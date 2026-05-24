@@ -6,7 +6,6 @@ import { notFound } from "next/navigation";
 import {
   ArrowRight,
   TrendingUp,
-  Target,
   Star,
   User,
   Users,
@@ -114,6 +113,9 @@ export default async function Home({ params }: HomeProps) {
     loc,
     { compact: true },
   );
+  const auditEntryPrice = formatAmount(getEntryPriceEur(AUDIT_TIERS) ?? 0, loc, {
+    compact: true,
+  });
   const unAUnEntryPrice = formatAmount(getEntryPriceEur(UN_A_UN_TIERS) ?? 0, loc, {
     compact: true,
   });
@@ -674,11 +676,11 @@ export default async function Home({ params }: HomeProps) {
         </Container>
       </section>
 
-      {/* ─────────────── GRILLE TARIFAIRE — 3 NIVEAUX D'ENGAGEMENT ───────────────
-          Refonte (Will 2026-05-24) : 3 niveaux d'engagement (Découverte 1j /
-          Cadrage 2-4 sem / Déploiement 2-6 mois). Chaque niveau couvre TOUTES
-          les verticales (formation, audit, 1-to-1, implémentation, plateforme web).
-          Position : juste après le fondateur William J. ("On la livre"). */}
+      {/* ─────────────── GRILLE TARIFAIRE — TABLEAU SINGLE-BLOCK 5 SERVICES ───────────────
+          Refonte (Will 2026-05-24 v2) : un seul bloc moderne avec les 5 services
+          dans un tableau aligné. Plus dense, plus lisible, plus pro qu'un grid 3 cards.
+          Prix dérivés du SSOT pricing.ts (interventionEntry/auditFlash/unAUn/impl/web).
+          Mobile : cartes empilées. Desktop : table row + colonnes (SERVICE / CATÉGORIE / INCLUS / PRIX). */}
       <section
         id="pricing"
         aria-labelledby="pricing-heading"
@@ -686,7 +688,7 @@ export default async function Home({ params }: HomeProps) {
       >
         <Container>
           <FadeInOnView>
-            <div className="mx-auto mb-16 max-w-3xl text-center">
+            <div className="mx-auto mb-14 max-w-3xl text-center">
               <p className="text-fg-muted mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
                 <span className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle" />
                 {isFr ? "Tarifs transparents" : "Transparent pricing"}
@@ -695,250 +697,218 @@ export default async function Home({ params }: HomeProps) {
                 id="pricing-heading"
                 className="text-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight"
               >
-                {isFr ? "Trois niveaux. " : "Three levels. "}
+                {isFr ? "Cinq services. " : "Five services. "}
                 <span
                   className="italic-editorial text-terracotta"
                   style={{ fontFamily: "var(--font-serif)" }}
                 >
-                  {isFr ? "Vous choisissez la profondeur." : "You choose the depth."}
+                  {isFr ? "Un prix d'entrée clair." : "One clear entry price."}
                 </span>
               </h2>
               <p className="text-fg-soft mx-auto mt-5 max-w-2xl text-lg leading-relaxed">
                 {isFr
-                  ? "Du diagnostic flash en 1 journée au déploiement complet sur plusieurs mois — chaque niveau couvre toutes nos expertises (formation, audit, 1-to-1, implémentation, plateforme web)."
-                  : "From a 1-day flash diagnosis to full multi-month deployment — each level covers all our expertise areas (training, audit, 1-to-1, implementation, web platform)."}
+                  ? "De la formation au déploiement, chaque service a son prix d'entrée transparent. Sans devis flou, sans surprise."
+                  : "From training to deployment, every service has its transparent entry price. No fuzzy quotes, no surprises."}
               </p>
             </div>
           </FadeInOnView>
-          <ul className="grid gap-5 lg:grid-cols-3 lg:gap-6">
-            {(
-              [
-                {
-                  id: "decouverte",
-                  highlight: false,
-                  nameFr: "Découverte",
-                  nameEn: "Discovery",
-                  durationFr: "1 journée sur site",
-                  durationEn: "1 day on-site",
-                  taglineFr: "Tester l'IA dans votre contexte, sans engagement",
-                  taglineEn: "Test AI in your context, no commitment",
-                  priceLabel: `${interventionEntryPrice} HT`,
-                  priceSubFr: "Forfait journée — frais inclus capitales régionales",
-                  priceSubEn: "Day package — travel included for regional capitals",
-                  includesFr: [
-                    "Diagnostic flash de vos process",
-                    "Démonstration d'outils IA sur vos vrais cas",
-                    "Plan d'action 5 priorités chiffrées",
-                    "Synthèse écrite + recommandations livrée sous 48h",
-                    "Support email 30 jours inclus",
-                  ],
-                  includesEn: [
-                    "Flash diagnosis of your processes",
-                    "AI tools demo on your real cases",
-                    "5 quantified priority action plan",
-                    "Written summary + recommendations within 48h",
-                    "30-day email support included",
-                  ],
-                  ctaFr: "Réserver une journée",
-                  ctaEn: "Book a day",
-                  ctaHref: "/reserver" as const,
-                  Icon: Sparkles,
-                },
-                {
-                  id: "cadrage",
-                  highlight: true,
-                  nameFr: "Cadrage",
-                  nameEn: "Scoping",
-                  durationFr: "2 à 4 semaines",
-                  durationEn: "2 to 4 weeks",
-                  taglineFr: "Cartographier, prioriser, démontrer le ROI",
-                  taglineEn: "Map, prioritize, demonstrate ROI",
-                  priceLabel: auditRange,
-                  priceSubFr: "Audit IA complet · selon taille entreprise",
-                  priceSubEn: "Full AI audit · based on company size",
-                  includesFr: [
-                    "Audit IA complet de vos process & outils",
-                    "Cartographie gains chiffrés action par action",
-                    "Roadmap priorisée 6-12 mois",
-                    "Démos POC sur vos données réelles",
-                    "3 sessions coaching 1-to-1 dirigeant",
-                    "Rapport livré · pas une présentation floue",
-                  ],
-                  includesEn: [
-                    "Full AI audit of your processes & tools",
-                    "Quantified gains map action by action",
-                    "Prioritized 6-12 month roadmap",
-                    "POC demos on your real data",
-                    "3 executive 1-to-1 coaching sessions",
-                    "Delivered report · not a fuzzy slideshow",
-                  ],
-                  ctaFr: "Demander un cadrage",
-                  ctaEn: "Request scoping",
-                  ctaHref: "/audit" as const,
-                  Icon: Target,
-                },
-                {
-                  id: "deploiement",
-                  highlight: false,
-                  nameFr: "Déploiement",
-                  nameEn: "Deployment",
-                  durationFr: "2 à 6 mois",
-                  durationEn: "2 to 6 months",
-                  taglineFr: "Construire, livrer, former, supporter",
-                  taglineEn: "Build, deliver, train, support",
-                  priceLabel: isFr ? "Sur devis" : "Quote on demand",
-                  priceSubFr: `Implémentation IA ou plateforme web · à partir de ${implEntryPrice}`,
-                  priceSubEn: `AI implementation or web platform · from ${implEntryPrice}`,
-                  includesFr: [
-                    "Implémentation IA ou site web augmenté IA sur mesure",
-                    "Intégration outils existants (CRM, ERP, etc.)",
-                    "Formation équipes incluse (modules adaptés)",
-                    "Tests utilisateurs + go-live",
-                    "Support production 90 jours",
-                    "Hébergement Europe RGPD strict",
-                  ],
-                  includesEn: [
-                    "Custom AI implementation or AI-augmented website",
-                    "Integration with existing tools (CRM, ERP, etc.)",
-                    "Team training included (adapted modules)",
-                    "User testing + go-live",
-                    "90-day production support",
-                    "European hosting, strict GDPR",
-                  ],
-                  ctaFr: "Discuter d'un projet",
-                  ctaEn: "Discuss a project",
-                  ctaHref: "/contact" as const,
-                  Icon: Rocket,
-                },
-              ] as const
-            ).map((tier, idx) => (
-              <FadeInOnView key={tier.id} delay={idx * 60}>
-                <li
-                  className={cn(
-                    "relative flex h-full flex-col rounded-3xl border p-7 transition sm:p-8",
-                    tier.highlight
-                      ? "bg-mocha-rich text-mocha-fg border-terracotta shadow-card lg:-translate-y-3"
-                      : "bg-paper border-border shadow-subtle",
-                  )}
+
+          {/* ─── TABLEAU SINGLE-BLOCK — desktop ≥ md, cards stacked mobile ─── */}
+          <FadeInOnView>
+            <div className="mx-auto max-w-6xl">
+              <div
+                role="table"
+                aria-label={isFr ? "Grille tarifaire des cinq services" : "Pricing grid of five services"}
+                className="bg-paper border-border shadow-elevated overflow-hidden rounded-3xl border"
+              >
+                {/* En-tête colonnes (desktop seulement) */}
+                <div
+                  role="row"
+                  className="bg-sand text-fg-muted hidden border-b border-border px-8 py-4 text-[11px] font-bold tracking-[0.18em] uppercase md:grid md:grid-cols-[2.2fr_1fr_2.4fr_1.3fr] md:items-center md:gap-6"
                 >
-                  {tier.highlight ? (
-                    <span className="bg-terracotta text-paper absolute -top-3 left-1/2 -translate-x-1/2 rounded-full px-3 py-1 text-[10px] font-bold tracking-[0.18em] uppercase">
-                      {isFr ? "Le plus choisi" : "Most chosen"}
-                    </span>
-                  ) : null}
-                  <div className="mb-6 flex items-start gap-4">
-                    <span
-                      className={cn(
-                        "inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full",
-                        tier.highlight
-                          ? "bg-terracotta text-paper"
-                          : "bg-terracotta-soft text-terracotta-deep",
-                      )}
-                      aria-hidden="true"
-                    >
-                      <tier.Icon className="h-5 w-5" strokeWidth={2.2} />
-                    </span>
-                    <div>
-                      <p
-                        className={cn(
-                          "text-[12px] font-bold tracking-[0.18em] uppercase",
-                          tier.highlight ? "text-terracotta-soft" : "text-terracotta",
-                        )}
-                      >
-                        {isFr ? tier.nameFr : tier.nameEn}
-                      </p>
-                      <p
-                        className={cn(
-                          "mt-1 text-xs font-medium",
-                          tier.highlight ? "text-mocha-fg/80" : "text-fg-muted",
-                        )}
-                      >
-                        {isFr ? tier.durationFr : tier.durationEn}
-                      </p>
-                    </div>
-                  </div>
-                  <p
-                    className={cn(
-                      "mb-6 text-base leading-relaxed italic",
-                      tier.highlight ? "text-mocha-fg" : "text-fg",
-                    )}
-                    style={{ fontFamily: "var(--font-serif)" }}
-                  >
-                    {isFr ? tier.taglineFr : tier.taglineEn}
-                  </p>
-                  <div className="mb-6">
-                    <p
-                      className={cn(
-                        "text-[clamp(1.75rem,3vw,2.5rem)] leading-none font-bold tracking-tight",
-                        tier.highlight ? "text-mocha-fg" : "text-fg",
-                      )}
-                      style={{ fontFamily: "var(--font-serif)" }}
-                    >
-                      {tier.priceLabel}
-                    </p>
-                    <p
-                      className={cn(
-                        "mt-2 text-xs leading-relaxed",
-                        tier.highlight ? "text-mocha-fg/70" : "text-fg-soft",
-                      )}
-                    >
-                      {isFr ? tier.priceSubFr : tier.priceSubEn}
-                    </p>
-                  </div>
-                  <ul className="mb-8 flex flex-1 flex-col gap-3">
-                    {(isFr ? tier.includesFr : tier.includesEn).map((item, i) => (
-                      <li key={i} className="flex items-start gap-2.5">
-                        <BadgeCheck
-                          className={cn(
-                            "mt-0.5 h-4 w-4 shrink-0",
-                            tier.highlight ? "text-terracotta-soft" : "text-terracotta",
-                          )}
-                          aria-hidden="true"
-                          strokeWidth={2.2}
-                        />
-                        <span
-                          className={cn(
-                            "text-sm leading-relaxed",
-                            tier.highlight ? "text-mocha-fg/90" : "text-fg-soft",
-                          )}
-                        >
-                          {item}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
+                  <span role="columnheader">{isFr ? "Service" : "Service"}</span>
+                  <span role="columnheader">{isFr ? "Catégorie" : "Category"}</span>
+                  <span role="columnheader">{isFr ? "Inclus" : "Included"}</span>
+                  <span role="columnheader" className="text-right">{isFr ? "Prix HT" : "Price excl. tax"}</span>
+                </div>
+
+                {/* 5 lignes services */}
+                {(
+                  [
+                    {
+                      id: "formation",
+                      dotColor: "bg-terracotta",
+                      badgeBg: "bg-terracotta-soft",
+                      badgeFg: "text-terracotta-deep",
+                      nameFr: "Formation IA",
+                      nameEn: "AI Training",
+                      subFr: "Présentiel · À partir d'une demi-journée",
+                      subEn: "On-site · From a half-day",
+                      categoryFr: "Formation",
+                      categoryEn: "Training",
+                      includesFr: "Ateliers métier · Sur site · Groupes 1–30 pers.",
+                      includesEn: "Business workshops · On-site · Groups of 1–30",
+                      price: interventionEntryPrice,
+                      href: "/interventions" as const,
+                    },
+                    {
+                      id: "audit",
+                      dotColor: "bg-primary",
+                      badgeBg: "bg-primary-soft",
+                      badgeFg: "text-primary",
+                      nameFr: "Audit IA",
+                      nameEn: "AI Audit",
+                      subFr: "Présentiel ou distanciel",
+                      subEn: "On-site or remote",
+                      categoryFr: "Audit",
+                      categoryEn: "Audit",
+                      includesFr: "Diagnostic process · Gains chiffrés · Roadmap 6–12 mois",
+                      includesEn: "Process diagnosis · Quantified gains · 6–12 month roadmap",
+                      price: auditEntryPrice,
+                      href: "/audit" as const,
+                    },
+                    {
+                      id: "coaching",
+                      dotColor: "bg-sage",
+                      badgeBg: "bg-sage-soft",
+                      badgeFg: "text-sage",
+                      nameFr: "Coaching 1-to-1",
+                      nameEn: "1-to-1 Coaching",
+                      subFr: "Par session · Dirigeant ou collaborateur",
+                      subEn: "Per session · Executive or staff",
+                      categoryFr: "Coaching",
+                      categoryEn: "Coaching",
+                      includesFr: "Sessions individuelles · Automatisations live · ROI J+1",
+                      includesEn: "Individual sessions · Live automations · ROI day-one",
+                      price: unAUnEntryPrice,
+                      href: "/un-a-un" as const,
+                    },
+                    {
+                      id: "implementation",
+                      dotColor: "bg-terracotta-deep",
+                      badgeBg: "bg-terracotta-soft",
+                      badgeFg: "text-terracotta-deep",
+                      nameFr: "Implémentation IA",
+                      nameEn: "AI Implementation",
+                      subFr: "Sur mesure · Projets clés en main",
+                      subEn: "Custom · Turnkey projects",
+                      categoryFr: "Implémentation",
+                      categoryEn: "Implementation",
+                      includesFr: "Automatisations · Intégration CRM/ERP · Support 90j",
+                      includesEn: "Automations · CRM/ERP integration · 90-day support",
+                      price: implEntryPrice,
+                      href: "/implementation" as const,
+                    },
+                    {
+                      id: "web",
+                      dotColor: "bg-primary",
+                      badgeBg: "bg-primary-soft",
+                      badgeFg: "text-primary",
+                      nameFr: "Plateforme web / SaaS IA",
+                      nameEn: "AI Web Platform / SaaS",
+                      subFr: "Sur devis · Plateformes IA dédiées",
+                      subEn: "Quote · Dedicated AI platforms",
+                      categoryFr: "Plateforme",
+                      categoryEn: "Platform",
+                      includesFr: "Web IA sur mesure · Reco & search natifs · RGPD Europe",
+                      includesEn: "Custom AI web · Native reco & search · EU GDPR",
+                      price: webEntryPrice,
+                      href: "/sites-web-augmentes" as const,
+                    },
+                  ] as const
+                ).map((s, idx) => (
                   <Link
-                    href={tier.ctaHref}
+                    key={s.id}
+                    href={s.href}
+                    role="row"
                     className={cn(
-                      "cta-lift inline-flex h-12 w-full items-center justify-center gap-2 rounded-full text-sm font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
-                      tier.highlight
-                        ? "bg-terracotta text-paper focus-visible:ring-terracotta"
-                        : "bg-fg text-paper focus-visible:ring-fg",
+                      "group hover:bg-sand/50 focus-visible:bg-sand/70 focus-visible:outline-none relative grid items-center gap-4 px-6 py-6 transition-colors md:grid-cols-[2.2fr_1fr_2.4fr_1.3fr] md:gap-6 md:px-8 md:py-7",
+                      idx > 0 && "border-border border-t",
                     )}
                   >
-                    {isFr ? tier.ctaFr : tier.ctaEn}
-                    <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                    {/* Colonne 1 — Service (dot + nom + sub) */}
+                    <div role="cell" className="flex items-start gap-3 md:items-center">
+                      <span
+                        className={cn(
+                          "mt-2 inline-block h-2.5 w-2.5 shrink-0 rounded-full md:mt-0",
+                          s.dotColor,
+                        )}
+                        aria-hidden="true"
+                      />
+                      <div className="min-w-0">
+                        <p className="text-fg text-base font-bold leading-tight sm:text-lg">
+                          {isFr ? s.nameFr : s.nameEn}
+                        </p>
+                        <p className="text-fg-muted mt-1 text-xs leading-snug sm:text-sm">
+                          {isFr ? s.subFr : s.subEn}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Colonne 2 — Catégorie (badge pill) */}
+                    <div role="cell" className="md:flex md:items-center">
+                      <span
+                        className={cn(
+                          "inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold",
+                          s.badgeBg,
+                          s.badgeFg,
+                        )}
+                      >
+                        {isFr ? s.categoryFr : s.categoryEn}
+                      </span>
+                    </div>
+
+                    {/* Colonne 3 — Inclus */}
+                    <div role="cell" className="text-fg-soft text-sm leading-relaxed">
+                      {isFr ? s.includesFr : s.includesEn}
+                    </div>
+
+                    {/* Colonne 4 — Prix HT + flèche */}
+                    <div
+                      role="cell"
+                      className="flex items-center justify-between gap-3 md:justify-end"
+                    >
+                      <div className="text-right">
+                        <p
+                          className="text-fg text-xl font-bold tracking-tight sm:text-2xl"
+                          style={{ fontFamily: "var(--font-serif)" }}
+                        >
+                          {s.price}
+                        </p>
+                        <p className="text-fg-muted text-[11px] leading-snug">
+                          {isFr ? "à partir de" : "starting at"}
+                        </p>
+                      </div>
+                      <span
+                        aria-hidden="true"
+                        className="bg-paper border-border text-fg-soft group-hover:border-terracotta group-hover:bg-terracotta group-hover:text-paper inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border transition-all"
+                      >
+                        <ArrowRight className="h-4 w-4" strokeWidth={2.2} />
+                      </span>
+                    </div>
                   </Link>
-                </li>
-              </FadeInOnView>
-            ))}
-          </ul>
+                ))}
+              </div>
+            </div>
+          </FadeInOnView>
           <p className="text-fg-muted mt-10 text-center text-sm leading-relaxed">
             {isFr ? (
               <>
-                Pas sûr du bon niveau ?{" "}
+                Pas sûr du bon service pour vous ?{" "}
                 <Link href="/contact" className="text-terracotta font-semibold hover:underline">
                   Parlons-en
                 </Link>{" "}
-                — on vous oriente sans engagement.
+                — on prend le temps d'écouter, d'analyser votre contexte et de
+                vous proposer la solution la plus adaptée. Sans engagement.
               </>
             ) : (
               <>
-                Not sure which level fits?{" "}
+                Not sure which service fits?{" "}
                 <Link href="/contact" className="text-terracotta font-semibold hover:underline">
                   Let's discuss
                 </Link>{" "}
-                — we guide you, no commitment.
+                — we take the time to listen, analyse your context and propose
+                the best-fit solution. No commitment.
               </>
             )}
           </p>
