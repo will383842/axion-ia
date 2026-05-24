@@ -178,7 +178,7 @@ jobs:
 
       - name: Extract metadata (tags, labels)
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           # Lowercase forcé (GHCR rejette le mixed-case).
           images: ghcr.io/${{ github.repository_owner }}/axion-ia
