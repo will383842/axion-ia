@@ -21,6 +21,10 @@ import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
 import { LocalGeoFaqSection } from "@/components/sections/LocalGeoFaqSection";
 import { Illustration } from "@/components/visual/Illustration";
+// Sprint uniformisation 2026-05-24 (Will) — alignement template /implementation.
+import { ProcessSteps } from "@/components/sections/ProcessSteps";
+import { CtaBlock } from "@/components/sections/CtaBlock";
+import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -465,6 +469,49 @@ export default async function CodageDeveloppementHub({ params }: Props) {
         </ul>
       </Section>
 
+      {/* MÉTHODOLOGIE — 4 étapes (Sprint uniformisation 2026-05-24) */}
+      <Section
+        eyebrow={isFr ? "Méthodologie" : "Methodology"}
+        title={isFr ? "Du brief à la production" : "From brief to production"}
+        titleEm={isFr ? "en 4 étapes" : "in 4 steps"}
+      >
+        <Container>
+          <ProcessSteps
+            orientation="horizontal"
+            steps={[
+              {
+                id: "step-1-cadrage",
+                title: isFr ? "Cadrage 48 h" : "48-h scoping",
+                description: isFr
+                  ? "Devis ferme sous 48 h après brief : périmètre, stack, intégrations IA, planning et prix forfaitaire fixé d'avance."
+                  : "Firm quote within 48 h after brief: scope, stack, AI integrations, timeline and fixed flat fee set in advance.",
+              },
+              {
+                id: "step-2-conception",
+                title: isFr ? "Conception" : "Design",
+                description: isFr
+                  ? "Maquettes UX/UI + architecture technique + cahier des charges IA (modèles, RAG, agents). Validation client avant tout build."
+                  : "UX/UI mockups + technical architecture + AI specs (models, RAG, agents). Client validation before any build.",
+              },
+              {
+                id: "step-3-build",
+                title: isFr ? "Build & intégration IA" : "Build & AI integration",
+                description: isFr
+                  ? "Développement Next.js / Astro / framework choisi + intégration des couches IA (chatbot RAG, search sémantique, automatisations, agents)."
+                  : "Next.js / Astro / chosen framework development + AI layers integration (RAG chatbot, semantic search, automations, agents).",
+              },
+              {
+                id: "step-4-livraison",
+                title: isFr ? "Livraison & passation" : "Delivery & handover",
+                description: isFr
+                  ? "Mise en production, tests UX, formation équipe interne. Vous êtes propriétaire du code (Git, hébergement). Support 30 j inclus."
+                  : "Production deployment, UX tests, internal team training. You own the code (Git, hosting). 30-day support included.",
+              },
+            ]}
+          />
+        </Container>
+      </Section>
+
       {/* COUVERTURE NATIONALE */}
       <LocalCoverageSection
         isFr={isFr}
@@ -487,27 +534,19 @@ export default async function CodageDeveloppementHub({ params }: Props) {
         <FaqAccordion items={faqs} className="mx-auto max-w-3xl" />
       </Section>
 
-      {/* CTA FINAL */}
-      <section className="bg-mocha-rich py-16 sm:py-20">
-        <Container className="max-w-2xl text-center">
-          <p className="text-mocha-fg/60 mb-4 text-[12px] font-semibold tracking-[0.18em] uppercase">
-            {isFr ? "Prêt à démarrer" : "Ready to start"}
-          </p>
-          <h2
-            className="text-mocha-fg text-3xl leading-tight font-medium sm:text-4xl"
-            style={{ fontFamily: "var(--font-serif)" }}
-          >
-            {isFr ? "Dites-nous ce que vous voulez" : "Tell us what you want"}
-            <span className="text-terracotta-soft mx-2 italic">
-              {isFr ? "construire." : "to build."}
-            </span>
-          </h2>
-          <p className="text-mocha-fg/70 mt-4 text-base leading-relaxed">
-            {isFr
-              ? "Devis ferme en 48 h. Forfait fixe. Vous êtes propriétaire du code."
-              : "Firm quote in 48 h. Fixed fee. You own the code."}
-          </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-4">
+      {/* CTA FINAL — composant centralise CtaBlock (Sprint uniformisation) */}
+      <CtaBlock
+        eyebrow={isFr ? "Prêt à démarrer" : "Ready to start"}
+        title={isFr ? "Dites-nous ce que vous voulez" : "Tell us what you want"}
+        titleEm={isFr ? "construire" : "to build"}
+        titleTail="."
+        description={
+          isFr
+            ? "Devis ferme en 48 h. Forfait fixe. Vous êtes propriétaire du code."
+            : "Firm quote in 48 h. Fixed fee. You own the code."
+        }
+        cta={
+          <div className="flex flex-wrap justify-center gap-4">
             <Cta href="/contact" size="lg" track="codage-hub-final">
               {isFr ? "Décrire mon projet" : "Describe my project"}
               <ArrowRight aria-hidden="true" className="h-4 w-4" />
@@ -521,8 +560,15 @@ export default async function CodageDeveloppementHub({ params }: Props) {
               {isFr ? "Voir le détail Web & Digital" : "See Web & Digital details"}
             </Cta>
           </div>
-        </Container>
-      </section>
+        }
+      />
+
+      {/* CTA mobile sticky (Sprint uniformisation) */}
+      <StickyMobileCta
+        href="/contact"
+        label={isFr ? "Décrire mon projet" : "Describe my project"}
+        track="codage-developpement-sticky-mobile"
+      />
     </>
   );
 }
