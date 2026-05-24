@@ -7,16 +7,12 @@ import {
   ArrowRight,
   TrendingUp,
   Target,
-  Lightbulb,
   Star,
   User,
   Users,
   Layers,
-  Infinity as InfinityIcon,
   MapPin,
-  UserCheck,
   BadgeCheck,
-  Trophy,
   Search,
   GraduationCap,
   Cog,
@@ -87,8 +83,8 @@ export async function generateMetadata({ params }: HomeProps): Promise<Metadata>
       ? "Cabinet IA Paris · Formations · Audits · Axion-IA"
       : "AI Consultancy Paris · Training · Audits · Axion-IA",
     description: isFr
-      ? `Interventions IA en entreprise, audits chiffrés et implémentations pour PME et ETI. Hébergement UE, à partir de ${formatAmount(getEntryPriceEur(INTERVENTION_TIERS) ?? 0, "fr", { compact: true })}.`
-      : `On-site AI sessions, costed audits and implementation for SMEs and mid-market firms. EU hosting, from ${formatAmount(getEntryPriceEur(INTERVENTION_TIERS) ?? 0, "en", { compact: true })}.`,
+      ? `Cabinet IA 100 % seniors, zéro intermédiaire. Formations, audits chiffrés, coaching 1-to-1 et implémentations pour TPE, PME et ETI. Résultats mesurables, hébergement UE, à partir de ${formatAmount(getEntryPriceEur(INTERVENTION_TIERS) ?? 0, "fr", { compact: true })}.`
+      : `Senior-only AI consultancy, zero middlemen. Training, costed audits, 1-to-1 coaching and implementation for SMBs and mid-market firms. Measurable results, EU hosting, from ${formatAmount(getEntryPriceEur(INTERVENTION_TIERS) ?? 0, "en", { compact: true })}.`,
     alternates: { fr: "/", en: "/" },
   });
 }
@@ -285,7 +281,13 @@ export default async function Home({ params }: HomeProps) {
   // foundingLocation + knowsLanguage). Pas de re-émission ici (signal Google
   // "double Organization" ambigu). Le FAQ utilise `buildFaqSpeakableJsonLd`
   // pour activer la voix (Google Assistant + Alexa + Bixby — AEO 2026).
-  const faqJsonLd = buildFaqSpeakableJsonLd({ items: faqs });
+  // `additionalSelectors` étend la couverture Speakable au hero (h1 + intro)
+  // pour que voice search lise le brand statement avant les Q+R (cf. audit P1-1
+  // 2026-05-24 : sans ça, Google Assistant ne lit que la FAQ, jamais le hero).
+  const faqJsonLd = buildFaqSpeakableJsonLd({
+    items: faqs,
+    additionalSelectors: ["[data-speakable-hero]"],
+  });
 
   // LocalBusiness JSON-LD — Service Area Business safe mode.
   // Pas d'adresse/geo/openingHours sur la home (juste areaServed France).
@@ -311,16 +313,15 @@ export default async function Home({ params }: HomeProps) {
     implement: "/implementation",
     web: "/sites-web-augmentes",
   };
+  // Service x5 — provider référence l'Organization émise layout-level via @id
+  // (knowledge graph LLM-friendly : Organization → Service → Offer cohérent vs
+  // chaque Service îlot avec provider string dupliqué). Cf. audit AEO 2026-05-24.
   const servicesJsonLd = valuePropositions.map((v) => ({
     "@context": "https://schema.org",
     "@type": "Service" as const,
     name: v.action,
     description: v.gain,
-    provider: {
-      "@type": "Organization" as const,
-      name: "Axion-IA",
-      url: SITE_URL,
-    },
+    provider: { "@id": `${SITE_URL}/#organization` },
     areaServed: "FR",
     serviceType: v.headline,
     url: `${SITE_URL}${SERVICE_PATHS[v.id] ?? "/"}`,
@@ -334,29 +335,21 @@ export default async function Home({ params }: HomeProps) {
   // Ré-activer quand Will aura collecté ≥ 5 vrais avis avec accord écrit + dates.
   const reviewedCases = CASE_STUDIES.filter((c) => c[loc].testimonialQuote);
 
-  // 3) BreadcrumbList JSON-LD — même pour la home (signal SEO + structure indexable)
-  const breadcrumbJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList" as const,
-    itemListElement: [
-      {
-        "@type": "ListItem" as const,
-        position: 1,
-        name: isFr ? "Accueil" : "Home",
-        item: `${SITE_URL}/${loc}`,
-      },
-    ],
-  };
+  // BreadcrumbList JSON-LD : ABSENT volontairement sur la home (convention 2026 :
+  // la home EST la racine hiérarchique → un BL self-referencing 1-item est un
+  // anti-pattern Google. Les pages enfants émettent leur BL via buildBreadcrumbJsonLd).
+  // Cf. audit perfection A4 2026-05-24.
 
-  // 4) VideoObject[] — un schema par vidéo témoignage. Vide si pas de vidéos
+  // 3) VideoObject[] — un schema par vidéo témoignage. Vide si pas de vidéos
   //    (section masquée côté JSX → schema absent aussi, cohérent).
+  //    `datePublished` requis sur VideoTestimonial pour signal fraîcheur honnête.
   const videosJsonLd = VIDEO_TESTIMONIALS.map((v) => ({
     "@context": "https://schema.org",
     "@type": "VideoObject" as const,
     name: v.title,
     description: `« ${v.quote} » — ${v.author}, ${v.role}, ${v.company}`,
     thumbnailUrl: v.thumbnail ?? `https://i.ytimg.com/vi/${v.youtubeId}/maxresdefault.jpg`,
-    uploadDate: new Date().toISOString().slice(0, 10),
+    uploadDate: v.datePublished,
     ...(v.duration ? { duration: v.duration } : {}),
     contentUrl: `https://www.youtube.com/watch?v=${v.youtubeId}`,
     embedUrl: `https://www.youtube-nocookie.com/embed/${v.youtubeId}`,
@@ -365,7 +358,11 @@ export default async function Home({ params }: HomeProps) {
   return (
     <>
       {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ HERO â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
-      <section className="bg-halo-warm relative overflow-hidden pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-20 lg:pb-32">
+      <section
+        id="hero"
+        aria-labelledby="hero-heading"
+        className="bg-halo-warm relative overflow-hidden pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-20 lg:pb-32"
+      >
         <Container className="relative">
           <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14 xl:gap-16">
             {/* Colonne gauche : copy (titre garde sa taille géante) */}
@@ -374,14 +371,17 @@ export default async function Home({ params }: HomeProps) {
                 <span className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle" />
                 {t("heroEyebrow")}
               </p>
-              <h1 className="display-editorial text-fg">
+              <h1 id="hero-heading" className="display-editorial text-fg" data-speakable-hero>
                 {t("heroTitlePart1")}{" "}
                 <em className="italic-editorial text-terracotta not-italic">
                   <span className="italic">{t("heroTitleEm")}</span>
                 </em>
                 {t("heroTitlePart2")}
               </h1>
-              <p className="text-fg-soft mt-8 max-w-2xl text-lg leading-relaxed sm:text-xl">
+              <p
+                className="text-fg-soft mt-8 max-w-2xl text-lg leading-relaxed sm:text-xl"
+                data-speakable-hero
+              >
                 {t("heroDescription")}
               </p>
               {/* Hero CTAs (2026-05-23 Will) : 2 boutons côte à côte
@@ -446,7 +446,11 @@ export default async function Home({ params }: HomeProps) {
           C'est LA section la plus importante de la page — visibilité maximum,
           chaque service a SA couleur d'accent dédiée (rotation terracotta /
           primary / sage sur 5 cartes). Layout 3+2 sur lg desktop. */}
-      <section className="bg-paper relative py-20 sm:py-24 lg:py-28">
+      <section
+        id="services"
+        aria-labelledby="services-heading"
+        className="bg-paper relative py-20 sm:py-24 lg:py-28"
+      >
         <Container>
           <FadeInOnView>
             <div className="mx-auto mb-14 max-w-5xl text-center">
@@ -454,7 +458,10 @@ export default async function Home({ params }: HomeProps) {
                 <span className="bg-terracotta mr-3 inline-block h-2 w-2 rounded-full align-middle" />
                 {t("valueEyebrow")}
               </p>
-              <h2 className="text-fg text-[clamp(2.75rem,6vw,5.5rem)] leading-[0.98] font-semibold tracking-tight">
+              <h2
+                id="services-heading"
+                className="text-fg text-[clamp(2.75rem,6vw,5.5rem)] leading-[0.98] font-semibold tracking-tight"
+              >
                 {t("valueTitlePart1")}{" "}
                 <span
                   className="italic-editorial text-terracotta"
@@ -540,7 +547,7 @@ export default async function Home({ params }: HomeProps) {
           Juste les 17 logos, pas de eyebrow/title/caption. Box normalisée
           dans LogosMarquee pour que tous les logos paraissent à la même
           taille visuelle (object-contain dans container fixe). */}
-      <section className="bg-bg border-border border-t border-b py-12 sm:py-16">
+      <section id="clients" aria-label={isFr ? "Nos clients" : "Our clients"} className="bg-bg border-border border-t border-b py-12 sm:py-16">
         <Container>
           <LogosMarquee logos={CLIENT_LOGOS} />
         </Container>
@@ -570,7 +577,11 @@ export default async function Home({ params }: HomeProps) {
           CEO" de l'exemple : eyebrow + headline 2 lignes + description +
           tagline italic / photo dirigeant + stats bar 3 colonnes.
           Photo placeholder : drop `public/illustrations/home-founder-william.avif`. */}
-      <section className="bg-paper border-border border-t py-20 sm:py-24 lg:py-28">
+      <section
+        id="founder"
+        aria-labelledby="founder-heading"
+        className="bg-paper border-border border-t py-20 sm:py-24 lg:py-28"
+      >
         <Container>
           <FadeInOnView>
             <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
@@ -581,6 +592,7 @@ export default async function Home({ params }: HomeProps) {
                   {t("founderEyebrow")}
                 </p>
                 <h2
+                  id="founder-heading"
                   className="text-fg text-[clamp(2.5rem,5vw,4.25rem)] leading-[1.02] font-semibold tracking-tight"
                   style={{ fontFamily: "var(--font-serif)" }}
                 >
@@ -600,6 +612,16 @@ export default async function Home({ params }: HomeProps) {
                     {t("founderTagline")}
                   </p>
                 </div>
+                {/* Lien contextuel /a-propos (audit P0-4 internal linking 2026-05-24) */}
+                <p className="mt-6">
+                  <Link
+                    href="/a-propos"
+                    className="text-terracotta hover:text-terracotta-deep inline-flex items-center gap-1 text-sm font-semibold underline-offset-4 hover:underline focus-visible:underline focus-visible:outline-none"
+                  >
+                    {isFr ? "Découvrir notre approche complète" : "Discover our full approach"}
+                    <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                  </Link>
+                </p>
               </div>
 
               {/* Colonne droite : carte fondateur */}
@@ -657,7 +679,11 @@ export default async function Home({ params }: HomeProps) {
           Cadrage 2-4 sem / Déploiement 2-6 mois). Chaque niveau couvre TOUTES
           les verticales (formation, audit, 1-to-1, implémentation, plateforme web).
           Position : juste après le fondateur William J. ("On la livre"). */}
-      <section className="bg-paper py-24 sm:py-28 lg:py-32">
+      <section
+        id="pricing"
+        aria-labelledby="pricing-heading"
+        className="bg-paper py-24 sm:py-28 lg:py-32"
+      >
         <Container>
           <FadeInOnView>
             <div className="mx-auto mb-16 max-w-3xl text-center">
@@ -665,7 +691,10 @@ export default async function Home({ params }: HomeProps) {
                 <span className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle" />
                 {isFr ? "Tarifs transparents" : "Transparent pricing"}
               </p>
-              <h2 className="text-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight">
+              <h2
+                id="pricing-heading"
+                className="text-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight"
+              >
                 {isFr ? "Trois niveaux. " : "Three levels. "}
                 <span
                   className="italic-editorial text-terracotta"
@@ -913,6 +942,16 @@ export default async function Home({ params }: HomeProps) {
               </>
             )}
           </p>
+          {/* Lien contextuel /methodologie (audit P0-4 internal linking 2026-05-24) */}
+          <p className="text-fg-muted mt-4 text-center text-sm leading-relaxed">
+            <Link
+              href="/methodologie"
+              className="text-terracotta inline-flex items-center gap-1 font-semibold underline-offset-4 hover:underline"
+            >
+              {isFr ? "Voir notre méthode en 4 étapes" : "See our 4-step method"}
+              <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+            </Link>
+          </p>
         </Container>
       </section>
 
@@ -923,7 +962,11 @@ export default async function Home({ params }: HomeProps) {
           2. 6 différenciateurs en grid 3×2 éditoriale (numéros géants serif)
           3. Modularité — 6 capacités en bandeau horizontal (sans répétition)
           4. Trust signals + tagline finale */}
-      <section className="bg-halo-cool relative py-24 sm:py-28 lg:py-32">
+      <section
+        id="why"
+        aria-labelledby="why-heading"
+        className="bg-halo-cool relative py-24 sm:py-28 lg:py-32"
+      >
         <Container>
           {/* BLOC 1 — Header */}
           <FadeInOnView>
@@ -932,7 +975,10 @@ export default async function Home({ params }: HomeProps) {
                 <span className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle" />
                 {isFr ? "Ce qui nous distingue" : "What sets us apart"}
               </p>
-              <h2 className="text-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight">
+              <h2
+                id="why-heading"
+                className="text-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight"
+              >
                 {isFr ? "Six raisons concrètes" : "Six concrete reasons"}
                 <br />
                 <span
@@ -1125,7 +1171,8 @@ export default async function Home({ params }: HomeProps) {
                 <p className="text-fg-muted mb-3 text-[12px] font-medium tracking-[0.16em] uppercase">
                   {isFr ? "Modulaire par design" : "Modular by design"}
                 </p>
-                <h3
+                {/* Promu h3 → h2 (audit A4 2026-05-24 : pas de h3 orpheline sans h2 parent) */}
+                <h2
                   className="text-fg text-[clamp(1.5rem,3vw,2.25rem)] leading-tight font-semibold tracking-tight"
                   style={{ fontFamily: "var(--font-serif)" }}
                 >
@@ -1133,7 +1180,7 @@ export default async function Home({ params }: HomeProps) {
                   <span className="text-terracotta italic">
                     {isFr ? "Indépendantes ou combinées." : "Independent or combined."}
                   </span>
-                </h3>
+                </h2>
               </div>
               {/* Bandeau capacités : 6 pills + connecteurs */}
               <ul className="bg-paper border-border flex flex-wrap items-center justify-center gap-2 rounded-2xl border p-6 sm:gap-3 sm:p-8">
@@ -1252,7 +1299,10 @@ export default async function Home({ params }: HomeProps) {
                 <p className="text-mocha-fg/70 mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
                   {t("videosEyebrow")}
                 </p>
-                <h2 className="text-mocha-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight">
+                <h2
+                  id="videos-heading"
+                  className="text-mocha-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight"
+                >
                   {t("videosTitlePart1")}{" "}
                   <span
                     className="italic-editorial text-terracotta-soft"
@@ -1273,7 +1323,11 @@ export default async function Home({ params }: HomeProps) {
       ) : null}
 
       {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ CASES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
-      <section className="bg-paper py-24 sm:py-28 lg:py-36">
+      <section
+        id="cases"
+        aria-labelledby="cases-heading"
+        className="bg-paper py-24 sm:py-28 lg:py-36"
+      >
         <Container>
           <FadeInOnView>
             <div className="mb-16 flex flex-wrap items-end justify-between gap-6">
@@ -1281,7 +1335,10 @@ export default async function Home({ params }: HomeProps) {
                 <p className="text-fg-muted mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
                   {t("casesEyebrow")}
                 </p>
-                <h2 className="text-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight">
+                <h2
+                  id="cases-heading"
+                  className="text-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight"
+                >
                   {isFr ? "Des implémentations" : "Custom"}{" "}
                   <span
                     className="italic-editorial text-terracotta"
@@ -1458,7 +1515,11 @@ export default async function Home({ params }: HomeProps) {
           4 segments TPE/PME/ETI/Grande + nuage des secteurs. Texte
           riche en keywords pour AEO ("IA pour PME françaises", "cabinet
           IA grandes entreprises"…). */}
-      <section className="bg-bg py-24 sm:py-28 lg:py-32">
+      <section
+        id="audience"
+        aria-labelledby="audience-heading"
+        className="bg-bg py-24 sm:py-28 lg:py-32"
+      >
         <Container>
           <FadeInOnView>
             <div className="mb-16 max-w-3xl">
@@ -1466,7 +1527,10 @@ export default async function Home({ params }: HomeProps) {
                 <span className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle" />
                 {t("audienceEyebrow")}
               </p>
-              <h2 className="text-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight">
+              <h2
+                id="audience-heading"
+                className="text-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight"
+              >
                 {t("audienceTitlePart1")}{" "}
                 <span
                   className="italic-editorial text-terracotta"
@@ -1503,9 +1567,11 @@ export default async function Home({ params }: HomeProps) {
               Signal AEO fort : entités sectorielles indexées par LLM. */}
           <FadeInOnView>
             <div className="border-border-strong mt-16 border-t pt-12">
-              <h3 className="text-fg text-xl leading-tight font-semibold tracking-tight sm:text-2xl">
+              {/* Promu h3 → h2 (audit A4 2026-05-24 : section autonome, pas
+                  un sous-titre de la sub-section audience précédente) */}
+              <h2 className="text-fg text-xl leading-tight font-semibold tracking-tight sm:text-2xl">
                 {t("audienceSectorsTitle")}
-              </h3>
+              </h2>
               <p className="text-fg-soft mt-3 max-w-2xl text-base leading-relaxed">
                 {t("audienceSectorsLead")}
               </p>
@@ -1540,14 +1606,21 @@ export default async function Home({ params }: HomeProps) {
       {/* ─────────────── TESTIMONIALS — design premium étoiles + avatars ───────────────
           Cards avec rating 5 étoiles terracotta, avatar initiales, quote serif,
           identité auteur + entreprise. 6 témoignages en grid 3 col desktop. */}
-      <section className="bg-paper py-24 sm:py-28 lg:py-36">
+      <section
+        id="testimonials"
+        aria-labelledby="testimonials-heading"
+        className="bg-paper py-24 sm:py-28 lg:py-36"
+      >
         <Container>
           <FadeInOnView>
             <div className="mx-auto mb-16 max-w-3xl text-center">
               <p className="text-fg-muted mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
                 {t("testimonialsEyebrow")}
               </p>
-              <h2 className="text-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight">
+              <h2
+                id="testimonials-heading"
+                className="text-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight"
+              >
                 {t("testimonialsTitlePart1")}{" "}
                 <span
                   className="italic-editorial text-terracotta"
@@ -1664,17 +1737,34 @@ export default async function Home({ params }: HomeProps) {
               );
             })}
           </ul>
+          {/* Lien contextuel /blog (audit P0-4 internal linking 2026-05-24) */}
+          <p className="text-fg-muted mt-12 text-center text-sm">
+            <Link
+              href="/blog"
+              className="text-terracotta inline-flex items-center gap-1 font-semibold underline-offset-4 hover:underline"
+            >
+              {isFr ? "Plus d'analyses et retours d'expérience sur le blog" : "More analysis & feedback on our blog"}
+              <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+            </Link>
+          </p>
         </Container>
       </section>
 
       {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ FAQ â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
-      <section className="bg-bg py-24 sm:py-28 lg:py-36">
+      <section
+        id="faq"
+        aria-labelledby="faq-heading"
+        className="bg-bg py-24 sm:py-28 lg:py-36"
+      >
         <Container className="max-w-3xl">
           <FadeInOnView>
             <p className="text-fg-muted mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
               FAQ
             </p>
-            <h2 className="text-fg text-[clamp(2rem,4vw,3rem)] leading-[1.1] font-semibold tracking-tight">
+            <h2
+              id="faq-heading"
+              className="text-fg text-[clamp(2rem,4vw,3rem)] leading-[1.1] font-semibold tracking-tight"
+            >
               {t("faqTitle")}
             </h2>
             <p className="text-fg-soft mt-4 text-base leading-relaxed">{t("faqDescription")}</p>
@@ -1714,19 +1804,46 @@ export default async function Home({ params }: HomeProps) {
                   </>
                 )}
               </p>
+              {/* Lien contextuel /transparence (audit P0-4 internal linking 2026-05-24) */}
+              <p className="text-fg-muted mt-3 text-center text-xs">
+                {isFr ? (
+                  <>
+                    Voir aussi{" "}
+                    <Link href="/transparence" className="text-fg-soft hover:text-terracotta underline-offset-4 hover:underline">
+                      notre politique de transparence
+                    </Link>
+                    .
+                  </>
+                ) : (
+                  <>
+                    See also{" "}
+                    <Link href="/transparence" className="text-fg-soft hover:text-terracotta underline-offset-4 hover:underline">
+                      our transparency policy
+                    </Link>
+                    .
+                  </>
+                )}
+              </p>
             </div>
           </FadeInOnView>
         </Container>
       </section>
 
       {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ CTA FINAL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
-      <section className="bg-mocha-rich text-mocha-fg relative overflow-hidden py-24 sm:py-28 lg:py-32">
+      <section
+        id="start"
+        aria-labelledby="start-heading"
+        className="bg-mocha-rich text-mocha-fg relative overflow-hidden py-24 sm:py-28 lg:py-32"
+      >
         <Container>
           <div className="mx-auto mb-12 max-w-3xl text-center">
             <p className="text-mocha-fg/70 mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
               {isFr ? "Démarrer" : "Get started"}
             </p>
-            <h2 className="text-mocha-fg text-[clamp(2.25rem,5vw,4.5rem)] leading-[1.02] font-semibold tracking-tight">
+            <h2
+              id="start-heading"
+              className="text-mocha-fg text-[clamp(2.25rem,5vw,4.5rem)] leading-[1.02] font-semibold tracking-tight"
+            >
               {isFr ? "Choisissez votre " : "Choose your "}
               <span
                 className="text-terracotta-soft italic"
@@ -1876,7 +1993,7 @@ export default async function Home({ params }: HomeProps) {
       <JsonLd data={faqJsonLd} />
       <JsonLd data={localBusinessJsonLd} />
       <JsonLd data={servicesJsonLd} />
-      <JsonLd data={breadcrumbJsonLd} />
+      {/* BreadcrumbList JSON-LD ABSENT : home = racine hiérarchique (cf. audit A4 2026-05-24) */}
       {videosJsonLd.length > 0 ? <JsonLd data={videosJsonLd} /> : null}
 
       {/* ───────────── STICKY MOBILE CTA (Blueprint §19) ─────────────

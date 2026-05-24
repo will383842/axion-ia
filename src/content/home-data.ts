@@ -28,6 +28,11 @@ export interface VideoTestimonial {
   thumbnail?: string;
   /** Durée ISO 8601 (PT1M28S). Sert au JSON-LD VideoObject. */
   duration?: string;
+  /**
+   * Date de publication ISO 8601 (YYYY-MM-DD). REQUIS pour signal AEO de
+   * fraîcheur honnête vs date de build dynamique (cf. audit AEO 2026-05-24).
+   */
+  datePublished: string;
 }
 
 // ─── LOGOS CLIENTS ─────────────────────────────────────────────────────────
