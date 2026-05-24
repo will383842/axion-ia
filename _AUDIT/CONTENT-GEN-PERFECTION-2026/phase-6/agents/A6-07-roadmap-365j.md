@@ -1,4 +1,5 @@
 # ROADMAP 365J — Vision 12 mois (J181-J365)
+
 ## Date : 2026-05-22 | Score entrant : ~4251/5000 | Score sortant estimé : ~4500-4650/5000
 
 ---
@@ -15,34 +16,34 @@ Gain cible : **+250 à +400 pts** pour franchir le seuil GO 4500 et viser 4600-4
 
 ### Jalons clés
 
-| Jalon | Date estimée | Condition |
-|-------|-------------|-----------|
-| **GO 4500 atteint** | J250-J270 (~2027-01-27 à 2027-02-16) | Trajectoire J91 confirmée |
-| Scale 500 art/j activée | J270-J300 | Infra stable 300/j + budget validé |
-| Audit perfection 2027 | J365 (~2027-05-22) | Annual review |
-| Migration Claude 5 | J200-J300 (si disponible) | Anthropic roadmap |
-| Backlinks trimestriel #2 | J180-J270 | Suite backlinks #1 |
-| Backlinks trimestriel #3 | J270-J365 | Maturité domaine |
+| Jalon                    | Date estimée                         | Condition                          |
+| ------------------------ | ------------------------------------ | ---------------------------------- |
+| **GO 4500 atteint**      | J250-J270 (~2027-01-27 à 2027-02-16) | Trajectoire J91 confirmée          |
+| Scale 500 art/j activée  | J270-J300                            | Infra stable 300/j + budget validé |
+| Audit perfection 2027    | J365 (~2027-05-22)                   | Annual review                      |
+| Migration Claude 5       | J200-J300 (si disponible)            | Anthropic roadmap                  |
+| Backlinks trimestriel #2 | J180-J270                            | Suite backlinks #1                 |
+| Backlinks trimestriel #3 | J270-J365                            | Maturité domaine                   |
 
 ---
 
 ### Items inclus
 
-| # | Item | Dimension | Effort Claude | Effort Will | Gain pts | Coût $ | Dépendances |
-|---|------|-----------|---------------|-------------|----------|--------|-------------|
-| A | Scale 300→500 art/j (config progressive) | D-Etat | 2h | 1h | +30 | $4 500/trimestre | Scale 300/j stable |
-| B | Migration Claude 5 (si disponible) | D-Qual | 8h | 2h | +25 | ~$0 (coût par token) | Anthropic disponibilité |
-| C | Backlinks trimestriel #2 (Q1 2027) | D-Visi | 8h | 5h | +15 | ~$0 | Backlinks #1 en cours |
-| D | Backlinks trimestriel #3 (Q2 2027) | D-Visi | 8h | 5h | +15 | ~$0 | Backlinks #2 |
-| E | Audit qualité #4 (500 articles, LLM-judge) | D-Qual | 8h | 1h | +25 | ~$50 | 10 000+ articles publiés |
-| F | Optimisation prompts post-audit #4 | D-Qual | 8h | 1h | +20 | ~$0 | Audit #4 |
-| G | GBP premium features (Q&A automatisés, produits) | D-Visi | 4h | 2h | +10 | ~$0 | GBP actif 6+ mois |
-| H | Audit content-gen perfection 2027 (25 agents //) | Toutes | 8h | 3h | +0 (mesure) | ~$20 | J365 |
-| I | Pages AMP ou ISR agressif pour mobile speed | D-Visi | 10h | 1h | +15 | ~$0 | Web Vitals stables |
-| J | Intégration GSC SearchAnalytics → dashboard interne | D-Visi | 6h | 30 min | +20 | ~$0 | GSC service account |
-| K | Auto-refresh prompts (drift détection automatique) | D-Qual | 8h | 1h | +15 | ~$5/mois | LLM-judge opérationnel |
-| L | Entity graph (Knowledge Graph local) | D-Archi | 12h | 2h | +20 | ~$0 | KB 4 verticales |
-| M | Bilingue EN (si D14=oui et non livré J121-J150) | D-Etat | 30h | 4h | +15 | ~$30 dev | Bug next-intl fixé |
+| #   | Item                                                | Dimension | Effort Claude | Effort Will | Gain pts    | Coût $               | Dépendances              |
+| --- | --------------------------------------------------- | --------- | ------------- | ----------- | ----------- | -------------------- | ------------------------ |
+| A   | Scale 300→500 art/j (config progressive)            | D-Etat    | 2h            | 1h          | +30         | $4 500/trimestre     | Scale 300/j stable       |
+| B   | Migration Claude 5 (si disponible)                  | D-Qual    | 8h            | 2h          | +25         | ~$0 (coût par token) | Anthropic disponibilité  |
+| C   | Backlinks trimestriel #2 (Q1 2027)                  | D-Visi    | 8h            | 5h          | +15         | ~$0                  | Backlinks #1 en cours    |
+| D   | Backlinks trimestriel #3 (Q2 2027)                  | D-Visi    | 8h            | 5h          | +15         | ~$0                  | Backlinks #2             |
+| E   | Audit qualité #4 (500 articles, LLM-judge)          | D-Qual    | 8h            | 1h          | +25         | ~$50                 | 10 000+ articles publiés |
+| F   | Optimisation prompts post-audit #4                  | D-Qual    | 8h            | 1h          | +20         | ~$0                  | Audit #4                 |
+| G   | GBP premium features (Q&A automatisés, produits)    | D-Visi    | 4h            | 2h          | +10         | ~$0                  | GBP actif 6+ mois        |
+| H   | Audit content-gen perfection 2027 (25 agents //)    | Toutes    | 8h            | 3h          | +0 (mesure) | ~$20                 | J365                     |
+| I   | Pages AMP ou ISR agressif pour mobile speed         | D-Visi    | 10h           | 1h          | +15         | ~$0                  | Web Vitals stables       |
+| J   | Intégration GSC SearchAnalytics → dashboard interne | D-Visi    | 6h            | 30 min      | +20         | ~$0                  | GSC service account      |
+| K   | Auto-refresh prompts (drift détection automatique)  | D-Qual    | 8h            | 1h          | +15         | ~$5/mois             | LLM-judge opérationnel   |
+| L   | Entity graph (Knowledge Graph local)                | D-Archi   | 12h           | 2h          | +20         | ~$0                  | KB 4 verticales          |
+| M   | Bilingue EN (si D14=oui et non livré J121-J150)     | D-Etat    | 30h           | 4h          | +15         | ~$30 dev             | Bug next-intl fixé       |
 
 ---
 
@@ -90,11 +91,11 @@ Sous-total J211-J245 : **+55 pts** (D-Etat +30, D-Qual +25)
 
 Audit flash 10 agents (3h Claude) pour confirmer le score réel.
 
-| Score J250 | Verdict | Action |
-|------------|---------|--------|
-| >= 4500 | **GO ATTEINT** | Annoncer + continuer scale |
-| 4400-4499 | GO J270 | Finaliser items E-F |
-| < 4400 | Écart résiduel | STOP & ASK Will — sprint correctif |
+| Score J250 | Verdict        | Action                             |
+| ---------- | -------------- | ---------------------------------- |
+| >= 4500    | **GO ATTEINT** | Annoncer + continuer scale         |
+| 4400-4499  | GO J270        | Finaliser items E-F                |
+| < 4400     | Écart résiduel | STOP & ASK Will — sprint correctif |
 
 Sous-total J246-J270 : **+30 pts** (D-Archi +20 entity graph partiel, D-Qual +10)
 
@@ -144,29 +145,29 @@ Sous-total J311-J355 : **+60 pts** (D-Visi +15, D-Etat +15, D-Ops +15, D-Qual +1
 
 ### Coût total vision 12 mois (J181-J365)
 
-| Poste | Montant |
-|-------|---------|
-| Tokens Claude (dev / audits / backlinks / prompts) | ~$100-150 |
-| Génération articles 500 art/j × 90j Q4 = 45k articles | ~$4 500 |
+| Poste                                                       | Montant           |
+| ----------------------------------------------------------- | ----------------- |
+| Tokens Claude (dev / audits / backlinks / prompts)          | ~$100-150         |
+| Génération articles 500 art/j × 90j Q4 = 45k articles       | ~$4 500           |
 | Génération articles 300 art/j × 90j Q3 (déjà dans J91-J180) | (inclus J91-J180) |
-| Audit qualité #4 LLM-judge 500 articles | ~$50 |
-| Auto-refresh prompts LLM-judge rolling | ~$60/an |
-| Audit perfection 2027 25 agents | ~$20 |
-| Infra upgrade VPS si nécessaire (CPX52 delta) | ~$0-360/an |
-| **Total J181-J365** | **~$4 730-5 140** |
+| Audit qualité #4 LLM-judge 500 articles                     | ~$50              |
+| Auto-refresh prompts LLM-judge rolling                      | ~$60/an           |
+| Audit perfection 2027 25 agents                             | ~$20              |
+| Infra upgrade VPS si nécessaire (CPX52 delta)               | ~$0-360/an        |
+| **Total J181-J365**                                         | **~$4 730-5 140** |
 
 ---
 
 ### Score estimé post-vision 12 mois
 
-| Dimension | J180 | J365 | Delta J181-J365 |
-|-----------|------|------|-----------------|
-| D-Etat | ~838 | ~898 | +60 (scale 500/j + EN) |
-| D-Archi | ~836 | ~876 | +40 (entity graph + drift detection) |
-| D-Visi | ~897 | ~957 | +60 (backlinks ×2 + GBP + GSC dashboard) |
-| D-Qual | ~904 | ~984 | +80 (Claude 5 + audits + prompts) |
-| D-Ops | ~776 | ~836 | +60 (ISR + CampaignTemplate + rapports) |
-| **TOTAL** | **~4251** | **~4551** | **+300** |
+| Dimension | J180      | J365      | Delta J181-J365                          |
+| --------- | --------- | --------- | ---------------------------------------- |
+| D-Etat    | ~838      | ~898      | +60 (scale 500/j + EN)                   |
+| D-Archi   | ~836      | ~876      | +40 (entity graph + drift detection)     |
+| D-Visi    | ~897      | ~957      | +60 (backlinks ×2 + GBP + GSC dashboard) |
+| D-Qual    | ~904      | ~984      | +80 (Claude 5 + audits + prompts)        |
+| D-Ops     | ~776      | ~836      | +60 (ISR + CampaignTemplate + rapports)  |
+| **TOTAL** | **~4251** | **~4551** | **+300**                                 |
 
 > Fourchette optimiste (Claude 5 disponible, backlinks excellents, EN livré) : **~4650/5000**
 > Fourchette conservatrice (Claude 5 indispo, backlinks lents) : **~4450/5000**
@@ -177,40 +178,40 @@ Sous-total J311-J355 : **+60 pts** (D-Visi +15, D-Etat +15, D-Ops +15, D-Qual +1
 
 #### Volume et génération
 
-| KPI | Valeur cible |
-|-----|-------------|
-| Articles publiés total | ~60 000-80 000 |
-| Cadence journalière | 500 art/j |
-| Score qualité moyen LLM-judge | > 80/100 |
-| Taux erreurs workers | < 2% |
+| KPI                           | Valeur cible   |
+| ----------------------------- | -------------- |
+| Articles publiés total        | ~60 000-80 000 |
+| Cadence journalière           | 500 art/j      |
+| Score qualité moyen LLM-judge | > 80/100       |
+| Taux erreurs workers          | < 2%           |
 
 #### SEO et visibilité
 
-| KPI | Valeur cible |
-|-----|-------------|
-| Impressions GSC mensuelles | > 500 000 |
-| Clicks organiques mensuels | > 15 000 |
-| Position moyenne GSC | < 25 |
-| Domaines référents | > 50 |
-| GBP vues fiche mensuelle | > 1 000 |
-| Featured Snippets position 0 | > 20 URLs |
+| KPI                          | Valeur cible |
+| ---------------------------- | ------------ |
+| Impressions GSC mensuelles   | > 500 000    |
+| Clicks organiques mensuels   | > 15 000     |
+| Position moyenne GSC         | < 25         |
+| Domaines référents           | > 50         |
+| GBP vues fiche mensuelle     | > 1 000      |
+| Featured Snippets position 0 | > 20 URLs    |
 
 #### Opérationnel
 
-| KPI | Valeur cible |
-|-----|-------------|
-| Score pipeline content-gen | >= 4 500/5 000 (GO) |
-| Temps moyen publication article | < 90s |
-| Taux succès BullMQ | > 98% |
-| Coût tokens / article | < $0.12 |
+| KPI                             | Valeur cible        |
+| ------------------------------- | ------------------- |
+| Score pipeline content-gen      | >= 4 500/5 000 (GO) |
+| Temps moyen publication article | < 90s               |
+| Taux succès BullMQ              | > 98%               |
+| Coût tokens / article           | < $0.12             |
 
 #### Conformité
 
-| KPI | Valeur cible |
-|-----|-------------|
+| KPI                       | Valeur cible         |
+| ------------------------- | -------------------- |
 | AI Act art. 50 compliance | 100% articles tagués |
-| RGPD droit à l'effacement | Endpoint actif |
-| Mentions légales IA | A jour |
+| RGPD droit à l'effacement | Endpoint actif       |
+| Mentions légales IA       | A jour               |
 
 ---
 
@@ -218,17 +219,18 @@ Sous-total J311-J355 : **+60 pts** (D-Visi +15, D-Etat +15, D-Ops +15, D-Qual +1
 
 Pour atteindre GO 4500 à J250, voici la trajectoire point par point :
 
-| Jalon | Score estimé |
-|-------|-------------|
-| J0 (2026-05-22) | ~3715 |
-| J30 (Sprint A) | ~3840 |
-| J60 (Sprint B) | ~3960 |
-| J90 (Sprint C) | ~4049 |
-| J180 (Sprint D) | ~4251 |
-| **J250 (GO estimé)** | **~4500** |
-| J365 (Vision 12m) | ~4551-4650 |
+| Jalon                | Score estimé |
+| -------------------- | ------------ |
+| J0 (2026-05-22)      | ~3715        |
+| J30 (Sprint A)       | ~3840        |
+| J60 (Sprint B)       | ~3960        |
+| J90 (Sprint C)       | ~4049        |
+| J180 (Sprint D)      | ~4251        |
+| **J250 (GO estimé)** | **~4500**    |
+| J365 (Vision 12m)    | ~4551-4650   |
 
 Écart J180→J250 à combler : **~249 pts en 70 jours**
+
 - Scale 500/j : +30 pts D-Etat
 - Migration Claude 5 : +25 pts D-Qual
 - Backlinks #2 : +15 pts D-Visi
@@ -244,15 +246,15 @@ Pour atteindre GO 4500 à J250, voici la trajectoire point par point :
 
 ### Risques vision 12 mois
 
-| Risque | Probabilité | Impact | Mitigation |
-|--------|-------------|--------|------------|
-| Claude 5 non disponible avant J300 | Moyenne | -25 pts D-Qual | Optimiser Sonnet 4.6 via prompts (item K) |
-| Google SGE remplace Featured Snippets | Moyenne | -30 pts D-Visi | Pivoter vers AEO / GEO / IA Overviews |
-| Coût tokens 500/j dépasse $15k/an | Faible | Budget | Stop-loss $1200/mois, optimiser prompts |
-| Backlinks très lents (6+ mois impact DA) | Haute | -30 pts D-Visi | Normal SEO long-terme — prévoir J270 pour mesurer |
-| Regulation EU 2027 (AI Act extension) | Faible | Inconnu | Veille trimestrielle + audit compliance automatique |
-| VPS CPX42 insuffisant à 500/j | Moyenne | -20 pts D-Ops | Upgrade CPX52 (~$40/mois delta) ou workers distribués |
-| Score GO non atteint J250 | Faible | Déception | Sprint correctif J251-J270 ciblé (STOP & ASK Will) |
+| Risque                                   | Probabilité | Impact         | Mitigation                                            |
+| ---------------------------------------- | ----------- | -------------- | ----------------------------------------------------- |
+| Claude 5 non disponible avant J300       | Moyenne     | -25 pts D-Qual | Optimiser Sonnet 4.6 via prompts (item K)             |
+| Google SGE remplace Featured Snippets    | Moyenne     | -30 pts D-Visi | Pivoter vers AEO / GEO / IA Overviews                 |
+| Coût tokens 500/j dépasse $15k/an        | Faible      | Budget         | Stop-loss $1200/mois, optimiser prompts               |
+| Backlinks très lents (6+ mois impact DA) | Haute       | -30 pts D-Visi | Normal SEO long-terme — prévoir J270 pour mesurer     |
+| Regulation EU 2027 (AI Act extension)    | Faible      | Inconnu        | Veille trimestrielle + audit compliance automatique   |
+| VPS CPX42 insuffisant à 500/j            | Moyenne     | -20 pts D-Ops  | Upgrade CPX52 (~$40/mois delta) ou workers distribués |
+| Score GO non atteint J250                | Faible      | Déception      | Sprint correctif J251-J270 ciblé (STOP & ASK Will)    |
 
 ---
 

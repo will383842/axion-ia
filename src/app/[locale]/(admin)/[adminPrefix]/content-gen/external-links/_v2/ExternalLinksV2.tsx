@@ -21,6 +21,27 @@ interface Props {
 
 const PAGE_SIZE = 100;
 
+/** Construit l'URL de pagination en préservant tous les filtres actifs. */
+function pageUrl(
+  offset: number,
+  filters: {
+    category?: string;
+    scope?: string;
+    status?: string;
+    search?: string;
+    onlyProblems?: boolean;
+  },
+): string {
+  const params = new URLSearchParams();
+  if (filters.search) params.set("search", filters.search);
+  if (filters.category) params.set("category", filters.category);
+  if (filters.scope) params.set("scope", filters.scope);
+  if (filters.status) params.set("status", filters.status);
+  if (filters.onlyProblems) params.set("onlyProblems", "1");
+  params.set("offset", String(offset));
+  return `?${params.toString()}`;
+}
+
 export async function ExternalLinksV2({
   adminPrefix,
   filters,
@@ -284,7 +305,7 @@ export async function ExternalLinksV2({
           <div className="flex gap-2">
             {(filters.offset ?? 0) > 0 && (
               <Link
-                href={`?offset=${Math.max(0, (filters.offset ?? 0) - PAGE_SIZE)}`}
+                href={pageUrl(Math.max(0, (filters.offset ?? 0) - PAGE_SIZE), filters)}
                 className="admin-button-secondary"
               >
                 ← Précédent
@@ -292,7 +313,7 @@ export async function ExternalLinksV2({
             )}
             {(filters.offset ?? 0) + PAGE_SIZE < result.total && (
               <Link
-                href={`?offset=${(filters.offset ?? 0) + PAGE_SIZE}`}
+                href={pageUrl((filters.offset ?? 0) + PAGE_SIZE, filters)}
                 className="admin-button-secondary"
               >
                 Suivant →

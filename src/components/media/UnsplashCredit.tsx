@@ -18,7 +18,7 @@ export function UnsplashCredit({ photographerName, photographerUrl, className }:
 
   return (
     <p
-      className={`text-xs text-fg-muted mt-1.5 ${className ?? ""}`}
+      className={`text-fg-muted mt-1.5 text-xs ${className ?? ""}`}
       aria-label={`Crédit photo : ${photographerName} sur Unsplash`}
     >
       Photo :{" "}
@@ -26,7 +26,7 @@ export function UnsplashCredit({ photographerName, photographerUrl, className }:
         href={photographerHref}
         target="_blank"
         rel="noopener noreferrer nofollow"
-        className="underline underline-offset-2 hover:text-fg transition-colors"
+        className="hover:text-fg underline underline-offset-2 transition-colors"
       >
         {photographerName}
       </a>{" "}
@@ -35,7 +35,7 @@ export function UnsplashCredit({ photographerName, photographerUrl, className }:
         href="https://unsplash.com/?utm_source=axion-ia&utm_medium=referral"
         target="_blank"
         rel="noopener noreferrer nofollow"
-        className="underline underline-offset-2 hover:text-fg transition-colors"
+        className="hover:text-fg underline underline-offset-2 transition-colors"
       >
         Unsplash
       </a>

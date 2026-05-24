@@ -546,7 +546,7 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implémentation d'un cas d'usage simple (lecture documents, qualification leads, génération de devis) pour artisans et petites structures stéphanoises.",
           },
@@ -652,7 +652,7 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implementation of a simple use case (document reading, lead qualification, quote generation) for Saint-Étienne artisans and small structures.",
           },

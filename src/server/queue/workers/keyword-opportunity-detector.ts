@@ -110,8 +110,7 @@ let workerInstance: Worker | null = null;
 export function startKeywordOpportunityDetectorWorker(): Worker {
   if (workerInstance) return workerInstance;
   const redisUrl = process.env.REDIS_URL;
-  if (!redisUrl)
-    throw new Error("REDIS_URL not set — keyword-opportunity-detector cannot start");
+  if (!redisUrl) throw new Error("REDIS_URL not set — keyword-opportunity-detector cannot start");
 
   workerInstance = new Worker(
     QUEUE_NAME,
@@ -152,7 +151,7 @@ export function startKeywordOpportunityDetectorWorker(): Worker {
 
 /** @deprecated Utiliser startKeywordOpportunityDetectorWorker() */
 export function createKeywordOpportunityDetectorWorker(redisUrl: string): Worker {
-  return new Worker(QUEUE_NAME, async (job: Job) => detectOpportunities(), {
+  return new Worker(QUEUE_NAME, async (_job: Job) => detectOpportunities(), {
     connection: { url: redisUrl },
     concurrency: 1,
     lockDuration: 120_000,

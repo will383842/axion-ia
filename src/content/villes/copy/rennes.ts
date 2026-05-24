@@ -551,7 +551,7 @@ export const RENNES_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE (< 10 collab)",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implémentation d'un cas d'usage simple (lecture factures, comptes-rendus de réunion, génération de fiches produits) pour une micro-structure rennaise.",
           },
@@ -657,7 +657,7 @@ export const RENNES_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business (< 10 staff)",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implementation of a simple use case (invoice reading, meeting minutes, product sheet generation) for a Rennes micro-structure.",
           },

@@ -89,6 +89,9 @@ export const ROUTES = {
 
   // ROI calculator
   roi: "/roi",
+
+  // Tarifs récap multi-modules (Sprint Header refonte 2026-05-24)
+  pricing: "/tarifs",
 } as const satisfies Record<string, RouteKey>;
 
 export type Route = (typeof ROUTES)[keyof typeof ROUTES];

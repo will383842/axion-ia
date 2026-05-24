@@ -40,6 +40,7 @@ import { AnswerCard } from "@/components/marketing/AnswerCard";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { PressImageBank } from "@/components/sections/PressImageBank";
 import { buildProductMetadata, SITE_URL, BUILD_DATE } from "@/lib/seo";
+import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 import {
   PRESS_RELEASES,
   getPressRelease,
@@ -229,10 +230,9 @@ export default async function PressReleaseDetailPage({ params }: Props) {
     // Speakable signal vocal (Google Assistant / Alexa / Siri) — cible le
     // TL;DR (dek) en haut de page. Cohérence avec `/presse` page principale
     // qui pointe `[#press-pitch, #press-boilerplate]`.
-    speakable: {
-      "@type": "SpeakableSpecification",
-      cssSelector: ['[data-aeo="press-release-tldr"]'],
-    },
+    speakable: buildSpeakableSpecification({
+      selectors: ['[data-aeo="press-release-tldr"]'],
+    }),
   } as const;
 
   // WebPage JSON-LD additionnel — datePublished/dateModified au niveau page

@@ -579,7 +579,7 @@ export const ROUEN_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implémentation d'un cas d'usage simple en quelques semaines — automatisation devis, comptes-rendus réunion, qualification leads pour TPE et indépendants rouennais.",
           },
@@ -685,7 +685,7 @@ export const ROUEN_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implementation of a simple use case over a few weeks — quote automation, meeting minutes, lead qualification for Rouen micro-businesses and freelancers.",
           },

@@ -114,7 +114,10 @@ const nextConfig: NextConfig = {
   ],
   images: {
     formats: ["image/avif", "image/webp"],
-    remotePatterns: [],
+    remotePatterns: [
+      // Unsplash : portraits clients testimonials home (libres de droits Unsplash License)
+      { protocol: "https", hostname: "images.unsplash.com" },
+    ],
     // D4 cert 2026-05-08 — anti-pattern Next 16 self-hosted : default
     // minimumCacheTTL = 60 sec → invalidation transforms AVIF/WebP toutes
     // les minutes côté disk cache, pression I/O CX/CPX32 inutile. Cible

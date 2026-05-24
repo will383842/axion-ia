@@ -1,8 +1,9 @@
 // Composant template — pages détail des formations 4 h Collectives.
 // Sprint 14.10.7 fix Will (2026-05-11) : tout format AVEC un tarif doit
 // avoir sa page indexable dédiée. Les 2 formations 4 h (Démarrage IA
-// Express + Atelier IA ciblé) à 390 € HT avaient été câblées sur la
-// page demande générique — on les promeut en pages détail à part entière.
+// Express + Atelier IA ciblé) — prix dérivé dynamiquement de pricing.ts
+// (cf. intervention-4h) — avaient été câblées sur la page demande
+// générique avant ; on les promeut en pages détail à part entière.
 //
 // Pattern miroir d'IndividualCoachingPage : hero + 3 chips + 4 bénéfices
 // + programme demi-journée 9 h–13 h + FAQ + JSON-LD Service + FAQPage.
@@ -324,10 +325,10 @@ export function CollectiveTrainingPage({ slug, locale }: Props): ReactNode {
   const priceFr = formatAmount(fourHTier.priceFlat!, "fr");
   const priceEn = formatAmount(fourHTier.priceFlat!, "en");
   // Will (audit /interventions 2026-05-12) — les 2 formations 4 h à prix
-  // fixe 390 € sont bookables direct sur le calendrier (enum DB ajouté via
-  // migration 20260512120000_collective_4h_enum_values). Avant : CTAs câblées
-  // sur /interventions/demande (formulaire), incohérent avec les autres formats
-  // à prix fixe (Essentielle, Approfondie, etc.).
+  // fixe (cf. pricing.ts intervention-4h) sont bookables direct sur le
+  // calendrier (enum DB ajouté via migration 20260512120000_collective_4h_enum_values).
+  // Avant : CTAs câblées sur /interventions/demande (formulaire), incohérent
+  // avec les autres formats à prix fixe (Essentielle, Approfondie, etc.).
   const bookingHref = `/reserver?intervention=${slug}`;
 
   // Sprint 14.10.7 fix charte couleur : tout en terracotta (orange Axion-IA).

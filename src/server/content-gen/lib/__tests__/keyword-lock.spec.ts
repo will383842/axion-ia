@@ -80,13 +80,7 @@ describe("keyword-lock (Sprint Final P1-14)", () => {
 
       await acquireKeywordLock("audit RGPD", 60);
 
-      expect(redisSetMock).toHaveBeenCalledWith(
-        "keyword-lock:audit rgpd",
-        "1",
-        "EX",
-        60,
-        "NX",
-      );
+      expect(redisSetMock).toHaveBeenCalledWith("keyword-lock:audit rgpd", "1", "EX", 60, "NX");
     });
 
     it("normalizes FR (lowercase + strip accents + trim) — collision détectée", async () => {
@@ -191,12 +185,8 @@ describe("keyword-lock (Sprint Final P1-14)", () => {
     it("produces consistent normalized keys", async () => {
       const { buildKeywordLockKey } = await import("../keyword-lock");
 
-      expect(buildKeywordLockKey("Formation IA Paris")).toBe(
-        "keyword-lock:formation ia paris",
-      );
-      expect(buildKeywordLockKey("  Implémentation  ")).toBe(
-        "keyword-lock:implementation",
-      );
+      expect(buildKeywordLockKey("Formation IA Paris")).toBe("keyword-lock:formation ia paris");
+      expect(buildKeywordLockKey("  Implémentation  ")).toBe("keyword-lock:implementation");
       expect(buildKeywordLockKey("AUDIT RGPD")).toBe("keyword-lock:audit rgpd");
     });
   });

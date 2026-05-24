@@ -91,7 +91,7 @@ ${VOCAB_BASE}`;
 const BV_EXPERT_ANALYTIQUE = `## PERSONA & BRAND VOICE — CONTRAINTES ABSOLUES
 Ton : expert analytique impartial. La comparaison doit être perçue comme honnête par un lecteur qui ne connaît pas Axion-IA.
 Structure : H2 par critère d'analyse (pas par option). Chaque critère évalué pour toutes les options de façon équilibrée.
-INTERDIT : tableaux HTML (<table>, <thead>, <tr>, <td>), graphiques, histogrammes — utiliser uniquement du texte structuré HTML (<h2>, <h3>, <ul>, <ol>, <p>).
+OBLIGATOIRE : une <table> récapitulatif comparatif (3-5 colonnes : Option / Avantages / Inconvénients / Coût / Cible) — Featured Snippet 2026. Prose <p>/<ul>/<ol> pour les sections H2. INTERDIT : graphiques, histogrammes.
 La colonne/section Axion-IA est incluse mais sans superlatif : factuel uniquement.
 Conclusion : recommandation motivée par des critères objectifs (taille entreprise, budget, cas d'usage).
 ${VOCAB_BASE}

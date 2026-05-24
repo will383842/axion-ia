@@ -1,44 +1,46 @@
 # Test 02 — Lighthouse 10 pages (substitut audit code)
+
 ## Date : 2026-05-22
 
 Mode AUDIT-ONLY : pas d'exécution Lighthouse live. Vérification lighthouserc.json + bundle stats.
 
 ## lighthouserc.json
+
 {
-  "ci": {
-    "collect": {
-      "url": [
-        "http://localhost:3000/fr",
-        "http://localhost:3000/en",
-        "http://localhost:3000/fr/interventions",
-        "http://localhost:3000/en/interventions",
-        "http://localhost:3000/fr/interventions/essentielle",
-        "http://localhost:3000/en/interventions/essential",
-        "http://localhost:3000/fr/audit",
-        "http://localhost:3000/en/audit",
-        "http://localhost:3000/fr/implementation",
-        "http://localhost:3000/en/implementation",
-        "http://localhost:3000/fr/cas-concrets",
-        "http://localhost:3000/en/case-studies",
-        "http://localhost:3000/fr/blog",
-        "http://localhost:3000/en/blog",
-        "http://localhost:3000/fr/contact",
-        "http://localhost:3000/en/contact",
-        "http://localhost:3000/fr/galerie",
-        "http://localhost:3000/en/gallery"
-      ],
-      "startServerCommand": "pnpm start",
-      "startServerReadyPattern": "Ready",
-      "numberOfRuns": 3,
-      "settings": [{ "preset": "desktop" }, { "preset": "mobile" }]
-    },
-    "assert": {
-      "preset": "lighthouse:no-pwa",
-      "assertions": {
-        "categories:performance": ["error", { "minScore": 0.9 }],
-        "categories:accessibility": ["warn", { "minScore": 0.9 }],
-        "categories:best-practices": ["warn", { "minScore": 0.9 }],
-        "categories:seo": ["warn", { "minScore": 0.9 }],
+"ci": {
+"collect": {
+"url": [
+"http://localhost:3000/fr",
+"http://localhost:3000/en",
+"http://localhost:3000/fr/interventions",
+"http://localhost:3000/en/interventions",
+"http://localhost:3000/fr/interventions/essentielle",
+"http://localhost:3000/en/interventions/essential",
+"http://localhost:3000/fr/audit",
+"http://localhost:3000/en/audit",
+"http://localhost:3000/fr/implementation",
+"http://localhost:3000/en/implementation",
+"http://localhost:3000/fr/cas-concrets",
+"http://localhost:3000/en/case-studies",
+"http://localhost:3000/fr/blog",
+"http://localhost:3000/en/blog",
+"http://localhost:3000/fr/contact",
+"http://localhost:3000/en/contact",
+"http://localhost:3000/fr/galerie",
+"http://localhost:3000/en/gallery"
+],
+"startServerCommand": "pnpm start",
+"startServerReadyPattern": "Ready",
+"numberOfRuns": 3,
+"settings": [{ "preset": "desktop" }, { "preset": "mobile" }]
+},
+"assert": {
+"preset": "lighthouse:no-pwa",
+"assertions": {
+"categories:performance": ["error", { "minScore": 0.9 }],
+"categories:accessibility": ["warn", { "minScore": 0.9 }],
+"categories:best-practices": ["warn", { "minScore": 0.9 }],
+"categories:seo": ["warn", { "minScore": 0.9 }],
 
         "largest-contentful-paint": ["error", { "maxNumericValue": 1800 }],
         "interaction-to-next-paint": "off",
@@ -87,15 +89,17 @@ Mode AUDIT-ONLY : pas d'exécution Lighthouse live. Vérification lighthouserc.j
       "target": "filesystem",
       "outputDir": "./lhci"
     }
-  }
+
+}
 }
 
 ## Bundle stats files presents
 
-## Web Vitals memos _AUDIT
-_perf-chunk-inspect.cjs
-_perf-firstload-gz.cjs
-_perf-scan.cjs
+## Web Vitals memos \_AUDIT
+
+\_perf-chunk-inspect.cjs
+\_perf-firstload-gz.cjs
+\_perf-scan.cjs
 AUDIT-PERFECTION-FINALE-2026-05-07.md
 AUDIT-PERFECTION-FINALE-V2-2026-05-07.md
 AUDIT-WEB-VITALS-2026-BASELINE-A.md

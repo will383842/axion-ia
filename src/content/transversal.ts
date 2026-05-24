@@ -125,6 +125,60 @@ export interface FaqEntry {
 
 export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
   {
+    id: "geo-france",
+    fr: {
+      question: "Couvrez-vous toute la France — métropole et outre-mer ?",
+      answer:
+        "Oui. Nous intervenons partout en France : Île-de-France, Auvergne-Rhône-Alpes, Provence-Alpes-Côte d'Azur, Occitanie, Nouvelle-Aquitaine, Hauts-de-France, Pays de la Loire, Bretagne, Grand Est, Normandie, Bourgogne-Franche-Comté, Centre-Val de Loire, Corse — ainsi qu'en Outre-mer (Guadeloupe, Martinique, Guyane, La Réunion, Mayotte).",
+    },
+    en: {
+      question: "Do you cover the whole of France — mainland and overseas?",
+      answer:
+        "Yes. We operate everywhere in France: Île-de-France, Auvergne-Rhône-Alpes, Provence-Alpes-Côte d'Azur, Occitanie, Nouvelle-Aquitaine, Hauts-de-France, Pays de la Loire, Brittany, Grand Est, Normandy, Bourgogne-Franche-Comté, Centre-Val de Loire, Corsica — as well as Overseas territories (Guadeloupe, Martinique, Guyane, La Réunion, Mayotte).",
+    },
+  },
+  {
+    id: "geo-metropoles",
+    fr: {
+      question:
+        "Intervenez-vous dans les métropoles régionales (Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes…) ?",
+      answer:
+        "Oui. Nos consultants se déplacent dans toutes les capitales régionales : Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes, Strasbourg, Montpellier, Rennes, Nice, Reims, Saint-Étienne, Le Havre, Grenoble, Dijon, Angers — et plus généralement toute ville française. Frais de déplacement inclus.",
+    },
+    en: {
+      question:
+        "Do you work in regional cities (Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes…)?",
+      answer:
+        "Yes. Our consultants travel to every regional capital: Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes, Strasbourg, Montpellier, Rennes, Nice, Reims, Saint-Étienne, Le Havre, Grenoble, Dijon, Angers — and more broadly any French city. Travel costs included.",
+    },
+  },
+  {
+    id: "geo-tpe-rural",
+    fr: {
+      question: "Et pour les TPE, PME et artisans en zone rurale ou petites villes ?",
+      answer:
+        "Absolument. Nous accompagnons artisans, commerçants, TPE, PME et ETI partout en France, y compris en zone rurale et petites villes. Le format à distance est souvent plus rentable pour ces structures — sans perdre en qualité d'accompagnement.",
+    },
+    en: {
+      question: "What about SMEs, craftsmen in rural areas or small towns?",
+      answer:
+        "Absolutely. We support craftsmen, retailers, SMEs and mid-cap companies across France, including rural areas and small towns. Remote format is often more cost-effective for these structures — without losing quality of support.",
+    },
+  },
+  {
+    id: "geo-distance-international",
+    fr: {
+      question: "Pouvez-vous intervenir à distance ou à l'international ?",
+      answer:
+        "Oui aux deux. Visio sécurisée, partage d'écran chiffré, livrables sous 48h. Nous intervenons en français ou en anglais, dans toute l'Union européenne et au-delà (Suisse, Royaume-Uni, Québec, Maghreb francophone). Format hybride possible (présentiel + remote).",
+    },
+    en: {
+      question: "Can you work fully remote or internationally?",
+      answer:
+        "Yes to both. Secure video calls, encrypted screen sharing, deliverables within 48h. We deliver in French or English, across the European Union and beyond (Switzerland, UK, Quebec, French-speaking North Africa). Hybrid format available (on-site + remote).",
+    },
+  },
+  {
     id: "definition",
     fr: {
       question: "Qu'est-ce qu'Axion-IA ?",
@@ -218,12 +272,12 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "L'IA va-t-elle remplacer mes salariés ?",
       answer:
-        "Non. L'IA telle que déployée par Axion-IA automatise les tâches répétitives (rédaction d'emails, comptes-rendus, classement, recherche d'informations) pour libérer du temps sur les tâches à valeur ajoutée. L'objectif est d'augmenter la productivité de vos équipes, pas de les remplacer.",
+        "L'IA automatise les tâches répétitives à faible valeur (saisie, classement, rédaction d'e-mails standards, comptes-rendus, recherche d'informations) pour libérer du temps sur les missions à forte valeur ajoutée. En pratique : vos équipes produisent plus avec le même effectif, votre masse salariale n'augmente plus au rythme de votre croissance, et certains postes peuvent évoluer vers des missions plus stratégiques. C'est un levier de productivité — nous vous accompagnons sur le diagnostic technique et la transformation des process, pas sur l'organisation RH interne (qui reste votre décision).",
     },
     en: {
       question: "Will AI replace my employees?",
       answer:
-        "No. AI as deployed by Axion-IA automates repetitive tasks (email writing, meeting notes, filing, information search) to free up time for value-added work. The goal is to boost your teams' productivity, not to replace them.",
+        "AI automates low-value repetitive tasks (data entry, filing, standard email drafting, meeting notes, information search) to free up time for higher-value work. In practice: your teams produce more with the same headcount, your payroll no longer scales at the same pace as your growth, and some roles can evolve toward more strategic missions. It's a productivity lever — we support you on the technical diagnosis and process transformation, not on internal HR organisation (which stays your decision).",
     },
   },
   {
@@ -323,12 +377,12 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Axion-IA travaille-t-il avec les ETI et grands comptes ?",
       answer:
-        "Oui. Axion-IA accompagne des entreprises de toutes tailles, des TPE aux ETI et grands comptes. Pour les ETI et grands comptes (25-80k€ de projet), Axion-IA propose des programmes multi-sites, des audits stratégiques approfondis et des implémentations IA à large envergure avec gouvernance des données.",
+        "Oui. Axion-IA accompagne des entreprises de toutes tailles, des TPE aux ETI et grands comptes. Pour les ETI et grands comptes, Axion-IA propose des programmes multi-sites sur devis, des audits stratégiques approfondis et des implémentations IA à large envergure avec gouvernance des données.",
     },
     en: {
       question: "Does Axion-IA work with mid-caps and large companies?",
       answer:
-        "Yes. Axion-IA works with companies of all sizes, from small businesses to mid-caps and large companies. For mid-caps and large accounts (€25-80k projects), Axion-IA offers multi-site programmes, in-depth strategic audits and large-scale AI implementations with data governance.",
+        "Yes. Axion-IA works with companies of all sizes, from small businesses to mid-caps and large companies. For mid-caps and large accounts, Axion-IA offers multi-site programmes (on request), in-depth strategic audits and large-scale AI implementations with data governance.",
     },
   },
   {

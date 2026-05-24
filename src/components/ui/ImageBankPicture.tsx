@@ -32,6 +32,7 @@
 //     compatibilité React 19 hydration — aucun state, aucun effet).
 
 import type { CSSProperties } from 'react';
+import ReactDOM from 'react-dom';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -76,6 +77,21 @@ export function ImageBankPicture({
   className,
 }: ImageBankPictureProps) {
   const base = `/images/${slug}`;
+
+  // React 19 / Next.js 15+ : émet un <link rel="preload" as="image"> dans le
+  // <head> lorsque l'image est above-the-fold. Cela permet aux navigateurs de
+  // commencer le téléchargement de l'image avant que le rendu HTML ne soit
+  // complet, améliorant significativement le LCP.
+  // ReactDOM.preload() fonctionne côté serveur (SSR) ET côté client.
+  if (priority) {
+    ReactDOM.preload(`${base}.webp`, {
+      as: 'image',
+      fetchPriority: 'high',
+      imageSrcSet: `${base}.webp 1920w, ${base}-md.webp 768w, ${base}-sm.webp 384w`,
+      imageSizes: '(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 1200px',
+      type: 'image/webp',
+    });
+  }
 
   // Style inline pour le LQIP — fond flou pendant le chargement.
   const imgStyle: CSSProperties | undefined = lqipBase64

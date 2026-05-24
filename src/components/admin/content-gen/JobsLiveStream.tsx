@@ -91,15 +91,29 @@ export function JobsLiveStream({ jobId, initialStatus }: Props): React.ReactElem
   const progress = STATUS_PROGRESS[status] ?? 50;
 
   const pollStatus = useCallback(async () => {
+    // P0-12 Sprint correctif admin — la route SSE supporte désormais
+    // Accept: application/json pour un snapshot one-shot. On parse la réponse
+    // JSON pour mettre à jour le statut sans ouvrir un stream SSE.
     try {
       const res = await fetch(`/api/content-gen/jobs/${jobId}/stream`, {
         headers: { Accept: "application/json" },
       });
       if (!res.ok) return;
-      // Le stream SSE ne se prête pas au polling — on fait juste un fetch de
-      // l'état du job via l'API admin jobs (action côté serveur non disponible
-      // ici). On interroge directement la route SSE qui renvoie les events SSE.
-      // Pour le polling fallback, on abandonne si on ne peut pas EventSource.
+      const data = (await res.json()) as {
+        status: string;
+        qualityScore?: number | null;
+        durationMs?: number | null;
+      };
+      setStatus(data.status);
+      if (data.qualityScore != null) setQualityScore(data.qualityScore);
+      if (data.durationMs != null) setDurationMs(data.durationMs);
+      if (isTerminalStatus(data.status)) {
+        setDone(true);
+        if (pollingRef.current) {
+          clearInterval(pollingRef.current);
+          pollingRef.current = null;
+        }
+      }
     } catch {
       // Silencieux
     }

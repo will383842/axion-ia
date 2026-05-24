@@ -251,12 +251,12 @@ export const AUDIT_TIERS: ReadonlyArray<PricingTier> = [
  * Brackets canoniques imposés par Will : 2-8 / 9-15 / 16-30 personnes.
  * Identiques à Approfondie (même grille pour tous les formats).
  *
- *   2-8 pers   :   490 € HT (prix d'entrée flagship)
- *   9-15 pers  :   790 € HT (recommandé · effectif moyen)
- *   16-30 pers : 1 190 € HT (grande équipe)
+ *   2-8 pers   :   690 € HT (prix d'entrée flagship)
+ *   9-15 pers  :   890 € HT (recommandé · effectif moyen)
+ *   16-30 pers : 1 490 € HT (grande équipe)
  *
  * Dégressivité €/pers (au pire de chaque bracket) :
- *     61 € → 53 € → 40 €/pers ✅ vraiment dégressif
+ *     86 € → 59 € → 50 €/pers ✅ vraiment dégressif
  *
  * Au-delà de 30 personnes : Conférence (Sur devis) ou Sur demande.
  *
@@ -271,7 +271,7 @@ export const ESSENTIELLE_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
     labelEn: "Intimate",
     rangeFr: "2 à 8 personnes",
     rangeEn: "2 to 8 people",
-    priceFlat: 490,
+    priceFlat: 690,
   },
   {
     id: "essentielle-standard",
@@ -279,7 +279,7 @@ export const ESSENTIELLE_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
     labelEn: "Standard",
     rangeFr: "9 à 15 personnes",
     rangeEn: "9 to 15 people",
-    priceFlat: 790,
+    priceFlat: 890,
     isFeatured: true,
   },
   {
@@ -288,7 +288,7 @@ export const ESSENTIELLE_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
     labelEn: "Complete",
     rangeFr: "16 à 30 personnes",
     rangeEn: "16 to 30 people",
-    priceFlat: 1190,
+    priceFlat: 1490,
   },
 ];
 
@@ -296,17 +296,16 @@ export const ESSENTIELLE_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
  * Sous-tiers Approfondie (2 jours) — Sprint 14.10.5c (Will 2026-05-08).
  *
  * Brackets identiques à Essentielle (Will : « pas 2-4 mais 2-8, pas 5-6
- * mais 9-15, pas 7-8 mais 16-30 »). Cohérence stricte avec Essentielle :
- *   Approfondie N pers (2j) = Essentielle N pers (1j) × 1.8
- *   Le coefficient 1.8 reflète le coût marginal du 2e jour (~80 % du 1er :
- *   prof déjà mobilisé, logement+repas déjà payés, pas doublement strict).
+ * mais 9-15, pas 7-8 mais 16-30 »). Cohérence stricte avec Essentielle —
+ * le 2e jour reflète le coût marginal (prof déjà mobilisé, logement+repas
+ * déjà payés, pas doublement strict).
  *
- *   2-8 pers   :   880 € HT (=  490 × 1.8 arrondi)
- *   9-15 pers  : 1 420 € HT (=  790 × 1.8 arrondi)
- *   16-30 pers : 2 140 € HT (= 1190 × 1.8 arrondi)
+ *   2-8 pers   : 1 190 € HT
+ *   9-15 pers  : 1 590 € HT
+ *   16-30 pers : 2 490 € HT
  *
  * Dégressivité €/pers (au pire de chaque bracket) :
- *     110 € → 95 € → 71 €/pers ✅ vraiment dégressif
+ *     149 € → 106 € → 83 €/pers ✅ vraiment dégressif
  *
  * Au-delà de 30 personnes : Conférence (Sur devis) ou Sur demande.
  */
@@ -317,7 +316,7 @@ export const APPROFONDIE_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
     labelEn: "Intimate",
     rangeFr: "2 à 8 personnes",
     rangeEn: "2 to 8 people",
-    priceFlat: 880,
+    priceFlat: 1190,
   },
   {
     id: "approfondie-standard",
@@ -325,7 +324,7 @@ export const APPROFONDIE_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
     labelEn: "Standard",
     rangeFr: "9 à 15 personnes",
     rangeEn: "9 to 15 people",
-    priceFlat: 1420,
+    priceFlat: 1590,
     isFeatured: true,
   },
   {
@@ -334,7 +333,7 @@ export const APPROFONDIE_SUB_TIERS: ReadonlyArray<PricingSubTier> = [
     labelEn: "Complete",
     rangeFr: "16 à 30 personnes",
     rangeEn: "16 to 30 people",
-    priceFlat: 2140,
+    priceFlat: 2490,
   },
 ];
 
@@ -347,7 +346,7 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
     id: "intervention-4h",
     labelFr: "Formation 4 heures",
     labelEn: "4-hour training",
-    priceFlat: 390,
+    priceFlat: 590,
     durationFr: "Demi-journée (4 h)",
     durationEn: "Half-day (4 h)",
     groupSizeFr: "2 à 20 personnes",
@@ -361,7 +360,7 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
     id: "intervention-essentielle",
     labelFr: "Essentielle",
     labelEn: "Essential",
-    priceFlat: 490,
+    priceFlat: 690,
     durationFr: "1 journée",
     durationEn: "1 day",
     groupSizeFr: "2 à 30 personnes",
@@ -389,7 +388,7 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
     id: "intervention-approfondie",
     labelFr: "Approfondie",
     labelEn: "Deep dive",
-    priceFlat: 880,
+    priceFlat: 1190,
     durationFr: "2 jours",
     durationEn: "2 days",
     groupSizeFr: "2 à 30 personnes",
@@ -429,14 +428,32 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
     audienceSizes: ["tpe", "pme", "eti", "grande-entreprise"],
   },
   {
+    // Will 2026-05-24 — variante 1-to-1 pour collaborateur clé (non-dirigeant).
+    // Même format journée 1-to-1 que `intervention-dirigeants`, prix d'entrée
+    // 890 € HT (différenciation tarifaire vs 990 € dirigeant).
+    id: "intervention-membre-equipe",
+    labelFr: "Membre équipe",
+    labelEn: "Team member",
+    priceFlat: 890,
+    durationFr: "1 journée",
+    durationEn: "1 day",
+    groupSizeFr: "1 collaborateur (1-to-1)",
+    groupSizeEn: "1 employee (1-on-1)",
+    descriptionFr:
+      "Journée 1-to-1 avec un collaborateur clé pour monter en compétence sur ses propres cas (IA opérationnelle, automatisations métier).",
+    descriptionEn:
+      "1-on-1 day with a key team member to upskill on their own real cases (operational AI, business automations).",
+    audienceSizes: ["tpe", "pme", "eti", "grande-entreprise"],
+  },
+  {
     // Will (audit /interventions 2026-05-12) — passage de Sur devis à prix
-    // fixe 690 € HT pour groupe 2 à 8 personnes. Bookable direct calendrier.
-    // (Pour groupes plus larges, Will alignera plus tard sur la grille
-    // Essentielle/Approfondie ou gardera Sur devis cas par cas.)
+    // fixe pour groupe 2 à 8 personnes. Bookable direct calendrier.
+    // 2026-05-24 (Will) : alignement à 990 € HT (parité avec Gagner du
+    // temps / Dirigeants, journée flagship 1-to-many sur Claude).
     id: "intervention-claude",
     labelFr: "Intervention Claude",
     labelEn: "Claude intervention",
-    priceFlat: 690,
+    priceFlat: 990,
     durationFr: "1 journée",
     durationEn: "1 day",
     groupSizeFr: "2 à 8 personnes",
@@ -491,56 +508,62 @@ export const UN_A_UN_TIERS: ReadonlyArray<PricingTier> = [INTERVENTION_DIRIGEANT
 
 export const IMPLEMENTATION_TIERS: ReadonlyArray<PricingTier> = [
   {
+    // 2026-05-24 (Will) — rebrand « POC » → « Pilote IA » (mot simple,
+    // compréhensible sans jargon tech). L'id `impl-poc` reste stable
+    // (URLs, JSON-LD, intégrations DB inchangés). Prix d'entrée conservé.
     id: "impl-poc",
-    labelFr: "POC",
-    labelEn: "POC",
+    labelFr: "Pilote IA",
+    labelEn: "AI Pilot",
     priceMin: 990,
     priceMax: 4900,
-    descriptionFr: "Preuve de concept ciblée sur un cas d'usage prioritaire.",
-    descriptionEn: "Proof of concept targeting one priority use case.",
+    descriptionFr: "Pilote ciblé sur un cas d'usage prioritaire — preuve de valeur rapide.",
+    descriptionEn: "Pilot targeting one priority use case — quick proof of value.",
     audienceSizes: ["tpe"],
   },
   {
+    // 2026-05-24 (Will) — passage en Sur devis (périmètre trop variable
+    // pour publier un range pertinent : nombre de cas d'usage, intégrations,
+    // formation interne ajustent fortement le chiffrage).
     id: "impl-mission-pme",
     labelFr: "Mission PME",
     labelEn: "SME mission",
-    priceMin: 8000,
-    priceMax: 25000,
+    onQuote: true,
     descriptionFr: "Déploiement multi-cas + formation des équipes en interne.",
     descriptionEn: "Multi-case deployment + internal team training.",
     audienceSizes: ["pme"],
   },
   {
+    // 2026-05-24 (Will) — passage en Sur devis (gouvernance + intégrations
+    // avancées trop variables pour publier un range).
     id: "impl-mission-eti",
     labelFr: "Mission ETI",
     labelEn: "Mid-cap mission",
-    priceMin: 25000,
-    priceMax: 80000,
+    onQuote: true,
     descriptionFr: "Déploiement transverse + gouvernance IA + intégrations avancées.",
     descriptionEn: "Transverse deployment + AI governance + advanced integrations.",
     audienceSizes: ["eti"],
   },
   {
+    // 2026-05-24 (Will) — sur devis pur (pas de floor publié).
     id: "impl-grand-programme",
     labelFr: "Grand programme",
     labelEn: "Large program",
-    priceMin: 80000,
     onQuote: true,
     descriptionFr: "Programmes annuels pour grandes entreprises et grands comptes.",
     descriptionEn: "Annual programs for large enterprises and key accounts.",
     audienceSizes: ["grande-entreprise"],
   },
   // Sprint 14.10.5 — IA custom d'entreprise (offre tech-spécifique).
-  // Orthogonale aux tiers par taille (POC/PME/ETI/grand-programme) ;
+  // Orthogonale aux tiers par taille (Pilote/PME/ETI/grand-programme) ;
   // s'applique aux clients qui veulent un projet sur mesure indépendamment
   // de la taille. `IMPLEMENTATIONS::ia-custom` (content/implementation.ts)
   // dérive son prix de ce tier.
+  // 2026-05-24 (Will) — passage en Sur devis.
   {
     id: "impl-ia-custom",
     labelFr: "IA custom d'entreprise",
     labelEn: "Custom enterprise AI",
-    priceMin: 8000,
-    priceMax: 50000,
+    onQuote: true,
     durationFr: "4 à 12 semaines",
     durationEn: "4 to 12 weeks",
     descriptionFr:

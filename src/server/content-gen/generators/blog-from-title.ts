@@ -32,6 +32,7 @@ import { getGlossaryContext } from "../brand/glossary-context";
 import { injectInternalLinks } from "../links/internal-link-catalog";
 import { injectExternalLinks } from "../links/external-links-injector";
 import { getIntentPromptAddendum } from "../shared/intent-prompt-adapter";
+import { extractMentionedCitiesFromText } from "@/lib/geo/extract-mentioned-cities";
 
 const QUALITY_THRESHOLD = 60;
 const MAX_QUALITY_ITERATIONS = 3;
@@ -48,6 +49,8 @@ Produis un article de blog en français optimisé SEO/AEO 2026. Règles absolues
 - 0 numéro de téléphone : utiliser uniquement contact@axion-ia.com.
 - Anti-doorway HCU 2024 : minimum 500 mots de contenu substantiel.
 - 6 à 8 questions FAQ réelles (People-Also-Ask) avec réponses directes ≥ 2 lignes.
+- "metaTitle": "50-60 caractères MAX, keyword principal inclus au début"
+- "metaDescription": "140-155 caractères, phrase complète avec bénéfice clair, keyword naturel inclus"
 - Output JSON strict : { title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}], tags }`);
 
 export const blogFromTitleGenerator: Generator = {
@@ -259,6 +262,7 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
       .trim();
     const wordCount = bodyText.split(/\s+/).filter((w) => w.length > 0).length;
     const readingTimeMinutes = Math.max(1, Math.round(wordCount / 200));
+    const mentionedCities = extractMentionedCitiesFromText(bodyText, { maxCities: 20 });
 
     const finalInternalLinkCount =
       (parsed.bodyHtml.match(/<a\b[^>]*href="\/[^"]*"/gi) ?? []).length +
@@ -319,6 +323,7 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
       citations: lastCitations,
       promptHash: lastPromptHash,
       selectedExternalLinkIds: externalLinksCtx.ids,
+      mentionedCities,
     };
   },
 };

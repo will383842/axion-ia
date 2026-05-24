@@ -28,6 +28,12 @@ interface TestimonialRow {
   module: string | null;
   rating: number | null;
   displayOrder: number;
+  /**
+   * Sprint v7 Phase 15 (F5) : true si le testimonial a été marqué "réel"
+   * (source vérifiable + consentement RGPD) via `markAsRealTestimonial`.
+   * Lu depuis `displayPages.realMeta.isReal` côté list page.
+   */
+  isReal?: boolean;
 }
 
 interface Props {
@@ -149,8 +155,18 @@ export function TestimonialsV2({
                   <tr key={t.id}>
                     <td>{t.displayOrder}</td>
                     <td>
-                      <div>
-                        {t.firstName} {t.lastName}
+                      <div className="flex items-center gap-2">
+                        <span>
+                          {t.firstName} {t.lastName}
+                        </span>
+                        {t.isReal ? (
+                          <span
+                            className="admin-badge admin-badge-published"
+                            title="Testimonial vérifié : source identifiable + consentement RGPD"
+                          >
+                            ✓ Authentifié
+                          </span>
+                        ) : null}
                       </div>
                       <code className="admin-meta-small">{t.slug}</code>
                     </td>

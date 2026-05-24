@@ -30,10 +30,13 @@ import {
   AdminSidebarNav,
   AdminTopbar,
   AdminUserMenu,
+  AdminNotificationsDropdown,
 } from "@/components/admin/ui";
+import type { AdminNotificationItem } from "@/components/admin/ui";
 import { buildAdminNav } from "@/lib/admin-nav";
 import { AdminCommandPalette } from "./AdminCommandPalette";
 import { getFailedJobsCount } from "@/server/actions/content-gen/jobs";
+import { prisma } from "@/lib/prisma";
 
 import "@/app/admin.css";
 import "@/app/print.css";
@@ -100,12 +103,101 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
   // Sprint A-suite P6 — Item 2. Badge rouge failed jobs sidebar.
   // Fire-and-forget au rendu SSR ; si DB non disponible (stub) → 0, pas de badge.
   let failedJobsCount = 0;
+  // A-12 SP-X3 — Notifications topbar + badge alertes sidebar.
+  const notificationItems: AdminNotificationItem[] = [];
+  let alertsCount = 0;
+  // Vérif Site Explorer — Badge anomalies high severity (non résolues).
+  let siteExplorerAnomaliesHighCount = 0;
+
   if (showSidebar) {
-    try {
-      failedJobsCount = await getFailedJobsCount();
-    } catch {
-      // Silencieux — build-time stub ou DB indisponible.
+    // Fetch failedJobsCount + DB-stored anomaly alerts in parallel.
+    const ANOMALY_KEYS = [
+      "alert_quality_drop",
+      "alert_reject_spike",
+      "alert_pipeline_stall",
+      "cost_cap_80_active",
+    ] as const;
+
+    const [failedCount, anomalyRows, siteExplorerHighCount] = await Promise.all([
+      getFailedJobsCount().catch(() => 0),
+      prisma.contentGenConfig
+        .findMany({
+          where: { key: { in: [...ANOMALY_KEYS] } },
+          select: { key: true, value: true, updatedAt: true },
+        })
+        .catch(() => [] as Array<{ key: string; value: unknown; updatedAt: Date }>),
+      prisma.siteRouteAnomaly
+        .count({ where: { severity: "high", resolvedAt: null } })
+        .catch(() => 0),
+    ]);
+
+    failedJobsCount = failedCount;
+    siteExplorerAnomaliesHighCount = siteExplorerHighCount;
+
+    // Build notification items from DB anomaly alerts.
+    for (const row of anomalyRows) {
+      const val = row.value as {
+        active?: boolean;
+        message?: string;
+        provider?: string;
+        pct?: number;
+      } | null;
+      if (!val?.active) continue;
+
+      if (row.key === "cost_cap_80_active") {
+        const pct = val.pct ?? 0;
+        const costNotif: AdminNotificationItem = {
+          id: "cost_cap_80",
+          title: `Coût ${pct >= 100 ? "plafond atteint" : `${pct}% du plafond`}`,
+          href: `${adminBase}/content-gen/costs`,
+          severity: pct >= 100 ? "destructive" : "warning",
+          createdAt: row.updatedAt.toISOString(),
+          ...(val.provider ? { description: `Provider : ${val.provider}` } : {}),
+        };
+        notificationItems.push(costNotif);
+        alertsCount++; // cost cap counts as an ops alert
+        continue;
+      }
+
+      const labelMap: Record<string, string> = {
+        alert_quality_drop: "Chute qualité détectée",
+        alert_reject_spike: "Spike de rejets",
+        alert_pipeline_stall: "Pipeline bloqué",
+      };
+      const anomalyNotif: AdminNotificationItem = {
+        id: row.key,
+        title: labelMap[row.key] ?? row.key,
+        href: `${adminBase}/content-gen/monitoring`,
+        severity: "destructive",
+        createdAt: row.updatedAt.toISOString(),
+        ...(val.message ? { description: val.message } : {}),
+      };
+      notificationItems.push(anomalyNotif);
     }
+
+    // Failed jobs notification (if any).
+    if (failedJobsCount > 0) {
+      notificationItems.push({
+        id: "failed_jobs",
+        title: `${failedJobsCount} job${failedJobsCount > 1 ? "s" : ""} en échec`,
+        href: `${adminBase}/content-gen/jobs`,
+        severity: "destructive",
+        createdAt: new Date().toISOString(),
+      });
+    }
+
+    // Sort: destructive first, then warning, then by date desc.
+    const sevOrder: Record<AdminNotificationItem["severity"], number> = {
+      destructive: 0,
+      warning: 1,
+      info: 2,
+      success: 3,
+    };
+    notificationItems.sort(
+      (a, b) =>
+        (sevOrder[a.severity] ?? 3) - (sevOrder[b.severity] ?? 3) ||
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    );
   }
 
   // CSS injecté côté admin (force-dynamic) pour masquer le Header/Footer publics
@@ -135,6 +227,9 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
         <AdminTopbar
           brand={<strong className="admin-brand">Axion-IA · Admin</strong>}
           commandPalette={<AdminCommandPalette adminPrefix={adminPrefix} />}
+          notifications={
+            <AdminNotificationsDropdown items={notificationItems} allHref={`${adminBase}/alerts`} />
+          }
           userMenu={
             session.user.email ? (
               <AdminUserMenu email={session.user.email} adminBase={adminBase} />
@@ -142,7 +237,12 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
           }
         />
         <div className="flex">
-          <AdminSidebarNav items={nav} failedJobsCount={failedJobsCount} />
+          <AdminSidebarNav
+            items={nav}
+            failedJobsCount={failedJobsCount}
+            alertsCount={alertsCount}
+            siteExplorerAnomaliesHighCount={siteExplorerAnomaliesHighCount}
+          />
           <main className="admin-main min-w-0 flex-1">{children}</main>
         </div>
         <AdminSessionExpiryWarning />

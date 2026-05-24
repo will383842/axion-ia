@@ -22,6 +22,7 @@ import { getGlossaryContext } from "../brand/glossary-context";
 import { injectInternalLinks } from "../links/internal-link-catalog";
 import { injectExternalLinks } from "../links/external-links-injector";
 import { getIntentPromptAddendum } from "../shared/intent-prompt-adapter";
+import { extractMentionedCitiesFromText } from "@/lib/geo/extract-mentioned-cities";
 
 const QUALITY_THRESHOLD = 55;
 const MAX_QUALITY_ITERATIONS = 2;
@@ -36,6 +37,8 @@ Produis une page FAQ complète en français optimisée AEO/SEO 2026. Règles abs
 - 0 numéro de téléphone : contact@axion-ia.com uniquement.
 - 0 prix en dur, 0 promesses de délais chiffrés.
 - bodyHtml = intro thématique HTML (2-3 paragraphes) — les Q/A vont dans faq[].
+- "metaTitle": "50-60 caractères MAX, keyword principal inclus au début"
+- "metaDescription": "140-155 caractères, phrase complète avec bénéfice clair, keyword naturel inclus"
 - Output JSON strict : { title, metaTitle, metaDescription, slug, directAnswer, bodyHtml, faq:[{q,a}×10-15], tags }`);
 
 function synthesizeFaqTopic(input: GeneratorBaseInput): string {
@@ -214,6 +217,7 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
       .trim();
     const wordCount = bodyText.split(/\s+/).filter((w) => w.length > 0).length;
     const faqCount = (parsed.faq ?? []).length;
+    const mentionedCities = extractMentionedCitiesFromText(bodyText, { maxCities: 20 });
     const readingTimeMinutes = Math.max(1, Math.round((wordCount + faqCount * 50) / 200));
 
     const readability = computeReadabilityFr(bodyText);
@@ -269,6 +273,7 @@ ${glossaryContext ? `\n${glossaryContext}` : ""}
       citations: lastCitations,
       promptHash: lastPromptHash,
       selectedExternalLinkIds: externalLinksCtx.ids,
+      mentionedCities,
     };
   },
 };

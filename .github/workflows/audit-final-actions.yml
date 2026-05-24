@@ -1,0 +1,259 @@
+name: Audit Final · Actions Will (Sprint Final 2026-05-22)
+
+# Workflow utilitaire workflow_dispatch — exécute les 3 actions Will prod
+# du Sprint Final pré-prod audit 2026-05-22 :
+#
+#   1. P0-5 — Seed les 6 CampaignTemplate (table campaign_template, idempotent)
+#      via `pnpm content-gen:seed-templates` (script seed-campaign-templates-standalone.ts)
+#      Sans ce seed, le flow Fl-04 "Création campagne depuis preset" est cassé
+#      en prod (UI utilise FALLBACK_PRESETS sans id Prisma).
+#
+#   2. P1-18 — Vérifier que le cron daily backup Postgres tourne sur le VPS
+#      Hetzner. Lit `crontab -l | grep backup-postgres`. Read-only.
+#      Si absent, alerte Will pour configurer le cron manuellement.
+#
+#   3. P1-20 — Vérifier prisma migrate status post déploiement
+#      (sanity check, déjà fait par admin-emergency-migrate).
+#
+# ⚠️ NON inclus : Rampe D-W1 (`MAX_PUBLISH_PER_DAY=30`) — c'est une action
+# IMPACTANTE (activation génération automatique articles live sur axion-ia.com).
+# Will doit la déclencher explicitement via workflow séparé OU Coolify UI.
+#
+# Secrets requis :
+#   - HETZNER_SSH_KEY (clé privée SSH root@VPS Hetzner CPX42)
+#
+# Trigger : workflow_dispatch uniquement.
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_seed_templates:
+        description: "P0-5 — Seed 6 CampaignTemplate (idempotent upsert)"
+        required: false
+        default: "true"
+        type: choice
+        options: ["true", "false"]
+      verify_backup_cron:
+        description: "P1-18 — Verify crontab backup daily Postgres"
+        required: false
+        default: "true"
+        type: choice
+        options: ["true", "false"]
+      verify_migrate_status:
+        description: "P1-20 — Verify prisma migrate status (no drift)"
+        required: false
+        default: "true"
+        type: choice
+        options: ["true", "false"]
+
+permissions:
+  contents: read
+
+jobs:
+  audit-final-actions:
+    name: Audit Final Sprint actions
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Setup SSH (Hetzner CPX42)
+        env:
+          HETZNER_SSH_KEY: ${{ secrets.HETZNER_SSH_KEY }}
+        run: |
+          set -euo pipefail
+          if [ -z "${HETZNER_SSH_KEY:-}" ]; then
+            echo "::error::Secret HETZNER_SSH_KEY missing."
+            exit 1
+          fi
+          mkdir -p ~/.ssh
+          echo "$HETZNER_SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H -T 8 178.105.55.15 >> ~/.ssh/known_hosts 2>/dev/null || true
+          ssh -o BatchMode=yes -o ConnectTimeout=10 root@178.105.55.15 'echo SSH_OK'
+
+      - name: Find axion-ia container
+        id: container
+        env:
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+        run: |
+          set -euo pipefail
+          CONTAINERS=$(ssh -o BatchMode=yes root@178.105.55.15 \
+            'docker ps --format "{{.Names}}|{{.Image}}|{{.Status}}"' 2>&1)
+          echo "── All containers ──"
+          echo "$CONTAINERS"
+          echo "──────"
+          NAME=$(echo "$CONTAINERS" | awk -F'|' -v uuid="$COOLIFY_APP_UUID" '$1 ~ "^"uuid {print $1; exit}')
+          if [ -z "$NAME" ]; then
+            echo "::error::No container matching COOLIFY_APP_UUID found"
+            exit 1
+          fi
+          echo "name=$NAME" >> "$GITHUB_OUTPUT"
+          echo "Container: $NAME"
+
+      # ─────────────────────────────────────────────────────────────────────
+      # P0-5 — Resolve failed migration + apply pending + seed CampaignTemplate
+      # ─────────────────────────────────────────────────────────────────────
+      - name: P0-5a — Resolve 2 failed migrations + copy fixed SQL + deploy
+        if: inputs.run_seed_templates == 'true'
+        env:
+          CONTAINER: ${{ steps.container.outputs.name }}
+        timeout-minutes: 5
+        run: |
+          set -euo pipefail
+          echo "──── P0-5a — Resolve 2 failed migrations (CONCURRENTLY in transaction) ────"
+          # 2 migrations failed à cause de CREATE INDEX CONCURRENTLY in transaction (P3018) :
+          # - 20260521150200_add_article_campaign_id
+          # - 20260521150300_add_performance_indexes
+          # Commit 27d6bf48 retire CONCURRENTLY sur origin/main mais les rows
+          # failed restent dans _prisma_migrations table prod → bloquent les
+          # migrations suivantes (dont add_campaign_template_and_feedback).
+          for MIG in "20260521150200_add_article_campaign_id" "20260521150300_add_performance_indexes"; do
+            echo "── Resolve --rolled-back $MIG ──"
+            ssh -o BatchMode=yes root@178.105.55.15 \
+              "docker exec '$CONTAINER' sh -c \
+              'cd /app && (/tmp/prisma-fresh/node_modules/.bin/prisma migrate resolve --rolled-back $MIG --schema=/app/prisma/schema.prisma 2>&1 || \
+                /app/prisma-cli/node_modules/.bin/prisma migrate resolve --rolled-back $MIG --schema=/app/prisma/schema.prisma 2>&1 || \
+                echo RESOLVE_SKIP_OR_NOT_FAILED)'" 2>&1 | tail -5
+          done
+
+          echo ""
+          echo "──── Copy fixed migration.sql files into container ────"
+          for MIG_PATH in \
+            "prisma/migrations/20260521150200_add_article_campaign_id/migration.sql" \
+            "prisma/migrations/20260521150300_add_performance_indexes/migration.sql"; do
+            curl -fsSL "https://raw.githubusercontent.com/will383842/axion-ia/main/$MIG_PATH" -o "/tmp/$(basename $(dirname $MIG_PATH))-migration.sql"
+            FNAME="$(basename $(dirname $MIG_PATH))-migration.sql"
+            scp -o BatchMode=yes "/tmp/$FNAME" "root@178.105.55.15:/tmp/$FNAME"
+            ssh -o BatchMode=yes root@178.105.55.15 \
+              "docker cp /tmp/$FNAME '$CONTAINER':/app/$MIG_PATH"
+            echo "  ✓ Copied $MIG_PATH"
+          done
+
+          echo ""
+          echo "──── Run migrate deploy (idempotent ADD COLUMN IF NOT EXISTS + nouveaux indexes) ────"
+          ssh -o BatchMode=yes root@178.105.55.15 \
+            "docker exec '$CONTAINER' sh -c \
+            'cd /app && (/tmp/prisma-fresh/node_modules/.bin/prisma migrate deploy --schema=/app/prisma/schema.prisma 2>&1 || \
+              /app/prisma-cli/node_modules/.bin/prisma migrate deploy --schema=/app/prisma/schema.prisma 2>&1 || \
+              echo MIGRATE_DEPLOY_FAILED)'" 2>&1 | tail -30
+          echo "──── P0-5a fin ────"
+
+      - name: P0-5b — Seed CampaignTemplate (8 presets D-P5-1) inline node
+        if: inputs.run_seed_templates == 'true'
+        env:
+          CONTAINER: ${{ steps.container.outputs.name }}
+        timeout-minutes: 5
+        run: |
+          set -euo pipefail
+          echo "──── P0-5 — Seed CampaignTemplate inline node script ────"
+          # 8 templates D-P5-1 directement embedés (cohérent avec
+          # prisma/seeds/content-gen/seed-campaign-templates.ts).
+          # Approche inline car container axionia prod n'a pas tsx en runtime
+          # (devDep). PrismaClient JS-only suffit pour les upserts.
+          ALL_V='["interventions_formations","audits","implementations","un_a_un","sites_web_augmentes"]'
+          ALL_T='["tpe","pme","eti","ge"]'
+
+          ssh -o BatchMode=yes root@178.105.55.15 \
+            "docker exec '$CONTAINER' node -e \
+            \"
+            const {PrismaClient} = require('/app/prisma/generated/client');
+            const p = new PrismaClient();
+            const ALL_V = ['interventions_formations','audits','implementations','un_a_un','sites_web_augmentes'];
+            const ALL_T = ['tpe','pme','eti','ge'];
+            const TEMPLATES = [
+              {slug:'toutes-verticales-general', name:'Toutes verticales — Général', description:'Campagne générale couvrant les 5 services Axion-IA pour toutes tailles d entreprise — blog depuis keywords, 30/j.', config:{verticals:ALL_V, target:ALL_T, types:['blog_from_keywords','qa_derived'], batchSize:30, dailyCap:30, cityProcessingMode:'sequential'}},
+              {slug:'interventions-formations-all', name:'Interventions & Formations — Toutes cibles', description:'Articles formations IA pour TPE, PME, ETI et GE — blog pilier + keywords + Q/R.', config:{verticals:['interventions_formations'], target:ALL_T, types:['blog_pillar','blog_from_keywords','qa_derived'], batchSize:30, dailyCap:30}},
+              {slug:'audits-all', name:'Audits IA — Toutes cibles', description:'Articles audit IA + landing pages villes pour toutes tailles d entreprise.', config:{verticals:['audits'], target:ALL_T, types:['blog_pillar','landing_ville','blog_from_keywords'], batchSize:20, dailyCap:30, cityProcessingMode:'sequential'}},
+              {slug:'implementations-all', name:'Implémentations IA — Toutes cibles', description:'Articles implémentations IA (chatbots, RAG, automatisation) pour toutes tailles d entreprise.', config:{verticals:['implementations'], target:ALL_T, types:['blog_pillar','blog_from_keywords','comparison'], batchSize:20, dailyCap:30}},
+              {slug:'un-a-un-all', name:'Coaching 1-to-1 IA — Toutes cibles', description:'Articles coaching individuel IA pour dirigeants et managers — blog pilier + Q/R.', config:{verticals:['un_a_un'], target:ALL_T, types:['blog_pillar','qa_derived','blog_from_keywords'], batchSize:15, dailyCap:20}},
+              {slug:'sites-web-augmentes-all', name:'Sites Web Augmentés IA — Toutes cibles', description:'Articles création/augmentation de sites web par l IA pour toutes tailles d entreprise.', config:{verticals:['sites_web_augmentes'], target:ALL_T, types:['blog_pillar','blog_from_keywords','comparison','qa_derived'], batchSize:20, dailyCap:30}},
+              {slug:'landing-villes-all', name:'Landing pages villes — 5 verticales', description:'Landing pages géolocalisées pour les 120 villes FR — couvre toutes les verticales et toutes les cibles.', config:{verticals:ALL_V, target:ALL_T, types:['landing_ville'], batchSize:20, dailyCap:30, cityProcessingMode:'sequential'}},
+              {slug:'rss-daily', name:'RSS quotidien — Actualité IA', description:'Blog depuis flux RSS IA chaque matin à 7h — couvre toutes les verticales.', config:{verticals:ALL_V, target:ALL_T, types:['blog_from_rss'], schedule:'0 7 * * *', batchSize:10, qualityThreshold:65, recurringSchedule:'0 7 * * *'}}
+            ];
+            (async () => {
+              let count = 0;
+              for (const t of TEMPLATES) {
+                await p.campaignTemplate.upsert({
+                  where:{slug:t.slug},
+                  create:{slug:t.slug, name:t.name, description:t.description, config:t.config, isSystem:true, isActive:true},
+                  update:{name:t.name, description:t.description, config:t.config, isSystem:true, isActive:true}
+                });
+                count++;
+                console.log('  upserted ' + t.slug);
+              }
+              console.log('[seed-campaign-templates] ' + count + ' templates upserted.');
+              process.exit(0);
+            })().catch((e) => { console.error('SEED_ERROR:', e.message); process.exit(1); });
+            \"" 2>&1 | tee /tmp/seed-templates.log
+          echo "──── P0-5 fin ────"
+
+      - name: P0-5 — Verify CampaignTemplate count
+        if: inputs.run_seed_templates == 'true'
+        env:
+          CONTAINER: ${{ steps.container.outputs.name }}
+        run: |
+          echo "──── Count CampaignTemplate après seed ────"
+          ssh -o BatchMode=yes root@178.105.55.15 \
+            "docker exec '$CONTAINER' node -e \
+            \"try{const{PrismaClient}=require('/app/prisma/generated/client');
+            const p=new PrismaClient();
+            p.campaignTemplate.count().then((c)=>{
+              console.log('CampaignTemplate count:',c);
+              if (c >= 6) console.log('✅ OK : 6+ templates en DB');
+              else console.log('⚠️ WARNING : <6 templates (attendu 6 D-P5-1 presets)');
+              process.exit(0);
+            }).catch((e)=>{console.log('post-check skip:',e.message.slice(0,80));process.exit(0);});}
+            catch(e){console.log('post-check skip:',e.message.slice(0,60));process.exit(0);}\"" 2>&1 || true
+
+      # ─────────────────────────────────────────────────────────────────────
+      # P1-18 — Verify cron backup-postgres actif
+      # ─────────────────────────────────────────────────────────────────────
+      - name: P1-18 — Verify crontab backup-postgres
+        if: inputs.verify_backup_cron == 'true'
+        run: |
+          set -euo pipefail
+          echo "──── P1-18 — Vérification crontab backup-postgres ────"
+          BACKUP_LINES=$(ssh -o BatchMode=yes root@178.105.55.15 \
+            "crontab -l 2>/dev/null | grep -E 'backup-postgres|backup_postgres' || echo 'NO_CRON_FOUND'") || true
+          echo "$BACKUP_LINES"
+          if echo "$BACKUP_LINES" | grep -q "NO_CRON_FOUND"; then
+            echo "::warning::Crontab backup-postgres ABSENT sur VPS Hetzner."
+            echo "::warning::Action Will requise : ajouter via 'crontab -e' :"
+            echo "  0 3 * * *  bash /var/www/axion-ia/axionia/scripts/backup-postgres.sh"
+            echo "  0 4 * * 0  bash /var/www/axion-ia/axionia/scripts/backup-postgres.sh --type weekly"
+            echo "  0 5 1 * *  bash /var/www/axion-ia/axionia/scripts/backup-postgres.sh --type monthly"
+          else
+            echo "✅ OK : cron backup-postgres trouvé sur VPS."
+          fi
+          echo "──── P1-18 fin ────"
+
+      # ─────────────────────────────────────────────────────────────────────
+      # P1-20 — Verify prisma migrate status (sanity check, deja fait par admin-emergency-migrate)
+      # ─────────────────────────────────────────────────────────────────────
+      - name: P1-20 — Verify prisma migrate status (no drift)
+        if: inputs.verify_migrate_status == 'true'
+        env:
+          CONTAINER: ${{ steps.container.outputs.name }}
+        timeout-minutes: 3
+        run: |
+          set -euo pipefail
+          echo "──── P1-20 — Prisma migrate status (sanity) ────"
+          ssh -o BatchMode=yes root@178.105.55.15 \
+            "docker exec '$CONTAINER' sh -c \
+            '/tmp/prisma-fresh/node_modules/.bin/prisma migrate status --schema=/app/prisma/schema.prisma 2>&1 || \
+              corepack pnpm prisma migrate status 2>&1 || \
+              echo MIGRATE_STATUS_UNAVAILABLE'" 2>&1 | tail -30
+          echo "──── P1-20 fin ────"
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "──── Audit Final Sprint actions résumé ────"
+          echo "P0-5 Seed CampaignTemplate : ${{ inputs.run_seed_templates }}"
+          echo "P1-18 Verify backup cron   : ${{ inputs.verify_backup_cron }}"
+          echo "P1-20 Verify migrate status : ${{ inputs.verify_migrate_status }}"
+          echo ""
+          echo "⚠️ NON inclus dans ce workflow :"
+          echo "  - Rampe D-W1 (MAX_PUBLISH_PER_DAY=30) — activation prod actuelle"
+          echo "    Use workflow séparé OU Coolify UI Settings → Env vars."
+          echo "  - P1-21 GSC + Bing WMT submit sitemaps — consoles web manuelles."

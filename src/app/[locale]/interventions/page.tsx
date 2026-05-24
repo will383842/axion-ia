@@ -206,7 +206,7 @@ function buildFamilyCards(isFr: boolean): ReadonlyArray<FamilyCardData> {
         return { label, meta };
       });
       const total = countFormatsByFamily("collectives");
-      // Prix d'entrée famille Collectives = tier le moins cher (4h à 390 €).
+      // Prix d'entrée famille Collectives = tier le moins cher (4h, cf. pricing.ts).
       const fourHPrice = getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!;
       const entryFr = formatAmount(fourHPrice, "fr", { compact: true });
       const entryEn = formatAmount(fourHPrice, "en", { compact: true });
@@ -331,6 +331,8 @@ export default async function InterventionsListing({ params }: Props) {
     "intervention-essentielle",
   ).priceFlat!;
   const essentielleEntry = formatAmount(essentielleEntryAmount, loc);
+  // Sprint 14.10.7 — prix d'entrée 4h dérivé de pricing.ts pour éviter le drift.
+  const fourHEntryAmount = getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!;
 
   const audienceStrip = [
     {
@@ -807,8 +809,8 @@ export default async function InterventionsListing({ params }: Props) {
                 ? "Personne n'a encore utilisé l'IA dans l'équipe"
                 : "No one on the team uses AI yet",
               body: isFr
-                ? `Démarrage rapide en 4 heures (390 €) ou 1 journée (${formatAmount(essentielleEntryAmount, "fr", { compact: true })}). Vos équipes ressortent avec les bons outils installés et 3-5 automatisations testées.`
-                : `Quick start in 4 hours (€390) or 1 day (${formatAmount(essentielleEntryAmount, "en", { compact: true })}). Your teams leave with the right tools installed and 3-5 automations tested.`,
+                ? `Démarrage rapide en 4 heures (${formatAmount(fourHEntryAmount, "fr", { compact: true })}) ou 1 journée (${formatAmount(essentielleEntryAmount, "fr", { compact: true })}). Vos équipes ressortent avec les bons outils installés et 3-5 automatisations testées.`
+                : `Quick start in 4 hours (${formatAmount(fourHEntryAmount, "en", { compact: true })}) or 1 day (${formatAmount(essentielleEntryAmount, "en", { compact: true })}). Your teams leave with the right tools installed and 3-5 automations tested.`,
               recommendation: isFr ? "Voir les formations équipe" : "See team trainings",
               href: "/interventions/collectives",
             },
@@ -965,7 +967,7 @@ export default async function InterventionsListing({ params }: Props) {
 
       {/* P1-17 audit E2E NAV+CTA 2026-05-15 — sticky mobile CTA pour hubs
           services tier-1 (parité /audit et /implementation). Pousse vers le
-          format entry (4 h) qui correspond au prix d'entrée 390 €. */}
+          format entry (4 h) qui correspond au prix d'entrée pricing.ts. */}
       <StickyMobileCta
         href="/reserver"
         label={

@@ -81,7 +81,14 @@ export default async function RegionPage({ params }: Props) {
   ];
 
   // ---- JSON-LD stack (3 schemas + BreadcrumbList auto via <Breadcrumbs>) ----
-  // LocalBusiness — areaServed = AdministrativeArea régionale.
+  // Sprint Correctif P1-2 (2026-05-23 — audit E2E passe 2 runtime + décision Will) —
+  // Service Area Business safe : Axion-IA a 1 siège FR (Paris), pas un bureau
+  // dans chaque préfecture régionale. Le LB ne doit pas claim `geo` régional
+  // (= prétendre un bureau à ces coordonnées). `placeJsonLd` ci-dessous garde
+  // les coords pour décrire la région (Place ≠ LocalBusiness).
+  //   ❌ RETIRÉ `geo` (coords région ≠ bureau réel)
+  //   ✅ GARDÉ `address` (prefecture + région : zone de service)
+  //   ✅ GARDÉ `areaServed: AdministrativeArea` (cœur Service Area Business)
   const localBusinessJsonLd = buildLocalBusinessJsonLd({
     locale: loc,
     path: `/implantations/${region.slug}`,
@@ -91,7 +98,6 @@ export default async function RegionPage({ params }: Props) {
     description: isFr ? region.pitchFr : region.pitchEn,
     areaServed: { type: "AdministrativeArea", name: region.nameFr },
     address: { city: region.prefecture, region: region.nameFr, country: "FR" },
-    geo: { latitude: region.geo.lat, longitude: region.geo.lon },
   });
 
   // Place — entité géographique (utile pour AI Overviews + Knowledge Graph).

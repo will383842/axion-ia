@@ -10,6 +10,7 @@ import { Cta } from "@/components/marketing/Cta";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 import { getGlossaryTerms } from "@/lib/knowledge/readers";
 
 interface Props {
@@ -55,10 +56,9 @@ export default async function GlossaryPage({ params }: Props) {
     name: isFr ? "Glossaire IA Axion-IA" : "Axion-IA AI glossary",
     inLanguage: locale,
     url: `${SITE_URL}/${locale}/glossaire`,
-    speakable: {
-      "@type": "SpeakableSpecification",
-      cssSelector: ["[data-aeo='glossary-intro']"],
-    },
+    speakable: buildSpeakableSpecification({
+      selectors: ["[data-aeo='glossary-intro']"],
+    }),
     hasDefinedTerm: terms.map((t) => ({
       "@type": "DefinedTerm",
       name: t.term,

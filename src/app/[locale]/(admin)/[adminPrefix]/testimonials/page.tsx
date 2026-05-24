@@ -25,11 +25,24 @@ export default async function TestimonialsListPage({ params, searchParams }: Pag
     page: sp.page ? parseInt(sp.page, 10) : 1,
   });
 
+  // Sprint v7 Phase 15 (F5) : on calcule `isReal` côté serveur depuis le JSON
+  // `displayPages.realMeta.isReal` pour ne pas exposer la metadata RGPD brute
+  // (source URL, consentDate) dans le bundle client de la liste.
+  const items = result.items.map((t) => {
+    const display =
+      typeof t.displayPages === "object" && t.displayPages !== null
+        ? (t.displayPages as Record<string, unknown>)
+        : {};
+    const realMeta = display["realMeta"] as { isReal?: boolean } | undefined;
+    const { displayPages: _displayPages, ...rest } = t;
+    return { ...rest, isReal: realMeta?.isReal === true };
+  });
+
   return (
     <TestimonialsV2
       adminPrefix={adminPrefix}
       searchParams={sp}
-      items={result.items}
+      items={items}
       total={result.total}
       page={result.page}
       totalPages={result.totalPages}

@@ -31,6 +31,7 @@ import {
   buildHowToJsonLd,
   SITE_URL,
 } from "@/lib/seo";
+import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -119,7 +120,6 @@ export function buildVilleServiceJsonLdGraph(
     methodologySteps,
     nearbyVilles,
     priceEur,
-    priceRange = "€€€",
   } = input;
 
   const path = `${servicePathFr}/${ville.slug}` as `/${string}`;
@@ -155,10 +155,19 @@ export function buildVilleServiceJsonLdGraph(
     } as Parameters<typeof buildServiceJsonLd>[0]),
   );
 
-  // ── 2. LocalBusiness / ProfessionalService (2026 perfection) ──────────────
-  // @id stable pour Knowledge Graph linking.
-  // email requis pour le local pack Google Maps (telephone volontairement absent).
-  // sameAs ville → Wikipedia = corroboration entité externe pour AI Overviews.
+  // ── 2. LocalBusiness / ProfessionalService (Service Area Business safe) ──
+  // Sprint correctif P1-1 (2026-05-23) — Axion-IA = 1 siège FR + interventions
+  // mixtes (présentiel/remote). Pattern Schema.org "Service Area Business"
+  // légitime mais ASSAINI pour éviter sanction Google "fake local SEO" :
+  //   ❌ RETIRÉ `geo` (GPS = revendique bureau physique → faux pour villes hors siège)
+  //   ❌ RETIRÉ `openingHoursSpecification` (9h-18h = bureau ouvert chaque ville → faux)
+  //   ❌ RETIRÉ `priceRange` (varie par mission, pas par ville)
+  //   ❌ RETIRÉ `address.postalCode` (CP = revendique adresse précise)
+  //   ✅ GARDÉ `address.addressLocality` (= zone de service couverte, légitime SAB)
+  //   ✅ GARDÉ `parentOrganization` (essentiel : pointe vers entité unique root)
+  //   ✅ GARDÉ `areaServed` (cœur du pattern Service Area Business)
+  // Référence : https://developers.google.com/search/docs/appearance/structured-data/local-business
+  // « Do not mark up an address that is not a real, accurate physical address. »
   schemas.push({
     "@context": "https://schema.org",
     "@type": ["LocalBusiness", "ProfessionalService"],
@@ -170,18 +179,11 @@ export function buildVilleServiceJsonLdGraph(
     url,
     email: "contact@axion-ia.com",
     image: `${SITE_URL}/opengraph-image`,
-    priceRange,
     address: {
       "@type": "PostalAddress",
       addressLocality: ville.nameFr,
       addressRegion: region.nameFr,
       addressCountry: "FR",
-      ...(ville.postalCode ? { postalCode: ville.postalCode } : {}),
-    },
-    geo: {
-      "@type": "GeoCoordinates",
-      latitude: ville.geo.lat,
-      longitude: ville.geo.lon,
     },
     sameAs: ["https://www.linkedin.com/company/axion-ia", cityWikiUrl],
     parentOrganization: {
@@ -191,14 +193,6 @@ export function buildVilleServiceJsonLdGraph(
       legalName: "Axion-IA",
       url: SITE_URL,
     },
-    openingHoursSpecification: [
-      {
-        "@type": "OpeningHoursSpecification",
-        dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-        opens: "09:00",
-        closes: "18:00",
-      },
-    ],
     areaServed: { "@type": "City", name: ville.nameFr },
     knowsLanguage: ["fr", "en"],
   });
@@ -233,10 +227,7 @@ export function buildVilleServiceJsonLdGraph(
     schemas.push({
       "@context": "https://schema.org",
       "@type": "FAQPage",
-      speakable: {
-        "@type": "SpeakableSpecification",
-        cssSelector: speakableSelectors,
-      },
+      speakable: buildSpeakableSpecification({ selectors: speakableSelectors }),
       mainEntity: faqItems.map((item, idx) => ({
         "@type": "Question",
         "@id": `${url}#faq-${idx + 1}`,
@@ -324,10 +315,7 @@ export function buildVilleServiceJsonLdGraph(
     ],
     // Speakable cible le bloc directAnswer + FAQ pour voice search (SGE, Bixby, Google Assistant)
     // Selector #axion-direct-answer conditionnel (P2-2 Sprint S+5 — drift JSON-LD/DOM fix).
-    speakable: {
-      "@type": "SpeakableSpecification",
-      cssSelector: speakableSelectors,
-    },
+    speakable: buildSpeakableSpecification({ selectors: speakableSelectors }),
     breadcrumb: { "@id": `${url}#breadcrumb` },
     potentialAction: {
       "@type": "ReserveAction",

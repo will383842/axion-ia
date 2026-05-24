@@ -81,6 +81,36 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "🏙️",
       group: "content",
     },
+    {
+      href: `${base}/content-gen/city-equity`,
+      label: "Équité villes",
+      icon: "⚖️",
+      group: "content",
+    },
+    {
+      href: `${base}/content-gen/cities-order`,
+      label: "Ordre villes",
+      icon: "📋",
+      group: "content",
+    },
+    {
+      href: `${base}/content-gen/coverage-map`,
+      label: "Carte couverture",
+      icon: "🗺️",
+      group: "content",
+    },
+    {
+      href: `${base}/content-gen/campaigns/new`,
+      label: "Nouvelle campagne",
+      icon: "➕",
+      group: "content",
+    },
+    {
+      href: `${base}/content-gen/orchestrator/adhoc`,
+      label: "Lancement ad-hoc",
+      icon: "⚡",
+      group: "content",
+    },
     { href: `${base}/blog`, label: "Blog", icon: "📝", group: "content" },
     { href: `${base}/categories`, label: "Catégories", icon: "🏷️", group: "content" },
     { href: `${base}/case-studies`, label: "Cas concrets", icon: "🏆", group: "content" },
@@ -113,6 +143,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     // ── ops & monitoring ─────────────────────────────────────────────────
     { href: `${base}/analytics`, label: "Analytics & SEO", icon: "📊", group: "ops" },
     { href: `${base}/web-vitals`, label: "Web Vitals", icon: "📈", group: "ops" },
+    { href: `${base}/site-explorer`, label: "Site Explorer", icon: "🗺️", group: "ops" },
     { href: `${base}/infra`, label: "Infra & outils", icon: "🔧", group: "ops" },
     { href: `${base}/alerts`, label: "Alertes ops", icon: "🚨", group: "ops" },
     // ── système ──────────────────────────────────────────────────────────

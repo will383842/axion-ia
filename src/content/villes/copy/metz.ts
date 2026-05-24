@@ -566,7 +566,7 @@ export const METZ_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "ImplÃ©mentation d'un cas d'usage simple â€” automatisation devis, comptes-rendus rÃ©union, qualification leads pour TPE et indÃ©pendants messins.",
           },
@@ -672,7 +672,7 @@ export const METZ_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implementation of a simple use case â€” quote automation, meeting minutes, lead qualification for Metz micro-businesses and freelancers.",
           },

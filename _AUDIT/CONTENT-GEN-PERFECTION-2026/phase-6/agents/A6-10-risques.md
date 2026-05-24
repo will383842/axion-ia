@@ -248,16 +248,16 @@ SEVERITE  Haute   │           │    R1     │           │
 
 ## Tableau recapitulatif
 
-| ID | Risque                          | Severite   | Prob     | Priorite  | Delai action |
-|----|----------------------------------|------------|----------|-----------|--------------|
-| R1 | Regression HCU Google            | HAUTE      | MOYENNE  | Haute     | GSC = Immediat |
-| R2 | Derive cout LLM                  | MOYENNE    | MOYENNE  | Moyenne   | J+30         |
-| R3 | Changement algo SGE              | MOYENNE    | FAIBLE   | Basse     | J+180        |
-| R4 | Non-conformite AI Act art. 50    | CRITIQUE   | FAIBLE   | Critique  | J+72 ferme   |
-| R5 | Concurrent axionai.fr            | MOYENNE    | MOYENNE  | Moyenne   | GBP post-D10 |
-| R6 | Crash BullMQ / double pub        | MOYENNE    | FAIBLE   | Basse     | J+60         |
-| R7 | Drift qualite 500/j              | MOYENNE    | HAUTE    | Haute     | J+30         |
-| R8 | Vendor lock-in Anthropic         | MOYENNE    | FAIBLE   | Basse     | J+60         |
+| ID  | Risque                        | Severite | Prob    | Priorite | Delai action   |
+| --- | ----------------------------- | -------- | ------- | -------- | -------------- |
+| R1  | Regression HCU Google         | HAUTE    | MOYENNE | Haute    | GSC = Immediat |
+| R2  | Derive cout LLM               | MOYENNE  | MOYENNE | Moyenne  | J+30           |
+| R3  | Changement algo SGE           | MOYENNE  | FAIBLE  | Basse    | J+180          |
+| R4  | Non-conformite AI Act art. 50 | CRITIQUE | FAIBLE  | Critique | J+72 ferme     |
+| R5  | Concurrent axionai.fr         | MOYENNE  | MOYENNE | Moyenne  | GBP post-D10   |
+| R6  | Crash BullMQ / double pub     | MOYENNE  | FAIBLE  | Basse    | J+60           |
+| R7  | Drift qualite 500/j           | MOYENNE  | HAUTE   | Haute    | J+30           |
+| R8  | Vendor lock-in Anthropic      | MOYENNE  | FAIBLE  | Basse    | J+60           |
 
 ---
 
@@ -271,4 +271,4 @@ SEVERITE  Haute   │           │    R1     │           │
 
 ---
 
-*Agent A6-10 — AUDIT-ONLY — 2026-05-22*
+_Agent A6-10 — AUDIT-ONLY — 2026-05-22_

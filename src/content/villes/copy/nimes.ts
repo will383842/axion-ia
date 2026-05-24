@@ -538,7 +538,7 @@ export const NIMES_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implémentation d'un cas d'usage simple (lecture devis/factures, comptes-rendus, qualification leads) pour artisans et petites structures nîmoises.",
           },
@@ -644,7 +644,7 @@ export const NIMES_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implementation of a simple use case (quote/invoice reading, meeting minutes, lead qualification) for Nîmes tradespeople and small structures.",
           },

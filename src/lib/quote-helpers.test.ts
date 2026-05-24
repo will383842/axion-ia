@@ -12,12 +12,12 @@ describe("requiresQuote", () => {
     expect(requiresQuote("essentielle", 600_000)).toBe(true);
   });
 
-  it("false pour essentielle palier standard", () => {
-    expect(requiresQuote("essentielle", 79_000)).toBe(false);
+  it("false pour essentielle palier standard 890 €", () => {
+    expect(requiresQuote("essentielle", 89_000)).toBe(false);
   });
 
-  it("false pour Approfondie palier intimiste 880 €", () => {
-    expect(requiresQuote("approfondie", 88_000)).toBe(false);
+  it("false pour Approfondie palier intimiste 1 190 €", () => {
+    expect(requiresQuote("approfondie", 119_000)).toBe(false);
   });
 
   it("false si basePriceHtCents null/undefined", () => {

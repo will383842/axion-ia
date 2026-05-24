@@ -6,6 +6,7 @@
 ## Évidence
 
 ### Wording disclosure D4 (Will figée)
+
 - `src/components/marketing/AiContentDisclaimer.tsx:33-76` composant Server Component bilingue FR/EN aligné Art. 50 §4 AI Act 2024/1689.
 - Wording max FR (ligne 37) : « Cet article a été rédigé avec l'assistance de l'IA (Claude Sonnet 4.6, Anthropic) et relu par l'équipe Axion-IA avant publication. Conformément à l'article 50 du Règlement européen sur l'IA (AI Act 2024/1689). »
 - Wording EN équivalent (ligne 38).
@@ -14,6 +15,7 @@
 - Routes couvertes documentées (ligne 17-22) : `/actualites/[slug]`, `/blog/[slug]`, `/centre-aide/[slug]`, `/guides/[slug]`.
 
 ### JSON-LD machine-readable
+
 - `src/lib/seo-content-gen-factories.ts:69-77` factory pose :
   - `aiGenerated: true` (Schema.org/AIGeneratedContent)
   - `additionalType: "https://schema.org/AIGeneratedContent"`
@@ -23,6 +25,7 @@
 - Couvre BlogPosting + NewsArticle + HelpArticle + Guide (cf. méta-cert AGENT 20 commentaire ligne 17-22 du composant).
 
 ### Traçabilité GenerationProvenance (6 ans rétention SOC2)
+
 - `prisma/schema.prisma:976-1000` modèle complet :
   - `articleId` (relation Restrict — empêche suppression article cascade)
   - `step`, `provider`, `model`, `modelVersion`
@@ -35,9 +38,11 @@
 - Migration `prisma/migrations/20260521180000_sync_schema_p0_fixes/migration.sql` sync explicite onDelete: Restrict.
 
 ### Pas de double-publication (lockDuration BullMQ)
+
 - Verrouillage worker côté queue (mémoire 2026-05-21 P0-2 `lockDuration` corrigé). `content-publish-worker` côté `src/server/queue/workers/`.
 
 ### Persona Manon (transparence éditoriale)
+
 - `/equipe/manon` portrait + disclaimer (mémoire 2026-05-22 V-04). `AuthorProfile.aiGenerated` flag DB.
 
 ## Findings P0 / P1 / P2

@@ -68,13 +68,21 @@ async function _signInActionInner(_prev: SignInState, formData: FormData): Promi
     return { ok: false, error: "Email ou mot de passe invalide." };
   }
 
-  // 2FA requise UNIQUEMENT si l'admin l'a explicitement activée via /admin/2fa/setup.
-  // Mode bootstrap : un super_admin/admin fraîchement seedé doit pouvoir se connecter
-  // une 1re fois pour configurer son 2FA. Une fois activée (twoFactorEnabled=true),
-  // elle devient obligatoire pour tout login ultérieur.
-  // Pour exiger 2FA dès le 1er login (forcé par rôle), réajouter la condition rôle.
-  const requires2FA = user.twoFactorEnabled;
+  // P1 — Aligner le pre-check UX avec auth.ts:187 :
+  // • 2FA requise si l'admin l'a explicitement activée (twoFactorEnabled=true).
+  // • Pour les rôles admin/super_admin, 2FA est également obligatoire même si pas encore
+  //   configurée : on renvoie un message d'erreur dédié invitant à configurer via /2fa/setup.
+  const isAdminRole = user.role === "admin" || user.role === "super_admin";
+  const requires2FA = user.twoFactorEnabled || isAdminRole;
   if (requires2FA && !parsed.data.totp) {
+    if (isAdminRole && !user.twoFactorEnabled) {
+      return {
+        ok: false,
+        error:
+          "2FA obligatoire pour ce rôle. Configurez-la via /2fa/setup avant de vous connecter.",
+        requires2FA: true,
+      };
+    }
     return { ok: false, error: "Code 2FA requis.", requires2FA: true };
   }
 

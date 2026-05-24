@@ -10,6 +10,7 @@
 ## Schéma — modèles critiques détectés
 
 ### Article (`schema.prisma:874`)
+
 - `indexationTier` (enum 3-tiers) `:892`
 - `qualityScore`, `seoScore`, `factCheckScore`, `editorialScore`, `plagiarismScore` `:893-898`
 - `generatedByJobId` `:901`, `kbChunkIds[]` `:905`, `searchIntent` `:908`
@@ -18,6 +19,7 @@
 - `mentionedCities String[]` (PIN GIN index ligne 972) — auto-tagging géo cascade Phase C
 
 Indexes : `:965-972`
+
 - `@@index([status])`
 - `@@index([publishedAt])`
 - `@@index([indexationTier, status])` — composite critique pour sitemap/blog hub
@@ -26,24 +28,29 @@ Indexes : `:965-972`
 - `@@index([mentionedCities], type: Gin)` — query hub ville
 
 ### GenerationProvenance (`schema.prisma:979`)
+
 - 16 champs (id, articleId, step, provider, model, modelVersion, promptHash, inputTokens, outputTokens, cacheReadInputTokens, cost Decimal(10,6), regulationVersion, previousHash, hash, timestamp + 1 relation)
 - `articleId @relation(... onDelete: Restrict)` `:982` ✅ — conforme P2 P0-1 (RESTRICT, pas Cascade) pour audit immuable AI Act art. 50
 - Indexes : `@@index([articleId])` `:997`, `@@index([timestamp])` `:998`
 
 ### CoverageCampaign (`schema.prisma:2900`), ContentGenJob (`schema.prisma:2947`)
+
 Présents. ContentGenJob a `correlationId` (P6 item 3 acquis) + `campaignId` FK + `idempotencyKey` unique.
 
 ### Keyword (`schema.prisma:3286`)
+
 - `term @unique`, `termNormalized`, `vertical`, `searchIntent`, `cityIds[]` `:3294` (codes INSEE, V-12 correction Sprint Keywords 2026-05-22)
 - `usageCount`, `lastUsedAt` `:3298-3299` pour rotation équitable selectKeyword()
 - `clusterId` `:3297`
 - Indexes : `@@index([vertical])`, `@@index([usageCount, lastUsedAt])` `:3302-3303` — composite couvre selectKeyword query
 
 ### ImageAsset (`schema.prisma:3343`)
+
 - `isAiGenerated` `:3424` (default false), `requiresHumanReview` `:3425`, `watermarkEnabled` `:3427`, `pHash` `:3430`
 - 10 indexes `:3443-3453` incluant `(module, targetCity)`, `(module, targetRegion)`, `fileHash`, `pHash`
 
 ### FactCheckClaim (`schema.prisma:1005`)
+
 - FK `article` `:1015` avec `onDelete: Cascade` (justifié — claims meurent avec l'article)
 
 ## Extensions Postgres
@@ -60,13 +67,16 @@ Présents. ContentGenJob a `correlationId` (P6 item 3 acquis) + `campaignId` FK 
 ## Findings
 
 ### P0
+
 Aucun.
 
 ### P1
+
 1. **Pas d'index sur `Article.featuredImage`** — si query GalleryGrid filtre par featured (admin), full scan. Non critique car querying par `mentionedCities` GIN + status.
 2. **`embedding Unsupported("vector(1536)")` sans HNSW/IVFFlat index explicit dans schema** — migration `20260514020000_kb_v4_pgvector_embeddings` ou `20260521130000_add_article_dedup_layers_3_4` doit créer l'index ; à vérifier qu'il est bien `vector_cosine_ops` IVFFlat (HNSW limite 2000 dims, 1536 OK mais perf differ). Memory mentionne "IVFFlat (3072 dim > limite HNSW 2000)" donc fix appliqué.
 
 ### P2
+
 3. Schéma Prisma 3300+ lignes (>3340) — risque de drift implicite ; recommandation : segmenter via `prisma multiSchema` ou découper en `.prisma` imports (feature preview). Cosmétique.
 4. `@db.Decimal(10, 6)` sur `GenerationProvenance.cost` `:991` : précision OK pour coûts $0.000010 minimum, mais pas pour très petits coûts cache_read Anthropic ($0.0000003/token). Borderline.
 

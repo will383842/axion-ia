@@ -1,4 +1,5 @@
 # F-01 Routes publiques
+
 ## Score : 22/25 — 🟢
 
 ## Findings (preuves)
@@ -18,14 +19,18 @@
 7. **`/[...catchall]/page.tsx`** : route catch-all présente (anti-404 silencieux).
 
 ## P0 bloquants prod
+
 - **Aucun** route majeure ne manque.
 
 ## P1 importants
+
 - `internal-link-catalog.ts:20-83` référence 4 URLs **inexistantes** (`/audits` au lieu de `/audit`, `/interventions-formations` au lieu de `/interventions`, `/implementations` au lieu de `/implementation`, `/tarifs` n’existe pas). Risque 404 dans les articles content-gen → voir F-07.
 - `src/app/[locale]/components/page.tsx` + `/design` + `/sections` exposés mais protégés par `EXCLUDED_FROM_INDEX` dans sitemap + Disallow robots.
 
 ## P2 polish
+
 - Pas de `generateStaticParams` détecté pour `/centre-aide/[slug]` à vérifier au build.
 
 ## Verdict
+
 Couverture URL exhaustive et bien structurée. Les 5 verticales sont toutes présentes avec déclinaisons pSEO villes/régions. Pages légales complètes (D7 société FR). Le SSOT `pricing.ts` + `buildProductMetadata` garantit cohérence metadata. Le bug du catalog de liens internes est tracé dans F-07 — pas bloquant pour l’indexation routes publiques elles-mêmes mais risque réel d’émettre des `<a href="/audits">` cassés dans 100 % des articles content-gen. Score 22/25 ; -3 pour le catalog interne cassé et l’absence de vérification SSG des slugs centre-aide.

@@ -1,5 +1,7 @@
 # SPRINT FINAL CORRECTIF — Livraison
+
 ## Date : 2026-05-22 (post-audit final)
+
 ## Mode : autopilot suite Sprint Final option [A]
 
 ---
@@ -9,6 +11,7 @@
 **4 P0 code corrigés en 1 session autopilot** + 1 action Will documentée (P0-5).
 
 ### Gates verts post-fixes
+
 - ✅ `pnpm typecheck` — 0 erreur (exit 0)
 - ✅ `pnpm test` — **1687/1694 verts** (166 test files) — baseline maintenue
 - ✅ Smoke test 5/5 URLs cibles → 200 (`/fr/audit`, `/fr/interventions`, `/fr/implementation`, `/fr/demande-devis`, `/fr/un-a-un`)
@@ -35,6 +38,7 @@
 **Risque évité** : OUTAGE TOTAL content-gen à J+30.
 
 **Fichiers modifiés** :
+
 - `axionia/src/server/queue/queues.ts` :
   - Nouvelle queue `costCapResetQueue` (BullMQ)
   - Cron pattern `0 0 1 * *` (1er du mois 00:00 UTC) dans `bootRepeatableJobs()`
@@ -51,6 +55,7 @@
 **Risque évité** : Sprint External Links Database livré 2026-05-22 mais worker inerte (aucun cron trigger).
 
 **Fichiers modifiés** :
+
 - `axionia/src/server/queue/queues.ts` :
   - Nouvelle queue `externalLinksMonitorQueue` (BullMQ)
   - Cron pattern `0 2 1 * *` (1er du mois 02:00 UTC) dans `bootRepeatableJobs()` — décalé de 2h vs cost-cap-reset pour éviter contention Redis
@@ -81,6 +86,7 @@ pnpm tsx prisma/seeds/content-gen/seed-campaign-templates-standalone.ts
 ```
 
 **Résultat attendu** :
+
 ```
 [seed-campaign-templates] 6 templates upserted.
 ```
@@ -88,6 +94,7 @@ pnpm tsx prisma/seeds/content-gen/seed-campaign-templates-standalone.ts
 Le seed est **idempotent** (upsert on slug) — peut être rejoué sans risque.
 
 **Vérification post-seed** :
+
 ```sql
 SELECT slug, name FROM campaign_template ORDER BY display_order;
 -- Attendu : 6 rows (PME audits, ETI implementations, etc. — D-P5-1)
@@ -101,13 +108,13 @@ Après seed, le flow `Fl-04 Création campagne depuis preset` (24/25 dans l'audi
 
 ### Score audit projeté
 
-| Bloc | Score audit | Score post-fixes (projection) |
-|------|-------------|--------------------------------|
-| Frontend | 209/250 | **~215/250** (P0-1 résolu = F-07 16→22) |
-| Backend | 205/250 | **~215/250** (P0-2/3/4 résolus = B-01 18→21, B-06 21→23, B-08 22→24) |
-| Flows | 236/250 | **236/250** (P0-5 ouvre Fl-04, déjà au max) |
-| Prod readiness | 204/250 | **204/250** (P1 polish restants) |
-| **TOTAL** | **854/1000** | **~870/1000** (projeté) |
+| Bloc           | Score audit  | Score post-fixes (projection)                                        |
+| -------------- | ------------ | -------------------------------------------------------------------- |
+| Frontend       | 209/250      | **~215/250** (P0-1 résolu = F-07 16→22)                              |
+| Backend        | 205/250      | **~215/250** (P0-2/3/4 résolus = B-01 18→21, B-06 21→23, B-08 22→24) |
+| Flows          | 236/250      | **236/250** (P0-5 ouvre Fl-04, déjà au max)                          |
+| Prod readiness | 204/250      | **204/250** (P1 polish restants)                                     |
+| **TOTAL**      | **854/1000** | **~870/1000** (projeté)                                              |
 
 ### Verdict
 
@@ -165,15 +172,15 @@ Audit code : `getFactCheckQueue().add(...)` est bien appelé à `src/server/queu
 
 ## Gates finaux Sprint Final complet
 
-| Gate | Résultat |
-|------|----------|
-| `pnpm typecheck` | ✅ exit 0 — 0 erreur |
-| `pnpm test --no-file-parallelism` | ✅ **1687 passed / 7 skipped / 0 failed** (1694 total) — **baseline EXACT maintenue** |
-| `pnpm test` (mode parallèle défaut) | ⚠️ 1680 passed / 7 failed / 7 skipped (test isolation pollution, code OK) |
-| `pnpm audit` | ✅ 0 critical / 0 high (7 moderate/low devDeps inchangé) |
-| Smoke catalog URLs (`/fr/audit`, `/fr/interventions`, `/fr/implementation`, `/fr/demande-devis`, `/fr/un-a-un`) | ✅ 5/5 → 200 |
-| Workers `lockDuration: 120_000` | ✅ **34/34** |
-| Workers `captureWorkerError` | ✅ **34/34** |
+| Gate                                                                                                            | Résultat                                                                              |
+| --------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| `pnpm typecheck`                                                                                                | ✅ exit 0 — 0 erreur                                                                  |
+| `pnpm test --no-file-parallelism`                                                                               | ✅ **1687 passed / 7 skipped / 0 failed** (1694 total) — **baseline EXACT maintenue** |
+| `pnpm test` (mode parallèle défaut)                                                                             | ⚠️ 1680 passed / 7 failed / 7 skipped (test isolation pollution, code OK)             |
+| `pnpm audit`                                                                                                    | ✅ 0 critical / 0 high (7 moderate/low devDeps inchangé)                              |
+| Smoke catalog URLs (`/fr/audit`, `/fr/interventions`, `/fr/implementation`, `/fr/demande-devis`, `/fr/un-a-un`) | ✅ 5/5 → 200                                                                          |
+| Workers `lockDuration: 120_000`                                                                                 | ✅ **34/34**                                                                          |
+| Workers `captureWorkerError`                                                                                    | ✅ **34/34**                                                                          |
 
 ### ⚠️ Test isolation pollution — P2 follow-up
 
@@ -218,13 +225,13 @@ axionia/src/server/queue/workers/__tests__/*.spec.ts × 4               (P1-2 se
 
 ## Score audit final projeté
 
-| Bloc | Score audit initial | Score post-Sprint Final |
-|------|---------------------|--------------------------|
-| Frontend | 209/250 | **~217/250** (P0-1 + P1-6 + P1-8 partiels) |
-| Backend | 205/250 | **~220/250** (P0-2/3/4 + P1-1 + P1-2 ratchet 17→34) |
-| Flows | 236/250 | **236/250** (P0-5 ouvre Fl-04, déjà max) |
-| Prod readiness | 204/250 | **~210/250** (P1-15 + P1-18 verified + P1-8 CI strict) |
-| **TOTAL** | **854/1000** | **~883/1000** (projeté +29 pts) |
+| Bloc           | Score audit initial | Score post-Sprint Final                                |
+| -------------- | ------------------- | ------------------------------------------------------ |
+| Frontend       | 209/250             | **~217/250** (P0-1 + P1-6 + P1-8 partiels)             |
+| Backend        | 205/250             | **~220/250** (P0-2/3/4 + P1-1 + P1-2 ratchet 17→34)    |
+| Flows          | 236/250             | **236/250** (P0-5 ouvre Fl-04, déjà max)               |
+| Prod readiness | 204/250             | **~210/250** (P1-15 + P1-18 verified + P1-8 CI strict) |
+| **TOTAL**      | **854/1000**        | **~883/1000** (projeté +29 pts)                        |
 
 🟢 **Verdict : GO PROD** après action Will P0-5 (seed CampaignTemplate prod ~30s).
 
@@ -254,12 +261,12 @@ axionia/src/server/queue/workers/__tests__/*.spec.ts × 4               (P1-2 se
 
 ### Actions Will résiduelles (3, ~5 min cumulé)
 
-| # | Action | Effort |
-|---|--------|--------|
-| P0-5 | `pnpm tsx prisma/seeds/content-gen/seed-campaign-templates-standalone.ts` (Coolify exec) | 30s |
-| P1-18 | `crontab -l` sur VPS Hetzner pour confirmer cron daily backup actif | 1 min |
-| P1-20 | `pnpm prisma migrate status` sur prod pour vérifier no drift | 2 min |
-| P1-21 | GSC + Bing WMT submissions sub-sitemaps récents (KB/glossaire/presse/stack-ia) | 2 min |
+| #     | Action                                                                                   | Effort |
+| ----- | ---------------------------------------------------------------------------------------- | ------ |
+| P0-5  | `pnpm tsx prisma/seeds/content-gen/seed-campaign-templates-standalone.ts` (Coolify exec) | 30s    |
+| P1-18 | `crontab -l` sur VPS Hetzner pour confirmer cron daily backup actif                      | 1 min  |
+| P1-20 | `pnpm prisma migrate status` sur prod pour vérifier no drift                             | 2 min  |
+| P1-21 | GSC + Bing WMT submissions sub-sitemaps récents (KB/glossaire/presse/stack-ia)           | 2 min  |
 
 ### Skippés (par décision Will explicite)
 
@@ -273,22 +280,22 @@ Pendant Sprint Final P1, Manon (parallèle) a poussé 3 commits external-links s
 
 ## Gates finaux Sprint Final COMPLET (P0 + P1 prioritaires + P1 secondaires)
 
-| Gate | Résultat |
-|------|----------|
-| `pnpm typecheck` | ✅ exit 0 — 0 erreur |
-| `pnpm test` | ✅ **1700 passed / 7 skipped / 0 failed** (167 test files) — **+13 tests vs baseline** (keyword-lock + autres) |
-| `pnpm audit` | ✅ 0 critical / 0 high (1 moderate dev-only `vite` restant, P2 vitest 3.x upgrade) |
-| Workers `lockDuration: 120_000` | ✅ **34/34** |
-| Workers `captureWorkerError` | ✅ **34/34** |
-| Catalog URLs cassées | ✅ **0/4** (toutes corrigées) |
-| Server Actions Zod runtime | ✅ **18/18** files mutables |
-| JSON-LD @graph villes hub | ✅ **8 schemas** (vs 4 avant) |
-| LHCI cibles strictes | ✅ CLS 0.05 + TBT 150 + INP 80 |
-| Redis keyword-lock | ✅ atomic SET NX EX 1800s |
-| Cookies banner gating Clarity | ✅ VERIFIED prod-ready |
-| Registre RGPD Art. 30 | ✅ livré 11 sections CNIL |
-| ADRs index centralisé | ✅ 28 entrées |
-| RGPD endpoint effacement | ✅ acquis P2 P0-2 |
+| Gate                            | Résultat                                                                                                       |
+| ------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| `pnpm typecheck`                | ✅ exit 0 — 0 erreur                                                                                           |
+| `pnpm test`                     | ✅ **1700 passed / 7 skipped / 0 failed** (167 test files) — **+13 tests vs baseline** (keyword-lock + autres) |
+| `pnpm audit`                    | ✅ 0 critical / 0 high (1 moderate dev-only `vite` restant, P2 vitest 3.x upgrade)                             |
+| Workers `lockDuration: 120_000` | ✅ **34/34**                                                                                                   |
+| Workers `captureWorkerError`    | ✅ **34/34**                                                                                                   |
+| Catalog URLs cassées            | ✅ **0/4** (toutes corrigées)                                                                                  |
+| Server Actions Zod runtime      | ✅ **18/18** files mutables                                                                                    |
+| JSON-LD @graph villes hub       | ✅ **8 schemas** (vs 4 avant)                                                                                  |
+| LHCI cibles strictes            | ✅ CLS 0.05 + TBT 150 + INP 80                                                                                 |
+| Redis keyword-lock              | ✅ atomic SET NX EX 1800s                                                                                      |
+| Cookies banner gating Clarity   | ✅ VERIFIED prod-ready                                                                                         |
+| Registre RGPD Art. 30           | ✅ livré 11 sections CNIL                                                                                      |
+| ADRs index centralisé           | ✅ 28 entrées                                                                                                  |
+| RGPD endpoint effacement        | ✅ acquis P2 P0-2                                                                                              |
 
 ## Files Sprint Final TOTAL : ~70 fichiers (modifiés + nouveaux)
 
@@ -301,13 +308,13 @@ TOTAL : 70 modifiés + 5 nouveaux + 2 fichiers docs livrés
 
 ## Score audit final projeté
 
-| Bloc | Score initial | Score post-Sprint Final TOTAL |
-|------|---------------|--------------------------------|
-| Frontend | 209/250 | **~225/250** (P0-1 + P1-5/6/7/8/12/16/17 livrés) |
-| Backend | 205/250 | **~230/250** (P0-2/3/4 + P1-1/2/3/14 livrés) |
-| Flows | 236/250 | **~244/250** (P1-13 + P1-14 + Cookies VERIFIED) |
-| Prod readiness | 204/250 | **~225/250** (P1-10/11 docs + P1-19 audit + cookies + restore verified) |
-| **TOTAL** | **854/1000** | **~924/1000** (projeté **+70 pts**) |
+| Bloc           | Score initial | Score post-Sprint Final TOTAL                                           |
+| -------------- | ------------- | ----------------------------------------------------------------------- |
+| Frontend       | 209/250       | **~225/250** (P0-1 + P1-5/6/7/8/12/16/17 livrés)                        |
+| Backend        | 205/250       | **~230/250** (P0-2/3/4 + P1-1/2/3/14 livrés)                            |
+| Flows          | 236/250       | **~244/250** (P1-13 + P1-14 + Cookies VERIFIED)                         |
+| Prod readiness | 204/250       | **~225/250** (P1-10/11 docs + P1-19 audit + cookies + restore verified) |
+| **TOTAL**      | **854/1000**  | **~924/1000** (projeté **+70 pts**)                                     |
 
 🟢 **Verdict final** : **GO PROD** après actions Will (~5 min) — seed CampaignTemplate + crontab/migrate verifications.
 

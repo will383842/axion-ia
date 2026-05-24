@@ -128,8 +128,8 @@ async function QualityAttemptsDistributionBlock(): Promise<React.ReactElement> {
     <AdminCard className="mt-[var(--space-admin-5)]">
       <h2 className="admin-h2">Distribution boucle qualité (LLM-judge → improver)</h2>
       <p className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-text-muted)]">
-        Nombre d&apos;itérations LLM-judge nécessaires avant statut terminal{" "}
-        <code>published</code> ou <code>needs_review</code>. {total} job
+        Nombre d&apos;itérations LLM-judge nécessaires avant statut terminal <code>published</code>{" "}
+        ou <code>needs_review</code>. {total} job
         {total > 1 ? "s" : ""} agrégé{total > 1 ? "s" : ""}.
       </p>
       <div className="mt-[var(--space-admin-4)] flex flex-col gap-[var(--space-admin-3)]">

@@ -606,7 +606,7 @@ export const LIMOGES_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implémentation d'un cas d'usage simple — automatisation devis, gestion catalogue porcelaine, qualification leads pour TPE et indépendants limougeauds.",
           },
@@ -712,7 +712,7 @@ export const LIMOGES_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implementation of a simple use case — quote automation, porcelain catalogue management, lead qualification for Limoges micro-businesses and freelancers.",
           },

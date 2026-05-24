@@ -12,6 +12,7 @@
 
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { requireAdmin } from "./_auth";
 
 // Sprint Final P1-3 — Zod runtime validation des inputs Server Actions.
 const SortBySchema = z.enum(["priority", "population", "name", "articlesCount"]);
@@ -94,6 +95,7 @@ export async function listCities(params: {
   sortBy?: "priority" | "population" | "name" | "articlesCount";
   sortDir?: "asc" | "desc";
 }): Promise<CitiesListResult> {
+  await requireAdmin();
   // Sprint Final P1-3 — Zod runtime validation.
   ListCitiesParamsSchema.parse(params);
   const {
@@ -153,6 +155,7 @@ export async function listCities(params: {
 }
 
 export async function getCitiesStats(): Promise<CitiesStatsResult> {
+  await requireAdmin();
   const [total, covered] = await Promise.all([
     prisma.city.count({ where: { isTargeted: true } }),
     prisma.city.count({ where: { isTargeted: true, isCovered: true } }),
@@ -203,6 +206,7 @@ export async function getCitiesStats(): Promise<CitiesStatsResult> {
 }
 
 export async function markCitiesPriority(citySlugs: string[]): Promise<{ updated: number }> {
+  await requireAdmin();
   // Sprint Final P1-3 — Zod runtime validation.
   MarkPrioritySchema.parse(citySlugs);
   const result = await prisma.city.updateMany({
@@ -217,6 +221,7 @@ export async function exportCitiesCSV(params: {
   regionSlug?: string;
   isCovered?: boolean | null;
 }): Promise<string> {
+  await requireAdmin();
   // Sprint Final P1-3 — Zod runtime validation.
   ExportCsvParamsSchema.parse(params);
   const where = {

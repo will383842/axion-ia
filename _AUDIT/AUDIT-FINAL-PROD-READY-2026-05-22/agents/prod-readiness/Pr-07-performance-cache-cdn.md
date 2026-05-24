@@ -6,6 +6,7 @@
 ## Évidence
 
 ### Bundle ≤ 75 KB gz / route (target V6)
+
 - `AGENTS.md` budget Web Vitals 2026 source de vérité (15 pages stratégiques) : LCP ≤ 1800ms p75, INP ≤ 100ms p75, CLS = 0, TBT ≤ 150ms, First Load JS ≤ 75 KB gz / route. Exception `/reserver` (calendrier client-heavy) ≤ 110 KB.
 - `next.config.ts:150-167` `optimizePackageImports` 15 packages (lucide-react + 14 radix-ui) — tree-shake granulaire.
 - `next.config.ts:97-114` `serverExternalPackages` 9 (Prisma, argon2, bullmq, ioredis, sharp, otplib, pino, react-email/render, nodemailer, isomorphic-dompurify, jsdom) — empêche leak server-only vers client.
@@ -15,6 +16,7 @@
 - Gate B `pnpm bundle:check` (size-limit) + delta vs main `size-limit-action` (continue-on-error pour l'instant, cf. Pr-05).
 
 ### LCP / INP / CLS gates
+
 - `lighthouserc.json:32-44` assertions strictes :
   - `categories:performance` ≥ 0.9 error
   - `largest-contentful-paint` ≤ 1800ms error
@@ -25,6 +27,7 @@
 - INP gate `"off"` (ligne 38) — Lab Lighthouse n'a pas d'interaction utilisateur réelle ; mesuré via CrUX field data (RUM `/api/vitals`).
 
 ### Cache-Control headers
+
 - `next.config.ts:213-237` Cache-Control explicites :
   - `/sitemap.xml` : `public, max-age=300, s-maxage=600, stale-while-revalidate=3600`
   - `/sitemap/:path*` : idem
@@ -33,22 +36,27 @@
 - `images.minimumCacheTTL: 31536000` (`next.config.ts:123`) — anti-pattern Next 16 self-hosted résolu (D4 cert 2026-05-08).
 
 ### Cloudflare CDN
+
 - Proxied DNS axion-ia.com (Caddyfile commentaire ligne 16-18). Workflow `cloudflare-purge-weekly.yml` + job `purge` post-deploy auto.
 - `Vary: RSC, Next-Router-State-Tree, Next-Router-Prefetch, Accept-Encoding` (`next.config.ts:38-42`) — variantes payload CDN propres (P-310).
 
 ### Image Sharp pipeline
+
 - `next.config.ts:116-124` `formats: ["image/avif", "image/webp"]`, `remotePatterns: []` (anti-SSRF), TTL 1 an.
 - Sharp `serverExternalPackages` (ligne 105) — runtime natif.
 
 ### Edge runtime middleware
+
 - `src/proxy.ts` Edge runtime (commentaire ligne 14 "aucun import Node-only").
-- COEP credentialless, CSP nonce per-request, X-* headers OWASP.
+- COEP credentialless, CSP nonce per-request, X-\* headers OWASP.
 
 ### Streaming SSR / RSC default Next 16
+
 - Next 16 RSC default (`AGENTS.md` "NOT the Next.js you know" prompt).
 - PPR `experimental.ppr` désactivé (commentaire ligne 131-133 "deferred — needs per-route Suspense boundaries"). React Compiler désactivé aussi (ligne 174-177 "deferred PERF-004").
 
 ### Brotli 11 build-time
+
 - `Caddyfile:53-72` documentation Brotli 11 + Gzip 9 pre-compress build-time. Bascule file_server `precompressed br gzip` différée (effort opérationnel > gain estimé).
 
 ## Findings P0 / P1 / P2

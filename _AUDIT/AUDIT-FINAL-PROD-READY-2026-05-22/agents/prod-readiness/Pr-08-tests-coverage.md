@@ -6,15 +6,18 @@
 ## Évidence
 
 ### Test files count
+
 - **75 fichiers `.test.ts`** dans `src/` (Vitest unitaires + intégration).
 - **18 fichiers `.spec.ts`** dans `tests/e2e/` (Playwright).
 - **1061 occurrences** `describe(|it(|test(` across 75 unit test files — bonne densité (~14 cas/fichier en moyenne).
 
 ### Vitest coverage
+
 - `ci.yml:54-65` Gate A : `pnpm test:coverage` avec coverage thresholds activés en CI. Commentaire Sprint S6.3 P1-7 (2026-05-15) : "thresholds vitest.config.ts:37-43 statements/branches/functions/lines 60/55/60/60". Bloque PR si couverture descend.
 - Upload coverage artifact retention 7j.
 
 ### E2E Playwright (`playwright.config.ts`)
+
 - 5 projects : chromium, webkit, firefox, mobile-chrome (Pixel 7), mobile-safari (iPhone 14 Pro).
 - CI workers 4, retries 2, fullyParallel.
 - webServer CI-aware : `pnpm start` en CI (build préalable Gate B step "Build"), `pnpm dev` en local.
@@ -26,6 +29,7 @@
   - `content-gen/` : `landing-ville`, `news-rss`, `coverage-campaign`, `quality-loop`, `blog-article`
 
 ### Tests modules critiques (échantillon haute valeur)
+
 - **Auth/Security** : `src/lib/magic-token.test.ts`, `src/lib/pii-redaction.test.ts`, `src/lib/knowledge/hmac.test.ts`, `src/server/actions/image-bank/forget-ip-hash.action.test.ts`, `src/server/content-gen/shared/prompt-input-escape.test.ts`, `src/server/content-gen/shared/html-sanitizer.test.ts`, `src/server/content-gen/shared/faq-sanitizer.test.ts`
 - **Workers BullMQ** : 8 tests `__tests__/` dont `scheduler-worker`, `deadline-checker`, `recurring-schedule`, `orchestrator-sequential`, `factcheck-gate`, `correlation-id`, `brand-voice-drift-monitor`, `embeddings-backfill-worker`, `external-links-monitor`
 - **Schemas Zod** : `_zod-schemas.test.ts` + Gate `pnpm zod:check` (pre-push + CI) — Zod schemas have tests obligatoire
@@ -36,9 +40,11 @@
 - **Booking V1** : `state-machine.test.ts` (26 cas), `admin-actions.test.ts` (25), `quote-actions.test.ts` (23), `option-cap.test.ts`, `refund-calc.test.ts`
 
 ### Pre-push hook
+
 - `.husky/pre-push` : `pnpm test` runs FULL Vitest suite avant push — gate dev hard.
 
 ### Baseline test count progression
+
 - Mémoires : 1010 (2026-05-18) → 1192 (2026-05-18 S+4) → 1376 (2026-05-21 P1 base) → 1488 (2026-05-22 Sprint Perfection) → 1526 → 1591 → **1620/1627 (2026-05-22 Sprint UX, mémoire la plus récente)**.
 - Cible attendue ≥ 1620 confirmée par mémoire 2026-05-22.
 
