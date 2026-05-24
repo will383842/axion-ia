@@ -28,6 +28,7 @@ import {
 } from "../constants";
 import { absoluteUrl, pageUrlFor } from "../utils/paths";
 import type { SeoScoreBreakdown } from "../types";
+import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 
 interface SiteConfig {
   siteUrl: string;
@@ -100,10 +101,9 @@ export class ImageSeoService {
       license: image.licenseUrl || DEFAULT_LICENSE_URL,
       acquireLicensePage: pageUrl,
       creditText: image.copyrightHolder || DEFAULT_CREDIT_TEXT,
-      speakable: {
-        "@type": "SpeakableSpecification",
-        cssSelector: ["h1", "figcaption", ".image-caption", ".image-description"],
-      },
+      speakable: buildSpeakableSpecification({
+        selectors: ["h1", "figcaption", ".image-caption", ".image-description"],
+      }),
     };
 
     // Abstract (= ai_summary) — version courte 1 phrase citable par LLMs (AEO).

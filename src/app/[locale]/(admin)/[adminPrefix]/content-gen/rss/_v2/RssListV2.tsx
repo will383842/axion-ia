@@ -1,39 +1,36 @@
 // Refonte admin mai 2026 — PR 7 (ADR 0028 IMPLEMENTATION-PLAN.md § PR 7).
+// Sprint v7 post-audit FIX (F2) — migration UI legacy `rss.ts` (ContentGenConfig
+// JSON, keyed by URL) → `rss-sources.ts` (Prisma `rss_sources`, keyed by id).
+// Voir audit A22 frontend-backend-wiring.
 //
 // RSS list V2 — AdminPageShell + AdminPageHeader + AdminCard.
-// Server Actions toggleRssSource + removeRssSource préservées.
+// Server Actions toggleRssSourceInDb + removeRssSourceFromDb (Prisma-backed).
 
 import Link from "next/link";
 import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
-import { removeRssSource, toggleRssSource } from "@/server/actions/content-gen/rss";
-import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
-
-interface RssSource {
-  readonly url: string;
-  readonly name: string;
-  readonly tags: ReadonlyArray<string>;
-  readonly pollIntervalMin: number;
-  readonly autoPublish: boolean;
-  readonly enabled: boolean;
-}
+import {
+  listRssSourcesFromDb,
+  removeRssSourceFromDb,
+  toggleRssSourceInDb,
+} from "@/server/actions/content-gen/rss-sources";
 
 interface Props {
   adminPrefix: string;
 }
 
 export async function RssListV2({ adminPrefix }: Props): Promise<React.ReactElement> {
-  const sources = await readContentGenConfig<ReadonlyArray<RssSource>>("rss_sources", []);
+  const sources = await listRssSourcesFromDb();
 
   async function doToggle(formData: FormData) {
     "use server";
-    const url = String(formData.get("url") ?? "");
+    const id = String(formData.get("id") ?? "");
     const enabled = formData.get("enabled") === "true";
-    await toggleRssSource(url, enabled);
+    await toggleRssSourceInDb(id, enabled);
   }
 
   async function doRemove(formData: FormData) {
     "use server";
-    await removeRssSource(String(formData.get("url") ?? ""));
+    await removeRssSourceFromDb(String(formData.get("id") ?? ""));
   }
 
   return (
@@ -71,7 +68,7 @@ export async function RssListV2({ adminPrefix }: Props): Promise<React.ReactElem
                 </tr>
               ) : (
                 sources.map((s) => (
-                  <tr key={s.url}>
+                  <tr key={s.id}>
                     <td>{s.name}</td>
                     <td>
                       <a href={s.url} target="_blank" rel="noopener" className="admin-link">
@@ -84,7 +81,7 @@ export async function RssListV2({ adminPrefix }: Props): Promise<React.ReactElem
                     <td>{s.enabled ? "✅" : "🚫"}</td>
                     <td className="flex gap-[var(--space-admin-2)]">
                       <form action={doToggle}>
-                        <input type="hidden" name="url" value={s.url} />
+                        <input type="hidden" name="id" value={s.id} />
                         <input type="hidden" name="enabled" value={(!s.enabled).toString()} />
                         <button
                           type="submit"
@@ -94,13 +91,13 @@ export async function RssListV2({ adminPrefix }: Props): Promise<React.ReactElem
                         </button>
                       </form>
                       <Link
-                        href={`/fr/${adminPrefix}/content-gen/rss/${encodeURIComponent(s.url)}`}
+                        href={`/fr/${adminPrefix}/content-gen/rss/${s.id}`}
                         className="admin-button-ghost text-[length:var(--text-admin-xs)]"
                       >
                         Éditer
                       </Link>
                       <form action={doRemove}>
-                        <input type="hidden" name="url" value={s.url} />
+                        <input type="hidden" name="id" value={s.id} />
                         <button
                           type="submit"
                           className="admin-button-ghost text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-destructive)]"

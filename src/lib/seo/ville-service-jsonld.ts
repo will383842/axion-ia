@@ -31,6 +31,7 @@ import {
   buildHowToJsonLd,
   SITE_URL,
 } from "@/lib/seo";
+import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -226,10 +227,7 @@ export function buildVilleServiceJsonLdGraph(
     schemas.push({
       "@context": "https://schema.org",
       "@type": "FAQPage",
-      speakable: {
-        "@type": "SpeakableSpecification",
-        cssSelector: speakableSelectors,
-      },
+      speakable: buildSpeakableSpecification({ selectors: speakableSelectors }),
       mainEntity: faqItems.map((item, idx) => ({
         "@type": "Question",
         "@id": `${url}#faq-${idx + 1}`,
@@ -317,10 +315,7 @@ export function buildVilleServiceJsonLdGraph(
     ],
     // Speakable cible le bloc directAnswer + FAQ pour voice search (SGE, Bixby, Google Assistant)
     // Selector #axion-direct-answer conditionnel (P2-2 Sprint S+5 — drift JSON-LD/DOM fix).
-    speakable: {
-      "@type": "SpeakableSpecification",
-      cssSelector: speakableSelectors,
-    },
+    speakable: buildSpeakableSpecification({ selectors: speakableSelectors }),
     breadcrumb: { "@id": `${url}#breadcrumb` },
     potentialAction: {
       "@type": "ReserveAction",

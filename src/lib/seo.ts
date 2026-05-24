@@ -7,6 +7,7 @@ import { isEnLocaleDisabled } from "@/lib/i18n/en-to-fr-redirect";
 // appelées au runtime quand les 2 modules sont déjà évalués. ESM-safe.
 import { buildServiceAreasServed } from "@/lib/service-coverage";
 import { buildOrganizationSameAs } from "@/lib/seo/wikidata-sameas";
+import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 
 // SITE_URL — résolu via env validé (`src/env.ts`).
 //
@@ -314,10 +315,7 @@ export function buildFaqJsonLd({ items, speakable = true }: FaqJsonLdInput) {
     })),
     ...(speakable !== false
       ? {
-          speakable: {
-            "@type": "SpeakableSpecification",
-            cssSelector: [speakableSelector],
-          },
+          speakable: buildSpeakableSpecification({ selectors: [speakableSelector] }),
         }
       : {}),
   } as const;
@@ -740,10 +738,8 @@ export function buildFaqSpeakableJsonLd({
     // `numberOfItems` : recommandé Google Search Console (rich results validator
     // émet warning sans). Aligne avec audit AEO 2026-05-24 (P1-4).
     numberOfItems: items.length,
-    speakable: {
-      "@type": "SpeakableSpecification",
-      cssSelector: selectors,
-    },
+    // Use buildSpeakableSpecification helper from main (DRY across all schemas).
+    speakable: buildSpeakableSpecification({ selectors }),
     mainEntity: items.map((item) => ({
       "@type": "Question",
       name: item.question,

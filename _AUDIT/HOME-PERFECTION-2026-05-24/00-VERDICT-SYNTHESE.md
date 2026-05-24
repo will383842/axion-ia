@@ -11,16 +11,16 @@
 
 Moyenne pondérée des 7 dimensions auditées :
 
-| # | Dimension | Score /100 | Classe | Détail |
-|---|---|---:|---|---|
-| A1 | SEO core (title/desc/canonical/hreflang/OG/Twitter/robots/internal-links) | **82** | Bon | `01-A1-SEO-CORE.md` |
-| A2 | AEO (FAQ + Speakable + Service x5 + Org + Review/AggregateRating) | **81** | Bon | `02-A2-AEO.md` |
-| A3 | GEO (LocalBusiness + areaServed + hreflang FR-only + LocalCoverage) | **92** | Excellent | `03-A3-GEO.md` |
-| A4 | Speakable + Breadcrumbs + Navigation + a11y landmarks | **72** | Moyen ⚠️ | `04-A4-SPEAKABLE-BREADCRUMBS-NAV.md` |
-| A5 | **Centralisation (SSOT, helpers, refactor 1894→320 LOC)** | **42** | 🔴 Critique | `05-A5-CENTRALISATION.md` |
-| A6 | Web Vitals (LCP/INP/CLS) + assets (hero AVIF, logos, video) | **82** | Bon | `06-A6-WEB-VITALS.md` |
-| A7 | i18n (FR/EN parité) + brand voice + AI Act | **82** | Bon | `07-A7-I18N-BRAND-AI-ACT.md` |
-| **Moyenne** | — | **76.14** | POLISH | — |
+| #           | Dimension                                                                 | Score /100 | Classe      | Détail                               |
+| ----------- | ------------------------------------------------------------------------- | ---------: | ----------- | ------------------------------------ |
+| A1          | SEO core (title/desc/canonical/hreflang/OG/Twitter/robots/internal-links) |     **82** | Bon         | `01-A1-SEO-CORE.md`                  |
+| A2          | AEO (FAQ + Speakable + Service x5 + Org + Review/AggregateRating)         |     **81** | Bon         | `02-A2-AEO.md`                       |
+| A3          | GEO (LocalBusiness + areaServed + hreflang FR-only + LocalCoverage)       |     **92** | Excellent   | `03-A3-GEO.md`                       |
+| A4          | Speakable + Breadcrumbs + Navigation + a11y landmarks                     |     **72** | Moyen ⚠️    | `04-A4-SPEAKABLE-BREADCRUMBS-NAV.md` |
+| A5          | **Centralisation (SSOT, helpers, refactor 1894→320 LOC)**                 |     **42** | 🔴 Critique | `05-A5-CENTRALISATION.md`            |
+| A6          | Web Vitals (LCP/INP/CLS) + assets (hero AVIF, logos, video)               |     **82** | Bon         | `06-A6-WEB-VITALS.md`                |
+| A7          | i18n (FR/EN parité) + brand voice + AI Act                                |     **82** | Bon         | `07-A7-I18N-BRAND-AI-ACT.md`         |
+| **Moyenne** | —                                                                         |  **76.14** | POLISH      | —                                    |
 
 **Verdict /1000** : 761 — la home post-refonte Blueprint 2026 a une **base SEO/AEO/GEO solide** mais souffre d'un **monolithe de 1894 lignes** qui pénalise la maintenabilité, plus **6 P0 ponctuels** à fixer pour passer en zone excellence.
 
@@ -31,14 +31,14 @@ Moyenne pondérée des 7 dimensions auditées :
 
 ## Top 6 P0 — à fixer avant tout
 
-| # | Audit | P0 | path:line | Effort | Impact |
-|---|---|---|---|---|---|
-| **P0-1** | A4 | **BreadcrumbList self-referencing sur home** — convention 2026 = home ne doit PAS émettre BL (warning Google). `breadcrumbJsonLd = null` ou retirer le `<JsonLd>` correspondant. | `page.tsx:337-349`, émission `page.tsx:1879` | 5 min | ⭐⭐⭐ |
-| **P0-2** | A4 | **2 h3 orphelines sans h2 parent** (hiérarchie cassée h1→h3) | `page.tsx:1128` ("Six expertises. Indépendantes...") + `page.tsx:1506` ("Secteurs couverts") | 15 min | ⭐⭐ |
-| **P0-3** | A1 | **Description SEO trop générique, USP dilué** — "Interventions IA en entreprise..." manque "100% seniors, zéro intermédiaire" | `page.tsx:89-91` | 15 min | ⭐⭐⭐ |
-| **P0-4** | A1 | **Internal linking diversité insuffisante** — 10 destinations dont 0 vers `/a-propos`, `/methodologie`, `/cas-concrets`, `/transparence`, `/blog`. Ajouter 4-5 liens contextuels (founder → /a-propos, pricing → /methodologie, cases section → /cas-concrets) | `page.tsx` hero + founder + pricing + post-cases sections | 1h | ⭐⭐⭐ |
-| **P0-5** | A2 | **Service x5 sans `@id` refs vers Organization** — graph knowledge fragmenté pour LLMs. Remplacer `provider: { @type:"Organization", name:"Axion-IA", url:SITE_URL }` par `provider: { "@id": "#organization" }` | `page.tsx:314-327` | 10 min | ⭐⭐ |
-| **P0-6** | A2 | **VideoObject uploadDate dynamique** = `new Date().toISOString().slice(0,10)` au runtime au lieu de la vraie date de publication YouTube → stale freshness signal | `page.tsx:359` + interface `VideoTestimonial` dans `content/home-data.ts` | 20 min | ⭐⭐ (conditionnel : actuellement VIDEO_TESTIMONIALS=[]) |
+| #        | Audit | P0                                                                                                                                                                                                                                                             | path:line                                                                                    | Effort | Impact                                                   |
+| -------- | ----- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ------ | -------------------------------------------------------- |
+| **P0-1** | A4    | **BreadcrumbList self-referencing sur home** — convention 2026 = home ne doit PAS émettre BL (warning Google). `breadcrumbJsonLd = null` ou retirer le `<JsonLd>` correspondant.                                                                               | `page.tsx:337-349`, émission `page.tsx:1879`                                                 | 5 min  | ⭐⭐⭐                                                   |
+| **P0-2** | A4    | **2 h3 orphelines sans h2 parent** (hiérarchie cassée h1→h3)                                                                                                                                                                                                   | `page.tsx:1128` ("Six expertises. Indépendantes...") + `page.tsx:1506` ("Secteurs couverts") | 15 min | ⭐⭐                                                     |
+| **P0-3** | A1    | **Description SEO trop générique, USP dilué** — "Interventions IA en entreprise..." manque "100% seniors, zéro intermédiaire"                                                                                                                                  | `page.tsx:89-91`                                                                             | 15 min | ⭐⭐⭐                                                   |
+| **P0-4** | A1    | **Internal linking diversité insuffisante** — 10 destinations dont 0 vers `/a-propos`, `/methodologie`, `/cas-concrets`, `/transparence`, `/blog`. Ajouter 4-5 liens contextuels (founder → /a-propos, pricing → /methodologie, cases section → /cas-concrets) | `page.tsx` hero + founder + pricing + post-cases sections                                    | 1h     | ⭐⭐⭐                                                   |
+| **P0-5** | A2    | **Service x5 sans `@id` refs vers Organization** — graph knowledge fragmenté pour LLMs. Remplacer `provider: { @type:"Organization", name:"Axion-IA", url:SITE_URL }` par `provider: { "@id": "#organization" }`                                               | `page.tsx:314-327`                                                                           | 10 min | ⭐⭐                                                     |
+| **P0-6** | A2    | **VideoObject uploadDate dynamique** = `new Date().toISOString().slice(0,10)` au runtime au lieu de la vraie date de publication YouTube → stale freshness signal                                                                                              | `page.tsx:359` + interface `VideoTestimonial` dans `content/home-data.ts`                    | 20 min | ⭐⭐ (conditionnel : actuellement VIDEO_TESTIMONIALS=[]) |
 
 **Total P0 fixes** : ~2h15 + 1h internal linking = **~3h15** pour passer 761 → ~810/1000.
 
@@ -46,16 +46,16 @@ Moyenne pondérée des 7 dimensions auditées :
 
 ## Top 8 P1 — important post-P0
 
-| # | Audit | P1 | Effort | Impact |
-|---|---|---|---|---|
-| P1-1 | A4 | Speakable coverage : ajouter `[data-speakable-hero]` sur h1 + intro paras (actuellement FAQ only) | 30 min | ⭐⭐ |
-| P1-2 | A4 | Anchor IDs sections manquants — ajouter `id="services"`, `"why"`, `"cases"`, `"faq"`, `"pricing"` (deep-linking, TOC, AI Overviews citations) | 1h | ⭐⭐ |
-| P1-3 | A4 | `aria-labelledby` sur sections (WCAG 2.1 AA) | 30 min | ⭐ |
-| P1-4 | A2 | FAQPage `numberOfItems` field (Google validator compliance) | 5 min | ⭐ |
-| P1-5 | A2 | Service `serviceType` aligné `pricing.ts` tiers (vs label libre actuel) | 20 min | ⭐ |
-| P1-6 | A7 | **30 ternaires `isFr ? "..." : "..."` inline** → migrer vers `t()` (anti-pattern i18n bloquant si réactivation EN) | 3-4h | ⭐⭐⭐ |
-| P1-7 | A7 | ~50 clés i18n orphelines (comparison/modules/videos/ROI) à auditer (intégrer OU supprimer) | 2h | ⭐⭐ |
-| P1-8 | A7 | AI Act : émettre `aiGenerated: false` explicite dans JSON-LD (transparence LLM-facing pour 2026-08-02) | 1h | ⭐⭐ |
+| #    | Audit | P1                                                                                                                                            | Effort | Impact |
+| ---- | ----- | --------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------ |
+| P1-1 | A4    | Speakable coverage : ajouter `[data-speakable-hero]` sur h1 + intro paras (actuellement FAQ only)                                             | 30 min | ⭐⭐   |
+| P1-2 | A4    | Anchor IDs sections manquants — ajouter `id="services"`, `"why"`, `"cases"`, `"faq"`, `"pricing"` (deep-linking, TOC, AI Overviews citations) | 1h     | ⭐⭐   |
+| P1-3 | A4    | `aria-labelledby` sur sections (WCAG 2.1 AA)                                                                                                  | 30 min | ⭐     |
+| P1-4 | A2    | FAQPage `numberOfItems` field (Google validator compliance)                                                                                   | 5 min  | ⭐     |
+| P1-5 | A2    | Service `serviceType` aligné `pricing.ts` tiers (vs label libre actuel)                                                                       | 20 min | ⭐     |
+| P1-6 | A7    | **30 ternaires `isFr ? "..." : "..."` inline** → migrer vers `t()` (anti-pattern i18n bloquant si réactivation EN)                            | 3-4h   | ⭐⭐⭐ |
+| P1-7 | A7    | ~50 clés i18n orphelines (comparison/modules/videos/ROI) à auditer (intégrer OU supprimer)                                                    | 2h     | ⭐⭐   |
+| P1-8 | A7    | AI Act : émettre `aiGenerated: false` explicite dans JSON-LD (transparence LLM-facing pour 2026-08-02)                                        | 1h     | ⭐⭐   |
 
 **Total P1** : ~9h.
 
@@ -68,40 +68,40 @@ Moyenne pondérée des 7 dimensions auditées :
 
 ### Phase 1 — Extraction sections (16h)
 
-| # | Section | Lignes inline | Component cible | Effort |
-|---|---|---:|---|---:|
-| P1.1 | VALUE PROPOSITION (5 cartes services) | 92 (L445-536) | `src/components/home/ValuePropositionGrid.tsx` | 3h |
-| P1.2 | PRICING TIERS (3 niveaux) | 258 (L660-917) | `src/components/home/PricingTierGrid.tsx` | 4h |
-| P1.3 | WHY (6 différenciateurs + trust) | 322 (L919-1240) | `src/components/home/WhySection.tsx` | 5h |
-| P1.4 | TESTIMONIALS (6 avis) | 129 (L1540-1668) | `src/components/home/TestimonialsSection.tsx` | 2.5h |
-| P1.5 | FAQ (12 questions) | 51 (L1670-1720) | `src/components/home/FaqSection.tsx` | 1.5h |
-| **Total Phase 1** | — | **-852 LOC** | — | **16h** |
+| #                 | Section                               |    Lignes inline | Component cible                                |  Effort |
+| ----------------- | ------------------------------------- | ---------------: | ---------------------------------------------- | ------: |
+| P1.1              | VALUE PROPOSITION (5 cartes services) |    92 (L445-536) | `src/components/home/ValuePropositionGrid.tsx` |      3h |
+| P1.2              | PRICING TIERS (3 niveaux)             |   258 (L660-917) | `src/components/home/PricingTierGrid.tsx`      |      4h |
+| P1.3              | WHY (6 différenciateurs + trust)      |  322 (L919-1240) | `src/components/home/WhySection.tsx`           |      5h |
+| P1.4              | TESTIMONIALS (6 avis)                 | 129 (L1540-1668) | `src/components/home/TestimonialsSection.tsx`  |    2.5h |
+| P1.5              | FAQ (12 questions)                    |  51 (L1670-1720) | `src/components/home/FaqSection.tsx`           |    1.5h |
+| **Total Phase 1** | —                                     |     **-852 LOC** | —                                              | **16h** |
 
 ### Phase 2 — Data extraction (9h)
 
-| # | Data | Fichier cible | Effort |
-|---|---|---|---:|
-| P2.1 | Tarification tiers | `src/content/home-pricing.ts` | 3h |
-| P2.2 | Différenciateurs Why | `src/content/home-why.ts` | 2.5h |
-| P2.3 | Case cards visuels | `src/content/home-cases.ts` | 1.5h |
-| P2.4 | CTA options finale | `src/content/home-cta-options.ts` | 2h |
+| #    | Data                 | Fichier cible                     | Effort |
+| ---- | -------------------- | --------------------------------- | -----: |
+| P2.1 | Tarification tiers   | `src/content/home-pricing.ts`     |     3h |
+| P2.2 | Différenciateurs Why | `src/content/home-why.ts`         |   2.5h |
+| P2.3 | Case cards visuels   | `src/content/home-cases.ts`       |   1.5h |
+| P2.4 | CTA options finale   | `src/content/home-cta-options.ts` |     2h |
 
 ### Phase 3 — JSON-LD helpers (2.5h)
 
-| # | Helper | Cible | Effort |
-|---|---|---|---:|
-| P3.1 | `buildHomeServicesJsonLd(verticales[])` | `src/lib/seo.ts` | 1.5h |
-| P3.2 | `buildHomeVideoJsonLd(testimonials[])` | `src/lib/seo.ts` | 0.5h |
-| P3.3 | Constantes rating/count `HOME_TESTIMONIALS_RATING` etc | `src/content/home-data.ts` | 0.5h |
+| #    | Helper                                                 | Cible                      | Effort |
+| ---- | ------------------------------------------------------ | -------------------------- | -----: |
+| P3.1 | `buildHomeServicesJsonLd(verticales[])`                | `src/lib/seo.ts`           |   1.5h |
+| P3.2 | `buildHomeVideoJsonLd(testimonials[])`                 | `src/lib/seo.ts`           |   0.5h |
+| P3.3 | Constantes rating/count `HOME_TESTIMONIALS_RATING` etc | `src/content/home-data.ts` |   0.5h |
 
 ### Bonus (10h optionnel)
 
-| # | Travail | Bénéfice | Effort |
-|---|---|---|---:|
-| P4 | Magic numbers → configs (4.9 rating, thresholds 600/320, idx*80 delays) | Testabilité +200% | 4h |
-| P5 | Lucide imports cleanup (24 imports → ~12 utilisés) | Bundle -400 B | 30 min |
-| P6 | Composant CTA cross-page (variants primary/secondary) | Dedup 60 LOC × 5 pages | 3h |
-| P7 | SSOT service descriptions `src/content/service-descriptions.ts` (dedup vs /audit /interventions /implementation) | Dedup 120 LOC cross-pages | 2.5h |
+| #   | Travail                                                                                                          | Bénéfice                  | Effort |
+| --- | ---------------------------------------------------------------------------------------------------------------- | ------------------------- | -----: |
+| P4  | Magic numbers → configs (4.9 rating, thresholds 600/320, idx\*80 delays)                                         | Testabilité +200%         |     4h |
+| P5  | Lucide imports cleanup (24 imports → ~12 utilisés)                                                               | Bundle -400 B             | 30 min |
+| P6  | Composant CTA cross-page (variants primary/secondary)                                                            | Dedup 60 LOC × 5 pages    |     3h |
+| P7  | SSOT service descriptions `src/content/service-descriptions.ts` (dedup vs /audit /interventions /implementation) | Dedup 120 LOC cross-pages |   2.5h |
 
 **Total Sprint Centralisation** : **27.5h core + 10h bonus = 37.5h**.
 
@@ -134,16 +134,19 @@ Moyenne pondérée des 7 dimensions auditées :
 ## Roadmap recommandée Will
 
 ### Option A — P0 only (3h15) — RECOMMANDÉ avant tout merge
+
 - Fix les 6 P0 ci-dessus (BreadcrumbList null, 2 h3 orphelines, description SEO, +4 internal links, Service @id refs, VideoObject date)
 - **Score projeté : 761 → 810/1000**
 - Commit dédié `fix(home): P0 audit perfection 2026-05-24`
 
 ### Option B — P0 + P1 (12h) — Idéal post-A
+
 - Tout Option A + P1-1 à P1-8 ci-dessus
 - **Score projeté : 810 → 870/1000**
 - 2-3 commits dédiés
 
 ### Option C — Sprint Centralisation complet (37.5h) — phase suivante
+
 - Refactor 1894→320 LOC selon plan A5 Phase 1+2+3 + bonus P4-P7
 - **Score projeté : 870 → 900-920/1000**
 - Sprint dédié 5 jours pleins, PR séparée

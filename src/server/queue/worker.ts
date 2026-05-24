@@ -42,6 +42,10 @@ import { startExternalLinksMonitorWorker } from "./workers/external-links-monito
 // Sprint Site Explorer Admin 2026-05-22
 import { startSiteRouteInspectorWorker } from "./workers/site-route-inspector-worker";
 import { startSiteRouteAnomalyDetectorWorker } from "./workers/site-route-anomaly-detector-worker";
+// Sprint v7 Phase 9 + Phase 13 — workers env-gated (throw si flag !=true).
+// Démarrent uniquement si l'opérateur active explicitement le flag Coolify.
+import { startGscHcuMonitorWorker } from "./workers/gsc-hcu-monitor-worker";
+import { startContentRefreshWorker } from "./workers/content-refresh-worker";
 import { bootRepeatableJobs } from "./queues";
 import { isBullmqDisabled } from "./connection";
 
@@ -96,6 +100,11 @@ async function main() {
     // Sprint Site Explorer Admin 2026-05-22
     startSiteRouteInspectorWorker(), // daily 02:00 UTC — inspection URLs publiques
     startSiteRouteAnomalyDetectorWorker(), // daily 03:00 UTC — détection anomalies
+    // Sprint v7 Phase 9 + Phase 13 — workers env-gated.
+    // Conditionnal spread : si flag !=true, le worker throw au start. On évite
+    // le throw en n'appelant le constructeur que si le flag est true.
+    ...(process.env.GSC_HCU_MONITOR_ENABLED === "true" ? [startGscHcuMonitorWorker()] : []),
+    ...(process.env.CONTENT_REFRESH_ENABLED === "true" ? [startContentRefreshWorker()] : []),
   ];
 
   await bootRepeatableJobs();

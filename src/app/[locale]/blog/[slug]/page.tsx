@@ -18,6 +18,7 @@ import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Badge } from "@/components/ui/badge";
 import { getAllBlogSlugs } from "@/content/transversal";
 import { buildProductMetadata, buildArticleJsonLd, SITE_URL } from "@/lib/seo";
+import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
 import { loadBlogArticleForView } from "@/server/content-gen/blog/loader";
 import { findArticleTombstone } from "@/server/content-gen/tombstone";
@@ -246,10 +247,9 @@ export default async function BlogArticle({ params }: Props) {
     }),
     aiGenerated: true,
     additionalType: "https://schema.org/AIGeneratedContent",
-    speakable: {
-      "@type": "SpeakableSpecification",
-      cssSelector: [".tldr-answer", '[data-aeo="tldr"]', ".faq-answer", '[data-aeo="answer"]'],
-    },
+    speakable: buildSpeakableSpecification({
+      selectors: [".tldr-answer", '[data-aeo="tldr"]', ".faq-answer", '[data-aeo="answer"]'],
+    }),
   };
 
   const breadcrumbItems = [

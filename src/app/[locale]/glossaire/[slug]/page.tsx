@@ -36,6 +36,7 @@ import { AnswerCard } from "@/components/marketing/AnswerCard";
 import { AiContentDisclaimer } from "@/components/marketing/AiContentDisclaimer";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata, SITE_URL, BUILD_DATE } from "@/lib/seo";
+import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 import {
   ALL_GLOSSARY_TERMS_EXTENDED,
   getGlossaryTermBySlug,
@@ -165,10 +166,9 @@ export default async function GlossaryTermPage({ params }: Props) {
       datePublished: BUILD_DATE,
       dateModified: BUILD_DATE,
       // Speakable cssSelector pour Google Assistant + Alexa.
-      speakable: {
-        "@type": "SpeakableSpecification",
-        cssSelector: ['[data-aeo="glossary-definition"]'],
-      },
+      speakable: buildSpeakableSpecification({
+        selectors: ['[data-aeo="glossary-definition"]'],
+      }),
     },
   } as const;
 

@@ -40,12 +40,35 @@ export default async function EditTestimonialPage({ params }: PageProps) {
     displayOrder: t.displayOrder,
   };
 
+  // Sprint v7 Phase 15 (F5) : extraction du `realMeta` depuis `displayPages`
+  // JSON (cf. `markAsRealTestimonial` qui le stocke sous cette clé).
+  const displayPagesObj =
+    typeof t.displayPages === "object" && t.displayPages !== null
+      ? (t.displayPages as Record<string, unknown>)
+      : {};
+  const rawRealMeta = displayPagesObj["realMeta"] as
+    | { isReal?: boolean; source?: string; consentDate?: string; verifiedBy?: string }
+    | undefined;
+  const realMeta =
+    rawRealMeta?.isReal === true &&
+    typeof rawRealMeta.source === "string" &&
+    typeof rawRealMeta.consentDate === "string"
+      ? {
+          source: rawRealMeta.source,
+          consentDate: rawRealMeta.consentDate,
+          ...(typeof rawRealMeta.verifiedBy === "string"
+            ? { verifiedBy: rawRealMeta.verifiedBy }
+            : {}),
+        }
+      : null;
+
   return (
     <TestimonialEditV2
       adminPrefix={adminPrefix}
       initial={initialPayload}
       title={`${t.firstName} ${t.lastName}`}
       updatedAtIso={t.updatedAt.toISOString().slice(0, 10)}
+      realMeta={realMeta}
     />
   );
 }

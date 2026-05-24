@@ -29,9 +29,7 @@ import {
   INTERVENTION_TIERS,
   UN_A_UN_TIERS,
   formatAmount,
-  formatAmountRange,
   getEntryPriceEur,
-  getTierById,
 } from "@/content/pricing";
 import {
   buildProductMetadata,
@@ -101,12 +99,11 @@ export default async function Home({ params }: HomeProps) {
   const implEntryPrice = formatAmount(getEntryPriceEur(IMPLEMENTATION_TIERS) ?? 0, loc, {
     compact: true,
   });
-  const auditRange = formatAmountRange(
-    getEntryPriceEur(AUDIT_TIERS) ?? 0,
-    getTierById(AUDIT_TIERS, "audit-strategique-eti").priceMin!,
-    loc,
-    { compact: true },
-  );
+  // auditRange retiré post-refonte pricing single-block 2026-05-24
+  // (la grille utilise désormais auditEntryPrice + "à partir de" plutôt qu un range).
+  // Préservé en commentaire pour réintroduction facile si Will veut revenir à un affichage range :
+  //   const auditRange = formatAmountRange(getEntryPriceEur(AUDIT_TIERS) ?? 0,
+  //     getTierById(AUDIT_TIERS, "audit-strategique-eti").priceMin!, loc, { compact: true });
   const auditEntryPrice = formatAmount(getEntryPriceEur(AUDIT_TIERS) ?? 0, loc, {
     compact: true,
   });
@@ -142,9 +139,7 @@ export default async function Home({ params }: HomeProps) {
       shortName: isFr ? "1-to-1" : "1-to-1",
       tagline: isFr ? "Coaching individuel" : "Personal coaching",
       headline: t("value4Headline"),
-      priceLabel: isFr
-        ? `À partir de ${unAUnEntryPrice} HT`
-        : `From ${unAUnEntryPrice} excl. tax`,
+      priceLabel: isFr ? `À partir de ${unAUnEntryPrice} HT` : `From ${unAUnEntryPrice} excl. tax`,
       gain: t("value4Gain"),
       href: "/un-a-un" as const,
     },
@@ -154,9 +149,7 @@ export default async function Home({ params }: HomeProps) {
       shortName: isFr ? "Audits" : "Audits",
       tagline: isFr ? "Diagnostic & roadmap" : "Diagnosis & roadmap",
       headline: t("value2Headline"),
-      priceLabel: isFr
-        ? `À partir de ${auditEntryPrice} HT`
-        : `From ${auditEntryPrice} excl. tax`,
+      priceLabel: isFr ? `À partir de ${auditEntryPrice} HT` : `From ${auditEntryPrice} excl. tax`,
       gain: t("value2Gain"),
       href: "/audit" as const,
     },
@@ -166,9 +159,7 @@ export default async function Home({ params }: HomeProps) {
       shortName: isFr ? "Implémentations" : "Implementation",
       tagline: isFr ? "Automatisations sur mesure" : "Custom automation",
       headline: t("value3Headline"),
-      priceLabel: isFr
-        ? `À partir de ${implEntryPrice} HT`
-        : `From ${implEntryPrice} excl. tax`,
+      priceLabel: isFr ? `À partir de ${implEntryPrice} HT` : `From ${implEntryPrice} excl. tax`,
       gain: t("value3Gain"),
       href: "/implementation" as const,
     },
@@ -178,9 +169,7 @@ export default async function Home({ params }: HomeProps) {
       shortName: isFr ? "Plateforme web & SaaS" : "Web platform & SaaS",
       tagline: isFr ? "Sites & apps augmentés IA" : "AI-augmented sites & apps",
       headline: t("value5Headline"),
-      priceLabel: isFr
-        ? `À partir de ${webEntryPrice} HT`
-        : `From ${webEntryPrice} excl. tax`,
+      priceLabel: isFr ? `À partir de ${webEntryPrice} HT` : `From ${webEntryPrice} excl. tax`,
       gain: t("value5Gain"),
       href: "/sites-web-augmentes" as const,
     },
@@ -459,7 +448,7 @@ export default async function Home({ params }: HomeProps) {
                 <li className="h-full">
                   <Link
                     href={v.href}
-                    className="group bg-paper border-border hover:border-terracotta hover:shadow-elevated relative flex h-full flex-col overflow-hidden rounded-2xl border-2 p-6 transition-all duration-300 hover:-translate-y-1 focus-visible:ring-2 focus-visible:ring-terracotta focus-visible:ring-offset-2 focus-visible:outline-none md:p-7"
+                    className="group bg-paper border-border hover:border-terracotta hover:shadow-elevated focus-visible:ring-terracotta relative flex h-full flex-col overflow-hidden rounded-2xl border-2 p-6 transition-all duration-300 hover:-translate-y-1 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none md:p-7"
                   >
                     {/* Stripe terracotta top — accent brand uniforme */}
                     <span
@@ -487,9 +476,7 @@ export default async function Home({ params }: HomeProps) {
                     </p>
 
                     {/* Description courte */}
-                    <p className="text-fg-soft mt-4 text-sm leading-relaxed">
-                      {v.headline}
-                    </p>
+                    <p className="text-fg-soft mt-4 text-sm leading-relaxed">{v.headline}</p>
 
                     {/* Prix d entrée — signal CA direct */}
                     <p
@@ -505,7 +492,10 @@ export default async function Home({ params }: HomeProps) {
                     {/* CTA Découvrir terracotta */}
                     <span className="border-border text-terracotta group-hover:border-terracotta group-hover:text-terracotta-deep mt-6 inline-flex items-center gap-2 border-t pt-4 text-sm font-semibold transition-colors">
                       {t("valueCardCta")}
-                      <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
+                      <ArrowRight
+                        className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+                        aria-hidden="true"
+                      />
                     </span>
                   </Link>
                 </li>
@@ -519,7 +509,11 @@ export default async function Home({ params }: HomeProps) {
           Juste les 17 logos, pas de eyebrow/title/caption. Box normalisée
           dans LogosMarquee pour que tous les logos paraissent à la même
           taille visuelle (object-contain dans container fixe). */}
-      <section id="clients" aria-label={isFr ? "Nos clients" : "Our clients"} className="bg-bg border-border border-t border-b py-12 sm:py-16">
+      <section
+        id="clients"
+        aria-label={isFr ? "Nos clients" : "Our clients"}
+        className="bg-bg border-border border-t border-b py-12 sm:py-16"
+      >
         <Container>
           <LogosMarquee logos={CLIENT_LOGOS} />
         </Container>
@@ -701,42 +695,49 @@ export default async function Home({ params }: HomeProps) {
                   Icon: Users,
                   titleFr: "Zéro intermédiaire",
                   titleEn: "Zero middleman",
-                  descFr: "Formateurs, auditeurs, développeurs, implémenteurs — tous seniors expérimentés.",
+                  descFr:
+                    "Formateurs, auditeurs, développeurs, implémenteurs — tous seniors expérimentés.",
                   descEn: "Trainers, auditors, developers, implementers — all seasoned seniors.",
                 },
                 {
                   Icon: Layers,
                   titleFr: "De A à Z",
                   titleEn: "End-to-end",
-                  descFr: "Formation, audit, 1-to-1, automatisation, plateforme — un seul interlocuteur.",
+                  descFr:
+                    "Formation, audit, 1-to-1, automatisation, plateforme — un seul interlocuteur.",
                   descEn: "Training, audit, 1-to-1, automation, platform — one single contact.",
                 },
                 {
                   Icon: MapPin,
                   titleFr: "Partout en France",
                   titleEn: "Across France",
-                  descFr: "Métropole, outre-mer, présentiel ou distanciel — on s'adapte au plus efficace.",
+                  descFr:
+                    "Métropole, outre-mer, présentiel ou distanciel — on s'adapte au plus efficace.",
                   descEn: "Mainland, overseas, on-site or remote — we adapt to what works best.",
                 },
                 {
                   Icon: BadgeCheck,
                   titleFr: "Vous parlez au senior",
                   titleEn: "You talk to the senior",
-                  descFr: "Pas à un commercial, pas à un junior. Directement à celui qui fait le travail.",
+                  descFr:
+                    "Pas à un commercial, pas à un junior. Directement à celui qui fait le travail.",
                   descEn: "Not to sales, not to a junior. Directly to the person doing the work.",
                 },
                 {
                   Icon: Target,
                   titleFr: "Vous êtes au centre",
                   titleEn: "You're at the center",
-                  descFr: "Votre projet, votre rythme, votre contexte. On s'adapte à vous — jamais l'inverse.",
-                  descEn: "Your project, your pace, your context. We adapt to you — never the reverse.",
+                  descFr:
+                    "Votre projet, votre rythme, votre contexte. On s'adapte à vous — jamais l'inverse.",
+                  descEn:
+                    "Your project, your pace, your context. We adapt to you — never the reverse.",
                 },
                 {
                   Icon: Sparkles,
                   titleFr: "Exigence senior absolue",
                   titleEn: "Strict senior standards",
-                  descFr: "Résultats mesurables. Même niveau pour un artisan que pour un grand groupe.",
+                  descFr:
+                    "Résultats mesurables. Même niveau pour un artisan que pour un grand groupe.",
                   descEn: "Measurable results. Same level for a craftsman or a large group.",
                 },
               ] as const
@@ -750,7 +751,7 @@ export default async function Home({ params }: HomeProps) {
                     <card.Icon className="h-5 w-5" strokeWidth={2} />
                   </span>
                   <div className="min-w-0">
-                    <h3 className="text-fg text-base font-bold leading-tight tracking-tight sm:text-lg">
+                    <h3 className="text-fg text-base leading-tight font-bold tracking-tight sm:text-lg">
                       {isFr ? card.titleFr : card.titleEn}
                     </h3>
                     <p className="text-fg-soft mt-1.5 text-sm leading-relaxed">
@@ -864,18 +865,22 @@ export default async function Home({ params }: HomeProps) {
             <div className="mx-auto max-w-6xl">
               <div
                 role="table"
-                aria-label={isFr ? "Grille tarifaire des cinq services" : "Pricing grid of five services"}
+                aria-label={
+                  isFr ? "Grille tarifaire des cinq services" : "Pricing grid of five services"
+                }
                 className="bg-paper border-border shadow-elevated overflow-hidden rounded-3xl border"
               >
                 {/* En-tête colonnes (desktop seulement) */}
                 <div
                   role="row"
-                  className="bg-sand text-fg-muted hidden border-b border-border px-8 py-4 text-[11px] font-bold tracking-[0.18em] uppercase md:grid md:grid-cols-[2.2fr_1fr_2.4fr_1.3fr] md:items-center md:gap-6"
+                  className="bg-sand text-fg-muted border-border hidden border-b px-8 py-4 text-[11px] font-bold tracking-[0.18em] uppercase md:grid md:grid-cols-[2.2fr_1fr_2.4fr_1.3fr] md:items-center md:gap-6"
                 >
                   <span role="columnheader">{isFr ? "Service" : "Service"}</span>
                   <span role="columnheader">{isFr ? "Catégorie" : "Category"}</span>
                   <span role="columnheader">{isFr ? "Inclus" : "Included"}</span>
-                  <span role="columnheader" className="text-right">{isFr ? "Prix HT" : "Price excl. tax"}</span>
+                  <span role="columnheader" className="text-right">
+                    {isFr ? "Prix HT" : "Price excl. tax"}
+                  </span>
                 </div>
 
                 {/* 5 lignes services */}
@@ -968,7 +973,7 @@ export default async function Home({ params }: HomeProps) {
                     href={s.href}
                     role="row"
                     className={cn(
-                      "group hover:bg-sand/50 focus-visible:bg-sand/70 focus-visible:outline-none relative grid items-center gap-4 px-6 py-6 transition-colors md:grid-cols-[2.2fr_1fr_2.4fr_1.3fr] md:gap-6 md:px-8 md:py-7",
+                      "group hover:bg-sand/50 focus-visible:bg-sand/70 relative grid items-center gap-4 px-6 py-6 transition-colors focus-visible:outline-none md:grid-cols-[2.2fr_1fr_2.4fr_1.3fr] md:gap-6 md:px-8 md:py-7",
                       idx > 0 && "border-border border-t",
                     )}
                   >
@@ -982,7 +987,7 @@ export default async function Home({ params }: HomeProps) {
                         aria-hidden="true"
                       />
                       <div className="min-w-0">
-                        <p className="text-fg text-base font-bold leading-tight sm:text-lg">
+                        <p className="text-fg text-base leading-tight font-bold sm:text-lg">
                           {isFr ? s.nameFr : s.nameEn}
                         </p>
                         <p className="text-fg-muted mt-1 text-xs leading-snug sm:text-sm">
@@ -1044,17 +1049,17 @@ export default async function Home({ params }: HomeProps) {
                 <Link href="/contact" className="text-terracotta font-semibold hover:underline">
                   Parlons-en
                 </Link>{" "}
-                — on prend le temps d'écouter, d'analyser votre contexte et de
-                vous proposer la solution la plus adaptée. Sans engagement.
+                — on prend le temps d&apos;écouter, d&apos;analyser votre contexte et de vous
+                proposer la solution la plus adaptée. Sans engagement.
               </>
             ) : (
               <>
                 Not sure which service fits?{" "}
                 <Link href="/contact" className="text-terracotta font-semibold hover:underline">
-                  Let's discuss
+                  Let&apos;s discuss
                 </Link>{" "}
-                — we take the time to listen, analyse your context and propose
-                the best-fit solution. No commitment.
+                — we take the time to listen, analyse your context and propose the best-fit
+                solution. No commitment.
               </>
             )}
           </p>
@@ -1499,7 +1504,7 @@ export default async function Home({ params }: HomeProps) {
                     </blockquote>
                     {/* Auteur : photo Unsplash + nom + rôle + secteur */}
                     <footer className="border-border mt-2 flex items-center gap-3 border-t pt-4">
-                      <span className="ring-paper shadow-sm relative inline-flex h-12 w-12 shrink-0 overflow-hidden rounded-full ring-2">
+                      <span className="ring-paper relative inline-flex h-12 w-12 shrink-0 overflow-hidden rounded-full shadow-sm ring-2">
                         <Image
                           src={photoUrl}
                           alt={`Portrait — ${author}`}
@@ -1529,7 +1534,9 @@ export default async function Home({ params }: HomeProps) {
               href="/blog"
               className="text-terracotta inline-flex items-center gap-1 font-semibold underline-offset-4 hover:underline"
             >
-              {isFr ? "Plus d'analyses et retours d'expérience sur le blog" : "More analysis & feedback on our blog"}
+              {isFr
+                ? "Plus d'analyses et retours d'expérience sur le blog"
+                : "More analysis & feedback on our blog"}
               <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
             </Link>
           </p>
@@ -1537,11 +1544,7 @@ export default async function Home({ params }: HomeProps) {
       </section>
 
       {/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ FAQ â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
-      <section
-        id="faq"
-        aria-labelledby="faq-heading"
-        className="bg-bg py-24 sm:py-28 lg:py-36"
-      >
+      <section id="faq" aria-labelledby="faq-heading" className="bg-bg py-24 sm:py-28 lg:py-36">
         <Container className="max-w-3xl">
           <FadeInOnView>
             <p className="text-fg-muted mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
@@ -1566,7 +1569,7 @@ export default async function Home({ params }: HomeProps) {
               <p className="text-fg-muted mt-8 text-center text-sm">
                 {isFr ? (
                   <>
-                    Vous avez d'autres questions ?{" "}
+                    Vous avez d&apos;autres questions ?{" "}
                     <Link href="/faq" className="text-terracotta font-semibold hover:underline">
                       Voir toute la FAQ
                     </Link>{" "}
@@ -1595,7 +1598,10 @@ export default async function Home({ params }: HomeProps) {
                 {isFr ? (
                   <>
                     Voir aussi{" "}
-                    <Link href="/transparence" className="text-fg-soft hover:text-terracotta underline-offset-4 hover:underline">
+                    <Link
+                      href="/transparence"
+                      className="text-fg-soft hover:text-terracotta underline-offset-4 hover:underline"
+                    >
                       notre politique de transparence
                     </Link>
                     .
@@ -1603,7 +1609,10 @@ export default async function Home({ params }: HomeProps) {
                 ) : (
                   <>
                     See also{" "}
-                    <Link href="/transparence" className="text-fg-soft hover:text-terracotta underline-offset-4 hover:underline">
+                    <Link
+                      href="/transparence"
+                      className="text-fg-soft hover:text-terracotta underline-offset-4 hover:underline"
+                    >
                       our transparency policy
                     </Link>
                     .

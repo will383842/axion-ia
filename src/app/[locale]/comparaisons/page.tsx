@@ -25,6 +25,7 @@ import { ComparisonsHeroSchema } from "@/components/sections/ComparisonsHeroSche
 import { COMPARISONS } from "@/content/comparaisons";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 import {
   IMPLEMENTATION_TIERS,
   INTERVENTION_TIERS,
@@ -69,10 +70,9 @@ export default async function ComparisonsListPage({ params }: Props) {
     url: `${SITE_URL}/${locale}/comparaisons`,
     inLanguage: locale,
     isPartOf: { "@type": "WebSite", name: "Axion-IA", url: SITE_URL },
-    speakable: {
-      "@type": "SpeakableSpecification",
-      cssSelector: ["[data-aeo='comparaisons-intro']"],
-    },
+    speakable: buildSpeakableSpecification({
+      selectors: ["[data-aeo='comparaisons-intro']"],
+    }),
     hasPart: COMPARISONS.map((c) => ({
       "@type": "Article",
       headline: c[loc].title,
