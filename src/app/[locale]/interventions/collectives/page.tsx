@@ -23,6 +23,12 @@ import {
 import { INTERVENTION_TIERS, formatAmount, getEntryPriceEur, getTierById } from "@/content/pricing";
 import { buildProductMetadata, buildServiceJsonLd, buildItemListJsonLd, SITE_URL } from "@/lib/seo";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
+// Sprint uniformisation 2026-05-24 (Will) — alignement template /implementation.
+import { ProcessSteps } from "@/components/sections/ProcessSteps";
+import { FaqAccordion } from "@/components/marketing/FaqAccordion";
+import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
+import { LocalGeoFaqSection } from "@/components/sections/LocalGeoFaqSection";
+import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -374,6 +380,142 @@ export default async function CollectivesFamilyHub({ params }: Props) {
         </div>
       </Section>
 
+      {/* MÉTHODOLOGIE — 4 étapes (Sprint uniformisation 2026-05-24) */}
+      <Section
+        eyebrow={isFr ? "Méthodologie" : "Methodology"}
+        title={isFr ? "De la commande" : "From order"}
+        titleEm={isFr ? "au transfert" : "to transfer"}
+        titleTail={isFr ? " de compétence." : "."}
+      >
+        <Container>
+          <ProcessSteps
+            orientation="horizontal"
+            steps={[
+              {
+                id: "step-1-cadrage",
+                title: isFr ? "Cadrage 30 min" : "30-min scoping",
+                description: isFr
+                  ? "Appel découverte gratuit : effectif, niveau IA, métier, objectifs. On recommande le palier durée adapté (4 h, 1 j, 2 j ou 3 j+)."
+                  : "Free discovery call: headcount, AI level, role, objectives. We recommend the right duration tier (4 h, 1 d, 2 d or 3 d+).",
+              },
+              {
+                id: "step-2-preparation",
+                title: isFr ? "Préparation sur mesure" : "Tailored preparation",
+                description: isFr
+                  ? "Le formateur prépare des démos sur VOS vrais documents et VOS vrais cas — pas de scénarios génériques. Programme calibré sur les profils présents."
+                  : "The trainer prepares demos on YOUR real documents and YOUR real cases — no generic scenarios. Programme calibrated to the profiles present.",
+              },
+              {
+                id: "step-3-intervention",
+                title: isFr ? "Intervention sur site" : "On-site session",
+                description: isFr
+                  ? "Démos live sur vos données, outils installés sur les postes, exercices appliqués métier. Chaque participant repart avec 3-5 automatisations opérationnelles."
+                  : "Live demos on your data, tools installed on workstations, role-applied exercises. Each participant leaves with 3-5 operational automations.",
+              },
+              {
+                id: "step-4-suivi",
+                title: isFr ? "Suivi 30 j inclus" : "30-day follow-up included",
+                description: isFr
+                  ? "Support 30 j pour répondre aux questions post-formation. Option : maintenance standard 290 €/mois ou journée 1-to-1 dirigeant pour approfondir."
+                  : "30-day support for post-training questions. Option: standard maintenance €290/month or 1-to-1 executive day for deeper work.",
+              },
+            ]}
+          />
+        </Container>
+      </Section>
+
+      {/* COUVERTURE NATIONALE (pSEO villes/régions) */}
+      <LocalCoverageSection
+        isFr={isFr}
+        serviceLabelFr="Les formations IA équipe"
+        serviceLabelEn="AI team trainings"
+        serviceSlug="interventions"
+        tone="paper"
+      />
+
+      {/* FAQ GÉOLOCALISÉE */}
+      <LocalGeoFaqSection isFr={isFr} service="interventions" tone="sand" />
+
+      {/* FAQ générique formations équipe (5 questions essentielles) */}
+      <Section
+        eyebrow={isFr ? "Questions fréquentes" : "Frequent questions"}
+        title={isFr ? "Avant de réserver" : "Before booking"}
+        titleEm={isFr ? "votre formation" : "your training"}
+      >
+        <Container>
+          <FaqAccordion
+            className="mx-auto max-w-3xl"
+            items={
+              isFr
+                ? [
+                    {
+                      id: "effectif",
+                      question: "Combien de participants par session ?",
+                      answer:
+                        "Selon le palier : Essentielle (1 jour) accueille 2-30 personnes en 3 tranches tarifaires (2-8, 9-15, 16-30). Approfondie (2 jours) idem. Format 4 h : 2-20 personnes prix fixe. Au-delà de 30 personnes, on bascule sur Conférence (sur devis).",
+                    },
+                    {
+                      id: "duree",
+                      question: "Quelle durée choisir ?",
+                      answer:
+                        "4 h pour découvrir l'IA ou cadrer 1 cas d'usage. 1 jour Essentielle pour le format de découverte opérationnelle. 1 jour Gagner du temps pour des automatisations métier ciblées. 2 jours Approfondie pour aller en profondeur. 3 jours+ pour multi-sites ou contenus ultra-spécifiques.",
+                    },
+                    {
+                      id: "frais-deplacement",
+                      question: "Frais de déplacement inclus ?",
+                      answer:
+                        "Non. Logement, repas et forfait trajet sont facturés en sus, calculés au cas par cas selon distance/durée. Devis transparent fourni avant signature.",
+                    },
+                    {
+                      id: "outils",
+                      question: "Quels outils IA utilisés ?",
+                      answer:
+                        "Ceux que votre équipe utilise déjà ou qui correspondent aux métiers : ChatGPT, Claude, Gemini, Microsoft Copilot, Perplexity, NotebookLM + automatisations métier (Make, Zapier) si pertinent. Pas de techno imposée.",
+                    },
+                    {
+                      id: "remboursement",
+                      question: "Garantie de résultat ?",
+                      answer:
+                        "Si l'équipe n'a rien tiré de la formation (cas extrêmement rare), on rembourse intégralement. Concrètement, 100 % de nos clients ressortent avec 3-5 automatisations applicables dès le lendemain.",
+                    },
+                  ]
+                : [
+                    {
+                      id: "headcount",
+                      question: "How many participants per session?",
+                      answer:
+                        "Depending on the tier: Essential (1 day) hosts 2-30 people in 3 price brackets (2-8, 9-15, 16-30). Deep dive (2 days) same. 4 h format: 2-20 people flat price. Beyond 30, we switch to Conference (on quote).",
+                    },
+                    {
+                      id: "duration",
+                      question: "Which duration to choose?",
+                      answer:
+                        "4 h to discover AI or frame 1 use case. 1 day Essential for operational discovery. 1 day Save Time for targeted business automations. 2 days Deep dive for depth. 3+ days for multi-site or ultra-specific content.",
+                    },
+                    {
+                      id: "travel-fees",
+                      question: "Travel expenses included?",
+                      answer:
+                        "No. Lodging, meals and travel allowance billed separately, calculated case by case based on distance/duration. Transparent quote provided before signature.",
+                    },
+                    {
+                      id: "tools",
+                      question: "Which AI tools are used?",
+                      answer:
+                        "The ones your team already uses or that fit the roles: ChatGPT, Claude, Gemini, Microsoft Copilot, Perplexity, NotebookLM + business automations (Make, Zapier) if relevant. No imposed tech.",
+                    },
+                    {
+                      id: "guarantee",
+                      question: "Guarantee?",
+                      answer:
+                        "If the team got nothing from the training (extremely rare), we refund in full. Concretely, 100 % of our customers come out with 3-5 automations applicable the next day.",
+                    },
+                  ]
+            }
+          />
+        </Container>
+      </Section>
+
       <CtaBlock
         eyebrow={isFr ? "Pas sûr·e du bon palier ?" : "Not sure which tier?"}
         title={
@@ -390,6 +532,13 @@ export default async function CollectivesFamilyHub({ params }: Props) {
           </Cta>
         }
         tone="dark"
+      />
+
+      {/* CTA mobile sticky (Sprint uniformisation 2026-05-24) */}
+      <StickyMobileCta
+        href="/contact"
+        label={isFr ? "Réserver une formation" : "Book a training"}
+        track="interventions-collectives-sticky-mobile"
       />
 
       <JsonLd data={serviceJsonLd} />
