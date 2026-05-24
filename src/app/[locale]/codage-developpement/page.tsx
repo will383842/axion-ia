@@ -20,7 +20,6 @@ import { buildServiceAreasServed } from "@/lib/service-coverage";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
 import { LocalGeoFaqSection } from "@/components/sections/LocalGeoFaqSection";
-import { Illustration } from "@/components/visual/Illustration";
 // Sprint uniformisation 2026-05-24 (Will) — alignement template /implementation.
 import { ProcessSteps } from "@/components/sections/ProcessSteps";
 import { CtaBlock } from "@/components/sections/CtaBlock";
@@ -363,23 +362,9 @@ export default async function CodageDeveloppementHub({ params }: Props) {
             </Cta>
           </div>
 
-          {/* Hero illustration — Sprint visual 2026-05-22 */}
-          <div className="mt-10">
-            <Illustration
-              slot="CODAGE-01-hero"
-              aspectRatio="16:9"
-              priority
-              filenameTarget="public/illustrations/codage-developpement-hero.avif"
-              alt={
-                isFr
-                  ? "Illustration éditoriale — plateforme web IA-native, développement augmenté par l'IA, Axion-IA"
-                  : "Editorial illustration — AI-native web platform, AI-augmented development, Axion-IA"
-              }
-              caption={
-                isFr ? "Codage & Développement IA · Axion-IA" : "AI Coding & Development · Axion-IA"
-              }
-            />
-          </div>
+          {/* Hero illustration retirée 2026-05-24 (Will) — placeholder
+              bizarre car `codage-developpement-hero.avif` n'est pas généré.
+              À ré-instancier quand l'illustration sera disponible. */}
         </Container>
       </section>
 
