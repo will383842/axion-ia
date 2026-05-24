@@ -27,7 +27,7 @@ jobs:
       # Sans full history, gitleaks fail avec "ambiguous argument" sur les
       # PRs dont le premier commit a un parent absent du shallow clone
       # (audit V1 image-bank 2026-05-16 PR #14).
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - uses: pnpm/action-setup@v4
@@ -114,7 +114,7 @@ jobs:
       NEXT_PUBLIC_SITE_URL: "https://axion-ia.com"
       NEXT_PUBLIC_APP_ENV: "production"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: pnpm/action-setup@v4
         with:
           version: ${{ env.PNPM_VERSION }}
@@ -193,7 +193,7 @@ jobs:
     timeout-minutes: 30
     continue-on-error: true
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Generate ephemeral test secrets
         id: secrets
@@ -304,7 +304,7 @@ jobs:
       DATABASE_URL: postgresql://axion_ia_ci:ci_password_dummy@localhost:5432/axion_ia_ci?schema=public
       DIRECT_URL: postgresql://axion_ia_ci:ci_password_dummy@localhost:5432/axion_ia_ci?schema=public
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: pnpm/action-setup@v4
         with:
           version: ${{ env.PNPM_VERSION }}
