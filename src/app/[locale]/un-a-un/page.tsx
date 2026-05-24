@@ -15,7 +15,6 @@ import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata, buildServiceJsonLd } from "@/lib/seo";
-import { Illustration } from "@/components/visual/Illustration";
 import { UN_A_UN_TIERS, formatPrice, getEntryTier } from "@/content/pricing";
 // Sprint uniformisation 2026-05-24 (Will) — alignement template /implementation.
 // Ajout ProcessSteps + FaqAccordion + LocalCoverageSection + LocalGeoFaqSection
@@ -104,21 +103,9 @@ export default async function UnAUnHubPage({ params }: Props) {
             </Cta>
           </div>
 
-          {/* Hero illustration — Sprint visual 2026-05-22 */}
-          <div className="mx-auto mt-10 max-w-3xl">
-            <Illustration
-              slot="UN-A-UN-01-hero"
-              aspectRatio="16:9"
-              priority
-              filenameTarget="public/illustrations/un-a-un-hero.avif"
-              alt={
-                isFr
-                  ? "Illustration éditoriale — coaching IA individuel 1-to-1, expert Axion-IA et collaborateur"
-                  : "Editorial illustration — 1-to-1 individual AI coaching, Axion-IA expert and employee"
-              }
-              caption={isFr ? "Coaching 1-to-1 IA · Axion-IA" : "1-to-1 AI Coaching · Axion-IA"}
-            />
-          </div>
+          {/* Hero illustration retirée 2026-05-24 (Will) — placeholder bizarre
+              car `public/illustrations/un-a-un-hero.avif` n'est pas généré. À
+              ré-instancier quand l'illustration sera disponible. */}
         </Container>
       </Section>
 

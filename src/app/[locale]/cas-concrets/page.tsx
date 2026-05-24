@@ -142,7 +142,10 @@ export default async function CaseStudiesListing({ params }: Props) {
               </p>
               <h1 className="text-fg display-editorial mt-5">
                 {isFr ? "Ce qu'ils ont " : "What they've "}
-                <span className="text-sage mx-2 italic" style={{ fontFamily: "var(--font-serif)" }}>
+                <span
+                  className="text-terracotta mx-2 italic"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
                   {isFr ? "concrètement gagné" : "actually gained"}
                 </span>
               </h1>
