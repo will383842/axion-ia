@@ -547,7 +547,7 @@ export const ANNECY_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE (< 10 collab)",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implémentation d'un cas d'usage simple en quelques semaines (rédaction automatique de rapports qualité, réponse aux emails clients, qualification d'offres).",
           },
@@ -653,7 +653,7 @@ export const ANNECY_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business (< 10 staff)",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implementation of a simple use case over a few weeks (automatic quality report writing, client email response, offer qualification).",
           },

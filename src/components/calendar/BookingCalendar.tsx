@@ -140,35 +140,36 @@ const INTERVENTION_OPTIONS: ReadonlyArray<InterventionOption> = [
     scheduleHintEn: "Day · 9 a.m. – 5 p.m. · on site · €990",
   },
   {
-    // Will (audit /interventions 2026-05-12) — formations 4 h prix fixe 390 €.
+    // Will (audit /interventions 2026-05-12) — formations 4 h prix fixe.
+    // 2026-05-24 (Will) : passage 390 € → 590 €.
     // Bug réparé : les 2 formations 4 h câblaient leurs CTAs sur /interventions/demande
     // alors que le tarif est fixe. Promues bookables direct calendrier. Enum DB
     // `demarrage_ia_express` ajouté via migration 20260512120000_collective_4h_enum_values.
     slug: "demarrage-ia-express",
-    fr: "Démarrage IA Express · 4 h · 390 €",
-    en: "AI Express Kickoff · 4 h · €390",
+    fr: "Démarrage IA Express · 4 h · 590 €",
+    en: "AI Express Kickoff · 4 h · €590",
     durationDays: 1,
-    scheduleHintFr: "Demi-journée · 9 h – 13 h · sur site · 390 € HT",
-    scheduleHintEn: "Half-day · 9 a.m. – 1 p.m. · on site · €390",
+    scheduleHintFr: "Demi-journée · 9 h – 13 h · sur site · 590 € HT",
+    scheduleHintEn: "Half-day · 9 a.m. – 1 p.m. · on site · €590",
   },
   {
     slug: "atelier-ia-cible",
-    fr: "Atelier IA ciblé · 4 h · 390 €",
-    en: "Targeted AI Workshop · 4 h · €390",
+    fr: "Atelier IA ciblé · 4 h · 590 €",
+    en: "Targeted AI Workshop · 4 h · €590",
     durationDays: 1,
-    scheduleHintFr: "Demi-journée · 9 h – 13 h · sur site · 390 € HT",
-    scheduleHintEn: "Half-day · 9 a.m. – 1 p.m. · on site · €390",
+    scheduleHintFr: "Demi-journée · 9 h – 13 h · sur site · 590 € HT",
+    scheduleHintEn: "Half-day · 9 a.m. – 1 p.m. · on site · €590",
   },
   {
     // Will (audit /interventions 2026-05-12) — Formation Claude équipe passe
-    // de Sur devis à prix fixe 690 € HT pour 2 à 8 personnes, bookable
-    // direct calendrier (cf. pricing.ts intervention-claude).
+    // de Sur devis à prix fixe pour 2 à 8 personnes, bookable direct calendrier
+    // (cf. pricing.ts intervention-claude). 2026-05-24 : alignement à 990 € HT.
     slug: "intervention-claude",
-    fr: "Formation Claude · 2-8 pers. · 690 €",
-    en: "Claude Training · 2-8 ppl · €690",
+    fr: "Formation Claude · 2-8 pers. · 990 €",
+    en: "Claude Training · 2-8 ppl · €990",
     durationDays: 1,
-    scheduleHintFr: "Journée · 9 h – 17 h · sur site · 690 € HT",
-    scheduleHintEn: "Day · 9 a.m. – 5 p.m. · on site · €690",
+    scheduleHintFr: "Journée · 9 h – 17 h · sur site · 990 € HT",
+    scheduleHintEn: "Day · 9 a.m. – 5 p.m. · on site · €990",
   },
 ];
 
@@ -249,8 +250,8 @@ const INTERVENTION_VISUAL: Record<
     icon: Sparkles,
     accentBg: "bg-terracotta-soft",
     accentFg: "text-terracotta-deep",
-    priceFr: "390 € HT",
-    priceEn: "€390",
+    priceFr: "590 € HT",
+    priceEn: "€590",
     previewFr: "Demi-journée · démystifier l'IA · panorama 2026 · 2-3 prompts opérationnels testés",
     previewEn: "Half-day · demystify AI · 2026 panorama · 2-3 working prompts tested",
   },
@@ -258,8 +259,8 @@ const INTERVENTION_VISUAL: Record<
     icon: Sparkles,
     accentBg: "bg-terracotta-soft",
     accentFg: "text-terracotta-deep",
-    priceFr: "390 € HT",
-    priceEn: "€390",
+    priceFr: "590 € HT",
+    priceEn: "€590",
     previewFr: "Demi-journée · 1 cas d'usage métier · implémenté sur chaque poste",
     previewEn: "Half-day · 1 business case · implemented on each workstation",
   },
@@ -269,8 +270,8 @@ const INTERVENTION_VISUAL: Record<
     // la Formation Claude (cohérent avec la card listing InterventionFormatCard).
     accentBg: "bg-[#FFF5EC]", // hex-ok: brand-anthropic-claude
     accentFg: "text-[#9C3E1E]", // hex-ok: brand-anthropic-claude
-    priceFr: "690 € HT",
-    priceEn: "€690",
+    priceFr: "990 € HT",
+    priceEn: "€990",
     previewFr: "1 journée 100 % Claude · 2-8 pers. · Chat + Projects + Code CLI",
     previewEn: "1 day 100 % Claude · 2-8 ppl · Chat + Projects + Code CLI",
   },

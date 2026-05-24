@@ -549,7 +549,7 @@ export const BREST_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implémentation d'un cas d'usage simple (gestion documentaire, comptes-rendus, qualification leads) pour petites structures du bassin brestois.",
           },
@@ -655,7 +655,7 @@ export const BREST_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implementation of a simple use case (document management, meeting minutes, lead qualification) for small Brest basin structures.",
           },

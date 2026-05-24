@@ -548,7 +548,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implémentation d'un cas d'usage simple (lecture automatisée de documents, comptes-rendus, qualification leads) pour les TPE et sous-traitants TPE du bassin.",
           },
@@ -654,7 +654,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implementation of a simple use case (automated document reading, meeting minutes, lead qualification) for basin micro-businesses and TPE sub-contractors.",
           },

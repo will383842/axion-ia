@@ -539,7 +539,7 @@ export const AMIENS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implémentation d'un cas d'usage simple — lecture automatique de documents, comptes-rendus, qualification leads — pour les TPE et artisans amiénois.",
           },
@@ -645,7 +645,7 @@ export const AMIENS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implementation of a simple use case — automatic document reading, meeting minutes, lead qualification — for Amiens micro-businesses and craft firms.",
           },

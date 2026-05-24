@@ -702,6 +702,13 @@ interface FaqSpeakableInput {
   items: ReadonlyArray<{ question: string; answer: string }>;
   /** CSS selector to scope Speakable extraction. Defaults to `[itemprop='text']`. */
   speakableSelector?: string;
+  /**
+   * Sélecteurs CSS additionnels à inclure dans Speakable. Permet à une page
+   * d'étendre la couverture vocale au-delà du FAQ (ex: home → ajouter
+   * `[data-speakable-hero]` pour que voice search lise aussi le H1 + intro).
+   * Cf. audit Speakable 2026-05-24 (P1-1).
+   */
+  additionalSelectors?: ReadonlyArray<string>;
 }
 
 // FAQPage JSON-LD enriched with `speakable` — Google Assistant + Alexa + Bixby
@@ -711,15 +718,27 @@ interface FaqSpeakableInput {
 // Why a separate factory (vs amending `buildFaqJsonLd`) : Speakable adds
 // a `speakable` property at the FAQPage level that not every caller wants
 // (some FAQs are too long to be spoken). Opt-in only.
-export function buildFaqSpeakableJsonLd({ items, speakableSelector }: FaqSpeakableInput) {
+export function buildFaqSpeakableJsonLd({
+  items,
+  speakableSelector,
+  additionalSelectors,
+}: FaqSpeakableInput) {
   // Speakable v2.6 best practice : couvrir question (itemprop=name) ET réponse (itemprop=text)
-  // pour que voice search lise le Q+R complet.
-  const selectors = speakableSelector
+  // pour que voice search lise le Q+R complet. `additionalSelectors` permet
+  // d'étendre la couverture au-delà de la FAQ (ex: hero home).
+  const baseSelectors = speakableSelector
     ? [speakableSelector]
     : ["[itemprop='name']", "[itemprop='text']", "[data-faq-q]", "[data-faq-a]"];
+  const selectors = additionalSelectors
+    ? [...baseSelectors, ...additionalSelectors]
+    : baseSelectors;
   return {
     "@context": "https://schema.org",
     "@type": "FAQPage",
+    // `numberOfItems` : recommandé Google Search Console (rich results validator
+    // émet warning sans). Aligne avec audit AEO 2026-05-24 (P1-4).
+    numberOfItems: items.length,
+    // Use buildSpeakableSpecification helper from main (DRY across all schemas).
     speakable: buildSpeakableSpecification({ selectors }),
     mainEntity: items.map((item) => ({
       "@type": "Question",

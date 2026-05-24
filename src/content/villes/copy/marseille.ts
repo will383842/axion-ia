@@ -536,7 +536,7 @@ export const MARSEILLE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implémentation d'un cas d'usage simple en quelques semaines (rédaction emails, comptes-rendus, qualification contacts).",
           },
@@ -642,7 +642,7 @@ export const MARSEILLE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implementation of a simple use case over a few weeks (email drafting, meeting minutes, contact qualification).",
           },

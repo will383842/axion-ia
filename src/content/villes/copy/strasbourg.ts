@@ -549,7 +549,7 @@ export const STRASBOURG_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implémentation d'un cas d'usage simple (lecture factures, veille automatisée, qualification leads) pour les TPE et startups deeptech du bassin strasbourgeois.",
           },
@@ -655,7 +655,7 @@ export const STRASBOURG_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "POC",
+            price: "Pilote IA",
             detail:
               "Implementation of a simple use case (invoice reading, automated watch, lead qualification) for Strasbourg basin micro-businesses and deeptech startups.",
           },

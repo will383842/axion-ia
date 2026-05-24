@@ -1,4 +1,5 @@
 "use client";
+// use-client: useState + form onSubmit handler require browser DOM.
 
 // Sprint v7 Phase 15 (F5) — wiring UI MVP `markAsRealTestimonial`.
 //
