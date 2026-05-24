@@ -701,8 +701,8 @@ export default async function Home({ params }: HomeProps) {
                   Icon: Users,
                   titleFr: "Zéro intermédiaire",
                   titleEn: "Zero middleman",
-                  descFr: "Formateurs, développeurs, implémenteurs — tous seniors, tous en interne.",
-                  descEn: "Trainers, developers, implementers — all senior, all in-house.",
+                  descFr: "Formateurs, auditeurs, développeurs, implémenteurs — tous seniors expérimentés.",
+                  descEn: "Trainers, auditors, developers, implementers — all seasoned seniors.",
                 },
                 {
                   Icon: Layers,
