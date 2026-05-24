@@ -12,6 +12,7 @@ import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata, buildItemListJsonLd, SITE_URL } from "@/lib/seo";
+import { ServiceHero } from "@/components/sections/ServiceHero";
 import {
   AUDIT_TIERS,
   INTERVENTION_TIERS,
@@ -112,9 +113,8 @@ export default async function PricingPage({ params }: Props) {
   const t = await getTranslations();
 
   const heroEyebrow = isFr ? "Tarifs · transparence totale" : "Pricing · full transparency";
-  const heroTitle = isFr ? "Nos tarifs IA en " : "Our AI pricing in ";
+  const heroTitle = isFr ? "Nos tarifs IA en" : "Our AI pricing in";
   const heroTitleEm = isFr ? "clair" : "plain sight";
-  const heroTitleTail = isFr ? "." : ".";
   const heroDesc = isFr
     ? "Audits, Formations, Implémentations, 1-to-1 et Plateforme web — tous nos prix publics HT, sans étoile, sans surprise. Frais de déplacement facturés en sus, devis transparent avant signature."
     : "Audits, Trainings, Implementations, 1-to-1 and Web platform — all our public prices excl. VAT, no asterisk, no surprise. Travel billed separately, transparent quote before signature.";
@@ -282,20 +282,17 @@ export default async function PricingPage({ params }: Props) {
     <>
       <JsonLd data={itemListJsonLd} scriptId="itemlist-pricing" />
 
-      {/* HERO — Section titleAs="h1" → halo-warm auto + décor signature site */}
-      <Section
+      <Container className="border-border border-b py-3">
+        <Breadcrumbs items={breadcrumbItems} />
+      </Container>
+
+      {/* HERO 2 colonnes — Sprint Uniformisation héros 2026-05-24 (Will) */}
+      <ServiceHero
         eyebrow={heroEyebrow}
-        title={heroTitle}
+        title={heroTitle.trim()}
         titleEm={heroTitleEm}
-        titleTail={heroTitleTail}
         description={heroDesc}
-        titleAs="h1"
-      >
-        <Container className="pt-2">
-          <Breadcrumbs items={breadcrumbItems} />
-        </Container>
-        <Container className="pt-8">
-          {/* Jump-links vers chaque module — aide la navigation longue page */}
+        ctas={
           <nav
             aria-label={isFr ? "Aller à un module" : "Jump to module"}
             className="flex flex-wrap gap-2"
@@ -310,8 +307,28 @@ export default async function PricingPage({ params }: Props) {
               </a>
             ))}
           </nav>
-        </Container>
-      </Section>
+        }
+        schemaCenterLabel={isFr ? "Tarifs publics" : "Public pricing"}
+        schemaAriaLabel={
+          isFr
+            ? "Schéma : tarifs publics au centre, entourés des 8 prestations chiffrées Axion-IA (Audit Flash 490 €, Audit Ciblé 1900 €, Formation 4 h 590 €, Essentielle 690 €, Approfondie 1190 €, 1-to-1 990 €, Pilote IA 990 €, Maintenance 290 €/mois)."
+            : "Diagram: public pricing at the center, surrounded by 8 priced Axion-IA services (Flash audit €490, Targeted audit €1900, 4 h training €590, Essential €690, Deep dive €1190, 1-to-1 €990, AI Pilot €990, Maintenance €290/month)."
+        }
+        schemaNodes={[
+          { label: "Flash", benefit: "490 € HT", accent: "terracotta" },
+          { label: isFr ? "Ciblé" : "Targeted", benefit: "1 900 € HT", accent: "primary" },
+          { label: "Formation 4 h", benefit: "590 € HT", accent: "sage" },
+          { label: "Essentielle", benefit: "690 € HT", accent: "mocha" },
+          {
+            label: isFr ? "Approfondie" : "Deep dive",
+            benefit: "1 190 € HT",
+            accent: "terracotta",
+          },
+          { label: "1-to-1", benefit: "990 € HT", accent: "primary" },
+          { label: isFr ? "Pilote IA" : "AI Pilot", benefit: "990 € HT", accent: "sage" },
+          { label: "Maintenance", benefit: "290 € HT/mois", accent: "mocha" },
+        ]}
+      />
 
       {/* 4 SECTIONS pricing.ts (Audits → Formations → 1-to-1 → Implémentations) */}
       {sections.map((s) => (
