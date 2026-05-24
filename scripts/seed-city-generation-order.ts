@@ -23,7 +23,7 @@
  *   - Migration `20260523123842_add_city_generation_order_v7_phase1` appliquée
  */
 
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "../prisma/generated/client";
 
 import { VILLES } from "../src/content/villes";
 

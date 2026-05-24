@@ -19,12 +19,32 @@
     "contact": "Contact",
     "primaryLabel": "Navigation principale",
     "footerLabel": "Liens du pied de page",
-    "breadcrumbLabel": "Fil d'Ariane"
+    "breadcrumbLabel": "Fil d'Ariane",
+    "solutions": "Nos solutions",
+    "solutionsLabel": "Catalogue solutions IA",
+    "solutionsTagline": "5 façons de mettre l'IA au travail dans votre entreprise",
+    "pricing": "Tarifs",
+    "formations": "Formations équipe",
+    "formationsHint": "4 h, 1, 2 ou 3+ jours · 2 à 30 personnes",
+    "oneToOne": "Accompagnement 1-to-1",
+    "oneToOneHint": "Journée dirigeant ou collaborateur clé",
+    "auditShort": "Audits IA",
+    "auditHint": "Flash 490 € à Stratégique ETI 12 000 €",
+    "implementationShort": "Implémentations IA",
+    "implementationHint": "Pilote, chatbot RAG, agents, automatisations",
+    "platform": "Plateforme web / SaaS",
+    "platformHint": "Site IA-native ou greffe sur l'existant",
+    "featuredTitle": "Pas sûr de votre point de départ ?",
+    "featuredDesc": "Décrivez votre besoin en 2 min — réponse personnalisée sous 24 h ouvrées.",
+    "featuredCta": "Demander un devis 48 h"
   },
   "cta": {
     "bookIntervention": "Réserver une intervention",
     "bookInterventionLong": "Réserver une intervention ou un audit IA",
-    "priceFrom": "à partir de"
+    "priceFrom": "à partir de",
+    "contact": "Contact",
+    "contactLong": "Nous contacter",
+    "contactAria": "Nous contacter — réponse sous 24 h ouvrées"
   },
   "footer": {
     "identity": "Identité",
