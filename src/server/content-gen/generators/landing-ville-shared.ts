@@ -250,7 +250,8 @@ ${config.userPromptFocusSection}
 - INTERDIT : claims inventés ("certifié AFNOR", "anciens Big 4", "anciens CTO", "n nombre de clients", "X % de satisfaction") sauf si fournis dans le KB factuel.
 - INTERDIT : mention "NDA possible", "accord de confidentialité signable", "NDA disponible sur demande" — la confidentialité est implicite, jamais mentionnée comme argument.
 - INTERDIT : email "contact@axion-ia.com" ou autre adresse email. Tous les contacts passent par le formulaire UnifiedContactForm (/contact) ou la prise de rendez-vous (/appel). Dire "via notre formulaire" ou "via prise de rendez-vous", JAMAIS d'email.
-- INTERDIT : "axion-ia.com" en tant qu'URL mentionnée dans le contenu. L'URL canonique est dans les metadata, pas dans le body.
+- INTERDIT : "axion-ia.com" en tant qu'URL mentionnée dans le contenu. L'URL canonique est dans les metadata, pas nan le body.
+- INTERDIT : durée fixe d'audit ("5 jours ouvrés", "audit en 5 jours", "5 j", "méthode en 5 jours", "en 4 jours", "en 3 jours"). La durée d'audit DÉPEND ENTIÈREMENT de la taille et du périmètre de l'entreprise (de quelques heures pour un Flash 4h à plusieurs semaines pour un audit complet ETI). Dire "durée adaptée à votre périmètre", "selon votre structure", "calibré à votre besoin", JAMAIS de chiffre fixe.
 
 ## 🚫 BANNED PHRASES (pénalité dure)
 - Marketing-speak : "transformation digitale efficace", "gain de compétitivité", "solutions sur mesure", "acteurs majeurs", "centre névralgique", "dynamique et innovant", "expertise dédiée", "tirer parti", "leviers IA"
@@ -343,8 +344,8 @@ label : ${config.recommendedCtaLabel}
     parsed.bodyHtml = sanitizeContentGenHtml(parsed.bodyHtml);
 
     // Sprint Quality 2026 — Strip patterns INTERDITS post-LLM (NDA, email contact,
-    // claims inventés). Le LLM peut ne pas respecter le ban du prompt, donc
-    // double-filtrage côté serveur.
+    // claims inventés, durée fixe audit). Le LLM peut ne pas respecter le ban du prompt,
+    // donc double-filtrage côté serveur.
     const stripBannedPatterns = (html: string): string => {
       let out = html;
       // NDA mentions — phrase entière supprimée
@@ -357,8 +358,24 @@ label : ${config.recommendedCtaLabel}
       out = out.replace(/[^.!?]*\bcontact@[\w.-]+\b[^.!?]*[.!?]?/gi, "");
       // URLs axion-ia.com dans le body (gardons que dans canonical/JSON-LD)
       out = out.replace(/\b(www\.)?axion-ia\.com\b\s*»?\s*\.?/gi, "");
+      // Durée fixe d'audit — remplacer par formule flexible (Will 2026-05-25)
+      // La durée d'audit dépend de la taille/scope entreprise, jamais fixe.
+      out = out.replace(/\ben\s+\d+\s+jours?\s+ouvrés?\b/gi, "selon votre périmètre");
+      out = out.replace(
+        /\b(audit|méthode|cadrage)\s+(en|sur)\s+\d+\s+jours?\b/gi,
+        "$1 calibré à votre périmètre",
+      );
+      out = out.replace(/\b\d+\s+jours?\s+ouvrés?\b/gi, "durée adaptée à votre besoin");
+      // Headers "Notre méthode en X jours" → "Notre méthode"
+      out = out.replace(
+        /<h([1-6])([^>]*)>([^<]*?)(en\s+\d+\s+jours?(?:\s+ouvrés?)?)([^<]*?)<\/h\1>/gi,
+        "<h$1$2>$3$5</h$1>",
+      );
       // Cleanup doubles espaces résultants
-      out = out.replace(/\s{2,}/g, " ").replace(/<p[^>]*>\s*<\/p>/gi, "");
+      out = out
+        .replace(/\s{2,}/g, " ")
+        .replace(/<p[^>]*>\s*<\/p>/gi, "")
+        .replace(/\s+\./g, ".");
       return out;
     };
     parsed.bodyHtml = stripBannedPatterns(parsed.bodyHtml);
