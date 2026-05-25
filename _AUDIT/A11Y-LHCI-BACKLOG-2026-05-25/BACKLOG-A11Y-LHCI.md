@@ -72,6 +72,22 @@ Fix attendu typique :
 
 ---
 
+## 2bis. État Phase 2 — investigations + skips documentés (2026-05-26)
+
+### ✅ Fixés Phase 2
+
+- **`list` / `listitem` warning sur `/fr`** — 5 patterns `<ul><FadeInOnView><li>...</li></FadeInOnView></ul>` corrigés en `<ul><li><FadeInOnView>...</FadeInOnView></li></ul>` dans `src/app/[locale]/page.tsx` (sections valuePropositions, différenciateurs, cas concrets, audienceSegments, testimonials reviewedCases). axe-core règle `list` exige que les enfants directs de `<ul>` soient `<li>`.
+
+### ⏸️ Skipped Phase 2 — nécessitent profiling live (Will, ~3-4h)
+
+- **`color-contrast`** — Grep des classes `text-X/85` / `text-X/75` a remonté 14 occurrences (`Footer`, `Section`, `LocaleSwitcher`, `CtaBlock`, `PressContact`, `FeatureGrid`, `ProcessSteps`, `InterventionsFamiliesGrid`, `IllustrationPlaceholder`, `StickyMobileCta`, `ImageLightbox`). Sans Chrome DevTools axe scan live, impossible de mesurer le ratio exact par paire (text/background). Fix aveugle (passer tout à `/100`) risque de dégrader le design. **Procédure** : Chrome DevTools axe DevTools extension → run sur chaque URL prod → fix composant par composant en respectant la palette.
+
+- **`errors-in-console`** — Nécessite ouvrir https://axion-ia.com/fr en prod + onglet Console F12 → identifier les erreurs runtime exactes. Probablement Sentry/Plausible/Clarity init order ou hydration warning. **Procédure** : `pnpm build && pnpm start` local → Chrome F12 Console → reproduire en mode prod + reporter sur prod (différences CSP). Peut être source d'une dizaine de warnings indépendants.
+
+- **`deprecations`** — `navigator.userAgent` utilisé dans `src/components/analytics/WebVitals.tsx` (5×). C'est legacy mais pas formellement deprecated par W3C, et `navigator.userAgentData.brands` (User-Agent Client Hints) n'est PAS supporté par Safari → fallback obligatoire. **Action** : aucune (faux positif Lighthouse) OU passer ce warning OFF dans `lighthouserc.json` avec doctrine explicite.
+
+- **`label-content-name-mismatch` sur `/fr/reserver`** — Source identifiée : boutons calendar `<button aria-label="15 — disponible">15<span>Réserver →</span></button>` dans `BookingCalendar.tsx` (l. 1153-1244). Le `<span>Réserver →</span>` reste dans le DOM (opacity-0 par défaut, visible on hover), donc axe lit "15Réserver →" en contenu vs "15 — disponible" en aria-label = mismatch. **Fix correct** : utiliser `aria-describedby` au lieu de `aria-label` pour ajouter "disponible/réservé/passé" en complément du contenu visible. Refactor non-trivial (~1-2h). Pour les cells réservées, idem : "📍 Paris · Conseil · 10-49" visible vs aria-label "15 — réservé" → utiliser `aria-describedby` ou wrap les détails dans `aria-hidden="true"` + accepter que les lecteurs d'écran perdent ces infos (compromis UX).
+
 ## 2. Warnings non-bloquants (⚠️ déjà documentés comme P1 Sprint A11y)
 
 Ces warnings sont **déjà gérés comme follow-up assumé** dans le `_assert_doctrine` du `lighthouserc.json` (lignes 76-80). Ils ne bloquent pas le gate mais accumulent de la dette qualité.

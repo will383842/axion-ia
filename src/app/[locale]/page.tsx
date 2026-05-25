@@ -446,10 +446,13 @@ export default async function Home({ params }: HomeProps) {
               - icône emoji dans cercle terracotta-soft (subtil)
               - "Découvrir le service →" terracotta hover-deep
               - hover : card lift + shadow + border terracotta */}
+          {/* A11Y Phase 2 fix 2026-05-26 — axe-core règle `list` exige que les
+              enfants directs de <ul> soient <li>. Le wrapper <FadeInOnView>
+              cassait cette règle → on inverse pour avoir <li><FadeInOnView/></li>. */}
           <ul className="grid gap-3 sm:grid-cols-2 md:grid-cols-3 md:gap-4 lg:grid-cols-5">
             {valuePropositions.map((v, idx) => (
-              <FadeInOnView key={v.id} delay={idx * 80}>
-                <li className="h-full">
+              <li key={v.id} className="h-full">
+                <FadeInOnView delay={idx * 80}>
                   <Link
                     href={v.href}
                     className="group bg-paper border-border hover:border-terracotta hover:shadow-elevated focus-visible:ring-terracotta relative flex h-full flex-col overflow-hidden rounded-2xl border-2 p-6 transition-all duration-300 hover:-translate-y-1 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none md:p-7"
@@ -502,8 +505,8 @@ export default async function Home({ params }: HomeProps) {
                       />
                     </span>
                   </Link>
-                </li>
-              </FadeInOnView>
+                </FadeInOnView>
+              </li>
             ))}
           </ul>
         </Container>
@@ -746,8 +749,11 @@ export default async function Home({ params }: HomeProps) {
                 },
               ] as const
             ).map((card, idx) => (
-              <FadeInOnView key={card.titleFr} delay={idx * 40}>
-                <li className="bg-paper border-border hover:border-terracotta hover:shadow-subtle group flex h-full items-start gap-4 rounded-2xl border p-5 transition-all duration-300 sm:p-6">
+              <li
+                key={card.titleFr}
+                className="bg-paper border-border hover:border-terracotta hover:shadow-subtle group flex h-full items-start gap-4 rounded-2xl border p-5 transition-all duration-300 sm:p-6"
+              >
+                <FadeInOnView delay={idx * 40}>
                   <span
                     className="bg-terracotta-soft text-terracotta-deep inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full transition-transform duration-300 group-hover:scale-110"
                     aria-hidden="true"
@@ -762,8 +768,8 @@ export default async function Home({ params }: HomeProps) {
                       {isFr ? card.descFr : card.descEn}
                     </p>
                   </div>
-                </li>
-              </FadeInOnView>
+                </FadeInOnView>
+              </li>
             ))}
           </ul>
 
@@ -1236,8 +1242,11 @@ export default async function Home({ params }: HomeProps) {
                 },
               ] as const
             ).map((demo, idx) => (
-              <FadeInOnView key={idx} delay={idx * 60}>
-                <li className="bg-bg border-border flex h-full flex-col overflow-hidden rounded-2xl border">
+              <li
+                key={idx}
+                className="bg-bg border-border flex h-full flex-col overflow-hidden rounded-2xl border"
+              >
+                <FadeInOnView delay={idx * 60}>
                   <ImageLightbox
                     src={demo.src}
                     alt={isFr ? demo.altFr : demo.altEn}
@@ -1265,8 +1274,8 @@ export default async function Home({ params }: HomeProps) {
                       {isFr ? demo.excerptFr : demo.excerptEn}
                     </p>
                   </div>
-                </li>
-              </FadeInOnView>
+                </FadeInOnView>
+              </li>
             ))}
           </ul>
         </Container>
@@ -1350,8 +1359,11 @@ export default async function Home({ params }: HomeProps) {
           </FadeInOnView>
           <ul className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {audienceSegments.map((seg, idx) => (
-              <FadeInOnView key={seg.id} delay={idx * 70}>
-                <li className="bg-paper border-border hover:border-border-strong flex h-full flex-col gap-4 rounded-2xl border p-7 transition">
+              <li
+                key={seg.id}
+                className="bg-paper border-border hover:border-border-strong flex h-full flex-col gap-4 rounded-2xl border p-7 transition"
+              >
+                <FadeInOnView delay={idx * 70}>
                   <h3 className="text-fg text-xl leading-tight font-semibold tracking-tight">
                     {seg.title}
                   </h3>
@@ -1362,8 +1374,8 @@ export default async function Home({ params }: HomeProps) {
                     {seg.lead}
                   </p>
                   <p className="text-fg-soft text-sm leading-relaxed">{seg.detail}</p>
-                </li>
-              </FadeInOnView>
+                </FadeInOnView>
+              </li>
             ))}
           </ul>
           {/* Nuage de secteurs (Blueprint §11 — éviter section séparée).
@@ -1476,8 +1488,11 @@ export default async function Home({ params }: HomeProps) {
               ] as const;
               const photoUrl = unsplashPhotos[idx % unsplashPhotos.length] ?? unsplashPhotos[0];
               return (
-                <FadeInOnView key={c.slug} delay={idx * 80}>
-                  <li className="bg-paper border-border shadow-subtle hover:shadow-card flex h-full flex-col gap-5 rounded-2xl border p-6 transition sm:p-7">
+                <li
+                  key={c.slug}
+                  className="bg-paper border-border shadow-subtle hover:shadow-card flex h-full flex-col gap-5 rounded-2xl border p-6 transition sm:p-7"
+                >
+                  <FadeInOnView delay={idx * 80}>
                     {/* Header : étoiles + badge vérifié */}
                     <div className="flex items-center justify-between">
                       <div
@@ -1543,8 +1558,8 @@ export default async function Home({ params }: HomeProps) {
                         </p>
                       </div>
                     </footer>
-                  </li>
-                </FadeInOnView>
+                  </FadeInOnView>
+                </li>
               );
             })}
           </ul>
