@@ -10,6 +10,8 @@
  * Server Component — performance + SEO (HTML statique).
  */
 
+import type { CSSProperties } from "react";
+
 import Image from "next/image";
 import { ImageLightbox } from "@/components/ui/ImageLightbox";
 
@@ -69,9 +71,12 @@ export function CaseStudyMarquee({
       />
       <ul
         className="case-marquee-track flex w-max gap-3 motion-reduce:animate-none sm:gap-4"
-        style={{
-          animation: `caseScrollX ${durationSec}s linear infinite`,
-        }}
+        style={
+          {
+            "--marquee-duration": `${durationSec}s`,
+            animation: `caseScrollX var(--marquee-duration) linear infinite`,
+          } as CSSProperties
+        }
       >
         {tracks.map((demo, idx) => (
           <li

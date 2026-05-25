@@ -93,6 +93,7 @@ import { SitesWebCtaBlock } from "@/components/services/sites-web/SitesWebCtaBlo
 
 // ─── Ville Phase 4 ───────────────────────────────────────────────────────────
 import { VilleEcosystemeLocal } from "@/components/ville/VilleEcosystemeLocal";
+import { VilleTissuEconomique } from "@/components/ville/VilleTissuEconomique";
 import { VilleCommunesProches } from "@/components/ville/VilleCommunesProches";
 import { VilleFaqGeolocalisee } from "@/components/ville/VilleFaqGeolocalisee";
 import { OrangeContactBanner } from "@/components/ville/OrangeContactBanner";
@@ -393,6 +394,7 @@ export default async function VilleVerticalePage({ params }: Props) {
           <AuditHero isFr={isFr} villeContext={villeContext} />
           <AuditTrustPills isFr={isFr} />
           <VilleEcosystemeLocal ville={villeAsCity} isFr={isFr} verticale="audits" />
+          <VilleTissuEconomique ville={ville} isFr={isFr} />
           <AuditTierGrid isFr={isFr} villeContext={villeContext} />
           <AuditMaturityLevels isFr={isFr} villeContext={villeContext} />
           <AuditMethodology isFr={isFr} />
@@ -410,6 +412,7 @@ export default async function VilleVerticalePage({ params }: Props) {
           <InterventionsHero isFr={isFr} villeContext={villeContext} />
           <InterventionsAudienceStrip isFr={isFr} />
           <VilleEcosystemeLocal ville={villeAsCity} isFr={isFr} verticale="interventions" />
+          <VilleTissuEconomique ville={ville} isFr={isFr} />
           <InterventionsFamiliesGrid isFr={isFr} villeContext={villeContext} />
           <InterventionsReservationFlow isFr={isFr} villeContext={villeContext} />
           <InterventionsMaturityLevels isFr={isFr} villeContext={villeContext} />
@@ -430,6 +433,7 @@ export default async function VilleVerticalePage({ params }: Props) {
           <ImplementationHero isFr={isFr} villeContext={villeContext} />
           <ImplementationTrustPills isFr={isFr} />
           <VilleEcosystemeLocal ville={villeAsCity} isFr={isFr} verticale="implementations" />
+          <VilleTissuEconomique ville={ville} isFr={isFr} />
           <ImplementationPillarChoices isFr={isFr} />
           <ImplementationCatalogFunctions isFr={isFr} villeContext={villeContext} />
           <ImplementationPricingTiers isFr={isFr} villeContext={villeContext} />
@@ -452,6 +456,7 @@ export default async function VilleVerticalePage({ params }: Props) {
           <UnAUnHero isFr={isFr} villeContext={villeContext} />
           <UnAUnTarget isFr={isFr} />
           <VilleEcosystemeLocal ville={villeAsCity} isFr={isFr} verticale="un-a-un" />
+          <VilleTissuEconomique ville={ville} isFr={isFr} />
           <UnAUnMethodology isFr={isFr} />
           <VilleCommunesProches ville={ville} verticale="un-a-un" isFr={isFr} />
           <UnAUnFaq isFr={isFr} villeContext={villeContext} villeSpecificFaqs={villeSpecificFaqs} />
@@ -466,6 +471,7 @@ export default async function VilleVerticalePage({ params }: Props) {
           <SitesWebHero isFr={isFr} villeContext={villeContext} />
           <SitesWebTrustPills isFr={isFr} />
           <VilleEcosystemeLocal ville={villeAsCity} isFr={isFr} verticale="sites-web-ia" />
+          <VilleTissuEconomique ville={ville} isFr={isFr} />
           <SitesWebStackAdaptee isFr={isFr} villeContext={villeContext} />
           <SitesWebMethodology isFr={isFr} />
           <VilleCommunesProches ville={ville} verticale="sites-web-ia" isFr={isFr} />

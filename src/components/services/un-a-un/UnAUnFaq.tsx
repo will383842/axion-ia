@@ -42,7 +42,7 @@ export function UnAUnFaq({ isFr, villeContext, villeSpecificFaqs }: UnAUnFaqProp
         {
           id: "prix",
           question: "Combien ça coûte ?",
-          answer: `${formattedPrice} pour la journée 1-to-1 dirigeant. Pour un collaborateur clé (non-dirigeant), 890 € HT. Frais de déplacement facturés en sus selon distance/durée — devis transparent avant signature.`,
+          answer: `${formattedPrice} pour la journée 1-to-1 dirigeant. Pour un collaborateur clé (non-dirigeant), tarif préférentiel sur devis. Frais de déplacement facturés en sus selon distance/durée — devis transparent avant signature.`,
         },
         {
           id: "visio-ou-site",
@@ -73,7 +73,7 @@ export function UnAUnFaq({ isFr, villeContext, villeSpecificFaqs }: UnAUnFaqProp
         {
           id: "price",
           question: "How much does it cost?",
-          answer: `${formattedPrice} for the 1-to-1 executive day. For a key employee (non-executive), €890 ex. VAT. Travel expenses billed separately based on distance/duration — transparent quote before signature.`,
+          answer: `${formattedPrice} for the 1-to-1 executive day. For a key employee (non-executive), preferential rate on request. Travel expenses billed separately based on distance/duration — transparent quote before signature.`,
         },
         {
           id: "remote-or-onsite",

@@ -76,3 +76,13 @@ AI Act art. 50 : toutes les images (hors logos) portent le champ JSON-LD aiGener
 - [Sitemap images villes T1](https://axion-ia.com/sitemap-images-villes-t1.xml) : Images villes ≥100 000 hab (40 villes).
 - [Sitemap images villes T2](https://axion-ia.com/sitemap-images-villes-t2.xml) : Images villes 50K–100K hab (83 villes).
 - [Sitemap images villes T3+T4](https://axion-ia.com/sitemap-images-villes-t3-t4.xml) : Images villes 5K–50K hab (2 034 villes).
+
+## Sprint A — Ville Pages Structure (2026-05-25)
+
+Architecture: Service pages (5) + Ville templates (2150 cities × 5 verticals = 10750 URLs)
+Components: Shared service components accepting villeContext? (DRY — 1 edit propagates to 2150 pages)
+Verticals: /fr/audit | /fr/interventions | /fr/implementation | /fr/un-a-un | /fr/sites-web-augmentes
+Ville pages: /fr/implantations/{region}/{ville} (hub) + /fr/implantations/{region}/{ville}/{vertical}
+JSON-LD: Service + LocalBusiness SAB + BreadcrumbList + FAQPage + Speakable + HowTo per page
+Content: LLM-generated city-specific sections (ecosystem/secteurs/faq-extended/cas-usage) + static shared components
+AI Act: AI-generated content disclosed via <meta name="generator"> + /transparence page

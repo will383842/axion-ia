@@ -85,7 +85,12 @@ export function InterventionsHero({ isFr, villeContext }: InterventionsHeroProps
 
   return (
     <>
-      <section className="bg-halo-warm text-fg relative overflow-hidden py-20 sm:py-24 lg:py-28">
+      <section
+        aria-label={
+          isFr ? "Présentation des services d'intervention IA" : "AI intervention services overview"
+        }
+        className="bg-halo-warm text-fg relative overflow-hidden py-20 sm:py-24 lg:py-28"
+      >
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 opacity-60"
@@ -143,11 +148,7 @@ export function InterventionsHero({ isFr, villeContext }: InterventionsHeroProps
             <InterventionsHeroSchema
               className="hero-schema pointer-events-none"
               centerLabel={
-                villeContext
-                  ? villeContext.name
-                  : isFr
-                    ? "Votre entreprise"
-                    : "Your company"
+                villeContext ? villeContext.name : isFr ? "Votre entreprise" : "Your company"
               }
               ariaLabel={
                 isFr

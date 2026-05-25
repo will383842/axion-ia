@@ -4008,3 +4008,70 @@ enum GeneratedVilleCopyStatus {
   /// Mise en quarantaine (ex : claim douteux, conflict avec fichier statique).
   quarantined
 }
+
+// ============================================================
+// GENERATED VILLE — EXTENDED CONTENT (Sprint A DRY 2026-05-25)
+// ============================================================
+
+model GeneratedVilleEcosystem {
+  id                 String   @id @default(cuid())
+  villeSlug          String   @map("ville_slug")
+  verticale          String
+  content            String   @db.Text
+  speakableSelectors Json     @default("[]") @map("speakable_selectors")
+  status             String   @default("draft")
+  qualityScore       Float?   @map("quality_score")
+  generatedAt        DateTime @default(now()) @map("generated_at")
+  updatedAt          DateTime @updatedAt @map("updated_at")
+
+  @@unique([villeSlug, verticale])
+  @@index([villeSlug])
+  @@index([status])
+  @@map("generated_ville_ecosystem")
+}
+
+model GeneratedVilleSecteurs {
+  id                 String   @id @default(cuid())
+  villeSlug          String   @unique @map("ville_slug")
+  content            String   @db.Text
+  speakableSelectors Json     @default("[]") @map("speakable_selectors")
+  status             String   @default("draft")
+  qualityScore       Float?   @map("quality_score")
+  generatedAt        DateTime @default(now()) @map("generated_at")
+  updatedAt          DateTime @updatedAt @map("updated_at")
+
+  @@index([status])
+  @@map("generated_ville_secteurs")
+}
+
+model GeneratedVilleFaqExtended {
+  id           String   @id @default(cuid())
+  villeSlug    String   @map("ville_slug")
+  verticale    String
+  faqs         Json     @default("[]")
+  status       String   @default("draft")
+  qualityScore Float?   @map("quality_score")
+  generatedAt  DateTime @default(now()) @map("generated_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@unique([villeSlug, verticale])
+  @@index([villeSlug])
+  @@index([status])
+  @@map("generated_ville_faq_extended")
+}
+
+model GeneratedVilleCasUsage {
+  id           String   @id @default(cuid())
+  villeSlug    String   @map("ville_slug")
+  verticale    String
+  cases        Json     @default("[]")
+  status       String   @default("draft")
+  qualityScore Float?   @map("quality_score")
+  generatedAt  DateTime @default(now()) @map("generated_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@unique([villeSlug, verticale])
+  @@index([villeSlug])
+  @@index([status])
+  @@map("generated_ville_cas_usage")
+}

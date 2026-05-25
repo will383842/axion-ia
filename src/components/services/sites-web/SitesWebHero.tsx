@@ -60,7 +60,14 @@ export function SitesWebHero({ isFr, villeContext }: SitesWebHeroProps): ReactNo
 
   return (
     <>
-      <section className="bg-halo-warm text-fg relative overflow-hidden pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-16 lg:pb-28">
+      <section
+        aria-label={
+          isFr
+            ? "Présentation des services de création de sites web IA"
+            : "AI web creation services overview"
+        }
+        className="bg-halo-warm text-fg relative overflow-hidden pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-16 lg:pb-28"
+      >
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0"
@@ -79,7 +86,9 @@ export function SitesWebHero({ isFr, villeContext }: SitesWebHeroProps): ReactNo
               aria-hidden="true"
               className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
             />
-            {isFr ? "Sites web & plateformes SaaS · augmentés par l'IA" : "Websites & SaaS platforms · AI-augmented"}
+            {isFr
+              ? "Sites web & plateformes SaaS · augmentés par l'IA"
+              : "Websites & SaaS platforms · AI-augmented"}
           </p>
 
           <h1 className="display-editorial text-fg mt-5">
@@ -92,10 +101,7 @@ export function SitesWebHero({ isFr, villeContext }: SitesWebHeroProps): ReactNo
             </span>
           </h1>
 
-          <p
-            data-hero-description
-            className="text-fg-soft mt-6 text-lg leading-relaxed sm:text-xl"
-          >
+          <p data-hero-description className="text-fg-soft mt-6 text-lg leading-relaxed sm:text-xl">
             {description}
           </p>
 
