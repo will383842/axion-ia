@@ -865,27 +865,38 @@ export default async function Home({ params }: HomeProps) {
           </FadeInOnView>
 
           {/* ─── TABLEAU SINGLE-BLOCK — desktop ≥ md, cards stacked mobile ─── */}
+          {/* A11Y Phase 1 fix 2026-05-25 — LHCI gate axe-core `aria-allowed-role`
+              + `aria-required-children` échouaient sur l'ancien pattern
+              `<div role="table"><Link role="row">…</Link></div>` :
+                1) <Link> rend un <a role="link"> → forcer role="row" est interdit
+                   pour les éléments interactifs (axe-core aria-allowed-role)
+                2) <div role="table"> sans <div role="rowgroup"> intermédiaire
+                   manque les enfants requis (aria-required-children)
+              Refactor : suppression de toute la sémantique ARIA table — la
+              grille reste visuelle (CSS Grid Tailwind). L'AT voit une liste de
+              5 liens services, ce qui est la sémantique réelle (chaque ligne
+              est un lien cliquable, pas une cellule de données). */}
           <FadeInOnView>
             <div className="mx-auto max-w-6xl">
-              <div
-                role="table"
+              <ul
+                role="list"
                 aria-label={
                   isFr ? "Grille tarifaire des cinq services" : "Pricing grid of five services"
                 }
                 className="bg-paper border-border shadow-elevated overflow-hidden rounded-3xl border"
               >
-                {/* En-tête colonnes (desktop seulement) */}
-                <div
-                  role="row"
+                {/* En-tête colonnes (desktop seulement) — hors du flux de liste
+                    pour ne pas casser la sémantique <ul><li> stricte. Présenté
+                    comme un row visuel uniquement, masqué aux AT via aria-hidden. */}
+                <li
+                  aria-hidden="true"
                   className="bg-sand text-fg-muted border-border hidden border-b px-8 py-4 text-[11px] font-bold tracking-[0.18em] uppercase md:grid md:grid-cols-[2.2fr_1fr_2.4fr_1.3fr] md:items-center md:gap-6"
                 >
-                  <span role="columnheader">{isFr ? "Service" : "Service"}</span>
-                  <span role="columnheader">{isFr ? "Catégorie" : "Category"}</span>
-                  <span role="columnheader">{isFr ? "Inclus" : "Included"}</span>
-                  <span role="columnheader" className="text-right">
-                    {isFr ? "Prix HT" : "Price excl. tax"}
-                  </span>
-                </div>
+                  <span>{isFr ? "Service" : "Service"}</span>
+                  <span>{isFr ? "Catégorie" : "Category"}</span>
+                  <span>{isFr ? "Inclus" : "Included"}</span>
+                  <span className="text-right">{isFr ? "Prix HT" : "Price excl. tax"}</span>
+                </li>
 
                 {/* 5 lignes services */}
                 {(
@@ -972,78 +983,75 @@ export default async function Home({ params }: HomeProps) {
                     },
                   ] as const
                 ).map((s, idx) => (
-                  <Link
-                    key={s.id}
-                    href={s.href}
-                    role="row"
-                    className={cn(
-                      "group hover:bg-sand/50 focus-visible:bg-sand/70 relative grid items-center gap-4 px-6 py-6 transition-colors focus-visible:outline-none md:grid-cols-[2.2fr_1fr_2.4fr_1.3fr] md:gap-6 md:px-8 md:py-7",
-                      idx > 0 && "border-border border-t",
-                    )}
-                  >
-                    {/* Colonne 1 — Service (dot + nom + sub) */}
-                    <div role="cell" className="flex items-start gap-3 md:items-center">
-                      <span
-                        className={cn(
-                          "mt-2 inline-block h-2.5 w-2.5 shrink-0 rounded-full md:mt-0",
-                          s.dotColor,
-                        )}
-                        aria-hidden="true"
-                      />
-                      <div className="min-w-0">
-                        <p className="text-fg text-base leading-tight font-bold sm:text-lg">
-                          {isFr ? s.nameFr : s.nameEn}
-                        </p>
-                        <p className="text-fg-muted mt-1 text-xs leading-snug sm:text-sm">
-                          {isFr ? s.subFr : s.subEn}
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Colonne 2 — Catégorie (badge pill) */}
-                    <div role="cell" className="md:flex md:items-center">
-                      <span
-                        className={cn(
-                          "inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold",
-                          s.badgeBg,
-                          s.badgeFg,
-                        )}
-                      >
-                        {isFr ? s.categoryFr : s.categoryEn}
-                      </span>
-                    </div>
-
-                    {/* Colonne 3 — Inclus */}
-                    <div role="cell" className="text-fg-soft text-sm leading-relaxed">
-                      {isFr ? s.includesFr : s.includesEn}
-                    </div>
-
-                    {/* Colonne 4 — Prix HT + flèche */}
-                    <div
-                      role="cell"
-                      className="flex items-center justify-between gap-3 md:justify-end"
+                  <li key={s.id}>
+                    <Link
+                      href={s.href}
+                      className={cn(
+                        "group hover:bg-sand/50 focus-visible:bg-sand/70 relative grid items-center gap-4 px-6 py-6 transition-colors focus-visible:outline-none md:grid-cols-[2.2fr_1fr_2.4fr_1.3fr] md:gap-6 md:px-8 md:py-7",
+                        idx > 0 && "border-border border-t",
+                      )}
                     >
-                      <div className="text-right">
-                        <p
-                          className="text-fg text-xl font-bold tracking-tight sm:text-2xl"
-                          style={{ fontFamily: "var(--font-serif)" }}
-                        >
-                          {s.price}
-                        </p>
-                        <p className="text-fg-muted text-[11px] leading-snug">
-                          {isFr ? "à partir de" : "starting at"}
-                        </p>
+                      {/* Colonne 1 — Service (dot + nom + sub) */}
+                      <div className="flex items-start gap-3 md:items-center">
+                        <span
+                          className={cn(
+                            "mt-2 inline-block h-2.5 w-2.5 shrink-0 rounded-full md:mt-0",
+                            s.dotColor,
+                          )}
+                          aria-hidden="true"
+                        />
+                        <div className="min-w-0">
+                          <p className="text-fg text-base leading-tight font-bold sm:text-lg">
+                            {isFr ? s.nameFr : s.nameEn}
+                          </p>
+                          <p className="text-fg-muted mt-1 text-xs leading-snug sm:text-sm">
+                            {isFr ? s.subFr : s.subEn}
+                          </p>
+                        </div>
                       </div>
-                      <span
-                        aria-hidden="true"
-                        className="bg-paper border-border text-fg-soft group-hover:border-terracotta group-hover:bg-terracotta group-hover:text-paper inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border transition-all"
-                      >
-                        <ArrowRight className="h-4 w-4" strokeWidth={2.2} />
-                      </span>
-                    </div>
-                  </Link>
+
+                      {/* Colonne 2 — Catégorie (badge pill) */}
+                      <div className="md:flex md:items-center">
+                        <span
+                          className={cn(
+                            "inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold",
+                            s.badgeBg,
+                            s.badgeFg,
+                          )}
+                        >
+                          {isFr ? s.categoryFr : s.categoryEn}
+                        </span>
+                      </div>
+
+                      {/* Colonne 3 — Inclus */}
+                      <div className="text-fg-soft text-sm leading-relaxed">
+                        {isFr ? s.includesFr : s.includesEn}
+                      </div>
+
+                      {/* Colonne 4 — Prix HT + flèche */}
+                      <div className="flex items-center justify-between gap-3 md:justify-end">
+                        <div className="text-right">
+                          <p
+                            className="text-fg text-xl font-bold tracking-tight sm:text-2xl"
+                            style={{ fontFamily: "var(--font-serif)" }}
+                          >
+                            {s.price}
+                          </p>
+                          <p className="text-fg-muted text-[11px] leading-snug">
+                            {isFr ? "à partir de" : "starting at"}
+                          </p>
+                        </div>
+                        <span
+                          aria-hidden="true"
+                          className="bg-paper border-border text-fg-soft group-hover:border-terracotta group-hover:bg-terracotta group-hover:text-paper inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border transition-all"
+                        >
+                          <ArrowRight className="h-4 w-4" strokeWidth={2.2} />
+                        </span>
+                      </div>
+                    </Link>
+                  </li>
                 ))}
-              </div>
+              </ul>
             </div>
           </FadeInOnView>
           <p className="text-fg-muted mt-10 text-center text-sm leading-relaxed">
@@ -1427,7 +1435,14 @@ export default async function Home({ params }: HomeProps) {
               </h2>
               {/* Rating moyen global */}
               <div className="mt-7 inline-flex flex-col items-center gap-2">
-                <div className="flex items-center gap-1" aria-label="5 étoiles sur 5">
+                {/* A11Y Phase 1 fix 2026-05-25 — axe `aria-prohibited-attr` :
+                    aria-label sur <div> sans role est interdit. role="img" rend
+                    le groupe d'étoiles annoncé comme image avec son label. */}
+                <div
+                  role="img"
+                  aria-label={isFr ? "5 étoiles sur 5" : "5 stars out of 5"}
+                  className="flex items-center gap-1"
+                >
                   {[0, 1, 2, 3, 4].map((i) => (
                     <Star
                       key={i}
@@ -1466,8 +1481,9 @@ export default async function Home({ params }: HomeProps) {
                     {/* Header : étoiles + badge vérifié */}
                     <div className="flex items-center justify-between">
                       <div
-                        className="flex items-center gap-0.5"
+                        role="img"
                         aria-label={isFr ? "Note 5 étoiles sur 5" : "5-star rating"}
+                        className="flex items-center gap-0.5"
                       >
                         {[0, 1, 2, 3, 4].map((i) => (
                           <Star

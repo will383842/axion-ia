@@ -31,11 +31,7 @@ function slugifyId(input: string, fallbackIndex: number): string {
   return slug.length > 0 ? `ville-faq-${slug}` : `ville-faq-q-${fallbackIndex}`;
 }
 
-export function VilleFaqGeolocalisee({
-  villeContext,
-  faqs,
-  isFr,
-}: VilleFaqGeolocaliseeProps) {
+export function VilleFaqGeolocalisee({ villeContext, faqs, isFr }: VilleFaqGeolocaliseeProps) {
   // Cap à 10 entrées pour éviter content bloat (LLM peut générer plus).
   const items = faqs.slice(0, 10);
   if (items.length === 0) {
@@ -51,9 +47,7 @@ export function VilleFaqGeolocalisee({
   const sectionId = `ville-faq-${villeContext.villeSlug}`;
   const headingId = `${sectionId}-title`;
 
-  const heading = isFr
-    ? `FAQ — ${villeContext.name}`
-    : `FAQ — ${villeContext.name}`;
+  const heading = isFr ? `FAQ — ${villeContext.name}` : `FAQ — ${villeContext.name}`;
 
   const description = isFr
     ? `Questions des dirigeants de TPE/PME/ETI/GE de ${villeContext.name}. Notre équipe d'experts répond sous 24 h ouvrées si la vôtre n'y est pas.`
@@ -69,11 +63,7 @@ export function VilleFaqGeolocalisee({
   });
 
   return (
-    <section
-      aria-labelledby={headingId}
-      id={sectionId}
-      className="bg-paper py-16 sm:py-20"
-    >
+    <section aria-labelledby={headingId} id={sectionId} className="bg-paper py-16 sm:py-20">
       <div className="mx-auto max-w-4xl px-6 lg:px-10">
         <p className="text-fg-muted mb-3 text-[12px] font-semibold tracking-[0.16em] uppercase">
           <span className="bg-terracotta mr-2 inline-block h-1.5 w-1.5 rounded-full align-middle" />
@@ -86,21 +76,31 @@ export function VilleFaqGeolocalisee({
         >
           {heading}
         </h2>
-        <p className="text-fg-soft mt-3 max-w-2xl text-base leading-relaxed">
-          {description}
-        </p>
+        <p className="text-fg-soft mt-3 max-w-2xl text-base leading-relaxed">{description}</p>
 
-        <dl className="mt-10 divide-y divide-border-strong/30 border-y border-border-strong/30">
+        {/* A11Y Phase 1 fix 2026-05-25 — LHCI gate échouait sur les règles
+            axe `definition-list` + `dlitem` car le pattern <dl><div><details>
+            <summary><dt>…</dt></summary><dd>…</dd></details></div></dl>
+            viole la spec : <dt>/<dd> doivent être enfants directs du <dl>, et
+            <details>/<summary> ne sont pas autorisés à wrapper des paires.
+            Refactor en <ul role="list"> — la sémantique FAQ est de toute façon
+            émise via le JSON-LD `FAQPage` (cf. JsonLd plus bas). Les data
+            attributes `data-faq-q` / `data-faq-a` restent disponibles pour
+            la Speakable Specification (sélecteurs CSS, pas dépendants du tag). */}
+        <ul
+          role="list"
+          className="divide-border-strong/30 border-border-strong/30 mt-10 divide-y border-y"
+        >
           {normalized.map((item) => (
-            <div key={item.id} className="py-2">
+            <li key={item.id} className="py-2">
               <details className="group">
                 <summary
                   id={item.id}
-                  className="text-fg flex cursor-pointer list-none items-start justify-between gap-4 py-4 text-left text-base font-semibold leading-snug sm:text-lg"
+                  className="text-fg flex cursor-pointer list-none items-start justify-between gap-4 py-4 text-left text-base leading-snug font-semibold sm:text-lg"
                 >
-                  <dt data-faq-q className="flex-1">
+                  <span data-faq-q className="flex-1">
                     {item.question}
-                  </dt>
+                  </span>
                   <span
                     aria-hidden="true"
                     className="text-fg-muted mt-1 shrink-0 text-xl leading-none transition-transform group-open:rotate-45"
@@ -108,23 +108,16 @@ export function VilleFaqGeolocalisee({
                     +
                   </span>
                 </summary>
-                <dd
-                  data-faq-a
-                  className="text-fg-soft pb-5 pr-8 text-[15px] leading-relaxed"
-                >
+                <div data-faq-a className="text-fg-soft pr-8 pb-5 text-[15px] leading-relaxed">
                   {item.answer}
-                </dd>
+                </div>
               </details>
-            </div>
+            </li>
           ))}
-        </dl>
+        </ul>
       </div>
 
-      <JsonLd
-        data={faqJsonLd}
-        strategy="afterInteractive"
-        scriptId={`jsonld-${sectionId}`}
-      />
+      <JsonLd data={faqJsonLd} strategy="afterInteractive" scriptId={`jsonld-${sectionId}`} />
     </section>
   );
 }
