@@ -463,12 +463,262 @@ Si Will veut **étendre à d'autres villes après Paris** : `pnpm tsx scripts/re
 
 ---
 
-## 10. Démarrage complément (à coller dans la conv Opus en cours)
+## 10bis. Best practices 2026 additionnelles (CRITIQUES — ajoutées V2)
+
+Ce qui a été oublié dans la version initiale du complément.
+
+### A. E-E-A-T 2026 (Experience-Expertise-Authoritativeness-Trustworthiness)
+
+Google Helpful Content System privilégie les pages avec **Experience pratique réelle** (depuis sept. 2023). Sans signaux E-E-A-T, page déclassée même si SEO technique parfait.
+
+**À implémenter dans Sprint A** :
+
+- **Author entity** : chaque page service ET verticale ville doit avoir un `Person` schema avec :
+  - `name`, `jobTitle`, `worksFor: Organization Axion-IA`
+  - `sameAs: [LinkedIn, Wikidata Q-ID si applicable, ORCID si applicable]`
+  - `description` 1-2 lignes Experience pratique IA opérationnelle (X années, X clients accompagnés)
+  - `image` portrait (Manon ou Will selon doctrine éditoriale brand)
+  - **Référence cross-page** : `mainEntity.author` sur Article schema pointe vers ce Person `@id`
+
+- **Experience signals dans body LLM** :
+  - Prompt ajout : "Mentionne au moins 1 cas d'usage concret vécu (sans nommer client : 'Une entreprise de {secteur} à {ville} a réduit son temps {tâche} de X% après {intervention}')"
+  - Évite formulations théoriques génériques ("l'IA peut faire X")
+  - Préfère témoignages indirects ("nos clients constatent X")
+
+- **Trust signals visibles** :
+  - Lien footer vers `/methodologie` détaillant approche
+  - Lien `/transparence` (déjà existant selon mémoire) avec persona Manon + AI Act compliance
+  - Mention RGPD + AI Act dans chaque CTA bloc (footer composant)
+
+### B. Helpful Content System (HCU) compliance
+
+Google HCU pénalise les pages "made for SEO" sans valeur utilisateur.
+
+**Règles à coder dans pipeline LLM Phase 2E.2** :
+
+- Promp ajout : "Réponds à la question implicite '{intent_dominant_keyword}', ne fais pas que keyword-stuffer"
+- Strip post-LLM : retirer patterns red flags HCU
+  - "Dans cet article nous allons voir" (meta-narration)
+  - "Pour conclure, il est important de" (transitions stéréotypées)
+  - "En tant qu'expert en X" (claim non-justifiable)
+  - "L'IA révolutionne" + variants (cliché)
+- Quality gate ajout : reading level Flesch FR ≥ 60 (accessible), pas > 80 (trop simple)
+
+### C. AI-generated content disclosure (transparence Google + AI Act EU)
+
+Google n'interdit PAS le contenu LLM mais demande **transparence pour les sujets YMYL** (Your Money or Your Life). Axion-IA n'est pas YMYL strict mais consulting B2B → bonne pratique.
+
+**À implémenter** :
+
+- `<meta name="generator" content="Axion-IA editorial pipeline (multi-LLM + human review)" />` dans `<head>` des pages verticales ville
+- Article JSON-LD ajout : `creativeWorkStatus: "Published"` + `assesses: "AI-assisted content with human editorial review"` (custom property)
+- Footer mention 1 ligne : "Contenu rédigé avec assistance IA, supervisé éditorialement" (lien vers `/transparence`)
+- AI Act EU Art. 50 transparency obligation (système IA générant contenu) — déjà couvert via `/transparence` page selon mémoire
+
+### D. AI Crawlers robots.txt — opt-in stratégie 2026
+
+**Décision stratégique** : opt-in massif pour AI crawlers (visibilité ChatGPT/Perplexity/Gemini) > paranoia training data.
+
+**Vérifier** `axionia/public/robots.txt` (ou route handler) inclut :
 
 ```
-COMPLÉMENT AU BRIEF SPRINT A : lis aussi le fichier
-C:\Users\willi\Documents\Projets\Axion-IA\axionia\_AUDIT\SPRINT-A-VILLE-DRY-2026-05-25\SPRINT-A-COMPLEMENT-DESIGN-SEO-AEO-GEO.md
-et intègre ces 3 sous-sprints supplémentaires (2D design system, 2E SEO/AEO/GEO + LLM extension, 2F Web Vitals + A11y) dans le plan global. Total sub-agents passe à ~70 vs 44. Critères de succès complément §8 doivent tous être ✅ avant Phase 10 commit final.
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: FacebookBot
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+```
+
+**Note** : selon mémoire Sprint v7 audit (565/1000), robots conforme 19 bots — vérifier que ces 10 sont bien dedans.
+
+### E. Cite-worthiness LLM (apparaître dans réponses ChatGPT/Perplexity)
+
+LLMs préfèrent citer verbatim des paragraphes **structurés ainsi** :
+
+1. **Claim factuel court** (1 phrase, 15-25 mots)
+2. **Justification 1-2 phrases** (50-80 mots total paragraphe)
+3. **Source explicite** (si applicable, mention "selon {entité}")
+
+**Prompt LLM Phase 2E.2 ajout** :
+```
+Structure chaque paragraphe principal pour être citable verbatim par ChatGPT/Perplexity :
+- Phrase 1 : claim factuel (15-25 mots)
+- Phrases 2-3 : justification (total paragraphe 50-80 mots)
+- Pas de transition "Tout d'abord", "En outre", "Pour conclure"
+- Préfère phrases déclaratives directes, sujet-verbe-complément
+```
+
+**Speakable selectors par paragraphe** : `.cite-worthy-claim` injecté DOM-wise pour les 3-4 meilleurs paragraphes par page.
+
+### F. Performance 2026 (au-delà de Lighthouse)
+
+- **LCP image preload + fetchpriority** :
+  ```tsx
+  <link rel="preload" as="image" href={heroImage} fetchpriority="high" />
+  // OU directement sur <Image priority fetchPriority="high" />
+  ```
+- **Next.js Image** : `priority` + `fetchPriority="high"` sur LCP, `loading="lazy"` partout ailleurs
+- **View Transitions API** (Chrome 111+ baseline 2024) : smooth nav entre verticales
+  ```tsx
+  // root layout
+  <meta name="view-transition" content="same-origin" />
+  ```
+- **Speculation Rules** : déjà implémenté Sprint V-04 selon mémoire, vérifier coverage 5 verticales
+- **CSS containment** : `contain: layout style paint` sur sections lourdes (TierGrid, FAQ accordion)
+- **font-display: swap** + **preload** critical fonts (serif H1 surtout, sans body)
+- **WebP/AVIF avec fallback** : Next.js Image fait auto, vérifier `formats: ['image/avif', 'image/webp']` dans `next.config.js`
+- **Critical CSS inline** above-fold : Next.js gère via App Router automatiquement (vérifier)
+- **Resource hints** : `<link rel="preconnect" href="https://fonts.gstatic.com" />` si Google Fonts
+- **Bundle splitting per route** : Next.js fait auto, vérifier via `pnpm build` reporting (First Load JS par route)
+
+### G. WCAG 2.2 AAA (oct. 2023) — nouveaux critères
+
+WCAG 2.2 a ajouté **9 nouveaux critères** vs 2.1. À couvrir :
+
+- **2.4.11 Focus Not Obscured (AA)** : focus visible même si élément sticky/modal
+- **2.4.13 Focus Appearance (AAA)** : focus ring ≥ 2px solid avec contraste 3:1 min vs background
+- **2.5.7 Dragging Movements (AA)** : pas de drag-only (alternative click/keyboard)
+- **2.5.8 Target Size Minimum (AA)** : 24×24 px min (sauf inline text, default UA, essential)
+- **3.2.6 Consistent Help (A)** : si contact/help présent, place cohérente cross-pages
+- **3.3.7 Redundant Entry (A)** : pas demander info déjà fournie (form pre-fill)
+- **3.3.8 Accessible Authentication Minimum (AA)** : pas de CAPTCHA cognitif
+
+**À auditer Phase 2F-2** (axe-core agent) : run avec règles WCAG 2.2 enabled :
+```bash
+pnpm playwright test --grep "a11y-axe-core-villes" -- --tags wcag22aaa
+```
+
+### H. Schema.org additions 2026
+
+En plus des 10 schemas Phase 2E.1.B :
+
+- **Organization** étendu : `founder: Person`, `employee: [Person]`, `numberOfEmployees: QuantitativeValue`, `award: [...]` si applicable
+- **WebSite avec SearchAction** : sitelinks search box Google
+  ```json
+  {
+    "@type": "WebSite",
+    "url": "https://axion-ia.fr",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://axion-ia.fr/fr/recherche?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  ```
+- **AggregateRating** + **Review** si témoignages réels existent (Will doit fournir vrais ratings — sinon SKIP, JAMAIS inventer)
+- **DefinedTermSet** glossaire IA : déjà implémenté Sprint v7 phase 12 selon mémoire, vérifier coverage cross-template
+- **CreativeWork avec encodingFormat** : si pages contiennent vidéos/podcasts (probable hero VideoObject sur home)
+- **OpeningHoursSpecification** : SI Will a horaires fixes (probable "Lun-Ven 9h-18h" — à confirmer Will, sinon SKIP)
+- **ContactPoint** dans Organization : telephone, email, contactType, areaServed, availableLanguage
+
+### I. Stratification LLM par tier ville (économie + qualité)
+
+**Problème actuel** : si on génère 1 200 mots × 2 150 villes × 5 verticales = 12,9M tokens output → ~$60-90 (Claude Sonnet 4.6 output $15/MT).
+
+**Solution stratification** : générer profondément seulement pour les villes à fort potentiel SEO.
+
+**Tier 1 (~100 villes, population > 50k)** : 1 000-1 200 mots/page, tous generators activés (ecosystem + secteurs + faq-extended + cas-usage)
+**Tier 2 (~400 villes, 20k-50k pop)** : 600-800 mots/page, 2 generators (ecosystem + faq-extended seulement)
+**Tier 3 (~1 650 villes, < 20k pop)** : 300 mots/page, generator existant `landing-ville-shared.ts` seulement
+
+**Implémentation** : ajouter `cityTier` dans table `Ville` Prisma (déjà présent selon mémoire content-equity Sprint), router pipeline LLM selon tier.
+
+**Coût estimé Paris 5 verticales (Tier 1)** : ~$0.50-1.00 par ville × 5 verticales × 4 generators = ~$10-20 pour Paris seul. Total Tier 1 + 2 + 3 sur 2 150 villes : ~$30-50.
+
+### J. Stratégie IndexNow + crawl budget
+
+- **IndexNow** (Bing/Yandex protocol) : push immédiat des nouvelles URLs vers Bing → reflété dans ChatGPT search + Copilot
+  ```ts
+  // src/server/seo/indexnow.ts
+  await fetch("https://api.indexnow.org/indexnow", {
+    method: "POST",
+    body: JSON.stringify({ host: "axion-ia.fr", key: env.INDEXNOW_KEY, urlList: [...] }),
+  });
+  ```
+- À déclencher après chaque publication LLM ville (worker `content-publish-worker` selon mémoire)
+- Google Search Console **API URL inspection** + **Indexing API** pour Job postings + Livestream uniquement (pas pour landing pages, contre TOS) → skip
+- **Sitemap ping** : Google + Bing après chaque update (déjà via sitemap.ts ISR probablement)
+
+### K. Privacy + accessibility médias
+
+- **`prefers-reduced-motion`** : déjà mentionné §2D, à enforcer
+- **`prefers-reduced-data`** : ne pas charger images hero hi-res si bandwidth-saver
+  ```tsx
+  <Image src={highRes} loading="eager" />
+  // avec media query CSS :
+  // @media (prefers-reduced-data: reduce) { .hero-img { content: url('low-res.webp'); } }
+  ```
+- **`prefers-contrast: more`** : tokens couleur dédiés (terracotta plus saturé, ink plus dark)
+- **`forced-colors: active`** (Windows High Contrast) : tester avec emulator Chrome DevTools, garantir lisibilité
+- **GPC (Global Privacy Control)** : honorer le header `Sec-GPC: 1` côté server (skip analytics, skip third-party)
+
+### L. Multi-judge LLM quality (Sprint v7 phase 16 déjà fait)
+
+Selon mémoire : multi-judge + originality.ai score ≥ 80 déjà implémenté. **Vérifier** que les 4 nouveaux generators Phase 2E.2 réutilisent ce pipeline (pas court-circuit).
+
+Pattern : Sonnet 4.6 author → Haiku 4.5 critic ×3 (factual / style / brand) → Sonnet 4.6 arbitre → originality.ai → publish si score ≥ 55 (tier_1_indexable) ou ≥ 70 (tier_premium).
+
+---
+
+## 10. Démarrage complément (deux scenarios)
+
+### Scénario A — Si conv Opus EN COURS (Sprint A pas encore terminé)
+
+À coller pendant qu'Opus travaille :
+
+```
+COMPLÉMENT AU BRIEF SPRINT A : lis aussi C:\Users\willi\Documents\Projets\Axion-IA\axionia\_AUDIT\SPRINT-A-VILLE-DRY-2026-05-25\SPRINT-A-COMPLEMENT-DESIGN-SEO-AEO-GEO.md (V2 enrichi best practices 2026). Intègre les 3 sous-sprints (2D design, 2E SEO/AEO/GEO+LLM, 2F Web Vitals/A11y) + les 12 règles 2026 §10bis (E-E-A-T, HCU, AI disclosure, AI Crawlers, Cite-worthiness, Perf 2026, WCAG 2.2 AAA, Schema additions, Stratification LLM par tier, IndexNow, Privacy a11y, Multi-judge) dans le plan global. Total sub-agents ~70. Critères §8 + §10bis doivent tous être ✅ avant Phase 10 commit final.
+```
+
+### Scénario B — Si conv Opus DÉJÀ TERMINÉE (Sprint A commit + push fait)
+
+À coller dans une **nouvelle conv Opus dédiée** pour exécuter le complément en mode enrichment post-Sprint A :
+
+```
+Le Sprint A (refactor DRY pages services + verticales ville) a été livré dans un commit récent sur main. Maintenant exécute le complément 2026 best practices.
+
+Étape 1 : lis le contexte complet
+- C:\Users\willi\Documents\Projets\Axion-IA\axionia\_AUDIT\SPRINT-A-VILLE-DRY-2026-05-25\SPRINT-A-BRIEF-OPUS.md (brief principal)
+- C:\Users\willi\Documents\Projets\Axion-IA\axionia\_AUDIT\SPRINT-A-VILLE-DRY-2026-05-25\SPRINT-A-COMPLEMENT-DESIGN-SEO-AEO-GEO.md (complément V2 best practices 2026)
+- git log --oneline -20 pour voir ce que Sprint A a déjà fait
+
+Étape 2 : exécute en mode enrichment (post-pass) les sous-sprints du complément qui n'ont PAS été couverts par Sprint A :
+- Sous-sprint 2D design system (4 agents //) — DESIGN_RULES.md + audit conformité + fix violations sur composants déjà extraits
+- Sous-sprint 2E SEO/AEO/GEO + LLM extension (6 agents //) — helpers metadata + 10 schemas JSON-LD + 4 generators LLM dédiés
+- Sous-sprint 2F Web Vitals + A11y (3 agents //) — Lighthouse + axe-core + responsive 4 viewports
+- 12 règles 2026 §10bis (E-E-A-T author entity, HCU compliance, AI-generated disclosure, AI Crawlers robots.txt, Cite-worthiness LLM prompts, Perf 2026 fetchpriority/View Transitions/CSS contain, WCAG 2.2 AAA, Schema additions Organization+WebSite+AggregateRating, Stratification LLM par tier ville, IndexNow, prefers-reduced-data/forced-colors/GPC, Multi-judge LLM réutilisé)
+
+Étape 3 : vérification finale double-pass (15 agents // pareil que Phase 9 brief principal mais ciblée enrichments)
+- Pass A fonctionnel : 11 URLs testées (5 services + 5 verticales Paris + 1 hub Paris) — meta + JSON-LD + Speakable + content LLM rendered
+- Pass B production-ready : Web Vitals top 1% gate + SEO/AEO/GEO regression + LLM quality + E-E-A-T signals + WCAG 2.2 AAA + AI disclosure
+
+Étape 4 : commit + push + rapport `_AUDIT/SPRINT-A-VILLE-DRY-2026-05-25/RAPPORT-FINAL-COMPLEMENT.md` consolidé.
+
+Travaille sur main. Lance les sub-agents en parallèle dans un seul message à chaque phase. STOP & ASK Will uniquement si Web Vitals régresse > 100ms ou bundle > +5KB gz ou JSON-LD critique invalide.
 ```
 
 Bon Sprint A perfection extrême. 🎯
