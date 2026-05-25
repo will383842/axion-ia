@@ -27,7 +27,7 @@
 - **Phase 9 (vérif finale double pass)** : 15 agents parallèles → 4h compressées à 1h
 - **Phase 10 (commit + push + memory)** : single agent → 15 min
 
-**Total sub-agents** : ~44 (5 recon + 5 extraction + 5 refactor service + 4 ville + 10 cohérence + 5 tests + 15 finale)
+**Total sub-agents** : ~60 (5 recon + 1 design-system + 5 extraction + 5 refactor service + 4 ville + 2 templates + 12 cohérence visuelle + structurelle + 8 tests runtime + visuel + 15 finale double-pass + 3 a11y/perf/responsive)
 
 Sub-agents Anthropic recommandés :
 

@@ -1,30 +1,30 @@
 // Hub canonique 4e verticale `un-a-un`.
 // 1 personne ↔ 1 expert IA Axion-IA — coaching individuel, format flexible.
 // Cible : tout collaborateur (manager, RH, commercial, opérateur, dirigeant).
+//
+// Sprint A Phase 3 — refactor : page assembleuse de composants Phase 2 sous
+// `src/components/services/un-a-un/`. Le contenu détaillé (hero, cible,
+// méthodologie, FAQ, CTA final) est encapsulé dans des composants partagés
+// avec les pages ville `/fr/implantations/{region}/{ville}/un-a-un`.
 
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { ArrowUpRight } from "lucide-react";
 import { routing } from "@/i18n/routing";
-import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
-import { Cta } from "@/components/marketing/Cta";
-import { ServiceHero, type ServiceHeroNode } from "@/components/sections/ServiceHero";
-import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata, buildServiceJsonLd } from "@/lib/seo";
-import { UN_A_UN_TIERS, formatPrice, getEntryTier } from "@/content/pricing";
-// Sprint uniformisation 2026-05-24 (Will) — alignement template /implementation.
-// Ajout ProcessSteps + FaqAccordion + LocalCoverageSection + LocalGeoFaqSection
-// + StickyMobileCta. Contenu MINIMAL (réutilisation existant + Q/R triviales).
-import { ProcessSteps } from "@/components/sections/ProcessSteps";
-import { FaqAccordion } from "@/components/marketing/FaqAccordion";
+import { UN_A_UN_TIERS, getEntryTier } from "@/content/pricing";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
 import { LocalGeoFaqSection } from "@/components/sections/LocalGeoFaqSection";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
+import { UnAUnHero } from "@/components/services/un-a-un/UnAUnHero";
+import { UnAUnTarget } from "@/components/services/un-a-un/UnAUnTarget";
+import { UnAUnMethodology } from "@/components/services/un-a-un/UnAUnMethodology";
+import { UnAUnFaq } from "@/components/services/un-a-un/UnAUnFaq";
+import { UnAUnCtaBlock } from "@/components/services/un-a-un/UnAUnCtaBlock";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -54,9 +54,8 @@ export default async function UnAUnHubPage({ params }: Props) {
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
   const isFr = locale === "fr";
-  const entryTier = getEntryTier(UN_A_UN_TIERS);
-  const formattedPrice = formatPrice(entryTier, isFr ? "fr" : "en");
   const path = isFr ? "/un-a-un" : "/one-to-one";
+  const entryTier = getEntryTier(UN_A_UN_TIERS);
 
   const serviceJsonLd = buildServiceJsonLd({
     locale,
@@ -77,167 +76,9 @@ export default async function UnAUnHubPage({ params }: Props) {
         />
       </Container>
 
-      {/* HERO 2 colonnes — Sprint Uniformisation héros 2026-05-24 (Will).
-          Pattern unifié sur les 5 pages services (calqué sur /implementation). */}
-      <ServiceHero
-        eyebrow={isFr ? "Module 4 · Accompagnement 1-to-1" : "Module 4 · 1-to-1 coaching"}
-        title={isFr ? "Un expert IA" : "One AI expert"}
-        titleEm={isFr ? "pour une personne" : "for one person"}
-        description={
-          isFr
-            ? `Un collaborateur, un expert IA Axion-IA. Pas une formation groupe, pas un audit d'entreprise — un accompagnement individuel calibré sur le poste réel, les outils du quotidien et les objectifs concrets de la personne. À partir de ${formattedPrice}.`
-            : `One employee, one Axion-IA AI expert. Not a group training, not a company audit — individual coaching calibrated to the real role, daily tools and concrete objectives of the person. From ${formattedPrice}.`
-        }
-        ctas={
-          <>
-            <Cta
-              href="/contact"
-              variant="primary"
-              size="lg"
-              shape="pill"
-              track="un-a-un-hero-primary"
-            >
-              {isFr ? "Démarrer mon accompagnement" : "Start my coaching"}
-              <ArrowUpRight aria-hidden="true" className="h-4 w-4" />
-            </Cta>
-            <Cta
-              href={"/interventions/collectives" as never}
-              variant="outline"
-              size="lg"
-              shape="pill"
-              track="un-a-un-hero-formations"
-            >
-              {isFr ? "Voir les formations groupe" : "See group training"}
-            </Cta>
-          </>
-        }
-        schemaCenterLabel={isFr ? "1 collaborateur" : "1 employee"}
-        schemaAriaLabel={
-          isFr
-            ? "Schéma : un collaborateur au centre, entouré des 8 objectifs maîtrisables en coaching 1-to-1 (productivité, automatisation, outils IA, communication, reporting, prise de décision, autonomie, transfert d'expertise)."
-            : "Diagram: one employee at the center, surrounded by 8 objectives masterable in 1-to-1 coaching (productivity, automation, AI tools, communication, reporting, decision-making, autonomy, expertise transfer)."
-        }
-        schemaNodes={
-          [
-            {
-              label: isFr ? "Productivité" : "Productivity",
-              benefit: isFr ? "1-3 h/jour gagnées" : "1-3 h/day saved",
-              accent: "terracotta",
-            },
-            {
-              label: isFr ? "Automatisation" : "Automation",
-              benefit: isFr ? "Tâches répétitives" : "Repetitive tasks",
-              accent: "primary",
-            },
-            {
-              label: isFr ? "Outils IA" : "AI tools",
-              benefit: isFr ? "ChatGPT, Claude, Copilot" : "ChatGPT, Claude, Copilot",
-              accent: "sage",
-            },
-            {
-              label: isFr ? "Communication" : "Communication",
-              benefit: isFr ? "Mails, comptes-rendus" : "Emails, reports",
-              accent: "mocha",
-            },
-            {
-              label: isFr ? "Reporting" : "Reporting",
-              benefit: isFr ? "Synthèse auto" : "Auto-synthesis",
-              accent: "terracotta",
-            },
-            {
-              label: isFr ? "Décision" : "Decision",
-              benefit: isFr ? "Données structurées" : "Structured data",
-              accent: "primary",
-            },
-            {
-              label: isFr ? "Autonomie" : "Autonomy",
-              benefit: isFr ? "Plus de dépendance" : "No more dependency",
-              accent: "sage",
-            },
-            {
-              label: isFr ? "Transfert" : "Transfer",
-              benefit: isFr ? "Équipe formée" : "Team trained",
-              accent: "mocha",
-            },
-          ] as const satisfies ReadonlyArray<ServiceHeroNode>
-        }
-      />
-
-      <Section
-        eyebrow={isFr ? "Pour qui ?" : "Who for?"}
-        title={isFr ? "Tout collaborateur" : "Any employee"}
-        titleEm={isFr ? "qui veut vraiment maîtriser l'IA" : "who wants to truly master AI"}
-        tone="sand"
-      >
-        <Container className="text-fg max-w-3xl space-y-5 text-lg leading-relaxed">
-          <p>
-            {isFr
-              ? "Le 1-to-1 n'est pas réservé aux dirigeants. Il s'adresse à n'importe quel collaborateur qui a un poste précis, des outils précis, et des objectifs précis — et qui veut intégrer l'IA dans son travail réel, pas dans un cours théorique."
-              : "The 1-to-1 is not reserved for executives. It is for any employee who has a specific role, specific tools, and specific objectives — and who wants to integrate AI into their actual work, not in a theoretical course."}
-          </p>
-          <ul className="list-disc space-y-2 pl-6">
-            <li>
-              {isFr
-                ? "Manager d'équipe qui veut gagner du temps sur le reporting et le pilotage"
-                : "Team manager who wants to save time on reporting and management"}
-            </li>
-            <li>
-              {isFr
-                ? "Commercial qui veut accélérer la prospection et la rédaction de propositions"
-                : "Sales rep who wants to accelerate prospecting and proposal writing"}
-            </li>
-            <li>
-              {isFr
-                ? "RH qui veut automatiser les tâches répétitives (fiches de poste, onboarding, suivi)"
-                : "HR professional who wants to automate repetitive tasks (job descriptions, onboarding, tracking)"}
-            </li>
-            <li>
-              {isFr
-                ? "Opérateur ou technicien qui veut utiliser l'IA pour documenter, analyser et décider plus vite"
-                : "Operator or technician who wants to use AI to document, analyse and decide faster"}
-            </li>
-            <li>
-              {isFr
-                ? "Dirigeant qui veut comprendre et piloter l'IA sans passer par l'IT"
-                : "Executive who wants to understand and steer AI without going through IT"}
-            </li>
-          </ul>
-        </Container>
-      </Section>
-
-      <Section
-        eyebrow={isFr ? "Format" : "Format"}
-        title={isFr ? "Comment ça se passe" : "How it works"}
-      >
-        <Container>
-          <ProcessSteps
-            orientation="horizontal"
-            steps={[
-              {
-                id: "step-1-cadrage",
-                title: isFr ? "Cadrage individuel" : "Individual scoping",
-                description: isFr
-                  ? "30 min, gratuit. On apprend à connaître le poste, les outils utilisés, les tâches chronophages et les objectifs prioritaires de la personne."
-                  : "30 min, free. We get to know the role, tools used, time-consuming tasks and priority objectives of the person.",
-              },
-              {
-                id: "step-2-coaching",
-                title: isFr ? "Sessions de coaching" : "Coaching sessions",
-                description: isFr
-                  ? "En visio ou sur site selon la préférence. Rythme adapté à l'agenda — pas de format imposé. Chaque session travaille sur des cas réels tirés du quotidien de la personne."
-                  : "Remote or on-site according to preference. Pace adapted to the schedule — no imposed format. Each session works on real cases from the person's daily life.",
-              },
-              {
-                id: "step-3-progression",
-                title: isFr ? "Progression mesurable" : "Measurable progress",
-                description: isFr
-                  ? "À chaque étape, on valide ce qui est acquis et on ajuste la suite. L'objectif : que la personne soit autonome sur l'IA dans son poste — pas dépendante d'un prestataire."
-                  : "At each stage, we validate what has been acquired and adjust what comes next. The objective: the person becomes autonomous with AI in their role — not dependent on a provider.",
-              },
-            ]}
-          />
-        </Container>
-      </Section>
+      <UnAUnHero isFr={isFr} />
+      <UnAUnTarget isFr={isFr} />
+      <UnAUnMethodology isFr={isFr} />
 
       {/* Couverture nationale — composant centralisé Sprint 14.9 levier 3 */}
       <LocalCoverageSection
@@ -251,98 +92,8 @@ export default async function UnAUnHubPage({ params }: Props) {
       {/* FAQ géo locale — composant centralisé (FAQS_BY_SERVICE pré-existants) */}
       <LocalGeoFaqSection isFr={isFr} service="un-a-un" tone="sand" />
 
-      {/* FAQ générique 1-to-1 (5 questions essentielles, contenu factuel) */}
-      <Section
-        eyebrow={isFr ? "Questions fréquentes" : "Frequent questions"}
-        title={isFr ? "L'essentiel" : "The essentials"}
-        titleEm={isFr ? "à savoir" : "to know"}
-      >
-        <Container>
-          <FaqAccordion
-            className="mx-auto max-w-3xl"
-            items={
-              isFr
-                ? [
-                    {
-                      id: "duree-session",
-                      question: "Combien de temps dure une session ?",
-                      answer:
-                        "La journée standard fait 7 h sur site (9h-17h avec pause déjeuner). En visio, on adapte par blocs de 2-3 h selon l'agenda de la personne. Pas de format imposé.",
-                    },
-                    {
-                      id: "prix",
-                      question: "Combien ça coûte ?",
-                      answer: `${formattedPrice} pour la journée 1-to-1 dirigeant. Pour un collaborateur clé (non-dirigeant), 890 € HT. Frais de déplacement facturés en sus selon distance/durée — devis transparent avant signature.`,
-                    },
-                    {
-                      id: "visio-ou-site",
-                      question: "Visio ou sur site ?",
-                      answer:
-                        "Au choix. La visio fonctionne très bien pour le coaching IA (partage d'écran sur les outils réels de la personne). Le sur site est privilégié quand il faut voir le contexte physique (atelier, ligne de production, point de vente).",
-                    },
-                    {
-                      id: "outils",
-                      question: "Quels outils IA sont enseignés ?",
-                      answer:
-                        "Ceux que la personne utilise déjà ou qui correspondent à son poste : ChatGPT, Claude, Gemini, Microsoft Copilot, Perplexity, NotebookLM, plus les automatisations métier (Make, Zapier) si pertinent. Pas de techno imposée — on travaille sur ses outils réels.",
-                    },
-                    {
-                      id: "garantie",
-                      question: "Garantie de résultat ?",
-                      answer:
-                        "Si la personne n'a rien tiré de la journée (cas extrêmement rare), on rembourse intégralement. Concrètement, 100 % de nos clients 1-to-1 ressortent avec 3-5 automatisations ou améliorations directement applicables à leur poste.",
-                    },
-                  ]
-                : [
-                    {
-                      id: "session-length",
-                      question: "How long is a session?",
-                      answer:
-                        "Standard day is 7 h on-site (9am-5pm with lunch break). Remotely, we adapt in 2-3 h blocks based on the person's schedule. No imposed format.",
-                    },
-                    {
-                      id: "price",
-                      question: "How much does it cost?",
-                      answer: `${formattedPrice} for the 1-to-1 executive day. For a key employee (non-executive), €890 ex. VAT. Travel expenses billed separately based on distance/duration — transparent quote before signature.`,
-                    },
-                    {
-                      id: "remote-or-onsite",
-                      question: "Remote or on-site?",
-                      answer:
-                        "Either. Remote works very well for AI coaching (screen sharing on the person's real tools). On-site is preferred when the physical context matters (workshop, production line, point of sale).",
-                    },
-                    {
-                      id: "tools",
-                      question: "Which AI tools are taught?",
-                      answer:
-                        "The ones the person already uses or that fit their role: ChatGPT, Claude, Gemini, Microsoft Copilot, Perplexity, NotebookLM, plus business automations (Make, Zapier) if relevant. No imposed tech — we work on their real tools.",
-                    },
-                    {
-                      id: "guarantee",
-                      question: "Guarantee?",
-                      answer:
-                        "If the person got nothing from the day (extremely rare), we refund in full. Concretely, 100 % of our 1-to-1 customers come out with 3-5 automations or improvements directly applicable to their role.",
-                    },
-                  ]
-            }
-          />
-        </Container>
-      </Section>
-
-      <CtaBlock
-        title={isFr ? "Prêt à progresser sur l'IA ?" : "Ready to progress on AI?"}
-        description={
-          isFr
-            ? `À partir de ${formattedPrice}, sans engagement, en visio ou sur site partout en France métropolitaine.`
-            : `From ${formattedPrice}, no commitment, remote or on-site anywhere in metropolitan France.`
-        }
-        cta={
-          <Cta href="/contact" size="lg">
-            {isFr ? "Démarrer mon accompagnement 1-to-1" : "Start my 1-to-1 coaching"}
-          </Cta>
-        }
-        tone="dark"
-      />
+      <UnAUnFaq isFr={isFr} />
+      <UnAUnCtaBlock isFr={isFr} />
 
       {/* CTA mobile sticky — apparaît au scroll, masqué sur lg+ */}
       <StickyMobileCta
