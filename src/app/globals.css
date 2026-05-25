@@ -392,6 +392,34 @@
   will-change: opacity, text-shadow;
 }
 
+/* Sprint Quality 2026 — CaseStudyMarquee : carousel infini horizontal.
+   Pattern : track = items + items (dupliqués) → on translate de -50% pour boucler
+   sans saut visible. `prefers-reduced-motion` désactive auto.
+   Pause au hover du parent `.group` pour permettre lecture. */
+@keyframes caseScrollX {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.case-marquee-track {
+  will-change: transform;
+}
+
+.group:hover .case-marquee-track,
+.group:focus-within .case-marquee-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .case-marquee-track {
+    animation: none !important;
+  }
+}
+
 /* prefers-reduced-motion strict */
 @media (prefers-reduced-motion: reduce) {
   *,

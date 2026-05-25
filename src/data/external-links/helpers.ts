@@ -6,10 +6,10 @@
  * `trackExternalLinksUsage()` : persistence DB usageCount + lastUsedAt.
  * `refreshUsageStats()` : hydrate ALL_EXTERNAL_LINKS depuis DB.
  *
- * Server-only. NE PAS importer dans un composant client.
+ * Server-side. NE PAS importer dans un composant client.
+ * (note 2026-05-24 : `import "server-only"` retiré pour permettre l'usage
+ * depuis scripts/* + workers/* — convention codebase, cf. perplexity-search.ts.)
  */
-
-import "server-only";
 
 import type { ExternalLink, ExternalLinkAuthority, SelectExternalLinksOptions } from "./types";
 import { isCompetitorDomain } from "./types";

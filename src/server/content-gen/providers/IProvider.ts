@@ -22,6 +22,10 @@ export interface GenerationRequest {
   readonly role: ProviderRole;
   /// Modèle override par-job (sinon ProviderConfig.model default).
   readonly model?: string;
+  /// Provider préféré pour ce job (réordonne les candidates du router, sans casser
+  /// le fallback automatique). Sprint Quality 2026 — utilisé par landing_ville
+  /// generators pour forcer Claude Sonnet (verbosité + qualité éditoriale).
+  readonly preferredProvider?: ProviderKey;
   /// System prompt (prefix cache-friendly Anthropic).
   readonly systemPrompt: string;
   /// User prompt (variable, pas cache).

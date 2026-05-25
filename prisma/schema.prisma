@@ -3931,3 +3931,80 @@ model SiteRouteAnomaly {
   @@index([resolvedAt])
   @@map("site_route_anomalies")
 }
+
+/// Hub ville auto-généré (Sprint VilleCopy generator 2026-05-24).
+///
+/// Doctrine :
+///   - Source #1 = fichier statique `src/content/villes/copy/[slug].ts` (manuel curatié, ~40 villes pilotes).
+///   - Source #2 (fallback) = cette table, si `status=approved` ET ville sans fichier statique.
+///   - Source #3 (rien) = stub `noindex follow` (anti-doorway HCU 2024).
+///
+/// Le `getVille()` async résout dans cet ordre. La page hub utilise un seul
+/// chemin de rendu (le template 13 sections) — cette table évite juste
+/// d'avoir 500+ fichiers .ts manuels à écrire.
+///
+/// Champs FR uniquement (EN locale désactivé cf AGENTS.md).
+model GeneratedVilleCopy {
+  id        String @id @default(cuid())
+  villeSlug String @unique @map("ville_slug") @db.VarChar(100)
+
+  /// Pitch FR 30-50 mots citable LLMs (hero).
+  pitchFr String @map("pitch_fr") @db.VarChar(600)
+  /// Direct-answer FR 40-80 mots autonome (data-speakable-hero + AI Overviews).
+  directAnswerFr String @map("direct_answer_fr") @db.VarChar(900)
+  /// Écosystème économique local 30-60 mots (anti-doorway HCU).
+  ecosystemFr String @map("ecosystem_fr") @db.VarChar(800)
+  /// Distances clés 1-2 phrases (~25 mots) — gares, aéroports, métro.
+  distancesFr String @map("distances_fr") @db.VarChar(400)
+  /// Top secteurs NAF B2B locaux (array de strings, max 8).
+  topSectorsNaf String[] @default([]) @map("top_sectors_naf")
+
+  /// `servicesContext` (4 services × 25-50 mots fr) sérialisé.
+  /// Shape : { audit, interventions, implementation, unAUn } chacun { fr: string }.
+  servicesContextJson Json @map("services_context_json")
+  /// `faqGeolocalisee` (4-6 Q/R) sérialisé. Shape : [{ q, a }, ...].
+  faqGeolocaliseeJson Json @map("faq_geolocalisee_json")
+  /// `heroSchema` (centerSubLabel + 6 satellites) sérialisé. Shape : { centerSubLabel?, satellites: [...] }.
+  heroSchemaJson Json? @map("hero_schema_json")
+
+  /// Quality gate — score 0-100, gate auto-approve si >= autoApproveThreshold.
+  qualityScore        Int @map("quality_score")
+  /// Plagiarism check Jaccard score (0.0-1.0). >0.3 = rejet.
+  plagiarismScore     Decimal? @map("plagiarism_score") @db.Decimal(5, 3)
+  /// Anti-duplicate: max Jaccard vs les 5 verticales Article de la ville.
+  duplicateVsVerticales Decimal? @map("duplicate_vs_verticales") @db.Decimal(5, 3)
+
+  /// LLM cost tracking + AI Act art. 50 audit trail.
+  modelUsed   String @map("model_used") @db.VarChar(80)
+  totalCostUsd Decimal @map("total_cost_usd") @db.Decimal(10, 6)
+  promptHash  String  @map("prompt_hash") @db.VarChar(64)
+  tokensInput Int     @map("tokens_input")
+  tokensOutput Int    @map("tokens_output")
+
+  /// Provenance — quels champs KB ont alimenté le prompt.
+  kbContextUsed Json? @map("kb_context_used")
+
+  status      GeneratedVilleCopyStatus @default(generated)
+  reviewedBy  String?  @map("reviewed_by") @db.VarChar(120)
+  reviewedAt  DateTime? @map("reviewed_at")
+  reviewNotes String?  @map("review_notes") @db.Text
+
+  generatedAt DateTime @default(now()) @map("generated_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@index([status])
+  @@index([qualityScore])
+  @@index([villeSlug, status])
+  @@map("generated_ville_copies")
+}
+
+enum GeneratedVilleCopyStatus {
+  /// LLM output frais, pas encore validé — page reste noindex.
+  generated
+  /// Validée manuellement OU auto-approve si qualityScore >= seuil — page indexable.
+  approved
+  /// Rejetée — qualité insuffisante, ne sera pas utilisée. Re-gen possible.
+  rejected
+  /// Mise en quarantaine (ex : claim douteux, conflict avec fichier statique).
+  quarantined
+}

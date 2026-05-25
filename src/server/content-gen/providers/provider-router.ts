@@ -117,10 +117,27 @@ const ROLE_TO_PROVIDERS = {
  * - Telegram alert si fallback déclenché 5+ fois en 30s.
  */
 export async function generate(req: GenerationRequest): Promise<GenerationResponse> {
-  const candidates = ROLE_TO_PROVIDERS[req.role];
+  const baseCandidates = ROLE_TO_PROVIDERS[req.role] as ReadonlyArray<IProvider>;
+  // Sprint Quality 2026 — `preferredProvider` réordonne les candidates sans
+  // casser le fallback. Si le préféré est dans les candidates → en premier.
+  // Si le préféré est anthropicProvider mais pas dans `text` role par défaut,
+  // on l'ajoute en tête. Le fallback OpenAI reste activé en cas d'échec.
+  let candidates: ReadonlyArray<IProvider> = baseCandidates;
+  if (req.preferredProvider) {
+    const preferred = [
+      openaiProvider,
+      anthropicProvider,
+      perplexityProvider,
+      unsplashProvider,
+    ].find((p) => p.key === req.preferredProvider);
+    if (preferred) {
+      const rest = baseCandidates.filter((p) => p.key !== preferred.key);
+      candidates = [preferred, ...rest];
+    }
+  }
 
   let lastError: Error | null = null;
-  for (const provider of candidates as ReadonlyArray<IProvider>) {
+  for (const provider of candidates) {
     // Circuit breaker — skip provider si circuit ouvert
     if (isCircuitOpen(provider.key)) {
       lastError = new ProviderError(
