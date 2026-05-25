@@ -227,7 +227,6 @@ export function buildVilleServiceJsonLdGraph(
     schemas.push({
       "@context": "https://schema.org",
       "@type": "FAQPage",
-      speakable: buildSpeakableSpecification({ selectors: speakableSelectors }),
       mainEntity: faqItems.map((item, idx) => ({
         "@type": "Question",
         "@id": `${url}#faq-${idx + 1}`,

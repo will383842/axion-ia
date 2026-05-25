@@ -18,6 +18,7 @@ import type { Ville } from "@/content/villes";
 import type { VerticaleSlug } from "@/components/services/types";
 import { getNearbyVilles } from "@/lib/geo";
 import { fmtPopulation } from "@/lib/intl";
+import { SITE_URL } from "@/lib/seo";
 
 interface VilleCommunesProchesProps {
   /** Ville source (composite TS hardcode SSOT, cf. `@/content/villes`). */
@@ -48,9 +49,7 @@ function buildItemListJsonLd(args: {
   const payload = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: args.isFr
-      ? `Communes proches de ${args.sourceName}`
-      : `Cities near ${args.sourceName}`,
+    name: args.isFr ? `Communes proches de ${args.sourceName}` : `Cities near ${args.sourceName}`,
     numberOfItems: args.items.length,
     itemListElement: args.items.map((it, idx) => ({
       "@type": "ListItem",
@@ -97,26 +96,23 @@ export async function VilleCommunesProches(props: VilleCommunesProchesProps) {
   const sectionId = `ville-communes-proches-${ville.slug}`;
   const headingId = `${sectionId}-h`;
 
-  // Construit les items pour JSON-LD (URL canonique relative — l'absolutisation
-  // se fait via le builder global si jamais embarqué dans un @graph).
+  // P0-04 audit E2E Sprint A 2026-05-25 — ItemList Schema.org exige des URLs
+  // absolues. Les URLs relatives sont rejetées par Google AI Overviews / Perplexity
+  // pour le maillage AEO (~12 900 pages impactées avant correctif).
+  const localePrefix = isFr ? "fr" : "en";
   const jsonLdItems = nearby.map(({ ville: v }) => ({
-    url: `/implantations/${v.region}/${v.slug}${suffix}`,
+    url: `${SITE_URL}/${localePrefix}/implantations/${v.region}/${v.slug}${suffix}`,
     name: v.nameFr,
   }));
 
   return (
-    <section
-      aria-labelledby={headingId}
-      className="border-border-strong border-t pt-12"
-    >
+    <section aria-labelledby={headingId} className="border-border-strong border-t pt-12">
       <h2
         id={headingId}
         className="text-fg text-xl leading-tight font-semibold tracking-tight sm:text-2xl"
         style={{ fontFamily: "var(--font-serif)" }}
       >
-        {isFr
-          ? `Communes proches de ${ville.nameFr}`
-          : `Cities near ${ville.nameFr}`}
+        {isFr ? `Communes proches de ${ville.nameFr}` : `Cities near ${ville.nameFr}`}
       </h2>
       <p className="text-fg-soft mt-3 max-w-2xl text-base leading-relaxed">
         {isFr
@@ -127,21 +123,14 @@ export async function VilleCommunesProches(props: VilleCommunesProchesProps) {
             ? `Cities eligible for the same services within close range of ${ville.nameFr}, sorted by distance.`
             : `Surrounding cities covered by Axion-IA, sorted by distance from ${ville.nameFr}.`}
       </p>
-      <ul
-        role="list"
-        className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4"
-      >
+      <ul role="list" className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
         {nearby.map(({ ville: v, distanceKm }) => (
           <li key={v.slug}>
             <Link
               href={`/implantations/${v.region}/${v.slug}${suffix}` as never}
               data-source-region={v.region}
               data-source-ville={v.slug}
-              data-cta-tracking={
-                verticale
-                  ? `ville_${verticale}_nearby`
-                  : `ville_hub_nearby`
-              }
+              data-cta-tracking={verticale ? `ville_${verticale}_nearby` : `ville_hub_nearby`}
               className="group hover:bg-sand focus-visible:ring-terracotta block rounded-lg px-3 py-2.5 transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
             >
               <span

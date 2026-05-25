@@ -34,8 +34,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? "Implantations · Cabinet IA opérationnel partout en France"
       : "Locations · Operational AI consultancy across France",
     description: isFr
-      ? "Axion-IA intervient sur site dans 12 régions et plus de 2 150 communes françaises. Trouvez votre métropole, vos villes proches et votre cabinet IA opérationnel local."
-      : "Axion-IA operates on site across 12 regions and 2,150+ French communes. Find your metropolitan area, nearby cities and your local operational AI consultancy.",
+      ? "Axion-IA intervient sur site dans 12 régions et 2 150+ communes françaises. Trouvez votre métropole et votre cabinet IA opérationnel local."
+      : "Axion-IA operates on site across 12 regions and 2,150+ French communes. Find your metropolitan area and your local operational AI consultancy.",
     alternates: { fr: "/implantations", en: "/locations" },
   });
 }

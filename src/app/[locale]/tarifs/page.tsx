@@ -49,8 +49,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     locale,
     path: "/tarifs",
     title: isFr
-      ? "Tarifs Axion-IA · Audits, Formations, Implémentations, 1-to-1, Plateforme"
-      : "Axion-IA pricing · Audits, Trainings, Implementations, 1-to-1, Platform",
+      ? "Tarifs IA · Audits, Formations, Implémentations · Axion-IA"
+      : "AI pricing · Audits, Training, Implementations · Axion-IA",
     description: isFr
       ? "Tous nos tarifs IA en transparence : Audits dès 490 € HT, Formations dès 590 € HT, Implémentations dès 990 € HT, 1-to-1 dès 990 € HT, Plateforme web/SaaS sur devis."
       : "All our AI pricing, transparent: Audits from €490 ex. VAT, Trainings from €590, Implementations from €990, 1-to-1 from €990, Web platform/SaaS on quote.",

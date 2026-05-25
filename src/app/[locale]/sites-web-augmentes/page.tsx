@@ -27,12 +27,8 @@ import { SitesWebStackAdaptee } from "@/components/services/sites-web/SitesWebSt
 import { SitesWebMethodology } from "@/components/services/sites-web/SitesWebMethodology";
 import { SitesWebFaq } from "@/components/services/sites-web/SitesWebFaq";
 import { SitesWebCtaBlock } from "@/components/services/sites-web/SitesWebCtaBlock";
-import {
-  buildProductMetadata,
-  buildServiceJsonLd,
-  buildItemListJsonLd,
-  SITE_URL,
-} from "@/lib/seo";
+import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
+import { buildProductMetadata, buildServiceJsonLd, buildItemListJsonLd, SITE_URL } from "@/lib/seo";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
 
 interface Props {
@@ -155,6 +151,11 @@ export default async function SitesWebAugmentesHub({ params }: Props) {
       <LocalGeoFaqSection isFr={isFr} service="codage-developpement" tone="paper" />
 
       <SitesWebCtaBlock isFr={isFr} />
+
+      <StickyMobileCta
+        label={isFr ? "Demander un devis" : "Request a quote"}
+        href="/demande-devis"
+      />
     </>
   );
 }

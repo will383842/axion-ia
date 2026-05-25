@@ -3,7 +3,7 @@
  *
  * Module 2 Axion-IA : audit IA d'optimisation entreprise. Tarifs SSOT :
  *   TPE 290 € · PME 690 € · ETI 1290 € (à distance ; +200/300/700 € sur site).
- * Tone : analytique, ROI-focused, "diagnostic complet en 5 jours ouvrés".
+ * Tone : analytique, ROI-focused, "diagnostic structuré avec délai adapté à votre situation".
  *
  * Migration depuis `landing-ville-templates.ts` variant `focus_audit`
  * (supprimé en Phase 5 commit 1).
@@ -29,12 +29,12 @@ KPIs centraux : gain de temps mesurable, économies cachées identifiées,
 optimisation main-d'œuvre. Tarifs Audit (TPE 290 € · PME 690 € · ETI 1290 €
 à distance ; +200/300/700 € sur site).
 
-Tone : analytique, ROI-focused, "diagnostic complet en 5 jours ouvrés".
+Tone : analytique, ROI-focused, "diagnostic structuré, délai adapté à votre situation".
 Sub-prompt complet : prompts/landing-ville.md megapack (variant audits).`,
   userPromptFocusSection: `## Focus AUDITS (Module 2)
 Pivote sur l'audit IA d'optimisation. Tone diagnostic, ROI, gain temps/argent.
 Mention : grille 4 tailles entreprise × 2 modalités (à distance / sur site).
-CTA principal : /audit (formulaire 5 étapes → rapport 5 jours ouvrés).
+CTA principal : /audit (formulaire 5 étapes → rapport avec délai adapté à votre situation).
 Sections obligatoires : Hero audit · 4 tailles entreprise · ROI estimé · FAQ
 audit × 8 · CTA audit final.`,
   recommendedCtaHref: "/audit",

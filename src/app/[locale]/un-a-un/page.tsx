@@ -43,8 +43,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? "Coaching IA individuel 1-to-1 · Axion-IA"
       : "1-to-1 individual AI coaching · Axion-IA",
     description: isFr
-      ? "Un expert IA Axion-IA dédié à une personne. Coaching individuel calibré sur le poste, les outils et les objectifs réels du collaborateur — manager, RH, commercial, opérateur, dirigeant."
-      : "One Axion-IA AI expert dedicated to one person. Individual coaching calibrated to the role, tools and real objectives of the employee — manager, HR, sales, operator, executive.",
+      ? "1 expert IA dédié à 1 personne. Coaching individuel calibré sur le poste et les objectifs du collaborateur — manager, RH, commercial, dirigeant. Résultats mesurables."
+      : "1 AI expert dedicated to 1 person. Coaching calibrated to role and objectives — manager, HR, sales, executive. Measurable results.",
     alternates: { fr: "/un-a-un", en: "/one-to-one" },
   });
 }

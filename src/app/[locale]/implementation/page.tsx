@@ -79,8 +79,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         : "AI implementation · Catalogue by function · Axion-IA",
     description:
       loc === "fr"
-        ? `Catalogue d'automatisations IA par fonction d'entreprise (service client, ventes, marketing, RH, données, métier...). Forfait fixe à partir de ${entryAutomatisation}, sans abonnement mensuel, livraison 2-6 semaines.`
-        : `AI automation catalogue by business function (customer service, sales, marketing, HR, data, operations...). Fixed fee from ${entryAutomatisation}, no monthly subscription, 2-6 week delivery.`,
+        ? `Automatisations IA par fonction (service client, ventes, RH, données…). Forfait fixe dès ${entryAutomatisation}, sans abonnement, livraison 2-6 semaines. Résultats mesurables.`
+        : `AI automations by function (customer service, sales, HR, data…). Fixed fee from ${entryAutomatisation}, no subscription, 2-6 week delivery. Measurable results.`,
   });
 }
 

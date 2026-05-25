@@ -361,6 +361,7 @@ export default async function VilleVerticalePage({ params }: Props) {
   const breadcrumbJsonLd = buildBreadcrumbJsonLd({
     locale: loc,
     items: [
+      { name: isFr ? "Accueil" : "Home", href: "/" },
       { name: isFr ? "Implantations" : "Locations", href: "/implantations" },
       { name: region.nameFr, href: `/implantations/${region.slug}` },
       { name: ville.nameFr, href: `/implantations/${region.slug}/${ville.slug}` },
@@ -378,7 +379,7 @@ export default async function VilleVerticalePage({ params }: Props) {
     inLanguage: loc,
     isPartOf: { "@id": `${SITE_URL}/#website` },
     breadcrumb: { "@id": `${url}#breadcrumb` },
-    datePublished: article.publishedAt?.toISOString(),
+    datePublished: article.publishedAt?.toISOString() ?? new Date().toISOString(),
   } as const;
 
   return (

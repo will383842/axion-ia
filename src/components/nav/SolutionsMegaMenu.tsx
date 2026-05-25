@@ -69,7 +69,7 @@ export function SolutionsMegaMenu({
   return (
     <HeaderMegaMenu
       triggerLabel={triggerLabel}
-      triggerHref="/contact"
+      triggerHref="/implementation"
       triggerTrackingId="header_megamenu_solutions"
       panelLabel={panelLabel}
       panelAlign="left"

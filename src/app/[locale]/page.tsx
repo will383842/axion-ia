@@ -67,17 +67,21 @@ export async function generateMetadata({ params }: HomeProps): Promise<Metadata>
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   const isFr = locale === "fr";
-  return buildProductMetadata({
-    locale,
-    path: "/",
-    title: isFr
-      ? "Cabinet IA Paris · Formations · Audits · Axion-IA"
-      : "AI Consultancy Paris · Training · Audits · Axion-IA",
-    description: isFr
-      ? `Cabinet IA 100 % seniors, zéro intermédiaire. Formations, audits chiffrés, coaching 1-to-1 et implémentations pour TPE, PME et ETI. Résultats mesurables, hébergement UE, à partir de ${formatAmount(getEntryPriceEur(INTERVENTION_TIERS) ?? 0, "fr", { compact: true })}.`
-      : `Senior-only AI consultancy, zero middlemen. Training, costed audits, 1-to-1 coaching and implementation for SMBs and mid-market firms. Measurable results, EU hosting, from ${formatAmount(getEntryPriceEur(INTERVENTION_TIERS) ?? 0, "en", { compact: true })}.`,
-    alternates: { fr: "/", en: "/" },
-  });
+  const titleStr = isFr
+    ? "Cabinet IA Paris · Formations · Audits · Axion-IA"
+    : "AI Consultancy Paris · Training · Audits · Axion-IA";
+  return {
+    ...buildProductMetadata({
+      locale,
+      path: "/",
+      title: titleStr,
+      description: isFr
+        ? `Cabinet IA 100 % seniors, zéro intermédiaire. Audits, formations, coaching 1-to-1, implémentations pour TPE/PME. Résultats mesurables, hébergement UE, dès ${formatAmount(getEntryPriceEur(INTERVENTION_TIERS) ?? 0, "fr", { compact: true })}.`
+        : `Senior-only AI consultancy, zero middlemen. Audits, training, 1-to-1 coaching, implementations for SMBs. Measurable results, EU hosting, from ${formatAmount(getEntryPriceEur(INTERVENTION_TIERS) ?? 0, "en", { compact: true })}.`,
+      alternates: { fr: "/", en: "/" },
+    }),
+    title: { absolute: titleStr },
+  };
 }
 
 export default async function Home({ params }: HomeProps) {

@@ -60,7 +60,11 @@ export function FadeInOnView({ children, delay = 0, className }: FadeInOnViewPro
       style={{
         opacity: 1,
         transform: animated ? "translate3d(0, 0, 0)" : "translate3d(0, 8px, 0)",
-        transition: `transform 400ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms`,
+        transition:
+          typeof window !== "undefined" &&
+          window.matchMedia("(prefers-reduced-motion: reduce)").matches
+            ? "none"
+            : `transform 400ms cubic-bezier(0.16, 1, 0.3, 1) ${delay}ms`,
         willChange: animated ? "auto" : "transform",
       }}
     >

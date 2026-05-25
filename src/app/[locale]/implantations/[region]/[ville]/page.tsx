@@ -281,6 +281,7 @@ export default async function VilleHubPage({ params }: Props) {
   const breadcrumbJsonLd = buildBreadcrumbJsonLd({
     locale: loc,
     items: [
+      { name: isFr ? "Accueil" : "Home", href: "/" },
       { name: isFr ? "Implantations" : "Locations", href: "/implantations" },
       { name: region.nameFr, href: `/implantations/${region.slug}` },
       { name: ville.nameFr, href: path },
@@ -323,7 +324,10 @@ export default async function VilleHubPage({ params }: Props) {
       >
         <Container>
           <p className="text-fg-muted mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
-            <span aria-hidden="true" className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle" />
+            <span
+              aria-hidden="true"
+              className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
+            />
             {isFr ? `Implantations · ${region.nameFr}` : `Locations · ${region.nameFr}`}
           </p>
           <h1
@@ -336,11 +340,17 @@ export default async function VilleHubPage({ params }: Props) {
             </span>
             {` (${ville.departementLabel ?? ville.departement})`}
           </h1>
-          <p className="text-fg-soft mt-6 max-w-3xl text-lg leading-relaxed sm:text-xl" data-speakable-hero>
+          <p
+            className="text-fg-soft mt-6 max-w-3xl text-lg leading-relaxed sm:text-xl"
+            data-speakable-hero
+          >
             {isFr ? (copy.directAnswerFr ?? copy.pitchFr) : (copy.directAnswerEn ?? copy.pitchEn)}
           </p>
           <div className="text-fg-muted mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
-            <span>{fmtPopulation(ville.population, isFr ? "fr" : "en")} {isFr ? "habitants" : "inhabitants"}</span>
+            <span>
+              {fmtPopulation(ville.population, isFr ? "fr" : "en")}{" "}
+              {isFr ? "habitants" : "inhabitants"}
+            </span>
             <span>{region.nameFr}</span>
             {ville.postalCode ? <span className="tabular-nums">{ville.postalCode}</span> : null}
           </div>
@@ -350,11 +360,25 @@ export default async function VilleHubPage({ params }: Props) {
               : `Micro-business, SMB, mid-market or large enterprise — in ${ville.nameFr} as anywhere in France, you get the same premium senior standard. Public pricing, real-time calendar, your data stays yours.`}
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-3">
-            <Cta href="/appel" variant="primary" size="lg" shape="pill" track="ville_cta_book" data-source-ville={ville.slug}>
+            <Cta
+              href="/appel"
+              variant="primary"
+              size="lg"
+              shape="pill"
+              track="ville_cta_book"
+              data-source-ville={ville.slug}
+            >
               {isFr ? "Réserver un appel" : "Book a call"}
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Cta>
-            <Cta href="/contact" variant="ghost" size="lg" shape="pill" track="ville_cta_contact" data-source-ville={ville.slug}>
+            <Cta
+              href="/contact"
+              variant="ghost"
+              size="lg"
+              shape="pill"
+              track="ville_cta_contact"
+              data-source-ville={ville.slug}
+            >
               {isFr ? "Nous contacter" : "Contact us"}
             </Cta>
           </div>
@@ -405,7 +429,10 @@ export default async function VilleHubPage({ params }: Props) {
                   href={`/implantations/${region.slug}/${ville.slug}/${v.slug}` as never}
                   className="group bg-paper border-border hover:border-terracotta hover:shadow-elevated focus-visible:ring-terracotta relative flex h-full flex-col overflow-hidden rounded-2xl border-2 p-6 transition-all duration-300 hover:-translate-y-1 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none md:p-7"
                 >
-                  <span aria-hidden="true" className="bg-terracotta absolute inset-x-0 top-0 h-1.5 origin-left" />
+                  <span
+                    aria-hidden="true"
+                    className="bg-terracotta absolute inset-x-0 top-0 h-1.5 origin-left"
+                  />
                   <h3
                     className="text-fg text-[clamp(1.5rem,2vw,2rem)] leading-[1.06] font-semibold tracking-tight"
                     style={{ fontFamily: "var(--font-serif)" }}
@@ -418,7 +445,10 @@ export default async function VilleHubPage({ params }: Props) {
                   <div className="flex-1" />
                   <span className="border-border text-terracotta group-hover:text-terracotta-deep mt-6 inline-flex items-center gap-2 border-t pt-4 text-sm font-semibold">
                     {isFr ? "Découvrir le module" : "Discover the module"}
-                    <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
+                    <ArrowRight
+                      className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+                      aria-hidden="true"
+                    />
                   </span>
                 </Link>
               </li>

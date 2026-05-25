@@ -97,6 +97,9 @@ export function buildCspHeader({ nonce, strict }: BuildCspOptions): string {
   // doit être mis à jour. À monitorer en CI via test e2e qui vérifie
   // /admin /login affiche 0 erreur CSP en console.
   const SPECULATION_RULES_HASH = "'sha256-vy7BO95SqCwcPVAwxQTU/zWpSiYL9C1CWCCb1LB+ni4='";
+  // Calendly inline widget (`/appel` Sprint A correctif 2026-05-25) charge
+  // `assets.calendly.com/assets/external/widget.js` via next/script lazyOnload.
+  // Connect + frame ajoutés plus bas pour l'iframe `calendly.com/{user}/{event}`.
   const scriptSrc = strict
     ? [
         "script-src",
@@ -118,6 +121,7 @@ export function buildCspHeader({ nonce, strict }: BuildCspOptions): string {
         "https://plausible.axion-ia.com",
         "https://www.clarity.ms",
         "https://*.clarity.ms",
+        "https://assets.calendly.com",
       ].join(" ");
 
   return [
@@ -129,10 +133,11 @@ export function buildCspHeader({ nonce, strict }: BuildCspOptions): string {
     // Sprint X.2 — `https://api.stripe.com` requis pour Stripe.js (publishable
     // key client) + côté serveur indirect via Checkout redirect. `https://checkout.stripe.com`
     // frame-src pour 3DS challenges si on bascule un jour à Stripe Elements (V1.5+).
-    "connect-src 'self' https://challenges.cloudflare.com https://plausible.axion-ia.com https://api.telegram.org https://*.ingest.sentry.io https://*.ingest.de.sentry.io https://*.ingest.us.sentry.io https://api.stripe.com https://www.clarity.ms https://*.clarity.ms",
+    "connect-src 'self' https://challenges.cloudflare.com https://plausible.axion-ia.com https://api.telegram.org https://*.ingest.sentry.io https://*.ingest.de.sentry.io https://*.ingest.us.sentry.io https://api.stripe.com https://www.clarity.ms https://*.clarity.ms https://calendly.com https://*.calendly.com",
     // `plausible.axion-ia.com` autorisé pour l'embed dashboard dans
     // /fr/{prefix}/analytics (Plausible "Shared link" iframe).
-    "frame-src 'self' https://challenges.cloudflare.com https://checkout.stripe.com https://plausible.axion-ia.com",
+    // `calendly.com` autorisé pour l'embed booking inline sur /appel.
+    "frame-src 'self' https://challenges.cloudflare.com https://checkout.stripe.com https://plausible.axion-ia.com https://calendly.com",
     "frame-ancestors 'none'",
     "form-action 'self'",
     "base-uri 'self'",

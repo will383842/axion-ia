@@ -116,7 +116,7 @@ export function HeaderMegaMenu({
     >
       <Link
         href={triggerHref as never}
-        aria-haspopup="true"
+        aria-haspopup="dialog"
         aria-expanded={open}
         className="text-mocha-fg hover:text-mocha focus-visible:ring-mocha-fg focus-visible:ring-offset-terracotta inline-flex items-center gap-1.5 rounded-sm px-1 text-[17px] font-semibold tracking-tight transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
         data-cta-tracking={triggerTrackingId}

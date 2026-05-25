@@ -25,7 +25,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const meta = buildProductMetadata({
     locale,
     path: "/faq",
-    title: locale === "fr" ? "FAQ · cabinet IA Axion-IA" : "FAQ · Axion-IA AI consultancy",
+    title:
+      locale === "fr"
+        ? "FAQ IA entreprise · Questions fréquentes · Axion-IA"
+        : "AI FAQ · Frequently asked questions · Axion-IA",
     description:
       locale === "fr"
         ? "Questions fréquentes sur les interventions IA, l'audit, l'implémentation, la souveraineté des données, la facturation."

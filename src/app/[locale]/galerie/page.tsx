@@ -50,7 +50,10 @@ export async function generateMetadata({
   const filters = await searchParams;
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
 
-  let title = locale === "fr" ? "Banque d'images Axion-IA" : "Axion-IA Image Bank";
+  let title =
+    locale === "fr"
+      ? "Banque d'images IA — Visuels libres CC BY · Axion-IA"
+      : "AI Image Bank — Free CC BY visuals · Axion-IA";
   const description =
     locale === "fr"
       ? "Banque d'images Axion-IA — IA opérationnelle, audits IA, implémentations Claude. Toutes sous licence CC BY 4.0."

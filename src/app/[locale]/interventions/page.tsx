@@ -65,8 +65,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         : "Corporate AI sessions · 4 families · France & international",
     description:
       loc === "fr"
-        ? `Interventions et formations IA opérationnelles sur site organisées en 4 blocs : formations équipe (4 h à 3 j+, à partir de ${essentiellePrice}), coaching individuel 1-to-1, journée stratégique dirigeants, et conférence plénière. France et international.`
-        : `Operational AI sessions on site organised in 4 blocks: team trainings (4 h to 3 d+, from ${essentiellePrice}), 1-on-1 coaching, executive strategic day, and plenary talk. France and international.`,
+        ? `Formations et interventions IA sur site en 4 familles : équipe (dès ${essentiellePrice}), coaching 1-to-1, journée dirigeants, conférence. France et international.`
+        : `On-site AI sessions in 4 blocks: team training (from ${essentiellePrice}), 1-on-1 coaching, executive day, plenary talk. France and international.`,
   });
 }
 

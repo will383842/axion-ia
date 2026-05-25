@@ -201,6 +201,16 @@ const nextConfig: NextConfig = {
         destination: "/sitemap-index.xml",
         permanent: true,
       },
+      {
+        source: "/:locale(fr|en)/audit/cibl%C3%A9",
+        destination: "/:locale/audit/cible",
+        permanent: true,
+      },
+      {
+        source: "/:locale(fr|en)/audit/ciblé",
+        destination: "/:locale/audit/cible",
+        permanent: true,
+      },
     ];
   },
   async headers() {

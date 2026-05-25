@@ -45,7 +45,7 @@ export function InterventionsAudienceStrip({ isFr }: InterventionsAudienceStripP
   return (
     <section className="bg-paper border-border border-y py-10">
       <Container className={TIGHT_X}>
-        <ul className="grid grid-cols-2 gap-6 sm:gap-8 lg:grid-cols-4">
+        <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-8 lg:grid-cols-4">
           {audienceStrip.map((item) => {
             const Icon = item.icon;
             return (

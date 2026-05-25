@@ -334,7 +334,7 @@ export async function renderVilleServicePage({
   return (
     <>
       <Container className="border-border border-b py-3">
-        <Breadcrumbs items={breadcrumbItems} />
+        <Breadcrumbs items={breadcrumbItems} emitJsonLd={false} />
       </Container>
 
       {/* Direct-answer AEO : citable verbatim par Perplexity / Claude / Google AI Overviews.

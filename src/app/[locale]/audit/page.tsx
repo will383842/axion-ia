@@ -26,19 +26,9 @@ import { AuditMaturityLevels } from "@/components/services/audit/AuditMaturityLe
 import { AuditCrossModules } from "@/components/services/audit/AuditCrossModules";
 import { AuditMethodology } from "@/components/services/audit/AuditMethodology";
 import { AuditCtaBlock } from "@/components/services/audit/AuditCtaBlock";
-import {
-  AUDIT_TIERS,
-  formatAmount,
-  formatAmountRange,
-  getTierById,
-} from "@/content/pricing";
+import { AUDIT_TIERS, formatAmount, formatAmountRange, getTierById } from "@/content/pricing";
 import { AUDIT_BY_SIZE, AUDIT_TIERS_META, auditTierPath } from "@/content/audit-taxonomy";
-import {
-  buildProductMetadata,
-  buildServiceJsonLd,
-  buildItemListJsonLd,
-  SITE_URL,
-} from "@/lib/seo";
+import { buildProductMetadata, buildServiceJsonLd, buildItemListJsonLd, SITE_URL } from "@/lib/seo";
 
 // ============================================================================
 // Sprint A · Phase 3 Refactor-1 (Will 2026-05-25) — page hub /audit reconstruite
@@ -75,18 +65,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   });
   const pmeRange = formatAmountRange(pmeTier.priceMin!, pmeTier.priceMax!, loc, { compact: true });
   const etiFrom = formatAmount(etiTier.priceMin!, loc, { compact: true });
-  return buildProductMetadata({
-    locale,
-    path: "/audit",
-    title:
-      loc === "fr"
-        ? `Audit IA PME & ETI · 4 niveaux · Flash dès ${flash} · Axion-IA`
-        : `AI audit for SMEs & mid-caps · 4 levels · from ${flash} · Axion-IA`,
-    description:
-      loc === "fr"
-        ? `4 niveaux d'audit IA : Flash ${flash}, Audit ciblé ${cibleRange}, Stratégique PME ${pmeRange}, Stratégique ETI à partir de ${etiFrom}. Choisissez selon votre taille ou votre situation.`
-        : `4-level AI audit: Flash ${flash}, Targeted ${cibleRange}, Strategic SMB ${pmeRange}, Strategic mid-cap from ${etiFrom}. Choose by size or by situation.`,
-  });
+  const titleStr =
+    loc === "fr"
+      ? `Audit IA PME & ETI · 4 niveaux · Flash dès ${flash} · Axion-IA`
+      : `AI audit for SMEs & mid-caps · 4 levels · from ${flash} · Axion-IA`;
+  return {
+    ...buildProductMetadata({
+      locale,
+      path: "/audit",
+      title: titleStr,
+      description:
+        loc === "fr"
+          ? `4 niveaux d'audit IA : Flash ${flash}, Audit ciblé ${cibleRange}, Stratégique PME ${pmeRange}, Stratégique ETI à partir de ${etiFrom}. Choisissez selon votre taille ou votre situation.`
+          : `4-level AI audit: Flash ${flash}, Targeted ${cibleRange}, Strategic SMB ${pmeRange}, Strategic mid-cap from ${etiFrom}. Choose by size or by situation.`,
+    }),
+    title: { absolute: titleStr },
+  };
 }
 
 export default async function AuditHub({ params }: Props) {

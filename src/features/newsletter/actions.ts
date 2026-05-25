@@ -11,6 +11,7 @@
 "use server";
 
 import crypto from "node:crypto";
+import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
 import { newsletterSchema } from "@/lib/schemas/forms";
 import { checkRateLimit } from "@/lib/rate-limit";
@@ -168,6 +169,7 @@ export async function confirmNewsletterAction(token: string | null): Promise<Con
     // confirmations perdues sont invisibles côté ops.
     const cause = err instanceof Error ? err.message : String(err);
     console.error(`[confirmNewsletter] DB error: ${cause}`);
+    Sentry.captureException(err);
     return { ok: false, error: "internal" };
   }
 }
@@ -210,7 +212,8 @@ export async function unsubscribeNewsletterAction(token: string | null): Promise
       silent: true,
     });
     return { ok: true, alreadyUnsubscribed: false, email: sub.email };
-  } catch {
+  } catch (err) {
+    Sentry.captureException(err);
     return { ok: false, error: "internal" };
   }
 }

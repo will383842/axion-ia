@@ -274,6 +274,7 @@ export const routing = defineRouting({
       fr: "/cas-concrets/secteur/[slug]",
       en: "/case-studies/industry/[slug]",
     },
+    "/appel": { fr: "/appel", en: "/book-a-call" },
     "/reserver": { fr: "/reserver", en: "/book" },
     // Sprint Header refonte 2026-05-24 (Will) — page récap tarifs multi-modules
     // (Audit / Formations / 1-to-1 / Implémentation / Plateforme). Source de

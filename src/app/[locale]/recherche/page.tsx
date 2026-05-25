@@ -22,7 +22,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const meta = buildProductMetadata({
     locale,
     path: "/recherche",
-    title: locale === "fr" ? "Recherche · Axion-IA" : "Search · Axion-IA",
+    title:
+      locale === "fr"
+        ? "Recherche base de connaissances IA · Axion-IA"
+        : "Search AI knowledge base · Axion-IA",
     description:
       locale === "fr"
         ? "Recherche full-text sur la base de connaissances Axion-IA (KB V4)."
