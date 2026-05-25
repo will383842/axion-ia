@@ -1,0 +1,34 @@
+url-pattern|schema-type|required-fields-ok|issues
+/[locale]/layout (global)|Organization|YES|No @id self-reference issue; vatID/registrationNumber optional env-gated (acceptable); sameAs hard-codes 2 social URLs + wikidata env — OK
+/[locale]/layout (global)|WebSite|YES|url uses locale prefix only (not SITE_URL/fr) — minor; SearchAction urlTemplate locale-dynamic — OK
+/[locale]/layout (global)|SiteNavigationElement|YES|hasPart array valid; urls are absolute — OK
+/[locale]/page (home)|FAQPage|YES|mainEntity array; acceptedAnswer present; numberOfItems present (buildFaqSpeakableJsonLd); Speakable cssSelector present — OK
+/[locale]/page (home)|LocalBusiness (ProfessionalService)|YES|name/url present; areaServed present; address absent intentionally (SAB pattern); NO geo/openingHours — correct per Google SAB guidelines
+/[locale]/page (home)|Service x5|PARTIAL|name/provider/areaServed present; provider uses @id ref to Organization (good); areaServed is plain string "FR" not typed object — minor (valid but weaker)
+/[locale]/page (home)|VideoObject (conditional)|PARTIAL|name/description/thumbnailUrl/uploadDate present; contentUrl/embedUrl present; uploadDate sourced from VIDEO_TESTIMONIALS — depends on data; if VIDEO_TESTIMONIALS is empty array, schema not emitted — OK
+/[locale]/audit/page|Service|YES|name/description/provider(Organization)/areaServed(auto-injected from buildServiceAreasServed) — all present; dateModified auto BUILD_DATE — OK
+/[locale]/audit/page|ItemList|YES|name/url/numberOfItems/itemListElement[position/name/url] all present — OK
+/[locale]/audit/par-ville/[ville]/page → VilleServicePageTemplate|Service|YES|name/description/url/provider/areaServed[City+AdministrativeArea+Country] — all fields present; dateModified auto — OK
+/[locale]/audit/par-ville/[ville]/page → VilleServicePageTemplate|LocalBusiness+ProfessionalService|YES|@type array valid; @id present; name/description/url/email/image present; address(PostalAddress+addressLocality+addressRegion+addressCountry) present; areaServed(City) present; parentOrganization refs root — OK; NO geo/openingHours/priceRange (SAB-safe) — OK
+/[locale]/audit/par-ville/[ville]/page → VilleServicePageTemplate|BreadcrumbList|YES|@id present; itemListElement[position/name/item] — item is absolute URL — OK; 3-level hierarchy — correct
+/[locale]/audit/par-ville/[ville]/page → VilleServicePageTemplate|FAQPage|CONDITIONAL|emitted only if faqItems.length>0; mainEntity[Question+acceptedAnswer] present; @id per Q present; Speakable cssSelector conditional on directAnswer — OK; duplicate Speakable on both FAQPage AND WebPage schemas — P1 WARNING (2x speakable on same page)
+/[locale]/audit/par-ville/[ville]/page → VilleServicePageTemplate|HowTo|CONDITIONAL|emitted only if methodologySteps.length>=3; name/description/url/inLanguage/totalTime present; steps[HowToStep+position+name+text] — OK; estimatedCost conditional on priceEur — OK
+/[locale]/audit/par-ville/[ville]/page → VilleServicePageTemplate|Person (Manon)|PARTIAL|@type/name/jobTitle/worksFor present; NO @id on Person — P2 (no @id = not referenceable in graph); NO sameAs intentional (doctrine v2.1 personas) — acceptable; knowsAbout array — OK
+/[locale]/audit/par-ville/[ville]/page → VilleServicePageTemplate|WebPage|YES|@id present; url/name/abstract/alternativeHeadline/description/inLanguage/isPartOf/@id/breadcrumb/@id — all present; potentialAction(ReserveAction) — OK; Speakable present — OK
+/[locale]/audit/par-ville/[ville]/page → VilleServicePageTemplate|ItemList (villes proches)|CONDITIONAL|emitted only if nearbyVilles.length>0; name/url/numberOfItems/itemListElement[position/name/url] — OK
+/[locale]/interventions/par-ville/[ville]/page|Same as audit/par-ville|YES|Same template (renderVilleServicePage), same schema set — all validation identical
+/[locale]/implementation/par-ville/[ville]/page|Same as audit/par-ville|YES|Same template — identical
+/[locale]/un-a-un/par-ville/[ville]/page|Same as audit/par-ville|YES|Same template — identical
+/[locale]/implantations/[region]/[ville]/page (hub)|Service|YES|name/description/url/provider/areaServed[City+AdministrativeArea+Country]/dateModified — all present — OK
+/[locale]/implantations/[region]/[ville]/page (hub)|Place|YES|@type/name/url/geo(GeoCoordinates+lat+lon)/containedInPlace(Place+name+url)/population via additionalProperty — all present — OK
+/[locale]/implantations/[region]/[ville]/page (hub)|BreadcrumbList|YES|3-level; @id; itemListElement[position/name/item absolute URL] — OK
+/[locale]/implantations/[region]/[ville]/page (hub)|ItemList (5 verticales)|YES|name/url/numberOfItems/itemListElement[position/name/description/url] — OK; 5 items expected
+/[locale]/implantations/[region]/[ville]/page (hub)|FAQPage (conditional)|CONDITIONAL|faqSpeakableJsonLd only emitted if villeSpecificFaqs.length>0; additionalSelectors[data-speakable-hero] added — OK; Note in code: VilleFaqGeolocalisee emits its own FAQPage — POSSIBLE DUPLICATE P1
+/[locale]/implantations/[region]/[ville]/[verticale]/page|Service|YES|name/description/url/provider/areaServed[City+AdministrativeArea+Country] — OK
+/[locale]/implantations/[region]/[ville]/[verticale]/page|BreadcrumbList|YES|4-level breadcrumb; @id; itemListElement — OK
+/[locale]/implantations/[region]/[ville]/[verticale]/page|WebPage|PARTIAL|@id/url/name/description/inLanguage/isPartOf/@id/breadcrumb/@id present; datePublished sourced from article.publishedAt?.toISOString() — RISK: if article.publishedAt is null, field emitted as undefined — P1 BUG
+/[locale]/VilleEcosystemeLocal (component)|Place|PARTIAL|@context/@type/name/address(PostalAddress+addressLocality+addressRegion+addressCountry)/containedInPlace — OK; NO @id — minor; NO geo (intentional) — OK; uses dangerouslySetInnerHTML direct in component (not JsonLd/JsonLdGraph wrapper) — P2 WARNING (bypasses strategy deferral)
+/[locale]/VilleCommunesProches (component)|ItemList|PARTIAL|@context/@type/name/numberOfItems/itemListElement[position/url/name] — OK; urls are RELATIVE paths (not absolute) — P0 BUG: Google requires absolute URLs in ItemList itemListElement
+/[locale]/galerie/page|ImageObject (image-bank)|CONDITIONAL|imageJsonldGraph.service — emits via image-jsonld-graph.service.ts; not directly audited here
+/[locale]/galerie/[slug]/page|ImageObject|CONDITIONAL|Same service — not directly audited
+/[locale]/(admin)/*|All schemas noindex|INFO|Admin pages have noindex robots — JSON-LD is technically present in layout but irrelevant for Google indexation

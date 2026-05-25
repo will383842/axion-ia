@@ -1,0 +1,126 @@
+tier,ville,region_slug,verticale,url,http_status,h1_ville_ok,json_ld_ok,severity,notes
+1,Lyon,auvergne-rhone-alpes,audits,/fr/implantations/auvergne-rhone-alpes/lyon/audits,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent (stub path sans Hero)
+1,Lyon,auvergne-rhone-alpes,interventions,/fr/implantations/auvergne-rhone-alpes/lyon/interventions,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+1,Lyon,auvergne-rhone-alpes,implementations,/fr/implantations/auvergne-rhone-alpes/lyon/implementations,200,yes,no,WARNING,CONFIRMÉ RUNTIME 200+H1; stub page; noindex; JSON-LD absent confirmé runtime
+1,Lyon,auvergne-rhone-alpes,un-a-un,/fr/implantations/auvergne-rhone-alpes/lyon/un-a-un,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+1,Lyon,auvergne-rhone-alpes,sites-web-ia,/fr/implantations/auvergne-rhone-alpes/lyon/sites-web-ia,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+1,Marseille,provence-alpes-cote-d-azur,audits,/fr/implantations/provence-alpes-cote-d-azur/marseille/audits,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+1,Marseille,provence-alpes-cote-d-azur,interventions,/fr/implantations/provence-alpes-cote-d-azur/marseille/interventions,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+1,Marseille,provence-alpes-cote-d-azur,implementations,/fr/implantations/provence-alpes-cote-d-azur/marseille/implementations,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+1,Marseille,provence-alpes-cote-d-azur,un-a-un,/fr/implantations/provence-alpes-cote-d-azur/marseille/un-a-un,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+1,Marseille,provence-alpes-cote-d-azur,sites-web-ia,/fr/implantations/provence-alpes-cote-d-azur/marseille/sites-web-ia,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+1,Toulouse,occitanie,audits,/fr/implantations/occitanie/toulouse/audits,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+1,Toulouse,occitanie,interventions,/fr/implantations/occitanie/toulouse/interventions,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+1,Toulouse,occitanie,implementations,/fr/implantations/occitanie/toulouse/implementations,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+1,Toulouse,occitanie,un-a-un,/fr/implantations/occitanie/toulouse/un-a-un,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+1,Toulouse,occitanie,sites-web-ia,/fr/implantations/occitanie/toulouse/sites-web-ia,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+1,Bordeaux,nouvelle-aquitaine,audits,/fr/implantations/nouvelle-aquitaine/bordeaux/audits,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+1,Bordeaux,nouvelle-aquitaine,interventions,/fr/implantations/nouvelle-aquitaine/bordeaux/interventions,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+1,Bordeaux,nouvelle-aquitaine,implementations,/fr/implantations/nouvelle-aquitaine/bordeaux/implementations,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+1,Bordeaux,nouvelle-aquitaine,un-a-un,/fr/implantations/nouvelle-aquitaine/bordeaux/un-a-un,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+1,Bordeaux,nouvelle-aquitaine,sites-web-ia,/fr/implantations/nouvelle-aquitaine/bordeaux/sites-web-ia,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+1,Lille,hauts-de-france,audits,/fr/implantations/hauts-de-france/lille/audits,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+1,Lille,hauts-de-france,interventions,/fr/implantations/hauts-de-france/lille/interventions,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+1,Lille,hauts-de-france,implementations,/fr/implantations/hauts-de-france/lille/implementations,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+1,Lille,hauts-de-france,un-a-un,/fr/implantations/hauts-de-france/lille/un-a-un,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+1,Lille,hauts-de-france,sites-web-ia,/fr/implantations/hauts-de-france/lille/sites-web-ia,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+1,Nice,provence-alpes-cote-d-azur,audits,/fr/implantations/provence-alpes-cote-d-azur/nice/audits,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+1,Nice,provence-alpes-cote-d-azur,interventions,/fr/implantations/provence-alpes-cote-d-azur/nice/interventions,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+1,Nice,provence-alpes-cote-d-azur,implementations,/fr/implantations/provence-alpes-cote-d-azur/nice/implementations,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+1,Nice,provence-alpes-cote-d-azur,un-a-un,/fr/implantations/provence-alpes-cote-d-azur/nice/un-a-un,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+1,Nice,provence-alpes-cote-d-azur,sites-web-ia,/fr/implantations/provence-alpes-cote-d-azur/nice/sites-web-ia,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+1,Nantes,pays-de-la-loire,audits,/fr/implantations/pays-de-la-loire/nantes/audits,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+1,Nantes,pays-de-la-loire,interventions,/fr/implantations/pays-de-la-loire/nantes/interventions,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+1,Nantes,pays-de-la-loire,implementations,/fr/implantations/pays-de-la-loire/nantes/implementations,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+1,Nantes,pays-de-la-loire,un-a-un,/fr/implantations/pays-de-la-loire/nantes/un-a-un,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+1,Nantes,pays-de-la-loire,sites-web-ia,/fr/implantations/pays-de-la-loire/nantes/sites-web-ia,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+1,Strasbourg,grand-est,audits,/fr/implantations/grand-est/strasbourg/audits,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+1,Strasbourg,grand-est,interventions,/fr/implantations/grand-est/strasbourg/interventions,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+1,Strasbourg,grand-est,implementations,/fr/implantations/grand-est/strasbourg/implementations,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+1,Strasbourg,grand-est,un-a-un,/fr/implantations/grand-est/strasbourg/un-a-un,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+1,Strasbourg,grand-est,sites-web-ia,/fr/implantations/grand-est/strasbourg/sites-web-ia,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+1,Montpellier,occitanie,audits,/fr/implantations/occitanie/montpellier/audits,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+1,Montpellier,occitanie,interventions,/fr/implantations/occitanie/montpellier/interventions,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+1,Montpellier,occitanie,implementations,/fr/implantations/occitanie/montpellier/implementations,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+1,Montpellier,occitanie,un-a-un,/fr/implantations/occitanie/montpellier/un-a-un,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+1,Montpellier,occitanie,sites-web-ia,/fr/implantations/occitanie/montpellier/sites-web-ia,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+1,Rennes,bretagne,audits,/fr/implantations/bretagne/rennes/audits,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+1,Rennes,bretagne,interventions,/fr/implantations/bretagne/rennes/interventions,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+1,Rennes,bretagne,implementations,/fr/implantations/bretagne/rennes/implementations,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+1,Rennes,bretagne,un-a-un,/fr/implantations/bretagne/rennes/un-a-un,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+1,Rennes,bretagne,sites-web-ia,/fr/implantations/bretagne/rennes/sites-web-ia,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Angers,pays-de-la-loire,audits,/fr/implantations/pays-de-la-loire/angers/audits,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Angers,pays-de-la-loire,interventions,/fr/implantations/pays-de-la-loire/angers/interventions,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Angers,pays-de-la-loire,implementations,/fr/implantations/pays-de-la-loire/angers/implementations,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Angers,pays-de-la-loire,un-a-un,/fr/implantations/pays-de-la-loire/angers/un-a-un,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Angers,pays-de-la-loire,sites-web-ia,/fr/implantations/pays-de-la-loire/angers/sites-web-ia,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Caen,normandie,audits,/fr/implantations/normandie/caen/audits,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Caen,normandie,interventions,/fr/implantations/normandie/caen/interventions,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Caen,normandie,implementations,/fr/implantations/normandie/caen/implementations,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Caen,normandie,un-a-un,/fr/implantations/normandie/caen/un-a-un,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Caen,normandie,sites-web-ia,/fr/implantations/normandie/caen/sites-web-ia,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Metz,grand-est,audits,/fr/implantations/grand-est/metz/audits,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Metz,grand-est,interventions,/fr/implantations/grand-est/metz/interventions,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Metz,grand-est,implementations,/fr/implantations/grand-est/metz/implementations,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Metz,grand-est,un-a-un,/fr/implantations/grand-est/metz/un-a-un,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Metz,grand-est,sites-web-ia,/fr/implantations/grand-est/metz/sites-web-ia,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Mulhouse,grand-est,audits,/fr/implantations/grand-est/mulhouse/audits,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Mulhouse,grand-est,interventions,/fr/implantations/grand-est/mulhouse/interventions,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Mulhouse,grand-est,implementations,/fr/implantations/grand-est/mulhouse/implementations,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Mulhouse,grand-est,un-a-un,/fr/implantations/grand-est/mulhouse/un-a-un,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Mulhouse,grand-est,sites-web-ia,/fr/implantations/grand-est/mulhouse/sites-web-ia,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Pau,nouvelle-aquitaine,audits,/fr/implantations/nouvelle-aquitaine/pau/audits,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Pau,nouvelle-aquitaine,interventions,/fr/implantations/nouvelle-aquitaine/pau/interventions,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Pau,nouvelle-aquitaine,implementations,/fr/implantations/nouvelle-aquitaine/pau/implementations,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Pau,nouvelle-aquitaine,un-a-un,/fr/implantations/nouvelle-aquitaine/pau/un-a-un,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Pau,nouvelle-aquitaine,sites-web-ia,/fr/implantations/nouvelle-aquitaine/pau/sites-web-ia,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Rouen,normandie,audits,/fr/implantations/normandie/rouen/audits,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Rouen,normandie,interventions,/fr/implantations/normandie/rouen/interventions,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Rouen,normandie,implementations,/fr/implantations/normandie/rouen/implementations,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Rouen,normandie,un-a-un,/fr/implantations/normandie/rouen/un-a-un,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Rouen,normandie,sites-web-ia,/fr/implantations/normandie/rouen/sites-web-ia,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Saint-Nazaire,pays-de-la-loire,audits,/fr/implantations/pays-de-la-loire/saint-nazaire/audits,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Saint-Nazaire,pays-de-la-loire,interventions,/fr/implantations/pays-de-la-loire/saint-nazaire/interventions,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Saint-Nazaire,pays-de-la-loire,implementations,/fr/implantations/pays-de-la-loire/saint-nazaire/implementations,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Saint-Nazaire,pays-de-la-loire,un-a-un,/fr/implantations/pays-de-la-loire/saint-nazaire/un-a-un,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Saint-Nazaire,pays-de-la-loire,sites-web-ia,/fr/implantations/pays-de-la-loire/saint-nazaire/sites-web-ia,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Troyes,grand-est,audits,/fr/implantations/grand-est/troyes/audits,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Troyes,grand-est,interventions,/fr/implantations/grand-est/troyes/interventions,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Troyes,grand-est,implementations,/fr/implantations/grand-est/troyes/implementations,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Troyes,grand-est,un-a-un,/fr/implantations/grand-est/troyes/un-a-un,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Troyes,grand-est,sites-web-ia,/fr/implantations/grand-est/troyes/sites-web-ia,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Valence,auvergne-rhone-alpes,audits,/fr/implantations/auvergne-rhone-alpes/valence/audits,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Valence,auvergne-rhone-alpes,interventions,/fr/implantations/auvergne-rhone-alpes/valence/interventions,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Valence,auvergne-rhone-alpes,implementations,/fr/implantations/auvergne-rhone-alpes/valence/implementations,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Valence,auvergne-rhone-alpes,un-a-un,/fr/implantations/auvergne-rhone-alpes/valence/un-a-un,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Valence,auvergne-rhone-alpes,sites-web-ia,/fr/implantations/auvergne-rhone-alpes/valence/sites-web-ia,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Lorient,bretagne,audits,/fr/implantations/bretagne/lorient/audits,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Lorient,bretagne,interventions,/fr/implantations/bretagne/lorient/interventions,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Lorient,bretagne,implementations,/fr/implantations/bretagne/lorient/implementations,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Lorient,bretagne,un-a-un,/fr/implantations/bretagne/lorient/un-a-un,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+2,Lorient,bretagne,sites-web-ia,/fr/implantations/bretagne/lorient/sites-web-ia,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent
+3,Roanne,auvergne-rhone-alpes,audits,/fr/implantations/auvergne-rhone-alpes/roanne/audits,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent; Tier 3 = priorité contenu basse
+3,Roanne,auvergne-rhone-alpes,interventions,/fr/implantations/auvergne-rhone-alpes/roanne/interventions,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent; Tier 3 = priorité contenu basse
+3,Roanne,auvergne-rhone-alpes,implementations,/fr/implantations/auvergne-rhone-alpes/roanne/implementations,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent; Tier 3 = priorité contenu basse
+3,Roanne,auvergne-rhone-alpes,un-a-un,/fr/implantations/auvergne-rhone-alpes/roanne/un-a-un,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent; Tier 3 = priorité contenu basse
+3,Roanne,auvergne-rhone-alpes,sites-web-ia,/fr/implantations/auvergne-rhone-alpes/roanne/sites-web-ia,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent; Tier 3 = priorité contenu basse
+3,Albi,occitanie,audits,/fr/implantations/occitanie/albi/audits,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent; Tier 3 = priorité contenu basse
+3,Albi,occitanie,interventions,/fr/implantations/occitanie/albi/interventions,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent; Tier 3 = priorité contenu basse
+3,Albi,occitanie,implementations,/fr/implantations/occitanie/albi/implementations,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent; Tier 3 = priorité contenu basse
+3,Albi,occitanie,un-a-un,/fr/implantations/occitanie/albi/un-a-un,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent; Tier 3 = priorité contenu basse
+3,Albi,occitanie,sites-web-ia,/fr/implantations/occitanie/albi/sites-web-ia,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent; Tier 3 = priorité contenu basse
+3,Blois,centre-val-de-loire,audits,/fr/implantations/centre-val-de-loire/blois/audits,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent; Tier 3 = priorité contenu basse
+3,Blois,centre-val-de-loire,interventions,/fr/implantations/centre-val-de-loire/blois/interventions,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent; Tier 3 = priorité contenu basse
+3,Blois,centre-val-de-loire,implementations,/fr/implantations/centre-val-de-loire/blois/implementations,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent; Tier 3 = priorité contenu basse
+3,Blois,centre-val-de-loire,un-a-un,/fr/implantations/centre-val-de-loire/blois/un-a-un,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent; Tier 3 = priorité contenu basse
+3,Blois,centre-val-de-loire,sites-web-ia,/fr/implantations/centre-val-de-loire/blois/sites-web-ia,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent; Tier 3 = priorité contenu basse
+3,Gap,provence-alpes-cote-d-azur,audits,/fr/implantations/provence-alpes-cote-d-azur/gap/audits,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent; Tier 3 = priorité contenu basse
+3,Gap,provence-alpes-cote-d-azur,interventions,/fr/implantations/provence-alpes-cote-d-azur/gap/interventions,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent; Tier 3 = priorité contenu basse
+3,Gap,provence-alpes-cote-d-azur,implementations,/fr/implantations/provence-alpes-cote-d-azur/gap/implementations,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent; Tier 3 = priorité contenu basse
+3,Gap,provence-alpes-cote-d-azur,un-a-un,/fr/implantations/provence-alpes-cote-d-azur/gap/un-a-un,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent; Tier 3 = priorité contenu basse
+3,Gap,provence-alpes-cote-d-azur,sites-web-ia,/fr/implantations/provence-alpes-cote-d-azur/gap/sites-web-ia,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent; Tier 3 = priorité contenu basse
+3,Niort,nouvelle-aquitaine,audits,/fr/implantations/nouvelle-aquitaine/niort/audits,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent; Tier 3 = priorité contenu basse
+3,Niort,nouvelle-aquitaine,interventions,/fr/implantations/nouvelle-aquitaine/niort/interventions,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent; Tier 3 = priorité contenu basse
+3,Niort,nouvelle-aquitaine,implementations,/fr/implantations/nouvelle-aquitaine/niort/implementations,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent; Tier 3 = priorité contenu basse
+3,Niort,nouvelle-aquitaine,un-a-un,/fr/implantations/nouvelle-aquitaine/niort/un-a-un,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent; Tier 3 = priorité contenu basse
+3,Niort,nouvelle-aquitaine,sites-web-ia,/fr/implantations/nouvelle-aquitaine/niort/sites-web-ia,200,yes,no,WARNING,Stub page — pas d'article publié; noindex anti-doorway HCU; JSON-LD absent; Tier 3 = priorité contenu basse

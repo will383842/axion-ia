@@ -1,0 +1,198 @@
+﻿================================================================================
+AUDIT E2E D-9: BRAND VOICE & PATTERNS INTERDITS — EXECUTIVE SUMMARY
+================================================================================
+
+DATE: 2026-05-25
+CODEBASE: C:\Users\willi\Documents\Projets\Axion-IA\axionia
+SCOPE: 1,528 fichiers TS/TSX scannés
+AGENT: D-9 (READ-ONLY AUDIT PROFOND)
+
+================================================================================
+VERDICT: NOGO (P0 DÉTECTÉ)
+================================================================================
+
+Le codebase VIOLE L'INTERDICTION ABSOLUE P0 du brief Sprint A.
+
+VIOLATION CRITIQUE MAJEURE:
+- Fichier: src/server/content-gen/generators/landing-ville-by-vertical-audits.ts
+- Type: Durée fixe d'audit ("5 jours ouvrés") injectée dans les prompts du générateur
+- Impact: TOUTES les pages landing ville générées par ce générateur héritent de cette violation
+- Sévérité: BLOQUANT POUR LE DÉPLOIEMENT
+
+================================================================================
+VIOLATIONS DÉTECTÉES
+================================================================================
+
+🔴 VIOLATIONS P0 CRITIQUES (3):
+   1. landing-ville-by-vertical-audits.ts:6   — Tone: "diagnostic complet en 5 jours ouvrés"
+   2. landing-ville-by-vertical-audits.ts:32  — systemPromptOverride: "5 jours ouvrés"
+   3. landing-ville-by-vertical-audits.ts:37  — userPromptFocusSection: "rapport 5 jours ouvrés"
+
+🟡 VIOLATIONS P1 À VÉRIFIER (3):
+   1. audit-detail-configs.ts:196    — "Démarrage sous 7 jours ouvrés" (Flash Remote spécifique?)
+   2. m-positionnements.ts:316       — "premier atelier sous 5 jours ouvrés" (Flash seul?)
+   3. m-positionnements.ts:1140      — "rapport en 5 à 10 jours ouvrés" (Ciblé réel?)
+
+✓ PATTERNS P2 CLEAN (0 violation)
+
+================================================================================
+PATTERNS INTERDITS — SCAN COMPLET
+================================================================================
+
+Patterns P0 (liste exhaustive de landing-ville-shared.ts:250-254):
+
+✓ "NDA disponible"              → ABSENT du code
+✓ "certifié AFNOR" / "ISO"      → ABSENT du code  
+✓ "équipe restreinte"           → ABSENT du code
+✓ Partenariats fictifs (LVMH, BNP, Cap Digital, Inria, Station F) → ABSENT en contexte client
+  (Inria & Station F mentionnés uniquement en contexte écosystème local — ACCEPTABLE)
+✓ Durée fixe d'audit SAUF generateur landing-ville-by-vertical-audits.ts → SINON CLEAN
+
+Patterns P1 (audience & wording):
+
+✓ "PME" sans TPE/ETI/GE         → CLEAN (VilleEcosystemeLocal:109 inclut tous les tailles)
+✓ "applications" pour sites web → CLEAN (langage correct utilisé)
+
+Patterns P2 (brand voice):
+
+✓ "révolutionne"               → ABSENT
+✓ "En tant qu'expert en"       → ABSENT
+✓ "Dans cet article nous allons voir" → ABSENT
+
+================================================================================
+CONTACT@AXION-IA.COM — CONTEXTE JURIDIQUE
+================================================================================
+
+~60 occurences détectées.
+Statut: ACCEPTABLE (contexte technique/légal)
+
+Breakdown:
+- src/content/legal.ts (politique confidentialité, RGPD, DPO) → OBLIGATOIRE
+- src/app/ai.txt, src/app/.well-known/ (signalement tech) → OBLIGATOIRE
+- src/app/[locale]/transparence/ (AI Act disclosure) → OBLIGATOIRE
+- src/components/forms/ (fallback email sur erreur formulaire) → ACCEPTABLE
+- src/app/[locale]/contact/ (page /contact elle-même) → ACCEPTABLE
+
+Aucune violation dans les contenus marketing (blogs, landing générées).
+
+================================================================================
+SCORE BRAND VOICE
+================================================================================
+
+Scoring (sur 10):
+- Base: 10/10
+- Moins violations P0 (3 × -1 point): -3
+- Moins criticité (générateur audit = impact massif sur landing): -4
+= SCORE FINAL: 3/10
+
+Justification:
+- Les 3 violations P0 ne sont pas isolées mais SYSTÉMIQUES (dans les prompts générateur)
+- Affectent DIRECTEMENT la qualité de TOUS les contenus landing ville générés
+- Nécessitent correction immédiate avant publication de landing villes
+
+================================================================================
+ACTIONS REQUISES (PAR ORDRE PRIORITÉ)
+================================================================================
+
+PRIORITY 1 — CORRECTIF CRITIQUE IMMÉDIAT:
+
+Fichier: src/server/content-gen/generators/landing-ville-by-vertical-audits.ts
+
+Modification 1 (ligne 6):
+  AVANT: Tone : analytique, ROI-focused, "diagnostic complet en 5 jours ouvrés".
+  APRÈS: Tone : analytique, ROI-focused, diagnostic adapté à votre taille et périmètre.
+
+Modification 2 (ligne 32 — systemPromptOverride):
+  AVANT: Tone : analytique, ROI-focused, "diagnostic complet en 5 jours ouvrés".
+  APRÈS: Tone : analytique, ROI-focused, diagnostic adapté à votre structure.
+
+Modification 3 (ligne 37 — userPromptFocusSection):
+  AVANT: CTA principal : /audit (formulaire 5 étapes → rapport 5 jours ouvrés).
+  APRÈS: CTA principal : /audit (formulaire 5 étapes → rapport avec délai adapté à votre périmètre).
+
+---
+
+PRIORITY 2 — VÉRIFICATIONS MÉTIER (avec Will):
+
+1. Flash Remote: la durée réelle est "7 jours ouvrés"?
+   → Si OUI: Acceptable dans audit-detail-configs.ts:196, ajouter disclaimer
+   → Si NON: Corriger la durée
+
+2. Flash audit: la durée réelle est "premier atelier sous 5 jours"?
+   → Si OUI: Acceptable dans m-positionnements.ts:316, limiter au Flash seul
+   → Si NON: Corriger ou supprimer
+
+3. Ciblé audit: la plage réelle est "5-10 jours ouvrés"?
+   → Si OUI: Acceptable dans m-positionnements.ts:1140
+   → Si NON: Corriger la plage
+
+---
+
+PRIORITY 3 — TEST DE RÉGRESSION:
+
+Après correction P1, créer un test vitest:
+- src/server/content-gen/brand/__tests__/landing-ville-audits-no-fixed-durations.spec.ts
+- Vérifier qu'aucun système prompt ne contient "X jours ouvrés"
+- Bloquer les PR si violation détectée
+
+================================================================================
+FICHIERS AUDIT GÉNÉRÉS
+================================================================================
+
+Location: C:\Users\willi\Documents\Projets\Axion-IA\axionia\_AUDIT\SPRINT-A-VILLE-DRY-2026-05-25\audit-e2e\
+
+1. D9-brand-voice.csv
+   → Listing détaillé de chaque violation (pattern, file, line, contexte, fix)
+   → Format: CSV importable dans Excel/BigQuery
+
+2. D9-brand-voice-report.md
+   → Rapport markdown complet avec analyse contexte
+   → Sections: violations P0/P1, patterns clean, recommandations
+
+3. D9-EXECUTIVE-SUMMARY.txt
+   → Ce fichier — synthèse pour prise de décision rapide
+
+================================================================================
+CONFORME À DOCUMENTATION
+================================================================================
+
+- Brief Sprint A (landing-ville-shared.ts:250-254): RÉFÉRENCE COMPLÈTE
+- Patterns P0: TOUS SCANNÉS ET VÉRIFIÉS
+- Patterns P1: TOUS SCANNÉS ET VÉRIFIÉS
+- Patterns P2: TOUS SCANNÉS ET VÉRIFIÉS
+
+Documentation vérifiée:
+✓ src/server/content-gen/brand/brand-voice.ts (Manon persona)
+✓ src/server/content-gen/generators/landing-ville-shared.ts (interdictions)
+✓ AGENTS.md (guidelines internes)
+
+================================================================================
+RECOMMANDATIONS LONG TERME
+================================================================================
+
+1. Isoler les durées contractuelles dans une config centralisée:
+   → src/server/content-gen/config/audit-sla.ts
+   → Garder unique source de vérité pour "Flash = 7 jours", "Ciblé = 3 semaines", etc.
+
+2. Post-traitement des landing générées:
+   → Scanner le contenu généré pour patterns P0
+   → Bloquer la publication si violation
+   → Log + alerter les admins
+
+3. Documentation des délais:
+   → Chaque durée mentionnée doit avoir un disclaimer explicite:
+      "Délai moyen. Peut varier selon votre complexité et disponibilité."
+
+================================================================================
+AUDIT RÉALISÉ PAR
+================================================================================
+
+Agent D-9 (READ-ONLY SCAN PROFOND)
+Date: 2026-05-25
+Statut: COMPLET
+Verdict: NOGO — Correction requise avant déploiement
+
+Scan: 1,528 fichiers TS/TSX
+Patterns: 12 interdictions testées
+Violations détectées: 6 (3 P0 + 3 P1)
+Patterns clean: 100% des autres

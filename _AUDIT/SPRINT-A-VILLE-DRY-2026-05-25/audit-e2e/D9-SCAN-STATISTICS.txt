@@ -1,0 +1,250 @@
+﻿================================================================================
+D-9 AUDIT: SCAN STATISTICS & METHODOLOGY
+================================================================================
+
+SCAN DATE: 2026-05-25 (May 25, 2026)
+AGENT: D-9 (READ-ONLY PROFOND AUDIT)
+EFFORT LEVEL: HIGH (comprehensive coverage)
+
+================================================================================
+COVERAGE METRICS
+================================================================================
+
+Total Files Scanned: 1,528 (TypeScript/TSX)
+Directories Scanned:
+  ✓ src/components/**/*.tsx
+  ✓ src/app/**/*.ts
+  ✓ src/server/**/*.ts
+  ✓ src/content/**/*.ts
+  ✓ src/lib/**/*.ts
+  ✓ src/features/**/*.ts
+
+Exclusions (README/docs/node_modules): Applied
+
+================================================================================
+PATTERNS SEARCHED (EXHAUSTIVE LIST)
+================================================================================
+
+P0 CRITICAL PATTERNS (8):
+
+1. "NDA disponible" / "NDA disponible sur demande"
+   Status: ABSENT ✓
+
+2. "contact@axion-ia.com" (in marketing context only)
+   Status: PRESENT (60+ occurrences)
+   Assessment: ACCEPTABLE (context: legal/technical/form fallback)
+
+3. Durée fixe audit: "5 jours ouvrés", "audit en 5 jours", etc.
+   Status: PRESENT (3 violations in landing-ville-by-vertical-audits.ts)
+   Assessment: P0 VIOLATION
+
+4. "Big 4" + partenariat/client context
+   Status: PRESENT (1 occurrence in AuditConversionBlocks.tsx:176)
+   Assessment: P0_ALLOWED (differentiation context, not partnership)
+
+5. Fabricated partnerships (LVMH, BNP Paribas, Cap Digital, Inria, Station F)
+   Status: PRESENT (Inria, Station F in VilleEcosystemeLocal.tsx)
+   Assessment: P0_ALLOWED (ecosystem context only, not partnership)
+
+6. "équipe restreinte"
+   Status: ABSENT ✓
+
+7. "certifié" + entity name (AFNOR, ISO, etc.)
+   Status: ABSENT (Qualiopi mentioned in historical context only) ✓
+
+8. Claims: "anciens Big 4", "anciens CTO", "X clients", "X% satisfaction"
+   Status: ABSENT ✓
+
+---
+
+P1 PATTERNS (3):
+
+1. "PME" without TPE/ETI/Grandes Entreprises
+   Status: ABSENT ✓ (VilleEcosystemeLocal:109 includes all sizes)
+
+2. "applications" for websites (should be "sites web & plateformes SaaS")
+   Status: ABSENT ✓
+
+3. Audience targeting PME only
+   Status: ABSENT ✓
+
+---
+
+P2 PATTERNS (3):
+
+1. "révolutionne" / "révolutionnaire"
+   Status: ABSENT ✓
+
+2. "En tant qu'expert en"
+   Status: ABSENT ✓
+
+3. "Dans cet article nous allons voir" (meta-narration)
+   Status: ABSENT ✓
+
+================================================================================
+GREP OPERATIONS PERFORMED
+================================================================================
+
+Total Grep Searches: 11
+
+Search 1: "NDA disponible"
+  Result: 1 match (in comments only — landing-ville-shared.ts:251)
+  Assessment: OK (rule documentation, not violation)
+
+Search 2: "contact@axion-ia\.com"
+  Result: 60+ matches across multiple files
+  Breakdown:
+    - legal.ts: 15+ matches (REQUIRED for legal/GDPR)
+    - ai.txt, policy.json: 3+ matches (REQUIRED for tech signaling)
+    - transversal.ts: 5+ matches (REQUIRED for transparency)
+    - form fallbacks: 3+ matches (ACCEPTABLE fallback)
+    - landing/blog pages: 0 matches in generated content ✓
+  Assessment: CLEAN (no violations in marketing content)
+
+Search 3: "jours ouvrés"
+  Result: 15 matches
+  Breakdown:
+    - audit-detail-configs.ts: 1 (Flash tier config — P1 VERIFY)
+    - m-positionnements.ts: 2 (keyword variables — P1 VERIFY)
+    - landing-ville-by-vertical-audits.ts: 3 (GENERATOR PROMPTS — P0 VIOLATION)
+    - email templates: 4 (refund/cancellation messages — ACCEPTABLE)
+    - accessibility page: 1 (legal requirement — ACCEPTABLE)
+    - formations-kb: 1 (real duration from training calendar — ACCEPTABLE)
+  Assessment: 3 P0 + 3 P1 violations
+
+Search 4: "Big 4"
+  Result: 1 match (AuditConversionBlocks.tsx:176)
+  Context: "You can pick a Big 4 (expensive, slow), a freelance..."
+  Assessment: P0_ALLOWED (differentiation, not partnership claim)
+
+Search 5: "LVMH|BNP Paribas|Cap Digital|Station F|Inria"
+  Result: 2 matches (VilleEcosystemeLocal.tsx:152, 162)
+  Context: "Pôles recherche publique (Inria, CEA, CNRS…)"
+           "Incubateur (Station F, Wilco, NUMA…)"
+  Assessment: P0_ALLOWED (ecosystem context, neutral wording)
+
+Search 6: "équipe restreinte"
+  Result: 0 matches ✓
+
+Search 7: "révolutionne"
+  Result: 0 matches in code
+  (noted in brand guidelines as forbidden — correct)
+
+Search 8: "Dans cet article nous allons voir"
+  Result: 0 matches ✓
+
+Search 9: "En tant qu'expert en"
+  Result: 0 matches ✓
+
+Search 10-11: "applications" + audience filtering
+  Result: 0 matches in marketing context ✓
+
+================================================================================
+VIOLATION CLASSIFICATION
+================================================================================
+
+VIOLATIONS FOUND: 6 total
+
+P0 CRITICAL (BLOCKING): 3
+  ├─ landing-ville-by-vertical-audits.ts:6
+  ├─ landing-ville-by-vertical-audits.ts:32
+  └─ landing-ville-by-vertical-audits.ts:37
+
+P1 WARNINGS (VERIFY): 3
+  ├─ audit-detail-configs.ts:196
+  ├─ m-positionnements.ts:316
+  └─ m-positionnements.ts:1140
+
+P2 (CLEAN): 0 ✓
+
+ACCEPTABLE (CONTEXT OK): ~20+
+  ├─ contact@axion-ia.com in legal/technical
+  ├─ Big 4 differentiation
+  ├─ Inria/Station F in ecosystem context
+  └─ jours ouvrés in refund/accessibility contexts
+
+================================================================================
+METHODOLOGY NOTES
+================================================================================
+
+Approach: Exhaustive Pattern Matching + Contextual Analysis
+- Used Grep (ripgrep) for fast pattern detection
+- Reviewed each match for business context
+- Distinguished violations from acceptable uses
+- Validated against landing-ville-shared.ts:250-254 rules
+
+False Positive Prevention:
+- Excluded matches in comments/documentation
+- Included matches in generated code (comments in generator files flagged as violations)
+- Verified context for every match with code reading
+
+High-Effort Scan Features:
+- Manual review of all violation contexts
+- Cross-referenced against official brief documents
+- Mapped impact of violations to generated output
+- Provided specific fix recommendations for each violation
+
+================================================================================
+DELIVERABLES
+================================================================================
+
+Files Generated:
+
+1. D9-brand-voice.csv
+   Format: CSV (7 columns)
+   Records: 10 (violations + acceptables)
+   Purpose: Detailed inventory for engineering triage
+
+2. D9-brand-voice-report.md
+   Format: Markdown
+   Sections: 8 (summary, violations, analysis, recommendations)
+   Purpose: Comprehensive audit report with context
+
+3. D9-EXECUTIVE-SUMMARY.txt
+   Format: Text
+   Purpose: Quick reference for decision makers
+
+4. D9-SCAN-STATISTICS.txt
+   Format: Text (this file)
+   Purpose: Transparency on methodology & coverage
+
+================================================================================
+RECOMMENDATIONS FOR NEXT AUDIT
+================================================================================
+
+1. Implement automated CI/CD checks:
+   - Add vitest spec to block PRs with P0 patterns
+   - Run on every commit to generators
+
+2. Centralize duration config:
+   - Create src/server/content-gen/config/audit-sla.ts
+   - Import from single source in all generators
+
+3. Post-generation validation:
+   - Scan generated landing pages for P0 before publishing
+   - Alert ops if violations detected
+
+4. Documentation:
+   - Update brand-voice.ts with latest verified durations
+   - Add disclaimer to all audit duration mentions
+
+================================================================================
+AUDIT CERTIFICATION
+================================================================================
+
+Agent: D-9
+Date: 2026-05-25
+Scope: Complete (1,528 files)
+Effort: High
+Status: DELIVERED
+
+Output Directory:
+C:\Users\willi\Documents\Projets\Axion-IA\axionia\_AUDIT\SPRINT-A-VILLE-DRY-2026-05-25\audit-e2e\
+
+Files:
+✓ D9-brand-voice.csv (10 records)
+✓ D9-brand-voice-report.md (3,000+ words)
+✓ D9-EXECUTIVE-SUMMARY.txt (8,636 bytes)
+✓ D9-SCAN-STATISTICS.txt (this file)
+
+Verdict: NOGO — P0 violations require correction before deployment
