@@ -33,6 +33,7 @@ import { FadeInOnView } from "@/components/motion/FadeInOnView";
 import { LogosMarquee } from "@/components/home/LogosMarquee";
 import { CaseStudyMarquee } from "@/components/ville/CaseStudyMarquee";
 import { AiToolsStack } from "@/components/ville/AiToolsStack";
+import { OrangeContactBanner } from "@/components/ville/OrangeContactBanner";
 import { FaqBlock } from "@/components/sections/FaqBlock";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { getRegion } from "@/content/regions";
@@ -432,34 +433,34 @@ export default async function VilleVerticalePage({ params }: Props) {
     audits: {
       titleFr: "Nos experts auditeurs interviennent",
       titleEn: "Our expert auditors intervene",
-      bodyFr: `Une équipe restreinte d'auditeurs IA seniors expérimentés — praticiens terrain, jamais junior sur vos missions. Chaque audit à ${ville.nameFr} est conduit avec la même rigueur méthodologique, du diagnostic Flash 4h au cadrage complet bout-en-bout de votre structure.`,
-      bodyEn: `A small team of experienced senior AI auditors — field practitioners, never a junior on your engagements. Every audit in ${ville.nameFr} is conducted with the same methodological rigor, from Flash 4h diagnosis to a complete end-to-end scope review of your structure.`,
+      bodyFr: `Une équipe d'experts d'auditeurs IA seniors expérimentés — praticiens terrain, jamais junior sur vos missions. Chaque audit à ${ville.nameFr} est conduit avec la même rigueur méthodologique, du diagnostic Flash 4h au cadrage complet bout-en-bout de votre structure.`,
+      bodyEn: `An expert team of senior AI auditors — field practitioners, never a junior on your engagements. Every audit in ${ville.nameFr} is conducted with the same methodological rigor, from Flash 4h diagnosis to a complete end-to-end scope review of your structure.`,
     },
     interventions: {
       titleFr: "Nos formateurs IA interviennent",
       titleEn: "Our AI trainers intervene",
-      bodyFr: `William J. assure la majorité des formations à ${ville.nameFr}. Une équipe restreinte de formateurs IA seniors expérimentés le seconde — praticiens IA terrain, jamais théoriciens. Vos collaborateurs montent en compétence sur vos outils réels avec un premier livrable opérationnel dès le lendemain.`,
-      bodyEn: `William J. personally delivers most training in ${ville.nameFr}. A small team of experienced senior AI trainers supports him — field practitioners, never theorists. Your teams build skills on your real tools with a first operational deliverable by the next day.`,
+      bodyFr: `William J. assure la majorité des formations à ${ville.nameFr}. Une équipe d'experts de formateurs IA seniors expérimentés le seconde — praticiens IA terrain, jamais théoriciens. Vos collaborateurs montent en compétence sur vos outils réels avec un premier livrable opérationnel dès le lendemain.`,
+      bodyEn: `William J. personally delivers most training in ${ville.nameFr}. An expert team of senior AI trainers supports him — field practitioners, never theorists. Your teams build skills on your real tools with a first operational deliverable by the next day.`,
     },
     implementations: {
       titleFr: "Nos experts implémenteurs interviennent",
       titleEn: "Our expert implementers intervene",
-      bodyFr: `Une équipe restreinte d'ingénieurs IA seniors expérimentés — full-stack, agents IA, intégrations CRM/ERP. Aucun consultant junior sur vos missions à ${ville.nameFr}. Architecture livrée en production, documentée, transférable. Support 90 jours inclus.`,
-      bodyEn: `A small team of experienced senior AI engineers — full-stack, AI agents, CRM/ERP integration. Never a junior consultant on your engagements in ${ville.nameFr}. Production-grade architecture, documented, transferable. 90-day support included.`,
+      bodyFr: `Une équipe d'experts d'ingénieurs IA seniors expérimentés — full-stack, agents IA, intégrations CRM/ERP. Aucun consultant junior sur vos missions à ${ville.nameFr}. Architecture livrée en production, documentée, transférable. Support 90 jours inclus.`,
+      bodyEn: `An expert team of senior AI engineers — full-stack, AI agents, CRM/ERP integration. Never a junior consultant on your engagements in ${ville.nameFr}. Production-grade architecture, documented, transferable. 90-day support included.`,
     },
     "un-a-un": {
       titleFr: "William J. et nos coachs IA interviennent",
       titleEn: "William J. and our AI coaches intervene",
       // Will 2026-05-25 : un-a-un n'est pas QUE pour dirigeants — c'est pour TOUT poste qui
       // a besoin d'un accompagnement individuel (collaborateur, secrétaire, manager, etc.)
-      bodyFr: `William J., fondateur d'Axion-IA, conduit lui-même la majorité des sessions 1-to-1 à ${ville.nameFr}. Une équipe restreinte de coachs IA seniors expérimentés le seconde — accompagnement individuel adapté à TOUT profil : dirigeant, manager, commercial, secrétaire, opérationnel… Pas de coach junior, pas de méthode pré-mâchée : chaque session est calibrée sur votre poste, vos enjeux quotidiens, votre maturité IA.`,
-      bodyEn: `William J., Axion-IA founder, personally leads most 1-to-1 sessions in ${ville.nameFr}. A small team of experienced senior AI coaches supports him — individual coaching for ANY role: executive, manager, sales, assistant, operational… No junior coach, no off-the-shelf method: each session is calibrated to your role, daily challenges, AI maturity.`,
+      bodyFr: `William J., fondateur d'Axion-IA, conduit lui-même la majorité des sessions 1-to-1 à ${ville.nameFr}. Une équipe d'experts de coachs IA seniors expérimentés le seconde — accompagnement individuel adapté à TOUT profil : dirigeant, manager, commercial, secrétaire, opérationnel… Pas de coach junior, pas de méthode pré-mâchée : chaque session est calibrée sur votre poste, vos enjeux quotidiens, votre maturité IA.`,
+      bodyEn: `William J., Axion-IA founder, personally leads most 1-to-1 sessions in ${ville.nameFr}. An expert team of senior AI coaches supports him — individual coaching for ANY role: executive, manager, sales, assistant, operational… No junior coach, no off-the-shelf method: each session is calibrated to your role, daily challenges, AI maturity.`,
     },
     "sites-web-ia": {
       titleFr: "Nos développeurs IA interviennent",
       titleEn: "Our AI developers intervene",
-      bodyFr: `Une équipe restreinte de développeurs full-stack IA seniors expérimentés — architectes plateformes web, search sémantique, chatbots RAG. Aucun junior sur vos projets à ${ville.nameFr}. Stack moderne, RGPD hébergement UE, code documenté et transférable.`,
-      bodyEn: `A small team of experienced senior full-stack AI developers — web platform architects, semantic search, RAG chatbots. Never a junior on your projects in ${ville.nameFr}. Modern stack, EU GDPR hosting, documented and transferable code.`,
+      bodyFr: `Une équipe d'experts de développeurs full-stack IA seniors expérimentés — architectes plateformes web, search sémantique, chatbots RAG. Aucun junior sur vos projets à ${ville.nameFr}. Stack moderne, RGPD hébergement UE, code documenté et transférable.`,
+      bodyEn: `An expert team of senior full-stack AI developers — web platform architects, semantic search, RAG chatbots. Never a junior on your projects in ${ville.nameFr}. Modern stack, EU GDPR hosting, documented and transferable code.`,
     },
   };
   const expertsIntro = EXPERTS_INTRO_BY_VERTICALE[verticale];
@@ -1162,56 +1163,148 @@ export default async function VilleVerticalePage({ params }: Props) {
         </section>
       ) : null}
 
+      {/* ── 4d-bis. BANDEAU ORANGE CONTACT (milieu de page — Sprint Quality 2026 Will 2026-05-25) ── */}
+      <OrangeContactBanner isFr={isFr} villeSlug={ville.slug} />
+
       {/* ── 4e. TARIFS — pricing SSOT depuis pricing.ts (Sprint Quality 2026 V3 — Will 2026-05-25)
            Ignore le pricingTable LLM (incohérences). Source = pricing.ts SSOT, mapping
-           4 cards TPE/PME/ETI/GE par verticale, "À partir de X €" cohérent. ── */}
-      <section
-        aria-label={isFr ? "Tarifs" : "Pricing"}
-        className="bg-bg border-border border-t py-16 sm:py-20"
-      >
-        <Container>
-          <div className="mx-auto max-w-5xl">
-            <FadeInOnView>
-              <p className="text-fg-muted mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
-                <span className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle" />
-                {isFr ? "Tarifs publics" : "Public pricing"}
-              </p>
-              <h2
-                className="text-fg text-[clamp(1.75rem,3.5vw,2.75rem)] leading-[1.1] font-semibold tracking-tight"
-                style={{ fontFamily: "var(--font-serif)" }}
-              >
-                {isFr ? "Calibré selon la " : "Sized for your "}
-                <span className="italic-editorial text-terracotta">
-                  {isFr ? "taille de votre entreprise" : "company size"}
-                </span>
-              </h2>
-              <p className="text-fg-soft mt-3 text-base leading-relaxed">
-                {isFr
-                  ? "Quelle que soit votre structure, un engagement Axion-IA peut commencer à l'entrée de gamme et s'étendre selon votre périmètre. Tarifs publics, sans devis opaque."
-                  : "Whatever your structure, an Axion-IA engagement can start at entry level and scale to your scope. Public pricing, no opaque quotes."}
-              </p>
-            </FadeInOnView>
-            <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {ssotPricingRows.map((p, idx) => (
-                <FadeInOnView key={idx} delay={idx * 60}>
-                  <li className="bg-paper border-border-strong/40 shadow-subtle flex h-full flex-col gap-3 rounded-2xl border-2 p-6">
-                    <p
-                      className="text-fg text-lg leading-tight font-semibold"
-                      style={{ fontFamily: "var(--font-serif)" }}
-                    >
-                      {isFr ? p.sizeFr : p.sizeEn}
-                    </p>
-                    <p className="text-terracotta text-base font-bold">{p.price}</p>
-                    <p className="text-fg-soft text-sm leading-relaxed">
-                      {isFr ? p.detailFr : p.detailEn}
-                    </p>
-                  </li>
-                </FadeInOnView>
-              ))}
-            </ul>
-          </div>
-        </Container>
-      </section>
+           4 cards TPE/PME/ETI/GE par verticale, "À partir de X €" cohérent.
+           ⚠️ Sites web & SaaS : section MASQUÉE (devis sur mesure, pas de prix affichés
+           pour éviter d'effrayer prospects — chaque projet a son propre budget). ── */}
+      {verticale !== "sites-web-ia" ? (
+        <section
+          aria-label={isFr ? "Tarifs" : "Pricing"}
+          className="bg-bg border-border border-t py-16 sm:py-20"
+        >
+          <Container>
+            <div className="mx-auto max-w-5xl">
+              <FadeInOnView>
+                <p className="text-fg-muted mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
+                  <span className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle" />
+                  {isFr ? "Tarifs publics" : "Public pricing"}
+                </p>
+                <h2
+                  className="text-fg text-[clamp(1.75rem,3.5vw,2.75rem)] leading-[1.1] font-semibold tracking-tight"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
+                  {isFr ? "Calibré selon la " : "Sized for your "}
+                  <span className="italic-editorial text-terracotta">
+                    {isFr ? "taille de votre entreprise" : "company size"}
+                  </span>
+                </h2>
+                <p className="text-fg-soft mt-3 text-base leading-relaxed">
+                  {isFr
+                    ? "Quelle que soit votre structure, un engagement Axion-IA peut commencer à l'entrée de gamme et s'étendre selon votre périmètre. Tarifs publics, sans devis opaque."
+                    : "Whatever your structure, an Axion-IA engagement can start at entry level and scale to your scope. Public pricing, no opaque quotes."}
+                </p>
+              </FadeInOnView>
+              <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                {ssotPricingRows.map((p, idx) => (
+                  <FadeInOnView key={idx} delay={idx * 60}>
+                    <li className="bg-paper border-border-strong/40 shadow-subtle flex h-full flex-col gap-3 rounded-2xl border-2 p-6">
+                      <p
+                        className="text-fg text-lg leading-tight font-semibold"
+                        style={{ fontFamily: "var(--font-serif)" }}
+                      >
+                        {isFr ? p.sizeFr : p.sizeEn}
+                      </p>
+                      <p className="text-terracotta text-base font-bold">{p.price}</p>
+                      <p className="text-fg-soft text-sm leading-relaxed">
+                        {isFr ? p.detailFr : p.detailEn}
+                      </p>
+                    </li>
+                  </FadeInOnView>
+                ))}
+              </ul>
+            </div>
+          </Container>
+        </section>
+      ) : null}
+
+      {/* ── 4e-bis. STACK ADAPTÉE — affiché UNIQUEMENT pour sites-web-ia (remplace Tarifs) ── */}
+      {verticale === "sites-web-ia" ? (
+        <section
+          aria-label={isFr ? "Stack technique adaptée" : "Adapted tech stack"}
+          className="bg-bg border-border border-t py-16 sm:py-20"
+        >
+          <Container>
+            <div className="mx-auto max-w-5xl">
+              <FadeInOnView>
+                <p className="text-fg-muted mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
+                  <span className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle" />
+                  {isFr ? "Stack & approche sur mesure" : "Custom stack & approach"}
+                </p>
+                <h2
+                  className="text-fg text-[clamp(1.75rem,3.5vw,2.75rem)] leading-[1.1] font-semibold tracking-tight"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
+                  {isFr ? "La " : "The "}
+                  <span className="italic-editorial text-terracotta">
+                    {isFr ? "meilleure stack pour vos objectifs" : "best stack for your goals"}
+                  </span>
+                </h2>
+                <p className="text-fg-soft mt-3 max-w-3xl text-base leading-relaxed">
+                  {isFr
+                    ? "Chaque projet web ou plateforme SaaS est devisé sur-mesure. Nous choisissons la stack technique la plus adaptée à vos objectifs business, votre périmètre fonctionnel, votre budget et vos contraintes IT. Pas de stack imposée, jamais : la stack choisie est toujours la meilleure possible pour VOTRE entreprise."
+                    : "Every web or SaaS project is custom-quoted. We pick the tech stack best suited to your business goals, functional scope, budget and IT constraints. No stack ever imposed: the chosen stack is always the best possible for YOUR company."}
+                </p>
+              </FadeInOnView>
+              <ul role="list" className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                {(
+                  [
+                    {
+                      titleFr: "Frontend moderne",
+                      titleEn: "Modern frontend",
+                      descFr:
+                        "Next.js, React, Vue, Svelte ou autre — selon vos équipes et besoins SEO/perf.",
+                      descEn:
+                        "Next.js, React, Vue, Svelte or other — based on your team and SEO/perf needs.",
+                    },
+                    {
+                      titleFr: "Backend & API",
+                      titleEn: "Backend & API",
+                      descFr:
+                        "Node.js, Python, Go, .NET, PHP — choix pragmatique selon écosystème existant.",
+                      descEn:
+                        "Node.js, Python, Go, .NET, PHP — pragmatic choice based on existing ecosystem.",
+                    },
+                    {
+                      titleFr: "Couche IA",
+                      titleEn: "AI layer",
+                      descFr:
+                        "OpenAI, Claude, Gemini, Mistral, modèles open-source self-hosted — selon RGPD et coûts.",
+                      descEn:
+                        "OpenAI, Claude, Gemini, Mistral, self-hosted open-source — based on GDPR and costs.",
+                    },
+                    {
+                      titleFr: "Hébergement",
+                      titleEn: "Hosting",
+                      descFr:
+                        "Vercel, AWS, GCP, OVH, Scaleway, self-hosted — UE pour RGPD critique.",
+                      descEn:
+                        "Vercel, AWS, GCP, OVH, Scaleway, self-hosted — EU for critical GDPR.",
+                    },
+                  ] as const
+                ).map((s, idx) => (
+                  <FadeInOnView key={s.titleFr} delay={idx * 60}>
+                    <li className="bg-paper border-border-strong/30 flex h-full flex-col gap-2 rounded-2xl border p-5">
+                      <h3
+                        className="text-fg text-base leading-tight font-semibold tracking-tight"
+                        style={{ fontFamily: "var(--font-serif)" }}
+                      >
+                        {isFr ? s.titleFr : s.titleEn}
+                      </h3>
+                      <p className="text-fg-soft text-xs leading-relaxed">
+                        {isFr ? s.descFr : s.descEn}
+                      </p>
+                    </li>
+                  </FadeInOnView>
+                ))}
+              </ul>
+            </div>
+          </Container>
+        </section>
+      ) : null}
 
       {/* ── 4f-bis. SÉCURITÉ & CONFORMITÉ — RGPD, AI Act, no vendor lock-in (Sprint Quality 2026 perfection) ── */}
       <section

@@ -213,14 +213,14 @@ export const VERTICALE_META: Record<VerticaleSlug, VerticaleMeta> = {
       {
         icon: HandshakeIcon,
         number: "1-to-1",
-        labelFr: "sessions exclusives dirigeants",
-        labelEn: "exclusive executive sessions",
+        labelFr: "TPE dirigeants + cadres décisionnaires PME/ETI",
+        labelEn: "Micro execs + decision-maker managers SMB/Mid",
       },
       {
         icon: Sparkles,
         number: "Sur mesure",
-        labelFr: "adapté à votre métier",
-        labelEn: "tailored to your business",
+        labelFr: "adapté à votre poste et métier",
+        labelEn: "tailored to your role and business",
       },
       {
         icon: Heart,

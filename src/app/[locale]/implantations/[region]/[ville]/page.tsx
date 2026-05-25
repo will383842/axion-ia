@@ -22,6 +22,7 @@ import { FadeInOnView } from "@/components/motion/FadeInOnView";
 import { LogosMarquee } from "@/components/home/LogosMarquee";
 import { Illustration } from "@/components/visual/Illustration";
 import { CaseStudyMarquee } from "@/components/ville/CaseStudyMarquee";
+import { OrangeContactBanner } from "@/components/ville/OrangeContactBanner";
 import { AiToolsStack } from "@/components/ville/AiToolsStack";
 
 import { getRegion } from "@/content/regions";
@@ -855,7 +856,7 @@ export default async function VillePage({ params }: Props) {
                               .map((nv) => nv.ville.nameFr)
                               .join(", ")}${nearbyVilles.length > 4 ? "…" : ""}`
                           : ""
-                      }. Une équipe restreinte d'experts seniors triés sur le volet le seconde — même exigence de perfection, même standard d'excellence, aucun consultant junior sur vos missions. Chaque intervention est conduite sur site, chez vous — jamais en visio.`
+                      }. Une équipe d'experts seniors triés sur le volet le seconde — même exigence de perfection, même standard d'excellence, aucun consultant junior sur vos missions. Chaque intervention est conduite sur site, chez vous — jamais en visio.`
                     : `William J., Axion-IA founder, personally leads the majority of engagements in ${ville.nameFr}${
                         nearbyVilles.length > 0
                           ? ` and surrounding areas: ${nearbyVilles
@@ -863,7 +864,7 @@ export default async function VillePage({ params }: Props) {
                               .map((nv) => nv.ville.nameFr)
                               .join(", ")}${nearbyVilles.length > 4 ? "…" : ""}`
                           : ""
-                      }. A small team of hand-picked senior experts supports him — same pursuit of perfection, same standard of excellence, never a junior consultant on your engagements. Every engagement is conducted on-site, at your premises — never on video calls.`}
+                      }. An expert team of hand-picked senior consultants supports him — same pursuit of perfection, same standard of excellence, never a junior consultant on your engagements. Every engagement is conducted on-site, at your premises — never on video calls.`}
                 </p>
                 <div className="border-border-strong mt-8 flex items-start gap-4 border-t pt-6">
                   <span className="bg-terracotta mt-1 inline-block h-6 w-0.5 shrink-0 rounded-full" />
@@ -1007,6 +1008,9 @@ export default async function VillePage({ params }: Props) {
           </Container>
         </section>
       ) : null}
+
+      {/* ── 5b-bis. BANDEAU ORANGE CONTACT (milieu de page — Sprint Quality 2026 Will 2026-05-25) ── */}
+      <OrangeContactBanner isFr={isFr} villeSlug={ville.slug} />
 
       {/* ── 5c. SOURCES D'AUTORITÉ — external links E-E-A-T 2026 ── */}
       <section
