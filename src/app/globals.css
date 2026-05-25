@@ -1584,8 +1584,8 @@
   align-items: center;
 }
 
-/* P1-20 audit Sprint A — sticky header (80-96px) masque les cibles d'ancre.
+/* P1-20 audit Sprint A — sticky header (max 96px) masque les cibles d'ancre.
    scroll-margin-top global évite que chaque composant gère ça individuellement. */
 [id] {
-  scroll-margin-top: 5rem;
+  scroll-margin-top: 6rem;
 }

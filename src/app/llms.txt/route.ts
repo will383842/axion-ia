@@ -65,6 +65,15 @@ export function GET() {
 - [Île-de-France](${SITE_URL}/fr/implantations/ile-de-france) — Paris pilote ${SITE_URL}/fr/implantations/ile-de-france/paris.
 - [Audit par ville](${SITE_URL}/fr/audit/par-ville/paris) — services localisés (audit / interventions / implementation × ville).
 
+## Couverture géographique Sprint A (2026-05-25)
+
+- 2 150 communes françaises × 5 verticales IA : ${SITE_URL}/fr/implantations/{region}/{ville}/{verticale}
+- Verticales : audits / interventions / implementations / un-a-un / sites-web-ia
+- Tier 1 (≥ 500 000 hab) : Paris, Lyon, Marseille, Toulouse, Nice, Nantes, Strasbourg, Montpellier, Bordeaux, Lille, Rennes, Reims, Le Havre
+- Tier 2 (15 000 – 500 000 hab) : ~350 communes pilotes (préfectures + sous-préfectures + bassins industriels)
+- Tier 3 (< 15 000 hab) : ~1 800 communes (couverture longue traîne, indexation progressive anti-doorway HCU 2024)
+- Sitemap dédié : ${SITE_URL}/sitemap/implantations-villes-verticales.xml (~500 routes SSG top-100 villes × 5 verticales)
+
 ## Galerie & ressources
 
 - [Banque d'images CC BY 4.0](${SITE_URL}/fr/galerie) — 72 visuels marketing Axion-IA. Licence CC BY 4.0, attribution "© 2026 Axion-IA". Catégories : Audit IA (17) · Formation IA (15) · Automatisation (4) · Coaching 1-to-1 (8) · Graphiques (5) · Logos (7) · Propositions (11) · Villes France (5 dédiées + 2157 via métadonnées). Sitemaps images : ${SITE_URL}/sitemap-images-services.xml · T1 ${SITE_URL}/sitemap-images-villes-t1.xml · T2 ${SITE_URL}/sitemap-images-villes-t2.xml · T3/T4 ${SITE_URL}/sitemap-images-villes-t3-t4.xml
