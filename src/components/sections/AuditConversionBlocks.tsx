@@ -264,7 +264,7 @@ export function SocialProof({ isFr, showTestimonials = true }: SocialProofProps)
         },
         {
           quote:
-            "Le rapport Axion-IA tient en 30 pages, sans jargon, avec un plan d'action chiffré jusqu'à la dernière tâche. Notre CODIR a validé en une seule session. C'est devenu notre référentiel IA interne.",
+            "Le rapport Axion-IA est calibré sur notre taille et la profondeur du déploiement — de 30 pages à plusieurs centaines selon le périmètre. Le nôtre était structuré par phases d'échéancier, avec un plan chiffré jusqu'à la dernière tâche. On est ensuite libres de déployer les chantiers prioritaires à notre rythme, avec ou sans Axion-IA. Notre CODIR a validé en une session.",
           author: "Directeur des opérations",
           role: "COO",
           company: "PME industrielle · 80 collaborateurs · Belgique",
@@ -287,7 +287,7 @@ export function SocialProof({ isFr, showTestimonials = true }: SocialProofProps)
         },
         {
           quote:
-            "The Axion-IA report fits 30 pages, no jargon, with a costed action plan down to the last task. Our leadership signed off in a single session. It's now our internal AI reference.",
+            "The Axion-IA report is calibrated to our size and deployment depth — from 30 pages to several hundred depending on scope. Ours was structured by phase timelines, with a costed action plan down to the last task. We're then free to roll out the priority workstreams at our pace, with or without Axion-IA. Our leadership signed off in a single session.",
           author: "Director of Operations",
           role: "COO",
           company: "Industrial SMB · 80 staff · Belgium",

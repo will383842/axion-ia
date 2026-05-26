@@ -55,7 +55,7 @@ function buildFrFaqs(onsitePrice: string): ReadonlyArray<AuditFaqItem> {
       id: "after",
       question: "Que se passe-t-il après l'audit ?",
       answer:
-        "Vous repartez avec un plan d'action chiffré, exécutable par vos équipes ou par Axion-IA (module Implémentation). Une session de suivi peut être programmée 30 à 60 jours après la livraison pour challenger la mise en œuvre — sans frais additionnels si elle tient en 60 minutes.",
+        "Vous repartez avec un plan d'action chiffré et structuré par phases d'échéancier. Le rapport est calibré sur votre taille et la profondeur du déploiement — de 30 pages pour un audit ciblé à plusieurs centaines pour un déploiement complet ETI ou grand groupe. Vous êtes ensuite totalement libres : déployer les recommandations à votre rythme avec vos équipes, n'activer que les chantiers prioritaires, ou confier l'exécution à Axion-IA (module Implémentation). Une session de suivi peut être programmée 30 à 60 jours après la livraison pour challenger la mise en œuvre — sans frais additionnels si elle tient en 60 minutes.",
     },
     {
       id: "eu-jurisdiction",
@@ -95,7 +95,7 @@ function buildEnFaqs(onsitePrice: string): ReadonlyArray<AuditFaqItem> {
       id: "after",
       question: "What happens after the audit?",
       answer:
-        "You leave with a costed action plan, executable by your teams or by Axion-IA (Implementation module). A follow-up session can be scheduled 30 to 60 days after delivery to challenge execution — at no additional cost if it fits in 60 minutes.",
+        "You leave with a costed action plan structured by phase timelines. The report is calibrated to your size and deployment depth — from 30 pages for a targeted audit to several hundred for a full mid-cap or large-enterprise deployment. You're then fully free: roll out the recommendations at your pace with your teams, activate only the priority workstreams, or hand execution to Axion-IA (Implementation module). A follow-up session can be scheduled 30 to 60 days after delivery to challenge execution — at no additional cost if it fits in 60 minutes.",
     },
     {
       id: "eu-jurisdiction",
