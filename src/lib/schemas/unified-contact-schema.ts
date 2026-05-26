@@ -9,12 +9,16 @@ import { z } from "zod";
 
 // ---- Types & enums ---------------------------------------------------------
 
+// Ordre = ordre d'affichage du segmented control. `autre` en tête car defaultType
+// et car couvre 100 % des cas non-listés (politique "le formulaire sert à tout").
 export const UNIFIED_CONTACT_TYPES = [
-  "formation",
-  "un_a_un",
+  "autre",
+  "devis",
   "audit",
   "implementation",
-  "autre",
+  "formation",
+  "un_a_un",
+  "partenariat",
 ] as const;
 export type UnifiedContactType = (typeof UNIFIED_CONTACT_TYPES)[number];
 
@@ -86,11 +90,13 @@ export type UnifiedContactInput = z.infer<typeof unifiedContactSchema>;
 
 export function unifiedTypeLabel(type: UnifiedContactType, locale: "fr" | "en"): string {
   const labels: Record<UnifiedContactType, { fr: string; en: string }> = {
-    formation: { fr: "Formation", en: "Training" },
-    un_a_un: { fr: "Coaching 1-à-1", en: "1-on-1 coaching" },
+    autre: { fr: "Autre demande", en: "Other request" },
+    devis: { fr: "Devis", en: "Quote" },
     audit: { fr: "Audit IA", en: "AI audit" },
     implementation: { fr: "Implémentation IA", en: "AI implementation" },
-    autre: { fr: "Autre demande", en: "Other request" },
+    formation: { fr: "Formation", en: "Training" },
+    un_a_un: { fr: "Coaching 1-à-1", en: "1-on-1 coaching" },
+    partenariat: { fr: "Partenariat", en: "Partnership" },
   };
   return labels[type][locale];
 }

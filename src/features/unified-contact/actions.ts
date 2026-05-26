@@ -63,6 +63,9 @@ function submissionTypeFor(type: UnifiedContactType): SubmissionType {
     case "formation":
     case "un_a_un":
       return SubmissionType.intervention;
+    case "devis":
+      return SubmissionType.quote_request;
+    case "partenariat":
     case "autre":
       return SubmissionType.contact;
   }
@@ -75,7 +78,9 @@ function telegramTagFor(type: UnifiedContactType): TelegramTag {
     case "formation":
     case "un_a_un":
       return "INTERVENTION";
+    case "devis":
     case "implementation":
+    case "partenariat":
     case "autre":
       return "CONTACT";
   }
@@ -87,8 +92,10 @@ function emailTemplateFor(type: UnifiedContactType): EmailJobName {
       return "audit-confirmed";
     case "implementation":
       return "implementation-confirmed";
+    case "devis":
     case "formation":
     case "un_a_un":
+    case "partenariat":
     case "autre":
       return "contact-confirmed";
   }
@@ -96,11 +103,13 @@ function emailTemplateFor(type: UnifiedContactType): EmailJobName {
 
 function humanType(type: UnifiedContactType, locale: "fr" | "en"): string {
   const labels: Record<UnifiedContactType, { fr: string; en: string }> = {
-    formation: { fr: "Formation", en: "Training" },
-    un_a_un: { fr: "Coaching 1-à-1", en: "1-on-1 coaching" },
+    autre: { fr: "Autre", en: "Other" },
+    devis: { fr: "Devis", en: "Quote" },
     audit: { fr: "Audit IA", en: "AI audit" },
     implementation: { fr: "Implémentation IA", en: "AI implementation" },
-    autre: { fr: "Autre", en: "Other" },
+    formation: { fr: "Formation", en: "Training" },
+    un_a_un: { fr: "Coaching 1-à-1", en: "1-on-1 coaching" },
+    partenariat: { fr: "Partenariat", en: "Partnership" },
   };
   return labels[type][locale];
 }

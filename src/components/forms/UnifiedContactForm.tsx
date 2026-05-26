@@ -48,13 +48,16 @@ const LABELS = {
     title: "Décrivez votre besoin",
     titleEm: "en quelques secondes",
     subtitle: "Réponse sous 48 h ouvrées par un humain. Sans engagement.",
-    typeLabel: "Vous voulez parler de…",
+    typeLabel: "Objet de votre demande",
+    typeHelp: "Vous ne trouvez pas votre cas ? Choisissez « Autre » — le formulaire sert à tout.",
     typeOptions: {
-      formation: "Formation",
-      un_a_un: "1-à-1",
+      autre: "Autre",
+      devis: "Devis",
       audit: "Audit",
       implementation: "Implémentation",
-      autre: "Autre",
+      formation: "Formation",
+      un_a_un: "1-à-1",
+      partenariat: "Partenariat",
     },
     nom: "Nom complet",
     nomPlaceholder: "Prénom Nom",
@@ -104,13 +107,16 @@ const LABELS = {
     title: "Tell us about your need",
     titleEm: "in seconds",
     subtitle: "Reply within 48 business hours, by a human. No commitment.",
-    typeLabel: "You want to talk about…",
+    typeLabel: "What is your request about?",
+    typeHelp: "Not sure where you fit? Pick « Other » — this form covers everything.",
     typeOptions: {
-      formation: "Training",
-      un_a_un: "1-on-1",
+      autre: "Other",
+      devis: "Quote",
       audit: "Audit",
       implementation: "Implementation",
-      autre: "Other",
+      formation: "Training",
+      un_a_un: "1-on-1",
+      partenariat: "Partnership",
     },
     nom: "Full name",
     nomPlaceholder: "First Last",
@@ -357,6 +363,7 @@ export function UnifiedContactForm({
               );
             })}
           </div>
+          <p className="text-fg-muted text-[12.5px] leading-relaxed">{t.typeHelp}</p>
           {errors.type ? (
             <p role="alert" className="text-accent-red text-xs">
               {errors.type.message ?? t.typeRequired}

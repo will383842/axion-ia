@@ -29,10 +29,15 @@ describe("unifiedContactSchema", () => {
     expect(r.success).toBe(false);
   });
 
-  it("accepts all 5 enum types", () => {
+  it("accepts all enum types", () => {
     for (const type of UNIFIED_CONTACT_TYPES) {
       expect(unifiedContactSchema.safeParse({ ...validBase, type }).success).toBe(true);
     }
+  });
+
+  it("covers devis + partenariat (2026-05-26 extension)", () => {
+    expect(UNIFIED_CONTACT_TYPES).toContain("devis");
+    expect(UNIFIED_CONTACT_TYPES).toContain("partenariat");
   });
 
   it("rejects email malformé", () => {
@@ -145,15 +150,19 @@ describe("unifiedContactSchema", () => {
 
 describe("unifiedTypeLabel", () => {
   it("returns FR labels for all types", () => {
-    expect(unifiedTypeLabel("formation", "fr")).toBe("Formation");
-    expect(unifiedTypeLabel("un_a_un", "fr")).toBe("Coaching 1-à-1");
+    expect(unifiedTypeLabel("autre", "fr")).toBe("Autre demande");
+    expect(unifiedTypeLabel("devis", "fr")).toBe("Devis");
     expect(unifiedTypeLabel("audit", "fr")).toBe("Audit IA");
     expect(unifiedTypeLabel("implementation", "fr")).toBe("Implémentation IA");
-    expect(unifiedTypeLabel("autre", "fr")).toBe("Autre demande");
+    expect(unifiedTypeLabel("formation", "fr")).toBe("Formation");
+    expect(unifiedTypeLabel("un_a_un", "fr")).toBe("Coaching 1-à-1");
+    expect(unifiedTypeLabel("partenariat", "fr")).toBe("Partenariat");
   });
 
   it("returns EN labels for all types", () => {
     expect(unifiedTypeLabel("audit", "en")).toBe("AI audit");
     expect(unifiedTypeLabel("implementation", "en")).toBe("AI implementation");
+    expect(unifiedTypeLabel("devis", "en")).toBe("Quote");
+    expect(unifiedTypeLabel("partenariat", "en")).toBe("Partnership");
   });
 });
