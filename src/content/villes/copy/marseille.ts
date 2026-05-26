@@ -29,7 +29,7 @@ export const MARSEILLE_COPY: VilleCopy = {
       en: "Operational AI audit in Marseille: we identify your automation cases on site and quantify the ROI. Four tiers from Flash to Mid-cap Strategic depending on your size — maritime, logistics, biotech or services.",
     },
     interventions: {
-      fr: "Interventions IA à Marseille : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA configurés pour leur métier. Pour Marseille intra-muros et la métropole Aix-Marseille, le déplacement consultant (TGV/voiture, repas) est facturé en sus du forfait journée.",
+      fr: "Interventions IA à Marseille : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA configurés pour leur métier — maritime, logistique, santé/biotech, services B2B ou industrie navale.",
       en: "AI sessions in Marseille: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools configured for their work. Lodging, meals and travel allowance billed separately.",
     },
     implementation: {
@@ -37,7 +37,7 @@ export const MARSEILLE_COPY: VilleCopy = {
       en: "AI implementation in Marseille: we deploy AI into your existing tools (TMS, ERP, CRM, email) with contractually-costed ROI. Your teams stay in control, we create no dependency.",
     },
     unAUn: {
-      fr: "Coaching IA individuel à Marseille : sessions 1-to-1 sur site dans vos locaux (Euroméditerranée, Joliette, Château-Gombert) ou en visio. Dirigeants, managers et entrepreneurs des PME/ETI marseillaises — maritime, logistique, santé, services — qui veulent monter en compétence IA à leur rythme sur leurs propres cas business. Pour le présentiel, le déplacement consultant Paris↔Marseille est facturé en sus du forfait séance.",
+      fr: "Coaching IA individuel à Marseille : sessions 1-to-1 sur site dans vos locaux (Euroméditerranée, Joliette, Château-Gombert) ou en visio. Dirigeants, managers et entrepreneurs des PME/ETI marseillaises — maritime, logistique, santé, services — qui veulent monter en compétence IA à leur rythme sur leurs propres cas business.",
       en: "Individual AI coaching in Marseille: 1-to-1 sessions on site at your offices (Euroméditerranée, Joliette, Château-Gombert) or by video. Executives, managers and entrepreneurs at Marseille SMEs/mid-caps — maritime, logistics, health, services — who want to build AI competence at their own pace on their own business cases. Lodging, meals and travel allowance billed separately.",
     },
     sitesWeb: {
@@ -288,7 +288,7 @@ export const MARSEILLE_COPY: VilleCopy = {
 
     interventions: {
       fr: {
-        hero: "Les interventions IA Axion-IA à Marseille se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur métier réel — logistique, santé, commerce ou services. Pour Marseille intra-muros et la métropole, le déplacement consultant (TGV depuis Paris, repas, hébergement si multi-jours) est facturé à part du forfait journée.",
+        hero: "Les interventions IA Axion-IA à Marseille se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur métier réel — logistique portuaire, santé/biotech Luminy, commerce ou services Euroméditerranée.",
         whyHere: [
           "Marseille est l'un de nos terrains d'intervention prioritaires sur la Méditerranée : nous y déroulons des sessions pour des équipes aussi diverses qu'un service douane d'une ETI portuaire et une équipe commerciale de PME tech Luminy.",
           "Tous les arrondissements couverts en présentiel ainsi que le bassin : Euroméditerranée, Château-Gombert, Luminy, Aubagne, Aix-en-Provence, La Ciotat, Vitrolles.",
@@ -718,7 +718,7 @@ export const MARSEILLE_COPY: VilleCopy = {
 
     unAUn: {
       fr: {
-        hero: "Le coaching IA 1-to-1 Axion-IA à Marseille est un accompagnement individuel sur mesure, conçu pour les dirigeants, managers et entrepreneurs du tissu économique marseillais — ETI maritimes d'Euroméditerranée, PME logistiques de la Joliette, dirigeants de Centrale Méditerranée et d'AMU, professionnels de santé de Luminy. Sessions en présentiel dans vos locaux ou en visio selon vos contraintes. Tarif d'entrée à partir de 990 € HT. Vous progressez à votre rythme, sur vos propres cas business réels. Pour le présentiel, le déplacement consultant Paris↔Marseille est facturé en sus du forfait séance.",
+        hero: "Le coaching IA 1-to-1 Axion-IA à Marseille est un accompagnement individuel sur mesure, conçu pour les dirigeants, managers et entrepreneurs du tissu économique marseillais — ETI maritimes d'Euroméditerranée, PME logistiques de la Joliette, dirigeants de Centrale Méditerranée et d'AMU, professionnels de santé de Luminy. Sessions en présentiel dans vos locaux ou en visio selon vos contraintes. Tarif d'entrée à partir de 990 € HT. Vous progressez à votre rythme, sur vos propres cas business réels.",
         whyHere: [
           "Marseille concentre des profils de dirigeants à fort potentiel IA : PDG d'ETI CMA CGM-orbite, DG de PME transitaires Joliette, responsables formation AMU/Centrale Méditerranée, directeurs médicaux Luminy. Chacun de ces profils mérite un accompagnement calibré sur ses réalités métier, pas une session générique.",
           "Le tissu PME/ETI des Bouches-du-Rhône génère des besoins très spécifiques en coaching IA : automatisation de la gestion documentaire portuaire, assistance à la négociation commerciale export, optimisation des process de soins, structuration de la veille concurrentielle maritime.",

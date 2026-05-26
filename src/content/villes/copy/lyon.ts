@@ -33,7 +33,7 @@ export const LYON_COPY: VilleCopy = {
       en: "Operational AI audit in Lyon: we map what can be automated at your company and quantify the ROI. 4 tiers from Flash to Mid-cap Strategic, from Lyon practices to industrial mid-caps in the Vallée de la Chimie.",
     },
     interventions: {
-      fr: "Interventions IA à Lyon : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste. Pour Lyon intra-muros et la Métropole, le déplacement consultant (TGV depuis Paris, repas, hébergement si plusieurs jours) est facturé en sus du forfait journée.",
+      fr: "Interventions IA à Lyon : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste, configurés pour leur métier — chimie industrielle, biotech, banque Part-Dieu, équipementiers ou services tertiaires.",
       en: "AI sessions in Lyon: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools installed on their workstations. Lodging, meals and travel allowance billed separately.",
     },
     implementation: {
@@ -294,7 +294,7 @@ export const LYON_COPY: VilleCopy = {
     },
     interventions: {
       fr: {
-        hero: "Les interventions IA Axion-IA à Lyon se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — en usine de la Vallée de la Chimie, en laboratoire Gerland, dans les bureaux de Part-Dieu ou sur sites clients de la Métropole. Le déplacement consultant (TGV depuis Paris, repas, hébergement si multi-jours) est facturé à part du forfait journée.",
+        hero: "Les interventions IA Axion-IA à Lyon se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — en usine de la Vallée de la Chimie, en laboratoire Gerland, dans les bureaux de Part-Dieu ou sur sites clients de la Métropole.",
         whyHere: [
           "Lyon est l'un de nos principaux terrains d'intervention : entreprises industrielles, biotech, services financiers Part-Dieu et PME numériques Villeurbanne représentent une part significative de nos sessions.",
           "Tous les arrondissements et communes de la Métropole couverts en présentiel : Part-Dieu, Confluence, Gerland, Villeurbanne, Vaise, Écully, Bron, Saint-Priest, Vénissieux, Caluire.",
@@ -722,7 +722,7 @@ export const LYON_COPY: VilleCopy = {
     },
     unAUn: {
       fr: {
-        hero: "Le coaching 1-to-1 IA Axion-IA à Lyon est conçu pour les dirigeants et managers qui pilotent une transformation, une restructuration ou une montée en compétence IA sans vouloir exposer leurs doutes en groupe. Sessions confidentielles, en présentiel dans vos locaux lyonnais — Part-Dieu, Confluence, Gerland, Villeurbanne, Écully — ou à distance selon vos impératifs d'agenda. Nous travaillons sur votre pratique réelle : vos emails, vos rapports, vos décisions, votre relation aux équipes. L'objectif n'est pas une certification : c'est que vous soyez opérationnel sur l'IA comme levier de direction dans vos 90 premiers jours. Pas de contrat récurrent ni de suite logicielle imposés, aucun suivi prolongé au-delà de ce que vous validez. Pour le présentiel hors Lyon intra-muros, le déplacement consultant est facturé en sus du forfait séance.",
+        hero: "Le coaching 1-to-1 IA Axion-IA à Lyon est conçu pour les dirigeants et managers qui pilotent une transformation, une restructuration ou une montée en compétence IA sans vouloir exposer leurs doutes en groupe. Sessions confidentielles, en présentiel dans vos locaux lyonnais — Part-Dieu, Confluence, Gerland, Villeurbanne, Écully — ou à distance selon vos impératifs d'agenda. Nous travaillons sur votre pratique réelle : vos emails, vos rapports, vos décisions, votre relation aux équipes. L'objectif n'est pas une certification : c'est que vous soyez opérationnel sur l'IA comme levier de direction dans vos 90 premiers jours. Pas de contrat récurrent ni de suite logicielle imposés, aucun suivi prolongé au-delà de ce que vous validez.",
         whyHere: [
           "Lyon concentre des dirigeants d'ETI industrielles (Vallée de la Chimie, Renault Trucks, équipementiers) et de PME biotech (Gerland, Lyonbiopôle) qui ne trouvent pas de pairs pour parler IA en toute confidentialité — notre coaching 1-to-1 répond exactement à ce besoin.",
           "L'écosystème EM Lyon et INSA produit chaque année des cadres dirigeants lyonnais qui prennent des postes à responsabilité sans avoir été formés sur l'IA opérationnelle — le coaching 1-to-1 comble ce gap en quelques sessions.",
@@ -763,25 +763,25 @@ export const LYON_COPY: VilleCopy = {
             sizeLabel: "TPE",
             price: "à partir de 990 € HT",
             detail:
-              "Pour indépendants, gérants et dirigeants de TPE lyonnaises (Presqu'île, Vieux Lyon, quartiers résidentiels). Parcours court sur sessions de travail ciblées — email, devis, veille, gestion administrative. Pour les séances présentielles hors Lyon intra-muros, déplacement consultant facturé en sus du forfait.",
+              "Pour indépendants, gérants et dirigeants de TPE lyonnaises (Presqu'île, Vieux Lyon, quartiers résidentiels). Parcours court sur sessions de travail ciblées — email, devis, veille, gestion administrative.",
           },
           {
             sizeLabel: "PME",
             price: "Parcours PME — sur devis",
             detail:
-              "Pour dirigeants et managers de PME lyonnaises (Villeurbanne IT, Vaise, Presqu'île). Parcours calibré sur plusieurs mois : prise de décision, management d'équipes, reporting, gestion de projet IA. Hors Lyon intra-muros, déplacement consultant en sus du forfait par séance.",
+              "Pour dirigeants et managers de PME lyonnaises (Villeurbanne IT, Vaise, Presqu'île). Parcours calibré sur plusieurs mois : prise de décision, management d'équipes, reporting, gestion de projet IA.",
           },
           {
             sizeLabel: "ETI",
             price: "Parcours ETI — sur devis",
             detail:
-              "Pour DG, DAF, DRH et directeurs de directions d'ETI industrielles ou biotech lyonnaises. Travail sur la gouvernance IA, la communication interne et externe, la relation investisseurs et la conduite du changement. Pour les séances en bureau hors Lyon intra-muros, déplacement consultant en supplément du forfait par séance.",
+              "Pour DG, DAF, DRH et directeurs de directions d'ETI industrielles ou biotech lyonnaises. Travail sur la gouvernance IA, la communication interne et externe, la relation investisseurs et la conduite du changement.",
           },
           {
             sizeLabel: "Grande entreprise",
             price: "Parcours grands comptes — sur devis",
             detail:
-              "Pour dirigeants de grandes entreprises et groupes implantés dans la Métropole (Sanofi Gerland, Groupe SEB Écully, Renault Trucks Saint-Priest). Format confidentiel haut niveau, agenda adapté aux contraintes de direction générale. Déplacement consultant (TGV depuis Paris, hébergement multi-jours, repas) facturé séparément du forfait séance.",
+              "Pour dirigeants de grandes entreprises et groupes implantés dans la Métropole (Sanofi Gerland, Groupe SEB Écully, Renault Trucks Saint-Priest). Format confidentiel haut niveau, agenda adapté aux contraintes de direction générale.",
           },
         ],
         testimonials: [
@@ -825,7 +825,7 @@ export const LYON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Engagement séance par séance : vous arrêtez le parcours à tout moment sans pénalité au-delà des sessions déjà réalisées. Confidentialité stricte, aucune référence publiée sans accord écrit — particulièrement strict pour les dirigeants biotech Gerland et banque Part-Dieu sensibles aux fuites stratégiques. Résultats orientés pratique réelle : si après trois sessions vous n'avez pas constaté de gain concret dans votre pratique quotidienne, séance de diagnostic offerte pour recadrer le parcours. Pour les sessions présentielles hors Lyon intra-muros, déplacement consultant en sus du forfait séance.",
+          "Engagement séance par séance : vous arrêtez le parcours à tout moment sans pénalité au-delà des sessions déjà réalisées. Confidentialité stricte, aucune référence publiée sans accord écrit — particulièrement strict pour les dirigeants biotech Gerland et banque Part-Dieu sensibles aux fuites stratégiques. Résultats orientés pratique réelle : si après trois sessions vous n'avez pas constaté de gain concret dans votre pratique quotidienne, séance de diagnostic offerte pour recadrer le parcours.",
       },
       en: {
         hero: "Axion-IA's 1-to-1 AI coaching in Lyon is designed for executives and managers steering a transformation, restructuring or AI skills upgrade without wanting to expose their questions in a group setting. Confidential sessions at your Lyon offices — Part-Dieu, Confluence, Gerland, Villeurbanne, Écully — or remote depending on your schedule. We work on your real practice: your emails, your reports, your decisions, your relationship with your teams. The goal is not a certification: it is that you are operational with AI as a leadership lever within your first 90 days. No lock-in, no follow-up imposed beyond what you validate. Lodging, meals and travel allowance billed separately for on-site sessions outside central Lyon.",

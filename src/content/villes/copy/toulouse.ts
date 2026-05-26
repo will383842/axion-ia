@@ -23,13 +23,15 @@ export const TOULOUSE_COPY: VilleCopy = {
   pitchEn:
     "Toulouse hosts 19,600 active businesses, Europe's aerospace capital (Airbus, CNES, Thales Alenia Space, ONERA) and France's fourth city for high-tech employment. Axion-IA delivers on site, from local micro-businesses to mid-caps and large enterprises in the Aerospace Valley and Labège-Innopole hubs.",
 
+  seoHook: "aérospatial, deeptech & agro",
+
   servicesContext: {
     audit: {
       fr: "Audit IA opérationnel à Toulouse : nous identifions ce qui peut être automatisé dans votre organisation et chiffrons le ROI. 4 niveaux du Flash au Stratégique ETI, calibrés pour les structures aérospatiales, IT et agroalimentaires toulousaines.",
       en: "Operational AI audit in Toulouse: we identify what can be automated in your organisation and quantify the ROI. 4 tiers from Flash to Mid-cap Strategic, calibrated for Toulouse aerospace, IT and agri-food companies.",
     },
     interventions: {
-      fr: "Interventions IA à Toulouse : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste. Frais de logement, repas et forfait trajet en sus.",
+      fr: "Interventions IA à Toulouse : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste, configurés pour leur métier — aéronautique sous-traitance Blagnac, IoT Labège, agro-industriel ou tech Toulouse centre.",
       en: "AI sessions in Toulouse: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools installed on their workstations. Lodging, meals and travel allowance billed separately.",
     },
     implementation: {
@@ -37,7 +39,7 @@ export const TOULOUSE_COPY: VilleCopy = {
       en: "AI implementation in Toulouse: we deploy AI into your existing tools (PLM, ERP, email, technical documentation) with contractually-costed ROI. Your teams stay in control, no dependency created.",
     },
     unAUn: {
-      fr: "Coaching IA 1-to-1 à Toulouse : accompagnement individuel pour dirigeants et ingénieurs de l'Aerospace Valley, cadres French Tech Toulouse et responsables des ETI toulousaines. Sessions sur site (Blagnac, Labège, Toulouse centre) ou à distance. Tarif d'entrée 990 € HT. Frais de logement, repas et forfait trajet en sus hors Toulouse intra-muros.",
+      fr: "Coaching IA 1-to-1 à Toulouse : accompagnement individuel pour dirigeants et ingénieurs de l'Aerospace Valley, cadres French Tech Toulouse et responsables des ETI toulousaines. Sessions sur site (Blagnac, Labège, Toulouse centre) ou à distance. Tarif d'entrée 990 € HT.",
       en: "1-to-1 AI coaching in Toulouse: individual coaching for Aerospace Valley executives and engineers, French Tech Toulouse managers and Toulouse mid-cap leaders. On-site sessions (Blagnac, Labège, Toulouse centre) or remote. Entry rate from €990 excl. VAT. Lodging, meals and travel allowance billed separately outside central Toulouse.",
     },
     sitesWeb: {
@@ -47,7 +49,7 @@ export const TOULOUSE_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Toulouse (31) sur site dans la ville rose et le bassin toulousain (Blagnac, Colomiers, Labège, Tournefeuille). Nous accompagnons les TPE, PME, ETI et grandes entreprises toulousaines — acteurs de l'aérospatiale, du numérique, de l'agroalimentaire — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Toulouse (31) sur site dans la ville rose et le bassin toulousain (Blagnac, Colomiers, Labège, Tournefeuille). Nous accompagnons les TPE, PME, ETI et grandes entreprises toulousaines — acteurs de l'aérospatiale, du numérique, de l'agroalimentaire — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Vos équipes restent maîtres de la stack (modèles, PLM aéronautique, intégrations IoT Valley) après notre mission — sans verrou éditeur ni dépendance contractuelle continue.",
   directAnswerEn:
     "Axion-IA is a senior AI architects consultancy that intervenes in Toulouse (31) on site across the city and the greater Toulouse basin (Blagnac, Colomiers, Labège, Tournefeuille). We support Toulouse micro-businesses, SMEs, mid-caps and large enterprises — aerospace, digital, agri-food players — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
@@ -176,7 +178,7 @@ export const TOULOUSE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, option infra locale pour données sensibles aérospatiales. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement.",
+          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, option infra locale pour données sensibles aérospatiales. Le plan d'action remis est portable — exécutable par tout intégrateur de l'Aerospace Valley ou par vos équipes en interne, sans contrat de prestation continue obligatoire. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement.",
       },
       en: {
         hero: "Axion-IA's AI audit maps what can be automated in your organisation and quantifies the 12-24 month return on investment. Four tiers from Flash to Mid-cap Strategic cover every size, from Toulouse micro-businesses to large aerospace group divisions in the greater basin.",
@@ -288,7 +290,7 @@ export const TOULOUSE_COPY: VilleCopy = {
 
     interventions: {
       fr: {
-        hero: "Les interventions IA Axion-IA à Toulouse se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel. Frais de logement, repas et forfait trajet facturés à part.",
+        hero: "Les interventions IA Axion-IA à Toulouse se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — en bureau d'études aéronautique Blagnac, sur ligne d'assemblage, en laboratoire agro ou en bureau IoT Labège.",
         whyHere: [
           "Toulouse est un pôle d'intervention prioritaire pour Axion-IA : industrie aérospatiale, numérique et agroalimentaire génèrent des besoins spécifiques que nos sessions adressent directement.",
           "Toute la métropole couverte en présentiel — Toulouse intra-muros, Blagnac (Airbus), Colomiers, Labège-Innopole (IoT Valley), Tournefeuille, Muret — ainsi que les sites industriels de banlieue.",
@@ -371,11 +373,11 @@ export const TOULOUSE_COPY: VilleCopy = {
           },
           {
             q: "Pouvez-vous intervenir sur les sites industriels de Blagnac et Labège ?",
-            a: "Oui. Nous intervenons sur l'ensemble du bassin toulousain : Toulouse intra-muros, Blagnac (Airbus, ATR), Colomiers, Labège-Innopole (IoT Valley), Tournefeuille et Muret. Frais de logement, repas et forfait trajet facturés à part.",
+            a: "Oui. Nous intervenons sur l'ensemble du bassin toulousain : Toulouse intra-muros, Blagnac (Airbus, ATR), Colomiers, Labège-Innopole (IoT Valley), Tournefeuille et Muret.",
           },
           {
             q: "Les outils installés restent-ils utilisables après la session ?",
-            a: "Oui, ce sont des comptes individuels (gratuits ou avec abonnement employé) sur ChatGPT, Claude, Mistral, Notion AI, Gamma, Perplexity selon le profil. Aucun lock-in Axion-IA, vous gardez la main.",
+            a: "Oui, ce sont des comptes individuels (gratuits ou avec abonnement employé) sur ChatGPT, Claude, Mistral, Notion AI, Gamma, Perplexity selon le profil. Les accès restent à votre nom et révocables à tout moment — particulièrement adapté aux profils ingénieurs Aerospace Valley habitués à gérer leurs propres licences logicielles.",
           },
           {
             q: "Pouvez-vous adapter le contenu à notre secteur aérospatial ou IoT ?",
@@ -590,7 +592,7 @@ export const TOULOUSE_COPY: VilleCopy = {
           },
           {
             q: "Qui maintient la solution après la mission ?",
-            a: "Vos ambassadeurs internes, formés pendant la mission. Documentation runbook complète remise. Si maintenance externalisée souhaitée, contrat de support optionnel. Aucun lock-in : vous pouvez aussi externaliser ailleurs.",
+            a: "Vos ambassadeurs internes, formés pendant la mission. Documentation runbook complète remise. Si maintenance externalisée souhaitée, contrat de support optionnel chez nous ou chez tout intégrateur de l'écosystème Aerospace Valley / IoT Valley — vous restez libre du choix.",
           },
           {
             q: "Mes données restent-elles chez moi ou partent-elles chez Axion-IA ?",
@@ -606,7 +608,7 @@ export const TOULOUSE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Forfait fixe sur SOW : pas de dérive horaire cachée. Livraison dans les délais convenus à la signature, avec compensation contractuelle en cas de retard de notre fait. ROI chiffré contractuel : si après une année de production le ROI réel mesuré reste très en deçà de la prédiction du SOW, audit gratuit pour identifier la cause + ajustement déploiement offert. Aucun lock-in technologique : vos modèles, vos données, votre runbook. Vos ambassadeurs internes formés sont autonomes après go-live.",
+          "Forfait fixe sur SOW : pas de dérive horaire cachée. Livraison dans les délais convenus à la signature, avec compensation contractuelle en cas de retard de notre fait. ROI chiffré contractuel : si après une année de production le ROI réel mesuré reste très en deçà de la prédiction du SOW, audit gratuit pour identifier la cause + ajustement déploiement offert. Modèles, données et runbook restent intégralement chez vous, transférables à tout intégrateur Aerospace Valley / IoT Valley ou repris en interne. Vos ambassadeurs internes formés sont autonomes après go-live.",
       },
       en: {
         hero: "Axion-IA's AI implementation in Toulouse brings your AI cases to production with contractually-costed ROI, team training included. Mode is hybrid on-site / remote, with a mandatory kick-off in Toulouse or the greater basin.",
@@ -717,7 +719,7 @@ export const TOULOUSE_COPY: VilleCopy = {
     },
     unAUn: {
       fr: {
-        hero: "Le coaching IA 1-to-1 Axion-IA à Toulouse s'adresse aux dirigeants, ingénieurs et managers de l'aérospatiale (Airbus, CNES, Thales Alenia Space, ONERA), aux cadres des PME et ETI de l'Aerospace Valley, aux responsables des scale-ups French Tech Toulouse et aux dirigeants du tissu industriel toulousain. Pas de programme collectif : chaque séance part de vos vrais dossiers, vos vraies décisions, votre réalité métier. Tarif d'entrée 990 € HT. Frais de logement, repas et forfait trajet en sus hors Toulouse intra-muros.",
+        hero: "Le coaching IA 1-to-1 Axion-IA à Toulouse s'adresse aux dirigeants, ingénieurs et managers de l'aérospatiale (Airbus, CNES, Thales Alenia Space, ONERA), aux cadres des PME et ETI de l'Aerospace Valley, aux responsables des scale-ups French Tech Toulouse et aux dirigeants du tissu industriel toulousain. Pas de programme collectif : chaque séance part de vos vrais dossiers, vos vraies décisions, votre réalité métier. Tarif d'entrée 990 € HT.",
         whyHere: [
           "Toulouse concentre une densité exceptionnelle d'ingénieurs et de managers techniques dans l'aérospatiale (Airbus, CNES, Thales Alenia Space, ATR, ONERA) qui ont besoin d'intégrer l'IA dans leur pratique sans passer par une formation collective inadaptée à leur niveau.",
           "L'écosystème French Tech Toulouse et IoT Valley à Labège-Innopole génère des dirigeants de scale-ups et des fondateurs techniques pour qui une montée en compétence IA rapide et personnalisée est souvent plus pertinente qu'un programme de groupe.",
@@ -758,7 +760,7 @@ export const TOULOUSE_COPY: VilleCopy = {
             sizeLabel: "TPE",
             price: "à partir de 990 € HT",
             detail:
-              "Pour indépendants, bureaux d'études et dirigeants de TPE du bassin toulousain. Parcours court sur 2-3 séances focalisées sur vos cas d'usage prioritaires. Frais de logement, repas et forfait trajet en sus hors Toulouse intra-muros.",
+              "Pour indépendants, bureaux d'études et dirigeants de TPE du bassin toulousain. Parcours court sur 2-3 séances focalisées sur vos cas d'usage prioritaires.",
           },
           {
             sizeLabel: "PME",
@@ -808,7 +810,7 @@ export const TOULOUSE_COPY: VilleCopy = {
           },
           {
             q: "Les séances se déroulent-elles en présentiel à Toulouse ou à distance ?",
-            a: "Les deux sont possibles selon vos préférences. Présentiel dans vos locaux (Toulouse centre, Blagnac, Labège, Colomiers) ou à distance en visio. Frais de logement, repas et forfait trajet en sus pour le présentiel hors Toulouse intra-muros.",
+            a: "Les deux sont possibles selon vos préférences. Présentiel dans vos locaux (Toulouse centre, Blagnac, Labège, Colomiers) ou à distance en visio.",
           },
           {
             q: "Quelle différence avec une formation collective IA à Toulouse ?",
@@ -820,7 +822,7 @@ export const TOULOUSE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Entretien de positionnement inclus sans engagement : si le coaching ne correspond pas à vos besoins, aucune facturation. Séances facturées au forfait, pas à l'heure — vous savez exactement ce que vous payez. Confidentialité stricte dès le démarrage, aucune référence publiée sans accord écrit. Frais de logement, repas et forfait trajet facturés en sus et validés avec vous avant chaque séance en présentiel hors intra-muros. Aucun lock-in : les compétences acquises sont utilisables en autonomie totale.",
+          "Entretien de positionnement inclus sans engagement : si le coaching ne correspond pas à vos besoins, aucune facturation. Séances facturées au forfait, pas à l'heure — vous savez exactement ce que vous payez. Confidentialité stricte dès le démarrage, aucune référence publiée sans accord écrit — particulièrement strict pour les dirigeants Airbus, CNES et ONERA exposés à des contraintes ITAR ou défense. Les compétences acquises sont utilisables en autonomie totale, sans contrat récurrent ni licence à renouveler.",
       },
       en: {
         hero: "Axion-IA's 1-to-1 AI coaching in Toulouse is for executives, engineers and managers in aerospace (Airbus, CNES, Thales Alenia Space, ONERA), Aerospace Valley SMEs and mid-caps, French Tech Toulouse scale-up leaders and Toulouse industrial firms. No group programme: each session starts from your real files, your real decisions, your actual business reality. Entry rate from €990 excl. VAT. Lodging, meals and travel allowance billed separately outside central Toulouse.",
@@ -934,7 +936,7 @@ export const TOULOUSE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Toulouse ?",
-      a: "Le tarif dépend du niveau retenu — Audit Flash, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise). Aucun supplément géographique : le tarif est le même à Toulouse que partout en France.",
+      a: "Quatre paliers tarifaires publics couvrent toutes les configurations toulousaines — Flash pour les TPE de la ville rose ou bureaux d'études indépendants, Ciblé pour les PME sous-traitantes Aerospace Valley et services Toulouse centre, Stratégique PME pour les scale-ups French Tech Toulouse et acteurs agro-industriels, Stratégique ETI pour les opérateurs Aerospace Valley (Airbus, ATR, Thales) et grandes filiales Blagnac/Colomiers. La grille appliquée à Toulouse est strictement identique à celle de Paris ou Lyon — aucune pondération Occitanie.",
     },
     {
       q: "Avez-vous des références dans l'industrie aérospatiale toulousaine ?",
@@ -946,7 +948,7 @@ export const TOULOUSE_COPY: VilleCopy = {
     },
     {
       q: "Pouvez-vous intervenir sur site à Blagnac ou Labège ?",
-      a: "Oui. Nous intervenons sur l'ensemble du bassin toulousain — Toulouse intra-muros, Blagnac (Airbus, ATR), Colomiers, Labège-Innopole (IoT Valley), Tournefeuille et Muret. Pour toutes les interventions hors Toulouse intra-muros, frais de logement, repas et forfait trajet en sus.",
+      a: "Oui. Nous intervenons sur l'ensemble du bassin toulousain — Toulouse intra-muros, Blagnac (Airbus, ATR), Colomiers, Labège-Innopole (IoT Valley), Tournefeuille et Muret.",
     },
     {
       q: "Travaillez-vous avec les startups de la French Tech Toulouse ?",

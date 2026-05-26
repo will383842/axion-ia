@@ -38,7 +38,7 @@ export const PARIS_COPY: VilleCopy = {
       en: "Operational AI audit in Paris: we identify what can be automated at your company and quantify the ROI. 4 tiers from Flash to Mid-cap Strategic depending on your size and ambition.",
     },
     interventions: {
-      fr: "Interventions IA à Paris : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste. Déplacement consultant intra-muros et première couronne facturé séparément (forfait métro/RER + repas).",
+      fr: "Interventions IA à Paris : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste, configurés pour leur métier — finance, conseil, tech, médias, luxe ou tourisme premium.",
       en: "AI sessions in Paris: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools installed on their workstations. Lodging, meals and travel allowance billed separately.",
     },
     implementation: {
@@ -46,7 +46,7 @@ export const PARIS_COPY: VilleCopy = {
       en: "AI implementation in Paris: we deploy AI into your existing tools (CRM, ERP, email) with contractually-costed ROI. Your teams stay in control, we create no dependency.",
     },
     unAUn: {
-      fr: "Accompagnement IA individuel à Paris : sessions 1-to-1 sur site dans votre bureau parisien ou en visio. Dirigeants, managers et entrepreneurs des 20 arrondissements et La Défense qui veulent monter en compétence IA à leur rythme, sur leurs propres cas business. Pour le présentiel, le déplacement consultant est facturé en sus du forfait journée (zone Paris/banlieue).",
+      fr: "Accompagnement IA individuel à Paris : sessions 1-to-1 sur site dans votre bureau parisien ou en visio. Dirigeants, managers et entrepreneurs des 20 arrondissements et La Défense qui veulent monter en compétence IA à leur rythme, sur leurs propres cas business — finance, conseil, scale-up tech ou maison de luxe.",
       en: "Individual AI coaching in Paris: 1-to-1 sessions on site at your Paris office or by video. Executives, managers and entrepreneurs across all 20 arrondissements and La Défense who want to build AI competence at their own pace, on their own business cases. Lodging, meals and travel allowance billed separately.",
     },
     sitesWeb: {
@@ -300,7 +300,7 @@ export const PARIS_COPY: VilleCopy = {
     },
     interventions: {
       fr: {
-        hero: "Les interventions IA Axion-IA à Paris se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel. Déplacement consultant intra-Paris et première couronne (transports, repas) facturé séparément du forfait journée.",
+        hero: "Les interventions IA Axion-IA à Paris se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — finance 9e/8e, cabinet conseil 16e, tech Sentier, scale-up Station F ou direction ETI La Défense.",
         whyHere: [
           "Paris est notre premier terrain d'intervention : nous y déroulons une part importante de nos sessions chaque mois.",
           "Tous les arrondissements couverts en présentiel ainsi que la première couronne (Levallois, Boulogne, Issy, Neuilly, Saint-Denis, Vincennes, Montreuil).",
@@ -727,7 +727,7 @@ export const PARIS_COPY: VilleCopy = {
     },
     unAUn: {
       fr: {
-        hero: "L'accompagnement 1-to-1 Axion-IA à Paris est conçu pour les dirigeants, managers et entrepreneurs qui veulent progresser sur l'IA à leur propre rythme, sur leurs vrais cas business — pas sur des exercices génériques. Sessions sur site dans vos bureaux (Station F, PME 8e/9e, ETI La Défense, startups Sentier) ou en visio selon vos contraintes. Pas de contrat récurrent imposé, pas de suite logicielle propriétaire, zéro jargon — résultats applicables le lendemain. Pour le présentiel, le déplacement consultant est facturé en sus du forfait séance.",
+        hero: "L'accompagnement 1-to-1 Axion-IA à Paris est conçu pour les dirigeants, managers et entrepreneurs qui veulent progresser sur l'IA à leur propre rythme, sur leurs vrais cas business — pas sur des exercices génériques. Sessions sur site dans vos bureaux (Station F, PME 8e/9e, ETI La Défense, startups Sentier) ou en visio selon vos contraintes. Pas de contrat récurrent imposé, pas de suite logicielle propriétaire, zéro jargon — résultats applicables le lendemain.",
         whyHere: [
           "Paris est l'épicentre décisionnel français : dirigeants de PME du 8e, DG de startups du Sentier, CEOs d'ETI à La Défense — tous nos profils 1-to-1 y sont surreprésentés.",
           "Tissu B2B parisien multi-sectoriel sans équivalent : chaque session est calibrée sur votre secteur réel (finance, conseil, tech, mode, retail) et vos propres données.",
@@ -830,7 +830,7 @@ export const PARIS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Engagement séance par séance : vous interrompez le programme quand vous voulez sans pénalité contractuelle. Confidentialité stricte dès le démarrage, documents jamais exportés hors de vos systèmes sans accord explicite. Sessions orientées résultats applicables immédiatement : si après la première session vous estimez n'avoir rien de directement utilisable, séance remboursée. Pour le présentiel, le déplacement consultant est facturé en sus du forfait séance.",
+          "Engagement séance par séance : vous interrompez le programme quand vous voulez sans pénalité contractuelle. Confidentialité stricte dès le démarrage, documents jamais exportés hors de vos systèmes sans accord explicite. Sessions orientées résultats applicables immédiatement : si après la première session vous estimez n'avoir rien de directement utilisable, séance remboursée.",
       },
       en: {
         hero: "Axion-IA's 1-to-1 AI coaching in Paris is designed for executives, managers and entrepreneurs who want to progress on AI at their own pace, on their real business cases — not on generic exercises. Sessions on site at your Paris offices (Station F, 8th/9th SMEs, La Défense mid-caps, Sentier startups) or by video depending on your schedule. No lock-in, no jargon, results applicable the next day. Lodging, meals and travel allowance billed separately for on-site sessions.",
