@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
@@ -171,15 +172,99 @@ export default async function AppelPage({ params }: Props) {
           </Container>
         </section>
 
-        {/* Section calendrier Calendly — élément principal de la page, mis en
-            valeur visuellement (ombre + bordure radius + fond canvas clair).
+        {/* Section calendrier Calendly — layout 2 colonnes desktop avec sidebar
+            sticky "Comment ça marche" + portrait Williams + trust signals à
+            gauche, widget Calendly à droite dans un cadre moderne (shadow
+            multi-layer + glow décoratif terracotta + ring border).
+            Mobile : sidebar empilée au-dessus du widget.
             Le widget se charge en lazyOnload (pas d'impact LCP). */}
         <section aria-labelledby="appel-calendar-h2" className="bg-canvas pb-16 sm:pb-20">
           <Container>
             <h2 id="appel-calendar-h2" className="sr-only">
-              {isFr ? "Calendrier de réservation" : "Booking calendar"}
+              Calendrier de réservation
             </h2>
-            <CalendlyInlineWidget calendlyUrl={CALENDLY_APPEL_URL} isFr={isFr} height={720} />
+            <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[minmax(280px,1fr)_minmax(0,2fr)] lg:gap-10">
+              {/* Sidebar : portrait + steps + trust signals (sticky desktop) */}
+              <aside className="space-y-5 lg:sticky lg:top-24 lg:self-start">
+                {/* Portrait Williams */}
+                <div className="bg-sand flex items-center gap-4 rounded-2xl p-5">
+                  <div className="ring-paper relative h-14 w-14 shrink-0 overflow-hidden rounded-full ring-2">
+                    <Image
+                      src="/images/axion-ia-fondateur-williams-jullin-portrait-professionnel.jpg"
+                      alt="Williams Jullin"
+                      fill
+                      sizes="56px"
+                      className="object-cover"
+                    />
+                  </div>
+                  <div>
+                    <p className="text-fg-soft text-[11px] tracking-widest uppercase">Avec</p>
+                    <p
+                      className="text-fg leading-tight font-semibold"
+                      style={{ fontFamily: "var(--font-serif)" }}
+                    >
+                      Williams Jullin
+                    </p>
+                    <p className="text-fg-soft mt-0.5 text-xs">Consultant IA · Fondateur</p>
+                  </div>
+                </div>
+
+                {/* Steps "Comment ça marche" */}
+                <div className="bg-paper border-border rounded-2xl border p-5">
+                  <h3
+                    className="text-fg mb-4 text-sm font-semibold"
+                    style={{ fontFamily: "var(--font-serif)" }}
+                  >
+                    Comment ça marche
+                  </h3>
+                  <ol className="space-y-3">
+                    {[
+                      "Choisissez un créneau qui vous convient dans le calendrier.",
+                      "Vous recevez une confirmation par email immédiatement.",
+                      "On discute de votre projet le jour J, simplement.",
+                    ].map((step, i) => (
+                      <li key={step} className="flex gap-3">
+                        <span className="bg-terracotta text-paper flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-semibold">
+                          {i + 1}
+                        </span>
+                        <p className="text-fg-soft text-sm leading-relaxed">{step}</p>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+
+                {/* Trust signals 3 cols */}
+                <div className="grid grid-cols-3 gap-2">
+                  <div className="bg-paper border-border rounded-xl border p-3 text-center">
+                    <Clock className="text-terracotta mx-auto mb-1 h-4 w-4" aria-hidden="true" />
+                    <p className="text-fg-soft text-[11px] leading-tight">30 min</p>
+                  </div>
+                  <div className="bg-paper border-border rounded-xl border p-3 text-center">
+                    <Shield className="text-terracotta mx-auto mb-1 h-4 w-4" aria-hidden="true" />
+                    <p className="text-fg-soft text-[11px] leading-tight">Sans engagement</p>
+                  </div>
+                  <div className="bg-paper border-border rounded-xl border p-3 text-center">
+                    <CheckCircle
+                      className="text-terracotta mx-auto mb-1 h-4 w-4"
+                      aria-hidden="true"
+                    />
+                    <p className="text-fg-soft text-[11px] leading-tight">Confirmation immédiate</p>
+                  </div>
+                </div>
+              </aside>
+
+              {/* Widget Calendly avec cadre moderne (glow + shadow + ring) */}
+              <div className="relative">
+                {/* Glow décoratif terracotta derrière le widget — pur ornement */}
+                <div
+                  className="from-terracotta/15 to-terracotta/5 pointer-events-none absolute -inset-3 rounded-[2rem] bg-gradient-to-br via-transparent opacity-60 blur-2xl"
+                  aria-hidden="true"
+                />
+                <div className="bg-paper ring-border shadow-terracotta/10 relative rounded-3xl p-1.5 shadow-2xl ring-1">
+                  <CalendlyInlineWidget calendlyUrl={CALENDLY_APPEL_URL} isFr={isFr} height={720} />
+                </div>
+              </div>
+            </div>
           </Container>
         </section>
 
