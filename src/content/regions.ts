@@ -366,17 +366,17 @@ export const REGIONS: ReadonlyArray<Region> = [
     geo: { lat: 41.9192, lon: 8.7386 },
     type: "metropole",
     pibBillionsEur: 10,
-    publicationPhase: 2,
-    noindex: true,
+    publicationPhase: 1,
+    noindex: false,
     pitchFr:
-      "PIB 10 Md€, tourisme premium, vins, agro-alimentaire (clémentines, charcuterie). Axion-IA intervient ponctuellement à Ajaccio et Bastia sur des missions courtes (2-3 jours) auprès des PME insulaires.",
+      "PIB 10 Md€, tourisme premium, vins, agro-alimentaire (clémentines, charcuterie). Axion-IA intervient sur site à Ajaccio, Bastia, Porto-Vecchio et Calvi auprès des PME insulaires — périmètre et durée d'intervention adaptés à chaque entreprise et à ses objectifs.",
     pitchEn:
-      "GDP €10 B, premium tourism, wines, agri-food (clementines, charcuterie). Axion-IA delivers occasional short engagements (2-3 days) in Ajaccio and Bastia for island SMEs.",
+      "GDP €10 B, premium tourism, wines, agri-food (clementines, charcuterie). Axion-IA delivers on-site engagements in Ajaccio, Bastia, Porto-Vecchio and Calvi for island SMEs — scope and duration tailored to each company and its goals.",
     metaTitleFr: "Corse · Architectes IA seniors · Audit, Formation, Coaching, SaaS · Axion-IA",
     metaDescFr:
-      "Architectes IA seniors en Corse. 5 services pour TPE et PME insulaires : audit IA, formation, implémentation, coaching 1-to-1, plateformes web/SaaS. Missions courtes 2-3 jours. Ajaccio, Bastia, Porto-Vecchio, Calvi.",
+      "Architectes IA seniors en Corse. 5 services pour TPE et PME insulaires : audit IA, formation, implémentation, coaching 1-to-1 dirigeants, plateformes web/SaaS IA. Ajaccio, Bastia, Porto-Vecchio, Calvi.",
     audienceLocalFr:
-      "La Corse compte près de 40 000 TPE-PME insulaires au tissu artisanal et touristique dense. Hôteliers et restaurateurs d'Ajaccio, Bonifacio, Porto-Vecchio, Calvi, viticulteurs des AOC corses (Patrimonio, Ajaccio, Sartène), charcutiers de Niolu, agences immobilières, négociants en clémentines, artisans bastiais. Axion-IA accompagne d'abord ces dirigeants TPE-PME insulaires, sur des missions courtes 2-3 jours adaptées à la saisonnalité touristique.",
+      "La Corse compte près de 40 000 TPE-PME insulaires au tissu artisanal et touristique dense. Hôteliers et restaurateurs d'Ajaccio, Bonifacio, Porto-Vecchio, Calvi, viticulteurs des AOC corses (Patrimonio, Ajaccio, Sartène), charcutiers de Niolu, agences immobilières, négociants en clémentines, artisans bastiais. Axion-IA accompagne d'abord ces dirigeants TPE-PME insulaires sur site — chaque intervention est cadrée en fonction de votre entreprise, de vos objectifs et de votre périmètre métier.",
   },
 
   // === DROM volontairement exclus 2026-05-08 ===

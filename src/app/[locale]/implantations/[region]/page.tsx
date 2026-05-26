@@ -354,12 +354,12 @@ export default async function RegionPage({ params }: Props) {
                 >
                   <Icon aria-hidden="true" className="h-5 w-5" strokeWidth={2.25} />
                 </span>
-                <p
+                <h3
                   className="text-fg text-lg leading-tight font-semibold"
                   style={{ fontFamily: "var(--font-serif)" }}
                 >
                   {label}
-                </p>
+                </h3>
                 <p className="text-fg-soft mt-2 flex-1 text-sm leading-relaxed">{detail}</p>
                 <p className="text-terracotta mt-4 inline-flex items-center gap-1.5 text-sm font-semibold">
                   {isFr ? "Voir le service" : "See service"}
@@ -450,12 +450,12 @@ export default async function RegionPage({ params }: Props) {
                         {fmtPopulation(ville.population, isFr ? "fr" : "en")}{" "}
                         {isFr ? "hab." : "inhab."}
                       </p>
-                      <p
+                      <h3
                         className="text-fg mt-2 text-2xl leading-tight font-semibold"
                         style={{ fontFamily: "var(--font-serif)" }}
                       >
                         {ville.nameFr}
-                      </p>
+                      </h3>
                     </div>
                     <ArrowUpRight
                       aria-hidden="true"
