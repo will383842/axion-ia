@@ -64,6 +64,12 @@ export interface Region {
   audienceLocalFr: string;
   /** Miroir EN. Optionnel. */
   audienceLocalEn?: string;
+  /** Section logistique DROM hand-crafted (Will 2026-05-26) — affichée
+   *  uniquement si region.type === "drom" pour épaissir les pages DROM
+   *  (qui n'ont pas de villes INSEE >5000 hab listées). Décrit la
+   *  logistique d'intervention, les délais typiques, les modalités
+   *  spécifiques au DROM. ~400-600 chars hand-crafted, anti-duplicate. */
+  dromLogisticsFr?: string;
 }
 
 // Phase 1 = chefs-lieux indexable immédiatement après dépôt sitemap.
@@ -415,6 +421,8 @@ export const REGIONS: ReadonlyArray<Region> = [
       "Architectes IA seniors en Guadeloupe. 5 services pour TPE et PME insulaires : audit IA, formation, implémentation, coaching 1-to-1, plateformes web/SaaS. Basse-Terre, Pointe-à-Pitre, Sainte-Anne, Le Gosier.",
     audienceLocalFr:
       "La Guadeloupe abrite plus de 35 000 TPE-PME insulaires. Hôteliers et restaurateurs de Sainte-Anne et Saint-François, distillateurs de rhum agricole (Damoiseau, Bologne, Longueteau, Bellevue), exportateurs de banane et de melon, négociants en café et cacao, agences de tourisme caribéen, artisans pointois et basse-terriens, cabinets médicaux. Axion-IA accompagne ces dirigeants TPE-PME comme les ETI agro-industrielles et touristiques antillaises, avec le même standard premium senior — mission cadrée selon votre entreprise, vos objectifs et votre périmètre métier.",
+    dromLogisticsFr:
+      "Intervenir en Guadeloupe demande une logistique cadrée : aéroport Pôle Caraïbes (Pointe-à-Pitre), accès à Basse-Terre par la côte sous-le-vent ou la traversée centrale, archipel des Saintes / Marie-Galante / La Désirade accessibles en ferry. Axion-IA structure les missions en blocs cohérents (audit Flash + atelier ; ou implementation sprint), avec sessions distancielles en complément pour limiter les déplacements. Devis transparent intégrant les frais de voyage et hébergement, validé avant signature.",
   },
   {
     slug: "martinique",
@@ -438,6 +446,8 @@ export const REGIONS: ReadonlyArray<Region> = [
       "Architectes IA seniors en Martinique. 5 services pour TPE et PME : audit IA, formation, implémentation, coaching 1-to-1, plateformes web/SaaS. Fort-de-France, Lamentin, Schœlcher, Sainte-Marie.",
     audienceLocalFr:
       "La Martinique compte près de 32 000 TPE-PME ancrées dans le tissu créole. Hôteliers et restaurateurs des Trois-Îlets et de Sainte-Anne, distillateurs de rhum agricole AOC (Saint-James, Trois-Rivières, La Mauny, Clément, Depaz, JM), exportateurs de banane et fruits tropicaux, négociants foyalais, cabinets médicaux, agences immobilières, artisans pêcheurs du François. Axion-IA accompagne ces dirigeants TPE-PME comme les ETI agro-industrielles antillaises, avec le même standard premium senior — mission cadrée selon votre entreprise, vos objectifs et votre périmètre.",
+    dromLogisticsFr:
+      "Intervenir en Martinique se cadre autour de l'aéroport Aimé-Césaire (Le Lamentin) et de l'agglomération foyalaise. Distance utile : Fort-de-France → Sainte-Marie 35 min, → Trois-Îlets 20 min de ferry. Axion-IA regroupe les missions par campagnes (audit sur 2-3 jours, atelier dirigeant + équipe, livrables sous 5 jours), avec suivi distanciel sur 30-60 jours. Devis transparent incluant transport et hébergement, sans surprise.",
   },
   {
     slug: "guyane",
@@ -461,6 +471,8 @@ export const REGIONS: ReadonlyArray<Region> = [
       "Architectes IA seniors en Guyane. 5 services pour TPE et PME : audit IA, formation, implémentation, coaching 1-to-1, plateformes web/SaaS. Cayenne, Kourou, Saint-Laurent-du-Maroni, Matoury.",
     audienceLocalFr:
       "La Guyane fédère près de 15 000 TPE-PME amazoniennes. Restaurateurs et hôteliers de Cayenne et Rémire-Montjoly, sous-traitants aérospatiaux du Centre spatial guyanais à Kourou (logistique, ingénierie, maintenance), entreprises forestières et exploitants aurifères, négociants en bois précieux, artisans amérindiens, cabinets médicaux. Axion-IA accompagne ces dirigeants TPE-PME comme les ETI aérospatiales et minières guyanaises, avec le même standard premium senior — mission cadrée selon votre entreprise et vos contraintes logistiques amazoniennes.",
+    dromLogisticsFr:
+      "Intervenir en Guyane se cadre autour de l'aéroport Félix-Eboué (Cayenne) et de l'axe Cayenne → Kourou (60 km, 45 min). Saint-Laurent-du-Maroni accessible par RN1 (250 km). Axion-IA regroupe les missions par campagnes denses (2-4 jours sur place + livrables sous 5 jours), avec suivi distanciel pour limiter les déplacements transatlantiques. Devis transparent incluant transport, hébergement et frais spécifiques amazoniens (autorisations Kourou si zone spatiale).",
   },
   {
     slug: "la-reunion",
@@ -484,6 +496,8 @@ export const REGIONS: ReadonlyArray<Region> = [
       "Architectes IA seniors à La Réunion. 5 services pour TPE et PME : audit IA, formation, implémentation, coaching 1-to-1, plateformes web/SaaS. Saint-Denis, Saint-Paul, Saint-Pierre, Le Tampon.",
     audienceLocalFr:
       "La Réunion compte plus de 75 000 TPE-PME insulaires au tissu dense. Hôteliers et restaurateurs des cirques (Cilaos, Salazie, Mafate) et de la côte ouest, planteurs et industriels de la canne à sucre (Tereos Océan Indien), exportateurs de vanille Bourbon et de géranium rosat, PME tech de Saint-Denis et Sainte-Marie, agences de voyage volcanique (piton de la Fournaise), artisans dionysiens, cabinets médicaux. Axion-IA accompagne ces dirigeants TPE-PME comme les ETI agro-industrielles et tertiaires réunionnaises, avec le même standard premium senior.",
+    dromLogisticsFr:
+      "Intervenir à La Réunion se cadre autour de l'aéroport Roland-Garros (Saint-Denis) ou Pierrefonds (Saint-Pierre). Axe Nord-Sud : Saint-Denis → Saint-Pierre 1h30 (route des Tamarins). Axion-IA structure les missions en campagnes longues (4-7 jours sur place) pour amortir le voyage et couvrir Nord-Ouest-Sud, avec suivi distanciel ensuite. Devis transparent incluant vol, hébergement, location véhicule et déplacements inter-cirques si nécessaire.",
   },
   {
     slug: "mayotte",
@@ -507,6 +521,8 @@ export const REGIONS: ReadonlyArray<Region> = [
       "Architectes IA seniors à Mayotte. 5 services pour TPE et PME : audit IA, formation, implémentation, coaching 1-to-1, plateformes web/SaaS. Mamoudzou, Dzaoudzi, Koungou, Sada.",
     audienceLocalFr:
       "Mayotte fédère plus de 10 000 TPE-PME mahoraises au sein du plus jeune département français (101ᵉ depuis 2011). Producteurs de vanille Bourbon et d'ylang-ylang, pêcheurs artisanaux du lagon, commerçants mamoudziens et de Koungou, restaurateurs créoles et comoriens, cabinets médicaux du Centre hospitalier de Mayotte, négociants en produits tropicaux, artisans. Axion-IA accompagne ces dirigeants TPE-PME mahoraises comme les ETI agro-industrielles et de pêche, avec le même standard premium senior — mission cadrée selon votre entreprise et votre périmètre métier.",
+    dromLogisticsFr:
+      "Intervenir à Mayotte se cadre autour de l'aéroport de Dzaoudzi-Pamandzi (Petite-Terre), accessible depuis Mamoudzou via la barge maritime (~30 min). Axion-IA organise les missions en blocs denses (3-5 jours sur place + livrables sous 5 jours), avec suivi distanciel sur 30-60 jours pour limiter les rotations longue distance. Devis transparent incluant vol, hébergement, navette barge et déplacements Grande-Terre / Petite-Terre selon le périmètre.",
   },
 ];
 

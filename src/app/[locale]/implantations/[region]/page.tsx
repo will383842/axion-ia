@@ -592,6 +592,22 @@ export default async function RegionPage({ params }: Props) {
         </Section>
       ) : null}
 
+      {/* Section logistique DROM (Will 2026-05-26) — affichée uniquement
+          pour region.type === "drom" pour épaissir les pages DROM qui n'ont
+          pas de villes INSEE >5000 hab listées. Contenu hand-crafted par DROM
+          dans regions.ts champ `dromLogisticsFr` (~400-600 chars unique). */}
+      {region.type === "drom" && region.dromLogisticsFr ? (
+        <Section
+          eyebrow={isFr ? "Logistique d'intervention" : "Logistique d'intervention"}
+          title={isFr ? "Comment intervenir" : "Comment intervenir"}
+          titleEm={isFr ? `en ${region.nameFr}` : `en ${region.nameFr}`}
+          description={region.dromLogisticsFr}
+          tone="paper"
+        >
+          <></>
+        </Section>
+      ) : null}
+
       {/* Section « Nous accompagnons toutes les tailles » personnalisée à la
           région (Will 2026-05-26). H2 régionalisé + paragraphe `audienceLocalFr`
           hand-crafted par région (cf. regions.ts). 4 cards TPE/PME/ETI/Grandes
@@ -631,10 +647,12 @@ export default async function RegionPage({ params }: Props) {
                 {fmtPopulation(region.population, isFr ? "fr" : "en")}{" "}
                 {isFr ? "habitants" : "inhabitants"}
               </span>
-              <span className="inline-flex items-center gap-2">
-                <Building2 className="h-3.5 w-3.5" aria-hidden="true" />
-                {villes.length} {isFr ? "communes ≥ 5 000 hab" : "communes ≥ 5,000 inhab."}
-              </span>
+              {villes.length > 0 ? (
+                <span className="inline-flex items-center gap-2">
+                  <Building2 className="h-3.5 w-3.5" aria-hidden="true" />
+                  {villes.length} {isFr ? "communes ≥ 5 000 hab" : "communes ≥ 5,000 inhab."}
+                </span>
+              ) : null}
               {typeof region.pibBillionsEur === "number" ? (
                 <span className="inline-flex items-center gap-2">
                   <Briefcase className="h-3.5 w-3.5" aria-hidden="true" />
