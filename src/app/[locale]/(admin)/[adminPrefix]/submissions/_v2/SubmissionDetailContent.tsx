@@ -13,6 +13,8 @@ import { auth } from "@/auth";
 import { getSubmissionDetailAction } from "@/features/admin-submissions/actions";
 import { AdminPageShell, AdminPageHeader } from "@/components/admin/ui";
 import { SubmissionUpdateForm } from "../[id]/SubmissionUpdateForm";
+import { ReplyComposer } from "@/components/admin/contacts/ReplyComposer";
+import { ReplyHistory } from "@/components/admin/contacts/ReplyHistory";
 
 const TYPE_LABELS: Record<string, string> = {
   audit: "Audit",
@@ -50,6 +52,14 @@ export async function SubmissionDetailContent({
           <a href={backHref} className="admin-link admin-back">
             {backLabel}
           </a>
+        }
+        actions={
+          <ReplyComposer
+            submissionId={submission.id}
+            contactName={submission.contactName}
+            contactEmail={submission.contactEmail}
+            defaultSubject={`Re: votre demande ${TYPE_LABELS[submission.type] ?? submission.type}`}
+          />
         }
       />
       <div className="admin-detail-grid">
@@ -149,6 +159,7 @@ export async function SubmissionDetailContent({
             currentAssignedTo={submission.assignedTo}
           />
         </div>
+        <ReplyHistory submissionId={submission.id} />
         {(submission.ipAddress || submission.userAgent) && (
           <div className="admin-card admin-card-wide">
             <h2 className="admin-h2">Métadonnées techniques</h2>

@@ -108,6 +108,9 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
   let alertsCount = 0;
   // Vérif Site Explorer — Badge anomalies high severity (non résolues).
   let siteExplorerAnomaliesHighCount = 0;
+  // Sprint Notif Infra — Badge contacts sans réponse (needsAttention=true,
+  // non archivés). Filtre par défaut de l'inbox côté listing.
+  let unreadContactsCount = 0;
 
   if (showSidebar) {
     // Fetch failedJobsCount + DB-stored anomaly alerts in parallel.
@@ -118,7 +121,7 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
       "cost_cap_80_active",
     ] as const;
 
-    const [failedCount, anomalyRows, siteExplorerHighCount] = await Promise.all([
+    const [failedCount, anomalyRows, siteExplorerHighCount, unreadCount] = await Promise.all([
       getFailedJobsCount().catch(() => 0),
       prisma.contentGenConfig
         .findMany({
@@ -129,10 +132,12 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
       prisma.siteRouteAnomaly
         .count({ where: { severity: "high", resolvedAt: null } })
         .catch(() => 0),
+      prisma.submission.count({ where: { needsAttention: true, archivedAt: null } }).catch(() => 0),
     ]);
 
     failedJobsCount = failedCount;
     siteExplorerAnomaliesHighCount = siteExplorerHighCount;
+    unreadContactsCount = unreadCount;
 
     // Build notification items from DB anomaly alerts.
     for (const row of anomalyRows) {
@@ -242,6 +247,7 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
             failedJobsCount={failedJobsCount}
             alertsCount={alertsCount}
             siteExplorerAnomaliesHighCount={siteExplorerAnomaliesHighCount}
+            unreadContactsCount={unreadContactsCount}
           />
           <main className="admin-main min-w-0 flex-1">{children}</main>
         </div>
