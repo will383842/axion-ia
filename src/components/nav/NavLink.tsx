@@ -10,12 +10,16 @@ interface NavLinkProps {
   href: string;
   label: string;
   variant?: "desktop" | "mobile";
+  // Si vrai, le label peut s'étaler sur plusieurs lignes (utile pour les
+  // intitulés longs qu'on veut compacter horizontalement dans le header).
+  // Le label doit contenir `\n` aux endroits où on souhaite forcer un saut.
+  multiline?: boolean;
 }
 
 // Editorial v3 — desktop on terracotta header (fixe, pas de scroll-aware) :
 // italique mocha sur item actif, underline animée mocha-fg.
 // Mobile (drawer ivoire): bg sand sur item actif.
-export function NavLink({ href, label, variant = "desktop" }: NavLinkProps) {
+export function NavLink({ href, label, variant = "desktop", multiline = false }: NavLinkProps) {
   const pathname = usePathname();
   const isActive = href === "/" ? pathname === "/" : pathname.startsWith(href);
 
@@ -43,6 +47,9 @@ export function NavLink({ href, label, variant = "desktop" }: NavLinkProps) {
         // Underline animée 2px ivoire — couleur fixe sur fond terracotta
         "after:absolute after:-bottom-1.5 after:left-0 after:h-0.5 after:transition-all after:duration-300",
         "[[data-tone=terracotta]_&]:after:bg-mocha-fg",
+        // Mode multi-lignes : honore les `\n` dans le label, compacte la
+        // hauteur de ligne et centre le texte pour un visuel équilibré.
+        multiline && "text-center leading-[1.15] whitespace-pre-line",
         isActive
           ? "text-mocha italic after:w-full"
           : "text-mocha-fg hover:text-mocha [[data-tone=terracotta]_&]:after:w-0 [[data-tone=terracotta]_&]:hover:after:w-full",

@@ -39,10 +39,17 @@ export async function Header() {
   ] as const;
 
   // 3 onglets secondaires À DROITE du CTA (desktop).
+  // /implementation : label affiché sur 2 lignes pour compacter la largeur
+  // (« Implémentations » + « & automatisations »). Le `\n` est honoré via
+  // le prop `multiline` qui applique `whitespace-pre-line` côté NavLink.
   const navAfterCtaDesktop = [
-    { href: "/implementation", label: t("nav.implementationShort") },
-    { href: "/tarifs", label: t("nav.pricing") },
-    { href: "/cas-concrets", label: t("nav.caseStudies") },
+    {
+      href: "/implementation",
+      label: t("nav.implementationShort").replace(" & ", "\n& "),
+      multiline: true,
+    },
+    { href: "/tarifs", label: t("nav.pricing"), multiline: false },
+    { href: "/cas-concrets", label: t("nav.caseStudies"), multiline: false },
   ] as const;
 
   // Mobile drawer : on évite le doublon /implementation (déjà dans solutionsMobileItems)
@@ -146,7 +153,12 @@ export async function Header() {
             data-nav-section="secondary"
           >
             {navAfterCtaDesktop.map((item) => (
-              <NavLink key={item.href} href={item.href} label={item.label} />
+              <NavLink
+                key={item.href}
+                href={item.href}
+                label={item.label}
+                multiline={item.multiline}
+              />
             ))}
           </nav>
         </div>
