@@ -18,7 +18,7 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight, MapPin, Building2 } from "lucide-react";
 
 import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
@@ -354,24 +354,6 @@ export default async function VilleHubPage({ params }: Props) {
               {isFr ? `à ${ville.nameFr} et alentours.` : `in ${ville.nameFr} and surroundings.`}
             </span>
           </p>
-          {/* Direct answer ville-spécifique (AEO) — paragraphe secondaire
-              riche en contexte local (data différenciée par ville). */}
-          <p className="text-fg-muted mt-4 max-w-3xl text-base leading-relaxed">
-            {isFr ? (copy.directAnswerFr ?? copy.pitchFr) : (copy.directAnswerEn ?? copy.pitchEn)}
-          </p>
-          <div className="text-fg-muted mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
-            <span>
-              {fmtPopulation(ville.population, isFr ? "fr" : "en")}{" "}
-              {isFr ? "habitants" : "inhabitants"}
-            </span>
-            <span>{region.nameFr}</span>
-            {ville.postalCode ? <span className="tabular-nums">{ville.postalCode}</span> : null}
-          </div>
-          <p className="text-fg-soft mt-4 max-w-3xl text-sm leading-relaxed">
-            {isFr
-              ? `TPE, PME, ETI ou grande entreprise — à ${ville.nameFr} comme partout en France, vous bénéficiez du même standard premium senior. Tarifs publics, calendrier temps réel, vos données restent chez vous.`
-              : `Micro-business, SMB, mid-market or large enterprise — in ${ville.nameFr} as anywhere in France, you get the same premium senior standard. Public pricing, real-time calendar, your data stays yours.`}
-          </p>
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <Cta
               href="/appel"
@@ -478,6 +460,49 @@ export default async function VilleHubPage({ params }: Props) {
 
       {/* ── FAQ ville-spécifique (composant ville Phase 4) ── */}
       <VilleFaqGeolocalisee villeContext={villeContext} faqs={villeSpecificFaqs} isFr={isFr} />
+
+      {/* ── Contexte local (Will 2026-05-26) — discret, en bas de page ──
+          Décision : directAnswer + stats sortis du hero (bruit côté visiteur).
+          Maintenus en bas pour AEO/GEO + anti-duplicate-content cross-villes
+          (data différenciée par ville). */}
+      <section
+        aria-labelledby="ville-contexte-heading"
+        className="bg-bg border-border border-t py-12 sm:py-16"
+      >
+        <Container>
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="text-fg-muted mb-3 text-[11px] font-semibold tracking-[0.18em] uppercase">
+              {isFr ? "Contexte local" : "Local context"}
+            </p>
+            <h2
+              id="ville-contexte-heading"
+              className="text-fg text-xl leading-tight font-semibold tracking-tight sm:text-2xl"
+              style={{ fontFamily: "var(--font-serif)" }}
+            >
+              {ville.nameFr}
+            </h2>
+            <p className="text-fg-soft mx-auto mt-4 max-w-2xl text-sm leading-relaxed sm:text-base">
+              {isFr ? (copy.directAnswerFr ?? copy.pitchFr) : (copy.directAnswerEn ?? copy.pitchEn)}
+            </p>
+            <div className="text-fg-muted mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs sm:text-sm">
+              <span className="inline-flex items-center gap-2">
+                <MapPin className="h-3.5 w-3.5" aria-hidden="true" />
+                {fmtPopulation(ville.population, isFr ? "fr" : "en")}{" "}
+                {isFr ? "habitants" : "inhabitants"}
+              </span>
+              <span className="inline-flex items-center gap-2">
+                <Building2 className="h-3.5 w-3.5" aria-hidden="true" />
+                {region.nameFr}
+              </span>
+              {ville.postalCode ? (
+                <span className="inline-flex items-center gap-2 tabular-nums">
+                  {ville.postalCode}
+                </span>
+              ) : null}
+            </div>
+          </div>
+        </Container>
+      </section>
 
       {/* AI Act art. 50 disclosure */}
       <AiContentDisclaimer locale={loc} />

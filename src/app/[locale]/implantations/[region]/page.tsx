@@ -212,28 +212,6 @@ export default async function RegionPage({ params }: Props) {
                   {isFr ? `en ${region.nameFr}.` : `in ${region.nameEn ?? region.nameFr}.`}
                 </span>
               </p>
-              {/* Pitch région (data différenciée par région) */}
-              <p className="text-fg-muted mt-4 text-base leading-relaxed">
-                {isFr ? region.pitchFr : region.pitchEn}
-              </p>
-              {/* Stats inline */}
-              <div className="text-fg-muted mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
-                <span className="inline-flex items-center gap-2">
-                  <MapPin className="h-4 w-4" aria-hidden="true" />
-                  {fmtPopulation(region.population, isFr ? "fr" : "en")}{" "}
-                  {isFr ? "habitants" : "inhabitants"}
-                </span>
-                <span className="inline-flex items-center gap-2">
-                  <Building2 className="h-4 w-4" aria-hidden="true" />
-                  {villes.length} {isFr ? "communes ≥ 5 000 hab" : "communes ≥ 5,000 inhab."}
-                </span>
-                {typeof region.pibBillionsEur === "number" ? (
-                  <span className="inline-flex items-center gap-2">
-                    <Briefcase className="h-4 w-4" aria-hidden="true" />
-                    {region.pibBillionsEur} Md€ {isFr ? "PIB régional" : "regional GDP"}
-                  </span>
-                ) : null}
-              </div>
               {/* CTAs */}
               <div className="mt-8 flex flex-wrap items-center gap-3">
                 <Cta
@@ -602,6 +580,50 @@ export default async function RegionPage({ params }: Props) {
           );
         })()}
       </Section>
+
+      {/* Contexte régional — discret, en bas de page (Will 2026-05-26).
+          Décision : pitchFr + stats (population / communes / PIB) sortis du
+          hero — bruit côté visiteur. Maintenus en bas pour AEO/GEO + anti-
+          duplicate-content cross-régions (data différenciée par région). */}
+      <section
+        aria-labelledby="region-contexte-heading"
+        className="bg-bg border-border border-t py-12 sm:py-16"
+      >
+        <Container>
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="text-fg-muted mb-3 text-[11px] font-semibold tracking-[0.18em] uppercase">
+              {isFr ? "Contexte régional" : "Regional context"}
+            </p>
+            <h2
+              id="region-contexte-heading"
+              className="text-fg text-xl leading-tight font-semibold tracking-tight sm:text-2xl"
+              style={{ fontFamily: "var(--font-serif)" }}
+            >
+              {region.nameFr}
+            </h2>
+            <p className="text-fg-soft mx-auto mt-4 max-w-2xl text-sm leading-relaxed sm:text-base">
+              {isFr ? region.pitchFr : region.pitchEn}
+            </p>
+            <div className="text-fg-muted mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs sm:text-sm">
+              <span className="inline-flex items-center gap-2">
+                <MapPin className="h-3.5 w-3.5" aria-hidden="true" />
+                {fmtPopulation(region.population, isFr ? "fr" : "en")}{" "}
+                {isFr ? "habitants" : "inhabitants"}
+              </span>
+              <span className="inline-flex items-center gap-2">
+                <Building2 className="h-3.5 w-3.5" aria-hidden="true" />
+                {villes.length} {isFr ? "communes ≥ 5 000 hab" : "communes ≥ 5,000 inhab."}
+              </span>
+              {typeof region.pibBillionsEur === "number" ? (
+                <span className="inline-flex items-center gap-2">
+                  <Briefcase className="h-3.5 w-3.5" aria-hidden="true" />
+                  {region.pibBillionsEur} Md€ {isFr ? "PIB régional" : "regional GDP"}
+                </span>
+              ) : null}
+            </div>
+          </div>
+        </Container>
+      </section>
 
       {/* CTA final */}
       <CtaBlock
