@@ -117,9 +117,9 @@ const INDEXABLE_SERVICE_VILLE_SLUGS: Record<
 };
 
 /**
- * Régions indexables. 13 métropole en V1 (Will 2026-05-26 — Corse réintégrée
- * suite à enrichissement contenu hand-crafted : metaTitleFr, metaDescFr,
- * audienceLocalFr, pitchFr, fiche complète à parité avec les 12 autres).
+ * Régions indexables. 13 métropole + 5 DROM en V1 (Will 2026-05-26 — DROM
+ * réintégrés avec pages SEO dédiées hand-crafted : metaTitleFr, metaDescFr,
+ * audienceLocalFr, pitchFr, parité avec les 13 régions métropolitaines).
  * Sync test : `seo-noindex-routes.test.ts`.
  */
 const INDEXABLE_REGION_SLUGS: ReadonlySet<string> = new Set([
@@ -129,8 +129,13 @@ const INDEXABLE_REGION_SLUGS: ReadonlySet<string> = new Set([
   "centre-val-de-loire",
   "corse",
   "grand-est",
+  "guadeloupe",
+  "guyane",
   "hauts-de-france",
   "ile-de-france",
+  "la-reunion",
+  "martinique",
+  "mayotte",
   "normandie",
   "nouvelle-aquitaine",
   "occitanie",

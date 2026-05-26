@@ -252,8 +252,8 @@ export default async function RegionPage({ params }: Props) {
                 filenameTarget="public/images/axion-ia-proposition-globe-4-services-formations-audit-implementations-carre.avif"
                 alt={
                   isFr
-                    ? `Globe stylisé représentant les services Axion-IA — formations, audits, implémentations, coaching 1-to-1, plateformes web IA — disponibles en ${region.nameFr}.`
-                    : `Stylized globe showing Axion-IA services — training, audits, implementations, 1-to-1 coaching, AI web platforms — available in ${region.nameEn ?? region.nameFr}.`
+                    ? `Architectes IA Axion-IA en ${region.nameFr} — 5 services sur site.`
+                    : `Architectes IA Axion-IA en ${region.nameFr} — 5 services sur site.`
                 }
                 caption={
                   isFr

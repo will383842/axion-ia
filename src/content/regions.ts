@@ -144,7 +144,7 @@ export const REGIONS: ReadonlyArray<Region> = [
       "PIB 173 Md€, écosystème PME diversifié — tourisme premium, maritime, aérospatial, tech (Sophia-Antipolis). Axion-IA accompagne dirigeants et DAF de Marseille, Aix-en-Provence, Nice, Toulon, Cannes sur leurs déploiements IA opérationnels.",
     pitchEn:
       "GDP €173 B, diversified SME ecosystem — premium tourism, maritime, aerospace, tech (Sophia-Antipolis). Axion-IA supports leaders and CFOs in Marseille, Aix-en-Provence, Nice, Toulon, Cannes on their operational AI deployments.",
-    metaTitleFr: "PACA · Architectes IA seniors · Audit, Formation, Coaching, SaaS · Axion-IA",
+    metaTitleFr: "PACA · Architectes IA seniors · Audit, Formation, Coaching, SaaS",
     metaTitleEn: "PACA · Senior AI architects · Audit, Training, Coaching, SaaS · Axion-IA",
     metaDescFr:
       "Architectes IA seniors en Provence-Alpes-Côte d'Azur. 5 services pour TPE et PME : audit IA, formation, implémentation, coaching 1-to-1, plateformes web/SaaS. ETI et tech également. Marseille, Aix, Nice, Toulon, Cannes.",
@@ -172,7 +172,7 @@ export const REGIONS: ReadonlyArray<Region> = [
       "PIB 178 Md€, capitale aéronautique européenne (Airbus, ATR), filière santé (Montpellier), agro-alimentaire dense. Axion-IA y intervient auprès des ETI sous-traitantes et des laboratoires recherche.",
     pitchEn:
       "GDP €178 B, European aerospace capital (Airbus, ATR), health sector (Montpellier), dense agri-food. Axion-IA serves sub-contracting mid-caps and research labs.",
-    metaTitleFr: "Occitanie · Architectes IA seniors · Audit, Formation, Coaching, SaaS · Axion-IA",
+    metaTitleFr: "Occitanie · Architectes IA seniors · Audit, Formation, Coaching, SaaS",
     metaDescFr:
       "Architectes IA seniors en Occitanie. 5 services pour TPE et PME : audit IA, formation, implémentation, coaching 1-to-1, plateformes web/SaaS. ETI aéronautiques et santé également. Toulouse, Montpellier, Perpignan, Nîmes.",
     audienceLocalFr:
@@ -241,7 +241,7 @@ export const REGIONS: ReadonlyArray<Region> = [
       "PIB 165 Md€, frontière Allemagne–Suisse–Belgique–Luxembourg. Champagne, automobile (Peugeot, Smart), pharma. Axion-IA y déploie des interventions cross-border DE/FR pour ETI exportatrices.",
     pitchEn:
       "GDP €165 B, German–Swiss–Belgian–Luxembourg border. Champagne, automotive (Peugeot, Smart), pharma. Axion-IA delivers cross-border DE/FR engagements for exporting mid-caps.",
-    metaTitleFr: "Grand Est · Architectes IA seniors · Audit, Formation, Coaching, SaaS · Axion-IA",
+    metaTitleFr: "Grand Est · Architectes IA seniors · Audit, Formation, Coaching, SaaS",
     metaDescFr:
       "Architectes IA seniors en Grand Est. 5 services pour TPE et PME : audit IA, formation, implémentation, coaching 1-to-1, plateformes web/SaaS. ETI cross-border DE/FR également. Strasbourg, Reims, Metz, Nancy, Mulhouse.",
     audienceLocalFr:
@@ -287,7 +287,7 @@ export const REGIONS: ReadonlyArray<Region> = [
       "PIB 102 Md€, agro-alimentaire (1ère région de France), tech (Rennes), maritime. Axion-IA intervient auprès des coopératives agricoles, des ETI agro-industrielles et de l'écosystème b<>com de Rennes.",
     pitchEn:
       "GDP €102 B, agri-food (France's #1 region), tech (Rennes), maritime. Axion-IA serves agricultural cooperatives, agri-industrial mid-caps and Rennes' b<>com ecosystem.",
-    metaTitleFr: "Bretagne · Architectes IA seniors · Audit, Formation, Coaching, SaaS · Axion-IA",
+    metaTitleFr: "Bretagne · Architectes IA seniors · Audit, Formation, Coaching, SaaS",
     metaDescFr:
       "Architectes IA seniors en Bretagne. 5 services pour TPE et PME : audit IA, formation, implémentation, coaching 1-to-1, plateformes web/SaaS. ETI agro et tech également. Rennes, Brest, Quimper, Vannes, Saint-Brieuc.",
     audienceLocalFr:
@@ -310,7 +310,7 @@ export const REGIONS: ReadonlyArray<Region> = [
       "PIB 95 Md€, Le Havre (1er port français en valeur), pétrochimie, automobile, élevage. Axion-IA accompagne les industriels de Rouen, Caen et l'axe Seine sur des cas IA opérationnels logistique et qualité.",
     pitchEn:
       "GDP €95 B, Le Havre (France's #1 port by value), petrochemical, automotive, livestock. Axion-IA supports industrial operators in Rouen, Caen and the Seine corridor on operational AI cases — logistics and quality.",
-    metaTitleFr: "Normandie · Architectes IA seniors · Audit, Formation, Coaching, SaaS · Axion-IA",
+    metaTitleFr: "Normandie · Architectes IA seniors · Audit, Formation, Coaching, SaaS",
     metaDescFr:
       "Architectes IA seniors en Normandie. 5 services pour TPE et PME : audit IA, formation, implémentation, coaching 1-to-1, plateformes web/SaaS. ETI portuaires et industrielles également. Rouen, Caen, Le Havre, Cherbourg.",
     audienceLocalFr:
@@ -379,22 +379,135 @@ export const REGIONS: ReadonlyArray<Region> = [
       "PIB 10 Md€, tourisme premium, vins, agro-alimentaire (clémentines, charcuterie). Axion-IA intervient sur site à Ajaccio, Bastia, Porto-Vecchio et Calvi auprès des PME insulaires — périmètre et durée d'intervention adaptés à chaque entreprise et à ses objectifs.",
     pitchEn:
       "GDP €10 B, premium tourism, wines, agri-food (clementines, charcuterie). Axion-IA delivers on-site engagements in Ajaccio, Bastia, Porto-Vecchio and Calvi for island SMEs — scope and duration tailored to each company and its goals.",
-    metaTitleFr: "Corse · Architectes IA seniors · Audit, Formation, Coaching, SaaS · Axion-IA",
+    metaTitleFr: "Corse · Architectes IA seniors · Audit, Formation, Coaching, SaaS",
     metaDescFr:
       "Architectes IA seniors en Corse. 5 services pour TPE et PME insulaires : audit IA, formation, implémentation, coaching 1-to-1 dirigeants, plateformes web/SaaS IA. Ajaccio, Bastia, Porto-Vecchio, Calvi.",
     audienceLocalFr:
       "La Corse compte près de 40 000 TPE-PME insulaires au tissu artisanal et touristique dense. Hôteliers et restaurateurs d'Ajaccio, Bonifacio, Porto-Vecchio, Calvi, viticulteurs des AOC corses (Patrimonio, Ajaccio, Sartène), charcutiers de Niolu, agences immobilières, négociants en clémentines, artisans bastiais. Axion-IA accompagne ces dirigeants TPE-PME insulaires sur site — chaque intervention est cadrée en fonction de votre entreprise, de vos objectifs et de votre périmètre métier, avec le même standard premium senior.",
   },
 
-  // === DROM : COUVERTS mais pas de page dédiée V1 (Will 2026-05-26) ===
+  // === 5 DROM (Will 2026-05-26 — pages SEO dédiées) ===
   // Décision Will MAJ : Axion-IA COUVRE Guadeloupe / Martinique / Guyane /
-  // La Réunion / Mayotte (interventions sur devis selon zone et mission).
-  // Pas de page SEO dédiée V1 pour ces 5 DROM — accessibles via /contact.
-  // L'engagement est mentionné explicitement dans : transversal.ts FAQ
-  // « geo-france », home value-prop « Partout en France et francophonie »,
-  // /implantations hero + Section « 13 régions, 5 DROM, francophonie ».
-  // Idem entreprises francophones à l'étranger (Belgique, Suisse, Luxembourg,
-  // Monaco, Maghreb, Afrique francophone, Québec) : sur devis via /contact.
+  // La Réunion / Mayotte avec pages SEO dédiées et contenu hand-crafted
+  // niveau perfection (parité avec les 13 régions métropolitaines).
+  // Entreprises francophones à l'étranger (Belgique, Suisse, Luxembourg,
+  // Monaco, Maghreb, Afrique francophone, Québec) : sur devis via /contact
+  // (pas de page SEO dédiée V1).
+  {
+    slug: "guadeloupe",
+    nameFr: "Guadeloupe",
+    nameEn: "Guadeloupe",
+    prefecture: "Basse-Terre",
+    inseeCode: "01",
+    departements: ["971"],
+    population: 378561,
+    geo: { lat: 16.265, lon: -61.551 },
+    type: "drom",
+    pibBillionsEur: 9,
+    publicationPhase: 1,
+    noindex: false,
+    pitchFr:
+      "PIB 9 Md€, archipel des Caraïbes — tourisme premium, banane d'export, rhum agricole AOC, services. Axion-IA accompagne sur site les hôteliers, restaurateurs, distillateurs, exportateurs agro et PME de Basse-Terre, Pointe-à-Pitre, Sainte-Anne, Le Gosier.",
+    pitchEn:
+      "PIB 9 Md€, archipel des Caraïbes — tourisme premium, banane d'export, rhum agricole AOC, services. Axion-IA accompagne sur site les hôteliers, restaurateurs, distillateurs, exportateurs agro et PME de Basse-Terre, Pointe-à-Pitre, Sainte-Anne, Le Gosier.",
+    metaTitleFr: "Guadeloupe · Architectes IA seniors · Audit, Formation, Coaching, SaaS",
+    metaDescFr:
+      "Architectes IA seniors en Guadeloupe. 5 services pour TPE et PME insulaires : audit IA, formation, implémentation, coaching 1-to-1, plateformes web/SaaS. Basse-Terre, Pointe-à-Pitre, Sainte-Anne, Le Gosier.",
+    audienceLocalFr:
+      "La Guadeloupe abrite plus de 35 000 TPE-PME insulaires. Hôteliers et restaurateurs de Sainte-Anne et Saint-François, distillateurs de rhum agricole (Damoiseau, Bologne, Longueteau, Bellevue), exportateurs de banane et de melon, négociants en café et cacao, agences de tourisme caribéen, artisans pointois et basse-terriens, cabinets médicaux. Axion-IA accompagne ces dirigeants TPE-PME comme les ETI agro-industrielles et touristiques antillaises, avec le même standard premium senior — mission cadrée selon votre entreprise, vos objectifs et votre périmètre métier.",
+  },
+  {
+    slug: "martinique",
+    nameFr: "Martinique",
+    nameEn: "Martinique",
+    prefecture: "Fort-de-France",
+    inseeCode: "02",
+    departements: ["972"],
+    population: 360749,
+    geo: { lat: 14.6415, lon: -61.0242 },
+    type: "drom",
+    pibBillionsEur: 9,
+    publicationPhase: 1,
+    noindex: false,
+    pitchFr:
+      "PIB 9 Md€, Petites Antilles françaises — tourisme, banane, rhum agricole AOC, distribution. Axion-IA accompagne sur site hôteliers créoles, distillateurs, exportateurs et PME de Fort-de-France au Lamentin, jusqu'à Sainte-Marie et Le François.",
+    pitchEn:
+      "PIB 9 Md€, Petites Antilles françaises — tourisme, banane, rhum agricole AOC, distribution. Axion-IA accompagne sur site hôteliers créoles, distillateurs, exportateurs et PME de Fort-de-France au Lamentin, jusqu'à Sainte-Marie et Le François.",
+    metaTitleFr: "Martinique · Architectes IA seniors · Audit, Formation, Coaching, SaaS",
+    metaDescFr:
+      "Architectes IA seniors en Martinique. 5 services pour TPE et PME : audit IA, formation, implémentation, coaching 1-to-1, plateformes web/SaaS. Fort-de-France, Lamentin, Schœlcher, Sainte-Marie.",
+    audienceLocalFr:
+      "La Martinique compte près de 32 000 TPE-PME ancrées dans le tissu créole. Hôteliers et restaurateurs des Trois-Îlets et de Sainte-Anne, distillateurs de rhum agricole AOC (Saint-James, Trois-Rivières, La Mauny, Clément, Depaz, JM), exportateurs de banane et fruits tropicaux, négociants foyalais, cabinets médicaux, agences immobilières, artisans pêcheurs du François. Axion-IA accompagne ces dirigeants TPE-PME comme les ETI agro-industrielles antillaises, avec le même standard premium senior — mission cadrée selon votre entreprise, vos objectifs et votre périmètre.",
+  },
+  {
+    slug: "guyane",
+    nameFr: "Guyane",
+    nameEn: "French Guiana",
+    prefecture: "Cayenne",
+    inseeCode: "03",
+    departements: ["973"],
+    population: 290691,
+    geo: { lat: 4.9333, lon: -52.3333 },
+    type: "drom",
+    pibBillionsEur: 4,
+    publicationPhase: 1,
+    noindex: false,
+    pitchFr:
+      "PIB 4 Md€, Amazonie française — aérospatial (Centre spatial guyanais, Arianespace), or, bois précieux, agriculture tropicale. Axion-IA intervient sur site auprès des PME et sous-traitants aérospatiaux de Cayenne à Kourou, jusqu'à Saint-Laurent-du-Maroni.",
+    pitchEn:
+      "PIB 4 Md€, Amazonie française — aérospatial (Centre spatial guyanais, Arianespace), or, bois précieux, agriculture tropicale. Axion-IA intervient sur site auprès des PME et sous-traitants aérospatiaux de Cayenne à Kourou, jusqu'à Saint-Laurent-du-Maroni.",
+    metaTitleFr: "Guyane · Architectes IA seniors · Audit, Formation, Coaching, SaaS",
+    metaDescFr:
+      "Architectes IA seniors en Guyane. 5 services pour TPE et PME : audit IA, formation, implémentation, coaching 1-to-1, plateformes web/SaaS. Cayenne, Kourou, Saint-Laurent-du-Maroni, Matoury.",
+    audienceLocalFr:
+      "La Guyane fédère près de 15 000 TPE-PME amazoniennes. Restaurateurs et hôteliers de Cayenne et Rémire-Montjoly, sous-traitants aérospatiaux du Centre spatial guyanais à Kourou (logistique, ingénierie, maintenance), entreprises forestières et exploitants aurifères, négociants en bois précieux, artisans amérindiens, cabinets médicaux. Axion-IA accompagne ces dirigeants TPE-PME comme les ETI aérospatiales et minières guyanaises, avec le même standard premium senior — mission cadrée selon votre entreprise et vos contraintes logistiques amazoniennes.",
+  },
+  {
+    slug: "la-reunion",
+    nameFr: "La Réunion",
+    nameEn: "Réunion",
+    prefecture: "Saint-Denis",
+    inseeCode: "04",
+    departements: ["974"],
+    population: 862814,
+    geo: { lat: -21.1151, lon: 55.5364 },
+    type: "drom",
+    pibBillionsEur: 21,
+    publicationPhase: 1,
+    noindex: false,
+    pitchFr:
+      "PIB 21 Md€, océan Indien — tourisme volcanique, canne à sucre, géranium, vanille Bourbon, tertiaire dynamique. Axion-IA accompagne sur site hôteliers, planteurs, exportateurs et PME tech de Saint-Denis à Saint-Pierre, en passant par Saint-Paul et Le Tampon.",
+    pitchEn:
+      "PIB 21 Md€, océan Indien — tourisme volcanique, canne à sucre, géranium, vanille Bourbon, tertiaire dynamique. Axion-IA accompagne sur site hôteliers, planteurs, exportateurs et PME tech de Saint-Denis à Saint-Pierre, en passant par Saint-Paul et Le Tampon.",
+    metaTitleFr: "La Réunion · Architectes IA seniors · Audit, Formation, Coaching, SaaS",
+    metaDescFr:
+      "Architectes IA seniors à La Réunion. 5 services pour TPE et PME : audit IA, formation, implémentation, coaching 1-to-1, plateformes web/SaaS. Saint-Denis, Saint-Paul, Saint-Pierre, Le Tampon.",
+    audienceLocalFr:
+      "La Réunion compte plus de 75 000 TPE-PME insulaires au tissu dense. Hôteliers et restaurateurs des cirques (Cilaos, Salazie, Mafate) et de la côte ouest, planteurs et industriels de la canne à sucre (Tereos Océan Indien), exportateurs de vanille Bourbon et de géranium rosat, PME tech de Saint-Denis et Sainte-Marie, agences de voyage volcanique (piton de la Fournaise), artisans dionysiens, cabinets médicaux. Axion-IA accompagne ces dirigeants TPE-PME comme les ETI agro-industrielles et tertiaires réunionnaises, avec le même standard premium senior.",
+  },
+  {
+    slug: "mayotte",
+    nameFr: "Mayotte",
+    nameEn: "Mayotte",
+    prefecture: "Mamoudzou",
+    inseeCode: "06",
+    departements: ["976"],
+    population: 320901,
+    geo: { lat: -12.7864, lon: 45.275 },
+    type: "drom",
+    pibBillionsEur: 2.7,
+    publicationPhase: 1,
+    noindex: false,
+    pitchFr:
+      "PIB 2,7 Md€, océan Indien (101ᵉ département depuis 2011) — agriculture tropicale (vanille, ylang-ylang), pêche, jeune économie en structuration. Axion-IA intervient sur site auprès des TPE-PME mahoraises en croissance, de Mamoudzou à Dzaoudzi et Koungou.",
+    pitchEn:
+      "PIB 2,7 Md€, océan Indien (101ᵉ département depuis 2011) — agriculture tropicale (vanille, ylang-ylang), pêche, jeune économie en structuration. Axion-IA intervient sur site auprès des TPE-PME mahoraises en croissance, de Mamoudzou à Dzaoudzi et Koungou.",
+    metaTitleFr: "Mayotte · Architectes IA seniors · Audit, Formation, Coaching, SaaS",
+    metaDescFr:
+      "Architectes IA seniors à Mayotte. 5 services pour TPE et PME : audit IA, formation, implémentation, coaching 1-to-1, plateformes web/SaaS. Mamoudzou, Dzaoudzi, Koungou, Sada.",
+    audienceLocalFr:
+      "Mayotte fédère plus de 10 000 TPE-PME mahoraises au sein du plus jeune département français (101ᵉ depuis 2011). Producteurs de vanille Bourbon et d'ylang-ylang, pêcheurs artisanaux du lagon, commerçants mamoudziens et de Koungou, restaurateurs créoles et comoriens, cabinets médicaux du Centre hospitalier de Mayotte, négociants en produits tropicaux, artisans. Axion-IA accompagne ces dirigeants TPE-PME mahoraises comme les ETI agro-industrielles et de pêche, avec le même standard premium senior — mission cadrée selon votre entreprise et votre périmètre métier.",
+  },
 ];
 
 const SLUG_INDEX = new Map(REGIONS.map((r) => [r.slug, r] as const));
