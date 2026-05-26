@@ -1,18 +1,24 @@
 /**
- * Content Generator — Registry des 9 generators (Sprint 2 AGT-C).
+ * Content Generator — Registry des content-types LLM.
  *
- * Resolve : `ContentType` → `Generator` correspondant.
+ * Refonte architecture villes 2026-05-26 (Will) — Le ContentType `landing_ville`
+ * a été supprimé du registry suite à la suppression des 10 750 pages
+ * `/implantations/[region]/[ville]/[verticale]` (risque doorway HCU 2024 +
+ * cannibalisation des pages services principales). Les 5 generators verticaux
+ * (`landing-ville-by-vertical-*`) + le pipeline partagé `landing-ville-shared.ts`
+ * + le dispatcher `landing-ville.ts` ont été supprimés du code.
  *
- * Sprint v7 Phase 5 commit 1 — extension : le `landing_ville` generator
- * (mappé sur le `ContentType` enum DB) est désormais un dispatcher qui
- * route vers 5 generators verticaux dédiés (`landing-ville-by-vertical-*`).
- * Ce file exporte aussi le registry vertical + les 5 generators standalones
- * pour usages avancés (tests, admin UI, dispatch ad-hoc).
+ * Les autres generators `landing-ville-{cas-usage,economic-data,ecosystem,
+ * faq-extended,secteurs}.ts` restent en place — ils nourrissent les sections
+ * du hub ville (`/implantations/[region]/[ville]`).
+ *
+ * Note : l'enum Prisma `ContentType` contient toujours `landing_ville` (legacy
+ * compat — pas de migration destructive). Les jobs queue historiques avec ce
+ * ContentType lèveront une erreur explicite à l'exécution.
  */
 
 import type { ContentType } from "../../../../prisma/generated/client";
 import type { Generator } from "./types";
-import { landingVilleGenerator } from "./landing-ville";
 import { blogArticleGenerator } from "./blog-article";
 import { blogFromRssGenerator } from "./blog-from-rss";
 import { blogFromKeywordsGenerator } from "./blog-from-keywords";
@@ -37,8 +43,7 @@ import {
   caseStudyLocalGenerator,
 } from "./v7-phase8-generators";
 
-const REGISTRY: Record<ContentType, Generator> = {
-  landing_ville: landingVilleGenerator,
+const REGISTRY: Partial<Record<ContentType, Generator>> = {
   blog_article: blogArticleGenerator,
   blog_from_rss: blogFromRssGenerator,
   blog_from_keywords: blogFromKeywordsGenerator,
@@ -69,24 +74,5 @@ export function getGenerator(contentType: ContentType): Generator {
   }
   return gen;
 }
-
-export { landingVilleGenerator } from "./landing-ville";
-export { LANDING_VILLE_BY_VERTICAL_REGISTRY, resolveLandingVilleVertical } from "./landing-ville";
-
-// Sprint v7 Phase 5 commit 1 — 5 generators verticaux exposés en exports
-// nommés. Utilisables directement (tests, ad-hoc Session 6) sans passer par
-// le dispatcher `landingVilleGenerator`.
-export { landingVilleByVerticalInterventionsGenerator } from "./landing-ville-by-vertical-interventions";
-export { landingVilleByVerticalAuditsGenerator } from "./landing-ville-by-vertical-audits";
-export { landingVilleByVerticalImplementationsGenerator } from "./landing-ville-by-vertical-implementations";
-export { landingVilleByVerticalUnAUnGenerator } from "./landing-ville-by-vertical-un-a-un";
-export { landingVilleByVerticalSitesWebIaGenerator } from "./landing-ville-by-vertical-sites-web-ia";
-
-export {
-  LANDING_VILLE_VERTICAL_SLUGS,
-  DOCTRINE_INTOUCHABLE,
-  runLandingVilleByVerticalPipeline,
-} from "./landing-ville-shared";
-export type { LandingVilleVerticalSlug, VerticalConfig } from "./landing-ville-shared";
 
 export type { Generator, GeneratorOutput, GeneratorBaseInput } from "./types";

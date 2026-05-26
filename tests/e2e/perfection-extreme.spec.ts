@@ -15,12 +15,13 @@
 
 import { test, expect } from "@playwright/test";
 
+// Refonte villes 2026-05-26 — routes ville×verticale supprimees (301 redirects
+// vers pages services principales). Hub ville reste landing locale unique.
 const PUBLIC_ROUTES = [
   { path: "/fr", label: "Home" },
   { path: "/fr/audit", label: "Audit" },
   { path: "/fr/interventions", label: "Interventions" },
   { path: "/fr/implantations/ile-de-france/paris", label: "Hub Paris" },
-  { path: "/fr/implantations/ile-de-france/paris/interventions", label: "Paris × interventions" },
 ] as const;
 
 test.describe("Sprint v7 Phase 18 — perfection extrême publiques", () => {

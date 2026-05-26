@@ -211,6 +211,63 @@ const nextConfig: NextConfig = {
         destination: "/:locale/audit/cible",
         permanent: true,
       },
+      // Refonte villes 2026-05-26 — les 10 750 pages `/implantations/[region]/[ville]/[verticale]`
+      // ont été supprimées (risque doorway HCU 2024 + cannibalisation des pages services).
+      // 5 redirects 301 par verticale vers la page service canonique correspondante.
+      // L'autorité crawl Google est ainsi transférée vers les pages commerciales principales.
+      // Note : `audits` (pluriel ville) → `/audit` (singulier service). `implementations` → `/implementation`.
+      // `sites-web-ia` → `/sites-web-augmentes`.
+      {
+        source: "/:locale(fr|en)/implantations/:region/:ville/audits",
+        destination: "/:locale/audit",
+        permanent: true,
+      },
+      {
+        source: "/:locale(fr|en)/implantations/:region/:ville/interventions",
+        destination: "/:locale/interventions",
+        permanent: true,
+      },
+      {
+        source: "/:locale(fr|en)/implantations/:region/:ville/implementations",
+        destination: "/:locale/implementation",
+        permanent: true,
+      },
+      {
+        source: "/:locale(fr|en)/implantations/:region/:ville/un-a-un",
+        destination: "/:locale/un-a-un",
+        permanent: true,
+      },
+      {
+        source: "/:locale(fr|en)/implantations/:region/:ville/sites-web-ia",
+        destination: "/:locale/sites-web-augmentes",
+        permanent: true,
+      },
+      // EN miroir (path `/locations` au lieu de `/implantations`)
+      {
+        source: "/:locale(fr|en)/locations/:region/:ville/audits",
+        destination: "/:locale/audit",
+        permanent: true,
+      },
+      {
+        source: "/:locale(fr|en)/locations/:region/:ville/interventions",
+        destination: "/:locale/interventions",
+        permanent: true,
+      },
+      {
+        source: "/:locale(fr|en)/locations/:region/:ville/implementations",
+        destination: "/:locale/implementation",
+        permanent: true,
+      },
+      {
+        source: "/:locale(fr|en)/locations/:region/:ville/un-a-un",
+        destination: "/:locale/un-a-un",
+        permanent: true,
+      },
+      {
+        source: "/:locale(fr|en)/locations/:region/:ville/sites-web-ia",
+        destination: "/:locale/sites-web-augmentes",
+        permanent: true,
+      },
     ];
   },
   async headers() {

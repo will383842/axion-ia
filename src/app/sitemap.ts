@@ -99,13 +99,11 @@ type StaticSitemapId =
   // ~22 URLs V1 (11 outils × 2 locales). Sub-sitemap propre pour isoler le
   // diagnostic Product JSON-LD côté Search Console. Scale prête pour +5
   // outils/trimestre sans refactor.
-  | "stack-ia-tools"
-  // Sprint A P1-01 2026-05-25 — pages landing ville × verticale pré-générées SSG
-  // (top 100 villes × 5 verticales = ~500 routes SSG). Sub-sitemap dédié pour
-  // isoler le diagnostic côté Search Console et éviter d'allonger `implantations.xml`.
-  // Seules les villes `getIndexableVilles()` (copy éditorial présent) sont émises
-  // — anti-doorway HCU 2024 : les stubs sans article rendent noindex.
-  | "implantations-villes-verticales";
+  | "stack-ia-tools";
+// Refonte villes 2026-05-26 — sub-sitemap `implantations-villes-verticales` retiré
+// suite à la suppression des 10 750 pages `/implantations/[region]/[ville]/[verticale]`
+// (risque doorway HCU 2024 + cannibalisation des pages services). Les 301 redirects
+// sont gérés via `next.config.ts`.
 
 type ServiceVillesKey = "audit" | "interventions" | "implementation" | "un-a-un";
 
@@ -287,8 +285,6 @@ export async function generateSitemaps(): Promise<Array<{ id: string }>> {
     "presse",
     "implementation",
     "implantations",
-    // Sprint A P1-01 2026-05-25 — landing ville × verticale (~500 routes SSG).
-    "implantations-villes-verticales",
     "services-villes-audit",
     "services-villes-interventions",
     "services-villes-implementation",
@@ -384,9 +380,6 @@ export default async function sitemap(props: {
       return filterEnIfDisabled(buildImplementationSitemap(now));
     case "implantations":
       return filterEnIfDisabled(buildImplantationsHubSitemap(now));
-    // Sprint A P1-01 2026-05-25 — landing ville × verticale SSG (~500 routes).
-    case "implantations-villes-verticales":
-      return filterEnIfDisabled(buildImplantationsVillesVerticalesSitemap(now));
     case "services-villes-audit":
       return filterEnIfDisabled(buildServicesVillesSitemap(now, "audit"));
     case "services-villes-interventions":
@@ -1023,62 +1016,5 @@ function buildServicesVillesSitemap(now: Date, service: ServiceVillesKey): Metad
   return entries;
 }
 
-/**
- * Sub-sitemap `implantations-villes-verticales` — Sprint A P1-01 2026-05-25.
- *
- * Émet les routes SSG `/implantations/[region]/[ville]/[verticale]` pré-générées
- * (Sprint A phase 5, commit 4b1a881f). `generateStaticParams` de la page pré-rend
- * les ~100 villes top-population × 5 verticales = ~500 routes.
- *
- * Stratégie anti-doorway HCU 2024 : on émet uniquement les villes `getIndexableVilles()`
- * (copy éditorial présent). Les villes sans copy rendent un stub avec `noindex` quand
- * aucun article LLM n'est disponible — les inclure dans le sitemap dépenserait du
- * crawl budget sans bénéfice d'indexation.
- *
- * Les 5 verticales FR sont hard-codées ici (source de vérité :
- * `LANDING_VILLE_VERTICAL_SLUGS` dans `src/server/content-gen/generators/landing-ville-shared.ts`).
- * Ce fichier n'est pas importé directement car il entraîne des dépendances lourdes
- * (providers LLM, BullMQ) incompatibles avec le contexte build SSG + stub Prisma/Redis.
- *
- * EN miroir : `/en/locations/[region]/[ville]/[verticale]` — même slug URL que FR
- * (les verticales ne sont pas traduites dans l'URL, uniquement dans le contenu).
- *
- * Priority 0.7 — ces pages sont des landing pages city × service, à haute valeur
- * commerciale locale. Au même niveau que les pages services-villes-{service}.
- */
-function buildImplantationsVillesVerticalesSitemap(now: Date): MetadataRoute.Sitemap {
-  const entries: MetadataRoute.Sitemap = [];
-
-  // Source de vérité : LANDING_VILLE_VERTICAL_SLUGS dans landing-ville-shared.ts.
-  // Hard-codé ici pour éviter l'import du module server lourd au build SSG.
-  const VERTICALES_FR = [
-    "interventions",
-    "audits",
-    "implementations",
-    "un-a-un",
-    "sites-web-ia",
-  ] as const;
-
-  for (const ville of getIndexableVilles()) {
-    for (const verticale of VERTICALES_FR) {
-      const frUrl = `${SITE_URL}/fr/implantations/${ville.region}/${ville.slug}/${verticale}`;
-      const enUrl = `${SITE_URL}/en/locations/${ville.region}/${ville.slug}/${verticale}`;
-      const langs = { fr: frUrl, en: enUrl, "x-default": frUrl };
-      entries.push({
-        url: frUrl,
-        lastModified: now,
-        changeFrequency: "monthly" as const,
-        priority: 0.7,
-        alternates: { languages: langs },
-      });
-      entries.push({
-        url: enUrl,
-        lastModified: now,
-        changeFrequency: "monthly" as const,
-        priority: 0.7,
-        alternates: { languages: langs },
-      });
-    }
-  }
-  return entries;
-}
+// Refonte villes 2026-05-26 — `buildImplantationsVillesVerticalesSitemap` supprimé
+// (les 10 750 pages ville×verticale n'existent plus, 301 redirects via next.config.ts).

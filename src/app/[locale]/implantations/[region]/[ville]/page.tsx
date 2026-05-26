@@ -1,13 +1,14 @@
 /**
- * Page hub ville — assemblage composants ville Phase 4 + grille 5 verticales (Sprint A · Phase 6).
+ * Page hub ville — assemblage composants ville Phase 4 + grille 5 modules (Sprint A · Phase 6).
  *
  * Route : `/[locale]/implantations/[region]/[ville]`.
  *
- * Le hub n'utilise PAS les composants `services/*` (ils vivent sur les pages
- * verticales `/[verticale]`). Il assemble : hero ville + composants ville
- * Phase 4 (`@/components/ville/*`) + grille 5 verticales (cards → pages
- * ville × verticale) + JSON-LD ville (Place + Service areaServed + Breadcrumb
- * + ItemList 5 verticales + FAQPage Speakable).
+ * Refonte architecture villes 2026-05-26 (Will) : suppression des 10 750 pages
+ * ville × verticale (risque doorway HCU 2024 + cannibalisation des pages services
+ * principales). Les 5 cards du hub pointent désormais DIRECTEMENT vers les pages
+ * services canoniques (`/audit`, `/interventions`, `/implementation`, `/un-a-un`,
+ * `/sites-web-augmentes`) — pattern BCG / Roland Berger / Deloitte. Les routes
+ * `[verticale]` ont été supprimées, 301 redirects ajoutés dans `next.config.ts`.
  *
  * Anti-doorway HCU 2024 : villes sans `ville.copy` → stub `noindex` + absence
  * du sitemap (`buildImplantationsSitemap` filtre sur `getIndexableVilles`).
@@ -168,13 +169,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return meta;
 }
 
-// 5 verticales — meta utilisé par la grille du hub.
+// 5 modules — meta utilisé par la grille du hub.
+// Refonte 2026-05-26 (Will) : `mainServiceHref` pointe directement vers la page
+// service canonique (`/audit`, `/interventions`, etc.) — les routes ville×verticale
+// ont été supprimées (cf. doc en tête de fichier).
 interface VerticaleMeta {
   readonly slug: VerticaleSlug;
   readonly labelFr: string;
   readonly labelEn: string;
   readonly descFr: string;
   readonly descEn: string;
+  /** Page service canonique vers laquelle le card pointe (FR-canonical). */
+  readonly mainServiceHref: string;
 }
 
 function buildVerticales(v: string): ReadonlyArray<VerticaleMeta> {
@@ -185,6 +191,7 @@ function buildVerticales(v: string): ReadonlyArray<VerticaleMeta> {
       labelEn: "AI Audit",
       descFr: `Diagnostic IA de vos processus à ${v} — 3 chantiers prioritaires chiffrés, roadmap 6 mois, résultat le jour même (Flash) ou en 2-4 semaines (Stratégique). TPE, PME, ETI, grandes entreprises.`,
       descEn: `AI audit in ${v} — 3 costed projects, 6-month roadmap, same-day result (Flash) or 2-4 weeks (Strategic). Micro-businesses, SMBs, mid-market, large enterprises.`,
+      mainServiceHref: "/audit",
     },
     {
       slug: "interventions",
@@ -192,6 +199,7 @@ function buildVerticales(v: string): ReadonlyArray<VerticaleMeta> {
       labelEn: "On-site interventions",
       descFr: `Ateliers et formations IA sur site à ${v} — demi-journée à 2 jours, sur vos données réelles, avec vos équipes. TPE, PME, ETI et grandes entreprises.`,
       descEn: `On-site AI workshops in ${v} — half-day to 2 days, on your real data, with your teams. Micro-businesses, SMBs, mid-market, large enterprises.`,
+      mainServiceHref: "/interventions",
     },
     {
       slug: "implementations",
@@ -199,6 +207,7 @@ function buildVerticales(v: string): ReadonlyArray<VerticaleMeta> {
       labelEn: "AI Implementation",
       descFr: `Agents IA, automatisations back-office, CRM/ERP augmentés — livrés en production à ${v}. ROI chiffré avant mission. Toutes tailles d'entreprise.`,
       descEn: `AI agents, back-office automations, augmented CRM/ERP — delivered to production in ${v}. Costed ROI before engagement. All company sizes.`,
+      mainServiceHref: "/implementation",
     },
     {
       slug: "un-a-un",
@@ -206,6 +215,7 @@ function buildVerticales(v: string): ReadonlyArray<VerticaleMeta> {
       labelEn: "1-to-1 coaching",
       descFr: `Journée 1-to-1 avec William J. à ${v} — cartographie IA de vos processus et 3 chantiers chiffrés, sans engagement. Dirigeants TPE, PME, ETI.`,
       descEn: `1-on-1 day with William J. in ${v} — AI mapping of your processes and 3 costed projects, no commitment. Leaders of SMBs and mid-market.`,
+      mainServiceHref: "/un-a-un",
     },
     {
       slug: "sites-web-ia",
@@ -213,6 +223,7 @@ function buildVerticales(v: string): ReadonlyArray<VerticaleMeta> {
       labelEn: "AI-augmented websites",
       descFr: `Sites web, applications métier et plateformes SaaS augmentées par l'IA — conçus pour vos clients à ${v} et en France. RGPD, hébergement UE.`,
       descEn: `Websites, business apps and AI-augmented SaaS platforms — for your clients in ${v} and across France. GDPR, EU hosting.`,
+      mainServiceHref: "/sites-web-augmentes",
     },
   ];
 }
@@ -310,7 +321,8 @@ export default async function VilleHubPage({ params }: Props) {
     ],
   });
 
-  // ItemList : 5 verticales disponibles à cette ville.
+  // ItemList : 5 modules disponibles à cette ville. URLs pointent vers les pages
+  // services canoniques (refonte 2026-05-26 — suppression des routes ville×verticale).
   const verticalesItemList = buildItemListJsonLd({
     locale: loc,
     path,
@@ -319,7 +331,7 @@ export default async function VilleHubPage({ params }: Props) {
       position: idx + 1,
       name: isFr ? v.labelFr : v.labelEn,
       description: isFr ? v.descFr : v.descEn,
-      url: `${SITE_URL}/${loc}/implantations/${region.slug}/${ville.slug}/${v.slug}`,
+      url: `${SITE_URL}/${loc}${v.mainServiceHref}`,
     })),
   });
 
@@ -614,7 +626,9 @@ export default async function VilleHubPage({ params }: Props) {
             {verticales.map((v) => (
               <li key={v.slug} className="h-full">
                 <Link
-                  href={`/implantations/${region.slug}/${ville.slug}/${v.slug}` as never}
+                  href={v.mainServiceHref as never}
+                  data-source-ville={ville.slug}
+                  data-service-module={v.slug}
                   className="group bg-paper border-border hover:border-terracotta hover:shadow-elevated focus-visible:ring-terracotta relative flex h-full flex-col overflow-hidden rounded-2xl border-2 p-6 transition-all duration-300 hover:-translate-y-1 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none md:p-7"
                 >
                   <span
