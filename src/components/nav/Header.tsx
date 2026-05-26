@@ -1,6 +1,5 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import { ArrowRight } from "lucide-react";
-import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { BRAND } from "@/lib/brand";
 import { ROUTES } from "@/lib/routes";
@@ -100,21 +99,29 @@ export async function Header() {
       />
       {/* Layout pleine largeur : Logo + Nav split + CTA central Contact */}
       <div className="relative flex h-20 w-full items-center gap-4 px-6 sm:px-8 lg:h-24 lg:gap-4 lg:px-12 xl:gap-6 xl:px-16">
-        {/* GAUCHE : Logo (sans encadrement) + Nav mega-menu Solutions */}
+        {/* GAUCHE : Logo TYPOGRAPHIQUE serif (restauré 2026-05-26 à la
+            version d'avant le commit ece82717 — version éditoriale d'origine
+            qui était parfaite : « Axion » noir serif + tiret gris + « IA »
+            italique terracotta, dans un badge ivoire bg-paper) + Nav mega-menu
+            Solutions */}
         <div className="flex flex-1 items-center justify-between gap-6 lg:gap-10">
           <Link
             href={ROUTES.home}
             aria-label={BRAND.name}
-            className="focus-visible:ring-mocha focus-visible:ring-offset-terracotta inline-flex shrink-0 items-center rounded-md focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+            className="bg-paper text-fg shadow-subtle focus-visible:ring-mocha focus-visible:ring-offset-terracotta hover:shadow-card inline-flex shrink-0 items-center gap-1 rounded-xl px-4 py-2 transition-shadow focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
           >
-            <Image
-              src="/images/logo.webp"
-              alt={BRAND.name}
-              width={400}
-              height={225}
-              className="h-14 w-auto lg:h-16"
-              priority
-            />
+            <span
+              className="text-2xl leading-none font-medium tracking-tight"
+              style={{ fontFamily: "var(--font-serif)" }}
+            >
+              Axion
+              <span aria-hidden="true" className="text-fg/70 mx-0.5">
+                -
+              </span>
+              <span className="text-terracotta italic" style={{ fontFamily: "var(--font-serif)" }}>
+                IA
+              </span>
+            </span>
           </Link>
 
           <nav
