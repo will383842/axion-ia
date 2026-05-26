@@ -127,14 +127,14 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
   {
     id: "geo-france",
     fr: {
-      question: "Couvrez-vous toute la France — métropole et outre-mer ?",
+      question: "Couvrez-vous toute la France ?",
       answer:
-        "Oui. Nous intervenons partout en France : Île-de-France, Auvergne-Rhône-Alpes, Provence-Alpes-Côte d'Azur, Occitanie, Nouvelle-Aquitaine, Hauts-de-France, Pays de la Loire, Bretagne, Grand Est, Normandie, Bourgogne-Franche-Comté, Centre-Val de Loire, Corse — ainsi qu'en Outre-mer (Guadeloupe, Martinique, Guyane, La Réunion, Mayotte).",
+        "Oui — France métropolitaine intégralement, Corse comprise. Nous intervenons sur site dans les 13 régions : Île-de-France, Auvergne-Rhône-Alpes, Provence-Alpes-Côte d'Azur, Occitanie, Nouvelle-Aquitaine, Hauts-de-France, Pays de la Loire, Bretagne, Grand Est, Normandie, Bourgogne-Franche-Comté, Centre-Val de Loire et Corse. Les DROM (Guadeloupe, Martinique, Guyane, La Réunion, Mayotte) ne font pas partie de notre périmètre V1 (décision 2026-05-08, ADR 0006).",
     },
     en: {
-      question: "Do you cover the whole of France — mainland and overseas?",
+      question: "Do you cover the whole of France?",
       answer:
-        "Yes. We operate everywhere in France: Île-de-France, Auvergne-Rhône-Alpes, Provence-Alpes-Côte d'Azur, Occitanie, Nouvelle-Aquitaine, Hauts-de-France, Pays de la Loire, Brittany, Grand Est, Normandy, Bourgogne-Franche-Comté, Centre-Val de Loire, Corsica — as well as Overseas territories (Guadeloupe, Martinique, Guyane, La Réunion, Mayotte).",
+        "Yes — metropolitan France in full, Corsica included. We operate on-site across the 13 regions: Île-de-France, Auvergne-Rhône-Alpes, Provence-Alpes-Côte d'Azur, Occitanie, Nouvelle-Aquitaine, Hauts-de-France, Pays de la Loire, Brittany, Grand Est, Normandy, Bourgogne-Franche-Comté, Centre-Val de Loire and Corsica. Overseas territories (Guadeloupe, Martinique, Guyane, La Réunion, Mayotte) are not part of our V1 scope (decision 2026-05-08, ADR 0006).",
     },
   },
   {

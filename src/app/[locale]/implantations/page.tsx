@@ -227,7 +227,7 @@ export default async function ImplantationsHub({ params }: Props) {
             : "Continental France in full, Corsica included. Overseas regions are not in our V1 scope (decision 2026-05-08, see ADR 0006)."
         }
       >
-        <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+        <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {REGIONS.map((region) => {
             const isIndexable = !region.noindex;
             return (
@@ -235,18 +235,45 @@ export default async function ImplantationsHub({ params }: Props) {
                 <Link
                   href={`/implantations/${region.slug}` as never}
                   data-source-region={region.slug}
-                  className="group hover:bg-sand focus-visible:ring-terracotta block rounded-lg px-3 py-2.5 transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                  className="group bg-paper border-border hover:border-terracotta hover:bg-halo-warm focus-visible:ring-terracotta shadow-subtle hover:shadow-card flex h-full items-start gap-3 rounded-xl border p-4 transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
                 >
                   <span
-                    className="text-fg group-hover:text-terracotta block text-sm font-semibold tracking-tight transition"
-                    style={{ fontFamily: "var(--font-serif)" }}
+                    aria-hidden="true"
+                    className="bg-terracotta-soft text-terracotta-deep mt-0.5 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg"
                   >
-                    {region.nameFr}
+                    <MapPin className="h-4 w-4" strokeWidth={2.25} />
                   </span>
-                  <span className="text-fg-muted mt-0.5 block text-[11px]">
-                    {region.prefecture}
-                    {!isIndexable ? (isFr ? " · à venir" : " · coming soon") : ""}
-                  </span>
+                  <div className="min-w-0 flex-1">
+                    <h3
+                      className="text-fg group-hover:text-terracotta text-[15px] leading-tight font-semibold tracking-tight transition"
+                      style={{ fontFamily: "var(--font-serif)" }}
+                    >
+                      {region.nameFr}
+                    </h3>
+                    <p className="text-fg-muted mt-1 text-[11.5px] leading-snug">
+                      {region.prefecture}
+                      {typeof region.pibBillionsEur === "number"
+                        ? ` · ${region.pibBillionsEur} Md€ PIB`
+                        : ""}
+                    </p>
+                    <p className="text-fg-soft mt-1.5 text-[11px] leading-snug">
+                      {region.departements.length}{" "}
+                      {isFr
+                        ? region.departements.length > 1
+                          ? "départements"
+                          : "département"
+                        : region.departements.length > 1
+                          ? "departments"
+                          : "department"}{" "}
+                      · {fmtPopulation(region.population, isFr ? "fr" : "en")}{" "}
+                      {isFr ? "hab." : "inhab."}
+                      {!isIndexable ? (isFr ? " · à venir" : " · coming soon") : ""}
+                    </p>
+                  </div>
+                  <ArrowUpRight
+                    aria-hidden="true"
+                    className="text-fg-muted group-hover:text-terracotta mt-1 h-4 w-4 shrink-0 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  />
                 </Link>
               </li>
             );

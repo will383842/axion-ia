@@ -716,11 +716,12 @@ export default async function Home({ params }: HomeProps) {
                 },
                 {
                   Icon: MapPin,
-                  titleFr: "Partout en France",
-                  titleEn: "Across France",
+                  titleFr: "Partout en France métropolitaine",
+                  titleEn: "Across metropolitan France",
                   descFr:
-                    "Métropole, outre-mer, présentiel ou distanciel — on s'adapte au plus efficace.",
-                  descEn: "Mainland, overseas, on-site or remote — we adapt to what works best.",
+                    "13 régions, Corse comprise — sur site ou à distance, on s'adapte au plus efficace.",
+                  descEn:
+                    "13 regions, Corsica included — on-site or remote, we adapt to what works best.",
                 },
                 {
                   Icon: BadgeCheck,
