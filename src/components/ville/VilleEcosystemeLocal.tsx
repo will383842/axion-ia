@@ -214,7 +214,10 @@ function buildPlaceJsonLd(ville: Ville): string {
  * partenariat), adaptation par verticale optionnelle.
  */
 export function VilleEcosystemeLocal({ ville, isFr, verticale }: VilleEcosystemeLocalProps) {
-  const secteurs = buildSecteursList(ville.slug, isFr);
+  // Will 2026-05-26 : `secteurs` plus utilisé ici (section retirée pour éviter
+  // duplication avec VilleTissuEconomique). Conservé en helper pour build
+  // mais nettoyé du rendu — préfixe `_` pour ESLint no-unused-vars.
+  const _secteurs = buildSecteursList(ville.slug, isFr);
   const institutions = buildInstitutionsList(ville.slug);
   const isPrefecture = isPrefectureDepartement(ville);
   const verticaleSentence = getVerticaleSentence(verticale, ville.name, isFr);
@@ -232,7 +235,9 @@ export function VilleEcosystemeLocal({ ville, isFr, verticale }: VilleEcosysteme
       parts.push(`${ville.name} est située dans le département ${ville.departmentName}.`);
     }
     if (isPrefecture) {
-      parts.push(`Préfecture de département, elle joue un rôle structurant pour son bassin économique.`);
+      parts.push(
+        `Préfecture de département, elle joue un rôle structurant pour son bassin économique.`,
+      );
     }
     return parts.join(" ");
   })();
@@ -263,10 +268,13 @@ export function VilleEcosystemeLocal({ ville, isFr, verticale }: VilleEcosysteme
             aria-hidden="true"
             className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
           />
-          {isFr ? "Écosystème local" : "Local ecosystem"}
+          {isFr ? "Données et institutions" : "Données et institutions"}
         </p>
 
-        {/* H2 */}
+        {/* H2 — Will 2026-05-26 : renommé pour lever la redondance avec
+            VilleTissuEconomique qui parle aussi de tissu économique. Cette
+            section = data INSEE + institutions ; VilleTissuEconomique = secteurs
+            B2B + leviers IA. Rôles clairement distincts. */}
         <h2
           id={headingId}
           className="text-fg text-[clamp(1.75rem,3.5vw,2.75rem)] leading-[1.1] font-semibold tracking-tight"
@@ -274,13 +282,11 @@ export function VilleEcosystemeLocal({ ville, isFr, verticale }: VilleEcosysteme
         >
           {isFr ? (
             <>
-              Le tissu économique de{" "}
-              <span className="text-terracotta italic">{ville.name}</span>
+              L&apos;écosystème de <span className="text-terracotta italic">{ville.name}</span>
             </>
           ) : (
             <>
-              The economic fabric of{" "}
-              <span className="text-terracotta italic">{ville.name}</span>
+              L&apos;écosystème de <span className="text-terracotta italic">{ville.name}</span>
             </>
           )}
         </h2>
@@ -297,45 +303,11 @@ export function VilleEcosystemeLocal({ ville, isFr, verticale }: VilleEcosysteme
           </p>
         ) : null}
 
-        {/* Grid secteurs économiques */}
-        <div className="mt-12">
-          <h3
-            className="text-fg mb-6 text-xl font-semibold tracking-tight"
-            style={{ fontFamily: "var(--font-serif)" }}
-          >
-            {isFr ? "Secteurs économiques principaux" : "Main economic sectors"}
-          </h3>
-          <ul
-            role="list"
-            aria-label={
-              isFr
-                ? `Secteurs économiques représentés à ${ville.name}`
-                : `Economic sectors represented in ${ville.name}`
-            }
-            className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3"
-          >
-            {secteurs.map((secteur, idx) => (
-              <li
-                key={`${ville.slug}-secteur-${idx}`}
-                className="bg-sand border-border-strong/30 flex items-start gap-3 rounded-xl border px-4 py-4"
-              >
-                <span
-                  aria-hidden="true"
-                  className="bg-terracotta-soft text-terracotta-deep inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold"
-                  style={{ fontFamily: "var(--font-serif)" }}
-                >
-                  {idx + 1}
-                </span>
-                <span className="text-fg text-sm leading-snug font-medium">{secteur}</span>
-              </li>
-            ))}
-          </ul>
-          <p className="text-fg-muted mt-4 text-xs leading-relaxed">
-            {isFr
-              ? "Source : INSEE Sirene v3.11 — stats commune (sections NAF dominantes par nombre d'établissements actifs)."
-              : "Source: INSEE Sirene v3.11 — commune statistics (dominant NAF sections by number of active establishments)."}
-          </p>
-        </div>
+        {/* Sous-section « Secteurs économiques principaux » RETIRÉE
+            (Will 2026-05-26) — dupliquait VilleTissuEconomique. Les secteurs
+            macro NAF sont remplacés par le tableau B2B « Secteurs et leviers IA »
+            du composant TissuEconomique qui suit. Conservation ici de la
+            section Institutions (donnée unique à ce composant). */}
 
         {/* Institutions présentes (sans claim partenariat) */}
         {institutions.length > 0 ? (

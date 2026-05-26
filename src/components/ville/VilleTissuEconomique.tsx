@@ -59,7 +59,11 @@ function presenceFromRank(
 }
 
 /** Libellé secteur dans la langue active, fallback FR si EN manquant. */
-function sectorLabel(opportunity: SectorIaOpportunity | undefined, raw: string, isFr: boolean): string {
+function sectorLabel(
+  opportunity: SectorIaOpportunity | undefined,
+  raw: string,
+  isFr: boolean,
+): string {
   if (!opportunity) return raw;
   return isFr ? opportunity.labelFr : opportunity.labelEn;
 }
@@ -133,24 +137,23 @@ export function VilleTissuEconomique({ ville, isFr }: VilleTissuEconomiqueProps)
   const sectionId = `ville-tissu-${ville.slug}`;
   const headingId = `${sectionId}-title`;
 
+  // Will 2026-05-26 : renommé pour distinguer clairement de VilleEcosystemeLocal
+  // (qui parle de l'écosystème institutionnel + données INSEE). Ce composant =
+  // tableau secteurs B2B + leviers IA prioritaires (action-oriented).
   const heading = isFr
-    ? `Tissu économique de ${ville.nameFr}`
-    : `${ville.nameEn ?? ville.nameFr}'s economic landscape`;
+    ? `Secteurs B2B et leviers IA à ${ville.nameFr}`
+    : `Secteurs B2B et leviers IA à ${ville.nameFr}`;
 
   const description = isFr
     ? `Vue d'ensemble des secteurs B2B représentés à ${ville.nameFr} et leurs leviers IA prioritaires. Notre cabinet accompagne TPE, PME, ETI et grandes entreprises sans biais sectoriel.`
     : `Overview of B2B sectors active in ${ville.nameEn ?? ville.nameFr} and their priority AI levers. Our consultancy supports very small, medium, mid-cap and large companies with no sector bias.`;
 
   return (
-    <section
-      aria-labelledby={headingId}
-      id={sectionId}
-      className="bg-paper py-16 sm:py-20"
-    >
+    <section aria-labelledby={headingId} id={sectionId} className="bg-paper py-16 sm:py-20">
       <div className="mx-auto max-w-5xl px-6 lg:px-10">
         <p className="text-fg-muted mb-3 text-[12px] font-semibold tracking-[0.16em] uppercase">
           <span className="bg-terracotta mr-2 inline-block h-1.5 w-1.5 rounded-full align-middle" />
-          {isFr ? "Tissu local" : "Local landscape"}
+          {isFr ? "Opportunités IA par secteur" : "Opportunités IA par secteur"}
         </p>
         <h2
           id={headingId}
@@ -159,31 +162,20 @@ export function VilleTissuEconomique({ ville, isFr }: VilleTissuEconomiqueProps)
         >
           {heading}
         </h2>
-        <p className="text-fg-soft mt-3 max-w-3xl text-base leading-relaxed">
-          {description}
-        </p>
+        <p className="text-fg-soft mt-3 max-w-3xl text-base leading-relaxed">{description}</p>
 
         {/* Desktop / tablette ≥ sm : tableau classique 3 colonnes */}
         <div className="border-border mt-10 hidden overflow-hidden rounded-lg border sm:block">
           <table className="w-full border-collapse text-left text-sm">
             <thead className="bg-sand text-ink">
               <tr>
-                <th
-                  scope="col"
-                  className="border-border border-b px-4 py-3 font-semibold"
-                >
+                <th scope="col" className="border-border border-b px-4 py-3 font-semibold">
                   {isFr ? "Secteur" : "Sector"}
                 </th>
-                <th
-                  scope="col"
-                  className="border-border border-b px-4 py-3 font-semibold"
-                >
+                <th scope="col" className="border-border border-b px-4 py-3 font-semibold">
                   {isFr ? "Présence locale" : "Local presence"}
                 </th>
-                <th
-                  scope="col"
-                  className="border-border border-b px-4 py-3 font-semibold"
-                >
+                <th scope="col" className="border-border border-b px-4 py-3 font-semibold">
                   {isFr ? "Opportunités IA" : "AI opportunities"}
                 </th>
               </tr>
@@ -198,13 +190,9 @@ export function VilleTissuEconomique({ ville, isFr }: VilleTissuEconomiqueProps)
                       : "bg-paper border-border border-b last:border-b-0"
                   }
                 >
-                  <td className="text-ink px-4 py-3 font-medium align-top">
-                    {row.sector}
-                  </td>
-                  <td className="text-fg-soft px-4 py-3 align-top">
-                    {row.presence}
-                  </td>
-                  <td className="text-fg-soft px-4 py-3 leading-relaxed align-top">
+                  <td className="text-ink px-4 py-3 align-top font-medium">{row.sector}</td>
+                  <td className="text-fg-soft px-4 py-3 align-top">{row.presence}</td>
+                  <td className="text-fg-soft px-4 py-3 align-top leading-relaxed">
                     {row.opportunity}
                   </td>
                 </tr>
@@ -216,17 +204,12 @@ export function VilleTissuEconomique({ ville, isFr }: VilleTissuEconomiqueProps)
         {/* Mobile < sm : cards empilées (table 3 cols illisible sur petit écran) */}
         <ul className="mt-10 grid grid-cols-1 gap-4 sm:hidden">
           {rows.map((row) => (
-            <li
-              key={row.key}
-              className="border-border bg-bg rounded-lg border p-4"
-            >
+            <li key={row.key} className="border-border bg-bg rounded-lg border p-4">
               <p className="text-ink text-base font-semibold">{row.sector}</p>
-              <p className="text-fg-muted mt-1 text-xs font-medium uppercase tracking-wider">
+              <p className="text-fg-muted mt-1 text-xs font-medium tracking-wider uppercase">
                 {isFr ? "Présence" : "Presence"} · {row.presence}
               </p>
-              <p className="text-fg-soft mt-2 text-sm leading-relaxed">
-                {row.opportunity}
-              </p>
+              <p className="text-fg-soft mt-2 text-sm leading-relaxed">{row.opportunity}</p>
             </li>
           ))}
         </ul>
