@@ -38,8 +38,15 @@ export async function Header() {
     { href: "/audit", label: t("nav.companyAudit") },
   ] as const;
 
-  // 2 onglets secondaires À DROITE du CTA.
-  const navAfterSolutions = [
+  // 3 onglets secondaires À DROITE du CTA (desktop).
+  const navAfterCtaDesktop = [
+    { href: "/implementation", label: t("nav.implementationShort") },
+    { href: "/tarifs", label: t("nav.pricing") },
+    { href: "/cas-concrets", label: t("nav.caseStudies") },
+  ] as const;
+
+  // Mobile drawer : on évite le doublon /implementation (déjà dans solutionsMobileItems)
+  const navAfterCtaMobile = [
     { href: "/tarifs", label: t("nav.pricing") },
     { href: "/cas-concrets", label: t("nav.caseStudies") },
   ] as const;
@@ -85,27 +92,27 @@ export async function Header() {
         className="bg-mocha/30 pointer-events-none absolute inset-x-0 bottom-0 block h-px"
       />
       {/* Layout pleine largeur : Logo + Nav split + CTA central Contact */}
-      <div className="relative flex h-20 w-full items-center gap-4 px-6 sm:px-8 lg:h-24 lg:gap-3 lg:px-12 xl:gap-4 xl:px-16">
-        {/* GAUCHE : Logo (avec bulle ivoire) + Nav mega-menu Solutions */}
-        <div className="flex flex-1 items-center justify-between gap-6 lg:gap-8">
+      <div className="relative flex h-20 w-full items-center gap-4 px-6 sm:px-8 lg:h-24 lg:gap-4 lg:px-12 xl:gap-6 xl:px-16">
+        {/* GAUCHE : Logo (sans encadrement) + Nav mega-menu Solutions */}
+        <div className="flex flex-1 items-center justify-between gap-6 lg:gap-10">
           <Link
             href={ROUTES.home}
             aria-label={BRAND.name}
-            className="bg-paper shadow-subtle focus-visible:ring-mocha focus-visible:ring-offset-terracotta hover:shadow-card inline-flex shrink-0 items-center rounded-xl px-3 py-1.5 transition-shadow focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+            className="focus-visible:ring-mocha focus-visible:ring-offset-terracotta inline-flex shrink-0 items-center rounded-md focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
           >
             <Image
               src="/images/logo.webp"
               alt={BRAND.name}
               width={400}
               height={225}
-              className="h-11 w-auto lg:h-12"
+              className="h-14 w-auto lg:h-16"
               priority
             />
           </Link>
 
           <nav
             aria-label={t("nav.primaryLabel")}
-            className="hidden items-center gap-5 lg:flex lg:justify-end xl:gap-7"
+            className="hidden items-center gap-8 lg:flex lg:justify-end xl:gap-10"
           >
             <SolutionsMegaMenu
               triggerLabel={t("nav.solutions")}
@@ -131,14 +138,14 @@ export async function Header() {
           <ArrowRight className="h-4 w-4" aria-hidden="true" />
         </Link>
 
-        {/* DROITE : Tarifs + Cas concrets */}
-        <div className="hidden flex-1 items-center justify-between gap-6 lg:flex lg:gap-8">
+        {/* DROITE : Implémentations + Tarifs + Cas concrets */}
+        <div className="hidden flex-1 items-center justify-between gap-6 lg:flex lg:gap-10">
           <nav
             aria-label={t("nav.primaryLabel")}
-            className="hidden items-center gap-6 lg:flex lg:justify-start xl:gap-8"
+            className="hidden items-center gap-8 lg:flex lg:justify-start xl:gap-10"
             data-nav-section="secondary"
           >
-            {navAfterSolutions.map((item) => (
+            {navAfterCtaDesktop.map((item) => (
               <NavLink key={item.href} href={item.href} label={item.label} />
             ))}
           </nav>
@@ -164,7 +171,7 @@ export async function Header() {
               ))}
               {/* Séparateur fin avant Tarifs + Cas concrets */}
               <div className="border-border mt-3 mb-1 border-t pt-3" aria-hidden="true" />
-              {navAfterSolutions.map((item) => (
+              {navAfterCtaMobile.map((item) => (
                 <NavLink key={item.href} href={item.href} label={item.label} variant="mobile" />
               ))}
               {/* Items secondaires (6) — pages stratégiques accessibles depuis mobile */}
