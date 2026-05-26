@@ -246,7 +246,7 @@ export const REGIONS: ReadonlyArray<Region> = [
       titleFr: "Château de Saint-Émilion grand cru",
       leadFr: "Allocation export pilotée par IA",
       detailFr:
-        "Château grand cru classé : agent IA qui croise historique d'allocation, scores Robert Parker, demandes importateurs et stock millésime. Décisions d'allocation accélérées de 60 %, équité fidélité maintenue.",
+        "Château grand cru classé : agent IA qui croise historique d'allocation, scores critiques internationaux, demandes importateurs et stock millésime. Décisions d'allocation accélérées de 60 %, équité fidélité maintenue.",
     },
   },
   {
@@ -517,7 +517,7 @@ export const REGIONS: ReadonlyArray<Region> = [
       titleFr: "Distillerie de rhum agricole AOC",
       leadFr: "Traçabilité export + storytelling marque",
       detailFr:
-        "Distillerie familiale en Basse-Terre : agent IA qui croise lots de canne, fermentation, distillation et fiches dégustation pour produire fiches export multilingues. Délai préparation salon ProWein passé de 3 semaines à 4 jours.",
+        "Distillerie familiale en Basse-Terre : agent IA qui croise lots de canne, fermentation, distillation et fiches dégustation pour produire fiches export multilingues. Délai préparation salons œnologiques internationaux passé de 3 semaines à 4 jours.",
     },
   },
   {
@@ -577,9 +577,9 @@ export const REGIONS: ReadonlyArray<Region> = [
       "Intervenir en Guyane se cadre autour de l'aéroport Félix-Eboué (Cayenne) et de l'axe Cayenne → Kourou (60 km, 45 min). Saint-Laurent-du-Maroni accessible par RN1 (250 km). Axion-IA regroupe les missions par campagnes denses (2-4 jours sur place + livrables sous 5 jours), avec suivi distanciel pour limiter les déplacements transatlantiques. Devis transparent incluant transport, hébergement et frais spécifiques amazoniens (autorisations Kourou si zone spatiale).",
     audienceCaseStudyFr: {
       titleFr: "Sous-traitant aérospatial Kourou",
-      leadFr: "Conformité ESA + traçabilité pièces",
+      leadFr: "Conformité agence spatiale + traçabilité pièces",
       detailFr:
-        "PME logistique 25 salariés (Kourou) : agent IA RAG sur référentiel pièces + procédures ESA + historique campagnes Ariane. Préparation dossiers de conformité passée de 5 jours à 1 jour.",
+        "PME logistique 25 salariés (Kourou) : agent IA RAG sur référentiel pièces + procédures agence spatiale européenne + historique campagnes de lancement. Préparation dossiers de conformité passée de 5 jours à 1 jour.",
     },
   },
   {

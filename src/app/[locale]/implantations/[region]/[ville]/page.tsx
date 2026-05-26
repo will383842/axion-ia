@@ -469,12 +469,16 @@ export default async function VilleHubPage({ params }: Props) {
                 </span>
                 {isFr ? " utilisent déjà l'IA. Et vous ?" : " utilisent déjà l'IA. Et vous ?"}
               </h1>
-              {/* Sous-ligne hero — copy unifié + locale ville. Réponse au hook. */}
+              {/* Sous-ligne hero — préfixe « Axion-IA, votre cabinet… »
+                  (Will 2026-05-26) lève l'ambiguïté : c'est UN cabinet
+                  (Axion-IA), pas plusieurs architectes en sous-traitance. */}
               <p
                 className="text-fg-soft mt-6 text-lg leading-relaxed sm:text-xl"
                 data-speakable-hero
               >
-                {isFr ? "Architectes IA seniors à " : "Architectes IA seniors à "}
+                {isFr
+                  ? "Axion-IA, votre cabinet d'architectes IA seniors à "
+                  : "Axion-IA, votre cabinet d'architectes IA seniors à "}
                 <span className="text-fg font-semibold">
                   {ville.nameFr} {isFr ? "et alentours" : "et alentours"}
                 </span>
@@ -574,13 +578,9 @@ export default async function VilleHubPage({ params }: Props) {
       {/* ── Bandeau logos clients — preuve sociale juste après le hero ── */}
       <ClientLogosBand isFr={isFr} />
 
-      {/* ── Écosystème économique local (composant ville Phase 4) ── */}
-      <VilleEcosystemeLocal ville={villeAsCity} isFr={isFr} />
-
-      {/* ── Tissu économique : secteurs, opportunités IA (composant ville Phase 4) ── */}
-      <VilleTissuEconomique ville={ville} isFr={isFr} />
-
-      {/* ── Grille 5 verticales : entrée principale du hub vers les pages ville × verticale ── */}
+      {/* ── Grille 5 verticales — DÉPLACÉE juste après le hero (Will 2026-05-26).
+            Le visiteur voit immédiatement les 5 prestations dispo à sa ville,
+            avant de plonger dans l'écosystème local. ── */}
       <section
         id="ville-verticales"
         aria-labelledby="ville-verticales-heading"
@@ -645,6 +645,12 @@ export default async function VilleHubPage({ params }: Props) {
           </ul>
         </Container>
       </section>
+
+      {/* ── Écosystème économique local (composant ville Phase 4) ── */}
+      <VilleEcosystemeLocal ville={villeAsCity} isFr={isFr} />
+
+      {/* ── Tissu économique : secteurs, opportunités IA (composant ville Phase 4) ── */}
+      <VilleTissuEconomique ville={ville} isFr={isFr} />
 
       {/* ── Bandeau orange contact (milieu de page) ── */}
       <OrangeContactBanner isFr={isFr} villeSlug={ville.slug} />
