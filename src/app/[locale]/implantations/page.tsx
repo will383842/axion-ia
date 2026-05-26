@@ -2,22 +2,25 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { ArrowUpRight, MapPin, Users } from "lucide-react";
+import { ArrowRight, ArrowUpRight, MapPin, Users } from "lucide-react";
 
 import { routing, type Locale } from "@/i18n/routing";
 import { fmtPopulation } from "@/lib/intl";
+import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
 import { JsonLd } from "@/components/marketing/JsonLd";
+import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
+import { Illustration } from "@/components/visual/Illustration";
 import { Link } from "@/i18n/navigation";
+import { ClientLogosBand } from "@/components/sections/ClientLogosBand";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 
 import { REGIONS, getIndexableRegions, getTopRegionsByPib } from "@/content/regions";
 import { getIndexableVilles, VILLES } from "@/content/villes";
 import { buildProductMetadata, buildItemListJsonLd, buildServiceJsonLd, SITE_URL } from "@/lib/seo";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
-import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -31,11 +34,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     locale,
     path: "/implantations",
     title: isFr
-      ? "Implantations · Cabinet IA opérationnel partout en France"
-      : "Locations · Operational AI consultancy across France",
+      ? "Implantations · Architectes IA seniors partout en France · Axion-IA"
+      : "Locations · Senior AI architects across France · Axion-IA",
     description: isFr
-      ? "Axion-IA intervient sur site dans 12 régions et 2 150+ communes françaises. Trouvez votre métropole et votre cabinet IA opérationnel local."
-      : "Axion-IA operates on site across 12 regions and 2,150+ French communes. Find your metropolitan area and your local operational AI consultancy.",
+      ? "Axion-IA intervient partout en France, dans toutes les communes — de la TPE à l'ETI. 5 services : audit IA, formation, implémentation, coaching 1-to-1, plateformes web/SaaS. 13 régions couvertes."
+      : "Axion-IA operates everywhere in France, in every commune — from SMBs to mid-caps. 5 services: AI audit, training, implementation, 1-to-1 coaching, AI web platforms/SaaS. 13 regions covered.",
     alternates: { fr: "/implantations", en: "/locations" },
   });
 }
@@ -68,18 +71,18 @@ export default async function ImplantationsHub({ params }: Props) {
       sameAs: "https://www.wikidata.org/wiki/Q142",
     },
     description: isFr
-      ? "Cabinet IA opérationnel — interventions sur site dans 12 régions françaises et 2 150+ communes."
-      : "Operational AI consultancy — on-site delivery across 12 French regions and 2,150+ communes.",
+      ? "Architectes IA seniors — interventions sur site dans 13 régions françaises et 2 150+ communes, pour TPE, PME, ETI et grands comptes."
+      : "Senior AI architects — on-site delivery across 13 French regions and 2,150+ communes, for SMBs, mid-caps and large accounts.",
   };
   const serviceNationalJsonLd = buildServiceJsonLd({
     locale: loc,
     path: "/implantations",
     name: isFr
-      ? "Services IA opérationnels sur site partout en France"
-      : "Operational AI services on-site across France",
+      ? "Architectes IA seniors partout en France · 5 services sur site"
+      : "Senior AI architects across France · 5 services on-site",
     description: isFr
-      ? "Audit IA, interventions de formation et implémentations déployés sur site dans 12 régions et 2 150+ communes françaises."
-      : "AI audits, training sessions and implementations delivered on-site across 12 regions and 2,150+ French communes.",
+      ? "Axion-IA intervient partout en France, dans toutes les communes — de la TPE à l'ETI. 5 services : audit IA, formation, implémentation, coaching 1-to-1 dirigeants, plateformes web/SaaS IA. 13 régions couvertes."
+      : "Axion-IA operates everywhere in France, in every commune — from SMBs to mid-caps. 5 services: AI audit, training, implementation, 1-to-1 executive coaching, AI web platforms/SaaS. 13 regions covered.",
     serviceType: isFr ? "Services IA opérationnels" : "Operational AI services",
     areasServed: buildServiceAreasServed(loc),
   });
@@ -115,45 +118,158 @@ export default async function ImplantationsHub({ params }: Props) {
       />
       <JsonLd data={regionsItemList} />
 
-      {/* Hero — Section h1 (auto halo-warm + décoration) */}
+      {/* Hero — refonte 2-col (Will 2026-05-26) : image globe + copy équilibrés.
+          H1 hook qualité « Cabinet d'architectes IA chez vous ? », sous-ligne
+          énumérant la couverture nationale + 5 services. Image hero uploadée
+          par Will (carte France style architectes). */}
+      <section
+        aria-labelledby="implantations-hero-heading"
+        className="bg-bg relative overflow-hidden py-16 sm:py-20 lg:py-24"
+      >
+        <Container className="relative">
+          <div className="mb-8">
+            <Breadcrumbs items={breadcrumbItems} />
+          </div>
+          <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14 xl:gap-16">
+            {/* Colonne gauche — copy */}
+            <div className="max-w-2xl">
+              <p className="text-fg-muted mb-6 text-[13px] font-medium tracking-[0.16em] uppercase">
+                <span
+                  aria-hidden="true"
+                  className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
+                />
+                {isFr ? "Implantations · France entière" : "Locations · All of France"}
+              </p>
+              <h1
+                id="implantations-hero-heading"
+                className="display-editorial text-fg"
+                data-speakable-hero
+              >
+                {isFr ? "Cabinet d'" : "Senior "}
+                <em className="italic-editorial text-terracotta not-italic">
+                  <span className="italic" style={{ fontFamily: "var(--font-serif)" }}>
+                    {isFr ? "architectes IA" : "AI architects"}
+                  </span>
+                </em>
+                {isFr ? " chez vous ?" : " near you?"}
+              </h1>
+              <p
+                className="text-fg-soft mt-6 text-lg leading-relaxed sm:text-xl"
+                data-speakable-hero
+              >
+                {isFr
+                  ? "Axion-IA intervient partout en France, dans toutes les communes — "
+                  : "Axion-IA operates everywhere in France, in every commune — "}
+                <span className="text-fg font-semibold">
+                  {isFr ? "de la TPE à l'ETI" : "from SMBs to mid-caps"}
+                </span>
+                {isFr
+                  ? ", pour toutes nos prestations : audit IA, formation, implémentation, coaching 1-to-1 dirigeants, plateformes web et SaaS IA."
+                  : ", for all our services: AI audit, training, implementation, 1-to-1 executive coaching, AI web platforms and SaaS."}
+              </p>
+              <div className="text-fg-muted mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
+                <span className="inline-flex items-center gap-2">
+                  <MapPin className="h-4 w-4" aria-hidden="true" />
+                  {indexableRegions.length} {isFr ? "régions couvertes" : "regions covered"}
+                </span>
+                <span className="inline-flex items-center gap-2">
+                  <Users className="h-4 w-4" aria-hidden="true" />
+                  {fmtPopulation(totalVilles, isFr ? "fr" : "en")}{" "}
+                  {isFr ? "communes éligibles" : "eligible communes"}
+                </span>
+              </div>
+              <div className="mt-8 flex flex-wrap items-center gap-3">
+                <Cta href="/appel" variant="primary" size="lg" shape="pill" track="hub_cta_book">
+                  {isFr ? "Réserver un appel" : "Book a call"}
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </Cta>
+                <Cta href="/contact" variant="ghost" size="lg" shape="pill" track="hub_cta_contact">
+                  {isFr ? "Nous contacter" : "Contact us"}
+                </Cta>
+              </div>
+            </div>
+            {/* Colonne droite — image hero carte France architectes (1:1, priority LCP) */}
+            <div className="hidden lg:block">
+              <Illustration
+                slot="IMPLANTATIONS-01-hero"
+                src="/images/axion-ia-implantations-france-hero-architectes.png"
+                aspectRatio="1:1"
+                filenameTarget="public/images/axion-ia-implantations-france-hero-architectes.png"
+                alt={
+                  isFr
+                    ? "Carte de France stylisée illustrant le réseau d'architectes IA seniors Axion-IA — couverture nationale 13 régions, toutes communes éligibles."
+                    : "Stylized map of France showing the Axion-IA senior AI architects network — national coverage of 13 regions, all communes eligible."
+                }
+                caption={
+                  isFr
+                    ? "Architectes IA seniors · France entière"
+                    : "Senior AI architects · All of France"
+                }
+                priority
+              />
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      {/* Bandeau logos clients — preuve sociale juste après le hero */}
+      <ClientLogosBand isFr={isFr} />
+
+      {/* Toutes les régions — PLACÉE EN PREMIER (Will 2026-05-26).
+          Donne l'accès direct à toutes les régions sans hiérarchie cachée. */}
       <Section
-        titleAs="h1"
-        eyebrow={isFr ? "Implantations" : "Locations"}
-        title={isFr ? "Cabinet IA opérationnel" : "Operational AI consultancy"}
-        titleEm={isFr ? "près de chez vous" : "near you"}
-        titleTail={isFr ? "." : "."}
+        eyebrow={isFr ? "Toutes les régions" : "All regions"}
+        title={isFr ? "13 régions de France" : "13 French regions"}
+        titleEm={isFr ? "toutes couvertes" : "all covered"}
         description={
           isFr
-            ? `Axion-IA intervient sur site dans 12 régions de France métropolitaine — ${fmtPopulation(totalVilles, "fr")} communes éligibles, des chefs-lieux aux PME locales. Choisissez votre région ou votre métropole pour découvrir notre couverture.`
-            : `Axion-IA delivers on-site engagements across 12 metropolitan French regions — ${fmtPopulation(totalVilles, "en")} eligible communes, from prefectures to local SMEs. Pick your region or metropolitan area to explore our coverage.`
+            ? "France métropolitaine intégralement couverte, Corse incluse. Les DROM ne sont pas dans notre périmètre V1 (décision 2026-05-08, voir ADR 0006)."
+            : "Continental France fully covered, Corsica included. Overseas regions are not in our V1 scope (decision 2026-05-08, see ADR 0006)."
         }
       >
-        <div className="mb-10">
-          <Breadcrumbs items={breadcrumbItems} />
-        </div>
-        <div className="flex flex-wrap items-center gap-3">
-          <Cta href="/audit" variant="primary" size="lg" shape="pill" track="hub_cta_audit">
-            {isFr
-              ? `Demander un audit Flash · ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })}`
-              : `Request a Flash audit · ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}`}
-            <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-          </Cta>
-          <Cta href="/contact" variant="ghost" size="lg" shape="pill" track="hub_cta_contact">
-            {isFr ? "Parler à un consultant" : "Speak with a consultant"}
-          </Cta>
-        </div>
+        <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+          {REGIONS.map((region) => {
+            const isIndexable = !region.noindex;
+            return (
+              <li key={region.slug}>
+                <Link
+                  href={`/implantations/${region.slug}` as never}
+                  data-source-region={region.slug}
+                  className="group hover:bg-sand focus-visible:ring-terracotta block rounded-lg px-3 py-2.5 transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                >
+                  <span
+                    className="text-fg group-hover:text-terracotta block text-sm font-semibold tracking-tight transition"
+                    style={{ fontFamily: "var(--font-serif)" }}
+                  >
+                    {region.nameFr}
+                  </span>
+                  <span className="text-fg-muted mt-0.5 block text-[11px]">
+                    {region.prefecture}
+                    {!isIndexable ? (isFr ? " · à venir" : " · coming soon") : ""}
+                  </span>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
       </Section>
 
-      {/* Top régions par PIB — point d'entrée 80/20 */}
+      {/* Top régions par PIB — DÉPLACÉ APRÈS « Toutes les régions »
+          (Will 2026-05-26) : contrevendeur pour les régions hors top 6.
+          Renommé pour clarifier que c'est un classement, pas un filtre. */}
       <Section
-        eyebrow={isFr ? "Top métropoles" : "Top metropolitan areas"}
-        title={isFr ? "Les 6 régions les plus" : "The 6 regions most"}
-        titleEm={isFr ? "demandées" : "requested"}
-        titleTail={isFr ? "." : "."}
+        eyebrow={isFr ? "Classement par PIB" : "GDP ranking"}
+        title={isFr ? "Top 6 régions par" : "Top 6 regions by"}
+        titleEm={isFr ? "PIB régional" : "regional GDP"}
+        titleTail={
+          isFr
+            ? " — toutes les autres sont également couvertes."
+            : " — all others are also covered."
+        }
         description={
           isFr
-            ? "Nos pôles d'intervention prioritaires en 2026 — classement par PIB régional Eurostat. Chaque page liste vos villes proches, le tissu B2B local et nos cas concrets."
-            : "Our priority engagement hubs for 2026 — ranked by Eurostat regional GDP. Each page lists nearby cities, the local B2B fabric and our case studies."
+            ? "Classement Eurostat par PIB régional. Chaque page liste vos villes proches, le tissu B2B local et nos cas concrets — mais Axion-IA intervient avec le même standard premium dans les 13 régions."
+            : "Eurostat ranking by regional GDP. Each page lists nearby cities, the local B2B fabric and our case studies — but Axion-IA delivers the same premium standard across all 13 regions."
         }
         tone="paper"
       >
@@ -210,44 +326,6 @@ export default async function ImplantationsHub({ params }: Props) {
         </ul>
       </Section>
 
-      {/* Toutes les régions */}
-      <Section
-        eyebrow={isFr ? "Toutes les régions" : "All regions"}
-        title={isFr ? "12 régions de France" : "12 French regions"}
-        titleEm={isFr ? "toutes couvertes" : "all covered"}
-        description={
-          isFr
-            ? "France métropolitaine intégralement couverte. Les DROM ne sont pas dans notre périmètre V1 (décision 2026-05-08, voir ADR 0006)."
-            : "Continental France fully covered. Overseas regions are not in our V1 scope (decision 2026-05-08, see ADR 0006)."
-        }
-      >
-        <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-          {REGIONS.map((region) => {
-            const isIndexable = !region.noindex;
-            return (
-              <li key={region.slug}>
-                <Link
-                  href={`/implantations/${region.slug}` as never}
-                  data-source-region={region.slug}
-                  className="group hover:bg-sand focus-visible:ring-terracotta block rounded-lg px-3 py-2.5 transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-                >
-                  <span
-                    className="text-fg group-hover:text-terracotta block text-sm font-semibold tracking-tight transition"
-                    style={{ fontFamily: "var(--font-serif)" }}
-                  >
-                    {region.nameFr}
-                  </span>
-                  <span className="text-fg-muted mt-0.5 block text-[11px]">
-                    {region.prefecture}
-                    {!isIndexable ? (isFr ? " · à venir" : " · coming soon") : ""}
-                  </span>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-      </Section>
-
       {/* Villes pilotes (V1 = Paris seul) */}
       {indexableVilles.length > 0 ? (
         <Section
@@ -301,28 +379,98 @@ export default async function ImplantationsHub({ params }: Props) {
         </Section>
       ) : null}
 
+      {/* Bandeau orange contact (Will 2026-05-26) — image illustration uploadée
+          par Will à droite (architectes IA chez vous), copy + CTAs à gauche. */}
+      <section className="bg-terracotta py-16 sm:py-20">
+        <Container>
+          <div className="grid items-center gap-10 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] md:gap-14">
+            <div>
+              <h2
+                className="text-paper text-[clamp(1.75rem,3.5vw,2.75rem)] leading-tight font-semibold tracking-tight"
+                style={{ fontFamily: "var(--font-serif)" }}
+              >
+                {isFr
+                  ? "Votre projet IA mérite des architectes seniors."
+                  : "Your AI project deserves senior architects."}
+              </h2>
+              <p className="text-paper/85 mt-3 text-base leading-relaxed sm:text-lg">
+                {isFr
+                  ? "Décrivez votre besoin en 2 minutes. Un appel où l'on prend le temps de tout cadrer à la perfection. Réponse sous 24h ouvrées, sans engagement."
+                  : "Describe your need in 2 minutes. A call where we take the time to scope your project perfectly. Reply within 24 business hours, no commitment."}
+              </p>
+              <div className="mt-8 flex flex-wrap items-center gap-3">
+                <Link
+                  href="/appel"
+                  data-cta-tracking="hub_orange_banner_book"
+                  className="bg-paper text-terracotta cta-lift focus-visible:ring-paper inline-flex h-14 items-center justify-center gap-2 rounded-full px-7 text-base font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                >
+                  {isFr ? "Réserver un appel" : "Book a call"}
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </Link>
+                <Link
+                  href="/contact"
+                  data-cta-tracking="hub_orange_banner_contact"
+                  className="text-paper border-paper/40 hover:bg-paper/10 cta-lift focus-visible:ring-paper inline-flex h-14 items-center justify-center gap-2 rounded-full border-2 px-7 text-base font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                >
+                  {isFr ? "Nous contacter" : "Contact us"}
+                </Link>
+              </div>
+            </div>
+            <div className="hidden md:block">
+              <Illustration
+                slot="IMPLANTATIONS-02-bandeau-contact"
+                src="/images/axion-ia-implantations-bandeau-contact-architectes.png"
+                aspectRatio="1:1"
+                filenameTarget="public/images/axion-ia-implantations-bandeau-contact-architectes.png"
+                alt={
+                  isFr
+                    ? "Illustration architectes IA Axion-IA à votre service — équipe senior, conseil opérationnel, France entière."
+                    : "Axion-IA AI architects at your service — senior team, operational consulting, all of France."
+                }
+                caption={
+                  isFr ? "Axion-IA · architectes IA seniors" : "Axion-IA · senior AI architects"
+                }
+              />
+            </div>
+          </div>
+        </Container>
+      </section>
+
       {/* CTA final */}
       <CtaBlock
-        eyebrow={isFr ? "Pré-réservation sans engagement" : "No-commitment pre-booking"}
+        eyebrow={isFr ? "Démarrer" : "Get started"}
         title={isFr ? "Vous démarrez où ?" : "Where do you start?"}
-        titleEm={isFr ? "Réservez en ligne" : "Book online"}
+        titleEm={isFr ? "Parlons-en." : "Let's talk."}
         description={
           isFr
-            ? "Pré-réservez votre créneau en ligne — formation ou intervention — sans engagement. Vous confirmez (acompte 50 %) quand vous êtes prêt. Calendrier temps réel, frais de déplacement inclus en intra-Paris et capitales régionales."
-            : "Pre-book your slot online — training or engagement — with no commitment. Confirm (50% deposit) when you're ready. Real-time calendar, travel fees included in inner-Paris and regional capitals."
+            ? "TPE, PME, ETI ou grande entreprise — partout en France, vous bénéficiez du même standard premium senior. Tarifs publics, calendrier temps réel, vos données restent chez vous."
+            : "Micro-business, SMB, mid-market or large enterprise — everywhere in France, you get the same premium senior standard. Public pricing, real-time calendar, your data stays yours."
         }
         cta={
           <div className="flex flex-wrap items-center justify-center gap-3">
-            <Cta href="/reserver" variant="terracotta" size="lg" shape="pill" track="hub_cta_book">
-              {isFr
-                ? `Voir le calendrier · ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "fr", { compact: true })}`
-                : `View the calendar · ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!, "en", { compact: true })}`}
+            <Cta href="/appel" variant="primary" size="lg" shape="pill" track="hub_cta_book_final">
+              {isFr ? "Réserver un appel" : "Book a call"}
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Cta>
-            <Cta href="/audit" variant="outline" size="lg" shape="pill" track="hub_cta_audit_final">
-              {isFr ? "Audit IA détaillé" : "Detailed AI audit"}
+            <Cta
+              href="/contact"
+              variant="ghost"
+              size="lg"
+              shape="pill"
+              track="hub_cta_contact_final"
+            >
+              {isFr ? "Nous contacter" : "Contact us"}
             </Cta>
           </div>
         }
+      />
+
+      {/* Sticky mobile CTA — apparaît au scroll > 600 px, masqué sur lg+. */}
+      <StickyMobileCta
+        href="/appel"
+        label={isFr ? "Réserver un appel" : "Book a call"}
+        track="hub-sticky-mobile"
+        threshold={600}
       />
     </>
   );
