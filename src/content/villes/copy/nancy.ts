@@ -44,12 +44,16 @@ export const NANCY_COPY: VilleCopy = {
       fr: "Accompagnement individuel IA à Nancy : coaching sur-mesure pour dirigeants, cadres et chercheurs du bassin nancéien. Format 1-to-1 intensif, ancré dans vos cas réels (Technopôle Brabois, campus Artem, industrie). Aucun lock-in, vos acquis restent vôtres.",
       en: "Individual AI coaching in Nancy: bespoke coaching for executives, managers and researchers in the Nancy basin. Intensive 1-to-1 format grounded in your real cases (Brabois Technopole, Artem campus, industry). No lock-in, your learnings stay yours.",
     },
+    sitesWeb: {
+      fr: "Plateformes web et SaaS IA sur mesure pour PME, ETI et organisations nancéiennes — site vitrine premium pour industrie, santé et recherche, portail métier pour Technopôle Brabois et campus Artem, dashboard connecté à votre CRM/ERP. Architectes seniors, design system Axion-IA, hébergement européen.",
+      en: "Custom web platforms and SaaS AI for Nancy SMEs, mid-caps and organisations — premium showcase site for industry, health and research, business portal for Brabois Technopole and Artem campus, dashboard connected to your CRM/ERP. Senior architects, Axion-IA design system, European hosting.",
+    },
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet IA opérationnel qui intervient à Nancy (54) sur site — centre-ville, Technopôle Henri Poincaré Brabois (Vandœuvre-lès-Nancy), campus Artem et communes du Grand Nancy. Nous accompagnons les TPE, PME, ETI et grandes entreprises nancéiennes (industrie, santé, recherche, services) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nancy (54) sur site — centre-ville, Technopôle Henri Poincaré Brabois (Vandœuvre-lès-Nancy), campus Artem et communes du Grand Nancy. Nous accompagnons les TPE, PME, ETI et grandes entreprises nancéiennes (industrie, santé, recherche, services) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
-    "Axion-IA is an operational AI consultancy that intervenes in Nancy (54) on site — city centre, Henri Poincaré Brabois Technopole (Vandœuvre-lès-Nancy), Artem campus and Grand Nancy communes. We support Nancy micro-businesses, SMEs, mid-caps and large enterprises (industry, health, research, services) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
+    "Axion-IA is a senior AI architects consultancy that intervenes in Nancy (54) on site — city centre, Henri Poincaré Brabois Technopole (Vandœuvre-lès-Nancy), Artem campus and Grand Nancy communes. We support Nancy micro-businesses, SMEs, mid-caps and large enterprises (industry, health, research, services) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
   topSectorsNaf: [
     "Santé, CHRU & Biotech Brabois",

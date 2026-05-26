@@ -48,12 +48,16 @@ export const ANNECY_COPY: VilleCopy = {
       fr: "Coaching IA individuel 1-to-1 à Annecy : séances sur mesure pour dirigeants et cadres de l'outdoor/sport, de la mécanique de précision, des PME de Haute-Savoie et du bassin lémanique. Ancré sur le tissu industriel annécien, Outdoor Sports Valley et la proximité Genève. Frais de logement, repas et forfait trajet en sus pour le présentiel.",
       en: "1-to-1 AI coaching in Annecy: bespoke sessions for executives and managers in outdoor/sport, precision mechanics, Haute-Savoie SMEs and the Lake Geneva basin. Grounded in Annecy's industrial fabric, Outdoor Sports Valley and Geneva proximity. Lodging, meals and travel allowance billed separately for on-site sessions.",
     },
+    sitesWeb: {
+      fr: "Plateformes web et SaaS IA sur mesure pour PME et ETI annéciennes — site vitrine premium pour marques outdoor (Outdoor Sports Valley) et mécanique de précision Mont-Blanc Industries, espace client interactif, dashboard métier connecté à votre CRM/ERP. Architectes seniors, design system Axion-IA, hébergement européen.",
+      en: "Custom web platforms and SaaS AI for Annecy SMEs and mid-caps — premium showcase site for outdoor brands (Outdoor Sports Valley) and Mont-Blanc Industries precision engineering, interactive customer space, business dashboard connected to your CRM/ERP. Senior architects, Axion-IA design system, European hosting.",
+    },
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet IA opérationnel qui intervient à Annecy (74) sur site dans le bassin annécien, la Vallée de l'Arve et le secteur transfrontalier jusqu'à Genève. Nous accompagnons les TPE, PME, ETI et grandes entreprises savoyardes — équipementiers outdoor, industries de précision, services B2B — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Tarifs publics, aucun lock-in technologique, vos équipes restent autonomes.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Annecy (74) sur site dans le bassin annécien, la Vallée de l'Arve et le secteur transfrontalier jusqu'à Genève. Nous accompagnons les TPE, PME, ETI et grandes entreprises savoyardes — équipementiers outdoor, industries de précision, services B2B — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Tarifs publics, aucun lock-in technologique, vos équipes restent autonomes.",
   directAnswerEn:
-    "Axion-IA is an operational AI consultancy that intervenes in Annecy (74) on site across the Annecy basin, the Vallée de l'Arve and the cross-border area up to Geneva. We support micro-businesses, SMEs, mid-caps and large enterprises in Savoie — outdoor equipment makers, precision industry, B2B services — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. Public pricing, no tech lock-in, your teams stay autonomous.",
+    "Axion-IA is an senior AI architects consultancy that intervenes in Annecy (74) on site across the Annecy basin, the Vallée de l'Arve and the cross-border area up to Geneva. We support micro-businesses, SMEs, mid-caps and large enterprises in Savoie — outdoor equipment makers, precision industry, B2B services — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. Public pricing, no tech lock-in, your teams stay autonomous.",
 
   topSectorsNaf: [
     "Industries outdoor & équipements sportifs",

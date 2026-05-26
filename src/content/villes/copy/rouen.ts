@@ -43,12 +43,16 @@ export const ROUEN_COPY: VilleCopy = {
       fr: "Accompagnement individuel IA à Rouen : coaching dirigeant ou cadre sur vos cas métier personnels — logistique portuaire, industrie, pharma, assurance. Format 1-to-1, rythme calé sur vos contraintes.",
       en: "Individual AI coaching in Rouen: 1-to-1 executive or manager coaching on your personal business cases — port logistics, industry, pharma, insurance. Pace set to your constraints.",
     },
+    sitesWeb: {
+      fr: "Plateformes web et SaaS IA sur mesure pour PME/ETI rouennaises — site vitrine premium pour industrie, pharma et assurance (Renault Cléon, Safran Nacelles, Janssen-Cilag, Matmut), espace client interactif logistique HAROPA, dashboard métier connecté à votre CRM/ERP, LIMS ou systèmes industriels. Architectes seniors, design system Axion-IA, hébergement européen.",
+      en: "Custom web platforms and SaaS AI for Rouen SMEs/mid-caps — premium showcase site for industry, pharma and insurance (Renault Cléon, Safran Nacelles, Janssen-Cilag, Matmut), interactive customer space for HAROPA logistics, business dashboard connected to your CRM/ERP, LIMS or industrial systems. Senior architects, Axion-IA design system, European hosting.",
+    },
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet IA opérationnel qui intervient à Rouen (76) sur site — Technopôle du Madrillet, Plateau de la Vatine, quais de Seine, communes de la Métropole Rouen Normandie. Nous accompagnons les TPE, PME, ETI et grandes entreprises rouennaises (industrie, chimie, logistique, pharma, assurance, numérique) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rouen (76) sur site — Technopôle du Madrillet, Plateau de la Vatine, quais de Seine, communes de la Métropole Rouen Normandie. Nous accompagnons les TPE, PME, ETI et grandes entreprises rouennaises (industrie, chimie, logistique, pharma, assurance, numérique) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
-    "Axion-IA is an operational AI consultancy that intervenes in Rouen (76) on site — Technopôle du Madrillet, Plateau de la Vatine, Seine quays, Métropole Rouen Normandie communes. We support Rouen micro-businesses, SMEs, mid-caps and large enterprises (industry, chemicals, logistics, pharma, insurance, digital) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
+    "Axion-IA is a senior AI architects consultancy that intervenes in Rouen (76) on site — Technopôle du Madrillet, Plateau de la Vatine, Seine quays, Métropole Rouen Normandie communes. We support Rouen micro-businesses, SMEs, mid-caps and large enterprises (industry, chemicals, logistics, pharma, insurance, digital) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
   topSectorsNaf: [
     "Logistique & Supply chain (port HAROPA, Nov@log)",

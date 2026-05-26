@@ -42,12 +42,16 @@ export const NICE_COPY: VilleCopy = {
       fr: "Coaching IA 1-to-1 à Nice et Sophia Antipolis : accompagnement individuel intensif d'un dirigeant ou d'un expert métier pour maîtriser et déployer l'IA dans son quotidien professionnel. Séances sur site ou à distance selon votre rythme. Tarif d'entrée 990 € HT. Frais de déplacement pour le présentiel en sus.",
       en: "1-to-1 AI coaching in Nice and Sophia Antipolis: intensive individual support for a manager or expert to master and deploy AI in their professional practice. On-site or remote sessions at your pace. Entry rate from €990 excl. VAT. On-site travel expenses billed separately.",
     },
+    sitesWeb: {
+      fr: "Plateformes web et SaaS IA sur mesure pour PME et ETI niçoises — site vitrine premium pour scale-ups Sophia Antipolis et acteurs du tourisme d'affaires Côte d'Azur, espace client interactif, dashboard métier connecté à votre CRM/ERP. Architectes seniors, design system Axion-IA, hébergement européen.",
+      en: "Custom web platforms and SaaS AI for Nice SMEs and mid-caps — premium showcase site for Sophia Antipolis scale-ups and Côte d'Azur business tourism players, interactive customer space, business dashboard connected to your CRM/ERP. Senior architects, Axion-IA design system, European hosting.",
+    },
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet IA opérationnel qui intervient à Nice (06) sur site, de la Promenade des Anglais à Sophia Antipolis. Nous accompagnons TPE, PME, ETI et grandes entreprises de la Côte d'Azur — tourisme d'affaires, IT, santé, services — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nice (06) sur site, de la Promenade des Anglais à Sophia Antipolis. Nous accompagnons TPE, PME, ETI et grandes entreprises de la Côte d'Azur — tourisme d'affaires, IT, santé, services — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
-    "Axion-IA is an operational AI consultancy that intervenes in Nice (06) on site, from the Promenade des Anglais to Sophia Antipolis. We support micro-businesses, SMEs, mid-caps and large enterprises on the Côte d'Azur — business tourism, IT, health, services — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
+    "Axion-IA is an senior AI architects consultancy that intervenes in Nice (06) on site, from the Promenade des Anglais to Sophia Antipolis. We support micro-businesses, SMEs, mid-caps and large enterprises on the Côte d'Azur — business tourism, IT, health, services — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
   topSectorsNaf: [
     "Tourisme d'affaires & Hôtellerie premium",

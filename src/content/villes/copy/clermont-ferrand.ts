@@ -47,12 +47,16 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
       fr: "Coaching IA individuel à Clermont-Ferrand — à partir de 990 € HT. Un consultant senior dédié à votre cas, dans vos locaux du Technopôle La Pardieu ou d'un site industriel du bassin : dirigeant, manager ou expert technique qui veut progresser seul, à son rythme, sur sa réalité métier.",
       en: "Individual AI coaching in Clermont-Ferrand — from 990 € excl. VAT. A senior consultant dedicated to your case, at your Technopôle La Pardieu or industrial basin premises: executive, manager or technical expert who wants to progress alone, at their pace, on their real business context.",
     },
+    sitesWeb: {
+      fr: "Plateformes web et SaaS IA sur mesure pour PME/ETI clermontoises et auvergnates — site vitrine premium pour sous-traitants Michelin et acteurs aéronautique (Auvergne Aéronautique), espace client pour coopératives Limagrain et filière agro AOP, dashboard métier connecté à votre ERP industriel, GPAO ou CRM. Architectes seniors, design system Axion-IA, hébergement européen.",
+      en: "Custom web platforms and SaaS AI for Clermont-Ferrand and Auvergne SMEs/mid-caps — premium showcase site for Michelin sub-contractors and aerospace players (Auvergne Aéronautique), customer space for Limagrain cooperatives and AOP agri-food chain, business dashboard connected to your industrial ERP, GPAO or CRM. Senior architects, Axion-IA design system, European hosting.",
+    },
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet IA opérationnel qui intervient à Clermont-Ferrand (63) sur site — Technopôle La Pardieu, campus des Cézeaux, sites industriels du bassin clermontois. Nous accompagnons les TPE, PME, ETI et grandes entreprises de l'agglomération (industrie pneumatique-héritage, sous-traitance Michelin, agroalimentaire AOP, aéronautique, biotechnologies) sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Clermont-Ferrand (63) sur site — Technopôle La Pardieu, campus des Cézeaux, sites industriels du bassin clermontois. Nous accompagnons les TPE, PME, ETI et grandes entreprises de l'agglomération (industrie pneumatique-héritage, sous-traitance Michelin, agroalimentaire AOP, aéronautique, biotechnologies) sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
-    "Axion-IA is an operational AI consultancy delivering on site in Clermont-Ferrand (63) — Technopôle La Pardieu, campus des Cézeaux, industrial sites across the Clermont basin. We support micro-businesses, SMEs, mid-caps and large groups (tyre-heritage manufacturing, Michelin supply chain, AOP agri-food, aerospace, biotech) on their operational AI cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
+    "Axion-IA is a senior AI architects consultancy delivering on site in Clermont-Ferrand (63) — Technopôle La Pardieu, campus des Cézeaux, industrial sites across the Clermont basin. We support micro-businesses, SMEs, mid-caps and large groups (tyre-heritage manufacturing, Michelin supply chain, AOP agri-food, aerospace, biotech) on their operational AI cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
   topSectorsNaf: [
     "Industrie & Équipementiers automobile / pneumatique",

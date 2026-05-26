@@ -48,12 +48,16 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
       fr: "Coaching IA individuel 1-to-1 à Aix-en-Provence : séances sur mesure pour dirigeants et cadres des PME industrielles, cabinets d'ingénierie et ETI du bassin Aix-Marseille. Axe technopôle Aix-Marseille, Aix-en-Provence Tech et grandes entreprises du pays d'Aix. Frais de logement, repas et forfait trajet en sus pour le présentiel.",
       en: "1-to-1 AI coaching in Aix-en-Provence: bespoke sessions for executives and managers at industrial SMEs, engineering firms and mid-caps across the Aix-Marseille basin. Lodging, meals and travel allowance billed separately for on-site sessions.",
     },
+    sitesWeb: {
+      fr: "Plateformes web et SaaS IA sur mesure pour PME et ETI du bassin Aix-Marseille — site vitrine premium pour sous-traitants aérospatial et cabinets d'ingénierie du Technopôle Arbois, espace client interactif, dashboard métier connecté à votre CRM/ERP/PLM. Architectes seniors, design system Axion-IA, hébergement européen.",
+      en: "Custom web platforms and SaaS AI for SMEs and mid-caps across the Aix-Marseille basin — premium showcase site for aerospace subcontractors and Arbois Technopole engineering firms, interactive customer space, business dashboard connected to your CRM/ERP/PLM. Senior architects, Axion-IA design system, European hosting.",
+    },
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet IA opérationnel qui intervient à Aix-en-Provence (13001) et dans le bassin Aix-Marseille sur site. Nous accompagnons les TPE, PME, ETI et grandes entreprises aixoises — activités scientifiques et techniques, industrie aérospatiale, énergie, enseignement, services B2B — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action actionnable. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aix-en-Provence (13001) et dans le bassin Aix-Marseille sur site. Nous accompagnons les TPE, PME, ETI et grandes entreprises aixoises — activités scientifiques et techniques, industrie aérospatiale, énergie, enseignement, services B2B — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action actionnable. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
-    "Axion-IA is an operational AI consultancy that intervenes in Aix-en-Provence (13001) and across the Aix-Marseille basin on site. We support micro-businesses, SMEs, mid-caps and large enterprises in Aix — scientific and technical activities, aerospace industry, energy, education, B2B services — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
+    "Axion-IA is an senior AI architects consultancy that intervenes in Aix-en-Provence (13001) and across the Aix-Marseille basin on site. We support micro-businesses, SMEs, mid-caps and large enterprises in Aix — scientific and technical activities, aerospace industry, energy, education, B2B services — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
   topSectorsNaf: [
     "Activités scientifiques, techniques & conseil",

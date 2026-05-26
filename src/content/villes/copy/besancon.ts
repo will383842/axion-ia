@@ -42,12 +42,16 @@ export const BESANCON_COPY: VilleCopy = {
       fr: "Accompagnement individuel IA à Besançon : sessions sur mesure pour dirigeants et décideurs bisontins — industrie de précision, santé, services — pour construire votre stratégie IA personnelle et passer à l'action. Frais de logement, repas et forfait trajet en sus.",
       en: "One-to-one AI coaching in Besançon: bespoke sessions for Besançon executives and decision-makers — precision industry, health, services — to build your personal AI strategy and move to action. Lodging, meals and travel allowance billed separately.",
     },
+    sitesWeb: {
+      fr: "Plateformes web et SaaS IA sur mesure pour PME et ETI bisontines — site vitrine premium pour acteurs microtechniques (Pôle PMT, ENSMM/FEMTO-ST) et dispositifs médicaux TEMIS Santé, espace client interactif, dashboard métier connecté à votre CRM/ERP/LIMS. Architectes seniors, design system Axion-IA, hébergement européen.",
+      en: "Custom web platforms and SaaS AI for Besançon SMEs and mid-caps — premium showcase site for precision microtechnology players (PMT hub, ENSMM/FEMTO-ST) and TEMIS Santé medical devices, interactive customer space, business dashboard connected to your CRM/ERP/LIMS. Senior architects, Axion-IA design system, European hosting.",
+    },
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet IA opérationnel qui intervient à Besançon (25) sur site — TEMIS Innovation, TEMIS Santé, Châteaufarine, Trépillot, centre historique et communes du Grand Besançon. Nous accompagnons les TPE, PME, ETI et grandes entreprises bisontines (microtechniques, dispositifs médicaux, enseignement-recherche, services) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Besançon (25) sur site — TEMIS Innovation, TEMIS Santé, Châteaufarine, Trépillot, centre historique et communes du Grand Besançon. Nous accompagnons les TPE, PME, ETI et grandes entreprises bisontines (microtechniques, dispositifs médicaux, enseignement-recherche, services) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
-    "Axion-IA is an operational AI consultancy that intervenes in Besançon (25) on site — TEMIS Innovation, TEMIS Santé, Châteaufarine, Trépillot, historic centre and Grand Besançon communes. We support Besançon micro-businesses, SMEs, mid-caps and large enterprises (microtechnologies, medical devices, research, services) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
+    "Axion-IA is an senior AI architects consultancy that intervenes in Besançon (25) on site — TEMIS Innovation, TEMIS Santé, Châteaufarine, Trépillot, historic centre and Grand Besançon communes. We support Besançon micro-businesses, SMEs, mid-caps and large enterprises (microtechnologies, medical devices, research, services) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
   topSectorsNaf: [
     "Microtechniques, horlogerie & optique de précision",

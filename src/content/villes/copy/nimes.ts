@@ -40,12 +40,16 @@ export const NIMES_COPY: VilleCopy = {
       fr: "Coaching IA individuel à Nîmes : accompagnement 1-to-1 ancré dans votre réalité gardoise — BTP, logistique, agroalimentaire ou services. À partir de 990 € HT. Frais de logement, repas et forfait trajet en sus.",
       en: "Individual AI coaching in Nîmes: 1-to-1 support rooted in your Gard reality — construction, logistics, agri-food or services. From €990 excl. VAT. Lodging, meals and travel allowance billed separately.",
     },
+    sitesWeb: {
+      fr: "Plateformes web et SaaS IA sur mesure pour PME/ETI gardoises — site vitrine premium pour acteurs BTP, ingénierie eau (BRL Groupe) et agroalimentaire (Royal Canin, Perrier), espace client B2B pour structures tertiaires Parc Georges Besse, dashboard métier connecté à votre CRM/ERP. Architectes seniors, design system Axion-IA, hébergement européen.",
+      en: "Custom web platforms and SaaS AI for Gard SMEs and mid-caps — premium showcase site for construction, water engineering (BRL Groupe) and agri-food (Royal Canin, Perrier) players, B2B client portal for Parc Georges Besse tertiary firms, business dashboard connected to your CRM/ERP. Senior architects, Axion-IA design system, European hosting.",
+    },
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet IA opérationnel qui intervient à Nîmes (30) sur site. Nous accompagnons les TPE, PME, ETI et grandes entreprises du Gard — commerce, services, BTP, agroalimentaire, ingénierie — sur leurs cas IA concrets : diagnostic chiffré, démos sur vos vraies données, plan d'action actionnable. Le Parc Georges Besse, la zone Grézan et les entreprises implantées autour du CHU Carémeau font partie de notre terrain d'intervention régulier. Tarifs publics, aucun lock-in.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nîmes (30) sur site. Nous accompagnons les TPE, PME, ETI et grandes entreprises du Gard — commerce, services, BTP, agroalimentaire, ingénierie — sur leurs cas IA concrets : diagnostic chiffré, démos sur vos vraies données, plan d'action actionnable. Le Parc Georges Besse, la zone Grézan et les entreprises implantées autour du CHU Carémeau font partie de notre terrain d'intervention régulier. Tarifs publics, aucun lock-in.",
   directAnswerEn:
-    "Axion-IA is an operational AI consultancy that intervenes in Nîmes (30) on site. We support micro-businesses, SMEs, mid-caps and large companies in the Gard — trade, services, construction, agri-food, engineering — on their concrete AI use cases: costed diagnosis, demos on your real data, actionable plan. Parc Georges Besse, the Grézan zone and companies around CHU Carémeau are part of our regular intervention area. Public pricing, no lock-in.",
+    "Axion-IA is a senior AI architects consultancy that intervenes in Nîmes (30) on site. We support micro-businesses, SMEs, mid-caps and large companies in the Gard — trade, services, construction, agri-food, engineering — on their concrete AI use cases: costed diagnosis, demos on your real data, actionable plan. Parc Georges Besse, the Grézan zone and companies around CHU Carémeau are part of our regular intervention area. Public pricing, no lock-in.",
 
   topSectorsNaf: [
     "Commerce & Distribution",

@@ -43,12 +43,16 @@ export const REIMS_COPY: VilleCopy = {
       fr: "Coaching IA individuel à Reims : accompagnement 1-to-1 ancré dans votre réalité — Champagne, bioéconomie, agroalimentaire ou tertiaire académique. À partir de 990 € HT. Frais de logement, repas et forfait trajet en sus.",
       en: "Individual AI coaching in Reims: 1-to-1 support rooted in your reality — Champagne, bioeconomy, agri-food or academic tertiary. From €990 excl. VAT. Lodging, meals and travel allowance billed separately.",
     },
+    sitesWeb: {
+      fr: "Plateformes web et SaaS IA sur mesure pour maisons de Champagne, PME bioéconomie et ETI rémoise — site vitrine premium pour Champagne et agroalimentaire, espace distributeur international, dashboard connecté à votre CRM/ERP et systèmes viti-vini. Architectes seniors, design system Axion-IA, hébergement européen.",
+      en: "Custom web platforms and SaaS AI for Champagne houses, bioeconomy SMEs and Reims mid-caps — premium showcase site for Champagne and agri-food, international distributor portal, dashboard connected to your CRM/ERP and winery systems. Senior architects, Axion-IA design system, European hosting.",
+    },
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet IA opérationnel qui intervient à Reims (51100) sur site dans le Grand Reims et le bassin Champagne. Nous accompagnons les TPE, PME, ETI et grandes entreprises rémois — maisons de Champagne (LVMH/MHCS, Taittinger, Vranken-Pommery), industries bioéconomie (Pomacle-Bazancourt), tertiaire NEOMA/Sciences Po — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Gare TGV Champagne-Ardenne à 45 min de Paris. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Reims (51100) sur site dans le Grand Reims et le bassin Champagne. Nous accompagnons les TPE, PME, ETI et grandes entreprises rémois — maisons de Champagne (LVMH/MHCS, Taittinger, Vranken-Pommery), industries bioéconomie (Pomacle-Bazancourt), tertiaire NEOMA/Sciences Po — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Gare TGV Champagne-Ardenne à 45 min de Paris. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
-    "Axion-IA is an operational AI consultancy delivering on site in Reims (51100) across Greater Reims and the Champagne basin. We support micro-businesses, SMEs, mid-caps and large enterprises — Champagne houses (LVMH/MHCS, Taittinger, Vranken-Pommery), bioeconomy industries (Pomacle-Bazancourt), tertiary sector (NEOMA, Sciences Po) — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. Champagne-Ardenne TGV station, 45 min from Paris. No tech lock-in, your teams stay in control.",
+    "Axion-IA is a senior AI architects consultancy delivering on site in Reims (51100) across Greater Reims and the Champagne basin. We support micro-businesses, SMEs, mid-caps and large enterprises — Champagne houses (LVMH/MHCS, Taittinger, Vranken-Pommery), bioeconomy industries (Pomacle-Bazancourt), tertiary sector (NEOMA, Sciences Po) — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. Champagne-Ardenne TGV station, 45 min from Paris. No tech lock-in, your teams stay in control.",
 
   topSectorsNaf: [
     "Champagne & Vins de prestige",

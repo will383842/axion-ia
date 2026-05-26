@@ -146,7 +146,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? (ville.copy?.directAnswerFr ?? ville.copy?.pitchFr ?? "")
       : (ville.copy?.directAnswerEn ?? ville.copy?.pitchEn ?? "")
     : isFr
-      ? `Axion-IA intervient à ${ville.nameFr} (${region.nameFr}). 5 modules : audit IA, intervention sur site, implémentation, accompagnement 1-to-1, sites web augmentés. Réservation en ligne.`
+      ? `Axion-IA intervient à ${ville.nameFr} (${region.nameFr}). 5 services : audit IA, formations et interventions sur site, implémentation, accompagnement 1-to-1 dirigeants, sites web et plateformes SaaS IA. Réservation en ligne.`
       : `Axion-IA operates in ${ville.nameFr} (${region.nameFr}). 5 modules: AI audit, on-site, implementation, 1-to-1, AI-augmented websites. Direct online booking.`;
   const description = truncateForSerp(rawDescription, 155);
 
@@ -187,7 +187,7 @@ function buildVerticales(v: string): ReadonlyArray<VerticaleMeta> {
     },
     {
       slug: "interventions",
-      labelFr: "Interventions sur site",
+      labelFr: "Formations et interventions sur site",
       labelEn: "On-site interventions",
       descFr: `Ateliers et formations IA sur site à ${v} — demi-journée à 2 jours, sur vos données réelles, avec vos équipes. TPE, PME, ETI et grandes entreprises.`,
       descEn: `On-site AI workshops in ${v} — half-day to 2 days, on your real data, with your teams. Micro-businesses, SMBs, mid-market, large enterprises.`,
@@ -604,7 +604,7 @@ export default async function VilleHubPage({ params }: Props) {
             </h2>
             <p className="text-fg-soft mx-auto mt-6 max-w-2xl text-base leading-relaxed sm:text-lg">
               {isFr
-                ? "Audit, intervention sur site, implémentation, accompagnement 1-to-1, sites web augmentés. Adapté aux TPE, PME, ETI et grandes entreprises."
+                ? "Audit IA, formations et interventions sur site, implémentation, accompagnement 1-to-1 dirigeants, sites web et plateformes SaaS IA. Adapté aux TPE, PME, ETI et grandes entreprises."
                 : "Audit, on-site engagement, implementation, 1-to-1 coaching, AI-augmented websites. Adapted to micro-businesses, SMBs, mid-market and large enterprises."}
             </p>
           </div>

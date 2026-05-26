@@ -47,12 +47,16 @@ export const PARIS_COPY: VilleCopy = {
       fr: "Accompagnement IA individuel à Paris : sessions 1-to-1 sur site dans votre bureau parisien ou en visio. Dirigeants, managers et entrepreneurs des 20 arrondissements et La Défense qui veulent monter en compétence IA à leur rythme, sur leurs propres cas business. Frais de logement, repas et forfait trajet en sus.",
       en: "Individual AI coaching in Paris: 1-to-1 sessions on site at your Paris office or by video. Executives, managers and entrepreneurs across all 20 arrondissements and La Défense who want to build AI competence at their own pace, on their own business cases. Lodging, meals and travel allowance billed separately.",
     },
+    sitesWeb: {
+      fr: "Sites web et plateformes SaaS IA sur mesure à Paris : conception et déploiement de plateformes IA-native (chatbot RAG, search sémantique, agents conversationnels) pour PME tech parisiennes, scale-ups du Sentier et Station F, ou refonte IA pour ETI franciliennes. Code custom, hébergement Europe RGPD, zéro lock-in éditeur.",
+      en: "Sites web et plateformes SaaS IA sur mesure à Paris : conception et déploiement de plateformes IA-native (chatbot RAG, search sémantique, agents conversationnels) pour PME tech parisiennes, scale-ups du Sentier et Station F, ou refonte IA pour ETI franciliennes. Code custom, hébergement Europe RGPD, zéro lock-in éditeur.",
+    },
   },
 
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Paris (75) sur site dans les 20 arrondissements et la première couronne. Nous accompagnons les TPE, PME, ETI et grandes entreprises parisiennes (La Défense, 8e, 16e) ainsi que les startups du Sentier et de Station F sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
-    "Axion-IA is an operational AI consultancy that intervenes in Paris (75) on site across all 20 arrondissements and the inner suburbs. We support Paris micro-businesses, SMEs, mid-caps and large enterprises (La Défense, 8th, 16th) along with Sentier and Station F startups on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
+    "Axion-IA is a senior AI architects consultancy that intervenes in Paris (75) on site across all 20 arrondissements and the inner suburbs. We support Paris micro-businesses, SMEs, mid-caps and large enterprises (La Défense, 8th, 16th) along with Sentier and Station F startups on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
   topSectorsNaf: [
     "Banque & Finance",

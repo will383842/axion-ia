@@ -38,12 +38,16 @@ export const MARSEILLE_COPY: VilleCopy = {
       fr: "Coaching IA individuel à Marseille : sessions 1-to-1 sur site dans vos locaux (Euroméditerranée, Joliette, Château-Gombert) ou en visio. Dirigeants, managers et entrepreneurs des PME/ETI marseillaises — maritime, logistique, santé, services — qui veulent monter en compétence IA à leur rythme sur leurs propres cas business. Frais de logement, repas et forfait trajet en sus.",
       en: "Individual AI coaching in Marseille: 1-to-1 sessions on site at your offices (Euroméditerranée, Joliette, Château-Gombert) or by video. Executives, managers and entrepreneurs at Marseille SMEs/mid-caps — maritime, logistics, health, services — who want to build AI competence at their own pace on their own business cases. Lodging, meals and travel allowance billed separately.",
     },
+    sitesWeb: {
+      fr: "Sites web et plateformes SaaS IA sur mesure à Marseille : conception de plateformes IA-native pour PME maritimes (suivi conteneurs, tracking AIS), ETI logistiques du Grand Port, scale-ups d'Euroméditerranée, agences tourisme du Vieux-Port. Chatbot RAG, search sémantique, agents conversationnels — code custom, hébergement Europe RGPD, zéro lock-in éditeur.",
+      en: "Sites web et plateformes SaaS IA sur mesure à Marseille : conception de plateformes IA-native pour PME maritimes (suivi conteneurs, tracking AIS), ETI logistiques du Grand Port, scale-ups d'Euroméditerranée, agences tourisme du Vieux-Port. Chatbot RAG, search sémantique, agents conversationnels — code custom, hébergement Europe RGPD, zéro lock-in éditeur.",
+    },
   },
 
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marseille (13) sur site, du quartier Joliette à Euroméditerranée, des TPE du Panier aux ETI maritimes du Grand Port. Nous accompagnons les entreprises marseillaises sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Secteurs prioritaires : transport/logistique, santé/biotech, services B2B. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
-    "Axion-IA is an operational AI consultancy that intervenes in Marseille (13) on site, from Joliette to Euroméditerranée, from Panier micro-businesses to maritime mid-caps at the Grand Port. We support Marseille businesses on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. Priority sectors: transport/logistics, health/biotech, B2B services. No tech lock-in, your teams stay in control.",
+    "Axion-IA is a senior AI architects consultancy that intervenes in Marseille (13) on site, from Joliette to Euroméditerranée, from Panier micro-businesses to maritime mid-caps at the Grand Port. We support Marseille businesses on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. Priority sectors: transport/logistics, health/biotech, B2B services. No tech lock-in, your teams stay in control.",
 
   topSectorsNaf: [
     "Transport maritime & logistique",

@@ -40,12 +40,16 @@ export const TOULOUSE_COPY: VilleCopy = {
       fr: "Coaching IA 1-to-1 à Toulouse : accompagnement individuel pour dirigeants et ingénieurs de l'Aerospace Valley, cadres French Tech Toulouse et responsables des ETI toulousaines. Sessions sur site (Blagnac, Labège, Toulouse centre) ou à distance. Tarif d'entrée 990 € HT. Frais de logement, repas et forfait trajet en sus hors Toulouse intra-muros.",
       en: "1-to-1 AI coaching in Toulouse: individual coaching for Aerospace Valley executives and engineers, French Tech Toulouse managers and Toulouse mid-cap leaders. On-site sessions (Blagnac, Labège, Toulouse centre) or remote. Entry rate from €990 excl. VAT. Lodging, meals and travel allowance billed separately outside central Toulouse.",
     },
+    sitesWeb: {
+      fr: "Sites web et plateformes SaaS IA sur mesure à Toulouse : conception de plateformes IA-native pour ETI aéronautiques sous-traitantes d'Aerospace Valley (Blagnac, Colomiers, Labège), scale-ups French Tech Toulouse, PME agro-industrielles. Chatbot RAG, search sémantique, agents conversationnels — code custom, hébergement Europe RGPD, zéro lock-in éditeur.",
+      en: "Sites web et plateformes SaaS IA sur mesure à Toulouse : conception de plateformes IA-native pour ETI aéronautiques sous-traitantes d'Aerospace Valley (Blagnac, Colomiers, Labège), scale-ups French Tech Toulouse, PME agro-industrielles. Chatbot RAG, search sémantique, agents conversationnels — code custom, hébergement Europe RGPD, zéro lock-in éditeur.",
+    },
   },
 
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Toulouse (31) sur site dans la ville rose et le bassin toulousain (Blagnac, Colomiers, Labège, Tournefeuille). Nous accompagnons les TPE, PME, ETI et grandes entreprises toulousaines — acteurs de l'aérospatiale, du numérique, de l'agroalimentaire — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
-    "Axion-IA is an operational AI consultancy that intervenes in Toulouse (31) on site across the city and the greater Toulouse basin (Blagnac, Colomiers, Labège, Tournefeuille). We support Toulouse micro-businesses, SMEs, mid-caps and large enterprises — aerospace, digital, agri-food players — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
+    "Axion-IA is a senior AI architects consultancy that intervenes in Toulouse (31) on site across the city and the greater Toulouse basin (Blagnac, Colomiers, Labège, Tournefeuille). We support Toulouse micro-businesses, SMEs, mid-caps and large enterprises — aerospace, digital, agri-food players — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
   topSectorsNaf: [
     "Aérospatiale & Défense",

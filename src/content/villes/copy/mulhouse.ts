@@ -45,12 +45,16 @@ export const MULHOUSE_COPY: VilleCopy = {
       fr: "Accompagnement individuel IA à Mulhouse : programme 1-to-1 pour dirigeants et cadres du bassin mulhousien souhaitant structurer leur stratégie IA personnelle, en présentiel ou hybride sur le bassin Haut-Rhin.",
       en: "Individual AI coaching in Mulhouse: 1-to-1 program for Mulhouse basin executives and managers looking to structure their personal AI strategy, in person or hybrid across the Haut-Rhin basin.",
     },
+    sitesWeb: {
+      fr: "Plateformes web et SaaS IA sur mesure pour PME et ETI mulhousiennes — site vitrine premium pour automobile, industrie et chimie, espace client trinational FR/DE/EN, dashboard connecté à votre CRM/ERP et systèmes de production. Architectes seniors, design system Axion-IA, hébergement européen.",
+      en: "Custom web platforms and SaaS AI for Mulhouse SMEs and mid-caps — premium showcase site for automotive, industry and chemicals, tri-national FR/DE/EN customer space, dashboard connected to your CRM/ERP and production systems. Senior architects, Axion-IA design system, European hosting.",
+    },
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet IA opérationnel qui intervient à Mulhouse (68) sur site — centre-ville, Parc des Collines, Technoparc Bourtzwiller, Zone Industrielle Île Napoléon et communes du bassin (Riedisheim, Kingersheim, Illzach, Pfastatt). Nous accompagnons les TPE, PME, ETI et grandes entreprises mulhousiennes (automobile, industrie, chimie, numérique, services) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Position trinationale et contraintes RGPD transfrontalières maîtrisées.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mulhouse (68) sur site — centre-ville, Parc des Collines, Technoparc Bourtzwiller, Zone Industrielle Île Napoléon et communes du bassin (Riedisheim, Kingersheim, Illzach, Pfastatt). Nous accompagnons les TPE, PME, ETI et grandes entreprises mulhousiennes (automobile, industrie, chimie, numérique, services) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Position trinationale et contraintes RGPD transfrontalières maîtrisées.",
   directAnswerEn:
-    "Axion-IA is an operational AI consultancy that intervenes in Mulhouse (68) on site — city centre, Parc des Collines, Technoparc Bourtzwiller, Zone Industrielle Île Napoléon and basin communes (Riedisheim, Kingersheim, Illzach, Pfastatt). We support Mulhouse micro-businesses, SMEs, mid-caps and large enterprises (automotive, industry, chemicals, digital, services) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. Tri-national position and cross-border GDPR constraints handled.",
+    "Axion-IA is a senior AI architects consultancy that intervenes in Mulhouse (68) on site — city centre, Parc des Collines, Technoparc Bourtzwiller, Zone Industrielle Île Napoléon and basin communes (Riedisheim, Kingersheim, Illzach, Pfastatt). We support Mulhouse micro-businesses, SMEs, mid-caps and large enterprises (automotive, industry, chemicals, digital, services) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. Tri-national position and cross-border GDPR constraints handled.",
 
   topSectorsNaf: [
     "Automobile & Mobilité du futur",

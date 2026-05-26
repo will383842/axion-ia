@@ -485,6 +485,12 @@ export interface GenerateVilleHubCopyInput {
   readonly villeSlug: string;
   /** Pour la traçabilité (table GenerationLog plus tard). Optionnel. */
   readonly jobId?: string;
+  /**
+   * Override de la economic-data pour les villes hors `ECONOMIC_DATA_BY_SLUG`
+   * (générée à la volée par `landing-ville-economic-data.ts` LLM). Si fourni,
+   * prime sur le TS hardcodé. Permet de scaler à 2000+ villes sans data TS.
+   */
+  readonly ecoOverride?: VilleEconomicData;
 }
 
 const QUALITY_THRESHOLD_FOR_RETRY = 70;
@@ -598,7 +604,7 @@ export async function generateVilleHubCopy(
   if (!ville) {
     throw new Error(`generateVilleHubCopy: ville "${villeSlug}" introuvable`);
   }
-  const eco = ECONOMIC_DATA_BY_SLUG[villeSlug];
+  const eco = input.ecoOverride ?? ECONOMIC_DATA_BY_SLUG[villeSlug];
   const { facts: kbFacts, markdown: kbMarkdown } = buildKbContext(eco);
 
   // 🆕 KB RAG retrieve — doctrine + méthodologie + cas concrets Axion-IA

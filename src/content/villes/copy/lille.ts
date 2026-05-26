@@ -48,12 +48,16 @@ export const LILLE_COPY: VilleCopy = {
       fr: "Coaching IA individuel à Lille — à partir de 990 € HT. Un consultant senior dédié à votre cas, dans vos locaux lillois ou de la métropole : directeur retail, responsable supply chain, fondateur EuraTechnologies ou manager d'un siège grand groupe qui veut progresser seul, sur ses propres données et enjeux.",
       en: "Individual AI coaching in Lille — from 990 € excl. VAT. A senior consultant dedicated to your case, at your Lille or metropolitan premises: retail director, supply chain manager, EuraTechnologies founder or large-group HQ manager who wants to progress alone, on their own data and challenges.",
     },
+    sitesWeb: {
+      fr: "Plateformes web et SaaS IA sur mesure pour PME et ETI lilloise — site vitrine premium pour retail, e-commerce et logistique, espace client interactif, dashboard métier connecté à votre CRM/ERP/WMS. Architectes seniors, design system Axion-IA, hébergement européen.",
+      en: "Custom web platforms and SaaS AI for Lille SMEs and mid-caps — premium showcase site for retail, e-commerce and logistics, interactive customer space, business dashboard connected to your CRM/ERP/WMS. Senior architects, Axion-IA design system, European hosting.",
+    },
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet IA opérationnel qui intervient à Lille (59350) sur site dans la métropole lilloise : Euralille, Vieux-Lille, Villeneuve-d'Ascq, Roubaix, Tourcoing et communes limitrophes. Nous accompagnons les TPE, PME, ETI et grandes entreprises lilloise — des startups d'EuraTechnologies aux sièges retail de la métropole (Decathlon, Auchan, La Redoute) — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lille (59350) sur site dans la métropole lilloise : Euralille, Vieux-Lille, Villeneuve-d'Ascq, Roubaix, Tourcoing et communes limitrophes. Nous accompagnons les TPE, PME, ETI et grandes entreprises lilloise — des startups d'EuraTechnologies aux sièges retail de la métropole (Decathlon, Auchan, La Redoute) — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
-    "Axion-IA is an operational AI consultancy that delivers on site in Lille (59350) across the metropolitan area: Euralille, Vieux-Lille, Villeneuve-d'Ascq, Roubaix, Tourcoing and surrounding communes. We support Lille micro-businesses, SMEs, mid-caps and large enterprises — from EuraTechnologies startups to major retail HQs (Decathlon, Auchan, La Redoute) — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
+    "Axion-IA is a senior AI architects consultancy that delivers on site in Lille (59350) across the metropolitan area: Euralille, Vieux-Lille, Villeneuve-d'Ascq, Roubaix, Tourcoing and surrounding communes. We support Lille micro-businesses, SMEs, mid-caps and large enterprises — from EuraTechnologies startups to major retail HQs (Decathlon, Auchan, La Redoute) — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
   topSectorsNaf: [
     "Retail & E-commerce",

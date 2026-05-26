@@ -48,6 +48,13 @@ export interface VilleServicesContext {
    * (fallback générique si non renseigné).
    */
   unAUn?: { fr: string; en: string };
+  /**
+   * Will 2026-05-26 — 5e verticale `sites-web-augmentes` (Plateforme web /
+   * SaaS IA sur mesure). Aligne le copy ville avec les 5 services réels
+   * d'Axion-IA présentés sur la home / régions / pricing grid. Fallback
+   * générique si non renseigné.
+   */
+  sitesWeb?: { fr: string; en: string };
 }
 
 /**

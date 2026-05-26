@@ -49,12 +49,16 @@ export const RENNES_COPY: VilleCopy = {
       fr: "Coaching IA individuel à Rennes : accompagnement 1-to-1 ancré dans votre réalité — numérique, agroalimentaire, industrie ou télécoms. À partir de 990 € HT. Frais de logement, repas et forfait trajet en sus.",
       en: "Individual AI coaching in Rennes: 1-to-1 support rooted in your reality — digital, agri-food, industry or telecoms. From €990 excl. VAT. Lodging, meals and travel allowance billed separately.",
     },
+    sitesWeb: {
+      fr: "Plateformes web et SaaS IA sur mesure pour PME/ETI rennaises — site vitrine premium pour scale-ups French Tech Atalante, espace client interactif numérique/agroalimentaire, dashboard métier connecté à votre CRM/ERP ou MES industriel (La Janais, Valorial). Architectes seniors, design system Axion-IA, hébergement européen.",
+      en: "Custom web platforms and SaaS AI for Rennes SMEs/mid-caps — premium showcase site for French Tech Atalante scale-ups, interactive customer space for digital/agri-food, business dashboard connected to your CRM/ERP or industrial MES (La Janais, Valorial). Senior architects, Axion-IA design system, European hosting.",
+    },
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet IA opérationnel qui intervient à Rennes (35) sur site — technopole Atalante Beaulieu, ZAC ViaSilva, centre historique, zone La Janais. Nous accompagnons les TPE, PME, ETI et grandes entreprises du bassin rennais (numérique, agroalimentaire, industrie, banque) ainsi que les scale-ups de la French Tech Rennes Saint-Malo sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rennes (35) sur site — technopole Atalante Beaulieu, ZAC ViaSilva, centre historique, zone La Janais. Nous accompagnons les TPE, PME, ETI et grandes entreprises du bassin rennais (numérique, agroalimentaire, industrie, banque) ainsi que les scale-ups de la French Tech Rennes Saint-Malo sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
-    "Axion-IA is an operational AI consultancy that intervenes in Rennes (35) on site — Atalante Beaulieu technopole, ZAC ViaSilva, historic city centre, La Janais zone. We support micro-businesses, SMEs, mid-caps and large enterprises in the Rennes basin (digital, agri-food, industry, banking) along with French Tech Rennes Saint-Malo scale-ups on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
+    "Axion-IA is a senior AI architects consultancy that intervenes in Rennes (35) on site — Atalante Beaulieu technopole, ZAC ViaSilva, historic city centre, La Janais zone. We support micro-businesses, SMEs, mid-caps and large enterprises in the Rennes basin (digital, agri-food, industry, banking) along with French Tech Rennes Saint-Malo scale-ups on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
   topSectorsNaf: [
     "Numérique & Édition logicielle",

@@ -40,12 +40,16 @@ export const ORLEANS_COPY: VilleCopy = {
       fr: "Implémentation IA à Orléans : on déploie l'IA dans vos outils existants (CRM, ERP, LIMS, systèmes industriels) avec ROI chiffré contractuel. Vos équipes gardent la main, pas de dépendance Axion-IA.",
       en: "AI implementation in Orléans: we deploy AI into your existing tools (CRM, ERP, LIMS, industrial systems) with contractually-costed ROI. Your teams stay in control, no Axion-IA dependency.",
     },
+    sitesWeb: {
+      fr: "Plateformes web et SaaS IA sur mesure pour PME/ETI orléanaises et du Loiret — site vitrine premium pour acteurs Cosmetic Valley (R&D Ormes) et pharma CDMO (Saint-Jean-de-Braye, Gidy), espace client pour BRGM, INRAE et incubés Le LAB'O, dashboard métier connecté à votre LIMS, CRM ou ERP. Architectes seniors, design system Axion-IA, hébergement européen.",
+      en: "Custom web platforms and SaaS AI for Orléans and Loiret SMEs/mid-caps — premium showcase site for Cosmetic Valley players (R&D Ormes) and pharma CDMOs (Saint-Jean-de-Braye, Gidy), customer space for BRGM, INRAE and Le LAB'O incubatees, business dashboard connected to your LIMS, CRM or ERP. Senior architects, Axion-IA design system, European hosting.",
+    },
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet IA opérationnel qui intervient à Orléans (45) sur site — centre-ville, La Source, Saint-Jean-de-Braye, Ormes, Saran, Olivet et communes de l'agglomération. Nous accompagnons les TPE, PME, ETI et grandes entreprises orléanaises (cosmétique, pharmaceutique, industrie agro-machinisme, géosciences, numérique) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Orléans (45) sur site — centre-ville, La Source, Saint-Jean-de-Braye, Ormes, Saran, Olivet et communes de l'agglomération. Nous accompagnons les TPE, PME, ETI et grandes entreprises orléanaises (cosmétique, pharmaceutique, industrie agro-machinisme, géosciences, numérique) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
-    "Axion-IA is an operational AI consultancy that intervenes in Orléans (45) on site — city centre, La Source, Saint-Jean-de-Braye, Ormes, Saran, Olivet and agglomération communes. We support Orléans micro-businesses, SMEs, mid-caps and large enterprises (cosmetics, pharma, agri-machinery, geosciences, digital) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
+    "Axion-IA is a senior AI architects consultancy that intervenes in Orléans (45) on site — city centre, La Source, Saint-Jean-de-Braye, Ormes, Saran, Olivet and agglomération communes. We support Orléans micro-businesses, SMEs, mid-caps and large enterprises (cosmetics, pharma, agri-machinery, geosciences, digital) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
   topSectorsNaf: [
     "Cosmétique, Parfumerie & R&D",

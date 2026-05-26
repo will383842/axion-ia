@@ -46,12 +46,16 @@ export const LE_HAVRE_COPY: VilleCopy = {
       fr: "Coaching IA individuel au Havre — à partir de 990 € HT. Un consultant senior dédié à votre cas, dans vos locaux havrais ou de la ZIP : dirigeant logistique, directeur technique industriel ou responsable de PME portuaire qui veut progresser seul, sur ses propres données et contraintes métier.",
       en: "Individual AI coaching in Le Havre — from 990 € excl. VAT. A senior consultant dedicated to your case, at your Le Havre or ZIP premises: logistics executive, industrial technical director or port SME manager who wants to progress alone, on their own data and business constraints.",
     },
+    sitesWeb: {
+      fr: "Plateformes web et SaaS IA sur mesure pour PME/ETI havraises — site vitrine premium pour logistique portuaire, pétrochimie et aéronautique (HAROPA, Safran Nacelles, Sidel), espace client interactif supply chain, dashboard métier connecté à votre TMS/ERP industriel ou CRM. Architectes seniors, design system Axion-IA, hébergement européen.",
+      en: "Custom web platforms and SaaS AI for Le Havre SMEs/mid-caps — premium showcase site for port logistics, petrochemicals and aeronautics (HAROPA, Safran Nacelles, Sidel), interactive customer space for supply chain, business dashboard connected to your TMS/industrial ERP or CRM. Senior architects, Axion-IA design system, European hosting.",
+    },
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet IA opérationnel qui intervient au Havre (76) sur site dans la ville et le bassin Seine Estuaire (Gonfreville-l'Orcher, Montivilliers, Harfleur, Sandouville). Nous accompagnons les TPE et PME havraises du commerce et des services, les ETI industrielles de la Zone Industrialo-Portuaire (logistique, pétrochimie, aéronautique) et les grandes entreprises du cluster HAROPA sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Havre (76) sur site dans la ville et le bassin Seine Estuaire (Gonfreville-l'Orcher, Montivilliers, Harfleur, Sandouville). Nous accompagnons les TPE et PME havraises du commerce et des services, les ETI industrielles de la Zone Industrialo-Portuaire (logistique, pétrochimie, aéronautique) et les grandes entreprises du cluster HAROPA sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
-    "Axion-IA is an operational AI consultancy that intervenes in Le Havre (76) on site across the city and the Seine Estuaire basin (Gonfreville-l'Orcher, Montivilliers, Harfleur, Sandouville). We support Le Havre micro-businesses and SMEs in trade and services, industrial mid-caps in the Port Industrial Zone (logistics, petrochemicals, aeronautics) and large enterprises in the HAROPA cluster on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
+    "Axion-IA is a senior AI architects consultancy that intervenes in Le Havre (76) on site across the city and the Seine Estuaire basin (Gonfreville-l'Orcher, Montivilliers, Harfleur, Sandouville). We support Le Havre micro-businesses and SMEs in trade and services, industrial mid-caps in the Port Industrial Zone (logistics, petrochemicals, aeronautics) and large enterprises in the HAROPA cluster on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
   topSectorsNaf: [
     "Logistique & Supply Chain maritime",

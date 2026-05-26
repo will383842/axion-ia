@@ -49,12 +49,16 @@ export const ANGERS_COPY: VilleCopy = {
       fr: "Coaching IA individuel 1-to-1 à Angers : séances sur mesure pour dirigeants et cadres de la filière végétale, des PME industrielles et du tissu tertiaire Maine-et-Loire. Axe Végépolys, Quartz technopôle et PME Anjou. Frais de logement, repas et forfait trajet en sus pour le présentiel.",
       en: "1-to-1 AI coaching in Angers: bespoke sessions for executives and managers in the plant industry, industrial SMEs and service businesses across Maine-et-Loire. Focused on Vegepolys Valley, Quartz technopole and Anjou SMEs. Lodging, meals and travel allowance billed separately for on-site sessions.",
     },
+    sitesWeb: {
+      fr: "Plateformes web et SaaS IA sur mesure pour PME/ETI angevines — site vitrine premium pour filière végétale, industrie et HPC (Vegepolys Valley, Scania, Eviden/Atos, Thales), espace client interactif French Tech Angers, dashboard métier connecté à votre ERP/CRM, PLM ou systèmes industriels. Architectes seniors, design system Axion-IA, hébergement européen.",
+      en: "Custom web platforms and SaaS AI for Angers SMEs/mid-caps — premium showcase site for plant industry, manufacturing and HPC (Vegepolys Valley, Scania, Eviden/Atos, Thales), interactive customer space for French Tech Angers, business dashboard connected to your ERP/CRM, PLM or industrial systems. Senior architects, Axion-IA design system, European hosting.",
+    },
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet IA opérationnel qui intervient à Angers (49) sur site dans toute la métropole Angers Loire Métropole et le bassin Maine-et-Loire. Nous accompagnons les TPE, PME, ETI et grandes entreprises angevines — filière végétale (Vegepolys Valley), industrie (Scania, Eviden/Atos, Thales), agroalimentaire (Cointreau), tertiaire et French Tech Angers — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Angers (49) sur site dans toute la métropole Angers Loire Métropole et le bassin Maine-et-Loire. Nous accompagnons les TPE, PME, ETI et grandes entreprises angevines — filière végétale (Vegepolys Valley), industrie (Scania, Eviden/Atos, Thales), agroalimentaire (Cointreau), tertiaire et French Tech Angers — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique.",
   directAnswerEn:
-    "Axion-IA is an operational AI consultancy that intervenes in Angers (49) on site across the Angers Loire Métropole and the Maine-et-Loire area. We support Angers micro-businesses, SMEs, mid-caps and large enterprises — plant industry (Vegepolys Valley), manufacturing (Scania, Eviden/Atos, Thales), agri-food (Cointreau), services and French Tech Angers — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. No tech lock-in.",
+    "Axion-IA is a senior AI architects consultancy that intervenes in Angers (49) on site across the Angers Loire Métropole and the Maine-et-Loire area. We support Angers micro-businesses, SMEs, mid-caps and large enterprises — plant industry (Vegepolys Valley), manufacturing (Scania, Eviden/Atos, Thales), agri-food (Cointreau), services and French Tech Angers — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. No tech lock-in.",
 
   topSectorsNaf: [
     "Filière végétale & Agroalimentaire",

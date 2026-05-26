@@ -42,12 +42,16 @@ export const LYON_COPY: VilleCopy = {
       fr: "Coaching individuel IA à Lyon : accompagnement 1-to-1 pour dirigeants et managers qui veulent intégrer l'IA dans leur pratique quotidienne de direction. Sessions confidentielles dans vos locaux lyonnais (Part-Dieu, Confluence, Gerland, Écully) ou à distance.",
       en: "Individual AI coaching in Lyon: 1-to-1 coaching for executives and managers who want to integrate AI into their daily leadership practice. Confidential sessions at your Lyon offices (Part-Dieu, Confluence, Gerland, Écully) or remote.",
     },
+    sitesWeb: {
+      fr: "Sites web et plateformes SaaS IA sur mesure à Lyon : conception de plateformes IA-native pour ETI industrielles de la vallée du Rhône, scale-ups de Part-Dieu/Confluence, deep-tech Gerland (santé, biotech, microélectronique). Chatbot RAG, search sémantique, agents conversationnels — code custom, hébergement Europe RGPD, zéro lock-in éditeur.",
+      en: "Sites web et plateformes SaaS IA sur mesure à Lyon : conception de plateformes IA-native pour ETI industrielles de la vallée du Rhône, scale-ups de Part-Dieu/Confluence, deep-tech Gerland (santé, biotech, microélectronique). Chatbot RAG, search sémantique, agents conversationnels — code custom, hébergement Europe RGPD, zéro lock-in éditeur.",
+    },
   },
 
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lyon (69) sur site — Part-Dieu, Confluence, Gerland, Villeurbanne, Vaise et communes de la Métropole. Nous accompagnons les TPE, PME, ETI et grandes entreprises lyonnaises (industrie, biotech, banque, services) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
-    "Axion-IA is an operational AI consultancy that intervenes in Lyon (69) on site — Part-Dieu, Confluence, Gerland, Villeurbanne, Vaise and Métropole communes. We support Lyon micro-businesses, SMEs, mid-caps and large enterprises (industry, biotech, banking, services) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
+    "Axion-IA is a senior AI architects consultancy that intervenes in Lyon (69) on site — Part-Dieu, Confluence, Gerland, Villeurbanne, Vaise and Métropole communes. We support Lyon micro-businesses, SMEs, mid-caps and large enterprises (industry, biotech, banking, services) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
   topSectorsNaf: [
     "Chimie & Environnement industriel",

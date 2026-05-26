@@ -47,12 +47,16 @@ export const VILLEURBANNE_COPY: VilleCopy = {
       fr: "Accompagnement IA individuel à Villeurbanne : sessions 1-to-1 pour dirigeants, fondateurs tech et chercheurs-entrepreneurs du campus Doua et du Carré de Soie. Programme ajusté à votre rôle, votre secteur et votre rythme.",
       en: "Individual AI coaching in Villeurbanne: 1-to-1 sessions for executives, tech founders and researcher-entrepreneurs from campus Doua and Carré de Soie. Programme tailored to your role, your sector and your pace.",
     },
+    sitesWeb: {
+      fr: "Plateformes web et SaaS IA sur mesure pour PME tech et ETI villeurbannaises — site vitrine premium pour spin-offs INSA Lyon / campus LyonTech-La Doua et intégrateurs IT du Carré de Soie, espace client interactif, dashboard métier connecté à votre CRM/ERP SAP. Architectes seniors, design system Axion-IA, hébergement européen.",
+      en: "Custom web platforms and SaaS AI for Villeurbanne tech SMEs and mid-caps — premium showcase site for INSA Lyon / LyonTech-La Doua campus spin-offs and Carré de Soie IT integrators, interactive customer space, business dashboard connected to your SAP CRM/ERP. Senior architects, Axion-IA design system, European hosting.",
+    },
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet IA opérationnel qui intervient à Villeurbanne (69100) sur site — quartier Gratte-Ciel, campus LyonTech-La Doua, Carré de Soie et communes de la Métropole. Villeurbanne est une ville distincte de Lyon (69123) : 2e ville du Rhône, 13 426 établissements actifs, INSA Lyon, CNRS, Inria, FORVIA MATERI'ACT. Nous accompagnons les TPE, PME tech, ETI industrielles et grandes entreprises villeurbannaises sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villeurbanne (69100) sur site — quartier Gratte-Ciel, campus LyonTech-La Doua, Carré de Soie et communes de la Métropole. Villeurbanne est une ville distincte de Lyon (69123) : 2e ville du Rhône, 13 426 établissements actifs, INSA Lyon, CNRS, Inria, FORVIA MATERI'ACT. Nous accompagnons les TPE, PME tech, ETI industrielles et grandes entreprises villeurbannaises sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique.",
   directAnswerEn:
-    "Axion-IA is an operational AI consultancy that intervenes in Villeurbanne (69100) on site — Gratte-Ciel district, LyonTech-La Doua campus, Carré de Soie and Métropole communes. Villeurbanne is a distinct city from Lyon (69123): 2nd city in Rhône, 13,426 active businesses, INSA Lyon, CNRS, Inria, FORVIA MATERI'ACT. We support Villeurbanne micro-businesses, tech SMEs, industrial mid-caps and large enterprises on their operational AI use cases — costed diagnosis, demos on real data, concrete action plan. No tech lock-in.",
+    "Axion-IA is an senior AI architects consultancy that intervenes in Villeurbanne (69100) on site — Gratte-Ciel district, LyonTech-La Doua campus, Carré de Soie and Métropole communes. Villeurbanne is a distinct city from Lyon (69123): 2nd city in Rhône, 13,426 active businesses, INSA Lyon, CNRS, Inria, FORVIA MATERI'ACT. We support Villeurbanne micro-businesses, tech SMEs, industrial mid-caps and large enterprises on their operational AI use cases — costed diagnosis, demos on real data, concrete action plan. No tech lock-in.",
 
   topSectorsNaf: [
     "IT, Logiciel & Numérique",

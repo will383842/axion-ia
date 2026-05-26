@@ -48,12 +48,16 @@ export const BREST_COPY: VilleCopy = {
       fr: "Coaching IA individuel 1-to-1 à Brest : séances sur mesure pour dirigeants et cadres des technologies marines, du Technopôle Brest-Iroise et des PME du Finistère. Ancré sur l'écosystème Naval Group, IFREMER et l'économie maritime brestoise. Frais de logement, repas et forfait trajet en sus pour le présentiel.",
       en: "1-to-1 AI coaching in Brest: bespoke sessions for executives and managers in marine technologies, Technopôle Brest-Iroise and Finistère SMEs. Grounded in the Naval Group, IFREMER and Brest maritime economy ecosystem. Lodging, meals and travel allowance billed separately for on-site sessions.",
     },
+    sitesWeb: {
+      fr: "Plateformes web et SaaS IA sur mesure pour PME/ETI bretonnes — site vitrine premium pour défense maritime, sciences de la mer et énergies marines (Naval Group, IFREMER, Pôle Mer), espace client interactif Technopôle Brest-Iroise, dashboard métier connecté à votre CRM/ERP ou systèmes embarqués. Architectes seniors, design system Axion-IA, hébergement européen.",
+      en: "Custom web platforms and SaaS AI for Brittany SMEs/mid-caps — premium showcase site for maritime defence, marine sciences and marine renewables (Naval Group, IFREMER, Pôle Mer), interactive customer space at Technopôle Brest-Iroise, business dashboard connected to your CRM/ERP or embedded systems. Senior architects, Axion-IA design system, European hosting.",
+    },
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet IA opérationnel qui intervient à Brest (29019) sur site dans toute la Brest Métropole et le Finistère. Nous accompagnons les TPE locales, PME industrielles, ETI de la filière maritime et grands groupes (Naval Group, Thales Underwater, IFREMER) sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Brest (29019) sur site dans toute la Brest Métropole et le Finistère. Nous accompagnons les TPE locales, PME industrielles, ETI de la filière maritime et grands groupes (Naval Group, Thales Underwater, IFREMER) sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
-    "Axion-IA is an operational AI consultancy that intervenes in Brest (29019) on site across Brest Métropole and Finistère. We support local micro-businesses, industrial SMEs, maritime-sector mid-caps and large groups (Naval Group, Thales Underwater, IFREMER) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
+    "Axion-IA is a senior AI architects consultancy that intervenes in Brest (29019) on site across Brest Métropole and Finistère. We support local micro-businesses, industrial SMEs, maritime-sector mid-caps and large groups (Naval Group, Thales Underwater, IFREMER) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
   topSectorsNaf: [
     "Défense maritime & construction navale militaire",

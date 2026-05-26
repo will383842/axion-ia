@@ -47,12 +47,16 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
       fr: "Coaching IA individuel à Saint-Étienne : accompagnement 1-to-1 ancré dans votre réalité stéphanoise — industrie, design, textile médical ou distribution. À partir de 990 € HT. Frais de logement, repas et forfait trajet en sus.",
       en: "Individual AI coaching in Saint-Étienne: 1-to-1 support rooted in your Loire reality — manufacturing, design, medical textiles or distribution. From €990 excl. VAT. Lodging, meals and travel allowance billed separately.",
     },
+    sitesWeb: {
+      fr: "Plateformes web et SaaS IA sur mesure pour PME/ETI stéphanoises — site vitrine premium pour acteurs design (Cité du Design, UNESCO Creative City) et textile médical, espace client pour PME industrielles et distribution (Casino, Thuasne), dashboard métier connecté à votre ERP industriel ou GMAO. Architectes seniors, design system Axion-IA, hébergement européen.",
+      en: "Custom web platforms and SaaS AI for Saint-Étienne SMEs/mid-caps — premium showcase site for design players (Cité du Design, UNESCO Creative City) and medical textile firms, customer space for industrial SMEs and distribution (Casino, Thuasne), business dashboard connected to your industrial ERP or CMMS. Senior architects, Axion-IA design system, European hosting.",
+    },
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet IA opérationnel qui intervient à Saint-Étienne (42) sur site, dans le bassin stéphanois et les communes de Saint-Étienne Métropole. Nous accompagnons les TPE, PME industrielles et de services, ETI et grandes entreprises de la Loire — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Secteurs prioritaires : industrie manufacturière, textile médical, design, distribution et services B2B. Aucun lock-in, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Étienne (42) sur site, dans le bassin stéphanois et les communes de Saint-Étienne Métropole. Nous accompagnons les TPE, PME industrielles et de services, ETI et grandes entreprises de la Loire — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Secteurs prioritaires : industrie manufacturière, textile médical, design, distribution et services B2B. Aucun lock-in, vos équipes gardent la main.",
   directAnswerEn:
-    "Axion-IA is an operational AI consultancy that intervenes in Saint-Étienne (42) on site, across the Saint-Étienne basin and Saint-Étienne Métropole communes. We support Loire micro-businesses, industrial SMEs, mid-caps and large enterprises — costed diagnosis, demos on your real data, concrete action plan. Priority sectors: manufacturing, medical textiles, design, distribution and B2B services. No lock-in, your teams stay in control.",
+    "Axion-IA is a senior AI architects consultancy that intervenes in Saint-Étienne (42) on site, across the Saint-Étienne basin and Saint-Étienne Métropole communes. We support Loire micro-businesses, industrial SMEs, mid-caps and large enterprises — costed diagnosis, demos on your real data, concrete action plan. Priority sectors: manufacturing, medical textiles, design, distribution and B2B services. No lock-in, your teams stay in control.",
 
   topSectorsNaf: [
     "Industrie manufacturière & mécanique de précision",
