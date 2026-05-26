@@ -43,7 +43,7 @@ export const TOULOUSE_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet IA opérationnel qui intervient à Toulouse (31) sur site dans la ville rose et le bassin toulousain (Blagnac, Colomiers, Labège, Tournefeuille). Nous accompagnons les TPE, PME, ETI et grandes entreprises toulousaines — acteurs de l'aérospatiale, du numérique, de l'agroalimentaire — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Toulouse (31) sur site dans la ville rose et le bassin toulousain (Blagnac, Colomiers, Labège, Tournefeuille). Nous accompagnons les TPE, PME, ETI et grandes entreprises toulousaines — acteurs de l'aérospatiale, du numérique, de l'agroalimentaire — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
     "Axion-IA is an operational AI consultancy that intervenes in Toulouse (31) on site across the city and the greater Toulouse basin (Blagnac, Colomiers, Labège, Tournefeuille). We support Toulouse micro-businesses, SMEs, mid-caps and large enterprises — aerospace, digital, agri-food players — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 

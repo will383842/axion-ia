@@ -128,11 +128,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const title = isPilot
     ? isFr
-      ? `${ville.nameFr} (${ville.departementLabel ?? ville.departement}) · Cabinet IA opérationnel`
-      : `${ville.nameFr} (${ville.departementLabel ?? ville.departement}) · Operational AI consultancy`
+      ? `${ville.nameFr} (${ville.departementLabel ?? ville.departement}) · Architectes IA seniors`
+      : `${ville.nameFr} (${ville.departementLabel ?? ville.departement}) · Architectes IA seniors`
     : isFr
-      ? `${ville.nameFr} · Intervention IA opérationnelle (${region.nameFr})`
-      : `${ville.nameFr} · Operational AI engagement (${region.nameFr})`;
+      ? `${ville.nameFr} · Architectes IA seniors (${region.nameFr})`
+      : `${ville.nameFr} · Architectes IA seniors (${region.nameFr})`;
 
   // Description ≤ 155 chars (cible Google SERP — au-delà → tronqué).
   const truncateForSerp = (s: string, max = 155): string => {
@@ -272,10 +272,10 @@ export default async function VilleHubPage({ params }: Props) {
     locale: loc,
     path,
     name: isFr
-      ? `Cabinet IA opérationnel à ${ville.nameFr} · Axion-IA`
-      : `Operational AI consultancy in ${ville.nameFr} · Axion-IA`,
+      ? `Axion-IA · Architectes IA seniors à ${ville.nameFr}`
+      : `Axion-IA · Architectes IA seniors à ${ville.nameFr}`,
     description: isFr ? copy.pitchFr : copy.pitchEn,
-    serviceType: isFr ? "Cabinet IA opérationnel B2B" : "Operational B2B AI consultancy",
+    serviceType: isFr ? "Architectes IA seniors B2B" : "Architectes IA seniors B2B",
     areasServed: [
       { type: "City", name: ville.nameFr, url },
       {

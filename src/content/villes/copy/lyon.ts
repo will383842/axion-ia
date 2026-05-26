@@ -45,7 +45,7 @@ export const LYON_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet IA opérationnel qui intervient à Lyon (69) sur site — Part-Dieu, Confluence, Gerland, Villeurbanne, Vaise et communes de la Métropole. Nous accompagnons les TPE, PME, ETI et grandes entreprises lyonnaises (industrie, biotech, banque, services) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lyon (69) sur site — Part-Dieu, Confluence, Gerland, Villeurbanne, Vaise et communes de la Métropole. Nous accompagnons les TPE, PME, ETI et grandes entreprises lyonnaises (industrie, biotech, banque, services) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
     "Axion-IA is an operational AI consultancy that intervenes in Lyon (69) on site — Part-Dieu, Confluence, Gerland, Villeurbanne, Vaise and Métropole communes. We support Lyon micro-businesses, SMEs, mid-caps and large enterprises (industry, biotech, banking, services) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
