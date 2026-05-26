@@ -4184,6 +4184,10 @@ model CalendlyEvent {
   inviteeName        String?             @map("invitee_name") @db.VarChar(255)
   inviteeEmail       String?             @map("invitee_email") @db.Citext
   inviteePhone       String?             @map("invitee_phone") @db.VarChar(40)
+  /// Sprint Notif Infra 2026-05-26 / fix P1-4 audit 2026-05-27 — lieu du
+  /// RDV si fourni par Calendly (ex Google Meet URL, adresse physique). Si
+  /// absent du payload Embed JS, reste null et Will complète manuellement.
+  location           String?             @db.VarChar(500)
   source             CalendlyEventSource @default(embed_js)
   /// Payload complet du postMessage event (debug + future re-process).
   rawPayload         Json                @map("raw_payload")

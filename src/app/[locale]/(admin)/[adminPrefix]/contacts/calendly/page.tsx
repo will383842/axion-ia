@@ -7,6 +7,7 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { AdminPageHeader } from "@/components/admin/ui";
+import { ManualCalendlyEventButton } from "@/components/admin/contacts/ManualCalendlyEventButton";
 
 export const dynamic = "force-dynamic";
 
@@ -26,7 +27,15 @@ function formatDateTime(d: Date | null): string {
   }).format(d);
 }
 
-export default async function ContactsCalendlyPage(): Promise<React.ReactElement> {
+interface PageProps {
+  params: Promise<{ adminPrefix: string }>;
+}
+
+export default async function ContactsCalendlyPage({
+  params,
+}: PageProps): Promise<React.ReactElement> {
+  const { adminPrefix } = await params;
+  const detailBase = `/fr/${adminPrefix}/contacts/calendly`;
   const events = await prisma.calendlyEvent
     .findMany({
       orderBy: { capturedAt: "desc" },
@@ -53,14 +62,17 @@ export default async function ContactsCalendlyPage(): Promise<React.ReactElement
         title="RDV Calendly"
         description={`${events.length} réservation${events.length > 1 ? "s" : ""} captée${events.length > 1 ? "s" : ""} via widget /appel.`}
         actions={
-          <Link
-            href="https://calendly.com/event_types/user/me"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="admin-button-ghost"
-          >
-            Dashboard Calendly →
-          </Link>
+          <div className="flex gap-2">
+            <ManualCalendlyEventButton />
+            <Link
+              href="https://calendly.com/event_types/user/me"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="admin-button-ghost"
+            >
+              Dashboard Calendly →
+            </Link>
+          </div>
         }
       />
 
@@ -96,7 +108,11 @@ export default async function ContactsCalendlyPage(): Promise<React.ReactElement
             <tbody>
               {events.map((e) => (
                 <tr key={e.id}>
-                  <td>{formatDateTime(e.capturedAt)}</td>
+                  <td>
+                    <Link href={`${detailBase}/${e.id}`} className="admin-link">
+                      {formatDateTime(e.capturedAt)}
+                    </Link>
+                  </td>
                   <td>{e.eventTypeName}</td>
                   <td>
                     {e.inviteeName ? (
@@ -109,9 +125,12 @@ export default async function ContactsCalendlyPage(): Promise<React.ReactElement
                         )}
                       </>
                     ) : (
-                      <span className="text-[color:var(--color-admin-fg-muted)]">
-                        (à compléter manuellement)
-                      </span>
+                      <Link
+                        href={`${detailBase}/${e.id}`}
+                        className="text-[color:var(--color-admin-fg-muted)] underline"
+                      >
+                        (à compléter)
+                      </Link>
                     )}
                   </td>
                   <td>

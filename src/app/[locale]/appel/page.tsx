@@ -18,6 +18,12 @@ export const revalidate = 86400;
 
 interface Props {
   params: Promise<{ locale: string }>;
+  /**
+   * Sprint Notif Infra 2026-05-26 / fix P1-5 audit 2026-05-27 — searchParams
+   * UTM extraits côté Server Component et passés au CalendlyEventCapture
+   * pour attribution analytics.
+   */
+  searchParams: Promise<Record<string, string | undefined>>;
 }
 
 /**
@@ -52,11 +58,25 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function AppelPage({ params }: Props) {
+export default async function AppelPage({ params, searchParams }: Props) {
   const { locale } = await params;
+  const sp = await searchParams;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
   const isFr = locale === "fr";
+
+  // Sprint Notif Infra 2026-05-26 / fix P1-5 — extraction UTM côté Server.
+  const trackingContext: {
+    pageUrl: string;
+    utmSource?: string;
+    utmCampaign?: string;
+    utmMedium?: string;
+    referrer?: string;
+  } = { pageUrl: `${SITE_URL}/${locale}/appel` };
+  if (typeof sp["utm_source"] === "string") trackingContext.utmSource = sp["utm_source"];
+  if (typeof sp["utm_campaign"] === "string") trackingContext.utmCampaign = sp["utm_campaign"];
+  if (typeof sp["utm_medium"] === "string") trackingContext.utmMedium = sp["utm_medium"];
+  if (typeof sp["ref"] === "string") trackingContext.referrer = sp["ref"];
 
   const jsonLd = buildServiceJsonLd({
     locale: locale as "fr" | "en",
@@ -229,7 +249,7 @@ export default async function AppelPage({ params }: Props) {
                 {CALENDLY_APPEL_URL && (
                   <CalendlyEventCapture
                     calendlyUrl={CALENDLY_APPEL_URL}
-                    trackingContext={{ pageUrl: `${SITE_URL}/${locale}/appel` }}
+                    trackingContext={trackingContext}
                   />
                 )}
               </div>

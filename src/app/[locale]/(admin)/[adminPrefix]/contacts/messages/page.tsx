@@ -16,5 +16,5 @@ interface PageProps {
 export default async function ContactsMessagesPage({ params, searchParams }: PageProps) {
   const { adminPrefix } = await params;
   const sp = await searchParams;
-  return <SubmissionsV2 adminPrefix={adminPrefix} searchParams={sp} />;
+  return <SubmissionsV2 adminPrefix={adminPrefix} searchParams={sp} basePath="contacts/messages" />;
 }

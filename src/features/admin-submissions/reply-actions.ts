@@ -17,7 +17,7 @@
 "use server";
 
 import { z } from "zod";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import * as Sentry from "@sentry/nextjs";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
@@ -140,6 +140,9 @@ export async function replyToSubmissionAction(
 
   revalidatePath(adminPath("fr", "contacts/messages"));
   revalidatePath(adminPath("fr", `contacts/messages/${submission.id}`));
+  // Sprint Notif Infra 2026-05-26 / fix P1-1 audit 2026-05-27 — invalide le
+  // compteur unread cached du badge sidebar.
+  updateTag("admin:contacts-unread");
 
   return { ok: true, replyId };
 }
@@ -164,6 +167,7 @@ export async function archiveSubmissionAction(id: string): Promise<{ ok: boolean
     data: { archivedAt: new Date(), needsAttention: false, status: "archived" },
   });
   revalidatePath(adminPath("fr", "contacts/messages"));
+  updateTag("admin:contacts-unread");
   return { ok: true };
 }
 
@@ -180,6 +184,7 @@ export async function unarchiveSubmissionAction(id: string): Promise<{ ok: boole
     data: { archivedAt: null, status: "in_progress" },
   });
   revalidatePath(adminPath("fr", "contacts/messages"));
+  updateTag("admin:contacts-unread");
   return { ok: true };
 }
 
@@ -196,6 +201,7 @@ export async function bulkArchiveSubmissionsAction(ids: string[]): Promise<{ arc
     data: { archivedAt: new Date(), needsAttention: false, status: "archived" },
   });
   revalidatePath(adminPath("fr", "contacts/messages"));
+  updateTag("admin:contacts-unread");
   return { archived: result.count };
 }
 
@@ -214,6 +220,7 @@ export async function bulkUnarchiveSubmissionsAction(
     data: { archivedAt: null, status: "in_progress" },
   });
   revalidatePath(adminPath("fr", "contacts/messages"));
+  updateTag("admin:contacts-unread");
   return { unarchived: result.count };
 }
 
@@ -237,6 +244,7 @@ export async function markNeedsAttentionAction(
     data: { needsAttention: value },
   });
   revalidatePath(adminPath("fr", "contacts/messages"));
+  updateTag("admin:contacts-unread");
   return { ok: true };
 }
 

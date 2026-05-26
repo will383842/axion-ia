@@ -51,6 +51,17 @@ const listSubmissionsSchema = z.object({
   dateTo: z.string().optional(),
   page: z.coerce.number().int().min(1).default(1),
   pageSize: z.coerce.number().int().min(10).max(100).default(25),
+  /**
+   * Sprint Notif Infra 2026-05-26 / fix P0-2 audit 2026-05-27 — par défaut on
+   * masque les submissions archivées (archivedAt non null). L'admin peut
+   * activer le toggle pour les voir.
+   */
+  includeArchived: z.coerce.boolean().default(false),
+  /**
+   * Sprint Notif Infra 2026-05-26 / fix P1-2 audit 2026-05-27 — filtre
+   * sur le statut réponse (computed depuis replyCount + dernière deliveryStatus).
+   */
+  replyStatus: z.enum(["all", "unanswered", "answered", "failed"]).default("all"),
 });
 export type ListSubmissionsInput = z.infer<typeof listSubmissionsSchema>;
 
@@ -65,6 +76,14 @@ export interface SubmissionListItem {
   sector: string | null;
   assignedTo: string | null;
   submittedAt: Date;
+  // Sprint Notif Infra 2026-05-26 / fix P1-2 — champs reply system pour
+  // afficher les badges Sans réponse / Répondu (N) / Échec dans le listing.
+  replyCount: number;
+  needsAttention: boolean;
+  archivedAt: Date | null;
+  lastRepliedAt: Date | null;
+  /** Status delivery de la DERNIÈRE reply (null si aucune). */
+  lastReplyStatus: string | null;
 }
 
 export interface SubmissionListResult {
@@ -90,6 +109,26 @@ export async function listSubmissionsAction(
   if (parsed.type !== "all") where.type = parsed.type;
   if (parsed.status !== "all") where.status = parsed.status;
   if (parsed.locale !== "all") where.locale = parsed.locale;
+
+  // Sprint Notif Infra 2026-05-26 / fix P0-2 audit 2026-05-27 — masque les
+  // archivés par défaut. L'admin peut les ré-inclure via toggle.
+  if (!parsed.includeArchived) {
+    where.archivedAt = null;
+  }
+
+  // Sprint Notif Infra 2026-05-26 / fix P1-2 audit 2026-05-27 — filtre
+  // par statut réponse. "unanswered" = needsAttention=true (par défaut à la
+  // création de la Submission), "answered" = replyCount>0, "failed" = a au
+  // moins une reply avec deliveryStatus ∈ {failed, bounced}.
+  if (parsed.replyStatus === "unanswered") {
+    where.needsAttention = true;
+  } else if (parsed.replyStatus === "answered") {
+    where.replyCount = { gt: 0 };
+  } else if (parsed.replyStatus === "failed") {
+    where.replies = {
+      some: { deliveryStatus: { in: ["failed", "bounced"] } },
+    };
+  }
 
   if (parsed.dateFrom || parsed.dateTo) {
     where.submittedAt = {};
@@ -130,12 +169,42 @@ export async function listSubmissionsAction(
         sector: true,
         assignedTo: true,
         submittedAt: true,
+        replyCount: true,
+        needsAttention: true,
+        archivedAt: true,
+        lastRepliedAt: true,
+        // Sprint Notif Infra 2026-05-26 / fix P1-2 — récupère la dernière
+        // reply pour calculer lastReplyStatus (badge "Échec envoi").
+        replies: {
+          orderBy: { repliedAt: "desc" },
+          take: 1,
+          select: { deliveryStatus: true },
+        },
       },
     }),
   ]);
 
+  // Mappe vers SubmissionListItem (flatten lastReplyStatus depuis replies[0])
+  const mapped = items.map((s) => ({
+    id: s.id,
+    type: s.type,
+    status: s.status,
+    locale: s.locale,
+    companyName: s.companyName,
+    contactName: s.contactName,
+    contactEmail: s.contactEmail,
+    sector: s.sector,
+    assignedTo: s.assignedTo,
+    submittedAt: s.submittedAt,
+    replyCount: s.replyCount,
+    needsAttention: s.needsAttention,
+    archivedAt: s.archivedAt,
+    lastRepliedAt: s.lastRepliedAt,
+    lastReplyStatus: s.replies[0]?.deliveryStatus ?? null,
+  }));
+
   return {
-    items,
+    items: mapped,
     total,
     page: parsed.page,
     pageSize: parsed.pageSize,

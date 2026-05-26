@@ -1,8 +1,76 @@
 "use client";
 // use-client: composer modal interactif (états locaux subject/body + submit).
+// Sprint Notif Infra 2026-05-26 / fix P1-3 audit 2026-05-27 — preview live
+// du markdown léger à droite du textarea.
 
 import { useState, useTransition } from "react";
 import { replyToSubmissionAction } from "@/features/admin-submissions/reply-actions";
+
+/**
+ * Rendu inline du markdown léger pour la preview composer. Mêmes règles que
+ * le template email (`src/lib/email/templates/submission-reply.tsx`) :
+ * paragraphes séparés double-newline, **bold**, *italic*, [label](url).
+ */
+function renderMarkdownPreview(text: string): React.ReactNode {
+  const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
+  const boldRegex = /\*\*([^*]+)\*\*/g;
+  const italicRegex = /(?<!\*)\*([^*]+)\*(?!\*)/g;
+  type Part = { type: "text" | "bold" | "italic" | "link"; value: string; href?: string };
+
+  const paragraphs = text.split(/\n\s*\n/).filter((p) => p.trim().length > 0);
+  return paragraphs.map((para, pi) => {
+    let parts: Part[] = [{ type: "text", value: para }];
+    const apply = (regex: RegExp, kind: "bold" | "italic" | "link") => {
+      const next: Part[] = [];
+      for (const p of parts) {
+        if (p.type !== "text") {
+          next.push(p);
+          continue;
+        }
+        let lastIdx = 0;
+        let m: RegExpExecArray | null;
+        regex.lastIndex = 0;
+        while ((m = regex.exec(p.value)) !== null) {
+          if (m.index > lastIdx)
+            next.push({ type: "text", value: p.value.slice(lastIdx, m.index) });
+          if (kind === "link") {
+            next.push({ type: "link", value: m[1] ?? "", href: m[2] ?? "" });
+          } else {
+            next.push({ type: kind, value: m[1] ?? "" });
+          }
+          lastIdx = m.index + m[0].length;
+        }
+        if (lastIdx < p.value.length) next.push({ type: "text", value: p.value.slice(lastIdx) });
+      }
+      parts = next;
+    };
+    apply(linkRegex, "link");
+    apply(boldRegex, "bold");
+    apply(italicRegex, "italic");
+    return (
+      <p key={pi} className="mb-3 whitespace-pre-line last:mb-0">
+        {parts.map((p, i) => {
+          if (p.type === "bold") return <strong key={i}>{p.value}</strong>;
+          if (p.type === "italic") return <em key={i}>{p.value}</em>;
+          if (p.type === "link" && p.href) {
+            return (
+              <a
+                key={i}
+                href={p.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[color:var(--color-admin-info)] underline"
+              >
+                {p.value}
+              </a>
+            );
+          }
+          return <span key={i}>{p.value}</span>;
+        })}
+      </p>
+    );
+  });
+}
 
 interface Props {
   readonly submissionId: string;
@@ -88,7 +156,7 @@ export function ReplyComposer({
       aria-labelledby="reply-composer-title"
       className="fixed inset-0 z-50 flex items-start justify-center bg-black/40 p-4 pt-12 sm:items-center sm:pt-4"
     >
-      <div className="bg-paper relative w-full max-w-2xl rounded-lg border border-[color:var(--color-admin-border-default)] p-6 shadow-2xl">
+      <div className="bg-paper relative w-full max-w-4xl rounded-lg border border-[color:var(--color-admin-border-default)] p-6 shadow-2xl">
         <button
           type="button"
           onClick={() => setOpen(false)}
@@ -142,16 +210,32 @@ export function ReplyComposer({
               Message{" "}
               <span className="text-xs">(markdown léger : **gras**, *italique*, [lien](url))</span>
             </label>
-            <textarea
-              id="reply-body"
-              value={body}
-              onChange={(e) => setBody(e.target.value)}
-              rows={10}
-              maxLength={50_000}
-              required
-              className="admin-input admin-textarea font-mono text-sm"
-              disabled={isPending}
-            />
+            <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
+              <textarea
+                id="reply-body"
+                value={body}
+                onChange={(e) => setBody(e.target.value)}
+                rows={12}
+                maxLength={50_000}
+                required
+                className="admin-input admin-textarea font-mono text-sm"
+                disabled={isPending}
+                aria-describedby="reply-body-preview"
+              />
+              <div
+                id="reply-body-preview"
+                aria-label="Aperçu du message"
+                className="rounded-lg border border-[color:var(--color-admin-border-default)] bg-[color:var(--color-admin-bg-subtle)] p-4 text-sm leading-relaxed"
+              >
+                {body.trim() === "" ? (
+                  <p className="text-[color:var(--color-admin-fg-muted)] italic">
+                    L&apos;aperçu apparaîtra ici (markdown léger rendu).
+                  </p>
+                ) : (
+                  renderMarkdownPreview(body)
+                )}
+              </div>
+            </div>
           </div>
 
           <div className="admin-field">

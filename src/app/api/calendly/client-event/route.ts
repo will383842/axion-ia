@@ -75,14 +75,24 @@ export async function POST(req: Request): Promise<NextResponse> {
     return NextResponse.json({ ok: true, deduped: true });
   }
 
-  // 5. Tenter d'extraire invitee.{name,email} depuis le payload Calendly
-  //    (best-effort — Calendly Embed JS ne fournit pas systematiquement les
-  //    PII cote client pour des raisons RGPD).
+  // 5. Tenter d'extraire invitee.{name,email} + event.location depuis le
+  //    payload Calendly (best-effort — Calendly Embed JS ne fournit pas
+  //    systematiquement les PII cote client pour des raisons RGPD).
   const rawPayload = (parsed.data.payload ?? {}) as Record<string, unknown>;
   const invitee = (rawPayload["invitee"] ?? {}) as Record<string, unknown>;
+  const eventObj = (rawPayload["event"] ?? {}) as Record<string, unknown>;
   const inviteeName = typeof invitee["name"] === "string" ? (invitee["name"] as string) : undefined;
   const inviteeEmail =
     typeof invitee["email"] === "string" ? (invitee["email"] as string) : undefined;
+  // Sprint Notif Infra 2026-05-26 / fix P1-4 audit 2026-05-27 — location
+  // peut être string (URL Meet) ou objet { type, location } selon config Calendly.
+  const locationRaw = eventObj["location"];
+  const location =
+    typeof locationRaw === "string"
+      ? locationRaw.slice(0, 500)
+      : typeof locationRaw === "object" && locationRaw !== null
+        ? JSON.stringify(locationRaw).slice(0, 500)
+        : undefined;
 
   // 6. Persiste
   const event = await prisma.calendlyEvent.create({
@@ -94,6 +104,7 @@ export async function POST(req: Request): Promise<NextResponse> {
       source: "embed_js",
       ...(inviteeName ? { inviteeName } : {}),
       ...(inviteeEmail ? { inviteeEmail } : {}),
+      ...(location ? { location } : {}),
       pageUrl: parsed.data.pageUrl,
       ...(parsed.data.utmSource ? { utmSource: parsed.data.utmSource } : {}),
       ...(parsed.data.utmCampaign ? { utmCampaign: parsed.data.utmCampaign } : {}),

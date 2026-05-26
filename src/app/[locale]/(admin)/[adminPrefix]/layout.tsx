@@ -33,10 +33,25 @@ import {
   AdminNotificationsDropdown,
 } from "@/components/admin/ui";
 import type { AdminNotificationItem } from "@/components/admin/ui";
+import { unstable_cache } from "next/cache";
 import { buildAdminNav } from "@/lib/admin-nav";
 import { AdminCommandPalette } from "./AdminCommandPalette";
 import { getFailedJobsCount } from "@/server/actions/content-gen/jobs";
 import { prisma } from "@/lib/prisma";
+
+// Sprint Notif Infra 2026-05-26 / fix P1-1 audit 2026-05-27 — cache 30s du
+// compteur "contacts sans réponse" pour éviter une query DB à chaque render
+// SSR du layout admin (force-dynamic). Invalidation via revalidateTag
+// "admin:contacts-unread" depuis les server actions reply/archive/markAttn.
+const getUnreadContactsCount = unstable_cache(
+  async (): Promise<number> => {
+    return prisma.submission
+      .count({ where: { needsAttention: true, archivedAt: null } })
+      .catch(() => 0);
+  },
+  ["admin-contacts-unread-count"],
+  { revalidate: 30, tags: ["admin:contacts-unread"] },
+);
 
 import "@/app/admin.css";
 import "@/app/print.css";
@@ -132,7 +147,7 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
       prisma.siteRouteAnomaly
         .count({ where: { severity: "high", resolvedAt: null } })
         .catch(() => 0),
-      prisma.submission.count({ where: { needsAttention: true, archivedAt: null } }).catch(() => 0),
+      getUnreadContactsCount(),
     ]);
 
     failedJobsCount = failedCount;
