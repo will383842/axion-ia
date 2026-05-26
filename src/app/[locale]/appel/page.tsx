@@ -42,8 +42,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       path: "/appel",
       title: titleStr,
       description: isFr
-        ? "Réservez en 1 minute un appel téléphonique gratuit de 30 minutes avec un consultant IA senior d'Axion-IA. Calendrier temps réel, confirmation immédiate, aucun engagement."
-        : "Book a free 30-minute phone call with a senior Axion-IA AI consultant in 1 minute. Real-time calendar, instant confirmation, no commitment.",
+        ? "Réservez un appel téléphonique gratuit avec un consultant IA senior d'Axion-IA — où nous prenons le temps de cadrer votre projet à la perfection. Calendrier temps réel, confirmation immédiate, aucun engagement."
+        : "Book a free phone call with a senior Axion-IA AI consultant — where we take the time to scope your project perfectly. Real-time calendar, instant confirmation, no commitment.",
       alternates: { fr: "/appel", en: "/book-a-call" },
     }),
     title: { absolute: titleStr },
@@ -61,8 +61,8 @@ export default async function AppelPage({ params }: Props) {
     path: "/appel",
     name: isFr ? "Appel découverte téléphonique Axion-IA" : "Axion-IA discovery phone call",
     description: isFr
-      ? "Appel téléphonique gratuit de 30 minutes avec un consultant IA senior Axion-IA. Réservation en ligne via calendrier temps réel, confirmation immédiate."
-      : "Free 30-minute phone call with a senior Axion-IA AI consultant. Online booking via real-time calendar, instant confirmation.",
+      ? "Appel téléphonique gratuit avec un consultant IA senior Axion-IA — où nous prenons le temps de cadrer votre projet à la perfection. Réservation en ligne via calendrier temps réel, confirmation immédiate."
+      : "Free phone call with a senior Axion-IA AI consultant — where we take the time to scope your project perfectly. Online booking via real-time calendar, instant confirmation.",
   });
 
   const breadcrumbJsonLd = {
@@ -88,8 +88,8 @@ export default async function AppelPage({ params }: Props) {
     ? [
         {
           icon: Clock,
-          title: "30 minutes chrono",
-          text: "Un échange efficace, focus sur vos enjeux. Pas de discours commercial.",
+          title: "Le temps qu'il faut",
+          text: "Un appel où l'on prend le temps de cadrer votre projet à la perfection. Pas de chrono, pas de script commercial.",
         },
         {
           icon: Shield,
@@ -110,8 +110,8 @@ export default async function AppelPage({ params }: Props) {
     : [
         {
           icon: Clock,
-          title: "30 minutes flat",
-          text: "An efficient conversation focused on your challenges. No sales pitch.",
+          title: "Time well spent",
+          text: "A call where we take the time to scope your project perfectly. No stopwatch, no sales script.",
         },
         {
           icon: Shield,

@@ -248,7 +248,8 @@ export default async function ConferenceFamilyPage({ params }: Props) {
 
       <CtaBlock
         eyebrow={isFr ? "Démarrer" : "Start"}
-        title={isFr ? "Cadrage par appel 15 minutes" : "15-minute framing call"}
+        title={isFr ? "Un appel où l'on prend le temps" : "A call where we take the time"}
+        titleEm={isFr ? "de tout cadrer à la perfection" : "to scope your project perfectly"}
         description={
           isFr
             ? "On vous appelle, on comprend votre contexte (effectif, date, lieu, événement), on choisit plénière ou keynote, on chiffre. Devis sous 48 h. Aucun engagement avant signature."

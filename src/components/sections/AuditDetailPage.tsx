@@ -265,8 +265,8 @@ export function AuditDetailPage({ tier, locale }: Props): ReactNode {
         title={isFr ? "Choisissez le format qui vous convient" : "Choose the format that suits you"}
         description={
           isFr
-            ? "Pas sûr·e du sous-tier adapté ? Un appel de cadrage 15 min permet de choisir ensemble. Réponse sous 48 h ouvrées. Sans engagement."
-            : "Not sure which sub-tier suits you? A 15-min framing call helps choose together. Reply within 48 business hours. No commitment."
+            ? "Pas sûr·e du sous-tier adapté ? Un appel où l'on prend le temps de cadrer votre projet à la perfection — pour choisir ensemble le format juste. Réponse sous 48 h ouvrées. Sans engagement."
+            : "Not sure which sub-tier suits you? A call where we take the time to scope your project perfectly — to choose the right format together. Reply within 48 business hours. No commitment."
         }
         cta={
           <Cta

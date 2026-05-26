@@ -67,7 +67,7 @@ function buildFrFaqs(onsitePrice: string): ReadonlyArray<AuditFaqItem> {
       id: "starting-point",
       question: "Et si je ne sais pas par où commencer ?",
       answer:
-        "Notre rapport est volontairement priorisé : le quick-win #1 doit être lançable dans la semaine qui suit la restitution. Si vous hésitez, nous proposons un appel de clarification gratuit de 30 minutes dans les 30 jours suivant la livraison. Et le module Implémentation peut prendre le relais sans transition.",
+        "Notre rapport est volontairement priorisé : le quick-win #1 doit être lançable dans la semaine qui suit la restitution. Si vous hésitez, nous proposons un appel de clarification gratuit dans les 30 jours suivant la livraison — où l'on prend le temps de tout cadrer à la perfection. Et le module Implémentation peut prendre le relais sans transition.",
     },
   ];
 }

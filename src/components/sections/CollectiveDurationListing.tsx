@@ -284,8 +284,8 @@ export function CollectiveDurationListing({ durationId, locale }: Props): ReactN
         title={isFr ? "Parler à quelqu'un avant de réserver" : "Talk to someone before booking"}
         description={
           isFr
-            ? "Un appel de 15 min pour valider que ce format colle à votre contexte. Sans engagement."
-            : "A 15-minute call to make sure this format fits your context. No commitment."
+            ? "Un appel où l'on prend le temps de tout cadrer à la perfection — pour valider que ce format colle à votre contexte. Sans engagement."
+            : "A call where we take the time to scope your project perfectly — to make sure this format fits your context. No commitment."
         }
         cta={
           <Cta href={`/interventions/demande?objet=cadrage-${duration.slug}` as never} size="lg">

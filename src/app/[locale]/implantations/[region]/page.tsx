@@ -23,7 +23,9 @@ import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Illustration } from "@/components/visual/Illustration";
 import { Link } from "@/i18n/navigation";
+import { ClientLogosBand } from "@/components/sections/ClientLogosBand";
 import { CtaBlock } from "@/components/sections/CtaBlock";
+import { FounderTrustSection } from "@/components/sections/FounderTrustSection";
 
 import { REGIONS, getRegion } from "@/content/regions";
 import { getVillesByRegion } from "@/content/villes";
@@ -262,6 +264,10 @@ export default async function RegionPage({ params }: Props) {
           </div>
         </Container>
       </section>
+
+      {/* Bandeau logos clients — preuve sociale silencieuse juste après le hero
+          (même placement que la home). Composant partagé `ClientLogosBand`. */}
+      <ClientLogosBand isFr={isFr} />
 
       {/* Maillage canonique vers les 5 services — placé juste après le hero
           (Will 2026-05-26) : montrer immédiatement les prestations dispo + prix
@@ -580,6 +586,10 @@ export default async function RegionPage({ params }: Props) {
           );
         })()}
       </Section>
+
+      {/* Section fondateur William J. — crédibilité avant le contexte régional
+          + CTA final. Composant partagé `FounderTrustSection` (i18n home). */}
+      <FounderTrustSection isFr={isFr} />
 
       {/* Contexte régional — discret, en bas de page (Will 2026-05-26).
           Décision : pitchFr + stats (population / communes / PIB) sortis du

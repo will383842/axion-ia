@@ -265,13 +265,13 @@ export function InterventionDetailPage({ slug, locale }: Props): ReactNode {
             ? isBookable
               ? `${priceFr} pour ${config.groupSizeFr.toLowerCase()}. Réservez directement votre date sur le calendrier. Acompte 50 % à la confirmation du créneau, solde après l'intervention.`
               : config.priceFlatEur
-                ? `${priceFr} pour ${config.groupSizeFr.toLowerCase()}. Cadrage par appel 15 min, devis et planning sous 48 h ouvrées. Aucun engagement avant signature.`
-                : `Sur devis selon votre contexte. Cadrage par appel 15 min, devis et planning sous 48 h ouvrées. Aucun engagement avant signature.`
+                ? `${priceFr} pour ${config.groupSizeFr.toLowerCase()}. Cadrage par appel où l'on prend le temps de tout cadrer à la perfection, devis et planning sous 48 h ouvrées. Aucun engagement avant signature.`
+                : `Sur devis selon votre contexte. Cadrage par appel où l'on prend le temps de tout cadrer à la perfection, devis et planning sous 48 h ouvrées. Aucun engagement avant signature.`
             : isBookable
               ? `${priceEn} for ${config.groupSizeEn.toLowerCase()}. Book your date directly on the calendar. 50 % deposit on slot confirmation, balance after the session.`
               : config.priceFlatEur
-                ? `${priceEn} for ${config.groupSizeEn.toLowerCase()}. 15-min framing call, quote and schedule within 48 business hours. No commitment before signing.`
-                : `On request based on your context. 15-min framing call, quote and schedule within 48 business hours. No commitment before signing.`
+                ? `${priceEn} for ${config.groupSizeEn.toLowerCase()}. Framing call where we take the time to scope your project perfectly, quote and schedule within 48 business hours. No commitment before signing.`
+                : `On request based on your context. Framing call where we take the time to scope your project perfectly, quote and schedule within 48 business hours. No commitment before signing.`
         }
         cta={
           <Cta

@@ -219,8 +219,8 @@ export default async function DirigeantsFamilyPage({ params }: Props) {
         titleEm={isFr ? "dirigeant ciblés" : "of executives targeted"}
         description={
           isFr
-            ? "Chaque format répond à un objectif dirigeant distinct. Un appel de cadrage 15 min permet de choisir le bon."
-            : "Each format addresses a distinct executive goal. A 15-min framing call helps choose the right one."
+            ? "Chaque format répond à un objectif dirigeant distinct. Un appel où l'on prend le temps de tout cadrer à la perfection permet de choisir le bon."
+            : "Each format addresses a distinct executive goal. A call where we take the time to scope your project perfectly helps choose the right one."
         }
         contentClassName={TIGHT_X}
       >
@@ -259,7 +259,8 @@ export default async function DirigeantsFamilyPage({ params }: Props) {
 
       <CtaBlock
         eyebrow={isFr ? "Démarrer" : "Start"}
-        title={isFr ? "Cadrage par appel 15 minutes" : "15-minute framing call"}
+        title={isFr ? "Un appel où l'on prend le temps" : "A call where we take the time"}
+        titleEm={isFr ? "de tout cadrer à la perfection" : "to scope your project perfectly"}
         description={
           isFr
             ? "On vous appelle, on comprend votre contexte dirigeant, on choisit le bon format ensemble, on chiffre. Devis sous 48 h. Aucun engagement avant signature."

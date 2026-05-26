@@ -495,8 +495,8 @@ export function CollectiveTrainingPage({ slug, locale }: Props): ReactNode {
         title={isFr ? "Réservez cette formation 4 heures" : "Book this 4-hour training"}
         description={
           isFr
-            ? `${priceFr} pour 2 à 20 personnes sur site. Cadrage par appel 15 min, devis et planning sous 48 h ouvrées. Aucun engagement avant signature.`
-            : `${priceEn} for 2 to 20 people on site. 15-min framing call, quote and schedule within 48 business hours. No commitment before signing.`
+            ? `${priceFr} pour 2 à 20 personnes sur site. Cadrage par appel où l'on prend le temps de tout cadrer à la perfection, devis et planning sous 48 h ouvrées. Aucun engagement avant signature.`
+            : `${priceEn} for 2 to 20 people on site. Framing call where we take the time to scope your project perfectly, quote and schedule within 48 business hours. No commitment before signing.`
         }
         cta={
           <Cta
