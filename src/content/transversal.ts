@@ -127,14 +127,14 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
   {
     id: "geo-france",
     fr: {
-      question: "Couvrez-vous toute la France ?",
+      question: "Couvrez-vous toute la France et l'international ?",
       answer:
-        "Oui — France métropolitaine intégralement, Corse comprise. Nous intervenons sur site dans les 13 régions : Île-de-France, Auvergne-Rhône-Alpes, Provence-Alpes-Côte d'Azur, Occitanie, Nouvelle-Aquitaine, Hauts-de-France, Pays de la Loire, Bretagne, Grand Est, Normandie, Bourgogne-Franche-Comté, Centre-Val de Loire et Corse. Les DROM (Guadeloupe, Martinique, Guyane, La Réunion, Mayotte) ne font pas partie de notre périmètre V1 (décision 2026-05-08, ADR 0006).",
+        "Oui. Nous intervenons sur site dans les 13 régions de France métropolitaine, Corse comprise (Île-de-France, Auvergne-Rhône-Alpes, Provence-Alpes-Côte d'Azur, Occitanie, Nouvelle-Aquitaine, Hauts-de-France, Pays de la Loire, Bretagne, Grand Est, Normandie, Bourgogne-Franche-Comté, Centre-Val de Loire, Corse), dans les 5 DROM (Guadeloupe, Martinique, Guyane, La Réunion, Mayotte), ainsi qu'auprès des entreprises francophones à l'étranger (Belgique, Suisse, Luxembourg, Monaco, Maghreb, Afrique francophone, Québec, etc.) — sur devis selon la zone et la mission.",
     },
     en: {
-      question: "Do you cover the whole of France?",
+      question: "Couvrez-vous toute la France et l'international ?",
       answer:
-        "Yes — metropolitan France in full, Corsica included. We operate on-site across the 13 regions: Île-de-France, Auvergne-Rhône-Alpes, Provence-Alpes-Côte d'Azur, Occitanie, Nouvelle-Aquitaine, Hauts-de-France, Pays de la Loire, Brittany, Grand Est, Normandy, Bourgogne-Franche-Comté, Centre-Val de Loire and Corsica. Overseas territories (Guadeloupe, Martinique, Guyane, La Réunion, Mayotte) are not part of our V1 scope (decision 2026-05-08, ADR 0006).",
+        "Oui. Nous intervenons sur site dans les 13 régions de France métropolitaine, Corse comprise (Île-de-France, Auvergne-Rhône-Alpes, Provence-Alpes-Côte d'Azur, Occitanie, Nouvelle-Aquitaine, Hauts-de-France, Pays de la Loire, Bretagne, Grand Est, Normandie, Bourgogne-Franche-Comté, Centre-Val de Loire, Corse), dans les 5 DROM (Guadeloupe, Martinique, Guyane, La Réunion, Mayotte), ainsi qu'auprès des entreprises francophones à l'étranger (Belgique, Suisse, Luxembourg, Monaco, Maghreb, Afrique francophone, Québec, etc.) — sur devis selon la zone et la mission.",
     },
   },
   {

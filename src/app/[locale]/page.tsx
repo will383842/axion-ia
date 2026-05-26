@@ -716,12 +716,12 @@ export default async function Home({ params }: HomeProps) {
                 },
                 {
                   Icon: MapPin,
-                  titleFr: "Partout en France métropolitaine",
-                  titleEn: "Across metropolitan France",
+                  titleFr: "Partout en France et dans la francophonie",
+                  titleEn: "Partout en France et dans la francophonie",
                   descFr:
-                    "13 régions, Corse comprise — sur site ou à distance, on s'adapte au plus efficace.",
+                    "13 régions métropolitaines, 5 DROM, entreprises francophones à l'étranger — sur site ou à distance, selon le contexte.",
                   descEn:
-                    "13 regions, Corsica included — on-site or remote, we adapt to what works best.",
+                    "13 régions métropolitaines, 5 DROM, entreprises francophones à l'étranger — sur site ou à distance, selon le contexte.",
                 },
                 {
                   Icon: BadgeCheck,

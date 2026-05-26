@@ -1,6 +1,13 @@
 // Phase Frontend Final pSEO Villes/Régions — Sprint 14.9 (2026-05-08).
-// 13 régions métropole France (DROM + COM/TAAF volontairement exclus 2026-05-08
-// décision Will, cf. ADR 0006). Données INSEE. Slugs FR canoniques.
+// 13 régions métropole France listées ici pour les pages SEO dédiées
+// (`/implantations/[region]`). Données INSEE. Slugs FR canoniques.
+//
+// Couverture réelle Axion-IA (Will 2026-05-26, MAJ décision DROM) :
+//   - 13 régions métropolitaines (Corse comprise) : pages dédiées ci-dessous
+//   - 5 DROM (Guadeloupe, Martinique, Guyane, La Réunion, Mayotte) : couverts
+//     mais pas de page dédiée V1 → accessibles via /contact
+//   - Entreprises francophones à l'étranger (Belgique, Suisse, Luxembourg,
+//     Monaco, Maghreb, Afrique francophone, Québec) : sur devis via /contact
 //
 // Architecture pSEO (cf. axionia/docs/adr/0006-pseo-villes.md) :
 //   /implantations/[region]            → page région (top villes + maillage)
@@ -379,13 +386,15 @@ export const REGIONS: ReadonlyArray<Region> = [
       "La Corse compte près de 40 000 TPE-PME insulaires au tissu artisanal et touristique dense. Hôteliers et restaurateurs d'Ajaccio, Bonifacio, Porto-Vecchio, Calvi, viticulteurs des AOC corses (Patrimonio, Ajaccio, Sartène), charcutiers de Niolu, agences immobilières, négociants en clémentines, artisans bastiais. Axion-IA accompagne ces dirigeants TPE-PME insulaires sur site — chaque intervention est cadrée en fonction de votre entreprise, de vos objectifs et de votre périmètre métier, avec le même standard premium senior.",
   },
 
-  // === DROM volontairement exclus 2026-05-08 ===
-  // Décision Will : Axion-IA ne couvre pas Guadeloupe / Martinique / Guyane /
-  // La Réunion / Mayotte (pas d'intervention ni à distance V1, anti-doorway
-  // codebase). Si l'expansion est un jour décidée, ré-ajouter les blocs
-  // DROM ci-dessous + relancer `pnpm villes:import`. Voir aussi les
-  // 29 communes COM/TAAF déjà skippées par le script (Polynésie, Wallis,
-  // St-Barth, St-Martin, St-Pierre-et-Miquelon, Nouvelle-Calédonie).
+  // === DROM : COUVERTS mais pas de page dédiée V1 (Will 2026-05-26) ===
+  // Décision Will MAJ : Axion-IA COUVRE Guadeloupe / Martinique / Guyane /
+  // La Réunion / Mayotte (interventions sur devis selon zone et mission).
+  // Pas de page SEO dédiée V1 pour ces 5 DROM — accessibles via /contact.
+  // L'engagement est mentionné explicitement dans : transversal.ts FAQ
+  // « geo-france », home value-prop « Partout en France et francophonie »,
+  // /implantations hero + Section « 13 régions, 5 DROM, francophonie ».
+  // Idem entreprises francophones à l'étranger (Belgique, Suisse, Luxembourg,
+  // Monaco, Maghreb, Afrique francophone, Québec) : sur devis via /contact.
 ];
 
 const SLUG_INDEX = new Map(REGIONS.map((r) => [r.slug, r] as const));

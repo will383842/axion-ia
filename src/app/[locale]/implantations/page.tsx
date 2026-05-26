@@ -34,11 +34,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     locale,
     path: "/implantations",
     title: isFr
-      ? "Implantations · Architectes IA seniors partout en France · Axion-IA"
-      : "Locations · Senior AI architects across France · Axion-IA",
+      ? "Implantations · Architectes IA seniors partout en France et francophonie · Axion-IA"
+      : "Implantations · Architectes IA seniors partout en France et francophonie · Axion-IA",
     description: isFr
-      ? "Axion-IA intervient partout en France, dans toutes les communes — de la TPE à l'ETI. 5 services : audit IA, formation, implémentation, coaching 1-to-1, plateformes web/SaaS. 13 régions couvertes."
-      : "Axion-IA operates everywhere in France, in every commune — from SMBs to mid-caps. 5 services: AI audit, training, implementation, 1-to-1 coaching, AI web platforms/SaaS. 13 regions covered.",
+      ? "Axion-IA intervient dans les 13 régions de France métropolitaine, les 5 DROM et auprès des entreprises francophones à l'étranger. De la TPE à l'ETI. 5 services : audit IA, formation, implémentation, coaching 1-to-1, plateformes web/SaaS."
+      : "Axion-IA intervient dans les 13 régions de France métropolitaine, les 5 DROM et auprès des entreprises francophones à l'étranger. De la TPE à l'ETI. 5 services : audit IA, formation, implémentation, coaching 1-to-1, plateformes web/SaaS.",
     alternates: { fr: "/implantations", en: "/locations" },
   });
 }
@@ -71,19 +71,19 @@ export default async function ImplantationsHub({ params }: Props) {
       sameAs: "https://www.wikidata.org/wiki/Q142",
     },
     description: isFr
-      ? "Architectes IA seniors — interventions sur site dans 13 régions françaises et 2 150+ communes, pour TPE, PME, ETI et grands comptes."
-      : "Senior AI architects — on-site delivery across 13 French regions and 2,150+ communes, for SMBs, mid-caps and large accounts.",
+      ? "Architectes IA seniors — interventions sur site dans les 13 régions de France métropolitaine, les 5 DROM (Guadeloupe, Martinique, Guyane, La Réunion, Mayotte) et auprès des entreprises francophones à l'étranger. TPE, PME, ETI et grands comptes."
+      : "Architectes IA seniors — interventions sur site dans les 13 régions de France métropolitaine, les 5 DROM (Guadeloupe, Martinique, Guyane, La Réunion, Mayotte) et auprès des entreprises francophones à l'étranger. TPE, PME, ETI et grands comptes.",
   };
   const serviceNationalJsonLd = buildServiceJsonLd({
     locale: loc,
     path: "/implantations",
     name: isFr
-      ? "Architectes IA seniors partout en France · 5 services sur site"
-      : "Senior AI architects across France · 5 services on-site",
+      ? "Architectes IA seniors partout en France et francophonie · 5 services"
+      : "Architectes IA seniors partout en France et francophonie · 5 services",
     description: isFr
-      ? "Axion-IA intervient partout en France, dans toutes les communes — de la TPE à l'ETI. 5 services : audit IA, formation, implémentation, coaching 1-to-1 dirigeants, plateformes web/SaaS IA. 13 régions couvertes."
-      : "Axion-IA operates everywhere in France, in every commune — from SMBs to mid-caps. 5 services: AI audit, training, implementation, 1-to-1 executive coaching, AI web platforms/SaaS. 13 regions covered.",
-    serviceType: isFr ? "Services IA opérationnels" : "Operational AI services",
+      ? "Axion-IA intervient dans les 13 régions de France métropolitaine, les 5 DROM et auprès des entreprises francophones à l'étranger (Belgique, Suisse, Luxembourg, Monaco, Maghreb, Afrique francophone, Québec). De la TPE à l'ETI. 5 services : audit IA, formation, implémentation, coaching 1-to-1 dirigeants, plateformes web/SaaS IA."
+      : "Axion-IA intervient dans les 13 régions de France métropolitaine, les 5 DROM et auprès des entreprises francophones à l'étranger (Belgique, Suisse, Luxembourg, Monaco, Maghreb, Afrique francophone, Québec). De la TPE à l'ETI. 5 services : audit IA, formation, implémentation, coaching 1-to-1 dirigeants, plateformes web/SaaS IA.",
+    serviceType: isFr ? "Services IA opérationnels" : "Services IA opérationnels",
     areasServed: buildServiceAreasServed(loc),
   });
 
@@ -158,14 +158,14 @@ export default async function ImplantationsHub({ params }: Props) {
                 data-speakable-hero
               >
                 {isFr
-                  ? "Axion-IA intervient partout en France, dans toutes les communes — "
-                  : "Axion-IA operates everywhere in France, in every commune — "}
+                  ? "Axion-IA intervient dans les 13 régions métropolitaines, les 5 DROM et auprès des entreprises francophones à l'étranger — "
+                  : "Axion-IA intervient dans les 13 régions métropolitaines, les 5 DROM et auprès des entreprises francophones à l'étranger — "}
                 <span className="text-fg font-semibold">
-                  {isFr ? "de la TPE à l'ETI" : "from SMBs to mid-caps"}
+                  {isFr ? "de la TPE à l'ETI" : "de la TPE à l'ETI"}
                 </span>
                 {isFr
                   ? ", pour toutes nos prestations : audit IA, formation, implémentation, coaching 1-to-1 dirigeants, plateformes web et SaaS IA."
-                  : ", for all our services: AI audit, training, implementation, 1-to-1 executive coaching, AI web platforms and SaaS."}
+                  : ", pour toutes nos prestations : audit IA, formation, implémentation, coaching 1-to-1 dirigeants, plateformes web et SaaS IA."}
               </p>
               <div className="text-fg-muted mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
                 <span className="inline-flex items-center gap-2">
@@ -218,13 +218,13 @@ export default async function ImplantationsHub({ params }: Props) {
       {/* Toutes les régions — PLACÉE EN PREMIER (Will 2026-05-26).
           Donne l'accès direct à toutes les régions sans hiérarchie cachée. */}
       <Section
-        eyebrow={isFr ? "Couverture nationale" : "National coverage"}
-        title={isFr ? "13 régions de France," : "13 French regions,"}
-        titleEm={isFr ? "à votre service" : "at your service"}
+        eyebrow={isFr ? "Couverture France + francophonie" : "Couverture France + francophonie"}
+        title={isFr ? "13 régions, 5 DROM," : "13 régions, 5 DROM,"}
+        titleEm={isFr ? "et francophonie internationale" : "et francophonie internationale"}
         description={
           isFr
-            ? "Métropole au complet, Corse comprise. Les DROM ne sont pas dans notre périmètre V1 (décision 2026-05-08, voir ADR 0006)."
-            : "Continental France in full, Corsica included. Overseas regions are not in our V1 scope (decision 2026-05-08, see ADR 0006)."
+            ? "France métropolitaine au complet (Corse comprise), 5 DROM (Guadeloupe, Martinique, Guyane, La Réunion, Mayotte) et entreprises francophones à l'étranger (Belgique, Suisse, Luxembourg, Monaco, Maghreb, Afrique francophone, Québec). Les pages dédiées listent les 13 régions métropolitaines ; pour DROM et international, contactez-nous."
+            : "France métropolitaine au complet (Corse comprise), 5 DROM (Guadeloupe, Martinique, Guyane, La Réunion, Mayotte) et entreprises francophones à l'étranger (Belgique, Suisse, Luxembourg, Monaco, Maghreb, Afrique francophone, Québec). Les pages dédiées listent les 13 régions métropolitaines ; pour DROM et international, contactez-nous."
         }
       >
         <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
