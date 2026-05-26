@@ -37,6 +37,7 @@ import { JsonLdGraph } from "@/components/marketing/JsonLdGraph";
 import { Illustration } from "@/components/visual/Illustration";
 import { ClientLogosBand } from "@/components/sections/ClientLogosBand";
 import { FounderTrustSection } from "@/components/sections/FounderTrustSection";
+import { PricingGridVille } from "@/components/sections/PricingGridVille";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Link } from "@/i18n/navigation";
 import { AiContentDisclaimer } from "@/components/marketing/AiContentDisclaimer";
@@ -650,6 +651,16 @@ export default async function VilleHubPage({ params }: Props) {
             pour capter l'attention immédiate post-services. ── */}
       <OrangeContactBanner isFr={isFr} villeSlug={ville.slug} />
 
+      {/* ── Section fondateur William J. — DÉPLACÉE juste après le bandeau
+            orange (Will 2026-05-26). « On ne promet pas l'excellence. On la livre. »
+            arrive en renforcement immédiat de l'engagement contact. ── */}
+      <FounderTrustSection isFr={isFr} />
+
+      {/* ── Section tarifs « Un prix de départ pour chaque service » —
+            ajoutée juste après le fondateur (Will 2026-05-26). Reprise du
+            patron home, légèrement adaptée à la ville. ── */}
+      <PricingGridVille isFr={isFr} villeNameFr={ville.nameFr} loc={loc} />
+
       {/* ── Écosystème économique local (composant ville Phase 4) ── */}
       <VilleEcosystemeLocal ville={villeAsCity} isFr={isFr} />
 
@@ -661,9 +672,6 @@ export default async function VilleHubPage({ params }: Props) {
 
       {/* ── FAQ ville-spécifique (composant ville Phase 4) ── */}
       <VilleFaqGeolocalisee villeContext={villeContext} faqs={villeSpecificFaqs} isFr={isFr} />
-
-      {/* ── Section fondateur William J. — crédibilité avant contexte local ── */}
-      <FounderTrustSection isFr={isFr} />
 
       {/* ── Contexte local (Will 2026-05-26) — discret, en bas de page ──
           Décision : directAnswer + stats sortis du hero (bruit côté visiteur).

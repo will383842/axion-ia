@@ -56,9 +56,12 @@ export const unifiedContactSchema = z.object({
   telephone: z
     .string()
     .trim()
-    .min(6, "Téléphone requis.")
+    .min(8, "Téléphone requis avec indicatif pays.")
     .max(30, "Téléphone trop long.")
-    .regex(/^[+0-9 ()\-.]{6,30}$/, "Format de téléphone invalide."),
+    .regex(
+      /^(\+|00)[0-9]{1,3}[\s0-9()\-.]{4,28}$/,
+      "Indicatif pays obligatoire (ex : +33 6 12 34 56 78 ou 0033 6 12 34 56 78).",
+    ),
   ville: z.string().trim().min(2, "Ville requise.").max(120, "Ville trop longue."),
   message: z
     .string()

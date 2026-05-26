@@ -47,7 +47,8 @@ const LABELS = {
     eyebrow: "Démarrer un échange",
     title: "Décrivez votre besoin",
     titleEm: "en quelques secondes",
-    subtitle: "Réponse sous 48 h ouvrées par un humain. Sans engagement.",
+    subtitle:
+      "Chaque demande est lue personnellement par un consultant senior Axion-IA. Réponse cadrée sous 24 h ouvrées. Sans engagement.",
     typeLabel: "Objet de votre demande",
     typeHelp: "Vous ne trouvez pas votre cas ? Choisissez « Autre » — le formulaire sert à tout.",
     typeOptions: {
@@ -63,7 +64,7 @@ const LABELS = {
     nomPlaceholder: "Prénom Nom",
     email: "Email professionnel",
     emailPlaceholder: "vous@entreprise.com",
-    telephone: "Téléphone",
+    telephone: "Téléphone (avec indicatif pays)",
     telephonePlaceholder: "+33 6 12 34 56 78",
     ville: "Ville",
     villePlaceholder: "Paris",
@@ -95,18 +96,20 @@ const LABELS = {
       "J'accepte que mes données soient utilisées pour traiter cette demande conformément à la politique de confidentialité. Aucune revente, aucun profilage, désinscription à tout moment.",
     submit: "Envoyer ma demande",
     sending: "Envoi…",
-    success: "Demande reçue. Nous revenons vers vous sous 48 h ouvrées, par un humain.",
+    success:
+      "Demande reçue. Un consultant senior Axion-IA vous recontacte personnellement sous 24 h ouvrées. Votre projet a notre entière attention.",
     failure: "Une erreur est survenue. Réessayez ou écrivez à contact@axion-ia.com.",
     typeRequired: "Choisissez un type pour continuer.",
     submitAgain: "Faire une autre demande",
     referenceLabel: "Référence",
-    trustPills: ["RGPD · UE", "Réponse 48 h ouvrées", "Sans engagement"],
+    trustPills: ["RGPD · UE", "Réponse 24 h ouvrées", "Sans engagement"],
   },
   en: {
     eyebrow: "Start a conversation",
     title: "Tell us about your need",
     titleEm: "in seconds",
-    subtitle: "Reply within 48 business hours, by a human. No commitment.",
+    subtitle:
+      "Chaque demande est lue personnellement par un consultant senior Axion-IA. Réponse cadrée sous 24 h ouvrées. Sans engagement.",
     typeLabel: "What is your request about?",
     typeHelp: "Not sure where you fit? Pick « Other » — this form covers everything.",
     typeOptions: {
@@ -154,12 +157,13 @@ const LABELS = {
       "I agree to my data being used to handle this request per the privacy policy. No resale, no profiling, one-click unsubscribe.",
     submit: "Send my request",
     sending: "Sending…",
-    success: "Request received. We will reply within 48 business hours, by a human.",
+    success:
+      "Demande reçue. Un consultant senior Axion-IA vous recontacte personnellement sous 24 h ouvrées. Votre projet a notre entière attention.",
     failure: "An error occurred. Try again or email contact@axion-ia.com.",
     typeRequired: "Pick a type to continue.",
     submitAgain: "Send another request",
     referenceLabel: "Reference",
-    trustPills: ["GDPR · EU", "48 business-hour reply", "No commitment"],
+    trustPills: ["RGPD · UE", "Réponse 24 h ouvrées", "Sans engagement"],
   },
 } as const;
 
