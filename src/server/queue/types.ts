@@ -70,7 +70,9 @@ export type EmailJobName =
   | "disputed-notice"
   // Sprint X.13 — quote lifecycle
   | "quote-reminder"
-  | "quote-expired";
+  | "quote-expired"
+  // Sprint Notif Infra 2026-05-26 / Chantier 5 — reply admin
+  | "submission-reply";
 
 export interface EmailJobData {
   template: EmailJobName;

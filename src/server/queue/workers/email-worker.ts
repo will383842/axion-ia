@@ -11,6 +11,7 @@ import { getBullConnectionOrThrow } from "../connection";
 import { captureWorkerError } from "../lib/sentry-worker";
 import { sendEmail } from "@/lib/email/client";
 import { renderEmailTemplate } from "@/lib/email/templates";
+import { prisma } from "@/lib/prisma";
 import type { EmailJobData, EmailJobName } from "../types";
 
 export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
@@ -18,6 +19,15 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
     "emails",
     async (job) => {
       const { template, to, locale, payload, marketing } = job.data;
+
+      // Sprint Notif Infra 2026-05-26 / Chantier 5 — branche dédiée
+      // submission-reply : on synchronise SubmissionReply.deliveryStatus
+      // + Submission.firstRepliedAt/lastRepliedAt après envoi MTA.
+      if (template === "submission-reply") {
+        await handleSubmissionReply(payload);
+        return;
+      }
+
       const { subject, html, text } = await renderEmailTemplate(template, locale, payload);
       // RFC 8058 List-Unsubscribe (P0-RGPD-3 fix audit final 2026-05-09).
       // Marketing emails ET transactionnels qui contiennent un lien
@@ -59,4 +69,67 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
   });
 
   return worker;
+}
+
+// ============================================================
+// submission-reply : delivery status sync (Sprint Notif Infra 2026-05-26)
+// ============================================================
+//
+// Le payload `submission-reply` ne contient PAS le HTML — il référence le
+// `SubmissionReply.id`. On lit le bodyHtml/bodyText pré-rendu depuis la DB
+// (figé au moment du replyToSubmissionAction), on envoie, puis on update
+// le `deliveryStatus` + `sentAt`/`failedAt` + `Submission.firstRepliedAt`/
+// `lastRepliedAt`. Throw en cas d'échec SMTP → BullMQ retry avec backoff.
+
+async function handleSubmissionReply(payload: Record<string, unknown>): Promise<void> {
+  const replyId = typeof payload["replyId"] === "string" ? (payload["replyId"] as string) : null;
+  if (!replyId) throw new Error("[email-worker] submission-reply: missing replyId");
+
+  const reply = await prisma.submissionReply.findUnique({
+    where: { id: replyId },
+    include: { submission: { select: { id: true, firstRepliedAt: true } } },
+  });
+  if (!reply) throw new Error(`[email-worker] SubmissionReply ${replyId} not found`);
+
+  const replyTo = process.env.ADMIN_REPLY_FROM ?? "contact@axion-ia.com";
+
+  try {
+    const result = await sendEmail({
+      to: reply.toEmail,
+      subject: reply.subject,
+      html: reply.bodyHtml,
+      text: reply.bodyText,
+      replyTo,
+    });
+    const now = new Date();
+    await prisma.$transaction([
+      prisma.submissionReply.update({
+        where: { id: reply.id },
+        data: {
+          deliveryStatus: "sent",
+          sentAt: now,
+          providerMessageId: result.messageId,
+        },
+      }),
+      prisma.submission.update({
+        where: { id: reply.submissionId },
+        data: {
+          firstRepliedAt: reply.submission.firstRepliedAt ?? now,
+          lastRepliedAt: now,
+        },
+      }),
+    ]);
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    await prisma.submissionReply.update({
+      where: { id: reply.id },
+      data: {
+        deliveryStatus: "failed",
+        failedAt: new Date(),
+        errorMsg: msg.slice(0, 2000),
+        retryCount: { increment: 1 },
+      },
+    });
+    throw e; // BullMQ retry avec backoff exponentiel
+  }
 }
