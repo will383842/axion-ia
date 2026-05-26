@@ -88,7 +88,7 @@ export const REGIONS: ReadonlyArray<Region> = [
     metaDescEn:
       "Senior AI architects in Île-de-France. 5 services for SMBs in the Paris region: AI audit, training, implementation, 1-to-1 executive coaching, AI web platforms/SaaS. Mid-caps and large accounts also covered. Paris, La Défense.",
     audienceLocalFr:
-      "L'Île-de-France concentre 1,2 million de TPE-PME — artisans dans tous les arrondissements parisiens, commerçants de la petite couronne, PME tech à Boulogne-Billancourt et Saint-Denis, professions libérales du 16ᵉ et du 8ᵉ. Axion-IA s'adresse d'abord à ces dirigeants : un boulanger qui veut automatiser ses commandes, un cabinet d'avocats qui veut accélérer la rédaction, une PME e-commerce qui veut un agent IA produit. Les ETI franciliennes et sièges grand-compte à La Défense sont également accompagnés.",
+      "L'Île-de-France concentre 1,2 million de TPE-PME — artisans dans tous les arrondissements parisiens, commerçants de la petite couronne, PME tech à Boulogne-Billancourt et Saint-Denis, professions libérales du 16ᵉ et du 8ᵉ. Axion-IA accompagne ces dirigeants — un boulanger qui veut automatiser ses commandes, un cabinet d'avocats qui veut accélérer la rédaction, une PME e-commerce qui veut un agent IA produit — comme les ETI franciliennes et les sièges grand-compte à La Défense, avec le même standard premium senior.",
     audienceLocalEn:
       "Île-de-France concentrates 1.2 million SMBs — craftsmen in every Paris arrondissement, retailers in the inner suburbs, tech SMBs in Boulogne-Billancourt and Saint-Denis, professional services in the 16th and 8th. Axion-IA serves these executives first: a baker automating orders, a law firm accelerating drafting, an e-commerce SMB launching a product AI agent. Mid-caps and large headquarters in La Défense are also supported.",
   },
@@ -116,7 +116,7 @@ export const REGIONS: ReadonlyArray<Region> = [
     metaDescEn:
       "Senior AI architects in Auvergne-Rhône-Alpes. 5 services for SMBs: AI audit, corporate training, implementation, 1-to-1 coaching, AI web platforms/SaaS. Deep-tech mid-caps also covered. Lyon, Grenoble, Annecy, Clermont.",
     audienceLocalFr:
-      "L'Auvergne-Rhône-Alpes compte plus de 700 000 TPE-PME, du Pays roannais aux vallées alpines. Restaurateurs et hôteliers à Annecy et Chamonix, artisans bouchers à Lyon Confluence, PME mécaniques de la Loire et de la plasturgie d'Oyonnax, cabinets de conseil sur Part-Dieu, e-commerces grenoblois. Axion-IA s'adresse d'abord à ces dirigeants TPE-PME. Les ETI industrielles deep-tech (Grenoble, Saint-Étienne) sont également accompagnées.",
+      "L'Auvergne-Rhône-Alpes compte plus de 700 000 TPE-PME, du Pays roannais aux vallées alpines. Restaurateurs et hôteliers à Annecy et Chamonix, artisans bouchers à Lyon Confluence, PME mécaniques de la Loire et de la plasturgie d'Oyonnax, cabinets de conseil sur Part-Dieu, e-commerces grenoblois. Axion-IA accompagne ces dirigeants TPE-PME comme les ETI industrielles deep-tech (Grenoble, Saint-Étienne), les sièges DSI lyonnais et les groupes deep-tech (CEA, ST Microelectronics, Schneider), avec le même standard premium senior.",
     audienceLocalEn:
       "Auvergne-Rhône-Alpes counts over 700,000 SMBs, from the Roanne area to the Alpine valleys. Restaurateurs and hoteliers in Annecy and Chamonix, butchers in Lyon Confluence, mechanical SMBs in the Loire and Oyonnax plastics cluster, consulting firms on Part-Dieu, Grenoble e-commerces. Axion-IA serves these SMB executives first. Industrial deep-tech mid-caps (Grenoble, Saint-Étienne) are also supported.",
   },
@@ -144,7 +144,7 @@ export const REGIONS: ReadonlyArray<Region> = [
     metaDescEn:
       "Senior AI architects in Provence-Alpes-Côte d'Azur. 5 services for SMBs: AI audit, training, implementation, 1-to-1 coaching, AI web platforms/SaaS. Mid-caps and tech also covered. Marseille, Aix, Nice, Toulon, Cannes.",
     audienceLocalFr:
-      "Provence-Alpes-Côte d'Azur abrite plus de 500 000 TPE-PME ancrées dans le tissu local — hôteliers et restaurateurs azuréens, viticulteurs varois, négociants marseillais, cabinets d'avocats à Aix, agences immobilières cannoises, artisans du Var et des Alpes. Axion-IA accompagne ces dirigeants TPE-PME d'abord. Les ETI tech de Sophia-Antipolis et les sièges aéronautiques (Eurocopter, Airbus Marignane) sont également couverts.",
+      "Provence-Alpes-Côte d'Azur abrite plus de 500 000 TPE-PME ancrées dans le tissu local — hôteliers et restaurateurs azuréens, viticulteurs varois, négociants marseillais, cabinets d'avocats à Aix, agences immobilières cannoises, artisans du Var et des Alpes. Axion-IA accompagne ces dirigeants TPE-PME comme les ETI tech de Sophia-Antipolis et les sièges aéronautiques (Eurocopter, Airbus Marignane), avec le même standard premium senior.",
     audienceLocalEn:
       "Provence-Alpes-Côte d'Azur hosts over 500,000 SMBs rooted in local fabric — Riviera hoteliers and restaurateurs, Var winemakers, Marseille traders, Aix law firms, Cannes real-estate agencies, Var and Alpine craftsmen. Axion-IA serves these SMB executives first. Sophia-Antipolis tech mid-caps and aerospace HQs (Eurocopter, Airbus Marignane) are also covered.",
   },
@@ -169,7 +169,7 @@ export const REGIONS: ReadonlyArray<Region> = [
     metaDescFr:
       "Architectes IA seniors en Occitanie. 5 services pour TPE et PME : audit IA, formation, implémentation, coaching 1-to-1, plateformes web/SaaS. ETI aéronautiques et santé également. Toulouse, Montpellier, Perpignan, Nîmes.",
     audienceLocalFr:
-      "L'Occitanie compte près de 600 000 TPE-PME — vignerons du Languedoc, restaurateurs et hôteliers de la Méditerranée, artisans toulousains, PME viticoles (Corbières, Minervois), cabinets médicaux à Montpellier, cabinets d'experts-comptables, agences de tourisme. Axion-IA accompagne ces dirigeants TPE-PME en priorité. Les ETI aéronautiques sous-traitantes d'Airbus et les laboratoires de recherche santé de Montpellier sont également couverts.",
+      "L'Occitanie compte près de 600 000 TPE-PME — vignerons du Languedoc, restaurateurs et hôteliers de la Méditerranée, artisans toulousains, PME viticoles (Corbières, Minervois), cabinets médicaux à Montpellier, cabinets d'experts-comptables, agences de tourisme. Axion-IA accompagne ces dirigeants TPE-PME comme les ETI aéronautiques sous-traitantes d'Airbus et les laboratoires de recherche santé de Montpellier, avec le même standard premium senior.",
   },
   {
     slug: "nouvelle-aquitaine",
@@ -192,7 +192,7 @@ export const REGIONS: ReadonlyArray<Region> = [
     metaDescFr:
       "Architectes IA seniors en Nouvelle-Aquitaine. 5 services pour TPE et PME : audit IA, formation, implémentation, coaching 1-to-1, plateformes web/SaaS. ETI viticoles et tech également. Bordeaux, Pau, La Rochelle, Limoges.",
     audienceLocalFr:
-      "La Nouvelle-Aquitaine, plus grande région française, fédère plus de 550 000 TPE-PME. Domaines viticoles familiaux de Saint-Émilion à Médoc, restaurateurs et hôteliers du Bassin d'Arcachon, ostréiculteurs de Marennes, artisans bordelais, PME tech de Bordeaux Métropole, ETP du bois landais. Axion-IA accompagne d'abord ces dirigeants TPE-PME. Les ETI agro-industrielles et tech (Dassault Aviation Mérignac, Thales) sont également couvertes.",
+      "La Nouvelle-Aquitaine, plus grande région française, fédère plus de 550 000 TPE-PME. Domaines viticoles familiaux de Saint-Émilion à Médoc, restaurateurs et hôteliers du Bassin d'Arcachon, ostréiculteurs de Marennes, artisans bordelais, PME tech de Bordeaux Métropole, ETP du bois landais. Axion-IA accompagne ces dirigeants TPE-PME comme les ETI agro-industrielles et tech (Dassault Aviation Mérignac, Thales), avec le même standard premium senior.",
   },
   {
     slug: "hauts-de-france",
@@ -215,7 +215,7 @@ export const REGIONS: ReadonlyArray<Region> = [
     metaDescFr:
       "Architectes IA seniors en Hauts-de-France. 5 services pour TPE et PME : audit IA, formation, implémentation, coaching 1-to-1, plateformes web/SaaS. ETI distribution et industrie également. Lille, Amiens, Roubaix, Dunkerque.",
     audienceLocalFr:
-      "Les Hauts-de-France comptent plus de 460 000 TPE-PME. Estaminets et brasseries lilloises, artisans textiles roubaisiens, PME logistiques de Dunkerque et Calais, négoces agro-alimentaires de la Somme, cabinets dentaires d'Amiens, agences de voyages, fleuristes, traiteurs. Axion-IA s'adresse d'abord à ces dirigeants TPE-PME. Les sièges grand-compte régionaux (Auchan, Decathlon, Bonduelle, Boulanger) sont également couverts.",
+      "Les Hauts-de-France comptent plus de 460 000 TPE-PME. Estaminets et brasseries lilloises, artisans textiles roubaisiens, PME logistiques de Dunkerque et Calais, négoces agro-alimentaires de la Somme, cabinets dentaires d'Amiens, agences de voyages, fleuristes, traiteurs. Axion-IA accompagne ces dirigeants TPE-PME comme les sièges grand-compte régionaux (Auchan, Decathlon, Bonduelle, Boulanger), avec le même standard premium senior.",
   },
   {
     slug: "grand-est",
@@ -238,7 +238,7 @@ export const REGIONS: ReadonlyArray<Region> = [
     metaDescFr:
       "Architectes IA seniors en Grand Est. 5 services pour TPE et PME : audit IA, formation, implémentation, coaching 1-to-1, plateformes web/SaaS. ETI cross-border DE/FR également. Strasbourg, Reims, Metz, Nancy, Mulhouse.",
     audienceLocalFr:
-      "Le Grand Est rassemble plus de 410 000 TPE-PME entre la Champagne et les frontières germaniques. Viticulteurs et caves de champagne (Reims, Épernay), winstubs alsaciennes, artisans strasbourgeois, restaurateurs lorrains, PME industrielles de Mulhouse, négoces transfrontaliers, professions libérales messines. Axion-IA accompagne d'abord ces dirigeants TPE-PME. Les ETI exportatrices automobile et pharma cross-border DE/FR sont également couvertes.",
+      "Le Grand Est rassemble plus de 410 000 TPE-PME entre la Champagne et les frontières germaniques. Viticulteurs et caves de champagne (Reims, Épernay), winstubs alsaciennes, artisans strasbourgeois, restaurateurs lorrains, PME industrielles de Mulhouse, négoces transfrontaliers, professions libérales messines. Axion-IA accompagne ces dirigeants TPE-PME comme les ETI exportatrices automobile et pharma cross-border DE/FR, avec le même standard premium senior.",
   },
   {
     slug: "pays-de-la-loire",
@@ -261,7 +261,7 @@ export const REGIONS: ReadonlyArray<Region> = [
     metaDescFr:
       "Architectes IA seniors en Pays de la Loire. 5 services pour TPE et PME : audit IA, formation, implémentation, coaching 1-to-1, plateformes web/SaaS. ETI familiales industrielles également. Nantes, Angers, Le Mans, La Roche.",
     audienceLocalFr:
-      "Les Pays de la Loire abritent près de 300 000 TPE-PME au tissu artisanal dense. Boulangers angevins, restaurateurs nantais, hôteliers de l'île de Ré et de la côte vendéenne, artisans choletais, PME agro de la Sarthe, ostréiculteurs de la Vendée maritime, cabinets de notaires. Axion-IA accompagne d'abord ces dirigeants TPE-PME. Les ETI familiales industrielles (Mulliez, Pasquier, Beneteau, STX) sont également couvertes.",
+      "Les Pays de la Loire abritent près de 300 000 TPE-PME au tissu artisanal dense. Boulangers angevins, restaurateurs nantais, hôteliers de l'île de Ré et de la côte vendéenne, artisans choletais, PME agro de la Sarthe, ostréiculteurs de la Vendée maritime, cabinets de notaires. Axion-IA accompagne ces dirigeants TPE-PME comme les ETI familiales industrielles (Mulliez, Pasquier, Beneteau, STX), avec le même standard premium senior.",
   },
   {
     slug: "bretagne",
@@ -284,7 +284,7 @@ export const REGIONS: ReadonlyArray<Region> = [
     metaDescFr:
       "Architectes IA seniors en Bretagne. 5 services pour TPE et PME : audit IA, formation, implémentation, coaching 1-to-1, plateformes web/SaaS. ETI agro et tech également. Rennes, Brest, Quimper, Vannes, Saint-Brieuc.",
     audienceLocalFr:
-      "La Bretagne compte près de 260 000 TPE-PME ancrées dans le terroir. Crêperies et restaurateurs de la côte d'Émeraude, ostréiculteurs de Cancale, artisans cidriers, négoces de poissons et fruits de mer, PME maritimes brestoises, cabinets vétérinaires, hôteliers du Morbihan, agriculteurs et coopératives. Axion-IA accompagne d'abord ces dirigeants TPE-PME. Les ETI agro (Sodiaal, Triskalia, Even) et l'écosystème tech rennais (b<>com) sont également couverts.",
+      "La Bretagne compte près de 260 000 TPE-PME ancrées dans le terroir. Crêperies et restaurateurs de la côte d'Émeraude, ostréiculteurs de Cancale, artisans cidriers, négoces de poissons et fruits de mer, PME maritimes brestoises, cabinets vétérinaires, hôteliers du Morbihan, agriculteurs et coopératives. Axion-IA accompagne ces dirigeants TPE-PME comme les ETI agro (Sodiaal, Triskalia, Even) et l'écosystème tech rennais (b<>com), avec le même standard premium senior.",
   },
   {
     slug: "normandie",
@@ -307,7 +307,7 @@ export const REGIONS: ReadonlyArray<Region> = [
     metaDescFr:
       "Architectes IA seniors en Normandie. 5 services pour TPE et PME : audit IA, formation, implémentation, coaching 1-to-1, plateformes web/SaaS. ETI portuaires et industrielles également. Rouen, Caen, Le Havre, Cherbourg.",
     audienceLocalFr:
-      "La Normandie fédère plus de 240 000 TPE-PME. Restaurateurs et hôteliers de la côte fleurie (Deauville, Honfleur), artisans rouennais, négoces du port du Havre, cabinets dentaires de Caen, éleveurs et producteurs cidricoles, fromagers (Camembert, Livarot, Pont-l'Évêque), agences immobilières. Axion-IA accompagne d'abord ces dirigeants TPE-PME. Les ETI industrielles de l'axe Seine (pétrochimie, automobile, logistique portuaire) sont également couvertes.",
+      "La Normandie fédère plus de 240 000 TPE-PME. Restaurateurs et hôteliers de la côte fleurie (Deauville, Honfleur), artisans rouennais, négoces du port du Havre, cabinets dentaires de Caen, éleveurs et producteurs cidricoles, fromagers (Camembert, Livarot, Pont-l'Évêque), agences immobilières. Axion-IA accompagne ces dirigeants TPE-PME comme les ETI industrielles de l'axe Seine (pétrochimie, automobile, logistique portuaire), avec le même standard premium senior.",
   },
   {
     slug: "bourgogne-franche-comte",
@@ -330,7 +330,7 @@ export const REGIONS: ReadonlyArray<Region> = [
     metaDescFr:
       "Architectes IA seniors en Bourgogne-Franche-Comté. 5 services pour TPE et PME : audit IA, formation, implémentation, coaching 1-to-1, plateformes web/SaaS. ETI auto et viticoles également. Dijon, Besançon, Belfort.",
     audienceLocalFr:
-      "Bourgogne-Franche-Comté abrite plus de 200 000 TPE-PME. Domaines viticoles familiaux (Côte d'Or, Mâconnais), restaurateurs étoilés bourguignons, artisans dijonnais, PME de la microtechnique du Doubs, négoces de fromages (Comté, Époisses), cabinets de comptables, hôteliers de Beaune. Axion-IA accompagne d'abord ces dirigeants TPE-PME. Les ETI sous-traitantes automobile (PSA Sochaux, Alstom Belfort) sont également couvertes.",
+      "Bourgogne-Franche-Comté abrite plus de 200 000 TPE-PME. Domaines viticoles familiaux (Côte d'Or, Mâconnais), restaurateurs étoilés bourguignons, artisans dijonnais, PME de la microtechnique du Doubs, négoces de fromages (Comté, Époisses), cabinets de comptables, hôteliers de Beaune. Axion-IA accompagne ces dirigeants TPE-PME comme les ETI sous-traitantes automobile (PSA Sochaux, Alstom Belfort), avec le même standard premium senior.",
   },
   {
     slug: "centre-val-de-loire",
@@ -353,7 +353,7 @@ export const REGIONS: ReadonlyArray<Region> = [
     metaDescFr:
       "Architectes IA seniors en Centre-Val de Loire. 5 services pour TPE et PME : audit IA, formation, implémentation, coaching 1-to-1, plateformes web/SaaS. ETI cosmétique et pharma également. Orléans, Tours, Blois, Chartres.",
     audienceLocalFr:
-      "Le Centre-Val de Loire compte près de 180 000 TPE-PME. Viticulteurs du Val de Loire (Sancerre, Vouvray, Chinon), restaurateurs tourangeaux, hôteliers des châteaux, artisans orléanais, PME logistiques, négoces de produits du terroir, fromagers (Sainte-Maure), cabinets vétérinaires ruraux. Axion-IA accompagne d'abord ces dirigeants TPE-PME. Les ETI de la Cosmetic Valley (LVMH, Shiseido) et la pharma touraine sont également couvertes.",
+      "Le Centre-Val de Loire compte près de 180 000 TPE-PME. Viticulteurs du Val de Loire (Sancerre, Vouvray, Chinon), restaurateurs tourangeaux, hôteliers des châteaux, artisans orléanais, PME logistiques, négoces de produits du terroir, fromagers (Sainte-Maure), cabinets vétérinaires ruraux. Axion-IA accompagne ces dirigeants TPE-PME comme les ETI de la Cosmetic Valley (LVMH, Shiseido) et la pharma touraine, avec le même standard premium senior.",
   },
   {
     slug: "corse",
@@ -376,7 +376,7 @@ export const REGIONS: ReadonlyArray<Region> = [
     metaDescFr:
       "Architectes IA seniors en Corse. 5 services pour TPE et PME insulaires : audit IA, formation, implémentation, coaching 1-to-1 dirigeants, plateformes web/SaaS IA. Ajaccio, Bastia, Porto-Vecchio, Calvi.",
     audienceLocalFr:
-      "La Corse compte près de 40 000 TPE-PME insulaires au tissu artisanal et touristique dense. Hôteliers et restaurateurs d'Ajaccio, Bonifacio, Porto-Vecchio, Calvi, viticulteurs des AOC corses (Patrimonio, Ajaccio, Sartène), charcutiers de Niolu, agences immobilières, négociants en clémentines, artisans bastiais. Axion-IA accompagne d'abord ces dirigeants TPE-PME insulaires sur site — chaque intervention est cadrée en fonction de votre entreprise, de vos objectifs et de votre périmètre métier.",
+      "La Corse compte près de 40 000 TPE-PME insulaires au tissu artisanal et touristique dense. Hôteliers et restaurateurs d'Ajaccio, Bonifacio, Porto-Vecchio, Calvi, viticulteurs des AOC corses (Patrimonio, Ajaccio, Sartène), charcutiers de Niolu, agences immobilières, négociants en clémentines, artisans bastiais. Axion-IA accompagne ces dirigeants TPE-PME insulaires sur site — chaque intervention est cadrée en fonction de votre entreprise, de vos objectifs et de votre périmètre métier, avec le même standard premium senior.",
   },
 
   // === DROM volontairement exclus 2026-05-08 ===
