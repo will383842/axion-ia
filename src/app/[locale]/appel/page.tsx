@@ -34,16 +34,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!hasLocale(routing.locales, locale)) return {};
   const isFr = locale === "fr";
   const titleStr = isFr
-    ? "Réserver un appel téléphonique · Axion-IA"
-    : "Book a phone call · Axion-IA";
+    ? "Discutons de votre projet IA · Axion-IA"
+    : "Discutons de votre projet IA · Axion-IA";
   return {
     ...buildProductMetadata({
       locale,
       path: "/appel",
       title: titleStr,
       description: isFr
-        ? "Réservez un appel téléphonique gratuit avec un consultant IA senior d'Axion-IA — où nous prenons le temps de cadrer votre projet à la perfection. Calendrier temps réel, confirmation immédiate, aucun engagement."
-        : "Book a free phone call with a senior Axion-IA AI consultant — where we take the time to scope your project perfectly. Real-time calendar, instant confirmation, no commitment.",
+        ? "Un premier échange de 30 minutes pour explorer votre projet IA — formation, accompagnement 1-to-1, audit, automatisation, implémentation complète, SaaS web ou autre. Aucun engagement, aucune pression commerciale."
+        : "Un premier échange de 30 minutes pour explorer votre projet IA — formation, accompagnement 1-to-1, audit, automatisation, implémentation complète, SaaS web ou autre. Aucun engagement, aucune pression commerciale.",
       alternates: { fr: "/appel", en: "/book-a-call" },
     }),
     title: { absolute: titleStr },
@@ -59,10 +59,10 @@ export default async function AppelPage({ params }: Props) {
   const jsonLd = buildServiceJsonLd({
     locale: locale as "fr" | "en",
     path: "/appel",
-    name: isFr ? "Appel découverte téléphonique Axion-IA" : "Axion-IA discovery phone call",
+    name: isFr ? "Premier contact projet IA · Axion-IA" : "Premier contact projet IA · Axion-IA",
     description: isFr
-      ? "Appel téléphonique gratuit avec un consultant IA senior Axion-IA — où nous prenons le temps de cadrer votre projet à la perfection. Réservation en ligne via calendrier temps réel, confirmation immédiate."
-      : "Free phone call with a senior Axion-IA AI consultant — where we take the time to scope your project perfectly. Online booking via real-time calendar, instant confirmation.",
+      ? "Premier échange téléphonique de 30 minutes avec un consultant IA Axion-IA pour explorer votre projet — formation, accompagnement 1-to-1, audit, automatisation, implémentation, SaaS web. Aucun engagement."
+      : "Premier échange téléphonique de 30 minutes avec un consultant IA Axion-IA pour explorer votre projet — formation, accompagnement 1-to-1, audit, automatisation, implémentation, SaaS web. Aucun engagement.",
   });
 
   const breadcrumbJsonLd = {
@@ -78,7 +78,7 @@ export default async function AppelPage({ params }: Props) {
       {
         "@type": "ListItem",
         position: 2,
-        name: isFr ? "Réserver un appel" : "Book a call",
+        name: isFr ? "Premier contact" : "Premier contact",
         item: `${SITE_URL}/${locale}/appel`,
       },
     ],
@@ -137,7 +137,7 @@ export default async function AppelPage({ params }: Props) {
       <Breadcrumbs
         items={[
           { label: isFr ? "Accueil" : "Home", href: "/" },
-          { label: isFr ? "Réserver un appel" : "Book a call", href: "/appel" },
+          { label: isFr ? "Premier contact" : "Premier contact", href: "/appel" },
         ]}
         emitJsonLd={false}
       />
@@ -153,21 +153,19 @@ export default async function AppelPage({ params }: Props) {
             <div className="mx-auto max-w-3xl text-center">
               <p className="text-terracotta mb-4 inline-flex items-center gap-2 text-sm font-semibold tracking-widest uppercase">
                 <Calendar className="h-4 w-4" aria-hidden="true" />
-                {isFr
-                  ? "Calendrier temps réel · Confirmation immédiate"
-                  : "Real-time calendar · Instant confirmation"}
+                {isFr ? "Premier contact · Sans engagement" : "Premier contact · Sans engagement"}
               </p>
               <h1
                 id="appel-hero-h1"
                 className="text-fg text-[clamp(2rem,5vw,3.5rem)] leading-tight font-semibold tracking-tight"
                 style={{ fontFamily: "var(--font-serif)" }}
               >
-                {isFr ? "Réservez votre appel découverte" : "Book your discovery call"}
+                {isFr ? "Discutons de votre projet IA" : "Discutons de votre projet IA"}
               </h1>
               <p className="text-fg-soft mx-auto mt-6 max-w-2xl text-lg leading-relaxed">
                 {isFr
-                  ? "30 minutes avec un consultant IA senior pour comprendre vos enjeux, identifier les leviers concrets et vous orienter vers la solution adaptée. Choisissez le créneau qui vous convient ci-dessous."
-                  : "30 minutes with a senior AI consultant to understand your challenges, identify concrete levers and guide you to the right solution. Pick the slot that works for you below."}
+                  ? "Un premier échange de 30 minutes pour explorer votre projet et comprendre vos besoins — formation, accompagnement 1-to-1, audit, automatisation, implémentation complète, SaaS web ou autre. Aucun engagement, aucune pression commerciale."
+                  : "Un premier échange de 30 minutes pour explorer votre projet et comprendre vos besoins — formation, accompagnement 1-to-1, audit, automatisation, implémentation complète, SaaS web ou autre. Aucun engagement, aucune pression commerciale."}
               </p>
             </div>
           </Container>
@@ -261,7 +259,7 @@ export default async function AppelPage({ params }: Props) {
           </Container>
         </section>
       </main>
-      <StickyMobileCta label={isFr ? "Réserver un appel" : "Book a call"} href="/appel" />
+      <StickyMobileCta label={isFr ? "Premier contact" : "Premier contact"} href="/appel" />
     </>
   );
 }
