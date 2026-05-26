@@ -274,11 +274,8 @@ export default async function RegionPage({ params }: Props) {
           d'entrée avant la liste des villes. Grille 5 colonnes desktop. */}
       <Section
         eyebrow={isFr ? "Nos 5 services" : "Our 5 services"}
-        title={isFr ? "5 services." : "5 services."}
-        titleEm={isFr ? "Mêmes tarifs publics" : "Same public pricing"}
-        titleTail={
-          isFr ? `partout en ${region.nameFr}.` : `across ${region.nameEn ?? region.nameFr}.`
-        }
+        title={isFr ? "5 services partout" : "5 services available"}
+        titleEm={isFr ? `en ${region.nameFr}` : `in ${region.nameEn ?? region.nameFr}`}
         description={
           isFr
             ? "Toutes nos prestations sont disponibles aux mêmes tarifs publics partout en France métropolitaine."
