@@ -87,6 +87,38 @@ export default async function ImplantationsHub({ params }: Props) {
     areasServed: buildServiceAreasServed(loc),
   });
 
+  // ImageObject JSON-LD — Hero image carte France architectes (Will 2026-05-26
+  // perfection 2026). Signal Google Images + AI engines pour indexation visuelle.
+  const heroImageJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ImageObject",
+    "@id": `${SITE_URL}/${loc}/implantations#hero-image`,
+    contentUrl: `${SITE_URL}/images/axion-ia-implantations-france-hero-architectes.png`,
+    url: `${SITE_URL}/images/axion-ia-implantations-france-hero-architectes.png`,
+    name: "Axion-IA · architectes IA seniors partout en France",
+    description:
+      "Carte de France stylisée du réseau Axion-IA — architectes IA seniors, 13 régions métropolitaines, 5 DROM et entreprises francophones à l'étranger, 5 services sur site.",
+    encodingFormat: "image/png",
+    creator: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: "Axion-IA" },
+    copyrightHolder: { "@type": "Organization", name: "Axion-IA OÜ" },
+    license: "https://creativecommons.org/licenses/by/4.0/",
+    acquireLicensePage: `${SITE_URL}/${loc}/galerie`,
+    contentLocation: { "@type": "Country", name: "France" },
+  } as const;
+
+  // SpeakableSpecification — signal voice search + AI engines (Perplexity,
+  // ChatGPT, Claude.ai, Google AI Overviews) qui ciblent H1 + sous-ligne hero.
+  const speakableJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": `${SITE_URL}/${loc}/implantations#webpage`,
+    url: `${SITE_URL}/${loc}/implantations`,
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: ["[data-speakable-hero]", "#implantations-hero-heading"],
+    },
+  } as const;
+
   // ItemList JSON-LD régions — signal AEO/GEO : LLMs énumèrent les 12 régions
   // couvertes quand un utilisateur demande « où intervient Axion-IA ? ».
   const regionsItemList = buildItemListJsonLd({
@@ -117,6 +149,16 @@ export default async function ImplantationsHub({ params }: Props) {
         scriptId="jsonld-implantations-service"
       />
       <JsonLd data={regionsItemList} />
+      <JsonLd
+        data={heroImageJsonLd}
+        strategy="afterInteractive"
+        scriptId="jsonld-implantations-image"
+      />
+      <JsonLd
+        data={speakableJsonLd}
+        strategy="afterInteractive"
+        scriptId="jsonld-implantations-speakable"
+      />
 
       {/* Hero — refonte 2-col (Will 2026-05-26) : image globe + copy équilibrés.
           H1 hook qualité « Cabinet d'architectes IA chez vous ? », sous-ligne

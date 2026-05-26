@@ -134,6 +134,42 @@ export default async function RegionPage({ params }: Props) {
     population: region.population,
   });
 
+  // ImageObject JSON-LD — Hero image globe (Will 2026-05-26 perfection 2026).
+  // Signal Google Images + AI engines (Perplexity, ChatGPT, AI Overviews).
+  const heroImageJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ImageObject",
+    "@id": `${SITE_URL}/${loc}/implantations/${region.slug}#hero-image`,
+    contentUrl: `${SITE_URL}/images/axion-ia-proposition-globe-4-services-formations-audit-implementations-carre.avif`,
+    url: `${SITE_URL}/images/axion-ia-proposition-globe-4-services-formations-audit-implementations-carre.avif`,
+    name: `Axion-IA · 5 services en ${region.nameFr}`,
+    description: `Globe stylisé Axion-IA en ${region.nameFr} — audit IA, formation, implémentation, coaching 1-to-1 dirigeants, plateformes web et SaaS IA.`,
+    width: 1200,
+    height: 1200,
+    encodingFormat: "image/avif",
+    creator: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: "Axion-IA" },
+    copyrightHolder: { "@type": "Organization", name: "Axion-IA OÜ" },
+    license: "https://creativecommons.org/licenses/by/4.0/",
+    acquireLicensePage: `${SITE_URL}/${loc}/galerie`,
+    contentLocation: {
+      "@type": "AdministrativeArea",
+      name: region.nameFr,
+      containedInPlace: { "@type": "Country", name: "France" },
+    },
+  } as const;
+
+  // SpeakableSpecification — voice search + AI engines pour H1 + sous-ligne hero.
+  const speakableJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": `${SITE_URL}/${loc}/implantations/${region.slug}#webpage`,
+    url: `${SITE_URL}/${loc}/implantations/${region.slug}`,
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: ["[data-speakable-hero]", "#region-hero-heading"],
+    },
+  } as const;
+
   // ItemList — top villes de la région (signal AEO/GEO).
   const villesItemList = buildItemListJsonLd({
     locale: loc,
@@ -159,6 +195,12 @@ export default async function RegionPage({ params }: Props) {
         data={villesItemList}
         strategy="afterInteractive"
         scriptId="jsonld-region-villes-itemlist"
+      />
+      <JsonLd data={heroImageJsonLd} strategy="afterInteractive" scriptId="jsonld-region-image" />
+      <JsonLd
+        data={speakableJsonLd}
+        strategy="afterInteractive"
+        scriptId="jsonld-region-speakable"
       />
 
       {/* Hero région — refonte 2-col (Will 2026-05-26) : copy + illustration
