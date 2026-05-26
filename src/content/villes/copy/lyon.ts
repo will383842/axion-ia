@@ -25,13 +25,15 @@ export const LYON_COPY: VilleCopy = {
   pitchEn:
     "Lyon hosts 27,316 active businesses, France's second largest business district (Part-Dieu), the leading Auvergne-Rhône-Alpes biotech hub (Gerland, Sanofi, bioMérieux) and a dense industrial fabric (Vallée de la Chimie, Renault Trucks). Axion-IA delivers on site, from Lyon micro-businesses to large-enterprise AI leadership across the Métropole.",
 
+  seoHook: "biotech, industrie & banque",
+
   servicesContext: {
     audit: {
       fr: "Audit IA opérationnel à Lyon : nous cartographions ce qui peut être automatisé dans votre entreprise et chiffrons le ROI. 4 niveaux du Flash au Stratégique ETI selon votre taille, du cabinet lyonnais à l'ETI industrielle de la Vallée de la Chimie.",
       en: "Operational AI audit in Lyon: we map what can be automated at your company and quantify the ROI. 4 tiers from Flash to Mid-cap Strategic, from Lyon practices to industrial mid-caps in the Vallée de la Chimie.",
     },
     interventions: {
-      fr: "Interventions IA à Lyon : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste. Frais de logement, repas et forfait trajet en sus.",
+      fr: "Interventions IA à Lyon : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste. Pour Lyon intra-muros et la Métropole, le déplacement consultant (TGV depuis Paris, repas, hébergement si plusieurs jours) est facturé en sus du forfait journée.",
       en: "AI sessions in Lyon: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools installed on their workstations. Lodging, meals and travel allowance billed separately.",
     },
     implementation: {
@@ -49,7 +51,7 @@ export const LYON_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lyon (69) sur site — Part-Dieu, Confluence, Gerland, Villeurbanne, Vaise et communes de la Métropole. Nous accompagnons les TPE, PME, ETI et grandes entreprises lyonnaises (industrie, biotech, banque, services) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lyon (69) sur site — Part-Dieu, Confluence, Gerland, Villeurbanne, Vaise et communes de la Métropole. Nous accompagnons les TPE, PME, ETI et grandes entreprises lyonnaises (industrie, biotech, banque, services) sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Vos équipes lyonnaises conservent la maîtrise pleine de la stack (modèles, prompts, intégrations Vallée de la Chimie ou Gerland) après notre mission — sans verrou éditeur ni dépendance contractuelle.",
   directAnswerEn:
     "Axion-IA is a senior AI architects consultancy that intervenes in Lyon (69) on site — Part-Dieu, Confluence, Gerland, Villeurbanne, Vaise and Métropole communes. We support Lyon micro-businesses, SMEs, mid-caps and large enterprises (industry, biotech, banking, services) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
@@ -181,7 +183,7 @@ export const LYON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement.",
+          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Le plan d'action remis est portable — exécutable par tout intégrateur de la French Tech Lyon-Auvergne-Rhône-Alpes ou par vos équipes en interne, sans contrat de prestation continue obligatoire. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement.",
       },
       en: {
         hero: "Axion-IA's AI audit maps what can be automated at your Lyon business and quantifies the 12-24 month return on investment. Four tiers from Flash to Mid-cap Strategic cover every size, from Lyon micro-businesses to large industrial mid-caps in the Vallée de la Chimie and AI leadership at Part-Dieu HQs.",
@@ -292,7 +294,7 @@ export const LYON_COPY: VilleCopy = {
     },
     interventions: {
       fr: {
-        hero: "Les interventions IA Axion-IA à Lyon se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — en usine, en laboratoire, au bureau ou en clientèle. Frais de logement, repas et forfait trajet facturés à part.",
+        hero: "Les interventions IA Axion-IA à Lyon se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — en usine de la Vallée de la Chimie, en laboratoire Gerland, dans les bureaux de Part-Dieu ou sur sites clients de la Métropole. Le déplacement consultant (TGV depuis Paris, repas, hébergement si multi-jours) est facturé à part du forfait journée.",
         whyHere: [
           "Lyon est l'un de nos principaux terrains d'intervention : entreprises industrielles, biotech, services financiers Part-Dieu et PME numériques Villeurbanne représentent une part significative de nos sessions.",
           "Tous les arrondissements et communes de la Métropole couverts en présentiel : Part-Dieu, Confluence, Gerland, Villeurbanne, Vaise, Écully, Bron, Saint-Priest, Vénissieux, Caluire.",
@@ -379,7 +381,7 @@ export const LYON_COPY: VilleCopy = {
           },
           {
             q: "Les outils installés restent-ils utilisables après la session ?",
-            a: "Oui, ce sont des comptes individuels (gratuits ou avec abonnement employé) sur ChatGPT, Claude, Mistral, Notion AI, Gamma, Perplexity selon le profil. Aucun lock-in Axion-IA, vous gardez la main.",
+            a: "Oui, ce sont des comptes individuels (gratuits ou avec abonnement employé) sur ChatGPT, Claude, Mistral, Notion AI, Gamma, Perplexity selon le profil. Les accès restent à votre nom et révocables à tout moment — pas de licence Axion-IA imposée, pas de dépendance technique cachée.",
           },
           {
             q: "Pouvez-vous adapter le contenu au secteur industriel ou pharma lyonnais ?",
@@ -593,7 +595,7 @@ export const LYON_COPY: VilleCopy = {
           },
           {
             q: "Qui maintient la solution après la mission ?",
-            a: "Vos ambassadeurs internes, formés pendant la mission. Documentation runbook complète remise. Si maintenance externalisée souhaitée, contrat de support optionnel. Aucun lock-in : vous pouvez aussi externaliser ailleurs.",
+            a: "Vos ambassadeurs internes, formés pendant la mission. Documentation runbook complète remise. Si maintenance externalisée souhaitée, contrat de support optionnel chez nous ou chez tout intégrateur lyonnais — vous restez libre de la délégation.",
           },
           {
             q: "Mes données industrielles ou cliniques restent-elles chez moi ?",
@@ -609,7 +611,7 @@ export const LYON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Forfait fixe sur SOW : pas de dérive horaire cachée. Livraison dans les délais convenus à la signature, avec compensation contractuelle en cas de retard de notre fait. ROI chiffré contractuel : si après une année de production le ROI réel mesuré reste très en deçà de la prédiction du SOW, audit gratuit pour identifier la cause + ajustement déploiement offert. Aucun lock-in technologique : vos modèles, vos données, votre runbook. Vos ambassadeurs internes formés sont autonomes après go-live.",
+          "Forfait fixe sur SOW : pas de dérive horaire cachée. Livraison dans les délais convenus à la signature, avec compensation contractuelle en cas de retard de notre fait. ROI chiffré contractuel : si après une année de production le ROI réel mesuré reste très en deçà de la prédiction du SOW, audit gratuit pour identifier la cause + ajustement déploiement offert. Modèles, données et runbook restent intégralement chez vous, transférables à tout intégrateur Auvergne-Rhône-Alpes ou repris en interne. Vos ambassadeurs internes formés sont autonomes après go-live.",
       },
       en: {
         hero: "Axion-IA's AI implementation in Lyon brings your AI use cases to production with contractually-costed ROI, team training included. Mode is hybrid on-site / remote, with a mandatory kick-off at your Lyon offices — Part-Dieu, Gerland, Confluence or a Métropole commune.",
@@ -720,7 +722,7 @@ export const LYON_COPY: VilleCopy = {
     },
     unAUn: {
       fr: {
-        hero: "Le coaching 1-to-1 IA Axion-IA à Lyon est conçu pour les dirigeants et managers qui pilotent une transformation, une restructuration ou une montée en compétence IA sans vouloir exposer leurs doutes en groupe. Sessions confidentielles, en présentiel dans vos locaux lyonnais — Part-Dieu, Confluence, Gerland, Villeurbanne, Écully — ou à distance selon vos impératifs d'agenda. Nous travaillons sur votre pratique réelle : vos emails, vos rapports, vos décisions, votre relation aux équipes. L'objectif n'est pas une certification : c'est que vous soyez opérationnel sur l'IA comme levier de direction dans vos 90 premiers jours. Aucun lock-in, aucun suivi imposé au-delà de ce que vous validez. Frais de logement, repas et forfait trajet en sus sur les sessions présentiel hors Lyon intra-muros.",
+        hero: "Le coaching 1-to-1 IA Axion-IA à Lyon est conçu pour les dirigeants et managers qui pilotent une transformation, une restructuration ou une montée en compétence IA sans vouloir exposer leurs doutes en groupe. Sessions confidentielles, en présentiel dans vos locaux lyonnais — Part-Dieu, Confluence, Gerland, Villeurbanne, Écully — ou à distance selon vos impératifs d'agenda. Nous travaillons sur votre pratique réelle : vos emails, vos rapports, vos décisions, votre relation aux équipes. L'objectif n'est pas une certification : c'est que vous soyez opérationnel sur l'IA comme levier de direction dans vos 90 premiers jours. Pas de contrat récurrent ni de suite logicielle imposés, aucun suivi prolongé au-delà de ce que vous validez. Pour le présentiel hors Lyon intra-muros, le déplacement consultant est facturé en sus du forfait séance.",
         whyHere: [
           "Lyon concentre des dirigeants d'ETI industrielles (Vallée de la Chimie, Renault Trucks, équipementiers) et de PME biotech (Gerland, Lyonbiopôle) qui ne trouvent pas de pairs pour parler IA en toute confidentialité — notre coaching 1-to-1 répond exactement à ce besoin.",
           "L'écosystème EM Lyon et INSA produit chaque année des cadres dirigeants lyonnais qui prennent des postes à responsabilité sans avoir été formés sur l'IA opérationnelle — le coaching 1-to-1 comble ce gap en quelques sessions.",
@@ -761,25 +763,25 @@ export const LYON_COPY: VilleCopy = {
             sizeLabel: "TPE",
             price: "à partir de 990 € HT",
             detail:
-              "Pour indépendants, gérants et dirigeants de TPE lyonnaises (Presqu'île, Vieux Lyon, quartiers résidentiels). Parcours court sur sessions de travail ciblées — email, devis, veille, gestion administrative. Frais de logement, repas et forfait trajet en sus pour présentiel hors Lyon intra-muros.",
+              "Pour indépendants, gérants et dirigeants de TPE lyonnaises (Presqu'île, Vieux Lyon, quartiers résidentiels). Parcours court sur sessions de travail ciblées — email, devis, veille, gestion administrative. Pour les séances présentielles hors Lyon intra-muros, déplacement consultant facturé en sus du forfait.",
           },
           {
             sizeLabel: "PME",
             price: "Parcours PME — sur devis",
             detail:
-              "Pour dirigeants et managers de PME lyonnaises (Villeurbanne IT, Vaise, Presqu'île). Parcours calibré sur plusieurs mois : prise de décision, management d'équipes, reporting, gestion de projet IA. Frais de logement, repas et forfait trajet en sus pour présentiel hors Lyon intra-muros.",
+              "Pour dirigeants et managers de PME lyonnaises (Villeurbanne IT, Vaise, Presqu'île). Parcours calibré sur plusieurs mois : prise de décision, management d'équipes, reporting, gestion de projet IA. Hors Lyon intra-muros, déplacement consultant en sus du forfait par séance.",
           },
           {
             sizeLabel: "ETI",
             price: "Parcours ETI — sur devis",
             detail:
-              "Pour DG, DAF, DRH et directeurs de directions d'ETI industrielles ou biotech lyonnaises. Travail sur la gouvernance IA, la communication interne et externe, la relation investisseurs et la conduite du changement. Frais de logement, repas et forfait trajet en sus pour présentiel hors Lyon intra-muros.",
+              "Pour DG, DAF, DRH et directeurs de directions d'ETI industrielles ou biotech lyonnaises. Travail sur la gouvernance IA, la communication interne et externe, la relation investisseurs et la conduite du changement. Pour les séances en bureau hors Lyon intra-muros, déplacement consultant en supplément du forfait par séance.",
           },
           {
             sizeLabel: "Grande entreprise",
             price: "Parcours grands comptes — sur devis",
             detail:
-              "Pour dirigeants de grandes entreprises et groupes implantés dans la Métropole (Sanofi Gerland, Groupe SEB Écully, Renault Trucks Saint-Priest). Format confidentiel haut niveau, agenda adapté aux contraintes de direction générale. Frais de logement, repas et forfait trajet en sus.",
+              "Pour dirigeants de grandes entreprises et groupes implantés dans la Métropole (Sanofi Gerland, Groupe SEB Écully, Renault Trucks Saint-Priest). Format confidentiel haut niveau, agenda adapté aux contraintes de direction générale. Déplacement consultant (TGV depuis Paris, hébergement multi-jours, repas) facturé séparément du forfait séance.",
           },
         ],
         testimonials: [
@@ -823,7 +825,7 @@ export const LYON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Aucun lock-in : vous pouvez arrêter le parcours à tout moment sans pénalité au-delà des sessions déjà réalisées. Confidentialité stricte, aucune référence publiée sans accord écrit. Résultats orientés pratique réelle : si après trois sessions vous n'avez pas constaté de gain concret dans votre pratique quotidienne, session de diagnostic offerte pour recadrer le parcours. Frais de logement, repas et forfait trajet en sus pour les sessions présentiel hors Lyon intra-muros.",
+          "Engagement séance par séance : vous arrêtez le parcours à tout moment sans pénalité au-delà des sessions déjà réalisées. Confidentialité stricte, aucune référence publiée sans accord écrit — particulièrement strict pour les dirigeants biotech Gerland et banque Part-Dieu sensibles aux fuites stratégiques. Résultats orientés pratique réelle : si après trois sessions vous n'avez pas constaté de gain concret dans votre pratique quotidienne, séance de diagnostic offerte pour recadrer le parcours. Pour les sessions présentielles hors Lyon intra-muros, déplacement consultant en sus du forfait séance.",
       },
       en: {
         hero: "Axion-IA's 1-to-1 AI coaching in Lyon is designed for executives and managers steering a transformation, restructuring or AI skills upgrade without wanting to expose their questions in a group setting. Confidential sessions at your Lyon offices — Part-Dieu, Confluence, Gerland, Villeurbanne, Écully — or remote depending on your schedule. We work on your real practice: your emails, your reports, your decisions, your relationship with your teams. The goal is not a certification: it is that you are operational with AI as a leadership lever within your first 90 days. No lock-in, no follow-up imposed beyond what you validate. Lodging, meals and travel allowance billed separately for on-site sessions outside central Lyon.",
@@ -937,7 +939,7 @@ export const LYON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Lyon ?",
-      a: "Le tarif dépend du niveau retenu — Audit Flash, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique à Lyon et partout en France.",
+      a: "Quatre paliers tarifaires publics couvrent toutes les configurations lyonnaises — Flash pour les TPE Presqu'île/Vieux Lyon, Ciblé pour les PME Villeurbanne IT et Vaise, Stratégique PME pour les cabinets de banque Part-Dieu et services Confluence, Stratégique ETI pour les industriels Vallée de la Chimie, biotechs Gerland et grands comptes Écully/Saint-Priest. La grille appliquée à Lyon est strictement identique à celle de Paris ou Marseille — aucune pondération régionale ni surcoût Auvergne-Rhône-Alpes.",
     },
     {
       q: "Avez-vous des cas clients dans la Métropole de Lyon ?",
@@ -953,7 +955,7 @@ export const LYON_COPY: VilleCopy = {
     },
     {
       q: "En combien de temps pouvez-vous démarrer une mission à Lyon ?",
-      a: "Le délai dépend de votre besoin (urgence, complexité, taille). Nous calons une date de démarrage lors du brief de cadrage initial et tenons l'engagement contractuel à la signature.",
+      a: "Pour les structures lyonnaises en cycle court (scale-ups H7 Confluence, PME tech Villeurbanne, cabinets de la Presqu'île), démarrage post-brief de cadrage sous quelques semaines en général. Pour les missions ETI industrielles Vallée de la Chimie, biotechs Gerland ou grands comptes Écully/Saint-Priest, le calendrier intègre votre fenêtre achat et la disponibilité de votre comité de pilotage. Date contractuelle fixée à la signature et tenue.",
     },
     {
       q: "Travaillez-vous avec les startups lyonnaises (French Tech One, H7, Pulsalys) ?",

@@ -21,13 +21,15 @@ export const MARSEILLE_COPY: VilleCopy = {
   pitchEn:
     "Marseille hosts 31,646 active businesses, France's busiest port, the global HQ of CMA CGM, and the deep-tech ecosystem of Euroméditerranée / Château-Gombert. Axion-IA delivers on site in Marseille, from Vieux-Port SMEs to AI leadership at maritime and logistics mid-caps.",
 
+  seoHook: "port, logistique & biotech",
+
   servicesContext: {
     audit: {
       fr: "Audit IA opérationnel à Marseille : nous identifions vos cas d'automatisation sur site et chiffrons le ROI. Quatre niveaux du Flash au Stratégique ETI selon votre taille — maritime, logistique, biotech ou services.",
       en: "Operational AI audit in Marseille: we identify your automation cases on site and quantify the ROI. Four tiers from Flash to Mid-cap Strategic depending on your size — maritime, logistics, biotech or services.",
     },
     interventions: {
-      fr: "Interventions IA à Marseille : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA configurés pour leur métier. Frais de logement, repas et forfait trajet en sus.",
+      fr: "Interventions IA à Marseille : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA configurés pour leur métier. Pour Marseille intra-muros et la métropole Aix-Marseille, le déplacement consultant (TGV/voiture, repas) est facturé en sus du forfait journée.",
       en: "AI sessions in Marseille: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools configured for their work. Lodging, meals and travel allowance billed separately.",
     },
     implementation: {
@@ -35,7 +37,7 @@ export const MARSEILLE_COPY: VilleCopy = {
       en: "AI implementation in Marseille: we deploy AI into your existing tools (TMS, ERP, CRM, email) with contractually-costed ROI. Your teams stay in control, we create no dependency.",
     },
     unAUn: {
-      fr: "Coaching IA individuel à Marseille : sessions 1-to-1 sur site dans vos locaux (Euroméditerranée, Joliette, Château-Gombert) ou en visio. Dirigeants, managers et entrepreneurs des PME/ETI marseillaises — maritime, logistique, santé, services — qui veulent monter en compétence IA à leur rythme sur leurs propres cas business. Frais de logement, repas et forfait trajet en sus.",
+      fr: "Coaching IA individuel à Marseille : sessions 1-to-1 sur site dans vos locaux (Euroméditerranée, Joliette, Château-Gombert) ou en visio. Dirigeants, managers et entrepreneurs des PME/ETI marseillaises — maritime, logistique, santé, services — qui veulent monter en compétence IA à leur rythme sur leurs propres cas business. Pour le présentiel, le déplacement consultant Paris↔Marseille est facturé en sus du forfait séance.",
       en: "Individual AI coaching in Marseille: 1-to-1 sessions on site at your offices (Euroméditerranée, Joliette, Château-Gombert) or by video. Executives, managers and entrepreneurs at Marseille SMEs/mid-caps — maritime, logistics, health, services — who want to build AI competence at their own pace on their own business cases. Lodging, meals and travel allowance billed separately.",
     },
     sitesWeb: {
@@ -45,7 +47,7 @@ export const MARSEILLE_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marseille (13) sur site, du quartier Joliette à Euroméditerranée, des TPE du Panier aux ETI maritimes du Grand Port. Nous accompagnons les entreprises marseillaises sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Secteurs prioritaires : transport/logistique, santé/biotech, services B2B. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marseille (13) sur site, du quartier Joliette à Euroméditerranée, des TPE du Panier aux ETI maritimes du Grand Port. Nous accompagnons les entreprises marseillaises sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Secteurs prioritaires : transport/logistique, santé/biotech, services B2B. Vos équipes restent maîtres de la stack (modèles, prompts, intégrations) après notre passage — pas de verrou éditeur ni dépendance contractuelle continue.",
   directAnswerEn:
     "Axion-IA is a senior AI architects consultancy that intervenes in Marseille (13) on site, from Joliette to Euroméditerranée, from Panier micro-businesses to maritime mid-caps at the Grand Port. We support Marseille businesses on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. Priority sectors: transport/logistics, health/biotech, B2B services. No tech lock-in, your teams stay in control.",
 
@@ -174,7 +176,7 @@ export const MARSEILLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement (clause activable, jamais activée à ce jour).",
+          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Le plan d'action remis est portable — exécutable par tout cabinet de la Région Sud ou par vos équipes en interne, sans contrat de suivi obligatoire. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement (clause activable, jamais activée à ce jour).",
       },
       en: {
         hero: "Axion-IA's AI audit maps what can be automated in your Marseille organization and quantifies the 12-24 month return on investment. Four tiers from Flash to Mid-cap Strategic cover every size, from Marseille commerce micro-businesses to large logistics groups at the Vieux-Port or Joliette district.",
@@ -286,7 +288,7 @@ export const MARSEILLE_COPY: VilleCopy = {
 
     interventions: {
       fr: {
-        hero: "Les interventions IA Axion-IA à Marseille se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur métier réel — logistique, santé, commerce ou services. Frais de logement, repas et forfait trajet facturés à part.",
+        hero: "Les interventions IA Axion-IA à Marseille se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur métier réel — logistique, santé, commerce ou services. Pour Marseille intra-muros et la métropole, le déplacement consultant (TGV depuis Paris, repas, hébergement si multi-jours) est facturé à part du forfait journée.",
         whyHere: [
           "Marseille est l'un de nos terrains d'intervention prioritaires sur la Méditerranée : nous y déroulons des sessions pour des équipes aussi diverses qu'un service douane d'une ETI portuaire et une équipe commerciale de PME tech Luminy.",
           "Tous les arrondissements couverts en présentiel ainsi que le bassin : Euroméditerranée, Château-Gombert, Luminy, Aubagne, Aix-en-Provence, La Ciotat, Vitrolles.",
@@ -373,7 +375,7 @@ export const MARSEILLE_COPY: VilleCopy = {
           },
           {
             q: "Les outils installés restent-ils utilisables après la session ?",
-            a: "Oui. Ce sont des comptes individuels (gratuits ou avec abonnement employé) sur ChatGPT, Claude, Mistral, Notion AI, Gamma, Perplexity selon le profil. Aucun lock-in Axion-IA, vous gardez la main.",
+            a: "Oui. Ce sont des comptes individuels (gratuits ou avec abonnement employé) sur ChatGPT, Claude, Mistral, Notion AI, Gamma, Perplexity selon le profil. Les comptes restent à votre nom, gérables et révocables à tout moment — aucune licence Axion-IA, aucune dépendance technique imposée.",
           },
           {
             q: "Pouvez-vous adapter la session au secteur maritime ou médical ?",
@@ -588,7 +590,7 @@ export const MARSEILLE_COPY: VilleCopy = {
           },
           {
             q: "Qui maintient la solution après la mission ?",
-            a: "Vos ambassadeurs internes, formés pendant la mission. Documentation runbook complète remise. Si maintenance externalisée souhaitée, contrat de support optionnel. Aucun lock-in : vous pouvez aussi externaliser ailleurs.",
+            a: "Vos ambassadeurs internes, formés pendant la mission. Documentation runbook complète remise. Si maintenance externalisée souhaitée, contrat de support optionnel chez nous ou chez tout intégrateur de la Région Sud — vous restez libre de la délégation.",
           },
           {
             q: "Mes données restent-elles chez moi ou partent-elles chez Axion-IA ?",
@@ -604,7 +606,7 @@ export const MARSEILLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Forfait fixe sur SOW : aucune dérive horaire cachée. Livraison dans les délais convenus à la signature, avec compensation contractuelle en cas de retard de notre fait. ROI chiffré contractuel : si après une année de production le ROI réel reste très en deçà de la prédiction du SOW, audit gratuit pour identifier la cause et ajustement déploiement offert. Aucun lock-in technologique : vos modèles, vos données, votre runbook. Vos ambassadeurs internes formés sont autonomes après go-live.",
+          "Forfait fixe sur SOW : aucune dérive horaire cachée. Livraison dans les délais convenus à la signature, avec compensation contractuelle en cas de retard de notre fait. ROI chiffré contractuel : si après une année de production le ROI réel reste très en deçà de la prédiction du SOW, audit gratuit pour identifier la cause et ajustement déploiement offert. Modèles, données et runbook restent chez vous, transférables à tout intégrateur méditerranéen ou repris en interne. Vos ambassadeurs internes formés sont autonomes après go-live.",
       },
       en: {
         hero: "Axion-IA's AI implementation in Marseille brings your use cases to production with contractually-costed ROI, team training included. Mode is hybrid on-site / remote, with a mandatory Marseille kick-off. Priority sectors: transport/logistics, health/biotech, B2B services.",
@@ -716,14 +718,14 @@ export const MARSEILLE_COPY: VilleCopy = {
 
     unAUn: {
       fr: {
-        hero: "Le coaching IA 1-to-1 Axion-IA à Marseille est un accompagnement individuel sur mesure, conçu pour les dirigeants, managers et entrepreneurs du tissu économique marseillais — ETI maritimes d'Euroméditerranée, PME logistiques de la Joliette, dirigeants de Centrale Méditerranée et d'AMU, professionnels de santé de Luminy. Sessions en présentiel dans vos locaux ou en visio selon vos contraintes. Tarif d'entrée à partir de 990 € HT. Vous progressez à votre rythme, sur vos propres cas business réels. Frais de logement, repas et forfait trajet en sus pour les sessions sur site.",
+        hero: "Le coaching IA 1-to-1 Axion-IA à Marseille est un accompagnement individuel sur mesure, conçu pour les dirigeants, managers et entrepreneurs du tissu économique marseillais — ETI maritimes d'Euroméditerranée, PME logistiques de la Joliette, dirigeants de Centrale Méditerranée et d'AMU, professionnels de santé de Luminy. Sessions en présentiel dans vos locaux ou en visio selon vos contraintes. Tarif d'entrée à partir de 990 € HT. Vous progressez à votre rythme, sur vos propres cas business réels. Pour le présentiel, le déplacement consultant Paris↔Marseille est facturé en sus du forfait séance.",
         whyHere: [
           "Marseille concentre des profils de dirigeants à fort potentiel IA : PDG d'ETI CMA CGM-orbite, DG de PME transitaires Joliette, responsables formation AMU/Centrale Méditerranée, directeurs médicaux Luminy. Chacun de ces profils mérite un accompagnement calibré sur ses réalités métier, pas une session générique.",
           "Le tissu PME/ETI des Bouches-du-Rhône génère des besoins très spécifiques en coaching IA : automatisation de la gestion documentaire portuaire, assistance à la négociation commerciale export, optimisation des process de soins, structuration de la veille concurrentielle maritime.",
           "Sessions en présentiel possibles dans vos bureaux à Euroméditerranée, Joliette, Château-Gombert, Luminy, Parc Chanot ou tout quartier d'affaires marseillais. Visio pour les créneaux qui ne nécessitent pas de démo sur vos infrastructures.",
           "Rythme adapté à l'agenda d'un dirigeant marseillais : sessions courtes denses (demi-journée) ou longues de fond (journée pleine) selon votre disponibilité et votre priorité du moment.",
           "Zéro recyclage générique : chaque session est préparée à partir de votre fiche contexte (secteur, outils, cas business prioritaires). Vous n'écoutez pas un cours — vous travaillez sur vos vrais dossiers avec un expert IA.",
-          "Aucun lock-in : ce que vous apprenez est votre propriété. Les outils installés sur votre poste, les prompts construits ensemble, la méthode appliquée — tout reste entre vos mains après la dernière session.",
+          "Ce que vous apprenez est votre propriété pleine et entière : les outils installés sur votre poste, les prompts construits ensemble, la méthode appliquée à vos données maritimes ou santé — tout reste entre vos mains après la dernière session, sans contrat récurrent imposé.",
         ],
         methodology: [
           {
@@ -819,7 +821,7 @@ export const MARSEILLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Première session pilote : si après cette session vous estimez que le format ne correspond pas à vos attentes, remboursement intégral sans condition. Programme multi-sessions : devis forfaitaire fixe à la signature, aucune dérive. Confidentialité totale : Confidentialité stricte dès le démarrage, vos cas business, données et documents traités en session ne quittent jamais notre périmètre. Aucun lock-in : tout ce que vous construisez en session (prompts, workflows, fiches méthode) vous appartient. Après la dernière session, vous êtes autonome.",
+          "Première session pilote : si après cette session vous estimez que le format ne correspond pas à vos attentes, remboursement intégral sans condition. Programme multi-sessions : devis forfaitaire fixe à la signature, aucune dérive. Confidentialité totale dès le démarrage, vos cas business, données et documents traités en session ne quittent jamais notre périmètre. Tout ce que vous construisez en session (prompts, workflows, fiches méthode adaptées à votre secteur maritime, logistique ou santé) vous appartient en propriété exclusive. Après la dernière session, vous êtes autonome.",
       },
       en: {
         hero: "Axion-IA's 1-to-1 AI coaching in Marseille is a tailored individual programme designed for executives, managers and entrepreneurs in the Marseille business ecosystem — Euroméditerranée maritime mid-caps, Joliette logistics SMEs, Centrale Méditerranée and AMU leadership, Luminy health professionals. Sessions in person at your offices or by video depending on your schedule. Entry price from 990 € excl. VAT. You progress at your own pace, on your own real business cases. Lodging, meals and travel allowance billed separately for on-site sessions.",
@@ -933,7 +935,7 @@ export const MARSEILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Marseille ?",
-      a: "Le tarif dépend du niveau retenu — Audit Flash, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre secteur (logistique, santé, services). Aucun supplément géographique : le tarif est le même à Marseille qu'à Paris.",
+      a: "Quatre paliers tarifaires publics couvrent toutes les configurations marseillaises — Flash pour les TPE du Panier ou commerces de proximité, Ciblé pour les PME de la Joliette et services portuaires, Stratégique PME pour les cabinets santé Luminy et services Euroméditerranée, Stratégique ETI pour les opérateurs maritimes du Grand Port, filiales CMA CGM et industriels Château-Gombert. La grille appliquée à Marseille est strictement identique à celle de Paris ou Lyon — pas de pondération régionale.",
     },
     {
       q: "Avez-vous des cas clients à Marseille ou dans la métropole Aix-Marseille ?",
@@ -953,7 +955,7 @@ export const MARSEILLE_COPY: VilleCopy = {
     },
     {
       q: "En combien de temps pouvez-vous démarrer une mission à Marseille ?",
-      a: "Le délai dépend de votre besoin (urgence, complexité, taille de la mission). Nous calons une date de démarrage avec vous lors du brief de cadrage initial et tenons l'engagement contractuel à la signature.",
+      a: "Pour les structures marseillaises en cycle court (PME logistique Joliette, scale-ups French Tech Aix-Marseille), démarrage post-brief de cadrage sous quelques semaines généralement. Pour les missions ETI portuaires, filiales CMA CGM ou hôpitaux du bassin Luminy/AMU, le calendrier intègre votre fenêtre achat et la coordination avec votre direction technique. Date contractuelle fixée à la signature et tenue.",
     },
   ],
 };

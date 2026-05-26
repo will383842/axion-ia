@@ -30,13 +30,15 @@ export const PARIS_COPY: VilleCopy = {
   pitchEn:
     "Paris hosts 215,000 active businesses of every size, the French AI ecosystem (Mistral, Hugging Face, Station F) and the densest B2B fabric in the country. Axion-IA delivers on site, from independent Paris professionals to large-enterprise AI leadership at La Défense.",
 
+  seoHook: "finance, conseil & deeptech",
+
   servicesContext: {
     audit: {
       fr: "Audit IA opérationnel à Paris : nous identifions ce qui peut être automatisé chez vous et chiffrons le ROI. 4 niveaux du Flash au Stratégique ETI selon votre taille et votre ambition.",
       en: "Operational AI audit in Paris: we identify what can be automated at your company and quantify the ROI. 4 tiers from Flash to Mid-cap Strategic depending on your size and ambition.",
     },
     interventions: {
-      fr: "Interventions IA à Paris : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste. Frais de logement, repas et forfait trajet en sus.",
+      fr: "Interventions IA à Paris : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste. Déplacement consultant intra-muros et première couronne facturé séparément (forfait métro/RER + repas).",
       en: "AI sessions in Paris: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools installed on their workstations. Lodging, meals and travel allowance billed separately.",
     },
     implementation: {
@@ -44,7 +46,7 @@ export const PARIS_COPY: VilleCopy = {
       en: "AI implementation in Paris: we deploy AI into your existing tools (CRM, ERP, email) with contractually-costed ROI. Your teams stay in control, we create no dependency.",
     },
     unAUn: {
-      fr: "Accompagnement IA individuel à Paris : sessions 1-to-1 sur site dans votre bureau parisien ou en visio. Dirigeants, managers et entrepreneurs des 20 arrondissements et La Défense qui veulent monter en compétence IA à leur rythme, sur leurs propres cas business. Frais de logement, repas et forfait trajet en sus.",
+      fr: "Accompagnement IA individuel à Paris : sessions 1-to-1 sur site dans votre bureau parisien ou en visio. Dirigeants, managers et entrepreneurs des 20 arrondissements et La Défense qui veulent monter en compétence IA à leur rythme, sur leurs propres cas business. Pour le présentiel, le déplacement consultant est facturé en sus du forfait journée (zone Paris/banlieue).",
       en: "Individual AI coaching in Paris: 1-to-1 sessions on site at your Paris office or by video. Executives, managers and entrepreneurs across all 20 arrondissements and La Défense who want to build AI competence at their own pace, on their own business cases. Lodging, meals and travel allowance billed separately.",
     },
     sitesWeb: {
@@ -54,7 +56,7 @@ export const PARIS_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Paris (75) sur site dans les 20 arrondissements et la première couronne. Nous accompagnons les TPE, PME, ETI et grandes entreprises parisiennes (La Défense, 8e, 16e) ainsi que les startups du Sentier et de Station F sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Paris (75) sur site dans les 20 arrondissements et la première couronne. Nous accompagnons les TPE, PME, ETI et grandes entreprises parisiennes (La Défense, 8e, 16e) ainsi que les startups du Sentier et de Station F sur leurs cas IA opérationnels — diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Vos équipes restent maîtres de la stack après notre mission — aucun verrou technologique ni dépendance contractuelle.",
   directAnswerEn:
     "Axion-IA is a senior AI architects consultancy that intervenes in Paris (75) on site across all 20 arrondissements and the inner suburbs. We support Paris micro-businesses, SMEs, mid-caps and large enterprises (La Défense, 8th, 16th) along with Sentier and Station F startups on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
@@ -189,7 +191,7 @@ export const PARIS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement (clause activable, mais jamais activée à ce jour sur nos missions parisiennes).",
+          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Le plan d'action remis est exécutable par vos équipes en interne ou par tout prestataire de votre choix — pas de verrou Axion-IA, pas de prestation continue obligatoire. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement (clause activable, mais jamais activée à ce jour sur nos missions parisiennes).",
       },
       en: {
         hero: "Axion-IA's AI audit maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers from Flash to Mid-cap Strategic cover every size, from independent Paris micro-businesses to large-enterprise La Défense HQs.",
@@ -298,7 +300,7 @@ export const PARIS_COPY: VilleCopy = {
     },
     interventions: {
       fr: {
-        hero: "Les interventions IA Axion-IA à Paris se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel. Frais de logement, repas et forfait trajet facturés à part.",
+        hero: "Les interventions IA Axion-IA à Paris se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel. Déplacement consultant intra-Paris et première couronne (transports, repas) facturé séparément du forfait journée.",
         whyHere: [
           "Paris est notre premier terrain d'intervention : nous y déroulons une part importante de nos sessions chaque mois.",
           "Tous les arrondissements couverts en présentiel ainsi que la première couronne (Levallois, Boulogne, Issy, Neuilly, Saint-Denis, Vincennes, Montreuil).",
@@ -385,7 +387,7 @@ export const PARIS_COPY: VilleCopy = {
           },
           {
             q: "Les outils installés sur les postes restent-ils utilisables après la session ?",
-            a: "Oui, ce sont des comptes individuels (gratuits ou avec abonnement employé) sur ChatGPT, Claude, Mistral, Notion AI, Gamma, Perplexity selon le profil. Aucun lock-in Axion-IA, vous gardez la main.",
+            a: "Oui, ce sont des comptes individuels (gratuits ou avec abonnement employé) sur ChatGPT, Claude, Mistral, Notion AI, Gamma, Perplexity selon le profil. Vous gardez le contrôle complet des comptes IA installés — pas de licence Axion-IA, pas de dépendance technique.",
           },
           {
             q: "Pouvez-vous adapter le contenu à notre secteur ?",
@@ -598,7 +600,7 @@ export const PARIS_COPY: VilleCopy = {
           },
           {
             q: "Qui maintient la solution après la mission ?",
-            a: "Vos ambassadeurs internes, formés pendant la mission. Documentation runbook complète remise. Si maintenance externalisée souhaitée, contrat de support optionnel. Aucun lock-in : vous pouvez aussi externaliser ailleurs.",
+            a: "Vos ambassadeurs internes, formés pendant la mission. Documentation runbook complète remise. Si maintenance externalisée souhaitée, contrat de support optionnel chez nous ou chez tout prestataire francilien — vous restez libre de votre choix.",
           },
           {
             q: "Mes données restent-elles chez moi ou partent-elles chez Axion-IA ?",
@@ -614,7 +616,7 @@ export const PARIS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Forfait fixe sur SOW : pas de dérive horaire cachée. Livraison dans les délais convenus à la signature, avec compensation contractuelle en cas de retard de notre fait. ROI chiffré contractuel : si après une année de production le ROI réel mesuré reste très en deçà de la prédiction du SOW, audit gratuit pour identifier la cause + ajustement déploiement offert. Aucun lock-in technologique : vos modèles, vos données, votre runbook. Vos ambassadeurs internes formés sont autonomes après go-live.",
+          "Forfait fixe sur SOW : pas de dérive horaire cachée. Livraison dans les délais convenus à la signature, avec compensation contractuelle en cas de retard de notre fait. ROI chiffré contractuel : si après une année de production le ROI réel mesuré reste très en deçà de la prédiction du SOW, audit gratuit pour identifier la cause + ajustement déploiement offert. Votre runbook, vos modèles, vos données : tout reste chez vous, transférable à tout prestataire externe ou repris en interne. Vos ambassadeurs internes formés sont autonomes après go-live.",
       },
       en: {
         hero: "Axion-IA's AI implementation in Paris brings your AI cases to production with contractually-costed ROI, team training included. Mode is hybrid on-site / remote, with a mandatory Paris kick-off.",
@@ -725,12 +727,12 @@ export const PARIS_COPY: VilleCopy = {
     },
     unAUn: {
       fr: {
-        hero: "L'accompagnement 1-to-1 Axion-IA à Paris est conçu pour les dirigeants, managers et entrepreneurs qui veulent progresser sur l'IA à leur propre rythme, sur leurs vrais cas business — pas sur des exercices génériques. Sessions sur site dans vos bureaux (Station F, PME 8e/9e, ETI La Défense, startups Sentier) ou en visio selon vos contraintes. Aucun lock-in, aucun jargon, résultats applicables le lendemain. Frais de logement, repas et forfait trajet en sus pour les sessions présentielles.",
+        hero: "L'accompagnement 1-to-1 Axion-IA à Paris est conçu pour les dirigeants, managers et entrepreneurs qui veulent progresser sur l'IA à leur propre rythme, sur leurs vrais cas business — pas sur des exercices génériques. Sessions sur site dans vos bureaux (Station F, PME 8e/9e, ETI La Défense, startups Sentier) ou en visio selon vos contraintes. Pas de contrat récurrent imposé, pas de suite logicielle propriétaire, zéro jargon — résultats applicables le lendemain. Pour le présentiel, le déplacement consultant est facturé en sus du forfait séance.",
         whyHere: [
           "Paris est l'épicentre décisionnel français : dirigeants de PME du 8e, DG de startups du Sentier, CEOs d'ETI à La Défense — tous nos profils 1-to-1 y sont surreprésentés.",
           "Tissu B2B parisien multi-sectoriel sans équivalent : chaque session est calibrée sur votre secteur réel (finance, conseil, tech, mode, retail) et vos propres données.",
           "Déplacements intra-muros ou visio selon votre agenda : nos consultants se rendent directement dans vos bureaux, sans que vous ayez à vous déplacer.",
-          "Aucun lock-in d'aucune sorte : pas de suite logicielle imposée, pas de contrat récurrent obligatoire — vous avancez au rythme que vous décidez.",
+          "Liberté totale de stack après les sessions : ChatGPT, Claude, Mistral, Notion AI — vos choix, votre rythme, sans contrat récurrent ni suite logicielle propriétaire imposée.",
           "Cas réels uniquement : on travaille sur vos emails, vos documents, vos processus métier du moment, pas sur des cas d'école.",
           "Ecosystème IA parisien à portée de main : Station F, Mistral AI, Hugging Face — nous vous aidons aussi à vous y positionner stratégiquement.",
         ],
@@ -828,7 +830,7 @@ export const PARIS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Aucun lock-in : pas de contrat récurrent imposé, vous pouvez stopper après chaque session. Confidentialité stricte avec Confidentialité stricte dès le démarrage. Sessions orientées résultats applicables immédiatement : si après la première session vous estimez n'avoir rien de directement utilisable, session remboursée. Frais de logement, repas et forfait trajet facturés en sus pour les sessions présentielles.",
+          "Engagement séance par séance : vous interrompez le programme quand vous voulez sans pénalité contractuelle. Confidentialité stricte dès le démarrage, documents jamais exportés hors de vos systèmes sans accord explicite. Sessions orientées résultats applicables immédiatement : si après la première session vous estimez n'avoir rien de directement utilisable, séance remboursée. Pour le présentiel, le déplacement consultant est facturé en sus du forfait séance.",
       },
       en: {
         hero: "Axion-IA's 1-to-1 AI coaching in Paris is designed for executives, managers and entrepreneurs who want to progress on AI at their own pace, on their real business cases — not on generic exercises. Sessions on site at your Paris offices (Station F, 8th/9th SMEs, La Défense mid-caps, Sentier startups) or by video depending on your schedule. No lock-in, no jargon, results applicable the next day. Lodging, meals and travel allowance billed separately for on-site sessions.",
@@ -942,7 +944,7 @@ export const PARIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Paris ?",
-      a: "Le tarif dépend du niveau retenu — Audit Flash, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est le même à Paris que partout en France.",
+      a: "Quatre paliers tarifaires publics couvrent toutes les configurations parisiennes — Flash pour les TPE indépendantes du 9e ou du Sentier, Ciblé pour les PME du 8e/16e, Stratégique PME pour les cabinets de conseil et finance, Stratégique ETI pour La Défense et les groupes du CAC 40. Tarifs identiques en intra-muros et en première couronne — aucune majoration spécifique à l'Île-de-France.",
     },
     {
       q: "Avez-vous des cas clients à Paris ?",
@@ -958,7 +960,7 @@ export const PARIS_COPY: VilleCopy = {
     },
     {
       q: "En combien de temps pouvez-vous démarrer une mission à Paris ?",
-      a: "Le délai dépend de votre besoin (urgence, complexité, taille de la mission). Nous calons une date de démarrage avec vous lors du brief de cadrage initial, et tenons l'engagement contractuel à la signature.",
+      a: "Pour les structures parisiennes en cycle court (PME du Sentier, scale-ups Station F), le démarrage suit le brief de cadrage initial sous quelques semaines en général. Pour les missions ETI à La Défense ou multi-sites, le calendrier intègre votre fenêtre d'achat et la disponibilité de votre comité de pilotage. La date contractuelle est fixée à la signature et tenue.",
     },
     {
       q: "Travaillez-vous avec les startups parisiennes (Station F, French Tech) ?",

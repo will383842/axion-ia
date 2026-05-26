@@ -136,6 +136,15 @@ export interface VilleCopy {
   pitchFr: string;
   /** Pitch EN miroir. */
   pitchEn: string;
+  /**
+   * Accroche sectorielle SEO 20-40 chars utilisée dans le `<title>` du hub
+   * ville pour différencier en SERP (CTR + signal sectoriel Google).
+   * Sprint Anti-Boilerplate 2026-05-26. Si absent → fallback suffixe générique.
+   * Ex : "finance, conseil & deeptech" (Paris), "logistique & audiovisuel"
+   * (Saint-Denis), "biotech & industrie" (Lyon), "tourisme & port" (Marseille).
+   * Cible : reflet du `topSectorsNaf` top 2 ou 3 en formulation compacte.
+   */
+  seoHook?: string;
   /** Contexte local d'application des 3 services Axion-IA (version courte). */
   servicesContext?: VilleServicesContext;
   /**

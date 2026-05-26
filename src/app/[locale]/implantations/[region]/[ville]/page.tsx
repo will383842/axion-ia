@@ -126,13 +126,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const isFr = locale === "fr";
   const isPilot = !!ville.copy;
 
+  // Title sectoriel par ville (Sprint Anti-Boilerplate 2026-05-26) : si la ville
+  // expose `copy.seoHook`, on remplace le suffixe générique par un hook
+  // sectoriel court (anti-CTR plat + signal Google).
+  const seoHook = ville.copy?.seoHook?.trim();
+  const titleSuffix = seoHook ? `Architectes IA · ${seoHook}` : "Architectes IA seniors";
   const title = isPilot
-    ? isFr
-      ? `${ville.nameFr} (${ville.departementLabel ?? ville.departement}) · Architectes IA seniors`
-      : `${ville.nameFr} (${ville.departementLabel ?? ville.departement}) · Architectes IA seniors`
-    : isFr
-      ? `${ville.nameFr} · Architectes IA seniors (${region.nameFr})`
-      : `${ville.nameFr} · Architectes IA seniors (${region.nameFr})`;
+    ? `${ville.nameFr} (${ville.departementLabel ?? ville.departement}) · ${titleSuffix}`
+    : `${ville.nameFr} · Architectes IA seniors (${region.nameFr})`;
 
   // Description ≤ 155 chars (cible Google SERP — au-delà → tronqué).
   const truncateForSerp = (s: string, max = 155): string => {
