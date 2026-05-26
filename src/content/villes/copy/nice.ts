@@ -25,13 +25,15 @@ export const NICE_COPY: VilleCopy = {
   pitchEn:
     "Nice brings together 16,327 active businesses, Europe's leading tech park at Sophia Antipolis (20 km away), worldwide R&D from Amadeus IT and IBM, the 3IA Côte d'Azur AI institute and French Tech Côte d'Azur. Axion-IA delivers on site, from Old Nice micro-businesses to regional Côte d'Azur headquarters.",
 
+  seoHook: "tourisme d'affaires & tech Sophia",
+
   servicesContext: {
     audit: {
       fr: "Audit IA opérationnel à Nice : nous identifions ce qui peut être automatisé dans votre structure et chiffrons le ROI. 4 niveaux du Flash au Stratégique ETI, calibrés de la TPE niçoise aux ETI et grandes entreprises de la Côte d'Azur.",
       en: "Operational AI audit in Nice: we identify what can be automated at your company and quantify the ROI. 4 tiers from Flash to Mid-cap Strategic, calibrated from Nice micro-businesses to Côte d'Azur mid-caps and large enterprises.",
     },
     interventions: {
-      fr: "Interventions IA à Nice : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste. Frais de logement, repas et forfait trajet en sus.",
+      fr: "Interventions IA à Nice : formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs repartent autonomes sur des outils IA installés sur leur poste, configurés pour leur métier — tourisme d'affaires, hôtellerie premium, tech Sophia, santé/biotech ou services.",
       en: "AI sessions in Nice: on-site formats from one to several days depending on your teams. Your staff leave autonomous with AI tools installed on their workstations. Lodging, meals and travel allowance billed separately.",
     },
     implementation: {
@@ -39,7 +41,7 @@ export const NICE_COPY: VilleCopy = {
       en: "AI implementation in Nice: we deploy AI into your existing tools (CRM, ERP, email) with contractually-costed ROI. Your teams stay in control — no dependency created.",
     },
     unAUn: {
-      fr: "Coaching IA 1-to-1 à Nice et Sophia Antipolis : accompagnement individuel intensif d'un dirigeant ou d'un expert métier pour maîtriser et déployer l'IA dans son quotidien professionnel. Séances sur site ou à distance selon votre rythme. Tarif d'entrée 990 € HT. Frais de déplacement pour le présentiel en sus.",
+      fr: "Coaching IA 1-to-1 à Nice et Sophia Antipolis : accompagnement individuel intensif d'un dirigeant ou d'un expert métier pour maîtriser et déployer l'IA dans son quotidien professionnel. Séances sur site ou à distance selon votre rythme. Tarif d'entrée 990 € HT.",
       en: "1-to-1 AI coaching in Nice and Sophia Antipolis: intensive individual support for a manager or expert to master and deploy AI in their professional practice. On-site or remote sessions at your pace. Entry rate from €990 excl. VAT. On-site travel expenses billed separately.",
     },
     sitesWeb: {
@@ -49,7 +51,7 @@ export const NICE_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nice (06) sur site, de la Promenade des Anglais à Sophia Antipolis. Nous accompagnons TPE, PME, ETI et grandes entreprises de la Côte d'Azur — tourisme d'affaires, IT, santé, services — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nice (06) sur site, de la Promenade des Anglais à Sophia Antipolis. Nous accompagnons TPE, PME, ETI et grandes entreprises de la Côte d'Azur — tourisme d'affaires, IT, santé, services — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Vos équipes azuréennes conservent la maîtrise pleine de la stack (modèles, CRM hôtelier, intégrations Sophia) après notre mission — sans verrou éditeur ni dépendance contractuelle.",
   directAnswerEn:
     "Axion-IA is an senior AI architects consultancy that intervenes in Nice (06) on site, from the Promenade des Anglais to Sophia Antipolis. We support micro-businesses, SMEs, mid-caps and large enterprises on the Côte d'Azur — business tourism, IT, health, services — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
@@ -179,7 +181,7 @@ export const NICE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement (clause activable, jamais déclenchée à ce jour sur nos missions azuréennes).",
+          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Le plan d'action remis est portable — exécutable par tout cabinet de la French Tech Côte d'Azur ou par vos équipes en interne, sans prestation continue obligatoire. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement (clause activable, jamais déclenchée à ce jour sur nos missions azuréennes).",
       },
       en: {
         hero: "Axion-IA's AI audit maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers from Flash to Mid-cap Strategic cover every size: Nice and Grand Arénas micro-businesses and SMEs, Côte d'Azur hospitality and services mid-caps, Sophia Antipolis regional R&D headquarters.",
@@ -289,7 +291,7 @@ export const NICE_COPY: VilleCopy = {
     },
     interventions: {
       fr: {
-        hero: "Les interventions IA Axion-IA à Nice se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel. Frais de logement, repas et forfait trajet facturés à part.",
+        hero: "Les interventions IA Axion-IA à Nice se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — réception hôtelière, équipe événementiel tourisme d'affaires, support tech Sophia, cabinet médical Eurobiomed ou service client B2B.",
         whyHere: [
           "Nice et la Côte d'Azur couvrent un tissu B2B de 16 327 établissements actifs : hôtels, agences, cabinets, structures IT et biotech — tous éligibles à nos sessions sur site.",
           "Le bassin Sophia Antipolis concentre les équipes R&D d'Amadeus, IBM, SAP et d'une centaine d'entreprises tech : nous y animons des sessions dédiées IT/IA.",
@@ -376,7 +378,7 @@ export const NICE_COPY: VilleCopy = {
           },
           {
             q: "Les outils installés sur les postes restent-ils utilisables après la session ?",
-            a: "Oui, ce sont des comptes individuels (gratuits ou avec abonnement employé) sur ChatGPT, Claude, Mistral, Notion AI, Gamma, Perplexity selon le profil. Aucun lock-in Axion-IA, vous gardez la main.",
+            a: "Oui, ce sont des comptes individuels (gratuits ou avec abonnement employé) sur ChatGPT, Claude, Mistral, Notion AI, Gamma, Perplexity selon le profil. Les accès restent à votre nom et révocables à tout moment — pas de licence Axion-IA, pas de dépendance technique imposée.",
           },
           {
             q: "Pouvez-vous adapter le contenu à notre secteur touristique ou hôtelier ?",
@@ -590,7 +592,7 @@ export const NICE_COPY: VilleCopy = {
           },
           {
             q: "Qui maintient la solution après la mission ?",
-            a: "Vos ambassadeurs internes, formés pendant la mission. Documentation runbook complète remise. Si maintenance externalisée souhaitée, contrat de support optionnel. Aucun lock-in : vous pouvez externaliser ailleurs.",
+            a: "Vos ambassadeurs internes, formés pendant la mission. Documentation runbook complète remise. Si maintenance externalisée souhaitée, contrat de support optionnel chez nous ou chez tout intégrateur Côte d'Azur — vous restez libre de la délégation.",
           },
           {
             q: "Mes données restent-elles chez moi ou partent-elles chez Axion-IA ?",
@@ -606,7 +608,7 @@ export const NICE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Forfait fixe sur SOW : pas de dérive horaire cachée. Livraison dans les délais convenus à la signature, avec compensation contractuelle en cas de retard de notre fait. ROI chiffré contractuel : si après une année de production le ROI réel mesuré reste très en deçà de la prédiction du SOW, audit gratuit pour identifier la cause + ajustement déploiement offert. Aucun lock-in technologique : vos modèles, vos données, votre runbook. Vos ambassadeurs internes formés sont autonomes après go-live.",
+          "Forfait fixe sur SOW : pas de dérive horaire cachée. Livraison dans les délais convenus à la signature, avec compensation contractuelle en cas de retard de notre fait. ROI chiffré contractuel : si après une année de production le ROI réel mesuré reste très en deçà de la prédiction du SOW, audit gratuit pour identifier la cause + ajustement déploiement offert. Modèles, données et runbook restent intégralement chez vous, transférables à tout intégrateur Côte d'Azur ou repris en interne. Vos ambassadeurs internes formés sont autonomes après go-live.",
       },
       en: {
         hero: "Axion-IA's AI implementation in Nice brings your AI cases to production with contractually-costed ROI, team training included. Mode is hybrid on-site / remote, with a mandatory kick-off in Nice or the Sophia Antipolis basin depending on your location.",
@@ -820,7 +822,7 @@ export const NICE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Tarif d'entrée fixe à 990 € HT pour la séance découverte : vous savez exactement ce que vous payez avant de réserver. Livrable utilisable remis à l'issue de chaque séance — pas de séance sans sortie concrète. Confidentialité stricte dès le démarrage. Frais de déplacement pour le présentiel présentés en sus, jamais fondus dans le tarif. Aucun lock-in : à l'issue du programme, vous êtes autonome et libre d'utiliser vos compétences IA avec n'importe quel outil ou prestataire.",
+          "Tarif d'entrée fixe à 990 € HT pour la séance découverte : vous savez exactement ce que vous payez avant de réserver. Livrable utilisable remis à l'issue de chaque séance — pas de séance sans sortie concrète. Confidentialité stricte dès le démarrage, particulièrement adaptée aux dirigeants tourisme d'affaires et tech Sophia sensibles aux fuites stratégiques. À l'issue du programme, vous êtes autonome et libre d'utiliser vos compétences IA avec n'importe quel outil ou prestataire, sans contrat récurrent ni licence à renouveler.",
       },
       en: {
         hero: "Axion-IA's 1-to-1 AI coaching in Nice and Sophia Antipolis is an intensive individual programme designed for executives, managers and domain experts who want to master AI in their daily professional practice — without going through group training. Each session focuses on YOUR files, YOUR data, YOUR workflows. On-site in Nice, Grand Arénas, Sophia Antipolis, or remote at your pace. On-site travel expenses billed separately. Entry rate from €990 excl. VAT.",
@@ -934,7 +936,7 @@ export const NICE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Nice ?",
-      a: "Le tarif dépend du niveau retenu — Audit Flash, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est le même à Nice que partout en France.",
+      a: "Quatre paliers tarifaires publics couvrent toutes les configurations niçoises et azuréennes — Flash pour les TPE indépendantes du Vieux-Nice ou de la Promenade, Ciblé pour les PME hôtellerie premium et services Côte d'Azur, Stratégique PME pour les scale-ups Sophia Antipolis et acteurs French Tech, Stratégique ETI pour les groupes hôteliers, opérateurs tourisme d'affaires et grandes tech de Sophia. La grille appliquée à Nice est strictement identique à celle de Paris ou Lyon — aucune pondération PACA.",
     },
     {
       q: "Intervenez-vous à Sophia Antipolis depuis Nice ?",
