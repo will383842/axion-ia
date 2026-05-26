@@ -1,0 +1,264 @@
+// Hub notifications — format Telegram MarkdownV2 (Sprint Notif Infra 2026-05-26).
+//
+// MarkdownV2 nécessite l'échappement de 18 caractères réservés. Sinon Telegram
+// renvoie `Bad Request: can't parse entities`. Cf.
+// https://core.telegram.org/bots/api#markdownv2-style
+
+import type { NotificationCategory, NotificationEvent, NotificationSeverity } from "./types";
+
+const SEVERITY_EMOJI: Record<NotificationSeverity, string> = {
+  info: "🟢",
+  warn: "🟡",
+  error: "🔴",
+  critical: "🚨",
+};
+
+const TITLES: Record<NotificationCategory, string> = {
+  CONTACT_FORM_SUBMITTED: "Nouveau message contact",
+  AUDIT_REQUEST_SUBMITTED: "Nouvelle demande d'audit IA",
+  INTERVENTION_REQUEST_SUBMITTED: "Nouvelle demande d'intervention",
+  IMPLEMENTATION_REQUEST_SUBMITTED: "Nouvelle demande d'implémentation",
+  QUOTE_REQUEST_RECEIVED: "Nouvelle demande de devis",
+  NEWSLETTER_PENDING: "Newsletter — opt-in en attente",
+  NEWSLETTER_CONFIRMED: "Newsletter — opt-in confirmé",
+  NEWSLETTER_UNSUBSCRIBED: "Newsletter — désinscription",
+  BOOKING_CREATED: "Nouvelle réservation",
+  BOOKING_CANCELLED: "Réservation annulée",
+  OPTION_POSTED: "Option 48h posée",
+  OPTION_CONFIRMED: "Option confirmée",
+  OPTION_REFUSED: "Option refusée",
+  OPTION_EXPIRED: "Option expirée",
+  CALENDLY_INVITEE_CREATED: "Nouvelle réservation Calendly",
+  CALENDLY_INVITEE_CANCELED: "Calendly — annulation",
+  CALENDLY_INVITEE_RESCHEDULED: "Calendly — déplacement",
+  ADMIN_REPLIED_TO_SUBMISSION: "Réponse admin envoyée",
+  DEPLOY_SUCCESS: "Déploiement réussi",
+  DEPLOY_FAILED: "Échec déploiement",
+  BACKUP_SUCCESS: "Sauvegarde réussie",
+  BACKUP_FAILED: "Échec sauvegarde",
+  INCIDENT_DETECTED: "Incident détecté",
+  SECURITY_ALERT: "Alerte sécurité",
+  STRIPE_EVENT: "Stripe — événement",
+  STRIPE_WEBHOOK_SIGNATURE_FAIL: "Stripe — signature webhook invalide",
+  MONITORING_ALERT: "Alerte monitoring",
+};
+
+const MD_V2_RESERVED = /[_*[\]()~`>#+\-=|{}.!\\]/g;
+
+/** Échappe les 18 caractères réservés MarkdownV2 de Telegram. */
+export function escapeMarkdownV2(text: string): string {
+  return text.replace(MD_V2_RESERVED, (c) => `\\${c}`);
+}
+
+/** Formatte une date ISO/Date en Europe/Paris (style FR humain). */
+export function formatParisDateTime(input: string | Date | undefined): string {
+  if (!input) return "—";
+  const d = typeof input === "string" ? new Date(input) : input;
+  if (Number.isNaN(d.getTime())) return "—";
+  return new Intl.DateTimeFormat("fr-FR", {
+    timeZone: "Europe/Paris",
+    dateStyle: "medium",
+    timeStyle: "short",
+  }).format(d);
+}
+
+function formatKV(label: string, value: string | number | null | undefined): string | null {
+  if (value === null || value === undefined || value === "") return null;
+  return `• *${escapeMarkdownV2(label)}* : ${escapeMarkdownV2(String(value))}`;
+}
+
+function formatBody(event: NotificationEvent): string {
+  switch (event.category) {
+    case "CONTACT_FORM_SUBMITTED":
+    case "AUDIT_REQUEST_SUBMITTED":
+    case "INTERVENTION_REQUEST_SUBMITTED":
+    case "IMPLEMENTATION_REQUEST_SUBMITTED":
+    case "QUOTE_REQUEST_RECEIVED": {
+      const p = event.payload;
+      const lines = [
+        formatKV("Nom", p.contactName),
+        formatKV("Email", p.contactEmail),
+        "contactPhone" in p ? formatKV("Téléphone", p.contactPhone) : null,
+        "ville" in p ? formatKV("Ville", p.ville) : null,
+        "companyName" in p ? formatKV("Société", p.companyName) : null,
+        "companySize" in p ? formatKV("Taille", p.companySize) : null,
+        "budgetIndicative" in p ? formatKV("Budget", p.budgetIndicative) : null,
+        "timingWeeks" in p ? formatKV("Timing", p.timingWeeks) : null,
+        "subType" in p ? formatKV("Sous-type", p.subType) : null,
+        "scope" in p ? formatKV("Scope", p.scope) : null,
+        "urgency" in p ? formatKV("Urgence", p.urgency) : null,
+        "budget" in p ? formatKV("Budget", p.budget) : null,
+        "source" in p ? formatKV("Source", p.source) : null,
+        formatKV("Locale", p.locale),
+        formatKV("ID", p.submissionId),
+      ].filter((v): v is string => v !== null);
+      return lines.join("\n");
+    }
+    case "NEWSLETTER_PENDING":
+    case "NEWSLETTER_CONFIRMED":
+    case "NEWSLETTER_UNSUBSCRIBED": {
+      const p = event.payload;
+      return [formatKV("Email", p.email), formatKV("Locale", p.locale)]
+        .filter((v): v is string => v !== null)
+        .join("\n");
+    }
+    case "BOOKING_CREATED":
+    case "BOOKING_CANCELLED":
+    case "OPTION_POSTED":
+    case "OPTION_CONFIRMED":
+    case "OPTION_REFUSED":
+    case "OPTION_EXPIRED": {
+      const p = event.payload as Record<string, string | number | undefined>;
+      const order = [
+        "bookingId",
+        "serviceType",
+        "contactName",
+        "contactEmail",
+        "bookingDate",
+        "expiresAt",
+        "admin",
+        "cancelledBy",
+        "reason",
+      ];
+      return order
+        .map((k) => formatKV(k, p[k]))
+        .filter((v): v is string => v !== null)
+        .join("\n");
+    }
+    case "CALENDLY_INVITEE_CREATED": {
+      const p = event.payload;
+      return [
+        formatKV("Type RDV", p.eventName),
+        formatKV("Invitee", p.inviteeName),
+        formatKV("Email", p.inviteeEmail),
+        formatKV("Début", p.eventStartTime),
+        formatKV("Page", p.pageUrl),
+        formatKV("UTM source", p.utmSource),
+        formatKV("UTM campagne", p.utmCampaign),
+        formatKV("ID", p.eventUri),
+      ]
+        .filter((v): v is string => v !== null)
+        .join("\n");
+    }
+    case "CALENDLY_INVITEE_CANCELED": {
+      const p = event.payload;
+      return [
+        formatKV("Email", p.inviteeEmail),
+        formatKV("Raison", p.reason),
+        formatKV("ID", p.eventUri),
+      ]
+        .filter((v): v is string => v !== null)
+        .join("\n");
+    }
+    case "CALENDLY_INVITEE_RESCHEDULED": {
+      const p = event.payload;
+      return [
+        formatKV("Email", p.inviteeEmail),
+        formatKV("Avant", p.oldStart),
+        formatKV("Après", p.newStart),
+        formatKV("ID", p.eventUri),
+      ]
+        .filter((v): v is string => v !== null)
+        .join("\n");
+    }
+    case "ADMIN_REPLIED_TO_SUBMISSION": {
+      const p = event.payload;
+      return [
+        formatKV("Par", p.repliedBy),
+        formatKV("À", p.toEmail),
+        formatKV("Sujet", p.subject),
+        formatKV("Submission", p.submissionId),
+      ]
+        .filter((v): v is string => v !== null)
+        .join("\n");
+    }
+    case "DEPLOY_SUCCESS":
+    case "DEPLOY_FAILED": {
+      const p = event.payload;
+      return [
+        formatKV("SHA", p.sha),
+        formatKV("Durée (s)", p.duration),
+        formatKV("Erreur", p.error?.slice(0, 500)),
+      ]
+        .filter((v): v is string => v !== null)
+        .join("\n");
+    }
+    case "BACKUP_SUCCESS":
+    case "BACKUP_FAILED": {
+      const p = event.payload;
+      return [
+        formatKV("Type", p.type),
+        formatKV("Taille (B)", p.size),
+        formatKV("Erreur", p.error?.slice(0, 500)),
+      ]
+        .filter((v): v is string => v !== null)
+        .join("\n");
+    }
+    case "INCIDENT_DETECTED": {
+      const p = event.payload;
+      return [
+        formatKV("Titre", p.title),
+        formatKV("URL", p.url),
+        formatKV("Statut HTTP", p.statusCode),
+        formatKV("User", p.userId),
+        formatKV("Erreur", p.error?.slice(0, 500)),
+      ]
+        .filter((v): v is string => v !== null)
+        .join("\n");
+    }
+    case "SECURITY_ALERT": {
+      const p = event.payload;
+      return [
+        formatKV("Type", p.kind),
+        formatKV("IP", p.ip),
+        formatKV("Détails", JSON.stringify(p.details).slice(0, 800)),
+      ]
+        .filter((v): v is string => v !== null)
+        .join("\n");
+    }
+    case "STRIPE_EVENT": {
+      const p = event.payload;
+      return [
+        formatKV("Type événement", p.eventType),
+        formatKV("Object", p.objectId),
+        formatKV("Montant", p.amount),
+      ]
+        .filter((v): v is string => v !== null)
+        .join("\n");
+    }
+    case "STRIPE_WEBHOOK_SIGNATURE_FAIL": {
+      const p = event.payload;
+      return [formatKV("IP", p.ip)].filter((v): v is string => v !== null).join("\n");
+    }
+    case "MONITORING_ALERT": {
+      const p = event.payload;
+      return [
+        formatKV("Type", p.kind),
+        formatKV("Détails", JSON.stringify(p.details).slice(0, 800)),
+      ]
+        .filter((v): v is string => v !== null)
+        .join("\n");
+    }
+  }
+}
+
+export interface FormattedMessage {
+  /** Texte MarkdownV2 prêt pour Telegram. */
+  text: string;
+}
+
+/** Produit le message MarkdownV2 final pour Telegram. */
+export function formatNotification(
+  event: NotificationEvent,
+  severity: NotificationSeverity,
+): FormattedMessage {
+  const emoji = SEVERITY_EMOJI[severity];
+  const title = TITLES[event.category];
+  const header = `${emoji} *${escapeMarkdownV2(title)}*`;
+  const body = formatBody(event);
+  const footer = [
+    `🕐 ${escapeMarkdownV2(formatParisDateTime(new Date()))}`,
+    `🏷️ ${escapeMarkdownV2(event.category)}`,
+  ].join(" · ");
+  return { text: [header, "", body, "", footer].join("\n") };
+}
