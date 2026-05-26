@@ -191,7 +191,7 @@ export default async function AppelPage({ params }: Props) {
                   <div className="ring-paper relative h-14 w-14 shrink-0 overflow-hidden rounded-full ring-2">
                     <Image
                       src="/images/axion-ia-fondateur-williams-jullin-portrait-professionnel.jpg"
-                      alt="Williams Jullin"
+                      alt="William"
                       fill
                       sizes="56px"
                       className="object-cover"
@@ -203,7 +203,7 @@ export default async function AppelPage({ params }: Props) {
                       className="text-fg leading-tight font-semibold"
                       style={{ fontFamily: "var(--font-serif)" }}
                     >
-                      Williams Jullin
+                      William
                     </p>
                     <p className="text-fg-soft mt-0.5 text-xs">Consultant IA · Fondateur</p>
                   </div>

@@ -94,6 +94,12 @@ export function CalendlyInlineWidget({
 
   return (
     <>
+      {/* Resource hints — pré-établit DNS + TLS handshake vers Calendly assets
+          et iframe AVANT que le script ne se charge. Économise ~200-500ms sur
+          la première apparition du widget. Hoistés par Next dans <head>. */}
+      <link rel="preconnect" href="https://assets.calendly.com" />
+      <link rel="preconnect" href="https://calendly.com" />
+      <link rel="dns-prefetch" href="https://calendly.com" />
       {/* Container Calendly inline — le script widget.js detect `.calendly-inline-widget`
           au load et y injecte l'iframe correspondant à `data-url`. */}
       <div
@@ -114,7 +120,7 @@ export function CalendlyInlineWidget({
       </noscript>
       <Script
         src="https://assets.calendly.com/assets/external/widget.js"
-        strategy="lazyOnload"
+        strategy="afterInteractive"
         async
       />
     </>
