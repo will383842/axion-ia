@@ -321,6 +321,31 @@ export default async function VilleHubPage({ params }: Props) {
       })
     : null;
 
+  // ImageObject JSON-LD — Hero image triangle 3 piliers Axion-IA (Will 2026-05-26).
+  // Signal Google Images + AI engines pour indexation visuelle de la marque.
+  // Licence CC BY 4.0 (cohérent avec /galerie banque d'images Axion-IA).
+  const heroImageJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ImageObject",
+    "@id": `${SITE_URL}${path}#hero-image`,
+    contentUrl: `${SITE_URL}/images/axion-ia-ville-hero-triangle-3-piliers-temps-couts-resultats-carre.avif`,
+    url: `${SITE_URL}/images/axion-ia-ville-hero-triangle-3-piliers-temps-couts-resultats-carre.avif`,
+    name: `Axion-IA · 3 piliers à ${ville.nameFr}`,
+    description: `Triangle Axion-IA des 3 piliers à ${ville.nameFr} : gagnez du temps, réduisez vos coûts, maximisez vos résultats — 100 % gagnant, moins de complexité, plus de performance.`,
+    width: 1254,
+    height: 1254,
+    encodingFormat: "image/avif",
+    creator: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: "Axion-IA" },
+    copyrightHolder: { "@type": "Organization", name: "Axion-IA OÜ" },
+    license: "https://creativecommons.org/licenses/by/4.0/",
+    acquireLicensePage: `${SITE_URL}/${loc}/galerie`,
+    contentLocation: {
+      "@type": "Place",
+      name: ville.nameFr,
+      containedInPlace: { "@type": "AdministrativeArea", name: region.nameFr },
+    },
+  } as const;
+
   return (
     <>
       <Container>
@@ -438,23 +463,25 @@ export default async function VilleHubPage({ params }: Props) {
                 </Cta>
               </div>
             </div>
-            {/* Colonne droite — illustration universelle (globe + services).
-                Aspect 1:1, priority LCP. Cachée < lg pour focus copy mobile. */}
+            {/* Colonne droite — illustration triangle « 3 piliers » Axion-IA :
+                Gagnez du temps · Réduisez vos coûts · Maximisez vos résultats.
+                Image hand-crafted (Will 2026-05-26), AVIF 56 KB / WebP 91 KB
+                fallback PNG. Aspect 1:1, priority LCP. Cachée < lg. */}
             <div className="hidden lg:block">
               <Illustration
                 slot="VILLE-01-hero"
-                src="/images/axion-ia-proposition-globe-4-services-formations-audit-implementations-carre.avif"
+                src="/images/axion-ia-ville-hero-triangle-3-piliers-temps-couts-resultats-carre.avif"
                 aspectRatio="1:1"
-                filenameTarget="public/images/axion-ia-proposition-globe-4-services-formations-audit-implementations-carre.avif"
+                filenameTarget="public/images/axion-ia-ville-hero-triangle-3-piliers-temps-couts-resultats-carre.avif"
                 alt={
                   isFr
-                    ? `Architectes IA Axion-IA à ${ville.nameFr} — 5 services sur site.`
-                    : `Architectes IA Axion-IA à ${ville.nameFr} — 5 services sur site.`
+                    ? `Triangle Axion-IA des 3 piliers à ${ville.nameFr} : gagnez du temps, réduisez vos coûts, maximisez vos résultats — 100 % gagnant, moins de complexité, plus de performance.`
+                    : `Triangle Axion-IA des 3 piliers à ${ville.nameFr} : gagnez du temps, réduisez vos coûts, maximisez vos résultats — 100 % gagnant, moins de complexité, plus de performance.`
                 }
                 caption={
                   isFr
-                    ? `Architectes IA seniors · ${ville.nameFr}`
-                    : `Architectes IA seniors · ${ville.nameFr}`
+                    ? `Axion-IA · 3 piliers à ${ville.nameFr}`
+                    : `Axion-IA · 3 piliers à ${ville.nameFr}`
                 }
                 priority
               />
@@ -608,6 +635,7 @@ export default async function VilleHubPage({ params }: Props) {
           placeJsonLd,
           breadcrumbJsonLd,
           verticalesItemList,
+          heroImageJsonLd,
           faqSpeakableJsonLd ?? null,
         ]}
         strategy="afterInteractive"
