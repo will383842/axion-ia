@@ -26,6 +26,7 @@ import { Link } from "@/i18n/navigation";
 import { ClientLogosBand } from "@/components/sections/ClientLogosBand";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { FounderTrustSection } from "@/components/sections/FounderTrustSection";
+import { RegionAudienceSection } from "@/components/sections/RegionAudienceSection";
 
 import { REGIONS, getRegion } from "@/content/regions";
 import { getVillesByRegion } from "@/content/villes";
@@ -64,13 +65,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const region = getRegion(regionSlug);
   if (!region) return {};
   const isFr = locale === "fr";
+  // metaTitle + metaDesc hand-crafted per région (Will 2026-05-26) — voir
+  // `regions.ts` champs metaTitleFr / metaDescFr. Anti-duplicate-content,
+  // mention positionnement architecte + 5 services + ville/région.
   const meta = buildProductMetadata({
     locale,
     path: `/implantations/${region.slug}`,
-    title: isFr
-      ? `${region.nameFr} · Architectes IA seniors`
-      : `${region.nameFr} · Senior AI architects`,
-    description: isFr ? region.pitchFr : region.pitchEn,
+    title: isFr ? region.metaTitleFr : (region.metaTitleEn ?? region.metaTitleFr),
+    description: isFr ? region.metaDescFr : (region.metaDescEn ?? region.metaDescFr),
     alternates: {
       fr: `/implantations/${region.slug}`,
       en: `/locations/${region.slug}`,
@@ -583,6 +585,12 @@ export default async function RegionPage({ params }: Props) {
           );
         })()}
       </Section>
+
+      {/* Section « Nous accompagnons toutes les tailles » personnalisée à la
+          région (Will 2026-05-26). H2 régionalisé + paragraphe `audienceLocalFr`
+          hand-crafted par région (cf. regions.ts). 4 cards TPE/PME/ETI/Grandes
+          réutilisées de la home via les clés i18n `audience{N}{Title,Lead,Detail}`. */}
+      <RegionAudienceSection region={region} isFr={isFr} />
 
       {/* Section fondateur William J. — crédibilité avant le contexte régional
           + CTA final. Composant partagé `FounderTrustSection` (i18n home). */}
