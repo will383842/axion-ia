@@ -17,6 +17,7 @@ import { newsletterSchema } from "@/lib/schemas/forms";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { sendTelegram } from "@/lib/telegram";
+import { notify } from "@/server/notifications";
 import { redactEmail } from "@/lib/pii-redaction";
 import { enqueueEmail } from "@/server/queue/queues";
 import { parseLocale } from "@/lib/schemas/locale";
@@ -81,12 +82,14 @@ export async function subscribeNewsletterAction(
     },
   });
 
-  // 6. Notifications (fail-soft)
+  // 6. Notifications via hub typé (cf. ADR 0027) — pilote migration.
+  // sendTelegram() reste utilisé sur d'autres call-sites du fichier (confirm,
+  // unsubscribe) pour limiter le scope de migration de ce sprint.
   if (sub.status === "pending") {
-    await sendTelegram({
-      tag: "NEWSLETTER",
-      body: `Nouvelle inscription pending\n• Email : \`${redactEmail(parsed.data.email)}\`\n• Locale : ${locale}${source ? `\n• Source : ${source}` : ""}`,
-      silent: true,
+    await notify({
+      category: "NEWSLETTER_PENDING",
+      payload: { email: parsed.data.email, locale },
+      dedupKey: sub.id,
     });
   }
 
