@@ -19,6 +19,7 @@ import type { VerticaleSlug } from "@/components/services/types";
 import { getNearbyVilles } from "@/lib/geo";
 import { fmtPopulation } from "@/lib/intl";
 import { SITE_URL } from "@/lib/seo";
+import { Container } from "@/components/layout/Container";
 
 interface VilleCommunesProchesProps {
   /** Ville source (composite TS hardcode SSOT, cf. `@/content/villes`). */
@@ -106,60 +107,65 @@ export async function VilleCommunesProches(props: VilleCommunesProchesProps) {
   }));
 
   return (
-    <section aria-labelledby={headingId} className="border-border-strong border-t pt-12">
-      <h2
-        id={headingId}
-        className="text-fg text-xl leading-tight font-semibold tracking-tight sm:text-2xl"
-        style={{ fontFamily: "var(--font-serif)" }}
-      >
-        {isFr ? `Communes proches de ${ville.nameFr}` : `Cities near ${ville.nameFr}`}
-      </h2>
-      <p className="text-fg-soft mt-3 max-w-2xl text-base leading-relaxed">
-        {isFr
-          ? verticale
-            ? `Communes éligibles aux mêmes prestations dans un rayon proche de ${ville.nameFr}, triées par distance.`
-            : `Communes alentours couvertes par Axion-IA, triées par distance depuis ${ville.nameFr}.`
-          : verticale
-            ? `Cities eligible for the same services within close range of ${ville.nameFr}, sorted by distance.`
-            : `Surrounding cities covered by Axion-IA, sorted by distance from ${ville.nameFr}.`}
-      </p>
-      <ul role="list" className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-        {nearby.map(({ ville: v, distanceKm }) => (
-          <li key={v.slug}>
-            <Link
-              href={`/implantations/${v.region}/${v.slug}${suffix}` as never}
-              data-source-region={v.region}
-              data-source-ville={v.slug}
-              data-cta-tracking={verticale ? `ville_${verticale}_nearby` : `ville_hub_nearby`}
-              className="group hover:bg-sand focus-visible:ring-terracotta block rounded-lg px-3 py-2.5 transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-            >
-              <span
-                className="text-fg group-hover:text-terracotta block text-sm font-semibold tracking-tight transition"
-                style={{ fontFamily: "var(--font-serif)" }}
+    <section
+      aria-labelledby={headingId}
+      className="bg-bg border-border-strong border-t py-12 sm:py-16"
+    >
+      <Container>
+        <h2
+          id={headingId}
+          className="text-fg text-xl leading-tight font-semibold tracking-tight sm:text-2xl"
+          style={{ fontFamily: "var(--font-serif)" }}
+        >
+          {isFr ? `Communes proches de ${ville.nameFr}` : `Cities near ${ville.nameFr}`}
+        </h2>
+        <p className="text-fg-soft mt-3 max-w-2xl text-base leading-relaxed">
+          {isFr
+            ? verticale
+              ? `Communes éligibles aux mêmes prestations dans un rayon proche de ${ville.nameFr}, triées par distance.`
+              : `Communes alentours couvertes par Axion-IA, triées par distance depuis ${ville.nameFr}.`
+            : verticale
+              ? `Cities eligible for the same services within close range of ${ville.nameFr}, sorted by distance.`
+              : `Surrounding cities covered by Axion-IA, sorted by distance from ${ville.nameFr}.`}
+        </p>
+        <ul role="list" className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+          {nearby.map(({ ville: v, distanceKm }) => (
+            <li key={v.slug}>
+              <Link
+                href={`/implantations/${v.region}/${v.slug}${suffix}` as never}
+                data-source-region={v.region}
+                data-source-ville={v.slug}
+                data-cta-tracking={verticale ? `ville_${verticale}_nearby` : `ville_hub_nearby`}
+                className="group hover:bg-sand focus-visible:ring-terracotta block rounded-lg px-3 py-2.5 transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
               >
-                {v.nameFr}
-              </span>
-              <span className="text-fg-muted mt-0.5 block text-[11px] tabular-nums">
-                {Math.round(distanceKm)} km
-                {v.population > 0
-                  ? ` · ${fmtPopulation(v.population, isFr ? "fr" : "en")} ${isFr ? "hab." : "inhab."}`
-                  : ""}
-              </span>
-            </Link>
-          </li>
-        ))}
-      </ul>
-      {/* JSON-LD ItemList — AEO / Google AI Overviews maillage interne. */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: buildItemListJsonLd({
-            sourceName: ville.nameFr,
-            items: jsonLdItems,
-            isFr,
-          }),
-        }}
-      />
+                <span
+                  className="text-fg group-hover:text-terracotta block text-sm font-semibold tracking-tight transition"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
+                  {v.nameFr}
+                </span>
+                <span className="text-fg-muted mt-0.5 block text-[11px] tabular-nums">
+                  {Math.round(distanceKm)} km
+                  {v.population > 0
+                    ? ` · ${fmtPopulation(v.population, isFr ? "fr" : "en")} ${isFr ? "hab." : "inhab."}`
+                    : ""}
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+        {/* JSON-LD ItemList — AEO / Google AI Overviews maillage interne. */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: buildItemListJsonLd({
+              sourceName: ville.nameFr,
+              items: jsonLdItems,
+              isFr,
+            }),
+          }}
+        />
+      </Container>
     </section>
   );
 }

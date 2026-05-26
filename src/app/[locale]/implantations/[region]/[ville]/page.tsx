@@ -575,12 +575,9 @@ export default async function VilleHubPage({ params }: Props) {
         </Container>
       </section>
 
-      {/* ── Bandeau logos clients — preuve sociale juste après le hero ── */}
-      <ClientLogosBand isFr={isFr} />
-
-      {/* ── Grille 5 verticales — DÉPLACÉE juste après le hero (Will 2026-05-26).
+      {/* ── Grille 5 verticales — JUSTE après le hero (Will 2026-05-26).
             Le visiteur voit immédiatement les 5 prestations dispo à sa ville,
-            avant de plonger dans l'écosystème local. ── */}
+            avant les logos clients et le bandeau contact. ── */}
       <section
         id="ville-verticales"
         aria-labelledby="ville-verticales-heading"
@@ -646,14 +643,18 @@ export default async function VilleHubPage({ params }: Props) {
         </Container>
       </section>
 
+      {/* ── Bandeau logos clients — preuve sociale après les 5 modules ── */}
+      <ClientLogosBand isFr={isFr} />
+
+      {/* ── Bandeau orange contact — placé juste après les logos (Will 2026-05-26)
+            pour capter l'attention immédiate post-services. ── */}
+      <OrangeContactBanner isFr={isFr} villeSlug={ville.slug} />
+
       {/* ── Écosystème économique local (composant ville Phase 4) ── */}
       <VilleEcosystemeLocal ville={villeAsCity} isFr={isFr} />
 
       {/* ── Tissu économique : secteurs, opportunités IA (composant ville Phase 4) ── */}
       <VilleTissuEconomique ville={ville} isFr={isFr} />
-
-      {/* ── Bandeau orange contact (milieu de page) ── */}
-      <OrangeContactBanner isFr={isFr} villeSlug={ville.slug} />
 
       {/* ── Communes proches (composant ville Phase 4) — sans verticale → liens hub ── */}
       <VilleCommunesProches ville={ville} isFr={isFr} />
