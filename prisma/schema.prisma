@@ -664,12 +664,92 @@ model Submission {
   // (qui matche le legacy `submissionId`).
   bookingsFromSubmission Booking[] @relation("BookingFromSubmission")
 
+  // Sprint Notif Infra 2026-05-26 / Chantier 5 — reply system admin.
+  // Permet à Will de répondre directement aux contacts/leads via l'admin
+  // inbox + suivre delivery status. Cf. ADR 0031 reply-system.
+  replies        SubmissionReply[]
+  /// Compteur cache (incrémenté à chaque reply envoyée). Évite count() à
+  /// chaque rendu listing pour le badge "Répondu (N)".
+  replyCount     Int               @default(0) @map("reply_count")
+  /// Timestamp du premier envoi réussi. Snapshot pour audit + tri.
+  firstRepliedAt DateTime?         @map("first_replied_at")
+  /// Timestamp du dernier envoi réussi. Filtre "Dernière réponse depuis...".
+  lastRepliedAt  DateTime?         @map("last_replied_at")
+  /// True = nécessite l'attention de Will (default pour toute nouvelle
+  /// soumission). Passe à false dès qu'au moins 1 reply envoyé OU manual
+  /// archive. Filtre par défaut du listing inbox.
+  needsAttention Boolean           @default(true) @map("needs_attention")
+  /// Timestamp d'archivage explicite (en plus de status="archived"). Permet
+  /// de filtrer rapidement les non-archivés sans toucher au workflow status
+  /// existant.
+  archivedAt     DateTime?         @map("archived_at")
+  // Sprint Notif Infra 2026-05-26 / Chantier 3 — relation inverse Calendly.
+  calendlyEvents CalendlyEvent[]
+
   @@index([type])
   @@index([status])
   @@index([locale])
   @@index([submittedAt])
   @@index([contactEmail])
+  // Sprint Notif Infra 2026-05-26 — filtres inbox.
+  @@index([needsAttention, archivedAt])
+  @@index([lastRepliedAt])
   @@map("submissions")
+}
+
+// ============================================================
+// 1b. submission_replies (Sprint Notif Infra 2026-05-26 / Chantier 5)
+// ============================================================
+//
+// Table dédiée : 1 Submission peut nécessiter plusieurs allers-retours
+// (relance, complément d'info). Historique propre + multi-réponses +
+// tracking delivery par message. Cf. ADR 0031 reply-system.
+
+model SubmissionReply {
+  id                String                @id @default(cuid())
+  submissionId      String                @map("submission_id") @db.Uuid
+  /// FK AdminUser (admin qui a envoyé). Nullable car onDelete=SetNull.
+  repliedByUserId   String?               @map("replied_by_user_id") @db.Uuid
+  /// Snapshot du nom au moment de l'envoi (immuable même si user supprimé).
+  repliedByName     String                @map("replied_by_name") @db.VarChar(255)
+  repliedAt         DateTime              @default(now()) @map("replied_at")
+  /// Snapshot — au cas où Submission.contactEmail change après coup.
+  toEmail           String                @map("to_email") @db.Citext
+  subject           String                @db.VarChar(500)
+  /// HTML rendu via template React Email (branded Axion-IA).
+  bodyHtml          String                @map("body_html") @db.Text
+  /// Version plain text (multipart MIME — auto-générée via @react-email/render).
+  bodyText          String                @map("body_text") @db.Text
+  deliveryStatus    SubmissionReplyStatus @default(pending) @map("delivery_status")
+  /// Message-ID SMTP / id du provider (PowerMTA / Resend / etc.).
+  providerMessageId String?               @map("provider_message_id") @db.VarChar(500)
+  sentAt            DateTime?             @map("sent_at")
+  failedAt          DateTime?             @map("failed_at")
+  errorMsg          String?               @map("error_msg") @db.Text
+  retryCount        Int                   @default(0) @map("retry_count")
+  /// Ex "default" | "audit_followup" | "intervention_followup" | "custom".
+  templateUsed      String?               @map("template_used") @db.VarChar(40)
+  /// Note privée admin sur cette réponse (jamais envoyée au user).
+  internalNote      String?               @map("internal_note") @db.Text
+
+  submission    Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  repliedByUser AdminUser? @relation(fields: [repliedByUserId], references: [id], onDelete: SetNull)
+
+  @@index([submissionId])
+  @@index([deliveryStatus])
+  @@index([repliedAt])
+  @@map("submission_replies")
+}
+
+enum SubmissionReplyStatus {
+  pending // en queue, pas encore envoyé
+  sent // SMTP 250 OK reçu (envoi accepté par MTA)
+  delivered // confirmation delivery via webhook bounce/delivery
+  bounced // hard bounce reçu
+  complained // spam complaint
+  failed // erreur définitive (4xx persistant ou 5xx)
+
+  @@map("submission_reply_status")
 }
 
 // ============================================================
@@ -1393,6 +1473,8 @@ model AdminUser {
   bookingTransitions    BookingTransition[] @relation("BookingTransitionActor")
   pricingConfigsUpdated PricingConfig[]
   siteSettingsUpdated   SiteSetting[]
+  // Sprint Notif Infra 2026-05-26 — reply system admin
+  submissionReplies     SubmissionReply[]
 
   @@index([role])
   @@index([status])
@@ -3949,45 +4031,45 @@ model GeneratedVilleCopy {
   villeSlug String @unique @map("ville_slug") @db.VarChar(100)
 
   /// Pitch FR 30-50 mots citable LLMs (hero).
-  pitchFr String @map("pitch_fr") @db.VarChar(600)
+  pitchFr        String   @map("pitch_fr") @db.VarChar(600)
   /// Direct-answer FR 40-80 mots autonome (data-speakable-hero + AI Overviews).
-  directAnswerFr String @map("direct_answer_fr") @db.VarChar(900)
+  directAnswerFr String   @map("direct_answer_fr") @db.VarChar(900)
   /// Écosystème économique local 30-60 mots (anti-doorway HCU).
-  ecosystemFr String @map("ecosystem_fr") @db.VarChar(800)
+  ecosystemFr    String   @map("ecosystem_fr") @db.VarChar(800)
   /// Distances clés 1-2 phrases (~25 mots) — gares, aéroports, métro.
-  distancesFr String @map("distances_fr") @db.VarChar(400)
+  distancesFr    String   @map("distances_fr") @db.VarChar(400)
   /// Top secteurs NAF B2B locaux (array de strings, max 8).
-  topSectorsNaf String[] @default([]) @map("top_sectors_naf")
+  topSectorsNaf  String[] @default([]) @map("top_sectors_naf")
 
   /// `servicesContext` (4 services × 25-50 mots fr) sérialisé.
   /// Shape : { audit, interventions, implementation, unAUn } chacun { fr: string }.
-  servicesContextJson Json @map("services_context_json")
+  servicesContextJson Json  @map("services_context_json")
   /// `faqGeolocalisee` (4-6 Q/R) sérialisé. Shape : [{ q, a }, ...].
-  faqGeolocaliseeJson Json @map("faq_geolocalisee_json")
+  faqGeolocaliseeJson Json  @map("faq_geolocalisee_json")
   /// `heroSchema` (centerSubLabel + 6 satellites) sérialisé. Shape : { centerSubLabel?, satellites: [...] }.
-  heroSchemaJson Json? @map("hero_schema_json")
+  heroSchemaJson      Json? @map("hero_schema_json")
 
   /// Quality gate — score 0-100, gate auto-approve si >= autoApproveThreshold.
-  qualityScore        Int @map("quality_score")
+  qualityScore          Int      @map("quality_score")
   /// Plagiarism check Jaccard score (0.0-1.0). >0.3 = rejet.
-  plagiarismScore     Decimal? @map("plagiarism_score") @db.Decimal(5, 3)
+  plagiarismScore       Decimal? @map("plagiarism_score") @db.Decimal(5, 3)
   /// Anti-duplicate: max Jaccard vs les 5 verticales Article de la ville.
   duplicateVsVerticales Decimal? @map("duplicate_vs_verticales") @db.Decimal(5, 3)
 
   /// LLM cost tracking + AI Act art. 50 audit trail.
-  modelUsed   String @map("model_used") @db.VarChar(80)
+  modelUsed    String  @map("model_used") @db.VarChar(80)
   totalCostUsd Decimal @map("total_cost_usd") @db.Decimal(10, 6)
-  promptHash  String  @map("prompt_hash") @db.VarChar(64)
-  tokensInput Int     @map("tokens_input")
-  tokensOutput Int    @map("tokens_output")
+  promptHash   String  @map("prompt_hash") @db.VarChar(64)
+  tokensInput  Int     @map("tokens_input")
+  tokensOutput Int     @map("tokens_output")
 
   /// Provenance — quels champs KB ont alimenté le prompt.
   kbContextUsed Json? @map("kb_context_used")
 
   status      GeneratedVilleCopyStatus @default(generated)
-  reviewedBy  String?  @map("reviewed_by") @db.VarChar(120)
-  reviewedAt  DateTime? @map("reviewed_at")
-  reviewNotes String?  @map("review_notes") @db.Text
+  reviewedBy  String?                  @map("reviewed_by") @db.VarChar(120)
+  reviewedAt  DateTime?                @map("reviewed_at")
+  reviewNotes String?                  @map("review_notes") @db.Text
 
   generatedAt DateTime @default(now()) @map("generated_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
@@ -4074,4 +4156,73 @@ model GeneratedVilleCasUsage {
   @@index([villeSlug])
   @@index([status])
   @@map("generated_ville_cas_usage")
+}
+
+// ============================================================
+// Calendly events (Sprint Notif Infra 2026-05-26 / Chantier 3)
+// ============================================================
+//
+// Persistance des réservations captées via le widget Calendly inline sur
+// `/appel`. Mode Embed JS gratuit : on écoute postMessage iframe Calendly
+// côté client + POST notre endpoint serveur. Capture les créations uniquement
+// (limitation Calendly Free — pas de webhook officiel). Cf. ADR 0030.
+
+model CalendlyEvent {
+  id                 String              @id @default(cuid())
+  /// Nom humain de l'event-type (ex "Appel découverte 30 min"). Will peut
+  /// l'éditer manuellement après capture.
+  eventTypeName      String              @map("event_type_name") @db.VarChar(255)
+  /// Slug extrait de l'URL Calendly (ex "appel-decouverte"). Sert de
+  /// référence stable pour matching.
+  eventTypeSlug      String              @map("event_type_slug") @db.VarChar(100)
+  status             CalendlyEventStatus @default(scheduled)
+  /// Embed JS ne fournit pas tjrs précis — best effort, complétable manuel.
+  startTime          DateTime?           @map("start_time")
+  endTime            DateTime?           @map("end_time")
+  timezone           String              @default("Europe/Paris") @db.VarChar(80)
+  /// Extrait du payload Embed JS si dispo, sinon Will complète via admin.
+  inviteeName        String?             @map("invitee_name") @db.VarChar(255)
+  inviteeEmail       String?             @map("invitee_email") @db.Citext
+  inviteePhone       String?             @map("invitee_phone") @db.VarChar(40)
+  source             CalendlyEventSource @default(embed_js)
+  /// Payload complet du postMessage event (debug + future re-process).
+  rawPayload         Json                @map("raw_payload")
+  /// URL où l'event a été capté (ex "https://axion-ia.com/fr/appel").
+  pageUrl            String?             @map("page_url") @db.VarChar(500)
+  utmSource          String?             @map("utm_source") @db.VarChar(100)
+  utmCampaign        String?             @map("utm_campaign") @db.VarChar(100)
+  utmMedium          String?             @map("utm_medium") @db.VarChar(100)
+  referrer           String?             @db.VarChar(500)
+  /// Match manuel par Will via admin (lien vers une Submission existante).
+  linkedSubmissionId String?             @map("linked_submission_id") @db.Uuid
+  capturedAt         DateTime            @default(now()) @map("captured_at")
+  updatedAt          DateTime            @updatedAt @map("updated_at")
+  /// Notes admin manuelles (debrief post-call, etc.).
+  notes              String?             @db.Text
+
+  linkedSubmission Submission? @relation(fields: [linkedSubmissionId], references: [id], onDelete: SetNull)
+
+  @@index([status])
+  @@index([startTime])
+  @@index([inviteeEmail])
+  @@index([capturedAt])
+  @@index([linkedSubmissionId])
+  @@map("calendly_events")
+}
+
+enum CalendlyEventStatus {
+  scheduled // créé via Embed JS, par défaut
+  canceled // marqué manuellement par Will (Calendly Free ne notifie pas)
+  completed // marqué manuellement post-call
+  no_show // marqué manuellement post-call
+
+  @@map("calendly_event_status")
+}
+
+enum CalendlyEventSource {
+  embed_js // capté via postMessage iframe Calendly (V1 par défaut)
+  manual_import // ajouté manuellement par Will via admin
+  webhook // réservé pour V2 future si upgrade Calendly Standard
+
+  @@map("calendly_event_source")
 }
