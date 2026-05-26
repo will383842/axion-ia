@@ -46,6 +46,14 @@ import { getRegion } from "@/content/regions";
 import { VILLES, type Ville } from "@/content/villes";
 import { resolveVilleWithCopy } from "@/content/villes/resolve-with-copy";
 import {
+  AUDIT_TIERS,
+  INTERVENTION_TIERS,
+  UN_A_UN_TIERS,
+  IMPLEMENTATION_TIERS,
+  getEntryPriceEur,
+  getTierById,
+} from "@/content/pricing";
+import {
   buildProductMetadata,
   buildItemListJsonLd,
   buildPlaceJsonLd,
@@ -320,6 +328,79 @@ export default async function VilleHubPage({ params }: Props) {
         additionalSelectors: ["[data-speakable-hero]"],
       })
     : null;
+
+  // AggregateOffer JSON-LD — Prix entry-point des 5 verticales (Will 2026-05-26
+  // perfection 2026). Signal AI engine SERP rich snippet (Perplexity, Google AI
+  // Overviews) + Google Shopping/Local Pack avec prix inline.
+  const auditFlashPrice = getTierById(AUDIT_TIERS, "audit-flash").priceFlat!;
+  const auditEtiHighPrice = getTierById(AUDIT_TIERS, "audit-strategique-eti").priceMin!;
+  const interventionEntryPrice = getEntryPriceEur(INTERVENTION_TIERS) ?? 690;
+  const unAUnEntryPrice = getEntryPriceEur(UN_A_UN_TIERS) ?? 990;
+  const implEntryPrice = getEntryPriceEur(IMPLEMENTATION_TIERS) ?? 990;
+
+  const aggregateOfferJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "AggregateOffer",
+    "@id": `${SITE_URL}${path}#offers`,
+    name: `Services Axion-IA à ${ville.nameFr}`,
+    description: `Tarifs entry-point des 5 services Axion-IA à ${ville.nameFr} — audit IA, formation, implémentation, coaching 1-to-1 dirigeants, plateformes web/SaaS IA.`,
+    priceCurrency: "EUR",
+    lowPrice: auditFlashPrice,
+    highPrice: auditEtiHighPrice,
+    offerCount: 5,
+    areaServed: { "@type": "City", name: ville.nameFr },
+    seller: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: "Axion-IA" },
+    offers: [
+      {
+        "@type": "Offer",
+        name: "Audit IA Flash",
+        price: auditFlashPrice,
+        priceCurrency: "EUR",
+        url: `${SITE_URL}/${loc}/audit`,
+        availability: "https://schema.org/InStock",
+        category: "AI audit",
+      },
+      {
+        "@type": "Offer",
+        name: "Intervention Essentielle (formation IA sur site)",
+        price: interventionEntryPrice,
+        priceCurrency: "EUR",
+        url: `${SITE_URL}/${loc}/interventions`,
+        availability: "https://schema.org/InStock",
+        category: "AI training",
+      },
+      {
+        "@type": "Offer",
+        name: "Coaching 1-to-1 dirigeant",
+        price: unAUnEntryPrice,
+        priceCurrency: "EUR",
+        url: `${SITE_URL}/${loc}/un-a-un`,
+        availability: "https://schema.org/InStock",
+        category: "AI executive coaching",
+      },
+      {
+        "@type": "Offer",
+        name: "Implémentation IA — Pilote",
+        price: implEntryPrice,
+        priceCurrency: "EUR",
+        url: `${SITE_URL}/${loc}/implementation`,
+        availability: "https://schema.org/InStock",
+        category: "AI implementation",
+      },
+      {
+        "@type": "Offer",
+        name: "Plateforme web / SaaS IA sur mesure",
+        priceSpecification: {
+          "@type": "PriceSpecification",
+          priceCurrency: "EUR",
+          minPrice: implEntryPrice,
+        },
+        url: `${SITE_URL}/${loc}/sites-web-augmentes`,
+        availability: "https://schema.org/InStock",
+        category: "AI web platform / SaaS",
+      },
+    ],
+  } as const;
 
   // ImageObject JSON-LD — Hero image triangle 3 piliers Axion-IA (Will 2026-05-26).
   // Signal Google Images + AI engines pour indexation visuelle de la marque.
@@ -636,6 +717,7 @@ export default async function VilleHubPage({ params }: Props) {
           breadcrumbJsonLd,
           verticalesItemList,
           heroImageJsonLd,
+          aggregateOfferJsonLd,
           faqSpeakableJsonLd ?? null,
         ]}
         strategy="afterInteractive"

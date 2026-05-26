@@ -106,6 +106,61 @@ export default async function ImplantationsHub({ params }: Props) {
     contentLocation: { "@type": "Country", name: "France" },
   } as const;
 
+  // ItemList JSON-LD — 5 services canoniques Axion-IA (Will 2026-05-26
+  // perfection 2026). Internal linking sémantique : hub → 5 pages services
+  // canoniques (audit, interventions, un-a-un, implementation, sites-web).
+  // Signal AEO/GEO fort : AI engines énumèrent les 5 services quand un
+  // visiteur demande « que propose Axion-IA ? ».
+  const servicesItemList = buildItemListJsonLd({
+    locale: loc,
+    path: "/implantations",
+    name: isFr ? "5 services Axion-IA" : "5 services Axion-IA",
+    items: [
+      {
+        position: 1,
+        name: isFr ? "Audit IA" : "Audit IA",
+        url: `${SITE_URL}/${loc}/audit`,
+        description: isFr
+          ? "Diagnostic IA chiffré, 4 niveaux (Flash 490 € → Stratégique ETI dès 12 000 €), plan d'action priorisé."
+          : "Diagnostic IA chiffré, 4 niveaux (Flash 490 € → Stratégique ETI dès 12 000 €), plan d'action priorisé.",
+      },
+      {
+        position: 2,
+        name: isFr ? "Formation IA en entreprise" : "Formation IA en entreprise",
+        url: `${SITE_URL}/${loc}/interventions`,
+        description: isFr
+          ? "Ateliers et interventions sur site, dès 490 €, groupes 1-30 personnes, sur vos vraies données."
+          : "Ateliers et interventions sur site, dès 490 €, groupes 1-30 personnes, sur vos vraies données.",
+      },
+      {
+        position: 3,
+        name: isFr ? "Coaching 1-to-1 dirigeants" : "Coaching 1-to-1 dirigeants",
+        url: `${SITE_URL}/${loc}/un-a-un`,
+        description: isFr
+          ? "Journée 1-to-1 avec un dirigeant, 990 €, structurer l'entreprise et chiffrer les gains IA."
+          : "Journée 1-to-1 avec un dirigeant, 990 €, structurer l'entreprise et chiffrer les gains IA.",
+      },
+      {
+        position: 4,
+        name: isFr ? "Implémentation IA" : "Implémentation IA",
+        url: `${SITE_URL}/${loc}/implementation`,
+        description: isFr
+          ? "Pilote IA dès 990 €, chatbot RAG, agents IA, automatisations, IA custom d'entreprise."
+          : "Pilote IA dès 990 €, chatbot RAG, agents IA, automatisations, IA custom d'entreprise.",
+      },
+      {
+        position: 5,
+        name: isFr
+          ? "Plateformes web et SaaS IA sur mesure"
+          : "Plateformes web et SaaS IA sur mesure",
+        url: `${SITE_URL}/${loc}/sites-web-augmentes`,
+        description: isFr
+          ? "Sites web et SaaS IA-native sur devis, RGPD Europe, performances Web Vitals 2026 strictes."
+          : "Sites web et SaaS IA-native sur devis, RGPD Europe, performances Web Vitals 2026 strictes.",
+      },
+    ],
+  });
+
   // SpeakableSpecification — signal voice search + AI engines (Perplexity,
   // ChatGPT, Claude.ai, Google AI Overviews) qui ciblent H1 + sous-ligne hero.
   const speakableJsonLd = {
@@ -149,6 +204,11 @@ export default async function ImplantationsHub({ params }: Props) {
         scriptId="jsonld-implantations-service"
       />
       <JsonLd data={regionsItemList} />
+      <JsonLd
+        data={servicesItemList}
+        strategy="afterInteractive"
+        scriptId="jsonld-implantations-services"
+      />
       <JsonLd
         data={heroImageJsonLd}
         strategy="afterInteractive"
