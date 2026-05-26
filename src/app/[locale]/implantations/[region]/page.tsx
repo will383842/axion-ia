@@ -198,19 +198,18 @@ export default async function RegionPage({ params }: Props) {
                   ? " utilisent déjà l'IA. Et vous ?"
                   : " are already using AI. What about you?"}
               </h1>
-              {/* Sous-ligne hero — énumération des 5 services Axion-IA.
-                  Réponse claire au « Et vous ? » : voici ce qu'on propose. */}
+              {/* Sous-ligne hero — copy unifié home/régions/villes (Will 2026-05-26)
+                  Réponse au « Et vous ? » en miroir de la home, avec suffixe
+                  géographique localisé à la région. */}
               <p
                 className="text-fg-soft mt-6 text-lg leading-relaxed sm:text-xl"
                 data-speakable-hero
               >
                 {isFr
-                  ? "Formations et interventions sur site, audits IA, implémentations, coaching 1-to-1 dirigeants, plateformes web et SaaS IA — "
-                  : "On-site training, AI audits, implementations, 1-to-1 executive coaching, AI web platforms and SaaS — "}
+                  ? "Axion-IA forme, audite et déploie l'IA dans votre entreprise — de l'automatisation aux plateformes sur mesure, "
+                  : "Axion-IA trains, audits and deploys AI in your company — from automation to custom platforms, "}
                 <span className="text-fg font-semibold">
-                  {isFr
-                    ? `partout en ${region.nameFr}.`
-                    : `across ${region.nameEn ?? region.nameFr}.`}
+                  {isFr ? `en ${region.nameFr}.` : `in ${region.nameEn ?? region.nameFr}.`}
                 </span>
               </p>
               {/* Pitch région (data différenciée par région) */}

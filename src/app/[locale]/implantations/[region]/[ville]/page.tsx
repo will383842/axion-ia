@@ -340,10 +340,23 @@ export default async function VilleHubPage({ params }: Props) {
             </span>
             {` (${ville.departementLabel ?? ville.departement})`}
           </h1>
+          {/* Sous-ligne hero — copy unifié home/régions/villes (Will 2026-05-26)
+              Miroir du heroDescription home, avec suffixe géographique localisé
+              à la ville (« à {ville} et alentours »). */}
           <p
             className="text-fg-soft mt-6 max-w-3xl text-lg leading-relaxed sm:text-xl"
             data-speakable-hero
           >
+            {isFr
+              ? "Axion-IA forme, audite et déploie l'IA dans votre entreprise — de l'automatisation aux plateformes sur mesure, "
+              : "Axion-IA trains, audits and deploys AI in your company — from automation to custom platforms, "}
+            <span className="text-fg font-semibold">
+              {isFr ? `à ${ville.nameFr} et alentours.` : `in ${ville.nameFr} and surroundings.`}
+            </span>
+          </p>
+          {/* Direct answer ville-spécifique (AEO) — paragraphe secondaire
+              riche en contexte local (data différenciée par ville). */}
+          <p className="text-fg-muted mt-4 max-w-3xl text-base leading-relaxed">
             {isFr ? (copy.directAnswerFr ?? copy.pitchFr) : (copy.directAnswerEn ?? copy.pitchEn)}
           </p>
           <div className="text-fg-muted mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
