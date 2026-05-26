@@ -62,6 +62,7 @@ import { PERPIGNAN_COPY } from "./copy/perpignan";
 import { REIMS_COPY } from "./copy/reims";
 import { RENNES_COPY } from "./copy/rennes";
 import { ROUEN_COPY } from "./copy/rouen";
+import { SAINT_DENIS_COPY } from "./copy/saint-denis";
 import { SAINT_ETIENNE_COPY } from "./copy/saint-etienne";
 import { STRASBOURG_COPY } from "./copy/strasbourg";
 import { TOULON_COPY } from "./copy/toulon";
@@ -120,6 +121,7 @@ const COPY_BY_SLUG: Record<string, VilleCopy> = {
   reims: REIMS_COPY,
   rennes: RENNES_COPY,
   rouen: ROUEN_COPY,
+  "saint-denis": SAINT_DENIS_COPY,
   "saint-etienne": SAINT_ETIENNE_COPY,
   strasbourg: STRASBOURG_COPY,
   toulon: TOULON_COPY,
