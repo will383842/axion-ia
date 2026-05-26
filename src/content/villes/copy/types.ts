@@ -16,23 +16,6 @@ export interface VilleFaq {
 }
 
 /**
- * Configuration du schéma hero (SVG inline `VilleHeroSchema`). Optionnel —
- * sans config, la page ville rend le hero sans illustration. Avec config,
- * 6 satellites représentant l'écosystème économique gravitent autour du
- * nom de la ville (gold standard Paris pilote).
- */
-export interface VilleHeroConfig {
-  /** Légende sous le nom (ex "Écosystème IA · 215 K entreprises"). */
-  centerSubLabel?: string;
-  /** Six satellites — ordre = sens horaire à partir du haut-gauche. */
-  satellites: ReadonlyArray<{
-    label: string;
-    detail: string;
-    accent: "terracotta" | "primary" | "sage" | "mocha";
-  }>;
-}
-
-/**
  * Contexte local d'application des 3 services Axion-IA — version COURTE
  * pour la page ville mère (1 phrase ~25-50 mots par service).
  * Conservé pour rétrocompat. Pour les pages ville × service dédiées
@@ -184,6 +167,4 @@ export interface VilleCopy {
   ecosystemEn?: string;
   /** FAQ géolocalisée — 4-6 Q minimum pour activer Speakable JSON-LD. */
   faqGeolocalisee?: ReadonlyArray<VilleFaq>;
-  /** Schéma hero SVG inline (cf. VilleHeroSchema). */
-  heroSchema?: VilleHeroConfig;
 }

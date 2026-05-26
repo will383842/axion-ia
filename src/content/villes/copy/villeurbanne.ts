@@ -77,18 +77,6 @@ export const VILLEURBANNE_COPY: VilleCopy = {
   ecosystemEn:
     "Villeurbanne economic fabric: 13,426 active businesses, density 83 per 1,000 inhabitants. LyonTech-La Doua campus (INSA Lyon, CPE Lyon, UCBL, ENSSIB, IUT Lyon 1 — 25,000 students + CNRS, INRAE, Inria). FORVIA MATERI'ACT world HQ (sustainable materials, 7,500 m² R&D centre). TVH Consulting (SAP ERP). Bel Air Camp and Pulsalys (SATT) incubators. French Tech One Lyon-St-Étienne.",
 
-  heroSchema: {
-    centerSubLabel: "Villeurbanne · 13 426 établissements",
-    satellites: [
-      { label: "INSA Lyon", detail: "Campus LyonTech-La Doua", accent: "primary" },
-      { label: "CNRS / Inria", detail: "R&D campus Doua", accent: "sage" },
-      { label: "FORVIA MATERI'ACT", detail: "Siège mondial + R&D", accent: "terracotta" },
-      { label: "IT / Numérique", detail: "993 établissements sect. J", accent: "primary" },
-      { label: "Bel Air Camp", detail: "Incubateur industriel", accent: "mocha" },
-      { label: "Métro A", detail: "Laurent Bonnevay · Gratte-Ciel", accent: "sage" },
-    ],
-  },
-
   faqGeolocalisee: [
     {
       q: "Villeurbanne est-elle distincte de Lyon pour une mission IA ?",

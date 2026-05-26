@@ -73,18 +73,6 @@ export const MONTREUIL_COPY: VilleCopy = {
   ecosystemEn:
     "Sectorised B2B fabric in a dense footprint — 4th largest Île-de-France city (~111,000 residents). Bas-Montreuil: Ubisoft global HQ (2,200+ employees), AFD HQ, BNP Paribas Personal Finance HQ, major Capgemini site. Cap Digital Paris-Région digital ecosystem. La Pousse incubator (social economy). IUT Montreuil (Sorbonne Paris Nord). ZAC Boissière-Acacia under development.",
 
-  heroSchema: {
-    centerSubLabel: "Écosystème IA · Montreuil 93",
-    satellites: [
-      { label: "Ubisoft", detail: "Siège mondial jeu vidéo", accent: "terracotta" },
-      { label: "AFD", detail: "Banque publique développement", accent: "primary" },
-      { label: "BNP PF", detail: "Siège crédit consommation", accent: "sage" },
-      { label: "Capgemini", detail: "Conseil IT & numérique", accent: "mocha" },
-      { label: "Cap Digital", detail: "Pôle IA / numérique IDF", accent: "primary" },
-      { label: "Métro L9", detail: "Croix de Chavaux · Paris 20e", accent: "terracotta" },
-    ],
-  },
-
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Montreuil ?",

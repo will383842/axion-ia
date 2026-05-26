@@ -35,14 +35,6 @@ interface DbVilleCopyShape {
     readonly unAUn?: { readonly fr: string };
   };
   readonly faqGeolocaliseeJson: ReadonlyArray<VilleFaq>;
-  readonly heroSchemaJson: {
-    readonly centerSubLabel?: string;
-    readonly satellites: ReadonlyArray<{
-      readonly label: string;
-      readonly detail: string;
-      readonly accent: "terracotta" | "primary" | "sage" | "mocha";
-    }>;
-  } | null;
 }
 
 /**
@@ -86,9 +78,6 @@ function mapDbToVilleCopy(row: DbVilleCopyShape): VilleCopy {
     servicesContext: services,
     faqGeolocalisee: row.faqGeolocaliseeJson,
   };
-  if (row.heroSchemaJson) {
-    copy.heroSchema = row.heroSchemaJson;
-  }
   return copy;
 }
 
@@ -111,7 +100,6 @@ async function getApprovedVilleCopyFromDb(slug: string): Promise<VilleCopy | nul
         topSectorsNaf: true,
         servicesContextJson: true,
         faqGeolocaliseeJson: true,
-        heroSchemaJson: true,
       },
     });
     if (!row) return null;

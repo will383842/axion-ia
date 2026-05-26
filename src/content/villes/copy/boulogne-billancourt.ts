@@ -73,18 +73,6 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
   ecosystemEn:
     "Very dense B2B fabric — 21,158 active businesses, density 176 per thousand. Trapèze district (ZAC Renault Trapèze, 74 ha): Île-de-France's leading next-generation business zone outside La Défense. Renault Group HQ (automotive/mobility), TF1 Group HQ (media/broadcasting), Boursorama HQ (Société Générale fintech), Quai du Point-du-Jour (media/finance cluster). Île Seguin in cultural conversion (La Seine Musicale). Cap Digital Paris-Région and Systematic Paris-Region active in the catchment.",
 
-  heroSchema: {
-    centerSubLabel: "21 158 établissements actifs",
-    satellites: [
-      { label: "Renault Group", detail: "Siège mondial — fondé 1898", accent: "primary" },
-      { label: "TF1 / Médias", detail: "Hub audiovisuel majeur", accent: "terracotta" },
-      { label: "Trapèze", detail: "1er QCA IdF hors La Défense", accent: "mocha" },
-      { label: "Boursorama", detail: "Fintech · Banque en ligne", accent: "sage" },
-      { label: "Île Seguin", detail: "Culture · Reconversion", accent: "terracotta" },
-      { label: "Conseil · Ingénierie", detail: "5 882 établissements M+N", accent: "primary" },
-    ],
-  },
-
   // === SERVICES LONG-FORM BOULOGNE-BILLANCOURT ===
   // Même structure que paris.ts / lyon.ts.
   // Aucun prix en dur, aucun délai chiffré, aucun « frais inclus ».

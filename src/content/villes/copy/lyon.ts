@@ -72,18 +72,6 @@ export const LYON_COPY: VilleCopy = {
   ecosystemEn:
     "Dense, sectorised B2B fabric — 27,316 active businesses. Part-Dieu tertiary hub (banking HQs, insurance, consulting), Gerland technopole (Sanofi, bioMérieux, Lyonbiopôle), Confluence eco-district (H7 startups, digital services), Vaise digital technopole, Vallée de la Chimie (Axelera), Villeurbanne IT cluster, grandes écoles (INSA, EM Lyon, ENS) and French Tech One Lyon-St-Étienne.",
 
-  heroSchema: {
-    centerSubLabel: "27 316 établissements actifs",
-    satellites: [
-      { label: "Part-Dieu", detail: "2e quartier d'affaires français", accent: "terracotta" },
-      { label: "Gerland Biotech", detail: "Sanofi · bioMérieux · Lyonbiopôle", accent: "primary" },
-      { label: "Vallée de la Chimie", detail: "Axelera · industrie chimique", accent: "mocha" },
-      { label: "INSA + ENS Lyon", detail: "Grandes écoles & R&D", accent: "primary" },
-      { label: "Confluence", detail: "H7 · startups · services numériques", accent: "sage" },
-      { label: "French Tech One", detail: "Lyon-St-Étienne · scale-ups", accent: "terracotta" },
-    ],
-  },
-
   // === SERVICES LONG-FORM LYON ===
   // Même structure que paris.ts.
   // Aucun prix en dur, aucun délai chiffré, aucun « frais inclus ».

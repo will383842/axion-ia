@@ -78,18 +78,6 @@ export const PARIS_COPY: VilleCopy = {
   ecosystemEn:
     "Densest B2B fabric in France across every company size — micro-businesses and independents (215,000 active within Paris), SMEs and mid-caps (expertise firms, scale-ups, consulting), large-enterprise HQs (La Défense, 8th, 16th districts), deep-tech hub (Station F, Quai d'Innovation, engineering schools). The French AI ecosystem clusters here: Mistral AI, Hugging Face, Owkin, Photoroom, Dust.",
 
-  heroSchema: {
-    centerSubLabel: "215 K entreprises actives",
-    satellites: [
-      { label: "La Défense", detail: "1ère place tertiaire EU", accent: "primary" },
-      { label: "Station F", detail: "1 000+ startups deep-tech", accent: "terracotta" },
-      { label: "Banque · Finance", detail: "Sièges + family offices", accent: "mocha" },
-      { label: "Conseil · Audit", detail: "Cabinets stratégie", accent: "primary" },
-      { label: "Tech · SaaS", detail: "Mistral, Hugging Face", accent: "sage" },
-      { label: "Mode · Luxe", detail: "Maisons + cosmétique", accent: "terracotta" },
-    ],
-  },
-
   // === SERVICES LONG-FORM PARIS — refonte 14.10.2 (aérée, accessible) ===
   // Aucun prix en dur (vient de pricing.ts via le rendu page),
   // aucun délai chiffré, aucune mention « frais inclus », aucun « basé en UE ».

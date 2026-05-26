@@ -958,40 +958,4 @@ export const ORLEANS_COPY: VilleCopy = {
       a: "Oui. Nous accompagnons les startups et PME en croissance de l'écosystème orléanais — Le LAB'O incubateur numérique, Village by CA Centre-Loire, French Tech Loire Valley. Notre offre est calibrée pour les structures en phase de scale qui veulent passer du POC IA à un déploiement opérationnel.",
     },
   ],
-
-  heroSchema: {
-    centerSubLabel: "Écosystème IA · Loiret · Centre-Val de Loire",
-    satellites: [
-      {
-        label: "Cosmetic Valley",
-        detail: "Shiseido R&D Ormes · 1er pôle mondial cosmétique",
-        accent: "terracotta",
-      },
-      {
-        label: "Pharmaceutique",
-        detail: "Famar CDMO · Servier · Saint-Jean-de-Braye",
-        accent: "primary",
-      },
-      {
-        label: "John Deere France",
-        detail: "Siège Ormes · agro-machinisme",
-        accent: "sage",
-      },
-      {
-        label: "BRGM national",
-        detail: "Siège La Source · géosciences",
-        accent: "mocha",
-      },
-      {
-        label: "Université d'Orléans",
-        detail: "Fondée 1306 · Polytech · ESCEM",
-        accent: "primary",
-      },
-      {
-        label: "Le LAB'O",
-        detail: "Incubateur numérique · French Tech Loire Valley",
-        accent: "sage",
-      },
-    ],
-  },
 };

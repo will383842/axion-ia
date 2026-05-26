@@ -32,6 +32,10 @@ const SourceMeta = {
   verifiedOn: new Date().toISOString().slice(0, 10),
 };
 
+/** Strip accents (siège_social → siege_social) avant Zod enum validation. */
+const stripAccents = (s: unknown): unknown =>
+  typeof s === "string" ? s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase() : s;
+
 const TopSectorSchema = z.object({
   naf: z.string().min(1).max(8),
   label: z.string().min(2).max(60),
@@ -41,40 +45,60 @@ const TopSectorSchema = z.object({
 const PoleCompetitiviteSchema = z.object({
   nom: z.string().min(2).max(80),
   secteur: z.string().min(2).max(80),
-  type: z.enum(["siege", "rayonnement"]).default("rayonnement"),
+  type: z
+    .preprocess(stripAccents, z.enum(["siege", "rayonnement"]).catch("rayonnement"))
+    .default("rayonnement"),
 });
 
 const GrandGroupeSchema = z.object({
   nom: z.string().min(2).max(80),
   secteur: z.string().min(2).max(80),
   typeImplantation: z
-    .enum(["siege_social", "site_majeur", "centre_rd", "usine_principale", "heritage"])
+    .preprocess(
+      stripAccents,
+      z
+        .enum(["siege_social", "site_majeur", "centre_rd", "usine_principale", "heritage"])
+        .catch("site_majeur"),
+    )
     .default("site_majeur"),
 });
 
 const ZoneActiviteSchema = z.object({
   nom: z.string().min(2).max(100),
-  type: z.enum(["zac", "parc_tech", "technopole", "district_eco", "autre"]).default("autre"),
+  type: z
+    .preprocess(
+      stripAccents,
+      z.enum(["zac", "parc_tech", "technopole", "district_eco", "autre"]).catch("autre"),
+    )
+    .default("autre"),
   secteurDominant: z.string().min(2).max(80).optional(),
 });
 
 const EcoleSchema = z.object({
   nom: z.string().min(2).max(120),
-  type: z.enum([
-    "ecole_ingenieur",
-    "ecole_commerce",
-    "universite",
-    "iut",
-    "ens",
-    "sciences_po",
-    "autre",
-  ]),
+  type: z.preprocess(
+    stripAccents,
+    z
+      .enum([
+        "ecole_ingenieur",
+        "ecole_commerce",
+        "universite",
+        "iut",
+        "ens",
+        "sciences_po",
+        "autre",
+      ])
+      .catch("autre"),
+  ),
   specialites: z.array(z.string().min(2).max(60)).max(5).optional(),
 });
 
 const PoleRechercheSchema = z.object({
   nom: z.string().min(2).max(120),
-  organisme: z.enum(["inria", "cea", "cnrs", "anr", "inserm", "inrae", "autre"]),
+  organisme: z.preprocess(
+    stripAccents,
+    z.enum(["inria", "cea", "cnrs", "anr", "inserm", "inrae", "autre"]).catch("autre"),
+  ),
   domaine: z.string().min(2).max(60).optional(),
 });
 
@@ -110,7 +134,10 @@ const StatsInseeSchema = z.object({
 });
 
 const FrenchTechSchema = z.object({
-  statut: z.enum(["capitale", "communaute", "siege_national"]),
+  statut: z.preprocess(
+    stripAccents,
+    z.enum(["capitale", "communaute", "siege_national"]).catch("communaute"),
+  ),
   nomChapitre: z.string().min(2).max(80).optional(),
 });
 
@@ -123,9 +150,9 @@ const CommuneBassinSchema = z.object({
 export const EconomicDataLlmSchema = z.object({
   topSectorsNaf: z.array(TopSectorSchema).min(3).max(8),
   polesCompetitivite: z.array(PoleCompetitiviteSchema).max(4).default([]),
-  grandsGroupesImplantes: z.array(GrandGroupeSchema).min(2).max(10),
+  grandsGroupesImplantes: z.array(GrandGroupeSchema).min(0).max(10).default([]),
   zonesActivitesParcs: z.array(ZoneActiviteSchema).max(5).default([]),
-  grandesEcolesEtUniversites: z.array(EcoleSchema).min(1).max(6),
+  grandesEcolesEtUniversites: z.array(EcoleSchema).min(0).max(6).default([]),
   polesRechercheRD: z.array(PoleRechercheSchema).max(3).default([]),
   incubateursAccelerateurs: z.array(IncubateurSchema).max(3).default([]),
   distances: DistancesSchema,
@@ -175,15 +202,15 @@ function computeQualityScore(o: EconomicDataLlmOutput): {
     issues.push(`topSectorsNaf insuffisant (${o.topSectorsNaf.length} < 4)`);
     score -= 8;
   }
-  if (o.grandsGroupesImplantes.length < 3) {
-    issues.push(`grandsGroupesImplantes insuffisant (${o.grandsGroupesImplantes.length} < 3)`);
-    score -= 12;
-  }
-  if (o.grandesEcolesEtUniversites.length < 2) {
-    issues.push(
-      `grandesEcolesEtUniversites insuffisant (${o.grandesEcolesEtUniversites.length} < 2)`,
-    );
+  if (o.grandsGroupesImplantes.length < 2) {
+    issues.push(`grandsGroupesImplantes insuffisant (${o.grandsGroupesImplantes.length} < 2)`);
     score -= 8;
+  }
+  if (o.grandesEcolesEtUniversites.length < 1) {
+    issues.push(
+      `grandesEcolesEtUniversites insuffisant (${o.grandesEcolesEtUniversites.length} < 1)`,
+    );
+    score -= 5;
   }
   if (o.communesBassin.length < 4) {
     issues.push(`communesBassin insuffisant (${o.communesBassin.length} < 4)`);
@@ -419,16 +446,22 @@ export async function generateVilleEconomicData(
       userPrompt,
       maxTokens: 2200,
       temperature,
-      preferredProvider: "anthropic",
+      preferredProvider: "openai",
     });
 
     totalCostUsd += llm.costUsd;
     iteration++;
 
+    console.log(
+      `[economic-data] ${input.villeSlug} iter${iteration} — LLM call OK (${llm.model}, $${llm.costUsd.toFixed(4)}, ${llm.tokensInput}in/${llm.tokensOutput}out)`,
+    );
     let parsedRaw: unknown;
     try {
       parsedRaw = parseLlmJson(llm.output);
     } catch (err) {
+      console.warn(
+        `[economic-data] ${input.villeSlug} iter${iteration} — JSON parse failed: ${err instanceof Error ? err.message : err}. Output preview: ${llm.output.slice(0, 200)}`,
+      );
       retryFeedback = `JSON invalide — retourne UNIQUEMENT du JSON pur. Erreur : ${err instanceof Error ? err.message : "parse"}`;
       continue;
     }
@@ -438,6 +471,7 @@ export async function generateVilleEconomicData(
         .map((i) => `${i.path.join(".")}: ${i.message}`)
         .slice(0, 6)
         .join(" / ");
+      console.warn(`[economic-data] ${input.villeSlug} iter${iteration} — Zod failed: ${flat}`);
       retryFeedback = `Schema Zod invalide — corrige : ${flat}`;
       continue;
     }

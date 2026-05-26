@@ -74,18 +74,6 @@ export const NANCY_COPY: VilleCopy = {
   ecosystemEn:
     "B2B fabric with a dominant public and industrial character — 4,334 active businesses. Leading Grand Est university cluster (Université de Lorraine, Mines Nancy, ICN, Sciences Po, ~52,000 students, Artem campus), Brabois health-research hub (CHRU, surgical robotics, Inria, CNRS, INRAE), Lorraine industry (Saint-Gobain PAM, Materalia, EDF Grand Est) and French Tech East (Nancy/Metz/Strasbourg/Reims).",
 
-  heroSchema: {
-    centerSubLabel: "4 334 établissements actifs",
-    satellites: [
-      { label: "Brabois", detail: "CHRU + IA + robotique", accent: "primary" },
-      { label: "Artem", detail: "Mines Nancy · ICN · ENSAD", accent: "terracotta" },
-      { label: "Industrie", detail: "Saint-Gobain PAM · Materalia", accent: "mocha" },
-      { label: "Inria", detail: "IA · algo · sécurité", accent: "sage" },
-      { label: "Université", detail: "~52 000 étudiants", accent: "primary" },
-      { label: "Place Stanislas", detail: "UNESCO 1983", accent: "terracotta" },
-    ],
-  },
-
   // === SERVICES LONG-FORM NANCY ===
   // Aucun prix en dur, aucun délai chiffré, aucun « frais inclus ».
   services: {

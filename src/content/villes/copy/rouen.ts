@@ -73,18 +73,6 @@ export const ROUEN_COPY: VilleCopy = {
   ecosystemEn:
     "Diversified B2B fabric — 12,648 active businesses. Left-bank heavy industry (Renault Cléon, Safran Nacelles, Lubrizol, HAROPA Port — Europe's no.1 cereal port), Technopôle du Madrillet digital hub (INSA, ESIGELEC, CNRS, CRIANN HPC computing), Plateau de la Vatine tertiary hub (SME/mid-cap HQs, Matmut, Crédit Agricole Normandie-Seine), French Tech Normandie startups (Seinari, NWX, Village by CA) and grandes écoles (NEOMA, URN, ESITech).",
 
-  heroSchema: {
-    centerSubLabel: "Écosystème IA · 12 648 établissements",
-    satellites: [
-      { label: "Port HAROPA", detail: "1er céréalier EU", accent: "primary" },
-      { label: "Madrillet", detail: "INSA · ESIGELEC · CNRS", accent: "terracotta" },
-      { label: "Industrie", detail: "Renault · Safran · J&J", accent: "mocha" },
-      { label: "Vatine", detail: "Matmut · PME tertiaires", accent: "sage" },
-      { label: "French Tech", detail: "Normandie · Seinari · NWX", accent: "primary" },
-      { label: "NEOMA / URN", detail: "Grande école & université", accent: "terracotta" },
-    ],
-  },
-
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Rouen ?",

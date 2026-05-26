@@ -35,6 +35,8 @@ interface RunArgs {
   resumeFrom?: string;
   dryRun: boolean;
   autoApproveThreshold: number;
+  workerId?: number; // 1..N pour parallélisme (mod sharding)
+  workerCount?: number; // K total workers
 }
 
 function parseArgs(): RunArgs {
@@ -61,6 +63,12 @@ function parseArgs(): RunArgs {
     } else if (arg.startsWith("--auto-approve-threshold=")) {
       const t = parseInt(arg.replace("--auto-approve-threshold=", ""), 10);
       if (!isNaN(t) && t >= 0 && t <= 100) result.autoApproveThreshold = t;
+    } else if (arg.startsWith("--worker-id=")) {
+      const n = parseInt(arg.replace("--worker-id=", ""), 10);
+      if (!isNaN(n) && n >= 1) result.workerId = n;
+    } else if (arg.startsWith("--worker-count=")) {
+      const n = parseInt(arg.replace("--worker-count=", ""), 10);
+      if (!isNaN(n) && n >= 1) result.workerCount = n;
     } else {
       console.error(`[regen-complete] Unknown arg: ${arg}`);
       process.exit(1);
@@ -100,6 +108,10 @@ function selectVilles(args: RunArgs): Ville[] {
   if (args.resumeFrom) {
     const idx = pool.findIndex((v) => v.slug === args.resumeFrom);
     if (idx >= 0) pool = pool.slice(idx);
+  }
+  // Sharding pour parallélisme : worker N traite villes d'index où index%count == N-1
+  if (args.workerId !== undefined && args.workerCount !== undefined) {
+    pool = pool.filter((_, idx) => idx % args.workerCount! === args.workerId! - 1);
   }
   return pool;
 }

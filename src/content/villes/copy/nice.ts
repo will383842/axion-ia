@@ -72,26 +72,6 @@ export const NICE_COPY: VilleCopy = {
   ecosystemEn:
     "South-East France's leading regional capital: 16,327 active businesses (INSEE 2024), French Tech Côte d'Azur, Sophia Antipolis basin (Europe's top tech park, Amadeus IT, IBM, SAP Labs, EURECOM), Université Côte d'Azur IDEX, Inria Mediterranean centre, 3IA Côte d'Azur (one of France's 4 PIA AI institutes), EDHEC Business School Nice campus, Nice Eco-Vallée OIN, Grand Arénas multimodal hub.",
 
-  heroSchema: {
-    centerSubLabel: "16 327 établissements actifs",
-    satellites: [
-      {
-        label: "Sophia Antipolis",
-        detail: "1er technopôle européen · 2 300 entreprises",
-        accent: "terracotta",
-      },
-      { label: "French Tech CdA", detail: "Capitale French Tech Sud-Est", accent: "primary" },
-      { label: "3IA / CNRS", detail: "Institut IA · Inria Méditerranée", accent: "mocha" },
-      { label: "Université Côte d'Azur", detail: "IDEX · 30 000 étudiants", accent: "primary" },
-      { label: "Tourisme d'affaires", detail: "Grand Arénas · Nice Méridia", accent: "sage" },
-      {
-        label: "Aéroport NCE",
-        detail: "2e aéroport de France · hub international",
-        accent: "terracotta",
-      },
-    ],
-  },
-
   // === SERVICES LONG-FORM NICE ===
   services: {
     audit: {

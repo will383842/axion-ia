@@ -75,42 +75,6 @@ export const ARGENTEUIL_COPY: VilleCopy = {
   ecosystemEn:
     "Diverse B2B fabric — 9,045 active businesses, 2,690 company creations per year. Dominant sectors: commerce/transport (61.9%), construction (23.6%), public sector and health (8.8%), legacy industry from Dassault Aviation (5.4%). Val d'Argent business park (industry/logistics/tertiary), Dassault site under urban redevelopment. Cap Digital (digital/AI) and Mov'eo (mobility/aerospace) cluster influence. Fast connection to La Défense and Grand Paris.",
 
-  heroSchema: {
-    centerSubLabel: "Écosystème IA · 9 045 établissements",
-    satellites: [
-      {
-        label: "Commerce & Services",
-        detail: "61,9 % des établissements",
-        accent: "terracotta",
-      },
-      {
-        label: "BTP & Construction",
-        detail: "23,6 % des établissements",
-        accent: "primary",
-      },
-      {
-        label: "Paris Saint-Lazare",
-        detail: "~12 min Transilien J",
-        accent: "sage",
-      },
-      {
-        label: "Cap Digital",
-        detail: "Pôle IA / numérique IDF",
-        accent: "mocha",
-      },
-      {
-        label: "Grand Paris",
-        detail: "La Défense ~8 km",
-        accent: "primary",
-      },
-      {
-        label: "2 690 créations/an",
-        detail: "Tissu entrepreneurial actif",
-        accent: "sage",
-      },
-    ],
-  },
-
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Argenteuil ?",

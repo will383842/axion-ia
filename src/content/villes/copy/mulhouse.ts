@@ -75,42 +75,6 @@ export const MULHOUSE_COPY: VilleCopy = {
   ecosystemEn:
     "Dense industrial and tech B2B fabric — 3,724 active businesses. Stellantis automotive hub at Île Napoléon (ex-PSA, since 1962), Pôle Véhicule du Futur at Bourtzwiller, Clemessy industrial engineering (Eiffage HQ), KMØ digital campus, Parc des Collines technopole, SEMIA Grand Est incubator, UHA + ENSISA + ENSCMu universities, IRIMAS (AI/computer science CNRS), Alsace BioValley, Rhine port PortAlsace, tri-national Basel-Freiburg position.",
 
-  heroSchema: {
-    centerSubLabel: "Écosystème IA · 3 724 établissements",
-    satellites: [
-      {
-        label: "Stellantis",
-        detail: "Automobile, Île Napoléon",
-        accent: "terracotta",
-      },
-      {
-        label: "Pôle Véhicule du Futur",
-        detail: "Mobilité / hydrogène",
-        accent: "primary",
-      },
-      {
-        label: "Clemessy (Eiffage)",
-        detail: "Ingénierie industrielle",
-        accent: "sage",
-      },
-      {
-        label: "KMØ",
-        detail: "Campus numérique / Industrie 4.0",
-        accent: "mocha",
-      },
-      {
-        label: "UHA / ENSISA / ENSCMu",
-        detail: "Recherche & formation",
-        accent: "primary",
-      },
-      {
-        label: "EuroAirport BSL",
-        detail: "Trinational · 25 km",
-        accent: "sage",
-      },
-    ],
-  },
-
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Mulhouse ?",

@@ -55,11 +55,6 @@ async function main(): Promise<void> {
     console.log(`    [${i}] Q: ${f.q}`);
     console.log(`        A: ${f.a}`);
   });
-  if (result.output.heroSchema) {
-    console.log(`  heroSchema     : ${result.output.heroSchema.satellites.length} satellites`);
-    console.log(`  centerSubLabel : ${result.output.heroSchema.centerSubLabel ?? "(absent)"}`);
-  }
-
   // Auto-approve si score ≥ threshold
   if (result.qualityScore >= AUTO_APPROVE_THRESHOLD) {
     await prisma.generatedVilleCopy.update({

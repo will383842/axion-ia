@@ -74,30 +74,6 @@ export const METZ_COPY: VilleCopy = {
   ecosystemEn:
     "EuromÃ©tropole B2B fabric â€” Luxembourg cross-border basin (~110,000 Lorraine commuters), TechnopÃ´le Metz 2000 (Georgia Tech Lorraine, CentraleSupÃ©lec, LORIA/Inria), Quartier de l'AmphithÃ©Ã¢tre (tertiary, Centre Pompidou-Metz), automotive industry (Stellantis TrÃ©mery, Materalia cluster), steel (ArcelorMittal Florange), banking (BPCE, Caisse d'Ã‰pargne Grand Est), CCI Moselle MÃ©tropole and French Tech East.",
 
-  heroSchema: {
-    centerSubLabel: "Ã‰cosystÃ¨me IA Â· EuromÃ©tropole Metz",
-    satellites: [
-      {
-        label: "Stellantis TrÃ©mery",
-        detail: "Motopropulseurs industrie automobile",
-        accent: "terracotta",
-      },
-      {
-        label: "Georgia Tech Lorraine",
-        detail: "Campus amÃ©ricain unique en France",
-        accent: "primary",
-      },
-      { label: "Transfrontalier Lux", detail: "~110 000 frontaliers, 60 km", accent: "sage" },
-      { label: "LORIA / Inria", detail: "Recherche IA & numÃ©rique", accent: "mocha" },
-      { label: "Materalia", detail: "PÃ´le matÃ©riaux & procÃ©dÃ©s", accent: "primary" },
-      {
-        label: "Centre Pompidou-Metz",
-        detail: "Culture & attractivitÃ© tertiaire",
-        accent: "sage",
-      },
-    ],
-  },
-
   // === SERVICES LONG-FORM METZ ===
   // MÃªme structure que lyon.ts â€” Aucun prix en dur, aucun dÃ©lai chiffrÃ©.
   services: {

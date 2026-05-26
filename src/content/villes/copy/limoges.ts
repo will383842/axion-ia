@@ -73,42 +73,6 @@ export const LIMOGES_COPY: VilleCopy = {
   ecosystemEn:
     "Singular industrial and technological fabric — Legrand global HQ (CAC 40, ~36,000 staff), world capital of protected GI porcelain (Bernardaud, Haviland, Royal Limoges), European Ceramics Hub, ESTER Technopole (technical ceramics, electronics, life sciences), IRCER CNRS, XLIM CNRS (photonics, AI, imaging), ENSIL-ENSCI, 3iL engineers, Texelis (industrial mobility), Madrange (agri-food), French Tech Limoges and regional CHU.",
 
-  heroSchema: {
-    centerSubLabel: "Écosystème IA · Haute-Vienne",
-    satellites: [
-      {
-        label: "Legrand",
-        detail: "CAC 40 — siège mondial",
-        accent: "primary",
-      },
-      {
-        label: "Porcelaine IGP",
-        detail: "Bernardaud · Haviland · Royal Limoges",
-        accent: "terracotta",
-      },
-      {
-        label: "ESTER Technopole",
-        detail: "Céramique · électronique · vivant",
-        accent: "sage",
-      },
-      {
-        label: "IRCER / XLIM",
-        detail: "CNRS — céramiques & photonique",
-        accent: "mocha",
-      },
-      {
-        label: "ENSIL-ENSCI · 3iL",
-        detail: "Ingénieurs — matériaux & IA",
-        accent: "primary",
-      },
-      {
-        label: "French Tech Limoges",
-        detail: "Startups & scale-ups Haute-Vienne",
-        accent: "sage",
-      },
-    ],
-  },
-
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Limoges ?",

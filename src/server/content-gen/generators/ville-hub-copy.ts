@@ -66,18 +66,6 @@ const VilleHubCopySchema = z.object({
     )
     .min(4)
     .max(6),
-  heroSchema: z.object({
-    centerSubLabel: z.string().min(4).max(80).optional(),
-    satellites: z
-      .array(
-        z.object({
-          label: z.string().min(2).max(40),
-          detail: z.string().min(5).max(80),
-          accent: z.enum(["terracotta", "primary", "sage", "mocha"]),
-        }),
-      )
-      .length(6),
-  }),
 });
 
 export type VilleHubCopyOutput = z.infer<typeof VilleHubCopySchema>;
@@ -397,8 +385,23 @@ function computeQualityScore(output: VilleHubCopyOutput): {
     );
   }
   if (bannedFound.length > 0) {
+    // 2026-05-26 — feedback étendu avec alternatives concrètes (GPT-4o tend à
+    // re-utiliser les mêmes banned phrases si on ne propose pas d'alternative).
     fbParts.push(
-      `PHRASES BANNIES détectées — RÉÉCRIS sans ces formulations : ${bannedFound.join(", ")}.`,
+      `🚨 PHRASES BANNIES DÉTECTÉES — interdites : ${bannedFound.join(", ")}.\n` +
+        `ALTERNATIVES OBLIGATOIRES :\n` +
+        `  - "transformation digitale efficace" → "déploiement IA concret"\n` +
+        `  - "gain de compétitivité" → "réduction des coûts opérationnels mesurés"\n` +
+        `  - "solutions sur mesure" → "interventions adaptées à votre stack"\n` +
+        `  - "expertise dédiée" → "consultants seniors sur site"\n` +
+        `  - "écosystème dynamique" → nom factuel d'institution\n` +
+        `  - "leviers IA" → "automatisations concrètes (devis/relances/reporting)"\n` +
+        `  - "tirer parti" → "utiliser pour"\n` +
+        `  - "acteurs majeurs" → noms factuels d'entreprises\n` +
+        `  - "centre névralgique" → "siège" / "pôle"\n` +
+        `  - "dynamique et innovant" → SUPPRIMER (adjectifs creux)\n` +
+        `  - "expertise locale/équipe locale/présence locale" → "Williams se déplace à <Ville>"\n` +
+        `Écris comme un journaliste business : faits, noms propres, chiffres. JAMAIS d'adjectif élogieux.`,
     );
   }
   const retryFeedback = fbParts.length > 0 ? fbParts.join("\n") : "";
@@ -479,6 +482,26 @@ Anti-duplicate avec les 5 sous-pages verticales :
 - N'explique PAS comment se déroule un audit / une intervention / une implémentation — c'est le rôle des sous-pages
 - Concentre-toi sur : intervention Axion-IA × écosystème local, FAQ géolocalisée, contexte économique de la ville
 
+🚨🚨 STYLE OBLIGATOIRE — JOURNALISTE BUSINESS, PAS MARKETER 🚨🚨
+
+Tu es un journaliste éditorial de Les Échos / La Tribune qui écrit sur un cabinet IA. PAS un commercial. Donc :
+
+✅ AUTORISÉ — phrases factuelles avec noms propres :
+  - "Le bassin industriel de [Ville] regroupe Bouygues, Renault et Sanofi"
+  - "Axion-IA intervient à [Ville] pour automatiser devis, relances et reporting"
+  - "L'audit Flash 4h démarre à 490 € HT"
+  - "Williams se déplace sur site dans les 5 jours ouvrés"
+
+❌ INTERDIT — adjectifs élogieux + marketing-speak (pénalité -10 par occurrence) :
+  - JAMAIS : "transformation digitale efficace", "gain de compétitivité", "solutions sur mesure"
+  - JAMAIS : "expertise dédiée", "écosystème dynamique", "acteurs majeurs"
+  - JAMAIS : "centre névralgique", "dynamique et innovant", "leviers IA"
+  - JAMAIS : "tirer parti", "renforçant son rôle", "développement personnalisé"
+  - JAMAIS : "contactez-nous pour devis", "selon vos besoins", "selon la complexité"
+  - JAMAIS : "expertise locale", "équipe locale", "présence locale", "notre bureau à X"
+
+RÈGLE D'OR : si tu peux supprimer un adjectif sans changer le sens factuel → SUPPRIME-LE.
+
 Concision absolue — pas de remplissage, pas de paraphrase. Si une info n'est pas dans le KB, n'invente pas.`;
 
 export interface GenerateVilleHubCopyInput {
@@ -493,9 +516,12 @@ export interface GenerateVilleHubCopyInput {
   readonly ecoOverride?: VilleEconomicData;
 }
 
-const QUALITY_THRESHOLD_FOR_RETRY = 70;
-const MAX_RETRY_ITERATIONS = 2; // total = 1 initial + 2 retries = 3 max
-const BUDGET_CAP_USD_PER_VILLE = 0.15;
+// 2026-05-26 — tuning OpenAI : GPT-4o tend à utiliser marketing-speak (banned
+// phrases), donc plus d'itérations + threshold légèrement plus bas. Best-of-N
+// garde toujours le meilleur output produit, donc augmenter MAX ne dégrade jamais.
+const QUALITY_THRESHOLD_FOR_RETRY = 60; // était 70 (Claude). OpenAI : 60 acceptable.
+const MAX_RETRY_ITERATIONS = 3; // total = 1 initial + 3 retries = 4 max (était 3 total)
+const BUDGET_CAP_USD_PER_VILLE = 0.2; // était 0.15 (Claude). OpenAI moins cher → tolère 4 iter.
 
 function buildUserPrompt(
   ville: NonNullable<Awaited<ReturnType<typeof getVille>>>,
@@ -551,8 +577,6 @@ ${kbMarkdown}${kbDoctrineSection}
 - faqGeolocalisee : 4-6 Q/R B2B local pertinentes (tarifs, déplacement intra-ville, délais, RGPD, formats)
   - Q : 12-22 mots, question concrète d'un prospect ${ville.nameFr}
   - A : 35-65 mots OBLIGATOIRE, FACTUELLE. Pour les tarifs : CITER les vrais prix (ex : "Audit Flash à partir de ${auditEntry} HT, intervention dès ${interventionEntry} HT — tarifs publics sur le site"). JAMAIS "contactez-nous pour devis".
-- heroSchema OBLIGATOIRE : 6 satellites du KB (label 2-4 mots = nom propre, detail 5-12 mots = qualificatif sectoriel, accent rotatif terracotta/primary/sage/mocha)
-
 ## INTERDICTIONS DURES — pénalité -10 par occurrence
 - Toute implication qu'Axion-IA est implanté/basé/présent à ${ville.nameFr} : "expertise locale", "équipe locale", "présence locale", "notre antenne", "à proximité", "nos bureaux"
 - Marketing-speak : "transformation digitale efficace", "gain de compétitivité", "solutions sur mesure", "acteurs majeurs", "centre névralgique", "dynamique et innovant", "expertise dédiée", "tirer parti", "leviers IA"
@@ -573,14 +597,7 @@ ${kbMarkdown}${kbDoctrineSection}
     "implementation": { "fr": "..." },
     "unAUn": { "fr": "..." }
   },
-  "faqGeolocalisee": [{ "q": "...", "a": "..." }, ...],
-  "heroSchema": {
-    "centerSubLabel": "...",
-    "satellites": [
-      { "label": "...", "detail": "...", "accent": "terracotta" },
-      ...
-    ]
-  }
+  "faqGeolocalisee": [{ "q": "...", "a": "..." }, ...]
 }`;
 }
 
@@ -669,10 +686,9 @@ export async function generateVilleHubCopy(
       userPrompt,
       maxTokens: 2400,
       temperature,
-      // Sprint Quality 2026 — Claude Sonnet préféré pour landing pages ville
-      // (meilleur respect des word counts + qualité éditoriale Manon). Fallback
-      // OpenAI auto si Claude indisponible.
-      preferredProvider: "anthropic",
+      // 2026-05-26 — switch OpenAI (Anthropic credit empty). Revert si qualité
+      // insuffisante après recharge Anthropic.
+      preferredProvider: "openai",
     });
 
     totalCostUsd += llmResult.costUsd;
@@ -799,7 +815,6 @@ export async function generateVilleHubCopy(
       topSectorsNaf: [...bestOutput.topSectorsNaf],
       servicesContextJson: bestOutput.servicesContext,
       faqGeolocaliseeJson: [...bestOutput.faqGeolocalisee],
-      heroSchemaJson: bestOutput.heroSchema,
       qualityScore: bestScore,
       duplicateVsVerticales: duplicateScore,
       modelUsed: bestModel,
@@ -822,7 +837,6 @@ export async function generateVilleHubCopy(
       topSectorsNaf: [...bestOutput.topSectorsNaf],
       servicesContextJson: bestOutput.servicesContext,
       faqGeolocaliseeJson: [...bestOutput.faqGeolocalisee],
-      heroSchemaJson: bestOutput.heroSchema,
       qualityScore: bestScore,
       duplicateVsVerticales: duplicateScore,
       modelUsed: bestModel,

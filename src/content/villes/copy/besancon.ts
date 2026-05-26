@@ -72,42 +72,6 @@ export const BESANCON_COPY: VilleCopy = {
   ecosystemEn:
     "Specialised B2B fabric — 9,952 active businesses. TEMIS Innovation Microtechnique technopole (PMT HQ, precision R&D) and TEMIS Santé (medical devices), Pôle des Microtechniques Phase V 270+ members, Institut FEMTO-ST (CNRS, ~750 people), ENSMM, Université de Franche-Comté, CHRU Besançon, Maty (jewellery/watchmaking HQ), Micronora (biennial world trade fair), French Tech Bourgogne-Franche-Comté, Village by CA Franche-Comté.",
 
-  heroSchema: {
-    centerSubLabel: "Écosystème IA · 9 952 établissements",
-    satellites: [
-      {
-        label: "Microtechniques",
-        detail: "PMT Phase V · ENSMM · FEMTO-ST",
-        accent: "terracotta",
-      },
-      {
-        label: "TEMIS",
-        detail: "Innovation + Santé",
-        accent: "primary",
-      },
-      {
-        label: "Maty / Yema",
-        detail: "Horlogerie · siège Besançon",
-        accent: "sage",
-      },
-      {
-        label: "CHRU & Médical",
-        detail: "TEMIS Santé · ISIFC · INSERM",
-        accent: "mocha",
-      },
-      {
-        label: "Vauban UNESCO",
-        detail: "Citadelle · 2008 · ref. 1283",
-        accent: "primary",
-      },
-      {
-        label: "Micronora",
-        detail: "Salon mondial biennal · 800 exposants",
-        accent: "sage",
-      },
-    ],
-  },
-
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Besançon ?",

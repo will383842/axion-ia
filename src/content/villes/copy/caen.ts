@@ -73,42 +73,6 @@ export const CAEN_COPY: VilleCopy = {
   ecosystemEn:
     "Dense B2B fabric — 11,288 active businesses. Electronics and automotive industry (NXP Semiconductors Colombelles, Robert Bosch Mondeville, Renault Trucks Blainville), Plateau Nord research campus (UCN founded 1432, ENSICAEN, GANIL, GREYC AI/cybersecurity), EffiScience technopole (~250 digital/R&D firms), ZAC Presqu'île (tertiary district in transformation), Hippolia equine hub (France's only dedicated equine competitiveness pole), Caen University Hospital and Normandie Incubation.",
 
-  heroSchema: {
-    centerSubLabel: "Écosystème IA · 11 288 établissements",
-    satellites: [
-      {
-        label: "NXP / Bosch",
-        detail: "Semi-conducteurs & électronique",
-        accent: "primary",
-      },
-      {
-        label: "UCN · ENSICAEN",
-        detail: "Campus recherche fondée 1432",
-        accent: "sage",
-      },
-      {
-        label: "GANIL · GREYC",
-        detail: "Physique nucléaire · IA / cybersécurité",
-        accent: "mocha",
-      },
-      {
-        label: "Renault Trucks",
-        detail: "Mobilités électriques, bassin Caen",
-        accent: "terracotta",
-      },
-      {
-        label: "Hippolia",
-        detail: "Filière équine — unique en France",
-        accent: "sage",
-      },
-      {
-        label: "EffiScience",
-        detail: "Technopôle numérique / R&D",
-        accent: "primary",
-      },
-    ],
-  },
-
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Caen ?",

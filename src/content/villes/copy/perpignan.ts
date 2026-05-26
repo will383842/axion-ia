@@ -74,42 +74,6 @@ export const PERPIGNAN_COPY: VilleCopy = {
   ecosystemEn:
     "B2B fabric of 13,498 active businesses, structured around 4 clusters: Saint-Charles International logistics platform (80 ha, 150 companies, fruit-vegetable trading), Tecnosud technopole (DERBI-CEMATER renewables), Agrosud agri-food zone (Cémoi, Conserves France) and Polygone Nord tertiary hub. University Via Domitia (8,945 students), Sup'EnR, cross-border IFCT and French Tech Perpignan complete the ecosystem.",
 
-  heroSchema: {
-    centerSubLabel: "Écosystème IA · 13 498 entreprises",
-    satellites: [
-      {
-        label: "Saint-Charles",
-        detail: "1er centre européen fruits-légumes · 2,3 Md€",
-        accent: "terracotta",
-      },
-      {
-        label: "Cémoi",
-        detail: "N°1 chocolat France · siège Perpignan",
-        accent: "mocha",
-      },
-      {
-        label: "DERBI-Tecnosud",
-        detail: "Pôle EnR · 300 entreprises · R&D",
-        accent: "sage",
-      },
-      {
-        label: "UPVD",
-        detail: "Université Via Domitia · 8 945 étudiants",
-        accent: "primary",
-      },
-      {
-        label: "9 AOP/AOC",
-        detail: "Roussillon · Banyuls · Rivesaltes · Maury",
-        accent: "terracotta",
-      },
-      {
-        label: "Barcelone ~80 min",
-        detail: "Transfrontalier France-Catalogne",
-        accent: "sage",
-      },
-    ],
-  },
-
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Perpignan ?",
