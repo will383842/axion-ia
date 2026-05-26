@@ -218,13 +218,13 @@ export default async function ImplantationsHub({ params }: Props) {
       {/* Toutes les régions — PLACÉE EN PREMIER (Will 2026-05-26).
           Donne l'accès direct à toutes les régions sans hiérarchie cachée. */}
       <Section
-        eyebrow={isFr ? "Toutes les régions" : "All regions"}
-        title={isFr ? "13 régions de France" : "13 French regions"}
-        titleEm={isFr ? "toutes couvertes" : "all covered"}
+        eyebrow={isFr ? "Couverture nationale" : "National coverage"}
+        title={isFr ? "13 régions de France," : "13 French regions,"}
+        titleEm={isFr ? "à votre service" : "at your service"}
         description={
           isFr
-            ? "France métropolitaine intégralement couverte, Corse incluse. Les DROM ne sont pas dans notre périmètre V1 (décision 2026-05-08, voir ADR 0006)."
-            : "Continental France fully covered, Corsica included. Overseas regions are not in our V1 scope (decision 2026-05-08, see ADR 0006)."
+            ? "Métropole au complet, Corse comprise. Les DROM ne sont pas dans notre périmètre V1 (décision 2026-05-08, voir ADR 0006)."
+            : "Continental France in full, Corsica included. Overseas regions are not in our V1 scope (decision 2026-05-08, see ADR 0006)."
         }
       >
         <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
@@ -254,22 +254,74 @@ export default async function ImplantationsHub({ params }: Props) {
         </ul>
       </Section>
 
+      {/* Bandeau orange contact — DÉPLACÉ entre « 13 régions » et « Top 6 »
+          (Will 2026-05-26). Capte l'attention juste après le tableau régions. */}
+      <section className="bg-terracotta py-16 sm:py-20">
+        <Container>
+          <div className="grid items-center gap-10 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] md:gap-14">
+            <div>
+              <h2
+                className="text-paper text-[clamp(1.75rem,3.5vw,2.75rem)] leading-tight font-semibold tracking-tight"
+                style={{ fontFamily: "var(--font-serif)" }}
+              >
+                {isFr
+                  ? "Votre projet IA mérite des architectes seniors."
+                  : "Your AI project deserves senior architects."}
+              </h2>
+              <p className="text-paper/85 mt-3 text-base leading-relaxed sm:text-lg">
+                {isFr
+                  ? "Décrivez votre besoin en 2 minutes. Un appel où l'on prend le temps de tout cadrer à la perfection. Réponse sous 24h ouvrées, sans engagement."
+                  : "Describe your need in 2 minutes. A call where we take the time to scope your project perfectly. Reply within 24 business hours, no commitment."}
+              </p>
+              <div className="mt-8 flex flex-wrap items-center gap-3">
+                <Link
+                  href="/appel"
+                  data-cta-tracking="hub_orange_banner_book"
+                  className="bg-paper text-terracotta cta-lift focus-visible:ring-paper inline-flex h-14 items-center justify-center gap-2 rounded-full px-7 text-base font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                >
+                  {isFr ? "Réserver un appel" : "Book a call"}
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </Link>
+                <Link
+                  href="/contact"
+                  data-cta-tracking="hub_orange_banner_contact"
+                  className="text-paper border-paper/40 hover:bg-paper/10 cta-lift focus-visible:ring-paper inline-flex h-14 items-center justify-center gap-2 rounded-full border-2 px-7 text-base font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                >
+                  {isFr ? "Nous contacter" : "Contact us"}
+                </Link>
+              </div>
+            </div>
+            <div className="hidden md:block">
+              <Illustration
+                slot="IMPLANTATIONS-02-bandeau-contact"
+                src="/images/axion-ia-implantations-bandeau-contact-architectes.png"
+                aspectRatio="1:1"
+                filenameTarget="public/images/axion-ia-implantations-bandeau-contact-architectes.png"
+                alt={
+                  isFr
+                    ? "Illustration architectes IA Axion-IA à votre service — équipe senior, conseil opérationnel, France entière."
+                    : "Axion-IA AI architects at your service — senior team, operational consulting, all of France."
+                }
+                caption={
+                  isFr ? "Axion-IA · architectes IA seniors" : "Axion-IA · senior AI architects"
+                }
+              />
+            </div>
+          </div>
+        </Container>
+      </section>
+
       {/* Top régions par PIB — DÉPLACÉ APRÈS « Toutes les régions »
           (Will 2026-05-26) : contrevendeur pour les régions hors top 6.
           Renommé pour clarifier que c'est un classement, pas un filtre. */}
       <Section
         eyebrow={isFr ? "Classement par PIB" : "GDP ranking"}
-        title={isFr ? "Top 6 régions par" : "Top 6 regions by"}
-        titleEm={isFr ? "PIB régional" : "regional GDP"}
-        titleTail={
-          isFr
-            ? " — toutes les autres sont également couvertes."
-            : " — all others are also covered."
-        }
+        title={isFr ? "Top 6 par" : "Top 6 by"}
+        titleEm={isFr ? "PIB régional Eurostat" : "Eurostat regional GDP"}
         description={
           isFr
-            ? "Classement Eurostat par PIB régional. Chaque page liste vos villes proches, le tissu B2B local et nos cas concrets — mais Axion-IA intervient avec le même standard premium dans les 13 régions."
-            : "Eurostat ranking by regional GDP. Each page lists nearby cities, the local B2B fabric and our case studies — but Axion-IA delivers the same premium standard across all 13 regions."
+            ? "Pôles d'intervention prioritaires en 2026. Chaque page détaille les villes proches, le tissu B2B local et nos cas concrets — le même standard premium s'applique aux 7 autres régions, accessibles depuis la liste ci-dessus."
+            : "Priority engagement hubs for 2026. Each page details nearby cities, the local B2B fabric and our case studies — the same premium standard applies to the 7 other regions, accessible from the list above."
         }
         tone="paper"
       >
@@ -378,63 +430,6 @@ export default async function ImplantationsHub({ params }: Props) {
           </ul>
         </Section>
       ) : null}
-
-      {/* Bandeau orange contact (Will 2026-05-26) — image illustration uploadée
-          par Will à droite (architectes IA chez vous), copy + CTAs à gauche. */}
-      <section className="bg-terracotta py-16 sm:py-20">
-        <Container>
-          <div className="grid items-center gap-10 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] md:gap-14">
-            <div>
-              <h2
-                className="text-paper text-[clamp(1.75rem,3.5vw,2.75rem)] leading-tight font-semibold tracking-tight"
-                style={{ fontFamily: "var(--font-serif)" }}
-              >
-                {isFr
-                  ? "Votre projet IA mérite des architectes seniors."
-                  : "Your AI project deserves senior architects."}
-              </h2>
-              <p className="text-paper/85 mt-3 text-base leading-relaxed sm:text-lg">
-                {isFr
-                  ? "Décrivez votre besoin en 2 minutes. Un appel où l'on prend le temps de tout cadrer à la perfection. Réponse sous 24h ouvrées, sans engagement."
-                  : "Describe your need in 2 minutes. A call where we take the time to scope your project perfectly. Reply within 24 business hours, no commitment."}
-              </p>
-              <div className="mt-8 flex flex-wrap items-center gap-3">
-                <Link
-                  href="/appel"
-                  data-cta-tracking="hub_orange_banner_book"
-                  className="bg-paper text-terracotta cta-lift focus-visible:ring-paper inline-flex h-14 items-center justify-center gap-2 rounded-full px-7 text-base font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-                >
-                  {isFr ? "Réserver un appel" : "Book a call"}
-                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                </Link>
-                <Link
-                  href="/contact"
-                  data-cta-tracking="hub_orange_banner_contact"
-                  className="text-paper border-paper/40 hover:bg-paper/10 cta-lift focus-visible:ring-paper inline-flex h-14 items-center justify-center gap-2 rounded-full border-2 px-7 text-base font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-                >
-                  {isFr ? "Nous contacter" : "Contact us"}
-                </Link>
-              </div>
-            </div>
-            <div className="hidden md:block">
-              <Illustration
-                slot="IMPLANTATIONS-02-bandeau-contact"
-                src="/images/axion-ia-implantations-bandeau-contact-architectes.png"
-                aspectRatio="1:1"
-                filenameTarget="public/images/axion-ia-implantations-bandeau-contact-architectes.png"
-                alt={
-                  isFr
-                    ? "Illustration architectes IA Axion-IA à votre service — équipe senior, conseil opérationnel, France entière."
-                    : "Axion-IA AI architects at your service — senior team, operational consulting, all of France."
-                }
-                caption={
-                  isFr ? "Axion-IA · architectes IA seniors" : "Axion-IA · senior AI architects"
-                }
-              />
-            </div>
-          </div>
-        </Container>
-      </section>
 
       {/* CTA final */}
       <CtaBlock
