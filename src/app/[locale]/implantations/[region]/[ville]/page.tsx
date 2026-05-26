@@ -18,13 +18,23 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { ArrowRight, ArrowUpRight, MapPin, Building2 } from "lucide-react";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  MapPin,
+  Building2,
+  Briefcase,
+  UserCog,
+  Wrench,
+  Globe,
+} from "lucide-react";
 
 import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
 import { JsonLdGraph } from "@/components/marketing/JsonLdGraph";
+import { Illustration } from "@/components/visual/Illustration";
 import { ClientLogosBand } from "@/components/sections/ClientLogosBand";
 import { FounderTrustSection } from "@/components/sections/FounderTrustSection";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
@@ -319,65 +329,136 @@ export default async function VilleHubPage({ params }: Props) {
         </div>
       </Container>
 
-      {/* ── Hero hub ville (simple, spécifique au hub) ── */}
+      {/* ── Hero hub ville (Will 2026-05-26 refonte perfection) ──
+          Layout 2-col image + texte. H1 hook concurrentiel localisé à la
+          ville (cohérent avec les pages régions). Sous-ligne énumérant les
+          5 services Axion-IA + 5 badges visuels pour compréhension immédiate.
+          Image universelle globe-services (réutilisée des pages régions). */}
       <section
         aria-labelledby="ville-hub-hero"
         className="bg-halo-warm relative overflow-hidden pt-8 pb-16 sm:pt-12 sm:pb-20 lg:pt-16 lg:pb-24"
       >
         <Container>
-          <p className="text-fg-muted mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
-            <span
-              aria-hidden="true"
-              className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
-            />
-            {isFr ? `Implantations · ${region.nameFr}` : `Locations · ${region.nameFr}`}
-          </p>
-          <h1
-            id="ville-hub-hero"
-            className="text-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight"
-          >
-            {isFr ? "Axion-IA à" : "Axion-IA in"}{" "}
-            <span className="text-terracotta italic" style={{ fontFamily: "var(--font-serif)" }}>
-              {ville.nameFr}
-            </span>
-            {` (${ville.departementLabel ?? ville.departement})`}
-          </h1>
-          {/* Sous-ligne hero — copy unifié home/régions/villes (Will 2026-05-26)
-              Miroir du heroDescription home, avec suffixe géographique localisé
-              à la ville (« à {ville} et alentours »). */}
-          <p
-            className="text-fg-soft mt-6 max-w-3xl text-lg leading-relaxed sm:text-xl"
-            data-speakable-hero
-          >
-            {isFr
-              ? "Axion-IA forme, audite et déploie l'IA dans votre entreprise — de l'automatisation aux plateformes sur mesure, "
-              : "Axion-IA trains, audits and deploys AI in your company — from automation to custom platforms, "}
-            <span className="text-fg font-semibold">
-              {isFr ? `à ${ville.nameFr} et alentours.` : `in ${ville.nameFr} and surroundings.`}
-            </span>
-          </p>
-          <div className="mt-8 flex flex-wrap items-center gap-3">
-            <Cta
-              href="/appel"
-              variant="primary"
-              size="lg"
-              shape="pill"
-              track="ville_cta_book"
-              data-source-ville={ville.slug}
-            >
-              {isFr ? "Réserver un appel" : "Book a call"}
-              <ArrowRight className="h-4 w-4" aria-hidden="true" />
-            </Cta>
-            <Cta
-              href="/contact"
-              variant="ghost"
-              size="lg"
-              shape="pill"
-              track="ville_cta_contact"
-              data-source-ville={ville.slug}
-            >
-              {isFr ? "Nous contacter" : "Contact us"}
-            </Cta>
+          <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] lg:gap-14 xl:gap-16">
+            {/* Colonne gauche — copy */}
+            <div className="max-w-2xl">
+              <p className="text-fg-muted mb-5 text-[13px] font-medium tracking-[0.16em] uppercase">
+                <span
+                  aria-hidden="true"
+                  className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
+                />
+                {isFr ? `Architectes IA · ${ville.nameFr}` : `AI architects · ${ville.nameFr}`}
+              </p>
+              <h1
+                id="ville-hub-hero"
+                className="text-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight"
+                data-speakable-hero
+              >
+                {isFr ? "Vos concurrents à " : "Vos concurrents à "}
+                <span
+                  className="text-terracotta italic"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
+                  {ville.nameFr}
+                </span>
+                {isFr ? " utilisent déjà l'IA. Et vous ?" : " utilisent déjà l'IA. Et vous ?"}
+              </h1>
+              {/* Sous-ligne hero — copy unifié + locale ville. Réponse au hook. */}
+              <p
+                className="text-fg-soft mt-6 text-lg leading-relaxed sm:text-xl"
+                data-speakable-hero
+              >
+                {isFr ? "Architectes IA seniors à " : "Architectes IA seniors à "}
+                <span className="text-fg font-semibold">
+                  {ville.nameFr} {isFr ? "et alentours" : "et alentours"}
+                </span>
+                {isFr
+                  ? " — audit IA, formation entreprise, implémentation, coaching 1-to-1 dirigeants, plateformes web et SaaS IA. De la TPE à l'ETI."
+                  : " — audit IA, formation entreprise, implémentation, coaching 1-to-1 dirigeants, plateformes web et SaaS IA. De la TPE à l'ETI."}
+              </p>
+              {/* Badges 5 services — compréhension immédiate des prestations.
+                  Petits pills terracotta-soft avec icône Lucide. */}
+              <ul
+                aria-label={isFr ? "Nos 5 services" : "Our 5 services"}
+                className="mt-6 flex flex-wrap gap-2"
+              >
+                {(
+                  [
+                    { Icon: Briefcase, labelFr: "Audit IA", labelEn: "AI audit" },
+                    { Icon: Building2, labelFr: "Formation", labelEn: "Training" },
+                    { Icon: Wrench, labelFr: "Implémentation", labelEn: "Implementation" },
+                    { Icon: UserCog, labelFr: "Coaching 1-to-1", labelEn: "1-to-1 coaching" },
+                    { Icon: Globe, labelFr: "Web / SaaS IA", labelEn: "AI Web / SaaS" },
+                  ] as const
+                ).map(({ Icon, labelFr, labelEn }) => (
+                  <li
+                    key={labelFr}
+                    className="bg-terracotta-soft text-terracotta-deep border-terracotta/30 inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12.5px] font-semibold tracking-tight"
+                  >
+                    <Icon aria-hidden="true" className="h-3.5 w-3.5" strokeWidth={2.5} />
+                    {isFr ? labelFr : labelEn}
+                  </li>
+                ))}
+              </ul>
+              {/* Stats inline */}
+              <div className="text-fg-muted mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
+                <span className="inline-flex items-center gap-2">
+                  <MapPin className="h-4 w-4" aria-hidden="true" />
+                  {fmtPopulation(ville.population, isFr ? "fr" : "en")}{" "}
+                  {isFr ? "habitants" : "inhabitants"}
+                </span>
+                <span className="inline-flex items-center gap-2">
+                  <Building2 className="h-4 w-4" aria-hidden="true" />
+                  {ville.departementLabel ?? ville.departement}
+                </span>
+                {ville.postalCode ? <span className="tabular-nums">{ville.postalCode}</span> : null}
+              </div>
+              {/* CTAs */}
+              <div className="mt-8 flex flex-wrap items-center gap-3">
+                <Cta
+                  href="/appel"
+                  variant="primary"
+                  size="lg"
+                  shape="pill"
+                  track="ville_cta_book"
+                  data-source-ville={ville.slug}
+                >
+                  {isFr ? "Réserver un appel" : "Book a call"}
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </Cta>
+                <Cta
+                  href="/contact"
+                  variant="ghost"
+                  size="lg"
+                  shape="pill"
+                  track="ville_cta_contact"
+                  data-source-ville={ville.slug}
+                >
+                  {isFr ? "Nous contacter" : "Contact us"}
+                </Cta>
+              </div>
+            </div>
+            {/* Colonne droite — illustration universelle (globe + services).
+                Aspect 1:1, priority LCP. Cachée < lg pour focus copy mobile. */}
+            <div className="hidden lg:block">
+              <Illustration
+                slot="VILLE-01-hero"
+                src="/images/axion-ia-proposition-globe-4-services-formations-audit-implementations-carre.avif"
+                aspectRatio="1:1"
+                filenameTarget="public/images/axion-ia-proposition-globe-4-services-formations-audit-implementations-carre.avif"
+                alt={
+                  isFr
+                    ? `Architectes IA Axion-IA à ${ville.nameFr} — 5 services sur site.`
+                    : `Architectes IA Axion-IA à ${ville.nameFr} — 5 services sur site.`
+                }
+                caption={
+                  isFr
+                    ? `Architectes IA seniors · ${ville.nameFr}`
+                    : `Architectes IA seniors · ${ville.nameFr}`
+                }
+                priority
+              />
+            </div>
           </div>
         </Container>
       </section>
