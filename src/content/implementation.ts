@@ -206,16 +206,16 @@ export const IMPLEMENTATIONS: ReadonlyArray<ImplementationContent> = [
     pathFr: "/implementation/no-code",
     pathEn: "/implementation/no-code",
     fr: makeFr({
-      eyebrow: "Implémentation IA · Module 3",
-      title: "IA dans vos outils no-code",
+      eyebrow: "Implémentation IA · Module 3 · Sur demande",
+      title: "IA dans vos outils no-code existants",
       answer:
-        "Connecter de l'IA dans vos plateformes no-code (n8n, Make, Zapier, Bubble, Airtable). Workflows IA avec conditions, traitement par lots, gestion des erreurs et observabilité.",
+        "Sur demande client uniquement : si votre équipe utilise déjà n8n, Make, Zapier, Bubble ou Airtable, nous y intégrons l'IA proprement. Notre approche par défaut reste le code custom (souveraineté des données, zéro lock-in éditeur, performances 10× supérieures). Voir notre position sur le sujet en FAQ globale.",
     }),
     en: makeEn({
-      eyebrow: "AI implementation · Module 3",
-      title: "AI in your no-code stack",
+      eyebrow: "Implémentation IA · Module 3 · Sur demande",
+      title: "IA dans vos outils no-code existants",
       answer:
-        "Connect AI inside your no-code platforms (n8n, Make, Zapier, Bubble, Airtable). AI workflows with conditions, batch processing, error handling and observability.",
+        "Sur demande client uniquement : si votre équipe utilise déjà n8n, Make, Zapier, Bubble ou Airtable, nous y intégrons l'IA proprement. Notre approche par défaut reste le code custom (souveraineté des données, zéro lock-in éditeur, performances 10× supérieures). Voir notre position sur le sujet en FAQ globale.",
     }),
   },
 ];

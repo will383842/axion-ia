@@ -1115,31 +1115,12 @@ export const KW_PARTENAIRES_G5: KeywordSeed[] = [
 
   // ── E4 — Partenaires tech ────────────────────────────────────────────────
 
-  {
-    keyword: "intégrateur Make IA France certifié",
-    intent: "partenaire",
-    kbType: "guide",
-    module: "implementation",
-    cible: "partenaire-commercial",
-    priorite: 3,
-    niveau: 2,
-    injection: {
-      h1: "Axion-IA, intégrateur Make.com pour l'automatisation IA des PME françaises",
-      metaTitle: "Intégrateur Make IA France — Axion-IA",
-      metaDescription:
-        "Automatisation no-code avec Make.com couplée aux LLM : Axion-IA conçoit et déploie vos scénarios IA sur Make pour vos processus métier.",
-      h2Variants: [
-        "Notre expertise Make.com : +50 scénarios déployés clients",
-        "Make + Claude API : la combinaison qui transforme vos processus",
-        "Démarrer un projet Make IA avec Axion-IA",
-      ],
-    },
-    urlCible: "/fr/partenaires",
-    canonicalParent: "/fr/partenaires",
-    source: "manuel",
-    note: "Axion-IA se positionne comme intégrateur (sans partenariat financier officiel Make). Attention : stack-ia/page.tsx affirme 'aucun partenariat commercial' — formuler soigneusement : 'expert Make' pas 'partenaire certifié Make'.",
-  },
-
+  // (Will 2026-05-26 cleanup positionnement « code-first ») — keyword
+  // « intégrateur Make IA France certifié » RETIRÉ : contradisait le
+  // positionnement Axion-IA = architectes IA seniors qui livrent du code
+  // custom (pas no-code par défaut). Make / Zapier / n8n disponibles
+  // uniquement sur demande client explicite, pas comme service phare.
+  //
   // (V-12 P1 cleanup 2026-05-22) — keyword "consultant n8n certifié PME France"
   // retiré : pollution outil tiers contraire au positionnement agnostique.
 

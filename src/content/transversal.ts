@@ -229,6 +229,19 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     },
   },
   {
+    id: "no-code-position",
+    fr: {
+      question: "Utilisez-vous Zapier, Make ou n8n ?",
+      answer:
+        "Non par défaut. Axion-IA livre du code custom (Node.js, Python, n8n self-hosted) dans VOS systèmes, jamais dans des plateformes tierces qui louent l'accès à vos données. Pourquoi : souveraineté RGPD (vos données restent chez vous), zéro lock-in éditeur (vous possédez le code), performances 10× supérieures (pas de saut I/O entre étapes no-code), conformité AI Act native (audit trail, versioning git). Make / Zapier / n8n cloud sont disponibles uniquement sur demande client explicite — par exemple si votre équipe ops utilise déjà ces outils en production. C'est notre différence avec les freelances IA qui assemblent des workflows no-code : nous sommes des architectes IA seniors qui construisent, pas des intégrateurs qui collent des briques préfabriquées.",
+    },
+    en: {
+      question: "Utilisez-vous Zapier, Make ou n8n ?",
+      answer:
+        "Non par défaut. Axion-IA livre du code custom (Node.js, Python, n8n self-hosted) dans VOS systèmes, jamais dans des plateformes tierces qui louent l'accès à vos données. Pourquoi : souveraineté RGPD (vos données restent chez vous), zéro lock-in éditeur (vous possédez le code), performances 10× supérieures (pas de saut I/O entre étapes no-code), conformité AI Act native (audit trail, versioning git). Make / Zapier / n8n cloud sont disponibles uniquement sur demande client explicite — par exemple si votre équipe ops utilise déjà ces outils en production. C'est notre différence avec les freelances IA qui assemblent des workflows no-code : nous sommes des architectes IA seniors qui construisent, pas des intégrateurs qui collent des briques préfabriquées.",
+    },
+  },
+  {
     id: "billing",
     fr: {
       question: "Comment se passe la facturation ?",

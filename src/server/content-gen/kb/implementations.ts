@@ -92,7 +92,7 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   },
   {
     id: "impl-009",
-    text: "Automatisation de workflow IA (Make/Zapier + LLM) Axion-IA : 3 000 à 8 000 € HT selon le nombre d'étapes et d'intégrations — ROI moyen constaté inférieur à 6 mois.",
+    text: "Automatisation de workflow IA Axion-IA : 3 000 à 8 000 € HT selon le nombre d'étapes et d'intégrations — ROI moyen constaté inférieur à 6 mois. Notre approche par défaut est le code custom (n8n self-hosted, Node.js, Python) pour la souveraineté des données et zéro lock-in éditeur. Make / Zapier disponibles uniquement sur demande client explicite.",
     source: "Axion-IA — Grille tarifaire implémentations 2026",
     sourceUrl: "https://axion-ia.com/implementations",
     verifiedAt: "2026-05-01",
@@ -195,7 +195,7 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   // ── Intégrations SI ───────────────────────────────────────────────────────
   {
     id: "impl-020",
-    text: "Axion-IA maîtrise les intégrations avec les principaux SI d'entreprise : Salesforce, HubSpot, SAP, Sage, Dolibarr, Microsoft SharePoint, Google Workspace, Notion et Airtable — via API REST ou connecteurs Make/Zapier.",
+    text: "Axion-IA maîtrise les intégrations avec les principaux SI d'entreprise : Salesforce, HubSpot, SAP, Sage, Dolibarr, Microsoft SharePoint, Google Workspace, Notion et Airtable — via API REST custom (approche par défaut, code-first, zéro lock-in éditeur). Connecteurs Make / Zapier disponibles uniquement sur demande client explicite.",
     source: "Axion-IA — Catalogue intégrations 2026",
     sourceUrl: "https://axion-ia.com/implementations",
     verifiedAt: "2026-05-01",
