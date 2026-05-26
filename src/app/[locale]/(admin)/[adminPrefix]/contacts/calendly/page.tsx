@@ -1,46 +1,138 @@
 // Contacts admin — sous-onglet RDV Calendly (Sprint Notif Infra 2026-05-26).
 //
-// V1 placeholder : la table `CalendlyEvent` est créée en Phase 7 (Chantier 3).
-// Cette page affiche un bandeau d'information honnête + lien vers le dashboard
-// Calendly natif. Le listing réel sera ajouté en Phase 7.
+// Listing CalendlyEvent (table créée Phase 4, peuplée Phase 7).
+// Bandeau d'information honnête sur les limitations Calendly Free + lien
+// dashboard Calendly natif.
 
 import Link from "next/link";
+import { prisma } from "@/lib/prisma";
 import { AdminPageHeader } from "@/components/admin/ui";
 
 export const dynamic = "force-dynamic";
 
-export default function ContactsCalendlyPage(): React.ReactElement {
+const STATUS_LABEL: Record<string, string> = {
+  scheduled: "Programmé",
+  canceled: "Annulé",
+  completed: "Terminé",
+  no_show: "No-show",
+};
+
+function formatDateTime(d: Date | null): string {
+  if (!d) return "—";
+  return new Intl.DateTimeFormat("fr-FR", {
+    timeZone: "Europe/Paris",
+    dateStyle: "medium",
+    timeStyle: "short",
+  }).format(d);
+}
+
+export default async function ContactsCalendlyPage(): Promise<React.ReactElement> {
+  const events = await prisma.calendlyEvent
+    .findMany({
+      orderBy: { capturedAt: "desc" },
+      take: 100,
+      select: {
+        id: true,
+        eventTypeName: true,
+        eventTypeSlug: true,
+        status: true,
+        inviteeName: true,
+        inviteeEmail: true,
+        startTime: true,
+        capturedAt: true,
+        pageUrl: true,
+        utmSource: true,
+        source: true,
+      },
+    })
+    .catch(() => []);
+
   return (
     <>
       <AdminPageHeader
         title="RDV Calendly"
-        description="Réservations via le widget Calendly inline sur /appel."
-      />
-      <div className="admin-card mt-[var(--space-admin-6)] p-[var(--space-admin-6)]">
-        <div className="rounded-lg border border-[color:var(--color-admin-warning-border)] bg-[color:var(--color-admin-warning-bg)] p-4 text-sm text-[color:var(--color-admin-fg-default)]">
-          <p className="font-semibold">
-            ℹ️ La capture Calendly fonctionne en mode client-side gratuit.
-          </p>
-          <p className="mt-2">
-            Seules les <strong>créations depuis /appel</strong> sont captées automatiquement (via
-            Embed JS postMessage). Les annulations et déplacements doivent être marqués manuellement
-            (consulter votre boîte Gmail pour les notifications Calendly officielles).
-          </p>
-          <p className="mt-2 text-[color:var(--color-admin-fg-muted)]">
-            Listing en cours d&apos;implémentation (Phase 7 du sprint Notif Infra).
-          </p>
-        </div>
-        <div className="mt-[var(--space-admin-6)]">
+        description={`${events.length} réservation${events.length > 1 ? "s" : ""} captée${events.length > 1 ? "s" : ""} via widget /appel.`}
+        actions={
           <Link
             href="https://calendly.com/event_types/user/me"
             target="_blank"
             rel="noopener noreferrer"
             className="admin-button-ghost"
           >
-            Ouvrir Calendly (dashboard natif) →
+            Dashboard Calendly →
           </Link>
-        </div>
+        }
+      />
+
+      <div className="mt-[var(--space-admin-4)] rounded-lg border border-[color:var(--color-admin-warning-border)] bg-[color:var(--color-admin-warning-bg)] p-4 text-sm">
+        <p className="font-semibold">
+          ℹ️ La capture Calendly fonctionne en mode client-side gratuit.
+        </p>
+        <p className="mt-2">
+          Seules les <strong>créations depuis /appel</strong> sont captées automatiquement (via
+          Embed JS postMessage). Les annulations et déplacements doivent être marqués manuellement
+          (consulter votre boîte Gmail pour les notifications Calendly officielles).
+        </p>
       </div>
+
+      {events.length === 0 ? (
+        <div className="admin-card admin-card-wide mt-[var(--space-admin-4)] p-[var(--space-admin-6)] text-sm text-[color:var(--color-admin-fg-muted)]">
+          Aucune réservation captée pour le moment. Une réservation effectuée via le widget /appel
+          apparaîtra ici sous quelques secondes.
+        </div>
+      ) : (
+        <div className="admin-card admin-card-wide mt-[var(--space-admin-4)] overflow-x-auto">
+          <table className="admin-table w-full text-sm">
+            <thead>
+              <tr>
+                <th>Capturé le</th>
+                <th>Type RDV</th>
+                <th>Invitee</th>
+                <th>Statut</th>
+                <th>Source</th>
+                <th>UTM</th>
+              </tr>
+            </thead>
+            <tbody>
+              {events.map((e) => (
+                <tr key={e.id}>
+                  <td>{formatDateTime(e.capturedAt)}</td>
+                  <td>{e.eventTypeName}</td>
+                  <td>
+                    {e.inviteeName ? (
+                      <>
+                        <div>{e.inviteeName}</div>
+                        {e.inviteeEmail && (
+                          <div className="text-xs text-[color:var(--color-admin-fg-muted)]">
+                            {e.inviteeEmail}
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <span className="text-[color:var(--color-admin-fg-muted)]">
+                        (à compléter manuellement)
+                      </span>
+                    )}
+                  </td>
+                  <td>
+                    <span className={`admin-badge admin-badge-${e.status}`}>
+                      {STATUS_LABEL[e.status] ?? e.status}
+                    </span>
+                  </td>
+                  <td>{e.source}</td>
+                  <td>
+                    {e.utmSource ? (
+                      <code className="text-xs">{e.utmSource}</code>
+                    ) : (
+                      <span className="text-[color:var(--color-admin-fg-muted)]">—</span>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </>
   );
 }

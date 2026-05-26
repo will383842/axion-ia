@@ -11,6 +11,7 @@ import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { buildProductMetadata, buildServiceJsonLd, SITE_URL } from "@/lib/seo";
 import { CalendlyInlineWidget } from "@/components/booking/CalendlyInlineWidget";
+import { CalendlyEventCapture } from "@/components/booking/CalendlyEventCapture";
 import { ArrowRight, Clock, Shield, CheckCircle, Calendar } from "lucide-react";
 
 export const revalidate = 86400;
@@ -219,6 +220,18 @@ export default async function AppelPage({ params }: Props) {
                 <div className="bg-paper ring-border shadow-terracotta/10 relative rounded-3xl p-1.5 shadow-2xl ring-1">
                   <CalendlyInlineWidget calendlyUrl={CALENDLY_APPEL_URL} isFr={isFr} height={720} />
                 </div>
+                {/* Sprint Notif Infra 2026-05-26 / Chantier 3 — capture client
+                    des events `event_scheduled` emis par l'iframe Calendly.
+                    Aucune UI rendue, listener postMessage passif post-mount.
+                    Limitation honnete (cf. ADR 0030) : seules les CREATIONS
+                    depuis /appel sont captees ; annulations/reschedules
+                    geres via boite Gmail Will. */}
+                {CALENDLY_APPEL_URL && (
+                  <CalendlyEventCapture
+                    calendlyUrl={CALENDLY_APPEL_URL}
+                    trackingContext={{ pageUrl: `${SITE_URL}/${locale}/appel` }}
+                  />
+                )}
               </div>
             </div>
           </Container>
