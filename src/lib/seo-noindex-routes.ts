@@ -117,7 +117,9 @@ const INDEXABLE_SERVICE_VILLE_SLUGS: Record<
 };
 
 /**
- * Régions indexables. 12 métropole en V1, Corse exclue (faible volume, ROI nul).
+ * Régions indexables. 13 métropole en V1 (Will 2026-05-26 — Corse réintégrée
+ * suite à enrichissement contenu hand-crafted : metaTitleFr, metaDescFr,
+ * audienceLocalFr, pitchFr, fiche complète à parité avec les 12 autres).
  * Sync test : `seo-noindex-routes.test.ts`.
  */
 const INDEXABLE_REGION_SLUGS: ReadonlySet<string> = new Set([
@@ -125,6 +127,7 @@ const INDEXABLE_REGION_SLUGS: ReadonlySet<string> = new Set([
   "bourgogne-franche-comte",
   "bretagne",
   "centre-val-de-loire",
+  "corse",
   "grand-est",
   "hauts-de-france",
   "ile-de-france",
@@ -133,7 +136,6 @@ const INDEXABLE_REGION_SLUGS: ReadonlySet<string> = new Set([
   "occitanie",
   "pays-de-la-loire",
   "provence-alpes-cote-d-azur",
-  // "corse" exclue volontairement (noindex: true dans content/regions.ts)
 ]);
 
 const SERVICE_PATH_TO_KEY: Record<string, "audit" | "interventions" | "implementation"> = {

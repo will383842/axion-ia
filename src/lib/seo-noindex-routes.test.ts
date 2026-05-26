@@ -50,13 +50,10 @@ describe("isNoindexStubRoute — logique", () => {
     expect(isNoindexStubRoute("/en/locations/ile-de-france/paris")).toBe(false);
   });
 
-  it("retourne true pour région noindex (Corse)", () => {
-    expect(isNoindexStubRoute("/fr/implantations/corse")).toBe(true);
-    expect(isNoindexStubRoute("/en/locations/corse")).toBe(true);
-  });
-
-  it("retourne false pour région indexable", () => {
+  it("retourne false pour les 13 régions indexables (Will 2026-05-26 — Corse réintégrée)", () => {
     expect(isNoindexStubRoute("/fr/implantations/ile-de-france")).toBe(false);
+    expect(isNoindexStubRoute("/fr/implantations/corse")).toBe(false);
+    expect(isNoindexStubRoute("/en/locations/corse")).toBe(false);
   });
 
   it("retourne true pour service×ville stub", () => {
