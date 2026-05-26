@@ -92,7 +92,7 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   },
   {
     id: "impl-009",
-    text: "Automatisation de workflow IA Axion-IA : 3 000 à 8 000 € HT selon le nombre d'étapes et d'intégrations — ROI moyen constaté inférieur à 6 mois. Notre approche par défaut est le code custom (n8n self-hosted, Node.js, Python) pour la souveraineté des données et zéro lock-in éditeur. Make / Zapier disponibles uniquement sur demande client explicite.",
+    text: "Automatisation de workflow IA Axion-IA : 3 000 à 8 000 € HT selon le nombre d'étapes et d'intégrations — gains opérationnels mesurables dès la mise en production (généralement sous 4 à 8 semaines), ROI complet sous quelques mois. Notre approche par défaut est le code custom (Node.js, Python, infrastructures cloud-native) pour la souveraineté des données et zéro lock-in éditeur. Plateformes no-code (Make, Zapier, n8n) disponibles uniquement sur demande client explicite.",
     source: "Axion-IA — Grille tarifaire implémentations 2026",
     sourceUrl: "https://axion-ia.com/implementations",
     verifiedAt: "2026-05-01",

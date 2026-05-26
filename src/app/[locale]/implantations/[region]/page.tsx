@@ -479,112 +479,118 @@ export default async function RegionPage({ params }: Props) {
           réelle (~280 communes IDF, ~190 ARA, etc.) au lieu d'un top 12
           factice. Maillage interne massif vers les pages villes pilotes
           + stubs noindex (le crawl ne suit pas les noindex mais l'utilisateur
-          peut atterrir et trouver son Axion-IA local). */}
-      <Section
-        eyebrow={isFr ? "Couverture complète" : "Full coverage"}
-        title={
-          isFr
-            ? `${fmtPopulation(villes.length, "fr")} communes éligibles`
-            : `${fmtPopulation(villes.length, "en")} eligible communes`
-        }
-        titleEm={isFr ? `en ${region.nameFr}` : `in ${region.nameFr}`}
-        description={
-          isFr
-            ? `Toute commune française de plus de 5 000 habitants est éligible aux interventions sur site, audits et missions d'implémentation. Communes groupées par département. ${pilotVilles.length > 0 ? "Les villes marquées ★ ont une page locale enrichie." : ""}`
-            : `Any French commune with more than 5,000 inhabitants is eligible for on-site engagements, audits and implementation missions. Communes grouped by department. ${pilotVilles.length > 0 ? "Cities marked ★ have an enriched local page." : ""}`
-        }
-      >
-        {(() => {
-          // Groupement par département (clé = code numérique). Tri département
-          // par code asc, villes dans chaque département par population desc.
-          // `villes` est ReadonlyArray → on copie chaque entrée dans un Array
-          // mutable pour pouvoir `push`/`sort`.
-          type VilleEntry = (typeof villes)[number];
-          const byDept = new Map<string, VilleEntry[]>();
-          for (const v of villes) {
-            const key = v.departementLabel ?? v.departement;
-            const arr = byDept.get(key);
-            if (arr) {
-              arr.push(v);
-            } else {
-              byDept.set(key, [v]);
+          peut atterrir et trouver son Axion-IA local).
+          Will 2026-05-26 : section masquée si villes.length === 0 (cas DROM
+          sans data INSEE >5000 hab) — ne JAMAIS afficher « 0 communes » qui
+          serait contrevendeur. La couverture DROM est signalée via le hero
+          + Contexte régional + JSON-LD Place. */}
+      {villes.length > 0 ? (
+        <Section
+          eyebrow={isFr ? "Couverture complète" : "Full coverage"}
+          title={
+            isFr
+              ? `${fmtPopulation(villes.length, "fr")} communes éligibles`
+              : `${fmtPopulation(villes.length, "en")} eligible communes`
+          }
+          titleEm={isFr ? `en ${region.nameFr}` : `in ${region.nameFr}`}
+          description={
+            isFr
+              ? `Toute commune française de plus de 5 000 habitants est éligible aux interventions sur site, audits et missions d'implémentation. Communes groupées par département. ${pilotVilles.length > 0 ? "Les villes marquées ★ ont une page locale enrichie." : ""}`
+              : `Any French commune with more than 5,000 inhabitants is eligible for on-site engagements, audits and implementation missions. Communes grouped by department. ${pilotVilles.length > 0 ? "Cities marked ★ have an enriched local page." : ""}`
+          }
+        >
+          {(() => {
+            // Groupement par département (clé = code numérique). Tri département
+            // par code asc, villes dans chaque département par population desc.
+            // `villes` est ReadonlyArray → on copie chaque entrée dans un Array
+            // mutable pour pouvoir `push`/`sort`.
+            type VilleEntry = (typeof villes)[number];
+            const byDept = new Map<string, VilleEntry[]>();
+            for (const v of villes) {
+              const key = v.departementLabel ?? v.departement;
+              const arr = byDept.get(key);
+              if (arr) {
+                arr.push(v);
+              } else {
+                byDept.set(key, [v]);
+              }
             }
-          }
-          const sortedDepts = [...byDept.entries()].sort(([a], [b]) =>
-            a.localeCompare(b, undefined, { numeric: true }),
-          );
-          for (const [, arr] of sortedDepts) {
-            arr.sort((a: VilleEntry, b: VilleEntry) => b.population - a.population);
-          }
-          // Si la région a 1 seul département (ex Corse 2A+2B = 2 dept),
-          // on garde les <details> pour cohérence visuelle. Premier dept
-          // ouvert par défaut pour un aperçu sans clic.
-          return (
-            <div className="space-y-3">
-              {sortedDepts.map(([dept, list], idx) => (
-                <details
-                  key={dept}
-                  open={idx === 0}
-                  className="group bg-paper border-border-strong/40 open:shadow-card rounded-2xl border-2 transition"
-                >
-                  <summary className="hover:bg-sand focus-visible:ring-terracotta flex cursor-pointer items-center justify-between gap-3 rounded-2xl px-5 py-4 transition focus-visible:ring-2 focus-visible:outline-none">
-                    <span className="flex items-baseline gap-3">
+            const sortedDepts = [...byDept.entries()].sort(([a], [b]) =>
+              a.localeCompare(b, undefined, { numeric: true }),
+            );
+            for (const [, arr] of sortedDepts) {
+              arr.sort((a: VilleEntry, b: VilleEntry) => b.population - a.population);
+            }
+            // Si la région a 1 seul département (ex Corse 2A+2B = 2 dept),
+            // on garde les <details> pour cohérence visuelle. Premier dept
+            // ouvert par défaut pour un aperçu sans clic.
+            return (
+              <div className="space-y-3">
+                {sortedDepts.map(([dept, list], idx) => (
+                  <details
+                    key={dept}
+                    open={idx === 0}
+                    className="group bg-paper border-border-strong/40 open:shadow-card rounded-2xl border-2 transition"
+                  >
+                    <summary className="hover:bg-sand focus-visible:ring-terracotta flex cursor-pointer items-center justify-between gap-3 rounded-2xl px-5 py-4 transition focus-visible:ring-2 focus-visible:outline-none">
+                      <span className="flex items-baseline gap-3">
+                        <span
+                          className="text-fg text-lg leading-tight font-semibold tracking-tight"
+                          style={{ fontFamily: "var(--font-serif)" }}
+                        >
+                          {isFr ? `Département ${dept}` : `Department ${dept}`}
+                        </span>
+                        <span className="text-fg-muted text-sm tabular-nums">
+                          {list.length} {isFr ? "communes" : "communes"}
+                        </span>
+                      </span>
                       <span
-                        className="text-fg text-lg leading-tight font-semibold tracking-tight"
-                        style={{ fontFamily: "var(--font-serif)" }}
+                        aria-hidden="true"
+                        className="text-fg-muted text-xs transition-transform group-open:rotate-180"
                       >
-                        {isFr ? `Département ${dept}` : `Department ${dept}`}
+                        ▾
                       </span>
-                      <span className="text-fg-muted text-sm tabular-nums">
-                        {list.length} {isFr ? "communes" : "communes"}
-                      </span>
-                    </span>
-                    <span
-                      aria-hidden="true"
-                      className="text-fg-muted text-xs transition-transform group-open:rotate-180"
-                    >
-                      ▾
-                    </span>
-                  </summary>
-                  <ul className="border-border/40 grid grid-cols-2 gap-x-3 gap-y-1 border-t px-5 py-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-                    {list.map((ville) => {
-                      const isPilot = !!ville.copy;
-                      return (
-                        <li key={ville.slug}>
-                          <Link
-                            href={`/implantations/${region.slug}/${ville.slug}` as never}
-                            data-source-region={region.slug}
-                            data-source-ville={ville.slug}
-                            data-cta-tracking="region_all_villes"
-                            className="group/v hover:bg-sand focus-visible:ring-terracotta block rounded-md px-2 py-1.5 transition focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:outline-none"
-                          >
-                            <span className="text-fg group-hover/v:text-terracotta flex items-baseline gap-1 text-[13px] font-semibold tracking-tight transition">
-                              <span className="truncate">{ville.nameFr}</span>
-                              {isPilot ? (
-                                <span
-                                  aria-hidden="true"
-                                  className="text-terracotta shrink-0"
-                                  title={isFr ? "Page pilote" : "Pilot page"}
-                                >
-                                  ★
-                                </span>
-                              ) : null}
-                            </span>
-                            <span className="text-fg-muted mt-0.5 block text-[10.5px] tabular-nums">
-                              {fmtPopulation(ville.population, isFr ? "fr" : "en")}{" "}
-                              {isFr ? "hab." : "inhab."}
-                            </span>
-                          </Link>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </details>
-              ))}
-            </div>
-          );
-        })()}
-      </Section>
+                    </summary>
+                    <ul className="border-border/40 grid grid-cols-2 gap-x-3 gap-y-1 border-t px-5 py-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                      {list.map((ville) => {
+                        const isPilot = !!ville.copy;
+                        return (
+                          <li key={ville.slug}>
+                            <Link
+                              href={`/implantations/${region.slug}/${ville.slug}` as never}
+                              data-source-region={region.slug}
+                              data-source-ville={ville.slug}
+                              data-cta-tracking="region_all_villes"
+                              className="group/v hover:bg-sand focus-visible:ring-terracotta block rounded-md px-2 py-1.5 transition focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:outline-none"
+                            >
+                              <span className="text-fg group-hover/v:text-terracotta flex items-baseline gap-1 text-[13px] font-semibold tracking-tight transition">
+                                <span className="truncate">{ville.nameFr}</span>
+                                {isPilot ? (
+                                  <span
+                                    aria-hidden="true"
+                                    className="text-terracotta shrink-0"
+                                    title={isFr ? "Page pilote" : "Pilot page"}
+                                  >
+                                    ★
+                                  </span>
+                                ) : null}
+                              </span>
+                              <span className="text-fg-muted mt-0.5 block text-[10.5px] tabular-nums">
+                                {fmtPopulation(ville.population, isFr ? "fr" : "en")}{" "}
+                                {isFr ? "hab." : "inhab."}
+                              </span>
+                            </Link>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </details>
+                ))}
+              </div>
+            );
+          })()}
+        </Section>
+      ) : null}
 
       {/* Section « Nous accompagnons toutes les tailles » personnalisée à la
           région (Will 2026-05-26). H2 régionalisé + paragraphe `audienceLocalFr`
