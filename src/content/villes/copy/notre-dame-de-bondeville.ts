@@ -1,0 +1,71 @@
+﻿// AUTO-GENERATED 2026-05-27 — T4 batch #23 Claude Code (Will).
+// Notre-Dame-de-Bondeville (76, Seine-Maritime) — Agglo Rouen nord, 7 071 hab.
+
+import type { VilleCopy } from "./types";
+
+export const NOTRE_DAME_DE_BONDEVILLE_COPY: VilleCopy = {
+  pitchFr:
+    "Notre-Dame-de-Bondeville (76), commune de l'agglomeration rouennaise en Seine-Maritime, reunit pres de 7 070 habitants. Ville residentielle et commercante au nord de Rouen, elle accueille des TPE de services, des PME tertiaires, des commerces, des artisans et des professions liberales. Axion-IA y intervient pour tous types d'activites.",
+  pitchEn:
+    "Notre-Dame-de-Bondeville (76), commune de l'agglomeration rouennaise en Seine-Maritime, reunit pres de 7 070 habitants. Ville residentielle et commercante au nord de Rouen, elle accueille des TPE de services, des PME tertiaires, des commerces, des artisans et des professions liberales. Axion-IA y intervient pour tous types d'activites.",
+  seoHook: "commerce, services & agglo Rouen nord",
+  directAnswerFr:
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Notre-Dame-de-Bondeville (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise nord : commercants, artisans, prestataires de services et independants. Audit Flash a partir de 490 EUR HT.",
+  directAnswerEn:
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Notre-Dame-de-Bondeville (76). Nous accompagnons les TPE, PME et professions liberales de l'agglo rouennaise nord : commercants, artisans, prestataires de services et independants. Audit Flash a partir de 490 EUR HT.",
+  ecosystemFr:
+    "Notre-Dame-de-Bondeville fait partie de la Metropole Rouen Normandie, au nord de Rouen. Tissu economique de proximite : commerces de centre-ville, TPE de services, artisanat, professions liberales et PME tertiaires. Acces direct tramway T1 et A150 vers Le Havre.",
+  ecosystemEn:
+    "Notre-Dame-de-Bondeville fait partie de la Metropole Rouen Normandie, au nord de Rouen. Tissu economique de proximite : commerces de centre-ville, TPE de services, artisanat, professions liberales et PME tertiaires. Acces direct tramway T1 et A150 vers Le Havre.",
+  distancesFr:
+    "Tramway T1 vers Rouen centre (15 min). Gare Rouen Rive-Droite a 15 min. A150 Rouen-Le Havre a 5 min. Maromme a 5 min. Paris Saint-Lazare a 1h25 via Rouen. Aeroport Rouen-Boos a 25 min.",
+  distancesEn:
+    "Tramway T1 vers Rouen centre (15 min). Gare Rouen Rive-Droite a 15 min. A150 Rouen-Le Havre a 5 min. Maromme a 5 min. Paris Saint-Lazare a 1h25 via Rouen. Aeroport Rouen-Boos a 25 min.",
+  topSectorsNaf: [
+    "Commerce de proximite & detail",
+    "TPE services aux entreprises",
+    "PME tertiaire & bureaux",
+    "Professions liberales & sante",
+    "Artisanat & renovation",
+  ],
+  servicesContext: {
+    audit: {
+      fr: "Audit IA a Notre-Dame-de-Bondeville : diagnostic adapte aux TPE de services, commercants et professions liberales de l'agglo rouennaise nord. ROI chiffre, audit Flash 490 EUR HT.",
+      en: "Audit IA a Notre-Dame-de-Bondeville : diagnostic adapte aux TPE de services, commercants et professions liberales de l'agglo rouennaise nord. ROI chiffre, audit Flash 490 EUR HT.",
+    },
+    interventions: {
+      fr: "Interventions IA sur site a Notre-Dame-de-Bondeville : formations adaptees aux commerces, cabinets, PME tertiaires et artisans de l'agglo rouennaise. Equipes autonomes sur outils IA.",
+      en: "Interventions IA sur site a Notre-Dame-de-Bondeville : formations adaptees aux commerces, cabinets, PME tertiaires et artisans de l'agglo rouennaise. Equipes autonomes sur outils IA.",
+    },
+    implementation: {
+      fr: "Implementation IA a Notre-Dame-de-Bondeville : automatisation administrative, agents conversationnels, CRM augmentes pour commercants et PME de la metropole rouennaise.",
+      en: "Implementation IA a Notre-Dame-de-Bondeville : automatisation administrative, agents conversationnels, CRM augmentes pour commercants et PME de la metropole rouennaise.",
+    },
+    unAUn: {
+      fr: "Coaching 1-to-1 a Notre-Dame-de-Bondeville : accompagnement personnalise dirigeants TPE, gerants PME et professions liberales de l'agglo rouennaise nord.",
+      en: "Coaching 1-to-1 a Notre-Dame-de-Bondeville : accompagnement personnalise dirigeants TPE, gerants PME et professions liberales de l'agglo rouennaise nord.",
+    },
+  },
+  faqGeolocalisee: [
+    {
+      q: "Axion-IA intervient-il a Notre-Dame-de-Bondeville ?",
+      a: "Oui, Axion-IA intervient a Notre-Dame-de-Bondeville et dans toute la metropole rouennaise (Rouen, Maromme, Deville-les-Rouen, Canteleu). Consultants depuis Rouen (15 min) ou Paris (1h25).",
+    },
+    {
+      q: "Quels services IA pour les commercants de Notre-Dame-de-Bondeville ?",
+      a: "Pour les commercants, nous proposons : gestion stocks IA, agents conversationnels, fidelisation client, comptabilite augmentee, analyse ventes. Audit Flash 490 EUR HT.",
+    },
+    {
+      q: "Quel est le tarif d'un audit IA a Notre-Dame-de-Bondeville ?",
+      a: "L'audit Flash demarre a 490 EUR HT. Tous nos tarifs sont publics et consultables sur notre site. Intervention sur site sous 5 jours ouvres apres validation.",
+    },
+    {
+      q: "Accompagnez-vous les PME tertiaires de Notre-Dame-de-Bondeville ?",
+      a: "Oui, nous accompagnons les PME tertiaires : automatisation processus, agents IA, CRM augmentes, reporting intelligent, gestion documentaire. ROI mesurable.",
+    },
+    {
+      q: "Vos interventions respectent-elles le RGPD a Notre-Dame-de-Bondeville ?",
+      a: "Oui, toutes nos interventions a Notre-Dame-de-Bondeville sont conformes au RGPD. Protection des donnees de votre entreprise et de vos clients garantie contractuellement.",
+    },
+  ],
+};
