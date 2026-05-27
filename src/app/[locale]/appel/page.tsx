@@ -11,12 +11,19 @@ import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { buildProductMetadata, buildServiceJsonLd, SITE_URL } from "@/lib/seo";
 import { CalendlyInlineWidget } from "@/components/booking/CalendlyInlineWidget";
+import { CalendlyEventCapture } from "@/components/booking/CalendlyEventCapture";
 import { ArrowRight, Clock, Shield, CheckCircle, Calendar } from "lucide-react";
 
 export const revalidate = 86400;
 
 interface Props {
   params: Promise<{ locale: string }>;
+  /**
+   * Sprint Notif Infra 2026-05-26 / fix P1-5 audit 2026-05-27 — searchParams
+   * UTM extraits côté Server Component et passés au CalendlyEventCapture
+   * pour attribution analytics.
+   */
+  searchParams: Promise<Record<string, string | undefined>>;
 }
 
 /**
@@ -51,11 +58,25 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function AppelPage({ params }: Props) {
+export default async function AppelPage({ params, searchParams }: Props) {
   const { locale } = await params;
+  const sp = await searchParams;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
   const isFr = locale === "fr";
+
+  // Sprint Notif Infra 2026-05-26 / fix P1-5 — extraction UTM côté Server.
+  const trackingContext: {
+    pageUrl: string;
+    utmSource?: string;
+    utmCampaign?: string;
+    utmMedium?: string;
+    referrer?: string;
+  } = { pageUrl: `${SITE_URL}/${locale}/appel` };
+  if (typeof sp["utm_source"] === "string") trackingContext.utmSource = sp["utm_source"];
+  if (typeof sp["utm_campaign"] === "string") trackingContext.utmCampaign = sp["utm_campaign"];
+  if (typeof sp["utm_medium"] === "string") trackingContext.utmMedium = sp["utm_medium"];
+  if (typeof sp["ref"] === "string") trackingContext.referrer = sp["ref"];
 
   const jsonLd = buildServiceJsonLd({
     locale: locale as "fr" | "en",
@@ -219,6 +240,18 @@ export default async function AppelPage({ params }: Props) {
                 <div className="bg-paper ring-border shadow-terracotta/10 relative rounded-3xl p-1.5 shadow-2xl ring-1">
                   <CalendlyInlineWidget calendlyUrl={CALENDLY_APPEL_URL} isFr={isFr} height={720} />
                 </div>
+                {/* Sprint Notif Infra 2026-05-26 / Chantier 3 — capture client
+                    des events `event_scheduled` emis par l'iframe Calendly.
+                    Aucune UI rendue, listener postMessage passif post-mount.
+                    Limitation honnete (cf. ADR 0030) : seules les CREATIONS
+                    depuis /appel sont captees ; annulations/reschedules
+                    geres via boite Gmail Will. */}
+                {CALENDLY_APPEL_URL && (
+                  <CalendlyEventCapture
+                    calendlyUrl={CALENDLY_APPEL_URL}
+                    trackingContext={trackingContext}
+                  />
+                )}
               </div>
             </div>
           </Container>

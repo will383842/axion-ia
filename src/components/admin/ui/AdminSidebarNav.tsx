@@ -74,6 +74,7 @@ const ICON_MAP: Record<string, LucideIcon> = {
   Échéanciers: CalendarClock,
   "Options 48h": Hourglass,
   Soumissions: Inbox,
+  "Contacts & messages": Inbox,
   Connaissances: BookOpenText,
   "Générateur contenus": BrainCircuit,
   Blog: PenLine,
@@ -118,6 +119,8 @@ interface AdminSidebarNavProps {
   alertsCount?: number;
   /** Compteur anomalies Site Explorer high severity non résolues. */
   siteExplorerAnomaliesHighCount?: number;
+  /** Compteur contacts sans réponse (needsAttention=true ET non archivé). */
+  unreadContactsCount?: number;
 }
 
 export function AdminSidebarNav({
@@ -127,6 +130,7 @@ export function AdminSidebarNav({
   failedJobsCount = 0,
   alertsCount = 0,
   siteExplorerAnomaliesHighCount = 0,
+  unreadContactsCount = 0,
 }: AdminSidebarNavProps): React.ReactElement {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(defaultCollapsed);
@@ -371,6 +375,16 @@ export function AdminSidebarNav({
                                   {siteExplorerAnomaliesHighCount > 99
                                     ? "99+"
                                     : siteExplorerAnomaliesHighCount}
+                                </span>
+                              ) : null}
+                              {/* Badge contacts sans réponse (Sprint Notif Infra) */}
+                              {unreadContactsCount > 0 &&
+                              item.href.includes("/contacts/messages") ? (
+                                <span
+                                  className="ml-auto rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-bold text-white"
+                                  aria-label={`${unreadContactsCount} contact${unreadContactsCount > 1 ? "s" : ""} sans réponse`}
+                                >
+                                  {unreadContactsCount > 99 ? "99+" : unreadContactsCount}
                                 </span>
                               ) : null}
                             </>

@@ -1,9 +1,10 @@
-// Listing soumissions admin (M9 Tier 1 section 1).
+// Submissions admin — page legacy, redirige vers /contacts/messages
+// (Sprint Notif Infra 2026-05-26).
 //
-// Filtres URL params : ?type=&status=&locale=&search=&dateFrom=&dateTo=&page=
-// SubmissionFilters (client) navigate via useRouter.push pour preserver l'URL.
+// Garde l'URL accessible pour les liens internes/bookmarks externes mais
+// matérialise la nouvelle architecture "Contacts & Messages".
 
-import { SubmissionsV2 } from "./_v2/SubmissionsV2";
+import { permanentRedirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
@@ -12,9 +13,16 @@ interface PageProps {
   searchParams: Promise<Record<string, string | undefined>>;
 }
 
-export default async function SubmissionsListPage({ params, searchParams }: PageProps) {
+export default async function LegacySubmissionsRedirect({
+  params,
+  searchParams,
+}: PageProps): Promise<never> {
   const { adminPrefix } = await params;
   const sp = await searchParams;
-
-  return <SubmissionsV2 adminPrefix={adminPrefix} searchParams={sp} />;
+  const qs = new URLSearchParams();
+  for (const [k, v] of Object.entries(sp)) {
+    if (v !== undefined) qs.set(k, v);
+  }
+  const suffix = qs.toString();
+  permanentRedirect(`/fr/${adminPrefix}/contacts/messages${suffix ? `?${suffix}` : ""}`);
 }

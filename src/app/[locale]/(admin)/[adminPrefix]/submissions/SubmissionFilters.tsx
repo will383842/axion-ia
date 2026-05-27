@@ -18,13 +18,16 @@ export function SubmissionFilters({ initial }: FiltersProps) {
     search: initial.search ?? "",
     dateFrom: initial.dateFrom ?? "",
     dateTo: initial.dateTo ?? "",
+    // Sprint Notif Infra 2026-05-26 / fix P0-2 + P1-2 audit 2026-05-27.
+    replyStatus: initial.replyStatus ?? "all",
+    includeArchived: initial.includeArchived ?? "false",
   });
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     const params = new URLSearchParams();
     for (const [k, v] of Object.entries(state)) {
-      if (v && v !== "all") params.set(k, v);
+      if (v && v !== "all" && v !== "false" && v !== "") params.set(k, v);
     }
     router.push(`${pathname}?${params.toString()}`);
   }
@@ -127,6 +130,39 @@ export function SubmissionFilters({ initial }: FiltersProps) {
             onChange={(e) => setState({ ...state, dateTo: e.target.value })}
             className="admin-input"
           />
+        </div>
+
+        {/* Sprint Notif Infra 2026-05-26 / fix P1-2 — filtre statut réponse */}
+        <div className="admin-field">
+          <label htmlFor="replyStatus" className="admin-label">
+            Statut réponse
+          </label>
+          <select
+            id="replyStatus"
+            value={state.replyStatus}
+            onChange={(e) => setState({ ...state, replyStatus: e.target.value })}
+            className="admin-input"
+          >
+            <option value="all">Tous</option>
+            <option value="unanswered">Sans réponse</option>
+            <option value="answered">Répondus</option>
+            <option value="failed">Échec d&apos;envoi</option>
+          </select>
+        </div>
+
+        {/* Sprint Notif Infra 2026-05-26 / fix P0-2 — toggle archivés */}
+        <div className="admin-field flex items-end">
+          <label className="admin-label inline-flex cursor-pointer items-center gap-2">
+            <input
+              type="checkbox"
+              checked={state.includeArchived === "true"}
+              onChange={(e) =>
+                setState({ ...state, includeArchived: e.target.checked ? "true" : "false" })
+              }
+              className="h-4 w-4 rounded border-[color:var(--color-admin-border-default)]"
+            />
+            Inclure les archivés
+          </label>
         </div>
       </div>
       <div className="admin-filters-actions">

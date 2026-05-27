@@ -55,6 +55,7 @@ import {
   cancellationConfirmedByUserSubject,
 } from "./cancellation-confirmed-by-user";
 import { RefundIssuedEmail, refundIssuedSubject } from "./refund-issued";
+import { SubmissionReplyEmail, submissionReplySubject } from "./submission-reply";
 // Sprint X.3 + X.7 + X.12 + X.13 — stubs minimaux (copy finale livrée Sprint X.13)
 import {
   contractVersionUpdated,
@@ -193,6 +194,10 @@ const TEMPLATES: TemplateMap = {
   "refund-issued": {
     subject: refundIssuedSubject,
     component: RefundIssuedEmail,
+  },
+  "submission-reply": {
+    subject: submissionReplySubject,
+    component: SubmissionReplyEmail,
   },
   // Sprint X.3 / X.7 / X.12 / X.13 — stubs (copy finale Sprint X.13 dédié)
   "contract-version-updated": contractVersionUpdated,

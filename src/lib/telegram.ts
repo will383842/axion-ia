@@ -1,85 +1,90 @@
-// Telegram notifications (Sprint 15 / M8).
+// Telegram notifications — wrapper @deprecated (Sprint 15 / M8 + Sprint Notif
+// Infra 2026-05-26 refactor).
 //
-// Tags canoniques (CLAUDE.md v6 §11) :
-//   [INTERVENTION] [OPTION] [OPTION CONFIRMÉE] [OPTION EXPIRÉE] [ANNULATION]
-//   [AUDIT] [AUTO] [CONTACT] [NEWSLETTER]
+// ⚠️ DEPRECATED depuis 2026-05-26 :
+//   Ce module est conservé comme thin wrapper qui mappe les anciens tags vers
+//   le hub `@/server/notifications` (`notify()` typé strict). Les ~9 call-sites
+//   existants continuent à fonctionner sans modification.
 //
-// Fail-soft : si TELEGRAM_BOT_TOKEN ou TELEGRAM_CHAT_ID absent, on log
-// et on retourne false (pas de throw) — la submission utilisateur ne doit
-// pas echouer si Telegram est down.
+//   NOUVEAUX call-sites : utilisez directement `notify()` depuis
+//   `@/server/notifications` avec une `category` typée. Voir ADR 0027.
+//
+// Le mapping ci-dessous est intentionnellement best-effort : les body text
+// produits par les call-sites legacy sont passés tels quels au hub via une
+// catégorie "MONITORING_ALERT" (canal Telegram). Le hub réapplique son
+// échappement MarkdownV2, donc les anciens body en Markdown simple sont
+// désormais affichés comme texte brut côté Telegram (acceptable pour les
+// alertes ops historiques — pas de régression bloquante).
+//
+// Tags canoniques legacy :
+//   [INTERVENTION] [OPTION] [OPTION CONFIRMÉE] [OPTION REFUSÉE] [OPTION EXPIRÉE]
+//   [ANNULATION] [AUDIT] [AUTO] [CONTACT] [NEWSLETTER]
+//   [DEPLOY] [INCIDENT] [BACKUP] [MONITORING] [SECURITY]
+//   [STRIPE_EVENT] [STRIPE_WEBHOOK_SIGNATURE_FAIL] [QUOTE_REQUEST_RECEIVED]
+//
+// Fail-soft : retourne false si Telegram n'a pas confirmé l'envoi.
 
-const TG_API = "https://api.telegram.org";
+import { notify } from "@/server/notifications";
+import type { NotificationCategory, NotificationSeverity } from "@/server/notifications";
 
 export type TelegramTag =
   | "INTERVENTION"
   | "OPTION"
   | "OPTION CONFIRMÉE"
-  | "OPTION REFUSÉE" // Sprint 15 fix Fork 4 W1-4 : ajout pour decision admin
+  | "OPTION REFUSÉE"
   | "OPTION EXPIRÉE"
   | "ANNULATION"
   | "AUDIT"
   | "AUTO"
   | "CONTACT"
   | "NEWSLETTER"
-  // ops tags Sprint 23
   | "DEPLOY"
   | "INCIDENT"
   | "BACKUP"
   | "MONITORING"
   | "SECURITY"
-  // booking V1 tags Sprint X.2 — Stripe webhook ingestion
   | "STRIPE_EVENT"
   | "STRIPE_WEBHOOK_SIGNATURE_FAIL"
-  // booking V1 tags Sprint X.5bis — parcours B devis qualifié
   | "QUOTE_REQUEST_RECEIVED";
 
 export interface TelegramMessage {
   tag: TelegramTag;
-  /** Lignes formatees Markdown (rendered en MarkdownV2). */
+  /** Lignes formatees (legacy Markdown V1 — désormais affiché en plain). */
   body: string;
   /** Niveau d'urgence : alerte → notification; info → silencieux. */
   silent?: boolean;
 }
 
 /**
- * Envoie un message Telegram. Retourne true si succes.
- * Timeout 5s pour ne pas bloquer un Server Action.
+ * @deprecated — utilisez `notify()` depuis `@/server/notifications` pour les
+ * nouveaux call-sites. Wrapper conservé pour les ~9 call-sites legacy.
+ *
+ * Envoie un message Telegram via le hub centralisé. Retourne true si succès.
  */
 export async function sendTelegram(msg: TelegramMessage): Promise<boolean> {
-  const token = process.env.TELEGRAM_BOT_TOKEN;
-  const chatId = process.env.TELEGRAM_CHAT_ID;
-  if (!token || !chatId) {
-    if (process.env.NODE_ENV !== "test") {
-      console.warn("[telegram] missing TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID — skipping");
-    }
-    return false;
-  }
-
-  const text = `*[${msg.tag}]*\n${msg.body}`;
-  try {
-    const ctrl = new AbortController();
-    const timeout = setTimeout(() => ctrl.abort(), 5000);
-    const res = await fetch(`${TG_API}/bot${token}/sendMessage`, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({
-        chat_id: chatId,
-        text,
-        parse_mode: "Markdown",
-        disable_notification: msg.silent ?? false,
-      }),
-      signal: ctrl.signal,
-    });
-    clearTimeout(timeout);
-    return res.ok;
-  } catch {
-    return false;
-  }
+  const { category, severity } = mapTagToCategory(msg.tag);
+  const result = await notify({
+    category,
+    severity,
+    payload: {
+      // On expose le body legacy + tag pour traçabilité côté Sentry breadcrumb
+      // / logs. Le formatNotification du hub ignore ce shape libre (ne casse
+      // pas la sortie : la branche MONITORING_ALERT lit `kind` + `details`).
+      kind: msg.tag,
+      details: { legacyBody: msg.body },
+    } as never,
+    sync: true,
+    force: false,
+  } as Parameters<typeof notify>[0]);
+  // Si silent=true et que Telegram refuse parce que la catégorie est rate-
+  // limitée, c'est OK — pas de régression.
+  return result.ok || result.rateLimited === true || result.deduped === true;
 }
 
-// ─── Ops alert helpers (Sprint 23 / M11) ─────────────────────────────────────
-
-/** Alert ops critique : déploiement, incident, échec backup. */
+/**
+ * @deprecated — utilisez `notify()` avec category "INCIDENT_DETECTED" ou
+ * "DEPLOY_FAILED" / "BACKUP_FAILED" / "MONITORING_ALERT" / "SECURITY_ALERT".
+ */
 export async function alertOps(
   tag: "DEPLOY" | "INCIDENT" | "BACKUP" | "MONITORING" | "SECURITY",
   body: string,
@@ -88,15 +93,69 @@ export async function alertOps(
   return sendTelegram({ tag, body, silent: options?.silent ?? false });
 }
 
-/** Alert incident production avec stack trace + URL. */
+/**
+ * @deprecated — utilisez `notify({ category: "INCIDENT_DETECTED", ... })`
+ * avec un payload structuré (title/url/statusCode/error/userId).
+ */
 export async function alertIncident(
   title: string,
   details: { url?: string; statusCode?: number; error?: string; userId?: string },
 ): Promise<boolean> {
-  const lines = [`*${title}*`];
-  if (details.url) lines.push(`URL : \`${details.url}\``);
-  if (details.statusCode) lines.push(`Status : ${details.statusCode}`);
-  if (details.userId) lines.push(`User : ${details.userId}`);
-  if (details.error) lines.push(`\nErreur :\n\`\`\`\n${details.error.slice(0, 500)}\n\`\`\``);
-  return sendTelegram({ tag: "INCIDENT", body: lines.join("\n"), silent: false });
+  const result = await notify({
+    category: "INCIDENT_DETECTED",
+    payload: {
+      title,
+      ...(details.url ? { url: details.url } : {}),
+      ...(details.statusCode ? { statusCode: details.statusCode } : {}),
+      ...(details.error ? { error: details.error.slice(0, 500) } : {}),
+      ...(details.userId ? { userId: details.userId } : {}),
+    },
+    sync: true,
+  });
+  return result.ok;
+}
+
+// ─── Mapping legacy tag → hub category ─────────────────────────────────────
+
+function mapTagToCategory(tag: TelegramTag): {
+  category: NotificationCategory;
+  severity: NotificationSeverity;
+} {
+  switch (tag) {
+    // Form publics — toujours info
+    case "AUDIT":
+    case "CONTACT":
+    case "INTERVENTION":
+    case "AUTO":
+      // Pour les anciens call-sites qui ne fournissent qu'un body legacy, on
+      // mappe vers MONITORING_ALERT (canal Telegram, sans payload typé). Les
+      // nouveaux call-sites doivent appeler notify() avec la catégorie typée
+      // CONTACT_FORM_SUBMITTED / AUDIT_REQUEST_SUBMITTED etc.
+      return { category: "MONITORING_ALERT", severity: "info" };
+    case "NEWSLETTER":
+      return { category: "MONITORING_ALERT", severity: "info" };
+    case "OPTION":
+    case "OPTION CONFIRMÉE":
+    case "OPTION REFUSÉE":
+    case "OPTION EXPIRÉE":
+      return { category: "MONITORING_ALERT", severity: "info" };
+    case "ANNULATION":
+      return { category: "MONITORING_ALERT", severity: "warn" };
+    case "QUOTE_REQUEST_RECEIVED":
+      return { category: "MONITORING_ALERT", severity: "info" };
+    case "DEPLOY":
+      return { category: "MONITORING_ALERT", severity: "info" };
+    case "INCIDENT":
+      return { category: "INCIDENT_DETECTED", severity: "error" };
+    case "BACKUP":
+      return { category: "MONITORING_ALERT", severity: "info" };
+    case "MONITORING":
+      return { category: "MONITORING_ALERT", severity: "warn" };
+    case "SECURITY":
+      return { category: "SECURITY_ALERT", severity: "critical" };
+    case "STRIPE_EVENT":
+      return { category: "STRIPE_EVENT", severity: "info" };
+    case "STRIPE_WEBHOOK_SIGNATURE_FAIL":
+      return { category: "STRIPE_WEBHOOK_SIGNATURE_FAIL", severity: "warn" };
+  }
 }

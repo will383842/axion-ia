@@ -34,8 +34,7 @@ import { checkRateLimit } from "@/lib/rate-limit";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { encryptPii } from "@/lib/pii-crypto";
 import { hashIp } from "@/lib/security/ip-hash";
-import { sendTelegram, type TelegramTag } from "@/lib/telegram";
-import { redactContactLine } from "@/lib/pii-redaction";
+import { notify, type NotificationCategory } from "@/server/notifications";
 import { enqueueEmail } from "@/server/queue/queues";
 import type { EmailJobName } from "@/server/queue/types";
 import { parseLocale } from "@/lib/schemas/locale";
@@ -71,18 +70,20 @@ function submissionTypeFor(type: UnifiedContactType): SubmissionType {
   }
 }
 
-function telegramTagFor(type: UnifiedContactType): TelegramTag {
+function notifCategoryFor(type: UnifiedContactType): NotificationCategory {
   switch (type) {
     case "audit":
-      return "AUDIT";
+      return "AUDIT_REQUEST_SUBMITTED";
+    case "implementation":
+      return "IMPLEMENTATION_REQUEST_SUBMITTED";
     case "formation":
     case "un_a_un":
-      return "INTERVENTION";
+      return "INTERVENTION_REQUEST_SUBMITTED";
     case "devis":
-    case "implementation":
+      return "QUOTE_REQUEST_RECEIVED";
     case "partenariat":
     case "autre":
-      return "CONTACT";
+      return "CONTACT_FORM_SUBMITTED";
   }
 }
 
@@ -99,19 +100,6 @@ function emailTemplateFor(type: UnifiedContactType): EmailJobName {
     case "autre":
       return "contact-confirmed";
   }
-}
-
-function humanType(type: UnifiedContactType, locale: "fr" | "en"): string {
-  const labels: Record<UnifiedContactType, { fr: string; en: string }> = {
-    autre: { fr: "Autre", en: "Other" },
-    devis: { fr: "Devis", en: "Quote" },
-    audit: { fr: "Audit IA", en: "AI audit" },
-    implementation: { fr: "Implémentation IA", en: "AI implementation" },
-    formation: { fr: "Formation", en: "Training" },
-    un_a_un: { fr: "Coaching 1-à-1", en: "1-on-1 coaching" },
-    partenariat: { fr: "Partenariat", en: "Partnership" },
-  };
-  return labels[type][locale];
 }
 
 // ---- Server action --------------------------------------------------------
@@ -202,27 +190,34 @@ export async function submitUnifiedContactAction(
       },
     });
 
-    // 7. Telegram notification — tag dispatch
-    const typeLabel = humanType(data.type, locale);
-    await sendTelegram({
-      tag: telegramTagFor(data.type),
-      body: [
-        `Nouvelle demande **${typeLabel}**`,
-        `• De : ${redactContactLine(data.nom, data.email)}`,
-        `• Téléphone : ${data.telephone}`,
-        `• Ville : ${data.ville}`,
-        data.companyName ? `• Société : ${data.companyName}` : null,
-        data.companySize ? `• Taille : ${data.companySize}` : null,
-        data.budgetIndicative ? `• Budget : ${data.budgetIndicative}` : null,
-        data.timingWeeks ? `• Timing : ${data.timingWeeks}` : null,
-        data.subType ? `• Sous-type : ${data.subType}` : null,
-        `• Source : ${data.source ?? "—"}`,
-        `• Locale : ${locale}`,
-        `• ID : \`${submission.id}\``,
-      ]
-        .filter(Boolean)
-        .join("\n"),
-    });
+    // 7. Telegram notification — via hub typé (cf. ADR 0027).
+    // dedupKey = submission.id pour neutraliser un éventuel double-submit
+    // qui passerait au niveau DB (improbable car idempotencyKey, mais
+    // defense-in-depth).
+    const category = notifCategoryFor(data.type);
+    const notifPayload = {
+      submissionId: submission.id,
+      contactName: data.nom,
+      contactEmail: data.email,
+      ...(data.telephone ? { contactPhone: data.telephone } : {}),
+      ...(data.ville ? { ville: data.ville } : {}),
+      ...(data.companyName ? { companyName: data.companyName } : {}),
+      ...(data.companySize ? { companySize: data.companySize } : {}),
+      ...(data.budgetIndicative ? { budgetIndicative: data.budgetIndicative } : {}),
+      ...(data.timingWeeks ? { timingWeeks: data.timingWeeks } : {}),
+      ...(data.subType ? { subType: data.subType } : {}),
+      ...(data.source ? { source: data.source } : {}),
+      ...(category === "CONTACT_FORM_SUBMITTED" ? { formType: data.type } : {}),
+      ...(category === "QUOTE_REQUEST_RECEIVED" && data.budgetIndicative
+        ? { budget: data.budgetIndicative }
+        : {}),
+      locale,
+    };
+    await notify({
+      category,
+      payload: notifPayload,
+      dedupKey: submission.id,
+    } as Parameters<typeof notify>[0]);
 
     // 8. Email confirmation
     await enqueueEmail(emailTemplateFor(data.type), data.email, locale, {

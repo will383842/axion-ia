@@ -71,7 +71,12 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     { href: `${base}/paiements`, label: "Paiements", icon: "💶", group: "main" },
     { href: `${base}/echeanciers`, label: "Échéanciers", icon: "📅", group: "main" },
     { href: `${base}/options`, label: "Options 48h", icon: "⏳", group: "main" },
-    { href: `${base}/submissions`, label: "Soumissions", icon: "📥", group: "main" },
+    {
+      href: `${base}/contacts/messages`,
+      label: "Contacts & messages",
+      icon: "📥",
+      group: "main",
+    },
     // ── contenu ──────────────────────────────────────────────────────────
     { href: `${base}/connaissances`, label: "Connaissances", icon: "📚", group: "content" },
     { href: `${base}/content-gen`, label: "Générateur contenus", icon: "🧠", group: "content" },

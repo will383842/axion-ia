@@ -18,7 +18,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { getClientIp } from "@/lib/client-ip";
 import { adminPath } from "@/lib/admin-path";
-import { sendTelegram } from "@/lib/telegram";
+import { notify } from "@/server/notifications";
 import { enqueueEmail } from "@/server/queue/queues";
 import type { BookingStatus, CalendarSlotStatus } from "../../../prisma/generated/client";
 
@@ -308,9 +308,15 @@ export async function cancelBookingAction(
     return { booking, contactName, contactEmail };
   });
 
-  await sendTelegram({
-    tag: "ANNULATION",
-    body: `Réservation \`${result.booking.id}\` annulée par admin\n• Date : ${result.booking.bookingDate.toISOString().slice(0, 10)}\n• Type : ${result.booking.interventionType}\n• Motif : ${parsed.data.reason}`,
+  // Notif via hub typé (cf. ADR 0027) — pilote migration cancelBookingAction.
+  await notify({
+    category: "BOOKING_CANCELLED",
+    payload: {
+      bookingId: result.booking.id,
+      reason: parsed.data.reason,
+      cancelledBy: session.userId,
+    },
+    dedupKey: `cancel-${result.booking.id}`,
   });
 
   if (result.contactEmail && result.contactName) {
