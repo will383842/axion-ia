@@ -91,6 +91,7 @@ import { CASTRES_COPY } from "./castres";
 import { CAVAILLON_COPY } from "./cavaillon";
 import { CENON_COPY } from "./cenon";
 import { CERGY_COPY } from "./cergy";
+import { CESSY_COPY } from "./cessy";
 import { CHABEUIL_COPY } from "./chabeuil";
 import { CHALLANS_COPY } from "./challans";
 import { CHALON_SUR_SAONE_COPY } from "./chalon-sur-saone";
@@ -111,6 +112,7 @@ import { CHATEAUROUX_COPY } from "./chateauroux";
 import { CHATELLERAULT_COPY } from "./chatellerault";
 import { CHATENAY_MALABRY_COPY } from "./chatenay-malabry";
 import { CHATILLON_COPY } from "./chatillon";
+import { CHATILLON_SUR_CHALARONNE_COPY } from "./chatillon-sur-chalaronne";
 import { CHATOU_COPY } from "./chatou";
 import { CHATUZANGE_LE_GOUBET_COPY } from "./chatuzange-le-goubet";
 import { CHAUMONT_COPY } from "./chaumont";
@@ -230,6 +232,7 @@ import { IRIGNY_COPY } from "./irigny";
 import { ISSY_LES_MOULINEAUX_COPY } from "./issy-les-moulineaux";
 import { ISTRES_COPY } from "./istres";
 import { IVRY_SUR_SEINE_COPY } from "./ivry-sur-seine";
+import { JASSANS_RIOTTIER_COPY } from "./jassans-riottier";
 import { JOINVILLE_LE_PONT_COPY } from "./joinville-le-pont";
 import { JONAGE_COPY } from "./jonage";
 import { JOUE_LES_TOURS_COPY } from "./joue-les-tours";
@@ -345,6 +348,7 @@ import { MONTIGNY_LE_BRETONNEUX_COPY } from "./montigny-le-bretonneux";
 import { MONTIGNY_LES_CORMEILLES_COPY } from "./montigny-les-cormeilles";
 import { MONTIGNY_LES_METZ_COPY } from "./montigny-les-metz";
 import { MONTLUCON_COPY } from "./montlucon";
+import { MONTLUEL_COPY } from "./montluel";
 import { MONTMORENCY_COPY } from "./montmorency";
 import { MONTROND_LES_BAINS_COPY } from "./montrond-les-bains";
 import { MONTROUGE_COPY } from "./montrouge";
@@ -375,6 +379,7 @@ import { PALAISEAU_COPY } from "./palaiseau";
 import { PANTIN_COPY } from "./pantin";
 import { PAU_COPY } from "./pau";
 import { PERIGUEUX_COPY } from "./perigueux";
+import { PERONNAS_COPY } from "./peronnas";
 import { PESSAC_COPY } from "./pessac";
 import { PIERRELATTE_COPY } from "./pierrelatte";
 import { PLAISANCE_DU_TOUCH_COPY } from "./plaisance-du-touch";
@@ -391,6 +396,7 @@ import { PREVESSIN_MOENS_COPY } from "./prevessin-moens";
 import { PUTEAUX_COPY } from "./puteaux";
 import { QUIMPER_COPY } from "./quimper";
 import { RAMBOUILLET_COPY } from "./rambouillet";
+import { REYRIEUX_COPY } from "./reyrieux";
 import { REZE_COPY } from "./reze";
 import { RILLIEUX_LA_PAPE_COPY } from "./rillieux-la-pape";
 import { RIORGES_COPY } from "./riorges";
@@ -414,6 +420,7 @@ import { SAINT_CHAMOND_COPY } from "./saint-chamond";
 import { SAINT_CLOUD_COPY } from "./saint-cloud";
 import { SAINT_CYR_AU_MONT_D_OR_COPY } from "./saint-cyr-au-mont-d-or";
 import { SAINT_CYR_L_ECOLE_COPY } from "./saint-cyr-l-ecole";
+import { SAINT_DENIS_LES_BOURG_COPY } from "./saint-denis-les-bourg";
 import { SAINT_DIDIER_AU_MONT_D_OR_COPY } from "./saint-didier-au-mont-d-or";
 import { SAINT_DIZIER_COPY } from "./saint-dizier";
 import { SAINT_EGREVE_COPY } from "./saint-egreve";
@@ -498,6 +505,7 @@ import { TERNAY_COPY } from "./ternay";
 import { THIAIS_COPY } from "./thiais";
 import { THIONVILLE_COPY } from "./thionville";
 import { THIZY_LES_BOURGS_COPY } from "./thizy-les-bourgs";
+import { THOIRY_COPY } from "./thoiry";
 import { THONON_LES_BAINS_COPY } from "./thonon-les-bains";
 import { TIGNIEU_JAMEYZIEU_COPY } from "./tignieu-jameyzieu";
 import { TORCY_COPY } from "./torcy";
@@ -505,6 +513,7 @@ import { TOURCOING_COPY } from "./tourcoing";
 import { TOURNEFEUILLE_COPY } from "./tournefeuille";
 import { TRAPPES_COPY } from "./trappes";
 import { TREMBLAY_EN_FRANCE_COPY } from "./tremblay-en-france";
+import { TREVOUX_COPY } from "./trevoux";
 import { TROYES_COPY } from "./troyes";
 import { TULLINS_COPY } from "./tullins";
 import { UNIEUX_COPY } from "./unieux";
@@ -550,6 +559,7 @@ import { VILLIERS_LE_BEL_COPY } from "./villiers-le-bel";
 import { VILLIERS_SUR_MARNE_COPY } from "./villiers-sur-marne";
 import { VINCENNES_COPY } from "./vincennes";
 import { VINDRY_SUR_TURDINE_COPY } from "./vindry-sur-turdine";
+import { VIRIAT_COPY } from "./viriat";
 import { VIRY_CHATILLON_COPY } from "./viry-chatillon";
 import { VITROLLES_COPY } from "./vitrolles";
 import { VITRY_SUR_SEINE_COPY } from "./vitry-sur-seine";
@@ -648,6 +658,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   cavaillon: CAVAILLON_COPY,
   cenon: CENON_COPY,
   cergy: CERGY_COPY,
+  cessy: CESSY_COPY,
   chabeuil: CHABEUIL_COPY,
   challans: CHALLANS_COPY,
   "chalon-sur-saone": CHALON_SUR_SAONE_COPY,
@@ -668,6 +679,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   chatellerault: CHATELLERAULT_COPY,
   "chatenay-malabry": CHATENAY_MALABRY_COPY,
   chatillon: CHATILLON_COPY,
+  "chatillon-sur-chalaronne": CHATILLON_SUR_CHALARONNE_COPY,
   chatou: CHATOU_COPY,
   "chatuzange-le-goubet": CHATUZANGE_LE_GOUBET_COPY,
   chaumont: CHAUMONT_COPY,
@@ -787,6 +799,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   "issy-les-moulineaux": ISSY_LES_MOULINEAUX_COPY,
   istres: ISTRES_COPY,
   "ivry-sur-seine": IVRY_SUR_SEINE_COPY,
+  "jassans-riottier": JASSANS_RIOTTIER_COPY,
   "joinville-le-pont": JOINVILLE_LE_PONT_COPY,
   jonage: JONAGE_COPY,
   "joue-les-tours": JOUE_LES_TOURS_COPY,
@@ -902,6 +915,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   "montigny-les-cormeilles": MONTIGNY_LES_CORMEILLES_COPY,
   "montigny-les-metz": MONTIGNY_LES_METZ_COPY,
   montlucon: MONTLUCON_COPY,
+  montluel: MONTLUEL_COPY,
   montmorency: MONTMORENCY_COPY,
   "montrond-les-bains": MONTROND_LES_BAINS_COPY,
   montrouge: MONTROUGE_COPY,
@@ -932,6 +946,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   pantin: PANTIN_COPY,
   pau: PAU_COPY,
   perigueux: PERIGUEUX_COPY,
+  peronnas: PERONNAS_COPY,
   pessac: PESSAC_COPY,
   pierrelatte: PIERRELATTE_COPY,
   "plaisance-du-touch": PLAISANCE_DU_TOUCH_COPY,
@@ -948,6 +963,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   puteaux: PUTEAUX_COPY,
   quimper: QUIMPER_COPY,
   rambouillet: RAMBOUILLET_COPY,
+  reyrieux: REYRIEUX_COPY,
   reze: REZE_COPY,
   "rillieux-la-pape": RILLIEUX_LA_PAPE_COPY,
   riorges: RIORGES_COPY,
@@ -971,6 +987,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   "saint-cloud": SAINT_CLOUD_COPY,
   "saint-cyr-au-mont-d-or": SAINT_CYR_AU_MONT_D_OR_COPY,
   "saint-cyr-l-ecole": SAINT_CYR_L_ECOLE_COPY,
+  "saint-denis-les-bourg": SAINT_DENIS_LES_BOURG_COPY,
   "saint-didier-au-mont-d-or": SAINT_DIDIER_AU_MONT_D_OR_COPY,
   "saint-dizier": SAINT_DIZIER_COPY,
   "saint-egreve": SAINT_EGREVE_COPY,
@@ -1055,6 +1072,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   thiais: THIAIS_COPY,
   thionville: THIONVILLE_COPY,
   "thizy-les-bourgs": THIZY_LES_BOURGS_COPY,
+  thoiry: THOIRY_COPY,
   "thonon-les-bains": THONON_LES_BAINS_COPY,
   "tignieu-jameyzieu": TIGNIEU_JAMEYZIEU_COPY,
   torcy: TORCY_COPY,
@@ -1062,6 +1080,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   tournefeuille: TOURNEFEUILLE_COPY,
   trappes: TRAPPES_COPY,
   "tremblay-en-france": TREMBLAY_EN_FRANCE_COPY,
+  trevoux: TREVOUX_COPY,
   troyes: TROYES_COPY,
   tullins: TULLINS_COPY,
   unieux: UNIEUX_COPY,
@@ -1107,6 +1126,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   "villiers-sur-marne": VILLIERS_SUR_MARNE_COPY,
   vincennes: VINCENNES_COPY,
   "vindry-sur-turdine": VINDRY_SUR_TURDINE_COPY,
+  viriat: VIRIAT_COPY,
   "viry-chatillon": VIRY_CHATILLON_COPY,
   vitrolles: VITROLLES_COPY,
   "vitry-sur-seine": VITRY_SUR_SEINE_COPY,

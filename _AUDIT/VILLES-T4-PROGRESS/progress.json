@@ -1,10 +1,10 @@
 {
   "totalT4": 1702,
-  "done": 140,
-  "remaining": 1562,
-  "lastBatchAt": "2026-05-27T09:15:39.799Z",
+  "done": 150,
+  "remaining": 1552,
+  "lastBatchAt": "2026-05-27T09:21:52.183Z",
   "lastBatchSize": 10,
-  "lastBatchNumber": 14,
+  "lastBatchNumber": 15,
   "villes": {
     "gentilly": {
       "slug": "gentilly",
@@ -3392,9 +3392,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "01",
       "population": 7102,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:21:52.183Z",
+      "batch": 15
     },
     "sathonay-camp": {
       "slug": "sathonay-camp",
@@ -3412,9 +3412,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "01",
       "population": 7013,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:21:52.183Z",
+      "batch": 15
     },
     "saint-rambert-d-albon": {
       "slug": "saint-rambert-d-albon",
@@ -3462,9 +3462,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "01",
       "population": 6895,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:21:52.183Z",
+      "batch": 15
     },
     "saint-maurice-l-exil": {
       "slug": "saint-maurice-l-exil",
@@ -3632,9 +3632,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "01",
       "population": 6569,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:21:52.183Z",
+      "batch": 15
     },
     "saint-jean-bonnefonds": {
       "slug": "saint-jean-bonnefonds",
@@ -3772,9 +3772,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "01",
       "population": 6444,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:21:52.183Z",
+      "batch": 15
     },
     "la-tronche": {
       "slug": "la-tronche",
@@ -3912,9 +3912,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "01",
       "population": 6247,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:21:52.183Z",
+      "batch": 15
     },
     "pont-eveque": {
       "slug": "pont-eveque",
@@ -3982,9 +3982,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "01",
       "population": 6160,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:21:52.183Z",
+      "batch": 15
     },
     "jonage": {
       "slug": "jonage",
@@ -4062,9 +4062,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "01",
       "population": 5832,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:21:52.183Z",
+      "batch": 15
     },
     "saint-galmier": {
       "slug": "saint-galmier",
@@ -4282,9 +4282,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "01",
       "population": 5358,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:21:52.183Z",
+      "batch": 15
     },
     "la-balme-de-sillingy": {
       "slug": "la-balme-de-sillingy",
@@ -4342,9 +4342,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "01",
       "population": 5250,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:21:52.183Z",
+      "batch": 15
     },
     "le-bourget-du-lac": {
       "slug": "le-bourget-du-lac",
