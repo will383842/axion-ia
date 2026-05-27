@@ -68,21 +68,12 @@ async function _signInActionInner(_prev: SignInState, formData: FormData): Promi
     return { ok: false, error: "Email ou mot de passe invalide." };
   }
 
-  // P1 — Aligner le pre-check UX avec auth.ts:187 :
-  // • 2FA requise si l'admin l'a explicitement activée (twoFactorEnabled=true).
-  // • Pour les rôles admin/super_admin, 2FA est également obligatoire même si pas encore
-  //   configurée : on renvoie un message d'erreur dédié invitant à configurer via /2fa/setup.
-  const isAdminRole = user.role === "admin" || user.role === "super_admin";
-  const requires2FA = user.twoFactorEnabled || isAdminRole;
+  // Sprint Notif Infra fix 2026-05-27 — Will a explicitement demandé de
+  // désactiver l'enforcement 2FA basée sur le rôle. La 2FA reste opt-in par
+  // utilisateur via le flag `twoFactorEnabled` (chaque admin peut l'activer
+  // manuellement via /2fa/setup s'il le souhaite).
+  const requires2FA = user.twoFactorEnabled;
   if (requires2FA && !parsed.data.totp) {
-    if (isAdminRole && !user.twoFactorEnabled) {
-      return {
-        ok: false,
-        error:
-          "2FA obligatoire pour ce rôle. Configurez-la via /2fa/setup avant de vous connecter.",
-        requires2FA: true,
-      };
-    }
     return { ok: false, error: "Code 2FA requis.", requires2FA: true };
   }
 
@@ -247,9 +238,8 @@ export async function disable2FAAction(
   });
   if (!user?.twoFactorSecret) return { ok: false, error: "2FA non activée." };
 
-  if (user.role === "super_admin" || user.role === "admin") {
-    return { ok: false, error: "2FA obligatoire pour ce rôle." };
-  }
+  // Sprint Notif Infra fix 2026-05-27 — Will a désactivé l'enforcement 2FA
+  // role-based. Tout admin peut désactiver sa propre 2FA s'il l'avait activée.
 
   const passwordOk = await verifyPasswordSafe(user.passwordHash, parsed.data.password);
   if (!passwordOk) return { ok: false, error: "Mot de passe incorrect." };

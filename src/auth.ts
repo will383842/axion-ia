@@ -181,10 +181,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         // 5. Verify 2FA if enabled (bootstrap window: super_admin/admin can
         //    log in without 2FA on first sign-in, must enable via /2fa/setup
         //    afterwards which then makes 2FA mandatory).
-        // P0-4 Sprint correctif admin — 2FA obligatoire pour super_admin/admin
-        // même sans twoFactorEnabled (ANSSI hardening). Le flag twoFactorEnabled
-        // reste le vecteur principal ; le rôle enforce l'obligation.
-        const requires2FA = user.twoFactorEnabled || _ROLES_REQUIRING_2FA.has(user.role);
+        // Sprint Notif Infra fix 2026-05-27 — Will a explicitement demandé de
+        // désactiver l'enforcement 2FA basée sur le rôle. La 2FA reste opt-in
+        // par utilisateur via le flag `twoFactorEnabled` (qui peut être activé
+        // manuellement par chaque admin via /2fa/setup). Le set
+        // `_ROLES_REQUIRING_2FA` reste défini comme documentation au cas où
+        // l'enforcement role-based serait à ré-activer plus tard.
+        const requires2FA = user.twoFactorEnabled;
         if (requires2FA) {
           if (!user.twoFactorSecret) {
             // 2FA enabled but no secret — corrupted state, refuse.
