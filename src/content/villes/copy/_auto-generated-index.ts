@@ -15,6 +15,7 @@ import { ALENCON_COPY } from "./alencon";
 import { ALES_COPY } from "./ales";
 import { ALFORTVILLE_COPY } from "./alfortville";
 import { ALLAUCH_COPY } from "./allauch";
+import { AMBERIEU_EN_BUGEY_COPY } from "./amberieu-en-bugey";
 import { ANDREZIEUX_BOUTHEON_COPY } from "./andrezieux-boutheon";
 import { ANGLET_COPY } from "./anglet";
 import { ANGOULEME_COPY } from "./angouleme";
@@ -46,6 +47,7 @@ import { BEAUVAIS_COPY } from "./beauvais";
 import { BEGLES_COPY } from "./begles";
 import { BELFORT_COPY } from "./belfort";
 import { BELLEVILLE_EN_BEAUJOLAIS_COPY } from "./belleville-en-beaujolais";
+import { BELLEY_COPY } from "./belley";
 import { BERGERAC_COPY } from "./bergerac";
 import { BETHUNE_COPY } from "./bethune";
 import { BEZIERS_COPY } from "./beziers";
@@ -153,6 +155,7 @@ import { DECINES_CHARPIEU_COPY } from "./decines-charpieu";
 import { DENAIN_COPY } from "./denain";
 import { DEUIL_LA_BARRE_COPY } from "./deuil-la-barre";
 import { DIEPPE_COPY } from "./dieppe";
+import { DIVONNE_LES_BAINS_COPY } from "./divonne-les-bains";
 import { DOLE_COPY } from "./dole";
 import { DOMENE_COPY } from "./domene";
 import { DONZERE_COPY } from "./donzere";
@@ -176,6 +179,7 @@ import { EVREUX_COPY } from "./evreux";
 import { EVRY_COURCOURONNES_COPY } from "./evry-courcouronnes";
 import { EYBENS_COPY } from "./eybens";
 import { EYSINES_COPY } from "./eysines";
+import { FERNEY_VOLTAIRE_COPY } from "./ferney-voltaire";
 import { FEURS_COPY } from "./feurs";
 import { FEYZIN_COPY } from "./feyzin";
 import { FIRMINY_COPY } from "./firminy";
@@ -198,6 +202,7 @@ import { GARGES_LES_GONESSE_COPY } from "./garges-les-gonesse";
 import { GENAS_COPY } from "./genas";
 import { GENAY_COPY } from "./genay";
 import { GENNEVILLIERS_COPY } from "./gennevilliers";
+import { GEX_COPY } from "./gex";
 import { GIERES_COPY } from "./gieres";
 import { GIF_SUR_YVETTE_COPY } from "./gif-sur-yvette";
 import { GIVORS_COPY } from "./givors";
@@ -250,6 +255,7 @@ import { LA_TOUR_DU_PIN_COPY } from "./la-tour-du-pin";
 import { LA_TRONCHE_COPY } from "./la-tronche";
 import { LA_VALETTE_DU_VAR_COPY } from "./la-valette-du-var";
 import { LA_VERPILLIERE_COPY } from "./la-verpilliere";
+import { LAGNIEU_COPY } from "./lagnieu";
 import { LAGNY_SUR_MARNE_COPY } from "./lagny-sur-marne";
 import { LAMBERSART_COPY } from "./lambersart";
 import { LANESTER_COPY } from "./lanester";
@@ -314,11 +320,13 @@ import { MELUN_COPY } from "./melun";
 import { MENTON_COPY } from "./menton";
 import { MERIGNAC_COPY } from "./merignac";
 import { MEUDON_COPY } from "./meudon";
+import { MEXIMIEUX_COPY } from "./meximieux";
 import { MEYLAN_COPY } from "./meylan";
 import { MEYZIEU_COPY } from "./meyzieu";
 import { MILLAU_COPY } from "./millau";
 import { MIONS_COPY } from "./mions";
 import { MIRAMAS_COPY } from "./miramas";
+import { MIRIBEL_COPY } from "./miribel";
 import { MITRY_MORY_COPY } from "./mitry-mory";
 import { MOIRANS_COPY } from "./moirans";
 import { MONS_EN_BAR_UL_COPY } from "./mons-en-bar-ul";
@@ -379,6 +387,7 @@ import { PONTAULT_COMBAULT_COPY } from "./pontault-combault";
 import { PONTCHARRA_COPY } from "./pontcharra";
 import { PONTOISE_COPY } from "./pontoise";
 import { PORTES_LES_VALENCE_COPY } from "./portes-les-valence";
+import { PREVESSIN_MOENS_COPY } from "./prevessin-moens";
 import { PUTEAUX_COPY } from "./puteaux";
 import { QUIMPER_COPY } from "./quimper";
 import { RAMBOUILLET_COPY } from "./rambouillet";
@@ -414,6 +423,7 @@ import { SAINT_GALMIER_COPY } from "./saint-galmier";
 import { SAINT_GENEST_LERPT_COPY } from "./saint-genest-lerpt";
 import { SAINT_GENIS_LAVAL_COPY } from "./saint-genis-laval";
 import { SAINT_GENIS_LES_OLLIERES_COPY } from "./saint-genis-les-ollieres";
+import { SAINT_GENIS_POUILLY_COPY } from "./saint-genis-pouilly";
 import { SAINT_GERMAIN_EN_LAYE_COPY } from "./saint-germain-en-laye";
 import { SAINT_GRATIEN_COPY } from "./saint-gratien";
 import { SAINT_HERBLAIN_COPY } from "./saint-herblain";
@@ -562,6 +572,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   ales: ALES_COPY,
   alfortville: ALFORTVILLE_COPY,
   allauch: ALLAUCH_COPY,
+  "amberieu-en-bugey": AMBERIEU_EN_BUGEY_COPY,
   "andrezieux-boutheon": ANDREZIEUX_BOUTHEON_COPY,
   anglet: ANGLET_COPY,
   angouleme: ANGOULEME_COPY,
@@ -593,6 +604,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   begles: BEGLES_COPY,
   belfort: BELFORT_COPY,
   "belleville-en-beaujolais": BELLEVILLE_EN_BEAUJOLAIS_COPY,
+  belley: BELLEY_COPY,
   bergerac: BERGERAC_COPY,
   bethune: BETHUNE_COPY,
   beziers: BEZIERS_COPY,
@@ -700,6 +712,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   denain: DENAIN_COPY,
   "deuil-la-barre": DEUIL_LA_BARRE_COPY,
   dieppe: DIEPPE_COPY,
+  "divonne-les-bains": DIVONNE_LES_BAINS_COPY,
   dole: DOLE_COPY,
   domene: DOMENE_COPY,
   donzere: DONZERE_COPY,
@@ -723,6 +736,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   "evry-courcouronnes": EVRY_COURCOURONNES_COPY,
   eybens: EYBENS_COPY,
   eysines: EYSINES_COPY,
+  "ferney-voltaire": FERNEY_VOLTAIRE_COPY,
   feurs: FEURS_COPY,
   feyzin: FEYZIN_COPY,
   firminy: FIRMINY_COPY,
@@ -745,6 +759,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   genas: GENAS_COPY,
   genay: GENAY_COPY,
   gennevilliers: GENNEVILLIERS_COPY,
+  gex: GEX_COPY,
   gieres: GIERES_COPY,
   "gif-sur-yvette": GIF_SUR_YVETTE_COPY,
   givors: GIVORS_COPY,
@@ -797,6 +812,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   "la-tronche": LA_TRONCHE_COPY,
   "la-valette-du-var": LA_VALETTE_DU_VAR_COPY,
   "la-verpilliere": LA_VERPILLIERE_COPY,
+  lagnieu: LAGNIEU_COPY,
   "lagny-sur-marne": LAGNY_SUR_MARNE_COPY,
   lambersart: LAMBERSART_COPY,
   lanester: LANESTER_COPY,
@@ -861,11 +877,13 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   menton: MENTON_COPY,
   merignac: MERIGNAC_COPY,
   meudon: MEUDON_COPY,
+  meximieux: MEXIMIEUX_COPY,
   meylan: MEYLAN_COPY,
   meyzieu: MEYZIEU_COPY,
   millau: MILLAU_COPY,
   mions: MIONS_COPY,
   miramas: MIRAMAS_COPY,
+  miribel: MIRIBEL_COPY,
   "mitry-mory": MITRY_MORY_COPY,
   moirans: MOIRANS_COPY,
   "mons-en-bar-ul": MONS_EN_BAR_UL_COPY,
@@ -926,6 +944,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   pontcharra: PONTCHARRA_COPY,
   pontoise: PONTOISE_COPY,
   "portes-les-valence": PORTES_LES_VALENCE_COPY,
+  "prevessin-moens": PREVESSIN_MOENS_COPY,
   puteaux: PUTEAUX_COPY,
   quimper: QUIMPER_COPY,
   rambouillet: RAMBOUILLET_COPY,
@@ -961,6 +980,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   "saint-genest-lerpt": SAINT_GENEST_LERPT_COPY,
   "saint-genis-laval": SAINT_GENIS_LAVAL_COPY,
   "saint-genis-les-ollieres": SAINT_GENIS_LES_OLLIERES_COPY,
+  "saint-genis-pouilly": SAINT_GENIS_POUILLY_COPY,
   "saint-germain-en-laye": SAINT_GERMAIN_EN_LAYE_COPY,
   "saint-gratien": SAINT_GRATIEN_COPY,
   "saint-herblain": SAINT_HERBLAIN_COPY,

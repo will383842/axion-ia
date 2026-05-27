@@ -1,10 +1,10 @@
 {
   "totalT4": 1702,
-  "done": 130,
-  "remaining": 1572,
-  "lastBatchAt": "2026-05-27T09:07:57.182Z",
+  "done": 140,
+  "remaining": 1562,
+  "lastBatchAt": "2026-05-27T09:15:39.799Z",
   "lastBatchSize": 10,
-  "lastBatchNumber": 13,
+  "lastBatchNumber": 14,
   "villes": {
     "gentilly": {
       "slug": "gentilly",
@@ -2232,9 +2232,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "01",
       "population": 15934,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:15:39.799Z",
+      "batch": 14
     },
     "saint-just-saint-rambert": {
       "slug": "saint-just-saint-rambert",
@@ -2282,9 +2282,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "01",
       "population": 14432,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:15:39.799Z",
+      "batch": 14
     },
     "belleville-en-beaujolais": {
       "slug": "belleville-en-beaujolais",
@@ -2322,9 +2322,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "01",
       "population": 13627,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:15:39.799Z",
+      "batch": 14
     },
     "genas": {
       "slug": "genas",
@@ -2412,9 +2412,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "01",
       "population": 12094,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:15:39.799Z",
+      "batch": 14
     },
     "craponne": {
       "slug": "craponne",
@@ -2622,9 +2622,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "01",
       "population": 10464,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:15:39.799Z",
+      "batch": 14
     },
     "aubiere": {
       "slug": "aubiere",
@@ -2652,9 +2652,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "01",
       "population": 10395,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:15:39.799Z",
+      "batch": 14
     },
     "gerzat": {
       "slug": "gerzat",
@@ -2742,9 +2742,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "01",
       "population": 9388,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:15:39.799Z",
+      "batch": 14
     },
     "chaponost": {
       "slug": "chaponost",
@@ -2822,9 +2822,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "01",
       "population": 9153,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:15:39.799Z",
+      "batch": 14
     },
     "irigny": {
       "slug": "irigny",
@@ -3032,9 +3032,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "01",
       "population": 8247,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:15:39.799Z",
+      "batch": 14
     },
     "anse": {
       "slug": "anse",
@@ -3302,9 +3302,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "01",
       "population": 7411,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:15:39.799Z",
+      "batch": 14
     },
     "gieres": {
       "slug": "gieres",
