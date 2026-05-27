@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:09:46.788Z",
+  "villeSlug": "villeneuve-sur-yonne",
+  "villeName": "Villeneuve-sur-Yonne",
+  "wikipediaTitle": "Villeneuve-sur-Yonne",
+  "extract": "Villeneuve-sur-Yonne est une commune française située dans le département de l'Yonne, en région Bourgogne-Franche-Comté.\nLa commune est riveraine de la rivière Yonne, dans la basse vallée de celle-ci.",
+  "description": "commune française du département de l'Yonne",
+  "coordinates": {
+    "lat": 48.092757,
+    "lon": 3.294525
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Porte-de-Sens-%C3%A0-Villeneuve-sur-Yonne-DSC_0298.jpg/330px-Porte-de-Sens-%C3%A0-Villeneuve-sur-Yonne-DSC_0298.jpg",
+  "notFound": false
+}

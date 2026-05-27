@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:09:31.728Z",
+  "villeSlug": "le-bourget-du-lac",
+  "villeName": "Le Bourget-du-Lac",
+  "wikipediaTitle": "Le Bourget-du-Lac",
+  "extract": "Le Bourget-du-Lac est une commune française située dans le département de la Savoie, en région Auvergne-Rhône-Alpes.\nL'implantation d'un des pôles de l'université Savoie-Mont-Blanc sur la commune a permis dans une certaine mesure d'en faire une ville étudiante. Hormis les étudiants, l'économie de la ville repose essentiellement sur le tourisme, la zone d'activité de Savoie Technolac et l’aéroport de Chambéry - Savoie qui permet l'afflux de nombreux touristes en hiver comme en été.\nLa ville, historiquement, doit beaucoup à la présence de la maison de Savoie. Cette famille princière marqua profondément la commune et aimait régulièrement y séjourner au sein du château des comtes de Savoie, se situant sur les rives du lac du Bourget.",
+  "description": "commune française du département de la Savoie",
+  "coordinates": {
+    "lat": 45.645556,
+    "lon": 5.85911
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Le_Bourget-du-Lac_%28Savoie%29.JPG/330px-Le_Bourget-du-Lac_%28Savoie%29.JPG",
+  "notFound": false
+}

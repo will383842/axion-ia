@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:09:23.776Z",
+  "villeSlug": "valleiry",
+  "villeName": "Valleiry",
+  "wikipediaTitle": "Valleiry",
+  "extract": "Valleiry est une commune française située dans le département de la Haute-Savoie, en région Auvergne-Rhône-Alpes.",
+  "description": "commune française du département de la Haute-Savoie",
+  "coordinates": {
+    "lat": 46.10888889,
+    "lon": 5.96861111
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/13_-_%C3%89glise_de_Valleiry.JPG/330px-13_-_%C3%89glise_de_Valleiry.JPG",
+  "notFound": false
+}

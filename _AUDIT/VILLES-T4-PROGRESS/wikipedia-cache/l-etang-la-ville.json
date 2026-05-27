@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:09:43.568Z",
+  "villeSlug": "l-etang-la-ville",
+  "villeName": "L'Étang-la-Ville",
+  "wikipediaTitle": "L'Étang-la-Ville",
+  "extract": "L'Étang-la-Ville est une commune française située dans le département des Yvelines (78) en région Île-de-France. Située à une vingtaine de kilomètres à l'ouest du centre de Paris, aux confins de l'unité urbaine de Paris, la commune est au cœur du Pays des Impressionnistes et de la forêt domaniale de Marly. Elle abrite les vestiges du château de Pierre Séguier, chancelier de France de Louis XIII et Louis XIV, et membre fondateur de l'Académie française.\nSes habitants sont appelés les Stagnovillois.",
+  "description": "commune française du département des Yvelines",
+  "coordinates": {
+    "lat": 48.86944444,
+    "lon": 2.07194444
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/L%27%C3%89tang-la-Ville_Mairie.JPG/330px-L%27%C3%89tang-la-Ville_Mairie.JPG",
+  "notFound": false
+}

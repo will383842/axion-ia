@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:10:01.218Z",
+  "villeSlug": "giberville",
+  "villeName": "Giberville",
+  "wikipediaTitle": "Giberville",
+  "extract": "Giberville est une commune française, située dans le département du Calvados en région Normandie, peuplée de 5 077 habitants.\nLes habitants sont appelés les Gibervillais.\n\n",
+  "description": "commune française du département du Calvados",
+  "coordinates": {
+    "lat": 49.181667,
+    "lon": -0.282222
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Eglise_St_Martin_Giberville.JPG/330px-Eglise_St_Martin_Giberville.JPG",
+  "notFound": false
+}

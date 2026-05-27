@@ -1,10 +1,10 @@
 {
   "totalT4": 1702,
-  "done": 60,
-  "remaining": 1642,
-  "lastBatchAt": "2026-05-27T08:08:15.129Z",
+  "done": 70,
+  "remaining": 1632,
+  "lastBatchAt": "2026-05-27T08:15:04.661Z",
   "lastBatchSize": 10,
-  "lastBatchNumber": 6,
+  "lastBatchNumber": 7,
   "villes": {
     "gentilly": {
       "slug": "gentilly",
@@ -2182,9 +2182,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "42",
       "population": 17060,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:15:04.661Z",
+      "batch": 7
     },
     "valserhone": {
       "slug": "valserhone",
@@ -2222,9 +2222,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "42",
       "population": 16123,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:15:04.661Z",
+      "batch": 7
     },
     "amberieu-en-bugey": {
       "slug": "amberieu-en-bugey",
@@ -2242,9 +2242,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "42",
       "population": 15764,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:15:04.661Z",
+      "batch": 7
     },
     "francheville": {
       "slug": "francheville",
@@ -2262,9 +2262,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "42",
       "population": 15242,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:15:04.661Z",
+      "batch": 7
     },
     "issoire": {
       "slug": "issoire",
@@ -2402,9 +2402,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "42",
       "population": 12314,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:15:04.661Z",
+      "batch": 7
     },
     "ferney-voltaire": {
       "slug": "ferney-voltaire",
@@ -2532,9 +2532,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "42",
       "population": 11139,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:15:04.661Z",
+      "batch": 7
     },
     "le-pont-de-claix": {
       "slug": "le-pont-de-claix",
@@ -2642,9 +2642,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "42",
       "population": 10425,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:15:04.661Z",
+      "batch": 7
     },
     "miribel": {
       "slug": "miribel",
@@ -2722,9 +2722,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "42",
       "population": 9843,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:15:04.661Z",
+      "batch": 7
     },
     "ville-la-grand": {
       "slug": "ville-la-grand",
@@ -2852,9 +2852,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "42",
       "population": 8975,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:15:04.661Z",
+      "batch": 7
     },
     "cebazat": {
       "slug": "cebazat",
@@ -4222,9 +4222,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "26",
       "population": 5468,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:15:04.661Z",
+      "batch": 7
     },
     "saint-genis-les-ollieres": {
       "slug": "saint-genis-les-ollieres",

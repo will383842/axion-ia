@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:09:42.648Z",
+  "villeSlug": "seichamps",
+  "villeName": "Seichamps",
+  "wikipediaTitle": "Seichamps",
+  "extract": "Seichamps est une commune française située dans le département Meurthe-et-Moselle en région Grand Est.\nSes habitants sont appelés les Seichanais.",
+  "description": "commune française du département de Meurthe-et-Moselle",
+  "coordinates": {
+    "lat": 48.72,
+    "lon": 6.27
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Seichamps_-_Place_Fran%C3%A7ois_Mitterrand.JPG/330px-Seichamps_-_Place_Fran%C3%A7ois_Mitterrand.JPG",
+  "notFound": false
+}
