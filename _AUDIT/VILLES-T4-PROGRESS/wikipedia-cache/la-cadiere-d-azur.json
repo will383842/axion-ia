@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:07:49.755Z",
+  "villeSlug": "la-cadiere-d-azur",
+  "villeName": "La Cadière-d'Azur",
+  "wikipediaTitle": "La Cadière-d'Azur",
+  "extract": "La Cadière-d'Azur est une commune française située dans le département du Var en région Provence-Alpes-Côte d'Azur.",
+  "description": "commune française du département du Var",
+  "coordinates": {
+    "lat": 43.19666667,
+    "lon": 5.75638889
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Cadiere-mairie.jpg/330px-Cadiere-mairie.jpg",
+  "notFound": false
+}

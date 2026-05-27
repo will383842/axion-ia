@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:05:00.901Z",
+  "villeSlug": "liancourt",
+  "villeName": "Liancourt",
+  "wikipediaTitle": "Liancourt",
+  "extract": "Liancourt est une commune française située dans le département de l'Oise en région Hauts-de-France. Ses habitants sont appelés les Liancourtois et les Liancourtoises.",
+  "description": "commune française du département de l'Oise",
+  "coordinates": {
+    "lat": 49.33166667,
+    "lon": 2.46611111
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Liancourt_%2860%29%2C_%C3%A9glise_Saint-Martin.jpg/330px-Liancourt_%2860%29%2C_%C3%A9glise_Saint-Martin.jpg",
+  "notFound": false
+}

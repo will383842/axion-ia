@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:02:13.126Z",
+  "villeSlug": "chantonnay",
+  "villeName": "Chantonnay",
+  "wikipediaTitle": "Chantonnay",
+  "extract": "Chantonnay est une commune française située dans le département de la Vendée, dans la région Pays de la Loire.\nSes habitants sont les Chantonnaisiens et les Chantonnaisiennes.",
+  "description": "commune française du département de la Vendée",
+  "coordinates": {
+    "lat": 46.68777778,
+    "lon": -1.04944444
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Chantonnay_-_H%C3%B4tel_de_ville_-1.jpg/330px-Chantonnay_-_H%C3%B4tel_de_ville_-1.jpg",
+  "notFound": false
+}

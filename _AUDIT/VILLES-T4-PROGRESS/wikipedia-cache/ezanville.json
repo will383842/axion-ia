@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:00:46.371Z",
+  "villeSlug": "ezanville",
+  "villeName": "Ézanville",
+  "wikipediaTitle": "Ézanville",
+  "extract": "Ézanville est une commune française située dans le département du Val-d'Oise en région Île-de-France.\nSes habitants sont appelés les Ézanvillois.",
+  "description": "commune française du département du Val-d'Oise",
+  "coordinates": {
+    "lat": 49.0333,
+    "lon": 2.3667
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/%C3%89zanville_%2895%29%2C_mairie%2C_place_Jules-Rodet.jpg/330px-%C3%89zanville_%2895%29%2C_mairie%2C_place_Jules-Rodet.jpg",
+  "notFound": false
+}

@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:06:32.092Z",
+  "villeSlug": "aurec-sur-loire",
+  "villeName": "Aurec-sur-Loire",
+  "wikipediaTitle": "Aurec-sur-Loire",
+  "extract": "Aurec-sur-Loire est une commune française située dans le département de la Haute-Loire, en région Auvergne-Rhône-Alpes. Il s'agit de la cinquième ville la plus peuplée du département.",
+  "description": "commune française du département de la Haute-Loire",
+  "coordinates": {
+    "lat": 45.37,
+    "lon": 4.2025
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Aurec-sur-Loire_Vue_g%C3%A9n%C3%A9rale.JPG/330px-Aurec-sur-Loire_Vue_g%C3%A9n%C3%A9rale.JPG",
+  "notFound": false
+}

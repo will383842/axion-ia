@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:04:19.765Z",
+  "villeSlug": "montauroux",
+  "villeName": "Montauroux",
+  "wikipediaTitle": "Montauroux",
+  "extract": "Montauroux est une commune française située dans le département du Var, en région Provence-Alpes-Côte d'Azur.\nSes habitants se nomment les Montaurousiens.",
+  "description": "commune française du département du Var",
+  "coordinates": {
+    "lat": 43.6192,
+    "lon": 6.7658
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Chateau_de_la_colle_noire.jpg/330px-Chateau_de_la_colle_noire.jpg",
+  "notFound": false
+}

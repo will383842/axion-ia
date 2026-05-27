@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:01:17.910Z",
+  "villeSlug": "magny-les-hameaux",
+  "villeName": "Magny-les-Hameaux",
+  "wikipediaTitle": "Magny-les-Hameaux",
+  "extract": "Magny-les-Hameaux est une commune française située dans le département des Yvelines en région Île-de-France, située à 27 km au sud-ouest de Paris.",
+  "description": "commune française du département des Yvelines",
+  "coordinates": {
+    "lat": 48.736267,
+    "lon": 2.087746
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Magny-les-Hameaux_-_H%C3%B4tel_de_Ville.jpg/330px-Magny-les-Hameaux_-_H%C3%B4tel_de_Ville.jpg",
+  "notFound": false
+}

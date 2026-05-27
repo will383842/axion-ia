@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:05:45.181Z",
+  "villeSlug": "le-perray-en-yvelines",
+  "villeName": "Le Perray-en-Yvelines",
+  "wikipediaTitle": "Le Perray-en-Yvelines",
+  "extract": "Le Perray-en-Yvelines est une commune française située dans le département des Yvelines, en région Île-de-France.\nSes habitants sont appelés les Perrotins depuis 1980.",
+  "description": "commune française du département des Yvelines",
+  "coordinates": {
+    "lat": 48.69472222,
+    "lon": 1.855
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Place_de_la_Mairie_-_Le_Perray-en-Yvelines.jpg/330px-Place_de_la_Mairie_-_Le_Perray-en-Yvelines.jpg",
+  "notFound": false
+}

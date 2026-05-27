@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:01:02.741Z",
+  "villeSlug": "nort-sur-erdre",
+  "villeName": "Nort-sur-Erdre",
+  "wikipediaTitle": "Nort-sur-Erdre",
+  "extract": "Nort-sur-Erdre est une commune de l'Ouest de la France, située dans le département de la Loire-Atlantique, en région Pays de la Loire.\nSes habitants s'appellent les Nortais.",
+  "description": "commune française du département de la Loire-Atlantique",
+  "coordinates": {
+    "lat": 47.44027778,
+    "lon": -1.49722222
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Centre-ville_et_port_de_Nort-sur-Erdre.jpg/330px-Centre-ville_et_port_de_Nort-sur-Erdre.jpg",
+  "notFound": false
+}

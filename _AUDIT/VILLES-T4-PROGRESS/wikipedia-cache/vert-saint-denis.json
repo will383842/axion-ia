@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:01:24.315Z",
+  "villeSlug": "vert-saint-denis",
+  "villeName": "Vert-Saint-Denis",
+  "wikipediaTitle": "Vert-Saint-Denis",
+  "extract": "Vert-Saint-Denis est une commune française située dans le département de Seine-et-Marne, en région Île-de-France.\nEn 2023, elle compte 9 291 habitants.",
+  "description": "commune française du département de Seine-et-Marne",
+  "coordinates": {
+    "lat": 48.565,
+    "lon": 2.6147
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Mairievsd.jpg/330px-Mairievsd.jpg",
+  "notFound": false
+}

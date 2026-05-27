@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:06:55.962Z",
+  "villeSlug": "jouars-pontchartrain",
+  "villeName": "Jouars-Pontchartrain",
+  "wikipediaTitle": "Jouars-Pontchartrain",
+  "extract": "Jouars-Pontchartrain est une commune française située dans le département des Yvelines, en région Île-de-France.",
+  "description": "commune française du département des Yvelines",
+  "coordinates": {
+    "lat": 48.803889,
+    "lon": 1.902222
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Mairie_Jouars-Pontchartrain.jpg/330px-Mairie_Jouars-Pontchartrain.jpg",
+  "notFound": false
+}

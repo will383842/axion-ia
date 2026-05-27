@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:01:26.881Z",
+  "villeSlug": "evian-les-bains",
+  "villeName": "Évian-les-Bains",
+  "wikipediaTitle": "Évian-les-Bains",
+  "extract": "Évian-les-Bains, simplement appelée Évian, est une commune française de Haute-Savoie en région Auvergne-Rhône-Alpes, chef-lieu du canton d'Évian-les-Bains et ville centre de la communauté de communes Pays d'Évian Vallée d'Abondance, située sur les bords du Léman. Évian est mondialement connue comme ville thermale et pour son eau minérale Évian, exploitée par la Société anonyme des eaux minérales d’Évian, filiale du groupe Danone.",
+  "description": "commune française du département de la Haute-Savoie",
+  "coordinates": {
+    "lat": 46.38333333,
+    "lon": 6.58333333
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Evian_par_le_lac.jpg/330px-Evian_par_le_lac.jpg",
+  "notFound": false
+}

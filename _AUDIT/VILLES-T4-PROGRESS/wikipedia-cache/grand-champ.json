@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:07:13.031Z",
+  "villeSlug": "grand-champ",
+  "villeName": "Grand-Champ",
+  "wikipediaTitle": "Grand-Champ",
+  "extract": "Grand-Champ [gʁɑ̃ ʃɑ̃] est une commune française chef-lieu de canton située dans le département du Morbihan, en région Bretagne.\nSes habitants sont appelés les Grégamistes.",
+  "description": "commune française du département du Morbihan",
+  "coordinates": {
+    "lat": 47.75916667,
+    "lon": -2.84333333
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Mairie_de_Grand-Champ.jpg/330px-Mairie_de_Grand-Champ.jpg",
+  "notFound": false
+}

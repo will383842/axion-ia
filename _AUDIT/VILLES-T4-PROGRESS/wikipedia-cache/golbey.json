@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:01:53.545Z",
+  "villeSlug": "golbey",
+  "villeName": "Golbey",
+  "wikipediaTitle": "Golbey",
+  "extract": "Golbey  est une commune française située dans le département des Vosges, en Lorraine. La commune fait aujourd'hui partie de la région administrative Grand Est.\nSes habitants sont appelés les Golbéens.",
+  "description": "commune française du département des Vosges",
+  "coordinates": {
+    "lat": 48.19666667,
+    "lon": 6.43805556
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Golbey%2C_H%C3%B4tel_de_ville_1.jpg/330px-Golbey%2C_H%C3%B4tel_de_ville_1.jpg",
+  "notFound": false
+}

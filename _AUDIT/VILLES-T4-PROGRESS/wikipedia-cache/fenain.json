@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:08:50.633Z",
+  "villeSlug": "fenain",
+  "villeName": "Fenain",
+  "wikipediaTitle": "Fenain",
+  "extract": "Fenain est une commune française, située dans le département du Nord (59) en région Hauts-de-France.\nC'est une ville de l'ancien bassin minier du Nord-Pas-de-Calais.",
+  "description": "commune française du département du Nord",
+  "coordinates": {
+    "lat": 50.36638889,
+    "lon": 3.30138889
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Fenain_-_%C3%89glise_Saint-Andr%C3%A9_%2813%29.JPG/330px-Fenain_-_%C3%89glise_Saint-Andr%C3%A9_%2813%29.JPG",
+  "notFound": false
+}

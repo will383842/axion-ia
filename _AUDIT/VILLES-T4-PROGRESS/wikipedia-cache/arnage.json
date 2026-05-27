@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:08:49.710Z",
+  "villeSlug": "arnage",
+  "villeName": "Arnage",
+  "wikipediaTitle": "Arnage",
+  "extract": "Arnage est une commune française, située dans le département de la Sarthe en région Pays de la Loire, peuplée de 5 445 habitants.\nLa commune fait partie de la province historique du Maine, et se situe dans le Haut-Maine.",
+  "description": "commune française du département de la Sarthe",
+  "coordinates": {
+    "lat": 47.926111,
+    "lon": 0.187778
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Arnage_station_04.JPG/330px-Arnage_station_04.JPG",
+  "notFound": false
+}

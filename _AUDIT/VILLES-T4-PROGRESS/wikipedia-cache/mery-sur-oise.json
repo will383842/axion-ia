@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:00:39.276Z",
+  "villeSlug": "mery-sur-oise",
+  "villeName": "Méry-sur-Oise",
+  "wikipediaTitle": "Méry-sur-Oise",
+  "extract": "Méry-sur-Oise est une commune française située dans le département du Val-d'Oise en région Île-de-France.\nSes habitants sont appelés les Mérysiens.",
+  "description": "commune française du département du Val-d'Oise",
+  "coordinates": {
+    "lat": 49.0617,
+    "lon": 2.1869
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Mairie_OK.jpg/330px-Mairie_OK.jpg",
+  "notFound": false
+}

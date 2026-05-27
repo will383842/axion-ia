@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:05:18.210Z",
+  "villeSlug": "honfleur",
+  "villeName": "Honfleur",
+  "wikipediaTitle": "Honfleur",
+  "extract": "Honfleur est une commune française située dans le département du Calvados, en région Normandie. Ville portuaire, elle est située sur la rive sud de l'estuaire de la Seine, en face du Havre, tout près du débouché du pont de Normandie.\nElle est peuplée de 6 640 habitants.\nHonfleur est surtout connue pour son Vieux Bassin, caractérisé par ses maisons aux façades recouvertes d'ardoises, et pour avoir été maintes fois représentée par des artistes, dont Gustave Courbet, Eugène Boudin, Claude Monet et Johan Barthold Jongkind, formant l'École de Honfleur. Ces peintres et d'autres se retrouvent à ferme Saint-Siméon sur les hauteurs de la ville et contribuent à l'apparition du mouvement impressionniste. Alphonse Allais et Erik Satie y sont nés dans la même rue.\nLa commune est classée quatre fleurs au concours des villes et villages fleuris et bénéficie selon une étude d'une des plus fortes attractivités parmi les villes française de mille à dix mille habitants, avec Arcachon, Noirmoutier-en-l'Île, Étretat et Deauville.",
+  "description": "commune française du département du Calvados",
+  "coordinates": {
+    "lat": 49.418889,
+    "lon": 0.233056
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/France_Calvados_Honfleur_port2.jpg/330px-France_Calvados_Honfleur_port2.jpg",
+  "notFound": false
+}

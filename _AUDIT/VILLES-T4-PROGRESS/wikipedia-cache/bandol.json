@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:02:38.233Z",
+  "villeSlug": "bandol",
+  "villeName": "Bandol",
+  "wikipediaTitle": "Bandol",
+  "extract": "Bandol est une commune française dans le département du Var, en région Provence-Alpes-Côte d'Azur.\nSes habitants sont appelés les Bandolais.",
+  "description": "commune française du département du Var",
+  "coordinates": {
+    "lat": 43.133333,
+    "lon": 5.75
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Bandol_vu_des_calanques_le_soir_en_%C3%A9t%C3%A9.jpg/330px-Bandol_vu_des_calanques_le_soir_en_%C3%A9t%C3%A9.jpg",
+  "notFound": false
+}

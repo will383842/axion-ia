@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T07:59:32.151Z",
+  "villeSlug": "arcachon",
+  "villeName": "Arcachon",
+  "wikipediaTitle": "Arcachon",
+  "extract": "Arcachon est une commune du Sud-Ouest de la France, sous-préfecture du département de la Gironde, en région Nouvelle-Aquitaine. Cette station balnéaire a été créée en 1857 par détachement d'une partie de la commune de La Teste-de-Buch.\nPartie intégrante de l'ancienne province de Gascogne, elle s'inscrit dans le périmètre du Pays de Buch, des Landes de Gascogne et de la forêt des Landes.\nVille éponyme du bassin d'Arcachon, mais non la plus peuplée avec une population de 11 092 habitants en 2023, elle est au centre d'une unité urbaine de 69 991 habitants en 2023 et est une des grandes stations balnéaires de la côte atlantique, aux côtés de Royan, Biarritz, Les Sables-d'Olonne ou La Baule.",
+  "description": "commune française du département de la Gironde",
+  "coordinates": {
+    "lat": 44.65278,
+    "lon": -1.169186
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/ArcachonPlage.JPG/330px-ArcachonPlage.JPG",
+  "notFound": false
+}

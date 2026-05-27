@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:03:19.951Z",
+  "villeSlug": "terville",
+  "villeName": "Terville",
+  "wikipediaTitle": "Terville",
+  "extract": "Terville est une commune française située dans le département de la Moselle, en région Grand Est. Elle fait partie de l’agglomération du pays thionvillois, dont elle est limitrophe à la ville de Thionville.\nSes habitants appelés Tervillois et Tervilloises sont au nombre de 7801 en 2023.",
+  "description": "commune française du département de la Moselle",
+  "coordinates": {
+    "lat": 49.34527778,
+    "lon": 6.13472222
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Eglise_Terville.jpg/330px-Eglise_Terville.jpg",
+  "notFound": false
+}

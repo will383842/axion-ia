@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:06:15.189Z",
+  "villeSlug": "noyal-sur-vilaine",
+  "villeName": "Noyal-sur-Vilaine",
+  "wikipediaTitle": "Noyal-sur-Vilaine",
+  "extract": "Noyal-sur-Vilaine est une commune française située dans le département d'Ille-et-Vilaine en région Bretagne, peuplée de 6 269 habitants.",
+  "description": "commune française d'Ille-et-Vilaine",
+  "coordinates": {
+    "lat": 48.111667,
+    "lon": -1.524444
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Hotel_de_ville_Noyal_sur_Vilaine.JPG/330px-Hotel_de_ville_Noyal_sur_Vilaine.JPG",
+  "notFound": false
+}

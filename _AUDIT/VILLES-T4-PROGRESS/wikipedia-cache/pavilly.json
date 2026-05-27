@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:06:56.412Z",
+  "villeSlug": "pavilly",
+  "villeName": "Pavilly",
+  "wikipediaTitle": "Pavilly",
+  "extract": "Pavilly [paviji] est une commune française située dans le département de la Seine-Maritime, en région Normandie.\nElle appartient à une agglomération d'environ 20 000 habitants en 2013, l'unité urbaine de Barentin.",
+  "description": "commune française du département de la Seine-Maritime",
+  "coordinates": {
+    "lat": 49.56916667,
+    "lon": 0.95444444
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Pavilly.jpg/330px-Pavilly.jpg",
+  "notFound": false
+}

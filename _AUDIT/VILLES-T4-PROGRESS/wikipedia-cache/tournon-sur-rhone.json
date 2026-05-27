@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T07:59:26.438Z",
+  "villeSlug": "tournon-sur-rhone",
+  "villeName": "Tournon-sur-Rhône",
+  "wikipediaTitle": "Tournon-sur-Rhône",
+  "extract": "Tournon-sur-Rhône est une commune française située dans le département de l'Ardèche en région Auvergne-Rhône-Alpes, à 20 km au nord de Valence.\nLa ville, bordée par le Rhône, possède sa propre unité urbaine, située entre celles d'Annonay et celle de Valence. Son territoire se positionne au cœur de la communauté d'agglomération Arche Agglo située de chaque côté du fleuve et dont le siège est situé dans la commune voisine de Mauves.",
+  "description": "commune française du département de l'Ardèche",
+  "coordinates": {
+    "lat": 45.06805556,
+    "lon": 4.83333333
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Tournon-sur-Rh%C3%B4ne_-_Ard%C3%A8che.JPG/330px-Tournon-sur-Rh%C3%B4ne_-_Ard%C3%A8che.JPG",
+  "notFound": false
+}

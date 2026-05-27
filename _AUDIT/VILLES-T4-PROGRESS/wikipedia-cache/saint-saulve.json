@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T07:59:40.974Z",
+  "villeSlug": "saint-saulve",
+  "villeName": "Saint-Saulve",
+  "wikipediaTitle": "Saint-Saulve",
+  "extract": "Saint-Saulve est une commune française située dans le département du Nord, en région Hauts-de-France.",
+  "description": "commune française du département du Nord",
+  "coordinates": {
+    "lat": 50.37055556,
+    "lon": 3.55555556
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/H%C3%B4tel_de_Ville_de_Saint-Saulve_%2859880%29.jpg/330px-H%C3%B4tel_de_Ville_de_Saint-Saulve_%2859880%29.jpg",
+  "notFound": false
+}

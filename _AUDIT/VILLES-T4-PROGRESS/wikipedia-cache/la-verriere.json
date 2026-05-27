@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:07:02.365Z",
+  "villeSlug": "la-verriere",
+  "villeName": "La Verrière",
+  "wikipediaTitle": "La Verrière",
+  "extract": "La Verrière est une commune française située dans le département des Yvelines en région Île-de-France.",
+  "description": "commune française du département des Yvelines",
+  "coordinates": {
+    "lat": 48.7556,
+    "lon": 1.9561
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Mairie_de_La_Verri%C3%A8re.jpg/330px-Mairie_de_La_Verri%C3%A8re.jpg",
+  "notFound": false
+}

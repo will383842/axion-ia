@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:04:54.028Z",
+  "villeSlug": "loudun",
+  "villeName": "Loudun",
+  "wikipediaTitle": "Loudun",
+  "extract": "Loudun est une commune du Centre-Ouest de la France, située dans le département de la Vienne. Ses habitants sont appelés les Loudunais.\nC'est une ville avec les ruines de l'ancien château détruit par Richelieu, et dont le centre historique est entouré de vieux remparts. Cette ville possède un grand patrimoine culturel avec, entre autres, sa Tour Carrée, ses ruelles ayant gardé l'esprit du Moyen Âge, toutes les caves à champignons et à vins, sans oublier le musée Renaudot.",
+  "description": "commune française du département de la Vienne",
+  "coordinates": {
+    "lat": 47.01055556,
+    "lon": 0.08444444
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/La_tour_carr%C3%A9e_%28Loudun%2C_86%29_-_07.jpg/330px-La_tour_carr%C3%A9e_%28Loudun%2C_86%29_-_07.jpg",
+  "notFound": false
+}

@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:03:32.233Z",
+  "villeSlug": "bain-de-bretagne",
+  "villeName": "Bain-de-Bretagne",
+  "wikipediaTitle": "Bain-de-Bretagne",
+  "extract": "Bain-de-Bretagne est une commune française située dans le département d'Ille-et-Vilaine, en région Bretagne.",
+  "description": "commune française d'Ille-et-Vilaine",
+  "coordinates": {
+    "lat": 47.84305556,
+    "lon": -1.68055556
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Bain-de-Bretagne_mairie.JPG/330px-Bain-de-Bretagne_mairie.JPG",
+  "notFound": false
+}

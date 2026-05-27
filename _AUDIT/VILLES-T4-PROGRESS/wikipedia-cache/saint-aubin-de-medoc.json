@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:03:22.124Z",
+  "villeSlug": "saint-aubin-de-medoc",
+  "villeName": "Saint-Aubin-de-Médoc",
+  "wikipediaTitle": "Saint-Aubin-de-Médoc",
+  "extract": "Saint-Aubin-de-Médoc est une commune du Sud-Ouest de la France, située dans le département de la Gironde, en région Nouvelle-Aquitaine.",
+  "description": "commune française du département de la Gironde",
+  "coordinates": {
+    "lat": 44.91305556,
+    "lon": -0.72416667
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/StAdM_-_%C3%89glise.jpg/330px-StAdM_-_%C3%89glise.jpg",
+  "notFound": false
+}

@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:02:00.969Z",
+  "villeSlug": "l-ile-saint-denis",
+  "villeName": "L'Île-Saint-Denis",
+  "wikipediaTitle": "L'Île-Saint-Denis",
+  "extract": "L’Île-Saint-Denis est une commune française située dans le département de la Seine-Saint-Denis, dont le territoire correspond parfaitement à celui d'une île fluviale de la Seine, l'île Saint-Denis. Elle est souvent considérée, à tort, comme une partie de la ville de Saint-Denis. Sa superficie et sa population en font l'une des plus petites communes de la Seine-Saint-Denis.\nSes habitants sont appelés les Îlodionysiens.",
+  "description": "commune insulaire française du département de la Seine-Saint-Denis",
+  "coordinates": {
+    "lat": 48.9358,
+    "lon": 2.3397
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/H%C3%B4tel_ville_%C3%8Ele_St_Denis_1.jpg/330px-H%C3%B4tel_ville_%C3%8Ele_St_Denis_1.jpg",
+  "notFound": false
+}

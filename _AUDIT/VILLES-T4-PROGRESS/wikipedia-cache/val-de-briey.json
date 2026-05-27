@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:02:48.490Z",
+  "villeSlug": "val-de-briey",
+  "villeName": "Val de Briey",
+  "wikipediaTitle": "Val de Briey",
+  "extract": "Val de Briey est une commune nouvelle française, créée le 1er janvier 2017, située dans le département de Meurthe-et-Moselle, en Lorraine, dans la région administrative Grand Est, unissant les communes de Briey, de Mance et de Mancieulles.\nNote : les arrêtés préfectoraux utilisent la graphie « Val de Briey », graphie non conforme aux règles de typographie française, qui demanderaient deux traits d'union.",
+  "description": "commune française de Meurthe-et-Moselle",
+  "coordinates": {
+    "lat": 49.24944444,
+    "lon": 5.94027778
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Eglise_Briey.jpg/330px-Eglise_Briey.jpg",
+  "notFound": false
+}

@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:02:07.925Z",
+  "villeSlug": "domerat",
+  "villeName": "Domérat",
+  "wikipediaTitle": "Domérat",
+  "extract": "Domérat est une commune française située dans le département de l'Allier, en région Auvergne-Rhône-Alpes.",
+  "description": "commune française du département de l'Allier",
+  "coordinates": {
+    "lat": 46.36111111,
+    "lon": 2.53527778
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Dom%C3%A9rat_-_Notre-Dame_-1.jpg/330px-Dom%C3%A9rat_-_Notre-Dame_-1.jpg",
+  "notFound": false
+}

@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:05:58.510Z",
+  "villeSlug": "saint-jorioz",
+  "villeName": "Saint-Jorioz",
+  "wikipediaTitle": "Saint-Jorioz",
+  "extract": "Saint-Jorioz (le -z final ne se prononce pas) est une commune française située dans le département de la Haute-Savoie, en région Auvergne-Rhône-Alpes.",
+  "description": "commune française du département de la Haute-Savoie",
+  "coordinates": {
+    "lat": 45.8331,
+    "lon": 6.1669
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Saint_Jorioz_vu_de_la_Cochette.jpg/330px-Saint_Jorioz_vu_de_la_Cochette.jpg",
+  "notFound": false
+}

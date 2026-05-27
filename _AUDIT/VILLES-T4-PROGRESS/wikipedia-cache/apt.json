@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:00:28.500Z",
+  "villeSlug": "apt",
+  "villeName": "Apt",
+  "wikipediaTitle": "Apt",
+  "extract": "Apt (/apt/) est une commune française, sous-préfecture du département de Vaucluse, dans la région Provence-Alpes-Côte d'Azur (région Sud).",
+  "description": "commune française du département de Vaucluse",
+  "coordinates": {
+    "lat": 43.876945,
+    "lon": 5.396945
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Tour_Horloge_Apt_12.jpg/330px-Tour_Horloge_Apt_12.jpg",
+  "notFound": false
+}

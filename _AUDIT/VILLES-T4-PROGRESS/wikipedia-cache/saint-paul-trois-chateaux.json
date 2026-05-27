@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:01:42.585Z",
+  "villeSlug": "saint-paul-trois-chateaux",
+  "villeName": "Saint-Paul-Trois-Châteaux",
+  "wikipediaTitle": "Saint-Paul-Trois-Châteaux",
+  "extract": "Saint-Paul-Trois-Châteaux est une commune française située dans le département de la Drôme, en région Auvergne-Rhône-Alpes.\nSes habitants sont dénommés les Tricastins.",
+  "description": "commune française du département de la Drôme",
+  "coordinates": {
+    "lat": 44.34972222,
+    "lon": 4.769
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/St-paul_vuegenerale.jpg/330px-St-paul_vuegenerale.jpg",
+  "notFound": false
+}

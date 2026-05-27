@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:01:01.111Z",
+  "villeSlug": "lesquin",
+  "villeName": "Lesquin",
+  "wikipediaTitle": "Lesquin",
+  "extract": "Lesquin (prononcé : [lekɛ̃] ) est une commune française, située dans le département du Nord en région Hauts-de-France. Elle fait partie de la Métropole européenne de Lille.",
+  "description": "commune française du département du Nord",
+  "coordinates": {
+    "lat": 50.59055556,
+    "lon": 3.11166667
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Lesquin_-_Mairie.JPG/330px-Lesquin_-_Mairie.JPG",
+  "notFound": false
+}

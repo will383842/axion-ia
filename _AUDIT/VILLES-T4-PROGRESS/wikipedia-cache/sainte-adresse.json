@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:04:36.353Z",
+  "villeSlug": "sainte-adresse",
+  "villeName": "Sainte-Adresse",
+  "wikipediaTitle": "Sainte-Adresse",
+  "extract": "Sainte-Adresse est une commune française de la banlieue ouest du Havre située dans le département de la Seine-Maritime en région Normandie.\nElle a été la capitale de la Belgique durant la Première Guerre mondiale.\n\n",
+  "description": "commune française du département de la Seine-Maritime",
+  "coordinates": {
+    "lat": 49.50694444,
+    "lon": 0.08444444
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Comm%C3%A9moration_de_l%E2%80%99installation_du_gouvernement_belge_%C3%A0_Sainte-Adresse_en_1914.JPG/330px-Comm%C3%A9moration_de_l%E2%80%99installation_du_gouvernement_belge_%C3%A0_Sainte-Adresse_en_1914.JPG",
+  "notFound": false
+}

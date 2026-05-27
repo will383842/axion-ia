@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:02:48.951Z",
+  "villeSlug": "cavalaire-sur-mer",
+  "villeName": "Cavalaire-sur-Mer",
+  "wikipediaTitle": "Cavalaire-sur-Mer",
+  "extract": "Cavalaire-sur-Mer est une commune française située dans le département du Var, en région Provence-Alpes-Côte d'Azur.",
+  "description": "commune française du département du Var",
+  "coordinates": {
+    "lat": 43.17194444,
+    "lon": 6.52972222
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Baie_de_Cavalaire_%28vue_a%C3%A9rienne%29.jpg/330px-Baie_de_Cavalaire_%28vue_a%C3%A9rienne%29.jpg",
+  "notFound": false
+}

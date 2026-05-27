@@ -1,10 +1,10 @@
 {
   "totalT4": 1702,
-  "done": 50,
-  "remaining": 1652,
-  "lastBatchAt": "2026-05-27T07:53:14.582Z",
+  "done": 60,
+  "remaining": 1642,
+  "lastBatchAt": "2026-05-27T08:08:15.129Z",
   "lastBatchSize": 10,
-  "lastBatchNumber": 5,
+  "lastBatchNumber": 6,
   "villes": {
     "gentilly": {
       "slug": "gentilly",
@@ -2842,9 +2842,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "26",
       "population": 8981,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:08:15.129Z",
+      "batch": 6
     },
     "veauche": {
       "slug": "veauche",
@@ -2932,9 +2932,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "26",
       "population": 8658,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:08:15.129Z",
+      "batch": 6
     },
     "domerat": {
       "slug": "domerat",
@@ -3422,9 +3422,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "26",
       "population": 7001,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:08:15.129Z",
+      "batch": 6
     },
     "saint-bonnet-de-mure": {
       "slug": "saint-bonnet-de-mure",
@@ -3512,9 +3512,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "26",
       "population": 6833,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:08:15.129Z",
+      "batch": 6
     },
     "nyons": {
       "slug": "nyons",
@@ -3522,9 +3522,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "26",
       "population": 6816,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:08:15.129Z",
+      "batch": 6
     },
     "douvaine": {
       "slug": "douvaine",
@@ -3602,9 +3602,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "26",
       "population": 6614,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:08:15.129Z",
+      "batch": 6
     },
     "ceyrat": {
       "slug": "ceyrat",
@@ -3702,9 +3702,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "26",
       "population": 6523,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:08:15.129Z",
+      "batch": 6
     },
     "ambert": {
       "slug": "ambert",
@@ -3962,9 +3962,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "26",
       "population": 6176,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:08:15.129Z",
+      "batch": 6
     },
     "aurec-sur-loire": {
       "slug": "aurec-sur-loire",
@@ -4032,9 +4032,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "26",
       "population": 6008,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:08:15.129Z",
+      "batch": 6
     },
     "marnaz": {
       "slug": "marnaz",
@@ -4052,9 +4052,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "26",
       "population": 5915,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:08:15.129Z",
+      "batch": 6
     },
     "cessy": {
       "slug": "cessy",

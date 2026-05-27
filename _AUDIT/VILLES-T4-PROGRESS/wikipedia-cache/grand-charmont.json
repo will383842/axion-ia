@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:07:20.067Z",
+  "villeSlug": "grand-charmont",
+  "villeName": "Grand-Charmont",
+  "wikipediaTitle": "Grand-Charmont",
+  "extract": "Grand-Charmont est une commune française située dans le département du Doubs, la région culturelle et historique de Franche-Comté et la région administrative Bourgogne-Franche-Comté.\nSes habitants sont appelés les Charmontais.",
+  "description": "commune française du département du Doubs",
+  "coordinates": {
+    "lat": 47.5281,
+    "lon": 6.8244
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Grand-Charmont%2C_H%C3%B4tel_de_ville.jpg/330px-Grand-Charmont%2C_H%C3%B4tel_de_ville.jpg",
+  "notFound": false
+}

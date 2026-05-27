@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:05:05.872Z",
+  "villeSlug": "meyreuil",
+  "villeName": "Meyreuil",
+  "wikipediaTitle": "Meyreuil",
+  "extract": "Meyreuil est une commune française située dans le département des Bouches-du-Rhône, en région sud Provence-Alpes-Côte d'Azur.\nSes habitants sont appelés les Meyreuillais(es).",
+  "description": "commune française du département des Bouches-du-Rhône",
+  "coordinates": {
+    "lat": 43.4869,
+    "lon": 5.4942
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/La_place_de_l%27%C3%A9glise_de_Meyreuil.jpg/330px-La_place_de_l%27%C3%A9glise_de_Meyreuil.jpg",
+  "notFound": false
+}

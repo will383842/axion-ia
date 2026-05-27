@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:03:27.420Z",
+  "villeSlug": "noisy-le-roi",
+  "villeName": "Noisy-le-Roi",
+  "wikipediaTitle": "Noisy-le-Roi",
+  "extract": "Noisy-le-Roi est une commune du département des Yvelines en région Île-de-France, en France, à une vingtaine de kilomètres à l'ouest de Paris, en bordure et au sud de la forêt de Marly et au nord de la plaine de Versailles.\nSes habitants sont appelés les Noiséens.",
+  "description": "commune française du département des Yvelines",
+  "coordinates": {
+    "lat": 48.84694444,
+    "lon": 2.06083333
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Noisy-le-Roi_Mairie.JPG/330px-Noisy-le-Roi_Mairie.JPG",
+  "notFound": false
+}

@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:00:23.990Z",
+  "villeSlug": "la-ferte-sous-jouarre",
+  "villeName": "La Ferté-sous-Jouarre",
+  "wikipediaTitle": "La Ferté-sous-Jouarre",
+  "extract": "La Ferté-sous-Jouarre est une commune française située dans le département de Seine-et-Marne, Île-de-France.",
+  "description": "commune française du département de Seine-et-Marne",
+  "coordinates": {
+    "lat": 48.9435891,
+    "lon": 3.1292322
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/La_Fert%C3%A9-sous-Jouarre-H%C3%B4tel_de_Ville.jpg/330px-La_Fert%C3%A9-sous-Jouarre-H%C3%B4tel_de_Ville.jpg",
+  "notFound": false
+}

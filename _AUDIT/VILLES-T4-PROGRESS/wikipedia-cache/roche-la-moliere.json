@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:00:47.747Z",
+  "villeSlug": "roche-la-moliere",
+  "villeName": "Roche-la-Molière",
+  "wikipediaTitle": "Roche-la-Molière",
+  "extract": "Roche-la-Molière est une commune française située dans le département de la Loire en région Auvergne-Rhône-Alpes.",
+  "description": "commune française du département de la Loire",
+  "coordinates": {
+    "lat": 45.43472222,
+    "lon": 4.32444444
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Mol_roch.JPG/330px-Mol_roch.JPG",
+  "notFound": false
+}

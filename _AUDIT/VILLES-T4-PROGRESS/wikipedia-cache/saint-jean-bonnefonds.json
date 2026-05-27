@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:05:28.369Z",
+  "villeSlug": "saint-jean-bonnefonds",
+  "villeName": "Saint-Jean-Bonnefonds",
+  "wikipediaTitle": "Saint-Jean-Bonnefonds",
+  "extract": "Saint-Jean-Bonnefonds est une commune française située dans le département de la Loire, en région Auvergne-Rhône-Alpes.\nSes habitants se nomment les Saint-Jeandaires.",
+  "description": "commune française du département de la Loire",
+  "coordinates": {
+    "lat": 45.45194444,
+    "lon": 4.44722222
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/St-jan_bfds_3.JPG/330px-St-jan_bfds_3.JPG",
+  "notFound": false
+}

@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:04:51.492Z",
+  "villeSlug": "auvers-sur-oise",
+  "villeName": "Auvers-sur-Oise",
+  "wikipediaTitle": "Auvers-sur-Oise",
+  "extract": "Auvers-sur-Oise (/ovɛʁ syʁ waz/ ) est une commune française située dans le département du Val-d'Oise en région Île-de-France.\nElle doit sa renommée internationale aux peintres paysagistes et surtout impressionnistes, Charles-François Daubigny, Paul Cézanne, Camille Corot, Camille Pissarro et Vincent van Gogh qui sont venus puiser ici leur inspiration. On y retrouve la plupart des sites qu'ils ont immortalisés. Vincent Van Gogh y a peint 70 de ses toiles au cours des derniers mois de sa vie. Il y est mort et est inhumé dans le cimetière communal.",
+  "description": "commune française du département du Val-d'Oise",
+  "coordinates": {
+    "lat": 49.0667,
+    "lon": 2.1667
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Auvers_town_hall.jpg/330px-Auvers_town_hall.jpg",
+  "notFound": false
+}

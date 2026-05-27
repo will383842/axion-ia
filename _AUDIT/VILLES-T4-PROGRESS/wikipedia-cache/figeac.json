@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:00:50.280Z",
+  "villeSlug": "figeac",
+  "villeName": "Figeac",
+  "wikipediaTitle": "Figeac",
+  "extract": "Figeac est une commune française, sous-préfecture du département du Lot, en région Occitanie. Elle est située à l'est du causse de Gramat, le plus vaste et le plus sauvage des quatre causses du Quercy. Exposée à un climat océanique altéré, elle est drainée par le Célé, le Drauzou, le ruisseau de Planioles et divers petits cours d'eau. La commune possède un patrimoine naturel remarquable composé de cinq zones naturelles d'intérêt écologique, faunistique et floristique.\nLa commune est le centre de l'aire urbaine de Figeac, qui compte 26 200 habitants, et de la Communauté de communes Grand-Figeac regroupant un peu plus de 43 560 habitants. C'est aussi la commune-centre de l'aire d'attraction et le chef-lieu de l'arrondissement de Figeac, ainsi que le bureau centralisateur pour les différents cantons. Figeac se classe dans les trois communes urbaines du département avec Cahors et Pradines.\nDurant l'été, la commune est une des villes les plus visitées de la région Occitanie, ce qui lui vaut le label « Grand Site d'Occitanie ». Figeac est également labellisée « French Impact » et « ville d'art et d'histoire ». La ville de Figeac a reçu la croix de guerre avec étoile de vermeil, et la cité est souvent classée dans Les Plus Beaux Détours de France. Elle accueille un Institut universitaire de technologie (IUT) regroupant plusieurs grands bâtiments sur les hauteurs de la ville.",
+  "description": "commune française du département du Lot",
+  "coordinates": {
+    "lat": 44.60861111,
+    "lon": 2.03166667
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Figeac_-_Eglise_Saint-Sauveur_-_001.jpg/330px-Figeac_-_Eglise_Saint-Sauveur_-_001.jpg",
+  "notFound": false
+}

@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T07:59:14.967Z",
+  "villeSlug": "chauny",
+  "villeName": "Chauny",
+  "wikipediaTitle": "Chauny",
+  "extract": "Chauny est une ville française située dans le département de l'Aisne, dans les Hauts-de-France. Ses habitants sont les Chaunois et les Chaunoises.",
+  "description": "commune française du département de l'Aisne",
+  "coordinates": {
+    "lat": 49.61638889,
+    "lon": 3.22
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/H%C3%B4tel_de_ville_de_Chauny.jpg/330px-H%C3%B4tel_de_ville_de_Chauny.jpg",
+  "notFound": false
+}

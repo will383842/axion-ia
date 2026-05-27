@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:03:54.803Z",
+  "villeSlug": "trelissac",
+  "villeName": "Trélissac",
+  "wikipediaTitle": "Trélissac",
+  "extract": "Trélissac est une commune française de la banlieue est de Périgueux située dans le département de la Dordogne, en région Nouvelle-Aquitaine.",
+  "description": "commune française du département de la Dordogne",
+  "coordinates": {
+    "lat": 45.19666667,
+    "lon": 0.78333333
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Tr%C3%A9lissac_vue_g%C3%A9n%C3%A9rale.JPG/330px-Tr%C3%A9lissac_vue_g%C3%A9n%C3%A9rale.JPG",
+  "notFound": false
+}

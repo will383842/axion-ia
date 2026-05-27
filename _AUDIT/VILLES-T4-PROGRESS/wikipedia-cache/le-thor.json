@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:01:49.742Z",
+  "villeSlug": "le-thor",
+  "villeName": "Le Thor",
+  "wikipediaTitle": "Le Thor",
+  "extract": "Le Thor est une commune française située dans le département de Vaucluse, en région Provence-Alpes-Côte d'Azur.\nSes habitants sont appelés les Thorois.",
+  "description": "commune française du département de Vaucluse",
+  "coordinates": {
+    "lat": 43.93,
+    "lon": 4.995
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Le_Thor_01x.JPG/330px-Le_Thor_01x.JPG",
+  "notFound": false
+}

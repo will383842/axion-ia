@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:03:27.932Z",
+  "villeSlug": "les-andelys",
+  "villeName": "Les Andelys",
+  "wikipediaTitle": "Les Andelys",
+  "extract": "Les Andelys [lezɑ̃dli] sont une commune française située en région Normandie dans le département de l'Eure. Elle compte 7706 habitants.",
+  "description": "commune française du département de l'Eure",
+  "coordinates": {
+    "lat": 49.24611111,
+    "lon": 1.4125
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Petit-andely-depuis-chateau-gaillard.jpg/330px-Petit-andely-depuis-chateau-gaillard.jpg",
+  "notFound": false
+}

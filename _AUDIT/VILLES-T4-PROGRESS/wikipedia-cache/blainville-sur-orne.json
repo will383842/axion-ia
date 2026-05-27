@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:06:38.585Z",
+  "villeSlug": "blainville-sur-orne",
+  "villeName": "Blainville-sur-Orne",
+  "wikipediaTitle": "Blainville-sur-Orne",
+  "extract": "Blainville-sur-Orne est une commune française, située dans le département du Calvados en région Normandie, peuplée de 6 106 habitants.",
+  "description": "commune française du département du Calvados",
+  "coordinates": {
+    "lat": 49.22972222,
+    "lon": -0.29888889
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Eglise_Blainville_sur_Orne.JPG/330px-Eglise_Blainville_sur_Orne.JPG",
+  "notFound": false
+}

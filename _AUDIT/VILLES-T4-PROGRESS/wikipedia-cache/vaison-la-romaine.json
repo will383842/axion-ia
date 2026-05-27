@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:06:51.898Z",
+  "villeSlug": "vaison-la-romaine",
+  "villeName": "Vaison-la-Romaine",
+  "wikipediaTitle": "Vaison-la-Romaine",
+  "extract": "Vaison-la-Romaine est une commune française située dans le département de Vaucluse, en région Provence-Alpes-Côte d'Azur.\nSes habitants sont appelés les Vaisonnais.\nElle est connue pour ses vestiges romains particulièrement riches dont un pont à arche unique, ainsi que pour sa cité médiévale et sa cathédrale. La ville comprend des éléments antiques, médiévaux et modernes.\nVaison-la-Romaine dispose de quatre théâtres et de nombreux lieux d'exposition et galerie. Elle accueille également des événements culturels dont des festivals de danse et de chants polyphoniques qui lui ont permis d'être labellisée « Cité chorale Européenne ».",
+  "description": "commune française du département de Vaucluse",
+  "coordinates": {
+    "lat": 44.242248,
+    "lon": 5.072422
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Pont_Romain_Roman_Bridge_in_Vaison-la-Romaine.jpg/330px-Pont_Romain_Roman_Bridge_in_Vaison-la-Romaine.jpg",
+  "notFound": false
+}

@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T08:01:20.716Z",
+  "villeSlug": "jarville-la-malgrange",
+  "villeName": "Jarville-la-Malgrange",
+  "wikipediaTitle": "Jarville-la-Malgrange",
+  "extract": "Jarville-la-Malgrange est une commune française située dans le département de Meurthe-et-Moselle, en Lorraine, dans la région administrative Grand Est.\nSes habitants sont appelés Jarvillois(es).",
+  "description": "commune française du département de Meurthe-et-Moselle",
+  "coordinates": {
+    "lat": 48.67,
+    "lon": 6.20666667
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Jarville_P.JPG/330px-Jarville_P.JPG",
+  "notFound": false
+}
