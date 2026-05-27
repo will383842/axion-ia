@@ -137,21 +137,26 @@ interface PageProps {
 }
 
 /**
- * `generateStaticParams` partagé par les 3 services.
+ * `generateStaticParams` partagé par les 4 services par-ville.
  *
- * Audit deploy-unstuck 2026-05-18 (D4-QW1) — quand `BUILD_SSG_VILLES_INDEXABLE_ONLY=true`
- * (set au build GH Actions runner ubuntu-latest 16 GB), retourne uniquement
- * les villes avec `copy.services.<svc>` (Paris seul pour l'instant). Les autres
- * villes restent accessibles via `dynamicParams=true` + `revalidate=86400` ISR
- * (premier hit slow puis cached 24h). Cohérent SEO : les villes sans copy sont
- * déjà `noindex` côté metadata (anti-doorway HCU 2024), donc pas de perte
- * d'indexation. Réduit ~6 450 pages SSG (3 × 2 150) → peak RAM build divisé
- * par ~2. À retirer quand pipeline stable + larger runners activés.
+ * 2026-05-27 (sprint audit Will villes T4) — depuis que les 2157 villes ont
+ * toutes un `copy` éditorial (sprint VilleCopy T4 100%), `getIndexableVilles()`
+ * retourne 2157 villes → 4 services × 2157 = 8628 routes SSG, ce qui sature
+ * le disk GH Actions runner (« No space left on device » sur 3 derniers
+ * deploys consécutifs). On limite désormais le SSG aux villes pop ≥ 20 000
+ * (T1+T2 ~430 villes → 1720 routes), les T3+T4 sont rendues en ISR on-demand
+ * (`dynamicParams=true` + `revalidate=86400`). Trade-off : 1er hit T3/T4 =
+ * ~500ms latence, mais build passe ; sitemap continue à inclure toutes les
+ * villes indexables, donc Google les crawle = ISR génère = cachée.
  */
 export function buildStaticParams(): Array<{ ville: string }> {
   const indexableOnly = process.env.BUILD_SSG_VILLES_INDEXABLE_ONLY === "true";
-  const source = indexableOnly ? getIndexableVilles() : VILLES;
-  return source.map((v) => ({ ville: v.slug }));
+  if (indexableOnly) {
+    return getIndexableVilles()
+      .filter((v) => v.population >= 20_000)
+      .map((v) => ({ ville: v.slug }));
+  }
+  return VILLES.map((v) => ({ ville: v.slug }));
 }
 
 export async function buildPageMetadata(
