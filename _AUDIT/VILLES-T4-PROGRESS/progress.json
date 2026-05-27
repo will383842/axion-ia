@@ -1,10 +1,10 @@
 {
   "totalT4": 1702,
-  "done": 730,
-  "remaining": 972,
-  "lastBatchAt": "2026-05-27T12:10:44.110Z",
-  "lastBatchSize": 300,
-  "lastBatchNumber": 23,
+  "done": 930,
+  "remaining": 772,
+  "lastBatchAt": "2026-05-27T13:31:55.864Z",
+  "lastBatchSize": 200,
+  "lastBatchNumber": 24,
   "villes": {
     "gentilly": {
       "slug": "gentilly",
@@ -9212,9 +9212,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 19787,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "faches-thumesnil": {
       "slug": "faches-thumesnil",
@@ -9222,9 +9222,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 18619,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "hem": {
       "slug": "hem",
@@ -9232,9 +9232,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 18582,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "carvin": {
       "slug": "carvin",
@@ -9262,9 +9262,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 16076,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "saint-amand-les-eaux": {
       "slug": "saint-amand-les-eaux",
@@ -9272,9 +9272,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 15974,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "wattignies": {
       "slug": "wattignies",
@@ -9282,9 +9282,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 15525,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "senlis": {
       "slug": "senlis",
@@ -9292,9 +9292,9 @@
       "region": "hauts-de-france",
       "departement": "60",
       "population": 15157,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "chateau-thierry": {
       "slug": "chateau-thierry",
@@ -9302,9 +9302,9 @@
       "region": "hauts-de-france",
       "departement": "02",
       "population": 15097,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "haubourdin": {
       "slug": "haubourdin",
@@ -9312,9 +9312,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 15074,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "bailleul": {
       "slug": "bailleul",
@@ -9322,9 +9322,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 14732,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "saint-omer": {
       "slug": "saint-omer",
@@ -9362,9 +9362,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 14152,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "roncq": {
       "slug": "roncq",
@@ -9372,9 +9372,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 14075,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "lys-lez-lannoy": {
       "slug": "lys-lez-lannoy",
@@ -9382,9 +9382,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 14050,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "meru": {
       "slug": "meru",
@@ -9402,9 +9402,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 13833,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "mouvaux": {
       "slug": "mouvaux",
@@ -9412,9 +9412,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 13369,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "seclin": {
       "slug": "seclin",
@@ -9422,9 +9422,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 13261,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "saint-andre-lez-lille": {
       "slug": "saint-andre-lez-lille",
@@ -9432,9 +9432,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 13233,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "anzin": {
       "slug": "anzin",
@@ -9442,9 +9442,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 13183,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "outreau": {
       "slug": "outreau",
@@ -9462,9 +9462,9 @@
       "region": "hauts-de-france",
       "departement": "02",
       "population": 13045,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "noyon": {
       "slug": "noyon",
@@ -9492,9 +9492,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 12731,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "marquette-lez-lille": {
       "slug": "marquette-lez-lille",
@@ -9502,9 +9502,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 12622,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "pont-sainte-maxence": {
       "slug": "pont-sainte-maxence",
@@ -9532,9 +9532,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 12199,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "bully-les-mines": {
       "slug": "bully-les-mines",
@@ -9552,9 +9552,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 11995,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "somain": {
       "slug": "somain",
@@ -9562,9 +9562,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 11766,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "bruay-sur-l-escaut": {
       "slug": "bruay-sur-l-escaut",
@@ -9572,9 +9572,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 11644,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "mericourt": {
       "slug": "mericourt",
@@ -9592,9 +9592,9 @@
       "region": "hauts-de-france",
       "departement": "02",
       "population": 11596,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "n-ux-les-mines": {
       "slug": "n-ux-les-mines",
@@ -9612,9 +9612,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 11449,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "gravelines": {
       "slug": "gravelines",
@@ -9622,9 +9622,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 11430,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "wambrechies": {
       "slug": "wambrechies",
@@ -9632,9 +9632,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 11012,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "saint-saulve": {
       "slug": "saint-saulve",
@@ -9642,9 +9642,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 10947,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "saint-martin-boulogne": {
       "slug": "saint-martin-boulogne",
@@ -9662,9 +9662,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 10847,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "etaples": {
       "slug": "etaples",
@@ -9682,9 +9682,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 10617,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "chantilly": {
       "slug": "chantilly",
@@ -9722,9 +9722,9 @@
       "region": "hauts-de-france",
       "departement": "02",
       "population": 10489,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "marck": {
       "slug": "marck",
@@ -9772,9 +9772,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 10160,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "douchy-les-mines": {
       "slug": "douchy-les-mines",
@@ -9782,9 +9782,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 10109,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "auchel": {
       "slug": "auchel",
@@ -9802,9 +9802,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 10002,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "aniche": {
       "slug": "aniche",
@@ -9812,9 +9812,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 9963,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "chambly": {
       "slug": "chambly",
@@ -9832,9 +9832,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 9808,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "bondues": {
       "slug": "bondues",
@@ -9842,9 +9842,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 9747,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "montigny-en-gohelle": {
       "slug": "montigny-en-gohelle",
@@ -9862,9 +9862,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 9600,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "aire-sur-la-lys": {
       "slug": "aire-sur-la-lys",
@@ -9882,9 +9882,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 9521,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "albert": {
       "slug": "albert",
@@ -9922,9 +9922,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 9253,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "beuvry": {
       "slug": "beuvry",
@@ -9952,9 +9952,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 9039,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "gouvieux": {
       "slug": "gouvieux",
@@ -9982,9 +9982,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 8754,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "wingles": {
       "slug": "wingles",
@@ -10022,9 +10022,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 8612,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "rouvroy": {
       "slug": "rouvroy",
@@ -10052,9 +10052,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 8479,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "hirson": {
       "slug": "hirson",
@@ -10062,9 +10062,9 @@
       "region": "hauts-de-france",
       "departement": "02",
       "population": 8469,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "perenchies": {
       "slug": "perenchies",
@@ -10072,9 +10072,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 8455,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "orchies": {
       "slug": "orchies",
@@ -10082,9 +10082,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 8396,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "teteghem-coudekerque-village": {
       "slug": "teteghem-coudekerque-village",
@@ -10092,9 +10092,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 8247,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "mazingarbe": {
       "slug": "mazingarbe",
@@ -10112,9 +10112,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 8161,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "libercourt": {
       "slug": "libercourt",
@@ -10142,9 +10142,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 7921,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "achicourt": {
       "slug": "achicourt",
@@ -10162,9 +10162,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 7839,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "courcelles-les-lens": {
       "slug": "courcelles-les-lens",
@@ -10182,9 +10182,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 7764,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "wavrin": {
       "slug": "wavrin",
@@ -10192,9 +10192,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 7758,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "fresnes-sur-escaut": {
       "slug": "fresnes-sur-escaut",
@@ -10202,9 +10202,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 7354,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "barlin": {
       "slug": "barlin",
@@ -10222,9 +10222,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 7266,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "templeuve-en-pevele": {
       "slug": "templeuve-en-pevele",
@@ -10232,9 +10232,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 7202,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "peronne": {
       "slug": "peronne",
@@ -10252,9 +10252,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 7083,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "aulnoy-lez-valenciennes": {
       "slug": "aulnoy-lez-valenciennes",
@@ -10262,9 +10262,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 7080,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "leforest": {
       "slug": "leforest",
@@ -10292,9 +10292,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 6931,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "noyelles-sous-lens": {
       "slug": "noyelles-sous-lens",
@@ -10312,9 +10312,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 6805,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "loos-en-gohelle": {
       "slug": "loos-en-gohelle",
@@ -10332,9 +10332,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 6796,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "liancourt": {
       "slug": "liancourt",
@@ -10362,9 +10362,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 6764,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "feignies": {
       "slug": "feignies",
@@ -10372,9 +10372,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 6703,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "la-bassee": {
       "slug": "la-bassee",
@@ -10382,9 +10382,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 6650,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "grenay": {
       "slug": "grenay",
@@ -10402,9 +10402,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 6525,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "villers-saint-paul": {
       "slug": "villers-saint-paul",
@@ -10422,9 +10422,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 6467,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "saint-laurent-blangy": {
       "slug": "saint-laurent-blangy",
@@ -10442,9 +10442,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 6294,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "lallaing": {
       "slug": "lallaing",
@@ -10452,9 +10452,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 6287,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "wimereux": {
       "slug": "wimereux",
@@ -10482,9 +10482,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 6097,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "pecquencourt": {
       "slug": "pecquencourt",
@@ -10492,9 +10492,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 6092,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "fouquieres-les-lens": {
       "slug": "fouquieres-les-lens",
@@ -10522,9 +10522,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 6019,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "noyelles-godault": {
       "slug": "noyelles-godault",
@@ -10552,9 +10552,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 5956,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "loon-plage": {
       "slug": "loon-plage",
@@ -10562,9 +10562,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 5952,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "quievrechain": {
       "slug": "quievrechain",
@@ -10572,9 +10572,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 5949,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "sains-en-gohelle": {
       "slug": "sains-en-gohelle",
@@ -10672,9 +10672,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 5745,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "dainville": {
       "slug": "dainville",
@@ -10702,9 +10702,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 5652,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "sainghin-en-weppes": {
       "slug": "sainghin-en-weppes",
@@ -10712,9 +10712,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 5638,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "wallers": {
       "slug": "wallers",
@@ -10722,9 +10722,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 5633,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "la-gorgue": {
       "slug": "la-gorgue",
@@ -10732,9 +10732,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 5616,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "bohain-en-vermandois": {
       "slug": "bohain-en-vermandois",
@@ -10742,9 +10742,9 @@
       "region": "hauts-de-france",
       "departement": "02",
       "population": 5605,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "wormhout": {
       "slug": "wormhout",
@@ -10752,9 +10752,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 5584,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "beaurains": {
       "slug": "beaurains",
@@ -10772,9 +10772,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 5545,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "guines": {
       "slug": "guines",
@@ -10792,9 +10792,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 5441,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "coulogne": {
       "slug": "coulogne",
@@ -10812,9 +10812,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 5426,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "flers-en-escrebieux": {
       "slug": "flers-en-escrebieux",
@@ -10822,9 +10822,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 5424,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "lacroix-saint-ouen": {
       "slug": "lacroix-saint-ouen",
@@ -10862,9 +10862,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 5341,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "dechy": {
       "slug": "dechy",
@@ -10872,9 +10872,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 5338,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "mouy": {
       "slug": "mouy",
@@ -10912,9 +10912,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 5249,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "marquise": {
       "slug": "marquise",
@@ -10932,9 +10932,9 @@
       "region": "hauts-de-france",
       "departement": "02",
       "population": 5183,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "loison-sous-lens": {
       "slug": "loison-sous-lens",
@@ -10952,9 +10952,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 5131,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "cucq": {
       "slug": "cucq",
@@ -10992,9 +10992,9 @@
       "region": "hauts-de-france",
       "departement": "59",
       "population": 5054,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "laventie": {
       "slug": "laventie",
@@ -11032,9 +11032,9 @@
       "region": "grand-est",
       "departement": "67",
       "population": 19589,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "saint-die-des-vosges": {
       "slug": "saint-die-des-vosges",
@@ -11042,9 +11042,9 @@
       "region": "grand-est",
       "departement": "88",
       "population": 19251,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "bischheim": {
       "slug": "bischheim",
@@ -11052,9 +11052,9 @@
       "region": "grand-est",
       "departement": "67",
       "population": 18558,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "luneville": {
       "slug": "luneville",
@@ -11072,9 +11072,9 @@
       "region": "grand-est",
       "departement": "57",
       "population": 17391,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "verdun": {
       "slug": "verdun",
@@ -11082,9 +11082,9 @@
       "region": "grand-est",
       "departement": "55",
       "population": 16890,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "sedan": {
       "slug": "sedan",
@@ -11102,9 +11102,9 @@
       "region": "grand-est",
       "departement": "57",
       "population": 15806,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "toul": {
       "slug": "toul",
@@ -11132,9 +11132,9 @@
       "region": "grand-est",
       "departement": "68",
       "population": 15553,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "woippy": {
       "slug": "woippy",
@@ -11142,9 +11142,9 @@
       "region": "grand-est",
       "departement": "57",
       "population": 14967,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "romilly-sur-seine": {
       "slug": "romilly-sur-seine",
@@ -11162,9 +11162,9 @@
       "region": "grand-est",
       "departement": "68",
       "population": 14923,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "fameck": {
       "slug": "fameck",
@@ -11172,9 +11172,9 @@
       "region": "grand-est",
       "departement": "57",
       "population": 14788,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "laxou": {
       "slug": "laxou",
@@ -11192,9 +11192,9 @@
       "region": "grand-est",
       "departement": "57",
       "population": 14755,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "villers-les-nancy": {
       "slug": "villers-les-nancy",
@@ -11212,9 +11212,9 @@
       "region": "grand-est",
       "departement": "55",
       "population": 14607,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "rixheim": {
       "slug": "rixheim",
@@ -11222,9 +11222,9 @@
       "region": "grand-est",
       "departement": "68",
       "population": 14380,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "pont-a-mousson": {
       "slug": "pont-a-mousson",
@@ -11242,9 +11242,9 @@
       "region": "grand-est",
       "departement": "67",
       "population": 13946,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "kingersheim": {
       "slug": "kingersheim",
@@ -11252,9 +11252,9 @@
       "region": "grand-est",
       "departement": "68",
       "population": 13354,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "freyming-merlebach": {
       "slug": "freyming-merlebach",
@@ -11262,9 +11262,9 @@
       "region": "grand-est",
       "departement": "57",
       "population": 13266,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "saint-andre-les-vergers": {
       "slug": "saint-andre-les-vergers",
@@ -11292,9 +11292,9 @@
       "region": "grand-est",
       "departement": "67",
       "population": 12587,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "creutzwald": {
       "slug": "creutzwald",
@@ -11302,9 +11302,9 @@
       "region": "grand-est",
       "departement": "57",
       "population": 12254,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "bischwiller": {
       "slug": "bischwiller",
@@ -11312,9 +11312,9 @@
       "region": "grand-est",
       "departement": "67",
       "population": 12242,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "riedisheim": {
       "slug": "riedisheim",
@@ -11322,9 +11322,9 @@
       "region": "grand-est",
       "departement": "68",
       "population": 12200,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "sarrebourg": {
       "slug": "sarrebourg",
@@ -11332,9 +11332,9 @@
       "region": "grand-est",
       "departement": "57",
       "population": 12170,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "cernay": {
       "slug": "cernay",
@@ -11342,9 +11342,9 @@
       "region": "grand-est",
       "departement": "68",
       "population": 12057,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "florange": {
       "slug": "florange",
@@ -11352,9 +11352,9 @@
       "region": "grand-est",
       "departement": "57",
       "population": 12035,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "h-nheim": {
       "slug": "h-nheim",
@@ -11362,9 +11362,9 @@
       "region": "grand-est",
       "departement": "67",
       "population": 11742,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "maizieres-les-metz": {
       "slug": "maizieres-les-metz",
@@ -11372,9 +11372,9 @@
       "region": "grand-est",
       "departement": "57",
       "population": 11580,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "saverne": {
       "slug": "saverne",
@@ -11382,9 +11382,9 @@
       "region": "grand-est",
       "departement": "67",
       "population": 11460,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "guebwiller": {
       "slug": "guebwiller",
@@ -11392,9 +11392,9 @@
       "region": "grand-est",
       "departement": "68",
       "population": 11243,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "vitry-le-francois": {
       "slug": "vitry-le-francois",
@@ -11412,9 +11412,9 @@
       "region": "grand-est",
       "departement": "57",
       "population": 10956,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "amneville": {
       "slug": "amneville",
@@ -11422,9 +11422,9 @@
       "region": "grand-est",
       "departement": "57",
       "population": 10875,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "erstein": {
       "slug": "erstein",
@@ -11432,9 +11432,9 @@
       "region": "grand-est",
       "departement": "67",
       "population": 10790,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "tinqueux": {
       "slug": "tinqueux",
@@ -11452,9 +11452,9 @@
       "region": "grand-est",
       "departement": "68",
       "population": 10645,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "brumath": {
       "slug": "brumath",
@@ -11462,9 +11462,9 @@
       "region": "grand-est",
       "departement": "67",
       "population": 10499,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "pfastatt": {
       "slug": "pfastatt",
@@ -11472,9 +11472,9 @@
       "region": "grand-est",
       "departement": "68",
       "population": 10314,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "sainte-savine": {
       "slug": "sainte-savine",
@@ -11492,9 +11492,9 @@
       "region": "grand-est",
       "departement": "57",
       "population": 10286,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "villerupt": {
       "slug": "villerupt",
@@ -11542,9 +11542,9 @@
       "region": "grand-est",
       "departement": "57",
       "population": 9371,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "mont-saint-martin": {
       "slug": "mont-saint-martin",
@@ -11572,9 +11572,9 @@
       "region": "grand-est",
       "departement": "67",
       "population": 9318,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "hagondange": {
       "slug": "hagondange",
@@ -11582,9 +11582,9 @@
       "region": "grand-est",
       "departement": "57",
       "population": 9278,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "tomblaine": {
       "slug": "tomblaine",
@@ -11602,9 +11602,9 @@
       "region": "grand-est",
       "departement": "88",
       "population": 8832,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "essey-les-nancy": {
       "slug": "essey-les-nancy",
@@ -11622,9 +11622,9 @@
       "region": "grand-est",
       "departement": "88",
       "population": 8547,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "brunstatt-didenheim": {
       "slug": "brunstatt-didenheim",
@@ -11632,9 +11632,9 @@
       "region": "grand-est",
       "departement": "68",
       "population": 8259,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "souffelweyersheim": {
       "slug": "souffelweyersheim",
@@ -11642,9 +11642,9 @@
       "region": "grand-est",
       "departement": "67",
       "population": 8239,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "val-de-briey": {
       "slug": "val-de-briey",
@@ -11662,9 +11662,9 @@
       "region": "grand-est",
       "departement": "57",
       "population": 8120,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "guenange": {
       "slug": "guenange",
@@ -11672,9 +11672,9 @@
       "region": "grand-est",
       "departement": "57",
       "population": 8083,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "wintzenheim": {
       "slug": "wintzenheim",
@@ -11682,9 +11682,9 @@
       "region": "grand-est",
       "departement": "68",
       "population": 8059,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "jarny": {
       "slug": "jarny",
@@ -11702,9 +11702,9 @@
       "region": "grand-est",
       "departement": "67",
       "population": 7919,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "malzeville": {
       "slug": "malzeville",
@@ -11722,9 +11722,9 @@
       "region": "grand-est",
       "departement": "57",
       "population": 7801,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "hettange-grande": {
       "slug": "hettange-grande",
@@ -11732,9 +11732,9 @@
       "region": "grand-est",
       "departement": "57",
       "population": 7772,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "thann": {
       "slug": "thann",
@@ -11742,9 +11742,9 @@
       "region": "grand-est",
       "departement": "68",
       "population": 7762,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "gerardmer": {
       "slug": "gerardmer",
@@ -11752,9 +11752,9 @@
       "region": "grand-est",
       "departement": "88",
       "population": 7581,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "wissembourg": {
       "slug": "wissembourg",
@@ -11762,9 +11762,9 @@
       "region": "grand-est",
       "departement": "67",
       "population": 7566,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "huningue": {
       "slug": "huningue",
@@ -11772,9 +11772,9 @@
       "region": "grand-est",
       "departement": "68",
       "population": 7487,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "rethel": {
       "slug": "rethel",
@@ -11802,9 +11802,9 @@
       "region": "grand-est",
       "departement": "88",
       "population": 7388,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "saint-nicolas-de-port": {
       "slug": "saint-nicolas-de-port",
@@ -11822,9 +11822,9 @@
       "region": "grand-est",
       "departement": "57",
       "population": 7356,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "moyeuvre-grande": {
       "slug": "moyeuvre-grande",
@@ -11832,9 +11832,9 @@
       "region": "grand-est",
       "departement": "57",
       "population": 7311,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "ensisheim": {
       "slug": "ensisheim",
@@ -11842,9 +11842,9 @@
       "region": "grand-est",
       "departement": "68",
       "population": 7306,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "eckbolsheim": {
       "slug": "eckbolsheim",
@@ -11852,9 +11852,9 @@
       "region": "grand-est",
       "departement": "67",
       "population": 7157,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "barr": {
       "slug": "barr",
@@ -11862,9 +11862,9 @@
       "region": "grand-est",
       "departement": "67",
       "population": 7057,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "uckange": {
       "slug": "uckange",
@@ -11872,9 +11872,9 @@
       "region": "grand-est",
       "departement": "57",
       "population": 7021,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "soultz-haut-rhin": {
       "slug": "soultz-haut-rhin",
@@ -11882,9 +11882,9 @@
       "region": "grand-est",
       "departement": "68",
       "population": 7012,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "betheny": {
       "slug": "betheny",
@@ -11902,9 +11902,9 @@
       "region": "grand-est",
       "departement": "68",
       "population": 6851,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "saint-julien-les-villas": {
       "slug": "saint-julien-les-villas",
@@ -11922,9 +11922,9 @@
       "region": "grand-est",
       "departement": "88",
       "population": 6732,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "laneuveville-devant-nancy": {
       "slug": "laneuveville-devant-nancy",
@@ -11942,9 +11942,9 @@
       "region": "grand-est",
       "departement": "54",
       "population": 6551,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "marange-silvange": {
       "slug": "marange-silvange",
@@ -11952,9 +11952,9 @@
       "region": "grand-est",
       "departement": "57",
       "population": 6539,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "cormontreuil": {
       "slug": "cormontreuil",
@@ -11972,9 +11972,9 @@
       "region": "grand-est",
       "departement": "54",
       "population": 6524,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "frouard": {
       "slug": "frouard",
@@ -11982,9 +11982,9 @@
       "region": "grand-est",
       "departement": "54",
       "population": 6444,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "j-uf": {
       "slug": "j-uf",
@@ -11992,9 +11992,9 @@
       "region": "grand-est",
       "departement": "54",
       "population": 6392,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "givet": {
       "slug": "givet",
@@ -12012,9 +12012,9 @@
       "region": "grand-est",
       "departement": "54",
       "population": 6254,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "horbourg-wihr": {
       "slug": "horbourg-wihr",
@@ -12022,9 +12022,9 @@
       "region": "grand-est",
       "departement": "68",
       "population": 6199,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "petite-rosselle": {
       "slug": "petite-rosselle",
@@ -12032,9 +12032,9 @@
       "region": "grand-est",
       "departement": "57",
       "population": 6171,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "behren-les-forbach": {
       "slug": "behren-les-forbach",
@@ -12042,9 +12042,9 @@
       "region": "grand-est",
       "departement": "57",
       "population": 6166,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "vendenheim": {
       "slug": "vendenheim",
@@ -12052,9 +12052,9 @@
       "region": "grand-est",
       "departement": "67",
       "population": 6137,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "mutzig": {
       "slug": "mutzig",
@@ -12062,9 +12062,9 @@
       "region": "grand-est",
       "departement": "67",
       "population": 6087,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "hombourg-haut": {
       "slug": "hombourg-haut",
@@ -12072,9 +12072,9 @@
       "region": "grand-est",
       "departement": "57",
       "population": 5976,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "benfeld": {
       "slug": "benfeld",
@@ -12082,9 +12082,9 @@
       "region": "grand-est",
       "departement": "67",
       "population": 5973,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "raon-l-etape": {
       "slug": "raon-l-etape",
@@ -12092,9 +12092,9 @@
       "region": "grand-est",
       "departement": "88",
       "population": 5886,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "eschau": {
       "slug": "eschau",
@@ -12102,9 +12102,9 @@
       "region": "grand-est",
       "departement": "67",
       "population": 5878,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "la-wantzenau": {
       "slug": "la-wantzenau",
@@ -12112,9 +12112,9 @@
       "region": "grand-est",
       "departement": "67",
       "population": 5864,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "oberhausbergen": {
       "slug": "oberhausbergen",
@@ -12122,9 +12122,9 @@
       "region": "grand-est",
       "departement": "67",
       "population": 5857,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "fismes": {
       "slug": "fismes",
@@ -12142,9 +12142,9 @@
       "region": "grand-est",
       "departement": "54",
       "population": 5843,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "kembs": {
       "slug": "kembs",
@@ -12152,9 +12152,9 @@
       "region": "grand-est",
       "departement": "68",
       "population": 5834,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "algrange": {
       "slug": "algrange",
@@ -12162,9 +12162,9 @@
       "region": "grand-est",
       "departement": "57",
       "population": 5802,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "fegersheim": {
       "slug": "fegersheim",
@@ -12172,9 +12172,9 @@
       "region": "grand-est",
       "departement": "67",
       "population": 5780,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "wasselonne": {
       "slug": "wasselonne",
@@ -12182,9 +12182,9 @@
       "region": "grand-est",
       "departement": "67",
       "population": 5780,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "revin": {
       "slug": "revin",
@@ -12202,9 +12202,9 @@
       "region": "grand-est",
       "departement": "57",
       "population": 5699,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "altkirch": {
       "slug": "altkirch",
@@ -12212,9 +12212,9 @@
       "region": "grand-est",
       "departement": "68",
       "population": 5687,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "sausheim": {
       "slug": "sausheim",
@@ -12222,9 +12222,9 @@
       "region": "grand-est",
       "departement": "68",
       "population": 5666,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "liverdun": {
       "slug": "liverdun",
@@ -12232,9 +12232,9 @@
       "region": "grand-est",
       "departement": "54",
       "population": 5580,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "nogent-sur-seine": {
       "slug": "nogent-sur-seine",
@@ -12262,9 +12262,9 @@
       "region": "grand-est",
       "departement": "67",
       "population": 5457,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "saint-memmie": {
       "slug": "saint-memmie",
@@ -12282,9 +12282,9 @@
       "region": "grand-est",
       "departement": "57",
       "population": 5434,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "reichshoffen": {
       "slug": "reichshoffen",
@@ -12292,9 +12292,9 @@
       "region": "grand-est",
       "departement": "67",
       "population": 5418,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "heillecourt": {
       "slug": "heillecourt",
@@ -12302,9 +12302,9 @@
       "region": "grand-est",
       "departement": "54",
       "population": 5414,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "drusenheim": {
       "slug": "drusenheim",
@@ -12312,9 +12312,9 @@
       "region": "grand-est",
       "departement": "67",
       "population": 5388,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "commercy": {
       "slug": "commercy",
@@ -12322,9 +12322,9 @@
       "region": "grand-est",
       "departement": "55",
       "population": 5350,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "mundolsheim": {
       "slug": "mundolsheim",
@@ -12332,9 +12332,9 @@
       "region": "grand-est",
       "departement": "67",
       "population": 5322,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "gambsheim": {
       "slug": "gambsheim",
@@ -12342,9 +12342,9 @@
       "region": "grand-est",
       "departement": "67",
       "population": 5312,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "blotzheim": {
       "slug": "blotzheim",
@@ -12352,9 +12352,9 @@
       "region": "grand-est",
       "departement": "68",
       "population": 5282,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "moulins-les-metz": {
       "slug": "moulins-les-metz",
@@ -12362,9 +12362,9 @@
       "region": "grand-est",
       "departement": "57",
       "population": 5265,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "pont-sainte-marie": {
       "slug": "pont-sainte-marie",
@@ -12382,9 +12382,9 @@
       "region": "grand-est",
       "departement": "57",
       "population": 5224,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "l-hopital": {
       "slug": "l-hopital",
@@ -12392,9 +12392,9 @@
       "region": "grand-est",
       "departement": "57",
       "population": 5183,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "schweighouse-sur-moder": {
       "slug": "schweighouse-sur-moder",
@@ -12402,9 +12402,9 @@
       "region": "grand-est",
       "departement": "67",
       "population": 5182,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "seichamps": {
       "slug": "seichamps",
@@ -12412,9 +12412,9 @@
       "region": "grand-est",
       "departement": "54",
       "population": 5165,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "longuyon": {
       "slug": "longuyon",
@@ -12422,9 +12422,9 @@
       "region": "grand-est",
       "departement": "54",
       "population": 5134,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "faulquemont": {
       "slug": "faulquemont",
@@ -12432,9 +12432,9 @@
       "region": "grand-est",
       "departement": "57",
       "population": 5109,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "ay-champagne": {
       "slug": "ay-champagne",
@@ -12452,9 +12452,9 @@
       "region": "grand-est",
       "departement": "67",
       "population": 5102,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "pulnoy": {
       "slug": "pulnoy",
@@ -12462,9 +12462,9 @@
       "region": "grand-est",
       "departement": "54",
       "population": 5099,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "habsheim": {
       "slug": "habsheim",
@@ -12472,9 +12472,9 @@
       "region": "grand-est",
       "departement": "68",
       "population": 5076,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "bezannes": {
       "slug": "bezannes",
@@ -12492,9 +12492,9 @@
       "region": "grand-est",
       "departement": "88",
       "population": 5018,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T13:31:55.864Z",
+      "batch": 24
     },
     "pornic": {
       "slug": "pornic",
