@@ -1,10 +1,10 @@
 {
   "totalT4": 1702,
-  "done": 10,
-  "remaining": 1692,
-  "lastBatchAt": "2026-05-27T06:35:09.895Z",
+  "done": 20,
+  "remaining": 1682,
+  "lastBatchAt": "2026-05-27T06:50:53.336Z",
   "lastBatchSize": 10,
-  "lastBatchNumber": 1,
+  "lastBatchNumber": 2,
   "villes": {
     "gentilly": {
       "slug": "gentilly",
@@ -2952,9 +2952,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "38",
       "population": 8609,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T06:50:53.336Z",
+      "batch": 2
     },
     "roussillon": {
       "slug": "roussillon",
@@ -2962,9 +2962,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "38",
       "population": 8595,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T06:50:53.336Z",
+      "batch": 2
     },
     "varces-allieres-et-risset": {
       "slug": "varces-allieres-et-risset",
@@ -2972,9 +2972,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "38",
       "population": 8542,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T06:50:53.336Z",
+      "batch": 2
     },
     "privas": {
       "slug": "privas",
@@ -2992,9 +2992,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "38",
       "population": 8530,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T06:50:53.336Z",
+      "batch": 2
     },
     "unieux": {
       "slug": "unieux",
@@ -3062,9 +3062,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "38",
       "population": 8111,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T06:50:53.336Z",
+      "batch": 2
     },
     "seyssins": {
       "slug": "seyssins",
@@ -3072,9 +3072,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "38",
       "population": 8092,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T06:50:53.336Z",
+      "batch": 2
     },
     "la-ricamarie": {
       "slug": "la-ricamarie",
@@ -3102,9 +3102,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "38",
       "population": 8031,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T06:50:53.336Z",
+      "batch": 2
     },
     "romagnat": {
       "slug": "romagnat",
@@ -3142,9 +3142,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "38",
       "population": 7836,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T06:50:53.336Z",
+      "batch": 2
     },
     "moirans": {
       "slug": "moirans",
@@ -3152,9 +3152,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "38",
       "population": 7818,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T06:50:53.336Z",
+      "batch": 2
     },
     "neuville-sur-saone": {
       "slug": "neuville-sur-saone",
@@ -3172,9 +3172,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "38",
       "population": 7786,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T06:50:53.336Z",
+      "batch": 2
     },
     "cranves-sales": {
       "slug": "cranves-sales",
