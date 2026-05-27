@@ -1,10 +1,10 @@
 {
   "totalT4": 1702,
-  "done": 80,
-  "remaining": 1622,
-  "lastBatchAt": "2026-05-27T08:23:58.350Z",
+  "done": 90,
+  "remaining": 1612,
+  "lastBatchAt": "2026-05-27T08:31:05.173Z",
   "lastBatchSize": 10,
-  "lastBatchNumber": 8,
+  "lastBatchNumber": 9,
   "villes": {
     "gentilly": {
       "slug": "gentilly",
@@ -2062,9 +2062,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "69",
       "population": 19285,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:31:05.173Z",
+      "batch": 9
     },
     "moulins": {
       "slug": "moulins",
@@ -2122,9 +2122,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "69",
       "population": 17944,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:31:05.173Z",
+      "batch": 9
     },
     "cluses": {
       "slug": "cluses",
@@ -2252,9 +2252,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "69",
       "population": 15604,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:31:05.173Z",
+      "batch": 9
     },
     "rive-de-gier": {
       "slug": "rive-de-gier",
@@ -3742,9 +3742,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "42",
       "population": 6471,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:31:05.173Z",
+      "batch": 9
     },
     "entrelacs": {
       "slug": "entrelacs",
@@ -3952,9 +3952,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "42",
       "population": 6181,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:31:05.173Z",
+      "batch": 9
     },
     "saint-marcel-les-valence": {
       "slug": "saint-marcel-les-valence",
@@ -4072,9 +4072,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "42",
       "population": 5829,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:31:05.173Z",
+      "batch": 9
     },
     "sillingy": {
       "slug": "sillingy",
@@ -4142,9 +4142,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "42",
       "population": 5652,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:31:05.173Z",
+      "batch": 9
     },
     "challes-les-eaux": {
       "slug": "challes-les-eaux",
@@ -4202,9 +4202,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "42",
       "population": 5543,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:31:05.173Z",
+      "batch": 9
     },
     "coublevie": {
       "slug": "coublevie",
@@ -4392,9 +4392,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "42",
       "population": 5172,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:31:05.173Z",
+      "batch": 9
     },
     "villars-les-dombes": {
       "slug": "villars-les-dombes",
@@ -4422,9 +4422,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "42",
       "population": 5116,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:31:05.173Z",
+      "batch": 9
     },
     "ornex": {
       "slug": "ornex",

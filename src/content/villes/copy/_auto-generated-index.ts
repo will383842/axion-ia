@@ -106,6 +106,7 @@ import { CHATUZANGE_LE_GOUBET_COPY } from "./chatuzange-le-goubet";
 import { CHAUMONT_COPY } from "./chaumont";
 import { CHAVANOZ_COPY } from "./chavanoz";
 import { CHAVILLE_COPY } from "./chaville";
+import { CHAZELLES_SUR_LYON_COPY } from "./chazelles-sur-lyon";
 import { CHELLES_COPY } from "./chelles";
 import { CHEMILLE_EN_ANJOU_COPY } from "./chemille-en-anjou";
 import { CHERBOURG_EN_COTENTIN_COPY } from "./cherbourg-en-cotentin";
@@ -152,6 +153,7 @@ import { DREUX_COPY } from "./dreux";
 import { DUNKERQUE_COPY } from "./dunkerque";
 import { EAUBONNE_COPY } from "./eaubonne";
 import { ECHIROLLES_COPY } from "./echirolles";
+import { ECULLY_COPY } from "./ecully";
 import { ELANCOURT_COPY } from "./elancourt";
 import { EPERNAY_COPY } from "./epernay";
 import { EPINAL_COPY } from "./epinal";
@@ -171,6 +173,7 @@ import { FONTENAY_AUX_ROSES_COPY } from "./fontenay-aux-roses";
 import { FONTENAY_SOUS_BOIS_COPY } from "./fontenay-sous-bois";
 import { FORBACH_COPY } from "./forbach";
 import { FOUGERES_COPY } from "./fougeres";
+import { FRANCHEVILLE_COPY } from "./francheville";
 import { FRANCONVILLE_COPY } from "./franconville";
 import { FREJUS_COPY } from "./frejus";
 import { FRESNES_COPY } from "./fresnes";
@@ -311,6 +314,7 @@ import { MONTIGNY_LES_CORMEILLES_COPY } from "./montigny-les-cormeilles";
 import { MONTIGNY_LES_METZ_COPY } from "./montigny-les-metz";
 import { MONTLUCON_COPY } from "./montlucon";
 import { MONTMORENCY_COPY } from "./montmorency";
+import { MONTROND_LES_BAINS_COPY } from "./montrond-les-bains";
 import { MONTROUGE_COPY } from "./montrouge";
 import { MORSANG_SUR_ORGE_COPY } from "./morsang-sur-orge";
 import { MURET_COPY } from "./muret";
@@ -376,6 +380,9 @@ import { SAINT_CYR_L_ECOLE_COPY } from "./saint-cyr-l-ecole";
 import { SAINT_DIZIER_COPY } from "./saint-dizier";
 import { SAINT_EGREVE_COPY } from "./saint-egreve";
 import { SAINT_ETIENNE_DU_ROUVRAY_COPY } from "./saint-etienne-du-rouvray";
+import { SAINT_FONS_COPY } from "./saint-fons";
+import { SAINT_GALMIER_COPY } from "./saint-galmier";
+import { SAINT_GENEST_LERPT_COPY } from "./saint-genest-lerpt";
 import { SAINT_GENIS_LAVAL_COPY } from "./saint-genis-laval";
 import { SAINT_GERMAIN_EN_LAYE_COPY } from "./saint-germain-en-laye";
 import { SAINT_GRATIEN_COPY } from "./saint-gratien";
@@ -390,6 +397,7 @@ import { SAINT_MALO_COPY } from "./saint-malo";
 import { SAINT_MANDE_COPY } from "./saint-mande";
 import { SAINT_MARCEL_LES_VALENCE_COPY } from "./saint-marcel-les-valence";
 import { SAINT_MARCELLIN_COPY } from "./saint-marcellin";
+import { SAINT_MARCELLIN_EN_FOREZ_COPY } from "./saint-marcellin-en-forez";
 import { SAINT_MARTIN_D_HERES_COPY } from "./saint-martin-d-heres";
 import { SAINT_MARTIN_D_URIAGE_COPY } from "./saint-martin-d-uriage";
 import { SAINT_MARTIN_LE_VINOUX_COPY } from "./saint-martin-le-vinoux";
@@ -402,6 +410,7 @@ import { SAINT_OUEN_L_AUMONE_COPY } from "./saint-ouen-l-aumone";
 import { SAINT_OUEN_SUR_SEINE_COPY } from "./saint-ouen-sur-seine";
 import { SAINT_PAUL_TROIS_CHATEAUX_COPY } from "./saint-paul-trois-chateaux";
 import { SAINT_PRIEST_COPY } from "./saint-priest";
+import { SAINT_PRIEST_EN_JAREZ_COPY } from "./saint-priest-en-jarez";
 import { SAINT_QUENTIN_COPY } from "./saint-quentin";
 import { SAINT_QUENTIN_FALLAVIER_COPY } from "./saint-quentin-fallavier";
 import { SAINT_RAMBERT_D_ALBON_COPY } from "./saint-rambert-d-albon";
@@ -486,6 +495,7 @@ import { VILLENEUVE_SAINT_GEORGES_COPY } from "./villeneuve-saint-georges";
 import { VILLENEUVE_SUR_LOT_COPY } from "./villeneuve-sur-lot";
 import { VILLEPARISIS_COPY } from "./villeparisis";
 import { VILLEPINTE_COPY } from "./villepinte";
+import { VILLEREST_COPY } from "./villerest";
 import { VILLETTE_D_ANTHON_COPY } from "./villette-d-anthon";
 import { VILLIERS_LE_BEL_COPY } from "./villiers-le-bel";
 import { VILLIERS_SUR_MARNE_COPY } from "./villiers-sur-marne";
@@ -603,6 +613,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   chaumont: CHAUMONT_COPY,
   chavanoz: CHAVANOZ_COPY,
   chaville: CHAVILLE_COPY,
+  "chazelles-sur-lyon": CHAZELLES_SUR_LYON_COPY,
   chelles: CHELLES_COPY,
   "chemille-en-anjou": CHEMILLE_EN_ANJOU_COPY,
   "cherbourg-en-cotentin": CHERBOURG_EN_COTENTIN_COPY,
@@ -649,6 +660,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   dunkerque: DUNKERQUE_COPY,
   eaubonne: EAUBONNE_COPY,
   echirolles: ECHIROLLES_COPY,
+  ecully: ECULLY_COPY,
   elancourt: ELANCOURT_COPY,
   epernay: EPERNAY_COPY,
   epinal: EPINAL_COPY,
@@ -668,6 +680,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   "fontenay-sous-bois": FONTENAY_SOUS_BOIS_COPY,
   forbach: FORBACH_COPY,
   fougeres: FOUGERES_COPY,
+  francheville: FRANCHEVILLE_COPY,
   franconville: FRANCONVILLE_COPY,
   frejus: FREJUS_COPY,
   fresnes: FRESNES_COPY,
@@ -808,6 +821,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   "montigny-les-metz": MONTIGNY_LES_METZ_COPY,
   montlucon: MONTLUCON_COPY,
   montmorency: MONTMORENCY_COPY,
+  "montrond-les-bains": MONTROND_LES_BAINS_COPY,
   montrouge: MONTROUGE_COPY,
   "morsang-sur-orge": MORSANG_SUR_ORGE_COPY,
   muret: MURET_COPY,
@@ -873,6 +887,9 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   "saint-dizier": SAINT_DIZIER_COPY,
   "saint-egreve": SAINT_EGREVE_COPY,
   "saint-etienne-du-rouvray": SAINT_ETIENNE_DU_ROUVRAY_COPY,
+  "saint-fons": SAINT_FONS_COPY,
+  "saint-galmier": SAINT_GALMIER_COPY,
+  "saint-genest-lerpt": SAINT_GENEST_LERPT_COPY,
   "saint-genis-laval": SAINT_GENIS_LAVAL_COPY,
   "saint-germain-en-laye": SAINT_GERMAIN_EN_LAYE_COPY,
   "saint-gratien": SAINT_GRATIEN_COPY,
@@ -887,6 +904,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   "saint-mande": SAINT_MANDE_COPY,
   "saint-marcel-les-valence": SAINT_MARCEL_LES_VALENCE_COPY,
   "saint-marcellin": SAINT_MARCELLIN_COPY,
+  "saint-marcellin-en-forez": SAINT_MARCELLIN_EN_FOREZ_COPY,
   "saint-martin-d-heres": SAINT_MARTIN_D_HERES_COPY,
   "saint-martin-d-uriage": SAINT_MARTIN_D_URIAGE_COPY,
   "saint-martin-le-vinoux": SAINT_MARTIN_LE_VINOUX_COPY,
@@ -899,6 +917,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   "saint-ouen-sur-seine": SAINT_OUEN_SUR_SEINE_COPY,
   "saint-paul-trois-chateaux": SAINT_PAUL_TROIS_CHATEAUX_COPY,
   "saint-priest": SAINT_PRIEST_COPY,
+  "saint-priest-en-jarez": SAINT_PRIEST_EN_JAREZ_COPY,
   "saint-quentin": SAINT_QUENTIN_COPY,
   "saint-quentin-fallavier": SAINT_QUENTIN_FALLAVIER_COPY,
   "saint-rambert-d-albon": SAINT_RAMBERT_D_ALBON_COPY,
@@ -983,6 +1002,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   "villeneuve-sur-lot": VILLENEUVE_SUR_LOT_COPY,
   villeparisis: VILLEPARISIS_COPY,
   villepinte: VILLEPINTE_COPY,
+  villerest: VILLEREST_COPY,
   "villette-d-anthon": VILLETTE_D_ANTHON_COPY,
   "villiers-le-bel": VILLIERS_LE_BEL_COPY,
   "villiers-sur-marne": VILLIERS_SUR_MARNE_COPY,
