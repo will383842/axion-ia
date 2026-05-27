@@ -519,8 +519,11 @@ export interface GenerateVilleHubCopyInput {
 // 2026-05-26 — tuning OpenAI : GPT-4o tend à utiliser marketing-speak (banned
 // phrases), donc plus d'itérations + threshold légèrement plus bas. Best-of-N
 // garde toujours le meilleur output produit, donc augmenter MAX ne dégrade jamais.
-const QUALITY_THRESHOLD_FOR_RETRY = 60; // était 70 (Claude). OpenAI : 60 acceptable.
-const MAX_RETRY_ITERATIONS = 3; // total = 1 initial + 3 retries = 4 max (était 3 total)
+// Batch T3 mass-regen 2026-05-27 : early-exit dès score 50 (= seuil auto-approve)
+// + MAX_RETRY_ITERATIONS=1 (2 iter total) pour accélérer ~4x. Quality 50-60 OK
+// pour T3 (cohérent avec batch précédent 53 villes gpt-4o approved score 50-63).
+const QUALITY_THRESHOLD_FOR_RETRY = 50;
+const MAX_RETRY_ITERATIONS = 1;
 const BUDGET_CAP_USD_PER_VILLE = 0.2; // était 0.15 (Claude). OpenAI moins cher → tolère 4 iter.
 
 function buildUserPrompt(
