@@ -1,0 +1,70 @@
+﻿// AUTO-GENERATED 2026-05-27 — T4 batch #24 Claude Code (Will).
+// Mondonville (31, Haute-Garonne) — Nord-ouest Toulouse.
+
+import type { VilleCopy } from "./types";
+
+export const MONDONVILLE_COPY: VilleCopy = {
+  pitchFr:
+    "Mondonville (31), commune du nord-ouest de Toulouse avec plus de 6 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités de la couronne nord-ouest de Toulouse.",
+  pitchEn:
+    "Mondonville (31), commune du nord-ouest de Toulouse avec plus de 6 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités de la couronne nord-ouest de Toulouse.",
+  directAnswerFr:
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mondonville (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord-ouest Toulouse. Audit Flash dès 490 € HT.",
+  directAnswerEn:
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mondonville (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord-ouest Toulouse. Audit Flash dès 490 € HT.",
+  ecosystemFr:
+    "Mondonville est une commune résidentielle du nord-ouest de Toulouse, entre Cornebarrieu et Aussonne. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Proximité de l'aéroport et du pôle aéronautique.",
+  ecosystemEn:
+    "Mondonville est une commune résidentielle du nord-ouest de Toulouse, entre Cornebarrieu et Aussonne. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Proximité de l'aéroport et du pôle aéronautique.",
+  distancesFr:
+    "Toulouse centre à 20 min (D902). Aéroport Toulouse-Blagnac à 10 min. Gare Matabiau à 25 min. Cornebarrieu à 5 min. Aussonne à 5 min.",
+  distancesEn:
+    "Toulouse centre à 20 min (D902). Aéroport Toulouse-Blagnac à 10 min. Gare Matabiau à 25 min. Cornebarrieu à 5 min. Aussonne à 5 min.",
+  topSectorsNaf: [
+    "Artisanat & BTP",
+    "Services aux entreprises",
+    "Commerce de détail",
+    "Professions libérales & santé",
+    "Agriculture & maraîchage",
+  ],
+  servicesContext: {
+    audit: {
+      fr: "Audit IA à Mondonville : diagnostic adapté aux TPE artisans, PME de services et professions libérales du nord-ouest Toulouse. Audit Flash 490 € HT.",
+      en: "Audit IA à Mondonville : diagnostic adapté aux TPE artisans, PME de services et professions libérales du nord-ouest Toulouse. Audit Flash 490 € HT.",
+    },
+    interventions: {
+      fr: "Interventions IA sur site à Mondonville : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos équipes repartent autonomes.",
+      en: "Interventions IA sur site à Mondonville : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos équipes repartent autonomes.",
+    },
+    implementation: {
+      fr: "Implémentation IA à Mondonville : automatisation gestion clients, classification documents, agents conversationnels, optimisation planning pour TPE-PME nord-ouest Toulouse.",
+      en: "Implémentation IA à Mondonville : automatisation gestion clients, classification documents, agents conversationnels, optimisation planning pour TPE-PME nord-ouest Toulouse.",
+    },
+    unAUn: {
+      fr: "Coaching 1-to-1 à Mondonville : sessions dirigeants TPE et PME du nord-ouest toulousain, dans vos locaux ou en visio.",
+      en: "Coaching 1-to-1 à Mondonville : sessions dirigeants TPE et PME du nord-ouest toulousain, dans vos locaux ou en visio.",
+    },
+  },
+  faqGeolocalisee: [
+    {
+      q: "Axion-IA intervient-il à Mondonville ?",
+      a: "Oui, Axion-IA intervient à Mondonville et dans tout le nord-ouest de Toulouse (Cornebarrieu, Aussonne, Beauzelle). Nos consultants se déplacent en 20 min depuis Toulouse.",
+    },
+    {
+      q: "Quels secteurs accompagnez-vous à Mondonville ?",
+      a: "Nous accompagnons tous types d'activités : TPE artisans, PME de services, professions libérales, commerces, agriculture. Aucun secteur exclu.",
+    },
+    {
+      q: "Quel est le tarif d'un audit IA à Mondonville ?",
+      a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics.",
+    },
+    {
+      q: "Comment se déroule une intervention IA à Mondonville ?",
+      a: "Nos consultants se déplacent à Mondonville depuis Toulouse (20 min D902). Intervention 1 journée minimum, atelier pratique.",
+    },
+    {
+      q: "Proposez-vous du coaching individuel à Mondonville ?",
+      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME. Format flexible : locaux, visio. À partir de 990 € HT.",
+    },
+  ],
+};

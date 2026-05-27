@@ -1,0 +1,70 @@
+﻿// AUTO-GENERATED 2026-05-27 — T4 batch #24 Claude Code (Will).
+// Bordères-sur-l'Échez (65, Hautes-Pyrénées) — agglomération Tarbes, résidentiel, industrie.
+
+import type { VilleCopy } from "./types";
+
+export const BORDERES_SUR_L_ECHEZ_COPY: VilleCopy = {
+  pitchFr:
+    "Bordères-sur-l'Échez (65), commune résidentielle et industrielle de l'agglomération de Tarbes dans les Hautes-Pyrénées. Zones d'activités, proximité Pyrénées. Tissu PME industrielles, TPE artisans, commerces, professions libérales, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+  pitchEn:
+    "Bordères-sur-l'Échez (65), commune résidentielle et industrielle de l'agglomération de Tarbes dans les Hautes-Pyrénées. Zones d'activités, proximité Pyrénées. Tissu PME industrielles, TPE artisans, commerces, professions libérales, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+  directAnswerFr:
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bordères-sur-l'Échez (65). Nous accompagnons tous types d'activités : PME industrielles et artisanales, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de l'agglomération tarbaise.",
+  directAnswerEn:
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bordères-sur-l'Échez (65). Nous accompagnons tous types d'activités : PME industrielles et artisanales, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de l'agglomération tarbaise.",
+  ecosystemFr:
+    "Bordères-sur-l'Échez est une commune résidentielle et industrielle de l'agglomération de Tarbes, traversée par l'Échez. Zones d'activités dynamiques attirant PME industrielles (métallurgie, mécanique) et artisanales. Tissu TPE artisans BTP, commerces de proximité, professions libérales, services aux entreprises. Accès rapide Pyrénées et stations.",
+  ecosystemEn:
+    "Bordères-sur-l'Échez est une commune résidentielle et industrielle de l'agglomération de Tarbes, traversée par l'Échez. Zones d'activités dynamiques attirant PME industrielles (métallurgie, mécanique) et artisanales. Tissu TPE artisans BTP, commerces de proximité, professions libérales, services aux entreprises. Accès rapide Pyrénées et stations.",
+  distancesFr:
+    "Tarbes centre à 5 min. Lourdes à 25 min A64. Pau à 40 min A64. Toulouse à 1h40 A64. Aéroport Tarbes-Lourdes-Pyrénées à 20 min. Gare SNCF Tarbes à 8 min.",
+  distancesEn:
+    "Tarbes centre à 5 min. Lourdes à 25 min A64. Pau à 40 min A64. Toulouse à 1h40 A64. Aéroport Tarbes-Lourdes-Pyrénées à 20 min. Gare SNCF Tarbes à 8 min.",
+  topSectorsNaf: [
+    "Industrie métallurgique & mécanique",
+    "TPE artisanat BTP & second œuvre",
+    "Commerce de proximité",
+    "Professions libérales & services aux entreprises",
+    "Logistique & transport (axe A64)",
+  ],
+  servicesContext: {
+    audit: {
+      fr: "Audit IA à Bordères-sur-l'Échez : diagnostic adapté aux PME industrielles, TPE artisans BTP, commerçants et professions libérales de l'agglomération tarbaise. ROI chiffré, audit Flash 490 € HT.",
+      en: "Audit IA à Bordères-sur-l'Échez : diagnostic adapté aux PME industrielles, TPE artisans BTP, commerçants et professions libérales de l'agglomération tarbaise. ROI chiffré, audit Flash 490 € HT.",
+    },
+    interventions: {
+      fr: "Interventions IA sur site à Bordères-sur-l'Échez : formats adaptés à l'atelier industriel, entreprise artisanale, commerce ou cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      en: "Interventions IA sur site à Bordères-sur-l'Échez : formats adaptés à l'atelier industriel, entreprise artisanale, commerce ou cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",
+    },
+    implementation: {
+      fr: "Implémentation IA à Bordères-sur-l'Échez : prédiction maintenance industrielle, automatisation devis artisans, classification documents comptables, gestion planning équipes. Adapté industrie + artisanat + services.",
+      en: "Implémentation IA à Bordères-sur-l'Échez : prédiction maintenance industrielle, automatisation devis artisans, classification documents comptables, gestion planning équipes. Adapté industrie + artisanat + services.",
+    },
+    unAUn: {
+      fr: "Coaching 1-to-1 à Bordères-sur-l'Échez : sessions dans votre atelier, entreprise, commerce ou en visio. Dirigeants PME industrielles, artisans BTP, commerçants, gérants TPE/PME tarbais.",
+      en: "Coaching 1-to-1 à Bordères-sur-l'Échez : sessions dans votre atelier, entreprise, commerce ou en visio. Dirigeants PME industrielles, artisans BTP, commerçants, gérants TPE/PME tarbais.",
+    },
+  },
+  faqGeolocalisee: [
+    {
+      q: "Axion-IA intervient-il à Bordères-sur-l'Échez et agglo Tarbes ?",
+      a: "Oui, Axion-IA intervient à Bordères-sur-l'Échez et toute l'agglomération de Tarbes (Séméac, Aureilhan, Laloubère, Ibos, Odos). Couverture étendue au bassin tarbais et piémont pyrénéen.",
+    },
+    {
+      q: "Travaillez-vous avec les PME industrielles des zones d'activités ?",
+      a: "Oui, nous accompagnons les PME industrielles et artisanales des zones d'activités de Bordères : prédiction maintenance, contrôle qualité par vision, automatisation traçabilité, optimisation planification production.",
+    },
+    {
+      q: "Quels services pour les TPE artisans BTP bordarais ?",
+      a: "Pour les TPE artisans BTP à Bordères-sur-l'Échez, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis chantier, agents IA prise de RDV, gestion planning équipes, suivi chantier.",
+    },
+    {
+      q: "Accompagnez-vous les professions libérales et services ?",
+      a: "Oui, nous accompagnons les professions libérales et services aux entreprises : automatisation administrative, classification documents juridiques/comptables, agents IA relation client, optimisation facturation et recouvrement.",
+    },
+    {
+      q: "Comment se passe une mission à Bordères-sur-l'Échez ?",
+      a: "Bordères est à 5 min de Tarbes centre et 20 min de l'aéroport Tarbes-Lourdes. Gare SNCF Tarbes à 8 min. Nos consultants interviennent sur site. Frais de déplacement inclus dans le forfait agglo Tarbes.",
+    },
+  ],
+};

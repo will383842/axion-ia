@@ -1,0 +1,70 @@
+﻿// AUTO-GENERATED 2026-05-27 — T4 batch #24 Claude Code (Will).
+// Mazamet (81, Tarn) — Délainage mondial historique, Montagne Noire.
+
+import type { VilleCopy } from "./types";
+
+export const MAZAMET_COPY: VilleCopy = {
+  pitchFr:
+    "Mazamet (81), ancienne capitale mondiale du délainage au pied de la Montagne Noire, plus de 10 000 habitants. Tissu TPE artisans, PME industrielles en reconversion textile, commerces, services et professions libérales. Axion-IA y intervient pour tous types d'activités du bassin mazamétain.",
+  pitchEn:
+    "Mazamet (81), ancienne capitale mondiale du délainage au pied de la Montagne Noire, plus de 10 000 habitants. Tissu TPE artisans, PME industrielles en reconversion textile, commerces, services et professions libérales. Axion-IA y intervient pour tous types d'activités du bassin mazamétain.",
+  directAnswerFr:
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mazamet (81). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants et professions libérales du bassin mazamétain. Audit Flash dès 490 € HT.",
+  directAnswerEn:
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mazamet (81). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants et professions libérales du bassin mazamétain. Audit Flash dès 490 € HT.",
+  ecosystemFr:
+    "Mazamet (10 085 hab) est l'ancienne capitale mondiale du délainage, au pied de la Montagne Noire. Reconversion industrielle réussie vers le textile technique, les éco-matériaux et les services. Agglo Castres-Mazamet dynamique. Tissu TPE artisans, PME industrie-services, professions libérales, commerces. Passerelle de Mazamet et hauteurs de la Montagne Noire attirent le tourisme vert.",
+  ecosystemEn:
+    "Mazamet (10 085 hab) est l'ancienne capitale mondiale du délainage, au pied de la Montagne Noire. Reconversion industrielle réussie vers le textile technique, les éco-matériaux et les services. Agglo Castres-Mazamet dynamique. Tissu TPE artisans, PME industrie-services, professions libérales, commerces. Passerelle de Mazamet et hauteurs de la Montagne Noire attirent le tourisme vert.",
+  distancesFr:
+    "Castres à 15 min. Toulouse centre à 1h15 (A68 puis N126). Carcassonne à 50 min. Gare SNCF Mazamet (TER Toulouse-Mazamet). Aéroport Toulouse-Blagnac à 1h20. Aussillon à 5 min.",
+  distancesEn:
+    "Castres à 15 min. Toulouse centre à 1h15 (A68 puis N126). Carcassonne à 50 min. Gare SNCF Mazamet (TER Toulouse-Mazamet). Aéroport Toulouse-Blagnac à 1h20. Aussillon à 5 min.",
+  topSectorsNaf: [
+    "Textile technique & éco-matériaux",
+    "Commerce de détail & services",
+    "Artisanat du bâtiment",
+    "Santé & professions libérales",
+    "Tourisme vert & Montagne Noire",
+  ],
+  servicesContext: {
+    audit: {
+      fr: "Audit IA à Mazamet : diagnostic adapté aux TPE artisans, PME textile et industrielles, commerçants et professions libérales du bassin mazamétain. Audit Flash 490 € HT.",
+      en: "Audit IA à Mazamet : diagnostic adapté aux TPE artisans, PME textile et industrielles, commerçants et professions libérales du bassin mazamétain. Audit Flash 490 € HT.",
+    },
+    interventions: {
+      fr: "Interventions IA sur site à Mazamet : formats adaptés à l'atelier textile, PME industrielle, commerce ou cabinet libéral. Vos équipes repartent autonomes sur les outils IA configurés métier.",
+      en: "Interventions IA sur site à Mazamet : formats adaptés à l'atelier textile, PME industrielle, commerce ou cabinet libéral. Vos équipes repartent autonomes sur les outils IA configurés métier.",
+    },
+    implementation: {
+      fr: "Implémentation IA à Mazamet : automatisation gestion production textile, traçabilité matières, CRM clients, gestion documentaire, agents conversationnels pour les PME du bassin mazamétain.",
+      en: "Implémentation IA à Mazamet : automatisation gestion production textile, traçabilité matières, CRM clients, gestion documentaire, agents conversationnels pour les PME du bassin mazamétain.",
+    },
+    unAUn: {
+      fr: "Coaching 1-to-1 à Mazamet : sessions dans vos locaux ou en visio. Dirigeants TPE artisans, gérants PME industrielles, commerçants de la Montagne Noire souhaitant intégrer l'IA.",
+      en: "Coaching 1-to-1 à Mazamet : sessions dans vos locaux ou en visio. Dirigeants TPE artisans, gérants PME industrielles, commerçants de la Montagne Noire souhaitant intégrer l'IA.",
+    },
+  },
+  faqGeolocalisee: [
+    {
+      q: "Axion-IA intervient-il à Mazamet et en Montagne Noire ?",
+      a: "Oui, Axion-IA intervient à Mazamet et dans tout le bassin mazamétain (Aussillon, Labruguière, Pont-de-l'Arn, Montagne Noire). Nos consultants se déplacent depuis Toulouse (1h15) ou Castres (15 min).",
+    },
+    {
+      q: "Quel est le tarif d'un audit IA pour une TPE à Mazamet ?",
+      a: "L'Audit Flash IA démarre à 490 € HT pour les TPE de Mazamet. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre activité.",
+    },
+    {
+      q: "L'IA peut-elle aider les PME textile à Mazamet ?",
+      a: "Oui, l'IA optimise gestion production, traçabilité matières, contrôle qualité, automatisation facturation et logistique. Axion-IA adapte chaque solution au contexte spécifique du textile technique mazamétain.",
+    },
+    {
+      q: "Accompagnez-vous les entreprises du tourisme vert ?",
+      a: "Oui, nous accompagnons hébergeurs, guides, restaurants et prestataires tourisme de la Montagne Noire : automatisation réservations, agents conversationnels clients, CRM augmenté, gestion avis en ligne.",
+    },
+    {
+      q: "Proposez-vous du coaching individuel IA à Mazamet ?",
+      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Mazamet. Format flexible : dans vos locaux, en visio ou en espace partagé. Accompagnement personnalisé à partir de 990 € HT.",
+    },
+  ],
+};

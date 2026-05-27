@@ -1,10 +1,10 @@
 {
   "totalT4": 1702,
-  "done": 1230,
-  "remaining": 472,
-  "lastBatchAt": "2026-05-27T14:12:45.787Z",
-  "lastBatchSize": 275,
-  "lastBatchNumber": 26,
+  "done": 1430,
+  "remaining": 272,
+  "lastBatchAt": "2026-05-27T14:50:06.016Z",
+  "lastBatchSize": 192,
+  "lastBatchNumber": 28,
   "villes": {
     "gentilly": {
       "slug": "gentilly",
@@ -5912,9 +5912,9 @@
       "region": "occitanie",
       "departement": "30",
       "population": 18112,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "balma": {
       "slug": "balma",
@@ -5922,9 +5922,9 @@
       "region": "occitanie",
       "departement": "31",
       "population": 17772,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "lattes": {
       "slug": "lattes",
@@ -5932,9 +5932,9 @@
       "region": "occitanie",
       "departement": "34",
       "population": 17351,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:35:45.688Z",
+      "batch": 27
     },
     "mauguio": {
       "slug": "mauguio",
@@ -5942,9 +5942,9 @@
       "region": "occitanie",
       "departement": "34",
       "population": 16522,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:35:45.688Z",
+      "batch": 27
     },
     "pamiers": {
       "slug": "pamiers",
@@ -5952,9 +5952,9 @@
       "region": "occitanie",
       "departement": "09",
       "population": 16473,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "gaillac": {
       "slug": "gaillac",
@@ -5962,9 +5962,9 @@
       "region": "occitanie",
       "departement": "81",
       "population": 16162,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "beaucaire": {
       "slug": "beaucaire",
@@ -5972,9 +5972,9 @@
       "region": "occitanie",
       "departement": "30",
       "population": 15692,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "castanet-tolosan": {
       "slug": "castanet-tolosan",
@@ -5982,9 +5982,9 @@
       "region": "occitanie",
       "departement": "31",
       "population": 15317,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "ramonville-saint-agne": {
       "slug": "ramonville-saint-agne",
@@ -5992,9 +5992,9 @@
       "region": "occitanie",
       "departement": "31",
       "population": 15158,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "saint-gilles": {
       "slug": "saint-gilles",
@@ -6002,9 +6002,9 @@
       "region": "occitanie",
       "departement": "30",
       "population": 14734,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "saint-orens-de-gameville": {
       "slug": "saint-orens-de-gameville",
@@ -6012,9 +6012,9 @@
       "region": "occitanie",
       "departement": "31",
       "population": 14646,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "castelsarrasin": {
       "slug": "castelsarrasin",
@@ -6022,9 +6022,9 @@
       "region": "occitanie",
       "departement": "82",
       "population": 14343,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "juvignac": {
       "slug": "juvignac",
@@ -6032,9 +6032,9 @@
       "region": "occitanie",
       "departement": "34",
       "population": 14055,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:35:45.688Z",
+      "batch": 27
     },
     "moissac": {
       "slug": "moissac",
@@ -6042,9 +6042,9 @@
       "region": "occitanie",
       "departement": "82",
       "population": 13419,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "saint-jean-de-vedas": {
       "slug": "saint-jean-de-vedas",
@@ -6052,9 +6052,9 @@
       "region": "occitanie",
       "departement": "34",
       "population": 13328,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:35:45.688Z",
+      "batch": 27
     },
     "lourdes": {
       "slug": "lourdes",
@@ -6062,9 +6062,9 @@
       "region": "occitanie",
       "departement": "65",
       "population": 13266,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "canet-en-roussillon": {
       "slug": "canet-en-roussillon",
@@ -6072,9 +6072,9 @@
       "region": "occitanie",
       "departement": "66",
       "population": 13227,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "villeneuve-les-avignon": {
       "slug": "villeneuve-les-avignon",
@@ -6082,9 +6082,9 @@
       "region": "occitanie",
       "departement": "30",
       "population": 13148,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "graulhet": {
       "slug": "graulhet",
@@ -6092,9 +6092,9 @@
       "region": "occitanie",
       "departement": "81",
       "population": 13129,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "fonsorbes": {
       "slug": "fonsorbes",
@@ -6102,9 +6102,9 @@
       "region": "occitanie",
       "departement": "31",
       "population": 12954,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "meze": {
       "slug": "meze",
@@ -6112,9 +6112,9 @@
       "region": "occitanie",
       "departement": "34",
       "population": 12669,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:35:45.688Z",
+      "batch": 27
     },
     "l-union": {
       "slug": "l-union",
@@ -6122,9 +6122,9 @@
       "region": "occitanie",
       "departement": "31",
       "population": 12638,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "mende": {
       "slug": "mende",
@@ -6132,9 +6132,9 @@
       "region": "occitanie",
       "departement": "48",
       "population": 12464,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "castelnaudary": {
       "slug": "castelnaudary",
@@ -6142,9 +6142,9 @@
       "region": "occitanie",
       "departement": "11",
       "population": 12151,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "saint-gaudens": {
       "slug": "saint-gaudens",
@@ -6152,9 +6152,9 @@
       "region": "occitanie",
       "departement": "31",
       "population": 12139,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "onet-le-chateau": {
       "slug": "onet-le-chateau",
@@ -6162,9 +6162,9 @@
       "region": "occitanie",
       "departement": "12",
       "population": 12080,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "saint-cyprien": {
       "slug": "saint-cyprien",
@@ -6172,9 +6172,9 @@
       "region": "occitanie",
       "departement": "66",
       "population": 12068,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "vauvert": {
       "slug": "vauvert",
@@ -6182,9 +6182,9 @@
       "region": "occitanie",
       "departement": "30",
       "population": 11671,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "saint-esteve": {
       "slug": "saint-esteve",
@@ -6192,9 +6192,9 @@
       "region": "occitanie",
       "departement": "66",
       "population": 11630,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "pia": {
       "slug": "pia",
@@ -6202,9 +6202,9 @@
       "region": "occitanie",
       "departement": "66",
       "population": 11615,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "villefranche-de-rouergue": {
       "slug": "villefranche-de-rouergue",
@@ -6212,9 +6212,9 @@
       "region": "occitanie",
       "departement": "12",
       "population": 11271,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "castelginest": {
       "slug": "castelginest",
@@ -6222,9 +6222,9 @@
       "region": "occitanie",
       "departement": "31",
       "population": 11271,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "saint-jean": {
       "slug": "saint-jean",
@@ -6232,9 +6232,9 @@
       "region": "occitanie",
       "departement": "31",
       "population": 11261,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "villeneuve-tolosane": {
       "slug": "villeneuve-tolosane",
@@ -6242,9 +6242,9 @@
       "region": "occitanie",
       "departement": "31",
       "population": 11044,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "lavaur": {
       "slug": "lavaur",
@@ -6252,9 +6252,9 @@
       "region": "occitanie",
       "departement": "81",
       "population": 10965,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "pont-saint-esprit": {
       "slug": "pont-saint-esprit",
@@ -6262,9 +6262,9 @@
       "region": "occitanie",
       "departement": "30",
       "population": 10958,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "villeneuve-les-maguelone": {
       "slug": "villeneuve-les-maguelone",
@@ -6272,9 +6272,9 @@
       "region": "occitanie",
       "departement": "34",
       "population": 10872,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "argeles-sur-mer": {
       "slug": "argeles-sur-mer",
@@ -6282,9 +6282,9 @@
       "region": "occitanie",
       "departement": "66",
       "population": 10616,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "seysses": {
       "slug": "seysses",
@@ -6292,9 +6292,9 @@
       "region": "occitanie",
       "departement": "31",
       "population": 10539,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "limoux": {
       "slug": "limoux",
@@ -6302,9 +6302,9 @@
       "region": "occitanie",
       "departement": "11",
       "population": 10532,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "saint-gely-du-fesc": {
       "slug": "saint-gely-du-fesc",
@@ -6312,9 +6312,9 @@
       "region": "occitanie",
       "departement": "34",
       "population": 10472,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "cabestany": {
       "slug": "cabestany",
@@ -6322,9 +6322,9 @@
       "region": "occitanie",
       "departement": "66",
       "population": 10465,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "auterive": {
       "slug": "auterive",
@@ -6332,9 +6332,9 @@
       "region": "occitanie",
       "departement": "31",
       "population": 10456,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "lezignan-corbieres": {
       "slug": "lezignan-corbieres",
@@ -6342,9 +6342,9 @@
       "region": "occitanie",
       "departement": "11",
       "population": 10343,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "mazamet": {
       "slug": "mazamet",
@@ -6352,9 +6352,9 @@
       "region": "occitanie",
       "departement": "81",
       "population": 10085,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "leguevin": {
       "slug": "leguevin",
@@ -6362,9 +6362,9 @@
       "region": "occitanie",
       "departement": "31",
       "population": 9945,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "foix": {
       "slug": "foix",
@@ -6372,9 +6372,9 @@
       "region": "occitanie",
       "departement": "09",
       "population": 9934,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "saint-laurent-de-la-salanque": {
       "slug": "saint-laurent-de-la-salanque",
@@ -6382,9 +6382,9 @@
       "region": "occitanie",
       "departement": "66",
       "population": 9898,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "saint-lys": {
       "slug": "saint-lys",
@@ -6392,9 +6392,9 @@
       "region": "occitanie",
       "departement": "31",
       "population": 9892,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "carmaux": {
       "slug": "carmaux",
@@ -6402,9 +6402,9 @@
       "region": "occitanie",
       "departement": "81",
       "population": 9872,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "frouzins": {
       "slug": "frouzins",
@@ -6412,9 +6412,9 @@
       "region": "occitanie",
       "departement": "31",
       "population": 9805,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "figeac": {
       "slug": "figeac",
@@ -6422,9 +6422,9 @@
       "region": "occitanie",
       "departement": "46",
       "population": 9793,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "portet-sur-garonne": {
       "slug": "portet-sur-garonne",
@@ -6432,9 +6432,9 @@
       "region": "occitanie",
       "departement": "31",
       "population": 9782,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "revel": {
       "slug": "revel",
@@ -6442,9 +6442,9 @@
       "region": "occitanie",
       "departement": "31",
       "population": 9762,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "saint-sulpice-la-pointe": {
       "slug": "saint-sulpice-la-pointe",
@@ -6452,9 +6452,9 @@
       "region": "occitanie",
       "departement": "81",
       "population": 9719,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "aucamville": {
       "slug": "aucamville",
@@ -6462,9 +6462,9 @@
       "region": "occitanie",
       "departement": "31",
       "population": 9623,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "perols": {
       "slug": "perols",
@@ -6472,9 +6472,9 @@
       "region": "occitanie",
       "departement": "34",
       "population": 9615,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "l-isle-jourdain": {
       "slug": "l-isle-jourdain",
@@ -6482,9 +6482,9 @@
       "region": "occitanie",
       "departement": "32",
       "population": 9537,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:35:45.688Z",
+      "batch": 27
     },
     "elne": {
       "slug": "elne",
@@ -6492,9 +6492,9 @@
       "region": "occitanie",
       "departement": "66",
       "population": 9511,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "clermont-l-herault": {
       "slug": "clermont-l-herault",
@@ -6502,9 +6502,9 @@
       "region": "occitanie",
       "departement": "34",
       "population": 9461,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "rivesaltes": {
       "slug": "rivesaltes",
@@ -6512,9 +6512,9 @@
       "region": "occitanie",
       "departement": "66",
       "population": 9270,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "le-cres": {
       "slug": "le-cres",
@@ -6522,9 +6522,9 @@
       "region": "occitanie",
       "departement": "34",
       "population": 9226,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "launaguet": {
       "slug": "launaguet",
@@ -6532,9 +6532,9 @@
       "region": "occitanie",
       "departement": "31",
       "population": 9173,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "grabels": {
       "slug": "grabels",
@@ -6542,9 +6542,9 @@
       "region": "occitanie",
       "departement": "34",
       "population": 9092,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "grenade": {
       "slug": "grenade",
@@ -6552,9 +6552,9 @@
       "region": "occitanie",
       "departement": "31",
       "population": 9062,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "cornebarrieu": {
       "slug": "cornebarrieu",
@@ -6562,9 +6562,9 @@
       "region": "occitanie",
       "departement": "31",
       "population": 8978,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "pibrac": {
       "slug": "pibrac",
@@ -6572,9 +6572,9 @@
       "region": "occitanie",
       "departement": "31",
       "population": 8977,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "les-angles": {
       "slug": "les-angles",
@@ -6582,9 +6582,9 @@
       "region": "occitanie",
       "departement": "30",
       "population": 8908,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "beauzelle": {
       "slug": "beauzelle",
@@ -6592,9 +6592,9 @@
       "region": "occitanie",
       "departement": "31",
       "population": 8713,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "aigues-mortes": {
       "slug": "aigues-mortes",
@@ -6602,9 +6602,9 @@
       "region": "occitanie",
       "departement": "30",
       "population": 8699,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "saint-jory": {
       "slug": "saint-jory",
@@ -6612,9 +6612,9 @@
       "region": "occitanie",
       "departement": "31",
       "population": 8662,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "le-grau-du-roi": {
       "slug": "le-grau-du-roi",
@@ -6622,9 +6622,9 @@
       "region": "occitanie",
       "departement": "30",
       "population": 8588,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "serignan": {
       "slug": "serignan",
@@ -6632,9 +6632,9 @@
       "region": "occitanie",
       "departement": "34",
       "population": 8588,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "uzes": {
       "slug": "uzes",
@@ -6642,9 +6642,9 @@
       "region": "occitanie",
       "departement": "30",
       "population": 8519,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "la-salvetat-saint-gilles": {
       "slug": "la-salvetat-saint-gilles",
@@ -6652,9 +6652,9 @@
       "region": "occitanie",
       "departement": "31",
       "population": 8511,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "la-grande-motte": {
       "slug": "la-grande-motte",
@@ -6662,9 +6662,9 @@
       "region": "occitanie",
       "departement": "34",
       "population": 8440,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "pignan": {
       "slug": "pignan",
@@ -6672,9 +6672,9 @@
       "region": "occitanie",
       "departement": "34",
       "population": 8431,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "marseillan": {
       "slug": "marseillan",
@@ -6682,9 +6682,9 @@
       "region": "occitanie",
       "departement": "34",
       "population": 8414,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "marguerittes": {
       "slug": "marguerittes",
@@ -6692,9 +6692,9 @@
       "region": "occitanie",
       "departement": "30",
       "population": 8346,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "thuir": {
       "slug": "thuir",
@@ -6702,9 +6702,9 @@
       "region": "occitanie",
       "departement": "66",
       "population": 8243,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "rochefort-du-gard": {
       "slug": "rochefort-du-gard",
@@ -6712,9 +6712,9 @@
       "region": "occitanie",
       "departement": "30",
       "population": 8117,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "bellegarde": {
       "slug": "bellegarde",
@@ -6722,9 +6722,9 @@
       "region": "occitanie",
       "departement": "30",
       "population": 8035,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "aureilhan": {
       "slug": "aureilhan",
@@ -6732,9 +6732,9 @@
       "region": "occitanie",
       "departement": "65",
       "population": 8031,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "aussonne": {
       "slug": "aussonne",
@@ -6742,9 +6742,9 @@
       "region": "occitanie",
       "departement": "31",
       "population": 7997,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "le-soler": {
       "slug": "le-soler",
@@ -6752,9 +6752,9 @@
       "region": "occitanie",
       "departement": "66",
       "population": 7942,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "saint-affrique": {
       "slug": "saint-affrique",
@@ -6762,9 +6762,9 @@
       "region": "occitanie",
       "departement": "12",
       "population": 7941,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "bompas": {
       "slug": "bompas",
@@ -6772,9 +6772,9 @@
       "region": "occitanie",
       "departement": "66",
       "population": 7832,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "baillargues": {
       "slug": "baillargues",
@@ -6782,9 +6782,9 @@
       "region": "occitanie",
       "departement": "34",
       "population": 7829,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "pezenas": {
       "slug": "pezenas",
@@ -6792,9 +6792,9 @@
       "region": "occitanie",
       "departement": "34",
       "population": 7797,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "ceret": {
       "slug": "ceret",
@@ -6802,9 +6802,9 @@
       "region": "occitanie",
       "departement": "66",
       "population": 7521,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "toulouges": {
       "slug": "toulouges",
@@ -6812,9 +6812,9 @@
       "region": "occitanie",
       "departement": "66",
       "population": 7450,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "fabregues": {
       "slug": "fabregues",
@@ -6822,9 +6822,9 @@
       "region": "occitanie",
       "departement": "34",
       "population": 7447,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "cournonterral": {
       "slug": "cournonterral",
@@ -6832,9 +6832,9 @@
       "region": "occitanie",
       "departement": "34",
       "population": 7359,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "saint-christol-lez-ales": {
       "slug": "saint-christol-lez-ales",
@@ -6842,9 +6842,9 @@
       "region": "occitanie",
       "departement": "30",
       "population": 7310,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "vendargues": {
       "slug": "vendargues",
@@ -6852,9 +6852,9 @@
       "region": "occitanie",
       "departement": "34",
       "population": 7262,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "lodeve": {
       "slug": "lodeve",
@@ -6862,9 +6862,9 @@
       "region": "occitanie",
       "departement": "34",
       "population": 7251,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "balaruc-les-bains": {
       "slug": "balaruc-les-bains",
@@ -6872,9 +6872,9 @@
       "region": "occitanie",
       "departement": "34",
       "population": 7139,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "bagneres-de-bigorre": {
       "slug": "bagneres-de-bigorre",
@@ -6882,9 +6882,9 @@
       "region": "occitanie",
       "departement": "65",
       "population": 7114,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "manduel": {
       "slug": "manduel",
@@ -6892,9 +6892,9 @@
       "region": "occitanie",
       "departement": "30",
       "population": 7044,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "castelnau-d-estretefonds": {
       "slug": "castelnau-d-estretefonds",
@@ -6902,9 +6902,9 @@
       "region": "occitanie",
       "departement": "31",
       "population": 7003,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "marsillargues": {
       "slug": "marsillargues",
@@ -6912,9 +6912,9 @@
       "region": "occitanie",
       "departement": "34",
       "population": 6988,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "escalquens": {
       "slug": "escalquens",
@@ -6922,9 +6922,9 @@
       "region": "occitanie",
       "departement": "31",
       "population": 6924,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "jacou": {
       "slug": "jacou",
@@ -6932,9 +6932,9 @@
       "region": "occitanie",
       "departement": "34",
       "population": 6924,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "castries": {
       "slug": "castries",
@@ -6942,9 +6942,9 @@
       "region": "occitanie",
       "departement": "34",
       "population": 6883,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "laudun-l-ardoise": {
       "slug": "laudun-l-ardoise",
@@ -6952,9 +6952,9 @@
       "region": "occitanie",
       "departement": "30",
       "population": 6835,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "caussade": {
       "slug": "caussade",
@@ -6962,9 +6962,9 @@
       "region": "occitanie",
       "departement": "82",
       "population": 6803,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "poussan": {
       "slug": "poussan",
@@ -6972,9 +6972,9 @@
       "region": "occitanie",
       "departement": "34",
       "population": 6797,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "merville-31": {
       "slug": "merville-31",
@@ -6982,9 +6982,9 @@
       "region": "occitanie",
       "departement": "31",
       "population": 6760,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "fronton": {
       "slug": "fronton",
@@ -6992,9 +6992,9 @@
       "region": "occitanie",
       "departement": "31",
       "population": 6671,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "montech": {
       "slug": "montech",
@@ -7002,9 +7002,9 @@
       "region": "occitanie",
       "departement": "82",
       "population": 6663,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "gignac": {
       "slug": "gignac",
@@ -7012,9 +7012,9 @@
       "region": "occitanie",
       "departement": "34",
       "population": 6651,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "gigean": {
       "slug": "gigean",
@@ -7022,9 +7022,9 @@
       "region": "occitanie",
       "departement": "34",
       "population": 6639,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "canohes": {
       "slug": "canohes",
@@ -7032,9 +7032,9 @@
       "region": "occitanie",
       "departement": "66",
       "population": 6616,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "labarthe-sur-leze": {
       "slug": "labarthe-sur-leze",
@@ -7042,9 +7042,9 @@
       "region": "occitanie",
       "departement": "31",
       "population": 6585,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "labruguiere": {
       "slug": "labruguiere",
@@ -7052,9 +7052,9 @@
       "region": "occitanie",
       "departement": "81",
       "population": 6584,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "saint-juery": {
       "slug": "saint-juery",
@@ -7062,9 +7062,9 @@
       "region": "occitanie",
       "departement": "81",
       "population": 6564,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "eaunes": {
       "slug": "eaunes",
@@ -7072,9 +7072,9 @@
       "region": "occitanie",
       "departement": "31",
       "population": 6539,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "saint-alban": {
       "slug": "saint-alban",
@@ -7082,9 +7082,9 @@
       "region": "occitanie",
       "departement": "31",
       "population": 6534,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "calvisson": {
       "slug": "calvisson",
@@ -7092,9 +7092,9 @@
       "region": "occitanie",
       "departement": "30",
       "population": 6486,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "condom": {
       "slug": "condom",
@@ -7102,9 +7102,9 @@
       "region": "occitanie",
       "departement": "32",
       "population": 6473,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:35:45.688Z",
+      "batch": 27
     },
     "saint-andre-de-sangonis": {
       "slug": "saint-andre-de-sangonis",
@@ -7112,9 +7112,9 @@
       "region": "occitanie",
       "departement": "34",
       "population": 6427,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "villemur-sur-tarn": {
       "slug": "villemur-sur-tarn",
@@ -7122,9 +7122,9 @@
       "region": "occitanie",
       "departement": "31",
       "population": 6345,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "milhaud": {
       "slug": "milhaud",
@@ -7132,9 +7132,9 @@
       "region": "occitanie",
       "departement": "30",
       "population": 6297,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "fleurance": {
       "slug": "fleurance",
@@ -7142,9 +7142,9 @@
       "region": "occitanie",
       "departement": "32",
       "population": 6247,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:35:45.688Z",
+      "batch": 27
     },
     "bruguieres": {
       "slug": "bruguieres",
@@ -7152,9 +7152,9 @@
       "region": "occitanie",
       "departement": "31",
       "population": 6202,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "prades-le-lez": {
       "slug": "prades-le-lez",
@@ -7162,9 +7162,9 @@
       "region": "occitanie",
       "departement": "34",
       "population": 6184,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "prades": {
       "slug": "prades",
@@ -7172,9 +7172,9 @@
       "region": "occitanie",
       "departement": "66",
       "population": 6148,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "quint-fonsegrives": {
       "slug": "quint-fonsegrives",
@@ -7182,9 +7182,9 @@
       "region": "occitanie",
       "departement": "31",
       "population": 6133,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "palavas-les-flots": {
       "slug": "palavas-les-flots",
@@ -7192,9 +7192,9 @@
       "region": "occitanie",
       "departement": "34",
       "population": 6133,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "le-barcares": {
       "slug": "le-barcares",
@@ -7202,9 +7202,9 @@
       "region": "occitanie",
       "departement": "66",
       "population": 6109,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "bouillargues": {
       "slug": "bouillargues",
@@ -7212,9 +7212,9 @@
       "region": "occitanie",
       "departement": "30",
       "population": 6070,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "beauvoisin": {
       "slug": "beauvoisin",
@@ -7222,9 +7222,9 @@
       "region": "occitanie",
       "departement": "30",
       "population": 6066,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "mondonville": {
       "slug": "mondonville",
@@ -7232,9 +7232,9 @@
       "region": "occitanie",
       "departement": "31",
       "population": 6060,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "luc-la-primaube": {
       "slug": "luc-la-primaube",
@@ -7242,9 +7242,9 @@
       "region": "occitanie",
       "departement": "12",
       "population": 6046,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "saint-girons": {
       "slug": "saint-girons",
@@ -7252,9 +7252,9 @@
       "region": "occitanie",
       "departement": "09",
       "population": 6008,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "clapiers": {
       "slug": "clapiers",
@@ -7262,9 +7262,9 @@
       "region": "occitanie",
       "departement": "34",
       "population": 6006,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "lavelanet": {
       "slug": "lavelanet",
@@ -7272,9 +7272,9 @@
       "region": "occitanie",
       "departement": "09",
       "population": 5987,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "vias": {
       "slug": "vias",
@@ -7282,9 +7282,9 @@
       "region": "occitanie",
       "departement": "34",
       "population": 5952,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "negrepelisse": {
       "slug": "negrepelisse",
@@ -7302,9 +7302,9 @@
       "region": "occitanie",
       "departement": "31",
       "population": 5906,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "rabastens": {
       "slug": "rabastens",
@@ -7312,9 +7312,9 @@
       "region": "occitanie",
       "departement": "81",
       "population": 5867,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "port-la-nouvelle": {
       "slug": "port-la-nouvelle",
@@ -7322,9 +7322,9 @@
       "region": "occitanie",
       "departement": "11",
       "population": 5852,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "bessan": {
       "slug": "bessan",
@@ -7332,9 +7332,9 @@
       "region": "occitanie",
       "departement": "34",
       "population": 5838,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "lannemezan": {
       "slug": "lannemezan",
@@ -7342,9 +7342,9 @@
       "region": "occitanie",
       "departement": "65",
       "population": 5811,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "bedarieux": {
       "slug": "bedarieux",
@@ -7352,9 +7352,9 @@
       "region": "occitanie",
       "departement": "34",
       "population": 5804,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "vergeze": {
       "slug": "vergeze",
@@ -7362,9 +7362,9 @@
       "region": "occitanie",
       "departement": "30",
       "population": 5788,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "fenouillet": {
       "slug": "fenouillet",
@@ -7372,9 +7372,9 @@
       "region": "occitanie",
       "departement": "31",
       "population": 5784,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "coursan": {
       "slug": "coursan",
@@ -7382,9 +7382,9 @@
       "region": "occitanie",
       "departement": "11",
       "population": 5737,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "aimargues": {
       "slug": "aimargues",
@@ -7392,9 +7392,9 @@
       "region": "occitanie",
       "departement": "30",
       "population": 5705,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "saint-privat-des-vieux": {
       "slug": "saint-privat-des-vieux",
@@ -7402,9 +7402,9 @@
       "region": "occitanie",
       "departement": "30",
       "population": 5703,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "saleilles": {
       "slug": "saleilles",
@@ -7412,9 +7412,9 @@
       "region": "occitanie",
       "departement": "66",
       "population": 5698,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "saint-georges-d-orques": {
       "slug": "saint-georges-d-orques",
@@ -7422,9 +7422,9 @@
       "region": "occitanie",
       "departement": "34",
       "population": 5676,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "sigean": {
       "slug": "sigean",
@@ -7432,9 +7432,9 @@
       "region": "occitanie",
       "departement": "11",
       "population": 5657,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "sauvian": {
       "slug": "sauvian",
@@ -7442,9 +7442,9 @@
       "region": "occitanie",
       "departement": "34",
       "population": 5608,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "carbonne": {
       "slug": "carbonne",
@@ -7452,9 +7452,9 @@
       "region": "occitanie",
       "departement": "31",
       "population": 5563,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "ille-sur-tet": {
       "slug": "ille-sur-tet",
@@ -7462,9 +7462,9 @@
       "region": "occitanie",
       "departement": "66",
       "population": 5556,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "pollestres": {
       "slug": "pollestres",
@@ -7472,9 +7472,9 @@
       "region": "occitanie",
       "departement": "66",
       "population": 5548,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "roquemaure": {
       "slug": "roquemaure",
@@ -7482,9 +7482,9 @@
       "region": "occitanie",
       "departement": "30",
       "population": 5529,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "aussillon": {
       "slug": "aussillon",
@@ -7492,9 +7492,9 @@
       "region": "occitanie",
       "departement": "81",
       "population": 5527,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "servian": {
       "slug": "servian",
@@ -7502,9 +7502,9 @@
       "region": "occitanie",
       "departement": "34",
       "population": 5517,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "le-boulou": {
       "slug": "le-boulou",
@@ -7512,9 +7512,9 @@
       "region": "occitanie",
       "departement": "66",
       "population": 5487,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "roques": {
       "slug": "roques",
@@ -7522,9 +7522,9 @@
       "region": "occitanie",
       "departement": "31",
       "population": 5436,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "borderes-sur-l-echez": {
       "slug": "borderes-sur-l-echez",
@@ -7532,9 +7532,9 @@
       "region": "occitanie",
       "departement": "65",
       "population": 5399,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "garons": {
       "slug": "garons",
@@ -7542,9 +7542,9 @@
       "region": "occitanie",
       "departement": "30",
       "population": 5381,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "trebes": {
       "slug": "trebes",
@@ -7552,9 +7552,9 @@
       "region": "occitanie",
       "departement": "11",
       "population": 5361,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "valence-82": {
       "slug": "valence-82",
@@ -7572,9 +7572,9 @@
       "region": "occitanie",
       "departement": "34",
       "population": 5261,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "florensac": {
       "slug": "florensac",
@@ -7582,9 +7582,9 @@
       "region": "occitanie",
       "departement": "34",
       "population": 5254,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "semeac": {
       "slug": "semeac",
@@ -7592,9 +7592,9 @@
       "region": "occitanie",
       "departement": "65",
       "population": 5236,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "saint-clement-de-riviere": {
       "slug": "saint-clement-de-riviere",
@@ -7602,9 +7602,9 @@
       "region": "occitanie",
       "departement": "34",
       "population": 5218,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "sommieres": {
       "slug": "sommieres",
@@ -7612,9 +7612,9 @@
       "region": "occitanie",
       "departement": "30",
       "population": 5073,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "villefranche-de-lauragais": {
       "slug": "villefranche-de-lauragais",
@@ -7622,9 +7622,9 @@
       "region": "occitanie",
       "departement": "31",
       "population": 5072,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "gruissan": {
       "slug": "gruissan",
@@ -7632,9 +7632,9 @@
       "region": "occitanie",
       "departement": "11",
       "population": 5032,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "decazeville": {
       "slug": "decazeville",
@@ -7642,9 +7642,9 @@
       "region": "occitanie",
       "departement": "12",
       "population": 5020,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "bressuire": {
       "slug": "bressuire",
@@ -7852,9 +7852,9 @@
       "region": "nouvelle-aquitaine",
       "departement": "87",
       "population": 11415,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "le-haillan": {
       "slug": "le-haillan",
@@ -7872,9 +7872,9 @@
       "region": "nouvelle-aquitaine",
       "departement": "87",
       "population": 11342,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "arcachon": {
       "slug": "arcachon",
@@ -7962,9 +7962,9 @@
       "region": "nouvelle-aquitaine",
       "departement": "86",
       "population": 10289,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "couzeix": {
       "slug": "couzeix",
@@ -7972,9 +7972,9 @@
       "region": "nouvelle-aquitaine",
       "departement": "87",
       "population": 10195,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "parthenay": {
       "slug": "parthenay",
@@ -8212,9 +8212,9 @@
       "region": "nouvelle-aquitaine",
       "departement": "87",
       "population": 7995,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "lege-cap-ferret": {
       "slug": "lege-cap-ferret",
@@ -8322,9 +8322,9 @@
       "region": "nouvelle-aquitaine",
       "departement": "86",
       "population": 7528,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "saint-benoit": {
       "slug": "saint-benoit",
@@ -8332,9 +8332,9 @@
       "region": "nouvelle-aquitaine",
       "departement": "86",
       "population": 7375,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "trelissac": {
       "slug": "trelissac",
@@ -8382,9 +8382,9 @@
       "region": "nouvelle-aquitaine",
       "departement": "79",
       "population": 7221,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "labenne": {
       "slug": "labenne",
@@ -8412,9 +8412,9 @@
       "region": "nouvelle-aquitaine",
       "departement": "86",
       "population": 7007,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "nerac": {
       "slug": "nerac",
@@ -8442,9 +8442,9 @@
       "region": "nouvelle-aquitaine",
       "departement": "86",
       "population": 6839,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "saint-yrieix-la-perche": {
       "slug": "saint-yrieix-la-perche",
@@ -8452,9 +8452,9 @@
       "region": "nouvelle-aquitaine",
       "departement": "87",
       "population": 6830,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "cambo-les-bains": {
       "slug": "cambo-les-bains",
@@ -8522,9 +8522,9 @@
       "region": "nouvelle-aquitaine",
       "departement": "86",
       "population": 6290,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "migne-auxances": {
       "slug": "migne-auxances",
@@ -8532,9 +8532,9 @@
       "region": "nouvelle-aquitaine",
       "departement": "86",
       "population": 6285,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "belin-beliet": {
       "slug": "belin-beliet",
@@ -8582,9 +8582,9 @@
       "region": "nouvelle-aquitaine",
       "departement": "87",
       "population": 6176,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "naintre": {
       "slug": "naintre",
@@ -8592,9 +8592,9 @@
       "region": "nouvelle-aquitaine",
       "departement": "86",
       "population": 5964,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "saint-denis-de-pile": {
       "slug": "saint-denis-de-pile",
@@ -8632,9 +8632,9 @@
       "region": "nouvelle-aquitaine",
       "departement": "87",
       "population": 5890,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "lesparre-medoc": {
       "slug": "lesparre-medoc",
@@ -8672,9 +8672,9 @@
       "region": "nouvelle-aquitaine",
       "departement": "86",
       "population": 5821,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "le-barp": {
       "slug": "le-barp",
@@ -8692,9 +8692,9 @@
       "region": "nouvelle-aquitaine",
       "departement": "87",
       "population": 5775,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "canejan": {
       "slug": "canejan",
@@ -8712,9 +8712,9 @@
       "region": "nouvelle-aquitaine",
       "departement": "79",
       "population": 5752,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "lacanau": {
       "slug": "lacanau",
@@ -8732,9 +8732,9 @@
       "region": "nouvelle-aquitaine",
       "departement": "86",
       "population": 5713,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "marcheprime": {
       "slug": "marcheprime",
@@ -8772,9 +8772,9 @@
       "region": "nouvelle-aquitaine",
       "departement": "79",
       "population": 5662,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "ludon-medoc": {
       "slug": "ludon-medoc",
@@ -8792,9 +8792,9 @@
       "region": "nouvelle-aquitaine",
       "departement": "87",
       "population": 5556,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "neuville-de-poitou": {
       "slug": "neuville-de-poitou",
@@ -8802,9 +8802,9 @@
       "region": "nouvelle-aquitaine",
       "departement": "86",
       "population": 5513,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "nueil-les-aubiers": {
       "slug": "nueil-les-aubiers",
@@ -8812,9 +8812,9 @@
       "region": "nouvelle-aquitaine",
       "departement": "79",
       "population": 5483,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "foulayronnes": {
       "slug": "foulayronnes",
@@ -8842,9 +8842,9 @@
       "region": "nouvelle-aquitaine",
       "departement": "79",
       "population": 5419,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "saint-astier": {
       "slug": "saint-astier",
@@ -8882,9 +8882,9 @@
       "region": "nouvelle-aquitaine",
       "departement": "87",
       "population": 5281,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "mignaloux-beauvoir": {
       "slug": "mignaloux-beauvoir",
@@ -8892,9 +8892,9 @@
       "region": "nouvelle-aquitaine",
       "departement": "86",
       "population": 5229,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "pauillac": {
       "slug": "pauillac",
@@ -8912,9 +8912,9 @@
       "region": "nouvelle-aquitaine",
       "departement": "79",
       "population": 5121,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T14:50:06.016Z",
+      "batch": 28
     },
     "saint-pantaleon-de-larche": {
       "slug": "saint-pantaleon-de-larche",
