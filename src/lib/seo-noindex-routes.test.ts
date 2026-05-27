@@ -41,8 +41,10 @@ describe("seo-noindex-routes — sync vs content datas", () => {
 
 describe("isNoindexStubRoute — logique", () => {
   it("retourne true pour ville stub sans copy", () => {
-    expect(isNoindexStubRoute("/fr/implantations/hauts-de-france/compiegne")).toBe(true);
-    expect(isNoindexStubRoute("/en/locations/hauts-de-france/compiegne")).toBe(true);
+    // lestrem = commune T4 (<20k hab) volontairement non traitée par le batch T3 LLM
+    // 2026-05-27 — reste en stub noindex (anti-doorway HCU 2024).
+    expect(isNoindexStubRoute("/fr/implantations/hauts-de-france/lestrem")).toBe(true);
+    expect(isNoindexStubRoute("/en/locations/hauts-de-france/lestrem")).toBe(true);
   });
 
   it("retourne false pour ville pilote (Paris)", () => {
@@ -57,9 +59,11 @@ describe("isNoindexStubRoute — logique", () => {
   });
 
   it("retourne true pour service×ville stub", () => {
-    expect(isNoindexStubRoute("/fr/audit/par-ville/compiegne")).toBe(true);
-    expect(isNoindexStubRoute("/fr/interventions/par-ville/pau")).toBe(true);
-    expect(isNoindexStubRoute("/en/implementation/by-city/compiegne")).toBe(true);
+    // lestrem = T4 stub, pau et compiegne désormais en hub auto (services pas long-form)
+    // donc service×ville reste stub car copy.services absent. petite-foret = T4 stub.
+    expect(isNoindexStubRoute("/fr/audit/par-ville/lestrem")).toBe(true);
+    expect(isNoindexStubRoute("/fr/interventions/par-ville/petite-foret")).toBe(true);
+    expect(isNoindexStubRoute("/en/implementation/by-city/lestrem")).toBe(true);
   });
 
   it("retourne false pour service×ville pilote (Paris)", () => {
