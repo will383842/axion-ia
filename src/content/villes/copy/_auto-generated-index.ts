@@ -19,6 +19,7 @@ import { ANDREZIEUX_BOUTHEON_COPY } from "./andrezieux-boutheon";
 import { ANGLET_COPY } from "./anglet";
 import { ANGOULEME_COPY } from "./angouleme";
 import { ANNEMASSE_COPY } from "./annemasse";
+import { ANSE_COPY } from "./anse";
 import { ANTIBES_COPY } from "./antibes";
 import { ANTONY_COPY } from "./antony";
 import { ARCUEIL_COPY } from "./arcueil";
@@ -94,6 +95,7 @@ import { CHALONS_EN_CHAMPAGNE_COPY } from "./chalons-en-champagne";
 import { CHAMBERY_COPY } from "./chambery";
 import { CHAMPIGNY_SUR_MARNE_COPY } from "./champigny-sur-marne";
 import { CHAMPS_SUR_MARNE_COPY } from "./champs-sur-marne";
+import { CHAPONOST_COPY } from "./chaponost";
 import { CHARENTON_LE_PONT_COPY } from "./charenton-le-pont";
 import { CHARLEVILLE_MEZIERES_COPY } from "./charleville-mezieres";
 import { CHARTRES_COPY } from "./chartres";
@@ -142,6 +144,7 @@ import { CROIX_COPY } from "./croix";
 import { CROLLES_COPY } from "./crolles";
 import { CUGNAUX_COPY } from "./cugnaux";
 import { DAMMARIE_LES_LYS_COPY } from "./dammarie-les-lys";
+import { DARDILLY_COPY } from "./dardilly";
 import { DAX_COPY } from "./dax";
 import { DECINES_CHARPIEU_COPY } from "./decines-charpieu";
 import { DENAIN_COPY } from "./denain";
@@ -175,6 +178,7 @@ import { FEYZIN_COPY } from "./feyzin";
 import { FIRMINY_COPY } from "./firminy";
 import { FLEURY_LES_AUBRAIS_COPY } from "./fleury-les-aubrais";
 import { FONTAINE_COPY } from "./fontaine";
+import { FONTAINES_SUR_SAONE_COPY } from "./fontaines-sur-saone";
 import { FONTENAY_AUX_ROSES_COPY } from "./fontenay-aux-roses";
 import { FONTENAY_SOUS_BOIS_COPY } from "./fontenay-sous-bois";
 import { FORBACH_COPY } from "./forbach";
@@ -193,6 +197,7 @@ import { GENNEVILLIERS_COPY } from "./gennevilliers";
 import { GIERES_COPY } from "./gieres";
 import { GIF_SUR_YVETTE_COPY } from "./gif-sur-yvette";
 import { GIVORS_COPY } from "./givors";
+import { GLEIZE_COPY } from "./gleize";
 import { GONESSE_COPY } from "./gonesse";
 import { GOUSSAINVILLE_COPY } from "./goussainville";
 import { GRADIGNAN_COPY } from "./gradignan";
@@ -211,6 +216,7 @@ import { HEROUVILLE_SAINT_CLAIR_COPY } from "./herouville-saint-clair";
 import { HOUILLES_COPY } from "./houilles";
 import { HYERES_COPY } from "./hyeres";
 import { ILLKIRCH_GRAFFENSTADEN_COPY } from "./illkirch-graffenstaden";
+import { IRIGNY_COPY } from "./irigny";
 import { ISSY_LES_MOULINEAUX_COPY } from "./issy-les-moulineaux";
 import { ISTRES_COPY } from "./istres";
 import { IVRY_SUR_SEINE_COPY } from "./ivry-sur-seine";
@@ -332,6 +338,7 @@ import { NARBONNE_COPY } from "./narbonne";
 import { NEUILLY_PLAISANCE_COPY } from "./neuilly-plaisance";
 import { NEUILLY_SUR_MARNE_COPY } from "./neuilly-sur-marne";
 import { NEUILLY_SUR_SEINE_COPY } from "./neuilly-sur-seine";
+import { NEUVILLE_SUR_SAONE_COPY } from "./neuville-sur-saone";
 import { NEVERS_COPY } from "./nevers";
 import { NIORT_COPY } from "./niort";
 import { NOGENT_SUR_MARNE_COPY } from "./nogent-sur-marne";
@@ -382,10 +389,12 @@ import { ROSNY_SOUS_BOIS_COPY } from "./rosny-sous-bois";
 import { ROUBAIX_COPY } from "./roubaix";
 import { ROUSSILLON_COPY } from "./roussillon";
 import { RUEIL_MALMAISON_COPY } from "./rueil-malmaison";
+import { SAINT_BONNET_DE_MURE_COPY } from "./saint-bonnet-de-mure";
 import { SAINT_BRIEUC_COPY } from "./saint-brieuc";
 import { SAINT_CHAMOND_COPY } from "./saint-chamond";
 import { SAINT_CLOUD_COPY } from "./saint-cloud";
 import { SAINT_CYR_L_ECOLE_COPY } from "./saint-cyr-l-ecole";
+import { SAINT_DIDIER_AU_MONT_D_OR_COPY } from "./saint-didier-au-mont-d-or";
 import { SAINT_DIZIER_COPY } from "./saint-dizier";
 import { SAINT_EGREVE_COPY } from "./saint-egreve";
 import { SAINT_ETIENNE_DU_ROUVRAY_COPY } from "./saint-etienne-du-rouvray";
@@ -434,6 +443,7 @@ import { SARCELLES_COPY } from "./sarcelles";
 import { SARREGUEMINES_COPY } from "./sarreguemines";
 import { SARTROUVILLE_COPY } from "./sartrouville";
 import { SASSENAGE_COPY } from "./sassenage";
+import { SATHONAY_CAMP_COPY } from "./sathonay-camp";
 import { SAUMUR_COPY } from "./saumur";
 import { SAVIGNY_LE_TEMPLE_COPY } from "./savigny-le-temple";
 import { SAVIGNY_SUR_ORGE_COPY } from "./savigny-sur-orge";
@@ -536,6 +546,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   anglet: ANGLET_COPY,
   angouleme: ANGOULEME_COPY,
   annemasse: ANNEMASSE_COPY,
+  anse: ANSE_COPY,
   antibes: ANTIBES_COPY,
   antony: ANTONY_COPY,
   arcueil: ARCUEIL_COPY,
@@ -611,6 +622,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   chambery: CHAMBERY_COPY,
   "champigny-sur-marne": CHAMPIGNY_SUR_MARNE_COPY,
   "champs-sur-marne": CHAMPS_SUR_MARNE_COPY,
+  chaponost: CHAPONOST_COPY,
   "charenton-le-pont": CHARENTON_LE_PONT_COPY,
   "charleville-mezieres": CHARLEVILLE_MEZIERES_COPY,
   chartres: CHARTRES_COPY,
@@ -659,6 +671,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   crolles: CROLLES_COPY,
   cugnaux: CUGNAUX_COPY,
   "dammarie-les-lys": DAMMARIE_LES_LYS_COPY,
+  dardilly: DARDILLY_COPY,
   dax: DAX_COPY,
   "decines-charpieu": DECINES_CHARPIEU_COPY,
   denain: DENAIN_COPY,
@@ -692,6 +705,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   firminy: FIRMINY_COPY,
   "fleury-les-aubrais": FLEURY_LES_AUBRAIS_COPY,
   fontaine: FONTAINE_COPY,
+  "fontaines-sur-saone": FONTAINES_SUR_SAONE_COPY,
   "fontenay-aux-roses": FONTENAY_AUX_ROSES_COPY,
   "fontenay-sous-bois": FONTENAY_SOUS_BOIS_COPY,
   forbach: FORBACH_COPY,
@@ -710,6 +724,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   gieres: GIERES_COPY,
   "gif-sur-yvette": GIF_SUR_YVETTE_COPY,
   givors: GIVORS_COPY,
+  gleize: GLEIZE_COPY,
   gonesse: GONESSE_COPY,
   goussainville: GOUSSAINVILLE_COPY,
   gradignan: GRADIGNAN_COPY,
@@ -728,6 +743,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   houilles: HOUILLES_COPY,
   hyeres: HYERES_COPY,
   "illkirch-graffenstaden": ILLKIRCH_GRAFFENSTADEN_COPY,
+  irigny: IRIGNY_COPY,
   "issy-les-moulineaux": ISSY_LES_MOULINEAUX_COPY,
   istres: ISTRES_COPY,
   "ivry-sur-seine": IVRY_SUR_SEINE_COPY,
@@ -849,6 +865,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   "neuilly-plaisance": NEUILLY_PLAISANCE_COPY,
   "neuilly-sur-marne": NEUILLY_SUR_MARNE_COPY,
   "neuilly-sur-seine": NEUILLY_SUR_SEINE_COPY,
+  "neuville-sur-saone": NEUVILLE_SUR_SAONE_COPY,
   nevers: NEVERS_COPY,
   niort: NIORT_COPY,
   "nogent-sur-marne": NOGENT_SUR_MARNE_COPY,
@@ -899,10 +916,12 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   roubaix: ROUBAIX_COPY,
   roussillon: ROUSSILLON_COPY,
   "rueil-malmaison": RUEIL_MALMAISON_COPY,
+  "saint-bonnet-de-mure": SAINT_BONNET_DE_MURE_COPY,
   "saint-brieuc": SAINT_BRIEUC_COPY,
   "saint-chamond": SAINT_CHAMOND_COPY,
   "saint-cloud": SAINT_CLOUD_COPY,
   "saint-cyr-l-ecole": SAINT_CYR_L_ECOLE_COPY,
+  "saint-didier-au-mont-d-or": SAINT_DIDIER_AU_MONT_D_OR_COPY,
   "saint-dizier": SAINT_DIZIER_COPY,
   "saint-egreve": SAINT_EGREVE_COPY,
   "saint-etienne-du-rouvray": SAINT_ETIENNE_DU_ROUVRAY_COPY,
@@ -951,6 +970,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   sarreguemines: SARREGUEMINES_COPY,
   sartrouville: SARTROUVILLE_COPY,
   sassenage: SASSENAGE_COPY,
+  "sathonay-camp": SATHONAY_CAMP_COPY,
   saumur: SAUMUR_COPY,
   "savigny-le-temple": SAVIGNY_LE_TEMPLE_COPY,
   "savigny-sur-orge": SAVIGNY_SUR_ORGE_COPY,

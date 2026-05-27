@@ -1,10 +1,10 @@
 {
   "totalT4": 1702,
-  "done": 100,
-  "remaining": 1602,
-  "lastBatchAt": "2026-05-27T08:43:43.565Z",
+  "done": 110,
+  "remaining": 1592,
+  "lastBatchAt": "2026-05-27T08:53:08.297Z",
   "lastBatchSize": 10,
-  "lastBatchNumber": 10,
+  "lastBatchNumber": 11,
   "villes": {
     "gentilly": {
       "slug": "gentilly",
@@ -2752,9 +2752,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "69",
       "population": 9382,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:53:08.297Z",
+      "batch": 11
     },
     "la-ravoire": {
       "slug": "la-ravoire",
@@ -2802,9 +2802,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "69",
       "population": 9221,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:53:08.297Z",
+      "batch": 11
     },
     "scionzier": {
       "slug": "scionzier",
@@ -2832,9 +2832,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "69",
       "population": 9034,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:53:08.297Z",
+      "batch": 11
     },
     "saint-paul-trois-chateaux": {
       "slug": "saint-paul-trois-chateaux",
@@ -3042,9 +3042,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "69",
       "population": 8206,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:53:08.297Z",
+      "batch": 11
     },
     "sorbiers": {
       "slug": "sorbiers",
@@ -3092,9 +3092,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "69",
       "population": 8035,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:53:08.297Z",
+      "batch": 11
     },
     "tignieu-jameyzieu": {
       "slug": "tignieu-jameyzieu",
@@ -3162,9 +3162,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "69",
       "population": 7812,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:53:08.297Z",
+      "batch": 11
     },
     "la-verpilliere": {
       "slug": "la-verpilliere",
@@ -3282,9 +3282,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "69",
       "population": 7435,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:53:08.297Z",
+      "batch": 11
     },
     "yssingeaux": {
       "slug": "yssingeaux",
@@ -3402,9 +3402,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "69",
       "population": 7019,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:53:08.297Z",
+      "batch": 11
     },
     "trevoux": {
       "slug": "trevoux",
@@ -3432,9 +3432,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "69",
       "population": 6984,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:53:08.297Z",
+      "batch": 11
     },
     "fontaines-sur-saone": {
       "slug": "fontaines-sur-saone",
@@ -3442,9 +3442,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "69",
       "population": 6957,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:53:08.297Z",
+      "batch": 11
     },
     "cognin": {
       "slug": "cognin",
