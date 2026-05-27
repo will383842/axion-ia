@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const NOISY_LE_ROI_COPY: VilleCopy = {
   pitchFr:
-    "Noisy-le-Roi (78), commune résidentielle des Yvelines en lisière de la forêt de Marly, accueille un tissu de TPE de services, professions libérales, PME tertiaires et artisans dans un cadre verdoyant entre Versailles et Saint-Germain-en-Laye. Axion-IA y intervient pour tous types d'activités de l'ouest yvelinois.",
+    "Noisy-le-Roi (78), commune résidentielle des Yvelines en lisière de la forêt de Marly, accueille un tissu de TPE de services, professions libérales, PME tertiaires et artisans dans un cadre verdoyant entre Versailles et Saint-Germain-en-Laye. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'ouest yvelinois.",
   pitchEn:
-    "Noisy-le-Roi (78), commune résidentielle des Yvelines en lisière de la forêt de Marly, accueille un tissu de TPE de services, professions libérales, PME tertiaires et artisans dans un cadre verdoyant entre Versailles et Saint-Germain-en-Laye. Axion-IA y intervient pour tous types d'activités de l'ouest yvelinois.",
+    "Noisy-le-Roi (78), commune résidentielle des Yvelines en lisière de la forêt de Marly, accueille un tissu de TPE de services, professions libérales, PME tertiaires et artisans dans un cadre verdoyant entre Versailles et Saint-Germain-en-Laye. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'ouest yvelinois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Noisy-le-Roi (78). Nous accompagnons TPE et PME : professions libérales, cabinets conseil, PME tertiaires de l'ouest yvelinois, artisans et commerçants de cette commune résidentielle entre forêt de Marly et plaine de Versailles.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const NOISY_LE_ROI_COPY: VilleCopy = {
       en: "Audit IA à Noisy-le-Roi : diagnostic adapté aux TPE de services, professions libérales, PME tertiaires et artisans de l'ouest yvelinois entre Versailles et Saint-Germain. ROI chiffré, audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Noisy-le-Roi : formats adaptés aux cabinets professionnels, PME tertiaires et artisans de la zone Marly-Versailles. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Noisy-le-Roi : formats adaptés aux cabinets professionnels, PME tertiaires et artisans de la zone Marly-Versailles. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Noisy-le-Roi : formats adaptés aux cabinets professionnels, PME tertiaires et artisans de la zone Marly-Versailles. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Noisy-le-Roi : formats adaptés aux cabinets professionnels, PME tertiaires et artisans de la zone Marly-Versailles. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Noisy-le-Roi : agents conversationnels, automatisation gestion cabinet, CRM augmenté, suivi chantiers artisans, outils IA sur mesure pour TPE et PME de l'ouest Yvelines.",

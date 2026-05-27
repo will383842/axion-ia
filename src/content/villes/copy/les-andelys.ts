@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LES_ANDELYS_COPY: VilleCopy = {
   pitchFr:
-    "Les Andelys (27), commune de l'Eure en Normandie dominée par le Château-Gaillard de Richard Cœur de Lion, sur les bords de Seine. Tissu TPE artisans, PME tourisme et patrimoine, agriculture, commerces, services aux entreprises, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Les Andelys (27), commune de l'Eure en Normandie dominée par le Château-Gaillard de Richard Cœur de Lion, sur les bords de Seine. Tissu TPE artisans, PME tourisme et patrimoine, agriculture, commerces, services aux entreprises, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Les Andelys (27), commune de l'Eure en Normandie dominée par le Château-Gaillard de Richard Cœur de Lion, sur les bords de Seine. Tissu TPE artisans, PME tourisme et patrimoine, agriculture, commerces, services aux entreprises, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Les Andelys (27), commune de l'Eure en Normandie dominée par le Château-Gaillard de Richard Cœur de Lion, sur les bords de Seine. Tissu TPE artisans, PME tourisme et patrimoine, agriculture, commerces, services aux entreprises, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient aux Andelys (27). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et patrimoine Château-Gaillard, agriculture bords de Seine, commerces, professions libérales, indépendants et services aux entreprises de Seine Normandie Agglomération.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LES_ANDELYS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA aux Andelys : diagnostic adapté aux TPE artisans, PME tourisme et patrimoine, agriculture bords de Seine, commerces, professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA aux Andelys : diagnostic adapté aux TPE artisans, PME tourisme et patrimoine, agriculture bords de Seine, commerces, professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA aux Andelys : diagnostic adapté aux TPE artisans, PME tourisme et patrimoine, agriculture bords de Seine, commerces, professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA aux Andelys : diagnostic adapté aux TPE artisans, PME tourisme et patrimoine, agriculture bords de Seine, commerces, professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site aux Andelys : formats adaptés au site touristique, à l'exploitation agricole, au cabinet, au commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const LES_ANDELYS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Rouen ou Paris ?",
-      a: "Nos consultants viennent de Rouen (40 min) ou Paris (1h30 A13, gare Gaillon-Aubevoye à 15 min). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Rouen (40 min) ou Paris (1h30 A13, gare Gaillon-Aubevoye à 15 min). Pour les multi-jours, hébergement local possible. Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

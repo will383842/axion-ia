@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const AUCHEL_COPY: VilleCopy = {
   pitchFr:
-    "Auchel (62), commune du bassin minier du Pas-de-Calais, a entamé sa reconversion vers l'artisanat, le commerce et les services. TPE, PME de proximité et professions libérales. Axion-IA y intervient pour tous types d'activités du bassin minier.",
+    "Auchel (62), commune du bassin minier du Pas-de-Calais, a entamé sa reconversion vers l'artisanat, le commerce et les services. TPE, PME de proximité et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin minier.",
   pitchEn:
-    "Auchel (62), commune du bassin minier du Pas-de-Calais, a entamé sa reconversion vers l'artisanat, le commerce et les services. TPE, PME de proximité et professions libérales. Axion-IA y intervient pour tous types d'activités du bassin minier.",
+    "Auchel (62), commune du bassin minier du Pas-de-Calais, a entamé sa reconversion vers l'artisanat, le commerce et les services. TPE, PME de proximité et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin minier.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auchel (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthunois. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:

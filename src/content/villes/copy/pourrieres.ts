@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const POURRIERES_COPY: VilleCopy = {
   pitchFr:
-    "Pourrières (83), commune viticole au pied de la montagne Sainte-Victoire, conjugue patrimoine provençal et vignoble AOP Côtes de Provence dans la vallée de l'Arc. TPE artisans, PME viticoles, exploitations agricoles, professions libérales et commerces de proximité dans un bassin à cheval entre Var et bassin aixois. Axion-IA y intervient pour tous types d'activités.",
+    "Pourrières (83), commune viticole au pied de la montagne Sainte-Victoire, conjugue patrimoine provençal et vignoble AOP Côtes de Provence dans la vallée de l'Arc. TPE artisans, PME viticoles, exploitations agricoles, professions libérales et commerces de proximité dans un bassin à cheval entre Var et bassin aixois. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Pourrières (83), commune viticole au pied de la montagne Sainte-Victoire, conjugue patrimoine provençal et vignoble AOP Côtes de Provence dans la vallée de l'Arc. TPE artisans, PME viticoles, exploitations agricoles, professions libérales et commerces de proximité dans un bassin à cheval entre Var et bassin aixois. Axion-IA y intervient pour tous types d'activités.",
+    "Pourrières (83), commune viticole au pied de la montagne Sainte-Victoire, conjugue patrimoine provençal et vignoble AOP Côtes de Provence dans la vallée de l'Arc. TPE artisans, PME viticoles, exploitations agricoles, professions libérales et commerces de proximité dans un bassin à cheval entre Var et bassin aixois. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pourrières (83). Nous accompagnons TPE artisans, PME viticoles, exploitations agricoles, professions libérales et commerces du Centre-Var et de la vallée de l'Arc. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const POURRIERES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pourrières : diagnostic adapté aux TPE artisans, PME viticoles AOP Sainte-Victoire, exploitations agricoles et commerces de la vallée de l'Arc. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Pourrières : diagnostic adapté aux TPE artisans, PME viticoles AOP Sainte-Victoire, exploitations agricoles et commerces de la vallée de l'Arc. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Pourrières : diagnostic adapté aux TPE artisans, PME viticoles AOP Sainte-Victoire, exploitations agricoles et commerces de la vallée de l'Arc. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Pourrières : diagnostic adapté aux TPE artisans, PME viticoles AOP Sainte-Victoire, exploitations agricoles et commerces de la vallée de l'Arc. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pourrières : ateliers pour équipes TPE/PME, vignerons Sainte-Victoire, agriculteurs et artisans. Outils IA configurés métier réel, dans vos locaux ou à Aix.",
@@ -64,7 +64,7 @@ export const POURRIERES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Pourrières ?",
-      a: "Pourrières est à 25 min d'Aix-en-Provence et 15 min de Saint-Maximin via A8. Nos consultants se déplacent dans vos locaux ou domaines. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Pourrières est à 25 min d'Aix-en-Provence et 15 min de Saint-Maximin via A8. Nos consultants se déplacent dans vos locaux ou domaines. Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

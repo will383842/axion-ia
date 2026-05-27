@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_GORGUE_COPY: VilleCopy = {
   pitchFr:
-    "La Gorgue (59), commune flamande des bords de la Lys dans le Nord, hérite d'un passé textile et industriel reconverti. Tissu TPE artisans, PME logistique et agroalimentaire, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "La Gorgue (59), commune flamande des bords de la Lys dans le Nord, hérite d'un passé textile et industriel reconverti. Tissu TPE artisans, PME logistique et agroalimentaire, commerces de proximité, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "La Gorgue (59), commune flamande des bords de la Lys dans le Nord, hérite d'un passé textile et industriel reconverti. Tissu TPE artisans, PME logistique et agroalimentaire, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "La Gorgue (59), commune flamande des bords de la Lys dans le Nord, hérite d'un passé textile et industriel reconverti. Tissu TPE artisans, PME logistique et agroalimentaire, commerces de proximité, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Gorgue (59). Nous accompagnons TPE artisans, PME logistique et agroalimentaire, commerçants, indépendants et professions libérales de cette commune flamande des bords de la Lys. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:
@@ -30,12 +30,12 @@ export const LA_GORGUE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Gorgue : diagnostic adapté aux TPE artisans, PME logistique et agroalimentaire, commerçants du bassin Lys-Flandre. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à La Gorgue : diagnostic adapté aux TPE artisans, PME logistique et agroalimentaire, commerçants du bassin Lys-Flandre. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à La Gorgue : diagnostic adapté aux TPE artisans, PME logistique et agroalimentaire, commerçants du bassin Lys-Flandre. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à La Gorgue : diagnostic adapté aux TPE artisans, PME logistique et agroalimentaire, commerçants du bassin Lys-Flandre. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à La Gorgue : formats adaptés aux entrepôts logistique, ateliers artisans, commerces et cabinets. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à La Gorgue : formats adaptés aux entrepôts logistique, ateliers artisans, commerces et cabinets. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à La Gorgue : formats adaptés aux entrepôts logistique, ateliers artisans, commerces et cabinets. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à La Gorgue : formats adaptés aux entrepôts logistique, ateliers artisans, commerces et cabinets. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à La Gorgue : automatisation flux logistique, prédiction stocks agroalimentaire, agents IA prise de RDV commerces et cabinets, classification documents. Adapté TPE/PME Lys-Flandre.",
@@ -61,7 +61,7 @@ export const LA_GORGUE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à La Gorgue depuis Lille ?",
-      a: "Nos consultants rejoignent La Gorgue en 45 min depuis Lille via A25. Pour les missions multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants rejoignent La Gorgue en 45 min depuis Lille via A25. Pour les missions multi-jours, hébergement local possible. Frais de mission facturés en sus, selon tarifs publics.",
     },
     {
       q: "Quels secteurs accompagnez-vous à La Gorgue ?",

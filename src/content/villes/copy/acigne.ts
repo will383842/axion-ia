@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ACIGNE_COPY: VilleCopy = {
   pitchFr:
-    "Acigné (35), commune résidentielle de la vallée de la Vilaine à l'est de Rennes en Ille-et-Vilaine, fait partie de Rennes Métropole. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales et indépendants. Axion-IA y intervient pour tous types d'activités de l'est rennais.",
+    "Acigné (35), commune résidentielle de la vallée de la Vilaine à l'est de Rennes en Ille-et-Vilaine, fait partie de Rennes Métropole. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales et indépendants. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'est rennais.",
   pitchEn:
-    "Acigné (35), commune résidentielle de la vallée de la Vilaine à l'est de Rennes en Ille-et-Vilaine, fait partie de Rennes Métropole. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales et indépendants. Axion-IA y intervient pour tous types d'activités de l'est rennais.",
+    "Acigné (35), commune résidentielle de la vallée de la Vilaine à l'est de Rennes en Ille-et-Vilaine, fait partie de Rennes Métropole. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales et indépendants. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'est rennais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Acigné (35). Nous accompagnons TPE artisans, PME de services, commerçants, professions libérales et indépendants de l'est rennais, vallée de la Vilaine. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VARENNES_VAUZELLES_COPY: VilleCopy = {
   pitchFr:
-    "Varennes-Vauzelles (58), commune limitrophe nord de Nevers, concentre les principales zones d'activités économiques et logistiques de l'agglomération nivernaise. TPE/PME logistique et transport, commerces de zone, artisans du bâtiment, professions libérales et services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Varennes-Vauzelles (58), commune limitrophe nord de Nevers, concentre les principales zones d'activités économiques et logistiques de l'agglomération nivernaise. TPE/PME logistique et transport, commerces de zone, artisans du bâtiment, professions libérales et services aux entreprises. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Varennes-Vauzelles (58), commune limitrophe nord de Nevers, concentre les principales zones d'activités économiques et logistiques de l'agglomération nivernaise. TPE/PME logistique et transport, commerces de zone, artisans du bâtiment, professions libérales et services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Varennes-Vauzelles (58), commune limitrophe nord de Nevers, concentre les principales zones d'activités économiques et logistiques de l'agglomération nivernaise. TPE/PME logistique et transport, commerces de zone, artisans du bâtiment, professions libérales et services aux entreprises. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Varennes-Vauzelles (58). Nous accompagnons TPE et PME : entreprises logistique et transport, commerces de zones d'activités, artisans BTP, professions libérales et prestataires de services aux entreprises de l'agglomération neversoise. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const VARENNES_VAUZELLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Varennes-Vauzelles : diagnostic adapté aux TPE logistiques, transporteurs, commerces de zone, artisans BTP et professions libérales de l'agglomération neversoise. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Varennes-Vauzelles : diagnostic adapté aux TPE logistiques, transporteurs, commerces de zone, artisans BTP et professions libérales de l'agglomération neversoise. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Varennes-Vauzelles : diagnostic adapté aux TPE logistiques, transporteurs, commerces de zone, artisans BTP et professions libérales de l'agglomération neversoise. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Varennes-Vauzelles : diagnostic adapté aux TPE logistiques, transporteurs, commerces de zone, artisans BTP et professions libérales de l'agglomération neversoise. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Varennes-Vauzelles : formats adaptés à l'entrepôt, au commerce de zone, au bureau PME ou au cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Varennes-Vauzelles : formats adaptés à l'entrepôt, au commerce de zone, au bureau PME ou au cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Varennes-Vauzelles : formats adaptés à l'entrepôt, au commerce de zone, au bureau PME ou au cabinet. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Varennes-Vauzelles : formats adaptés à l'entrepôt, au commerce de zone, au bureau PME ou au cabinet. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Varennes-Vauzelles : optimisation tournées logistique, gestion stocks entrepôt, CRM augmenté commerce, automatisation devis BTP, outils IA professions libérales.",

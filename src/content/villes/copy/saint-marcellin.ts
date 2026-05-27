@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_MARCELLIN_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Marcellin (38), ville du Bas-Dauphiné en Isère, donne son nom au fromage AOP Saint-Marcellin (petit fromage à pâte molle). Tissu PME industrielles, fromageries artisanales, TPE artisans BTP, agriculture périphérique (élevage laitier) et commerces. Axion-IA y intervient pour tous types d'activités du Sud Grésivaudan.",
+    "Saint-Marcellin (38), ville du Bas-Dauphiné en Isère, donne son nom au fromage AOP Saint-Marcellin (petit fromage à pâte molle). Tissu PME industrielles, fromageries artisanales, TPE artisans BTP, agriculture périphérique (élevage laitier) et commerces. Axion-IA y déploie ses missions auprès de toutes les organisations du Sud Grésivaudan.",
   pitchEn:
-    "Saint-Marcellin (38), ville du Bas-Dauphiné en Isère, donne son nom au fromage AOP Saint-Marcellin (petit fromage à pâte molle). Tissu PME industrielles, fromageries artisanales, TPE artisans BTP, agriculture périphérique (élevage laitier) et commerces. Axion-IA y intervient pour tous types d'activités du Sud Grésivaudan.",
+    "Saint-Marcellin (38), ville du Bas-Dauphiné en Isère, donne son nom au fromage AOP Saint-Marcellin (petit fromage à pâte molle). Tissu PME industrielles, fromageries artisanales, TPE artisans BTP, agriculture périphérique (élevage laitier) et commerces. Axion-IA y déploie ses missions auprès de toutes les organisations du Sud Grésivaudan.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Marcellin (38). Nous accompagnons tous types d'activités : fromageries artisanales AOP Saint-Marcellin, agriculteurs/éleveurs laitiers, PME industrielles Sud Grésivaudan, TPE artisans BTP, commerçants, indépendants et services aux entreprises du Bas-Dauphiné.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const SAINT_MARCELLIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Marcellin : diagnostic adapté aux fromageries AOP, éleveurs laitiers, PME industrielles et TPE artisans du Bas-Dauphiné. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Saint-Marcellin : diagnostic adapté aux fromageries AOP, éleveurs laitiers, PME industrielles et TPE artisans du Bas-Dauphiné. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Saint-Marcellin : diagnostic adapté aux fromageries AOP, éleveurs laitiers, PME industrielles et TPE artisans du Bas-Dauphiné. Audit Flash 490 € HT avec ROI quantifié accessible.",
+      en: "Audit IA à Saint-Marcellin : diagnostic adapté aux fromageries AOP, éleveurs laitiers, PME industrielles et TPE artisans du Bas-Dauphiné. Audit Flash 490 € HT avec ROI quantifié accessible.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Marcellin : formats adaptés à la fromagerie, exploitation laitière, atelier industriel ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Saint-Marcellin : formats adaptés à la fromagerie, exploitation laitière, atelier industriel ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Saint-Marcellin : formats adaptés à la fromagerie, exploitation laitière, atelier industriel ou commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Saint-Marcellin : formats adaptés à la fromagerie, exploitation laitière, atelier industriel ou commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Marcellin : traçabilité AOP Saint-Marcellin (lait à fromage), classification photos qualité, agents conversationnels e-commerce direct producteur, optimisation production fromagère.",

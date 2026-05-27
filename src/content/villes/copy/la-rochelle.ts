@@ -14,6 +14,7 @@ export const LA_ROCHELLE_COPY: VilleCopy = {
     "À La Rochelle, Axion-IA propose des interventions sur site pour les entreprises souhaitant intégrer l'IA dans leurs opérations. Avec des acteurs économiques tels qu'Alstom et la Société des Pétroles Shell, nous aidons à automatiser les tâches administratives et à améliorer l'efficacité opérationnelle. Nos services incluent audits, implémentations et formations, adaptés aux besoins de chaque entreprise.",
   directAnswerEn:
     "À La Rochelle, Axion-IA propose des interventions sur site pour les entreprises souhaitant intégrer l'IA dans leurs opérations. Avec des acteurs économiques tels qu'Alstom et la Société des Pétroles Shell, nous aidons à automatiser les tâches administratives et à améliorer l'efficacité opérationnelle. Nos services incluent audits, implémentations et formations, adaptés aux besoins de chaque entreprise.",
+  seoHook: "nautisme, naval & tourisme",
   ecosystemFr:
     "La Rochelle, avec son Parc Atlantech et l'Université de La Rochelle, offre un environnement propice à l'innovation. Les entreprises locales bénéficient de la proximité de grands groupes comme Alstom, renforçant le potentiel de développement économique.",
   ecosystemEn:

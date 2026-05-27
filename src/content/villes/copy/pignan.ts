@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PIGNAN_COPY: VilleCopy = {
   pitchFr:
-    "Pignan (34), commune de l'ouest de l'agglomération de Montpellier, entre vignoble et garrigue. Forte croissance résidentielle, proximité autoroute A750. Tissu TPE commerçants, PME viticoles, artisans BTP, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Pignan (34), commune de l'ouest de l'agglomération de Montpellier, entre vignoble et garrigue. Forte croissance résidentielle, proximité autoroute A750. Tissu TPE commerçants, PME viticoles, artisans BTP, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Pignan (34), commune de l'ouest de l'agglomération de Montpellier, entre vignoble et garrigue. Forte croissance résidentielle, proximité autoroute A750. Tissu TPE commerçants, PME viticoles, artisans BTP, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Pignan (34), commune de l'ouest de l'agglomération de Montpellier, entre vignoble et garrigue. Forte croissance résidentielle, proximité autoroute A750. Tissu TPE commerçants, PME viticoles, artisans BTP, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pignan (34). Nous accompagnons TPE commerçants, PME viticoles, artisans BTP, professions libérales et entreprises de l'ouest montpelliérain.",
   directAnswerEn:

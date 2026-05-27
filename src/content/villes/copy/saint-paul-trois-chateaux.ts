@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_PAUL_TROIS_CHATEAUX_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Paul-Trois-Châteaux (26), commune du sud-Drôme dans la plaine du Tricastin, est réputée pour la truffe noire du Tricastin et la viticulture (AOC Grignan-les-Adhémar). Tissu agricole et viticole majeur, PME industrielles bassin Tricastin, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités tricastines.",
+    "Saint-Paul-Trois-Châteaux (26), commune du sud-Drôme dans la plaine du Tricastin, est réputée pour la truffe noire du Tricastin et la viticulture (AOC Grignan-les-Adhémar). Tissu agricole et viticole majeur, PME industrielles bassin Tricastin, TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs tricastines.",
   pitchEn:
-    "Saint-Paul-Trois-Châteaux (26), commune du sud-Drôme dans la plaine du Tricastin, est réputée pour la truffe noire du Tricastin et la viticulture (AOC Grignan-les-Adhémar). Tissu agricole et viticole majeur, PME industrielles bassin Tricastin, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités tricastines.",
+    "Saint-Paul-Trois-Châteaux (26), commune du sud-Drôme dans la plaine du Tricastin, est réputée pour la truffe noire du Tricastin et la viticulture (AOC Grignan-les-Adhémar). Tissu agricole et viticole majeur, PME industrielles bassin Tricastin, TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs tricastines.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Paul-Trois-Châteaux (26). Nous accompagnons tous types d'activités : trufficulteurs et viticulteurs AOC Grignan-les-Adhémar, PME industrielles bassin Tricastin (sous-traitants techniques), TPE artisans BTP, commerçants, indépendants et services aux entreprises sud-Drôme.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const SAINT_PAUL_TROIS_CHATEAUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Paul-Trois-Châteaux : diagnostic adapté aux trufficulteurs, viticulteurs AOC, PME industrielles Tricastin, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Paul-Trois-Châteaux : diagnostic adapté aux trufficulteurs, viticulteurs AOC, PME industrielles Tricastin, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Paul-Trois-Châteaux : diagnostic adapté aux trufficulteurs, viticulteurs AOC, PME industrielles Tricastin, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Saint-Paul-Trois-Châteaux : diagnostic adapté aux trufficulteurs, viticulteurs AOC, PME industrielles Tricastin, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Paul-Trois-Châteaux : formats adaptés à l'exploitation viticole, trufficole, atelier industriel. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -64,7 +64,7 @@ export const SAINT_PAUL_TROIS_CHATEAUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Valence ?",
-      a: "Nos consultants viennent de Lyon (1h45 A7) ou Valence (50 min). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (1h45 A7) ou Valence (50 min). Pour les multi-jours, hébergement local possible. Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

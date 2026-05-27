@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LES_ARCS_COPY: VilleCopy = {
   pitchFr:
-    "Les Arcs (83), commune du centre-Var dotée de la gare TGV Les Arcs-Draguignan (porte du Var), est ancrée dans le vignoble Côtes de Provence et la Maison des Vins. Tissu de TPE viticulteurs, artisans, restaurateurs et PME logistique, tourisme et services autour du hub TGV. Axion-IA y intervient pour tous types d'activités.",
+    "Les Arcs (83), commune du centre-Var dotée de la gare TGV Les Arcs-Draguignan (porte du Var), est ancrée dans le vignoble Côtes de Provence et la Maison des Vins. Tissu de TPE viticulteurs, artisans, restaurateurs et PME logistique, tourisme et services autour du hub TGV. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Les Arcs (83), commune du centre-Var dotée de la gare TGV Les Arcs-Draguignan (porte du Var), est ancrée dans le vignoble Côtes de Provence et la Maison des Vins. Tissu de TPE viticulteurs, artisans, restaurateurs et PME logistique, tourisme et services autour du hub TGV. Axion-IA y intervient pour tous types d'activités.",
+    "Les Arcs (83), commune du centre-Var dotée de la gare TGV Les Arcs-Draguignan (porte du Var), est ancrée dans le vignoble Côtes de Provence et la Maison des Vins. Tissu de TPE viticulteurs, artisans, restaurateurs et PME logistique, tourisme et services autour du hub TGV. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient aux Arcs (83). Nous accompagnons TPE viticulteurs Côtes de Provence, artisans, restaurateurs, PME logistique, tourisme et services du centre-Var autour du hub TGV. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LES_ARCS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA aux Arcs : diagnostic adapté aux domaines viticoles, TPE artisans, PME logistique hub TGV et services. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA aux Arcs : diagnostic adapté aux domaines viticoles, TPE artisans, PME logistique hub TGV et services. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA aux Arcs : diagnostic adapté aux domaines viticoles, TPE artisans, PME logistique hub TGV et services. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA aux Arcs : diagnostic adapté aux domaines viticoles, TPE artisans, PME logistique hub TGV et services. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site aux Arcs : ateliers pour vignerons Côtes de Provence, artisans, restaurateurs et PME services. Outils IA configurés métier réel.",

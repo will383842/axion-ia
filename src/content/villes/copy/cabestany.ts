@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CABESTANY_COPY: VilleCopy = {
   pitchFr:
-    "Cabestany (66), commune résidentielle et commerciale en périphérie est de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME zones commerciales, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités de l'agglomération perpignanaise.",
+    "Cabestany (66), commune résidentielle et commerciale en périphérie est de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME zones commerciales, commerces, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération perpignanaise.",
   pitchEn:
-    "Cabestany (66), commune résidentielle et commerciale en périphérie est de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME zones commerciales, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités de l'agglomération perpignanaise.",
+    "Cabestany (66), commune résidentielle et commerciale en périphérie est de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME zones commerciales, commerces, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération perpignanaise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cabestany (66). Nous accompagnons tous types d'activités : TPE artisans, PME zones commerciales, commerçants, professions libérales, indépendants et services aux entreprises de l'agglo Perpignan est.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const CABESTANY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cabestany : diagnostic adapté aux TPE artisans, PME zones commerciales, commerçants et professions libérales de l'agglo Perpignan est. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Cabestany : diagnostic adapté aux TPE artisans, PME zones commerciales, commerçants et professions libérales de l'agglo Perpignan est. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Cabestany : diagnostic adapté aux TPE artisans, PME zones commerciales, commerçants et professions libérales de l'agglo Perpignan est. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Cabestany : diagnostic adapté aux TPE artisans, PME zones commerciales, commerçants et professions libérales de l'agglo Perpignan est. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Cabestany : formats adaptés au commerce, bureau, cabinet, atelier. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Cabestany : formats adaptés au commerce, bureau, cabinet, atelier. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Cabestany : formats adaptés au commerce, bureau, cabinet, atelier. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Cabestany : formats adaptés au commerce, bureau, cabinet, atelier. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Cabestany : agents conversationnels commerce, gestion stocks zones commerciales, automatisation facturation, CRM augmentés. Perpignan Méditerranée Métropole.",
@@ -64,7 +64,7 @@ export const CABESTANY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Cabestany ?",
-      a: "Nos consultants interviennent depuis Perpignan (7 min). Missions sur site dans votre commerce, bureau ou cabinet. Visio possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants interviennent depuis Perpignan (7 min). Missions sur site dans votre commerce, bureau ou cabinet. Visio possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

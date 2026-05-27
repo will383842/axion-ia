@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ARCACHON_COPY: VilleCopy = {
   pitchFr:
-    "Arcachon (33), station balnéaire de renommée internationale au coeur du Bassin éponyme, associe tourisme prestige (Ville d'Hiver, dune du Pilat), ostréiculture, hôtellerie-restauration haut de gamme et commerces. Axion-IA y intervient pour tous types d'activités : TPE touristiques, hôteliers, restaurateurs, ostréiculteurs, commerçants et professions libérales.",
+    "Arcachon (33), station balnéaire de renommée internationale au coeur du Bassin éponyme, associe tourisme prestige (Ville d'Hiver, dune du Pilat), ostréiculture, hôtellerie-restauration haut de gamme et commerces. Axion-IA y déploie ses missions auprès de toutes les organisations : TPE touristiques, hôteliers, restaurateurs, ostréiculteurs, commerçants et professions libérales.",
   pitchEn:
-    "Arcachon (33), station balnéaire de renommée internationale au coeur du Bassin éponyme, associe tourisme prestige (Ville d'Hiver, dune du Pilat), ostréiculture, hôtellerie-restauration haut de gamme et commerces. Axion-IA y intervient pour tous types d'activités : TPE touristiques, hôteliers, restaurateurs, ostréiculteurs, commerçants et professions libérales.",
+    "Arcachon (33), station balnéaire de renommée internationale au coeur du Bassin éponyme, associe tourisme prestige (Ville d'Hiver, dune du Pilat), ostréiculture, hôtellerie-restauration haut de gamme et commerces. Axion-IA y déploie ses missions auprès de toutes les organisations : TPE touristiques, hôteliers, restaurateurs, ostréiculteurs, commerçants et professions libérales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arcachon (33). Nous accompagnons TPE et PME de la station balnéaire : hôteliers et résidences de tourisme, restaurateurs, ostréiculteurs, commerçants de centre-ville et professions libérales. Audit Flash dès 490 € HT.",
   directAnswerEn:

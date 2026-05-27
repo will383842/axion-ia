@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MAZINGARBE_COPY: VilleCopy = {
   pitchFr:
-    "Mazingarbe (62), commune du bassin minier du Pas-de-Calais au passé chimique reconverti, accueille TPE artisanales, commerces, PME de services et professions libérales. Axion-IA y intervient pour tous types d'activités du bassin minier.",
+    "Mazingarbe (62), commune du bassin minier du Pas-de-Calais au passé chimique reconverti, accueille TPE artisanales, commerces, PME de services et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin minier.",
   pitchEn:
-    "Mazingarbe (62), commune du bassin minier du Pas-de-Calais au passé chimique reconverti, accueille TPE artisanales, commerces, PME de services et professions libérales. Axion-IA y intervient pour tous types d'activités du bassin minier.",
+    "Mazingarbe (62), commune du bassin minier du Pas-de-Calais au passé chimique reconverti, accueille TPE artisanales, commerces, PME de services et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin minier.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mazingarbe (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthuno-lensois. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:

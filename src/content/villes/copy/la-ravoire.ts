@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_RAVOIRE_COPY: VilleCopy = {
   pitchFr:
-    "La Ravoire (73), 3e commune de l'agglomération de Chambéry en Savoie, est un ancien village agricole devenu pôle résidentiel au pied du Mont Peney. Tissu PME tertiaires de services, professions libérales, TPE artisanat, commerces de proximité, immobilier résidentiel. Axion-IA y intervient pour tous types d'activités.",
+    "La Ravoire (73), 3e commune de l'agglomération de Chambéry en Savoie, est un ancien village agricole devenu pôle résidentiel au pied du Mont Peney. Tissu PME tertiaires de services, professions libérales, TPE artisanat, commerces de proximité, immobilier résidentiel. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "La Ravoire (73), 3e commune de l'agglomération de Chambéry en Savoie, est un ancien village agricole devenu pôle résidentiel au pied du Mont Peney. Tissu PME tertiaires de services, professions libérales, TPE artisanat, commerces de proximité, immobilier résidentiel. Axion-IA y intervient pour tous types d'activités.",
+    "La Ravoire (73), 3e commune de l'agglomération de Chambéry en Savoie, est un ancien village agricole devenu pôle résidentiel au pied du Mont Peney. Tissu PME tertiaires de services, professions libérales, TPE artisanat, commerces de proximité, immobilier résidentiel. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Ravoire (73). Nous accompagnons TPE et PME du bassin chambérien : sociétés de services tertiaires, professions libérales, artisans, commerces de proximité, acteurs immobilier résidentiel et indépendants savoyards.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LA_RAVOIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Ravoire : diagnostic adapté aux PME de services, professions libérales, TPE artisans, commerçants et acteurs immobilier de l'agglomération chambérienne. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à La Ravoire : diagnostic adapté aux PME de services, professions libérales, TPE artisans, commerçants et acteurs immobilier de l'agglomération chambérienne. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à La Ravoire : diagnostic adapté aux PME de services, professions libérales, TPE artisans, commerçants et acteurs immobilier de l'agglomération chambérienne. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à La Ravoire : diagnostic adapté aux PME de services, professions libérales, TPE artisans, commerçants et acteurs immobilier de l'agglomération chambérienne. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Ravoire : ateliers dans vos locaux, cabinet libéral, agence ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier, formats demi-journée ou journée.",

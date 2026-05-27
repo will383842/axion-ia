@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_CHERON_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Chéron (91), commune résidentielle de la vallée de l'Orge supérieure en Essonne, bénéficie du RER C pour un accès direct à Paris. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, prestataires BTP. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Chéron (91), commune résidentielle de la vallée de l'Orge supérieure en Essonne, bénéficie du RER C pour un accès direct à Paris. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, prestataires BTP. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Saint-Chéron (91), commune résidentielle de la vallée de l'Orge supérieure en Essonne, bénéficie du RER C pour un accès direct à Paris. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, prestataires BTP. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Chéron (91), commune résidentielle de la vallée de l'Orge supérieure en Essonne, bénéficie du RER C pour un accès direct à Paris. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, prestataires BTP. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Chéron (91). Nous accompagnons TPE et PME : commerçants et artisans centre-bourg, PME services aux entreprises, professions libérales, restaurateurs, prestataires BTP vallée de l'Orge. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const SAINT_CHERON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Chéron : diagnostic adapté aux commerçants et artisans, PME services, professions libérales, restaurateurs, prestataires BTP vallée de l'Orge. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Chéron : diagnostic adapté aux commerçants et artisans, PME services, professions libérales, restaurateurs, prestataires BTP vallée de l'Orge. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Chéron : diagnostic adapté aux commerçants et artisans, PME services, professions libérales, restaurateurs, prestataires BTP vallée de l'Orge. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Saint-Chéron : diagnostic adapté aux commerçants et artisans, PME services, professions libérales, restaurateurs, prestataires BTP vallée de l'Orge. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Chéron : formats adaptés boutique, cabinet, restaurant, atelier BTP, bureau PME. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Saint-Chéron : formats adaptés boutique, cabinet, restaurant, atelier BTP, bureau PME. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Saint-Chéron : formats adaptés boutique, cabinet, restaurant, atelier BTP, bureau PME. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Saint-Chéron : formats adaptés boutique, cabinet, restaurant, atelier BTP, bureau PME. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Chéron : CRM augmenté commerçants, automatisation gestion cabinet, outils réservation restauration, suivi chantiers BTP, facturation intelligente PME.",
@@ -64,7 +64,7 @@ export const SAINT_CHERON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Dourdan ou Paris ?",
-      a: "Dourdan (10 min). Arpajon (15 min). Évry-Courcouronnes (25 min). Paris centre (50 min RER C). Orly (30 min). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Dourdan (10 min). Arpajon (15 min). Évry-Courcouronnes (25 min). Paris centre (50 min RER C). Orly (30 min). Coûts de déplacement à part, tarification transparente.",
     },
   ],
 };

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VENDENHEIM_COPY: VilleCopy = {
   pitchFr:
-    "Vendenheim (67), commune de 6 137 habitants en Bas-Rhin, située au nord de l'agglomération de Strasbourg, est ancrée dans un dense tissu de zones d'activités économiques, logistique et commerciales. Tissu TPE/PME logistique, services aux entreprises, commerces, artisanat, industrie légère. Axion-IA y intervient pour tous types d'activités.",
+    "Vendenheim (67), commune de 6 137 habitants en Bas-Rhin, située au nord de l'agglomération de Strasbourg, est ancrée dans un dense tissu de zones d'activités économiques, logistique et commerciales. Tissu TPE/PME logistique, services aux entreprises, commerces, artisanat, industrie légère. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Vendenheim (67), commune de 6 137 habitants en Bas-Rhin, située au nord de l'agglomération de Strasbourg, est ancrée dans un dense tissu de zones d'activités économiques, logistique et commerciales. Tissu TPE/PME logistique, services aux entreprises, commerces, artisanat, industrie légère. Axion-IA y intervient pour tous types d'activités.",
+    "Vendenheim (67), commune de 6 137 habitants en Bas-Rhin, située au nord de l'agglomération de Strasbourg, est ancrée dans un dense tissu de zones d'activités économiques, logistique et commerciales. Tissu TPE/PME logistique, services aux entreprises, commerces, artisanat, industrie légère. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vendenheim (67). Nous accompagnons tous types d'activités : TPE/PME logistique et services aux entreprises du nord strasbourgeois, artisans, commerces, industriels légers et acteurs économiques des zones d'activités de l'Eurométropole.",
   directAnswerEn:
@@ -30,12 +30,12 @@ export const VENDENHEIM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vendenheim : diagnostic adapté aux TPE/PME logistique, commerce de gros, services aux entreprises, artisans, industrie légère. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Vendenheim : diagnostic adapté aux TPE/PME logistique, commerce de gros, services aux entreprises, artisans, industrie légère. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Vendenheim : diagnostic adapté aux TPE/PME logistique, commerce de gros, services aux entreprises, artisans, industrie légère. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Vendenheim : diagnostic adapté aux TPE/PME logistique, commerce de gros, services aux entreprises, artisans, industrie légère. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Vendenheim : formats adaptés à l'entrepôt logistique, au commerce de gros, à l'atelier industriel, au bureau de services. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Vendenheim : formats adaptés à l'entrepôt logistique, au commerce de gros, à l'atelier industriel, au bureau de services. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Vendenheim : formats adaptés à l'entrepôt logistique, au commerce de gros, à l'atelier industriel, au bureau de services. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Vendenheim : formats adaptés à l'entrepôt logistique, au commerce de gros, à l'atelier industriel, au bureau de services. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Vendenheim : automatisation gestion d'entrepôt, traçabilité logistique, optimisation tournées, agents conversationnels B2B, gestion commerciale, ERP et workflow douanier.",

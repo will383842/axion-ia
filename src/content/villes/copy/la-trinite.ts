@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_TRINITE_COPY: VilleCopy = {
   pitchFr:
-    "La Trinité (06), dans la vallée du Paillon à l'est de Nice, est une commune résidentielle dynamique de la Métropole Nice Côte d'Azur. Tissu TPE/PME commerces, artisanat BTP, services aux entreprises, professions libérales et zone d'activités des Music. Axion-IA y intervient pour tous types d'activités.",
+    "La Trinité (06), dans la vallée du Paillon à l'est de Nice, est une commune résidentielle dynamique de la Métropole Nice Côte d'Azur. Tissu TPE/PME commerces, artisanat BTP, services aux entreprises, professions libérales et zone d'activités des Music. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "La Trinité (06), dans la vallée du Paillon à l'est de Nice, est une commune résidentielle dynamique de la Métropole Nice Côte d'Azur. Tissu TPE/PME commerces, artisanat BTP, services aux entreprises, professions libérales et zone d'activités des Music. Axion-IA y intervient pour tous types d'activités.",
+    "La Trinité (06), dans la vallée du Paillon à l'est de Nice, est une commune résidentielle dynamique de la Métropole Nice Côte d'Azur. Tissu TPE/PME commerces, artisanat BTP, services aux entreprises, professions libérales et zone d'activités des Music. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Trinité (06). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, PME de la zone d'activités des Music et entreprises de services de la vallée du Paillon.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LA_TRINITE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Trinité : diagnostic adapté aux TPE artisans BTP, commerçants, professions libérales et PME de la zone d'activités des Music. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
-      en: "Audit IA à La Trinité : diagnostic adapté aux TPE artisans BTP, commerçants, professions libérales et PME de la zone d'activités des Music. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
+      fr: "Audit IA à La Trinité : diagnostic adapté aux TPE artisans BTP, commerçants, professions libérales et PME de la zone d'activités des Music. Audit Flash 490 € HT, ROI documenté en chiffres accessible aux petites structures.",
+      en: "Audit IA à La Trinité : diagnostic adapté aux TPE artisans BTP, commerçants, professions libérales et PME de la zone d'activités des Music. Audit Flash 490 € HT, ROI documenté en chiffres accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Trinité : formats adaptés au commerce, atelier artisan, cabinet ou bureau PME. Vos équipes terrain repartent autonomes sur outils IA configurés métier.",

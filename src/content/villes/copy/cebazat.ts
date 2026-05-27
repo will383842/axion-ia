@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CEBAZAT_COPY: VilleCopy = {
   pitchFr:
-    "Cébazat (63), commune du nord de l'agglomération clermontoise en Puy-de-Dôme, fait partie de Clermont Auvergne Métropole. Zone d'activités nord Clermont dynamique, PME tertiaires, TPE artisanat BTP, commerces de proximité, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Cébazat (63), commune du nord de l'agglomération clermontoise en Puy-de-Dôme, fait partie de Clermont Auvergne Métropole. Zone d'activités nord Clermont dynamique, PME tertiaires, TPE artisanat BTP, commerces de proximité, services aux entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Cébazat (63), commune du nord de l'agglomération clermontoise en Puy-de-Dôme, fait partie de Clermont Auvergne Métropole. Zone d'activités nord Clermont dynamique, PME tertiaires, TPE artisanat BTP, commerces de proximité, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Cébazat (63), commune du nord de l'agglomération clermontoise en Puy-de-Dôme, fait partie de Clermont Auvergne Métropole. Zone d'activités nord Clermont dynamique, PME tertiaires, TPE artisanat BTP, commerces de proximité, services aux entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cébazat (63). Nous accompagnons TPE et PME : entreprises tertiaires zone nord Clermont, artisans BTP, commerçants, professions libérales, services aux entreprises de Clermont Auvergne Métropole.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const CEBAZAT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cébazat : diagnostic adapté aux PME tertiaires zone nord Clermont, TPE artisans BTP, commerçants et services aux entreprises de la métropole clermontoise. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Cébazat : diagnostic adapté aux PME tertiaires zone nord Clermont, TPE artisans BTP, commerçants et services aux entreprises de la métropole clermontoise. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Cébazat : diagnostic adapté aux PME tertiaires zone nord Clermont, TPE artisans BTP, commerçants et services aux entreprises de la métropole clermontoise. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Cébazat : diagnostic adapté aux PME tertiaires zone nord Clermont, TPE artisans BTP, commerçants et services aux entreprises de la métropole clermontoise. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Cébazat : formats adaptés aux bureaux tertiaires, ateliers artisans, commerces ou sociétés de services. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Cébazat : formats adaptés aux bureaux tertiaires, ateliers artisans, commerces ou sociétés de services. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Cébazat : formats adaptés aux bureaux tertiaires, ateliers artisans, commerces ou sociétés de services. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Cébazat : formats adaptés aux bureaux tertiaires, ateliers artisans, commerces ou sociétés de services. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Cébazat : automatisation back-office PME tertiaires, agents IA relation client, classification documentaire, optimisation gestion de chantier BTP, outils prédictifs services aux entreprises.",
@@ -64,7 +64,7 @@ export const CEBAZAT_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Clermont-Ferrand ?",
-      a: "Nos consultants interviennent depuis Clermont-Ferrand (10 min voiture). Pour les missions multi-jours, déplacement quotidien sans surcoût hébergement. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants interviennent depuis Clermont-Ferrand (10 min voiture). Pour les missions multi-jours, déplacement quotidien sans surcoût hébergement. Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

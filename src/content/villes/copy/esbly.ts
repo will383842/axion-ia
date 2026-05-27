@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ESBLY_COPY: VilleCopy = {
   pitchFr:
-    "Esbly (77), commune périurbaine à la confluence de la Marne et du Grand Morin en Seine-et-Marne, accueille un tissu de TPE artisans, commerces de proximité, PME de services, professions libérales et activités liées au tourisme fluvial. Axion-IA y intervient pour tous types d'activités de l'est francilien.",
+    "Esbly (77), commune périurbaine à la confluence de la Marne et du Grand Morin en Seine-et-Marne, accueille un tissu de TPE artisans, commerces de proximité, PME de services, professions libérales et activités liées au tourisme fluvial. Axion-IA y déploie ses missions auprès de toutes les organisations de l'est francilien.",
   pitchEn:
-    "Esbly (77), commune périurbaine à la confluence de la Marne et du Grand Morin en Seine-et-Marne, accueille un tissu de TPE artisans, commerces de proximité, PME de services, professions libérales et activités liées au tourisme fluvial. Axion-IA y intervient pour tous types d'activités de l'est francilien.",
+    "Esbly (77), commune périurbaine à la confluence de la Marne et du Grand Morin en Seine-et-Marne, accueille un tissu de TPE artisans, commerces de proximité, PME de services, professions libérales et activités liées au tourisme fluvial. Axion-IA y déploie ses missions auprès de toutes les organisations de l'est francilien.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Esbly (77). Nous accompagnons TPE et PME : artisans, commerçants, PME de services de la vallée de la Marne, professions libérales et acteurs touristiques de cette commune à la confluence Marne — Grand Morin.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const ESBLY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Esbly : diagnostic adapté aux TPE artisans, commerces, PME de services et professions libérales de la vallée de la Marne. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Esbly : diagnostic adapté aux TPE artisans, commerces, PME de services et professions libérales de la vallée de la Marne. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Esbly : diagnostic adapté aux TPE artisans, commerces, PME de services et professions libérales de la vallée de la Marne. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Esbly : diagnostic adapté aux TPE artisans, commerces, PME de services et professions libérales de la vallée de la Marne. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Esbly : formats adaptés au commerce, cabinet libéral, TPE artisan ou PME de services de l'est Seine-et-Marne. Vos équipes repartent autonomes sur outils IA configurés métier.",

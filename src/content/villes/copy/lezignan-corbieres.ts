@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LEZIGNAN_CORBIERES_COPY: VilleCopy = {
   pitchFr:
-    "Lézignan-Corbières (11), commune au coeur des Corbières dans l'Aude, est un pôle viticole et commercial majeur du département. Tissu TPE artisans, PME viticoles et caves coopératives, commerces et zones d'activités, agriculture (vigne, olivier), logistique. Axion-IA y intervient pour tous types d'activités du bassin lézignanais et des Corbières.",
+    "Lézignan-Corbières (11), commune au coeur des Corbières dans l'Aude, est un pôle viticole et commercial majeur du département. Tissu TPE artisans, PME viticoles et caves coopératives, commerces et zones d'activités, agriculture (vigne, olivier), logistique. Axion-IA opère pour toutes les structures économiques de la commune du bassin lézignanais et des Corbières.",
   pitchEn:
-    "Lézignan-Corbières (11), commune au coeur des Corbières dans l'Aude, est un pôle viticole et commercial majeur du département. Tissu TPE artisans, PME viticoles et caves coopératives, commerces et zones d'activités, agriculture (vigne, olivier), logistique. Axion-IA y intervient pour tous types d'activités du bassin lézignanais et des Corbières.",
+    "Lézignan-Corbières (11), commune au coeur des Corbières dans l'Aude, est un pôle viticole et commercial majeur du département. Tissu TPE artisans, PME viticoles et caves coopératives, commerces et zones d'activités, agriculture (vigne, olivier), logistique. Axion-IA opère pour toutes les structures économiques de la commune du bassin lézignanais et des Corbières.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lézignan-Corbières (11), pôle viticole des Corbières audoises. Nous accompagnons TPE artisans, PME viticoles et caves coopératives, commerçants, agriculteurs et acteurs logistique du bassin lézignanais. Audit Flash dès 490 € HT.",
   directAnswerEn:

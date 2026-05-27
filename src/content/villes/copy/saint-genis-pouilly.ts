@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_GENIS_POUILLY_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Genis-Pouilly (01), commune du pays de Gex dans l'Ain, est positionnée à la frontière suisse immédiate (Genève). Proximité notable du CERN (Organisation européenne pour la recherche nucléaire). Tissu économie frontalière dynamique, PME tertiaires et technologiques, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Genis-Pouilly (01), commune du pays de Gex dans l'Ain, est positionnée à la frontière suisse immédiate (Genève). Proximité notable du CERN (Organisation européenne pour la recherche nucléaire). Tissu économie frontalière dynamique, PME tertiaires et technologiques, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Saint-Genis-Pouilly (01), commune du pays de Gex dans l'Ain, est positionnée à la frontière suisse immédiate (Genève). Proximité notable du CERN (Organisation européenne pour la recherche nucléaire). Tissu économie frontalière dynamique, PME tertiaires et technologiques, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Genis-Pouilly (01), commune du pays de Gex dans l'Ain, est positionnée à la frontière suisse immédiate (Genève). Proximité notable du CERN (Organisation européenne pour la recherche nucléaire). Tissu économie frontalière dynamique, PME tertiaires et technologiques, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Genis-Pouilly (01). Nous accompagnons tous types d'activités : PME tertiaires et technologiques pays de Gex (proximité CERN), économie frontalière Genève, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const SAINT_GENIS_POUILLY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Genis-Pouilly : diagnostic adapté aux PME technologiques/tertiaires pays de Gex (proximité CERN), frontaliers Genève, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Genis-Pouilly : diagnostic adapté aux PME technologiques/tertiaires pays de Gex (proximité CERN), frontaliers Genève, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Genis-Pouilly : diagnostic adapté aux PME technologiques/tertiaires pays de Gex (proximité CERN), frontaliers Genève, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Saint-Genis-Pouilly : diagnostic adapté aux PME technologiques/tertiaires pays de Gex (proximité CERN), frontaliers Genève, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Genis-Pouilly : formats adaptés au bureau tech, commerce transfrontalier, atelier. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const SAINT_GENIS_POUILLY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Genève ?",
-      a: "Nos consultants viennent de Lyon (1h30) ou Genève (15 min). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (1h30) ou Genève (15 min). Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

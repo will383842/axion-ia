@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_GILLES_CROIX_DE_VIE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Gilles-Croix-de-Vie (85), port de pêche vendéen, rassemble plus de 8 300 habitants. Premier port sardinier de la côte atlantique, station balnéaire dynamique, tissu de TPE artisanales, PME pêche et tourisme, commerces et services. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Gilles-Croix-de-Vie (85), port de pêche vendéen, rassemble plus de 8 300 habitants. Premier port sardinier de la côte atlantique, station balnéaire dynamique, tissu de TPE artisanales, PME pêche et tourisme, commerces et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Saint-Gilles-Croix-de-Vie (85), port de pêche vendéen, rassemble plus de 8 300 habitants. Premier port sardinier de la côte atlantique, station balnéaire dynamique, tissu de TPE artisanales, PME pêche et tourisme, commerces et services. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Gilles-Croix-de-Vie (85), port de pêche vendéen, rassemble plus de 8 300 habitants. Premier port sardinier de la côte atlantique, station balnéaire dynamique, tissu de TPE artisanales, PME pêche et tourisme, commerces et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Gilles-Croix-de-Vie (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, professionnels de la pêche et mareyage, hôteliers-restaurateurs, acteurs tourisme littoral et services.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const SAINT_GILLES_CROIX_DE_VIE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Gilles-Croix-de-Vie : diagnostic adapté aux TPE pêche et mareyage, PME hôtellerie-restauration, commerces et artisans nautiques du littoral vendéen. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Gilles-Croix-de-Vie : diagnostic adapté aux TPE pêche et mareyage, PME hôtellerie-restauration, commerces et artisans nautiques du littoral vendéen. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Gilles-Croix-de-Vie : diagnostic adapté aux TPE pêche et mareyage, PME hôtellerie-restauration, commerces et artisans nautiques du littoral vendéen. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Saint-Gilles-Croix-de-Vie : diagnostic adapté aux TPE pêche et mareyage, PME hôtellerie-restauration, commerces et artisans nautiques du littoral vendéen. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Gilles-Croix-de-Vie : formats adaptés aux professionnels de la pêche, hôtels-restaurants, commerces et artisans nautiques. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Saint-Gilles-Croix-de-Vie : formats adaptés aux professionnels de la pêche, hôtels-restaurants, commerces et artisans nautiques. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Saint-Gilles-Croix-de-Vie : formats adaptés aux professionnels de la pêche, hôtels-restaurants, commerces et artisans nautiques. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Saint-Gilles-Croix-de-Vie : formats adaptés aux professionnels de la pêche, hôtels-restaurants, commerces et artisans nautiques. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Gilles-Croix-de-Vie : traçabilité pêche, prédiction marées et stocks, agents conversationnels tourisme, automatisation mareyage. Adapté TPE/PME port et littoral.",

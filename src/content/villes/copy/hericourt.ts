@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const HERICOURT_COPY: VilleCopy = {
   pitchFr:
-    "Héricourt (70), commune industrielle de Haute-Saône dans l'aire urbaine de Montbéliard, compte plus de 10 600 habitants. Tissu dense de TPE/PME sous-traitance automobile, mécanique de précision, plasturgie, logistique et services aux entreprises. Axion-IA y intervient pour tous types d'activités du nord Franche-Comté.",
+    "Héricourt (70), commune industrielle de Haute-Saône dans l'aire urbaine de Montbéliard, compte plus de 10 600 habitants. Tissu dense de TPE/PME sous-traitance automobile, mécanique de précision, plasturgie, logistique et services aux entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs du nord Franche-Comté.",
   pitchEn:
-    "Héricourt (70), commune industrielle de Haute-Saône dans l'aire urbaine de Montbéliard, compte plus de 10 600 habitants. Tissu dense de TPE/PME sous-traitance automobile, mécanique de précision, plasturgie, logistique et services aux entreprises. Axion-IA y intervient pour tous types d'activités du nord Franche-Comté.",
+    "Héricourt (70), commune industrielle de Haute-Saône dans l'aire urbaine de Montbéliard, compte plus de 10 600 habitants. Tissu dense de TPE/PME sous-traitance automobile, mécanique de précision, plasturgie, logistique et services aux entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs du nord Franche-Comté.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Héricourt (70). Nous accompagnons TPE et PME industrielles de l'aire urbaine Montbéliard : sous-traitants automobile, ateliers mécanique de précision, plasturgie, logistique, artisans, commerçants et professions libérales du nord Franche-Comté.",
   directAnswerEn:

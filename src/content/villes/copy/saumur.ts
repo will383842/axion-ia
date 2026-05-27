@@ -29,8 +29,8 @@ export const SAUMUR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saumur : diagnostic adapté aux viticulteurs Val de Loire, acteurs du tourisme patrimoine et TPE/PME saumuroises. ROI chiffré, audit Flash 490 € HT accessible aux exploitations familiales.",
-      en: "Audit IA à Saumur : diagnostic adapté aux viticulteurs Val de Loire, acteurs du tourisme patrimoine et TPE/PME saumuroises. ROI chiffré, audit Flash 490 € HT accessible aux exploitations familiales.",
+      fr: "Audit IA à Saumur : diagnostic adapté aux viticulteurs Val de Loire, acteurs du tourisme patrimoine et TPE/PME saumuroises. Audit Flash 490 € HT, ROI documenté en chiffres accessible aux exploitations familiales.",
+      en: "Audit IA à Saumur : diagnostic adapté aux viticulteurs Val de Loire, acteurs du tourisme patrimoine et TPE/PME saumuroises. Audit Flash 490 € HT, ROI documenté en chiffres accessible aux exploitations familiales.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saumur : sessions au chai, dans la cave troglodyte ou bureau. Vos équipes (vignerons, guides touristiques, restaurateurs) repartent avec outils IA configurés métier.",

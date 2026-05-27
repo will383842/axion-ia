@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_CONTROIS_EN_SOLOGNE_COPY: VilleCopy = {
   pitchFr:
-    "Le Controis-en-Sologne (41), commune nouvelle en Loir-et-Cher aux portes de la Sologne et en bords de Cher, fédère un tissu de TPE et PME entre viticulture AOC Touraine, agriculture céréalière, artisanat, tourisme vert et commerces. Axion-IA y intervient pour tous types d'activités du sud blésois.",
+    "Le Controis-en-Sologne (41), commune nouvelle en Loir-et-Cher aux portes de la Sologne et en bords de Cher, fédère un tissu de TPE et PME entre viticulture AOC Touraine, agriculture céréalière, artisanat, tourisme vert et commerces. Axion-IA y déploie ses missions auprès de toutes les organisations du sud blésois.",
   pitchEn:
-    "Le Controis-en-Sologne (41), commune nouvelle en Loir-et-Cher aux portes de la Sologne et en bords de Cher, fédère un tissu de TPE et PME entre viticulture AOC Touraine, agriculture céréalière, artisanat, tourisme vert et commerces. Axion-IA y intervient pour tous types d'activités du sud blésois.",
+    "Le Controis-en-Sologne (41), commune nouvelle en Loir-et-Cher aux portes de la Sologne et en bords de Cher, fédère un tissu de TPE et PME entre viticulture AOC Touraine, agriculture céréalière, artisanat, tourisme vert et commerces. Axion-IA y déploie ses missions auprès de toutes les organisations du sud blésois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Controis-en-Sologne (41). Nous accompagnons TPE viticoles, PME agricoles, artisans, hébergeurs tourisme vert et commerçants. Audit Flash dès 490 € HT, démarrage sous 10 jours.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const TALMONT_SAINT_HILAIRE_COPY: VilleCopy = {
   pitchFr:
-    "Talmont-Saint-Hilaire (85), commune vendéenne entre bocage et littoral, compte près de 8 500 habitants. Château de Talmont (Richard Cœur de Lion), port du Payré, plages. Tourisme, ostréiculture, artisanat, commerces et services de proximité. Axion-IA y intervient pour tous types d'activités.",
+    "Talmont-Saint-Hilaire (85), commune vendéenne entre bocage et littoral, compte près de 8 500 habitants. Château de Talmont (Richard Cœur de Lion), port du Payré, plages. Tourisme, ostréiculture, artisanat, commerces et services de proximité. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Talmont-Saint-Hilaire (85), commune vendéenne entre bocage et littoral, compte près de 8 500 habitants. Château de Talmont (Richard Cœur de Lion), port du Payré, plages. Tourisme, ostréiculture, artisanat, commerces et services de proximité. Axion-IA y intervient pour tous types d'activités.",
+    "Talmont-Saint-Hilaire (85), commune vendéenne entre bocage et littoral, compte près de 8 500 habitants. Château de Talmont (Richard Cœur de Lion), port du Payré, plages. Tourisme, ostréiculture, artisanat, commerces et services de proximité. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Talmont-Saint-Hilaire (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, ostréiculteurs port du Payré, hôteliers-restaurateurs, acteurs tourisme littoral, professions libérales et services.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const TALMONT_SAINT_HILAIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Talmont-Saint-Hilaire : diagnostic adapté aux TPE ostréiculteurs, campings, PME hôtellerie-restauration, commerces et artisans du littoral vendéen. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Talmont-Saint-Hilaire : diagnostic adapté aux TPE ostréiculteurs, campings, PME hôtellerie-restauration, commerces et artisans du littoral vendéen. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Talmont-Saint-Hilaire : diagnostic adapté aux TPE ostréiculteurs, campings, PME hôtellerie-restauration, commerces et artisans du littoral vendéen. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Talmont-Saint-Hilaire : diagnostic adapté aux TPE ostréiculteurs, campings, PME hôtellerie-restauration, commerces et artisans du littoral vendéen. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Talmont-Saint-Hilaire : formats adaptés aux ostréiculteurs, campings, hôtels-restaurants et commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Talmont-Saint-Hilaire : formats adaptés aux ostréiculteurs, campings, hôtels-restaurants et commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Talmont-Saint-Hilaire : formats adaptés aux ostréiculteurs, campings, hôtels-restaurants et commerces. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Talmont-Saint-Hilaire : formats adaptés aux ostréiculteurs, campings, hôtels-restaurants et commerces. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Talmont-Saint-Hilaire : traçabilité ostréicole, pricing dynamique campings, agents conversationnels tourisme patrimoine, automatisation réservations. Adapté TPE/PME littoral vendéen.",

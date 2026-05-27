@@ -29,8 +29,8 @@ export const VILLEMOISSON_SUR_ORGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villemoisson-sur-Orge : diagnostic adapté aux TPE artisans, professions libérales, commerçants et PME de services de la vallée de l'Orge. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Villemoisson-sur-Orge : diagnostic adapté aux TPE artisans, professions libérales, commerçants et PME de services de la vallée de l'Orge. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Villemoisson-sur-Orge : diagnostic adapté aux TPE artisans, professions libérales, commerçants et PME de services de la vallée de l'Orge. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Villemoisson-sur-Orge : diagnostic adapté aux TPE artisans, professions libérales, commerçants et PME de services de la vallée de l'Orge. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villemoisson-sur-Orge : formats adaptés au cabinet libéral, commerce ou bureau PME. Vos équipes repartent autonomes sur outils IA configurés métier réel.",

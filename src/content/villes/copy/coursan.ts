@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const COURSAN_COPY: VilleCopy = {
   pitchFr:
-    "Coursan (11), commune de l'agglomération narbonnaise en Aude, traversée par le canal de la Robine (patrimoine UNESCO). Tissu viticole historique, TPE artisans, PME négoce et services, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Coursan (11), commune de l'agglomération narbonnaise en Aude, traversée par le canal de la Robine (patrimoine UNESCO). Tissu viticole historique, TPE artisans, PME négoce et services, commerces de proximité, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Coursan (11), commune de l'agglomération narbonnaise en Aude, traversée par le canal de la Robine (patrimoine UNESCO). Tissu viticole historique, TPE artisans, PME négoce et services, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Coursan (11), commune de l'agglomération narbonnaise en Aude, traversée par le canal de la Robine (patrimoine UNESCO). Tissu viticole historique, TPE artisans, PME négoce et services, commerces de proximité, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coursan (11). Nous accompagnons TPE viticoles, artisans, PME négoce, commerçants, professions libérales et services de l'agglomération narbonnaise. Audit Flash dès 490 € HT.",
   directAnswerEn:

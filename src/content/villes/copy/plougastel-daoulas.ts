@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PLOUGASTEL_DAOULAS_COPY: VilleCopy = {
   pitchFr:
-    "Plougastel-Daoulas (29), presqu'île emblématique du Finistère, est célèbre pour ses fraises AOC et son calvaire monumental du XVIe siècle. Tissu TPE agricoles (maraîchage, horticulture), PME ostréicoles et maritimes, artisans BTP, commerces et services. Axion-IA y intervient pour tous types d'activités de la presqu'île et de l'agglomération brestoise.",
+    "Plougastel-Daoulas (29), presqu'île emblématique du Finistère, est célèbre pour ses fraises AOC et son calvaire monumental du XVIe siècle. Tissu TPE agricoles (maraîchage, horticulture), PME ostréicoles et maritimes, artisans BTP, commerces et services. Axion-IA y déploie ses missions auprès de toutes les organisations de la presqu'île et de l'agglomération brestoise.",
   pitchEn:
-    "Plougastel-Daoulas (29), presqu'île emblématique du Finistère, est célèbre pour ses fraises AOC et son calvaire monumental du XVIe siècle. Tissu TPE agricoles (maraîchage, horticulture), PME ostréicoles et maritimes, artisans BTP, commerces et services. Axion-IA y intervient pour tous types d'activités de la presqu'île et de l'agglomération brestoise.",
+    "Plougastel-Daoulas (29), presqu'île emblématique du Finistère, est célèbre pour ses fraises AOC et son calvaire monumental du XVIe siècle. Tissu TPE agricoles (maraîchage, horticulture), PME ostréicoles et maritimes, artisans BTP, commerces et services. Axion-IA y déploie ses missions auprès de toutes les organisations de la presqu'île et de l'agglomération brestoise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plougastel-Daoulas (29). Nous accompagnons tous types d'activités : TPE maraîchères et horticoles (fraises AOC), PME ostréicoles et maritimes, artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de la presqu'île et de Brest Métropole.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const PLOUGASTEL_DAOULAS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Plougastel-Daoulas : diagnostic adapté aux TPE maraîchères, PME ostréicoles, artisans BTP et commerçants de la presqu'île. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
-      en: "Audit IA à Plougastel-Daoulas : diagnostic adapté aux TPE maraîchères, PME ostréicoles, artisans BTP et commerçants de la presqu'île. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
+      fr: "Audit IA à Plougastel-Daoulas : diagnostic adapté aux TPE maraîchères, PME ostréicoles, artisans BTP et commerçants de la presqu'île. Audit Flash à 490 € HT, retour sur investissement chiffré accessible aux petites structures.",
+      en: "Audit IA à Plougastel-Daoulas : diagnostic adapté aux TPE maraîchères, PME ostréicoles, artisans BTP et commerçants de la presqu'île. Audit Flash à 490 € HT, retour sur investissement chiffré accessible aux petites structures.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Plougastel-Daoulas : formats adaptés à l'exploitation agricole, l'atelier ostréicole ou le commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Plougastel-Daoulas : formats adaptés à l'exploitation agricole, l'atelier ostréicole ou le commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Plougastel-Daoulas : formats adaptés à l'exploitation agricole, l'atelier ostréicole ou le commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Plougastel-Daoulas : formats adaptés à l'exploitation agricole, l'atelier ostréicole ou le commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Plougastel-Daoulas : classification photos cultures, traçabilité ostréicole, automatisation devis BTP, prédiction météo récolte, agents conversationnels. Presqu'île et Brest Métropole.",
@@ -64,7 +64,7 @@ export const PLOUGASTEL_DAOULAS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission sur la presqu'île depuis Brest ?",
-      a: "Nos consultants se déplacent depuis Brest (15 min pont de l'Iroise) ou par TGV Paris-Brest (3h30). Pour les multi-jours, hébergement possible à Brest ou Daoulas. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants se déplacent depuis Brest (15 min pont de l'Iroise) ou par TGV Paris-Brest (3h30). Pour les multi-jours, hébergement possible à Brest ou Daoulas. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

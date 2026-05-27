@@ -29,8 +29,8 @@ export const MONTEUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Monteux : diagnostic adapté aux TPE maraîchers, PME agroalimentaires, artisans et acteurs touristiques du Comtat Venaissin. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Monteux : diagnostic adapté aux TPE maraîchers, PME agroalimentaires, artisans et acteurs touristiques du Comtat Venaissin. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Monteux : diagnostic adapté aux TPE maraîchers, PME agroalimentaires, artisans et acteurs touristiques du Comtat Venaissin. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Monteux : diagnostic adapté aux TPE maraîchers, PME agroalimentaires, artisans et acteurs touristiques du Comtat Venaissin. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Monteux : ateliers pour équipes TPE/PME agricoles, transformateurs, artisans BTP et commerces. Outils IA configurés métier réel, dans vos locaux ou à Carpentras.",
@@ -64,7 +64,7 @@ export const MONTEUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Monteux ?",
-      a: "Monteux est à 20 min d'Avignon et 10 min de Carpentras via D942. Nos consultants se déplacent dans vos locaux. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Monteux est à 20 min d'Avignon et 10 min de Carpentras via D942. Nos consultants se déplacent dans vos locaux. Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const OSTWALD_COPY: VilleCopy = {
   pitchFr:
-    "Ostwald (67), commune du Bas-Rhin dans l'agglomération sud de Strasbourg, connue pour son cadre résidentiel et sa proximité immédiate avec le centre économique strasbourgeois. Tissu TPE/PME services, conseil, numérique, commerce, BTP et artisanat. Axion-IA y intervient pour tous types d'activités.",
+    "Ostwald (67), commune du Bas-Rhin dans l'agglomération sud de Strasbourg, connue pour son cadre résidentiel et sa proximité immédiate avec le centre économique strasbourgeois. Tissu TPE/PME services, conseil, numérique, commerce, BTP et artisanat. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Ostwald (67), commune du Bas-Rhin dans l'agglomération sud de Strasbourg, connue pour son cadre résidentiel et sa proximité immédiate avec le centre économique strasbourgeois. Tissu TPE/PME services, conseil, numérique, commerce, BTP et artisanat. Axion-IA y intervient pour tous types d'activités.",
+    "Ostwald (67), commune du Bas-Rhin dans l'agglomération sud de Strasbourg, connue pour son cadre résidentiel et sa proximité immédiate avec le centre économique strasbourgeois. Tissu TPE/PME services, conseil, numérique, commerce, BTP et artisanat. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ostwald (67). Nous accompagnons tous types d'activités : TPE/PME services et conseil, entreprises numériques, commerces de proximité, artisans BTP et professions libérales de l'agglomération strasbourgeoise sud.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const OSTWALD_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ostwald : diagnostic adapté aux TPE/PME services, conseil, numérique, commerces et artisans de l'agglomération strasbourgeoise. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Ostwald : diagnostic adapté aux TPE/PME services, conseil, numérique, commerces et artisans de l'agglomération strasbourgeoise. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Ostwald : diagnostic adapté aux TPE/PME services, conseil, numérique, commerces et artisans de l'agglomération strasbourgeoise. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Ostwald : diagnostic adapté aux TPE/PME services, conseil, numérique, commerces et artisans de l'agglomération strasbourgeoise. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ostwald : formats adaptés au bureau, cabinet, commerce, chantier. Vos équipes repartent autonomes.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BRICQUEBEC_EN_COTENTIN_COPY: VilleCopy = {
   pitchFr:
-    "Bricquebec-en-Cotentin (50), commune nouvelle du Cotentin dans la Manche (Normandie), est connue pour son château médiéval et son marché rural animé. Tissu TPE agricoles et artisanales, PME agroalimentaires du bocage, commerces de bourg, élevage bovin et productions locales. Axion-IA y intervient pour tous types d'activités.",
+    "Bricquebec-en-Cotentin (50), commune nouvelle du Cotentin dans la Manche (Normandie), est connue pour son château médiéval et son marché rural animé. Tissu TPE agricoles et artisanales, PME agroalimentaires du bocage, commerces de bourg, élevage bovin et productions locales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Bricquebec-en-Cotentin (50), commune nouvelle du Cotentin dans la Manche (Normandie), est connue pour son château médiéval et son marché rural animé. Tissu TPE agricoles et artisanales, PME agroalimentaires du bocage, commerces de bourg, élevage bovin et productions locales. Axion-IA y intervient pour tous types d'activités.",
+    "Bricquebec-en-Cotentin (50), commune nouvelle du Cotentin dans la Manche (Normandie), est connue pour son château médiéval et son marché rural animé. Tissu TPE agricoles et artisanales, PME agroalimentaires du bocage, commerces de bourg, élevage bovin et productions locales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bricquebec-en-Cotentin (50). Nous accompagnons tous types d'activités : TPE agriculteurs et artisans du bocage, PME agroalimentaires (lait, viande, cidre), commerçants de bourg, éleveurs bovins, prestataires tourisme rural et professions libérales du Cotentin.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const BRICQUEBEC_EN_COTENTIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bricquebec-en-Cotentin : diagnostic adapté aux TPE éleveurs et agriculteurs, PME agroalimentaires bocage, commerçants de bourg, artisans et prestataires tourisme rural. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Bricquebec-en-Cotentin : diagnostic adapté aux TPE éleveurs et agriculteurs, PME agroalimentaires bocage, commerçants de bourg, artisans et prestataires tourisme rural. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Bricquebec-en-Cotentin : diagnostic adapté aux TPE éleveurs et agriculteurs, PME agroalimentaires bocage, commerçants de bourg, artisans et prestataires tourisme rural. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Bricquebec-en-Cotentin : diagnostic adapté aux TPE éleveurs et agriculteurs, PME agroalimentaires bocage, commerçants de bourg, artisans et prestataires tourisme rural. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bricquebec-en-Cotentin : formats adaptés à l'exploitation d'élevage, la fromagerie, le commerce, l'atelier artisanal. Vos équipes repartent autonomes sur les outils IA.",
@@ -64,7 +64,7 @@ export const BRICQUEBEC_EN_COTENTIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Bricquebec-en-Cotentin ?",
-      a: "Nos consultants viennent de Cherbourg (30 min) ou Valognes (15 min). Gare de Valognes (TER Paris 2 h 45). Multi-jours : hébergement Valognes ou Cherbourg. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Cherbourg (30 min) ou Valognes (15 min). Gare de Valognes (TER Paris 2 h 45). Multi-jours : hébergement Valognes ou Cherbourg. Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

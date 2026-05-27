@@ -29,8 +29,8 @@ export const TRANS_EN_PROVENCE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Trans-en-Provence : diagnostic adapté aux TPE artisans, PME BTP, commerçants et services de l'agglomération dracénoise. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Trans-en-Provence : diagnostic adapté aux TPE artisans, PME BTP, commerçants et services de l'agglomération dracénoise. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Trans-en-Provence : diagnostic adapté aux TPE artisans, PME BTP, commerçants et services de l'agglomération dracénoise. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Trans-en-Provence : diagnostic adapté aux TPE artisans, PME BTP, commerçants et services de l'agglomération dracénoise. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Trans-en-Provence : ateliers pour artisans, BTP, restaurateurs, commerçants et PME services. Outils IA configurés métier réel.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FONTENAY_TRESIGNY_COPY: VilleCopy = {
   pitchFr:
-    "Fontenay-Trésigny (77), commune résidentielle de la Brie en Seine-et-Marne, accueille un tissu de TPE artisans du bâtiment, commerces de centre-bourg, PME de services et logistique, professions libérales et exploitants agricoles. Axion-IA y intervient pour tous types d'activités de l'est francilien.",
+    "Fontenay-Trésigny (77), commune résidentielle de la Brie en Seine-et-Marne, accueille un tissu de TPE artisans du bâtiment, commerces de centre-bourg, PME de services et logistique, professions libérales et exploitants agricoles. Axion-IA y déploie ses missions auprès de toutes les organisations de l'est francilien.",
   pitchEn:
-    "Fontenay-Trésigny (77), commune résidentielle de la Brie en Seine-et-Marne, accueille un tissu de TPE artisans du bâtiment, commerces de centre-bourg, PME de services et logistique, professions libérales et exploitants agricoles. Axion-IA y intervient pour tous types d'activités de l'est francilien.",
+    "Fontenay-Trésigny (77), commune résidentielle de la Brie en Seine-et-Marne, accueille un tissu de TPE artisans du bâtiment, commerces de centre-bourg, PME de services et logistique, professions libérales et exploitants agricoles. Axion-IA y déploie ses missions auprès de toutes les organisations de l'est francilien.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fontenay-Trésigny (77). Nous accompagnons TPE et PME : artisans du bâtiment, commerçants, PME de services et logistique de la Brie, professions libérales et exploitants agricoles de l'est Seine-et-Marne.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const FONTENAY_TRESIGNY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fontenay-Trésigny : diagnostic adapté aux TPE artisans, commerces, PME de services et exploitants agricoles de la Brie. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Fontenay-Trésigny : diagnostic adapté aux TPE artisans, commerces, PME de services et exploitants agricoles de la Brie. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Fontenay-Trésigny : diagnostic adapté aux TPE artisans, commerces, PME de services et exploitants agricoles de la Brie. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Fontenay-Trésigny : diagnostic adapté aux TPE artisans, commerces, PME de services et exploitants agricoles de la Brie. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Fontenay-Trésigny : formats adaptés au commerce, cabinet libéral, TPE artisan ou PME logistique de la Brie. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Fontenay-Trésigny : formats adaptés au commerce, cabinet libéral, TPE artisan ou PME logistique de la Brie. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Fontenay-Trésigny : formats adaptés au commerce, cabinet libéral, TPE artisan ou PME logistique de la Brie. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Fontenay-Trésigny : formats adaptés au commerce, cabinet libéral, TPE artisan ou PME logistique de la Brie. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Fontenay-Trésigny : automatisation gestion chantiers artisans, agents conversationnels clients, CRM augmenté PME, optimisation logistique, outils IA exploitations agricoles Brie.",

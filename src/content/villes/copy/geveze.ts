@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GEVEZE_COPY: VilleCopy = {
   pitchFr:
-    "Gévezé (35), commune résidentielle au nord-ouest de Rennes en Ille-et-Vilaine, abrite un tissu de TPE artisanales, commerces de proximité, PME de services, professions libérales et exploitations agricoles. Axion-IA y intervient pour tous types d'activités.",
+    "Gévezé (35), commune résidentielle au nord-ouest de Rennes en Ille-et-Vilaine, abrite un tissu de TPE artisanales, commerces de proximité, PME de services, professions libérales et exploitations agricoles. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Gévezé (35), commune résidentielle au nord-ouest de Rennes en Ille-et-Vilaine, abrite un tissu de TPE artisanales, commerces de proximité, PME de services, professions libérales et exploitations agricoles. Axion-IA y intervient pour tous types d'activités.",
+    "Gévezé (35), commune résidentielle au nord-ouest de Rennes en Ille-et-Vilaine, abrite un tissu de TPE artisanales, commerces de proximité, PME de services, professions libérales et exploitations agricoles. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gévezé (35). Nous accompagnons TPE et PME : artisans du bâtiment, commerçants, PME de services, professions libérales et exploitants agricoles du nord-ouest rennais. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -34,8 +34,8 @@ export const GEVEZE_COPY: VilleCopy = {
       en: "Audit IA à Gévezé : diagnostic adapté aux TPE artisans du bâtiment, commerces de proximité, PME de services et professions libérales du nord-ouest rennais. ROI chiffré, audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Gévezé : formations pratiques pour artisans, commerçants, PME de services et professions libérales. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Gévezé : formations pratiques pour artisans, commerçants, PME de services et professions libérales. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Gévezé : formations pratiques pour artisans, commerçants, PME de services et professions libérales. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Gévezé : formations pratiques pour artisans, commerçants, PME de services et professions libérales. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Gévezé : automatisation devis artisans BTP, CRM commerces, gestion planning professions libérales, reporting PME services, agents conversationnels prise de rendez-vous.",

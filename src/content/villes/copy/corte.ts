@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CORTE_COPY: VilleCopy = {
   pitchFr:
-    "Corte (2B), sous-préfecture et cœur historique de la Corse, abrite l'Université de Corse Pasquale Paoli et sa citadelle emblématique. TPE artisans, PME de services, commerçants de centre-ville, acteurs touristiques et professions libérales forment le tissu économique local. Axion-IA y intervient pour tous types d'activités du centre Corse.",
+    "Corte (2B), sous-préfecture et cœur historique de la Corse, abrite l'Université de Corse Pasquale Paoli et sa citadelle emblématique. TPE artisans, PME de services, commerçants de centre-ville, acteurs touristiques et professions libérales forment le tissu économique local. Axion-IA couvre l'ensemble des activités professionnelles présentes du centre Corse.",
   pitchEn:
-    "Corte (2B), sous-préfecture et cœur historique de la Corse, abrite l'Université de Corse Pasquale Paoli et sa citadelle emblématique. TPE artisans, PME de services, commerçants de centre-ville, acteurs touristiques et professions libérales forment le tissu économique local. Axion-IA y intervient pour tous types d'activités du centre Corse.",
+    "Corte (2B), sous-préfecture et cœur historique de la Corse, abrite l'Université de Corse Pasquale Paoli et sa citadelle emblématique. TPE artisans, PME de services, commerçants de centre-ville, acteurs touristiques et professions libérales forment le tissu économique local. Axion-IA couvre l'ensemble des activités professionnelles présentes du centre Corse.",
   seoHook: "université, tourisme & artisanat corse",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Corte (2B). Nous accompagnons tous types d'activités : TPE artisans, PME de services, commerçants, acteurs touristiques, professions libérales et structures liées à l'Université de Corse. Audit Flash dès 490 € HT, démarrage sous 5 jours.",

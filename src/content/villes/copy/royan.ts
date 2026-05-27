@@ -33,8 +33,8 @@ export const ROYAN_COPY: VilleCopy = {
       en: "Audit IA à Royan : diagnostic adapté aux hôteliers-restaurateurs, commerçants saisonniers, professionnels du tourisme, conchyliculteurs et TPE/PME de la Côte de Beauté. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Royan : formats adaptés à l'hôtel, au restaurant, au commerce saisonnier, au parc ostréicole ou au bureau. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Royan : formats adaptés à l'hôtel, au restaurant, au commerce saisonnier, au parc ostréicole ou au bureau. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Royan : formats adaptés à l'hôtel, au restaurant, au commerce saisonnier, au parc ostréicole ou au bureau. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Royan : formats adaptés à l'hôtel, au restaurant, au commerce saisonnier, au parc ostréicole ou au bureau. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Royan : automatisation yield management hôtelier, agents conversationnels accueil touristique multilingue, prédiction fréquentation plages, gestion stocks restauration saisonnière.",

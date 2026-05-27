@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MONISTROL_SUR_LOIRE_COPY: VilleCopy = {
   pitchFr:
-    "Monistrol-sur-Loire (43), deuxième ville du Velay, domine la vallée de la Loire sur l'axe Lyon–Toulouse par le Massif central. Forte expansion fin XXe siècle. Tissu PME industrielles (plasturgie, mécanique), TPE artisans BTP, commerces, services. Axion-IA y intervient pour tous types d'activités.",
+    "Monistrol-sur-Loire (43), deuxième ville du Velay, domine la vallée de la Loire sur l'axe Lyon–Toulouse par le Massif central. Forte expansion fin XXe siècle. Tissu PME industrielles (plasturgie, mécanique), TPE artisans BTP, commerces, services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Monistrol-sur-Loire (43), deuxième ville du Velay, domine la vallée de la Loire sur l'axe Lyon–Toulouse par le Massif central. Forte expansion fin XXe siècle. Tissu PME industrielles (plasturgie, mécanique), TPE artisans BTP, commerces, services. Axion-IA y intervient pour tous types d'activités.",
+    "Monistrol-sur-Loire (43), deuxième ville du Velay, domine la vallée de la Loire sur l'axe Lyon–Toulouse par le Massif central. Forte expansion fin XXe siècle. Tissu PME industrielles (plasturgie, mécanique), TPE artisans BTP, commerces, services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Monistrol-sur-Loire (43). Nous accompagnons TPE et PME : entreprises plasturgie et mécanique, artisans BTP, commerçants, services aux entreprises du bassin Velay-Rochebaron.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const MONISTROL_SUR_LOIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Monistrol-sur-Loire : diagnostic adapté aux PME plasturgie/mécanique, TPE artisans BTP, commerçants bassin Velay-Rochebaron. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Monistrol-sur-Loire : diagnostic adapté aux PME plasturgie/mécanique, TPE artisans BTP, commerçants bassin Velay-Rochebaron. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Monistrol-sur-Loire : diagnostic adapté aux PME plasturgie/mécanique, TPE artisans BTP, commerçants bassin Velay-Rochebaron. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Monistrol-sur-Loire : diagnostic adapté aux PME plasturgie/mécanique, TPE artisans BTP, commerçants bassin Velay-Rochebaron. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Monistrol-sur-Loire : formats adaptés à l'atelier industriel, PME mécanique/plasturgie, commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Monistrol-sur-Loire : formats adaptés à l'atelier industriel, PME mécanique/plasturgie, commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Monistrol-sur-Loire : formats adaptés à l'atelier industriel, PME mécanique/plasturgie, commerce. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Monistrol-sur-Loire : formats adaptés à l'atelier industriel, PME mécanique/plasturgie, commerce. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Monistrol-sur-Loire : contrôle qualité vision plasturgie, maintenance prédictive mécanique, automatisation gestion commandes sous-traitance.",
@@ -64,7 +64,7 @@ export const MONISTROL_SUR_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Saint-Étienne ou Lyon ?",
-      a: "Saint-Étienne (40 min) ou Lyon (1h20). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Saint-Étienne (40 min) ou Lyon (1h20). Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

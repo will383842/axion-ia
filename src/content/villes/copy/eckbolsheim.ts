@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ECKBOLSHEIM_COPY: VilleCopy = {
   pitchFr:
-    "Eckbolsheim (67), commune de 7 157 habitants en Bas-Rhin, située dans l'agglomération de Strasbourg à l'ouest, abrite l'hippodrome de Strasbourg et un tissu économique tourné vers les services, le commerce et l'artisanat. Tissu TPE/PME services, commerces, artisans, professions libérales, restauration. Axion-IA y intervient pour tous types d'activités.",
+    "Eckbolsheim (67), commune de 7 157 habitants en Bas-Rhin, située dans l'agglomération de Strasbourg à l'ouest, abrite l'hippodrome de Strasbourg et un tissu économique tourné vers les services, le commerce et l'artisanat. Tissu TPE/PME services, commerces, artisans, professions libérales, restauration. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Eckbolsheim (67), commune de 7 157 habitants en Bas-Rhin, située dans l'agglomération de Strasbourg à l'ouest, abrite l'hippodrome de Strasbourg et un tissu économique tourné vers les services, le commerce et l'artisanat. Tissu TPE/PME services, commerces, artisans, professions libérales, restauration. Axion-IA y intervient pour tous types d'activités.",
+    "Eckbolsheim (67), commune de 7 157 habitants en Bas-Rhin, située dans l'agglomération de Strasbourg à l'ouest, abrite l'hippodrome de Strasbourg et un tissu économique tourné vers les services, le commerce et l'artisanat. Tissu TPE/PME services, commerces, artisans, professions libérales, restauration. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Eckbolsheim (67). Nous accompagnons tous types d'activités : TPE/PME services et commerces de l'ouest strasbourgeois, artisans, professions libérales, restaurateurs et acteurs économiques de l'agglomération de Strasbourg.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const ECKBOLSHEIM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Eckbolsheim : diagnostic adapté aux TPE/PME services, commerces, artisans, professions libérales, restaurateurs. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Eckbolsheim : diagnostic adapté aux TPE/PME services, commerces, artisans, professions libérales, restaurateurs. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Eckbolsheim : diagnostic adapté aux TPE/PME services, commerces, artisans, professions libérales, restaurateurs. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Eckbolsheim : diagnostic adapté aux TPE/PME services, commerces, artisans, professions libérales, restaurateurs. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Eckbolsheim : formats adaptés au commerce, au cabinet libéral, à l'atelier d'artisan, au restaurant. Vos équipes repartent autonomes.",

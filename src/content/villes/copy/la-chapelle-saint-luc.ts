@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_CHAPELLE_SAINT_LUC_COPY: VilleCopy = {
   pitchFr:
-    "La Chapelle-Saint-Luc (10), commune résidentielle de 13 000 habitants au cœur de l'agglomération de Troyes. TPE et PME services aux entreprises, commerces de proximité, artisans, restauration, professions libérales, santé et sous-traitants industriels du bassin troyen. Axion-IA y intervient pour tous types d'activités.",
+    "La Chapelle-Saint-Luc (10), commune résidentielle de 13 000 habitants au cœur de l'agglomération de Troyes. TPE et PME services aux entreprises, commerces de proximité, artisans, restauration, professions libérales, santé et sous-traitants industriels du bassin troyen. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "La Chapelle-Saint-Luc (10), commune résidentielle de 13 000 habitants au cœur de l'agglomération de Troyes. TPE et PME services aux entreprises, commerces de proximité, artisans, restauration, professions libérales, santé et sous-traitants industriels du bassin troyen. Axion-IA y intervient pour tous types d'activités.",
+    "La Chapelle-Saint-Luc (10), commune résidentielle de 13 000 habitants au cœur de l'agglomération de Troyes. TPE et PME services aux entreprises, commerces de proximité, artisans, restauration, professions libérales, santé et sous-traitants industriels du bassin troyen. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Chapelle-Saint-Luc (10). Nous accompagnons TPE et PME : services aux entreprises, commerces de proximité, artisans, professions libérales, santé, sous-traitants industriels de l'agglo Troyes. Audit Flash dès 490 € HT.",
   directAnswerEn:

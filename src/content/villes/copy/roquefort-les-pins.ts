@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ROQUEFORT_LES_PINS_COPY: VilleCopy = {
   pitchFr:
-    "Roquefort-les-Pins (06), commune résidentielle de l'arrière-pays azuréen entre Valbonne et Vence, offre un cadre provençal boisé prisé des familles. Tissu TPE/PME artisanat BTP, commerces de proximité, professions libérales, services aux particuliers et télétravail. Axion-IA y intervient pour tous types d'activités.",
+    "Roquefort-les-Pins (06), commune résidentielle de l'arrière-pays azuréen entre Valbonne et Vence, offre un cadre provençal boisé prisé des familles. Tissu TPE/PME artisanat BTP, commerces de proximité, professions libérales, services aux particuliers et télétravail. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Roquefort-les-Pins (06), commune résidentielle de l'arrière-pays azuréen entre Valbonne et Vence, offre un cadre provençal boisé prisé des familles. Tissu TPE/PME artisanat BTP, commerces de proximité, professions libérales, services aux particuliers et télétravail. Axion-IA y intervient pour tous types d'activités.",
+    "Roquefort-les-Pins (06), commune résidentielle de l'arrière-pays azuréen entre Valbonne et Vence, offre un cadre provençal boisé prisé des familles. Tissu TPE/PME artisanat BTP, commerces de proximité, professions libérales, services aux particuliers et télétravail. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Roquefort-les-Pins (06). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, indépendants en télétravail, PME services et entreprises de l'arrière-pays azuréen.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const ROQUEFORT_LES_PINS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Roquefort-les-Pins : diagnostic adapté aux TPE artisans BTP, professions libérales, indépendants et PME services de l'arrière-pays azuréen. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
-      en: "Audit IA à Roquefort-les-Pins : diagnostic adapté aux TPE artisans BTP, professions libérales, indépendants et PME services de l'arrière-pays azuréen. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
+      fr: "Audit IA à Roquefort-les-Pins : diagnostic adapté aux TPE artisans BTP, professions libérales, indépendants et PME services de l'arrière-pays azuréen. Audit Flash 490 € HT, ROI documenté en chiffres accessible aux petites structures.",
+      en: "Audit IA à Roquefort-les-Pins : diagnostic adapté aux TPE artisans BTP, professions libérales, indépendants et PME services de l'arrière-pays azuréen. Audit Flash 490 € HT, ROI documenté en chiffres accessible aux petites structures.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Roquefort-les-Pins : formats adaptés à l'atelier artisan, cabinet libéral ou bureau à domicile. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Roquefort-les-Pins : formats adaptés à l'atelier artisan, cabinet libéral ou bureau à domicile. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Roquefort-les-Pins : formats adaptés à l'atelier artisan, cabinet libéral ou bureau à domicile. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Roquefort-les-Pins : formats adaptés à l'atelier artisan, cabinet libéral ou bureau à domicile. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Roquefort-les-Pins : automatisation devis BTP, agents conversationnels client, CRM augmenté, outils productivité télétravail, classification documents. Adapté aux TPE/PME et indépendants.",

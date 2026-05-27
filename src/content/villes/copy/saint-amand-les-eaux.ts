@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_AMAND_LES_EAUX_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Amand-les-Eaux (59), station thermale historique du Nord au cœur du parc naturel régional Scarpe-Escaut, est réputée pour sa faïencerie, son abbaye et ses thermes. Tissu économique : TPE et PME du thermalisme et bien-être, artisanat faïencier et métiers d'art, commerces de centre-ville, professions libérales de santé, PME agroalimentaire et brassicole du Valenciennois. Axion-IA y intervient pour tous types d'activités du bassin amandinois.",
+    "Saint-Amand-les-Eaux (59), station thermale historique du Nord au cœur du parc naturel régional Scarpe-Escaut, est réputée pour sa faïencerie, son abbaye et ses thermes. Tissu économique : TPE et PME du thermalisme et bien-être, artisanat faïencier et métiers d'art, commerces de centre-ville, professions libérales de santé, PME agroalimentaire et brassicole du Valenciennois. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin amandinois.",
   pitchEn:
-    "Saint-Amand-les-Eaux (59), station thermale historique du Nord au cœur du parc naturel régional Scarpe-Escaut, est réputée pour sa faïencerie, son abbaye et ses thermes. Tissu économique : TPE et PME du thermalisme et bien-être, artisanat faïencier et métiers d'art, commerces de centre-ville, professions libérales de santé, PME agroalimentaire et brassicole du Valenciennois. Axion-IA y intervient pour tous types d'activités du bassin amandinois.",
+    "Saint-Amand-les-Eaux (59), station thermale historique du Nord au cœur du parc naturel régional Scarpe-Escaut, est réputée pour sa faïencerie, son abbaye et ses thermes. Tissu économique : TPE et PME du thermalisme et bien-être, artisanat faïencier et métiers d'art, commerces de centre-ville, professions libérales de santé, PME agroalimentaire et brassicole du Valenciennois. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin amandinois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Amand-les-Eaux (59). Nous accompagnons TPE et PME : établissements thermaux et bien-être, artisans faïenciers et métiers d'art, commerces de centre-ville, professions libérales de santé et PME agroalimentaires du Valenciennois.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const SAINT_AMAND_LES_EAUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Amand-les-Eaux : diagnostic adapté aux TPE/PME du thermalisme, artisans faïenciers, commerces, professions libérales de santé et PME agroalimentaires du Valenciennois. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Amand-les-Eaux : diagnostic adapté aux TPE/PME du thermalisme, artisans faïenciers, commerces, professions libérales de santé et PME agroalimentaires du Valenciennois. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Amand-les-Eaux : diagnostic adapté aux TPE/PME du thermalisme, artisans faïenciers, commerces, professions libérales de santé et PME agroalimentaires du Valenciennois. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Saint-Amand-les-Eaux : diagnostic adapté aux TPE/PME du thermalisme, artisans faïenciers, commerces, professions libérales de santé et PME agroalimentaires du Valenciennois. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Amand-les-Eaux : formats adaptés à l'établissement thermal, à l'artisan d'art, au commerce ou au professionnel libéral de santé. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Saint-Amand-les-Eaux : formats adaptés à l'établissement thermal, à l'artisan d'art, au commerce ou au professionnel libéral de santé. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Saint-Amand-les-Eaux : formats adaptés à l'établissement thermal, à l'artisan d'art, au commerce ou au professionnel libéral de santé. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Saint-Amand-les-Eaux : formats adaptés à l'établissement thermal, à l'artisan d'art, au commerce ou au professionnel libéral de santé. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Amand-les-Eaux : gestion rendez-vous et parcours curistes thermes, catalogage et e-commerce faïencerie artisanale, CRM augmenté professions libérales santé, automatisation commandes agroalimentaire, agents IA accueil touristique abbaye et Scarpe-Escaut.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const JARVILLE_LA_MALGRANGE_COPY: VilleCopy = {
   pitchFr:
-    "Jarville-la-Malgrange (54), commune du sud de l'agglomération nancéienne en Meurthe-et-Moselle, abrite le musée de l'Histoire du fer et des zones d'activités dynamiques. Tissu TPE/PME commerce, services aux entreprises, artisans BTP, professions libérales, restauration. Axion-IA y intervient pour tous types d'activités.",
+    "Jarville-la-Malgrange (54), commune du sud de l'agglomération nancéienne en Meurthe-et-Moselle, abrite le musée de l'Histoire du fer et des zones d'activités dynamiques. Tissu TPE/PME commerce, services aux entreprises, artisans BTP, professions libérales, restauration. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Jarville-la-Malgrange (54), commune du sud de l'agglomération nancéienne en Meurthe-et-Moselle, abrite le musée de l'Histoire du fer et des zones d'activités dynamiques. Tissu TPE/PME commerce, services aux entreprises, artisans BTP, professions libérales, restauration. Axion-IA y intervient pour tous types d'activités.",
+    "Jarville-la-Malgrange (54), commune du sud de l'agglomération nancéienne en Meurthe-et-Moselle, abrite le musée de l'Histoire du fer et des zones d'activités dynamiques. Tissu TPE/PME commerce, services aux entreprises, artisans BTP, professions libérales, restauration. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jarville-la-Malgrange (54). Nous accompagnons tous types d'activités : TPE/PME commerçantes, artisans BTP, professions libérales, prestataires de services et restaurateurs de l'agglomération sud de Nancy.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const JARVILLE_LA_MALGRANGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Jarville-la-Malgrange : diagnostic adapté aux TPE/PME commerçantes, artisans BTP, professions libérales et prestataires de services du sud nancéien. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Jarville-la-Malgrange : diagnostic adapté aux TPE/PME commerçantes, artisans BTP, professions libérales et prestataires de services du sud nancéien. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Jarville-la-Malgrange : diagnostic adapté aux TPE/PME commerçantes, artisans BTP, professions libérales et prestataires de services du sud nancéien. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Jarville-la-Malgrange : diagnostic adapté aux TPE/PME commerçantes, artisans BTP, professions libérales et prestataires de services du sud nancéien. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Jarville-la-Malgrange : formats adaptés au commerce, au cabinet libéral ou au bureau PME. Vos équipes repartent autonomes sur les outils IA métier.",

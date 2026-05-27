@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_PECQ_COPY: VilleCopy = {
   pitchFr:
-    "Le Pecq (78), commune des Yvelines en bords de Seine face à Saint-Germain-en-Laye, conjugue cadre résidentiel privilégié et tissu local de TPE/PME. Commerces de centre-ville, professions libérales, services, artisans. Axion-IA y intervient pour tous types d'activités.",
+    "Le Pecq (78), commune des Yvelines en bords de Seine face à Saint-Germain-en-Laye, conjugue cadre résidentiel privilégié et tissu local de TPE/PME. Commerces de centre-ville, professions libérales, services, artisans. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Le Pecq (78), commune des Yvelines en bords de Seine face à Saint-Germain-en-Laye, conjugue cadre résidentiel privilégié et tissu local de TPE/PME. Commerces de centre-ville, professions libérales, services, artisans. Axion-IA y intervient pour tous types d'activités.",
+    "Le Pecq (78), commune des Yvelines en bords de Seine face à Saint-Germain-en-Laye, conjugue cadre résidentiel privilégié et tissu local de TPE/PME. Commerces de centre-ville, professions libérales, services, artisans. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Pecq (78). Nous accompagnons tous types d'activités : TPE et PME tertiaires, professions libérales, commerces de centre-ville, restaurateurs, artisans, indépendants et services aux particuliers de cette commune résidentielle face à Saint-Germain-en-Laye.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const LE_PECQ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Pecq : diagnostic adapté aux commerçants, restaurateurs, professions libérales et TPE/PME tertiaires face à Saint-Germain-en-Laye. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA au Pecq : diagnostic adapté aux commerçants, restaurateurs, professions libérales et TPE/PME tertiaires face à Saint-Germain-en-Laye. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA au Pecq : diagnostic adapté aux commerçants, restaurateurs, professions libérales et TPE/PME tertiaires face à Saint-Germain-en-Laye. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA au Pecq : diagnostic adapté aux commerçants, restaurateurs, professions libérales et TPE/PME tertiaires face à Saint-Germain-en-Laye. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site au Pecq : formats adaptés au restaurant, commerce, cabinet libéral ou PME tertiaire. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site au Pecq : formats adaptés au restaurant, commerce, cabinet libéral ou PME tertiaire. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site au Pecq : formats adaptés au restaurant, commerce, cabinet libéral ou PME tertiaire. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site au Pecq : formats adaptés au restaurant, commerce, cabinet libéral ou PME tertiaire. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA au Pecq : agents conversationnels clients, automatisation réservations restaurant, gestion RDV santé, CRM augmentés, classification documents. Adapté tissu résidentiel bords de Seine.",

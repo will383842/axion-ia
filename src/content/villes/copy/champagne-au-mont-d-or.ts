@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHAMPAGNE_AU_MONT_D_OR_COPY: VilleCopy = {
   pitchFr:
-    "Champagne-au-Mont-d'Or (69), commune des monts d'Or en banlieue nord-ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités du NO lyonnais.",
+    "Champagne-au-Mont-d'Or (69), commune des monts d'Or en banlieue nord-ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations du NO lyonnais.",
   pitchEn:
-    "Champagne-au-Mont-d'Or (69), commune des monts d'Or en banlieue nord-ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités du NO lyonnais.",
+    "Champagne-au-Mont-d'Or (69), commune des monts d'Or en banlieue nord-ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations du NO lyonnais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Champagne-au-Mont-d'Or (69). Nous accompagnons tous types d'activités : PME tertiaires monts d'Or, professions libérales, TPE artisans BTP, commerçants, indépendants et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:

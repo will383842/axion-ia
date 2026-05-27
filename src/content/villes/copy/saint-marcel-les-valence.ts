@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_MARCEL_LES_VALENCE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Marcel-lès-Valence (26), commune en banlieue nord de Valence dans la Drôme, est intégrée à Valence Romans Agglo. Proximité immédiate de la gare Valence TGV (LGV Méditerranée). Tissu PME tertiaires, zones d'activités, TPE artisans BTP, commerces, agriculture périphérique. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Marcel-lès-Valence (26), commune en banlieue nord de Valence dans la Drôme, est intégrée à Valence Romans Agglo. Proximité immédiate de la gare Valence TGV (LGV Méditerranée). Tissu PME tertiaires, zones d'activités, TPE artisans BTP, commerces, agriculture périphérique. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Saint-Marcel-lès-Valence (26), commune en banlieue nord de Valence dans la Drôme, est intégrée à Valence Romans Agglo. Proximité immédiate de la gare Valence TGV (LGV Méditerranée). Tissu PME tertiaires, zones d'activités, TPE artisans BTP, commerces, agriculture périphérique. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Marcel-lès-Valence (26), commune en banlieue nord de Valence dans la Drôme, est intégrée à Valence Romans Agglo. Proximité immédiate de la gare Valence TGV (LGV Méditerranée). Tissu PME tertiaires, zones d'activités, TPE artisans BTP, commerces, agriculture périphérique. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Marcel-lès-Valence (26). Nous accompagnons tous types d'activités : PME tertiaires zones d'activités Valence Romans Agglo, TPE artisans BTP, commerçants, agriculteurs périphériques, indépendants, professions libérales et services aux entreprises.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const SAINT_MARCEL_LES_VALENCE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Marcel-lès-Valence : diagnostic adapté aux PME tertiaires zones d'activités Valence Romans Agglo, TPE artisans, agriculteurs. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Marcel-lès-Valence : diagnostic adapté aux PME tertiaires zones d'activités Valence Romans Agglo, TPE artisans, agriculteurs. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Marcel-lès-Valence : diagnostic adapté aux PME tertiaires zones d'activités Valence Romans Agglo, TPE artisans, agriculteurs. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Saint-Marcel-lès-Valence : diagnostic adapté aux PME tertiaires zones d'activités Valence Romans Agglo, TPE artisans, agriculteurs. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Marcel-lès-Valence : formats adaptés au bureau tertiaire, zone d'activités, exploitation agricole. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Saint-Marcel-lès-Valence : formats adaptés au bureau tertiaire, zone d'activités, exploitation agricole. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Saint-Marcel-lès-Valence : formats adaptés au bureau tertiaire, zone d'activités, exploitation agricole. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Saint-Marcel-lès-Valence : formats adaptés au bureau tertiaire, zone d'activités, exploitation agricole. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Marcel-lès-Valence : agents conversationnels B2B client gare TGV, automatisation workflow, classification documents, CRM augmentés. Valence Romans Agglo.",
@@ -64,7 +64,7 @@ export const SAINT_MARCEL_LES_VALENCE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou Lyon ?",
-      a: "Nos consultants viennent de Paris (TGV Valence 2h15 + 5 min) ou Lyon (1h A7). Pour les multi-jours, hébergement local possible (hôtels Valence). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Paris (TGV Valence 2h15 + 5 min) ou Lyon (1h A7). Pour les multi-jours, hébergement local possible (hôtels Valence). Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

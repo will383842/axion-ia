@@ -29,12 +29,12 @@ export const ERAGNY_SUR_OISE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Éragny-sur-Oise : diagnostic adapté aux commerçants zone commerciale, PME tertiaire Cergy-Pontoise, professions libérales, restaurateurs, prestataires logistique. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Éragny-sur-Oise : diagnostic adapté aux commerçants zone commerciale, PME tertiaire Cergy-Pontoise, professions libérales, restaurateurs, prestataires logistique. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Éragny-sur-Oise : diagnostic adapté aux commerçants zone commerciale, PME tertiaire Cergy-Pontoise, professions libérales, restaurateurs, prestataires logistique. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Éragny-sur-Oise : diagnostic adapté aux commerçants zone commerciale, PME tertiaire Cergy-Pontoise, professions libérales, restaurateurs, prestataires logistique. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Éragny-sur-Oise : formats adaptés enseigne commerciale, bureau tertiaire, cabinet, restaurant, entrepôt logistique. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Éragny-sur-Oise : formats adaptés enseigne commerciale, bureau tertiaire, cabinet, restaurant, entrepôt logistique. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Éragny-sur-Oise : formats adaptés enseigne commerciale, bureau tertiaire, cabinet, restaurant, entrepôt logistique. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Éragny-sur-Oise : formats adaptés enseigne commerciale, bureau tertiaire, cabinet, restaurant, entrepôt logistique. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Éragny-sur-Oise : CRM augmenté commerçants, automatisation back-office PME tertiaire, outils réservation restauration, optimisation flux logistique, facturation intelligente.",
@@ -64,7 +64,7 @@ export const ERAGNY_SUR_OISE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Cergy ou Paris ?",
-      a: "Cergy-Pontoise (5 min). Paris La Défense (30 min RER A). Paris centre (40 min). CDG (40 min). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Cergy-Pontoise (5 min). Paris La Défense (30 min RER A). Paris centre (40 min). CDG (40 min). Frais de mission en sus, grille tarifaire publique.",
     },
   ],
 };

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PONT_AUDEMER_COPY: VilleCopy = {
   pitchFr:
-    "Pont-Audemer (27), sous-préfecture de l'Eure surnommée la « Venise normande » pour ses canaux de la Risle. Tissu TPE artisans, PME industrie et tannerie historique, commerces centre-ville, tourisme fluvial, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Pont-Audemer (27), sous-préfecture de l'Eure surnommée la « Venise normande » pour ses canaux de la Risle. Tissu TPE artisans, PME industrie et tannerie historique, commerces centre-ville, tourisme fluvial, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Pont-Audemer (27), sous-préfecture de l'Eure surnommée la « Venise normande » pour ses canaux de la Risle. Tissu TPE artisans, PME industrie et tannerie historique, commerces centre-ville, tourisme fluvial, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Pont-Audemer (27), sous-préfecture de l'Eure surnommée la « Venise normande » pour ses canaux de la Risle. Tissu TPE artisans, PME industrie et tannerie historique, commerces centre-ville, tourisme fluvial, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pont-Audemer (27). Nous accompagnons tous types d'activités : TPE artisans, PME industrie et cuir, commerces centre-ville Venise normande, tourisme fluvial, indépendants et services aux entreprises du Pays Risle-Charentonne.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const PONT_AUDEMER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pont-Audemer : diagnostic adapté aux TPE artisans, PME industrie et cuir, commerces Venise normande, tourisme fluvial, professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Pont-Audemer : diagnostic adapté aux TPE artisans, PME industrie et cuir, commerces Venise normande, tourisme fluvial, professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Pont-Audemer : diagnostic adapté aux TPE artisans, PME industrie et cuir, commerces Venise normande, tourisme fluvial, professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Pont-Audemer : diagnostic adapté aux TPE artisans, PME industrie et cuir, commerces Venise normande, tourisme fluvial, professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pont-Audemer : formats adaptés à l'atelier, la boutique centre-ville, l'office tourisme, le cabinet. Vos équipes repartent autonomes sur outils IA.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_FERTE_SOUS_JOUARRE_COPY: VilleCopy = {
   pitchFr:
-    "La Ferté-sous-Jouarre, commune de Seine-et-Marne (77) à la confluence de la Marne et du Petit Morin, 65 km à l'est de Paris. Tissu TPE artisans, commerçants de centre-bourg, PME agroalimentaires et industrielles, professions libérales et indépendants. Axion-IA y intervient pour tous types d'activités du bassin fertois.",
+    "La Ferté-sous-Jouarre, commune de Seine-et-Marne (77) à la confluence de la Marne et du Petit Morin, 65 km à l'est de Paris. Tissu TPE artisans, commerçants de centre-bourg, PME agroalimentaires et industrielles, professions libérales et indépendants. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin fertois.",
   pitchEn:
-    "La Ferté-sous-Jouarre, commune de Seine-et-Marne (77) à la confluence de la Marne et du Petit Morin, 65 km à l'est de Paris. Tissu TPE artisans, commerçants de centre-bourg, PME agroalimentaires et industrielles, professions libérales et indépendants. Axion-IA y intervient pour tous types d'activités du bassin fertois.",
+    "La Ferté-sous-Jouarre, commune de Seine-et-Marne (77) à la confluence de la Marne et du Petit Morin, 65 km à l'est de Paris. Tissu TPE artisans, commerçants de centre-bourg, PME agroalimentaires et industrielles, professions libérales et indépendants. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin fertois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Ferté-sous-Jouarre (77). Nous accompagnons tous types d'activités : TPE artisans, commerçants, PME agroalimentaires et industrielles, professions libérales et indépendants du bassin fertois. Audit Flash dès 490 € HT.",
   directAnswerEn:

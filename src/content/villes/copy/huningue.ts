@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const HUNINGUE_COPY: VilleCopy = {
   pitchFr:
-    "Huningue (68), commune de 7 487 habitants en Haut-Rhin, est située au carrefour des trois frontières (France, Allemagne, Suisse) aux portes de Bâle. Port rhénan, industries chimiques et pharmaceutiques, tissu TPE/PME logistique transfrontalière, commerce, services et artisanat. Axion-IA y intervient pour tous types d'activités.",
+    "Huningue (68), commune de 7 487 habitants en Haut-Rhin, est située au carrefour des trois frontières (France, Allemagne, Suisse) aux portes de Bâle. Port rhénan, industries chimiques et pharmaceutiques, tissu TPE/PME logistique transfrontalière, commerce, services et artisanat. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Huningue (68), commune de 7 487 habitants en Haut-Rhin, est située au carrefour des trois frontières (France, Allemagne, Suisse) aux portes de Bâle. Port rhénan, industries chimiques et pharmaceutiques, tissu TPE/PME logistique transfrontalière, commerce, services et artisanat. Axion-IA y intervient pour tous types d'activités.",
+    "Huningue (68), commune de 7 487 habitants en Haut-Rhin, est située au carrefour des trois frontières (France, Allemagne, Suisse) aux portes de Bâle. Port rhénan, industries chimiques et pharmaceutiques, tissu TPE/PME logistique transfrontalière, commerce, services et artisanat. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Huningue (68). Nous accompagnons TPE et PME du bassin des trois frontières : logisticiens, industriels chimie/pharma, commerçants, artisans et prestataires de services. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -34,8 +34,8 @@ export const HUNINGUE_COPY: VilleCopy = {
       en: "Audit IA à Huningue : diagnostic adapté aux TPE/PME chimie, pharma, logistique, commerce et services du bassin des trois frontières. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Huningue : formats adaptés au site industriel, à l'entrepôt logistique, au commerce, à l'agence ou au bureau. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Huningue : formats adaptés au site industriel, à l'entrepôt logistique, au commerce, à l'agence ou au bureau. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Huningue : formats adaptés au site industriel, à l'entrepôt logistique, au commerce, à l'agence ou au bureau. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Huningue : formats adaptés au site industriel, à l'entrepôt logistique, au commerce, à l'agence ou au bureau. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Huningue : contrôle qualité chimie/pharma, optimisation flux logistique portuaire, agents conversationnels trilingues FR/DE/EN, automatisation douanes transfrontalières, OCR documents réglementaires.",

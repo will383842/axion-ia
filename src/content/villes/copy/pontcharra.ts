@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PONTCHARRA_COPY: VilleCopy = {
   pitchFr:
-    "Pontcharra (38), commune de la vallée du Grésivaudan en Isère à la frontière avec la Savoie, est connue pour être le lieu de naissance du chevalier Bayard (« le chevalier sans peur et sans reproche », guerres d'Italie XVIe siècle). Tissu PME industrielles, TPE artisans BTP, commerces, agriculture. Axion-IA y intervient pour tous types d'activités.",
+    "Pontcharra (38), commune de la vallée du Grésivaudan en Isère à la frontière avec la Savoie, est connue pour être le lieu de naissance du chevalier Bayard (« le chevalier sans peur et sans reproche », guerres d'Italie XVIe siècle). Tissu PME industrielles, TPE artisans BTP, commerces, agriculture. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Pontcharra (38), commune de la vallée du Grésivaudan en Isère à la frontière avec la Savoie, est connue pour être le lieu de naissance du chevalier Bayard (« le chevalier sans peur et sans reproche », guerres d'Italie XVIe siècle). Tissu PME industrielles, TPE artisans BTP, commerces, agriculture. Axion-IA y intervient pour tous types d'activités.",
+    "Pontcharra (38), commune de la vallée du Grésivaudan en Isère à la frontière avec la Savoie, est connue pour être le lieu de naissance du chevalier Bayard (« le chevalier sans peur et sans reproche », guerres d'Italie XVIe siècle). Tissu PME industrielles, TPE artisans BTP, commerces, agriculture. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pontcharra (38). Nous accompagnons tous types d'activités : PME industrielles du Grésivaudan / Combe de Savoie, TPE artisans BTP, commerçants, agriculteurs, indépendants, professions libérales et services aux entreprises de la limite Isère-Savoie.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const PONTCHARRA_COPY: VilleCopy = {
       en: "Audit IA à Pontcharra : diagnostic adapté aux PME industrielles, agriculteurs, TPE artisans et commerçants du Grésivaudan / Combe de Savoie. ROI chiffré, audit Flash 490 € HT accessible.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Pontcharra : formats adaptés à l'atelier industriel, exploitation agricole, commerce ou site touristique. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Pontcharra : formats adaptés à l'atelier industriel, exploitation agricole, commerce ou site touristique. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Pontcharra : formats adaptés à l'atelier industriel, exploitation agricole, commerce ou site touristique. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Pontcharra : formats adaptés à l'atelier industriel, exploitation agricole, commerce ou site touristique. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Pontcharra : prédiction maintenance industrielle, classification photos cultures/animaux, agents conversationnels touristique (château Bayard), automatisation devis BTP.",
@@ -64,7 +64,7 @@ export const PONTCHARRA_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Grenoble ou Chambéry ?",
-      a: "Nos consultants viennent de Grenoble (30 min A41) ou Chambéry (25 min). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Grenoble (30 min A41) ou Chambéry (25 min). Pour les multi-jours, hébergement local possible. Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

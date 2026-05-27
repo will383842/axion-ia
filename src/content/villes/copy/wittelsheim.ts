@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const WITTELSHEIM_COPY: VilleCopy = {
   pitchFr:
-    "Wittelsheim (68), ville de 10 645 habitants à l'ouest de l'agglomération mulhousienne en Haut-Rhin, est issue du bassin potassique d'Alsace, aujourd'hui reconverti en activités industrielles, logistiques et de services. Tissu TPE/PME industrie reconvertie, logistique, commerces, artisanat, services. Axion-IA y intervient pour tous types d'activités.",
+    "Wittelsheim (68), ville de 10 645 habitants à l'ouest de l'agglomération mulhousienne en Haut-Rhin, est issue du bassin potassique d'Alsace, aujourd'hui reconverti en activités industrielles, logistiques et de services. Tissu TPE/PME industrie reconvertie, logistique, commerces, artisanat, services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Wittelsheim (68), ville de 10 645 habitants à l'ouest de l'agglomération mulhousienne en Haut-Rhin, est issue du bassin potassique d'Alsace, aujourd'hui reconverti en activités industrielles, logistiques et de services. Tissu TPE/PME industrie reconvertie, logistique, commerces, artisanat, services. Axion-IA y intervient pour tous types d'activités.",
+    "Wittelsheim (68), ville de 10 645 habitants à l'ouest de l'agglomération mulhousienne en Haut-Rhin, est issue du bassin potassique d'Alsace, aujourd'hui reconverti en activités industrielles, logistiques et de services. Tissu TPE/PME industrie reconvertie, logistique, commerces, artisanat, services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wittelsheim (68). Nous accompagnons tous types d'activités : TPE/PME industrie reconvertie et logistique, artisans, commerces et professions de services du bassin potassique mulhousien ouest.",
   directAnswerEn:
@@ -30,12 +30,12 @@ export const WITTELSHEIM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Wittelsheim : diagnostic adapté aux TPE/PME industrie reconvertie, logistique, artisans, commerces, services. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Wittelsheim : diagnostic adapté aux TPE/PME industrie reconvertie, logistique, artisans, commerces, services. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Wittelsheim : diagnostic adapté aux TPE/PME industrie reconvertie, logistique, artisans, commerces, services. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Wittelsheim : diagnostic adapté aux TPE/PME industrie reconvertie, logistique, artisans, commerces, services. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Wittelsheim : formats adaptés à l'atelier industriel, l'entrepôt logistique, le commerce, le bureau. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Wittelsheim : formats adaptés à l'atelier industriel, l'entrepôt logistique, le commerce, le bureau. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Wittelsheim : formats adaptés à l'atelier industriel, l'entrepôt logistique, le commerce, le bureau. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Wittelsheim : formats adaptés à l'atelier industriel, l'entrepôt logistique, le commerce, le bureau. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Wittelsheim : automatisation traçabilité industrielle, gestion entrepôts, workflow logistique, gestion commerciale, agents conversationnels.",

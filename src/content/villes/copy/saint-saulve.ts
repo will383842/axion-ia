@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_SAULVE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Saulve (59), commune de l'agglomération de Valenciennes dans le Hainaut, entre bassin minier et zone industrielle reconvertie. Tissu TPE/PME industrie automobile et ferroviaire, logistique, BTP, services aux entreprises, commerces et professions libérales du Valenciennois. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Saulve (59), commune de l'agglomération de Valenciennes dans le Hainaut, entre bassin minier et zone industrielle reconvertie. Tissu TPE/PME industrie automobile et ferroviaire, logistique, BTP, services aux entreprises, commerces et professions libérales du Valenciennois. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Saint-Saulve (59), commune de l'agglomération de Valenciennes dans le Hainaut, entre bassin minier et zone industrielle reconvertie. Tissu TPE/PME industrie automobile et ferroviaire, logistique, BTP, services aux entreprises, commerces et professions libérales du Valenciennois. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Saulve (59), commune de l'agglomération de Valenciennes dans le Hainaut, entre bassin minier et zone industrielle reconvertie. Tissu TPE/PME industrie automobile et ferroviaire, logistique, BTP, services aux entreprises, commerces et professions libérales du Valenciennois. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Saulve (59). Nous accompagnons TPE et PME du Valenciennois : sous-traitance automobile et ferroviaire, logistique, BTP, services aux entreprises, commerces de proximité et professions libérales.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const SAINT_SAULVE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Saulve : diagnostic adapté aux TPE/PME sous-traitance automobile-ferroviaire, logistique, BTP, services et commerces du Valenciennois. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Saulve : diagnostic adapté aux TPE/PME sous-traitance automobile-ferroviaire, logistique, BTP, services et commerces du Valenciennois. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Saulve : diagnostic adapté aux TPE/PME sous-traitance automobile-ferroviaire, logistique, BTP, services et commerces du Valenciennois. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Saint-Saulve : diagnostic adapté aux TPE/PME sous-traitance automobile-ferroviaire, logistique, BTP, services et commerces du Valenciennois. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Saulve : formats adaptés à l'atelier automobile, l'entrepôt logistique, le chantier BTP ou le cabinet de services. Vos équipes repartent autonomes sur outils IA configurés métier.",

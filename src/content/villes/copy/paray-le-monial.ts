@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PARAY_LE_MONIAL_COPY: VilleCopy = {
   pitchFr:
-    "Paray-le-Monial (71), cité du Sacré-Cœur en Saône-et-Loire, reconnue pour sa basilique romane et son pèlerinage international. Tissu TPE artisanat, commerce centre-ville, tourisme religieux et culturel, PME tertiaires, hébergement pèlerins. Axion-IA y intervient pour tous types d'activités.",
+    "Paray-le-Monial (71), cité du Sacré-Cœur en Saône-et-Loire, reconnue pour sa basilique romane et son pèlerinage international. Tissu TPE artisanat, commerce centre-ville, tourisme religieux et culturel, PME tertiaires, hébergement pèlerins. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Paray-le-Monial (71), cité du Sacré-Cœur en Saône-et-Loire, reconnue pour sa basilique romane et son pèlerinage international. Tissu TPE artisanat, commerce centre-ville, tourisme religieux et culturel, PME tertiaires, hébergement pèlerins. Axion-IA y intervient pour tous types d'activités.",
+    "Paray-le-Monial (71), cité du Sacré-Cœur en Saône-et-Loire, reconnue pour sa basilique romane et son pèlerinage international. Tissu TPE artisanat, commerce centre-ville, tourisme religieux et culturel, PME tertiaires, hébergement pèlerins. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Paray-le-Monial (71). Nous accompagnons TPE et PME : commerçants et artisans centre-ville, acteurs tourisme religieux (basilique, pèlerinage Sacré-Cœur), hébergeurs, PME tertiaires, restaurateurs. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const PARAY_LE_MONIAL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Paray-le-Monial : diagnostic adapté aux TPE commerçants et artisans, acteurs tourisme religieux (basilique, pèlerinage Sacré-Cœur), hébergeurs, restaurateurs. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Paray-le-Monial : diagnostic adapté aux TPE commerçants et artisans, acteurs tourisme religieux (basilique, pèlerinage Sacré-Cœur), hébergeurs, restaurateurs. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Paray-le-Monial : diagnostic adapté aux TPE commerçants et artisans, acteurs tourisme religieux (basilique, pèlerinage Sacré-Cœur), hébergeurs, restaurateurs. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Paray-le-Monial : diagnostic adapté aux TPE commerçants et artisans, acteurs tourisme religieux (basilique, pèlerinage Sacré-Cœur), hébergeurs, restaurateurs. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Paray-le-Monial : formats adaptés commerce, hébergement pèlerins, site religieux, restaurant. Vos équipes repartent autonomes sur outils IA.",
@@ -65,7 +65,7 @@ export const PARAY_LE_MONIAL_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Roanne ?",
-      a: "Nos consultants viennent de Lyon (1h45) ou Roanne (45 min). Le Creusot-TGV à 50 min. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (1h45) ou Roanne (45 min). Le Creusot-TGV à 50 min. Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

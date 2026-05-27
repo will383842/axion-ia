@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_MEE_SUR_SEINE_COPY: VilleCopy = {
   pitchFr:
-    "Le Mée-sur-Seine (77), commune de l'agglomération melunaise en bord de Seine, conjugue tissu résidentiel dense et dynamisme économique sud francilien. Tissu TPE commerces et artisanat, PME tertiaire et services, professions libérales, restauration, prestataires logistique. Axion-IA y intervient pour tous types d'activités.",
+    "Le Mée-sur-Seine (77), commune de l'agglomération melunaise en bord de Seine, conjugue tissu résidentiel dense et dynamisme économique sud francilien. Tissu TPE commerces et artisanat, PME tertiaire et services, professions libérales, restauration, prestataires logistique. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Le Mée-sur-Seine (77), commune de l'agglomération melunaise en bord de Seine, conjugue tissu résidentiel dense et dynamisme économique sud francilien. Tissu TPE commerces et artisanat, PME tertiaire et services, professions libérales, restauration, prestataires logistique. Axion-IA y intervient pour tous types d'activités.",
+    "Le Mée-sur-Seine (77), commune de l'agglomération melunaise en bord de Seine, conjugue tissu résidentiel dense et dynamisme économique sud francilien. Tissu TPE commerces et artisanat, PME tertiaire et services, professions libérales, restauration, prestataires logistique. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Mée-sur-Seine (77). Nous accompagnons TPE et PME : commerçants et artisans, PME tertiaire agglomération Melun, professions libérales, restaurateurs, prestataires logistique sud Seine-et-Marne. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const LE_MEE_SUR_SEINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Mée-sur-Seine : diagnostic adapté aux commerçants et artisans, PME tertiaire agglomération Melun, professions libérales, restaurateurs, prestataires logistique. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA au Mée-sur-Seine : diagnostic adapté aux commerçants et artisans, PME tertiaire agglomération Melun, professions libérales, restaurateurs, prestataires logistique. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA au Mée-sur-Seine : diagnostic adapté aux commerçants et artisans, PME tertiaire agglomération Melun, professions libérales, restaurateurs, prestataires logistique. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA au Mée-sur-Seine : diagnostic adapté aux commerçants et artisans, PME tertiaire agglomération Melun, professions libérales, restaurateurs, prestataires logistique. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
-      fr: "Interventions IA sur site au Mée-sur-Seine : formats adaptés boutique, bureau tertiaire, cabinet, restaurant, entrepôt logistique. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site au Mée-sur-Seine : formats adaptés boutique, bureau tertiaire, cabinet, restaurant, entrepôt logistique. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site au Mée-sur-Seine : formats adaptés boutique, bureau tertiaire, cabinet, restaurant, entrepôt logistique. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site au Mée-sur-Seine : formats adaptés boutique, bureau tertiaire, cabinet, restaurant, entrepôt logistique. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA au Mée-sur-Seine : CRM augmenté commerçants, automatisation back-office PME tertiaire, outils réservation restauration, optimisation flux logistique, facturation intelligente.",

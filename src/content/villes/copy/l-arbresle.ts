@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const L_ARBRESLE_COPY: VilleCopy = {
   pitchFr:
-    "L'Arbresle (69), commune du nord-ouest lyonnais dans le Rhône, est positionnée dans la vallée de la Brévenne à mi-chemin entre Lyon et Tarare. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités du NO lyonnais.",
+    "L'Arbresle (69), commune du nord-ouest lyonnais dans le Rhône, est positionnée dans la vallée de la Brévenne à mi-chemin entre Lyon et Tarare. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du NO lyonnais.",
   pitchEn:
-    "L'Arbresle (69), commune du nord-ouest lyonnais dans le Rhône, est positionnée dans la vallée de la Brévenne à mi-chemin entre Lyon et Tarare. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités du NO lyonnais.",
+    "L'Arbresle (69), commune du nord-ouest lyonnais dans le Rhône, est positionnée dans la vallée de la Brévenne à mi-chemin entre Lyon et Tarare. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du NO lyonnais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à L'Arbresle (69). Nous accompagnons tous types d'activités : PME tertiaires et industrielles NO lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la vallée de la Brévenne.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const L_ARBRESLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à L'Arbresle : diagnostic adapté aux PME tertiaires/industrielles NO lyonnais, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à L'Arbresle : diagnostic adapté aux PME tertiaires/industrielles NO lyonnais, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à L'Arbresle : diagnostic adapté aux PME tertiaires/industrielles NO lyonnais, professions libérales, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à L'Arbresle : diagnostic adapté aux PME tertiaires/industrielles NO lyonnais, professions libérales, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à L'Arbresle : formats adaptés au bureau, atelier, cabinet, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const L_ARBRESLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (30 min TER ou voiture). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (30 min TER ou voiture). Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

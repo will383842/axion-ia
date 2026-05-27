@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VIRIAT_COPY: VilleCopy = {
   pitchFr:
-    "Viriat (01), commune en banlieue immédiate de Bourg-en-Bresse dans l'Ain, est positionnée en Bresse. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces, agriculture Bresse (volaille de Bresse AOC à proximité). Axion-IA y intervient pour tous types d'activités bressoises.",
+    "Viriat (01), commune en banlieue immédiate de Bourg-en-Bresse dans l'Ain, est positionnée en Bresse. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces, agriculture Bresse (volaille de Bresse AOC à proximité). Axion-IA opère pour toutes les structures économiques de la commune bressoises.",
   pitchEn:
-    "Viriat (01), commune en banlieue immédiate de Bourg-en-Bresse dans l'Ain, est positionnée en Bresse. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces, agriculture Bresse (volaille de Bresse AOC à proximité). Axion-IA y intervient pour tous types d'activités bressoises.",
+    "Viriat (01), commune en banlieue immédiate de Bourg-en-Bresse dans l'Ain, est positionnée en Bresse. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces, agriculture Bresse (volaille de Bresse AOC à proximité). Axion-IA opère pour toutes les structures économiques de la commune bressoises.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Viriat (01). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Bresse, agriculteurs/éleveurs (volaille de Bresse AOC), TPE artisans BTP, commerçants et services aux entreprises de l'agglomération burgienne.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const VIRIAT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Viriat : diagnostic adapté aux PME tertiaires/industrielles Bresse, éleveurs volaille AOC, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Viriat : diagnostic adapté aux PME tertiaires/industrielles Bresse, éleveurs volaille AOC, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Viriat : diagnostic adapté aux PME tertiaires/industrielles Bresse, éleveurs volaille AOC, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Viriat : diagnostic adapté aux PME tertiaires/industrielles Bresse, éleveurs volaille AOC, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Viriat : formats adaptés au bureau, atelier, exploitation élevage, commerce. Vos équipes repartent autonomes sur outils IA.",

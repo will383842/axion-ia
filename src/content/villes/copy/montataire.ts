@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MONTATAIRE_COPY: VilleCopy = {
   pitchFr:
-    "Montataire (60), commune industrielle de l'agglomération creilloise dans l'Oise, héritière de la métallurgie lourde reconvertie vers les services, la logistique et le BTP. Tissu TPE/PME industrie, sous-traitance, commerce, artisanat et économie sociale. Axion-IA y intervient pour tous types d'activités.",
+    "Montataire (60), commune industrielle de l'agglomération creilloise dans l'Oise, héritière de la métallurgie lourde reconvertie vers les services, la logistique et le BTP. Tissu TPE/PME industrie, sous-traitance, commerce, artisanat et économie sociale. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Montataire (60), commune industrielle de l'agglomération creilloise dans l'Oise, héritière de la métallurgie lourde reconvertie vers les services, la logistique et le BTP. Tissu TPE/PME industrie, sous-traitance, commerce, artisanat et économie sociale. Axion-IA y intervient pour tous types d'activités.",
+    "Montataire (60), commune industrielle de l'agglomération creilloise dans l'Oise, héritière de la métallurgie lourde reconvertie vers les services, la logistique et le BTP. Tissu TPE/PME industrie, sous-traitance, commerce, artisanat et économie sociale. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montataire (60). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance reconvertie, artisans BTP, commerces de proximité, acteurs de la logistique et services aux entreprises du bassin creillois. Audit Flash dès 490 € HT.",
   directAnswerEn:

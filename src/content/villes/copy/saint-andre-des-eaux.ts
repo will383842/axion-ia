@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_ANDRE_DES_EAUX_COPY: VilleCopy = {
   pitchFr:
-    "Saint-André-des-Eaux (44), commune de la Brière en Loire-Atlantique, aux portes de La Baule et de la presqu'île guérandaise. Tissu TPE artisans et commerçants, PME tourisme balnéaire, hébergements, restauration, professions libérales. Axion-IA y intervient pour tous types d'activités du bassin Brière-La Baule.",
+    "Saint-André-des-Eaux (44), commune de la Brière en Loire-Atlantique, aux portes de La Baule et de la presqu'île guérandaise. Tissu TPE artisans et commerçants, PME tourisme balnéaire, hébergements, restauration, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin Brière-La Baule.",
   pitchEn:
-    "Saint-André-des-Eaux (44), commune de la Brière en Loire-Atlantique, aux portes de La Baule et de la presqu'île guérandaise. Tissu TPE artisans et commerçants, PME tourisme balnéaire, hébergements, restauration, professions libérales. Axion-IA y intervient pour tous types d'activités du bassin Brière-La Baule.",
+    "Saint-André-des-Eaux (44), commune de la Brière en Loire-Atlantique, aux portes de La Baule et de la presqu'île guérandaise. Tissu TPE artisans et commerçants, PME tourisme balnéaire, hébergements, restauration, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin Brière-La Baule.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-André-des-Eaux (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tourisme balnéaire, hébergements, restauration, professions libérales et entreprises du bassin Brière-La Baule.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CANOHES_COPY: VilleCopy = {
   pitchFr:
-    "Canohès (66), commune résidentielle en périphérie sud de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME tertiaires, commerces, agriculture, professions libérales. Axion-IA y intervient pour tous types d'activités de l'agglomération perpignanaise.",
+    "Canohès (66), commune résidentielle en périphérie sud de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME tertiaires, commerces, agriculture, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération perpignanaise.",
   pitchEn:
-    "Canohès (66), commune résidentielle en périphérie sud de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME tertiaires, commerces, agriculture, professions libérales. Axion-IA y intervient pour tous types d'activités de l'agglomération perpignanaise.",
+    "Canohès (66), commune résidentielle en périphérie sud de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME tertiaires, commerces, agriculture, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération perpignanaise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Canohès (66). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, commerçants, agriculteurs, indépendants et professions libérales de l'agglo Perpignan sud.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const CANOHES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Canohès : diagnostic adapté aux TPE artisans, PME tertiaires, agriculteurs et commerçants de l'agglo Perpignan sud. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Canohès : diagnostic adapté aux TPE artisans, PME tertiaires, agriculteurs et commerçants de l'agglo Perpignan sud. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Canohès : diagnostic adapté aux TPE artisans, PME tertiaires, agriculteurs et commerçants de l'agglo Perpignan sud. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Canohès : diagnostic adapté aux TPE artisans, PME tertiaires, agriculteurs et commerçants de l'agglo Perpignan sud. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Canohès : formats adaptés au bureau, atelier, exploitation, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Canohès : formats adaptés au bureau, atelier, exploitation, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Canohès : formats adaptés au bureau, atelier, exploitation, commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Canohès : formats adaptés au bureau, atelier, exploitation, commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Canohès : agents conversationnels B2B, automatisation devis BTP, classification parcellaire viticole, CRM augmentés. Perpignan Méditerranée Métropole.",

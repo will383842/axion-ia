@@ -33,8 +33,8 @@ export const SALLANCHES_COPY: VilleCopy = {
       en: "Audit IA à Sallanches : diagnostic adapté aux hôteliers, commerçants, TPE artisans BTP et PME services du Pays du Mont-Blanc. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Sallanches : formats adaptés aux hôtels, commerces, artisans BTP montagne. Vos équipes repartent autonomes sur outils IA configurés métier tourisme et services.",
-      en: "Interventions IA sur site à Sallanches : formats adaptés aux hôtels, commerces, artisans BTP montagne. Vos équipes repartent autonomes sur outils IA configurés métier tourisme et services.",
+      fr: "Interventions IA sur site à Sallanches : formats adaptés aux hôtels, commerces, artisans BTP montagne. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure tourisme et services.",
+      en: "Interventions IA sur site à Sallanches : formats adaptés aux hôtels, commerces, artisans BTP montagne. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure tourisme et services.",
     },
     implementation: {
       fr: "Implémentation IA à Sallanches : agents conversationnels réservation hôtelière, chatbots tourisme multilingues, automatisation devis BTP, gestion stocks commerce, prédiction affluence saisonnière. Pays du Mont-Blanc.",

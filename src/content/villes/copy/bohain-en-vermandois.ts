@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BOHAIN_EN_VERMANDOIS_COPY: VilleCopy = {
   pitchFr:
-    "Bohain-en-Vermandois (02), commune du Vermandois en Aisne, berceau historique du tissage et du textile, aujourd'hui tournée vers la sous-traitance industrielle, le commerce et les services. Tissu TPE/PME industrie, artisans BTP, commerces de proximité, professions de services, agriculture céréalière et savoir-faire textile résiduel. Axion-IA y intervient pour tous types d'activités.",
+    "Bohain-en-Vermandois (02), commune du Vermandois en Aisne, berceau historique du tissage et du textile, aujourd'hui tournée vers la sous-traitance industrielle, le commerce et les services. Tissu TPE/PME industrie, artisans BTP, commerces de proximité, professions de services, agriculture céréalière et savoir-faire textile résiduel. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Bohain-en-Vermandois (02), commune du Vermandois en Aisne, berceau historique du tissage et du textile, aujourd'hui tournée vers la sous-traitance industrielle, le commerce et les services. Tissu TPE/PME industrie, artisans BTP, commerces de proximité, professions de services, agriculture céréalière et savoir-faire textile résiduel. Axion-IA y intervient pour tous types d'activités.",
+    "Bohain-en-Vermandois (02), commune du Vermandois en Aisne, berceau historique du tissage et du textile, aujourd'hui tournée vers la sous-traitance industrielle, le commerce et les services. Tissu TPE/PME industrie, artisans BTP, commerces de proximité, professions de services, agriculture céréalière et savoir-faire textile résiduel. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bohain-en-Vermandois (02). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance, ateliers textile, artisans BTP, commerces de proximité, professions de services et exploitations agricoles du Vermandois.",
   directAnswerEn:
@@ -30,12 +30,12 @@ export const BOHAIN_EN_VERMANDOIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bohain-en-Vermandois : diagnostic adapté aux TPE/PME industrie, ateliers textile, sous-traitants, artisans BTP, commerces et exploitations agricoles. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Bohain-en-Vermandois : diagnostic adapté aux TPE/PME industrie, ateliers textile, sous-traitants, artisans BTP, commerces et exploitations agricoles. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Bohain-en-Vermandois : diagnostic adapté aux TPE/PME industrie, ateliers textile, sous-traitants, artisans BTP, commerces et exploitations agricoles. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Bohain-en-Vermandois : diagnostic adapté aux TPE/PME industrie, ateliers textile, sous-traitants, artisans BTP, commerces et exploitations agricoles. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Bohain-en-Vermandois : formats adaptés à l'atelier industriel ou textile, chantier, boutique, exploitation ou bureau. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Bohain-en-Vermandois : formats adaptés à l'atelier industriel ou textile, chantier, boutique, exploitation ou bureau. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Bohain-en-Vermandois : formats adaptés à l'atelier industriel ou textile, chantier, boutique, exploitation ou bureau. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Bohain-en-Vermandois : formats adaptés à l'atelier industriel ou textile, chantier, boutique, exploitation ou bureau. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Bohain-en-Vermandois : contrôle qualité production, traçabilité textile et sous-traitance, automatisation devis BTP, gestion stocks ateliers, agents conversationnels B2B, gestion exploitations.",

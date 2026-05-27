@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const EZANVILLE_COPY: VilleCopy = {
   pitchFr:
-    "Ézanville (95), commune résidentielle du nord de Paris en Val-d'Oise, abrite un tissu économique de TPE artisanales, PME de services, commerces de proximité et professions libérales. Proximité immédiate d'Écouen et de la Plaine de France. Axion-IA y intervient pour tous types d'activités.",
+    "Ézanville (95), commune résidentielle du nord de Paris en Val-d'Oise, abrite un tissu économique de TPE artisanales, PME de services, commerces de proximité et professions libérales. Proximité immédiate d'Écouen et de la Plaine de France. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Ézanville (95), commune résidentielle du nord de Paris en Val-d'Oise, abrite un tissu économique de TPE artisanales, PME de services, commerces de proximité et professions libérales. Proximité immédiate d'Écouen et de la Plaine de France. Axion-IA y intervient pour tous types d'activités.",
+    "Ézanville (95), commune résidentielle du nord de Paris en Val-d'Oise, abrite un tissu économique de TPE artisanales, PME de services, commerces de proximité et professions libérales. Proximité immédiate d'Écouen et de la Plaine de France. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ézanville (95). Nous accompagnons tous types d'activités : TPE artisanales et commerçantes, PME de services aux entreprises, professions libérales, indépendants et prestataires du nord Val-d'Oise.",
   directAnswerEn:

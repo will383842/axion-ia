@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BAUD_COPY: VilleCopy = {
   pitchFr:
-    "Baud (56), bourg historique du centre Morbihan, est connu pour la Vénus de Quinipily et son tissu de TPE artisanales, PME agroalimentaires et commerces de proximité. Axion-IA y intervient pour tous types d'activités du centre Morbihan.",
+    "Baud (56), bourg historique du centre Morbihan, est connu pour la Vénus de Quinipily et son tissu de TPE artisanales, PME agroalimentaires et commerces de proximité. Axion-IA accompagne entreprises et indépendants de tous secteurs du centre Morbihan.",
   pitchEn:
-    "Baud (56), bourg historique du centre Morbihan, est connu pour la Vénus de Quinipily et son tissu de TPE artisanales, PME agroalimentaires et commerces de proximité. Axion-IA y intervient pour tous types d'activités du centre Morbihan.",
+    "Baud (56), bourg historique du centre Morbihan, est connu pour la Vénus de Quinipily et son tissu de TPE artisanales, PME agroalimentaires et commerces de proximité. Axion-IA accompagne entreprises et indépendants de tous secteurs du centre Morbihan.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Baud (56). Nous accompagnons tous types d'activités : TPE artisanales, PME agroalimentaires et de services, commerces de centre-bourg, professions libérales, exploitations agricoles et acteurs touristiques du centre Morbihan.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const BAUD_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Baud : diagnostic adapté aux TPE artisanales, PME agroalimentaires, commerces de bourg et exploitations agricoles du centre Morbihan. ROI chiffré, audit Flash 490 € HT accessible à toute structure.",
-      en: "Audit IA à Baud : diagnostic adapté aux TPE artisanales, PME agroalimentaires, commerces de bourg et exploitations agricoles du centre Morbihan. ROI chiffré, audit Flash 490 € HT accessible à toute structure.",
+      fr: "Audit IA à Baud : diagnostic adapté aux TPE artisanales, PME agroalimentaires, commerces de bourg et exploitations agricoles du centre Morbihan. Audit Flash 490 € HT avec ROI quantifié accessible à toute structure.",
+      en: "Audit IA à Baud : diagnostic adapté aux TPE artisanales, PME agroalimentaires, commerces de bourg et exploitations agricoles du centre Morbihan. Audit Flash 490 € HT avec ROI quantifié accessible à toute structure.",
     },
     interventions: {
       fr: "Interventions IA sur site à Baud : formats adaptés au commerce de proximité, à l'atelier artisanal ou au bureau PME. Vos équipes repartent autonomes sur les outils IA métier adaptés à votre activité.",

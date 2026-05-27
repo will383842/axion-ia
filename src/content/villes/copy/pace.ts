@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PACE_COPY: VilleCopy = {
   pitchFr:
-    "Pacé (35), commune résidentielle dynamique à l'ouest de Rennes Métropole, en croissance démographique continue. Tissu TPE/PME de services, artisanat, commerces de proximité et activités tertiaires. Axion-IA y intervient pour tous types d'activités.",
+    "Pacé (35), commune résidentielle dynamique à l'ouest de Rennes Métropole, en croissance démographique continue. Tissu TPE/PME de services, artisanat, commerces de proximité et activités tertiaires. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Pacé (35), commune résidentielle dynamique à l'ouest de Rennes Métropole, en croissance démographique continue. Tissu TPE/PME de services, artisanat, commerces de proximité et activités tertiaires. Axion-IA y intervient pour tous types d'activités.",
+    "Pacé (35), commune résidentielle dynamique à l'ouest de Rennes Métropole, en croissance démographique continue. Tissu TPE/PME de services, artisanat, commerces de proximité et activités tertiaires. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pacé (35). Nous accompagnons tous types d'activités : TPE et PME de services, artisans, commerçants, professions libérales, indépendants et activités tertiaires de l'ouest de la métropole rennaise.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const PACE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pacé : diagnostic adapté aux TPE et PME de services, artisans, commerçants et professions libérales de l'ouest Rennes. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Pacé : diagnostic adapté aux TPE et PME de services, artisans, commerçants et professions libérales de l'ouest Rennes. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Pacé : diagnostic adapté aux TPE et PME de services, artisans, commerçants et professions libérales de l'ouest Rennes. ROI mesurable, audit Flash dès 490 € HT accessible.",
+      en: "Audit IA à Pacé : diagnostic adapté aux TPE et PME de services, artisans, commerçants et professions libérales de l'ouest Rennes. ROI mesurable, audit Flash dès 490 € HT accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pacé : formats adaptés aux cabinets, TPE de services, commerces, exploitations agricoles. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -64,7 +64,7 @@ export const PACE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Pacé ?",
-      a: "Nos consultants viennent de Rennes centre (10 min route D29). Intervention sur site dans vos locaux ou en visio selon vos préférences. Aéroport Rennes-Bretagne à 15 min. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Rennes centre (10 min route D29). Intervention sur site dans vos locaux ou en visio selon vos préférences. Aéroport Rennes-Bretagne à 15 min. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

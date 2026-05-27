@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const HEILLECOURT_COPY: VilleCopy = {
   pitchFr:
-    "Heillecourt (54), commune périurbaine résidentielle au sud de Nancy en Meurthe-et-Moselle, accueille des zones d'activités tertiaires et un tissu commercial dynamique. Tissu TPE/PME services aux entreprises, commerces, artisans, professions libérales, sous-traitants. Axion-IA y intervient pour tous types d'activités.",
+    "Heillecourt (54), commune périurbaine résidentielle au sud de Nancy en Meurthe-et-Moselle, accueille des zones d'activités tertiaires et un tissu commercial dynamique. Tissu TPE/PME services aux entreprises, commerces, artisans, professions libérales, sous-traitants. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Heillecourt (54), commune périurbaine résidentielle au sud de Nancy en Meurthe-et-Moselle, accueille des zones d'activités tertiaires et un tissu commercial dynamique. Tissu TPE/PME services aux entreprises, commerces, artisans, professions libérales, sous-traitants. Axion-IA y intervient pour tous types d'activités.",
+    "Heillecourt (54), commune périurbaine résidentielle au sud de Nancy en Meurthe-et-Moselle, accueille des zones d'activités tertiaires et un tissu commercial dynamique. Tissu TPE/PME services aux entreprises, commerces, artisans, professions libérales, sous-traitants. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Heillecourt (54). Nous accompagnons tous types d'activités : TPE/PME des zones d'activités sud-Nancy, services aux entreprises, commerces, artisans, professions libérales et sous-traitants heillecourtois.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const HEILLECOURT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Heillecourt : diagnostic adapté aux TPE/PME services aux entreprises, commerces, artisans, professions libérales et sous-traitants. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Heillecourt : diagnostic adapté aux TPE/PME services aux entreprises, commerces, artisans, professions libérales et sous-traitants. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Heillecourt : diagnostic adapté aux TPE/PME services aux entreprises, commerces, artisans, professions libérales et sous-traitants. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Heillecourt : diagnostic adapté aux TPE/PME services aux entreprises, commerces, artisans, professions libérales et sous-traitants. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Heillecourt : formats adaptés au bureau, au cabinet, à l'atelier, au commerce. Vos équipes repartent autonomes.",

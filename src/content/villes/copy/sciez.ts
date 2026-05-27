@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SCIEZ_COPY: VilleCopy = {
   pitchFr:
-    "Sciez (74), commune du Chablais haut-savoyard sur la rive sud du lac Léman, est connue sous le nom de Sciez-sur-Léman. Vignobles AOC Crépy, port de Sciez, tourisme lacustre, résidentiel frontalier Genève. Tissu TPE artisans, commerces saisonniers, PME viticoles et touristiques. Axion-IA y intervient pour tous types d'activités.",
+    "Sciez (74), commune du Chablais haut-savoyard sur la rive sud du lac Léman, est connue sous le nom de Sciez-sur-Léman. Vignobles AOC Crépy, port de Sciez, tourisme lacustre, résidentiel frontalier Genève. Tissu TPE artisans, commerces saisonniers, PME viticoles et touristiques. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Sciez (74), commune du Chablais haut-savoyard sur la rive sud du lac Léman, est connue sous le nom de Sciez-sur-Léman. Vignobles AOC Crépy, port de Sciez, tourisme lacustre, résidentiel frontalier Genève. Tissu TPE artisans, commerces saisonniers, PME viticoles et touristiques. Axion-IA y intervient pour tous types d'activités.",
+    "Sciez (74), commune du Chablais haut-savoyard sur la rive sud du lac Léman, est connue sous le nom de Sciez-sur-Léman. Vignobles AOC Crépy, port de Sciez, tourisme lacustre, résidentiel frontalier Genève. Tissu TPE artisans, commerces saisonniers, PME viticoles et touristiques. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sciez (74). Nous accompagnons TPE et PME : acteurs du tourisme lacustre Léman, viticulteurs AOC Crépy, commerces saisonniers, artisans BTP, professions libérales, hébergeurs et restaurateurs du Chablais.",
   directAnswerEn:
@@ -64,7 +64,7 @@ export const SCIEZ_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Genève ou Thonon ?",
-      a: "Nos consultants rejoignent Sciez depuis Thonon (10 min) ou Genève (35 min via douane Hermance). Multi-jours : hébergement local bord de lac possible. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants rejoignent Sciez depuis Thonon (10 min) ou Genève (35 min via douane Hermance). Multi-jours : hébergement local bord de lac possible. Frais de mission en sus, grille tarifaire publique.",
     },
   ],
 };

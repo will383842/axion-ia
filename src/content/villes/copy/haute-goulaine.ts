@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const HAUTE_GOULAINE_COPY: VilleCopy = {
   pitchFr:
-    "Haute-Goulaine (44), commune du vignoble nantais en Loire-Atlantique, connue pour son château et sa proximité avec le Muscadet. Tissu TPE viticulteurs et artisans, PME tertiaires, commerces de proximité, professions libérales, restauration. Axion-IA y intervient pour tous types d'activités de l'est nantais viticole.",
+    "Haute-Goulaine (44), commune du vignoble nantais en Loire-Atlantique, connue pour son château et sa proximité avec le Muscadet. Tissu TPE viticulteurs et artisans, PME tertiaires, commerces de proximité, professions libérales, restauration. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'est nantais viticole.",
   pitchEn:
-    "Haute-Goulaine (44), commune du vignoble nantais en Loire-Atlantique, connue pour son château et sa proximité avec le Muscadet. Tissu TPE viticulteurs et artisans, PME tertiaires, commerces de proximité, professions libérales, restauration. Axion-IA y intervient pour tous types d'activités de l'est nantais viticole.",
+    "Haute-Goulaine (44), commune du vignoble nantais en Loire-Atlantique, connue pour son château et sa proximité avec le Muscadet. Tissu TPE viticulteurs et artisans, PME tertiaires, commerces de proximité, professions libérales, restauration. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'est nantais viticole.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Haute-Goulaine (44). Nous accompagnons tous types d'activités : TPE viticulteurs et artisans du Muscadet, PME tertiaires, commerces de proximité, professions libérales et restauration de l'est nantais.",
   directAnswerEn:

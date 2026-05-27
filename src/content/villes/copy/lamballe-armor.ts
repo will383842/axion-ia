@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LAMBALLE_ARMOR_COPY: VilleCopy = {
   pitchFr:
-    "Lamballe-Armor (22), commune nouvelle créée en 2019 regroupant Lamballe, Meslin, Morieux et Planguenoual, est un pôle agroalimentaire et patrimonial des Côtes-d'Armor abritant le Haras national. TPE artisanat et services, PME agroalimentaires (filière porcine, volaille, transformation), commerces de centre-bourg, professions libérales, hôtellerie-restauration et tourisme littoral. Axion-IA y intervient pour tous types d'activités.",
+    "Lamballe-Armor (22), commune nouvelle créée en 2019 regroupant Lamballe, Meslin, Morieux et Planguenoual, est un pôle agroalimentaire et patrimonial des Côtes-d'Armor abritant le Haras national. TPE artisanat et services, PME agroalimentaires (filière porcine, volaille, transformation), commerces de centre-bourg, professions libérales, hôtellerie-restauration et tourisme littoral. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Lamballe-Armor (22), commune nouvelle créée en 2019 regroupant Lamballe, Meslin, Morieux et Planguenoual, est un pôle agroalimentaire et patrimonial des Côtes-d'Armor abritant le Haras national. TPE artisanat et services, PME agroalimentaires (filière porcine, volaille, transformation), commerces de centre-bourg, professions libérales, hôtellerie-restauration et tourisme littoral. Axion-IA y intervient pour tous types d'activités.",
+    "Lamballe-Armor (22), commune nouvelle créée en 2019 regroupant Lamballe, Meslin, Morieux et Planguenoual, est un pôle agroalimentaire et patrimonial des Côtes-d'Armor abritant le Haras national. TPE artisanat et services, PME agroalimentaires (filière porcine, volaille, transformation), commerces de centre-bourg, professions libérales, hôtellerie-restauration et tourisme littoral. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lamballe-Armor (22). Nous accompagnons TPE et PME : artisans et prestataires de services, PME agroalimentaires (filière porcine, volaille, transformation), commerçants de centre-bourg, professions libérales, hôteliers-restaurateurs et acteurs du tourisme littoral. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const LAMBALLE_ARMOR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lamballe-Armor : diagnostic adapté aux PME agroalimentaires (filière porcine, volaille, transformation), TPE artisans et commerçants centre-bourg, hôteliers-restaurateurs littoral, professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Lamballe-Armor : diagnostic adapté aux PME agroalimentaires (filière porcine, volaille, transformation), TPE artisans et commerçants centre-bourg, hôteliers-restaurateurs littoral, professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Lamballe-Armor : diagnostic adapté aux PME agroalimentaires (filière porcine, volaille, transformation), TPE artisans et commerçants centre-bourg, hôteliers-restaurateurs littoral, professions libérales. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Lamballe-Armor : diagnostic adapté aux PME agroalimentaires (filière porcine, volaille, transformation), TPE artisans et commerçants centre-bourg, hôteliers-restaurateurs littoral, professions libérales. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Lamballe-Armor : formats adaptés site agroalimentaire, exploitation, commerce, hôtel, restaurant, cabinet. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Lamballe-Armor : formats adaptés site agroalimentaire, exploitation, commerce, hôtel, restaurant, cabinet. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Lamballe-Armor : formats adaptés site agroalimentaire, exploitation, commerce, hôtel, restaurant, cabinet. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Lamballe-Armor : formats adaptés site agroalimentaire, exploitation, commerce, hôtel, restaurant, cabinet. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Lamballe-Armor : automatisation traçabilité et qualité agroalimentaire, maintenance prédictive lignes transformation, CRM augmenté hôtellerie-restauration, gestion réservations tourisme littoral, prise de rendez-vous IA professions libérales.",
@@ -64,7 +64,7 @@ export const LAMBALLE_ARMOR_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Rennes ou Paris ?",
-      a: "Rennes à 1h. Paris-Montparnasse à 2h45 en TGV (gare Lamballe). Saint-Brieuc à 15 min. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Rennes à 1h. Paris-Montparnasse à 2h45 en TGV (gare Lamballe). Saint-Brieuc à 15 min. Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

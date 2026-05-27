@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LORIOL_SUR_DROME_COPY: VilleCopy = {
   pitchFr:
-    "Loriol-sur-Drôme (26), commune limitrophe de Livron-sur-Drôme dans la Drôme, est positionnée sur l'axe A7 au sud de Valence. Tissu PME industrielles et logistiques, agriculture vallée du Rhône (vergers), TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités du sud-Valence drômois.",
+    "Loriol-sur-Drôme (26), commune limitrophe de Livron-sur-Drôme dans la Drôme, est positionnée sur l'axe A7 au sud de Valence. Tissu PME industrielles et logistiques, agriculture vallée du Rhône (vergers), TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs du sud-Valence drômois.",
   pitchEn:
-    "Loriol-sur-Drôme (26), commune limitrophe de Livron-sur-Drôme dans la Drôme, est positionnée sur l'axe A7 au sud de Valence. Tissu PME industrielles et logistiques, agriculture vallée du Rhône (vergers), TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités du sud-Valence drômois.",
+    "Loriol-sur-Drôme (26), commune limitrophe de Livron-sur-Drôme dans la Drôme, est positionnée sur l'axe A7 au sud de Valence. Tissu PME industrielles et logistiques, agriculture vallée du Rhône (vergers), TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs du sud-Valence drômois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Loriol-sur-Drôme (26). Nous accompagnons tous types d'activités : PME industrielles et logistiques axe A7, agriculteurs et arboriculteurs vallée du Rhône, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LORIOL_SUR_DROME_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Loriol-sur-Drôme : diagnostic adapté aux PME industrielles/logistiques axe A7, arboriculteurs vallée Rhône, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Loriol-sur-Drôme : diagnostic adapté aux PME industrielles/logistiques axe A7, arboriculteurs vallée Rhône, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Loriol-sur-Drôme : diagnostic adapté aux PME industrielles/logistiques axe A7, arboriculteurs vallée Rhône, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Loriol-sur-Drôme : diagnostic adapté aux PME industrielles/logistiques axe A7, arboriculteurs vallée Rhône, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Loriol-sur-Drôme : formats adaptés à l'entrepôt, atelier industriel, exploitation arboricole, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const LORIOL_SUR_DROME_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Valence ?",
-      a: "Nos consultants viennent de Lyon (1h15 A7) ou Valence (15 min). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (1h15 A7) ou Valence (15 min). Pour les multi-jours, hébergement local possible. Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

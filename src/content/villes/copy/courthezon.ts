@@ -29,8 +29,8 @@ export const COURTHEZON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Courthézon : diagnostic adapté aux TPE artisans, vignerons AOC, PME oenotouristiques, hôteliers et commerces du Vaucluse rhodanien. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Courthézon : diagnostic adapté aux TPE artisans, vignerons AOC, PME oenotouristiques, hôteliers et commerces du Vaucluse rhodanien. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Courthézon : diagnostic adapté aux TPE artisans, vignerons AOC, PME oenotouristiques, hôteliers et commerces du Vaucluse rhodanien. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Courthézon : diagnostic adapté aux TPE artisans, vignerons AOC, PME oenotouristiques, hôteliers et commerces du Vaucluse rhodanien. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Courthézon : ateliers pour équipes TPE/PME viticoles, oenotouristiques, artisans et commerces. Outils IA configurés métier réel, dans vos locaux ou à Orange.",
@@ -64,7 +64,7 @@ export const COURTHEZON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Courthézon ?",
-      a: "Courthézon est à 10 min d'Orange et 25 min d'Avignon via A7 et D907. Nos consultants se déplacent dans vos domaines et locaux. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Courthézon est à 10 min d'Orange et 25 min d'Avignon via A7 et D907. Nos consultants se déplacent dans vos domaines et locaux. Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

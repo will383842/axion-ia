@@ -3,9 +3,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_LONDE_LES_MAURES_COPY: VilleCopy = {
   pitchFr:
-    "La Londe-les-Maures (83, Var), station balnéaire entre Hyères et Bormes-les-Mimosas au cœur du vignoble Côtes de Provence La Londe, accueille TPE viticoles, PME hôtellerie-restauration, commerces, professions libérales et activités nautiques. Axion-IA y intervient pour tous types d'activités du littoral des Maures.",
+    "La Londe-les-Maures (83, Var), station balnéaire entre Hyères et Bormes-les-Mimosas au cœur du vignoble Côtes de Provence La Londe, accueille TPE viticoles, PME hôtellerie-restauration, commerces, professions libérales et activités nautiques. Axion-IA couvre l'ensemble des activités professionnelles présentes du littoral des Maures.",
   pitchEn:
-    "La Londe-les-Maures (83, Var), station balnéaire entre Hyères et Bormes-les-Mimosas au cœur du vignoble Côtes de Provence La Londe, accueille TPE viticoles, PME hôtellerie-restauration, commerces, professions libérales et activités nautiques. Axion-IA y intervient pour tous types d'activités du littoral des Maures.",
+    "La Londe-les-Maures (83, Var), station balnéaire entre Hyères et Bormes-les-Mimosas au cœur du vignoble Côtes de Provence La Londe, accueille TPE viticoles, PME hôtellerie-restauration, commerces, professions libérales et activités nautiques. Axion-IA couvre l'ensemble des activités professionnelles présentes du littoral des Maures.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Londe-les-Maures (83). Nous accompagnons TPE viticoles, PME hôtellerie-restauration, commerces et professions libérales du littoral des Maures. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:

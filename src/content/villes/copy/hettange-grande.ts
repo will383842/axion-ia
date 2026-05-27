@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const HETTANGE_GRANDE_COPY: VilleCopy = {
   pitchFr:
-    "Hettange-Grande (57), commune frontalière du Luxembourg au nord de Thionville, carrefour transfrontalier dynamique. Tissu TPE/PME services aux frontaliers, commerce, BTP, professions libérales, artisanat et transport. Axion-IA y intervient pour tous types d'activités.",
+    "Hettange-Grande (57), commune frontalière du Luxembourg au nord de Thionville, carrefour transfrontalier dynamique. Tissu TPE/PME services aux frontaliers, commerce, BTP, professions libérales, artisanat et transport. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Hettange-Grande (57), commune frontalière du Luxembourg au nord de Thionville, carrefour transfrontalier dynamique. Tissu TPE/PME services aux frontaliers, commerce, BTP, professions libérales, artisanat et transport. Axion-IA y intervient pour tous types d'activités.",
+    "Hettange-Grande (57), commune frontalière du Luxembourg au nord de Thionville, carrefour transfrontalier dynamique. Tissu TPE/PME services aux frontaliers, commerce, BTP, professions libérales, artisanat et transport. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hettange-Grande (57). Nous accompagnons tous types d'activités : TPE/PME services aux frontaliers, commerces, artisans BTP, professions libérales, transporteurs et acteurs transfrontaliers du nord mosellan.",
   directAnswerEn:
@@ -30,12 +30,12 @@ export const HETTANGE_GRANDE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Hettange-Grande : diagnostic adapté aux TPE/PME services aux frontaliers, commerces, artisans BTP, professions libérales et transporteurs du Pays des Trois Frontières. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Hettange-Grande : diagnostic adapté aux TPE/PME services aux frontaliers, commerces, artisans BTP, professions libérales et transporteurs du Pays des Trois Frontières. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Hettange-Grande : diagnostic adapté aux TPE/PME services aux frontaliers, commerces, artisans BTP, professions libérales et transporteurs du Pays des Trois Frontières. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Hettange-Grande : diagnostic adapté aux TPE/PME services aux frontaliers, commerces, artisans BTP, professions libérales et transporteurs du Pays des Trois Frontières. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Hettange-Grande : formats adaptés au bureau, commerce, atelier BTP, cabinet libéral ou dépôt logistique. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Hettange-Grande : formats adaptés au bureau, commerce, atelier BTP, cabinet libéral ou dépôt logistique. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Hettange-Grande : formats adaptés au bureau, commerce, atelier BTP, cabinet libéral ou dépôt logistique. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Hettange-Grande : formats adaptés au bureau, commerce, atelier BTP, cabinet libéral ou dépôt logistique. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Hettange-Grande : automatisation services frontaliers, gestion clientèle commerce, devis BTP, outils administratifs professions libérales, optimisation transport transfrontalier.",

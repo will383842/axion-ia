@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const INZINZAC_LOCHRIST_COPY: VilleCopy = {
   pitchFr:
-    "Inzinzac-Lochrist (56), commune de la vallée du Blavet héritière des historiques forges d'Hennebont, accueille un tissu de TPE/PME industrielles, agroalimentaires, artisans BTP, commerces, professions libérales et entreprises tertiaires de l'agglomération lorientaise. Axion-IA y intervient pour tous types d'activités du bassin lorientais.",
+    "Inzinzac-Lochrist (56), commune de la vallée du Blavet héritière des historiques forges d'Hennebont, accueille un tissu de TPE/PME industrielles, agroalimentaires, artisans BTP, commerces, professions libérales et entreprises tertiaires de l'agglomération lorientaise. Axion-IA opère pour toutes les structures économiques de la commune du bassin lorientais.",
   pitchEn:
-    "Inzinzac-Lochrist (56), commune de la vallée du Blavet héritière des historiques forges d'Hennebont, accueille un tissu de TPE/PME industrielles, agroalimentaires, artisans BTP, commerces, professions libérales et entreprises tertiaires de l'agglomération lorientaise. Axion-IA y intervient pour tous types d'activités du bassin lorientais.",
+    "Inzinzac-Lochrist (56), commune de la vallée du Blavet héritière des historiques forges d'Hennebont, accueille un tissu de TPE/PME industrielles, agroalimentaires, artisans BTP, commerces, professions libérales et entreprises tertiaires de l'agglomération lorientaise. Axion-IA opère pour toutes les structures économiques de la commune du bassin lorientais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Inzinzac-Lochrist (56). Nous accompagnons TPE et PME : PME industrielles héritières des forges, PME agroalimentaires, artisans BTP, commerçants, professions libérales et entreprises tertiaires de Lorient Agglomération.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const INZINZAC_LOCHRIST_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Inzinzac-Lochrist : diagnostic adapté aux PME industrielles de la vallée du Blavet, PME agroalimentaires, TPE artisans BTP, commerces et professions libérales du bassin lorientais. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Inzinzac-Lochrist : diagnostic adapté aux PME industrielles de la vallée du Blavet, PME agroalimentaires, TPE artisans BTP, commerces et professions libérales du bassin lorientais. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Inzinzac-Lochrist : diagnostic adapté aux PME industrielles de la vallée du Blavet, PME agroalimentaires, TPE artisans BTP, commerces et professions libérales du bassin lorientais. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Inzinzac-Lochrist : diagnostic adapté aux PME industrielles de la vallée du Blavet, PME agroalimentaires, TPE artisans BTP, commerces et professions libérales du bassin lorientais. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Inzinzac-Lochrist : formats adaptés aux PME industrielles, PME agroalimentaires, artisans BTP et cabinets de la vallée du Blavet. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Inzinzac-Lochrist : formats adaptés aux PME industrielles, PME agroalimentaires, artisans BTP et cabinets de la vallée du Blavet. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Inzinzac-Lochrist : formats adaptés aux PME industrielles, PME agroalimentaires, artisans BTP et cabinets de la vallée du Blavet. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Inzinzac-Lochrist : formats adaptés aux PME industrielles, PME agroalimentaires, artisans BTP et cabinets de la vallée du Blavet. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Inzinzac-Lochrist : outils IA maintenance prédictive industrielle, traçabilité agroalimentaire, automatisation gestion stocks, agents conversationnels SAV, gestion devis BTP, CRM augmenté commerce et libéral.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MAGNY_EN_VEXIN_COPY: VilleCopy = {
   pitchFr:
-    "Magny-en-Vexin (95), bourg-centre du Vexin français dans le Val-d'Oise, joue un rôle de pôle de services et de commerces pour les communes rurales environnantes. Tissu TPE commerces et artisanat, PME agricoles et agroalimentaires, professions libérales, restauration, services à la personne. Axion-IA y intervient pour tous types d'activités.",
+    "Magny-en-Vexin (95), bourg-centre du Vexin français dans le Val-d'Oise, joue un rôle de pôle de services et de commerces pour les communes rurales environnantes. Tissu TPE commerces et artisanat, PME agricoles et agroalimentaires, professions libérales, restauration, services à la personne. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Magny-en-Vexin (95), bourg-centre du Vexin français dans le Val-d'Oise, joue un rôle de pôle de services et de commerces pour les communes rurales environnantes. Tissu TPE commerces et artisanat, PME agricoles et agroalimentaires, professions libérales, restauration, services à la personne. Axion-IA y intervient pour tous types d'activités.",
+    "Magny-en-Vexin (95), bourg-centre du Vexin français dans le Val-d'Oise, joue un rôle de pôle de services et de commerces pour les communes rurales environnantes. Tissu TPE commerces et artisanat, PME agricoles et agroalimentaires, professions libérales, restauration, services à la personne. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Magny-en-Vexin (95). Nous accompagnons TPE et PME : commerçants et artisans du bourg, PME agricoles et agroalimentaires du Vexin, professions libérales, restaurateurs, prestataires services à la personne Val-d'Oise nord-ouest. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const MAGNY_EN_VEXIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Magny-en-Vexin : diagnostic adapté aux commerçants et artisans du bourg, PME agricoles et agroalimentaires du Vexin, professions libérales, restaurateurs. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Magny-en-Vexin : diagnostic adapté aux commerçants et artisans du bourg, PME agricoles et agroalimentaires du Vexin, professions libérales, restaurateurs. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Magny-en-Vexin : diagnostic adapté aux commerçants et artisans du bourg, PME agricoles et agroalimentaires du Vexin, professions libérales, restaurateurs. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Magny-en-Vexin : diagnostic adapté aux commerçants et artisans du bourg, PME agricoles et agroalimentaires du Vexin, professions libérales, restaurateurs. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Magny-en-Vexin : formats adaptés boutique, exploitation agricole, cabinet, restaurant, bureau PME Vexin français. Vos équipes repartent autonomes.",
@@ -64,7 +64,7 @@ export const MAGNY_EN_VEXIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Cergy ou Paris ?",
-      a: "Cergy-Pontoise (25 min). Mantes-la-Jolie (20 min). Paris centre (55 min via A15). Aéroport CDG (60 min). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Cergy-Pontoise (25 min). Mantes-la-Jolie (20 min). Paris centre (55 min via A15). Aéroport CDG (60 min). Coûts de déplacement à part, tarification transparente.",
     },
   ],
 };

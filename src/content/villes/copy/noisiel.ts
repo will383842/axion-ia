@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const NOISIEL_COPY: VilleCopy = {
   pitchFr:
-    "Noisiel (77), commune de Seine-et-Marne au coeur de Marne-la-Vallée, abrite un tissu économique dynamique porté par la Cité Descartes (pôle recherche et innovation) et les zones d'activités tertiaires. TPE/PME de services, conseil, numérique, commerce et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Noisiel (77), commune de Seine-et-Marne au coeur de Marne-la-Vallée, abrite un tissu économique dynamique porté par la Cité Descartes (pôle recherche et innovation) et les zones d'activités tertiaires. TPE/PME de services, conseil, numérique, commerce et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Noisiel (77), commune de Seine-et-Marne au coeur de Marne-la-Vallée, abrite un tissu économique dynamique porté par la Cité Descartes (pôle recherche et innovation) et les zones d'activités tertiaires. TPE/PME de services, conseil, numérique, commerce et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Noisiel (77), commune de Seine-et-Marne au coeur de Marne-la-Vallée, abrite un tissu économique dynamique porté par la Cité Descartes (pôle recherche et innovation) et les zones d'activités tertiaires. TPE/PME de services, conseil, numérique, commerce et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Noisiel (77). Nous accompagnons TPE et PME : entreprises tertiaires et numériques du pôle Marne-la-Vallée, commerces, prestataires de services, professions libérales et indépendants du bassin Noisiel-Torcy-Champs-sur-Marne. Audit Flash dès 490 € HT.",
   directAnswerEn:

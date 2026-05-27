@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CASTRIES_COPY: VilleCopy = {
   pitchFr:
-    "Castries (34), commune de l'est de Montpellier, connue pour son château classé (jardins Le Nôtre) et son aqueduc. Résidentielle, commerces, services. Tissu TPE professions libérales, PME services, artisans, commerces de proximité. Axion-IA y intervient pour tous types d'activités.",
+    "Castries (34), commune de l'est de Montpellier, connue pour son château classé (jardins Le Nôtre) et son aqueduc. Résidentielle, commerces, services. Tissu TPE professions libérales, PME services, artisans, commerces de proximité. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Castries (34), commune de l'est de Montpellier, connue pour son château classé (jardins Le Nôtre) et son aqueduc. Résidentielle, commerces, services. Tissu TPE professions libérales, PME services, artisans, commerces de proximité. Axion-IA y intervient pour tous types d'activités.",
+    "Castries (34), commune de l'est de Montpellier, connue pour son château classé (jardins Le Nôtre) et son aqueduc. Résidentielle, commerces, services. Tissu TPE professions libérales, PME services, artisans, commerces de proximité. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Castries (34). Nous accompagnons TPE professions libérales, PME de services, artisans, commerces et entreprises de l'est montpelliérain.",
   directAnswerEn:

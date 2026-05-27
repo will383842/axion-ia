@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BELLEGARDE_COPY: VilleCopy = {
   pitchFr:
-    "Bellegarde (30), commune gardoise des Costières entre Nîmes et Arles, carrefour agricole et logistique. Tissu TPE/PME viticulture Costières de Nîmes, agriculture (fruits, légumes), logistique, commerces et artisanat BTP. Axion-IA y intervient pour tous types d'activités des Costières.",
+    "Bellegarde (30), commune gardoise des Costières entre Nîmes et Arles, carrefour agricole et logistique. Tissu TPE/PME viticulture Costières de Nîmes, agriculture (fruits, légumes), logistique, commerces et artisanat BTP. Axion-IA couvre l'ensemble des activités professionnelles présentes des Costières.",
   pitchEn:
-    "Bellegarde (30), commune gardoise des Costières entre Nîmes et Arles, carrefour agricole et logistique. Tissu TPE/PME viticulture Costières de Nîmes, agriculture (fruits, légumes), logistique, commerces et artisanat BTP. Axion-IA y intervient pour tous types d'activités des Costières.",
+    "Bellegarde (30), commune gardoise des Costières entre Nîmes et Arles, carrefour agricole et logistique. Tissu TPE/PME viticulture Costières de Nîmes, agriculture (fruits, légumes), logistique, commerces et artisanat BTP. Axion-IA couvre l'ensemble des activités professionnelles présentes des Costières.",
   directAnswerFr:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Bellegarde (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs Costières de Nîmes, exploitants agricoles, entreprises logistique, commerçants et artisans BTP entre Nîmes et Arles. Audit Flash à partir de 490 € HT.",
   directAnswerEn:

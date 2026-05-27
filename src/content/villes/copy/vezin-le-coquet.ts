@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VEZIN_LE_COQUET_COPY: VilleCopy = {
   pitchFr:
-    "Vezin-le-Coquet (35), commune résidentielle de l'ouest de Rennes Métropole, bénéficie d'une situation privilégiée aux portes de Rennes. Tissu de TPE/PME tertiaires et de services, artisans BTP portés par la dynamique immobilière, commerces de proximité, professions libérales et indépendants. Axion-IA y intervient pour tous types d'activités.",
+    "Vezin-le-Coquet (35), commune résidentielle de l'ouest de Rennes Métropole, bénéficie d'une situation privilégiée aux portes de Rennes. Tissu de TPE/PME tertiaires et de services, artisans BTP portés par la dynamique immobilière, commerces de proximité, professions libérales et indépendants. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Vezin-le-Coquet (35), commune résidentielle de l'ouest de Rennes Métropole, bénéficie d'une situation privilégiée aux portes de Rennes. Tissu de TPE/PME tertiaires et de services, artisans BTP portés par la dynamique immobilière, commerces de proximité, professions libérales et indépendants. Axion-IA y intervient pour tous types d'activités.",
+    "Vezin-le-Coquet (35), commune résidentielle de l'ouest de Rennes Métropole, bénéficie d'une situation privilégiée aux portes de Rennes. Tissu de TPE/PME tertiaires et de services, artisans BTP portés par la dynamique immobilière, commerces de proximité, professions libérales et indépendants. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vezin-le-Coquet (35). Nous accompagnons tous types d'activités : TPE et PME tertiaires de l'ouest de Rennes Métropole, artisans BTP, commerçants de proximité, professions libérales, indépendants et prestataires de services aux entreprises du bassin rennais ouest.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const VEZIN_LE_COQUET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vezin-le-Coquet : diagnostic adapté aux PME tertiaires de l'ouest Rennes Métropole, artisans BTP, professions libérales et commerçants de proximité. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Vezin-le-Coquet : diagnostic adapté aux PME tertiaires de l'ouest Rennes Métropole, artisans BTP, professions libérales et commerçants de proximité. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Vezin-le-Coquet : diagnostic adapté aux PME tertiaires de l'ouest Rennes Métropole, artisans BTP, professions libérales et commerçants de proximité. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Vezin-le-Coquet : diagnostic adapté aux PME tertiaires de l'ouest Rennes Métropole, artisans BTP, professions libérales et commerçants de proximité. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vezin-le-Coquet : formats adaptés aux bureaux PME, cabinets libéraux, commerces et ateliers artisans. Vos équipes repartent autonomes sur les outils IA métier.",

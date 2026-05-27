@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MORNANT_COPY: VilleCopy = {
   pitchFr:
-    "Mornant (69), commune du sud-ouest lyonnais dans le Rhône, est un bourg-centre du pays mornantais. Tissu mixte : PME tertiaires, agriculture (viticulture coteaux du Lyonnais), TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités du SO lyonnais.",
+    "Mornant (69), commune du sud-ouest lyonnais dans le Rhône, est un bourg-centre du pays mornantais. Tissu mixte : PME tertiaires, agriculture (viticulture coteaux du Lyonnais), TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations du SO lyonnais.",
   pitchEn:
-    "Mornant (69), commune du sud-ouest lyonnais dans le Rhône, est un bourg-centre du pays mornantais. Tissu mixte : PME tertiaires, agriculture (viticulture coteaux du Lyonnais), TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités du SO lyonnais.",
+    "Mornant (69), commune du sud-ouest lyonnais dans le Rhône, est un bourg-centre du pays mornantais. Tissu mixte : PME tertiaires, agriculture (viticulture coteaux du Lyonnais), TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations du SO lyonnais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mornant (69). Nous accompagnons tous types d'activités : PME tertiaires SO lyonnais, viticulteurs coteaux du Lyonnais, agriculteurs, TPE artisans BTP, commerçants et services aux entreprises du pays mornantais.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const MORNANT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mornant : diagnostic adapté aux viticulteurs AOC Coteaux-du-Lyonnais, PME tertiaires, agriculteurs, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Mornant : diagnostic adapté aux viticulteurs AOC Coteaux-du-Lyonnais, PME tertiaires, agriculteurs, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Mornant : diagnostic adapté aux viticulteurs AOC Coteaux-du-Lyonnais, PME tertiaires, agriculteurs, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Mornant : diagnostic adapté aux viticulteurs AOC Coteaux-du-Lyonnais, PME tertiaires, agriculteurs, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mornant : formats adaptés au domaine viticole, exploitation agricole, bureau, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const MORNANT_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (30 min). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (30 min). Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BONNIERES_SUR_SEINE_COPY: VilleCopy = {
   pitchFr:
-    "Bonnières-sur-Seine (78), commune des Yvelines en bord de Seine dans le Mantois ouest, à la limite du Vexin. Tissu de TPE artisans et commerçants, PME industrielles et de services, professions libérales, agriculture et logistique fluviale. Axion-IA y intervient pour tous types d'activités.",
+    "Bonnières-sur-Seine (78), commune des Yvelines en bord de Seine dans le Mantois ouest, à la limite du Vexin. Tissu de TPE artisans et commerçants, PME industrielles et de services, professions libérales, agriculture et logistique fluviale. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Bonnières-sur-Seine (78), commune des Yvelines en bord de Seine dans le Mantois ouest, à la limite du Vexin. Tissu de TPE artisans et commerçants, PME industrielles et de services, professions libérales, agriculture et logistique fluviale. Axion-IA y intervient pour tous types d'activités.",
+    "Bonnières-sur-Seine (78), commune des Yvelines en bord de Seine dans le Mantois ouest, à la limite du Vexin. Tissu de TPE artisans et commerçants, PME industrielles et de services, professions libérales, agriculture et logistique fluviale. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bonnières-sur-Seine (78). Nous accompagnons TPE et PME : artisans et commerçants, PME industrielles et de services, professions libérales, exploitants agricoles et acteurs logistiques du Mantois ouest en bord de Seine. Audit Flash dès 490 € HT.",
   directAnswerEn:

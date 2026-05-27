@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VALLEIRY_COPY: VilleCopy = {
   pitchFr:
-    "Valleiry (74), commune frontalière du Grand Genève en Haute-Savoie, bénéficie de la dynamique transfrontalière franco-suisse avec un tissu de TPE/PME de services, artisans BTP, commerces, professions libérales et entreprises liées au bassin d'emploi genevois. Axion-IA y intervient pour tous types d'activités du Genevois français.",
+    "Valleiry (74), commune frontalière du Grand Genève en Haute-Savoie, bénéficie de la dynamique transfrontalière franco-suisse avec un tissu de TPE/PME de services, artisans BTP, commerces, professions libérales et entreprises liées au bassin d'emploi genevois. Axion-IA accompagne entreprises et indépendants de tous secteurs du Genevois français.",
   pitchEn:
-    "Valleiry (74), commune frontalière du Grand Genève en Haute-Savoie, bénéficie de la dynamique transfrontalière franco-suisse avec un tissu de TPE/PME de services, artisans BTP, commerces, professions libérales et entreprises liées au bassin d'emploi genevois. Axion-IA y intervient pour tous types d'activités du Genevois français.",
+    "Valleiry (74), commune frontalière du Grand Genève en Haute-Savoie, bénéficie de la dynamique transfrontalière franco-suisse avec un tissu de TPE/PME de services, artisans BTP, commerces, professions libérales et entreprises liées au bassin d'emploi genevois. Axion-IA accompagne entreprises et indépendants de tous secteurs du Genevois français.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Valleiry (74). Nous accompagnons TPE et PME : entreprises de services transfrontaliers Grand Genève, artisans BTP, commerces, professions libérales et PME tertiaires du Genevois français.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const VALLEIRY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Valleiry : diagnostic adapté aux PME de services transfrontaliers, artisans BTP, commerces et professions libérales du Genevois français. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Valleiry : diagnostic adapté aux PME de services transfrontaliers, artisans BTP, commerces et professions libérales du Genevois français. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Valleiry : diagnostic adapté aux PME de services transfrontaliers, artisans BTP, commerces et professions libérales du Genevois français. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Valleiry : diagnostic adapté aux PME de services transfrontaliers, artisans BTP, commerces et professions libérales du Genevois français. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Valleiry : formats adaptés aux PME tertiaires, cabinets, commerces et artisans du Grand Genève français. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Valleiry : formats adaptés aux PME tertiaires, cabinets, commerces et artisans du Grand Genève français. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Valleiry : formats adaptés aux PME tertiaires, cabinets, commerces et artisans du Grand Genève français. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Valleiry : formats adaptés aux PME tertiaires, cabinets, commerces et artisans du Grand Genève français. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Valleiry : automatisation comptabilité transfrontalière EUR/CHF, agents conversationnels bilingues FR/EN, CRM augmenté clientèle franco-suisse, gestion devis BTP, outils IA cabinets professionnels.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_JEAN_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Jean (31), commune résidentielle du sud de Toulouse avec plus de 11 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités de la couronne sud de Toulouse.",
+    "Saint-Jean (31), commune résidentielle du sud de Toulouse avec plus de 11 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de la couronne sud de Toulouse.",
   pitchEn:
-    "Saint-Jean (31), commune résidentielle du sud de Toulouse avec plus de 11 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités de la couronne sud de Toulouse.",
+    "Saint-Jean (31), commune résidentielle du sud de Toulouse avec plus de 11 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de la couronne sud de Toulouse.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud toulousain. Audit Flash dès 490 € HT.",
   directAnswerEn:

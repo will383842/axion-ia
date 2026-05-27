@@ -29,12 +29,12 @@ export const PERENCHIES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pérenchies : diagnostic adapté aux commerçants de proximité, artisans, prestataires B2B de l'agglo lilloise et PME résidentielles. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Pérenchies : diagnostic adapté aux commerçants de proximité, artisans, prestataires B2B de l'agglo lilloise et PME résidentielles. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Pérenchies : diagnostic adapté aux commerçants de proximité, artisans, prestataires B2B de l'agglo lilloise et PME résidentielles. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Pérenchies : diagnostic adapté aux commerçants de proximité, artisans, prestataires B2B de l'agglo lilloise et PME résidentielles. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Pérenchies : formats adaptés au commerce, à l'artisan ou au prestataire B2B de l'agglo lilloise. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Pérenchies : formats adaptés au commerce, à l'artisan ou au prestataire B2B de l'agglo lilloise. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Pérenchies : formats adaptés au commerce, à l'artisan ou au prestataire B2B de l'agglo lilloise. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Pérenchies : formats adaptés au commerce, à l'artisan ou au prestataire B2B de l'agglo lilloise. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Pérenchies : CRM augmenté pour commerces de proximité, automatisation devis-facturation artisans, agents conversationnels prestataires B2B, outils transfrontaliers franco-belges.",

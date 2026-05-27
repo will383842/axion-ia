@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const TOURNON_SUR_RHONE_COPY: VilleCopy = {
   pitchFr:
-    "Tournon-sur-Rhône (07), sous-préfecture de l'Ardèche, est positionnée face à Tain-l'Hermitage dans la vallée du Rhône. Position viticole notable (AOC Saint-Joseph). Tissu viticulture, tourisme oenotouristique, PME tertiaires, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Tournon-sur-Rhône (07), sous-préfecture de l'Ardèche, est positionnée face à Tain-l'Hermitage dans la vallée du Rhône. Position viticole notable (AOC Saint-Joseph). Tissu viticulture, tourisme oenotouristique, PME tertiaires, TPE artisans BTP, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Tournon-sur-Rhône (07), sous-préfecture de l'Ardèche, est positionnée face à Tain-l'Hermitage dans la vallée du Rhône. Position viticole notable (AOC Saint-Joseph). Tissu viticulture, tourisme oenotouristique, PME tertiaires, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Tournon-sur-Rhône (07), sous-préfecture de l'Ardèche, est positionnée face à Tain-l'Hermitage dans la vallée du Rhône. Position viticole notable (AOC Saint-Joseph). Tissu viticulture, tourisme oenotouristique, PME tertiaires, TPE artisans BTP, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tournon-sur-Rhône (07). Nous accompagnons tous types d'activités : viticulteurs AOC Saint-Joseph, acteurs oenotourisme vallée Rhône, administration sous-préfecture, PME tertiaires, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const TOURNON_SUR_RHONE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Tournon-sur-Rhône : diagnostic adapté aux viticulteurs AOC Saint-Joseph, acteurs oenotourisme, administration, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Tournon-sur-Rhône : diagnostic adapté aux viticulteurs AOC Saint-Joseph, acteurs oenotourisme, administration, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Tournon-sur-Rhône : diagnostic adapté aux viticulteurs AOC Saint-Joseph, acteurs oenotourisme, administration, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Tournon-sur-Rhône : diagnostic adapté aux viticulteurs AOC Saint-Joseph, acteurs oenotourisme, administration, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Tournon-sur-Rhône : formats adaptés au domaine viticole, site oenotouristique, administration, commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Tournon-sur-Rhône : formats adaptés au domaine viticole, site oenotouristique, administration, commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Tournon-sur-Rhône : formats adaptés au domaine viticole, site oenotouristique, administration, commerce. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Tournon-sur-Rhône : formats adaptés au domaine viticole, site oenotouristique, administration, commerce. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Tournon-sur-Rhône : prédiction vendanges Saint-Joseph, classification photos cépages, traçabilité AOC, agents conversationnels oenotourisme multilingue.",
@@ -64,7 +64,7 @@ export const TOURNON_SUR_RHONE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Valence ?",
-      a: "Lyon (1h A7) ou Valence (20 min). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Lyon (1h A7) ou Valence (20 min). Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

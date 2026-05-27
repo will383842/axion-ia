@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GAMBSHEIM_COPY: VilleCopy = {
   pitchFr:
-    "Gambsheim (67), commune de 5 312 habitants en Bas-Rhin, est implantée sur les bords du Rhin à la frontière allemande. Connue pour sa passe à poissons unique en Europe et son écluse fluviale, elle accueille un tissu de TPE/PME tourisme fluvial, agriculture rhénane, artisanat, BTP et services. Axion-IA y intervient pour tous types d'activités.",
+    "Gambsheim (67), commune de 5 312 habitants en Bas-Rhin, est implantée sur les bords du Rhin à la frontière allemande. Connue pour sa passe à poissons unique en Europe et son écluse fluviale, elle accueille un tissu de TPE/PME tourisme fluvial, agriculture rhénane, artisanat, BTP et services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Gambsheim (67), commune de 5 312 habitants en Bas-Rhin, est implantée sur les bords du Rhin à la frontière allemande. Connue pour sa passe à poissons unique en Europe et son écluse fluviale, elle accueille un tissu de TPE/PME tourisme fluvial, agriculture rhénane, artisanat, BTP et services. Axion-IA y intervient pour tous types d'activités.",
+    "Gambsheim (67), commune de 5 312 habitants en Bas-Rhin, est implantée sur les bords du Rhin à la frontière allemande. Connue pour sa passe à poissons unique en Europe et son écluse fluviale, elle accueille un tissu de TPE/PME tourisme fluvial, agriculture rhénane, artisanat, BTP et services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gambsheim (67). Nous accompagnons TPE et PME du Ried Nord alsacien : acteurs du tourisme fluvial, agriculteurs, artisans, entreprises BTP et prestataires de services. Audit Flash dès 490 € HT.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SARLAT_LA_CANEDA_COPY: VilleCopy = {
   pitchFr:
-    "Sarlat-la-Canéda (24), cité médiévale du Périgord Noir en Dordogne, haut lieu du tourisme patrimonial et de la gastronomie (foie gras, truffes, noix). Tissu TPE/PME tourisme, hôtellerie-restauration, commerce, artisanat d'art et agroalimentaire. Axion-IA y intervient pour tous types d'activités.",
+    "Sarlat-la-Canéda (24), cité médiévale du Périgord Noir en Dordogne, haut lieu du tourisme patrimonial et de la gastronomie (foie gras, truffes, noix). Tissu TPE/PME tourisme, hôtellerie-restauration, commerce, artisanat d'art et agroalimentaire. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Sarlat-la-Canéda (24), cité médiévale du Périgord Noir en Dordogne, haut lieu du tourisme patrimonial et de la gastronomie (foie gras, truffes, noix). Tissu TPE/PME tourisme, hôtellerie-restauration, commerce, artisanat d'art et agroalimentaire. Axion-IA y intervient pour tous types d'activités.",
+    "Sarlat-la-Canéda (24), cité médiévale du Périgord Noir en Dordogne, haut lieu du tourisme patrimonial et de la gastronomie (foie gras, truffes, noix). Tissu TPE/PME tourisme, hôtellerie-restauration, commerce, artisanat d'art et agroalimentaire. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sarlat-la-Canéda (24). Nous accompagnons TPE/PME du tourisme, de l'hôtellerie-restauration, du commerce, de l'artisanat d'art et de l'agroalimentaire du Périgord Noir. Audit Flash dès 490 € HT.",
   directAnswerEn:

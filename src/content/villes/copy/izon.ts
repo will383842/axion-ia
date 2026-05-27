@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const IZON_COPY: VilleCopy = {
   pitchFr:
-    "Izon (33), commune résidentielle du Libournais entre Bordeaux et Libourne, combine vignoble bordelais, artisanat BTP en croissance, commerces et professions libérales. Axion-IA y intervient pour tous types d'activités du bassin Libourne-Bordeaux.",
+    "Izon (33), commune résidentielle du Libournais entre Bordeaux et Libourne, combine vignoble bordelais, artisanat BTP en croissance, commerces et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin Libourne-Bordeaux.",
   pitchEn:
-    "Izon (33), commune résidentielle du Libournais entre Bordeaux et Libourne, combine vignoble bordelais, artisanat BTP en croissance, commerces et professions libérales. Axion-IA y intervient pour tous types d'activités du bassin Libourne-Bordeaux.",
+    "Izon (33), commune résidentielle du Libournais entre Bordeaux et Libourne, combine vignoble bordelais, artisanat BTP en croissance, commerces et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin Libourne-Bordeaux.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Izon (33). Nous accompagnons TPE et PME du Libournais : vignerons, artisans BTP, commerçants, professions libérales et PME de services. Audit Flash dès 490 € HT.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CRANVES_SALES_COPY: VilleCopy = {
   pitchFr:
-    "Cranves-Sales (74), commune résidentielle dynamique de l'agglomération Grand Genève côté français, concentre un tissu de TPE/PME tertiaires, artisans BTP, commerces et professions libérales au service d'une population frontalière en croissance. Axion-IA y intervient pour tous types d'activités du bassin genevois nord.",
+    "Cranves-Sales (74), commune résidentielle dynamique de l'agglomération Grand Genève côté français, concentre un tissu de TPE/PME tertiaires, artisans BTP, commerces et professions libérales au service d'une population frontalière en croissance. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin genevois nord.",
   pitchEn:
-    "Cranves-Sales (74), commune résidentielle dynamique de l'agglomération Grand Genève côté français, concentre un tissu de TPE/PME tertiaires, artisans BTP, commerces et professions libérales au service d'une population frontalière en croissance. Axion-IA y intervient pour tous types d'activités du bassin genevois nord.",
+    "Cranves-Sales (74), commune résidentielle dynamique de l'agglomération Grand Genève côté français, concentre un tissu de TPE/PME tertiaires, artisans BTP, commerces et professions libérales au service d'une population frontalière en croissance. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin genevois nord.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cranves-Sales (74). Nous accompagnons TPE et PME : entreprises de services transfrontaliers Grand Genève, PME tertiaires, artisans BTP, commerces locaux et professions libérales du bassin annémassien.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const CRANVES_SALES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cranves-Sales : diagnostic adapté aux PME tertiaires du Grand Genève, artisans BTP, commerces et professions libérales du bassin annémassien. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Cranves-Sales : diagnostic adapté aux PME tertiaires du Grand Genève, artisans BTP, commerces et professions libérales du bassin annémassien. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Cranves-Sales : diagnostic adapté aux PME tertiaires du Grand Genève, artisans BTP, commerces et professions libérales du bassin annémassien. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Cranves-Sales : diagnostic adapté aux PME tertiaires du Grand Genève, artisans BTP, commerces et professions libérales du bassin annémassien. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Cranves-Sales : formats adaptés aux PME de services transfrontaliers, cabinets conseil, artisans et commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Cranves-Sales : formats adaptés aux PME de services transfrontaliers, cabinets conseil, artisans et commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Cranves-Sales : formats adaptés aux PME de services transfrontaliers, cabinets conseil, artisans et commerces. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Cranves-Sales : formats adaptés aux PME de services transfrontaliers, cabinets conseil, artisans et commerces. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Cranves-Sales : automatisation comptabilité transfrontalière, agents conversationnels client bilingue FR/EN, CRM augmenté, gestion devis BTP, outils IA cabinets professionnels.",

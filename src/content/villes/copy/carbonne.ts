@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CARBONNE_COPY: VilleCopy = {
   pitchFr:
-    "Carbonne (31), commune des bords de Garonne au sud de Toulouse, plus de 5 500 habitants. Tissu TPE artisans, PME industrielles et de services, commerces de centre-ville, professions libérales, activités agricoles. Axion-IA y intervient pour tous types d'activités du sud de la Haute-Garonne.",
+    "Carbonne (31), commune des bords de Garonne au sud de Toulouse, plus de 5 500 habitants. Tissu TPE artisans, PME industrielles et de services, commerces de centre-ville, professions libérales, activités agricoles. Axion-IA accompagne entreprises et indépendants de tous secteurs du sud de la Haute-Garonne.",
   pitchEn:
-    "Carbonne (31), commune des bords de Garonne au sud de Toulouse, plus de 5 500 habitants. Tissu TPE artisans, PME industrielles et de services, commerces de centre-ville, professions libérales, activités agricoles. Axion-IA y intervient pour tous types d'activités du sud de la Haute-Garonne.",
+    "Carbonne (31), commune des bords de Garonne au sud de Toulouse, plus de 5 500 habitants. Tissu TPE artisans, PME industrielles et de services, commerces de centre-ville, professions libérales, activités agricoles. Axion-IA accompagne entreprises et indépendants de tous secteurs du sud de la Haute-Garonne.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carbonne (31). Nous accompagnons TPE artisans, PME industrielles, commerçants et professions libérales du sud Haute-Garonne. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const CARBONNE_COPY: VilleCopy = {
       en: "Audit IA à Carbonne : diagnostic adapté aux TPE artisans, PME industrielles et commerçants du sud Haute-Garonne. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Carbonne : formats adaptés à l'atelier industriel, au commerce, à l'artisan. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Carbonne : formats adaptés à l'atelier industriel, au commerce, à l'artisan. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Carbonne : formats adaptés à l'atelier industriel, au commerce, à l'artisan. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Carbonne : formats adaptés à l'atelier industriel, au commerce, à l'artisan. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Carbonne : automatisation contrôle qualité, gestion stocks, classification documents, agents conversationnels pour PME du sud Haute-Garonne.",

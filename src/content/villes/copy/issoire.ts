@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ISSOIRE_COPY: VilleCopy = {
   pitchFr:
-    "Issoire (63), sous-préfecture du Puy-de-Dôme, est réputée pour la basilique romane Saint-Austremoine (l'une des 5 églises romanes majeures d'Auvergne) et son tissu industriel aéronautique/métallurgique notable. Tissu PME industrielles, administration, agriculture Limagne, tourisme roman, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Issoire (63), sous-préfecture du Puy-de-Dôme, est réputée pour la basilique romane Saint-Austremoine (l'une des 5 églises romanes majeures d'Auvergne) et son tissu industriel aéronautique/métallurgique notable. Tissu PME industrielles, administration, agriculture Limagne, tourisme roman, TPE artisans BTP, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Issoire (63), sous-préfecture du Puy-de-Dôme, est réputée pour la basilique romane Saint-Austremoine (l'une des 5 églises romanes majeures d'Auvergne) et son tissu industriel aéronautique/métallurgique notable. Tissu PME industrielles, administration, agriculture Limagne, tourisme roman, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Issoire (63), sous-préfecture du Puy-de-Dôme, est réputée pour la basilique romane Saint-Austremoine (l'une des 5 églises romanes majeures d'Auvergne) et son tissu industriel aéronautique/métallurgique notable. Tissu PME industrielles, administration, agriculture Limagne, tourisme roman, TPE artisans BTP, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Issoire (63). Nous accompagnons tous types d'activités : PME industrielles aéronautique/métallurgie, administration sous-préfecture, acteurs tourisme roman, agriculteurs Limagne, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const ISSOIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Issoire : diagnostic adapté aux PME aéronautique/métallurgie, administration, acteurs tourisme roman, agriculteurs, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Issoire : diagnostic adapté aux PME aéronautique/métallurgie, administration, acteurs tourisme roman, agriculteurs, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Issoire : diagnostic adapté aux PME aéronautique/métallurgie, administration, acteurs tourisme roman, agriculteurs, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Issoire : diagnostic adapté aux PME aéronautique/métallurgie, administration, acteurs tourisme roman, agriculteurs, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Issoire : formats adaptés à l'atelier aéronautique, administration, site roman, exploitation, commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Issoire : formats adaptés à l'atelier aéronautique, administration, site roman, exploitation, commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Issoire : formats adaptés à l'atelier aéronautique, administration, site roman, exploitation, commerce. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Issoire : formats adaptés à l'atelier aéronautique, administration, site roman, exploitation, commerce. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Issoire : prédiction maintenance aéronautique, contrôle qualité par vision (pièces métallurgiques), agents conversationnels visiteurs roman multilingue, automatisation flux administratifs.",
@@ -64,7 +64,7 @@ export const ISSOIRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Clermont ?",
-      a: "Clermont (35 min A75). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Clermont (35 min A75). Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

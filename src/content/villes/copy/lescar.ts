@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LESCAR_COPY: VilleCopy = {
   pitchFr:
-    "Lescar (64), commune de l'agglomération de Pau, 9 455 habitants. Ancienne cité épiscopale (cathédrale romane), zones commerciales dynamiques, TPE artisans, PME services et commerces de périphérie urbaine. Axion-IA y intervient pour tous types d'activités de l'agglomération paloise.",
+    "Lescar (64), commune de l'agglomération de Pau, 9 455 habitants. Ancienne cité épiscopale (cathédrale romane), zones commerciales dynamiques, TPE artisans, PME services et commerces de périphérie urbaine. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération paloise.",
   pitchEn:
-    "Lescar (64), commune de l'agglomération de Pau, 9 455 habitants. Ancienne cité épiscopale (cathédrale romane), zones commerciales dynamiques, TPE artisans, PME services et commerces de périphérie urbaine. Axion-IA y intervient pour tous types d'activités de l'agglomération paloise.",
+    "Lescar (64), commune de l'agglomération de Pau, 9 455 habitants. Ancienne cité épiscopale (cathédrale romane), zones commerciales dynamiques, TPE artisans, PME services et commerces de périphérie urbaine. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération paloise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lescar (64). Nous accompagnons TPE, PME et commerces de l'agglomération paloise : retail, services, artisanat, restauration. Audit Flash à partir de 490 € HT.",
   directAnswerEn:

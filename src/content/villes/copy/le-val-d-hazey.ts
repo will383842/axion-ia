@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_VAL_D_HAZEY_COPY: VilleCopy = {
   pitchFr:
-    "Le Val d'Hazey (27), commune nouvelle de l'Eure dans la vallée de la Seine entre Gaillon et Les Andelys. Tissu TPE artisans, PME industrie et logistique vallée de Seine, agriculture, commerces de proximité, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Le Val d'Hazey (27), commune nouvelle de l'Eure dans la vallée de la Seine entre Gaillon et Les Andelys. Tissu TPE artisans, PME industrie et logistique vallée de Seine, agriculture, commerces de proximité, services aux entreprises. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Le Val d'Hazey (27), commune nouvelle de l'Eure dans la vallée de la Seine entre Gaillon et Les Andelys. Tissu TPE artisans, PME industrie et logistique vallée de Seine, agriculture, commerces de proximité, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Le Val d'Hazey (27), commune nouvelle de l'Eure dans la vallée de la Seine entre Gaillon et Les Andelys. Tissu TPE artisans, PME industrie et logistique vallée de Seine, agriculture, commerces de proximité, services aux entreprises. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Val d'Hazey (27). Nous accompagnons tous types d'activités : TPE artisans, PME industrie et logistique vallée de Seine, exploitants agricoles, commerces, indépendants et services aux entreprises de Seine Normandie Agglomération.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LE_VAL_D_HAZEY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Val d'Hazey : diagnostic adapté aux TPE artisans, PME industrie et logistique vallée de Seine, exploitants agricoles, commerces. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA au Val d'Hazey : diagnostic adapté aux TPE artisans, PME industrie et logistique vallée de Seine, exploitants agricoles, commerces. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA au Val d'Hazey : diagnostic adapté aux TPE artisans, PME industrie et logistique vallée de Seine, exploitants agricoles, commerces. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA au Val d'Hazey : diagnostic adapté aux TPE artisans, PME industrie et logistique vallée de Seine, exploitants agricoles, commerces. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site au Val d'Hazey : formats adaptés à l'usine, l'entrepôt logistique, l'exploitation agricole, le commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const LE_VAL_D_HAZEY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou Rouen ?",
-      a: "Nos consultants viennent de Paris (1h10 train direct gare Gaillon-Aubevoye à 5 min) ou Rouen (35 min). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Paris (1h10 train direct gare Gaillon-Aubevoye à 5 min) ou Rouen (35 min). Pour les multi-jours, hébergement local possible. Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

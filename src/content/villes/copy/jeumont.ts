@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const JEUMONT_COPY: VilleCopy = {
   pitchFr:
-    "Jeumont (59), commune du Nord dans la vallée de la Sambre, est une ville métallurgique historique frontalière de la Belgique. Tissu mixte : TPE artisans BTP, PME industrielles (métallurgie, mécanique), commerces de proximité, professions libérales, services frontaliers. Axion-IA y intervient pour tous types d'activités.",
+    "Jeumont (59), commune du Nord dans la vallée de la Sambre, est une ville métallurgique historique frontalière de la Belgique. Tissu mixte : TPE artisans BTP, PME industrielles (métallurgie, mécanique), commerces de proximité, professions libérales, services frontaliers. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Jeumont (59), commune du Nord dans la vallée de la Sambre, est une ville métallurgique historique frontalière de la Belgique. Tissu mixte : TPE artisans BTP, PME industrielles (métallurgie, mécanique), commerces de proximité, professions libérales, services frontaliers. Axion-IA y intervient pour tous types d'activités.",
+    "Jeumont (59), commune du Nord dans la vallée de la Sambre, est une ville métallurgique historique frontalière de la Belgique. Tissu mixte : TPE artisans BTP, PME industrielles (métallurgie, mécanique), commerces de proximité, professions libérales, services frontaliers. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jeumont (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles métallurgie-mécanique, commerçants de proximité, professions libérales, indépendants et services aux entreprises de la vallée Sambre.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const JEUMONT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Jeumont : diagnostic adapté aux TPE artisans BTP, PME industrielles métallurgie-mécanique, commerces et professions libérales vallée Sambre. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Jeumont : diagnostic adapté aux TPE artisans BTP, PME industrielles métallurgie-mécanique, commerces et professions libérales vallée Sambre. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Jeumont : diagnostic adapté aux TPE artisans BTP, PME industrielles métallurgie-mécanique, commerces et professions libérales vallée Sambre. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Jeumont : diagnostic adapté aux TPE artisans BTP, PME industrielles métallurgie-mécanique, commerces et professions libérales vallée Sambre. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Jeumont : formats adaptés à l'atelier industriel, au chantier, au commerce, au cabinet. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const JEUMONT_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lille ?",
-      a: "Nos consultants viennent de Lille (1 h 20). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lille (1 h 20). Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

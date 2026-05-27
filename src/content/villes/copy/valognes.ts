@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VALOGNES_COPY: VilleCopy = {
   pitchFr:
-    "Valognes (50), surnommée le « Versailles normand » pour ses hôtels particuliers, est un bourg historique du Cotentin dans la Manche (Normandie). Tissu TPE commerces et artisanat, PME agroalimentaires cidricoles, services de proximité, tourisme patrimonial et élevage normand. Axion-IA y intervient pour tous types d'activités.",
+    "Valognes (50), surnommée le « Versailles normand » pour ses hôtels particuliers, est un bourg historique du Cotentin dans la Manche (Normandie). Tissu TPE commerces et artisanat, PME agroalimentaires cidricoles, services de proximité, tourisme patrimonial et élevage normand. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Valognes (50), surnommée le « Versailles normand » pour ses hôtels particuliers, est un bourg historique du Cotentin dans la Manche (Normandie). Tissu TPE commerces et artisanat, PME agroalimentaires cidricoles, services de proximité, tourisme patrimonial et élevage normand. Axion-IA y intervient pour tous types d'activités.",
+    "Valognes (50), surnommée le « Versailles normand » pour ses hôtels particuliers, est un bourg historique du Cotentin dans la Manche (Normandie). Tissu TPE commerces et artisanat, PME agroalimentaires cidricoles, services de proximité, tourisme patrimonial et élevage normand. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Valognes (50). Nous accompagnons tous types d'activités : TPE commerçants et artisans du centre historique, PME agroalimentaires cidricoles du Cotentin, éleveurs normands, prestataires tourisme patrimonial, professions libérales et services.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const VALOGNES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Valognes : diagnostic adapté aux TPE commerçants et artisans, PME cidreries et agroalimentaire, éleveurs normands, prestataires tourisme patrimonial du Cotentin. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Valognes : diagnostic adapté aux TPE commerçants et artisans, PME cidreries et agroalimentaire, éleveurs normands, prestataires tourisme patrimonial du Cotentin. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Valognes : diagnostic adapté aux TPE commerçants et artisans, PME cidreries et agroalimentaire, éleveurs normands, prestataires tourisme patrimonial du Cotentin. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Valognes : diagnostic adapté aux TPE commerçants et artisans, PME cidreries et agroalimentaire, éleveurs normands, prestataires tourisme patrimonial du Cotentin. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Valognes : formats adaptés à la cidrerie, au commerce, à l'exploitation d'élevage, au site patrimonial. Vos équipes repartent autonomes sur les outils IA.",
@@ -64,7 +64,7 @@ export const VALOGNES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Valognes ?",
-      a: "Nos consultants viennent de Cherbourg (20 min) ou Caen (1 h 10). Gare de Valognes (TER Paris 2 h 45 via Caen). Multi-jours : hébergement local. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Cherbourg (20 min) ou Caen (1 h 10). Gare de Valognes (TER Paris 2 h 45 via Caen). Multi-jours : hébergement local. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

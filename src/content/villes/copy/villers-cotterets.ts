@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VILLERS_COTTERETS_COPY: VilleCopy = {
   pitchFr:
-    "Villers-Cotterêts (02), sous-préfecture du sud de l'Aisne, célèbre pour son château François Ier réhabilité en Cité internationale de la Langue française et bordée par la vaste forêt de Retz. Tissu TPE/PME tourisme culturel, hôtellerie-restauration, commerces de proximité, artisans BTP, professions libérales et exploitations sylvicoles. Axion-IA y intervient pour tous types d'activités.",
+    "Villers-Cotterêts (02), sous-préfecture du sud de l'Aisne, célèbre pour son château François Ier réhabilité en Cité internationale de la Langue française et bordée par la vaste forêt de Retz. Tissu TPE/PME tourisme culturel, hôtellerie-restauration, commerces de proximité, artisans BTP, professions libérales et exploitations sylvicoles. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Villers-Cotterêts (02), sous-préfecture du sud de l'Aisne, célèbre pour son château François Ier réhabilité en Cité internationale de la Langue française et bordée par la vaste forêt de Retz. Tissu TPE/PME tourisme culturel, hôtellerie-restauration, commerces de proximité, artisans BTP, professions libérales et exploitations sylvicoles. Axion-IA y intervient pour tous types d'activités.",
+    "Villers-Cotterêts (02), sous-préfecture du sud de l'Aisne, célèbre pour son château François Ier réhabilité en Cité internationale de la Langue française et bordée par la vaste forêt de Retz. Tissu TPE/PME tourisme culturel, hôtellerie-restauration, commerces de proximité, artisans BTP, professions libérales et exploitations sylvicoles. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villers-Cotterêts (02). Nous accompagnons tous types d'activités : TPE/PME tourisme culturel et hôtellerie, commerces de proximité, artisans BTP, professions libérales, exploitations sylvicoles et acteurs du patrimoine du sud de l'Aisne.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const VILLERS_COTTERETS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villers-Cotterêts : diagnostic adapté aux TPE/PME tourisme culturel, hôteliers-restaurateurs, commerçants, artisans BTP, professions libérales et filière bois. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Villers-Cotterêts : diagnostic adapté aux TPE/PME tourisme culturel, hôteliers-restaurateurs, commerçants, artisans BTP, professions libérales et filière bois. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Villers-Cotterêts : diagnostic adapté aux TPE/PME tourisme culturel, hôteliers-restaurateurs, commerçants, artisans BTP, professions libérales et filière bois. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Villers-Cotterêts : diagnostic adapté aux TPE/PME tourisme culturel, hôteliers-restaurateurs, commerçants, artisans BTP, professions libérales et filière bois. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villers-Cotterêts : formats adaptés à l'hôtel, restaurant, boutique, atelier ou cabinet libéral. Vos équipes repartent autonomes.",

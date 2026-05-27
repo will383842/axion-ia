@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VILLENEUVE_LE_ROI_COPY: VilleCopy = {
   pitchFr:
-    "Villeneuve-le-Roi, ville du Val-de-Marne (94) en banlieue sud de Paris, est ancrée dans le bassin aéroportuaire d'Orly (15 000+ emplois aéroport). Tissu logistique, industrie aéroportuaire, BTP, artisanat, commerces et PME tertiaires. Axion-IA y intervient pour tous types d'activités du sud-94.",
+    "Villeneuve-le-Roi, ville du Val-de-Marne (94) en banlieue sud de Paris, est ancrée dans le bassin aéroportuaire d'Orly (15 000+ emplois aéroport). Tissu logistique, industrie aéroportuaire, BTP, artisanat, commerces et PME tertiaires. Axion-IA y déploie ses missions auprès de toutes les organisations du sud-94.",
   pitchEn:
-    "Villeneuve-le-Roi, ville du Val-de-Marne (94) en banlieue sud de Paris, est ancrée dans le bassin aéroportuaire d'Orly (15 000+ emplois aéroport). Tissu logistique, industrie aéroportuaire, BTP, artisanat, commerces et PME tertiaires. Axion-IA y intervient pour tous types d'activités du sud-94.",
+    "Villeneuve-le-Roi, ville du Val-de-Marne (94) en banlieue sud de Paris, est ancrée dans le bassin aéroportuaire d'Orly (15 000+ emplois aéroport). Tissu logistique, industrie aéroportuaire, BTP, artisanat, commerces et PME tertiaires. Axion-IA y déploie ses missions auprès de toutes les organisations du sud-94.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villeneuve-le-Roi (94). Nous accompagnons tous types d'activités : opérateurs logistiques aéroportuaires Orly, services au sol (catering, maintenance, ground handling), industriels et sous-traitants aéronautiques, TPE artisans BTP, commerçants, PME tertiaires villeneuvoises et services publics.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const VILLENEUVE_LE_ROI_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villeneuve-le-Roi : diagnostic adapté aux opérateurs aéroportuaires Orly, logisticiens, industriels, TPE artisans et PME tertiaires sud-94. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Villeneuve-le-Roi : diagnostic adapté aux opérateurs aéroportuaires Orly, logisticiens, industriels, TPE artisans et PME tertiaires sud-94. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Villeneuve-le-Roi : diagnostic adapté aux opérateurs aéroportuaires Orly, logisticiens, industriels, TPE artisans et PME tertiaires sud-94. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Villeneuve-le-Roi : diagnostic adapté aux opérateurs aéroportuaires Orly, logisticiens, industriels, TPE artisans et PME tertiaires sud-94. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villeneuve-le-Roi : formats adaptés au métier (aérogare, entrepôt logistique, atelier maintenance, commerce). Vos équipes opérationnelles repartent autonomes sur outils IA.",

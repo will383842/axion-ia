@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ROUSSILLON_COPY: VilleCopy = {
   pitchFr:
-    "Roussillon (38), commune du sud-Isère dans la vallée du Rhône (entre Vienne et Valence), s'inscrit dans un bassin économique mixte industriel, agricole et résidentiel. Tissu PME industrielles, TPE artisans, agriculteurs, commerçants et services. Axion-IA y intervient pour tous types d'activités du sud-Isère et de l'axe rhodanien.",
+    "Roussillon (38), commune du sud-Isère dans la vallée du Rhône (entre Vienne et Valence), s'inscrit dans un bassin économique mixte industriel, agricole et résidentiel. Tissu PME industrielles, TPE artisans, agriculteurs, commerçants et services. Axion-IA y déploie ses missions auprès de toutes les organisations du sud-Isère et de l'axe rhodanien.",
   pitchEn:
-    "Roussillon (38), commune du sud-Isère dans la vallée du Rhône (entre Vienne et Valence), s'inscrit dans un bassin économique mixte industriel, agricole et résidentiel. Tissu PME industrielles, TPE artisans, agriculteurs, commerçants et services. Axion-IA y intervient pour tous types d'activités du sud-Isère et de l'axe rhodanien.",
+    "Roussillon (38), commune du sud-Isère dans la vallée du Rhône (entre Vienne et Valence), s'inscrit dans un bassin économique mixte industriel, agricole et résidentiel. Tissu PME industrielles, TPE artisans, agriculteurs, commerçants et services. Axion-IA y déploie ses missions auprès de toutes les organisations du sud-Isère et de l'axe rhodanien.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Roussillon (38). Nous accompagnons tous types d'activités : PME industrielles du sud-Isère, TPE artisans BTP, commerçants, agriculteurs et arboriculteurs de la vallée du Rhône, indépendants, professions libérales et services aux entreprises de l'axe rhodanien.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const ROUSSILLON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Roussillon : diagnostic adapté aux PME industrielles, agriculteurs vallée du Rhône, TPE artisans et commerces du sud-Isère. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
-      en: "Audit IA à Roussillon : diagnostic adapté aux PME industrielles, agriculteurs vallée du Rhône, TPE artisans et commerces du sud-Isère. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
+      fr: "Audit IA à Roussillon : diagnostic adapté aux PME industrielles, agriculteurs vallée du Rhône, TPE artisans et commerces du sud-Isère. Audit Flash à 490 € HT, retour sur investissement chiffré accessible aux petites structures.",
+      en: "Audit IA à Roussillon : diagnostic adapté aux PME industrielles, agriculteurs vallée du Rhône, TPE artisans et commerces du sud-Isère. Audit Flash à 490 € HT, retour sur investissement chiffré accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Roussillon : formats adaptés à l'atelier industriel, exploitation agricole ou commerce. Vos équipes (ouvriers, agriculteurs, commerçants) repartent autonomes sur outils IA métier.",

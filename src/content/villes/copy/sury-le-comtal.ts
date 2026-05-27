@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SURY_LE_COMTAL_COPY: VilleCopy = {
   pitchFr:
-    "Sury-le-Comtal (42), commune de la plaine du Forez dans la Loire, est intégrée à Loire Forez Agglo. Position péri-urbaine entre Saint-Étienne et Montbrison. Tissu PME tertiaires et industrielles, TPE artisans BTP, agriculture forézienne, commerces. Axion-IA y intervient pour tous types d'activités foréziennes.",
+    "Sury-le-Comtal (42), commune de la plaine du Forez dans la Loire, est intégrée à Loire Forez Agglo. Position péri-urbaine entre Saint-Étienne et Montbrison. Tissu PME tertiaires et industrielles, TPE artisans BTP, agriculture forézienne, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations foréziennes.",
   pitchEn:
-    "Sury-le-Comtal (42), commune de la plaine du Forez dans la Loire, est intégrée à Loire Forez Agglo. Position péri-urbaine entre Saint-Étienne et Montbrison. Tissu PME tertiaires et industrielles, TPE artisans BTP, agriculture forézienne, commerces. Axion-IA y intervient pour tous types d'activités foréziennes.",
+    "Sury-le-Comtal (42), commune de la plaine du Forez dans la Loire, est intégrée à Loire Forez Agglo. Position péri-urbaine entre Saint-Étienne et Montbrison. Tissu PME tertiaires et industrielles, TPE artisans BTP, agriculture forézienne, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations foréziennes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sury-le-Comtal (42). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Loire Forez Agglo, TPE artisans BTP, commerçants, agriculteurs plaine Forez, indépendants et services aux entreprises foréziennes.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const SURY_LE_COMTAL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sury-le-Comtal : diagnostic adapté aux PME tertiaires/industrielles Loire Forez Agglo, agriculteurs forez, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Sury-le-Comtal : diagnostic adapté aux PME tertiaires/industrielles Loire Forez Agglo, agriculteurs forez, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Sury-le-Comtal : diagnostic adapté aux PME tertiaires/industrielles Loire Forez Agglo, agriculteurs forez, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Sury-le-Comtal : diagnostic adapté aux PME tertiaires/industrielles Loire Forez Agglo, agriculteurs forez, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sury-le-Comtal : formats adaptés au bureau tertiaire, atelier industriel, exploitation agricole, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const SURY_LE_COMTAL_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",
-      a: "Nos consultants viennent de Lyon (1h) ou Saint-Étienne (25 min). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (1h) ou Saint-Étienne (25 min). Pour les multi-jours, hébergement local possible. Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

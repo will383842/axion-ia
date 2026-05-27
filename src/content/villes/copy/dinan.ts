@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const DINAN_COPY: VilleCopy = {
   pitchFr:
-    "Dinan (22), cité médiévale fortifiée surplombant la Rance, sous-préfecture des Côtes-d'Armor au carrefour de Saint-Malo et Saint-Brieuc. Tissu de TPE artisans d'art, PME tourisme et hôtellerie, commerces de centre historique, professions libérales et entreprises patrimoniales. Axion-IA y intervient pour tous types d'activités du pays de Dinan.",
+    "Dinan (22), cité médiévale fortifiée surplombant la Rance, sous-préfecture des Côtes-d'Armor au carrefour de Saint-Malo et Saint-Brieuc. Tissu de TPE artisans d'art, PME tourisme et hôtellerie, commerces de centre historique, professions libérales et entreprises patrimoniales. Axion-IA couvre l'ensemble des activités professionnelles présentes du pays de Dinan.",
   pitchEn:
-    "Dinan (22), cité médiévale fortifiée surplombant la Rance, sous-préfecture des Côtes-d'Armor au carrefour de Saint-Malo et Saint-Brieuc. Tissu de TPE artisans d'art, PME tourisme et hôtellerie, commerces de centre historique, professions libérales et entreprises patrimoniales. Axion-IA y intervient pour tous types d'activités du pays de Dinan.",
+    "Dinan (22), cité médiévale fortifiée surplombant la Rance, sous-préfecture des Côtes-d'Armor au carrefour de Saint-Malo et Saint-Brieuc. Tissu de TPE artisans d'art, PME tourisme et hôtellerie, commerces de centre historique, professions libérales et entreprises patrimoniales. Axion-IA couvre l'ensemble des activités professionnelles présentes du pays de Dinan.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Dinan (22). Nous accompagnons TPE et PME : artisans d'art, hôteliers-restaurateurs, commerces du centre historique, professions libérales et entreprises touristiques de cette cité médiévale surplombant la Rance. Audit Flash dès 490 € HT.",
   directAnswerEn:

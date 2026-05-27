@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FONDETTES_COPY: VilleCopy = {
   pitchFr:
-    "Fondettes (37), commune de l'ouest de Tours Métropole en Indre-et-Loire, se situe à la confluence de la Loire et de la Choisille. Tissu TPE artisans BTP, PME tertiaires et services, agriculture maraîchère Val de Loire, commerces de proximité. Axion-IA y intervient pour tous types d'activités.",
+    "Fondettes (37), commune de l'ouest de Tours Métropole en Indre-et-Loire, se situe à la confluence de la Loire et de la Choisille. Tissu TPE artisans BTP, PME tertiaires et services, agriculture maraîchère Val de Loire, commerces de proximité. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Fondettes (37), commune de l'ouest de Tours Métropole en Indre-et-Loire, se situe à la confluence de la Loire et de la Choisille. Tissu TPE artisans BTP, PME tertiaires et services, agriculture maraîchère Val de Loire, commerces de proximité. Axion-IA y intervient pour tous types d'activités.",
+    "Fondettes (37), commune de l'ouest de Tours Métropole en Indre-et-Loire, se situe à la confluence de la Loire et de la Choisille. Tissu TPE artisans BTP, PME tertiaires et services, agriculture maraîchère Val de Loire, commerces de proximité. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fondettes (37). Nous accompagnons tous types d'activités : TPE artisans BTP, PME tertiaires de Tours Métropole ouest, exploitants agricoles Val de Loire, commerçants et services aux entreprises fondettois.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const FONDETTES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fondettes : diagnostic adapté aux TPE artisans BTP, PME tertiaires, exploitants agricoles Val de Loire, professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Fondettes : diagnostic adapté aux TPE artisans BTP, PME tertiaires, exploitants agricoles Val de Loire, professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Fondettes : diagnostic adapté aux TPE artisans BTP, PME tertiaires, exploitants agricoles Val de Loire, professions libérales. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Fondettes : diagnostic adapté aux TPE artisans BTP, PME tertiaires, exploitants agricoles Val de Loire, professions libérales. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Fondettes : formats adaptés au bureau tertiaire, atelier artisan, exploitation agricole. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const FONDETTES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Fondettes ?",
-      a: "Nos consultants interviennent sur site à Fondettes (Tours centre à 10 min). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants interviennent sur site à Fondettes (Tours centre à 10 min). Coûts de déplacement à part, tarification transparente.",
     },
   ],
 };

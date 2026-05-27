@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LAXOU_COPY: VilleCopy = {
   pitchFr:
-    "Laxou (54), commune de Meurthe-et-Moselle intégrée à la Métropole du Grand Nancy, conjugue zones résidentielles, parcs d'activités et tissu tertiaire en plein essor. TPE et PME tertiaires, ESN, cabinets conseil, commerces de zone et de proximité, services aux entreprises, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Laxou (54), commune de Meurthe-et-Moselle intégrée à la Métropole du Grand Nancy, conjugue zones résidentielles, parcs d'activités et tissu tertiaire en plein essor. TPE et PME tertiaires, ESN, cabinets conseil, commerces de zone et de proximité, services aux entreprises, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Laxou (54), commune de Meurthe-et-Moselle intégrée à la Métropole du Grand Nancy, conjugue zones résidentielles, parcs d'activités et tissu tertiaire en plein essor. TPE et PME tertiaires, ESN, cabinets conseil, commerces de zone et de proximité, services aux entreprises, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Laxou (54), commune de Meurthe-et-Moselle intégrée à la Métropole du Grand Nancy, conjugue zones résidentielles, parcs d'activités et tissu tertiaire en plein essor. TPE et PME tertiaires, ESN, cabinets conseil, commerces de zone et de proximité, services aux entreprises, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Laxou (54). Nous accompagnons TPE et PME : sociétés tertiaires des zones d'activités, ESN, cabinets conseil, commerçants de zone, services aux entreprises, professions libérales de la Métropole Grand Nancy. Audit Flash dès 490 € HT.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_VIT_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Vit (25), commune de la vallée du Doubs située entre Besançon et Dole, est un bourg résidentiel et industriel de Franche-Comté. TPE artisans, PME industrielles et logistiques, commerces de proximité, professions libérales et exploitants agricoles de la plaine du Doubs composent son tissu économique. Axion-IA y intervient pour tous types d'activités entre Besançon et Dole.",
+    "Saint-Vit (25), commune de la vallée du Doubs située entre Besançon et Dole, est un bourg résidentiel et industriel de Franche-Comté. TPE artisans, PME industrielles et logistiques, commerces de proximité, professions libérales et exploitants agricoles de la plaine du Doubs composent son tissu économique. Axion-IA y déploie ses missions auprès de toutes les organisations entre Besançon et Dole.",
   pitchEn:
-    "Saint-Vit (25), commune de la vallée du Doubs située entre Besançon et Dole, est un bourg résidentiel et industriel de Franche-Comté. TPE artisans, PME industrielles et logistiques, commerces de proximité, professions libérales et exploitants agricoles de la plaine du Doubs composent son tissu économique. Axion-IA y intervient pour tous types d'activités entre Besançon et Dole.",
+    "Saint-Vit (25), commune de la vallée du Doubs située entre Besançon et Dole, est un bourg résidentiel et industriel de Franche-Comté. TPE artisans, PME industrielles et logistiques, commerces de proximité, professions libérales et exploitants agricoles de la plaine du Doubs composent son tissu économique. Axion-IA y déploie ses missions auprès de toutes les organisations entre Besançon et Dole.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Vit (25). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et logistiques de l'axe Besançon-Dole, commerçants, professions libérales, indépendants et exploitants agricoles de la plaine du Doubs.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const SAINT_VIT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Vit : diagnostic adapté aux TPE artisans, PME industrielles et logistiques de l'axe Besançon-Dole, commerçants et exploitants agricoles. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Saint-Vit : diagnostic adapté aux TPE artisans, PME industrielles et logistiques de l'axe Besançon-Dole, commerçants et exploitants agricoles. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Saint-Vit : diagnostic adapté aux TPE artisans, PME industrielles et logistiques de l'axe Besançon-Dole, commerçants et exploitants agricoles. ROI mesurable, audit Flash dès 490 € HT accessible.",
+      en: "Audit IA à Saint-Vit : diagnostic adapté aux TPE artisans, PME industrielles et logistiques de l'axe Besançon-Dole, commerçants et exploitants agricoles. ROI mesurable, audit Flash dès 490 € HT accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Vit : formats adaptés à l'atelier industriel, entrepôt logistique, TPE artisan BTP ou exploitation agricole. Vos équipes repartent autonomes sur les outils IA métier.",

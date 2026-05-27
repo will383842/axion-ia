@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BLANZY_COPY: VilleCopy = {
   pitchFr:
-    "Blanzy (71), commune du bassin minier Le Creusot-Montceau en Saône-et-Loire, conjugue héritage industriel minier et reconversion économique. Tissu de TPE artisanales, PME industrielles, commerces de proximité et services à la personne. Axion-IA y intervient pour tous types d'activités.",
+    "Blanzy (71), commune du bassin minier Le Creusot-Montceau en Saône-et-Loire, conjugue héritage industriel minier et reconversion économique. Tissu de TPE artisanales, PME industrielles, commerces de proximité et services à la personne. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Blanzy (71), commune du bassin minier Le Creusot-Montceau en Saône-et-Loire, conjugue héritage industriel minier et reconversion économique. Tissu de TPE artisanales, PME industrielles, commerces de proximité et services à la personne. Axion-IA y intervient pour tous types d'activités.",
+    "Blanzy (71), commune du bassin minier Le Creusot-Montceau en Saône-et-Loire, conjugue héritage industriel minier et reconversion économique. Tissu de TPE artisanales, PME industrielles, commerces de proximité et services à la personne. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Blanzy (71). Nous accompagnons TPE et PME du bassin Le Creusot-Montceau : sous-traitants industriels, artisans BTP, commerçants, prestataires de services à la personne et professions de santé. Audit Flash dès 490 € HT.",
   directAnswerEn:

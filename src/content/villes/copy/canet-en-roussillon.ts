@@ -29,12 +29,12 @@ export const CANET_EN_ROUSSILLON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Canet-en-Roussillon : diagnostic adapté aux TPE tourisme, PME hôtellerie-restauration, commerces saisonniers et activités nautiques du littoral catalan. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Canet-en-Roussillon : diagnostic adapté aux TPE tourisme, PME hôtellerie-restauration, commerces saisonniers et activités nautiques du littoral catalan. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Canet-en-Roussillon : diagnostic adapté aux TPE tourisme, PME hôtellerie-restauration, commerces saisonniers et activités nautiques du littoral catalan. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Canet-en-Roussillon : diagnostic adapté aux TPE tourisme, PME hôtellerie-restauration, commerces saisonniers et activités nautiques du littoral catalan. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Canet-en-Roussillon : formats adaptés à l'hôtel, restaurant, commerce saisonnier, port de plaisance. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Canet-en-Roussillon : formats adaptés à l'hôtel, restaurant, commerce saisonnier, port de plaisance. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Canet-en-Roussillon : formats adaptés à l'hôtel, restaurant, commerce saisonnier, port de plaisance. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Canet-en-Roussillon : formats adaptés à l'hôtel, restaurant, commerce saisonnier, port de plaisance. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Canet-en-Roussillon : chatbots réservation tourisme, yield management hôtelier, gestion stocks saisonniers, agents conversationnels multilingues. Perpignan Méditerranée Métropole.",
@@ -64,7 +64,7 @@ export const CANET_EN_ROUSSILLON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Canet-en-Roussillon ?",
-      a: "Nos consultants interviennent depuis Perpignan (12 min). Missions sur site dans votre établissement, commerce ou bureau. Visio possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants interviennent depuis Perpignan (12 min). Missions sur site dans votre établissement, commerce ou bureau. Visio possible. Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

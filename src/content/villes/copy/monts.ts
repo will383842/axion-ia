@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MONTS_COPY: VilleCopy = {
   pitchFr:
-    "Monts (37), commune résidentielle du sud de Tours dans la vallée de l'Indre, bénéficie de la proximité immédiate de l'agglomération tourangelle. Cadre de vie attractif entre coteaux et rivière. Tissu TPE artisans, commerçants de proximité, PME tertiaires, professions libérales et services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Monts (37), commune résidentielle du sud de Tours dans la vallée de l'Indre, bénéficie de la proximité immédiate de l'agglomération tourangelle. Cadre de vie attractif entre coteaux et rivière. Tissu TPE artisans, commerçants de proximité, PME tertiaires, professions libérales et services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Monts (37), commune résidentielle du sud de Tours dans la vallée de l'Indre, bénéficie de la proximité immédiate de l'agglomération tourangelle. Cadre de vie attractif entre coteaux et rivière. Tissu TPE artisans, commerçants de proximité, PME tertiaires, professions libérales et services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Monts (37), commune résidentielle du sud de Tours dans la vallée de l'Indre, bénéficie de la proximité immédiate de l'agglomération tourangelle. Cadre de vie attractif entre coteaux et rivière. Tissu TPE artisans, commerçants de proximité, PME tertiaires, professions libérales et services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Monts (37). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, PME tertiaires, professions libérales, prestataires de services, indépendants et entreprises de la vallée de l'Indre sud-tourangelle.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const MONTS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Monts : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires et professions libérales de la vallée de l'Indre sud-tourangelle. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Monts : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires et professions libérales de la vallée de l'Indre sud-tourangelle. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Monts : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires et professions libérales de la vallée de l'Indre sud-tourangelle. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Monts : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires et professions libérales de la vallée de l'Indre sud-tourangelle. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Monts : formats adaptés au cabinet professionnel, atelier artisan, commerce de proximité ou PME tertiaire. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Monts : formats adaptés au cabinet professionnel, atelier artisan, commerce de proximité ou PME tertiaire. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Monts : formats adaptés au cabinet professionnel, atelier artisan, commerce de proximité ou PME tertiaire. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Monts : formats adaptés au cabinet professionnel, atelier artisan, commerce de proximité ou PME tertiaire. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Monts : automatisation devis et facturation, agents conversationnels prise de RDV, classification documents, gestion planning artisan. Adapté aux TPE/PME de la vallée de l'Indre.",

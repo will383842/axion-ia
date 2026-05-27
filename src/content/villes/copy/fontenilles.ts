@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FONTENILLES_COPY: VilleCopy = {
   pitchFr:
-    "Fontenilles (31), commune de l'ouest toulousain en forte croissance, près de 6 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales, activités agricoles. Axion-IA y intervient pour tous types d'activités de la couronne ouest de Toulouse.",
+    "Fontenilles (31), commune de l'ouest toulousain en forte croissance, près de 6 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales, activités agricoles. Axion-IA y déploie ses missions auprès de toutes les organisations de la couronne ouest de Toulouse.",
   pitchEn:
-    "Fontenilles (31), commune de l'ouest toulousain en forte croissance, près de 6 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales, activités agricoles. Axion-IA y intervient pour tous types d'activités de la couronne ouest de Toulouse.",
+    "Fontenilles (31), commune de l'ouest toulousain en forte croissance, près de 6 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales, activités agricoles. Axion-IA y déploie ses missions auprès de toutes les organisations de la couronne ouest de Toulouse.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fontenilles (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'ouest Toulouse. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const FONTENILLES_COPY: VilleCopy = {
       en: "Audit IA à Fontenilles : diagnostic adapté aux TPE artisans, PME de services et professions libérales de l'ouest Toulouse. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Fontenilles : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Fontenilles : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Fontenilles : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Fontenilles : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Fontenilles : automatisation devis artisans, gestion clients, classification documents, agents conversationnels pour TPE-PME ouest Toulouse.",

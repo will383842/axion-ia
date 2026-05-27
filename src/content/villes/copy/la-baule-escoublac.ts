@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_BAULE_ESCOUBLAC_COPY: VilleCopy = {
   pitchFr:
-    "La Baule-Escoublac (44), station balnéaire de prestige avec sa plage de 12 km, près de 17 000 habitants. Hôtellerie haut de gamme, thalassothérapie, commerces de luxe, immobilier, artisanat et professions libérales. Tissu TPE commerçants, PME hôtelières et immobilières. Axion-IA y intervient pour tous types d'activités du bassin baulois.",
+    "La Baule-Escoublac (44), station balnéaire de prestige avec sa plage de 12 km, près de 17 000 habitants. Hôtellerie haut de gamme, thalassothérapie, commerces de luxe, immobilier, artisanat et professions libérales. Tissu TPE commerçants, PME hôtelières et immobilières. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin baulois.",
   pitchEn:
-    "La Baule-Escoublac (44), station balnéaire de prestige avec sa plage de 12 km, près de 17 000 habitants. Hôtellerie haut de gamme, thalassothérapie, commerces de luxe, immobilier, artisanat et professions libérales. Tissu TPE commerçants, PME hôtelières et immobilières. Axion-IA y intervient pour tous types d'activités du bassin baulois.",
+    "La Baule-Escoublac (44), station balnéaire de prestige avec sa plage de 12 km, près de 17 000 habitants. Hôtellerie haut de gamme, thalassothérapie, commerces de luxe, immobilier, artisanat et professions libérales. Tissu TPE commerçants, PME hôtelières et immobilières. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin baulois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Baule-Escoublac (44), station balnéaire de prestige de la baie. Nous accompagnons TPE commerçants, PME hôtelières et immobilières, artisans et professions libérales de la côte d'Amour. Audit Flash dès 490 € HT.",
   directAnswerEn:

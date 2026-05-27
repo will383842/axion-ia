@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CEYRAT_COPY: VilleCopy = {
   pitchFr:
-    "Ceyrat (63), commune résidentielle au sud-ouest de Clermont-Ferrand en Puy-de-Dôme, se situe au piémont de la chaîne des Puys (volcans d'Auvergne, patrimoine mondial UNESCO). Professions libérales santé, PME tertiaires, TPE artisanat, commerces de proximité, tourisme volcans. Axion-IA y intervient pour tous types d'activités.",
+    "Ceyrat (63), commune résidentielle au sud-ouest de Clermont-Ferrand en Puy-de-Dôme, se situe au piémont de la chaîne des Puys (volcans d'Auvergne, patrimoine mondial UNESCO). Professions libérales santé, PME tertiaires, TPE artisanat, commerces de proximité, tourisme volcans. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Ceyrat (63), commune résidentielle au sud-ouest de Clermont-Ferrand en Puy-de-Dôme, se situe au piémont de la chaîne des Puys (volcans d'Auvergne, patrimoine mondial UNESCO). Professions libérales santé, PME tertiaires, TPE artisanat, commerces de proximité, tourisme volcans. Axion-IA y intervient pour tous types d'activités.",
+    "Ceyrat (63), commune résidentielle au sud-ouest de Clermont-Ferrand en Puy-de-Dôme, se situe au piémont de la chaîne des Puys (volcans d'Auvergne, patrimoine mondial UNESCO). Professions libérales santé, PME tertiaires, TPE artisanat, commerces de proximité, tourisme volcans. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ceyrat (63). Nous accompagnons TPE et PME : professions libérales santé, sociétés tertiaires, artisans, commerçants et acteurs du tourisme volcans d'Auvergne du sud-ouest clermontois.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const CEYRAT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ceyrat : diagnostic adapté aux professions libérales santé, PME tertiaires, TPE artisans, commerçants et acteurs tourisme volcans du sud-ouest clermontois. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Ceyrat : diagnostic adapté aux professions libérales santé, PME tertiaires, TPE artisans, commerçants et acteurs tourisme volcans du sud-ouest clermontois. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Ceyrat : diagnostic adapté aux professions libérales santé, PME tertiaires, TPE artisans, commerçants et acteurs tourisme volcans du sud-ouest clermontois. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Ceyrat : diagnostic adapté aux professions libérales santé, PME tertiaires, TPE artisans, commerçants et acteurs tourisme volcans du sud-ouest clermontois. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Ceyrat : formats adaptés aux cabinets santé, bureaux PME, ateliers artisans ou structures touristiques volcans. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Ceyrat : formats adaptés aux cabinets santé, bureaux PME, ateliers artisans ou structures touristiques volcans. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Ceyrat : formats adaptés aux cabinets santé, bureaux PME, ateliers artisans ou structures touristiques volcans. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Ceyrat : formats adaptés aux cabinets santé, bureaux PME, ateliers artisans ou structures touristiques volcans. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Ceyrat : automatisation gestion cabinet santé (agenda, ordonnances, relances), agents IA accueil patients, classification dossiers médicaux, outils IA réservation tourisme volcans.",

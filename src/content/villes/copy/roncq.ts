@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const RONCQ_COPY: VilleCopy = {
   pitchFr:
-    "Roncq (59), commune de l'agglomération Lille-Tourcoing à la frontière belge, est connue pour ses importantes zones commerciales et son tissu économique dynamique. TPE, PME et enseignes commerciales côtoient prestataires logistiques, artisans, professions libérales et PME B2B transfrontalières franco-belges sur l'axe Lille-Bruges. Axion-IA y intervient pour tous types d'activités de la métropole lilloise nord.",
+    "Roncq (59), commune de l'agglomération Lille-Tourcoing à la frontière belge, est connue pour ses importantes zones commerciales et son tissu économique dynamique. TPE, PME et enseignes commerciales côtoient prestataires logistiques, artisans, professions libérales et PME B2B transfrontalières franco-belges sur l'axe Lille-Bruges. Axion-IA couvre l'ensemble des activités professionnelles présentes de la métropole lilloise nord.",
   pitchEn:
-    "Roncq (59), commune de l'agglomération Lille-Tourcoing à la frontière belge, est connue pour ses importantes zones commerciales et son tissu économique dynamique. TPE, PME et enseignes commerciales côtoient prestataires logistiques, artisans, professions libérales et PME B2B transfrontalières franco-belges sur l'axe Lille-Bruges. Axion-IA y intervient pour tous types d'activités de la métropole lilloise nord.",
+    "Roncq (59), commune de l'agglomération Lille-Tourcoing à la frontière belge, est connue pour ses importantes zones commerciales et son tissu économique dynamique. TPE, PME et enseignes commerciales côtoient prestataires logistiques, artisans, professions libérales et PME B2B transfrontalières franco-belges sur l'axe Lille-Bruges. Axion-IA couvre l'ensemble des activités professionnelles présentes de la métropole lilloise nord.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Roncq (59). Nous accompagnons TPE et PME : enseignes et commerces de zones commerciales, prestataires logistiques, artisans, professions libérales et PME B2B transfrontalières franco-belges de l'axe Lille-Tourcoing.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const RONCQ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Roncq : diagnostic adapté aux TPE/PME du commerce, prestataires logistiques, artisans, professions libérales et PME B2B transfrontalières de l'axe Lille-Tourcoing. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Roncq : diagnostic adapté aux TPE/PME du commerce, prestataires logistiques, artisans, professions libérales et PME B2B transfrontalières de l'axe Lille-Tourcoing. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Roncq : diagnostic adapté aux TPE/PME du commerce, prestataires logistiques, artisans, professions libérales et PME B2B transfrontalières de l'axe Lille-Tourcoing. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Roncq : diagnostic adapté aux TPE/PME du commerce, prestataires logistiques, artisans, professions libérales et PME B2B transfrontalières de l'axe Lille-Tourcoing. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Roncq : formats adaptés à l'enseigne commerciale, au prestataire logistique, à l'artisan ou au professionnel libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Roncq : formats adaptés à l'enseigne commerciale, au prestataire logistique, à l'artisan ou au professionnel libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Roncq : formats adaptés à l'enseigne commerciale, au prestataire logistique, à l'artisan ou au professionnel libéral. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Roncq : formats adaptés à l'enseigne commerciale, au prestataire logistique, à l'artisan ou au professionnel libéral. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Roncq : optimisation stock et pricing zones commerciales, automatisation logistique entrepôts, agents IA accueil client multilingues FR-NL transfrontaliers, CRM augmenté PME B2B, copilotes devis-facturation artisans et prestataires.",

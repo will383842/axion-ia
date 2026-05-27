@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SARRIANS_COPY: VilleCopy = {
   pitchFr:
-    "Sarrians (84), commune de la plaine du Comtat Venaissin proche de Beaumes-de-Venise, compte près de 5 792 habitants. Vignoble AOC Beaumes-de-Venise et Ventoux, agriculture, maraîchage, tissu de TPE artisanales, domaines viticoles, PME agroalimentaires et commerces de proximité. Axion-IA y intervient pour tous types d'activités.",
+    "Sarrians (84), commune de la plaine du Comtat Venaissin proche de Beaumes-de-Venise, compte près de 5 792 habitants. Vignoble AOC Beaumes-de-Venise et Ventoux, agriculture, maraîchage, tissu de TPE artisanales, domaines viticoles, PME agroalimentaires et commerces de proximité. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Sarrians (84), commune de la plaine du Comtat Venaissin proche de Beaumes-de-Venise, compte près de 5 792 habitants. Vignoble AOC Beaumes-de-Venise et Ventoux, agriculture, maraîchage, tissu de TPE artisanales, domaines viticoles, PME agroalimentaires et commerces de proximité. Axion-IA y intervient pour tous types d'activités.",
+    "Sarrians (84), commune de la plaine du Comtat Venaissin proche de Beaumes-de-Venise, compte près de 5 792 habitants. Vignoble AOC Beaumes-de-Venise et Ventoux, agriculture, maraîchage, tissu de TPE artisanales, domaines viticoles, PME agroalimentaires et commerces de proximité. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sarrians (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles, domaines viticoles AOC Beaumes-de-Venise et Ventoux, PME agroalimentaires, commerces et services du Comtat. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const SARRIANS_COPY: VilleCopy = {
       en: "Audit IA à Sarrians : diagnostic adapté aux TPE artisans, exploitations agricoles, domaines viticoles AOC Beaumes-de-Venise et PME agroalimentaires du Comtat. ROI chiffré, Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Sarrians : formats adaptés aux domaines viticoles muscat, maraîchers, PME agroalimentaires, coopératives et artisans. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Sarrians : formats adaptés aux domaines viticoles muscat, maraîchers, PME agroalimentaires, coopératives et artisans. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Sarrians : formats adaptés aux domaines viticoles muscat, maraîchers, PME agroalimentaires, coopératives et artisans. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Sarrians : formats adaptés aux domaines viticoles muscat, maraîchers, PME agroalimentaires, coopératives et artisans. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Sarrians : traçabilité parcellaire AOC, gestion vendanges muscat, automatisation devis maraîchers, outils prédictifs coopératives, gestion commerciale B2B et oenotourisme. Adapté TPE/PME Comtat.",

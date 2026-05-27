@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const WISSEMBOURG_COPY: VilleCopy = {
   pitchFr:
-    "Wissembourg (67), sous-préfecture du Bas-Rhin située à la frontière allemande, cité médiévale au riche patrimoine architectural (abbatiale, remparts) et porte d'entrée du Palatinat. Tissu TPE/PME industrie, tourisme transfrontalier, viticulture, BTP, commerces, services et artisanat. Axion-IA y intervient pour tous types d'activités.",
+    "Wissembourg (67), sous-préfecture du Bas-Rhin située à la frontière allemande, cité médiévale au riche patrimoine architectural (abbatiale, remparts) et porte d'entrée du Palatinat. Tissu TPE/PME industrie, tourisme transfrontalier, viticulture, BTP, commerces, services et artisanat. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Wissembourg (67), sous-préfecture du Bas-Rhin située à la frontière allemande, cité médiévale au riche patrimoine architectural (abbatiale, remparts) et porte d'entrée du Palatinat. Tissu TPE/PME industrie, tourisme transfrontalier, viticulture, BTP, commerces, services et artisanat. Axion-IA y intervient pour tous types d'activités.",
+    "Wissembourg (67), sous-préfecture du Bas-Rhin située à la frontière allemande, cité médiévale au riche patrimoine architectural (abbatiale, remparts) et porte d'entrée du Palatinat. Tissu TPE/PME industrie, tourisme transfrontalier, viticulture, BTP, commerces, services et artisanat. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wissembourg (67). Nous accompagnons tous types d'activités : TPE/PME industrie et viticulture, professionnels du tourisme transfrontalier, artisans BTP, commerces de proximité et entrepreneurs frontaliers de la sous-préfecture nord-alsacienne.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const WISSEMBOURG_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Wissembourg : diagnostic adapté aux TPE/PME industrie, viticulteurs, professionnels du tourisme transfrontalier, artisans BTP et commerces. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Wissembourg : diagnostic adapté aux TPE/PME industrie, viticulteurs, professionnels du tourisme transfrontalier, artisans BTP et commerces. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Wissembourg : diagnostic adapté aux TPE/PME industrie, viticulteurs, professionnels du tourisme transfrontalier, artisans BTP et commerces. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Wissembourg : diagnostic adapté aux TPE/PME industrie, viticulteurs, professionnels du tourisme transfrontalier, artisans BTP et commerces. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Wissembourg : formats adaptés à l'atelier industriel, domaine viticole, hôtel-restaurant, chantier ou commerce. Vos équipes repartent autonomes. Sessions bilingues franco-allemandes possibles.",

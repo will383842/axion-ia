@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BAYEUX_COPY: VilleCopy = {
   pitchFr:
-    "Bayeux (14), sous-préfecture du Calvados, est mondialement connue pour la Tapisserie de Bayeux (inscrite au registre Mémoire du monde UNESCO). Porte d'entrée des plages du Débarquement (Omaha Beach, Gold Beach). Tissu TPE artisans, PME tourisme patrimoine, commerces centre historique, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Bayeux (14), sous-préfecture du Calvados, est mondialement connue pour la Tapisserie de Bayeux (inscrite au registre Mémoire du monde UNESCO). Porte d'entrée des plages du Débarquement (Omaha Beach, Gold Beach). Tissu TPE artisans, PME tourisme patrimoine, commerces centre historique, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Bayeux (14), sous-préfecture du Calvados, est mondialement connue pour la Tapisserie de Bayeux (inscrite au registre Mémoire du monde UNESCO). Porte d'entrée des plages du Débarquement (Omaha Beach, Gold Beach). Tissu TPE artisans, PME tourisme patrimoine, commerces centre historique, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Bayeux (14), sous-préfecture du Calvados, est mondialement connue pour la Tapisserie de Bayeux (inscrite au registre Mémoire du monde UNESCO). Porte d'entrée des plages du Débarquement (Omaha Beach, Gold Beach). Tissu TPE artisans, PME tourisme patrimoine, commerces centre historique, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bayeux (14). Nous accompagnons tous types d'activités : acteurs du tourisme patrimoine (Tapisserie de Bayeux, plages du Débarquement), hôteliers-restaurateurs, TPE artisans, commerçants centre historique, professions libérales et services aux entreprises du Bessin.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const BAYEUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bayeux : diagnostic adapté aux acteurs du tourisme patrimoine (Tapisserie UNESCO, plages Débarquement), hôteliers-restaurateurs, TPE artisans et commerçants du Bessin. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Bayeux : diagnostic adapté aux acteurs du tourisme patrimoine (Tapisserie UNESCO, plages Débarquement), hôteliers-restaurateurs, TPE artisans et commerçants du Bessin. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Bayeux : diagnostic adapté aux acteurs du tourisme patrimoine (Tapisserie UNESCO, plages Débarquement), hôteliers-restaurateurs, TPE artisans et commerçants du Bessin. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Bayeux : diagnostic adapté aux acteurs du tourisme patrimoine (Tapisserie UNESCO, plages Débarquement), hôteliers-restaurateurs, TPE artisans et commerçants du Bessin. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bayeux : formats adaptés au site touristique patrimoine, hôtel, commerce centre historique ou cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",

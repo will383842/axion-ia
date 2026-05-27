@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHAMBRAY_LES_TOURS_COPY: VilleCopy = {
   pitchFr:
-    "Chambray-lès-Tours (37), commune du sud de Tours Métropole en Indre-et-Loire, concentre plusieurs zones commerciales et zones d'activités majeures de l'agglomération tourangelle. Tissu TPE commerces, PME tertiaires et logistique, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Chambray-lès-Tours (37), commune du sud de Tours Métropole en Indre-et-Loire, concentre plusieurs zones commerciales et zones d'activités majeures de l'agglomération tourangelle. Tissu TPE commerces, PME tertiaires et logistique, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Chambray-lès-Tours (37), commune du sud de Tours Métropole en Indre-et-Loire, concentre plusieurs zones commerciales et zones d'activités majeures de l'agglomération tourangelle. Tissu TPE commerces, PME tertiaires et logistique, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Chambray-lès-Tours (37), commune du sud de Tours Métropole en Indre-et-Loire, concentre plusieurs zones commerciales et zones d'activités majeures de l'agglomération tourangelle. Tissu TPE commerces, PME tertiaires et logistique, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chambray-lès-Tours (37). Nous accompagnons tous types d'activités : TPE commerces des zones commerciales sud Tours, PME tertiaires et logistique, prestataires de services aux entreprises de Tours Métropole.",
   directAnswerEn:
@@ -64,7 +64,7 @@ export const CHAMBRAY_LES_TOURS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Chambray-lès-Tours ?",
-      a: "Nos consultants interviennent sur site à Chambray-lès-Tours (Tours centre à 10 min). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants interviennent sur site à Chambray-lès-Tours (Tours centre à 10 min). Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

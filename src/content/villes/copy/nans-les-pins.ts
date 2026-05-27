@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const NANS_LES_PINS_COPY: VilleCopy = {
   pitchFr:
-    "Nans-les-Pins (83), commune au pied du massif de la Sainte-Baume, conjugue cadre forestier exceptionnel, golf 18 trous et tissu économique tourné vers le tourisme et l'artisanat. TPE artisans, PME tourisme et hôtellerie de plein air, exploitations forestières, professions libérales et commerces de proximité dans un bassin entre Provence verte et bassin aubagnais. Axion-IA y intervient pour tous types d'activités.",
+    "Nans-les-Pins (83), commune au pied du massif de la Sainte-Baume, conjugue cadre forestier exceptionnel, golf 18 trous et tissu économique tourné vers le tourisme et l'artisanat. TPE artisans, PME tourisme et hôtellerie de plein air, exploitations forestières, professions libérales et commerces de proximité dans un bassin entre Provence verte et bassin aubagnais. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Nans-les-Pins (83), commune au pied du massif de la Sainte-Baume, conjugue cadre forestier exceptionnel, golf 18 trous et tissu économique tourné vers le tourisme et l'artisanat. TPE artisans, PME tourisme et hôtellerie de plein air, exploitations forestières, professions libérales et commerces de proximité dans un bassin entre Provence verte et bassin aubagnais. Axion-IA y intervient pour tous types d'activités.",
+    "Nans-les-Pins (83), commune au pied du massif de la Sainte-Baume, conjugue cadre forestier exceptionnel, golf 18 trous et tissu économique tourné vers le tourisme et l'artisanat. TPE artisans, PME tourisme et hôtellerie de plein air, exploitations forestières, professions libérales et commerces de proximité dans un bassin entre Provence verte et bassin aubagnais. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nans-les-Pins (83). Nous accompagnons TPE artisans, PME tourisme, hôtellerie, professions libérales et commerces du massif de la Sainte-Baume. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const NANS_LES_PINS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Nans-les-Pins : diagnostic adapté aux TPE artisans, PME tourisme, hôtellerie de plein air, restauration et commerces du massif Sainte-Baume. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Nans-les-Pins : diagnostic adapté aux TPE artisans, PME tourisme, hôtellerie de plein air, restauration et commerces du massif Sainte-Baume. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Nans-les-Pins : diagnostic adapté aux TPE artisans, PME tourisme, hôtellerie de plein air, restauration et commerces du massif Sainte-Baume. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Nans-les-Pins : diagnostic adapté aux TPE artisans, PME tourisme, hôtellerie de plein air, restauration et commerces du massif Sainte-Baume. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Nans-les-Pins : ateliers pour équipes TPE/PME, hôteliers, restaurateurs, gestionnaires de golf et artisans. Outils IA configurés métier réel, dans vos locaux.",
@@ -64,7 +64,7 @@ export const NANS_LES_PINS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Nans-les-Pins ?",
-      a: "Nans-les-Pins est à 15 min de Saint-Maximin et 35 min d'Aix-en-Provence via A8. Nos consultants se déplacent dans vos locaux. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nans-les-Pins est à 15 min de Saint-Maximin et 35 min d'Aix-en-Provence via A8. Nos consultants se déplacent dans vos locaux. Frais de mission en sus, grille tarifaire publique.",
     },
   ],
 };

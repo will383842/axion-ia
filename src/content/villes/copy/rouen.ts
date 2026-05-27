@@ -54,6 +54,8 @@ export const ROUEN_COPY: VilleCopy = {
   directAnswerEn:
     "Axion-IA is a senior AI architects consultancy that intervenes in Rouen (76) on site — Technopôle du Madrillet, Plateau de la Vatine, Seine quays, Métropole Rouen Normandie communes. We support Rouen micro-businesses, SMEs, mid-caps and large enterprises (industry, chemicals, logistics, pharma, insurance, digital) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
+  seoHook: "logistique portuaire & chimie",
+
   topSectorsNaf: [
     "Logistique & Supply chain (port HAROPA, Nov@log)",
     "Chimie, Pétrochimie & Industrie",

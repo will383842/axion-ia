@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PLOUZANE_COPY: VilleCopy = {
   pitchFr:
-    "Plouzané (29), commune de Brest Métropole accueillant le Technopôle Brest-Iroise et le campus IFREMER/IMT Atlantique, pôle de recherche océanographique et numérique de rang mondial. Tissu de TPE de services, PME technologiques, sous-traitants recherche marine, professions libérales et prestataires tertiaires. Axion-IA y intervient pour tous types d'activités.",
+    "Plouzané (29), commune de Brest Métropole accueillant le Technopôle Brest-Iroise et le campus IFREMER/IMT Atlantique, pôle de recherche océanographique et numérique de rang mondial. Tissu de TPE de services, PME technologiques, sous-traitants recherche marine, professions libérales et prestataires tertiaires. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Plouzané (29), commune de Brest Métropole accueillant le Technopôle Brest-Iroise et le campus IFREMER/IMT Atlantique, pôle de recherche océanographique et numérique de rang mondial. Tissu de TPE de services, PME technologiques, sous-traitants recherche marine, professions libérales et prestataires tertiaires. Axion-IA y intervient pour tous types d'activités.",
+    "Plouzané (29), commune de Brest Métropole accueillant le Technopôle Brest-Iroise et le campus IFREMER/IMT Atlantique, pôle de recherche océanographique et numérique de rang mondial. Tissu de TPE de services, PME technologiques, sous-traitants recherche marine, professions libérales et prestataires tertiaires. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   seoHook: "technopôle, océanographie & recherche",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plouzané (29). Nous accompagnons TPE et PME : start-up du Technopôle Brest-Iroise, PME technologiques, sous-traitants recherche marine, professions libérales et services de cette commune de Brest Métropole à la pointe de la recherche océanographique. Audit Flash dès 490 € HT.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VERNEUIL_D_AVRE_ET_D_ITON_COPY: VilleCopy = {
   pitchFr:
-    "Verneuil d'Avre et d'Iton (27), commune nouvelle de l'Eure aux confins du Perche et du Pays d'Ouche, riche patrimoine médiéval (tour de la Madeleine, maisons à pans de bois). Tissu TPE artisans, PME agriculture et élevage, commerces, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Verneuil d'Avre et d'Iton (27), commune nouvelle de l'Eure aux confins du Perche et du Pays d'Ouche, riche patrimoine médiéval (tour de la Madeleine, maisons à pans de bois). Tissu TPE artisans, PME agriculture et élevage, commerces, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Verneuil d'Avre et d'Iton (27), commune nouvelle de l'Eure aux confins du Perche et du Pays d'Ouche, riche patrimoine médiéval (tour de la Madeleine, maisons à pans de bois). Tissu TPE artisans, PME agriculture et élevage, commerces, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Verneuil d'Avre et d'Iton (27), commune nouvelle de l'Eure aux confins du Perche et du Pays d'Ouche, riche patrimoine médiéval (tour de la Madeleine, maisons à pans de bois). Tissu TPE artisans, PME agriculture et élevage, commerces, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Verneuil d'Avre et d'Iton (27). Nous accompagnons tous types d'activités : TPE artisans, PME agriculture et élevage Perche-Ouche, commerces centre médiéval, professions libérales, indépendants et services aux entreprises du sud de l'Eure.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const VERNEUIL_D_AVRE_ET_D_ITON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Verneuil d'Avre et d'Iton : diagnostic adapté aux TPE artisans, PME agriculture et élevage Perche-Ouche, commerces, professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Verneuil d'Avre et d'Iton : diagnostic adapté aux TPE artisans, PME agriculture et élevage Perche-Ouche, commerces, professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Verneuil d'Avre et d'Iton : diagnostic adapté aux TPE artisans, PME agriculture et élevage Perche-Ouche, commerces, professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Verneuil d'Avre et d'Iton : diagnostic adapté aux TPE artisans, PME agriculture et élevage Perche-Ouche, commerces, professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Verneuil d'Avre et d'Iton : formats adaptés à l'exploitation agricole, l'atelier, le commerce, le cabinet. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const VERNEUIL_D_AVRE_ET_D_ITON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou Évreux ?",
-      a: "Nos consultants viennent de Paris (1h30 train direct gare Verneuil-sur-Avre) ou Évreux (35 min). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Paris (1h30 train direct gare Verneuil-sur-Avre) ou Évreux (35 min). Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

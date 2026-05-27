@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MACHECOUL_SAINT_MEME_COPY: VilleCopy = {
   pitchFr:
-    "Machecoul-Saint-Même (44), commune nouvelle de Loire-Atlantique aux portes du marais breton vendéen, conjugue agroalimentaire, artisanat, commerces de centre-bourg et PME de services. Axion-IA y intervient pour tous types d'activités du sud Loire-Atlantique.",
+    "Machecoul-Saint-Même (44), commune nouvelle de Loire-Atlantique aux portes du marais breton vendéen, conjugue agroalimentaire, artisanat, commerces de centre-bourg et PME de services. Axion-IA accompagne entreprises et indépendants de tous secteurs du sud Loire-Atlantique.",
   pitchEn:
-    "Machecoul-Saint-Même (44), commune nouvelle de Loire-Atlantique aux portes du marais breton vendéen, conjugue agroalimentaire, artisanat, commerces de centre-bourg et PME de services. Axion-IA y intervient pour tous types d'activités du sud Loire-Atlantique.",
+    "Machecoul-Saint-Même (44), commune nouvelle de Loire-Atlantique aux portes du marais breton vendéen, conjugue agroalimentaire, artisanat, commerces de centre-bourg et PME de services. Axion-IA accompagne entreprises et indépendants de tous secteurs du sud Loire-Atlantique.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Machecoul-Saint-Même (44). Nous accompagnons les TPE artisans, PME agroalimentaires, commerçants, professions libérales et exploitants du sud Loire-Atlantique sur leurs cas IA opérationnels. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const MACHECOUL_SAINT_MEME_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Machecoul-Saint-Même : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et professions libérales du sud Loire-Atlantique. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Machecoul-Saint-Même : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et professions libérales du sud Loire-Atlantique. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Machecoul-Saint-Même : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et professions libérales du sud Loire-Atlantique. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Machecoul-Saint-Même : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et professions libérales du sud Loire-Atlantique. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Machecoul-Saint-Même : formats courts adaptés usine agroalimentaire, atelier artisan, commerce ou cabinet. Vos équipes repartent autonomes sur outils IA.",

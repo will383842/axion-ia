@@ -29,12 +29,12 @@ export const SOISY_SOUS_MONTMORENCY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Soisy-sous-Montmorency : diagnostic adapté aux commerçants et artisans, PME services, professions libérales de santé, restaurateurs, prestataires bien-être vallée de Montmorency. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Soisy-sous-Montmorency : diagnostic adapté aux commerçants et artisans, PME services, professions libérales de santé, restaurateurs, prestataires bien-être vallée de Montmorency. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Soisy-sous-Montmorency : diagnostic adapté aux commerçants et artisans, PME services, professions libérales de santé, restaurateurs, prestataires bien-être vallée de Montmorency. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Soisy-sous-Montmorency : diagnostic adapté aux commerçants et artisans, PME services, professions libérales de santé, restaurateurs, prestataires bien-être vallée de Montmorency. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Soisy-sous-Montmorency : formats adaptés boutique, cabinet médical, restaurant, bureau PME, espace bien-être. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Soisy-sous-Montmorency : formats adaptés boutique, cabinet médical, restaurant, bureau PME, espace bien-être. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Soisy-sous-Montmorency : formats adaptés boutique, cabinet médical, restaurant, bureau PME, espace bien-être. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Soisy-sous-Montmorency : formats adaptés boutique, cabinet médical, restaurant, bureau PME, espace bien-être. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Soisy-sous-Montmorency : CRM augmenté commerçants, automatisation gestion cabinet médical, outils réservation restauration, planning intelligent prestataires bien-être, facturation PME.",

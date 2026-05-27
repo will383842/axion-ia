@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const DARDILLY_COPY: VilleCopy = {
   pitchFr:
-    "Dardilly (69), commune en banlieue nord-ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position stratégique : accès au technopôle Techlid (pôle tertiaire et technologique ouest lyonnais). Tissu PME tertiaires et technologiques, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Dardilly (69), commune en banlieue nord-ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position stratégique : accès au technopôle Techlid (pôle tertiaire et technologique ouest lyonnais). Tissu PME tertiaires et technologiques, TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Dardilly (69), commune en banlieue nord-ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position stratégique : accès au technopôle Techlid (pôle tertiaire et technologique ouest lyonnais). Tissu PME tertiaires et technologiques, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Dardilly (69), commune en banlieue nord-ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position stratégique : accès au technopôle Techlid (pôle tertiaire et technologique ouest lyonnais). Tissu PME tertiaires et technologiques, TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Dardilly (69). Nous accompagnons tous types d'activités : PME tertiaires et technologiques Techlid, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon NO.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const DARDILLY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Dardilly : diagnostic adapté aux PME technologiques Techlid, tertiaires, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Dardilly : diagnostic adapté aux PME technologiques Techlid, tertiaires, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Dardilly : diagnostic adapté aux PME technologiques Techlid, tertiaires, professions libérales, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Dardilly : diagnostic adapté aux PME technologiques Techlid, tertiaires, professions libérales, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Dardilly : formats adaptés au siège social Techlid, bureau tertiaire, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const DARDILLY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (15 min). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (15 min). Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

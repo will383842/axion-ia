@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SULLY_SUR_LOIRE_COPY: VilleCopy = {
   pitchFr:
-    "Sully-sur-Loire (45), commune des bords de Loire en Loiret, est célèbre pour son château de Sully (patrimoine mondial UNESCO Val de Loire). Bourg rural de l'est-Loiret, entre Sologne et Beauce. Tissu TPE artisans, commerçants, PME agricoles, tourisme patrimonial Loire. Axion-IA y intervient pour tous types d'activités.",
+    "Sully-sur-Loire (45), commune des bords de Loire en Loiret, est célèbre pour son château de Sully (patrimoine mondial UNESCO Val de Loire). Bourg rural de l'est-Loiret, entre Sologne et Beauce. Tissu TPE artisans, commerçants, PME agricoles, tourisme patrimonial Loire. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Sully-sur-Loire (45), commune des bords de Loire en Loiret, est célèbre pour son château de Sully (patrimoine mondial UNESCO Val de Loire). Bourg rural de l'est-Loiret, entre Sologne et Beauce. Tissu TPE artisans, commerçants, PME agricoles, tourisme patrimonial Loire. Axion-IA y intervient pour tous types d'activités.",
+    "Sully-sur-Loire (45), commune des bords de Loire en Loiret, est célèbre pour son château de Sully (patrimoine mondial UNESCO Val de Loire). Bourg rural de l'est-Loiret, entre Sologne et Beauce. Tissu TPE artisans, commerçants, PME agricoles, tourisme patrimonial Loire. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sully-sur-Loire (45). Nous accompagnons tous types d'activités : acteurs du tourisme patrimonial (château de Sully UNESCO), TPE artisans et commerçants du bourg, PME agricoles est-Loiret, indépendants, professions libérales et services aux entreprises du Sullias.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const SULLY_SUR_LOIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sully-sur-Loire : diagnostic adapté aux acteurs tourisme patrimonial (château UNESCO), TPE artisans, commerçants et PME agricoles de l'est-Loiret. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Sully-sur-Loire : diagnostic adapté aux acteurs tourisme patrimonial (château UNESCO), TPE artisans, commerçants et PME agricoles de l'est-Loiret. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Sully-sur-Loire : diagnostic adapté aux acteurs tourisme patrimonial (château UNESCO), TPE artisans, commerçants et PME agricoles de l'est-Loiret. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Sully-sur-Loire : diagnostic adapté aux acteurs tourisme patrimonial (château UNESCO), TPE artisans, commerçants et PME agricoles de l'est-Loiret. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Sully-sur-Loire : formats adaptés au site touristique, exploitation agricole, commerce ou PME. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Sully-sur-Loire : formats adaptés au site touristique, exploitation agricole, commerce ou PME. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Sully-sur-Loire : formats adaptés au site touristique, exploitation agricole, commerce ou PME. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Sully-sur-Loire : formats adaptés au site touristique, exploitation agricole, commerce ou PME. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Sully-sur-Loire : agents conversationnels multilingues visiteurs château, automatisation billetterie/réservations, prédiction rendements agricoles, classification photos parcelles, gestion stocks commerce. Adapté tourisme UNESCO + agriculture.",
@@ -64,7 +64,7 @@ export const SULLY_SUR_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Sully-sur-Loire ?",
-      a: "Nos consultants se déplacent depuis Orléans (40 min voiture D951 ou A77). Gare de Sully-sur-Loire desservie par TER Centre-Val de Loire. Pour les multi-jours, hébergement local ou Orléans. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants se déplacent depuis Orléans (40 min voiture D951 ou A77). Gare de Sully-sur-Loire desservie par TER Centre-Val de Loire. Pour les multi-jours, hébergement local ou Orléans. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

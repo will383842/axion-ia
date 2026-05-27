@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_FONS_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Fons (69), commune en banlieue sud immédiate de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position historique : ancrée dans la « Vallée de la Chimie » lyonnaise (bassin industriel chimique majeur du sud lyonnais). Tissu PME industrielles, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Fons (69), commune en banlieue sud immédiate de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position historique : ancrée dans la « Vallée de la Chimie » lyonnaise (bassin industriel chimique majeur du sud lyonnais). Tissu PME industrielles, TPE artisans BTP, commerces. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Saint-Fons (69), commune en banlieue sud immédiate de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position historique : ancrée dans la « Vallée de la Chimie » lyonnaise (bassin industriel chimique majeur du sud lyonnais). Tissu PME industrielles, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Fons (69), commune en banlieue sud immédiate de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position historique : ancrée dans la « Vallée de la Chimie » lyonnaise (bassin industriel chimique majeur du sud lyonnais). Tissu PME industrielles, TPE artisans BTP, commerces. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Fons (69). Nous accompagnons tous types d'activités : PME industrielles et sous-traitants techniques Vallée de la Chimie sud lyonnaise, TPE artisans BTP, commerçants, indépendants et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const SAINT_FONS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Fons : diagnostic adapté aux PME industrielles et sous-traitants techniques Vallée de la Chimie, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Fons : diagnostic adapté aux PME industrielles et sous-traitants techniques Vallée de la Chimie, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Fons : diagnostic adapté aux PME industrielles et sous-traitants techniques Vallée de la Chimie, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Saint-Fons : diagnostic adapté aux PME industrielles et sous-traitants techniques Vallée de la Chimie, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Fons : formats adaptés aux sous-traitants chimiques (avec exigences sécurité Seveso), atelier industriel, commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Saint-Fons : formats adaptés aux sous-traitants chimiques (avec exigences sécurité Seveso), atelier industriel, commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Saint-Fons : formats adaptés aux sous-traitants chimiques (avec exigences sécurité Seveso), atelier industriel, commerce. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Saint-Fons : formats adaptés aux sous-traitants chimiques (avec exigences sécurité Seveso), atelier industriel, commerce. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Fons : prédiction maintenance équipements chimiques, contrôle qualité par vision, classification incidents HSE, agents conversationnels B2B sous-traitance. Métropole de Lyon sud.",
@@ -64,7 +64,7 @@ export const SAINT_FONS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",
-      a: "Nos consultants viennent de Lyon (15 min métro) ou Saint-Étienne (50 min). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (15 min métro) ou Saint-Étienne (50 min). Pour les multi-jours, hébergement local possible. Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

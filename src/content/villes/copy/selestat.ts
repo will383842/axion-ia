@@ -30,12 +30,12 @@ export const SELESTAT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sélestat : diagnostic adapté aux TPE/PME industrie, vignerons, hôteliers-restaurateurs, commerces de centre médiéval, artisans, services. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Sélestat : diagnostic adapté aux TPE/PME industrie, vignerons, hôteliers-restaurateurs, commerces de centre médiéval, artisans, services. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Sélestat : diagnostic adapté aux TPE/PME industrie, vignerons, hôteliers-restaurateurs, commerces de centre médiéval, artisans, services. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Sélestat : diagnostic adapté aux TPE/PME industrie, vignerons, hôteliers-restaurateurs, commerces de centre médiéval, artisans, services. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Sélestat : formats adaptés à l'atelier industriel, le domaine viticole, l'hôtel-restaurant, le commerce, l'agence, le cabinet. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Sélestat : formats adaptés à l'atelier industriel, le domaine viticole, l'hôtel-restaurant, le commerce, l'agence, le cabinet. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Sélestat : formats adaptés à l'atelier industriel, le domaine viticole, l'hôtel-restaurant, le commerce, l'agence, le cabinet. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Sélestat : formats adaptés à l'atelier industriel, le domaine viticole, l'hôtel-restaurant, le commerce, l'agence, le cabinet. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Sélestat : automatisation gestion viticole, traçabilité production, channel manager hôtelier, agents conversationnels bilingues FR/DE/EN pour tourisme, gestion commerciale, billetterie patrimoniale.",

@@ -239,6 +239,14 @@
         ".next/static/chunks/app/**/gallery/**/page-*.js"
       ],
       "limit": "75 KB"
+    },
+    {
+      "name": "Routes /implantations hub villes (2157 pages, stratégie ISR T3/T4) — page chunks ≤ 72 KB gz stricter",
+      "path": [
+        ".next/static/chunks/app/**/implantations/**/page-*.js",
+        ".next/static/chunks/app/**/locations/**/page-*.js"
+      ],
+      "limit": "72 KB"
     }
   ],
   "pnpm": {

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_ASTIER_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Astier (24), bourg de la vallée de l'Isle en Dordogne, connu pour sa cimenterie historique et son abbatiale romane. Tissu TPE/PME commerce, artisanat, industrie ciment, agroalimentaire et services. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Astier (24), bourg de la vallée de l'Isle en Dordogne, connu pour sa cimenterie historique et son abbatiale romane. Tissu TPE/PME commerce, artisanat, industrie ciment, agroalimentaire et services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Saint-Astier (24), bourg de la vallée de l'Isle en Dordogne, connu pour sa cimenterie historique et son abbatiale romane. Tissu TPE/PME commerce, artisanat, industrie ciment, agroalimentaire et services. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Astier (24), bourg de la vallée de l'Isle en Dordogne, connu pour sa cimenterie historique et son abbatiale romane. Tissu TPE/PME commerce, artisanat, industrie ciment, agroalimentaire et services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Astier (24). Nous accompagnons TPE/PME du commerce, de l'artisanat, de l'industrie, de l'agroalimentaire périgourdin et des services en vallée de l'Isle. Audit Flash dès 490 € HT.",
   directAnswerEn:

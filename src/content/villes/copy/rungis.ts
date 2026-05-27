@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const RUNGIS_COPY: VilleCopy = {
   pitchFr:
-    "Rungis (94), mondialement connue pour son Marché international (MIN), est le premier pôle de logistique alimentaire d'Europe. Grossistes et négoce alimentaire, logistique frigorifique, TPE artisanat alimentaire, PME transport et distribution, restauration professionnelle. Axion-IA y intervient pour tous types d'activités.",
+    "Rungis (94), mondialement connue pour son Marché international (MIN), est le premier pôle de logistique alimentaire d'Europe. Grossistes et négoce alimentaire, logistique frigorifique, TPE artisanat alimentaire, PME transport et distribution, restauration professionnelle. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Rungis (94), mondialement connue pour son Marché international (MIN), est le premier pôle de logistique alimentaire d'Europe. Grossistes et négoce alimentaire, logistique frigorifique, TPE artisanat alimentaire, PME transport et distribution, restauration professionnelle. Axion-IA y intervient pour tous types d'activités.",
+    "Rungis (94), mondialement connue pour son Marché international (MIN), est le premier pôle de logistique alimentaire d'Europe. Grossistes et négoce alimentaire, logistique frigorifique, TPE artisanat alimentaire, PME transport et distribution, restauration professionnelle. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rungis (94). Nous accompagnons TPE et PME : grossistes et négociants alimentaires du MIN, entreprises de logistique frigorifique, artisans alimentaires, PME transport et distribution, restaurateurs professionnels. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const RUNGIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Rungis : diagnostic adapté aux grossistes du MIN, logisticiens frigorifiques, artisans alimentaires, transporteurs, restaurateurs professionnels. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Rungis : diagnostic adapté aux grossistes du MIN, logisticiens frigorifiques, artisans alimentaires, transporteurs, restaurateurs professionnels. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Rungis : diagnostic adapté aux grossistes du MIN, logisticiens frigorifiques, artisans alimentaires, transporteurs, restaurateurs professionnels. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Rungis : diagnostic adapté aux grossistes du MIN, logisticiens frigorifiques, artisans alimentaires, transporteurs, restaurateurs professionnels. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Rungis : formats adaptés pavillon MIN, entrepôt frigorifique, atelier, plateforme logistique. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Rungis : formats adaptés pavillon MIN, entrepôt frigorifique, atelier, plateforme logistique. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Rungis : formats adaptés pavillon MIN, entrepôt frigorifique, atelier, plateforme logistique. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Rungis : formats adaptés pavillon MIN, entrepôt frigorifique, atelier, plateforme logistique. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Rungis : automatisation traçabilité produits frais, gestion stocks frigorifiques, optimisation tournées livraison, prédiction demande saisonnière, facturation grossistes.",
@@ -64,7 +64,7 @@ export const RUNGIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",
-      a: "Paris-Denfert-Rochereau (20 min RER B, gare Pont de Rungis). Aéroport Orly à 5 min. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Paris-Denfert-Rochereau (20 min RER B, gare Pont de Rungis). Aéroport Orly à 5 min. Frais de mission en sus, grille tarifaire publique.",
     },
   ],
 };

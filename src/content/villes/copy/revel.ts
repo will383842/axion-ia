@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const REVEL_COPY: VilleCopy = {
   pitchFr:
-    "Revel (31), cité du Lauragais réputée pour l'ébénisterie et le meuble d'art, près de 10 000 habitants. Tissu TPE artisans d'art, PME du meuble et du bois, commerces de centre-ville, professions libérales, tourisme lac Saint-Ferréol. Axion-IA y intervient pour tous types d'activités du Lauragais.",
+    "Revel (31), cité du Lauragais réputée pour l'ébénisterie et le meuble d'art, près de 10 000 habitants. Tissu TPE artisans d'art, PME du meuble et du bois, commerces de centre-ville, professions libérales, tourisme lac Saint-Ferréol. Axion-IA couvre l'ensemble des activités professionnelles présentes du Lauragais.",
   pitchEn:
-    "Revel (31), cité du Lauragais réputée pour l'ébénisterie et le meuble d'art, près de 10 000 habitants. Tissu TPE artisans d'art, PME du meuble et du bois, commerces de centre-ville, professions libérales, tourisme lac Saint-Ferréol. Axion-IA y intervient pour tous types d'activités du Lauragais.",
+    "Revel (31), cité du Lauragais réputée pour l'ébénisterie et le meuble d'art, près de 10 000 habitants. Tissu TPE artisans d'art, PME du meuble et du bois, commerces de centre-ville, professions libérales, tourisme lac Saint-Ferréol. Axion-IA couvre l'ensemble des activités professionnelles présentes du Lauragais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Revel (31). Nous accompagnons TPE artisans d'art, PME du meuble, commerçants, professions libérales et acteurs du tourisme du Lauragais. Audit Flash dès 490 € HT.",
   directAnswerEn:

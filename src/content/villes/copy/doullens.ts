@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const DOULLENS_COPY: VilleCopy = {
   pitchFr:
-    "Doullens (80), sous-préfecture historique de la Somme, bourg picard au nord du département avec sa citadelle classée. Tissu de TPE artisans BTP, PME industrielles, exploitations agricoles, commerces de centre-ville et services de santé. Axion-IA y intervient pour tous types d'activités du Doullennais.",
+    "Doullens (80), sous-préfecture historique de la Somme, bourg picard au nord du département avec sa citadelle classée. Tissu de TPE artisans BTP, PME industrielles, exploitations agricoles, commerces de centre-ville et services de santé. Axion-IA opère pour toutes les structures économiques de la commune du Doullennais.",
   pitchEn:
-    "Doullens (80), sous-préfecture historique de la Somme, bourg picard au nord du département avec sa citadelle classée. Tissu de TPE artisans BTP, PME industrielles, exploitations agricoles, commerces de centre-ville et services de santé. Axion-IA y intervient pour tous types d'activités du Doullennais.",
+    "Doullens (80), sous-préfecture historique de la Somme, bourg picard au nord du département avec sa citadelle classée. Tissu de TPE artisans BTP, PME industrielles, exploitations agricoles, commerces de centre-ville et services de santé. Axion-IA opère pour toutes les structures économiques de la commune du Doullennais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Doullens (80). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles, exploitations agricoles du Doullennais, commerçants, professions de santé, indépendants et services aux entreprises de cette sous-préfecture picarde.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const DOULLENS_COPY: VilleCopy = {
       en: "Audit IA à Doullens : diagnostic adapté aux exploitations agricoles du Doullennais, TPE artisans BTP, PME industrielles et commerçants de cette sous-préfecture picarde. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Doullens : formats adaptés à l'exploitation agricole, l'atelier industriel, le commerce ou le cabinet de santé. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Doullens : formats adaptés à l'exploitation agricole, l'atelier industriel, le commerce ou le cabinet de santé. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Doullens : formats adaptés à l'exploitation agricole, l'atelier industriel, le commerce ou le cabinet de santé. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Doullens : formats adaptés à l'exploitation agricole, l'atelier industriel, le commerce ou le cabinet de santé. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Doullens : optimisation rendements agricoles, automatisation gestion stocks PME, agents conversationnels commerces centre-ville, outils IA gestion cabinet médical et planning soins.",

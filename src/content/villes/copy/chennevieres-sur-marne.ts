@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHENNEVIERES_SUR_MARNE_COPY: VilleCopy = {
   pitchFr:
-    "Chennevières-sur-Marne (94), commune des bords de Marne dans l'est du Val-de-Marne, entre Champigny-sur-Marne et Ormesson-sur-Marne. Tissu TPE artisans, PME de services et commerce, professions libérales, indépendants et prestataires. Axion-IA y intervient pour tous types d'activités de l'est Val-de-Marnais.",
+    "Chennevières-sur-Marne (94), commune des bords de Marne dans l'est du Val-de-Marne, entre Champigny-sur-Marne et Ormesson-sur-Marne. Tissu TPE artisans, PME de services et commerce, professions libérales, indépendants et prestataires. Axion-IA y déploie ses missions auprès de toutes les organisations de l'est Val-de-Marnais.",
   pitchEn:
-    "Chennevières-sur-Marne (94), commune des bords de Marne dans l'est du Val-de-Marne, entre Champigny-sur-Marne et Ormesson-sur-Marne. Tissu TPE artisans, PME de services et commerce, professions libérales, indépendants et prestataires. Axion-IA y intervient pour tous types d'activités de l'est Val-de-Marnais.",
+    "Chennevières-sur-Marne (94), commune des bords de Marne dans l'est du Val-de-Marne, entre Champigny-sur-Marne et Ormesson-sur-Marne. Tissu TPE artisans, PME de services et commerce, professions libérales, indépendants et prestataires. Axion-IA y déploie ses missions auprès de toutes les organisations de l'est Val-de-Marnais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chennevières-sur-Marne (94). Nous accompagnons tous types d'activités : TPE artisans du bâtiment et de la rénovation, PME de services et commerce, professions libérales, indépendants et prestataires des bords de Marne est. Audit Flash dès 490 € HT.",
   directAnswerEn:

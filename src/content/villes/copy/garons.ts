@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GARONS_COPY: VilleCopy = {
   pitchFr:
-    "Garons (30), commune de l'agglomération nîmoise sud accueillant l'aéroport Nîmes-Alès-Camargue-Cévennes. Tissu TPE/PME logistique aéroportuaire, services aux entreprises, commerces, artisanat BTP et viticulture Costières de Nîmes. Axion-IA y intervient pour tous types d'activités de la zone aéroport / agglo Nîmes sud.",
+    "Garons (30), commune de l'agglomération nîmoise sud accueillant l'aéroport Nîmes-Alès-Camargue-Cévennes. Tissu TPE/PME logistique aéroportuaire, services aux entreprises, commerces, artisanat BTP et viticulture Costières de Nîmes. Axion-IA accompagne entreprises et indépendants de tous secteurs de la zone aéroport / agglo Nîmes sud.",
   pitchEn:
-    "Garons (30), commune de l'agglomération nîmoise sud accueillant l'aéroport Nîmes-Alès-Camargue-Cévennes. Tissu TPE/PME logistique aéroportuaire, services aux entreprises, commerces, artisanat BTP et viticulture Costières de Nîmes. Axion-IA y intervient pour tous types d'activités de la zone aéroport / agglo Nîmes sud.",
+    "Garons (30), commune de l'agglomération nîmoise sud accueillant l'aéroport Nîmes-Alès-Camargue-Cévennes. Tissu TPE/PME logistique aéroportuaire, services aux entreprises, commerces, artisanat BTP et viticulture Costières de Nîmes. Axion-IA accompagne entreprises et indépendants de tous secteurs de la zone aéroport / agglo Nîmes sud.",
   directAnswerFr:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Garons (30). Nous accompagnons les TPE, PME et ETI locales : entreprises logistique aéroportuaire, services aux entreprises, commerçants, artisans BTP et viticulteurs Costières de l'agglo nîmoise sud. Audit Flash à partir de 490 € HT.",
   directAnswerEn:

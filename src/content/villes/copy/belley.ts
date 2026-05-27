@@ -29,8 +29,8 @@ export const BELLEY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Belley : diagnostic adapté à l'administration, viticulteurs AOC Bugey, agriculteurs, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Belley : diagnostic adapté à l'administration, viticulteurs AOC Bugey, agriculteurs, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Belley : diagnostic adapté à l'administration, viticulteurs AOC Bugey, agriculteurs, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Belley : diagnostic adapté à l'administration, viticulteurs AOC Bugey, agriculteurs, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Belley : formats adaptés à l'administration, exploitation viticole, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const BELLEY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (1h15). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (1h15). Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

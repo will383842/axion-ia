@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FISMES_COPY: VilleCopy = {
   pitchFr:
-    "Fismes (51), petite ville de la vallée de la Vesle entre Reims et Soissons, est un bourg-centre rural avec un tissu économique diversifié. TPE artisanat et services, commerces de proximité, PME agroalimentaires, exploitations viticoles champenoises, professions de santé. Axion-IA y intervient pour tous types d'activités.",
+    "Fismes (51), petite ville de la vallée de la Vesle entre Reims et Soissons, est un bourg-centre rural avec un tissu économique diversifié. TPE artisanat et services, commerces de proximité, PME agroalimentaires, exploitations viticoles champenoises, professions de santé. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Fismes (51), petite ville de la vallée de la Vesle entre Reims et Soissons, est un bourg-centre rural avec un tissu économique diversifié. TPE artisanat et services, commerces de proximité, PME agroalimentaires, exploitations viticoles champenoises, professions de santé. Axion-IA y intervient pour tous types d'activités.",
+    "Fismes (51), petite ville de la vallée de la Vesle entre Reims et Soissons, est un bourg-centre rural avec un tissu économique diversifié. TPE artisanat et services, commerces de proximité, PME agroalimentaires, exploitations viticoles champenoises, professions de santé. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fismes (51). Nous accompagnons TPE et PME : artisans et commerçants de centre-bourg, PME agroalimentaires, exploitants viticoles, professions de santé, prestataires de services ruraux. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -64,7 +64,7 @@ export const FISMES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ou Reims ?",
-      a: "Reims à 30 min par route. Paris à 1 h 20 via A4. Gare SNCF Fismes sur ligne Reims-Laon. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Reims à 30 min par route. Paris à 1 h 20 via A4. Gare SNCF Fismes sur ligne Reims-Laon. Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const UNIEUX_COPY: VilleCopy = {
   pitchFr:
-    "Unieux (42), commune de la vallée de l'Ondaine dans la Loire, est intégrée à Saint-Étienne Métropole. Héritage industriel métallurgique fort (vallée Ondaine historiquement bassin sidérurgique). Tissu PME industrielles, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités vallée Ondaine.",
+    "Unieux (42), commune de la vallée de l'Ondaine dans la Loire, est intégrée à Saint-Étienne Métropole. Héritage industriel métallurgique fort (vallée Ondaine historiquement bassin sidérurgique). Tissu PME industrielles, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations vallée Ondaine.",
   pitchEn:
-    "Unieux (42), commune de la vallée de l'Ondaine dans la Loire, est intégrée à Saint-Étienne Métropole. Héritage industriel métallurgique fort (vallée Ondaine historiquement bassin sidérurgique). Tissu PME industrielles, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités vallée Ondaine.",
+    "Unieux (42), commune de la vallée de l'Ondaine dans la Loire, est intégrée à Saint-Étienne Métropole. Héritage industriel métallurgique fort (vallée Ondaine historiquement bassin sidérurgique). Tissu PME industrielles, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations vallée Ondaine.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Unieux (42). Nous accompagnons tous types d'activités : PME industrielles vallée Ondaine (héritage métallurgique fort), TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de Saint-Étienne Métropole.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const UNIEUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Unieux : diagnostic adapté aux PME industrielles métallurgiques vallée Ondaine, TPE artisans, commerçants. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Unieux : diagnostic adapté aux PME industrielles métallurgiques vallée Ondaine, TPE artisans, commerçants. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Unieux : diagnostic adapté aux PME industrielles métallurgiques vallée Ondaine, TPE artisans, commerçants. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Unieux : diagnostic adapté aux PME industrielles métallurgiques vallée Ondaine, TPE artisans, commerçants. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Unieux : formats adaptés à l'atelier métallurgique, bureau, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Unieux : formats adaptés à l'atelier métallurgique, bureau, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Unieux : formats adaptés à l'atelier métallurgique, bureau, commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Unieux : formats adaptés à l'atelier métallurgique, bureau, commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Unieux : prédiction maintenance industrielle, contrôle qualité par vision, agents conversationnels B2B, classification documents techniques. Vallée Ondaine.",

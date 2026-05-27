@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_HILAIRE_DU_HARCOUET_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Hilaire-du-Harcouët (50), bourg-centre du bocage normand dans la Manche (Normandie), est historiquement un important marché aux bestiaux. Tissu TPE agriculteurs et éleveurs, PME agroalimentaires (lait, viande), artisans BTP, commerces de bourg et services de proximité. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Hilaire-du-Harcouët (50), bourg-centre du bocage normand dans la Manche (Normandie), est historiquement un important marché aux bestiaux. Tissu TPE agriculteurs et éleveurs, PME agroalimentaires (lait, viande), artisans BTP, commerces de bourg et services de proximité. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Saint-Hilaire-du-Harcouët (50), bourg-centre du bocage normand dans la Manche (Normandie), est historiquement un important marché aux bestiaux. Tissu TPE agriculteurs et éleveurs, PME agroalimentaires (lait, viande), artisans BTP, commerces de bourg et services de proximité. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Hilaire-du-Harcouët (50), bourg-centre du bocage normand dans la Manche (Normandie), est historiquement un important marché aux bestiaux. Tissu TPE agriculteurs et éleveurs, PME agroalimentaires (lait, viande), artisans BTP, commerces de bourg et services de proximité. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Hilaire-du-Harcouët (50). Nous accompagnons tous types d'activités : TPE éleveurs et agriculteurs du bocage, PME agroalimentaires laitières et viande, artisans BTP, commerçants de bourg, professions libérales et services du sud Manche.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const SAINT_HILAIRE_DU_HARCOUET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Hilaire-du-Harcouët : diagnostic adapté aux TPE éleveurs du bocage, PME agroalimentaires laitières et viande, artisans BTP, commerçants de bourg. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Hilaire-du-Harcouët : diagnostic adapté aux TPE éleveurs du bocage, PME agroalimentaires laitières et viande, artisans BTP, commerçants de bourg. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Hilaire-du-Harcouët : diagnostic adapté aux TPE éleveurs du bocage, PME agroalimentaires laitières et viande, artisans BTP, commerçants de bourg. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Saint-Hilaire-du-Harcouët : diagnostic adapté aux TPE éleveurs du bocage, PME agroalimentaires laitières et viande, artisans BTP, commerçants de bourg. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Hilaire-du-Harcouët : formats adaptés à l'exploitation d'élevage, la laiterie, l'atelier BTP, le commerce. Vos équipes repartent autonomes sur les outils IA.",
@@ -64,7 +64,7 @@ export const SAINT_HILAIRE_DU_HARCOUET_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Saint-Hilaire-du-Harcouët ?",
-      a: "Nos consultants viennent de Rennes (1 h A84) ou Avranches (25 min). Gare d'Avranches ou Fougères (TER). Multi-jours : hébergement local. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Rennes (1 h A84) ou Avranches (25 min). Gare d'Avranches ou Fougères (TER). Multi-jours : hébergement local. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

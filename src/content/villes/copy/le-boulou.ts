@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_BOULOU_COPY: VilleCopy = {
   pitchFr:
-    "Le Boulou (66), station thermale et ville frontalière sur l'axe A9 France-Espagne, fait partie de la Communauté de communes du Vallespir. Tissu TPE artisans, PME transport et logistique transfrontalière, commerces, thermalisme, agriculture. Axion-IA y intervient pour tous types d'activités du Vallespir frontalier.",
+    "Le Boulou (66), station thermale et ville frontalière sur l'axe A9 France-Espagne, fait partie de la Communauté de communes du Vallespir. Tissu TPE artisans, PME transport et logistique transfrontalière, commerces, thermalisme, agriculture. Axion-IA couvre l'ensemble des activités professionnelles présentes du Vallespir frontalier.",
   pitchEn:
-    "Le Boulou (66), station thermale et ville frontalière sur l'axe A9 France-Espagne, fait partie de la Communauté de communes du Vallespir. Tissu TPE artisans, PME transport et logistique transfrontalière, commerces, thermalisme, agriculture. Axion-IA y intervient pour tous types d'activités du Vallespir frontalier.",
+    "Le Boulou (66), station thermale et ville frontalière sur l'axe A9 France-Espagne, fait partie de la Communauté de communes du Vallespir. Tissu TPE artisans, PME transport et logistique transfrontalière, commerces, thermalisme, agriculture. Axion-IA couvre l'ensemble des activités professionnelles présentes du Vallespir frontalier.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Boulou (66). Nous accompagnons tous types d'activités : TPE artisans, PME transport et logistique transfrontalière, commerçants, professionnels du thermalisme, indépendants et professions libérales du Vallespir frontalier.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const LE_BOULOU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Boulou : diagnostic adapté aux TPE artisans, PME transport et logistique transfrontalière, professionnels du thermalisme et commerçants frontaliers. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA au Boulou : diagnostic adapté aux TPE artisans, PME transport et logistique transfrontalière, professionnels du thermalisme et commerçants frontaliers. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA au Boulou : diagnostic adapté aux TPE artisans, PME transport et logistique transfrontalière, professionnels du thermalisme et commerçants frontaliers. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA au Boulou : diagnostic adapté aux TPE artisans, PME transport et logistique transfrontalière, professionnels du thermalisme et commerçants frontaliers. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site au Boulou : formats adaptés au dépôt logistique, établissement thermal, commerce, atelier. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site au Boulou : formats adaptés au dépôt logistique, établissement thermal, commerce, atelier. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site au Boulou : formats adaptés au dépôt logistique, établissement thermal, commerce, atelier. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site au Boulou : formats adaptés au dépôt logistique, établissement thermal, commerce, atelier. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA au Boulou : optimisation tournées logistiques transfrontalières, gestion planning thermal, automatisation douane/export, agents conversationnels bilingues FR/ES. Vallespir.",
@@ -64,7 +64,7 @@ export const LE_BOULOU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission au Boulou ?",
-      a: "Nos consultants viennent de Perpignan (25 min). Missions sur site dans votre dépôt, établissement ou commerce. Visio possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Perpignan (25 min). Missions sur site dans votre dépôt, établissement ou commerce. Visio possible. Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

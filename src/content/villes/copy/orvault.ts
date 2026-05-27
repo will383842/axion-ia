@@ -29,8 +29,8 @@ export const ORVAULT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Orvault : diagnostic adapté aux TPE artisanales et PME tertiaires des zones d'activités nantaises. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
-      en: "Audit IA à Orvault : diagnostic adapté aux TPE artisanales et PME tertiaires des zones d'activités nantaises. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
+      fr: "Audit IA à Orvault : diagnostic adapté aux TPE artisanales et PME tertiaires des zones d'activités nantaises. Audit Flash à 490 € HT, retour sur investissement chiffré accessible aux petites structures.",
+      en: "Audit IA à Orvault : diagnostic adapté aux TPE artisanales et PME tertiaires des zones d'activités nantaises. Audit Flash à 490 € HT, retour sur investissement chiffré accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Orvault : sessions adaptées TPE/PME. Formats demi-journée à 2 jours, vos équipes (commerciaux, assistants, ouvriers BTP) repartent autonomes sur des outils IA.",

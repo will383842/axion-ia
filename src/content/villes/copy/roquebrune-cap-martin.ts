@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ROQUEBRUNE_CAP_MARTIN_COPY: VilleCopy = {
   pitchFr:
-    "Roquebrune-Cap-Martin (06), entre Monaco et Menton sur la Côte d'Azur, est célèbre pour le Cabanon de Le Corbusier et sa villa E-1027 d'Eileen Gray (patrimoine architectural mondial). Tissu TPE/PME tourisme haut de gamme, hôtellerie-restauration, services résidentiels et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Roquebrune-Cap-Martin (06), entre Monaco et Menton sur la Côte d'Azur, est célèbre pour le Cabanon de Le Corbusier et sa villa E-1027 d'Eileen Gray (patrimoine architectural mondial). Tissu TPE/PME tourisme haut de gamme, hôtellerie-restauration, services résidentiels et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Roquebrune-Cap-Martin (06), entre Monaco et Menton sur la Côte d'Azur, est célèbre pour le Cabanon de Le Corbusier et sa villa E-1027 d'Eileen Gray (patrimoine architectural mondial). Tissu TPE/PME tourisme haut de gamme, hôtellerie-restauration, services résidentiels et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Roquebrune-Cap-Martin (06), entre Monaco et Menton sur la Côte d'Azur, est célèbre pour le Cabanon de Le Corbusier et sa villa E-1027 d'Eileen Gray (patrimoine architectural mondial). Tissu TPE/PME tourisme haut de gamme, hôtellerie-restauration, services résidentiels et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Roquebrune-Cap-Martin (06). Nous accompagnons tous types d'activités : TPE hôtellerie-restauration haut de gamme, commerces de bord de mer, professions libérales, PME services résidentiels et entreprises touristiques de la Riviera entre Monaco et Menton.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const ROQUEBRUNE_CAP_MARTIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Roquebrune-Cap-Martin : diagnostic adapté aux TPE hôtellerie-restauration haut de gamme, professions libérales et PME services résidentiels de la Riviera Monaco-Menton. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
-      en: "Audit IA à Roquebrune-Cap-Martin : diagnostic adapté aux TPE hôtellerie-restauration haut de gamme, professions libérales et PME services résidentiels de la Riviera Monaco-Menton. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
+      fr: "Audit IA à Roquebrune-Cap-Martin : diagnostic adapté aux TPE hôtellerie-restauration haut de gamme, professions libérales et PME services résidentiels de la Riviera Monaco-Menton. Audit Flash à 490 € HT, retour sur investissement chiffré accessible aux petites structures.",
+      en: "Audit IA à Roquebrune-Cap-Martin : diagnostic adapté aux TPE hôtellerie-restauration haut de gamme, professions libérales et PME services résidentiels de la Riviera Monaco-Menton. Audit Flash à 490 € HT, retour sur investissement chiffré accessible aux petites structures.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Roquebrune-Cap-Martin : formats adaptés à l'hôtel, restaurant, cabinet ou commerce balnéaire. Vos équipes repartent autonomes sur outils IA configurés métier tourisme et services.",
-      en: "Interventions IA sur site à Roquebrune-Cap-Martin : formats adaptés à l'hôtel, restaurant, cabinet ou commerce balnéaire. Vos équipes repartent autonomes sur outils IA configurés métier tourisme et services.",
+      fr: "Interventions IA sur site à Roquebrune-Cap-Martin : formats adaptés à l'hôtel, restaurant, cabinet ou commerce balnéaire. Vos collaborateurs maîtrisent leurs outils IA après notre intervention tourisme et services.",
+      en: "Interventions IA sur site à Roquebrune-Cap-Martin : formats adaptés à l'hôtel, restaurant, cabinet ou commerce balnéaire. Vos collaborateurs maîtrisent leurs outils IA après notre intervention tourisme et services.",
     },
     implementation: {
       fr: "Implémentation IA à Roquebrune-Cap-Martin : agents conversationnels multilingues (clientèle internationale Monaco-Menton), automatisation réservations, gestion avis clients, CRM hôtelier augmenté. Adapté aux TPE/PME tourisme haut de gamme.",

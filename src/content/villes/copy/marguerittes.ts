@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MARGUERITTES_COPY: VilleCopy = {
   pitchFr:
-    "Marguerittes (30), commune de l'agglomération nîmoise nord, entre garrigue et plaine. Tissu TPE/PME services aux entreprises, commerces, artisanat BTP, professions libérales et agriculture (oliviers, vignes). Axion-IA y intervient pour tous types d'activités de l'agglomération nîmoise.",
+    "Marguerittes (30), commune de l'agglomération nîmoise nord, entre garrigue et plaine. Tissu TPE/PME services aux entreprises, commerces, artisanat BTP, professions libérales et agriculture (oliviers, vignes). Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération nîmoise.",
   pitchEn:
-    "Marguerittes (30), commune de l'agglomération nîmoise nord, entre garrigue et plaine. Tissu TPE/PME services aux entreprises, commerces, artisanat BTP, professions libérales et agriculture (oliviers, vignes). Axion-IA y intervient pour tous types d'activités de l'agglomération nîmoise.",
+    "Marguerittes (30), commune de l'agglomération nîmoise nord, entre garrigue et plaine. Tissu TPE/PME services aux entreprises, commerces, artisanat BTP, professions libérales et agriculture (oliviers, vignes). Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération nîmoise.",
   directAnswerFr:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Marguerittes (30). Nous accompagnons les TPE, PME et ETI locales : entreprises de services, commerçants, artisans BTP, professions libérales et agriculteurs de l'agglomération nîmoise nord. Audit Flash à partir de 490 € HT.",
   directAnswerEn:

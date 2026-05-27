@@ -33,8 +33,8 @@ export const ESCHAU_COPY: VilleCopy = {
       en: "Audit IA à Eschau : diagnostic adapté aux TPE/PME du sud de l''Eurométropole de Strasbourg, commerçants, artisans, prestataires de services et exploitants agricoles du Bas-Rhin. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Eschau : formats adaptés au commerce, à l''atelier d''artisan, à l''exploitation agricole ou à la TPE de services. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Eschau : formats adaptés au commerce, à l''atelier d''artisan, à l''exploitation agricole ou à la TPE de services. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Eschau : formats adaptés au commerce, à l''atelier d''artisan, à l''exploitation agricole ou à la TPE de services. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Eschau : formats adaptés au commerce, à l''atelier d''artisan, à l''exploitation agricole ou à la TPE de services. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Eschau : automatisation devis et facturation artisanat, agents conversationnels commerce, gestion stocks PME, CRM services et outils IA métier pour TPE/PME de l''Eurométropole.",

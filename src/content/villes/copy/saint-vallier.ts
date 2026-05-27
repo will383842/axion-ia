@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_VALLIER_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Vallier (71), commune du bassin minier Le Creusot-Montceau en Saône-et-Loire. Héritage industriel et minier reconverti, proximité Montceau-les-Mines. Tissu TPE artisanat BTP, PME industrielles reconversion, commerce, services, logistique. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Vallier (71), commune du bassin minier Le Creusot-Montceau en Saône-et-Loire. Héritage industriel et minier reconverti, proximité Montceau-les-Mines. Tissu TPE artisanat BTP, PME industrielles reconversion, commerce, services, logistique. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Saint-Vallier (71), commune du bassin minier Le Creusot-Montceau en Saône-et-Loire. Héritage industriel et minier reconverti, proximité Montceau-les-Mines. Tissu TPE artisanat BTP, PME industrielles reconversion, commerce, services, logistique. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Vallier (71), commune du bassin minier Le Creusot-Montceau en Saône-et-Loire. Héritage industriel et minier reconverti, proximité Montceau-les-Mines. Tissu TPE artisanat BTP, PME industrielles reconversion, commerce, services, logistique. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Vallier (71). Nous accompagnons TPE et PME : artisans BTP, PME industrielles bassin Le Creusot-Montceau, commerçants, prestataires logistique, entreprises en reconversion industrielle. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const SAINT_VALLIER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Vallier : diagnostic adapté aux PME industrielles bassin Le Creusot-Montceau, TPE artisans BTP, prestataires logistique, commerçants. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Vallier : diagnostic adapté aux PME industrielles bassin Le Creusot-Montceau, TPE artisans BTP, prestataires logistique, commerçants. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Vallier : diagnostic adapté aux PME industrielles bassin Le Creusot-Montceau, TPE artisans BTP, prestataires logistique, commerçants. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Saint-Vallier : diagnostic adapté aux PME industrielles bassin Le Creusot-Montceau, TPE artisans BTP, prestataires logistique, commerçants. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Vallier : formats adaptés atelier industriel, chantier BTP, entrepôt logistique, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -65,7 +65,7 @@ export const SAINT_VALLIER_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Chalon ?",
-      a: "Le Creusot-TGV à 20 min de Saint-Vallier. Lyon à 1h30, Chalon-sur-Saône à 40 min. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Le Creusot-TGV à 20 min de Saint-Vallier. Lyon à 1h30, Chalon-sur-Saône à 40 min. Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

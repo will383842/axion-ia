@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CUGAND_LA_BERNARDIERE_COPY: VilleCopy = {
   pitchFr:
-    "Cugand-la-Bernardière (85), commune nouvelle du bocage vendéen sur les bords de la Sèvre nantaise, rassemble plus de 5 700 habitants. Aux portes de Clisson et du vignoble nantais, tissu de TPE artisanales, PME, exploitations viticoles, commerces et services. Axion-IA y intervient pour tous types d'activités.",
+    "Cugand-la-Bernardière (85), commune nouvelle du bocage vendéen sur les bords de la Sèvre nantaise, rassemble plus de 5 700 habitants. Aux portes de Clisson et du vignoble nantais, tissu de TPE artisanales, PME, exploitations viticoles, commerces et services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Cugand-la-Bernardière (85), commune nouvelle du bocage vendéen sur les bords de la Sèvre nantaise, rassemble plus de 5 700 habitants. Aux portes de Clisson et du vignoble nantais, tissu de TPE artisanales, PME, exploitations viticoles, commerces et services. Axion-IA y intervient pour tous types d'activités.",
+    "Cugand-la-Bernardière (85), commune nouvelle du bocage vendéen sur les bords de la Sèvre nantaise, rassemble plus de 5 700 habitants. Aux portes de Clisson et du vignoble nantais, tissu de TPE artisanales, PME, exploitations viticoles, commerces et services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cugand-la-Bernardière (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, exploitations viticoles Sèvre nantaise, PME industrielles, professions libérales et services de proximité.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const CUGAND_LA_BERNARDIERE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cugand-la-Bernardière : diagnostic adapté aux TPE artisans, exploitations viticoles muscadet, PME industrielles et commerces. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Cugand-la-Bernardière : diagnostic adapté aux TPE artisans, exploitations viticoles muscadet, PME industrielles et commerces. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Cugand-la-Bernardière : diagnostic adapté aux TPE artisans, exploitations viticoles muscadet, PME industrielles et commerces. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Cugand-la-Bernardière : diagnostic adapté aux TPE artisans, exploitations viticoles muscadet, PME industrielles et commerces. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Cugand-la-Bernardière : formats adaptés aux domaines viticoles, artisans, PME et commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Cugand-la-Bernardière : formats adaptés aux domaines viticoles, artisans, PME et commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Cugand-la-Bernardière : formats adaptés aux domaines viticoles, artisans, PME et commerces. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Cugand-la-Bernardière : formats adaptés aux domaines viticoles, artisans, PME et commerces. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Cugand-la-Bernardière : gestion parcellaire viticole, automatisation cave et vente, outils prédictifs PME, marketing œnotourisme. Adapté TPE/PME vignoble nantais.",

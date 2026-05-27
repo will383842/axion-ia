@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const DEOLS_COPY: VilleCopy = {
   pitchFr:
-    "Déols (36), commune de l'agglomération de Châteauroux dans l'Indre, accueille l'aéroport de Châteauroux-Centre et hérite d'un passé militaire avec l'ancienne base aérienne. TPE artisans, PME logistiques et industrielles, commerçants, professions libérales, indépendants et acteurs de la zone aéroportuaire composent son tissu économique. Axion-IA y intervient pour tous types d'activités de l'agglomération castelroussine.",
+    "Déols (36), commune de l'agglomération de Châteauroux dans l'Indre, accueille l'aéroport de Châteauroux-Centre et hérite d'un passé militaire avec l'ancienne base aérienne. TPE artisans, PME logistiques et industrielles, commerçants, professions libérales, indépendants et acteurs de la zone aéroportuaire composent son tissu économique. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération castelroussine.",
   pitchEn:
-    "Déols (36), commune de l'agglomération de Châteauroux dans l'Indre, accueille l'aéroport de Châteauroux-Centre et hérite d'un passé militaire avec l'ancienne base aérienne. TPE artisans, PME logistiques et industrielles, commerçants, professions libérales, indépendants et acteurs de la zone aéroportuaire composent son tissu économique. Axion-IA y intervient pour tous types d'activités de l'agglomération castelroussine.",
+    "Déols (36), commune de l'agglomération de Châteauroux dans l'Indre, accueille l'aéroport de Châteauroux-Centre et hérite d'un passé militaire avec l'ancienne base aérienne. TPE artisans, PME logistiques et industrielles, commerçants, professions libérales, indépendants et acteurs de la zone aéroportuaire composent son tissu économique. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération castelroussine.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Déols (36), dans l'agglomération de Châteauroux. Nous accompagnons tous types d'activités : TPE artisans, PME logistiques et industrielles, commerçants, professions libérales, indépendants et entreprises de la zone aéroportuaire.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const DEOLS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Déols : diagnostic adapté aux TPE artisans, PME logistiques et industrielles de l'agglomération castelroussine, acteurs aéroportuaires, commerçants et professions libérales. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Déols : diagnostic adapté aux TPE artisans, PME logistiques et industrielles de l'agglomération castelroussine, acteurs aéroportuaires, commerçants et professions libérales. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Déols : diagnostic adapté aux TPE artisans, PME logistiques et industrielles de l'agglomération castelroussine, acteurs aéroportuaires, commerçants et professions libérales. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
+      en: "Audit IA à Déols : diagnostic adapté aux TPE artisans, PME logistiques et industrielles de l'agglomération castelroussine, acteurs aéroportuaires, commerçants et professions libérales. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Déols : formats adaptés aux entreprises logistiques, ateliers de maintenance aéronautique, TPE artisans BTP et commerces de proximité. Vos équipes repartent autonomes sur les outils IA métier.",

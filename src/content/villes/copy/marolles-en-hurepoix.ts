@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MAROLLES_EN_HUREPOIX_COPY: VilleCopy = {
   pitchFr:
-    "Marolles-en-Hurepoix (91), commune résidentielle du Hurepoix en Essonne, est située à 33 km au sud de Paris. Tissu TPE artisanales, commerces de proximité, PME tertiaires, professions libérales, indépendants. Axion-IA y intervient pour tous types d'activités du sud-Essonne.",
+    "Marolles-en-Hurepoix (91), commune résidentielle du Hurepoix en Essonne, est située à 33 km au sud de Paris. Tissu TPE artisanales, commerces de proximité, PME tertiaires, professions libérales, indépendants. Axion-IA y déploie ses missions auprès de toutes les organisations du sud-Essonne.",
   pitchEn:
-    "Marolles-en-Hurepoix (91), commune résidentielle du Hurepoix en Essonne, est située à 33 km au sud de Paris. Tissu TPE artisanales, commerces de proximité, PME tertiaires, professions libérales, indépendants. Axion-IA y intervient pour tous types d'activités du sud-Essonne.",
+    "Marolles-en-Hurepoix (91), commune résidentielle du Hurepoix en Essonne, est située à 33 km au sud de Paris. Tissu TPE artisanales, commerces de proximité, PME tertiaires, professions libérales, indépendants. Axion-IA y déploie ses missions auprès de toutes les organisations du sud-Essonne.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marolles-en-Hurepoix (91). Nous accompagnons tous types d'activités : TPE artisanales, commerces de proximité, PME tertiaires, professions libérales, indépendants et services aux entreprises du Hurepoix.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const MAROLLES_EN_HUREPOIX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Marolles-en-Hurepoix : diagnostic adapté aux TPE artisanales, commerces, PME tertiaires et professions libérales du Hurepoix. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Marolles-en-Hurepoix : diagnostic adapté aux TPE artisanales, commerces, PME tertiaires et professions libérales du Hurepoix. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Marolles-en-Hurepoix : diagnostic adapté aux TPE artisanales, commerces, PME tertiaires et professions libérales du Hurepoix. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Marolles-en-Hurepoix : diagnostic adapté aux TPE artisanales, commerces, PME tertiaires et professions libérales du Hurepoix. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Marolles-en-Hurepoix : formats adaptés aux TPE/PME. Demi-journée à 2 jours, vos équipes repartent autonomes sur outils IA configurés métier.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_MAURICE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Maurice (94), commune résidentielle du Val-de-Marne en bordure du Bois de Vincennes, accueille les hôpitaux nationaux de Saint-Maurice (dont Esquirol). Tissu TPE et PME santé, professions libérales, commerces, services à la personne, restauration. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Maurice (94), commune résidentielle du Val-de-Marne en bordure du Bois de Vincennes, accueille les hôpitaux nationaux de Saint-Maurice (dont Esquirol). Tissu TPE et PME santé, professions libérales, commerces, services à la personne, restauration. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Saint-Maurice (94), commune résidentielle du Val-de-Marne en bordure du Bois de Vincennes, accueille les hôpitaux nationaux de Saint-Maurice (dont Esquirol). Tissu TPE et PME santé, professions libérales, commerces, services à la personne, restauration. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Maurice (94), commune résidentielle du Val-de-Marne en bordure du Bois de Vincennes, accueille les hôpitaux nationaux de Saint-Maurice (dont Esquirol). Tissu TPE et PME santé, professions libérales, commerces, services à la personne, restauration. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Maurice (94). Nous accompagnons TPE et PME : prestataires santé autour des hôpitaux nationaux, professions libérales, commerçants, restaurateurs, services à la personne en bordure du Bois de Vincennes. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const SAINT_MAURICE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Maurice : diagnostic adapté aux prestataires santé, professions libérales, commerces, restaurateurs, services à la personne. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Maurice : diagnostic adapté aux prestataires santé, professions libérales, commerces, restaurateurs, services à la personne. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Maurice : diagnostic adapté aux prestataires santé, professions libérales, commerces, restaurateurs, services à la personne. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Saint-Maurice : diagnostic adapté aux prestataires santé, professions libérales, commerces, restaurateurs, services à la personne. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Maurice : formats adaptés cabinet médical, commerce, restaurant, bureau. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Saint-Maurice : formats adaptés cabinet médical, commerce, restaurant, bureau. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Saint-Maurice : formats adaptés cabinet médical, commerce, restaurant, bureau. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Saint-Maurice : formats adaptés cabinet médical, commerce, restaurant, bureau. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Maurice : automatisation gestion rendez-vous santé, CRM augmentés commerces, prise de commande restauration, planning services à la personne, facturation TPE.",

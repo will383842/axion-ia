@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ENTRELACS_COPY: VilleCopy = {
   pitchFr:
-    "Entrelacs (73), commune nouvelle en Savoie située entre Aix-les-Bains et Annecy, à proximité du lac du Bourget. Tourisme lacustre, agriculture et viticulture savoyarde, TPE artisanat, commerces de proximité, hôtellerie. Axion-IA y intervient pour tous types d'activités.",
+    "Entrelacs (73), commune nouvelle en Savoie située entre Aix-les-Bains et Annecy, à proximité du lac du Bourget. Tourisme lacustre, agriculture et viticulture savoyarde, TPE artisanat, commerces de proximité, hôtellerie. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Entrelacs (73), commune nouvelle en Savoie située entre Aix-les-Bains et Annecy, à proximité du lac du Bourget. Tourisme lacustre, agriculture et viticulture savoyarde, TPE artisanat, commerces de proximité, hôtellerie. Axion-IA y intervient pour tous types d'activités.",
+    "Entrelacs (73), commune nouvelle en Savoie située entre Aix-les-Bains et Annecy, à proximité du lac du Bourget. Tourisme lacustre, agriculture et viticulture savoyarde, TPE artisanat, commerces de proximité, hôtellerie. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Entrelacs (73). Nous accompagnons TPE et PME : acteurs du tourisme lacustre, exploitations viticoles et agricoles savoyardes, artisans, commerçants et hôteliers du bassin Aix-les-Bains.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const ENTRELACS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Entrelacs : diagnostic adapté aux acteurs du tourisme lacustre, exploitations viticoles, TPE artisans, commerçants et hôteliers du bassin Aix-les-Bains. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Entrelacs : diagnostic adapté aux acteurs du tourisme lacustre, exploitations viticoles, TPE artisans, commerçants et hôteliers du bassin Aix-les-Bains. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Entrelacs : diagnostic adapté aux acteurs du tourisme lacustre, exploitations viticoles, TPE artisans, commerçants et hôteliers du bassin Aix-les-Bains. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Entrelacs : diagnostic adapté aux acteurs du tourisme lacustre, exploitations viticoles, TPE artisans, commerçants et hôteliers du bassin Aix-les-Bains. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Entrelacs : formats adaptés aux hôtels, domaines viticoles, commerces touristiques ou ateliers artisans. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Entrelacs : formats adaptés aux hôtels, domaines viticoles, commerces touristiques ou ateliers artisans. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Entrelacs : formats adaptés aux hôtels, domaines viticoles, commerces touristiques ou ateliers artisans. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Entrelacs : formats adaptés aux hôtels, domaines viticoles, commerces touristiques ou ateliers artisans. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Entrelacs : automatisation réservations hôtelières, agents IA accueil touristique multilingue, gestion stocks viticoles, outils prédictifs saisonnalité, optimisation yield management.",
@@ -64,7 +64,7 @@ export const ENTRELACS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Entrelacs ?",
-      a: "Nos consultants seniors interviennent depuis Chambéry (20 min voiture) ou Aix-les-Bains (10 min). Pour les missions multi-jours, hébergement sur place si nécessaire. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants seniors interviennent depuis Chambéry (20 min voiture) ou Aix-les-Bains (10 min). Pour les missions multi-jours, hébergement sur place si nécessaire. Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

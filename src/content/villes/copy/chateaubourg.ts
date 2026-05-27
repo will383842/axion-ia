@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHATEAUBOURG_COPY: VilleCopy = {
   pitchFr:
-    "Châteaubourg (35), commune dynamique à l'est de Rennes en Ille-et-Vilaine, concentre d'importantes zones d'activités sur l'axe Rennes-Laval (RN157). Tissu PME industrielles agroalimentaires, TPE artisans, logistique et services aux entreprises. Axion-IA y intervient pour tous types d'activités de l'est rennais.",
+    "Châteaubourg (35), commune dynamique à l'est de Rennes en Ille-et-Vilaine, concentre d'importantes zones d'activités sur l'axe Rennes-Laval (RN157). Tissu PME industrielles agroalimentaires, TPE artisans, logistique et services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'est rennais.",
   pitchEn:
-    "Châteaubourg (35), commune dynamique à l'est de Rennes en Ille-et-Vilaine, concentre d'importantes zones d'activités sur l'axe Rennes-Laval (RN157). Tissu PME industrielles agroalimentaires, TPE artisans, logistique et services aux entreprises. Axion-IA y intervient pour tous types d'activités de l'est rennais.",
+    "Châteaubourg (35), commune dynamique à l'est de Rennes en Ille-et-Vilaine, concentre d'importantes zones d'activités sur l'axe Rennes-Laval (RN157). Tissu PME industrielles agroalimentaires, TPE artisans, logistique et services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'est rennais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châteaubourg (35). Nous accompagnons TPE artisans, PME industrielles agroalimentaires, entreprises logistiques et services de l'est rennais. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
   directAnswerEn:

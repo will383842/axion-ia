@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ANNONAY_COPY: VilleCopy = {
   pitchFr:
-    "Annonay (07), sous-préfecture de l'Ardèche dans le nord-Ardèche, est le berceau historique des frères Montgolfier (invention de la montgolfière, 1783). Héritage industriel papetier et tanneur. Tissu PME industrielles diversifiées, TPE artisans BTP, commerces, agriculture montagne. Axion-IA y intervient pour tous types d'activités ardéchoises.",
+    "Annonay (07), sous-préfecture de l'Ardèche dans le nord-Ardèche, est le berceau historique des frères Montgolfier (invention de la montgolfière, 1783). Héritage industriel papetier et tanneur. Tissu PME industrielles diversifiées, TPE artisans BTP, commerces, agriculture montagne. Axion-IA opère pour toutes les structures économiques de la commune ardéchoises.",
   pitchEn:
-    "Annonay (07), sous-préfecture de l'Ardèche dans le nord-Ardèche, est le berceau historique des frères Montgolfier (invention de la montgolfière, 1783). Héritage industriel papetier et tanneur. Tissu PME industrielles diversifiées, TPE artisans BTP, commerces, agriculture montagne. Axion-IA y intervient pour tous types d'activités ardéchoises.",
+    "Annonay (07), sous-préfecture de l'Ardèche dans le nord-Ardèche, est le berceau historique des frères Montgolfier (invention de la montgolfière, 1783). Héritage industriel papetier et tanneur. Tissu PME industrielles diversifiées, TPE artisans BTP, commerces, agriculture montagne. Axion-IA opère pour toutes les structures économiques de la commune ardéchoises.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Annonay (07). Nous accompagnons tous types d'activités : PME industrielles nord-Ardèche (héritage papetier/tanneur Montgolfier), agriculteurs montagne, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const ANNONAY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Annonay : diagnostic adapté aux PME industrielles nord-Ardèche, agriculteurs montagne, acteurs tourisme Montgolfier, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Annonay : diagnostic adapté aux PME industrielles nord-Ardèche, agriculteurs montagne, acteurs tourisme Montgolfier, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Annonay : diagnostic adapté aux PME industrielles nord-Ardèche, agriculteurs montagne, acteurs tourisme Montgolfier, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Annonay : diagnostic adapté aux PME industrielles nord-Ardèche, agriculteurs montagne, acteurs tourisme Montgolfier, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Annonay : formats adaptés à l'atelier industriel, exploitation agricole, site patrimonial, commerce. Vos équipes repartent autonomes.",

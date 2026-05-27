@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MONTREUIL_JUIGNE_COPY: VilleCopy = {
   pitchFr:
-    "Montreuil-Juigné (49), commune résidentielle en bords de Mayenne au nord-ouest d'Angers, accueille près de 7 800 habitants. Axion-IA y intervient pour tous types d'activités : PME tertiaires, commerces, artisanat, professions libérales et services de proximité.",
+    "Montreuil-Juigné (49), commune résidentielle en bords de Mayenne au nord-ouest d'Angers, accueille près de 7 800 habitants. Axion-IA y déploie ses missions auprès de toutes les organisations : PME tertiaires, commerces, artisanat, professions libérales et services de proximité.",
   pitchEn:
-    "Montreuil-Juigné (49), commune résidentielle en bords de Mayenne au nord-ouest d'Angers, accueille près de 7 800 habitants. Axion-IA y intervient pour tous types d'activités : PME tertiaires, commerces, artisanat, professions libérales et services de proximité.",
+    "Montreuil-Juigné (49), commune résidentielle en bords de Mayenne au nord-ouest d'Angers, accueille près de 7 800 habitants. Axion-IA y déploie ses missions auprès de toutes les organisations : PME tertiaires, commerces, artisanat, professions libérales et services de proximité.",
   directAnswerFr:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Montreuil-Juigné (49). Nous accompagnons les TPE, PME et indépendants de la rive nord-ouest angevine dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FLEURANCE_COPY: VilleCopy = {
   pitchFr:
-    "Fleurance (32), bastide gersoise de 6 247 habitants au cœur de la Lomagne, connue pour son festival d'astronomie et son patrimoine médiéval. Son économie repose sur un tissu de TPE artisans et commerçants, PME agroalimentaires et agricoles, professions libérales, tourisme culturel et entreprises de services. Axion-IA y intervient pour tous types d'activités.",
+    "Fleurance (32), bastide gersoise de 6 247 habitants au cœur de la Lomagne, connue pour son festival d'astronomie et son patrimoine médiéval. Son économie repose sur un tissu de TPE artisans et commerçants, PME agroalimentaires et agricoles, professions libérales, tourisme culturel et entreprises de services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Fleurance (32), bastide gersoise de 6 247 habitants au cœur de la Lomagne, connue pour son festival d'astronomie et son patrimoine médiéval. Son économie repose sur un tissu de TPE artisans et commerçants, PME agroalimentaires et agricoles, professions libérales, tourisme culturel et entreprises de services. Axion-IA y intervient pour tous types d'activités.",
+    "Fleurance (32), bastide gersoise de 6 247 habitants au cœur de la Lomagne, connue pour son festival d'astronomie et son patrimoine médiéval. Son économie repose sur un tissu de TPE artisans et commerçants, PME agroalimentaires et agricoles, professions libérales, tourisme culturel et entreprises de services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fleurance (32). Nous accompagnons TPE et PME de la bastide lomagnolle : artisans, commerçants, agriculteurs, entreprises agroalimentaires et professionnels du tourisme culturel. Audit Flash dès 490 € HT.",
   directAnswerEn:

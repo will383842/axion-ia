@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PAIMPOL_COPY: VilleCopy = {
   pitchFr:
-    "Paimpol (22), port de pêche et de plaisance emblématique de la Côte du Goëlo en Côtes-d'Armor, vit du tourisme maritime, de la conchyliculture, de la pêche et d'un tissu TPE/PME commerçants et artisans. Axion-IA y intervient pour tous types d'activités.",
+    "Paimpol (22), port de pêche et de plaisance emblématique de la Côte du Goëlo en Côtes-d'Armor, vit du tourisme maritime, de la conchyliculture, de la pêche et d'un tissu TPE/PME commerçants et artisans. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Paimpol (22), port de pêche et de plaisance emblématique de la Côte du Goëlo en Côtes-d'Armor, vit du tourisme maritime, de la conchyliculture, de la pêche et d'un tissu TPE/PME commerçants et artisans. Axion-IA y intervient pour tous types d'activités.",
+    "Paimpol (22), port de pêche et de plaisance emblématique de la Côte du Goëlo en Côtes-d'Armor, vit du tourisme maritime, de la conchyliculture, de la pêche et d'un tissu TPE/PME commerçants et artisans. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Paimpol (22). Nous accompagnons TPE et PME : professionnels du tourisme maritime, conchyliculteurs, pêcheurs, commerçants du port, artisans, restaurateurs et hébergeurs de la Côte du Goëlo. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const PAIMPOL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Paimpol : diagnostic adapté aux TPE/PME du tourisme maritime, conchyliculteurs, pêcheurs, commerçants du port, restaurateurs et hébergeurs Côte du Goëlo. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Paimpol : diagnostic adapté aux TPE/PME du tourisme maritime, conchyliculteurs, pêcheurs, commerçants du port, restaurateurs et hébergeurs Côte du Goëlo. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Paimpol : diagnostic adapté aux TPE/PME du tourisme maritime, conchyliculteurs, pêcheurs, commerçants du port, restaurateurs et hébergeurs Côte du Goëlo. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Paimpol : diagnostic adapté aux TPE/PME du tourisme maritime, conchyliculteurs, pêcheurs, commerçants du port, restaurateurs et hébergeurs Côte du Goëlo. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Paimpol : formats adaptés exploitation conchylicole, commerce de port, hôtel, restaurant, atelier artisan. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -64,7 +64,7 @@ export const PAIMPOL_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Paimpol ?",
-      a: "TGV Paris-Guingamp (3h30) puis TER Guingamp-Paimpol (30 min). Saint-Brieuc à 45 min. Hébergement local possible. Frais de déplacement facturés à part, tarifs publics.",
+      a: "TGV Paris-Guingamp (3h30) puis TER Guingamp-Paimpol (30 min). Saint-Brieuc à 45 min. Hébergement local possible. Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

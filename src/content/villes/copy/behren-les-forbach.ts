@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BEHREN_LES_FORBACH_COPY: VilleCopy = {
   pitchFr:
-    "Behren-lès-Forbach (57), commune mosellane du Bassin houiller lorrain, limitrophe de Forbach et frontalière de la Sarre allemande. Tissu TPE/PME commerce, services, BTP, artisanat et activités transfrontalières. Axion-IA y intervient pour tous types d'activités.",
+    "Behren-lès-Forbach (57), commune mosellane du Bassin houiller lorrain, limitrophe de Forbach et frontalière de la Sarre allemande. Tissu TPE/PME commerce, services, BTP, artisanat et activités transfrontalières. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Behren-lès-Forbach (57), commune mosellane du Bassin houiller lorrain, limitrophe de Forbach et frontalière de la Sarre allemande. Tissu TPE/PME commerce, services, BTP, artisanat et activités transfrontalières. Axion-IA y intervient pour tous types d'activités.",
+    "Behren-lès-Forbach (57), commune mosellane du Bassin houiller lorrain, limitrophe de Forbach et frontalière de la Sarre allemande. Tissu TPE/PME commerce, services, BTP, artisanat et activités transfrontalières. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Behren-lès-Forbach (57). Nous accompagnons tous types d'activités : TPE/PME commerce et services, artisans BTP, professions libérales et entrepreneurs frontaliers du Bassin houiller mosellan.",
   directAnswerEn:
@@ -34,8 +34,8 @@ export const BEHREN_LES_FORBACH_COPY: VilleCopy = {
       en: "Audit IA à Behren-lès-Forbach : diagnostic adapté aux TPE/PME commerce, services, artisans BTP et entrepreneurs frontaliers du Bassin houiller. ROI chiffré, audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Behren-lès-Forbach : formats adaptés au bureau, commerce, chantier. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Behren-lès-Forbach : formats adaptés au bureau, commerce, chantier. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Behren-lès-Forbach : formats adaptés au bureau, commerce, chantier. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Behren-lès-Forbach : formats adaptés au bureau, commerce, chantier. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Behren-lès-Forbach : automatisation gestion transfrontalière, agents conversationnels multilingues FR/DE, optimisation logistique, devis BTP automatisés.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHABEUIL_COPY: VilleCopy = {
   pitchFr:
-    "Chabeuil (26), commune à proximité immédiate de Valence dans la Drôme, abrite l'aérodrome Valence-Chabeuil (aviation générale, école de pilotage) et fait partie de Valence Romans Agglo. Tissu PME tertiaires, TPE artisans BTP, agriculture périphérique, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Chabeuil (26), commune à proximité immédiate de Valence dans la Drôme, abrite l'aérodrome Valence-Chabeuil (aviation générale, école de pilotage) et fait partie de Valence Romans Agglo. Tissu PME tertiaires, TPE artisans BTP, agriculture périphérique, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Chabeuil (26), commune à proximité immédiate de Valence dans la Drôme, abrite l'aérodrome Valence-Chabeuil (aviation générale, école de pilotage) et fait partie de Valence Romans Agglo. Tissu PME tertiaires, TPE artisans BTP, agriculture périphérique, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Chabeuil (26), commune à proximité immédiate de Valence dans la Drôme, abrite l'aérodrome Valence-Chabeuil (aviation générale, école de pilotage) et fait partie de Valence Romans Agglo. Tissu PME tertiaires, TPE artisans BTP, agriculture périphérique, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chabeuil (26). Nous accompagnons tous types d'activités : acteurs aéronautiques aérodrome Valence-Chabeuil, PME tertiaires Valence Romans Agglo, TPE artisans BTP, commerçants, agriculteurs périphériques, indépendants et services aux entreprises drômoises.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const CHABEUIL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chabeuil : diagnostic adapté aux acteurs aéronautiques aérodrome, PME tertiaires Valence Romans Agglo, TPE artisans, agriculteurs. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Chabeuil : diagnostic adapté aux acteurs aéronautiques aérodrome, PME tertiaires Valence Romans Agglo, TPE artisans, agriculteurs. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Chabeuil : diagnostic adapté aux acteurs aéronautiques aérodrome, PME tertiaires Valence Romans Agglo, TPE artisans, agriculteurs. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Chabeuil : diagnostic adapté aux acteurs aéronautiques aérodrome, PME tertiaires Valence Romans Agglo, TPE artisans, agriculteurs. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chabeuil : formats adaptés à l'école de pilotage, bureau tertiaire, exploitation agricole, atelier artisan. Vos équipes repartent autonomes sur outils IA.",

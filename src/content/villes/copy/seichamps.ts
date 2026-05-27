@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SEICHAMPS_COPY: VilleCopy = {
   pitchFr:
-    "Seichamps (54), commune périurbaine résidentielle à l'est de Nancy en Meurthe-et-Moselle, combine habitat pavillonnaire, tissu commercial de proximité et services. Tissu TPE/PME commerces, artisans, services aux particuliers, professions libérales, BTP. Axion-IA y intervient pour tous types d'activités.",
+    "Seichamps (54), commune périurbaine résidentielle à l'est de Nancy en Meurthe-et-Moselle, combine habitat pavillonnaire, tissu commercial de proximité et services. Tissu TPE/PME commerces, artisans, services aux particuliers, professions libérales, BTP. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Seichamps (54), commune périurbaine résidentielle à l'est de Nancy en Meurthe-et-Moselle, combine habitat pavillonnaire, tissu commercial de proximité et services. Tissu TPE/PME commerces, artisans, services aux particuliers, professions libérales, BTP. Axion-IA y intervient pour tous types d'activités.",
+    "Seichamps (54), commune périurbaine résidentielle à l'est de Nancy en Meurthe-et-Moselle, combine habitat pavillonnaire, tissu commercial de proximité et services. Tissu TPE/PME commerces, artisans, services aux particuliers, professions libérales, BTP. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Seichamps (54). Nous accompagnons tous types d'activités : TPE/PME commerces de proximité, artisans, services aux particuliers, professions libérales et acteurs du BTP seichampois.",
   directAnswerEn:
@@ -30,12 +30,12 @@ export const SEICHAMPS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Seichamps : diagnostic adapté aux TPE/PME commerces de proximité, artisans, services aux particuliers, professions libérales et acteurs du BTP. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Seichamps : diagnostic adapté aux TPE/PME commerces de proximité, artisans, services aux particuliers, professions libérales et acteurs du BTP. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Seichamps : diagnostic adapté aux TPE/PME commerces de proximité, artisans, services aux particuliers, professions libérales et acteurs du BTP. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Seichamps : diagnostic adapté aux TPE/PME commerces de proximité, artisans, services aux particuliers, professions libérales et acteurs du BTP. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Seichamps : formats adaptés au commerce, au cabinet, à l'atelier, au bureau. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Seichamps : formats adaptés au commerce, au cabinet, à l'atelier, au bureau. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Seichamps : formats adaptés au commerce, au cabinet, à l'atelier, au bureau. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Seichamps : formats adaptés au commerce, au cabinet, à l'atelier, au bureau. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Seichamps : automatisation gestion commerciale, relation client, présence en ligne, agents conversationnels TPE/PME, workflow professions libérales.",

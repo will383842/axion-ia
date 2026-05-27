@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_CHEVROLIERE_COPY: VilleCopy = {
   pitchFr:
-    "La Chevrolière (44), commune résidentielle du sud de l'agglomération nantaise en Loire-Atlantique, en bordure du lac de Grand-Lieu. Tissu TPE artisans et commerçants, PME tertiaires, professions libérales, exploitations maraîchères, services de proximité. Axion-IA y intervient pour tous types d'activités du sud nantais.",
+    "La Chevrolière (44), commune résidentielle du sud de l'agglomération nantaise en Loire-Atlantique, en bordure du lac de Grand-Lieu. Tissu TPE artisans et commerçants, PME tertiaires, professions libérales, exploitations maraîchères, services de proximité. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud nantais.",
   pitchEn:
-    "La Chevrolière (44), commune résidentielle du sud de l'agglomération nantaise en Loire-Atlantique, en bordure du lac de Grand-Lieu. Tissu TPE artisans et commerçants, PME tertiaires, professions libérales, exploitations maraîchères, services de proximité. Axion-IA y intervient pour tous types d'activités du sud nantais.",
+    "La Chevrolière (44), commune résidentielle du sud de l'agglomération nantaise en Loire-Atlantique, en bordure du lac de Grand-Lieu. Tissu TPE artisans et commerçants, PME tertiaires, professions libérales, exploitations maraîchères, services de proximité. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud nantais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Chevrolière (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires, professions libérales, exploitations maraîchères et services de proximité du sud nantais, en bordure du lac de Grand-Lieu.",
   directAnswerEn:

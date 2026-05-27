@@ -29,8 +29,8 @@ export const SAINT_MARTIN_D_URIAGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Martin-d'Uriage : diagnostic adapté aux acteurs thermalisme Uriage, TPE artisans, agriculteurs Belledonne et commerçants. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Martin-d'Uriage : diagnostic adapté aux acteurs thermalisme Uriage, TPE artisans, agriculteurs Belledonne et commerçants. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Martin-d'Uriage : diagnostic adapté aux acteurs thermalisme Uriage, TPE artisans, agriculteurs Belledonne et commerçants. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Saint-Martin-d'Uriage : diagnostic adapté aux acteurs thermalisme Uriage, TPE artisans, agriculteurs Belledonne et commerçants. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Martin-d'Uriage : formats adaptés à l'établissement thermal, hôtel, exploitation agricole, commerce. Vos équipes repartent autonomes sur outils IA métier.",
@@ -64,7 +64,7 @@ export const SAINT_MARTIN_D_URIAGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Grenoble ?",
-      a: "Nos consultants viennent de Grenoble (20 min D524). Pour les multi-jours, hébergement local possible (hôtels Uriage). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Grenoble (20 min D524). Pour les multi-jours, hébergement local possible (hôtels Uriage). Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

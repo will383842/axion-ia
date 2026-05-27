@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MEUNG_SUR_LOIRE_COPY: VilleCopy = {
   pitchFr:
-    "Meung-sur-Loire (45), commune des bords de Loire en Loiret, est un bourg historique de la Beauce ligérienne dominé par le château de Meung (résidence épiscopale XIIe siècle). Tissu TPE artisans, commerçants, PME agricoles et viticoles, tourisme patrimonial Loire. Axion-IA y intervient pour tous types d'activités.",
+    "Meung-sur-Loire (45), commune des bords de Loire en Loiret, est un bourg historique de la Beauce ligérienne dominé par le château de Meung (résidence épiscopale XIIe siècle). Tissu TPE artisans, commerçants, PME agricoles et viticoles, tourisme patrimonial Loire. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Meung-sur-Loire (45), commune des bords de Loire en Loiret, est un bourg historique de la Beauce ligérienne dominé par le château de Meung (résidence épiscopale XIIe siècle). Tissu TPE artisans, commerçants, PME agricoles et viticoles, tourisme patrimonial Loire. Axion-IA y intervient pour tous types d'activités.",
+    "Meung-sur-Loire (45), commune des bords de Loire en Loiret, est un bourg historique de la Beauce ligérienne dominé par le château de Meung (résidence épiscopale XIIe siècle). Tissu TPE artisans, commerçants, PME agricoles et viticoles, tourisme patrimonial Loire. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Meung-sur-Loire (45). Nous accompagnons tous types d'activités : TPE artisans et commerçants du bourg, PME agricoles et viticoles de Beauce ligérienne, acteurs du tourisme patrimonial (château de Meung, bords de Loire), indépendants, professions libérales et services aux entreprises du bassin orléanais ouest.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const MEUNG_SUR_LOIRE_COPY: VilleCopy = {
       en: "Audit IA à Meung-sur-Loire : diagnostic adapté aux TPE artisans, commerçants, PME agricoles/viticoles et acteurs tourisme patrimonial du bourg ligérien. ROI chiffré, audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Meung-sur-Loire : formats adaptés à l'exploitation agricole, commerce, site touristique ou PME tertiaire. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Meung-sur-Loire : formats adaptés à l'exploitation agricole, commerce, site touristique ou PME tertiaire. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Meung-sur-Loire : formats adaptés à l'exploitation agricole, commerce, site touristique ou PME tertiaire. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Meung-sur-Loire : formats adaptés à l'exploitation agricole, commerce, site touristique ou PME tertiaire. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Meung-sur-Loire : automatisation devis artisans, agents conversationnels visiteurs château, classification photos vignoble, prédiction rendements agricoles, gestion stocks commerce. Adapté TPE/PME ligériennes.",

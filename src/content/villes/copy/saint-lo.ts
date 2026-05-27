@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_LO_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Lô (50), préfecture de la Manche en Normandie, surnommée « capitale des ruines » après 1944 et entièrement reconstruite, accueille le haras national et un tissu de TPE artisanales, PME agroalimentaires, services publics départementaux et commerces de centre-ville. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Lô (50), préfecture de la Manche en Normandie, surnommée « capitale des ruines » après 1944 et entièrement reconstruite, accueille le haras national et un tissu de TPE artisanales, PME agroalimentaires, services publics départementaux et commerces de centre-ville. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Saint-Lô (50), préfecture de la Manche en Normandie, surnommée « capitale des ruines » après 1944 et entièrement reconstruite, accueille le haras national et un tissu de TPE artisanales, PME agroalimentaires, services publics départementaux et commerces de centre-ville. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Lô (50), préfecture de la Manche en Normandie, surnommée « capitale des ruines » après 1944 et entièrement reconstruite, accueille le haras national et un tissu de TPE artisanales, PME agroalimentaires, services publics départementaux et commerces de centre-ville. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Lô (50). Nous accompagnons tous types d'activités : TPE artisanales et commerçants du centre-ville reconstruit, PME agroalimentaires normandes, acteurs de la filière équine (haras), services publics départementaux, professions libérales et prestataires du bocage manchois.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const SAINT_LO_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Lô : diagnostic adapté aux TPE artisanales, PME agroalimentaires normandes, acteurs de la filière équine, commerçants du centre-ville et services publics. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Lô : diagnostic adapté aux TPE artisanales, PME agroalimentaires normandes, acteurs de la filière équine, commerçants du centre-ville et services publics. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Lô : diagnostic adapté aux TPE artisanales, PME agroalimentaires normandes, acteurs de la filière équine, commerçants du centre-ville et services publics. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Saint-Lô : diagnostic adapté aux TPE artisanales, PME agroalimentaires normandes, acteurs de la filière équine, commerçants du centre-ville et services publics. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Lô : formats adaptés à la laiterie, l'exploitation agricole, le commerce, l'administration départementale. Vos équipes repartent autonomes sur les outils IA.",

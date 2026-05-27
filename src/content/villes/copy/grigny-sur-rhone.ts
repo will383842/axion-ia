@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GRIGNY_SUR_RHONE_COPY: VilleCopy = {
   pitchFr:
-    "Grigny (69), commune en banlieue sud de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position vallée du Rhône entre Lyon et Vienne. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités du sud lyonnais.",
+    "Grigny (69), commune en banlieue sud de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position vallée du Rhône entre Lyon et Vienne. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du sud lyonnais.",
   pitchEn:
-    "Grigny (69), commune en banlieue sud de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position vallée du Rhône entre Lyon et Vienne. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités du sud lyonnais.",
+    "Grigny (69), commune en banlieue sud de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position vallée du Rhône entre Lyon et Vienne. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du sud lyonnais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Grigny (69). Nous accompagnons tous types d'activités : PME tertiaires et industrielles sud lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const GRIGNY_SUR_RHONE_COPY: VilleCopy = {
       en: "Audit IA à Grigny : diagnostic adapté aux PME tertiaires/industrielles sud lyonnais, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Grigny : formats adaptés au bureau, atelier, cabinet, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Grigny : formats adaptés au bureau, atelier, cabinet, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Grigny : formats adaptés au bureau, atelier, cabinet, commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Grigny : formats adaptés au bureau, atelier, cabinet, commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Grigny : agents conversationnels B2B/patient, automatisation workflow, prédiction maintenance industrielle, classification documents. Métropole Lyon sud.",

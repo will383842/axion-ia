@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_LAVANDOU_COPY: VilleCopy = {
   pitchFr:
-    "Le Lavandou (83), station balnéaire prestige de la Côte des Maures, est reconnue pour ses 12 plages, son port de plaisance et son tourisme haut de gamme face aux îles d'Or. Tissu de TPE hôteliers, restaurateurs, commerçants et PME tourisme, nautisme et services. Axion-IA y intervient pour tous types d'activités.",
+    "Le Lavandou (83), station balnéaire prestige de la Côte des Maures, est reconnue pour ses 12 plages, son port de plaisance et son tourisme haut de gamme face aux îles d'Or. Tissu de TPE hôteliers, restaurateurs, commerçants et PME tourisme, nautisme et services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Le Lavandou (83), station balnéaire prestige de la Côte des Maures, est reconnue pour ses 12 plages, son port de plaisance et son tourisme haut de gamme face aux îles d'Or. Tissu de TPE hôteliers, restaurateurs, commerçants et PME tourisme, nautisme et services. Axion-IA y intervient pour tous types d'activités.",
+    "Le Lavandou (83), station balnéaire prestige de la Côte des Maures, est reconnue pour ses 12 plages, son port de plaisance et son tourisme haut de gamme face aux îles d'Or. Tissu de TPE hôteliers, restaurateurs, commerçants et PME tourisme, nautisme et services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Lavandou (83). Nous accompagnons TPE hôteliers, restaurateurs, commerçants et PME du tourisme, du nautisme et des services de la Côte des Maures. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LE_LAVANDOU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Lavandou : diagnostic adapté aux hôtels, restaurants, plages privées et PME nautisme de la Côte des Maures. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA au Lavandou : diagnostic adapté aux hôtels, restaurants, plages privées et PME nautisme de la Côte des Maures. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA au Lavandou : diagnostic adapté aux hôtels, restaurants, plages privées et PME nautisme de la Côte des Maures. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA au Lavandou : diagnostic adapté aux hôtels, restaurants, plages privées et PME nautisme de la Côte des Maures. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site au Lavandou : ateliers pour hôteliers, restaurateurs, loueurs de bateaux et commerces. Outils IA configurés métier réel saison estivale.",

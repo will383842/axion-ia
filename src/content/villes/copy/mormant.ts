@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MORMANT_COPY: VilleCopy = {
   pitchFr:
-    "Mormant (77), bourg rural de la Brie en Seine-et-Marne, carrefour agricole et commercial entre Melun et Provins. TPE artisanat, commerces de bourg, PME agroalimentaire, exploitations agricoles, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Mormant (77), bourg rural de la Brie en Seine-et-Marne, carrefour agricole et commercial entre Melun et Provins. TPE artisanat, commerces de bourg, PME agroalimentaire, exploitations agricoles, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Mormant (77), bourg rural de la Brie en Seine-et-Marne, carrefour agricole et commercial entre Melun et Provins. TPE artisanat, commerces de bourg, PME agroalimentaire, exploitations agricoles, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Mormant (77), bourg rural de la Brie en Seine-et-Marne, carrefour agricole et commercial entre Melun et Provins. TPE artisanat, commerces de bourg, PME agroalimentaire, exploitations agricoles, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mormant (77). Nous accompagnons TPE et PME : artisans, commerçants de bourg, PME agroalimentaire, exploitants agricoles de la Brie, professions libérales. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -64,7 +64,7 @@ export const MORMANT_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi à Melun et Provins ?",
-      a: "Oui, nous couvrons Mormant, Melun, Provins, Nangis et toute la Brie seine-et-marnaise. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Oui, nous couvrons Mormant, Melun, Provins, Nangis et toute la Brie seine-et-marnaise. Coûts de déplacement à part, tarification transparente.",
     },
   ],
 };

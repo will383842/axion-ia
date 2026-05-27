@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GIERES_COPY: VilleCopy = {
   pitchFr:
-    "Gières (38), commune à l'est de Grenoble dans la métropole Grenoble-Alpes Métropole, abrite la seconde gare ferroviaire de l'agglomération grenobloise (Grenoble-Universités-Gières) et le campus universitaire. Tissu PME services, structures universitaires, TPE artisans, commerces et professions libérales. Axion-IA y intervient pour tous types d'activités giéroises.",
+    "Gières (38), commune à l'est de Grenoble dans la métropole Grenoble-Alpes Métropole, abrite la seconde gare ferroviaire de l'agglomération grenobloise (Grenoble-Universités-Gières) et le campus universitaire. Tissu PME services, structures universitaires, TPE artisans, commerces et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune giéroises.",
   pitchEn:
-    "Gières (38), commune à l'est de Grenoble dans la métropole Grenoble-Alpes Métropole, abrite la seconde gare ferroviaire de l'agglomération grenobloise (Grenoble-Universités-Gières) et le campus universitaire. Tissu PME services, structures universitaires, TPE artisans, commerces et professions libérales. Axion-IA y intervient pour tous types d'activités giéroises.",
+    "Gières (38), commune à l'est de Grenoble dans la métropole Grenoble-Alpes Métropole, abrite la seconde gare ferroviaire de l'agglomération grenobloise (Grenoble-Universités-Gières) et le campus universitaire. Tissu PME services, structures universitaires, TPE artisans, commerces et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune giéroises.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gières (38). Nous accompagnons tous types d'activités : structures universitaires et de recherche (campus Université Grenoble Alpes), PME tertiaires, TPE artisans BTP, commerçants, professions libérales et services aux entreprises de Grenoble-Alpes Métropole en zone est.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const GIERES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gières : diagnostic adapté aux structures universitaires, PME tertiaires, TPE artisans et professions libérales du bassin grenoblois est. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Gières : diagnostic adapté aux structures universitaires, PME tertiaires, TPE artisans et professions libérales du bassin grenoblois est. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Gières : diagnostic adapté aux structures universitaires, PME tertiaires, TPE artisans et professions libérales du bassin grenoblois est. Audit Flash 490 € HT, ROI documenté en chiffres accessible.",
+      en: "Audit IA à Gières : diagnostic adapté aux structures universitaires, PME tertiaires, TPE artisans et professions libérales du bassin grenoblois est. Audit Flash 490 € HT, ROI documenté en chiffres accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gières : formats adaptés au laboratoire universitaire, bureau PME, cabinet ou atelier. Vos équipes (chercheurs, commerciaux, assistants) repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const GIERES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Grenoble ?",
-      a: "Nos consultants viennent de Grenoble centre (15 min tramway B/D) ou Lyon (1h15 A48). Pour les multi-jours, hébergement local possible (hôtels Grenoble). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Grenoble centre (15 min tramway B/D) ou Lyon (1h15 A48). Pour les multi-jours, hébergement local possible (hôtels Grenoble). Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

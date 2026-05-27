@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const THORIGNE_FOUILLARD_COPY: VilleCopy = {
   pitchFr:
-    "Thorigné-Fouillard (35), commune résidentielle du nord-est de Rennes Métropole, allie cadre de vie verdoyant et dynamisme économique périurbain. TPE artisans BTP, commerces de proximité, PME de services et tertiaire, professions libérales de santé et indépendants. Axion-IA y intervient pour tous types d'activités du nord-est de Rennes Métropole.",
+    "Thorigné-Fouillard (35), commune résidentielle du nord-est de Rennes Métropole, allie cadre de vie verdoyant et dynamisme économique périurbain. TPE artisans BTP, commerces de proximité, PME de services et tertiaire, professions libérales de santé et indépendants. Axion-IA y déploie ses missions auprès de toutes les organisations du nord-est de Rennes Métropole.",
   pitchEn:
-    "Thorigné-Fouillard (35), commune résidentielle du nord-est de Rennes Métropole, allie cadre de vie verdoyant et dynamisme économique périurbain. TPE artisans BTP, commerces de proximité, PME de services et tertiaire, professions libérales de santé et indépendants. Axion-IA y intervient pour tous types d'activités du nord-est de Rennes Métropole.",
+    "Thorigné-Fouillard (35), commune résidentielle du nord-est de Rennes Métropole, allie cadre de vie verdoyant et dynamisme économique périurbain. TPE artisans BTP, commerces de proximité, PME de services et tertiaire, professions libérales de santé et indépendants. Axion-IA y déploie ses missions auprès de toutes les organisations du nord-est de Rennes Métropole.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thorigné-Fouillard (35). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, PME de services et tertiaire nord-est Rennes, professions libérales de santé, indépendants et prestataires de Rennes Métropole.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const THORIGNE_FOUILLARD_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Thorigné-Fouillard : diagnostic adapté aux TPE artisans, PME de services nord-est Rennes et professions libérales. ROI chiffré, audit Flash 490 € HT accessible à toute structure.",
-      en: "Audit IA à Thorigné-Fouillard : diagnostic adapté aux TPE artisans, PME de services nord-est Rennes et professions libérales. ROI chiffré, audit Flash 490 € HT accessible à toute structure.",
+      fr: "Audit IA à Thorigné-Fouillard : diagnostic adapté aux TPE artisans, PME de services nord-est Rennes et professions libérales. ROI mesurable, audit Flash dès 490 € HT accessible à toute structure.",
+      en: "Audit IA à Thorigné-Fouillard : diagnostic adapté aux TPE artisans, PME de services nord-est Rennes et professions libérales. ROI mesurable, audit Flash dès 490 € HT accessible à toute structure.",
     },
     interventions: {
       fr: "Interventions IA sur site à Thorigné-Fouillard : formats adaptés aux TPE artisans BTP, commerces, cabinets libéraux ou PME de services. Vos équipes repartent autonomes sur les outils IA configurés métier.",

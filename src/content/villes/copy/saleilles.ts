@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SALEILLES_COPY: VilleCopy = {
   pitchFr:
-    "Saleilles (66), commune résidentielle en périphérie est de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME tertiaires, commerces, professions libérales, zones d'activités. Axion-IA y intervient pour tous types d'activités de l'agglomération perpignanaise.",
+    "Saleilles (66), commune résidentielle en périphérie est de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME tertiaires, commerces, professions libérales, zones d'activités. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération perpignanaise.",
   pitchEn:
-    "Saleilles (66), commune résidentielle en périphérie est de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME tertiaires, commerces, professions libérales, zones d'activités. Axion-IA y intervient pour tous types d'activités de l'agglomération perpignanaise.",
+    "Saleilles (66), commune résidentielle en périphérie est de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME tertiaires, commerces, professions libérales, zones d'activités. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération perpignanaise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saleilles (66). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, commerçants, professions libérales, indépendants et services aux entreprises de l'agglo Perpignan est.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const SALEILLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saleilles : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales de l'agglo Perpignan est. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saleilles : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales de l'agglo Perpignan est. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saleilles : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales de l'agglo Perpignan est. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Saleilles : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales de l'agglo Perpignan est. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saleilles : formats adaptés au bureau, cabinet, commerce, atelier. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Saleilles : formats adaptés au bureau, cabinet, commerce, atelier. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Saleilles : formats adaptés au bureau, cabinet, commerce, atelier. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Saleilles : formats adaptés au bureau, cabinet, commerce, atelier. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Saleilles : agents conversationnels B2B, automatisation devis BTP, CRM augmentés, classification documents, gestion planning. Perpignan Méditerranée Métropole.",
@@ -64,7 +64,7 @@ export const SALEILLES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saleilles ?",
-      a: "Nos consultants interviennent depuis Perpignan (10 min). Missions sur site dans votre bureau, cabinet ou commerce. Visio possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants interviennent depuis Perpignan (10 min). Missions sur site dans votre bureau, cabinet ou commerce. Visio possible. Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const NEUVILLE_DE_POITOU_COPY: VilleCopy = {
   pitchFr:
-    "Neuville-de-Poitou (86), bourg-centre du nord de la Vienne au sein de Grand Poitiers, est un pôle de services et de commerces pour tout le nord Poitou. Tissu TPE artisans, PME tertiaires, agriculture, commerces et professions libérales. Axion-IA y intervient pour tous types d'activités du Grand Poitiers nord.",
+    "Neuville-de-Poitou (86), bourg-centre du nord de la Vienne au sein de Grand Poitiers, est un pôle de services et de commerces pour tout le nord Poitou. Tissu TPE artisans, PME tertiaires, agriculture, commerces et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations du Grand Poitiers nord.",
   pitchEn:
-    "Neuville-de-Poitou (86), bourg-centre du nord de la Vienne au sein de Grand Poitiers, est un pôle de services et de commerces pour tout le nord Poitou. Tissu TPE artisans, PME tertiaires, agriculture, commerces et professions libérales. Axion-IA y intervient pour tous types d'activités du Grand Poitiers nord.",
+    "Neuville-de-Poitou (86), bourg-centre du nord de la Vienne au sein de Grand Poitiers, est un pôle de services et de commerces pour tout le nord Poitou. Tissu TPE artisans, PME tertiaires, agriculture, commerces et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations du Grand Poitiers nord.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Neuville-de-Poitou (86). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, exploitants agricoles, commerçants, professions libérales et services aux entreprises du nord de Grand Poitiers, à proximité du Futuroscope.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const NEUVILLE_DE_POITOU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Neuville-de-Poitou : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales du nord Poitou. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Neuville-de-Poitou : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales du nord Poitou. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Neuville-de-Poitou : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales du nord Poitou. Audit Flash 490 € HT avec ROI quantifié accessible.",
+      en: "Audit IA à Neuville-de-Poitou : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales du nord Poitou. Audit Flash 490 € HT avec ROI quantifié accessible.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Neuville-de-Poitou : formats adaptés au cabinet, commerce, exploitation agricole ou bureau tertiaire. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Neuville-de-Poitou : formats adaptés au cabinet, commerce, exploitation agricole ou bureau tertiaire. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Neuville-de-Poitou : formats adaptés au cabinet, commerce, exploitation agricole ou bureau tertiaire. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Neuville-de-Poitou : formats adaptés au cabinet, commerce, exploitation agricole ou bureau tertiaire. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Neuville-de-Poitou : automatisation secrétariat médical, CRM augmenté, classification documents, agents conversationnels, gestion planning. Tous secteurs Grand Poitiers nord.",

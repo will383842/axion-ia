@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SENE_COPY: VilleCopy = {
   pitchFr:
-    "Séné (56), commune littorale aux portes du Golfe du Morbihan et de sa réserve naturelle, fait partie de l'agglomération de Vannes. TPE maritimes, PME de services, artisans, commerces de proximité, professions libérales et acteurs de l'écotourisme composent son tissu économique. Axion-IA y intervient pour tous types d'activités de l'agglomération vannetaise.",
+    "Séné (56), commune littorale aux portes du Golfe du Morbihan et de sa réserve naturelle, fait partie de l'agglomération de Vannes. TPE maritimes, PME de services, artisans, commerces de proximité, professions libérales et acteurs de l'écotourisme composent son tissu économique. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération vannetaise.",
   pitchEn:
-    "Séné (56), commune littorale aux portes du Golfe du Morbihan et de sa réserve naturelle, fait partie de l'agglomération de Vannes. TPE maritimes, PME de services, artisans, commerces de proximité, professions libérales et acteurs de l'écotourisme composent son tissu économique. Axion-IA y intervient pour tous types d'activités de l'agglomération vannetaise.",
+    "Séné (56), commune littorale aux portes du Golfe du Morbihan et de sa réserve naturelle, fait partie de l'agglomération de Vannes. TPE maritimes, PME de services, artisans, commerces de proximité, professions libérales et acteurs de l'écotourisme composent son tissu économique. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération vannetaise.",
   seoHook: "écotourisme, maritime & services",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Séné (56). Nous accompagnons tous types d'activités : TPE maritimes, PME de services, artisans, commerçants, professions libérales et acteurs de l'écotourisme du Golfe du Morbihan. Audit Flash dès 490 € HT, démarrage sous 5 jours.",

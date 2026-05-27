@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GAILLAC_COPY: VilleCopy = {
   pitchFr:
-    "Gaillac (81), capitale du vignoble le plus ancien de France avec plus de 16 000 habitants, au coeur du Tarn. Tissu TPE viticoles, PME agroalimentaires, commerces de centre-ville, artisans et professions libérales. Axion-IA y intervient pour tous types d'activités du Gaillacois et du vignoble tarnais.",
+    "Gaillac (81), capitale du vignoble le plus ancien de France avec plus de 16 000 habitants, au coeur du Tarn. Tissu TPE viticoles, PME agroalimentaires, commerces de centre-ville, artisans et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune du Gaillacois et du vignoble tarnais.",
   pitchEn:
-    "Gaillac (81), capitale du vignoble le plus ancien de France avec plus de 16 000 habitants, au coeur du Tarn. Tissu TPE viticoles, PME agroalimentaires, commerces de centre-ville, artisans et professions libérales. Axion-IA y intervient pour tous types d'activités du Gaillacois et du vignoble tarnais.",
+    "Gaillac (81), capitale du vignoble le plus ancien de France avec plus de 16 000 habitants, au coeur du Tarn. Tissu TPE viticoles, PME agroalimentaires, commerces de centre-ville, artisans et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune du Gaillacois et du vignoble tarnais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gaillac (81). Nous accompagnons TPE viticoles, PME agroalimentaires, commerçants, artisans et professions libérales du Gaillacois. Audit Flash dès 490 € HT.",
   directAnswerEn:

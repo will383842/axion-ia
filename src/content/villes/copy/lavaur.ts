@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LAVAUR_COPY: VilleCopy = {
   pitchFr:
-    "Lavaur (81), sous-préfecture du Tarn sur les bords de l'Agout, près de 11 000 habitants. Ville patrimoniale (cathédrale, orgue classé), pôle de services et commerces du Vaurais. Tissu TPE artisans, PME services, commerces, agriculture et professions libérales. Axion-IA y intervient pour tous types d'activités du bassin vauréen.",
+    "Lavaur (81), sous-préfecture du Tarn sur les bords de l'Agout, près de 11 000 habitants. Ville patrimoniale (cathédrale, orgue classé), pôle de services et commerces du Vaurais. Tissu TPE artisans, PME services, commerces, agriculture et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin vauréen.",
   pitchEn:
-    "Lavaur (81), sous-préfecture du Tarn sur les bords de l'Agout, près de 11 000 habitants. Ville patrimoniale (cathédrale, orgue classé), pôle de services et commerces du Vaurais. Tissu TPE artisans, PME services, commerces, agriculture et professions libérales. Axion-IA y intervient pour tous types d'activités du bassin vauréen.",
+    "Lavaur (81), sous-préfecture du Tarn sur les bords de l'Agout, près de 11 000 habitants. Ville patrimoniale (cathédrale, orgue classé), pôle de services et commerces du Vaurais. Tissu TPE artisans, PME services, commerces, agriculture et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin vauréen.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lavaur (81). Nous accompagnons TPE artisans, PME de services, commerçants, exploitants agricoles et professions libérales du Vaurais. Audit Flash dès 490 € HT.",
   directAnswerEn:

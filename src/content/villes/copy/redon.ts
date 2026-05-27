@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const REDON_COPY: VilleCopy = {
   pitchFr:
-    "Redon (35), sous-préfecture d'Ille-et-Vilaine à la confluence de la Vilaine et de l'Oust, est un carrefour fluvial et ferroviaire entre Bretagne et Pays de la Loire. Port fluvial historique, TPE artisans, PME industrielles agroalimentaires, commerces de centre-ville, professions libérales et exploitants agricoles. Axion-IA y intervient pour tous types d'activités du Pays de Redon.",
+    "Redon (35), sous-préfecture d'Ille-et-Vilaine à la confluence de la Vilaine et de l'Oust, est un carrefour fluvial et ferroviaire entre Bretagne et Pays de la Loire. Port fluvial historique, TPE artisans, PME industrielles agroalimentaires, commerces de centre-ville, professions libérales et exploitants agricoles. Axion-IA couvre l'ensemble des activités professionnelles présentes du Pays de Redon.",
   pitchEn:
-    "Redon (35), sous-préfecture d'Ille-et-Vilaine à la confluence de la Vilaine et de l'Oust, est un carrefour fluvial et ferroviaire entre Bretagne et Pays de la Loire. Port fluvial historique, TPE artisans, PME industrielles agroalimentaires, commerces de centre-ville, professions libérales et exploitants agricoles. Axion-IA y intervient pour tous types d'activités du Pays de Redon.",
+    "Redon (35), sous-préfecture d'Ille-et-Vilaine à la confluence de la Vilaine et de l'Oust, est un carrefour fluvial et ferroviaire entre Bretagne et Pays de la Loire. Port fluvial historique, TPE artisans, PME industrielles agroalimentaires, commerces de centre-ville, professions libérales et exploitants agricoles. Axion-IA couvre l'ensemble des activités professionnelles présentes du Pays de Redon.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Redon (35). Nous accompagnons tous types d'activités : TPE artisans et commerçants du centre-ville, PME agroalimentaires et industrielles du Pays de Redon, exploitants agricoles, professions libérales, indépendants et services aux entreprises de ce carrefour Bretagne-Pays de la Loire.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const REDON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Redon : diagnostic adapté aux TPE artisans, PME agroalimentaires et commerçants du Pays de Redon. ROI chiffré, audit Flash 490 € HT accessible à toute structure.",
-      en: "Audit IA à Redon : diagnostic adapté aux TPE artisans, PME agroalimentaires et commerçants du Pays de Redon. ROI chiffré, audit Flash 490 € HT accessible à toute structure.",
+      fr: "Audit IA à Redon : diagnostic adapté aux TPE artisans, PME agroalimentaires et commerçants du Pays de Redon. ROI mesurable, audit Flash dès 490 € HT accessible à toute structure.",
+      en: "Audit IA à Redon : diagnostic adapté aux TPE artisans, PME agroalimentaires et commerçants du Pays de Redon. ROI mesurable, audit Flash dès 490 € HT accessible à toute structure.",
     },
     interventions: {
       fr: "Interventions IA sur site à Redon : formats adaptés à l'atelier agroalimentaire, TPE artisan, commerce de centre-ville ou exploitation agricole. Vos équipes repartent autonomes sur les outils IA métier.",

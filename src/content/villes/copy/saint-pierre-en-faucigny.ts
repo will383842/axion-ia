@@ -29,12 +29,12 @@ export const SAINT_PIERRE_EN_FAUCIGNY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Pierre-en-Faucigny : diagnostic adapté aux PME industrielles du Faucigny, TPE artisans BTP, agriculteurs et commerçants du bassin de Bonneville. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Pierre-en-Faucigny : diagnostic adapté aux PME industrielles du Faucigny, TPE artisans BTP, agriculteurs et commerçants du bassin de Bonneville. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Pierre-en-Faucigny : diagnostic adapté aux PME industrielles du Faucigny, TPE artisans BTP, agriculteurs et commerçants du bassin de Bonneville. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Saint-Pierre-en-Faucigny : diagnostic adapté aux PME industrielles du Faucigny, TPE artisans BTP, agriculteurs et commerçants du bassin de Bonneville. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Pierre-en-Faucigny : formats adaptés à l'atelier industriel, chantier BTP, exploitation agricole ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Saint-Pierre-en-Faucigny : formats adaptés à l'atelier industriel, chantier BTP, exploitation agricole ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Saint-Pierre-en-Faucigny : formats adaptés à l'atelier industriel, chantier BTP, exploitation agricole ou commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Saint-Pierre-en-Faucigny : formats adaptés à l'atelier industriel, chantier BTP, exploitation agricole ou commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Pierre-en-Faucigny : contrôle qualité vision industrielle, automatisation devis BTP, prédiction maintenance machines, agents conversationnels client, agriculture de précision. Tissu Faucigny.",

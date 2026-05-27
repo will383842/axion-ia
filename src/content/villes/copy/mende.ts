@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MENDE_COPY: VilleCopy = {
   pitchFr:
-    "Mende (48), préfecture de la Lozère, plus petite préfecture de France métropolitaine. Cathédrale Notre-Dame-et-Saint-Privat, terre du Gévaudan. Tissu TPE artisans, PME agroalimentaires, commerces de proximité, tourisme nature et patrimoine, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Mende (48), préfecture de la Lozère, plus petite préfecture de France métropolitaine. Cathédrale Notre-Dame-et-Saint-Privat, terre du Gévaudan. Tissu TPE artisans, PME agroalimentaires, commerces de proximité, tourisme nature et patrimoine, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Mende (48), préfecture de la Lozère, plus petite préfecture de France métropolitaine. Cathédrale Notre-Dame-et-Saint-Privat, terre du Gévaudan. Tissu TPE artisans, PME agroalimentaires, commerces de proximité, tourisme nature et patrimoine, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Mende (48), préfecture de la Lozère, plus petite préfecture de France métropolitaine. Cathédrale Notre-Dame-et-Saint-Privat, terre du Gévaudan. Tissu TPE artisans, PME agroalimentaires, commerces de proximité, tourisme nature et patrimoine, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mende (48). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires, commerçants du centre historique, professions libérales, acteurs du tourisme nature Gévaudan, services publics et administrations locales.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const MENDE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mende : diagnostic adapté aux TPE artisans lozériens, PME agroalimentaires, commerçants du centre, professions libérales et acteurs du tourisme nature Gévaudan. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Mende : diagnostic adapté aux TPE artisans lozériens, PME agroalimentaires, commerçants du centre, professions libérales et acteurs du tourisme nature Gévaudan. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Mende : diagnostic adapté aux TPE artisans lozériens, PME agroalimentaires, commerçants du centre, professions libérales et acteurs du tourisme nature Gévaudan. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Mende : diagnostic adapté aux TPE artisans lozériens, PME agroalimentaires, commerçants du centre, professions libérales et acteurs du tourisme nature Gévaudan. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Mende : formats adaptés aux PME agroalimentaires, structures touristiques, commerce ou cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Mende : formats adaptés aux PME agroalimentaires, structures touristiques, commerce ou cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Mende : formats adaptés aux PME agroalimentaires, structures touristiques, commerce ou cabinet. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Mende : formats adaptés aux PME agroalimentaires, structures touristiques, commerce ou cabinet. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Mende : traçabilité agroalimentaire automatisée, chatbot tourisme multilingue gorges du Tarn, classification documents administratifs, prédiction flux touristiques saisonniers. Adapté agroalimentaire + tourisme nature.",

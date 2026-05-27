@@ -29,12 +29,12 @@ export const THOUARE_SUR_LOIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Thouaré-sur-Loire : diagnostic adapté aux TPE tertiaires, PME logistiques, viticulteurs Muscadet et professions libérales de l'est nantais. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Thouaré-sur-Loire : diagnostic adapté aux TPE tertiaires, PME logistiques, viticulteurs Muscadet et professions libérales de l'est nantais. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Thouaré-sur-Loire : diagnostic adapté aux TPE tertiaires, PME logistiques, viticulteurs Muscadet et professions libérales de l'est nantais. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Thouaré-sur-Loire : diagnostic adapté aux TPE tertiaires, PME logistiques, viticulteurs Muscadet et professions libérales de l'est nantais. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Thouaré-sur-Loire : formats adaptés au bureau tertiaire, entrepôt logistique, exploitation viticole ou cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Thouaré-sur-Loire : formats adaptés au bureau tertiaire, entrepôt logistique, exploitation viticole ou cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Thouaré-sur-Loire : formats adaptés au bureau tertiaire, entrepôt logistique, exploitation viticole ou cabinet libéral. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Thouaré-sur-Loire : formats adaptés au bureau tertiaire, entrepôt logistique, exploitation viticole ou cabinet libéral. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Thouaré-sur-Loire : optimisation tournées logistiques, traçabilité parcelles Muscadet, agents conversationnels oenotourisme, automatisation facturation cabinets libéraux.",

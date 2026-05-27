@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BLAINVILLE_SUR_ORNE_COPY: VilleCopy = {
   pitchFr:
-    "Blainville-sur-Orne (14), commune de l'agglomération de Caen dans le Calvados, est traversée par le canal de Caen à la mer et l'Orne. Zone d'activités dynamique, tissu TPE artisans BTP, PME industrielles et logistiques, commerces, professions libérales, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Blainville-sur-Orne (14), commune de l'agglomération de Caen dans le Calvados, est traversée par le canal de Caen à la mer et l'Orne. Zone d'activités dynamique, tissu TPE artisans BTP, PME industrielles et logistiques, commerces, professions libérales, services aux entreprises. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Blainville-sur-Orne (14), commune de l'agglomération de Caen dans le Calvados, est traversée par le canal de Caen à la mer et l'Orne. Zone d'activités dynamique, tissu TPE artisans BTP, PME industrielles et logistiques, commerces, professions libérales, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Blainville-sur-Orne (14), commune de l'agglomération de Caen dans le Calvados, est traversée par le canal de Caen à la mer et l'Orne. Zone d'activités dynamique, tissu TPE artisans BTP, PME industrielles et logistiques, commerces, professions libérales, services aux entreprises. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Blainville-sur-Orne (14). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles et logistiques canal de Caen, commerçants, professions libérales, indépendants et services aux entreprises de l'agglomération caennaise nord.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const BLAINVILLE_SUR_ORNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Blainville-sur-Orne : diagnostic adapté aux PME industrielles et logistiques canal de Caen, TPE artisans BTP, commerçants et professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Blainville-sur-Orne : diagnostic adapté aux PME industrielles et logistiques canal de Caen, TPE artisans BTP, commerçants et professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Blainville-sur-Orne : diagnostic adapté aux PME industrielles et logistiques canal de Caen, TPE artisans BTP, commerçants et professions libérales. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Blainville-sur-Orne : diagnostic adapté aux PME industrielles et logistiques canal de Caen, TPE artisans BTP, commerçants et professions libérales. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Blainville-sur-Orne : formats adaptés à l'entrepôt logistique, atelier industriel, bureau tertiaire ou commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const BLAINVILLE_SUR_ORNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Blainville-sur-Orne ?",
-      a: "Nos consultants viennent de Caen (10 min). Déplacement direct sur site (entrepôt, atelier, bureau, commerce). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Caen (10 min). Déplacement direct sur site (entrepôt, atelier, bureau, commerce). Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

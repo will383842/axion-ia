@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ROQUEBRUNE_SUR_ARGENS_COPY: VilleCopy = {
   pitchFr:
-    "Roquebrune-sur-Argens (83), commune du Var est entre rocher emblématique, vallée de l'Argens et plages, compte plus de 15 400 habitants. Tourisme balnéaire et nature, viticulture, zones d'activités, tissu de TPE artisanales, PME hôtellerie-restauration, commerces et services. Axion-IA y intervient pour tous types d'activités.",
+    "Roquebrune-sur-Argens (83), commune du Var est entre rocher emblématique, vallée de l'Argens et plages, compte plus de 15 400 habitants. Tourisme balnéaire et nature, viticulture, zones d'activités, tissu de TPE artisanales, PME hôtellerie-restauration, commerces et services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Roquebrune-sur-Argens (83), commune du Var est entre rocher emblématique, vallée de l'Argens et plages, compte plus de 15 400 habitants. Tourisme balnéaire et nature, viticulture, zones d'activités, tissu de TPE artisanales, PME hôtellerie-restauration, commerces et services. Axion-IA y intervient pour tous types d'activités.",
+    "Roquebrune-sur-Argens (83), commune du Var est entre rocher emblématique, vallée de l'Argens et plages, compte plus de 15 400 habitants. Tourisme balnéaire et nature, viticulture, zones d'activités, tissu de TPE artisanales, PME hôtellerie-restauration, commerces et services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Roquebrune-sur-Argens (83). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME hôtellerie-restauration et campings, domaines viticoles, professionnels du tourisme et services Var est.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const ROQUEBRUNE_SUR_ARGENS_COPY: VilleCopy = {
       en: "Audit IA à Roquebrune-sur-Argens : diagnostic adapté aux TPE hôtellerie-restauration, campings, domaines viticoles et commerces du Var est. ROI chiffré, Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Roquebrune-sur-Argens : formats adaptés aux hôtels, campings, restaurants, domaines viticoles et artisans. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Roquebrune-sur-Argens : formats adaptés aux hôtels, campings, restaurants, domaines viticoles et artisans. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Roquebrune-sur-Argens : formats adaptés aux hôtels, campings, restaurants, domaines viticoles et artisans. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Roquebrune-sur-Argens : formats adaptés aux hôtels, campings, restaurants, domaines viticoles et artisans. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Roquebrune-sur-Argens : gestion réservations hôtelières et campings, optimisation occupation saisonnière, traçabilité viticole, automatisation devis artisans. Adapté TPE/PME Var est.",

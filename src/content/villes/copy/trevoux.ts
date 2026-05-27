@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const TREVOUX_COPY: VilleCopy = {
   pitchFr:
-    "Trévoux (01), commune du val de Saône dans l'Ain, est une ancienne capitale historique de la principauté de Dombes (patrimoine architectural remarquable, Parlement de Dombes). Tissu PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités du val de Saône Ain.",
+    "Trévoux (01), commune du val de Saône dans l'Ain, est une ancienne capitale historique de la principauté de Dombes (patrimoine architectural remarquable, Parlement de Dombes). Tissu PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations du val de Saône Ain.",
   pitchEn:
-    "Trévoux (01), commune du val de Saône dans l'Ain, est une ancienne capitale historique de la principauté de Dombes (patrimoine architectural remarquable, Parlement de Dombes). Tissu PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités du val de Saône Ain.",
+    "Trévoux (01), commune du val de Saône dans l'Ain, est une ancienne capitale historique de la principauté de Dombes (patrimoine architectural remarquable, Parlement de Dombes). Tissu PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations du val de Saône Ain.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trévoux (01). Nous accompagnons tous types d'activités : PME tertiaires val de Saône Ain, acteurs tourisme patrimonial Dombes, TPE artisans BTP, commerçants, professions libérales et services aux entreprises.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const TREVOUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Trévoux : diagnostic adapté aux PME tertiaires val de Saône, acteurs tourisme Dombes, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Trévoux : diagnostic adapté aux PME tertiaires val de Saône, acteurs tourisme Dombes, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Trévoux : diagnostic adapté aux PME tertiaires val de Saône, acteurs tourisme Dombes, professions libérales, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Trévoux : diagnostic adapté aux PME tertiaires val de Saône, acteurs tourisme Dombes, professions libérales, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Trévoux : formats adaptés au bureau, site patrimonial, cabinet, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const TREVOUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (30 min). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (30 min). Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

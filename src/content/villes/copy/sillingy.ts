@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SILLINGY_COPY: VilleCopy = {
   pitchFr:
-    "Sillingy (74), commune résidentielle au nord-ouest d'Annecy en Haute-Savoie, bénéficie de la dynamique du bassin annécien. Tissu TPE artisans, PME de services, commerces, professions libérales et prestataires BtoB installés dans un cadre périurbain attractif. Axion-IA y intervient pour tous types d'activités du Grand Annecy.",
+    "Sillingy (74), commune résidentielle au nord-ouest d'Annecy en Haute-Savoie, bénéficie de la dynamique du bassin annécien. Tissu TPE artisans, PME de services, commerces, professions libérales et prestataires BtoB installés dans un cadre périurbain attractif. Axion-IA accompagne entreprises et indépendants de tous secteurs du Grand Annecy.",
   pitchEn:
-    "Sillingy (74), commune résidentielle au nord-ouest d'Annecy en Haute-Savoie, bénéficie de la dynamique du bassin annécien. Tissu TPE artisans, PME de services, commerces, professions libérales et prestataires BtoB installés dans un cadre périurbain attractif. Axion-IA y intervient pour tous types d'activités du Grand Annecy.",
+    "Sillingy (74), commune résidentielle au nord-ouest d'Annecy en Haute-Savoie, bénéficie de la dynamique du bassin annécien. Tissu TPE artisans, PME de services, commerces, professions libérales et prestataires BtoB installés dans un cadre périurbain attractif. Axion-IA accompagne entreprises et indépendants de tous secteurs du Grand Annecy.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sillingy (74). Nous accompagnons tous types d'activités : TPE artisans, PME de services et conseil, commerçants, indépendants, professions libérales et prestataires BtoB du bassin annécien nord-ouest.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const SILLINGY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sillingy : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales du Grand Annecy nord-ouest. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Sillingy : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales du Grand Annecy nord-ouest. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Sillingy : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales du Grand Annecy nord-ouest. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
+      en: "Audit IA à Sillingy : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales du Grand Annecy nord-ouest. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sillingy : formats adaptés au bureau, cabinet ou commerce. Proximité Annecy (10 min), vos équipes repartent autonomes sur outils IA configurés métier.",

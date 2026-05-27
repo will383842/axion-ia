@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SERRIS_COPY: VilleCopy = {
   pitchFr:
-    "Serris, commune dynamique de Seine-et-Marne (77) au coeur du Val d'Europe (Marne-la-Vallée secteur IV), 30 km à l'est de Paris. Tissu TPE commerçants, PME retail et tertiaires, professions libérales et prestataires tourisme-loisirs. Axion-IA y intervient pour tous types d'activités du pôle Val d'Europe.",
+    "Serris, commune dynamique de Seine-et-Marne (77) au coeur du Val d'Europe (Marne-la-Vallée secteur IV), 30 km à l'est de Paris. Tissu TPE commerçants, PME retail et tertiaires, professions libérales et prestataires tourisme-loisirs. Axion-IA opère pour toutes les structures économiques de la commune du pôle Val d'Europe.",
   pitchEn:
-    "Serris, commune dynamique de Seine-et-Marne (77) au coeur du Val d'Europe (Marne-la-Vallée secteur IV), 30 km à l'est de Paris. Tissu TPE commerçants, PME retail et tertiaires, professions libérales et prestataires tourisme-loisirs. Axion-IA y intervient pour tous types d'activités du pôle Val d'Europe.",
+    "Serris, commune dynamique de Seine-et-Marne (77) au coeur du Val d'Europe (Marne-la-Vallée secteur IV), 30 km à l'est de Paris. Tissu TPE commerçants, PME retail et tertiaires, professions libérales et prestataires tourisme-loisirs. Axion-IA opère pour toutes les structures économiques de la commune du pôle Val d'Europe.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Serris (77). Nous accompagnons tous types d'activités : TPE commerçants, PME retail et tertiaires, professions libérales et prestataires tourisme-loisirs du pôle Val d'Europe. Audit Flash dès 490 € HT.",
   directAnswerEn:

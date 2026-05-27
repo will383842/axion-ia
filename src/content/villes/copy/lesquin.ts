@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LESQUIN_COPY: VilleCopy = {
   pitchFr:
-    "Lesquin (59), commune de la Métropole Européenne de Lille abritant l'aéroport Lille-Lesquin et un pôle logistique majeur des Hauts-de-France. Tissu économique : TPE et PME de la logistique aéroportuaire et terrestre, fret, services aux entreprises, hôtellerie-restauration, commerce de zone, transport routier. Axion-IA y intervient pour tous types d'activités du pôle aéroportuaire et logistique lillois.",
+    "Lesquin (59), commune de la Métropole Européenne de Lille abritant l'aéroport Lille-Lesquin et un pôle logistique majeur des Hauts-de-France. Tissu économique : TPE et PME de la logistique aéroportuaire et terrestre, fret, services aux entreprises, hôtellerie-restauration, commerce de zone, transport routier. Axion-IA opère pour toutes les structures économiques de la commune du pôle aéroportuaire et logistique lillois.",
   pitchEn:
-    "Lesquin (59), commune de la Métropole Européenne de Lille abritant l'aéroport Lille-Lesquin et un pôle logistique majeur des Hauts-de-France. Tissu économique : TPE et PME de la logistique aéroportuaire et terrestre, fret, services aux entreprises, hôtellerie-restauration, commerce de zone, transport routier. Axion-IA y intervient pour tous types d'activités du pôle aéroportuaire et logistique lillois.",
+    "Lesquin (59), commune de la Métropole Européenne de Lille abritant l'aéroport Lille-Lesquin et un pôle logistique majeur des Hauts-de-France. Tissu économique : TPE et PME de la logistique aéroportuaire et terrestre, fret, services aux entreprises, hôtellerie-restauration, commerce de zone, transport routier. Axion-IA opère pour toutes les structures économiques de la commune du pôle aéroportuaire et logistique lillois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lesquin (59). Nous accompagnons TPE et PME : logisticiens aéroportuaires et terrestres, transporteurs, prestataires de fret, hôteliers-restaurateurs de zone, commerces et services aux entreprises du pôle aéroportuaire lillois.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const LESQUIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lesquin : diagnostic adapté aux TPE et PME de la logistique, du transport-fret, des services aéroportuaires, de l'hôtellerie et du commerce de zone. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Lesquin : diagnostic adapté aux TPE et PME de la logistique, du transport-fret, des services aéroportuaires, de l'hôtellerie et du commerce de zone. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Lesquin : diagnostic adapté aux TPE et PME de la logistique, du transport-fret, des services aéroportuaires, de l'hôtellerie et du commerce de zone. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Lesquin : diagnostic adapté aux TPE et PME de la logistique, du transport-fret, des services aéroportuaires, de l'hôtellerie et du commerce de zone. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Lesquin : formats adaptés au logisticien, au transporteur, au prestataire aéroportuaire ou à l'hôtelier-restaurateur. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Lesquin : formats adaptés au logisticien, au transporteur, au prestataire aéroportuaire ou à l'hôtelier-restaurateur. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Lesquin : formats adaptés au logisticien, au transporteur, au prestataire aéroportuaire ou à l'hôtelier-restaurateur. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Lesquin : formats adaptés au logisticien, au transporteur, au prestataire aéroportuaire ou à l'hôtelier-restaurateur. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Lesquin : optimisation flux logistiques entrepôts, prévision trafic fret, agents conversationnels multilingues accueil aéroportuaire, CRM augmenté prestataires transport, automatisation planification tournées et traçabilité colis.",

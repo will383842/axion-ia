@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHANGE_COPY: VilleCopy = {
   pitchFr:
-    "Changé (72), commune résidentielle de l'agglomération mancelle au nord-est du Mans en Sarthe, accueille un tissu économique de proximité où coexistent TPE artisans, PME de services, commerces, professions libérales et prestataires du bassin manceau. Axion-IA y intervient pour tous types d'activités.",
+    "Changé (72), commune résidentielle de l'agglomération mancelle au nord-est du Mans en Sarthe, accueille un tissu économique de proximité où coexistent TPE artisans, PME de services, commerces, professions libérales et prestataires du bassin manceau. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Changé (72), commune résidentielle de l'agglomération mancelle au nord-est du Mans en Sarthe, accueille un tissu économique de proximité où coexistent TPE artisans, PME de services, commerces, professions libérales et prestataires du bassin manceau. Axion-IA y intervient pour tous types d'activités.",
+    "Changé (72), commune résidentielle de l'agglomération mancelle au nord-est du Mans en Sarthe, accueille un tissu économique de proximité où coexistent TPE artisans, PME de services, commerces, professions libérales et prestataires du bassin manceau. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Changé (72). Nous accompagnons tous types d'activités : TPE artisans, PME de services, commerçants, professions libérales (santé, juridique, expertise) et prestataires du nord-est de l'agglomération mancelle.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const CHANGE_COPY: VilleCopy = {
       en: "Audit IA à Changé : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales du nord-est de l'agglomération mancelle. ROI chiffré, Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Changé : formations adaptées aux TPE artisans, PME tertiaires, commerces et professions libérales du bassin manceau. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Changé : formations adaptées aux TPE artisans, PME tertiaires, commerces et professions libérales du bassin manceau. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Changé : formations adaptées aux TPE artisans, PME tertiaires, commerces et professions libérales du bassin manceau. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Changé : formations adaptées aux TPE artisans, PME tertiaires, commerces et professions libérales du bassin manceau. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Changé : agents conversationnels commerces, automatisation administrative cabinets libéraux, outils IA artisanat, optimisation devis et planification services à la personne.",

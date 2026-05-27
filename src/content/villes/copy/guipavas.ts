@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GUIPAVAS_COPY: VilleCopy = {
   pitchFr:
-    "Guipavas (29), commune de Brest Métropole accueillant l'aéroport Brest-Bretagne et une zone d'activités dynamique aux portes du Technopôle Brest-Iroise. Tissu de TPE de services, PME logistiques et transport, commerces de zone, sous-traitants aéronautiques et prestataires tertiaires. Axion-IA y intervient pour tous types d'activités.",
+    "Guipavas (29), commune de Brest Métropole accueillant l'aéroport Brest-Bretagne et une zone d'activités dynamique aux portes du Technopôle Brest-Iroise. Tissu de TPE de services, PME logistiques et transport, commerces de zone, sous-traitants aéronautiques et prestataires tertiaires. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Guipavas (29), commune de Brest Métropole accueillant l'aéroport Brest-Bretagne et une zone d'activités dynamique aux portes du Technopôle Brest-Iroise. Tissu de TPE de services, PME logistiques et transport, commerces de zone, sous-traitants aéronautiques et prestataires tertiaires. Axion-IA y intervient pour tous types d'activités.",
+    "Guipavas (29), commune de Brest Métropole accueillant l'aéroport Brest-Bretagne et une zone d'activités dynamique aux portes du Technopôle Brest-Iroise. Tissu de TPE de services, PME logistiques et transport, commerces de zone, sous-traitants aéronautiques et prestataires tertiaires. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   seoHook: "aéroport, logistique & technopôle",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guipavas (29). Nous accompagnons TPE et PME : prestataires logistiques, sous-traitants aéronautiques, commerces de zone, PME de services et entreprises du Technopôle Brest-Iroise dans l'agglomération brestoise. Audit Flash dès 490 € HT.",

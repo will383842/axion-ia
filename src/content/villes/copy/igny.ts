@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const IGNY_COPY: VilleCopy = {
   pitchFr:
-    "Igny (91), commune résidentielle du nord de l'Essonne dans la vallée de la Bièvre, bénéficie de la proximité immédiate du plateau de Saclay et de son écosystème d'innovation. Tissu TPE services, professions libérales, PME conseil et ingénierie, commerces de proximité. Axion-IA y intervient pour tous types d'activités.",
+    "Igny (91), commune résidentielle du nord de l'Essonne dans la vallée de la Bièvre, bénéficie de la proximité immédiate du plateau de Saclay et de son écosystème d'innovation. Tissu TPE services, professions libérales, PME conseil et ingénierie, commerces de proximité. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Igny (91), commune résidentielle du nord de l'Essonne dans la vallée de la Bièvre, bénéficie de la proximité immédiate du plateau de Saclay et de son écosystème d'innovation. Tissu TPE services, professions libérales, PME conseil et ingénierie, commerces de proximité. Axion-IA y intervient pour tous types d'activités.",
+    "Igny (91), commune résidentielle du nord de l'Essonne dans la vallée de la Bièvre, bénéficie de la proximité immédiate du plateau de Saclay et de son écosystème d'innovation. Tissu TPE services, professions libérales, PME conseil et ingénierie, commerces de proximité. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Igny (91). Nous accompagnons TPE et PME : professions libérales, cabinets conseil et ingénierie proches du plateau de Saclay, commerces vallée de la Bièvre, artisans, indépendants et services aux entreprises du nord-Essonne. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -64,7 +64,7 @@ export const IGNY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Igny depuis Paris ?",
-      a: "Nos consultants interviennent à Igny (30 min depuis Paris via RER B+C, Massy-Palaiseau à 10 min). Aéroport Orly à 20 min. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants interviennent à Igny (30 min depuis Paris via RER B+C, Massy-Palaiseau à 10 min). Aéroport Orly à 20 min. Frais de mission en sus, grille tarifaire publique.",
     },
   ],
 };

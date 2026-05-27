@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BON_ENCONTRE_COPY: VilleCopy = {
   pitchFr:
-    "Bon-Encontre (47), commune de 6 530 habitants dans le Lot-et-Garonne, fait partie de l'agglomération d'Agen dont elle est un faubourg est résidentiel et dynamique. Son économie repose sur un tissu de TPE artisans et commerçants, PME services aux entreprises, professions libérales, santé et commerces de proximité. Axion-IA y intervient pour tous types d'activités.",
+    "Bon-Encontre (47), commune de 6 530 habitants dans le Lot-et-Garonne, fait partie de l'agglomération d'Agen dont elle est un faubourg est résidentiel et dynamique. Son économie repose sur un tissu de TPE artisans et commerçants, PME services aux entreprises, professions libérales, santé et commerces de proximité. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Bon-Encontre (47), commune de 6 530 habitants dans le Lot-et-Garonne, fait partie de l'agglomération d'Agen dont elle est un faubourg est résidentiel et dynamique. Son économie repose sur un tissu de TPE artisans et commerçants, PME services aux entreprises, professions libérales, santé et commerces de proximité. Axion-IA y intervient pour tous types d'activités.",
+    "Bon-Encontre (47), commune de 6 530 habitants dans le Lot-et-Garonne, fait partie de l'agglomération d'Agen dont elle est un faubourg est résidentiel et dynamique. Son économie repose sur un tissu de TPE artisans et commerçants, PME services aux entreprises, professions libérales, santé et commerces de proximité. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bon-Encontre (47). Nous accompagnons TPE et PME de l'agglomération agenaise est : artisans, commerçants, professions libérales, prestataires de services et entreprises du bassin agenais. Audit Flash dès 490 € HT.",
   directAnswerEn:

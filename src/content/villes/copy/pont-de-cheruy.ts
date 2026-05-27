@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PONT_DE_CHERUY_COPY: VilleCopy = {
   pitchFr:
-    "Pont-de-Chéruy (38), commune du Nord-Isère dans l'aire d'attraction est de Lyon, voisine de Charvieu-Chavagneux et Tignieu-Jameyzieu. Tissu PME industrielles, logistique périphérique (axe rhodanien), TPE artisans BTP, commerces et services. Axion-IA y intervient pour tous types d'activités.",
+    "Pont-de-Chéruy (38), commune du Nord-Isère dans l'aire d'attraction est de Lyon, voisine de Charvieu-Chavagneux et Tignieu-Jameyzieu. Tissu PME industrielles, logistique périphérique (axe rhodanien), TPE artisans BTP, commerces et services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Pont-de-Chéruy (38), commune du Nord-Isère dans l'aire d'attraction est de Lyon, voisine de Charvieu-Chavagneux et Tignieu-Jameyzieu. Tissu PME industrielles, logistique périphérique (axe rhodanien), TPE artisans BTP, commerces et services. Axion-IA y intervient pour tous types d'activités.",
+    "Pont-de-Chéruy (38), commune du Nord-Isère dans l'aire d'attraction est de Lyon, voisine de Charvieu-Chavagneux et Tignieu-Jameyzieu. Tissu PME industrielles, logistique périphérique (axe rhodanien), TPE artisans BTP, commerces et services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pont-de-Chéruy (38). Nous accompagnons tous types d'activités : PME industrielles Nord-Isère, opérateurs logistiques aire lyonnaise est, TPE artisans BTP, commerçants, indépendants, agriculteurs et services aux entreprises de la Communauté de communes Lyon Saint-Exupéry en Dauphiné.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const PONT_DE_CHERUY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pont-de-Chéruy : diagnostic adapté aux PME industrielles/logistiques Nord-Isère, TPE artisans et commerçants. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Pont-de-Chéruy : diagnostic adapté aux PME industrielles/logistiques Nord-Isère, TPE artisans et commerçants. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Pont-de-Chéruy : diagnostic adapté aux PME industrielles/logistiques Nord-Isère, TPE artisans et commerçants. Audit Flash 490 € HT, ROI documenté en chiffres accessible.",
+      en: "Audit IA à Pont-de-Chéruy : diagnostic adapté aux PME industrielles/logistiques Nord-Isère, TPE artisans et commerçants. Audit Flash 490 € HT, ROI documenté en chiffres accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pont-de-Chéruy : formats adaptés à l'atelier industriel, entrepôt logistique, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -64,7 +64,7 @@ export const PONT_DE_CHERUY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (40 min A43) ou Grenoble (1h). Pour les multi-jours, hébergement local possible (hôtels Lyon-Saint-Exupéry). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (40 min A43) ou Grenoble (1h). Pour les multi-jours, hébergement local possible (hôtels Lyon-Saint-Exupéry). Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

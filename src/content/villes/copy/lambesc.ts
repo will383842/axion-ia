@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LAMBESC_COPY: VilleCopy = {
   pitchFr:
-    "Lambesc (13), commune provençale du pays d'Aix au pied du massif des Costes, mêle patrimoine historique (chapelle, fontaines, vieille ville) et dynamique résidentielle. Tissu de TPE artisans, commerçants, professions libérales, PME tertiaires, viticulteurs et exploitations oléicoles. Axion-IA y intervient pour tous types d'activités.",
+    "Lambesc (13), commune provençale du pays d'Aix au pied du massif des Costes, mêle patrimoine historique (chapelle, fontaines, vieille ville) et dynamique résidentielle. Tissu de TPE artisans, commerçants, professions libérales, PME tertiaires, viticulteurs et exploitations oléicoles. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Lambesc (13), commune provençale du pays d'Aix au pied du massif des Costes, mêle patrimoine historique (chapelle, fontaines, vieille ville) et dynamique résidentielle. Tissu de TPE artisans, commerçants, professions libérales, PME tertiaires, viticulteurs et exploitations oléicoles. Axion-IA y intervient pour tous types d'activités.",
+    "Lambesc (13), commune provençale du pays d'Aix au pied du massif des Costes, mêle patrimoine historique (chapelle, fontaines, vieille ville) et dynamique résidentielle. Tissu de TPE artisans, commerçants, professions libérales, PME tertiaires, viticulteurs et exploitations oléicoles. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lambesc (13). Nous accompagnons TPE artisans, professions libérales, viticulteurs, oléiculteurs, commerçants et PME tertiaires du pays d'Aix. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -64,7 +64,7 @@ export const LAMBESC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Lambesc ?",
-      a: "Lambesc est à 20 min d'Aix et 15 min de Salon via D7n. Nos consultants se déplacent dans vos locaux. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Lambesc est à 20 min d'Aix et 15 min de Salon via D7n. Nos consultants se déplacent dans vos locaux. Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

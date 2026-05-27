@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PONT_DU_CHATEAU_COPY: VilleCopy = {
   pitchFr:
-    "Pont-du-Château (63), port fluvial historique sur l'Allier, fait partie de Clermont Auvergne Métropole. Tissu logistique et entreposage, PME tertiaires, TPE artisanat BTP, commerces de proximité, services. Axion-IA y intervient pour tous types d'activités.",
+    "Pont-du-Château (63), port fluvial historique sur l'Allier, fait partie de Clermont Auvergne Métropole. Tissu logistique et entreposage, PME tertiaires, TPE artisanat BTP, commerces de proximité, services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Pont-du-Château (63), port fluvial historique sur l'Allier, fait partie de Clermont Auvergne Métropole. Tissu logistique et entreposage, PME tertiaires, TPE artisanat BTP, commerces de proximité, services. Axion-IA y intervient pour tous types d'activités.",
+    "Pont-du-Château (63), port fluvial historique sur l'Allier, fait partie de Clermont Auvergne Métropole. Tissu logistique et entreposage, PME tertiaires, TPE artisanat BTP, commerces de proximité, services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pont-du-Château (63). Nous accompagnons TPE et PME : logistique fluviale et entreposage, tertiaire agglomération clermontoise, artisans BTP, commerçants de proximité, prestataires de services.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const PONT_DU_CHATEAU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pont-du-Château : diagnostic adapté aux entrepôts logistiques, PME tertiaires, TPE artisans BTP, commerces de proximité. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Pont-du-Château : diagnostic adapté aux entrepôts logistiques, PME tertiaires, TPE artisans BTP, commerces de proximité. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Pont-du-Château : diagnostic adapté aux entrepôts logistiques, PME tertiaires, TPE artisans BTP, commerces de proximité. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Pont-du-Château : diagnostic adapté aux entrepôts logistiques, PME tertiaires, TPE artisans BTP, commerces de proximité. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Pont-du-Château : formats adaptés entrepôt, bureau, chantier, commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Pont-du-Château : formats adaptés entrepôt, bureau, chantier, commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Pont-du-Château : formats adaptés entrepôt, bureau, chantier, commerce. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Pont-du-Château : formats adaptés entrepôt, bureau, chantier, commerce. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Pont-du-Château : automatisation flux logistiques, gestion stocks entrepôts, CRM augmentés TPE/PME, outils devis artisans.",
@@ -64,7 +64,7 @@ export const PONT_DU_CHATEAU_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Clermont-Ferrand ?",
-      a: "Clermont-Ferrand (15 min). Aéroport Clermont à 25 min. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Clermont-Ferrand (15 min). Aéroport Clermont à 25 min. Frais de mission en sus, grille tarifaire publique.",
     },
   ],
 };

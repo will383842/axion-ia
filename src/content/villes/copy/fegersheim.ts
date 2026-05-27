@@ -33,8 +33,8 @@ export const FEGERSHEIM_COPY: VilleCopy = {
       en: "Audit IA à Fegersheim : diagnostic adapté aux TPE/PME des zones industrielles du sud strasbourgeois, sous-traitants industriels, logisticiens, prestataires de services et artisans BTP du Bas-Rhin. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Fegersheim : formats adaptés à l''atelier industriel, au site logistique, à la TPE de services ou à l''artisan BTP. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Fegersheim : formats adaptés à l''atelier industriel, au site logistique, à la TPE de services ou à l''artisan BTP. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Fegersheim : formats adaptés à l''atelier industriel, au site logistique, à la TPE de services ou à l''artisan BTP. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Fegersheim : formats adaptés à l''atelier industriel, au site logistique, à la TPE de services ou à l''artisan BTP. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Fegersheim : planification production industrielle, gestion approvisionnements logistique, automatisation contrôle qualité, agents conversationnels services B2B, CRM donneurs d''ordre et outils IA métier pour PME alsaciennes.",

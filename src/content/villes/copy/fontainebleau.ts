@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FONTAINEBLEAU_COPY: VilleCopy = {
   pitchFr:
-    "Fontainebleau (77), sous-préfecture de Seine-et-Marne, est mondialement connue pour son château classé UNESCO et sa forêt domaniale de 25 000 hectares. Ville d'enseignement supérieur (INSEAD, Mines ParisTech campus), tourisme international, hôtellerie haut de gamme, TPE artisans, PME services, commerçants et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Fontainebleau (77), sous-préfecture de Seine-et-Marne, est mondialement connue pour son château classé UNESCO et sa forêt domaniale de 25 000 hectares. Ville d'enseignement supérieur (INSEAD, Mines ParisTech campus), tourisme international, hôtellerie haut de gamme, TPE artisans, PME services, commerçants et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Fontainebleau (77), sous-préfecture de Seine-et-Marne, est mondialement connue pour son château classé UNESCO et sa forêt domaniale de 25 000 hectares. Ville d'enseignement supérieur (INSEAD, Mines ParisTech campus), tourisme international, hôtellerie haut de gamme, TPE artisans, PME services, commerçants et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Fontainebleau (77), sous-préfecture de Seine-et-Marne, est mondialement connue pour son château classé UNESCO et sa forêt domaniale de 25 000 hectares. Ville d'enseignement supérieur (INSEAD, Mines ParisTech campus), tourisme international, hôtellerie haut de gamme, TPE artisans, PME services, commerçants et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fontainebleau (77). Nous accompagnons tous types d'activités : acteurs du tourisme international (château UNESCO, forêt domaniale), hôtellerie et restauration haut de gamme, établissements d'enseignement supérieur (INSEAD), TPE artisans, PME services, commerçants et professions libérales bellifontaines. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -64,7 +64,7 @@ export const FONTAINEBLEAU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA depuis Paris ?",
-      a: "Nos consultants rejoignent Fontainebleau en 40 min depuis Paris Gare de Lyon (Transilien R, gare Fontainebleau-Avon). Missions multi-jours possibles avec hébergement local. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants rejoignent Fontainebleau en 40 min depuis Paris Gare de Lyon (Transilien R, gare Fontainebleau-Avon). Missions multi-jours possibles avec hébergement local. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

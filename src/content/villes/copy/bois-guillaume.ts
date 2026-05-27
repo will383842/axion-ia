@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BOIS_GUILLAUME_COPY: VilleCopy = {
   pitchFr:
-    "Bois-Guillaume (76), commune résidentielle au nord de Rouen en Seine-Maritime, fait partie de la Métropole Rouen Normandie. Tissu TPE professions libérales, PME tertiaires et de services, commerces de proximité, cabinets médicaux. Axion-IA y intervient pour tous types d'activités de l'agglo rouennaise nord.",
+    "Bois-Guillaume (76), commune résidentielle au nord de Rouen en Seine-Maritime, fait partie de la Métropole Rouen Normandie. Tissu TPE professions libérales, PME tertiaires et de services, commerces de proximité, cabinets médicaux. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglo rouennaise nord.",
   pitchEn:
-    "Bois-Guillaume (76), commune résidentielle au nord de Rouen en Seine-Maritime, fait partie de la Métropole Rouen Normandie. Tissu TPE professions libérales, PME tertiaires et de services, commerces de proximité, cabinets médicaux. Axion-IA y intervient pour tous types d'activités de l'agglo rouennaise nord.",
+    "Bois-Guillaume (76), commune résidentielle au nord de Rouen en Seine-Maritime, fait partie de la Métropole Rouen Normandie. Tissu TPE professions libérales, PME tertiaires et de services, commerces de proximité, cabinets médicaux. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglo rouennaise nord.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bois-Guillaume (76). Nous accompagnons tous types d'activités : TPE professions libérales et commerçants, PME tertiaires et de services, cabinets médicaux, entreprises de l'agglo rouennaise nord. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const BOIS_GUILLAUME_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bois-Guillaume : diagnostic adapté aux professions libérales, cabinets médicaux, PME tertiaires agglo Rouen nord. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Bois-Guillaume : diagnostic adapté aux professions libérales, cabinets médicaux, PME tertiaires agglo Rouen nord. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Bois-Guillaume : diagnostic adapté aux professions libérales, cabinets médicaux, PME tertiaires agglo Rouen nord. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Bois-Guillaume : diagnostic adapté aux professions libérales, cabinets médicaux, PME tertiaires agglo Rouen nord. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bois-Guillaume : formats adaptés au cabinet, bureau PME, commerce. Vos équipes repartent autonomes sur outils IA.",

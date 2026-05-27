@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ERSTEIN_COPY: VilleCopy = {
   pitchFr:
-    "Erstein (67), ville du sud Bas-Rhin dans la plaine du Ried entre Strasbourg et Sélestat, conjugue héritage agro-industriel (sucrerie Erstein historique), bords de l'Ill et tissu économique mixte. TPE/PME agroalimentaires, exploitations agricoles du Ried, commerces, artisans BTP et professions libérales rayonnent sur la plaine alsacienne. Axion-IA y intervient pour tous types d'activités.",
+    "Erstein (67), ville du sud Bas-Rhin dans la plaine du Ried entre Strasbourg et Sélestat, conjugue héritage agro-industriel (sucrerie Erstein historique), bords de l'Ill et tissu économique mixte. TPE/PME agroalimentaires, exploitations agricoles du Ried, commerces, artisans BTP et professions libérales rayonnent sur la plaine alsacienne. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Erstein (67), ville du sud Bas-Rhin dans la plaine du Ried entre Strasbourg et Sélestat, conjugue héritage agro-industriel (sucrerie Erstein historique), bords de l'Ill et tissu économique mixte. TPE/PME agroalimentaires, exploitations agricoles du Ried, commerces, artisans BTP et professions libérales rayonnent sur la plaine alsacienne. Axion-IA y intervient pour tous types d'activités.",
+    "Erstein (67), ville du sud Bas-Rhin dans la plaine du Ried entre Strasbourg et Sélestat, conjugue héritage agro-industriel (sucrerie Erstein historique), bords de l'Ill et tissu économique mixte. TPE/PME agroalimentaires, exploitations agricoles du Ried, commerces, artisans BTP et professions libérales rayonnent sur la plaine alsacienne. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Erstein (67). Nous accompagnons TPE et PME : agro-industriels et coopératives, exploitations agricoles du Ried, commerçants, artisans BTP et professions libérales du sud Bas-Rhin. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const ERSTEIN_COPY: VilleCopy = {
       en: "Audit IA à Erstein : diagnostic adapté aux agro-industriels, exploitants agricoles du Ried, commerçants et artisans du sud Bas-Rhin. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Erstein : formats adaptés à l'agro-industrie, à l'exploitation agricole, à la coopérative, au commerce ou à l'atelier artisanal. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Erstein : formats adaptés à l'agro-industrie, à l'exploitation agricole, à la coopérative, au commerce ou à l'atelier artisanal. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Erstein : formats adaptés à l'agro-industrie, à l'exploitation agricole, à la coopérative, au commerce ou à l'atelier artisanal. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Erstein : formats adaptés à l'agro-industrie, à l'exploitation agricole, à la coopérative, au commerce ou à l'atelier artisanal. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Erstein : optimisation chaînes agroalimentaires, prévision de récoltes, traçabilité coopératives, agriculture de précision pour exploitations du Ried, agents conversationnels SAV et accueil pour TPE/PME du sud Bas-Rhin.",

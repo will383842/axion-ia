@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BEAUGENCY_COPY: VilleCopy = {
   pitchFr:
-    "Beaugency (45), cité médiévale en bords de Loire (pont roman classé, donjon du XIe siècle, abbatiale Notre-Dame), est un pôle touristique et patrimonial du Val de Loire entre Orléans et Blois. Tissu TPE commerçantes, artisans du bâtiment, PME viticoles et agro-alimentaires, professions libérales, hébergeurs tourisme. Axion-IA y intervient pour tous types d'activités.",
+    "Beaugency (45), cité médiévale en bords de Loire (pont roman classé, donjon du XIe siècle, abbatiale Notre-Dame), est un pôle touristique et patrimonial du Val de Loire entre Orléans et Blois. Tissu TPE commerçantes, artisans du bâtiment, PME viticoles et agro-alimentaires, professions libérales, hébergeurs tourisme. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Beaugency (45), cité médiévale en bords de Loire (pont roman classé, donjon du XIe siècle, abbatiale Notre-Dame), est un pôle touristique et patrimonial du Val de Loire entre Orléans et Blois. Tissu TPE commerçantes, artisans du bâtiment, PME viticoles et agro-alimentaires, professions libérales, hébergeurs tourisme. Axion-IA y intervient pour tous types d'activités.",
+    "Beaugency (45), cité médiévale en bords de Loire (pont roman classé, donjon du XIe siècle, abbatiale Notre-Dame), est un pôle touristique et patrimonial du Val de Loire entre Orléans et Blois. Tissu TPE commerçantes, artisans du bâtiment, PME viticoles et agro-alimentaires, professions libérales, hébergeurs tourisme. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beaugency (45). Nous accompagnons tous types d'activités : TPE commerçants et artisans du centre historique, PME viticoles et agro-alimentaires du Val de Loire, professions libérales, hébergeurs et restaurateurs touristiques, associations patrimoniales. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const BEAUGENCY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Beaugency : diagnostic adapté aux TPE commerçants, PME viticoles et agro-alimentaires, hébergeurs touristiques du Val de Loire. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
-      en: "Audit IA à Beaugency : diagnostic adapté aux TPE commerçants, PME viticoles et agro-alimentaires, hébergeurs touristiques du Val de Loire. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
+      fr: "Audit IA à Beaugency : diagnostic adapté aux TPE commerçants, PME viticoles et agro-alimentaires, hébergeurs touristiques du Val de Loire. Audit Flash à 490 € HT, retour sur investissement chiffré accessible aux petites structures.",
+      en: "Audit IA à Beaugency : diagnostic adapté aux TPE commerçants, PME viticoles et agro-alimentaires, hébergeurs touristiques du Val de Loire. Audit Flash à 490 € HT, retour sur investissement chiffré accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Beaugency : formats adaptés au commerce de centre-ville, domaine viticole ou PME agro-alimentaire. Vos équipes terrain et back-office repartent autonomes sur outils IA configurés métier.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GUEUGNON_COPY: VilleCopy = {
   pitchFr:
-    "Gueugnon (71), commune du val d'Arroux en Saône-et-Loire, est historiquement marquée par l'industrie métallurgique (aciers spéciaux Aperam). Tissu TPE/PME sous-traitance industrielle, artisans BTP, commerces de proximité, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Gueugnon (71), commune du val d'Arroux en Saône-et-Loire, est historiquement marquée par l'industrie métallurgique (aciers spéciaux Aperam). Tissu TPE/PME sous-traitance industrielle, artisans BTP, commerces de proximité, services aux entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Gueugnon (71), commune du val d'Arroux en Saône-et-Loire, est historiquement marquée par l'industrie métallurgique (aciers spéciaux Aperam). Tissu TPE/PME sous-traitance industrielle, artisans BTP, commerces de proximité, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Gueugnon (71), commune du val d'Arroux en Saône-et-Loire, est historiquement marquée par l'industrie métallurgique (aciers spéciaux Aperam). Tissu TPE/PME sous-traitance industrielle, artisans BTP, commerces de proximité, services aux entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gueugnon (71). Nous accompagnons tous types d'activités : TPE/PME sous-traitance métallurgie val d'Arroux, artisans BTP, commerçants, services aux entreprises et acteurs industriels de Saône-et-Loire.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const GUEUGNON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gueugnon : diagnostic adapté aux TPE/PME sous-traitance métallurgie, artisans BTP, commerçants, services. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Gueugnon : diagnostic adapté aux TPE/PME sous-traitance métallurgie, artisans BTP, commerçants, services. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Gueugnon : diagnostic adapté aux TPE/PME sous-traitance métallurgie, artisans BTP, commerçants, services. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Gueugnon : diagnostic adapté aux TPE/PME sous-traitance métallurgie, artisans BTP, commerçants, services. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gueugnon : formats adaptés à l'atelier industriel, bureau, commerce. Vos équipes repartent autonomes.",
@@ -64,7 +64,7 @@ export const GUEUGNON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Gueugnon ?",
-      a: "Nos consultants se déplacent depuis Lyon (2h15) ou via gare TGV Le Creusot (50 min). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants se déplacent depuis Lyon (2h15) ou via gare TGV Le Creusot (50 min). Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

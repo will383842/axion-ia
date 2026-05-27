@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BOUCAU_COPY: VilleCopy = {
   pitchFr:
-    "Boucau (64), commune de l'agglomération de Bayonne sur les bords de l'Adour, 8 968 habitants. Ancien site sidérurgique reconverti, tissu de TPE artisans, PME industrielles, commerces et activités portuaires. Axion-IA y intervient pour tous types d'activités de l'agglomération bayonnaise.",
+    "Boucau (64), commune de l'agglomération de Bayonne sur les bords de l'Adour, 8 968 habitants. Ancien site sidérurgique reconverti, tissu de TPE artisans, PME industrielles, commerces et activités portuaires. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération bayonnaise.",
   pitchEn:
-    "Boucau (64), commune de l'agglomération de Bayonne sur les bords de l'Adour, 8 968 habitants. Ancien site sidérurgique reconverti, tissu de TPE artisans, PME industrielles, commerces et activités portuaires. Axion-IA y intervient pour tous types d'activités de l'agglomération bayonnaise.",
+    "Boucau (64), commune de l'agglomération de Bayonne sur les bords de l'Adour, 8 968 habitants. Ancien site sidérurgique reconverti, tissu de TPE artisans, PME industrielles, commerces et activités portuaires. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération bayonnaise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Boucau (64). Nous accompagnons TPE, PME et artisans de l'agglomération bayonnaise : industrie, commerce, artisanat, activités portuaires. Audit Flash à partir de 490 € HT.",
   directAnswerEn:

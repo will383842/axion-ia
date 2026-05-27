@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const AUNEAU_BLEURY_SAINT_SYMPHORIEN_COPY: VilleCopy = {
   pitchFr:
-    "Auneau-Bleury-Saint-Symphorien (28), commune nouvelle d'Eure-et-Loir au cœur de la Beauce, est un pôle rural dynamique entre Chartres et Étampes. Tissu TPE/PME agriculture céréalière Beauce, agroalimentaire, artisanat, commerces de bourg et services de proximité. Axion-IA y intervient pour tous types d'activités.",
+    "Auneau-Bleury-Saint-Symphorien (28), commune nouvelle d'Eure-et-Loir au cœur de la Beauce, est un pôle rural dynamique entre Chartres et Étampes. Tissu TPE/PME agriculture céréalière Beauce, agroalimentaire, artisanat, commerces de bourg et services de proximité. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Auneau-Bleury-Saint-Symphorien (28), commune nouvelle d'Eure-et-Loir au cœur de la Beauce, est un pôle rural dynamique entre Chartres et Étampes. Tissu TPE/PME agriculture céréalière Beauce, agroalimentaire, artisanat, commerces de bourg et services de proximité. Axion-IA y intervient pour tous types d'activités.",
+    "Auneau-Bleury-Saint-Symphorien (28), commune nouvelle d'Eure-et-Loir au cœur de la Beauce, est un pôle rural dynamique entre Chartres et Étampes. Tissu TPE/PME agriculture céréalière Beauce, agroalimentaire, artisanat, commerces de bourg et services de proximité. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auneau-Bleury-Saint-Symphorien (28). Nous accompagnons tous types d'activités : exploitants céréaliers de Beauce, TPE/PME agroalimentaire, artisans, commerçants de bourg, professions libérales et services aux entreprises rurales.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const AUNEAU_BLEURY_SAINT_SYMPHORIEN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Auneau-Bleury-Saint-Symphorien : diagnostic adapté aux exploitants céréaliers Beauce, TPE/PME agroalimentaire, artisans, commerçants et professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Auneau-Bleury-Saint-Symphorien : diagnostic adapté aux exploitants céréaliers Beauce, TPE/PME agroalimentaire, artisans, commerçants et professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Auneau-Bleury-Saint-Symphorien : diagnostic adapté aux exploitants céréaliers Beauce, TPE/PME agroalimentaire, artisans, commerçants et professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Auneau-Bleury-Saint-Symphorien : diagnostic adapté aux exploitants céréaliers Beauce, TPE/PME agroalimentaire, artisans, commerçants et professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Auneau-Bleury-Saint-Symphorien : formats adaptés à l'exploitation céréalière, atelier agroalimentaire, commerce ou cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Auneau-Bleury-Saint-Symphorien : formats adaptés à l'exploitation céréalière, atelier agroalimentaire, commerce ou cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Auneau-Bleury-Saint-Symphorien : formats adaptés à l'exploitation céréalière, atelier agroalimentaire, commerce ou cabinet. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Auneau-Bleury-Saint-Symphorien : formats adaptés à l'exploitation céréalière, atelier agroalimentaire, commerce ou cabinet. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Auneau-Bleury-Saint-Symphorien : agriculture de précision céréales Beauce, automatisation gestion exploitation, prédiction rendements, agents conversationnels B2B négoce grains.",
@@ -64,7 +64,7 @@ export const AUNEAU_BLEURY_SAINT_SYMPHORIEN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Auneau-Bleury-Saint-Symphorien ?",
-      a: "Nos consultants se déplacent depuis Paris (1h15 via A10/A11) ou Chartres (25 min). Gare d'Auneau-Aunay (TER vers Chartres). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants se déplacent depuis Paris (1h15 via A10/A11) ou Chartres (25 min). Gare d'Auneau-Aunay (TER vers Chartres). Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BRISSAC_LOIRE_AUBANCE_COPY: VilleCopy = {
   pitchFr:
-    "Brissac Loire Aubance (49), commune nouvelle au sud d'Angers, est réputée pour le château de Brissac et le vignoble des coteaux de l'Aubance. Plus de 10 000 habitants dans un territoire viticole et touristique. Axion-IA y intervient pour tous types d'activités : viticulture, tourisme, artisanat, commerces et services.",
+    "Brissac Loire Aubance (49), commune nouvelle au sud d'Angers, est réputée pour le château de Brissac et le vignoble des coteaux de l'Aubance. Plus de 10 000 habitants dans un territoire viticole et touristique. Axion-IA accompagne entreprises et indépendants de tous secteurs : viticulture, tourisme, artisanat, commerces et services.",
   pitchEn:
-    "Brissac Loire Aubance (49), commune nouvelle au sud d'Angers, est réputée pour le château de Brissac et le vignoble des coteaux de l'Aubance. Plus de 10 000 habitants dans un territoire viticole et touristique. Axion-IA y intervient pour tous types d'activités : viticulture, tourisme, artisanat, commerces et services.",
+    "Brissac Loire Aubance (49), commune nouvelle au sud d'Angers, est réputée pour le château de Brissac et le vignoble des coteaux de l'Aubance. Plus de 10 000 habitants dans un territoire viticole et touristique. Axion-IA accompagne entreprises et indépendants de tous secteurs : viticulture, tourisme, artisanat, commerces et services.",
   directAnswerFr:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Brissac Loire Aubance (49). Nous accompagnons les TPE viticoles, PME touristiques et artisans de l'Aubance dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
   directAnswerEn:

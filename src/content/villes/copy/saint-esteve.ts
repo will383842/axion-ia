@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_ESTEVE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Estève (66), commune résidentielle en périphérie nord de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME tertiaires, commerces de proximité, zones d'activités périurbaines. Axion-IA y intervient pour tous types d'activités de l'agglomération perpignanaise.",
+    "Saint-Estève (66), commune résidentielle en périphérie nord de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME tertiaires, commerces de proximité, zones d'activités périurbaines. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération perpignanaise.",
   pitchEn:
-    "Saint-Estève (66), commune résidentielle en périphérie nord de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME tertiaires, commerces de proximité, zones d'activités périurbaines. Axion-IA y intervient pour tous types d'activités de l'agglomération perpignanaise.",
+    "Saint-Estève (66), commune résidentielle en périphérie nord de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME tertiaires, commerces de proximité, zones d'activités périurbaines. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération perpignanaise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Estève (66). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, commerçants, professions libérales, indépendants et services aux entreprises de l'agglomération perpignanaise nord.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const SAINT_ESTEVE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Estève : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales de l'agglo Perpignan nord. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Estève : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales de l'agglo Perpignan nord. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Estève : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales de l'agglo Perpignan nord. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Saint-Estève : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales de l'agglo Perpignan nord. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Estève : formats adaptés au bureau, cabinet, commerce, atelier. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Saint-Estève : formats adaptés au bureau, cabinet, commerce, atelier. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Saint-Estève : formats adaptés au bureau, cabinet, commerce, atelier. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Saint-Estève : formats adaptés au bureau, cabinet, commerce, atelier. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Estève : agents conversationnels B2B, automatisation devis BTP, CRM augmentés, classification documents. Perpignan Méditerranée Métropole.",
@@ -64,7 +64,7 @@ export const SAINT_ESTEVE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Estève ?",
-      a: "Nos consultants interviennent depuis Perpignan (8 min). Missions sur site dans votre bureau, cabinet ou atelier. Visio possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants interviennent depuis Perpignan (8 min). Missions sur site dans votre bureau, cabinet ou atelier. Visio possible. Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

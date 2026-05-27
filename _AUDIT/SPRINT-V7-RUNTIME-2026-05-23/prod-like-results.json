@@ -1,0 +1,57 @@
+{
+  "date": "2026-05-24T10:07:58.234Z",
+  "results": [
+    {
+      "id": "PROD-T1-blog-audit-ai-overview",
+      "status": "PASS",
+      "contentType": "blog_article",
+      "jobId": "cmpjm47sp0000juhsr097wj5r",
+      "slug": "audit-ia-pme-francaise-methodologie-roi-mesurable",
+      "title": "Audit IA pour PME française : méthodologie complète et ROI mesurable",
+      "wordCount": 263,
+      "qualityScore": 41,
+      "seoScore": 36,
+      "readabilityScore": 45,
+      "indexationTier": "tier_3_noindex_nofollow",
+      "costUsd": 0.0423475,
+      "durationMs": 27739
+    },
+    {
+      "id": "PROD-T2-comparison-vs-typical-consulting",
+      "status": "PASS",
+      "contentType": "comparison",
+      "jobId": "cmpjm4t4c0007juhsix2xa4dx",
+      "slug": "axion-ia-vs-cabinets-conseil-traditionnels-comparaison-ia",
+      "title": "Axion-IA vs cabinets de conseil traditionnels : comparaison méthodologie IA opérationnelle",
+      "wordCount": 330,
+      "qualityScore": 34,
+      "seoScore": 37,
+      "readabilityScore": 31,
+      "indexationTier": "tier_3_noindex_nofollow",
+      "costUsd": 0.027340000000000003,
+      "durationMs": 17695
+    },
+    {
+      "id": "PROD-T3-blog-keywords-formation-tpe",
+      "status": "PASS",
+      "contentType": "blog_from_keywords",
+      "jobId": "cmpjm56sf000cjuhsjegrzycl",
+      "slug": "formation-intelligence-artificielle-tpe-pme-france-2026",
+      "title": "Formation Intelligence Artificielle TPE PME France 2026",
+      "wordCount": 229,
+      "qualityScore": 43,
+      "seoScore": 39,
+      "readabilityScore": 46,
+      "indexationTier": "tier_3_noindex_nofollow",
+      "costUsd": 0.04022,
+      "durationMs": 33471
+    },
+    {
+      "id": "PROD-T4-faq-standalone-rgpd-ia",
+      "status": "FAIL",
+      "contentType": "faq_standalone",
+      "durationMs": 25197,
+      "error": "faq-standalone: aucun output valide après quality loop"
+    }
+  ]
+}

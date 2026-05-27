@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PLOERMEL_COPY: VilleCopy = {
   pitchFr:
-    "Ploërmel (56), ville-centre du Morbihan intérieur nichée au bord du lac au Duc, est un pôle de services et de tourisme de la Bretagne centrale. TPE de services, PME artisanales, commerces de centre-ville, professions libérales et acteurs du tourisme intérieur composent son tissu économique. Axion-IA y intervient pour tous types d'activités du centre Morbihan.",
+    "Ploërmel (56), ville-centre du Morbihan intérieur nichée au bord du lac au Duc, est un pôle de services et de tourisme de la Bretagne centrale. TPE de services, PME artisanales, commerces de centre-ville, professions libérales et acteurs du tourisme intérieur composent son tissu économique. Axion-IA accompagne entreprises et indépendants de tous secteurs du centre Morbihan.",
   pitchEn:
-    "Ploërmel (56), ville-centre du Morbihan intérieur nichée au bord du lac au Duc, est un pôle de services et de tourisme de la Bretagne centrale. TPE de services, PME artisanales, commerces de centre-ville, professions libérales et acteurs du tourisme intérieur composent son tissu économique. Axion-IA y intervient pour tous types d'activités du centre Morbihan.",
+    "Ploërmel (56), ville-centre du Morbihan intérieur nichée au bord du lac au Duc, est un pôle de services et de tourisme de la Bretagne centrale. TPE de services, PME artisanales, commerces de centre-ville, professions libérales et acteurs du tourisme intérieur composent son tissu économique. Axion-IA accompagne entreprises et indépendants de tous secteurs du centre Morbihan.",
   seoHook: "tourisme intérieur, artisanat & services",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ploërmel (56). Nous accompagnons tous types d'activités : TPE de services, PME artisanales, commerçants, professions libérales, acteurs du tourisme et indépendants du centre Morbihan. Audit Flash dès 490 € HT, démarrage sous 5 jours.",

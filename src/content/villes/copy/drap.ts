@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const DRAP_COPY: VilleCopy = {
   pitchFr:
-    "Drap (06), dans la vallée du Paillon entre Nice et Contes, est une commune résidentielle de la Métropole Nice Côte d'Azur au cadre verdoyant. Tissu TPE/PME artisanat BTP, commerces de proximité, services à la personne, professions libérales et petites entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Drap (06), dans la vallée du Paillon entre Nice et Contes, est une commune résidentielle de la Métropole Nice Côte d'Azur au cadre verdoyant. Tissu TPE/PME artisanat BTP, commerces de proximité, services à la personne, professions libérales et petites entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Drap (06), dans la vallée du Paillon entre Nice et Contes, est une commune résidentielle de la Métropole Nice Côte d'Azur au cadre verdoyant. Tissu TPE/PME artisanat BTP, commerces de proximité, services à la personne, professions libérales et petites entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Drap (06), dans la vallée du Paillon entre Nice et Contes, est une commune résidentielle de la Métropole Nice Côte d'Azur au cadre verdoyant. Tissu TPE/PME artisanat BTP, commerces de proximité, services à la personne, professions libérales et petites entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Drap (06). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, PME services et entreprises de la vallée du Paillon entre Nice et Contes.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const DRAP_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Drap : diagnostic adapté aux TPE artisans BTP, commerçants et professions libérales de la vallée du Paillon. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
-      en: "Audit IA à Drap : diagnostic adapté aux TPE artisans BTP, commerçants et professions libérales de la vallée du Paillon. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
+      fr: "Audit IA à Drap : diagnostic adapté aux TPE artisans BTP, commerçants et professions libérales de la vallée du Paillon. Audit Flash 490 € HT, ROI documenté en chiffres accessible aux petites structures.",
+      en: "Audit IA à Drap : diagnostic adapté aux TPE artisans BTP, commerçants et professions libérales de la vallée du Paillon. Audit Flash 490 € HT, ROI documenté en chiffres accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Drap : formats adaptés à l'atelier artisan, commerce ou cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",

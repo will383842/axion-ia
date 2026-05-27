@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LES_AVENIERES_VEYRINS_THUELLIN_COPY: VilleCopy = {
   pitchFr:
-    "Les Avenières Veyrins-Thuellin (38), commune nouvelle issue de la fusion (Les Avenières + Veyrins-Thuellin), est située dans le Nord-Isère / Bas-Dauphiné en bordure de la vallée du Rhône. Tissu PME industrielles, agriculture, TPE artisans BTP, commerces et services. Axion-IA y intervient pour tous types d'activités des Vals du Dauphiné.",
+    "Les Avenières Veyrins-Thuellin (38), commune nouvelle issue de la fusion (Les Avenières + Veyrins-Thuellin), est située dans le Nord-Isère / Bas-Dauphiné en bordure de la vallée du Rhône. Tissu PME industrielles, agriculture, TPE artisans BTP, commerces et services. Axion-IA couvre l'ensemble des activités professionnelles présentes des Vals du Dauphiné.",
   pitchEn:
-    "Les Avenières Veyrins-Thuellin (38), commune nouvelle issue de la fusion (Les Avenières + Veyrins-Thuellin), est située dans le Nord-Isère / Bas-Dauphiné en bordure de la vallée du Rhône. Tissu PME industrielles, agriculture, TPE artisans BTP, commerces et services. Axion-IA y intervient pour tous types d'activités des Vals du Dauphiné.",
+    "Les Avenières Veyrins-Thuellin (38), commune nouvelle issue de la fusion (Les Avenières + Veyrins-Thuellin), est située dans le Nord-Isère / Bas-Dauphiné en bordure de la vallée du Rhône. Tissu PME industrielles, agriculture, TPE artisans BTP, commerces et services. Axion-IA couvre l'ensemble des activités professionnelles présentes des Vals du Dauphiné.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient aux Avenières Veyrins-Thuellin (38). Nous accompagnons tous types d'activités : PME industrielles Nord-Isère, TPE artisans BTP, commerçants, agriculteurs/éleveurs du Bas-Dauphiné, indépendants, professions libérales et services aux entreprises de la Communauté de communes Les Vals du Dauphiné.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const LES_AVENIERES_VEYRINS_THUELLIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA aux Avenières Veyrins-Thuellin : diagnostic adapté aux PME industrielles, agriculteurs, TPE artisans et commerçants des Vals du Dauphiné. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA aux Avenières Veyrins-Thuellin : diagnostic adapté aux PME industrielles, agriculteurs, TPE artisans et commerçants des Vals du Dauphiné. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA aux Avenières Veyrins-Thuellin : diagnostic adapté aux PME industrielles, agriculteurs, TPE artisans et commerçants des Vals du Dauphiné. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA aux Avenières Veyrins-Thuellin : diagnostic adapté aux PME industrielles, agriculteurs, TPE artisans et commerçants des Vals du Dauphiné. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site aux Avenières : formats adaptés à l'atelier industriel, exploitation agricole, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site aux Avenières : formats adaptés à l'atelier industriel, exploitation agricole, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site aux Avenières : formats adaptés à l'atelier industriel, exploitation agricole, commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site aux Avenières : formats adaptés à l'atelier industriel, exploitation agricole, commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA aux Avenières : prédiction maintenance industrielle, classification photos cultures/animaux, automatisation devis BTP, agents conversationnels. Tous secteurs Vals du Dauphiné.",

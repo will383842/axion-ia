@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ORAISON_COPY: VilleCopy = {
   pitchFr:
-    "Oraison (04), commune de la Moyenne Durance en Alpes-de-Haute-Provence, se situe au cœur d'un bassin agricole (vergers, lavande, maraîchage). Tissu TPE artisans, PME agroalimentaires, agriculteurs, commerçants et services de proximité. Axion-IA y intervient pour tous types d'activités de la vallée de la Durance.",
+    "Oraison (04), commune de la Moyenne Durance en Alpes-de-Haute-Provence, se situe au cœur d'un bassin agricole (vergers, lavande, maraîchage). Tissu TPE artisans, PME agroalimentaires, agriculteurs, commerçants et services de proximité. Axion-IA y déploie ses missions auprès de toutes les organisations de la vallée de la Durance.",
   pitchEn:
-    "Oraison (04), commune de la Moyenne Durance en Alpes-de-Haute-Provence, se situe au cœur d'un bassin agricole (vergers, lavande, maraîchage). Tissu TPE artisans, PME agroalimentaires, agriculteurs, commerçants et services de proximité. Axion-IA y intervient pour tous types d'activités de la vallée de la Durance.",
+    "Oraison (04), commune de la Moyenne Durance en Alpes-de-Haute-Provence, se situe au cœur d'un bassin agricole (vergers, lavande, maraîchage). Tissu TPE artisans, PME agroalimentaires, agriculteurs, commerçants et services de proximité. Axion-IA y déploie ses missions auprès de toutes les organisations de la vallée de la Durance.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Oraison (04). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires, agriculteurs (vergers, lavande, maraîchage), commerçants, indépendants et services aux entreprises de la Moyenne Durance.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const ORAISON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Oraison : diagnostic adapté aux TPE artisans, PME agroalimentaires, agriculteurs et commerçants de la Moyenne Durance. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Oraison : diagnostic adapté aux TPE artisans, PME agroalimentaires, agriculteurs et commerçants de la Moyenne Durance. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Oraison : diagnostic adapté aux TPE artisans, PME agroalimentaires, agriculteurs et commerçants de la Moyenne Durance. ROI mesurable, audit Flash dès 490 € HT accessible.",
+      en: "Audit IA à Oraison : diagnostic adapté aux TPE artisans, PME agroalimentaires, agriculteurs et commerçants de la Moyenne Durance. ROI mesurable, audit Flash dès 490 € HT accessible.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Oraison : formats adaptés aux exploitations fruitières, ateliers agroalimentaires, commerces ou artisans. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Oraison : formats adaptés aux exploitations fruitières, ateliers agroalimentaires, commerces ou artisans. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Oraison : formats adaptés aux exploitations fruitières, ateliers agroalimentaires, commerces ou artisans. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Oraison : formats adaptés aux exploitations fruitières, ateliers agroalimentaires, commerces ou artisans. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Oraison : classification qualité fruits par vision, prédiction récolte lavande, automatisation traçabilité verger-à-expédition, agents e-commerce vente directe producteur.",

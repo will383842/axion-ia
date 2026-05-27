@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MAXEVILLE_COPY: VilleCopy = {
   pitchFr:
-    "Maxéville (54), commune de l'agglomération nancéienne nord en Meurthe-et-Moselle, accueille le Zénith de Nancy et des zones d'activités commerciales et tertiaires dynamiques. Tissu TPE/PME commerce, services aux entreprises, restauration, artisanat, professions de santé. Axion-IA y intervient pour tous types d'activités.",
+    "Maxéville (54), commune de l'agglomération nancéienne nord en Meurthe-et-Moselle, accueille le Zénith de Nancy et des zones d'activités commerciales et tertiaires dynamiques. Tissu TPE/PME commerce, services aux entreprises, restauration, artisanat, professions de santé. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Maxéville (54), commune de l'agglomération nancéienne nord en Meurthe-et-Moselle, accueille le Zénith de Nancy et des zones d'activités commerciales et tertiaires dynamiques. Tissu TPE/PME commerce, services aux entreprises, restauration, artisanat, professions de santé. Axion-IA y intervient pour tous types d'activités.",
+    "Maxéville (54), commune de l'agglomération nancéienne nord en Meurthe-et-Moselle, accueille le Zénith de Nancy et des zones d'activités commerciales et tertiaires dynamiques. Tissu TPE/PME commerce, services aux entreprises, restauration, artisanat, professions de santé. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Maxéville (54). Nous accompagnons tous types d'activités : TPE/PME des zones commerciales nord Nancy, enseignes distribution, restaurants, prestataires de services aux entreprises et artisans maxévillois.",
   directAnswerEn:
@@ -34,8 +34,8 @@ export const MAXEVILLE_COPY: VilleCopy = {
       en: "Audit IA à Maxéville : diagnostic adapté aux TPE/PME zones commerciales nord Nancy, enseignes distribution, restaurants, services B2B et artisans. ROI chiffré, audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Maxéville : formats adaptés au bureau, commerce, restaurant ou atelier. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Maxéville : formats adaptés au bureau, commerce, restaurant ou atelier. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Maxéville : formats adaptés au bureau, commerce, restaurant ou atelier. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Maxéville : formats adaptés au bureau, commerce, restaurant ou atelier. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Maxéville : automatisation gestion commerciale, relation client distribution, agents conversationnels B2B, workflow restauration, gestion stocks.",

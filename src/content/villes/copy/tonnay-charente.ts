@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const TONNAY_CHARENTE_COPY: VilleCopy = {
   pitchFr:
-    "Tonnay-Charente (17), commune en bords de Charente en Charente-Maritime, connue pour son pont suspendu historique. Tissu de TPE artisans, PME industrielles et logistiques, commerces de proximité, agriculture et services. Axion-IA y intervient pour tous types d'activités du bassin Rochefort-Tonnay.",
+    "Tonnay-Charente (17), commune en bords de Charente en Charente-Maritime, connue pour son pont suspendu historique. Tissu de TPE artisans, PME industrielles et logistiques, commerces de proximité, agriculture et services. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin Rochefort-Tonnay.",
   pitchEn:
-    "Tonnay-Charente (17), commune en bords de Charente en Charente-Maritime, connue pour son pont suspendu historique. Tissu de TPE artisans, PME industrielles et logistiques, commerces de proximité, agriculture et services. Axion-IA y intervient pour tous types d'activités du bassin Rochefort-Tonnay.",
+    "Tonnay-Charente (17), commune en bords de Charente en Charente-Maritime, connue pour son pont suspendu historique. Tissu de TPE artisans, PME industrielles et logistiques, commerces de proximité, agriculture et services. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin Rochefort-Tonnay.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tonnay-Charente (17). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et logistiques, agriculteurs, commerçants et indépendants de cette commune stratégique entre Rochefort et La Rochelle.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const TONNAY_CHARENTE_COPY: VilleCopy = {
       en: "Audit IA à Tonnay-Charente : diagnostic adapté aux PME industrielles et logistiques, TPE artisans, exploitants agricoles et commerces du bassin Rochefort-Tonnay. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Tonnay-Charente : formats adaptés à l'entrepôt, à l'exploitation agricole, à l'atelier ou au commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Tonnay-Charente : formats adaptés à l'entrepôt, à l'exploitation agricole, à l'atelier ou au commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Tonnay-Charente : formats adaptés à l'entrepôt, à l'exploitation agricole, à l'atelier ou au commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Tonnay-Charente : formats adaptés à l'entrepôt, à l'exploitation agricole, à l'atelier ou au commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Tonnay-Charente : optimisation flux logistiques, automatisation traçabilité agricole, gestion stocks prédictive, agents conversationnels gestion commandes et documentation.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MORANGIS_COPY: VilleCopy = {
   pitchFr:
-    "Morangis (91), commune de l'Essonne proche de l'aéroport Paris-Orly, dispose de zones d'activités économiques dynamiques. Tissu logistique et transport aérien, PME industrielles, TPE artisanat BTP, commerces, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Morangis (91), commune de l'Essonne proche de l'aéroport Paris-Orly, dispose de zones d'activités économiques dynamiques. Tissu logistique et transport aérien, PME industrielles, TPE artisanat BTP, commerces, services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Morangis (91), commune de l'Essonne proche de l'aéroport Paris-Orly, dispose de zones d'activités économiques dynamiques. Tissu logistique et transport aérien, PME industrielles, TPE artisanat BTP, commerces, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Morangis (91), commune de l'Essonne proche de l'aéroport Paris-Orly, dispose de zones d'activités économiques dynamiques. Tissu logistique et transport aérien, PME industrielles, TPE artisanat BTP, commerces, services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Morangis (91). Nous accompagnons TPE et PME : entreprises logistique et transport zone Orly, PME industrielles, artisans BTP, commerçants de proximité, prestataires services aux entreprises. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const MORANGIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Morangis : diagnostic adapté aux entreprises logistique zone Orly, PME industrielles, artisans BTP, commerçants, prestataires services. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Morangis : diagnostic adapté aux entreprises logistique zone Orly, PME industrielles, artisans BTP, commerçants, prestataires services. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Morangis : diagnostic adapté aux entreprises logistique zone Orly, PME industrielles, artisans BTP, commerçants, prestataires services. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Morangis : diagnostic adapté aux entreprises logistique zone Orly, PME industrielles, artisans BTP, commerçants, prestataires services. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Morangis : formats adaptés entrepôt logistique, usine, chantier, bureau PME, commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Morangis : formats adaptés entrepôt logistique, usine, chantier, bureau PME, commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Morangis : formats adaptés entrepôt logistique, usine, chantier, bureau PME, commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Morangis : formats adaptés entrepôt logistique, usine, chantier, bureau PME, commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Morangis : automatisation flux logistiques aéroportuaires, maintenance prédictive PME industrielles, gestion stocks entrepôts, CRM augmentés, outils devis artisans.",
@@ -64,7 +64,7 @@ export const MORANGIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou Massy ?",
-      a: "Aéroport Paris-Orly (5 min). Massy TGV (15 min). Paris centre (25 min). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Aéroport Paris-Orly (5 min). Massy TGV (15 min). Paris centre (25 min). Coûts de déplacement à part, tarification transparente.",
     },
   ],
 };

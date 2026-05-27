@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_ANDRE_LEZ_LILLE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-André-lez-Lille (59), commune résidentielle de la Métropole Européenne de Lille en bordure nord-ouest de Lille, entre Lambersart et Marquette-lez-Lille. Tissu économique : TPE et PME de services aux entreprises, professions libérales (santé, juridique, conseil), commerce de proximité, artisanat, restauration. Axion-IA y intervient pour tous types d'activités du nord-ouest de l'agglo lilloise.",
+    "Saint-André-lez-Lille (59), commune résidentielle de la Métropole Européenne de Lille en bordure nord-ouest de Lille, entre Lambersart et Marquette-lez-Lille. Tissu économique : TPE et PME de services aux entreprises, professions libérales (santé, juridique, conseil), commerce de proximité, artisanat, restauration. Axion-IA accompagne entreprises et indépendants de tous secteurs du nord-ouest de l'agglo lilloise.",
   pitchEn:
-    "Saint-André-lez-Lille (59), commune résidentielle de la Métropole Européenne de Lille en bordure nord-ouest de Lille, entre Lambersart et Marquette-lez-Lille. Tissu économique : TPE et PME de services aux entreprises, professions libérales (santé, juridique, conseil), commerce de proximité, artisanat, restauration. Axion-IA y intervient pour tous types d'activités du nord-ouest de l'agglo lilloise.",
+    "Saint-André-lez-Lille (59), commune résidentielle de la Métropole Européenne de Lille en bordure nord-ouest de Lille, entre Lambersart et Marquette-lez-Lille. Tissu économique : TPE et PME de services aux entreprises, professions libérales (santé, juridique, conseil), commerce de proximité, artisanat, restauration. Axion-IA accompagne entreprises et indépendants de tous secteurs du nord-ouest de l'agglo lilloise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-André-lez-Lille (59). Nous accompagnons TPE et PME : cabinets de professions libérales (santé, juridique, conseil), prestataires de services aux entreprises, commerçants, artisans et restaurateurs de la première couronne lilloise.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const SAINT_ANDRE_LEZ_LILLE_COPY: VilleCopy = {
       en: "Audit IA à Saint-André-lez-Lille : diagnostic adapté aux TPE et PME de services, cabinets de professions libérales, commerçants, artisans et restaurateurs de la première couronne lilloise. ROI chiffré, audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-André-lez-Lille : formats adaptés au cabinet libéral, à l'agence conseil, au commerce ou au restaurant. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Saint-André-lez-Lille : formats adaptés au cabinet libéral, à l'agence conseil, au commerce ou au restaurant. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Saint-André-lez-Lille : formats adaptés au cabinet libéral, à l'agence conseil, au commerce ou au restaurant. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Saint-André-lez-Lille : formats adaptés au cabinet libéral, à l'agence conseil, au commerce ou au restaurant. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-André-lez-Lille : agents IA prise de rendez-vous cabinet médical, automatisation rédaction actes juridiques, CRM augmenté agences conseil, copilotes comptables, chatbots accueil commerce et restauration.",

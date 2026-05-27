@@ -29,12 +29,12 @@ export const SCIONZIER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Scionzier : diagnostic adapté aux PME du décolletage et de la micromécanique, sous-traitants industriels vallée de l'Arve, TPE artisans et commerçants. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Scionzier : diagnostic adapté aux PME du décolletage et de la micromécanique, sous-traitants industriels vallée de l'Arve, TPE artisans et commerçants. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Scionzier : diagnostic adapté aux PME du décolletage et de la micromécanique, sous-traitants industriels vallée de l'Arve, TPE artisans et commerçants. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Scionzier : diagnostic adapté aux PME du décolletage et de la micromécanique, sous-traitants industriels vallée de l'Arve, TPE artisans et commerçants. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Scionzier : formats adaptés à l'atelier de décolletage, l'usine de micromécanique ou le commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Scionzier : formats adaptés à l'atelier de décolletage, l'usine de micromécanique ou le commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Scionzier : formats adaptés à l'atelier de décolletage, l'usine de micromécanique ou le commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Scionzier : formats adaptés à l'atelier de décolletage, l'usine de micromécanique ou le commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Scionzier : contrôle qualité par vision industrielle, prédiction maintenance machines-outils, optimisation production décolletage, agents conversationnels client. Tissu industriel vallée de l'Arve.",

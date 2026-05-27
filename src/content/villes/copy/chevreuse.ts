@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHEVREUSE_COPY: VilleCopy = {
   pitchFr:
-    "Chevreuse (78), bourg historique au cœur du Parc Naturel Régional de la Haute Vallée de Chevreuse, dominé par le château de la Madeleine. Tissu de TPE artisans et commerçants, PME de services, professions libérales, tourisme vert et activités agricoles. Axion-IA y intervient pour tous types d'activités.",
+    "Chevreuse (78), bourg historique au cœur du Parc Naturel Régional de la Haute Vallée de Chevreuse, dominé par le château de la Madeleine. Tissu de TPE artisans et commerçants, PME de services, professions libérales, tourisme vert et activités agricoles. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Chevreuse (78), bourg historique au cœur du Parc Naturel Régional de la Haute Vallée de Chevreuse, dominé par le château de la Madeleine. Tissu de TPE artisans et commerçants, PME de services, professions libérales, tourisme vert et activités agricoles. Axion-IA y intervient pour tous types d'activités.",
+    "Chevreuse (78), bourg historique au cœur du Parc Naturel Régional de la Haute Vallée de Chevreuse, dominé par le château de la Madeleine. Tissu de TPE artisans et commerçants, PME de services, professions libérales, tourisme vert et activités agricoles. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chevreuse (78). Nous accompagnons TPE et PME : artisans et commerçants du bourg, PME de services, professions libérales, acteurs du tourisme vert et exploitants agricoles du PNR Haute Vallée de Chevreuse. Audit Flash dès 490 € HT.",
   directAnswerEn:

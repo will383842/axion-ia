@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_AFFRIQUE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Affrique (12), commune du sud Aveyron dans la vallée de la Sorgue, porte d'entrée du pays de Roquefort. Tissu TPE artisans, PME agroalimentaires (filière Roquefort, charcuterie), commerces de centre-ville, professions libérales, tourisme vert (Grands Causses). Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Affrique (12), commune du sud Aveyron dans la vallée de la Sorgue, porte d'entrée du pays de Roquefort. Tissu TPE artisans, PME agroalimentaires (filière Roquefort, charcuterie), commerces de centre-ville, professions libérales, tourisme vert (Grands Causses). Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Saint-Affrique (12), commune du sud Aveyron dans la vallée de la Sorgue, porte d'entrée du pays de Roquefort. Tissu TPE artisans, PME agroalimentaires (filière Roquefort, charcuterie), commerces de centre-ville, professions libérales, tourisme vert (Grands Causses). Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Affrique (12), commune du sud Aveyron dans la vallée de la Sorgue, porte d'entrée du pays de Roquefort. Tissu TPE artisans, PME agroalimentaires (filière Roquefort, charcuterie), commerces de centre-ville, professions libérales, tourisme vert (Grands Causses). Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Affrique (12). Nous accompagnons TPE artisans, PME agroalimentaires de la filière Roquefort, commerçants, professions libérales, acteurs du tourisme vert Grands Causses et services du sud Aveyron. Audit Flash dès 490 € HT.",
   directAnswerEn:

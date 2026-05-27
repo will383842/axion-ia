@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHASSE_SUR_RHONE_COPY: VilleCopy = {
   pitchFr:
-    "Chasse-sur-Rhône (38), commune située à l'extrémité ouest du département de l'Isère (arrondissement de Vienne), occupe une position stratégique sur le Rhône entre Lyon et Vienne. Tissu PME industrielles, logistique (axe A7), TPE artisans BTP, commerces, agriculture. Axion-IA y intervient pour tous types d'activités.",
+    "Chasse-sur-Rhône (38), commune située à l'extrémité ouest du département de l'Isère (arrondissement de Vienne), occupe une position stratégique sur le Rhône entre Lyon et Vienne. Tissu PME industrielles, logistique (axe A7), TPE artisans BTP, commerces, agriculture. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Chasse-sur-Rhône (38), commune située à l'extrémité ouest du département de l'Isère (arrondissement de Vienne), occupe une position stratégique sur le Rhône entre Lyon et Vienne. Tissu PME industrielles, logistique (axe A7), TPE artisans BTP, commerces, agriculture. Axion-IA y intervient pour tous types d'activités.",
+    "Chasse-sur-Rhône (38), commune située à l'extrémité ouest du département de l'Isère (arrondissement de Vienne), occupe une position stratégique sur le Rhône entre Lyon et Vienne. Tissu PME industrielles, logistique (axe A7), TPE artisans BTP, commerces, agriculture. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chasse-sur-Rhône (38). Nous accompagnons tous types d'activités : PME industrielles bassin rhodanien Lyon-Vienne, logistique A7, TPE artisans BTP, commerçants, agriculteurs vallée du Rhône, indépendants et services aux entreprises de Vienne Condrieu Agglomération.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const CHASSE_SUR_RHONE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chasse-sur-Rhône : diagnostic adapté aux PME industrielles/logistiques bassin rhodanien Lyon-Vienne, TPE artisans, agriculteurs. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Chasse-sur-Rhône : diagnostic adapté aux PME industrielles/logistiques bassin rhodanien Lyon-Vienne, TPE artisans, agriculteurs. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Chasse-sur-Rhône : diagnostic adapté aux PME industrielles/logistiques bassin rhodanien Lyon-Vienne, TPE artisans, agriculteurs. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Chasse-sur-Rhône : diagnostic adapté aux PME industrielles/logistiques bassin rhodanien Lyon-Vienne, TPE artisans, agriculteurs. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chasse-sur-Rhône : formats adaptés à l'atelier industriel, entrepôt logistique, exploitation agricole. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const CHASSE_SUR_RHONE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Vienne ?",
-      a: "Nos consultants viennent de Lyon (30 min A7) ou Vienne (10 min). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (30 min A7) ou Vienne (10 min). Pour les multi-jours, hébergement local possible. Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

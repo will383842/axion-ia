@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ANSE_COPY: VilleCopy = {
   pitchFr:
-    "Anse (69), commune du val de Saône dans le Rhône, est positionnée à l'entrée sud du vignoble du Beaujolais. Tissu viticole périphérique, PME tertiaires, TPE artisans BTP, commerces, agriculture vallée Saône. Axion-IA y intervient pour tous types d'activités du Beaujolais méridional.",
+    "Anse (69), commune du val de Saône dans le Rhône, est positionnée à l'entrée sud du vignoble du Beaujolais. Tissu viticole périphérique, PME tertiaires, TPE artisans BTP, commerces, agriculture vallée Saône. Axion-IA y déploie ses missions auprès de toutes les organisations du Beaujolais méridional.",
   pitchEn:
-    "Anse (69), commune du val de Saône dans le Rhône, est positionnée à l'entrée sud du vignoble du Beaujolais. Tissu viticole périphérique, PME tertiaires, TPE artisans BTP, commerces, agriculture vallée Saône. Axion-IA y intervient pour tous types d'activités du Beaujolais méridional.",
+    "Anse (69), commune du val de Saône dans le Rhône, est positionnée à l'entrée sud du vignoble du Beaujolais. Tissu viticole périphérique, PME tertiaires, TPE artisans BTP, commerces, agriculture vallée Saône. Axion-IA y déploie ses missions auprès de toutes les organisations du Beaujolais méridional.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Anse (69). Nous accompagnons tous types d'activités : viticulteurs Beaujolais méridional, PME tertiaires, TPE artisans BTP, commerçants, agriculteurs val de Saône, indépendants et services aux entreprises.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const ANSE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Anse : diagnostic adapté aux viticulteurs Beaujolais, PME tertiaires, agriculteurs val de Saône, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Anse : diagnostic adapté aux viticulteurs Beaujolais, PME tertiaires, agriculteurs val de Saône, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Anse : diagnostic adapté aux viticulteurs Beaujolais, PME tertiaires, agriculteurs val de Saône, TPE artisans. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Anse : diagnostic adapté aux viticulteurs Beaujolais, PME tertiaires, agriculteurs val de Saône, TPE artisans. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Anse : formats adaptés au domaine viticole, bureau, exploitation agricole, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const ANSE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (30 min A6). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (30 min A6). Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

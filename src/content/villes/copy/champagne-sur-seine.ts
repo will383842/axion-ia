@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHAMPAGNE_SUR_SEINE_COPY: VilleCopy = {
   pitchFr:
-    "Champagne-sur-Seine (77), commune du sud Seine-et-Marne en bord de Seine, allie héritage industriel historique (Schneider Electric) et tissu de TPE artisanales, PME industrielles et de services, commerçants et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Champagne-sur-Seine (77), commune du sud Seine-et-Marne en bord de Seine, allie héritage industriel historique (Schneider Electric) et tissu de TPE artisanales, PME industrielles et de services, commerçants et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Champagne-sur-Seine (77), commune du sud Seine-et-Marne en bord de Seine, allie héritage industriel historique (Schneider Electric) et tissu de TPE artisanales, PME industrielles et de services, commerçants et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Champagne-sur-Seine (77), commune du sud Seine-et-Marne en bord de Seine, allie héritage industriel historique (Schneider Electric) et tissu de TPE artisanales, PME industrielles et de services, commerçants et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Champagne-sur-Seine (77). Nous accompagnons TPE et PME : sous-traitants industriels, TPE artisanales, PME de maintenance et de services, commerçants de proximité et professions libérales du sud Seine-et-Marne.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const CHAMPAGNE_SUR_SEINE_COPY: VilleCopy = {
       en: "Audit IA à Champagne-sur-Seine : diagnostic adapté aux PME industrielles, sous-traitants, TPE artisanales, commerçants et professions libérales du sud Seine-et-Marne. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Champagne-sur-Seine : formats adaptés à l'atelier industriel, à la TPE artisanale ou à la PME de services. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Champagne-sur-Seine : formats adaptés à l'atelier industriel, à la TPE artisanale ou à la PME de services. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Champagne-sur-Seine : formats adaptés à l'atelier industriel, à la TPE artisanale ou à la PME de services. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Champagne-sur-Seine : formats adaptés à l'atelier industriel, à la TPE artisanale ou à la PME de services. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Champagne-sur-Seine : maintenance prédictive, automatisation qualité production, agents conversationnels, gestion planning artisans, classification documents comptables.",

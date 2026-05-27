@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const EVRON_COPY: VilleCopy = {
   pitchFr:
-    "Évron (53), bourg de la Mayenne adossé à son abbaye bénédictine et sa basilique Notre-Dame-de-l'Épine, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-bourg, exploitations agricoles (élevage, lait) et prestataires de services. Axion-IA y intervient pour tous types d'activités.",
+    "Évron (53), bourg de la Mayenne adossé à son abbaye bénédictine et sa basilique Notre-Dame-de-l'Épine, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-bourg, exploitations agricoles (élevage, lait) et prestataires de services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Évron (53), bourg de la Mayenne adossé à son abbaye bénédictine et sa basilique Notre-Dame-de-l'Épine, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-bourg, exploitations agricoles (élevage, lait) et prestataires de services. Axion-IA y intervient pour tous types d'activités.",
+    "Évron (53), bourg de la Mayenne adossé à son abbaye bénédictine et sa basilique Notre-Dame-de-l'Épine, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-bourg, exploitations agricoles (élevage, lait) et prestataires de services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Évron (53). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles, éleveurs laitiers, commerçants, professions libérales, prestataires de services et acteurs du tourisme patrimonial du centre-Mayenne.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const EVRON_COPY: VilleCopy = {
       en: "Audit IA à Évron : diagnostic adapté aux TPE artisans, PME agroalimentaires, industriels et éleveurs du centre-Mayenne. ROI chiffré, Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Évron : formations adaptées aux PME laitières, industriels, artisans, éleveurs et commerçants du bassin d'Évron. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Évron : formations adaptées aux PME laitières, industriels, artisans, éleveurs et commerçants du bassin d'Évron. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Évron : formations adaptées aux PME laitières, industriels, artisans, éleveurs et commerçants du bassin d'Évron. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Évron : formations adaptées aux PME laitières, industriels, artisans, éleveurs et commerçants du bassin d'Évron. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Évron : traçabilité laitière, contrôle qualité conditionnement, maintenance prédictive mécanique, automatisation gestion élevage bovin et logistique.",

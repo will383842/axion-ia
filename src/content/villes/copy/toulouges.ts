@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const TOULOUGES_COPY: VilleCopy = {
   pitchFr:
-    "Toulouges (66), commune résidentielle en périphérie sud-ouest de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME tertiaires, commerces, zones d'activités, professions libérales. Axion-IA y intervient pour tous types d'activités de l'agglomération perpignanaise.",
+    "Toulouges (66), commune résidentielle en périphérie sud-ouest de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME tertiaires, commerces, zones d'activités, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération perpignanaise.",
   pitchEn:
-    "Toulouges (66), commune résidentielle en périphérie sud-ouest de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME tertiaires, commerces, zones d'activités, professions libérales. Axion-IA y intervient pour tous types d'activités de l'agglomération perpignanaise.",
+    "Toulouges (66), commune résidentielle en périphérie sud-ouest de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME tertiaires, commerces, zones d'activités, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération perpignanaise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Toulouges (66). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, commerçants, professions libérales, indépendants et services aux entreprises de l'agglo Perpignan sud-ouest.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const TOULOUGES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Toulouges : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales de l'agglo Perpignan sud-ouest. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Toulouges : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales de l'agglo Perpignan sud-ouest. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Toulouges : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales de l'agglo Perpignan sud-ouest. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Toulouges : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales de l'agglo Perpignan sud-ouest. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Toulouges : formats adaptés au bureau, cabinet, commerce, atelier. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -64,7 +64,7 @@ export const TOULOUGES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Toulouges ?",
-      a: "Nos consultants interviennent depuis Perpignan (8 min). Missions sur site dans votre bureau, cabinet ou atelier. Visio possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants interviennent depuis Perpignan (8 min). Missions sur site dans votre bureau, cabinet ou atelier. Visio possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

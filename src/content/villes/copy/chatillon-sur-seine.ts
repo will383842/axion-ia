@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHATILLON_SUR_SEINE_COPY: VilleCopy = {
   pitchFr:
-    "Châtillon-sur-Seine (21), capitale historique du Châtillonnais à l'extrême nord de la Côte-d'Or aux sources de la Seine et célèbre pour le Vase de Vix, dispose d'un tissu rural diversifié. TPE artisanat et services, commerces de centre-bourg, PME agroalimentaires et viticoles (Crémant), professions libérales, hôtellerie-restauration et tourisme patrimonial. Axion-IA y intervient pour tous types d'activités.",
+    "Châtillon-sur-Seine (21), capitale historique du Châtillonnais à l'extrême nord de la Côte-d'Or aux sources de la Seine et célèbre pour le Vase de Vix, dispose d'un tissu rural diversifié. TPE artisanat et services, commerces de centre-bourg, PME agroalimentaires et viticoles (Crémant), professions libérales, hôtellerie-restauration et tourisme patrimonial. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Châtillon-sur-Seine (21), capitale historique du Châtillonnais à l'extrême nord de la Côte-d'Or aux sources de la Seine et célèbre pour le Vase de Vix, dispose d'un tissu rural diversifié. TPE artisanat et services, commerces de centre-bourg, PME agroalimentaires et viticoles (Crémant), professions libérales, hôtellerie-restauration et tourisme patrimonial. Axion-IA y intervient pour tous types d'activités.",
+    "Châtillon-sur-Seine (21), capitale historique du Châtillonnais à l'extrême nord de la Côte-d'Or aux sources de la Seine et célèbre pour le Vase de Vix, dispose d'un tissu rural diversifié. TPE artisanat et services, commerces de centre-bourg, PME agroalimentaires et viticoles (Crémant), professions libérales, hôtellerie-restauration et tourisme patrimonial. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châtillon-sur-Seine (21). Nous accompagnons TPE et PME : artisans et prestataires de services, commerçants de centre-bourg, PME agroalimentaires et viticoles du Châtillonnais, professions libérales, hôteliers-restaurateurs et acteurs du tourisme patrimonial. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const CHATILLON_SUR_SEINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Châtillon-sur-Seine : diagnostic adapté aux TPE artisans et commerçants centre-bourg, PME agroalimentaires et viticoles du Châtillonnais, hôteliers-restaurateurs, professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Châtillon-sur-Seine : diagnostic adapté aux TPE artisans et commerçants centre-bourg, PME agroalimentaires et viticoles du Châtillonnais, hôteliers-restaurateurs, professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Châtillon-sur-Seine : diagnostic adapté aux TPE artisans et commerçants centre-bourg, PME agroalimentaires et viticoles du Châtillonnais, hôteliers-restaurateurs, professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Châtillon-sur-Seine : diagnostic adapté aux TPE artisans et commerçants centre-bourg, PME agroalimentaires et viticoles du Châtillonnais, hôteliers-restaurateurs, professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Châtillon-sur-Seine : formats adaptés artisan, commerce, exploitation viticole, hôtel, restaurant, cabinet. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Châtillon-sur-Seine : formats adaptés artisan, commerce, exploitation viticole, hôtel, restaurant, cabinet. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Châtillon-sur-Seine : formats adaptés artisan, commerce, exploitation viticole, hôtel, restaurant, cabinet. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Châtillon-sur-Seine : formats adaptés artisan, commerce, exploitation viticole, hôtel, restaurant, cabinet. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Châtillon-sur-Seine : automatisation traçabilité agroalimentaire, outils viticulture et Crémant, CRM augmenté hôtellerie-restauration, gestion réservations tourisme patrimonial, prise de rendez-vous IA professions libérales.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PLERIN_COPY: VilleCopy = {
   pitchFr:
-    "Plérin (22), commune littorale de l'agglomération de Saint-Brieuc, entre plage Martin et zones d'activités commerciales en Côtes-d'Armor. Tissu de TPE et PME du commerce, de la restauration balnéaire, des services aux entreprises, professions libérales et artisans. Axion-IA y intervient pour tous types d'activités de l'agglo briochine.",
+    "Plérin (22), commune littorale de l'agglomération de Saint-Brieuc, entre plage Martin et zones d'activités commerciales en Côtes-d'Armor. Tissu de TPE et PME du commerce, de la restauration balnéaire, des services aux entreprises, professions libérales et artisans. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglo briochine.",
   pitchEn:
-    "Plérin (22), commune littorale de l'agglomération de Saint-Brieuc, entre plage Martin et zones d'activités commerciales en Côtes-d'Armor. Tissu de TPE et PME du commerce, de la restauration balnéaire, des services aux entreprises, professions libérales et artisans. Axion-IA y intervient pour tous types d'activités de l'agglo briochine.",
+    "Plérin (22), commune littorale de l'agglomération de Saint-Brieuc, entre plage Martin et zones d'activités commerciales en Côtes-d'Armor. Tissu de TPE et PME du commerce, de la restauration balnéaire, des services aux entreprises, professions libérales et artisans. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglo briochine.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plérin (22). Nous accompagnons TPE et PME : commerces, restaurateurs, artisans, PME de services et professions libérales de cette commune littorale de l'agglomération de Saint-Brieuc. Audit Flash dès 490 € HT.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_HAGUE_COPY: VilleCopy = {
   pitchFr:
-    "La Hague (50), commune nouvelle du nord Cotentin dans la Manche (Normandie), réunit un littoral sauvage préservé et le site industriel de retraitement nucléaire. Tissu TPE artisanales et agricoles, PME sous-traitance industrielle et nucléaire, commerces ruraux, tourisme de nature. Axion-IA y intervient pour tous types d'activités.",
+    "La Hague (50), commune nouvelle du nord Cotentin dans la Manche (Normandie), réunit un littoral sauvage préservé et le site industriel de retraitement nucléaire. Tissu TPE artisanales et agricoles, PME sous-traitance industrielle et nucléaire, commerces ruraux, tourisme de nature. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "La Hague (50), commune nouvelle du nord Cotentin dans la Manche (Normandie), réunit un littoral sauvage préservé et le site industriel de retraitement nucléaire. Tissu TPE artisanales et agricoles, PME sous-traitance industrielle et nucléaire, commerces ruraux, tourisme de nature. Axion-IA y intervient pour tous types d'activités.",
+    "La Hague (50), commune nouvelle du nord Cotentin dans la Manche (Normandie), réunit un littoral sauvage préservé et le site industriel de retraitement nucléaire. Tissu TPE artisanales et agricoles, PME sous-traitance industrielle et nucléaire, commerces ruraux, tourisme de nature. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Hague (50). Nous accompagnons tous types d'activités : TPE artisanales et agricoles du Cotentin, PME sous-traitance industrielle et nucléaire, commerçants ruraux, prestataires tourisme nature, professions libérales et services du nord Cotentin.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LA_HAGUE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Hague : diagnostic adapté aux TPE agricoles, PME sous-traitance nucléaire et industrielle, commerçants ruraux, prestataires tourisme nature du nord Cotentin. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à La Hague : diagnostic adapté aux TPE agricoles, PME sous-traitance nucléaire et industrielle, commerçants ruraux, prestataires tourisme nature du nord Cotentin. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à La Hague : diagnostic adapté aux TPE agricoles, PME sous-traitance nucléaire et industrielle, commerçants ruraux, prestataires tourisme nature du nord Cotentin. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à La Hague : diagnostic adapté aux TPE agricoles, PME sous-traitance nucléaire et industrielle, commerçants ruraux, prestataires tourisme nature du nord Cotentin. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Hague : formats adaptés à l'exploitation agricole, l'atelier industriel, le commerce rural, le prestataire touristique. Vos équipes repartent autonomes sur les outils IA.",
@@ -64,7 +64,7 @@ export const LA_HAGUE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à La Hague ?",
-      a: "Nos consultants viennent de Cherbourg (20 min) ou Caen (1 h 30). Gare de Cherbourg (TER Paris-Saint-Lazare 3 h). Multi-jours : hébergement Cherbourg. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Cherbourg (20 min) ou Caen (1 h 30). Gare de Cherbourg (TER Paris-Saint-Lazare 3 h). Multi-jours : hébergement Cherbourg. Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

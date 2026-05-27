@@ -29,8 +29,8 @@ export const LA_MULATIERE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Mulatière : diagnostic adapté aux PME tertiaires sud lyonnais, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à La Mulatière : diagnostic adapté aux PME tertiaires sud lyonnais, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à La Mulatière : diagnostic adapté aux PME tertiaires sud lyonnais, professions libérales, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à La Mulatière : diagnostic adapté aux PME tertiaires sud lyonnais, professions libérales, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Mulatière : formats adaptés au bureau, cabinet, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const LA_MULATIERE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (10 min). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (10 min). Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

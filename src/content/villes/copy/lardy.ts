@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LARDY_COPY: VilleCopy = {
   pitchFr:
-    "Lardy (91), commune de l'Essonne dans la vallée de la Juine, à 38 km au sud-ouest de Paris. Cadre résidentiel rural, tissu TPE artisanales, commerces de proximité, PME tertiaires, agriculteurs, indépendants. Axion-IA y intervient pour tous types d'activités de la vallée de la Juine.",
+    "Lardy (91), commune de l'Essonne dans la vallée de la Juine, à 38 km au sud-ouest de Paris. Cadre résidentiel rural, tissu TPE artisanales, commerces de proximité, PME tertiaires, agriculteurs, indépendants. Axion-IA couvre l'ensemble des activités professionnelles présentes de la vallée de la Juine.",
   pitchEn:
-    "Lardy (91), commune de l'Essonne dans la vallée de la Juine, à 38 km au sud-ouest de Paris. Cadre résidentiel rural, tissu TPE artisanales, commerces de proximité, PME tertiaires, agriculteurs, indépendants. Axion-IA y intervient pour tous types d'activités de la vallée de la Juine.",
+    "Lardy (91), commune de l'Essonne dans la vallée de la Juine, à 38 km au sud-ouest de Paris. Cadre résidentiel rural, tissu TPE artisanales, commerces de proximité, PME tertiaires, agriculteurs, indépendants. Axion-IA couvre l'ensemble des activités professionnelles présentes de la vallée de la Juine.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lardy (91). Nous accompagnons tous types d'activités : TPE artisanales, commerces de proximité, PME tertiaires, agriculteurs, indépendants et professions libérales de la vallée de la Juine.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LARDY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lardy : diagnostic adapté aux TPE artisanales, agriculteurs, PME tertiaires et professions libérales de la vallée de la Juine. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Lardy : diagnostic adapté aux TPE artisanales, agriculteurs, PME tertiaires et professions libérales de la vallée de la Juine. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Lardy : diagnostic adapté aux TPE artisanales, agriculteurs, PME tertiaires et professions libérales de la vallée de la Juine. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Lardy : diagnostic adapté aux TPE artisanales, agriculteurs, PME tertiaires et professions libérales de la vallée de la Juine. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lardy : formats adaptés aux TPE/PME et exploitations agricoles. Demi-journée à 2 jours, vos équipes repartent autonomes sur outils IA configurés métier.",

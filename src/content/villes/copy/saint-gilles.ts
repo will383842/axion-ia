@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_GILLES_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Gilles (30), porte de la Petite Camargue gardoise, abrite une abbatiale classée UNESCO (chemin de Compostelle). Tissu TPE/PME agriculture Camargue (riz, taureaux, chevaux), viticulture Costières de Nîmes, commerces, artisanat et tourisme patrimonial. Axion-IA y intervient pour tous types d'activités de la Petite Camargue.",
+    "Saint-Gilles (30), porte de la Petite Camargue gardoise, abrite une abbatiale classée UNESCO (chemin de Compostelle). Tissu TPE/PME agriculture Camargue (riz, taureaux, chevaux), viticulture Costières de Nîmes, commerces, artisanat et tourisme patrimonial. Axion-IA y déploie ses missions auprès de toutes les organisations de la Petite Camargue.",
   pitchEn:
-    "Saint-Gilles (30), porte de la Petite Camargue gardoise, abrite une abbatiale classée UNESCO (chemin de Compostelle). Tissu TPE/PME agriculture Camargue (riz, taureaux, chevaux), viticulture Costières de Nîmes, commerces, artisanat et tourisme patrimonial. Axion-IA y intervient pour tous types d'activités de la Petite Camargue.",
+    "Saint-Gilles (30), porte de la Petite Camargue gardoise, abrite une abbatiale classée UNESCO (chemin de Compostelle). Tissu TPE/PME agriculture Camargue (riz, taureaux, chevaux), viticulture Costières de Nîmes, commerces, artisanat et tourisme patrimonial. Axion-IA y déploie ses missions auprès de toutes les organisations de la Petite Camargue.",
   directAnswerFr:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Saint-Gilles (30). Nous accompagnons les TPE, PME et ETI locales : exploitants agricoles Camargue, viticulteurs Costières de Nîmes, commerçants, artisans, acteurs touristiques et professions libérales de la Petite Camargue gardoise. Audit Flash à partir de 490 € HT.",
   directAnswerEn:

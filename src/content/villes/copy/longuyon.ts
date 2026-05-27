@@ -34,8 +34,8 @@ export const LONGUYON_COPY: VilleCopy = {
       en: "Audit IA à Longuyon : diagnostic adapté aux TPE/PME commerces, artisans, transporteurs transfrontaliers, sous-traitants industriels et professions libérales. ROI chiffré, audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Longuyon : formats adaptés au commerce, à l'atelier, au transport, au bureau. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Longuyon : formats adaptés au commerce, à l'atelier, au transport, au bureau. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Longuyon : formats adaptés au commerce, à l'atelier, au transport, au bureau. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Longuyon : formats adaptés au commerce, à l'atelier, au transport, au bureau. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Longuyon : optimisation logistique transfrontalière, automatisation gestion commerciale, agents conversationnels multilingues, workflow douanier, traçabilité transport.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_BLANC_COPY: VilleCopy = {
   pitchFr:
-    "Le Blanc (36), sous-préfecture de l'Indre en bordure de la Brenne, est une ville de caractère sur les rives de la Creuse, aux portes du Parc naturel régional de la Brenne. TPE artisans, PME agricoles et agroalimentaires, commerçants, professions libérales, acteurs du tourisme nature, indépendants et services publics composent son tissu économique. Axion-IA y intervient pour tous types d'activités du sud Berry.",
+    "Le Blanc (36), sous-préfecture de l'Indre en bordure de la Brenne, est une ville de caractère sur les rives de la Creuse, aux portes du Parc naturel régional de la Brenne. TPE artisans, PME agricoles et agroalimentaires, commerçants, professions libérales, acteurs du tourisme nature, indépendants et services publics composent son tissu économique. Axion-IA opère pour toutes les structures économiques de la commune du sud Berry.",
   pitchEn:
-    "Le Blanc (36), sous-préfecture de l'Indre en bordure de la Brenne, est une ville de caractère sur les rives de la Creuse, aux portes du Parc naturel régional de la Brenne. TPE artisans, PME agricoles et agroalimentaires, commerçants, professions libérales, acteurs du tourisme nature, indépendants et services publics composent son tissu économique. Axion-IA y intervient pour tous types d'activités du sud Berry.",
+    "Le Blanc (36), sous-préfecture de l'Indre en bordure de la Brenne, est une ville de caractère sur les rives de la Creuse, aux portes du Parc naturel régional de la Brenne. TPE artisans, PME agricoles et agroalimentaires, commerçants, professions libérales, acteurs du tourisme nature, indépendants et services publics composent son tissu économique. Axion-IA opère pour toutes les structures économiques de la commune du sud Berry.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Blanc (36), sous-préfecture de l'Indre aux portes de la Brenne. Nous accompagnons tous types d'activités : TPE artisans, PME agricoles, commerçants, acteurs du tourisme nature, professions libérales, indépendants et services publics du sud Berry.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LE_BLANC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Blanc : diagnostic adapté aux TPE artisans, PME agricoles du sud Berry, commerçants, acteurs du tourisme nature en Brenne, professions libérales et collectivités. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA au Blanc : diagnostic adapté aux TPE artisans, PME agricoles du sud Berry, commerçants, acteurs du tourisme nature en Brenne, professions libérales et collectivités. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA au Blanc : diagnostic adapté aux TPE artisans, PME agricoles du sud Berry, commerçants, acteurs du tourisme nature en Brenne, professions libérales et collectivités. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
+      en: "Audit IA au Blanc : diagnostic adapté aux TPE artisans, PME agricoles du sud Berry, commerçants, acteurs du tourisme nature en Brenne, professions libérales et collectivités. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site au Blanc : formats adaptés aux exploitations agricoles, TPE artisans BTP, acteurs du tourisme Brenne et commerces de centre-ville. Vos équipes repartent autonomes sur les outils IA métier.",

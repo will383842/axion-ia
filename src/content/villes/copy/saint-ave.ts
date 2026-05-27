@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_AVE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Avé (56), commune résidentielle dynamique de l'agglomération de Vannes (12 470 hab), conjugue cadre de vie et tissu économique tertiaire en plein développement. TPE et PME services, santé (centre hospitalier spécialisé), commerces de proximité, artisanat, BTP, écoles, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Avé (56), commune résidentielle dynamique de l'agglomération de Vannes (12 470 hab), conjugue cadre de vie et tissu économique tertiaire en plein développement. TPE et PME services, santé (centre hospitalier spécialisé), commerces de proximité, artisanat, BTP, écoles, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Saint-Avé (56), commune résidentielle dynamique de l'agglomération de Vannes (12 470 hab), conjugue cadre de vie et tissu économique tertiaire en plein développement. TPE et PME services, santé (centre hospitalier spécialisé), commerces de proximité, artisanat, BTP, écoles, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Avé (56), commune résidentielle dynamique de l'agglomération de Vannes (12 470 hab), conjugue cadre de vie et tissu économique tertiaire en plein développement. TPE et PME services, santé (centre hospitalier spécialisé), commerces de proximité, artisanat, BTP, écoles, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Avé (56). Nous accompagnons TPE et PME : services et tertiaire de l'agglomération de Vannes, professionnels de santé du centre hospitalier, commerces de proximité, artisans, BTP, professions libérales, écoles. Audit Flash dès 490 € HT.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_AVOLD_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Avold (57), sous-préfecture mosellane du bassin houiller lorrain, reconvertie en pôle majeur de la chimie et de la pétrochimie (plateforme Carling–Saint-Avold). Tissu TPE/PME industrie, sous-traitance chimie, logistique, BTP, commerces et services. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Avold (57), sous-préfecture mosellane du bassin houiller lorrain, reconvertie en pôle majeur de la chimie et de la pétrochimie (plateforme Carling–Saint-Avold). Tissu TPE/PME industrie, sous-traitance chimie, logistique, BTP, commerces et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Saint-Avold (57), sous-préfecture mosellane du bassin houiller lorrain, reconvertie en pôle majeur de la chimie et de la pétrochimie (plateforme Carling–Saint-Avold). Tissu TPE/PME industrie, sous-traitance chimie, logistique, BTP, commerces et services. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Avold (57), sous-préfecture mosellane du bassin houiller lorrain, reconvertie en pôle majeur de la chimie et de la pétrochimie (plateforme Carling–Saint-Avold). Tissu TPE/PME industrie, sous-traitance chimie, logistique, BTP, commerces et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Avold (57). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance chimie/pétrochimie, acteurs logistique, artisans BTP, commerces de proximité et professions de services du bassin houiller.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const SAINT_AVOLD_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Avold : diagnostic adapté aux TPE/PME industrie chimie, sous-traitants, logistique, artisans BTP, commerces et services. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Avold : diagnostic adapté aux TPE/PME industrie chimie, sous-traitants, logistique, artisans BTP, commerces et services. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Avold : diagnostic adapté aux TPE/PME industrie chimie, sous-traitants, logistique, artisans BTP, commerces et services. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Saint-Avold : diagnostic adapté aux TPE/PME industrie chimie, sous-traitants, logistique, artisans BTP, commerces et services. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Avold : formats adaptés à l'atelier industriel, plateforme chimique, entrepôt logistique, chantier, bureau. Vos équipes repartent autonomes.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ISLE_COPY: VilleCopy = {
   pitchFr:
-    "Isle (87), commune du nord de l'agglomération de Limoges traversée par la Vienne, est intégrée à Limoges Métropole. Tissu TPE artisans, PME industrielles et tertiaires, zones d'activités, commerces, agriculture et services. Axion-IA y intervient pour tous types d'activités de l'agglo limougeaude nord.",
+    "Isle (87), commune du nord de l'agglomération de Limoges traversée par la Vienne, est intégrée à Limoges Métropole. Tissu TPE artisans, PME industrielles et tertiaires, zones d'activités, commerces, agriculture et services. Axion-IA y déploie ses missions auprès de toutes les organisations de l'agglo limougeaude nord.",
   pitchEn:
-    "Isle (87), commune du nord de l'agglomération de Limoges traversée par la Vienne, est intégrée à Limoges Métropole. Tissu TPE artisans, PME industrielles et tertiaires, zones d'activités, commerces, agriculture et services. Axion-IA y intervient pour tous types d'activités de l'agglo limougeaude nord.",
+    "Isle (87), commune du nord de l'agglomération de Limoges traversée par la Vienne, est intégrée à Limoges Métropole. Tissu TPE artisans, PME industrielles et tertiaires, zones d'activités, commerces, agriculture et services. Axion-IA y déploie ses missions auprès de toutes les organisations de l'agglo limougeaude nord.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Isle (87). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et tertiaires, commerçants, agriculteurs, professions libérales, indépendants et services aux entreprises de l'agglomération de Limoges nord.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const ISLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Isle : diagnostic adapté aux TPE artisans, PME industrielles et tertiaires, commerçants et agriculteurs de l'agglo limougeaude nord. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Isle : diagnostic adapté aux TPE artisans, PME industrielles et tertiaires, commerçants et agriculteurs de l'agglo limougeaude nord. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Isle : diagnostic adapté aux TPE artisans, PME industrielles et tertiaires, commerçants et agriculteurs de l'agglo limougeaude nord. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
+      en: "Audit IA à Isle : diagnostic adapté aux TPE artisans, PME industrielles et tertiaires, commerçants et agriculteurs de l'agglo limougeaude nord. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Isle : formats adaptés à l'atelier industriel, entrepôt logistique, exploitation agricole ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Isle : formats adaptés à l'atelier industriel, entrepôt logistique, exploitation agricole ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Isle : formats adaptés à l'atelier industriel, entrepôt logistique, exploitation agricole ou commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Isle : formats adaptés à l'atelier industriel, entrepôt logistique, exploitation agricole ou commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Isle : optimisation logistique, prédiction maintenance industrielle, automatisation devis BTP, gestion stocks, agents conversationnels. Tous secteurs agglo Limoges nord.",

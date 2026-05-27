@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CARRY_LE_ROUET_COPY: VilleCopy = {
   pitchFr:
-    "Carry-le-Rouet (13), station balnéaire emblématique de la Côte Bleue, conjugue port de plaisance, plages et tradition des oursinades de février. Tissu de TPE tourisme et restauration, PME services, plaisance, commerces de proximité et professions libérales installées entre Marseille et Martigues. Axion-IA y intervient pour tous types d'activités.",
+    "Carry-le-Rouet (13), station balnéaire emblématique de la Côte Bleue, conjugue port de plaisance, plages et tradition des oursinades de février. Tissu de TPE tourisme et restauration, PME services, plaisance, commerces de proximité et professions libérales installées entre Marseille et Martigues. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Carry-le-Rouet (13), station balnéaire emblématique de la Côte Bleue, conjugue port de plaisance, plages et tradition des oursinades de février. Tissu de TPE tourisme et restauration, PME services, plaisance, commerces de proximité et professions libérales installées entre Marseille et Martigues. Axion-IA y intervient pour tous types d'activités.",
+    "Carry-le-Rouet (13), station balnéaire emblématique de la Côte Bleue, conjugue port de plaisance, plages et tradition des oursinades de février. Tissu de TPE tourisme et restauration, PME services, plaisance, commerces de proximité et professions libérales installées entre Marseille et Martigues. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carry-le-Rouet (13). Nous accompagnons TPE tourisme et restauration, PME services, professionnels de la plaisance et commerces de proximité de la station balnéaire et de la Côte Bleue. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const CARRY_LE_ROUET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Carry-le-Rouet : diagnostic adapté aux TPE tourisme, hôteliers indépendants, restaurateurs, plaisanciers et commerces de la station. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Carry-le-Rouet : diagnostic adapté aux TPE tourisme, hôteliers indépendants, restaurateurs, plaisanciers et commerces de la station. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Carry-le-Rouet : diagnostic adapté aux TPE tourisme, hôteliers indépendants, restaurateurs, plaisanciers et commerces de la station. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Carry-le-Rouet : diagnostic adapté aux TPE tourisme, hôteliers indépendants, restaurateurs, plaisanciers et commerces de la station. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Carry-le-Rouet : ateliers pour équipes tourisme, restauration, plaisance et commerces. Outils IA configurés métier réel, dans vos locaux face au port.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_CANNET_DES_MAURES_COPY: VilleCopy = {
   pitchFr:
-    "Le Cannet-des-Maures (83), commune du massif des Maures sur l'axe A8 Provence-Côte d'Azur, conjugue activités militaires (base aéronavale), tissu agricole viticole et zones d'activités sur les Aires de Vidauban. TPE artisans, PME viticoles, services logistiques, professions libérales et commerces de proximité dans un bassin tourné vers Le Luc et Vidauban. Axion-IA y intervient pour tous types d'activités.",
+    "Le Cannet-des-Maures (83), commune du massif des Maures sur l'axe A8 Provence-Côte d'Azur, conjugue activités militaires (base aéronavale), tissu agricole viticole et zones d'activités sur les Aires de Vidauban. TPE artisans, PME viticoles, services logistiques, professions libérales et commerces de proximité dans un bassin tourné vers Le Luc et Vidauban. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Le Cannet-des-Maures (83), commune du massif des Maures sur l'axe A8 Provence-Côte d'Azur, conjugue activités militaires (base aéronavale), tissu agricole viticole et zones d'activités sur les Aires de Vidauban. TPE artisans, PME viticoles, services logistiques, professions libérales et commerces de proximité dans un bassin tourné vers Le Luc et Vidauban. Axion-IA y intervient pour tous types d'activités.",
+    "Le Cannet-des-Maures (83), commune du massif des Maures sur l'axe A8 Provence-Côte d'Azur, conjugue activités militaires (base aéronavale), tissu agricole viticole et zones d'activités sur les Aires de Vidauban. TPE artisans, PME viticoles, services logistiques, professions libérales et commerces de proximité dans un bassin tourné vers Le Luc et Vidauban. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Cannet-des-Maures (83). Nous accompagnons TPE artisans, PME viticoles, services logistiques, professions libérales et commerces du Centre-Var et du massif des Maures. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LE_CANNET_DES_MAURES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Cannet-des-Maures : diagnostic adapté aux TPE artisans, PME viticoles, services logistiques, professions libérales et commerces du Centre-Var. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA au Cannet-des-Maures : diagnostic adapté aux TPE artisans, PME viticoles, services logistiques, professions libérales et commerces du Centre-Var. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA au Cannet-des-Maures : diagnostic adapté aux TPE artisans, PME viticoles, services logistiques, professions libérales et commerces du Centre-Var. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA au Cannet-des-Maures : diagnostic adapté aux TPE artisans, PME viticoles, services logistiques, professions libérales et commerces du Centre-Var. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site au Cannet-des-Maures : ateliers pour équipes TPE/PME, vignerons, logisticiens, artisans et professions libérales. Outils IA configurés métier réel, dans vos locaux.",
@@ -64,7 +64,7 @@ export const LE_CANNET_DES_MAURES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA au Cannet-des-Maures ?",
-      a: "Le Cannet-des-Maures est à 5 min du Luc et 25 min de Brignoles via A8. Nos consultants se déplacent dans vos locaux ou domaines. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Le Cannet-des-Maures est à 5 min du Luc et 25 min de Brignoles via A8. Nos consultants se déplacent dans vos locaux ou domaines. Frais de mission en sus, grille tarifaire publique.",
     },
   ],
 };

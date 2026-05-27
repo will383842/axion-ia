@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MARNAZ_COPY: VilleCopy = {
   pitchFr:
-    "Marnaz (74), commune de Haute-Savoie au cœur de la vallée de l'Arve, est un pôle majeur du décolletage et de la micromécanique à l'échelle mondiale. Tissu dense de TPE artisans usineurs, PME industrielles de précision, sous-traitants aéronautique et automobile. Axion-IA y intervient pour tous types d'activités de la vallée de l'Arve.",
+    "Marnaz (74), commune de Haute-Savoie au cœur de la vallée de l'Arve, est un pôle majeur du décolletage et de la micromécanique à l'échelle mondiale. Tissu dense de TPE artisans usineurs, PME industrielles de précision, sous-traitants aéronautique et automobile. Axion-IA opère pour toutes les structures économiques de la commune de la vallée de l'Arve.",
   pitchEn:
-    "Marnaz (74), commune de Haute-Savoie au cœur de la vallée de l'Arve, est un pôle majeur du décolletage et de la micromécanique à l'échelle mondiale. Tissu dense de TPE artisans usineurs, PME industrielles de précision, sous-traitants aéronautique et automobile. Axion-IA y intervient pour tous types d'activités de la vallée de l'Arve.",
+    "Marnaz (74), commune de Haute-Savoie au cœur de la vallée de l'Arve, est un pôle majeur du décolletage et de la micromécanique à l'échelle mondiale. Tissu dense de TPE artisans usineurs, PME industrielles de précision, sous-traitants aéronautique et automobile. Axion-IA opère pour toutes les structures économiques de la commune de la vallée de l'Arve.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marnaz (74). Nous accompagnons tous types d'activités : TPE artisans usineurs du décolletage, PME industrielles de précision, sous-traitants aéronautique et automobile, commerçants, indépendants et professions libérales de la vallée de l'Arve.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const MARNAZ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Marnaz : diagnostic adapté aux TPE artisans usineurs du décolletage, PME industrielles de précision, sous-traitants aéro et auto. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Marnaz : diagnostic adapté aux TPE artisans usineurs du décolletage, PME industrielles de précision, sous-traitants aéro et auto. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Marnaz : diagnostic adapté aux TPE artisans usineurs du décolletage, PME industrielles de précision, sous-traitants aéro et auto. ROI mesurable, audit Flash dès 490 € HT accessible.",
+      en: "Audit IA à Marnaz : diagnostic adapté aux TPE artisans usineurs du décolletage, PME industrielles de précision, sous-traitants aéro et auto. ROI mesurable, audit Flash dès 490 € HT accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Marnaz : formats adaptés à l'atelier d'usinage, ligne de production ou bureau d'études. Vos équipes repartent autonomes sur outils IA configurés métier.",

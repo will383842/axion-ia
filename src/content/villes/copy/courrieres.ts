@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const COURRIERES_COPY: VilleCopy = {
   pitchFr:
-    "Courrières (62), commune du bassin minier du Pas-de-Calais marquée par la catastrophe de 1906, s'est reconvertie vers les services, le commerce et l'artisanat. TPE, PME et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Courrières (62), commune du bassin minier du Pas-de-Calais marquée par la catastrophe de 1906, s'est reconvertie vers les services, le commerce et l'artisanat. TPE, PME et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Courrières (62), commune du bassin minier du Pas-de-Calais marquée par la catastrophe de 1906, s'est reconvertie vers les services, le commerce et l'artisanat. TPE, PME et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Courrières (62), commune du bassin minier du Pas-de-Calais marquée par la catastrophe de 1906, s'est reconvertie vers les services, le commerce et l'artisanat. TPE, PME et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Courrières (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier lensois. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:

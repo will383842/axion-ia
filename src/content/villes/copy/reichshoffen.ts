@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const REICHSHOFFEN_COPY: VilleCopy = {
   pitchFr:
-    "Reichshoffen (67), commune de 5 418 habitants au nord de l'Alsace, est un pôle industriel ferroviaire historique du Bas-Rhin. Constructeur ferroviaire de référence depuis le XIXe siècle. Tissu industrie ferroviaire et métallurgie, PME sous-traitants industriels, TPE artisans, commerces, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Reichshoffen (67), commune de 5 418 habitants au nord de l'Alsace, est un pôle industriel ferroviaire historique du Bas-Rhin. Constructeur ferroviaire de référence depuis le XIXe siècle. Tissu industrie ferroviaire et métallurgie, PME sous-traitants industriels, TPE artisans, commerces, services aux entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Reichshoffen (67), commune de 5 418 habitants au nord de l'Alsace, est un pôle industriel ferroviaire historique du Bas-Rhin. Constructeur ferroviaire de référence depuis le XIXe siècle. Tissu industrie ferroviaire et métallurgie, PME sous-traitants industriels, TPE artisans, commerces, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Reichshoffen (67), commune de 5 418 habitants au nord de l'Alsace, est un pôle industriel ferroviaire historique du Bas-Rhin. Constructeur ferroviaire de référence depuis le XIXe siècle. Tissu industrie ferroviaire et métallurgie, PME sous-traitants industriels, TPE artisans, commerces, services aux entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Reichshoffen (67). Nous accompagnons tous types d'activités : TPE/PME industrielles, sous-traitants ferroviaires et métallurgie, artisans, commerçants et services aux entreprises du nord de l'Alsace (Outre-Forêt).",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const REICHSHOFFEN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Reichshoffen : diagnostic adapté aux TPE/PME industrielles, sous-traitants ferroviaires et métallurgie, artisans et commerçants. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Reichshoffen : diagnostic adapté aux TPE/PME industrielles, sous-traitants ferroviaires et métallurgie, artisans et commerçants. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Reichshoffen : diagnostic adapté aux TPE/PME industrielles, sous-traitants ferroviaires et métallurgie, artisans et commerçants. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Reichshoffen : diagnostic adapté aux TPE/PME industrielles, sous-traitants ferroviaires et métallurgie, artisans et commerçants. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Reichshoffen : formats adaptés à l'industrie ferroviaire, atelier métallurgie, PME sous-traitante, commerce local. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Reichshoffen : formats adaptés à l'industrie ferroviaire, atelier métallurgie, PME sous-traitante, commerce local. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Reichshoffen : formats adaptés à l'industrie ferroviaire, atelier métallurgie, PME sous-traitante, commerce local. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Reichshoffen : formats adaptés à l'industrie ferroviaire, atelier métallurgie, PME sous-traitante, commerce local. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Reichshoffen : maintenance prédictive industrie ferroviaire, classification photos pièces métallurgie, automatisation devis sous-traitants, agents conversationnels SAV multilingue (DE/FR), optimisation supply chain.",

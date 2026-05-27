@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAULX_LES_CHARTREUX_COPY: VilleCopy = {
   pitchFr:
-    "Saulx-les-Chartreux (91), commune résidentielle de l'Essonne au sud de Longjumeau, conserve un patrimoine maraîcher historique. Tissu TPE artisans, exploitants maraîchers, commerces de proximité, PME services, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Saulx-les-Chartreux (91), commune résidentielle de l'Essonne au sud de Longjumeau, conserve un patrimoine maraîcher historique. Tissu TPE artisans, exploitants maraîchers, commerces de proximité, PME services, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Saulx-les-Chartreux (91), commune résidentielle de l'Essonne au sud de Longjumeau, conserve un patrimoine maraîcher historique. Tissu TPE artisans, exploitants maraîchers, commerces de proximité, PME services, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Saulx-les-Chartreux (91), commune résidentielle de l'Essonne au sud de Longjumeau, conserve un patrimoine maraîcher historique. Tissu TPE artisans, exploitants maraîchers, commerces de proximité, PME services, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saulx-les-Chartreux (91). Nous accompagnons TPE et PME : exploitants maraîchers, artisans BTP, commerces de proximité, professions libérales, PME services du sud Longjumeau. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const SAULX_LES_CHARTREUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saulx-les-Chartreux : diagnostic adapté aux exploitants maraîchers, artisans BTP, commerces, professions libérales, PME services. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saulx-les-Chartreux : diagnostic adapté aux exploitants maraîchers, artisans BTP, commerces, professions libérales, PME services. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saulx-les-Chartreux : diagnostic adapté aux exploitants maraîchers, artisans BTP, commerces, professions libérales, PME services. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Saulx-les-Chartreux : diagnostic adapté aux exploitants maraîchers, artisans BTP, commerces, professions libérales, PME services. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saulx-les-Chartreux : formats adaptés exploitation maraîchère, atelier artisan, cabinet libéral ou bureau PME. Vos équipes repartent autonomes.",

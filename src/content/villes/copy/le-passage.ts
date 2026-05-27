@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_PASSAGE_COPY: VilleCopy = {
   pitchFr:
-    "Le Passage (47), commune de 9 326 habitants dans le Lot-et-Garonne, fait partie de l'agglomération d'Agen dont elle est la première couronne sud. Ville résidentielle et commerciale, son économie repose sur un tissu de TPE artisans et commerçants, PME zones commerciales, services aux entreprises, professions libérales et santé. Axion-IA y intervient pour tous types d'activités.",
+    "Le Passage (47), commune de 9 326 habitants dans le Lot-et-Garonne, fait partie de l'agglomération d'Agen dont elle est la première couronne sud. Ville résidentielle et commerciale, son économie repose sur un tissu de TPE artisans et commerçants, PME zones commerciales, services aux entreprises, professions libérales et santé. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Le Passage (47), commune de 9 326 habitants dans le Lot-et-Garonne, fait partie de l'agglomération d'Agen dont elle est la première couronne sud. Ville résidentielle et commerciale, son économie repose sur un tissu de TPE artisans et commerçants, PME zones commerciales, services aux entreprises, professions libérales et santé. Axion-IA y intervient pour tous types d'activités.",
+    "Le Passage (47), commune de 9 326 habitants dans le Lot-et-Garonne, fait partie de l'agglomération d'Agen dont elle est la première couronne sud. Ville résidentielle et commerciale, son économie repose sur un tissu de TPE artisans et commerçants, PME zones commerciales, services aux entreprises, professions libérales et santé. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Passage (47). Nous accompagnons TPE et PME de l'agglomération d'Agen : commerçants zones commerciales, artisans, professions libérales, prestataires de services et entreprises du bassin agenais sud. Audit Flash dès 490 € HT.",
   directAnswerEn:

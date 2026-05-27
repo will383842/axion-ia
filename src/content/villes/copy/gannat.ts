@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GANNAT_COPY: VilleCopy = {
   pitchFr:
-    "Gannat (03), commune de la Limagne bourbonnaise dans l'Allier, est positionnée sur l'axe A71 Clermont-Paris. Tissu agricole (grandes cultures Limagne, élevage), PME tertiaires et industrielles, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités du Bourbonnais.",
+    "Gannat (03), commune de la Limagne bourbonnaise dans l'Allier, est positionnée sur l'axe A71 Clermont-Paris. Tissu agricole (grandes cultures Limagne, élevage), PME tertiaires et industrielles, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations du Bourbonnais.",
   pitchEn:
-    "Gannat (03), commune de la Limagne bourbonnaise dans l'Allier, est positionnée sur l'axe A71 Clermont-Paris. Tissu agricole (grandes cultures Limagne, élevage), PME tertiaires et industrielles, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités du Bourbonnais.",
+    "Gannat (03), commune de la Limagne bourbonnaise dans l'Allier, est positionnée sur l'axe A71 Clermont-Paris. Tissu agricole (grandes cultures Limagne, élevage), PME tertiaires et industrielles, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations du Bourbonnais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gannat (03). Nous accompagnons tous types d'activités : agriculteurs/éleveurs Limagne bourbonnaise, PME tertiaires et industrielles, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const GANNAT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gannat : diagnostic adapté aux agriculteurs/éleveurs Limagne, PME tertiaires/industrielles, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Gannat : diagnostic adapté aux agriculteurs/éleveurs Limagne, PME tertiaires/industrielles, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Gannat : diagnostic adapté aux agriculteurs/éleveurs Limagne, PME tertiaires/industrielles, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Gannat : diagnostic adapté aux agriculteurs/éleveurs Limagne, PME tertiaires/industrielles, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Gannat : formats adaptés à l'exploitation agricole, atelier, bureau, commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Gannat : formats adaptés à l'exploitation agricole, atelier, bureau, commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Gannat : formats adaptés à l'exploitation agricole, atelier, bureau, commerce. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Gannat : formats adaptés à l'exploitation agricole, atelier, bureau, commerce. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Gannat : prédiction récoltes Limagne, traçabilité élevage, classification photos cultures, automatisation workflow. Bourbonnais.",

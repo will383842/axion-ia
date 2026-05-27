@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BANDOL_COPY: VilleCopy = {
   pitchFr:
-    "Bandol (83), station balnéaire chic de la côte ouest-varoise, est mondialement réputée pour son vignoble AOC Bandol (rouges et rosés de garde) et son port de plaisance. Tissu de TPE viticulteurs, restaurateurs, hôteliers, professionnels du nautisme et PME du tourisme haut de gamme. Axion-IA y intervient pour tous types d'activités.",
+    "Bandol (83), station balnéaire chic de la côte ouest-varoise, est mondialement réputée pour son vignoble AOC Bandol (rouges et rosés de garde) et son port de plaisance. Tissu de TPE viticulteurs, restaurateurs, hôteliers, professionnels du nautisme et PME du tourisme haut de gamme. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Bandol (83), station balnéaire chic de la côte ouest-varoise, est mondialement réputée pour son vignoble AOC Bandol (rouges et rosés de garde) et son port de plaisance. Tissu de TPE viticulteurs, restaurateurs, hôteliers, professionnels du nautisme et PME du tourisme haut de gamme. Axion-IA y intervient pour tous types d'activités.",
+    "Bandol (83), station balnéaire chic de la côte ouest-varoise, est mondialement réputée pour son vignoble AOC Bandol (rouges et rosés de garde) et son port de plaisance. Tissu de TPE viticulteurs, restaurateurs, hôteliers, professionnels du nautisme et PME du tourisme haut de gamme. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bandol (83). Nous accompagnons TPE viticulteurs AOC Bandol, restaurateurs, hôteliers, professionnels du nautisme et PME du tourisme haut de gamme de la côte ouest-varoise. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const BANDOL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bandol : diagnostic adapté aux domaines AOC Bandol, restaurateurs, hôteliers et PME du tourisme haut de gamme. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Bandol : diagnostic adapté aux domaines AOC Bandol, restaurateurs, hôteliers et PME du tourisme haut de gamme. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Bandol : diagnostic adapté aux domaines AOC Bandol, restaurateurs, hôteliers et PME du tourisme haut de gamme. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Bandol : diagnostic adapté aux domaines AOC Bandol, restaurateurs, hôteliers et PME du tourisme haut de gamme. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bandol : ateliers pour vignerons AOC, restaurateurs gastronomiques, hôteliers et professionnels du nautisme. Outils IA configurés métier réel.",

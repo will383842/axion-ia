@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SENAS_COPY: VilleCopy = {
   pitchFr:
-    "Sénas (13), commune agricole et logistique en bordure de Durance sur l'axe A7, se situe entre Salon-de-Provence et Cavaillon. Tissu de TPE agricoles, transporteurs, artisans BTP, commerçants et PME logistique. Axion-IA y intervient pour tous types d'activités.",
+    "Sénas (13), commune agricole et logistique en bordure de Durance sur l'axe A7, se situe entre Salon-de-Provence et Cavaillon. Tissu de TPE agricoles, transporteurs, artisans BTP, commerçants et PME logistique. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Sénas (13), commune agricole et logistique en bordure de Durance sur l'axe A7, se situe entre Salon-de-Provence et Cavaillon. Tissu de TPE agricoles, transporteurs, artisans BTP, commerçants et PME logistique. Axion-IA y intervient pour tous types d'activités.",
+    "Sénas (13), commune agricole et logistique en bordure de Durance sur l'axe A7, se situe entre Salon-de-Provence et Cavaillon. Tissu de TPE agricoles, transporteurs, artisans BTP, commerçants et PME logistique. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sénas (13). Nous accompagnons TPE agricoles, artisans BTP, transporteurs, PME logistique et commerçants de la vallée de la Durance. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const SENAS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sénas : diagnostic adapté aux TPE agricoles, transporteurs, artisans BTP et PME logistique de la vallée de la Durance. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Sénas : diagnostic adapté aux TPE agricoles, transporteurs, artisans BTP et PME logistique de la vallée de la Durance. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Sénas : diagnostic adapté aux TPE agricoles, transporteurs, artisans BTP et PME logistique de la vallée de la Durance. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Sénas : diagnostic adapté aux TPE agricoles, transporteurs, artisans BTP et PME logistique de la vallée de la Durance. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sénas : ateliers pratiques pour équipes logistique, exploitants agricoles et artisans BTP. Outils IA configurés métier réel.",

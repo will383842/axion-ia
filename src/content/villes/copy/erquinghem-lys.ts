@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ERQUINGHEM_LYS_COPY: VilleCopy = {
   pitchFr:
-    "Erquinghem-Lys (59), commune des bords de la Lys dans l'agglomération d'Armentières, compte 5 341 habitants. Tissu TPE artisans, PME textiles et agroalimentaires, commerces de proximité, professions libérales et exploitations agricoles périurbaines. Axion-IA y intervient pour tous types d'activités.",
+    "Erquinghem-Lys (59), commune des bords de la Lys dans l'agglomération d'Armentières, compte 5 341 habitants. Tissu TPE artisans, PME textiles et agroalimentaires, commerces de proximité, professions libérales et exploitations agricoles périurbaines. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Erquinghem-Lys (59), commune des bords de la Lys dans l'agglomération d'Armentières, compte 5 341 habitants. Tissu TPE artisans, PME textiles et agroalimentaires, commerces de proximité, professions libérales et exploitations agricoles périurbaines. Axion-IA y intervient pour tous types d'activités.",
+    "Erquinghem-Lys (59), commune des bords de la Lys dans l'agglomération d'Armentières, compte 5 341 habitants. Tissu TPE artisans, PME textiles et agroalimentaires, commerces de proximité, professions libérales et exploitations agricoles périurbaines. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Erquinghem-Lys (59). Nous accompagnons tous types d'activités : TPE artisans, PME textiles et agroalimentaires héritées du val de Lys, commerçants, professions libérales, exploitants agricoles périurbains et services aux entreprises du bassin armentiérois.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const ERQUINGHEM_LYS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Erquinghem-Lys : diagnostic adapté aux TPE artisans, PME textiles et agroalimentaires, commerçants et professions libérales du val de Lys. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Erquinghem-Lys : diagnostic adapté aux TPE artisans, PME textiles et agroalimentaires, commerçants et professions libérales du val de Lys. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Erquinghem-Lys : diagnostic adapté aux TPE artisans, PME textiles et agroalimentaires, commerçants et professions libérales du val de Lys. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Erquinghem-Lys : diagnostic adapté aux TPE artisans, PME textiles et agroalimentaires, commerçants et professions libérales du val de Lys. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Erquinghem-Lys : formats adaptés à l'atelier, l'usine textile, l'exploitation agricole ou le cabinet. Vos équipes repartent avec des outils IA configurés métier.",

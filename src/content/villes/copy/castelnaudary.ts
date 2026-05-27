@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CASTELNAUDARY_COPY: VilleCopy = {
   pitchFr:
-    "Castelnaudary (11), capitale du cassoulet et du Lauragais dans l'Aude, est un bourg dynamique sur le canal du Midi (UNESCO). Tissu TPE artisans, PME agroalimentaire (cassoulet, conserverie), commerces, agriculture céréalière Lauragais, tourisme fluvial. Axion-IA y intervient pour tous types d'activités du Lauragais audois.",
+    "Castelnaudary (11), capitale du cassoulet et du Lauragais dans l'Aude, est un bourg dynamique sur le canal du Midi (UNESCO). Tissu TPE artisans, PME agroalimentaire (cassoulet, conserverie), commerces, agriculture céréalière Lauragais, tourisme fluvial. Axion-IA y déploie ses missions auprès de toutes les organisations du Lauragais audois.",
   pitchEn:
-    "Castelnaudary (11), capitale du cassoulet et du Lauragais dans l'Aude, est un bourg dynamique sur le canal du Midi (UNESCO). Tissu TPE artisans, PME agroalimentaire (cassoulet, conserverie), commerces, agriculture céréalière Lauragais, tourisme fluvial. Axion-IA y intervient pour tous types d'activités du Lauragais audois.",
+    "Castelnaudary (11), capitale du cassoulet et du Lauragais dans l'Aude, est un bourg dynamique sur le canal du Midi (UNESCO). Tissu TPE artisans, PME agroalimentaire (cassoulet, conserverie), commerces, agriculture céréalière Lauragais, tourisme fluvial. Axion-IA y déploie ses missions auprès de toutes les organisations du Lauragais audois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Castelnaudary (11), capitale du Lauragais audois. Nous accompagnons TPE artisans, PME agroalimentaire (cassoulet, conserverie), commerçants, agriculteurs céréaliers et acteurs du tourisme fluvial canal du Midi. Audit Flash dès 490 € HT.",
   directAnswerEn:

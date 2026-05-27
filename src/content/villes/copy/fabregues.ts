@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FABREGUES_COPY: VilleCopy = {
   pitchFr:
-    "Fabrègues (34), commune résidentielle du sud-ouest de l'agglomération de Montpellier, entre garrigue et littoral. Zones d'activités commerciales, accès A9/A750. Tissu TPE commerçants, PME services et logistique, artisans BTP, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Fabrègues (34), commune résidentielle du sud-ouest de l'agglomération de Montpellier, entre garrigue et littoral. Zones d'activités commerciales, accès A9/A750. Tissu TPE commerçants, PME services et logistique, artisans BTP, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Fabrègues (34), commune résidentielle du sud-ouest de l'agglomération de Montpellier, entre garrigue et littoral. Zones d'activités commerciales, accès A9/A750. Tissu TPE commerçants, PME services et logistique, artisans BTP, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Fabrègues (34), commune résidentielle du sud-ouest de l'agglomération de Montpellier, entre garrigue et littoral. Zones d'activités commerciales, accès A9/A750. Tissu TPE commerçants, PME services et logistique, artisans BTP, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fabrègues (34). Nous accompagnons TPE commerçants, PME services et logistique, artisans BTP, professions libérales et entreprises du sud-ouest montpelliérain.",
   directAnswerEn:

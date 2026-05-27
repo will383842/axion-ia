@@ -29,8 +29,8 @@ export const SAINT_CLEMENT_DE_RIVIERE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Clément-de-Rivière : diagnostic adapté aux professions libérales, cabinets médicaux, PME tertiaires, TPE artisans et commerçants du nord de Montpellier. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Clément-de-Rivière : diagnostic adapté aux professions libérales, cabinets médicaux, PME tertiaires, TPE artisans et commerçants du nord de Montpellier. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Clément-de-Rivière : diagnostic adapté aux professions libérales, cabinets médicaux, PME tertiaires, TPE artisans et commerçants du nord de Montpellier. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Saint-Clément-de-Rivière : diagnostic adapté aux professions libérales, cabinets médicaux, PME tertiaires, TPE artisans et commerçants du nord de Montpellier. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Clément-de-Rivière : formats adaptés aux cabinets conseil, structures de santé, PME ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",

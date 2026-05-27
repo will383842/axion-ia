@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MERU_COPY: VilleCopy = {
   pitchFr:
-    "Méru (60), chef-lieu du Pays de Thelle dans l'Oise, ville au riche héritage artisanal (nacre et tabletterie). Tissu TPE/PME artisanat, commerce de proximité, BTP, services, agriculture et logistique sur l'axe Paris–Beauvais. Axion-IA y intervient pour tous types d'activités.",
+    "Méru (60), chef-lieu du Pays de Thelle dans l'Oise, ville au riche héritage artisanal (nacre et tabletterie). Tissu TPE/PME artisanat, commerce de proximité, BTP, services, agriculture et logistique sur l'axe Paris–Beauvais. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Méru (60), chef-lieu du Pays de Thelle dans l'Oise, ville au riche héritage artisanal (nacre et tabletterie). Tissu TPE/PME artisanat, commerce de proximité, BTP, services, agriculture et logistique sur l'axe Paris–Beauvais. Axion-IA y intervient pour tous types d'activités.",
+    "Méru (60), chef-lieu du Pays de Thelle dans l'Oise, ville au riche héritage artisanal (nacre et tabletterie). Tissu TPE/PME artisanat, commerce de proximité, BTP, services, agriculture et logistique sur l'axe Paris–Beauvais. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Méru (60). Nous accompagnons tous types d'activités : TPE/PME artisanales et commerciales, entreprises BTP, exploitations agricoles, acteurs de la logistique et professions de services du Pays de Thelle. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -34,8 +34,8 @@ export const MERU_COPY: VilleCopy = {
       en: "Audit IA à Méru : diagnostic adapté aux TPE/PME artisanales, commerçants, entreprises BTP, agriculteurs et logisticiens du Pays de Thelle. ROI chiffré, Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Méru : formats adaptés à l'atelier artisanal, l'exploitation agricole, le commerce et le bureau. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Méru : formats adaptés à l'atelier artisanal, l'exploitation agricole, le commerce et le bureau. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Méru : formats adaptés à l'atelier artisanal, l'exploitation agricole, le commerce et le bureau. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Méru : formats adaptés à l'atelier artisanal, l'exploitation agricole, le commerce et le bureau. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Méru : automatisation artisanale, gestion stock commerce, planification agricole, traçabilité logistique, outils IA pour professions de services.",

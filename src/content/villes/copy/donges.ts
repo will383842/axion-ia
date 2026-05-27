@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const DONGES_COPY: VilleCopy = {
   pitchFr:
-    "Donges (44), commune de l'estuaire de la Loire en Loire-Atlantique, accueille la raffinerie TotalEnergies et un tissu de TPE artisans, PME industrielles, sous-traitants et commerces de proximité. Axion-IA y intervient pour tous types d'activités du bassin estuarien.",
+    "Donges (44), commune de l'estuaire de la Loire en Loire-Atlantique, accueille la raffinerie TotalEnergies et un tissu de TPE artisans, PME industrielles, sous-traitants et commerces de proximité. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin estuarien.",
   pitchEn:
-    "Donges (44), commune de l'estuaire de la Loire en Loire-Atlantique, accueille la raffinerie TotalEnergies et un tissu de TPE artisans, PME industrielles, sous-traitants et commerces de proximité. Axion-IA y intervient pour tous types d'activités du bassin estuarien.",
+    "Donges (44), commune de l'estuaire de la Loire en Loire-Atlantique, accueille la raffinerie TotalEnergies et un tissu de TPE artisans, PME industrielles, sous-traitants et commerces de proximité. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin estuarien.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Donges (44). Nous accompagnons les TPE artisans, PME industrielles et sous-traitantes, commerçants et prestataires de l'estuaire de la Loire sur leurs cas IA opérationnels. Audit Flash dès 490 € HT.",
   directAnswerEn:

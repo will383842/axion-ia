@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BLERE_COPY: VilleCopy = {
   pitchFr:
-    "Bléré (37), bourg de la vallée du Cher en Indre-et-Loire, est la porte d'entrée du château de Chenonceau. Viticulture AOC Touraine, maraîchage, artisanat, commerces et TPE/PME de services. Axion-IA y intervient pour tous types d'activités.",
+    "Bléré (37), bourg de la vallée du Cher en Indre-et-Loire, est la porte d'entrée du château de Chenonceau. Viticulture AOC Touraine, maraîchage, artisanat, commerces et TPE/PME de services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Bléré (37), bourg de la vallée du Cher en Indre-et-Loire, est la porte d'entrée du château de Chenonceau. Viticulture AOC Touraine, maraîchage, artisanat, commerces et TPE/PME de services. Axion-IA y intervient pour tous types d'activités.",
+    "Bléré (37), bourg de la vallée du Cher en Indre-et-Loire, est la porte d'entrée du château de Chenonceau. Viticulture AOC Touraine, maraîchage, artisanat, commerces et TPE/PME de services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bléré (37). Nous accompagnons tous types d'activités : acteurs du tourisme patrimonial (Chenonceau, châteaux de la Loire), viticulteurs AOC Touraine, maraîchers vallée du Cher, TPE artisans, commerçants, professions libérales et PME de services du sud-tourangeau.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const BLERE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bléré : diagnostic adapté aux acteurs touristiques (Chenonceau, hébergeurs), viticulteurs AOC Touraine, maraîchers, TPE artisans et commerçants du sud-tourangeau. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Bléré : diagnostic adapté aux acteurs touristiques (Chenonceau, hébergeurs), viticulteurs AOC Touraine, maraîchers, TPE artisans et commerçants du sud-tourangeau. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Bléré : diagnostic adapté aux acteurs touristiques (Chenonceau, hébergeurs), viticulteurs AOC Touraine, maraîchers, TPE artisans et commerçants du sud-tourangeau. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Bléré : diagnostic adapté aux acteurs touristiques (Chenonceau, hébergeurs), viticulteurs AOC Touraine, maraîchers, TPE artisans et commerçants du sud-tourangeau. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Bléré : formats adaptés au domaine viticole, exploitation maraîchère, hébergement touristique ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Bléré : formats adaptés au domaine viticole, exploitation maraîchère, hébergement touristique ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Bléré : formats adaptés au domaine viticole, exploitation maraîchère, hébergement touristique ou commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Bléré : formats adaptés au domaine viticole, exploitation maraîchère, hébergement touristique ou commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Bléré : agents conversationnels multilingues visiteurs, automatisation réservations hébergement, prédiction récoltes viticulture, classification avis clients tourisme. Adapté vallée du Cher.",
@@ -64,7 +64,7 @@ export const BLERE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Tours ?",
-      a: "Nos consultants interviennent depuis Tours centre (25 min). Accès direct A85 ou D976 vallée du Cher. Pour les multi-jours, hébergement local possible (gîtes vallée du Cher). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants interviennent depuis Tours centre (25 min). Accès direct A85 ou D976 vallée du Cher. Pour les multi-jours, hébergement local possible (gîtes vallée du Cher). Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

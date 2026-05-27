@@ -33,8 +33,8 @@ export const MONTCEAU_LES_MINES_COPY: VilleCopy = {
       en: "Audit IA à Montceau-les-Mines : diagnostic adapté aux TPE/PME industrielles du bassin montcellien, artisans, commerçants et professions de santé. Audit Flash 490 € HT, ROI chiffré, livrable sous 5 jours.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Montceau-les-Mines : formats adaptés à l'atelier industriel, commerce, organisme de formation, bureau. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Montceau-les-Mines : formats adaptés à l'atelier industriel, commerce, organisme de formation, bureau. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Montceau-les-Mines : formats adaptés à l'atelier industriel, commerce, organisme de formation, bureau. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Montceau-les-Mines : formats adaptés à l'atelier industriel, commerce, organisme de formation, bureau. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Montceau-les-Mines : prédiction maintenance industrielle, contrôle qualité vision, optimisation supply chain, automatisation devis BTP, agents conversationnels. Bassin montcellien.",

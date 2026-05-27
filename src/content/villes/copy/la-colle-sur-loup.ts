@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_COLLE_SUR_LOUP_COPY: VilleCopy = {
   pitchFr:
-    "La Colle-sur-Loup (06), dans l'arrière-pays de Saint-Paul-de-Vence entre Nice et Cannes, est une commune résidentielle et touristique traversée par le Loup. Tissu TPE/PME tourisme, artisanat, commerces, professions libérales et services aux entreprises du moyen-pays azuréen. Axion-IA y intervient pour tous types d'activités.",
+    "La Colle-sur-Loup (06), dans l'arrière-pays de Saint-Paul-de-Vence entre Nice et Cannes, est une commune résidentielle et touristique traversée par le Loup. Tissu TPE/PME tourisme, artisanat, commerces, professions libérales et services aux entreprises du moyen-pays azuréen. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "La Colle-sur-Loup (06), dans l'arrière-pays de Saint-Paul-de-Vence entre Nice et Cannes, est une commune résidentielle et touristique traversée par le Loup. Tissu TPE/PME tourisme, artisanat, commerces, professions libérales et services aux entreprises du moyen-pays azuréen. Axion-IA y intervient pour tous types d'activités.",
+    "La Colle-sur-Loup (06), dans l'arrière-pays de Saint-Paul-de-Vence entre Nice et Cannes, est une commune résidentielle et touristique traversée par le Loup. Tissu TPE/PME tourisme, artisanat, commerces, professions libérales et services aux entreprises du moyen-pays azuréen. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Colle-sur-Loup (06). Nous accompagnons tous types d'activités : TPE hôtellerie-restauration, artisans, commerçants, professions libérales, PME services et acteurs tourisme de l'arrière-pays Saint-Paul-de-Vence.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LA_COLLE_SUR_LOUP_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Colle-sur-Loup : diagnostic adapté aux TPE hôtellerie-restauration, artisans, commerçants et professions libérales de l'arrière-pays Saint-Paul-de-Vence. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
-      en: "Audit IA à La Colle-sur-Loup : diagnostic adapté aux TPE hôtellerie-restauration, artisans, commerçants et professions libérales de l'arrière-pays Saint-Paul-de-Vence. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
+      fr: "Audit IA à La Colle-sur-Loup : diagnostic adapté aux TPE hôtellerie-restauration, artisans, commerçants et professions libérales de l'arrière-pays Saint-Paul-de-Vence. Audit Flash 490 € HT avec ROI quantifié accessible aux petites structures.",
+      en: "Audit IA à La Colle-sur-Loup : diagnostic adapté aux TPE hôtellerie-restauration, artisans, commerçants et professions libérales de l'arrière-pays Saint-Paul-de-Vence. Audit Flash 490 € HT avec ROI quantifié accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Colle-sur-Loup : formats adaptés à l'hôtel, restaurant, atelier ou cabinet. Vos équipes repartent autonomes sur outils IA configurés métier tourisme et services.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VIAS_COPY: VilleCopy = {
   pitchFr:
-    "Vias (34), commune du littoral héraultais entre Agde et Béziers, célèbre pour Vias-Plage (campings, tourisme estival). Vignoble AOC Languedoc, agriculture. Tissu TPE commerçants saisonniers, PME hôtellerie campings, artisans, viticulteurs. Axion-IA y intervient pour tous types d'activités.",
+    "Vias (34), commune du littoral héraultais entre Agde et Béziers, célèbre pour Vias-Plage (campings, tourisme estival). Vignoble AOC Languedoc, agriculture. Tissu TPE commerçants saisonniers, PME hôtellerie campings, artisans, viticulteurs. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Vias (34), commune du littoral héraultais entre Agde et Béziers, célèbre pour Vias-Plage (campings, tourisme estival). Vignoble AOC Languedoc, agriculture. Tissu TPE commerçants saisonniers, PME hôtellerie campings, artisans, viticulteurs. Axion-IA y intervient pour tous types d'activités.",
+    "Vias (34), commune du littoral héraultais entre Agde et Béziers, célèbre pour Vias-Plage (campings, tourisme estival). Vignoble AOC Languedoc, agriculture. Tissu TPE commerçants saisonniers, PME hôtellerie campings, artisans, viticulteurs. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vias (34). Nous accompagnons TPE commerçants, PME campings et hôtellerie, viticulteurs, artisans et acteurs du tourisme balnéaire du littoral héraultais.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MONTIVILLIERS_COPY: VilleCopy = {
   pitchFr:
-    "Montivilliers (76), commune de l'agglomération du Havre en Seine-Maritime, est connue pour son abbaye fondée au VIIe siècle. Tissu TPE artisans, PME tertiaires et logistiques (proximité port du Havre), commerces, professions libérales. Axion-IA y intervient pour tous types d'activités de l'agglo havraise.",
+    "Montivilliers (76), commune de l'agglomération du Havre en Seine-Maritime, est connue pour son abbaye fondée au VIIe siècle. Tissu TPE artisans, PME tertiaires et logistiques (proximité port du Havre), commerces, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations de l'agglo havraise.",
   pitchEn:
-    "Montivilliers (76), commune de l'agglomération du Havre en Seine-Maritime, est connue pour son abbaye fondée au VIIe siècle. Tissu TPE artisans, PME tertiaires et logistiques (proximité port du Havre), commerces, professions libérales. Axion-IA y intervient pour tous types d'activités de l'agglo havraise.",
+    "Montivilliers (76), commune de l'agglomération du Havre en Seine-Maritime, est connue pour son abbaye fondée au VIIe siècle. Tissu TPE artisans, PME tertiaires et logistiques (proximité port du Havre), commerces, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations de l'agglo havraise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montivilliers (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires et logistiques de l'agglo havraise, professions libérales, services aux entreprises. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const MONTIVILLIERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montivilliers : diagnostic adapté aux TPE artisans, PME tertiaires/logistiques agglo havraise, professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Montivilliers : diagnostic adapté aux TPE artisans, PME tertiaires/logistiques agglo havraise, professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Montivilliers : diagnostic adapté aux TPE artisans, PME tertiaires/logistiques agglo havraise, professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Montivilliers : diagnostic adapté aux TPE artisans, PME tertiaires/logistiques agglo havraise, professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montivilliers : formats adaptés au bureau, entrepôt logistique, commerce. Vos équipes repartent autonomes sur outils IA.",

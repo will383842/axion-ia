@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const RAMONVILLE_SAINT_AGNE_COPY: VilleCopy = {
   pitchFr:
-    "Ramonville-Saint-Agne (31), commune du sud de Toulouse à proximité immédiate du campus universitaire Rangueil et du CNES, plus de 15 000 habitants. Tissu TPE innovantes, PME tech et spatial, startups, professions libérales. Axion-IA y intervient pour tous types d'activités du sud toulousain.",
+    "Ramonville-Saint-Agne (31), commune du sud de Toulouse à proximité immédiate du campus universitaire Rangueil et du CNES, plus de 15 000 habitants. Tissu TPE innovantes, PME tech et spatial, startups, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud toulousain.",
   pitchEn:
-    "Ramonville-Saint-Agne (31), commune du sud de Toulouse à proximité immédiate du campus universitaire Rangueil et du CNES, plus de 15 000 habitants. Tissu TPE innovantes, PME tech et spatial, startups, professions libérales. Axion-IA y intervient pour tous types d'activités du sud toulousain.",
+    "Ramonville-Saint-Agne (31), commune du sud de Toulouse à proximité immédiate du campus universitaire Rangueil et du CNES, plus de 15 000 habitants. Tissu TPE innovantes, PME tech et spatial, startups, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud toulousain.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ramonville-Saint-Agne (31). Nous accompagnons TPE innovantes, PME tech et spatial, startups, professions libérales et commerçants du sud de Toulouse. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const RAMONVILLE_SAINT_AGNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention sur site à Ramonville ?",
-      a: "Nos consultants se déplacent à Ramonville-Saint-Agne (12 min métro B). Intervention 1 journée minimum, format atelier pratique dans vos locaux. Vos équipes repartent autonomes.",
+      a: "Nos consultants se déplacent à Ramonville-Saint-Agne (12 min métro B). Intervention 1 journée minimum, format atelier pratique dans vos locaux. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     {
       q: "Accompagnez-vous les startups tech de Ramonville ?",

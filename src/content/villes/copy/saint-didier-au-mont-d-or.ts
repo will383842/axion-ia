@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_DIDIER_AU_MONT_D_OR_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Didier-au-Mont-d'Or (69), commune des monts d'Or en banlieue nord-ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position résidentielle prestigieuse en colline. Tissu PME tertiaires, professions libérales, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Didier-au-Mont-d'Or (69), commune des monts d'Or en banlieue nord-ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position résidentielle prestigieuse en colline. Tissu PME tertiaires, professions libérales, TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Saint-Didier-au-Mont-d'Or (69), commune des monts d'Or en banlieue nord-ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position résidentielle prestigieuse en colline. Tissu PME tertiaires, professions libérales, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Didier-au-Mont-d'Or (69), commune des monts d'Or en banlieue nord-ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position résidentielle prestigieuse en colline. Tissu PME tertiaires, professions libérales, TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Didier-au-Mont-d'Or (69). Nous accompagnons tous types d'activités : PME tertiaires monts d'Or lyonnais, professions libérales, TPE artisans BTP, commerçants, indépendants et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const SAINT_DIDIER_AU_MONT_D_OR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Didier-au-Mont-d'Or : diagnostic adapté aux PME tertiaires monts d'Or, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Didier-au-Mont-d'Or : diagnostic adapté aux PME tertiaires monts d'Or, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Didier-au-Mont-d'Or : diagnostic adapté aux PME tertiaires monts d'Or, professions libérales, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Saint-Didier-au-Mont-d'Or : diagnostic adapté aux PME tertiaires monts d'Or, professions libérales, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Didier-au-Mont-d'Or : formats adaptés au cabinet, bureau, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const SAINT_DIDIER_AU_MONT_D_OR_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (15 min). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (15 min). Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

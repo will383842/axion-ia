@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LONGUENEE_EN_ANJOU_COPY: VilleCopy = {
   pitchFr:
-    "Longuenée-en-Anjou (49), commune nouvelle au nord d'Angers, rassemble plus de 6 500 habitants dans un territoire semi-rural en croissance. Axion-IA y intervient pour tous types d'activités : agriculture, artisanat, commerces, PME tertiaires et services de proximité.",
+    "Longuenée-en-Anjou (49), commune nouvelle au nord d'Angers, rassemble plus de 6 500 habitants dans un territoire semi-rural en croissance. Axion-IA couvre l'ensemble des activités professionnelles présentes : agriculture, artisanat, commerces, PME tertiaires et services de proximité.",
   pitchEn:
-    "Longuenée-en-Anjou (49), commune nouvelle au nord d'Angers, rassemble plus de 6 500 habitants dans un territoire semi-rural en croissance. Axion-IA y intervient pour tous types d'activités : agriculture, artisanat, commerces, PME tertiaires et services de proximité.",
+    "Longuenée-en-Anjou (49), commune nouvelle au nord d'Angers, rassemble plus de 6 500 habitants dans un territoire semi-rural en croissance. Axion-IA couvre l'ensemble des activités professionnelles présentes : agriculture, artisanat, commerces, PME tertiaires et services de proximité.",
   directAnswerFr:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Longuenée-en-Anjou (49). Nous accompagnons les TPE, PME et exploitants agricoles du nord angevin dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
   directAnswerEn:

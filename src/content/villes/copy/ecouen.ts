@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ECOUEN_COPY: VilleCopy = {
   pitchFr:
-    "Écouen (95), commune du Val-d'Oise connue pour son château Renaissance abritant le Musée national de la Renaissance, à 19 km au nord de Paris. Tissu TPE artisans et commerces de proximité, PME de services, professions libérales, acteurs du tourisme culturel et structures associatives. Axion-IA y intervient pour tous types d'activités du nord valdoisien.",
+    "Écouen (95), commune du Val-d'Oise connue pour son château Renaissance abritant le Musée national de la Renaissance, à 19 km au nord de Paris. Tissu TPE artisans et commerces de proximité, PME de services, professions libérales, acteurs du tourisme culturel et structures associatives. Axion-IA couvre l'ensemble des activités professionnelles présentes du nord valdoisien.",
   pitchEn:
-    "Écouen (95), commune du Val-d'Oise connue pour son château Renaissance abritant le Musée national de la Renaissance, à 19 km au nord de Paris. Tissu TPE artisans et commerces de proximité, PME de services, professions libérales, acteurs du tourisme culturel et structures associatives. Axion-IA y intervient pour tous types d'activités du nord valdoisien.",
+    "Écouen (95), commune du Val-d'Oise connue pour son château Renaissance abritant le Musée national de la Renaissance, à 19 km au nord de Paris. Tissu TPE artisans et commerces de proximité, PME de services, professions libérales, acteurs du tourisme culturel et structures associatives. Axion-IA couvre l'ensemble des activités professionnelles présentes du nord valdoisien.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Écouen (95). Nous accompagnons tous types d'activités : TPE artisans et commerces, PME de services, professions libérales, acteurs du tourisme culturel et structures associatives du nord du Val-d'Oise. Audit Flash dès 490 € HT.",
   directAnswerEn:

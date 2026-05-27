@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_PRIEST_EN_JAREZ_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Priest-en-Jarez (42), commune en banlieue nord immédiate de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Tissu péri-urbain : PME tertiaires, santé (proximité hôpital régional), TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités du nord stéphanois.",
+    "Saint-Priest-en-Jarez (42), commune en banlieue nord immédiate de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Tissu péri-urbain : PME tertiaires, santé (proximité hôpital régional), TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs du nord stéphanois.",
   pitchEn:
-    "Saint-Priest-en-Jarez (42), commune en banlieue nord immédiate de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Tissu péri-urbain : PME tertiaires, santé (proximité hôpital régional), TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités du nord stéphanois.",
+    "Saint-Priest-en-Jarez (42), commune en banlieue nord immédiate de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Tissu péri-urbain : PME tertiaires, santé (proximité hôpital régional), TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs du nord stéphanois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Priest-en-Jarez (42). Nous accompagnons tous types d'activités : PME tertiaires Saint-Étienne Métropole, professionnels santé (à proximité hôpital régional), TPE artisans BTP, commerçants, indépendants et services aux entreprises de la banlieue nord stéphanoise.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const SAINT_PRIEST_EN_JAREZ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Priest-en-Jarez : diagnostic adapté aux professionnels santé, PME tertiaires Saint-Étienne Métropole, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Priest-en-Jarez : diagnostic adapté aux professionnels santé, PME tertiaires Saint-Étienne Métropole, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Priest-en-Jarez : diagnostic adapté aux professionnels santé, PME tertiaires Saint-Étienne Métropole, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Saint-Priest-en-Jarez : diagnostic adapté aux professionnels santé, PME tertiaires Saint-Étienne Métropole, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Priest-en-Jarez : formats adaptés au cabinet médical/santé, bureau tertiaire, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Saint-Priest-en-Jarez : formats adaptés au cabinet médical/santé, bureau tertiaire, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Saint-Priest-en-Jarez : formats adaptés au cabinet médical/santé, bureau tertiaire, commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Saint-Priest-en-Jarez : formats adaptés au cabinet médical/santé, bureau tertiaire, commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Priest-en-Jarez : agents conversationnels patient (RGPD-santé strict), automatisation gestion RDV, classification dossiers médicaux, CRM augmentés.",
@@ -64,7 +64,7 @@ export const SAINT_PRIEST_EN_JAREZ_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",
-      a: "Nos consultants viennent de Lyon (50 min) ou Saint-Étienne (10 min). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (50 min) ou Saint-Étienne (10 min). Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

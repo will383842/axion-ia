@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const N_UX_LES_MINES_COPY: VilleCopy = {
   pitchFr:
-    "Nœux-les-Mines (62), commune du Pas-de-Calais dans l'agglomération de Béthune (région Hauts-de-France), est issue du bassin minier reconverti inscrit UNESCO. Connue pour son stade nautique Loisinord (unique piste de ski synthétique du nord de la France). Tissu TPE artisanat BTP et services, PME industrie reconvertie, commerces de proximité, acteurs du tourisme sportif. Axion-IA y intervient pour tous types d'activités.",
+    "Nœux-les-Mines (62), commune du Pas-de-Calais dans l'agglomération de Béthune (région Hauts-de-France), est issue du bassin minier reconverti inscrit UNESCO. Connue pour son stade nautique Loisinord (unique piste de ski synthétique du nord de la France). Tissu TPE artisanat BTP et services, PME industrie reconvertie, commerces de proximité, acteurs du tourisme sportif. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Nœux-les-Mines (62), commune du Pas-de-Calais dans l'agglomération de Béthune (région Hauts-de-France), est issue du bassin minier reconverti inscrit UNESCO. Connue pour son stade nautique Loisinord (unique piste de ski synthétique du nord de la France). Tissu TPE artisanat BTP et services, PME industrie reconvertie, commerces de proximité, acteurs du tourisme sportif. Axion-IA y intervient pour tous types d'activités.",
+    "Nœux-les-Mines (62), commune du Pas-de-Calais dans l'agglomération de Béthune (région Hauts-de-France), est issue du bassin minier reconverti inscrit UNESCO. Connue pour son stade nautique Loisinord (unique piste de ski synthétique du nord de la France). Tissu TPE artisanat BTP et services, PME industrie reconvertie, commerces de proximité, acteurs du tourisme sportif. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nœux-les-Mines (62). Nous accompagnons tous types d'activités : TPE artisans BTP et services du bassin minier reconverti, PME industrie et sous-traitance, commerçants de proximité, acteurs du tourisme sportif (Loisinord), prestataires de l'agglomération béthunoise.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const N_UX_LES_MINES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Nœux-les-Mines : diagnostic adapté aux TPE artisans BTP, PME industrie reconvertie, commerçants, acteurs tourisme sportif de l'agglo béthunoise. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Nœux-les-Mines : diagnostic adapté aux TPE artisans BTP, PME industrie reconvertie, commerçants, acteurs tourisme sportif de l'agglo béthunoise. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Nœux-les-Mines : diagnostic adapté aux TPE artisans BTP, PME industrie reconvertie, commerçants, acteurs tourisme sportif de l'agglo béthunoise. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Nœux-les-Mines : diagnostic adapté aux TPE artisans BTP, PME industrie reconvertie, commerçants, acteurs tourisme sportif de l'agglo béthunoise. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Nœux-les-Mines : formats adaptés à l'atelier BTP, l'usine reconvertie, le commerce, la structure de loisirs. Vos équipes repartent autonomes sur les outils IA.",
@@ -64,7 +64,7 @@ export const N_UX_LES_MINES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Nœux-les-Mines depuis Lille ?",
-      a: "Nos consultants viennent de Lille (35 min A26/A1) ou Lens (15 min). Béthune est à 10 min. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lille (35 min A26/A1) ou Lens (15 min). Béthune est à 10 min. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

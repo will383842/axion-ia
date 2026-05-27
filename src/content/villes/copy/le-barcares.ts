@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_BARCARES_COPY: VilleCopy = {
   pitchFr:
-    "Le Barcarès (66), station balnéaire méditerranéenne célèbre pour le Lydia (seul paquebot ensablé au monde), fait partie de la Communauté de communes Perpignan Méditerranée Métropole. Tissu TPE tourisme, PME hôtellerie-restauration, commerces saisonniers, activités nautiques. Axion-IA y intervient pour tous types d'activités du littoral nord catalan.",
+    "Le Barcarès (66), station balnéaire méditerranéenne célèbre pour le Lydia (seul paquebot ensablé au monde), fait partie de la Communauté de communes Perpignan Méditerranée Métropole. Tissu TPE tourisme, PME hôtellerie-restauration, commerces saisonniers, activités nautiques. Axion-IA y déploie ses missions auprès de toutes les organisations du littoral nord catalan.",
   pitchEn:
-    "Le Barcarès (66), station balnéaire méditerranéenne célèbre pour le Lydia (seul paquebot ensablé au monde), fait partie de la Communauté de communes Perpignan Méditerranée Métropole. Tissu TPE tourisme, PME hôtellerie-restauration, commerces saisonniers, activités nautiques. Axion-IA y intervient pour tous types d'activités du littoral nord catalan.",
+    "Le Barcarès (66), station balnéaire méditerranéenne célèbre pour le Lydia (seul paquebot ensablé au monde), fait partie de la Communauté de communes Perpignan Méditerranée Métropole. Tissu TPE tourisme, PME hôtellerie-restauration, commerces saisonniers, activités nautiques. Axion-IA y déploie ses missions auprès de toutes les organisations du littoral nord catalan.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Barcarès (66). Nous accompagnons tous types d'activités : TPE tourisme balnéaire, PME hôtellerie-restauration, commerces saisonniers, activités nautiques, indépendants et professions libérales du littoral nord catalan.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const LE_BARCARES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Barcarès : diagnostic adapté aux TPE tourisme, PME campings-hôtellerie, commerces saisonniers et activités nautiques du littoral nord catalan. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA au Barcarès : diagnostic adapté aux TPE tourisme, PME campings-hôtellerie, commerces saisonniers et activités nautiques du littoral nord catalan. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA au Barcarès : diagnostic adapté aux TPE tourisme, PME campings-hôtellerie, commerces saisonniers et activités nautiques du littoral nord catalan. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA au Barcarès : diagnostic adapté aux TPE tourisme, PME campings-hôtellerie, commerces saisonniers et activités nautiques du littoral nord catalan. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
-      fr: "Interventions IA sur site au Barcarès : formats adaptés au camping, hôtel, restaurant, école nautique, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site au Barcarès : formats adaptés au camping, hôtel, restaurant, école nautique, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site au Barcarès : formats adaptés au camping, hôtel, restaurant, école nautique, commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site au Barcarès : formats adaptés au camping, hôtel, restaurant, école nautique, commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA au Barcarès : yield management campings/résidences, chatbots réservation multilingues, prédiction affluence saisonnière, gestion école nautique. Littoral nord catalan.",
@@ -64,7 +64,7 @@ export const LE_BARCARES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission au Barcarès ?",
-      a: "Nos consultants interviennent depuis Perpignan (20 min). Missions sur site dans votre établissement, camping ou commerce. Visio possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants interviennent depuis Perpignan (20 min). Missions sur site dans votre établissement, camping ou commerce. Visio possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

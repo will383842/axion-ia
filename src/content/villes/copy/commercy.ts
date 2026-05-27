@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const COMMERCY_COPY: VilleCopy = {
   pitchFr:
-    "Commercy (55), ville des bords de Meuse mondialement connue pour ses madeleines et son château Stanislas, conjugue patrimoine ducal, savoir-faire pâtissier et tissu industriel local. Tissu de TPE/PME agroalimentaire, commerce, artisanat, tourisme patrimonial et services. Axion-IA y intervient pour tous types d'activités.",
+    "Commercy (55), ville des bords de Meuse mondialement connue pour ses madeleines et son château Stanislas, conjugue patrimoine ducal, savoir-faire pâtissier et tissu industriel local. Tissu de TPE/PME agroalimentaire, commerce, artisanat, tourisme patrimonial et services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Commercy (55), ville des bords de Meuse mondialement connue pour ses madeleines et son château Stanislas, conjugue patrimoine ducal, savoir-faire pâtissier et tissu industriel local. Tissu de TPE/PME agroalimentaire, commerce, artisanat, tourisme patrimonial et services. Axion-IA y intervient pour tous types d'activités.",
+    "Commercy (55), ville des bords de Meuse mondialement connue pour ses madeleines et son château Stanislas, conjugue patrimoine ducal, savoir-faire pâtissier et tissu industriel local. Tissu de TPE/PME agroalimentaire, commerce, artisanat, tourisme patrimonial et services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Commercy (55). Nous accompagnons TPE et PME : pâtissiers et artisans agroalimentaires, commerçants, restaurateurs, artisans et prestataires de services de la Meuse. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const COMMERCY_COPY: VilleCopy = {
       en: "Audit IA à Commercy : diagnostic adapté aux pâtissiers et artisans agroalimentaires, commerçants, restaurateurs, artisans et prestataires de services de la Meuse. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Commercy : formats adaptés à la pâtisserie artisanale, au commerce, au restaurant ou à la TPE artisanale. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Commercy : formats adaptés à la pâtisserie artisanale, au commerce, au restaurant ou à la TPE artisanale. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Commercy : formats adaptés à la pâtisserie artisanale, au commerce, au restaurant ou à la TPE artisanale. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Commercy : formats adaptés à la pâtisserie artisanale, au commerce, au restaurant ou à la TPE artisanale. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Commercy : automatisation e-commerce madeleines et produits artisanaux, gestion stocks et expéditions, CRM touristique patrimonial, agents conversationnels accueil clients pour TPE/PME meusiennes.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CROLLES_COPY: VilleCopy = {
   pitchFr:
-    "Crolles (38), petite ville de la vallée du Grésivaudan en Isère, abrite un tissu industriel microélectronique majeur en périphérie nord-est de Grenoble. Présence d'industries high-tech, TPE artisans BTP, commerces, agriculture résiduelle. Axion-IA y intervient pour tous types d'activités du Grésivaudan.",
+    "Crolles (38), petite ville de la vallée du Grésivaudan en Isère, abrite un tissu industriel microélectronique majeur en périphérie nord-est de Grenoble. Présence d'industries high-tech, TPE artisans BTP, commerces, agriculture résiduelle. Axion-IA y déploie ses missions auprès de toutes les organisations du Grésivaudan.",
   pitchEn:
-    "Crolles (38), petite ville de la vallée du Grésivaudan en Isère, abrite un tissu industriel microélectronique majeur en périphérie nord-est de Grenoble. Présence d'industries high-tech, TPE artisans BTP, commerces, agriculture résiduelle. Axion-IA y intervient pour tous types d'activités du Grésivaudan.",
+    "Crolles (38), petite ville de la vallée du Grésivaudan en Isère, abrite un tissu industriel microélectronique majeur en périphérie nord-est de Grenoble. Présence d'industries high-tech, TPE artisans BTP, commerces, agriculture résiduelle. Axion-IA y déploie ses missions auprès de toutes les organisations du Grésivaudan.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Crolles (38). Nous accompagnons tous types d'activités : industriels microélectroniques et sous-traitants tech du Grésivaudan, TPE artisans BTP, commerçants, indépendants, professions libérales, PME tertiaires et agriculteurs de la vallée du Grésivaudan.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const CROLLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Crolles : diagnostic adapté aux industriels microélectroniques du Grésivaudan, sous-traitants tech, TPE artisans et PME tertiaires. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Crolles : diagnostic adapté aux industriels microélectroniques du Grésivaudan, sous-traitants tech, TPE artisans et PME tertiaires. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Crolles : diagnostic adapté aux industriels microélectroniques du Grésivaudan, sous-traitants tech, TPE artisans et PME tertiaires. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
+      en: "Audit IA à Crolles : diagnostic adapté aux industriels microélectroniques du Grésivaudan, sous-traitants tech, TPE artisans et PME tertiaires. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Crolles : formats adaptés à l'atelier industriel high-tech (avec exigences confidentialité), PME tech ou TPE artisan. Vos équipes repartent autonomes sur outils IA métier.",

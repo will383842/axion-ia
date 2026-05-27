@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_MESNIL_SAINT_DENIS_COPY: VilleCopy = {
   pitchFr:
-    "Le Mesnil-Saint-Denis (78), commune résidentielle verdoyante à 28 km au sud-ouest de Paris dans les Yvelines, accueille TPE artisans, PME de services, commerces de proximité, professions libérales et prestataires IT. Axion-IA y intervient pour tous types d'activités du sud Yvelines.",
+    "Le Mesnil-Saint-Denis (78), commune résidentielle verdoyante à 28 km au sud-ouest de Paris dans les Yvelines, accueille TPE artisans, PME de services, commerces de proximité, professions libérales et prestataires IT. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud Yvelines.",
   pitchEn:
-    "Le Mesnil-Saint-Denis (78), commune résidentielle verdoyante à 28 km au sud-ouest de Paris dans les Yvelines, accueille TPE artisans, PME de services, commerces de proximité, professions libérales et prestataires IT. Axion-IA y intervient pour tous types d'activités du sud Yvelines.",
+    "Le Mesnil-Saint-Denis (78), commune résidentielle verdoyante à 28 km au sud-ouest de Paris dans les Yvelines, accueille TPE artisans, PME de services, commerces de proximité, professions libérales et prestataires IT. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud Yvelines.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Mesnil-Saint-Denis (78). Nous accompagnons TPE et PME : prestataires IT sud Yvelines, artisans du bâtiment, commerces de centre-ville, professions libérales et PME de services de cette commune résidentielle entre Trappes et Chevreuse.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const LE_MESNIL_SAINT_DENIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Mesnil-Saint-Denis : diagnostic adapté aux PME IT, TPE artisans, commerces et professions libérales du sud Yvelines. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA au Mesnil-Saint-Denis : diagnostic adapté aux PME IT, TPE artisans, commerces et professions libérales du sud Yvelines. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA au Mesnil-Saint-Denis : diagnostic adapté aux PME IT, TPE artisans, commerces et professions libérales du sud Yvelines. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA au Mesnil-Saint-Denis : diagnostic adapté aux PME IT, TPE artisans, commerces et professions libérales du sud Yvelines. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site au Mesnil-Saint-Denis : formats adaptés au bureau IT, à l'atelier artisan, au commerce ou au cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site au Mesnil-Saint-Denis : formats adaptés au bureau IT, à l'atelier artisan, au commerce ou au cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site au Mesnil-Saint-Denis : formats adaptés au bureau IT, à l'atelier artisan, au commerce ou au cabinet libéral. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site au Mesnil-Saint-Denis : formats adaptés au bureau IT, à l'atelier artisan, au commerce ou au cabinet libéral. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA au Mesnil-Saint-Denis : automatisation workflows IT, agents conversationnels clients, CRM augmenté PME, gestion documentaire cabinets, planification artisans sud Yvelines.",

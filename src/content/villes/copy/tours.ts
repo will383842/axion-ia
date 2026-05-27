@@ -55,6 +55,8 @@ export const TOURS_COPY: VilleCopy = {
   directAnswerEn:
     "Axion-IA is a senior AI architects consultancy that intervenes in Tours (37) on site across Tours Métropole businesses. We support micro-businesses, SMEs, mid-caps and large enterprises in Tours — industry (STMicro, SKF, Michelin, Hutchinson), services, energy (S2E2 pole), agrifood and Val de Loire wine — on their concrete AI use cases: costed diagnosis, demos on your real data, actionable plan. No tech lock-in, your teams stay in control.",
 
+  seoHook: "viticole, pharma & patrimoine",
+
   topSectorsNaf: [
     "Industrie manufacturière & semi-conducteurs",
     "Énergie & Smart Electricity (S2E2)",

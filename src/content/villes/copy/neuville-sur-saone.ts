@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const NEUVILLE_SUR_SAONE_COPY: VilleCopy = {
   pitchFr:
-    "Neuville-sur-Saône (69), commune du val de Saône nord dans le Rhône, est intégrée à la Métropole de Lyon. Position péri-urbaine nord : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités du nord lyonnais.",
+    "Neuville-sur-Saône (69), commune du val de Saône nord dans le Rhône, est intégrée à la Métropole de Lyon. Position péri-urbaine nord : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune du nord lyonnais.",
   pitchEn:
-    "Neuville-sur-Saône (69), commune du val de Saône nord dans le Rhône, est intégrée à la Métropole de Lyon. Position péri-urbaine nord : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités du nord lyonnais.",
+    "Neuville-sur-Saône (69), commune du val de Saône nord dans le Rhône, est intégrée à la Métropole de Lyon. Position péri-urbaine nord : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune du nord lyonnais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Neuville-sur-Saône (69). Nous accompagnons tous types d'activités : PME tertiaires nord lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const NEUVILLE_SUR_SAONE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Neuville-sur-Saône : diagnostic adapté aux PME tertiaires nord lyonnais, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Neuville-sur-Saône : diagnostic adapté aux PME tertiaires nord lyonnais, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Neuville-sur-Saône : diagnostic adapté aux PME tertiaires nord lyonnais, professions libérales, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Neuville-sur-Saône : diagnostic adapté aux PME tertiaires nord lyonnais, professions libérales, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Neuville-sur-Saône : formats adaptés au bureau, cabinet, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const NEUVILLE_SUR_SAONE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (20 min). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (20 min). Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

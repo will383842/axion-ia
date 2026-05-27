@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_CADIERE_D_AZUR_COPY: VilleCopy = {
   pitchFr:
-    "La Cadière-d'Azur (83), village perché du sud-Var au cœur du vignoble AOC Bandol, est reconnue pour ses domaines viticoles prestigieux, son patrimoine provençal et sa proximité avec la mer. Tissu de TPE viticulteurs Bandol, restaurateurs, hôteliers, oléiculteurs, artisans et PME tourisme premium et services. Axion-IA y intervient pour tous types d'activités.",
+    "La Cadière-d'Azur (83), village perché du sud-Var au cœur du vignoble AOC Bandol, est reconnue pour ses domaines viticoles prestigieux, son patrimoine provençal et sa proximité avec la mer. Tissu de TPE viticulteurs Bandol, restaurateurs, hôteliers, oléiculteurs, artisans et PME tourisme premium et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "La Cadière-d'Azur (83), village perché du sud-Var au cœur du vignoble AOC Bandol, est reconnue pour ses domaines viticoles prestigieux, son patrimoine provençal et sa proximité avec la mer. Tissu de TPE viticulteurs Bandol, restaurateurs, hôteliers, oléiculteurs, artisans et PME tourisme premium et services. Axion-IA y intervient pour tous types d'activités.",
+    "La Cadière-d'Azur (83), village perché du sud-Var au cœur du vignoble AOC Bandol, est reconnue pour ses domaines viticoles prestigieux, son patrimoine provençal et sa proximité avec la mer. Tissu de TPE viticulteurs Bandol, restaurateurs, hôteliers, oléiculteurs, artisans et PME tourisme premium et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Cadière-d'Azur (83). Nous accompagnons TPE viticulteurs AOC Bandol, oléiculteurs, restaurateurs, hôteliers, artisans et PME du tourisme premium et des services du sud-Var. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LA_CADIERE_D_AZUR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Cadière-d'Azur : diagnostic adapté aux domaines viticoles AOC Bandol, oléiculteurs, hôtels et restaurants premium du sud-Var. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à La Cadière-d'Azur : diagnostic adapté aux domaines viticoles AOC Bandol, oléiculteurs, hôtels et restaurants premium du sud-Var. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à La Cadière-d'Azur : diagnostic adapté aux domaines viticoles AOC Bandol, oléiculteurs, hôtels et restaurants premium du sud-Var. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à La Cadière-d'Azur : diagnostic adapté aux domaines viticoles AOC Bandol, oléiculteurs, hôtels et restaurants premium du sud-Var. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Cadière-d'Azur : ateliers pour viticulteurs Bandol, hôteliers, restaurateurs, oléiculteurs et artisans. Outils IA configurés métier réel premium.",

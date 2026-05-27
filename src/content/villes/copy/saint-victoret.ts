@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_VICTORET_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Victoret (13), commune riveraine de l'aéroport Marseille-Provence, bénéficie d'un tissu d'entreprises liées à l'aéroportuaire, à la logistique et aux services. TPE artisans, PME transport et logistique, prestataires aéroportuaires, commerçants. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Victoret (13), commune riveraine de l'aéroport Marseille-Provence, bénéficie d'un tissu d'entreprises liées à l'aéroportuaire, à la logistique et aux services. TPE artisans, PME transport et logistique, prestataires aéroportuaires, commerçants. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Saint-Victoret (13), commune riveraine de l'aéroport Marseille-Provence, bénéficie d'un tissu d'entreprises liées à l'aéroportuaire, à la logistique et aux services. TPE artisans, PME transport et logistique, prestataires aéroportuaires, commerçants. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Victoret (13), commune riveraine de l'aéroport Marseille-Provence, bénéficie d'un tissu d'entreprises liées à l'aéroportuaire, à la logistique et aux services. TPE artisans, PME transport et logistique, prestataires aéroportuaires, commerçants. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Victoret (13). Nous accompagnons TPE artisans, PME de logistique aéroportuaire, prestataires de services, commerçants et entreprises de la zone Marseille-Provence. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -64,7 +64,7 @@ export const SAINT_VICTORET_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Saint-Victoret ?",
-      a: "Saint-Victoret est à 5 min de l'aéroport et 25 min de Marseille par A55. Nos consultants se déplacent dans vos locaux. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Saint-Victoret est à 5 min de l'aéroport et 25 min de Marseille par A55. Nos consultants se déplacent dans vos locaux. Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

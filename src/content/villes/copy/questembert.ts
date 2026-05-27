@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const QUESTEMBERT_COPY: VilleCopy = {
   pitchFr:
-    "Questembert (56), bourg du pays vannetais célèbre pour ses halles classées du XVe siècle, accueille un tissu de TPE/PME tertiaires, artisans BTP, commerces, professions libérales et entreprises agricoles, agroalimentaires et touristiques du Morbihan rural. Axion-IA y intervient pour tous types d'activités du pays de Vannes.",
+    "Questembert (56), bourg du pays vannetais célèbre pour ses halles classées du XVe siècle, accueille un tissu de TPE/PME tertiaires, artisans BTP, commerces, professions libérales et entreprises agricoles, agroalimentaires et touristiques du Morbihan rural. Axion-IA opère pour toutes les structures économiques de la commune du pays de Vannes.",
   pitchEn:
-    "Questembert (56), bourg du pays vannetais célèbre pour ses halles classées du XVe siècle, accueille un tissu de TPE/PME tertiaires, artisans BTP, commerces, professions libérales et entreprises agricoles, agroalimentaires et touristiques du Morbihan rural. Axion-IA y intervient pour tous types d'activités du pays de Vannes.",
+    "Questembert (56), bourg du pays vannetais célèbre pour ses halles classées du XVe siècle, accueille un tissu de TPE/PME tertiaires, artisans BTP, commerces, professions libérales et entreprises agricoles, agroalimentaires et touristiques du Morbihan rural. Axion-IA opère pour toutes les structures économiques de la commune du pays de Vannes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Questembert (56). Nous accompagnons TPE et PME : artisans BTP, commerçants du bourg, professions libérales, exploitations agricoles, PME agroalimentaires et entreprises touristiques du pays vannetais.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const QUESTEMBERT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Questembert : diagnostic adapté aux TPE artisans BTP, commerçants du bourg, professions libérales, exploitations agricoles et PME agroalimentaires du pays vannetais. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Questembert : diagnostic adapté aux TPE artisans BTP, commerçants du bourg, professions libérales, exploitations agricoles et PME agroalimentaires du pays vannetais. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Questembert : diagnostic adapté aux TPE artisans BTP, commerçants du bourg, professions libérales, exploitations agricoles et PME agroalimentaires du pays vannetais. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Questembert : diagnostic adapté aux TPE artisans BTP, commerçants du bourg, professions libérales, exploitations agricoles et PME agroalimentaires du pays vannetais. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Questembert : formats adaptés aux TPE/PME du pays vannetais, artisans BTP, cabinets libéraux, commerces et entreprises agroalimentaires. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Questembert : formats adaptés aux TPE/PME du pays vannetais, artisans BTP, cabinets libéraux, commerces et entreprises agroalimentaires. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Questembert : formats adaptés aux TPE/PME du pays vannetais, artisans BTP, cabinets libéraux, commerces et entreprises agroalimentaires. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Questembert : formats adaptés aux TPE/PME du pays vannetais, artisans BTP, cabinets libéraux, commerces et entreprises agroalimentaires. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Questembert : agents conversationnels accueil commerce, automatisation gestion devis BTP, CRM augmenté, outils IA traçabilité agroalimentaire, gestion administrative cabinets libéraux et exploitations agricoles.",

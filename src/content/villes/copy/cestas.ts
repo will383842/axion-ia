@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CESTAS_COPY: VilleCopy = {
   pitchFr:
-    "Cestas (33), commune au sud-ouest de Bordeaux Métropole en lisière de la forêt des Landes, abrite le technopôle Bordeaux-Cestas (laser, photonique, numérique) et un tissu dynamique de TPE/PME. Axion-IA y intervient pour tous types d'activités : startups tech, PME industrielles, artisans, commerces et professions libérales.",
+    "Cestas (33), commune au sud-ouest de Bordeaux Métropole en lisière de la forêt des Landes, abrite le technopôle Bordeaux-Cestas (laser, photonique, numérique) et un tissu dynamique de TPE/PME. Axion-IA opère pour toutes les structures économiques de la commune : startups tech, PME industrielles, artisans, commerces et professions libérales.",
   pitchEn:
-    "Cestas (33), commune au sud-ouest de Bordeaux Métropole en lisière de la forêt des Landes, abrite le technopôle Bordeaux-Cestas (laser, photonique, numérique) et un tissu dynamique de TPE/PME. Axion-IA y intervient pour tous types d'activités : startups tech, PME industrielles, artisans, commerces et professions libérales.",
+    "Cestas (33), commune au sud-ouest de Bordeaux Métropole en lisière de la forêt des Landes, abrite le technopôle Bordeaux-Cestas (laser, photonique, numérique) et un tissu dynamique de TPE/PME. Axion-IA opère pour toutes les structures économiques de la commune : startups tech, PME industrielles, artisans, commerces et professions libérales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cestas (33). Nous accompagnons TPE et PME du technopôle Bordeaux-Cestas et du bassin sud-ouest bordelais : entreprises tech (laser, photonique), PME industrielles, artisans, commerçants et professions libérales. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const CESTAS_COPY: VilleCopy = {
       en: "Audit IA à Cestas : diagnostic pour startups tech du technopôle, PME industrielles, TPE artisans et commerces du sud-ouest bordelais. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Cestas : ateliers adaptés aux entreprises tech, industriels, artisans et commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Cestas : ateliers adaptés aux entreprises tech, industriels, artisans et commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Cestas : ateliers adaptés aux entreprises tech, industriels, artisans et commerces. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Cestas : ateliers adaptés aux entreprises tech, industriels, artisans et commerces. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Cestas : automatisation R&D, agents conversationnels, classification données scientifiques, prédiction maintenance, CRM augmentés. Du technopôle aux TPE.",

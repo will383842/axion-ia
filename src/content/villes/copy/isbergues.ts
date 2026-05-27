@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ISBERGUES_COPY: VilleCopy = {
   pitchFr:
-    "Isbergues (62), commune industrielle du Pas-de-Calais au passé métallurgique reconverti, accueille PME industrielles, TPE artisanales, commerces et services. Axion-IA y intervient pour tous types d'activités du bassin artésien.",
+    "Isbergues (62), commune industrielle du Pas-de-Calais au passé métallurgique reconverti, accueille PME industrielles, TPE artisanales, commerces et services. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin artésien.",
   pitchEn:
-    "Isbergues (62), commune industrielle du Pas-de-Calais au passé métallurgique reconverti, accueille PME industrielles, TPE artisanales, commerces et services. Axion-IA y intervient pour tous types d'activités du bassin artésien.",
+    "Isbergues (62), commune industrielle du Pas-de-Calais au passé métallurgique reconverti, accueille PME industrielles, TPE artisanales, commerces et services. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin artésien.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Isbergues (62). Nous accompagnons PME industrielles reconverties, TPE artisanales, commerçants et professions libérales du bassin artésien. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:

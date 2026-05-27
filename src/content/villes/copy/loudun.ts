@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LOUDUN_COPY: VilleCopy = {
   pitchFr:
-    "Loudun (86), sous-préfecture du nord de la Vienne, est une cité historique connue pour l'affaire des possessions de 1634 et son patrimoine médiéval. Tissu PME agroalimentaires, viticulture (AOC Haut-Poitou), TPE artisans BTP, commerces, administration sous-préfecture et professions libérales. Axion-IA y intervient pour tous types d'activités du Loudunais.",
+    "Loudun (86), sous-préfecture du nord de la Vienne, est une cité historique connue pour l'affaire des possessions de 1634 et son patrimoine médiéval. Tissu PME agroalimentaires, viticulture (AOC Haut-Poitou), TPE artisans BTP, commerces, administration sous-préfecture et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du Loudunais.",
   pitchEn:
-    "Loudun (86), sous-préfecture du nord de la Vienne, est une cité historique connue pour l'affaire des possessions de 1634 et son patrimoine médiéval. Tissu PME agroalimentaires, viticulture (AOC Haut-Poitou), TPE artisans BTP, commerces, administration sous-préfecture et professions libérales. Axion-IA y intervient pour tous types d'activités du Loudunais.",
+    "Loudun (86), sous-préfecture du nord de la Vienne, est une cité historique connue pour l'affaire des possessions de 1634 et son patrimoine médiéval. Tissu PME agroalimentaires, viticulture (AOC Haut-Poitou), TPE artisans BTP, commerces, administration sous-préfecture et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du Loudunais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Loudun (86). Nous accompagnons tous types d'activités : PME agroalimentaires, viticulteurs AOC Haut-Poitou, TPE artisans BTP, commerçants, administrations sous-préfecture, professions libérales et services aux entreprises du Loudunais.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LOUDUN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Loudun : diagnostic adapté aux PME agroalimentaires, viticulteurs AOC, administrations sous-préfecture, TPE artisans et commerçants du Loudunais. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Loudun : diagnostic adapté aux PME agroalimentaires, viticulteurs AOC, administrations sous-préfecture, TPE artisans et commerçants du Loudunais. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Loudun : diagnostic adapté aux PME agroalimentaires, viticulteurs AOC, administrations sous-préfecture, TPE artisans et commerçants du Loudunais. Audit Flash 490 € HT, ROI documenté en chiffres accessible.",
+      en: "Audit IA à Loudun : diagnostic adapté aux PME agroalimentaires, viticulteurs AOC, administrations sous-préfecture, TPE artisans et commerçants du Loudunais. Audit Flash 490 € HT, ROI documenté en chiffres accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Loudun : formats adaptés aux ateliers agroalimentaires, exploitations viticoles, administrations ou commerces. Vos équipes repartent autonomes sur outils IA métier.",
@@ -64,7 +64,7 @@ export const LOUDUN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris en TGV (Tours 1h15 puis 1h route, ou Poitiers 1h40 puis 1h route). Pour les multi-jours, hébergement local possible (hôtels Loudun ou Saumur). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Paris en TGV (Tours 1h15 puis 1h route, ou Poitiers 1h40 puis 1h route). Pour les multi-jours, hébergement local possible (hôtels Loudun ou Saumur). Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

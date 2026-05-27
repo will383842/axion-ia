@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GUERANDE_COPY: VilleCopy = {
   pitchFr:
-    "Guérande (44), cité médiévale fortifiée et capitale du sel de Guérande, près de 17 000 habitants. Marais salants, tourisme patrimonial, commerces, artisanat d'art et agroalimentaire. Tissu TPE artisans, PME touristiques et agroalimentaires, professions libérales. Axion-IA y intervient pour tous types d'activités du bassin guérandais.",
+    "Guérande (44), cité médiévale fortifiée et capitale du sel de Guérande, près de 17 000 habitants. Marais salants, tourisme patrimonial, commerces, artisanat d'art et agroalimentaire. Tissu TPE artisans, PME touristiques et agroalimentaires, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin guérandais.",
   pitchEn:
-    "Guérande (44), cité médiévale fortifiée et capitale du sel de Guérande, près de 17 000 habitants. Marais salants, tourisme patrimonial, commerces, artisanat d'art et agroalimentaire. Tissu TPE artisans, PME touristiques et agroalimentaires, professions libérales. Axion-IA y intervient pour tous types d'activités du bassin guérandais.",
+    "Guérande (44), cité médiévale fortifiée et capitale du sel de Guérande, près de 17 000 habitants. Marais salants, tourisme patrimonial, commerces, artisanat d'art et agroalimentaire. Tissu TPE artisans, PME touristiques et agroalimentaires, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin guérandais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guérande (44), cité médiévale et capitale du sel. Nous accompagnons TPE artisans paludiers, PME agroalimentaires et touristiques, commerçants et professions libérales de la presqu'île guérandaise. Audit Flash dès 490 € HT.",
   directAnswerEn:

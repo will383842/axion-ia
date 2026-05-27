@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ORNEX_COPY: VilleCopy = {
   pitchFr:
-    "Ornex (01), commune du pays de Gex dans l'Ain, est positionnée à proximité de la frontière suisse et de Genève. Tissu économie frontalière, PME tertiaires, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités gessiennes.",
+    "Ornex (01), commune du pays de Gex dans l'Ain, est positionnée à proximité de la frontière suisse et de Genève. Tissu économie frontalière, PME tertiaires, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations gessiennes.",
   pitchEn:
-    "Ornex (01), commune du pays de Gex dans l'Ain, est positionnée à proximité de la frontière suisse et de Genève. Tissu économie frontalière, PME tertiaires, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités gessiennes.",
+    "Ornex (01), commune du pays de Gex dans l'Ain, est positionnée à proximité de la frontière suisse et de Genève. Tissu économie frontalière, PME tertiaires, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations gessiennes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ornex (01). Nous accompagnons tous types d'activités : PME tertiaires pays de Gex, économie frontalière Genève, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const ORNEX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ornex : diagnostic adapté aux PME tertiaires pays de Gex, frontaliers Genève, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Ornex : diagnostic adapté aux PME tertiaires pays de Gex, frontaliers Genève, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Ornex : diagnostic adapté aux PME tertiaires pays de Gex, frontaliers Genève, TPE artisans. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Ornex : diagnostic adapté aux PME tertiaires pays de Gex, frontaliers Genève, TPE artisans. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Ornex : formats adaptés au bureau, commerce, atelier. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Ornex : formats adaptés au bureau, commerce, atelier. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Ornex : formats adaptés au bureau, commerce, atelier. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Ornex : formats adaptés au bureau, commerce, atelier. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Ornex : agents conversationnels multilingue FR/EN/DE, automatisation workflow transfrontalier, classification documents. Pays de Gex.",
@@ -64,7 +64,7 @@ export const ORNEX_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Genève ?",
-      a: "Lyon (1h30) ou Genève (15 min). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Lyon (1h30) ou Genève (15 min). Frais de mission en sus, grille tarifaire publique.",
     },
   ],
 };

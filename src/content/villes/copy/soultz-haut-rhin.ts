@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SOULTZ_HAUT_RHIN_COPY: VilleCopy = {
   pitchFr:
-    "Soultz-Haut-Rhin (68), bourg historique du vignoble alsacien dans l'aire d'attraction de Mulhouse en Sud-Alsace. Tissu TPE viticulture et artisanat, PME services et industrie légère, commerçants, professions libérales, restaurateurs et indépendants du piémont vosgien. Axion-IA y intervient pour tous types d'activités.",
+    "Soultz-Haut-Rhin (68), bourg historique du vignoble alsacien dans l'aire d'attraction de Mulhouse en Sud-Alsace. Tissu TPE viticulture et artisanat, PME services et industrie légère, commerçants, professions libérales, restaurateurs et indépendants du piémont vosgien. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Soultz-Haut-Rhin (68), bourg historique du vignoble alsacien dans l'aire d'attraction de Mulhouse en Sud-Alsace. Tissu TPE viticulture et artisanat, PME services et industrie légère, commerçants, professions libérales, restaurateurs et indépendants du piémont vosgien. Axion-IA y intervient pour tous types d'activités.",
+    "Soultz-Haut-Rhin (68), bourg historique du vignoble alsacien dans l'aire d'attraction de Mulhouse en Sud-Alsace. Tissu TPE viticulture et artisanat, PME services et industrie légère, commerçants, professions libérales, restaurateurs et indépendants du piémont vosgien. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Soultz-Haut-Rhin (68). Nous accompagnons tous types d'activités : TPE viticulture et artisanat, PME services et industrie légère, commerçants, professions libérales, restaurateurs et indépendants du Sud-Alsace. Audit Flash dès 490 € HT.",
   directAnswerEn:

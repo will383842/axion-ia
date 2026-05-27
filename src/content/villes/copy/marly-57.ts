@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MARLY_57_COPY: VilleCopy = {
   pitchFr:
-    "Marly (57), commune française du département de la Moselle (région Grand Est), située en banlieue sud immédiate de Metz, est une commune résidentielle dotée de zones d'activités tertiaires et commerciales. Tissu TPE commerces, artisans BTP, services aux entreprises, PME tertiaires, professions libérales. À distinguer de Marly (78). Axion-IA y intervient pour tous types d'activités.",
+    "Marly (57), commune française du département de la Moselle (région Grand Est), située en banlieue sud immédiate de Metz, est une commune résidentielle dotée de zones d'activités tertiaires et commerciales. Tissu TPE commerces, artisans BTP, services aux entreprises, PME tertiaires, professions libérales. À distinguer de Marly (78). Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Marly (57), commune française du département de la Moselle (région Grand Est), située en banlieue sud immédiate de Metz, est une commune résidentielle dotée de zones d'activités tertiaires et commerciales. Tissu TPE commerces, artisans BTP, services aux entreprises, PME tertiaires, professions libérales. À distinguer de Marly (78). Axion-IA y intervient pour tous types d'activités.",
+    "Marly (57), commune française du département de la Moselle (région Grand Est), située en banlieue sud immédiate de Metz, est une commune résidentielle dotée de zones d'activités tertiaires et commerciales. Tissu TPE commerces, artisans BTP, services aux entreprises, PME tertiaires, professions libérales. À distinguer de Marly (78). Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marly (57). Nous accompagnons tous types d'activités : TPE commerces et artisans, PME tertiaires zones d'activités, professions libérales, services aux entreprises de Metz Métropole sud, indépendants et résidents actifs travaillant à Metz ou Luxembourg.",
   directAnswerEn:
@@ -64,7 +64,7 @@ export const MARLY_57_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Metz ou Nancy ?",
-      a: "Nos consultants viennent de Metz centre (10 min), Nancy (50 min) ou Luxembourg-Ville (1h). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Metz centre (10 min), Nancy (50 min) ou Luxembourg-Ville (1h). Pour les multi-jours, hébergement local possible. Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

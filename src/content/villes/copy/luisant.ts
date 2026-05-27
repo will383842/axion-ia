@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LUISANT_COPY: VilleCopy = {
   pitchFr:
-    "Luisant (28), commune résidentielle de l'agglomération de Chartres en Eure-et-Loir, accueille un tissu de TPE/PME services, professions libérales, artisans et commerces de proximité au sud de la préfecture. Axion-IA y intervient pour tous types d'activités.",
+    "Luisant (28), commune résidentielle de l'agglomération de Chartres en Eure-et-Loir, accueille un tissu de TPE/PME services, professions libérales, artisans et commerces de proximité au sud de la préfecture. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Luisant (28), commune résidentielle de l'agglomération de Chartres en Eure-et-Loir, accueille un tissu de TPE/PME services, professions libérales, artisans et commerces de proximité au sud de la préfecture. Axion-IA y intervient pour tous types d'activités.",
+    "Luisant (28), commune résidentielle de l'agglomération de Chartres en Eure-et-Loir, accueille un tissu de TPE/PME services, professions libérales, artisans et commerces de proximité au sud de la préfecture. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Luisant (28). Nous accompagnons tous types d'activités : TPE/PME services, professions libérales, artisans BTP, commerçants de proximité, indépendants et consultants de l'agglomération chartraine sud.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const LUISANT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Luisant : diagnostic adapté aux TPE/PME services, professions libérales, artisans BTP et commerçants de proximité de l'agglomération chartraine sud. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Luisant : diagnostic adapté aux TPE/PME services, professions libérales, artisans BTP et commerçants de proximité de l'agglomération chartraine sud. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Luisant : diagnostic adapté aux TPE/PME services, professions libérales, artisans BTP et commerçants de proximité de l'agglomération chartraine sud. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Luisant : diagnostic adapté aux TPE/PME services, professions libérales, artisans BTP et commerçants de proximité de l'agglomération chartraine sud. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Luisant : formats adaptés au cabinet libéral, commerce de proximité, atelier artisan ou bureau. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Luisant : formats adaptés au cabinet libéral, commerce de proximité, atelier artisan ou bureau. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Luisant : formats adaptés au cabinet libéral, commerce de proximité, atelier artisan ou bureau. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Luisant : formats adaptés au cabinet libéral, commerce de proximité, atelier artisan ou bureau. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Luisant : automatisation secrétariat médical, agents conversationnels cabinet juridique/comptable, gestion planning artisans, chatbots commerce de proximité.",
@@ -64,7 +64,7 @@ export const LUISANT_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Luisant ?",
-      a: "Nos consultants se déplacent depuis Paris (1h20 via A11) ou arrivent en gare de Chartres (TER 1h10 Paris-Montparnasse, puis 5 min Luisant). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants se déplacent depuis Paris (1h20 via A11) ou arrivent en gare de Chartres (TER 1h10 Paris-Montparnasse, puis 5 min Luisant). Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

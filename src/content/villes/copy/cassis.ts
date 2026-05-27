@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CASSIS_COPY: VilleCopy = {
   pitchFr:
-    "Cassis (13), joyau de la côte entre Marseille et La Ciotat, est célèbre pour ses calanques classées, son vin blanc AOC et son port pittoresque. Tissu de TPE viticulteurs, restaurateurs, hôteliers, commerçants et PME tourisme haut de gamme. Axion-IA y intervient pour tous types d'activités.",
+    "Cassis (13), joyau de la côte entre Marseille et La Ciotat, est célèbre pour ses calanques classées, son vin blanc AOC et son port pittoresque. Tissu de TPE viticulteurs, restaurateurs, hôteliers, commerçants et PME tourisme haut de gamme. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Cassis (13), joyau de la côte entre Marseille et La Ciotat, est célèbre pour ses calanques classées, son vin blanc AOC et son port pittoresque. Tissu de TPE viticulteurs, restaurateurs, hôteliers, commerçants et PME tourisme haut de gamme. Axion-IA y intervient pour tous types d'activités.",
+    "Cassis (13), joyau de la côte entre Marseille et La Ciotat, est célèbre pour ses calanques classées, son vin blanc AOC et son port pittoresque. Tissu de TPE viticulteurs, restaurateurs, hôteliers, commerçants et PME tourisme haut de gamme. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cassis (13). Nous accompagnons TPE viticulteurs AOC Cassis, restaurateurs, hôteliers, commerçants et PME du tourisme haut de gamme du littoral est-marseillais. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const CASSIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cassis : diagnostic adapté aux domaines viticoles AOC, restaurateurs, hôteliers et PME tourisme du littoral. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Cassis : diagnostic adapté aux domaines viticoles AOC, restaurateurs, hôteliers et PME tourisme du littoral. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Cassis : diagnostic adapté aux domaines viticoles AOC, restaurateurs, hôteliers et PME tourisme du littoral. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Cassis : diagnostic adapté aux domaines viticoles AOC, restaurateurs, hôteliers et PME tourisme du littoral. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cassis : ateliers pour domaines viticoles, restaurants gastronomiques, hôtels et commerces. Outils IA configurés métier réel.",

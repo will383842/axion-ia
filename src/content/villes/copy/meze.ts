@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MEZE_COPY: VilleCopy = {
   pitchFr:
-    "Mèze (34), commune de 12 669 habitants sur les rives de l'étang de Thau dans l'Hérault. Son économie repose sur un tissu de TPE et PME de la conchyliculture (huîtres, moules), de la pêche, de la restauration, du tourisme nautique, du commerce de centre-ville et de la viticulture. Axion-IA y intervient pour tous types d'activités.",
+    "Mèze (34), commune de 12 669 habitants sur les rives de l'étang de Thau dans l'Hérault. Son économie repose sur un tissu de TPE et PME de la conchyliculture (huîtres, moules), de la pêche, de la restauration, du tourisme nautique, du commerce de centre-ville et de la viticulture. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Mèze (34), commune de 12 669 habitants sur les rives de l'étang de Thau dans l'Hérault. Son économie repose sur un tissu de TPE et PME de la conchyliculture (huîtres, moules), de la pêche, de la restauration, du tourisme nautique, du commerce de centre-ville et de la viticulture. Axion-IA y intervient pour tous types d'activités.",
+    "Mèze (34), commune de 12 669 habitants sur les rives de l'étang de Thau dans l'Hérault. Son économie repose sur un tissu de TPE et PME de la conchyliculture (huîtres, moules), de la pêche, de la restauration, du tourisme nautique, du commerce de centre-ville et de la viticulture. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mèze (34). Nous accompagnons TPE et PME du bassin de Thau : conchyliculteurs, restaurateurs, commerçants, viticulteurs et professionnels du tourisme nautique. Audit Flash dès 490 € HT.",
   directAnswerEn:

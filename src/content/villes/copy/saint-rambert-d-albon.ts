@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_RAMBERT_D_ALBON_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Rambert-d'Albon (26), commune du nord-Drôme, occupe une position logistique stratégique sur l'axe A7 / ferroviaire Lyon-Marseille. Tissu PME industrielles et logistiques (plateformes majeures vallée Rhône), TPE artisans BTP, agriculture vallée, commerces. Axion-IA y intervient pour tous types d'activités du nord-Drôme.",
+    "Saint-Rambert-d'Albon (26), commune du nord-Drôme, occupe une position logistique stratégique sur l'axe A7 / ferroviaire Lyon-Marseille. Tissu PME industrielles et logistiques (plateformes majeures vallée Rhône), TPE artisans BTP, agriculture vallée, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes du nord-Drôme.",
   pitchEn:
-    "Saint-Rambert-d'Albon (26), commune du nord-Drôme, occupe une position logistique stratégique sur l'axe A7 / ferroviaire Lyon-Marseille. Tissu PME industrielles et logistiques (plateformes majeures vallée Rhône), TPE artisans BTP, agriculture vallée, commerces. Axion-IA y intervient pour tous types d'activités du nord-Drôme.",
+    "Saint-Rambert-d'Albon (26), commune du nord-Drôme, occupe une position logistique stratégique sur l'axe A7 / ferroviaire Lyon-Marseille. Tissu PME industrielles et logistiques (plateformes majeures vallée Rhône), TPE artisans BTP, agriculture vallée, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes du nord-Drôme.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Rambert-d'Albon (26). Nous accompagnons tous types d'activités : opérateurs logistiques axe A7/SNCF, PME industrielles nord-Drôme, agriculteurs vallée du Rhône, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
   directAnswerEn:

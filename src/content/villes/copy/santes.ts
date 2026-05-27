@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SANTES_COPY: VilleCopy = {
   pitchFr:
-    "Santes (59), commune résidentielle de l'agglomération Lille sud, entre Haubourdin et Wavrin, intégrée à la Métropole Européenne de Lille. Tissu économique : TPE et PME de services aux entreprises du sud lillois, artisanat, commerce de proximité, professions libérales, activités logistiques liées au canal de la Deûle et à la proximité de la zone commerciale Lomme-Englos. Axion-IA y intervient pour tous types d'activités du sud de la métropole lilloise.",
+    "Santes (59), commune résidentielle de l'agglomération Lille sud, entre Haubourdin et Wavrin, intégrée à la Métropole Européenne de Lille. Tissu économique : TPE et PME de services aux entreprises du sud lillois, artisanat, commerce de proximité, professions libérales, activités logistiques liées au canal de la Deûle et à la proximité de la zone commerciale Lomme-Englos. Axion-IA opère pour toutes les structures économiques de la commune du sud de la métropole lilloise.",
   pitchEn:
-    "Santes (59), commune résidentielle de l'agglomération Lille sud, entre Haubourdin et Wavrin, intégrée à la Métropole Européenne de Lille. Tissu économique : TPE et PME de services aux entreprises du sud lillois, artisanat, commerce de proximité, professions libérales, activités logistiques liées au canal de la Deûle et à la proximité de la zone commerciale Lomme-Englos. Axion-IA y intervient pour tous types d'activités du sud de la métropole lilloise.",
+    "Santes (59), commune résidentielle de l'agglomération Lille sud, entre Haubourdin et Wavrin, intégrée à la Métropole Européenne de Lille. Tissu économique : TPE et PME de services aux entreprises du sud lillois, artisanat, commerce de proximité, professions libérales, activités logistiques liées au canal de la Deûle et à la proximité de la zone commerciale Lomme-Englos. Axion-IA opère pour toutes les structures économiques de la commune du sud de la métropole lilloise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Santes (59). Nous accompagnons TPE et PME : prestataires de services B2B du sud lillois, artisans, commerçants, professions libérales et PME logistiques du canal de la Deûle.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const SANTES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Santes : diagnostic adapté aux TPE et PME de services du sud lillois, artisans du bâtiment, commerçants, professions libérales et PME logistiques du canal de la Deûle. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Santes : diagnostic adapté aux TPE et PME de services du sud lillois, artisans du bâtiment, commerçants, professions libérales et PME logistiques du canal de la Deûle. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Santes : diagnostic adapté aux TPE et PME de services du sud lillois, artisans du bâtiment, commerçants, professions libérales et PME logistiques du canal de la Deûle. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Santes : diagnostic adapté aux TPE et PME de services du sud lillois, artisans du bâtiment, commerçants, professions libérales et PME logistiques du canal de la Deûle. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Santes : formats adaptés à la PME de services, au cabinet libéral, à l'artisan ou au commerce de proximité. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Santes : formats adaptés à la PME de services, au cabinet libéral, à l'artisan ou au commerce de proximité. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Santes : formats adaptés à la PME de services, au cabinet libéral, à l'artisan ou au commerce de proximité. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Santes : formats adaptés à la PME de services, au cabinet libéral, à l'artisan ou au commerce de proximité. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Santes : automatisation gestion documentaire cabinets libéraux, CRM augmenté prestataires B2B sud lillois, agents conversationnels prise de rendez-vous, optimisation flux logistiques canal de la Deûle, copilotes IA comptabilité-facturation TPE-PME.",

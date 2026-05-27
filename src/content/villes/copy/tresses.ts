@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const TRESSES_COPY: VilleCopy = {
   pitchFr:
-    "Tresses (33), commune résidentielle de l'est de Bordeaux Métropole, combine tissu TPE artisanal, commerces de proximité, professions libérales et PME de services. Axion-IA y intervient pour tous types d'activités de l'est bordelais.",
+    "Tresses (33), commune résidentielle de l'est de Bordeaux Métropole, combine tissu TPE artisanal, commerces de proximité, professions libérales et PME de services. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'est bordelais.",
   pitchEn:
-    "Tresses (33), commune résidentielle de l'est de Bordeaux Métropole, combine tissu TPE artisanal, commerces de proximité, professions libérales et PME de services. Axion-IA y intervient pour tous types d'activités de l'est bordelais.",
+    "Tresses (33), commune résidentielle de l'est de Bordeaux Métropole, combine tissu TPE artisanal, commerces de proximité, professions libérales et PME de services. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'est bordelais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tresses (33). Nous accompagnons TPE et PME de l'est bordelais : artisans BTP, commerçants, professions libérales et PME de services. Audit Flash dès 490 € HT.",
   directAnswerEn:

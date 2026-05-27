@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LES_ESSARTS_LE_ROI_COPY: VilleCopy = {
   pitchFr:
-    "Les Essarts-le-Roi (78), commune résidentielle forestière au sud de Rambouillet dans les Yvelines, accueille TPE artisans, PME de services, commerces de proximité, professions libérales et auto-entrepreneurs. Axion-IA y intervient pour tous types d'activités du sud Yvelines.",
+    "Les Essarts-le-Roi (78), commune résidentielle forestière au sud de Rambouillet dans les Yvelines, accueille TPE artisans, PME de services, commerces de proximité, professions libérales et auto-entrepreneurs. Axion-IA accompagne entreprises et indépendants de tous secteurs du sud Yvelines.",
   pitchEn:
-    "Les Essarts-le-Roi (78), commune résidentielle forestière au sud de Rambouillet dans les Yvelines, accueille TPE artisans, PME de services, commerces de proximité, professions libérales et auto-entrepreneurs. Axion-IA y intervient pour tous types d'activités du sud Yvelines.",
+    "Les Essarts-le-Roi (78), commune résidentielle forestière au sud de Rambouillet dans les Yvelines, accueille TPE artisans, PME de services, commerces de proximité, professions libérales et auto-entrepreneurs. Axion-IA accompagne entreprises et indépendants de tous secteurs du sud Yvelines.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient aux Essarts-le-Roi (78). Nous accompagnons TPE et PME : artisans du bâtiment, PME de services sud Yvelines, commerçants, professions libérales et auto-entrepreneurs de cette commune résidentielle forestière entre Rambouillet et Saint-Quentin-en-Yvelines.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const LES_ESSARTS_LE_ROI_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA aux Essarts-le-Roi : diagnostic adapté aux TPE artisans, PME services, commerçants et professions libérales du sud Yvelines. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA aux Essarts-le-Roi : diagnostic adapté aux TPE artisans, PME services, commerçants et professions libérales du sud Yvelines. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA aux Essarts-le-Roi : diagnostic adapté aux TPE artisans, PME services, commerçants et professions libérales du sud Yvelines. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA aux Essarts-le-Roi : diagnostic adapté aux TPE artisans, PME services, commerçants et professions libérales du sud Yvelines. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site aux Essarts-le-Roi : formats adaptés au bureau PME, à l'atelier artisan, au commerce ou au cabinet de santé. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site aux Essarts-le-Roi : formats adaptés au bureau PME, à l'atelier artisan, au commerce ou au cabinet de santé. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site aux Essarts-le-Roi : formats adaptés au bureau PME, à l'atelier artisan, au commerce ou au cabinet de santé. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site aux Essarts-le-Roi : formats adaptés au bureau PME, à l'atelier artisan, au commerce ou au cabinet de santé. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA aux Essarts-le-Roi : automatisation workflows PME, agents conversationnels clients, CRM augmenté commerçants, gestion planning artisans, secrétariat médical augmenté cabinets.",

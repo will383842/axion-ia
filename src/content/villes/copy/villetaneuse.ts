@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VILLETANEUSE_COPY: VilleCopy = {
   pitchFr:
-    "Villetaneuse (93), commune universitaire du nord de la Seine-Saint-Denis, accueille le campus principal de l'Université Sorbonne Paris Nord (ex-Paris 13). Tissu de TPE commerçantes et artisanales, PME de services, professions libérales et acteurs de la recherche. Axion-IA y intervient pour tous types d'activités.",
+    "Villetaneuse (93), commune universitaire du nord de la Seine-Saint-Denis, accueille le campus principal de l'Université Sorbonne Paris Nord (ex-Paris 13). Tissu de TPE commerçantes et artisanales, PME de services, professions libérales et acteurs de la recherche. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Villetaneuse (93), commune universitaire du nord de la Seine-Saint-Denis, accueille le campus principal de l'Université Sorbonne Paris Nord (ex-Paris 13). Tissu de TPE commerçantes et artisanales, PME de services, professions libérales et acteurs de la recherche. Axion-IA y intervient pour tous types d'activités.",
+    "Villetaneuse (93), commune universitaire du nord de la Seine-Saint-Denis, accueille le campus principal de l'Université Sorbonne Paris Nord (ex-Paris 13). Tissu de TPE commerçantes et artisanales, PME de services, professions libérales et acteurs de la recherche. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villetaneuse (93). Nous accompagnons tous types d'activités : TPE commerçantes et artisanales, PME de services aux entreprises, professions libérales, laboratoires et structures liées à l'Université Sorbonne Paris Nord, restaurateurs et prestataires de proximité du nord Seine-Saint-Denis.",
   directAnswerEn:

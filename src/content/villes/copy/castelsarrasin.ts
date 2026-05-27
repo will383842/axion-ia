@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CASTELSARRASIN_COPY: VilleCopy = {
   pitchFr:
-    "Castelsarrasin (82), sous-préfecture du Tarn-et-Garonne sur le canal latéral à la Garonne, plus de 14 000 habitants. Pôle de services, commerces, agroalimentaire et industrie. Tissu TPE artisans, PME agroalimentaires et industrielles, professions libérales. Axion-IA y intervient pour tous types d'activités du bassin castelsarrasinois.",
+    "Castelsarrasin (82), sous-préfecture du Tarn-et-Garonne sur le canal latéral à la Garonne, plus de 14 000 habitants. Pôle de services, commerces, agroalimentaire et industrie. Tissu TPE artisans, PME agroalimentaires et industrielles, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin castelsarrasinois.",
   pitchEn:
-    "Castelsarrasin (82), sous-préfecture du Tarn-et-Garonne sur le canal latéral à la Garonne, plus de 14 000 habitants. Pôle de services, commerces, agroalimentaire et industrie. Tissu TPE artisans, PME agroalimentaires et industrielles, professions libérales. Axion-IA y intervient pour tous types d'activités du bassin castelsarrasinois.",
+    "Castelsarrasin (82), sous-préfecture du Tarn-et-Garonne sur le canal latéral à la Garonne, plus de 14 000 habitants. Pôle de services, commerces, agroalimentaire et industrie. Tissu TPE artisans, PME agroalimentaires et industrielles, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin castelsarrasinois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Castelsarrasin (82). Nous accompagnons TPE artisans, PME agroalimentaires et industrielles, commerçants et professions libérales de la sous-préfecture du Tarn-et-Garonne. Audit Flash dès 490 € HT.",
   directAnswerEn:

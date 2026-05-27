@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const POLLESTRES_COPY: VilleCopy = {
   pitchFr:
-    "Pollestres (66), commune résidentielle en périphérie sud de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME tertiaires, commerces, agriculture, professions libérales. Axion-IA y intervient pour tous types d'activités de l'agglomération perpignanaise.",
+    "Pollestres (66), commune résidentielle en périphérie sud de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME tertiaires, commerces, agriculture, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de l'agglomération perpignanaise.",
   pitchEn:
-    "Pollestres (66), commune résidentielle en périphérie sud de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME tertiaires, commerces, agriculture, professions libérales. Axion-IA y intervient pour tous types d'activités de l'agglomération perpignanaise.",
+    "Pollestres (66), commune résidentielle en périphérie sud de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME tertiaires, commerces, agriculture, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de l'agglomération perpignanaise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pollestres (66). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, commerçants, agriculteurs, indépendants et professions libérales de l'agglo Perpignan sud.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const POLLESTRES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pollestres : diagnostic adapté aux TPE artisans, PME tertiaires, agriculteurs et commerçants de l'agglo Perpignan sud. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Pollestres : diagnostic adapté aux TPE artisans, PME tertiaires, agriculteurs et commerçants de l'agglo Perpignan sud. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Pollestres : diagnostic adapté aux TPE artisans, PME tertiaires, agriculteurs et commerçants de l'agglo Perpignan sud. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Pollestres : diagnostic adapté aux TPE artisans, PME tertiaires, agriculteurs et commerçants de l'agglo Perpignan sud. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Pollestres : formats adaptés au bureau, atelier, exploitation, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Pollestres : formats adaptés au bureau, atelier, exploitation, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Pollestres : formats adaptés au bureau, atelier, exploitation, commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Pollestres : formats adaptés au bureau, atelier, exploitation, commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Pollestres : agents conversationnels B2B, automatisation devis BTP, classification parcellaire viticole, CRM augmentés. Perpignan Méditerranée Métropole.",
@@ -64,7 +64,7 @@ export const POLLESTRES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Pollestres ?",
-      a: "Nos consultants interviennent depuis Perpignan (10 min). Missions sur site dans votre bureau, atelier ou exploitation. Visio possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants interviennent depuis Perpignan (10 min). Missions sur site dans votre bureau, atelier ou exploitation. Visio possible. Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

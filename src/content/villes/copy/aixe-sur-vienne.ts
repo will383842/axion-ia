@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const AIXE_SUR_VIENNE_COPY: VilleCopy = {
   pitchFr:
-    "Aixe-sur-Vienne (87), commune des bords de la Vienne au sud-ouest de Limoges, est intégrée à Limoges Métropole. Tissu TPE artisans BTP, PME industrielles, agriculture, commerces centre-bourg, professions libérales et services. Axion-IA y intervient pour tous types d'activités de l'agglo limougeaude sud-ouest.",
+    "Aixe-sur-Vienne (87), commune des bords de la Vienne au sud-ouest de Limoges, est intégrée à Limoges Métropole. Tissu TPE artisans BTP, PME industrielles, agriculture, commerces centre-bourg, professions libérales et services. Axion-IA y déploie ses missions auprès de toutes les organisations de l'agglo limougeaude sud-ouest.",
   pitchEn:
-    "Aixe-sur-Vienne (87), commune des bords de la Vienne au sud-ouest de Limoges, est intégrée à Limoges Métropole. Tissu TPE artisans BTP, PME industrielles, agriculture, commerces centre-bourg, professions libérales et services. Axion-IA y intervient pour tous types d'activités de l'agglo limougeaude sud-ouest.",
+    "Aixe-sur-Vienne (87), commune des bords de la Vienne au sud-ouest de Limoges, est intégrée à Limoges Métropole. Tissu TPE artisans BTP, PME industrielles, agriculture, commerces centre-bourg, professions libérales et services. Axion-IA y déploie ses missions auprès de toutes les organisations de l'agglo limougeaude sud-ouest.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aixe-sur-Vienne (87). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles, agriculteurs, commerçants, professions libérales, indépendants et services aux entreprises de l'agglomération de Limoges sud-ouest.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const AIXE_SUR_VIENNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Aixe-sur-Vienne : diagnostic adapté aux TPE artisans BTP, PME industrielles, éleveurs limousins et commerçants de l'agglo limougeaude sud-ouest. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Aixe-sur-Vienne : diagnostic adapté aux TPE artisans BTP, PME industrielles, éleveurs limousins et commerçants de l'agglo limougeaude sud-ouest. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Aixe-sur-Vienne : diagnostic adapté aux TPE artisans BTP, PME industrielles, éleveurs limousins et commerçants de l'agglo limougeaude sud-ouest. Audit Flash 490 € HT, ROI documenté en chiffres accessible.",
+      en: "Audit IA à Aixe-sur-Vienne : diagnostic adapté aux TPE artisans BTP, PME industrielles, éleveurs limousins et commerçants de l'agglo limougeaude sud-ouest. Audit Flash 490 € HT, ROI documenté en chiffres accessible.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Aixe-sur-Vienne : formats adaptés à l'atelier industriel, exploitation agricole, commerce ou cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Aixe-sur-Vienne : formats adaptés à l'atelier industriel, exploitation agricole, commerce ou cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Aixe-sur-Vienne : formats adaptés à l'atelier industriel, exploitation agricole, commerce ou cabinet libéral. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Aixe-sur-Vienne : formats adaptés à l'atelier industriel, exploitation agricole, commerce ou cabinet libéral. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Aixe-sur-Vienne : prédiction maintenance industrielle, traçabilité élevage, automatisation devis BTP, agents conversationnels, CRM augmenté. Tous secteurs agglo Limoges sud-ouest.",

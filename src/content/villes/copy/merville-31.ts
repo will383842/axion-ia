@@ -33,8 +33,8 @@ export const MERVILLE_31_COPY: VilleCopy = {
       en: "Audit IA à Merville : diagnostic adapté aux TPE artisans, PME de services et exploitants agricoles du nord Haute-Garonne. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Merville : formats adaptés à l'artisan, au commerce, à l'exploitation agricole. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Merville : formats adaptés à l'artisan, au commerce, à l'exploitation agricole. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Merville : formats adaptés à l'artisan, au commerce, à l'exploitation agricole. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Merville : formats adaptés à l'artisan, au commerce, à l'exploitation agricole. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Merville : automatisation gestion planning, classification documents, agents conversationnels, optimisation logistique pour TPE-PME du nord 31.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SCHWEIGHOUSE_SUR_MODER_COPY: VilleCopy = {
   pitchFr:
-    "Schweighouse-sur-Moder (67), commune de la vallée de la Moder dans l'agglomération de Haguenau en Alsace du Nord, Bas-Rhin. Tissu TPE artisans, PME industrielles et de services, commerces de proximité, professions libérales et indépendants. Axion-IA y intervient pour tous types d'activités de l'Alsace du Nord.",
+    "Schweighouse-sur-Moder (67), commune de la vallée de la Moder dans l'agglomération de Haguenau en Alsace du Nord, Bas-Rhin. Tissu TPE artisans, PME industrielles et de services, commerces de proximité, professions libérales et indépendants. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'Alsace du Nord.",
   pitchEn:
-    "Schweighouse-sur-Moder (67), commune de la vallée de la Moder dans l'agglomération de Haguenau en Alsace du Nord, Bas-Rhin. Tissu TPE artisans, PME industrielles et de services, commerces de proximité, professions libérales et indépendants. Axion-IA y intervient pour tous types d'activités de l'Alsace du Nord.",
+    "Schweighouse-sur-Moder (67), commune de la vallée de la Moder dans l'agglomération de Haguenau en Alsace du Nord, Bas-Rhin. Tissu TPE artisans, PME industrielles et de services, commerces de proximité, professions libérales et indépendants. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'Alsace du Nord.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Schweighouse-sur-Moder (67). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants, professions libérales et indépendants de l'agglomération de Haguenau, vallée de la Moder. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LAUDUN_L_ARDOISE_COPY: VilleCopy = {
   pitchFr:
-    "Laudun-l'Ardoise (30), commune du nord Gard entre vallée du Rhône et garrigue, reconnue pour son vignoble Laudun (Côtes du Rhône Villages) et la proximité du site nucléaire de Marcoule. Tissu TPE/PME viticulture, sous-traitance industrielle, commerces et artisanat BTP. Axion-IA y intervient pour tous types d'activités du nord Gard rhodanien.",
+    "Laudun-l'Ardoise (30), commune du nord Gard entre vallée du Rhône et garrigue, reconnue pour son vignoble Laudun (Côtes du Rhône Villages) et la proximité du site nucléaire de Marcoule. Tissu TPE/PME viticulture, sous-traitance industrielle, commerces et artisanat BTP. Axion-IA y déploie ses missions auprès de toutes les organisations du nord Gard rhodanien.",
   pitchEn:
-    "Laudun-l'Ardoise (30), commune du nord Gard entre vallée du Rhône et garrigue, reconnue pour son vignoble Laudun (Côtes du Rhône Villages) et la proximité du site nucléaire de Marcoule. Tissu TPE/PME viticulture, sous-traitance industrielle, commerces et artisanat BTP. Axion-IA y intervient pour tous types d'activités du nord Gard rhodanien.",
+    "Laudun-l'Ardoise (30), commune du nord Gard entre vallée du Rhône et garrigue, reconnue pour son vignoble Laudun (Côtes du Rhône Villages) et la proximité du site nucléaire de Marcoule. Tissu TPE/PME viticulture, sous-traitance industrielle, commerces et artisanat BTP. Axion-IA y déploie ses missions auprès de toutes les organisations du nord Gard rhodanien.",
   directAnswerFr:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Laudun-l'Ardoise (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs Côtes du Rhône Villages Laudun, sous-traitants nucléaire Marcoule, commerçants, artisans BTP et professions libérales du nord Gard. Audit Flash à partir de 490 € HT.",
   directAnswerEn:

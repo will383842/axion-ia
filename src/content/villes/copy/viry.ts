@@ -29,8 +29,8 @@ export const VIRY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Viry : diagnostic adapté aux TPE artisans, PME de services transfrontaliers, commerçants et professions libérales du Grand Genève français. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Viry : diagnostic adapté aux TPE artisans, PME de services transfrontaliers, commerçants et professions libérales du Grand Genève français. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Viry : diagnostic adapté aux TPE artisans, PME de services transfrontaliers, commerçants et professions libérales du Grand Genève français. Audit Flash 490 € HT, ROI documenté en chiffres accessible.",
+      en: "Audit IA à Viry : diagnostic adapté aux TPE artisans, PME de services transfrontaliers, commerçants et professions libérales du Grand Genève français. Audit Flash 490 € HT, ROI documenté en chiffres accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Viry : formats adaptés au bureau, cabinet ou commerce frontalier. Proximité Genève (15 min), vos équipes repartent autonomes sur outils IA configurés métier.",

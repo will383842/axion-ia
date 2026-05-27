@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const AUDENGE_COPY: VilleCopy = {
   pitchFr:
-    "Audenge (33), commune du Bassin d'Arcachon entre Biganos et Lanton, connaît une croissance résidentielle forte avec un tissu de TPE artisanales, commerces de proximité, professions libérales et activités ostréicoles. Axion-IA y intervient pour tous types d'activités du Bassin.",
+    "Audenge (33), commune du Bassin d'Arcachon entre Biganos et Lanton, connaît une croissance résidentielle forte avec un tissu de TPE artisanales, commerces de proximité, professions libérales et activités ostréicoles. Axion-IA opère pour toutes les structures économiques de la commune du Bassin.",
   pitchEn:
-    "Audenge (33), commune du Bassin d'Arcachon entre Biganos et Lanton, connaît une croissance résidentielle forte avec un tissu de TPE artisanales, commerces de proximité, professions libérales et activités ostréicoles. Axion-IA y intervient pour tous types d'activités du Bassin.",
+    "Audenge (33), commune du Bassin d'Arcachon entre Biganos et Lanton, connaît une croissance résidentielle forte avec un tissu de TPE artisanales, commerces de proximité, professions libérales et activités ostréicoles. Axion-IA opère pour toutes les structures économiques de la commune du Bassin.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Audenge (33). Nous accompagnons TPE et PME du Bassin d'Arcachon : artisans BTP, commerçants, ostréiculteurs, professions libérales et entreprises de services. Audit Flash dès 490 € HT.",
   directAnswerEn:

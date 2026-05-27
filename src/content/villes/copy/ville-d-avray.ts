@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VILLE_D_AVRAY_COPY: VilleCopy = {
   pitchFr:
-    "Ville-d'Avray (92), commune résidentielle nichée entre les forêts de Fausses-Reposes et de Meudon, est célèbre pour ses étangs immortalisés par Corot et sa proximité immédiate avec Versailles et le plateau de Vélizy. Tissu de TPE indépendantes, professions libérales, cabinets de conseil et PME tertiaires ouest-parisien. Axion-IA y intervient pour tous types d'activités.",
+    "Ville-d'Avray (92), commune résidentielle nichée entre les forêts de Fausses-Reposes et de Meudon, est célèbre pour ses étangs immortalisés par Corot et sa proximité immédiate avec Versailles et le plateau de Vélizy. Tissu de TPE indépendantes, professions libérales, cabinets de conseil et PME tertiaires ouest-parisien. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Ville-d'Avray (92), commune résidentielle nichée entre les forêts de Fausses-Reposes et de Meudon, est célèbre pour ses étangs immortalisés par Corot et sa proximité immédiate avec Versailles et le plateau de Vélizy. Tissu de TPE indépendantes, professions libérales, cabinets de conseil et PME tertiaires ouest-parisien. Axion-IA y intervient pour tous types d'activités.",
+    "Ville-d'Avray (92), commune résidentielle nichée entre les forêts de Fausses-Reposes et de Meudon, est célèbre pour ses étangs immortalisés par Corot et sa proximité immédiate avec Versailles et le plateau de Vélizy. Tissu de TPE indépendantes, professions libérales, cabinets de conseil et PME tertiaires ouest-parisien. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ville-d'Avray (92). Nous accompagnons tous types d'activités : TPE indépendantes, professions libérales, cabinets de conseil, PME tertiaires du secteur ouest-parisien, commerçants de proximité et artisans davraysiens. Audit Flash à partir de 490 € HT.",
   directAnswerEn:

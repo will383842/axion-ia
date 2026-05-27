@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BORDERES_SUR_L_ECHEZ_COPY: VilleCopy = {
   pitchFr:
-    "Bordères-sur-l'Échez (65), commune résidentielle et industrielle de l'agglomération de Tarbes dans les Hautes-Pyrénées. Zones d'activités, proximité Pyrénées. Tissu PME industrielles, TPE artisans, commerces, professions libérales, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Bordères-sur-l'Échez (65), commune résidentielle et industrielle de l'agglomération de Tarbes dans les Hautes-Pyrénées. Zones d'activités, proximité Pyrénées. Tissu PME industrielles, TPE artisans, commerces, professions libérales, services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Bordères-sur-l'Échez (65), commune résidentielle et industrielle de l'agglomération de Tarbes dans les Hautes-Pyrénées. Zones d'activités, proximité Pyrénées. Tissu PME industrielles, TPE artisans, commerces, professions libérales, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Bordères-sur-l'Échez (65), commune résidentielle et industrielle de l'agglomération de Tarbes dans les Hautes-Pyrénées. Zones d'activités, proximité Pyrénées. Tissu PME industrielles, TPE artisans, commerces, professions libérales, services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bordères-sur-l'Échez (65). Nous accompagnons tous types d'activités : PME industrielles et artisanales, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de l'agglomération tarbaise.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const BORDERES_SUR_L_ECHEZ_COPY: VilleCopy = {
       en: "Audit IA à Bordères-sur-l'Échez : diagnostic adapté aux PME industrielles, TPE artisans BTP, commerçants et professions libérales de l'agglomération tarbaise. ROI chiffré, audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Bordères-sur-l'Échez : formats adaptés à l'atelier industriel, entreprise artisanale, commerce ou cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Bordères-sur-l'Échez : formats adaptés à l'atelier industriel, entreprise artisanale, commerce ou cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Bordères-sur-l'Échez : formats adaptés à l'atelier industriel, entreprise artisanale, commerce ou cabinet. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Bordères-sur-l'Échez : formats adaptés à l'atelier industriel, entreprise artisanale, commerce ou cabinet. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Bordères-sur-l'Échez : prédiction maintenance industrielle, automatisation devis artisans, classification documents comptables, gestion planning équipes. Adapté industrie + artisanat + services.",

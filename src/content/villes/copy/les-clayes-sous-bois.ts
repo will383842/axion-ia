@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LES_CLAYES_SOUS_BOIS_COPY: VilleCopy = {
   pitchFr:
-    "Les Clayes-sous-Bois (78), commune résidentielle de l'ouest francilien, conjugue commerces dynamiques, tissu de TPE/PME et proximité des pôles économiques de Saint-Quentin-en-Yvelines et Versailles. Axion-IA y intervient pour tous types d'activités des Yvelines ouest.",
+    "Les Clayes-sous-Bois (78), commune résidentielle de l'ouest francilien, conjugue commerces dynamiques, tissu de TPE/PME et proximité des pôles économiques de Saint-Quentin-en-Yvelines et Versailles. Axion-IA y déploie ses missions auprès de toutes les organisations des Yvelines ouest.",
   pitchEn:
-    "Les Clayes-sous-Bois (78), commune résidentielle de l'ouest francilien, conjugue commerces dynamiques, tissu de TPE/PME et proximité des pôles économiques de Saint-Quentin-en-Yvelines et Versailles. Axion-IA y intervient pour tous types d'activités des Yvelines ouest.",
+    "Les Clayes-sous-Bois (78), commune résidentielle de l'ouest francilien, conjugue commerces dynamiques, tissu de TPE/PME et proximité des pôles économiques de Saint-Quentin-en-Yvelines et Versailles. Axion-IA y déploie ses missions auprès de toutes les organisations des Yvelines ouest.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient aux Clayes-sous-Bois (78). Nous accompagnons tous types d'activités : TPE commerçants et artisans, PME de services et tertiaires, professions libérales, indépendants, prestataires locaux et structures liées aux pôles de Saint-Quentin-en-Yvelines.",
   directAnswerEn:

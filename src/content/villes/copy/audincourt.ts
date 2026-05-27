@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const AUDINCOURT_COPY: VilleCopy = {
   pitchFr:
-    "Audincourt (25), commune du Pays de Montbéliard dans le Doubs, est historiquement liée à l'industrie automobile et à la sous-traitance mécanique. Tissu PME sous-traitance automobile, TPE usinage et mécanique de précision, industrie métallurgique, commerces centre-ville, services aux entreprises industrielles. Axion-IA y intervient pour tous types d'activités.",
+    "Audincourt (25), commune du Pays de Montbéliard dans le Doubs, est historiquement liée à l'industrie automobile et à la sous-traitance mécanique. Tissu PME sous-traitance automobile, TPE usinage et mécanique de précision, industrie métallurgique, commerces centre-ville, services aux entreprises industrielles. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Audincourt (25), commune du Pays de Montbéliard dans le Doubs, est historiquement liée à l'industrie automobile et à la sous-traitance mécanique. Tissu PME sous-traitance automobile, TPE usinage et mécanique de précision, industrie métallurgique, commerces centre-ville, services aux entreprises industrielles. Axion-IA y intervient pour tous types d'activités.",
+    "Audincourt (25), commune du Pays de Montbéliard dans le Doubs, est historiquement liée à l'industrie automobile et à la sous-traitance mécanique. Tissu PME sous-traitance automobile, TPE usinage et mécanique de précision, industrie métallurgique, commerces centre-ville, services aux entreprises industrielles. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Audincourt (25). Nous accompagnons TPE et PME du Pays de Montbéliard : sous-traitants automobile, usineurs et mécaniciens de précision, métallurgistes, commerçants et prestataires services aux entreprises industrielles de l'agglomération.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const AUDINCOURT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Audincourt : diagnostic adapté aux sous-traitants automobile, usineurs, métallurgistes, TPE mécanique de précision et services aux entreprises industrielles du Pays de Montbéliard. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Audincourt : diagnostic adapté aux sous-traitants automobile, usineurs, métallurgistes, TPE mécanique de précision et services aux entreprises industrielles du Pays de Montbéliard. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Audincourt : diagnostic adapté aux sous-traitants automobile, usineurs, métallurgistes, TPE mécanique de précision et services aux entreprises industrielles du Pays de Montbéliard. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Audincourt : diagnostic adapté aux sous-traitants automobile, usineurs, métallurgistes, TPE mécanique de précision et services aux entreprises industrielles du Pays de Montbéliard. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Audincourt : ateliers dans vos locaux usine, atelier usinage ou bureau. Vos équipes repartent autonomes sur outils IA configurés métier sous-traitance automobile, mécanique et métallurgie.",

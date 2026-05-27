@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BISCHWILLER_COPY: VilleCopy = {
   pitchFr:
-    "Bischwiller (67), ville industrielle du Nord Alsace dans le Bas-Rhin, conjugue héritage textile et drap militaire, mécanique de précision et tissu économique manufacturier diversifié. TPE/PME industrielles, sous-traitance automobile, commerces, artisans et services rayonnent entre Strasbourg et Haguenau. Axion-IA y intervient pour tous types d'activités.",
+    "Bischwiller (67), ville industrielle du Nord Alsace dans le Bas-Rhin, conjugue héritage textile et drap militaire, mécanique de précision et tissu économique manufacturier diversifié. TPE/PME industrielles, sous-traitance automobile, commerces, artisans et services rayonnent entre Strasbourg et Haguenau. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Bischwiller (67), ville industrielle du Nord Alsace dans le Bas-Rhin, conjugue héritage textile et drap militaire, mécanique de précision et tissu économique manufacturier diversifié. TPE/PME industrielles, sous-traitance automobile, commerces, artisans et services rayonnent entre Strasbourg et Haguenau. Axion-IA y intervient pour tous types d'activités.",
+    "Bischwiller (67), ville industrielle du Nord Alsace dans le Bas-Rhin, conjugue héritage textile et drap militaire, mécanique de précision et tissu économique manufacturier diversifié. TPE/PME industrielles, sous-traitance automobile, commerces, artisans et services rayonnent entre Strasbourg et Haguenau. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bischwiller (67). Nous accompagnons TPE et PME : industriels textile et mécanique, sous-traitants automobile, artisans BTP, commerçants et professions libérales du Nord Alsace. Audit Flash dès 490 € HT.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FOULAYRONNES_COPY: VilleCopy = {
   pitchFr:
-    "Foulayronnes (47), commune de 5 476 habitants dans le Lot-et-Garonne, fait partie de l'agglomération d'Agen dont elle est la première couronne nord. Ville résidentielle en croissance, son économie repose sur un tissu de TPE artisans et commerçants, PME zones d'activité, services aux entreprises, professions libérales et santé. Axion-IA y intervient pour tous types d'activités.",
+    "Foulayronnes (47), commune de 5 476 habitants dans le Lot-et-Garonne, fait partie de l'agglomération d'Agen dont elle est la première couronne nord. Ville résidentielle en croissance, son économie repose sur un tissu de TPE artisans et commerçants, PME zones d'activité, services aux entreprises, professions libérales et santé. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Foulayronnes (47), commune de 5 476 habitants dans le Lot-et-Garonne, fait partie de l'agglomération d'Agen dont elle est la première couronne nord. Ville résidentielle en croissance, son économie repose sur un tissu de TPE artisans et commerçants, PME zones d'activité, services aux entreprises, professions libérales et santé. Axion-IA y intervient pour tous types d'activités.",
+    "Foulayronnes (47), commune de 5 476 habitants dans le Lot-et-Garonne, fait partie de l'agglomération d'Agen dont elle est la première couronne nord. Ville résidentielle en croissance, son économie repose sur un tissu de TPE artisans et commerçants, PME zones d'activité, services aux entreprises, professions libérales et santé. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Foulayronnes (47). Nous accompagnons TPE et PME de l'agglomération agenaise nord : artisans, commerçants, entreprises zones d'activité, professions libérales et prestataires de services. Audit Flash dès 490 € HT.",
   directAnswerEn:

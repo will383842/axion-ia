@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VALLONS_DE_L_ERDRE_COPY: VilleCopy = {
   pitchFr:
-    "Vallons-de-l'Erdre (44), commune nouvelle du nord de la Loire-Atlantique, née de la fusion de Bonnœuvre, Freigné, Maumusson, Saint-Mars-la-Jaille, Saint-Sulpice-des-Landes et Vritz. Tissu TPE artisans et commerçants, exploitations agricoles, PME agroalimentaires, services de proximité. Axion-IA y intervient pour tous types d'activités du nord Loire-Atlantique.",
+    "Vallons-de-l'Erdre (44), commune nouvelle du nord de la Loire-Atlantique, née de la fusion de Bonnœuvre, Freigné, Maumusson, Saint-Mars-la-Jaille, Saint-Sulpice-des-Landes et Vritz. Tissu TPE artisans et commerçants, exploitations agricoles, PME agroalimentaires, services de proximité. Axion-IA accompagne entreprises et indépendants de tous secteurs du nord Loire-Atlantique.",
   pitchEn:
-    "Vallons-de-l'Erdre (44), commune nouvelle du nord de la Loire-Atlantique, née de la fusion de Bonnœuvre, Freigné, Maumusson, Saint-Mars-la-Jaille, Saint-Sulpice-des-Landes et Vritz. Tissu TPE artisans et commerçants, exploitations agricoles, PME agroalimentaires, services de proximité. Axion-IA y intervient pour tous types d'activités du nord Loire-Atlantique.",
+    "Vallons-de-l'Erdre (44), commune nouvelle du nord de la Loire-Atlantique, née de la fusion de Bonnœuvre, Freigné, Maumusson, Saint-Mars-la-Jaille, Saint-Sulpice-des-Landes et Vritz. Tissu TPE artisans et commerçants, exploitations agricoles, PME agroalimentaires, services de proximité. Axion-IA accompagne entreprises et indépendants de tous secteurs du nord Loire-Atlantique.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vallons-de-l'Erdre (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, exploitations agricoles, PME agroalimentaires, services de proximité et entreprises du nord Loire-Atlantique.",
   directAnswerEn:

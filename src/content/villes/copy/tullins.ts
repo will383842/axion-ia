@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const TULLINS_COPY: VilleCopy = {
   pitchFr:
-    "Tullins (38), commune du Pays voironnais en Isère, est positionnée sur l'axe stratégique Lyon-Grenoble (A48). Tissu PME industrielles, agriculture vallée de l'Isère, TPE artisans BTP, commerces et services aux entreprises. Axion-IA y intervient pour tous types d'activités du Voironnais / Sud Grésivaudan.",
+    "Tullins (38), commune du Pays voironnais en Isère, est positionnée sur l'axe stratégique Lyon-Grenoble (A48). Tissu PME industrielles, agriculture vallée de l'Isère, TPE artisans BTP, commerces et services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune du Voironnais / Sud Grésivaudan.",
   pitchEn:
-    "Tullins (38), commune du Pays voironnais en Isère, est positionnée sur l'axe stratégique Lyon-Grenoble (A48). Tissu PME industrielles, agriculture vallée de l'Isère, TPE artisans BTP, commerces et services aux entreprises. Axion-IA y intervient pour tous types d'activités du Voironnais / Sud Grésivaudan.",
+    "Tullins (38), commune du Pays voironnais en Isère, est positionnée sur l'axe stratégique Lyon-Grenoble (A48). Tissu PME industrielles, agriculture vallée de l'Isère, TPE artisans BTP, commerces et services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune du Voironnais / Sud Grésivaudan.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tullins (38). Nous accompagnons tous types d'activités : PME industrielles Voironnais, TPE artisans BTP, commerçants, agriculteurs vallée de l'Isère, indépendants, professions libérales et services aux entreprises du Sud Grésivaudan / Pays voironnais.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const TULLINS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Tullins : diagnostic adapté aux PME industrielles Voironnais, agriculteurs vallée Isère, TPE artisans et commerçants. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Tullins : diagnostic adapté aux PME industrielles Voironnais, agriculteurs vallée Isère, TPE artisans et commerçants. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Tullins : diagnostic adapté aux PME industrielles Voironnais, agriculteurs vallée Isère, TPE artisans et commerçants. Audit Flash 490 € HT avec ROI quantifié accessible.",
+      en: "Audit IA à Tullins : diagnostic adapté aux PME industrielles Voironnais, agriculteurs vallée Isère, TPE artisans et commerçants. Audit Flash 490 € HT avec ROI quantifié accessible.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Tullins : formats adaptés à l'atelier industriel, exploitation agricole, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Tullins : formats adaptés à l'atelier industriel, exploitation agricole, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Tullins : formats adaptés à l'atelier industriel, exploitation agricole, commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Tullins : formats adaptés à l'atelier industriel, exploitation agricole, commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Tullins : optimisation supply chain (axe A48), prédiction maintenance industrielle, classification photos cultures, automatisation devis BTP, agents conversationnels. Voironnais.",
@@ -64,7 +64,7 @@ export const TULLINS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Grenoble ?",
-      a: "Nos consultants viennent de Lyon (1h A48) ou Grenoble (30 min A48). Pour les multi-jours, hébergement local possible (hôtels Voiron). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (1h A48) ou Grenoble (30 min A48). Pour les multi-jours, hébergement local possible (hôtels Voiron). Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

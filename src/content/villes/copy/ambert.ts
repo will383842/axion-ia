@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const AMBERT_COPY: VilleCopy = {
   pitchFr:
-    "Ambert (63), sous-préfecture du Puy-de-Dôme, est la capitale de la Fourme d'Ambert AOP (fromage emblématique du Livradois-Forez, mairie ronde médiévale). Tissu agroalimentaire fromager, agriculture Livradois, TPE artisanat, administration sous-préfecture, tourisme vert Livradois-Forez. Axion-IA y intervient pour tous types d'activités.",
+    "Ambert (63), sous-préfecture du Puy-de-Dôme, est la capitale de la Fourme d'Ambert AOP (fromage emblématique du Livradois-Forez, mairie ronde médiévale). Tissu agroalimentaire fromager, agriculture Livradois, TPE artisanat, administration sous-préfecture, tourisme vert Livradois-Forez. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Ambert (63), sous-préfecture du Puy-de-Dôme, est la capitale de la Fourme d'Ambert AOP (fromage emblématique du Livradois-Forez, mairie ronde médiévale). Tissu agroalimentaire fromager, agriculture Livradois, TPE artisanat, administration sous-préfecture, tourisme vert Livradois-Forez. Axion-IA y intervient pour tous types d'activités.",
+    "Ambert (63), sous-préfecture du Puy-de-Dôme, est la capitale de la Fourme d'Ambert AOP (fromage emblématique du Livradois-Forez, mairie ronde médiévale). Tissu agroalimentaire fromager, agriculture Livradois, TPE artisanat, administration sous-préfecture, tourisme vert Livradois-Forez. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ambert (63). Nous accompagnons TPE et PME : fromageries AOP Fourme, exploitants agricoles Livradois, artisans et commerçants, administration sous-préfecture, acteurs tourisme vert Livradois-Forez. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const AMBERT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ambert : diagnostic adapté aux fromageries AOP, exploitations agricoles Livradois, TPE artisans, administration sous-préfecture, acteurs tourisme vert. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Ambert : diagnostic adapté aux fromageries AOP, exploitations agricoles Livradois, TPE artisans, administration sous-préfecture, acteurs tourisme vert. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Ambert : diagnostic adapté aux fromageries AOP, exploitations agricoles Livradois, TPE artisans, administration sous-préfecture, acteurs tourisme vert. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Ambert : diagnostic adapté aux fromageries AOP, exploitations agricoles Livradois, TPE artisans, administration sous-préfecture, acteurs tourisme vert. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Ambert : formats adaptés fromagerie, exploitation agricole, commerce, bureau administratif. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Ambert : formats adaptés fromagerie, exploitation agricole, commerce, bureau administratif. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Ambert : formats adaptés fromagerie, exploitation agricole, commerce, bureau administratif. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Ambert : formats adaptés fromagerie, exploitation agricole, commerce, bureau administratif. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Ambert : traçabilité AOP Fourme automatisée, classification qualité fromage, gestion stocks exploitations, CRM gîtes et hébergements Livradois-Forez.",
@@ -64,7 +64,7 @@ export const AMBERT_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Clermont-Ferrand ?",
-      a: "Clermont-Ferrand (1h15). Aéroport Clermont à 1h20. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Clermont-Ferrand (1h15). Aéroport Clermont à 1h20. Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

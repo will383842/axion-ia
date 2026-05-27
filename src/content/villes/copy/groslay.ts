@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GROSLAY_COPY: VilleCopy = {
   pitchFr:
-    "Groslay (95), commune résidentielle de la vallée de Montmorency en Val-d'Oise, abrite un tissu économique de TPE artisanales, PME de services, commerces de proximité et professions libérales. Proximité de Sarcelles et Montmorency. Axion-IA y intervient pour tous types d'activités.",
+    "Groslay (95), commune résidentielle de la vallée de Montmorency en Val-d'Oise, abrite un tissu économique de TPE artisanales, PME de services, commerces de proximité et professions libérales. Proximité de Sarcelles et Montmorency. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Groslay (95), commune résidentielle de la vallée de Montmorency en Val-d'Oise, abrite un tissu économique de TPE artisanales, PME de services, commerces de proximité et professions libérales. Proximité de Sarcelles et Montmorency. Axion-IA y intervient pour tous types d'activités.",
+    "Groslay (95), commune résidentielle de la vallée de Montmorency en Val-d'Oise, abrite un tissu économique de TPE artisanales, PME de services, commerces de proximité et professions libérales. Proximité de Sarcelles et Montmorency. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Groslay (95). Nous accompagnons tous types d'activités : TPE artisanales, PME de services et conseil, commerçants, professions libérales de santé, indépendants et prestataires de la vallée de Montmorency.",
   directAnswerEn:

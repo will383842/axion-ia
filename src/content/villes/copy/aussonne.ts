@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const AUSSONNE_COPY: VilleCopy = {
   pitchFr:
-    "Aussonne (31), commune du nord-ouest de Toulouse avec près de 8 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités de la couronne nord-ouest de Toulouse.",
+    "Aussonne (31), commune du nord-ouest de Toulouse avec près de 8 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de la couronne nord-ouest de Toulouse.",
   pitchEn:
-    "Aussonne (31), commune du nord-ouest de Toulouse avec près de 8 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités de la couronne nord-ouest de Toulouse.",
+    "Aussonne (31), commune du nord-ouest de Toulouse avec près de 8 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de la couronne nord-ouest de Toulouse.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aussonne (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord-ouest Toulouse. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const AUSSONNE_COPY: VilleCopy = {
       en: "Audit IA à Aussonne : diagnostic adapté aux TPE artisans, PME de services et professions libérales du nord-ouest Toulouse. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Aussonne : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Aussonne : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Aussonne : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Aussonne : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Aussonne : automatisation gestion clients, devis artisans, classification documents, agents conversationnels pour TPE-PME nord-ouest Toulouse.",

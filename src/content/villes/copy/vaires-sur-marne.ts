@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VAIRES_SUR_MARNE_COPY: VilleCopy = {
   pitchFr:
-    "Vaires-sur-Marne (77), commune de Seine-et-Marne en bord de Marne, a accueilli les épreuves olympiques d'aviron et de canoë-kayak lors des Jeux de Paris 2024 grâce à sa base nautique olympique. Tissu TPE artisans et prestataires, PME services et sport-loisirs, commerçants et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Vaires-sur-Marne (77), commune de Seine-et-Marne en bord de Marne, a accueilli les épreuves olympiques d'aviron et de canoë-kayak lors des Jeux de Paris 2024 grâce à sa base nautique olympique. Tissu TPE artisans et prestataires, PME services et sport-loisirs, commerçants et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Vaires-sur-Marne (77), commune de Seine-et-Marne en bord de Marne, a accueilli les épreuves olympiques d'aviron et de canoë-kayak lors des Jeux de Paris 2024 grâce à sa base nautique olympique. Tissu TPE artisans et prestataires, PME services et sport-loisirs, commerçants et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Vaires-sur-Marne (77), commune de Seine-et-Marne en bord de Marne, a accueilli les épreuves olympiques d'aviron et de canoë-kayak lors des Jeux de Paris 2024 grâce à sa base nautique olympique. Tissu TPE artisans et prestataires, PME services et sport-loisirs, commerçants et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vaires-sur-Marne (77). Nous accompagnons tous types d'activités : acteurs du sport et loisirs nautiques (base olympique Paris 2024), TPE artisans et prestataires, PME services, commerçants, professions libérales et entreprises des bords de Marne. Audit Flash dès 490 € HT.",
   directAnswerEn:

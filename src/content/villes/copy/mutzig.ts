@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MUTZIG_COPY: VilleCopy = {
   pitchFr:
-    "Mutzig (67), commune de 6 087 habitants en Bas-Rhin, située dans la vallée de la Bruche en bordure du Piémont des Vosges, est ancrée dans l'héritage de la brasserie historique et un tissu d'industrie agroalimentaire et de PME locales. Tissu TPE/PME industrie agroalimentaire, artisanat, commerces, restauration, services. Axion-IA y intervient pour tous types d'activités.",
+    "Mutzig (67), commune de 6 087 habitants en Bas-Rhin, située dans la vallée de la Bruche en bordure du Piémont des Vosges, est ancrée dans l'héritage de la brasserie historique et un tissu d'industrie agroalimentaire et de PME locales. Tissu TPE/PME industrie agroalimentaire, artisanat, commerces, restauration, services. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Mutzig (67), commune de 6 087 habitants en Bas-Rhin, située dans la vallée de la Bruche en bordure du Piémont des Vosges, est ancrée dans l'héritage de la brasserie historique et un tissu d'industrie agroalimentaire et de PME locales. Tissu TPE/PME industrie agroalimentaire, artisanat, commerces, restauration, services. Axion-IA y intervient pour tous types d'activités.",
+    "Mutzig (67), commune de 6 087 habitants en Bas-Rhin, située dans la vallée de la Bruche en bordure du Piémont des Vosges, est ancrée dans l'héritage de la brasserie historique et un tissu d'industrie agroalimentaire et de PME locales. Tissu TPE/PME industrie agroalimentaire, artisanat, commerces, restauration, services. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mutzig (67). Nous accompagnons tous types d'activités : TPE/PME industrie agroalimentaire et artisans de la vallée de la Bruche, commerces, restaurateurs, professions de services et acteurs économiques du Piémont des Vosges.",
   directAnswerEn:
@@ -30,12 +30,12 @@ export const MUTZIG_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mutzig : diagnostic adapté aux TPE/PME industrie agroalimentaire, artisans, commerces, restaurateurs, services. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Mutzig : diagnostic adapté aux TPE/PME industrie agroalimentaire, artisans, commerces, restaurateurs, services. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Mutzig : diagnostic adapté aux TPE/PME industrie agroalimentaire, artisans, commerces, restaurateurs, services. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Mutzig : diagnostic adapté aux TPE/PME industrie agroalimentaire, artisans, commerces, restaurateurs, services. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Mutzig : formats adaptés à l'atelier agroalimentaire, à l'artisan, au commerce, au restaurant, au bureau de services. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Mutzig : formats adaptés à l'atelier agroalimentaire, à l'artisan, au commerce, au restaurant, au bureau de services. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Mutzig : formats adaptés à l'atelier agroalimentaire, à l'artisan, au commerce, au restaurant, au bureau de services. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Mutzig : formats adaptés à l'atelier agroalimentaire, à l'artisan, au commerce, au restaurant, au bureau de services. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Mutzig : automatisation traçabilité agroalimentaire, gestion production, agents conversationnels, gestion commerciale, optimisation des stocks et de la chaîne logistique.",

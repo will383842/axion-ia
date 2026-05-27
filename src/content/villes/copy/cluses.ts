@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CLUSES_COPY: VilleCopy = {
   pitchFr:
-    "Cluses (74), capitale historique du décolletage et de la micromécanique dans la vallée de l'Arve en Haute-Savoie, concentre un tissu industriel dense de PME sous-traitantes horlogerie, aéronautique et automobile. Centre technique CETIM, TPE artisanat, commerces. Axion-IA y intervient pour tous types d'activités de la vallée de l'Arve.",
+    "Cluses (74), capitale historique du décolletage et de la micromécanique dans la vallée de l'Arve en Haute-Savoie, concentre un tissu industriel dense de PME sous-traitantes horlogerie, aéronautique et automobile. Centre technique CETIM, TPE artisanat, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations de la vallée de l'Arve.",
   pitchEn:
-    "Cluses (74), capitale historique du décolletage et de la micromécanique dans la vallée de l'Arve en Haute-Savoie, concentre un tissu industriel dense de PME sous-traitantes horlogerie, aéronautique et automobile. Centre technique CETIM, TPE artisanat, commerces. Axion-IA y intervient pour tous types d'activités de la vallée de l'Arve.",
+    "Cluses (74), capitale historique du décolletage et de la micromécanique dans la vallée de l'Arve en Haute-Savoie, concentre un tissu industriel dense de PME sous-traitantes horlogerie, aéronautique et automobile. Centre technique CETIM, TPE artisanat, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations de la vallée de l'Arve.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cluses (74). Nous accompagnons TPE et PME : industriels décolletage/micromécanique vallée de l'Arve, sous-traitants horlogerie et aéronautique, artisans, commerçants et prestataires de services. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const CLUSES_COPY: VilleCopy = {
       en: "Audit IA à Cluses : diagnostic adapté aux PME décolletage/micromécanique, sous-traitants aéronautique/horlogerie, TPE artisans et commerçants vallée de l'Arve. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Cluses : formats adaptés à l'atelier d'usinage, au bureau d'études, à la TPE commerce. Vos équipes repartent autonomes sur outils IA configurés métier industriel.",
-      en: "Interventions IA sur site à Cluses : formats adaptés à l'atelier d'usinage, au bureau d'études, à la TPE commerce. Vos équipes repartent autonomes sur outils IA configurés métier industriel.",
+      fr: "Interventions IA sur site à Cluses : formats adaptés à l'atelier d'usinage, au bureau d'études, à la TPE commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés industriel.",
+      en: "Interventions IA sur site à Cluses : formats adaptés à l'atelier d'usinage, au bureau d'études, à la TPE commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés industriel.",
     },
     implementation: {
       fr: "Implémentation IA à Cluses : contrôle qualité par vision (pièces usinées), prédiction maintenance machines-outils, optimisation production série, classification plans CAO, agents conversationnels devis. Vallée de l'Arve.",

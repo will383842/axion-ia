@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const JOUARS_PONTCHARTRAIN_COPY: VilleCopy = {
   pitchFr:
-    "Jouars-Pontchartrain (78), commune résidentielle de la plaine de Versailles ouest, aux portes de la forêt de Sainte-Apolline dans les Yvelines. Tissu de TPE artisans, PME de services, commerces de bourg, professions libérales et entreprises du tertiaire liées au bassin de Plaisir-Trappes. Axion-IA y intervient pour tous types d'activités de l'ouest Yvelines.",
+    "Jouars-Pontchartrain (78), commune résidentielle de la plaine de Versailles ouest, aux portes de la forêt de Sainte-Apolline dans les Yvelines. Tissu de TPE artisans, PME de services, commerces de bourg, professions libérales et entreprises du tertiaire liées au bassin de Plaisir-Trappes. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'ouest Yvelines.",
   pitchEn:
-    "Jouars-Pontchartrain (78), commune résidentielle de la plaine de Versailles ouest, aux portes de la forêt de Sainte-Apolline dans les Yvelines. Tissu de TPE artisans, PME de services, commerces de bourg, professions libérales et entreprises du tertiaire liées au bassin de Plaisir-Trappes. Axion-IA y intervient pour tous types d'activités de l'ouest Yvelines.",
+    "Jouars-Pontchartrain (78), commune résidentielle de la plaine de Versailles ouest, aux portes de la forêt de Sainte-Apolline dans les Yvelines. Tissu de TPE artisans, PME de services, commerces de bourg, professions libérales et entreprises du tertiaire liées au bassin de Plaisir-Trappes. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'ouest Yvelines.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jouars-Pontchartrain (78). Nous accompagnons TPE et PME : artisans, commerces de bourg, PME de services et professions libérales de cette commune résidentielle de la plaine de Versailles ouest. Audit Flash dès 490 € HT.",
   directAnswerEn:

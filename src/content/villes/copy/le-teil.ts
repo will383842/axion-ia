@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_TEIL_COPY: VilleCopy = {
   pitchFr:
-    "Le Teil (07), commune du sud-Ardèche dans la vallée du Rhône, a un héritage industriel (cimenterie historique, carrières). Tissu PME industrielles diversifiées, agriculture, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités du sud-Ardèche vallée Rhône.",
+    "Le Teil (07), commune du sud-Ardèche dans la vallée du Rhône, a un héritage industriel (cimenterie historique, carrières). Tissu PME industrielles diversifiées, agriculture, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations du sud-Ardèche vallée Rhône.",
   pitchEn:
-    "Le Teil (07), commune du sud-Ardèche dans la vallée du Rhône, a un héritage industriel (cimenterie historique, carrières). Tissu PME industrielles diversifiées, agriculture, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités du sud-Ardèche vallée Rhône.",
+    "Le Teil (07), commune du sud-Ardèche dans la vallée du Rhône, a un héritage industriel (cimenterie historique, carrières). Tissu PME industrielles diversifiées, agriculture, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations du sud-Ardèche vallée Rhône.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Teil (07). Nous accompagnons tous types d'activités : PME industrielles sud-Ardèche, agriculteurs vallée Rhône, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LE_TEIL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Teil : diagnostic adapté aux PME industrielles sud-Ardèche, agriculteurs, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA au Teil : diagnostic adapté aux PME industrielles sud-Ardèche, agriculteurs, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA au Teil : diagnostic adapté aux PME industrielles sud-Ardèche, agriculteurs, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA au Teil : diagnostic adapté aux PME industrielles sud-Ardèche, agriculteurs, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site au Teil : formats adaptés à l'atelier, exploitation, commerce. Vos équipes repartent autonomes.",
@@ -64,7 +64,7 @@ export const LE_TEIL_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Valence ?",
-      a: "Lyon (1h30) ou Valence (40 min). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Lyon (1h30) ou Valence (40 min). Frais de mission en sus, grille tarifaire publique.",
     },
   ],
 };

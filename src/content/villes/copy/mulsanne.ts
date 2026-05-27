@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MULSANNE_COPY: VilleCopy = {
   pitchFr:
-    "Mulsanne (72), commune de l'agglomération du Mans en Sarthe, est célèbre pour la ligne droite des Hunaudières du circuit des 24 Heures. Plus de 5 200 habitants, zones d'activités industrielles et commerciales, tissu de TPE artisanales et PME. Axion-IA y intervient pour tous types d'activités.",
+    "Mulsanne (72), commune de l'agglomération du Mans en Sarthe, est célèbre pour la ligne droite des Hunaudières du circuit des 24 Heures. Plus de 5 200 habitants, zones d'activités industrielles et commerciales, tissu de TPE artisanales et PME. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Mulsanne (72), commune de l'agglomération du Mans en Sarthe, est célèbre pour la ligne droite des Hunaudières du circuit des 24 Heures. Plus de 5 200 habitants, zones d'activités industrielles et commerciales, tissu de TPE artisanales et PME. Axion-IA y intervient pour tous types d'activités.",
+    "Mulsanne (72), commune de l'agglomération du Mans en Sarthe, est célèbre pour la ligne droite des Hunaudières du circuit des 24 Heures. Plus de 5 200 habitants, zones d'activités industrielles et commerciales, tissu de TPE artisanales et PME. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mulsanne (72). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles agglo Le Mans, sous-traitants automobile, professions libérales et services de proximité.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const MULSANNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mulsanne : diagnostic adapté aux TPE artisans, PME industrielles et logistiques agglo Le Mans, sous-traitants automobile. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Mulsanne : diagnostic adapté aux TPE artisans, PME industrielles et logistiques agglo Le Mans, sous-traitants automobile. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Mulsanne : diagnostic adapté aux TPE artisans, PME industrielles et logistiques agglo Le Mans, sous-traitants automobile. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Mulsanne : diagnostic adapté aux TPE artisans, PME industrielles et logistiques agglo Le Mans, sous-traitants automobile. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Mulsanne : formats adaptés aux PME industrielles, entrepôts logistiques, TPE artisanales et commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Mulsanne : formats adaptés aux PME industrielles, entrepôts logistiques, TPE artisanales et commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Mulsanne : formats adaptés aux PME industrielles, entrepôts logistiques, TPE artisanales et commerces. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Mulsanne : formats adaptés aux PME industrielles, entrepôts logistiques, TPE artisanales et commerces. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Mulsanne : maintenance prédictive industrie, optimisation entrepôt logistique, contrôle qualité vision, automatisation gestion stocks. Adapté TPE/PME agglo Le Mans.",

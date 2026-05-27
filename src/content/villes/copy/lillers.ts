@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LILLERS_COPY: VilleCopy = {
   pitchFr:
-    "Lillers (62), bourg de l'Artois dans le Pas-de-Calais, combine agriculture, TPE artisanales, commerces de proximité et PME de services rurales. Axion-IA y intervient pour tous types d'activités du bassin artésien.",
+    "Lillers (62), bourg de l'Artois dans le Pas-de-Calais, combine agriculture, TPE artisanales, commerces de proximité et PME de services rurales. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin artésien.",
   pitchEn:
-    "Lillers (62), bourg de l'Artois dans le Pas-de-Calais, combine agriculture, TPE artisanales, commerces de proximité et PME de services rurales. Axion-IA y intervient pour tous types d'activités du bassin artésien.",
+    "Lillers (62), bourg de l'Artois dans le Pas-de-Calais, combine agriculture, TPE artisanales, commerces de proximité et PME de services rurales. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin artésien.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lillers (62). Nous accompagnons TPE artisanales, PME agricoles et agroalimentaires, commerçants et professions libérales de l'Artois. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:

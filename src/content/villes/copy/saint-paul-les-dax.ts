@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_PAUL_LES_DAX_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Paul-lès-Dax (40), station thermale de l'agglomération dacquoise dans les Landes, est la quatrième commune du département. Thermalisme, bien-être, commerces zone Grand Dax, TPE santé/bien-être, PME services, artisans. Tissu économique complémentaire de Dax. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Paul-lès-Dax (40), station thermale de l'agglomération dacquoise dans les Landes, est la quatrième commune du département. Thermalisme, bien-être, commerces zone Grand Dax, TPE santé/bien-être, PME services, artisans. Tissu économique complémentaire de Dax. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Saint-Paul-lès-Dax (40), station thermale de l'agglomération dacquoise dans les Landes, est la quatrième commune du département. Thermalisme, bien-être, commerces zone Grand Dax, TPE santé/bien-être, PME services, artisans. Tissu économique complémentaire de Dax. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Paul-lès-Dax (40), station thermale de l'agglomération dacquoise dans les Landes, est la quatrième commune du département. Thermalisme, bien-être, commerces zone Grand Dax, TPE santé/bien-être, PME services, artisans. Tissu économique complémentaire de Dax. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Paul-lès-Dax (40). Nous accompagnons TPE et PME du thermalisme et du bien-être, commerces de la zone Grand Dax, professions de santé, artisans BTP, hébergeurs et prestataires touristiques de l'agglomération dacquoise.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const SAINT_PAUL_LES_DAX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Paul-lès-Dax : diagnostic adapté aux TPE du thermalisme et du bien-être, commerces Grand Dax, professions de santé, artisans et PME services de l'agglomération dacquoise. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Paul-lès-Dax : diagnostic adapté aux TPE du thermalisme et du bien-être, commerces Grand Dax, professions de santé, artisans et PME services de l'agglomération dacquoise. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Paul-lès-Dax : diagnostic adapté aux TPE du thermalisme et du bien-être, commerces Grand Dax, professions de santé, artisans et PME services de l'agglomération dacquoise. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Saint-Paul-lès-Dax : diagnostic adapté aux TPE du thermalisme et du bien-être, commerces Grand Dax, professions de santé, artisans et PME services de l'agglomération dacquoise. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Paul-lès-Dax : formations adaptées aux établissements thermaux, centres bien-être, commerces, professions de santé. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -65,7 +65,7 @@ export const SAINT_PAUL_LES_DAX_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Bayonne ou Bordeaux ?",
-      a: "Nos consultants se déplacent facilement : Bayonne à 45 min par A63, Bordeaux à 1h30 par A63. Gare TGV Dax à 5 min. Pour les multi-jours, hébergement local Grand Dax. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants se déplacent facilement : Bayonne à 45 min par A63, Bordeaux à 1h30 par A63. Gare TGV Dax à 5 min. Pour les multi-jours, hébergement local Grand Dax. Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const QUESNOY_SUR_DEULE_COPY: VilleCopy = {
   pitchFr:
-    "Quesnoy-sur-Deûle (59), commune du département du Nord (région Hauts-de-France) dans la métropole européenne de Lille, sur les bords de la Deûle. Tissu TPE artisanat et services de proximité, PME transport et logistique fluviale, commerces, professions libérales et activités liées au bassin d'emploi lillois. Axion-IA y intervient pour tous types d'activités.",
+    "Quesnoy-sur-Deûle (59), commune du département du Nord (région Hauts-de-France) dans la métropole européenne de Lille, sur les bords de la Deûle. Tissu TPE artisanat et services de proximité, PME transport et logistique fluviale, commerces, professions libérales et activités liées au bassin d'emploi lillois. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Quesnoy-sur-Deûle (59), commune du département du Nord (région Hauts-de-France) dans la métropole européenne de Lille, sur les bords de la Deûle. Tissu TPE artisanat et services de proximité, PME transport et logistique fluviale, commerces, professions libérales et activités liées au bassin d'emploi lillois. Axion-IA y intervient pour tous types d'activités.",
+    "Quesnoy-sur-Deûle (59), commune du département du Nord (région Hauts-de-France) dans la métropole européenne de Lille, sur les bords de la Deûle. Tissu TPE artisanat et services de proximité, PME transport et logistique fluviale, commerces, professions libérales et activités liées au bassin d'emploi lillois. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Quesnoy-sur-Deûle (59). Nous accompagnons tous types d'activités : TPE artisans et services de proximité, PME transport et logistique, commerçants, professions libérales et entreprises du bassin d'emploi de la métropole lilloise nord.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const QUESNOY_SUR_DEULE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Quesnoy-sur-Deûle : diagnostic adapté aux TPE artisans, PME transport et logistique, commerçants, professions libérales du bassin lillois nord. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Quesnoy-sur-Deûle : diagnostic adapté aux TPE artisans, PME transport et logistique, commerçants, professions libérales du bassin lillois nord. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Quesnoy-sur-Deûle : diagnostic adapté aux TPE artisans, PME transport et logistique, commerçants, professions libérales du bassin lillois nord. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Quesnoy-sur-Deûle : diagnostic adapté aux TPE artisans, PME transport et logistique, commerçants, professions libérales du bassin lillois nord. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Quesnoy-sur-Deûle : formats adaptés au bureau, commerce, entrepôt logistique. Vos équipes repartent autonomes sur les outils IA du quotidien.",

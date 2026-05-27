@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_SULPICE_LA_POINTE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Sulpice-la-Pointe (81), commune dynamique à la charnière Toulouse-Tarn avec près de 10 000 habitants. Tissu TPE artisans, PME sous-traitance aéronautique et industrie, commerces, services et professions libérales. Axion-IA y intervient pour tous types d'activités du bassin saint-sulpicien.",
+    "Saint-Sulpice-la-Pointe (81), commune dynamique à la charnière Toulouse-Tarn avec près de 10 000 habitants. Tissu TPE artisans, PME sous-traitance aéronautique et industrie, commerces, services et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin saint-sulpicien.",
   pitchEn:
-    "Saint-Sulpice-la-Pointe (81), commune dynamique à la charnière Toulouse-Tarn avec près de 10 000 habitants. Tissu TPE artisans, PME sous-traitance aéronautique et industrie, commerces, services et professions libérales. Axion-IA y intervient pour tous types d'activités du bassin saint-sulpicien.",
+    "Saint-Sulpice-la-Pointe (81), commune dynamique à la charnière Toulouse-Tarn avec près de 10 000 habitants. Tissu TPE artisans, PME sous-traitance aéronautique et industrie, commerces, services et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin saint-sulpicien.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Sulpice-la-Pointe (81). Nous accompagnons TPE artisans, PME aéronautique et industrielles, commerçants et professions libérales entre Toulouse et Tarn. Audit Flash dès 490 € HT.",
   directAnswerEn:

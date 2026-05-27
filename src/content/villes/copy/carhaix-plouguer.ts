@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CARHAIX_PLOUGUER_COPY: VilleCopy = {
   pitchFr:
-    "Carhaix-Plouguer (29), sous-préfecture du centre Finistère, est le bourg-centre du Poher et accueille chaque été le festival des Vieilles Charrues (plus grand festival de musique de France). Tissu TPE artisans, PME agroalimentaires, commerces, services publics et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Carhaix-Plouguer (29), sous-préfecture du centre Finistère, est le bourg-centre du Poher et accueille chaque été le festival des Vieilles Charrues (plus grand festival de musique de France). Tissu TPE artisans, PME agroalimentaires, commerces, services publics et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Carhaix-Plouguer (29), sous-préfecture du centre Finistère, est le bourg-centre du Poher et accueille chaque été le festival des Vieilles Charrues (plus grand festival de musique de France). Tissu TPE artisans, PME agroalimentaires, commerces, services publics et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Carhaix-Plouguer (29), sous-préfecture du centre Finistère, est le bourg-centre du Poher et accueille chaque été le festival des Vieilles Charrues (plus grand festival de musique de France). Tissu TPE artisans, PME agroalimentaires, commerces, services publics et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carhaix-Plouguer (29). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires centre Finistère, commerçants, acteurs de l'événementiel (Vieilles Charrues), professions libérales et services. Audit Flash à 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const CARHAIX_PLOUGUER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Carhaix-Plouguer : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et acteurs de l'événementiel du centre Finistère. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Carhaix-Plouguer : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et acteurs de l'événementiel du centre Finistère. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Carhaix-Plouguer : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et acteurs de l'événementiel du centre Finistère. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Carhaix-Plouguer : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et acteurs de l'événementiel du centre Finistère. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Carhaix-Plouguer : formats adaptés à la laiterie, l'atelier artisan, le commerce ou l'organisation événementielle. Vos équipes repartent autonomes sur outils IA configurés métier.",

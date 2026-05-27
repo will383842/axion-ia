@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ORSAY_COPY: VilleCopy = {
   pitchFr:
-    "Orsay (91), commune de la Vallée de Chevreuse en Essonne, abrite le campus Paris-Saclay et des laboratoires CNRS de renommée mondiale. Tissu recherche et innovation, startups deeptech, services aux chercheurs, TPE conseil scientifique, PME high-tech. Axion-IA y intervient pour tous types d'activités.",
+    "Orsay (91), commune de la Vallée de Chevreuse en Essonne, abrite le campus Paris-Saclay et des laboratoires CNRS de renommée mondiale. Tissu recherche et innovation, startups deeptech, services aux chercheurs, TPE conseil scientifique, PME high-tech. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Orsay (91), commune de la Vallée de Chevreuse en Essonne, abrite le campus Paris-Saclay et des laboratoires CNRS de renommée mondiale. Tissu recherche et innovation, startups deeptech, services aux chercheurs, TPE conseil scientifique, PME high-tech. Axion-IA y intervient pour tous types d'activités.",
+    "Orsay (91), commune de la Vallée de Chevreuse en Essonne, abrite le campus Paris-Saclay et des laboratoires CNRS de renommée mondiale. Tissu recherche et innovation, startups deeptech, services aux chercheurs, TPE conseil scientifique, PME high-tech. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Orsay (91). Nous accompagnons TPE et PME : startups deeptech campus Paris-Saclay, spin-offs laboratoires CNRS, prestataires de services aux chercheurs, TPE conseil scientifique, PME high-tech Vallée de Chevreuse. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const ORSAY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Orsay : diagnostic adapté aux startups deeptech Paris-Saclay, spin-offs CNRS, PME high-tech, prestataires services chercheurs. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Orsay : diagnostic adapté aux startups deeptech Paris-Saclay, spin-offs CNRS, PME high-tech, prestataires services chercheurs. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Orsay : diagnostic adapté aux startups deeptech Paris-Saclay, spin-offs CNRS, PME high-tech, prestataires services chercheurs. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Orsay : diagnostic adapté aux startups deeptech Paris-Saclay, spin-offs CNRS, PME high-tech, prestataires services chercheurs. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Orsay : formats adaptés labo, incubateur, bureau campus, PME high-tech. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Orsay : formats adaptés labo, incubateur, bureau campus, PME high-tech. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Orsay : formats adaptés labo, incubateur, bureau campus, PME high-tech. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Orsay : formats adaptés labo, incubateur, bureau campus, PME high-tech. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Orsay : automatisation données recherche, NLP publications scientifiques, CRM deeptech, outils prédictifs spin-offs, pipelines data labs.",
@@ -64,7 +64,7 @@ export const ORSAY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou Massy ?",
-      a: "Paris centre (30 min RER B). Massy TGV (10 min). Aéroport Orly (20 min). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Paris centre (30 min RER B). Massy TGV (10 min). Aéroport Orly (20 min). Frais de mission en sus, grille tarifaire publique.",
     },
   ],
 };

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LEVENS_COPY: VilleCopy = {
   pitchFr:
-    "Levens (06), village perché du moyen-pays niçois à 600 m d'altitude, domine la vallée de la Vésubie et offre un panorama exceptionnel sur les Alpes et la mer. Tissu TPE/PME artisanat BTP, commerces de village, professions libérales, tourisme nature et agriculture de montagne. Axion-IA y intervient pour tous types d'activités.",
+    "Levens (06), village perché du moyen-pays niçois à 600 m d'altitude, domine la vallée de la Vésubie et offre un panorama exceptionnel sur les Alpes et la mer. Tissu TPE/PME artisanat BTP, commerces de village, professions libérales, tourisme nature et agriculture de montagne. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Levens (06), village perché du moyen-pays niçois à 600 m d'altitude, domine la vallée de la Vésubie et offre un panorama exceptionnel sur les Alpes et la mer. Tissu TPE/PME artisanat BTP, commerces de village, professions libérales, tourisme nature et agriculture de montagne. Axion-IA y intervient pour tous types d'activités.",
+    "Levens (06), village perché du moyen-pays niçois à 600 m d'altitude, domine la vallée de la Vésubie et offre un panorama exceptionnel sur les Alpes et la mer. Tissu TPE/PME artisanat BTP, commerces de village, professions libérales, tourisme nature et agriculture de montagne. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Levens (06). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, acteurs tourisme nature et agriculteurs de montagne du moyen-pays niçois.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const LEVENS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Levens : diagnostic adapté aux TPE artisans BTP, acteurs tourisme nature, commerçants et professions libérales du moyen-pays niçois. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
-      en: "Audit IA à Levens : diagnostic adapté aux TPE artisans BTP, acteurs tourisme nature, commerçants et professions libérales du moyen-pays niçois. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
+      fr: "Audit IA à Levens : diagnostic adapté aux TPE artisans BTP, acteurs tourisme nature, commerçants et professions libérales du moyen-pays niçois. ROI mesurable, audit Flash dès 490 € HT accessible aux petites structures.",
+      en: "Audit IA à Levens : diagnostic adapté aux TPE artisans BTP, acteurs tourisme nature, commerçants et professions libérales du moyen-pays niçois. ROI mesurable, audit Flash dès 490 € HT accessible aux petites structures.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Levens : formats adaptés au gîte, commerce de village, atelier artisan ou cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Levens : formats adaptés au gîte, commerce de village, atelier artisan ou cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Levens : formats adaptés au gîte, commerce de village, atelier artisan ou cabinet. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Levens : formats adaptés au gîte, commerce de village, atelier artisan ou cabinet. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Levens : agents conversationnels tourisme, automatisation réservations gîtes, gestion avis visiteurs, devis BTP automatisés, CRM augmenté. Adapté aux TPE/PME montagne et tourisme.",

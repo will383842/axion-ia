@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ROUSSET_COPY: VilleCopy = {
   pitchFr:
-    "Rousset (13), commune à l'est d'Aix-en-Provence, abrite l'une des plus importantes zones industrielles microélectronique de France (semi-conducteurs, salles blanches, sous-traitance high-tech). Tissu de PME industrielles, sous-traitants microélectronique, TPE artisans, PME services et commerces de proximité au pied de la montagne Sainte-Victoire. Axion-IA y intervient pour tous types d'activités.",
+    "Rousset (13), commune à l'est d'Aix-en-Provence, abrite l'une des plus importantes zones industrielles microélectronique de France (semi-conducteurs, salles blanches, sous-traitance high-tech). Tissu de PME industrielles, sous-traitants microélectronique, TPE artisans, PME services et commerces de proximité au pied de la montagne Sainte-Victoire. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Rousset (13), commune à l'est d'Aix-en-Provence, abrite l'une des plus importantes zones industrielles microélectronique de France (semi-conducteurs, salles blanches, sous-traitance high-tech). Tissu de PME industrielles, sous-traitants microélectronique, TPE artisans, PME services et commerces de proximité au pied de la montagne Sainte-Victoire. Axion-IA y intervient pour tous types d'activités.",
+    "Rousset (13), commune à l'est d'Aix-en-Provence, abrite l'une des plus importantes zones industrielles microélectronique de France (semi-conducteurs, salles blanches, sous-traitance high-tech). Tissu de PME industrielles, sous-traitants microélectronique, TPE artisans, PME services et commerces de proximité au pied de la montagne Sainte-Victoire. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rousset (13). Nous accompagnons TPE artisans, PME industrielles, sous-traitants microélectronique, PME services et commerces de proximité de la zone industrielle est-aixoise. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const ROUSSET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Rousset : diagnostic adapté aux PME industrielles microélectronique, sous-traitants high-tech, TPE artisans, viticulteurs Sainte-Victoire et commerces de l'est aixois. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Rousset : diagnostic adapté aux PME industrielles microélectronique, sous-traitants high-tech, TPE artisans, viticulteurs Sainte-Victoire et commerces de l'est aixois. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Rousset : diagnostic adapté aux PME industrielles microélectronique, sous-traitants high-tech, TPE artisans, viticulteurs Sainte-Victoire et commerces de l'est aixois. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Rousset : diagnostic adapté aux PME industrielles microélectronique, sous-traitants high-tech, TPE artisans, viticulteurs Sainte-Victoire et commerces de l'est aixois. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Rousset : ateliers pour équipes microélectronique, sous-traitants industriels, TPE et PME locales. Outils IA configurés métier réel, dans vos locaux ou à Aix.",

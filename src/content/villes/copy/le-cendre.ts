@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_CENDRE_COPY: VilleCopy = {
   pitchFr:
-    "Le Cendre (63), commune résidentielle au sud de Clermont-Ferrand dans Clermont Auvergne Métropole (proximité Cournon-d'Auvergne). Tissu PME tertiaires, professions libérales, TPE artisanat BTP, commerce de proximité, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Le Cendre (63), commune résidentielle au sud de Clermont-Ferrand dans Clermont Auvergne Métropole (proximité Cournon-d'Auvergne). Tissu PME tertiaires, professions libérales, TPE artisanat BTP, commerce de proximité, services aux entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Le Cendre (63), commune résidentielle au sud de Clermont-Ferrand dans Clermont Auvergne Métropole (proximité Cournon-d'Auvergne). Tissu PME tertiaires, professions libérales, TPE artisanat BTP, commerce de proximité, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Le Cendre (63), commune résidentielle au sud de Clermont-Ferrand dans Clermont Auvergne Métropole (proximité Cournon-d'Auvergne). Tissu PME tertiaires, professions libérales, TPE artisanat BTP, commerce de proximité, services aux entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Cendre (63). Nous accompagnons TPE et PME : entreprises tertiaires sud Clermont, professions libérales, artisans BTP, commerçants de proximité, prestataires services aux entreprises. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LE_CENDRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Cendre : diagnostic adapté aux PME tertiaires, professions libérales, artisans BTP, commerçants de proximité, prestataires de services. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA au Cendre : diagnostic adapté aux PME tertiaires, professions libérales, artisans BTP, commerçants de proximité, prestataires de services. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA au Cendre : diagnostic adapté aux PME tertiaires, professions libérales, artisans BTP, commerçants de proximité, prestataires de services. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA au Cendre : diagnostic adapté aux PME tertiaires, professions libérales, artisans BTP, commerçants de proximité, prestataires de services. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site au Cendre : formats adaptés bureau tertiaire, cabinet libéral, chantier BTP, commerce, siège PME. Vos équipes repartent autonomes.",

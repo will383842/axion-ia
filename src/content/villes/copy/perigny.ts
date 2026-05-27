@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PERIGNY_COPY: VilleCopy = {
   pitchFr:
-    "Périgny (17), commune de l'agglomération de La Rochelle en Charente-Maritime, pôle résidentiel et tertiaire avec zones d'activités. Tissu de TPE artisans, PME tertiaires et technologiques, commerces, services aux entreprises et professions libérales. Axion-IA y intervient pour tous types d'activités de l'agglomération rochelaise.",
+    "Périgny (17), commune de l'agglomération de La Rochelle en Charente-Maritime, pôle résidentiel et tertiaire avec zones d'activités. Tissu de TPE artisans, PME tertiaires et technologiques, commerces, services aux entreprises et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération rochelaise.",
   pitchEn:
-    "Périgny (17), commune de l'agglomération de La Rochelle en Charente-Maritime, pôle résidentiel et tertiaire avec zones d'activités. Tissu de TPE artisans, PME tertiaires et technologiques, commerces, services aux entreprises et professions libérales. Axion-IA y intervient pour tous types d'activités de l'agglomération rochelaise.",
+    "Périgny (17), commune de l'agglomération de La Rochelle en Charente-Maritime, pôle résidentiel et tertiaire avec zones d'activités. Tissu de TPE artisans, PME tertiaires et technologiques, commerces, services aux entreprises et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération rochelaise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Périgny (17). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires et technologiques, prestataires de services, commerçants et indépendants de cette commune dynamique de l'agglomération de La Rochelle.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const PERIGNY_COPY: VilleCopy = {
       en: "Audit IA à Périgny : diagnostic adapté aux PME tertiaires et technologiques, TPE artisans, prestataires de services et commerces de l'agglomération de La Rochelle. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Périgny : formats adaptés au bureau, au cabinet, à l'atelier ou au commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Périgny : formats adaptés au bureau, au cabinet, à l'atelier ou au commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Périgny : formats adaptés au bureau, au cabinet, à l'atelier ou au commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Périgny : formats adaptés au bureau, au cabinet, à l'atelier ou au commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Périgny : automatisation gestion administrative PME, agents conversationnels accueil client, classification documents, développement outils IA sur mesure pour PME technologiques.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_LAURENT_DE_LA_SALANQUE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Laurent-de-la-Salanque (66), bourg-centre de la Salanque avec zones commerciales importantes, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME commerce et logistique, agriculture maraîchère, services. Axion-IA y intervient pour tous types d'activités de la Salanque.",
+    "Saint-Laurent-de-la-Salanque (66), bourg-centre de la Salanque avec zones commerciales importantes, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME commerce et logistique, agriculture maraîchère, services. Axion-IA y déploie ses missions auprès de toutes les organisations de la Salanque.",
   pitchEn:
-    "Saint-Laurent-de-la-Salanque (66), bourg-centre de la Salanque avec zones commerciales importantes, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME commerce et logistique, agriculture maraîchère, services. Axion-IA y intervient pour tous types d'activités de la Salanque.",
+    "Saint-Laurent-de-la-Salanque (66), bourg-centre de la Salanque avec zones commerciales importantes, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME commerce et logistique, agriculture maraîchère, services. Axion-IA y déploie ses missions auprès de toutes les organisations de la Salanque.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Laurent-de-la-Salanque (66). Nous accompagnons tous types d'activités : TPE artisans, PME commerce et logistique, agriculteurs maraîchers, commerçants, indépendants et professions libérales de la Salanque.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const SAINT_LAURENT_DE_LA_SALANQUE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Laurent-de-la-Salanque : diagnostic adapté aux TPE artisans, PME commerce, agriculteurs maraîchers et commerçants de la Salanque. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Laurent-de-la-Salanque : diagnostic adapté aux TPE artisans, PME commerce, agriculteurs maraîchers et commerçants de la Salanque. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Laurent-de-la-Salanque : diagnostic adapté aux TPE artisans, PME commerce, agriculteurs maraîchers et commerçants de la Salanque. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Saint-Laurent-de-la-Salanque : diagnostic adapté aux TPE artisans, PME commerce, agriculteurs maraîchers et commerçants de la Salanque. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Laurent-de-la-Salanque : formats adaptés au commerce, exploitation maraîchère, atelier, entrepôt logistique. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const SAINT_LAURENT_DE_LA_SALANQUE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Laurent-de-la-Salanque ?",
-      a: "Nos consultants interviennent depuis Perpignan (15 min). Missions sur site dans votre commerce, exploitation ou atelier. Visio possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants interviennent depuis Perpignan (15 min). Missions sur site dans votre commerce, exploitation ou atelier. Visio possible. Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

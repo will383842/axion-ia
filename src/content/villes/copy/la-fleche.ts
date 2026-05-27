@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_FLECHE_COPY: VilleCopy = {
   pitchFr:
-    "La Flèche (72), sous-préfecture de la Sarthe dans la vallée du Loir, ville du Prytanée national militaire et du zoo de La Flèche, concentre un tissu de TPE artisans, PME de services et agroalimentaires, commerces de centre-ville, professions libérales et acteurs du tourisme. Axion-IA y intervient pour tous types d'activités.",
+    "La Flèche (72), sous-préfecture de la Sarthe dans la vallée du Loir, ville du Prytanée national militaire et du zoo de La Flèche, concentre un tissu de TPE artisans, PME de services et agroalimentaires, commerces de centre-ville, professions libérales et acteurs du tourisme. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "La Flèche (72), sous-préfecture de la Sarthe dans la vallée du Loir, ville du Prytanée national militaire et du zoo de La Flèche, concentre un tissu de TPE artisans, PME de services et agroalimentaires, commerces de centre-ville, professions libérales et acteurs du tourisme. Axion-IA y intervient pour tous types d'activités.",
+    "La Flèche (72), sous-préfecture de la Sarthe dans la vallée du Loir, ville du Prytanée national militaire et du zoo de La Flèche, concentre un tissu de TPE artisans, PME de services et agroalimentaires, commerces de centre-ville, professions libérales et acteurs du tourisme. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Flèche (72). Nous accompagnons tous types d'activités : TPE artisans, PME de services et agroalimentaires, commerçants de centre-ville, professions libérales, acteurs du tourisme (zoo, patrimoine) et prestataires de services de la vallée du Loir sarthoise.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const LA_FLECHE_COPY: VilleCopy = {
       en: "Audit IA à La Flèche : diagnostic adapté aux TPE artisans, PME de services, commerçants et acteurs du tourisme de la vallée du Loir sarthoise. ROI chiffré, Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à La Flèche : formations adaptées aux PME de services, commerces, acteurs touristiques, artisans et professions libérales de la vallée du Loir. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à La Flèche : formations adaptées aux PME de services, commerces, acteurs touristiques, artisans et professions libérales de la vallée du Loir. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à La Flèche : formations adaptées aux PME de services, commerces, acteurs touristiques, artisans et professions libérales de la vallée du Loir. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à La Flèche : formations adaptées aux PME de services, commerces, acteurs touristiques, artisans et professions libérales de la vallée du Loir. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à La Flèche : agents conversationnels tourisme et réservation, automatisation gestion commerces, outils IA pour professions libérales, optimisation planning événementiel.",

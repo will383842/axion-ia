@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BASSENS_COPY: VilleCopy = {
   pitchFr:
-    "Bassens (33), commune de la rive droite de Bordeaux Métropole, abrite le Grand Port Maritime de Bordeaux (terminaux industriels, logistique) et un tissu de PME industrielles, artisans BTP et commerces. Axion-IA y intervient pour tous types d'activités du port et de la rive droite bordelaise.",
+    "Bassens (33), commune de la rive droite de Bordeaux Métropole, abrite le Grand Port Maritime de Bordeaux (terminaux industriels, logistique) et un tissu de PME industrielles, artisans BTP et commerces. Axion-IA opère pour toutes les structures économiques de la commune du port et de la rive droite bordelaise.",
   pitchEn:
-    "Bassens (33), commune de la rive droite de Bordeaux Métropole, abrite le Grand Port Maritime de Bordeaux (terminaux industriels, logistique) et un tissu de PME industrielles, artisans BTP et commerces. Axion-IA y intervient pour tous types d'activités du port et de la rive droite bordelaise.",
+    "Bassens (33), commune de la rive droite de Bordeaux Métropole, abrite le Grand Port Maritime de Bordeaux (terminaux industriels, logistique) et un tissu de PME industrielles, artisans BTP et commerces. Axion-IA opère pour toutes les structures économiques de la commune du port et de la rive droite bordelaise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bassens (33). Nous accompagnons TPE et PME de la rive droite bordelaise : entreprises portuaires et logistiques, PME industrielles, artisans BTP, commerçants et professions libérales. Audit Flash dès 490 € HT.",
   directAnswerEn:

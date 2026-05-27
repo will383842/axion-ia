@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BOUCHEMAINE_COPY: VilleCopy = {
   pitchFr:
-    "Bouchemaine (49), commune résidentielle prisée au confluent de la Maine et de la Loire, à l'ouest d'Angers, accueille plus de 6 500 habitants. Axion-IA y intervient pour tous types d'activités : PME tertiaires, professions libérales, commerces, artisanat et services.",
+    "Bouchemaine (49), commune résidentielle prisée au confluent de la Maine et de la Loire, à l'ouest d'Angers, accueille plus de 6 500 habitants. Axion-IA opère pour toutes les structures économiques de la commune : PME tertiaires, professions libérales, commerces, artisanat et services.",
   pitchEn:
-    "Bouchemaine (49), commune résidentielle prisée au confluent de la Maine et de la Loire, à l'ouest d'Angers, accueille plus de 6 500 habitants. Axion-IA y intervient pour tous types d'activités : PME tertiaires, professions libérales, commerces, artisanat et services.",
+    "Bouchemaine (49), commune résidentielle prisée au confluent de la Maine et de la Loire, à l'ouest d'Angers, accueille plus de 6 500 habitants. Axion-IA opère pour toutes les structures économiques de la commune : PME tertiaires, professions libérales, commerces, artisanat et services.",
   directAnswerFr:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Bouchemaine (49). Nous accompagnons les TPE, PME et professions libérales de l'ouest angevin dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict, tarifs publics.",
   directAnswerEn:

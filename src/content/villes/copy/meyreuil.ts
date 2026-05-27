@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MEYREUIL_COPY: VilleCopy = {
   pitchFr:
-    "Meyreuil (13), commune résidentielle à l'est d'Aix-en-Provence au pied de la montagne Sainte-Victoire, accueille des cadres et familles du bassin aixois. Zone d'activités locale, TPE artisans, professions libérales, PME tertiaires et viticulture (AOC Côtes de Provence Sainte-Victoire). Axion-IA y intervient pour tous types d'activités.",
+    "Meyreuil (13), commune résidentielle à l'est d'Aix-en-Provence au pied de la montagne Sainte-Victoire, accueille des cadres et familles du bassin aixois. Zone d'activités locale, TPE artisans, professions libérales, PME tertiaires et viticulture (AOC Côtes de Provence Sainte-Victoire). Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Meyreuil (13), commune résidentielle à l'est d'Aix-en-Provence au pied de la montagne Sainte-Victoire, accueille des cadres et familles du bassin aixois. Zone d'activités locale, TPE artisans, professions libérales, PME tertiaires et viticulture (AOC Côtes de Provence Sainte-Victoire). Axion-IA y intervient pour tous types d'activités.",
+    "Meyreuil (13), commune résidentielle à l'est d'Aix-en-Provence au pied de la montagne Sainte-Victoire, accueille des cadres et familles du bassin aixois. Zone d'activités locale, TPE artisans, professions libérales, PME tertiaires et viticulture (AOC Côtes de Provence Sainte-Victoire). Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Meyreuil (13). Nous accompagnons TPE artisans, professions libérales, viticulteurs, PME tertiaires et entreprises de l'est aixois. Audit Flash dès 490 € HT.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_GARNACHE_COPY: VilleCopy = {
   pitchFr:
-    "La Garnache (85), commune du marais breton vendéen en Pays de la Loire, plus de 5 500 habitants. Ancienne seigneurie historique aujourd'hui pôle rural avec agriculture, artisanat, commerces et tourisme vert. Tissu TPE artisans, PME agroalimentaires, exploitations agricoles et professions libérales. Axion-IA y intervient pour tous types d'activités du bocage vendéen nord.",
+    "La Garnache (85), commune du marais breton vendéen en Pays de la Loire, plus de 5 500 habitants. Ancienne seigneurie historique aujourd'hui pôle rural avec agriculture, artisanat, commerces et tourisme vert. Tissu TPE artisans, PME agroalimentaires, exploitations agricoles et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du bocage vendéen nord.",
   pitchEn:
-    "La Garnache (85), commune du marais breton vendéen en Pays de la Loire, plus de 5 500 habitants. Ancienne seigneurie historique aujourd'hui pôle rural avec agriculture, artisanat, commerces et tourisme vert. Tissu TPE artisans, PME agroalimentaires, exploitations agricoles et professions libérales. Axion-IA y intervient pour tous types d'activités du bocage vendéen nord.",
+    "La Garnache (85), commune du marais breton vendéen en Pays de la Loire, plus de 5 500 habitants. Ancienne seigneurie historique aujourd'hui pôle rural avec agriculture, artisanat, commerces et tourisme vert. Tissu TPE artisans, PME agroalimentaires, exploitations agricoles et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du bocage vendéen nord.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Garnache (85). Nous accompagnons TPE artisans, PME agroalimentaires, exploitations agricoles, commerçants et professions libérales du marais breton vendéen. Audit Flash dès 490 € HT.",
   directAnswerEn:

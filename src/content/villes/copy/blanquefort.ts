@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BLANQUEFORT_COPY: VilleCopy = {
   pitchFr:
-    "Blanquefort (33), commune au nord de Bordeaux Métropole aux portes du vignoble du Médoc, associe activités industrielles (agroalimentaire, métallurgie) et tissu tertiaire. Axion-IA y intervient pour tous types d'activités : TPE viticoles, PME industrielles, commerces, professions libérales et entreprises de services.",
+    "Blanquefort (33), commune au nord de Bordeaux Métropole aux portes du vignoble du Médoc, associe activités industrielles (agroalimentaire, métallurgie) et tissu tertiaire. Axion-IA couvre l'ensemble des activités professionnelles présentes : TPE viticoles, PME industrielles, commerces, professions libérales et entreprises de services.",
   pitchEn:
-    "Blanquefort (33), commune au nord de Bordeaux Métropole aux portes du vignoble du Médoc, associe activités industrielles (agroalimentaire, métallurgie) et tissu tertiaire. Axion-IA y intervient pour tous types d'activités : TPE viticoles, PME industrielles, commerces, professions libérales et entreprises de services.",
+    "Blanquefort (33), commune au nord de Bordeaux Métropole aux portes du vignoble du Médoc, associe activités industrielles (agroalimentaire, métallurgie) et tissu tertiaire. Axion-IA couvre l'ensemble des activités professionnelles présentes : TPE viticoles, PME industrielles, commerces, professions libérales et entreprises de services.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Blanquefort (33). Nous accompagnons TPE et PME du nord Bordeaux-Médoc : exploitations viticoles, PME agroalimentaires et industrielles, artisans BTP, commerçants et professions libérales. Audit Flash dès 490 € HT.",
   directAnswerEn:

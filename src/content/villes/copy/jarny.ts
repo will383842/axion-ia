@@ -30,8 +30,8 @@ export const JARNY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Jarny : diagnostic adapté aux TPE/PME industrie, plateformes logistiques, artisans BTP et commerçants du Pays Haut. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Jarny : diagnostic adapté aux TPE/PME industrie, plateformes logistiques, artisans BTP et commerçants du Pays Haut. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Jarny : diagnostic adapté aux TPE/PME industrie, plateformes logistiques, artisans BTP et commerçants du Pays Haut. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Jarny : diagnostic adapté aux TPE/PME industrie, plateformes logistiques, artisans BTP et commerçants du Pays Haut. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Jarny : formats adaptés à l'atelier industriel, à l'entrepôt logistique, au chantier BTP ou au commerce. Vos équipes repartent autonomes sur les outils IA métier.",

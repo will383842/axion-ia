@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_JORIOZ_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Jorioz (74), commune de la rive ouest du lac d'Annecy en Haute-Savoie, allie cadre résidentiel prisé et tourisme lacustre. Plage de Saint-Jorioz, réserve naturelle du Bout du Lac, piste cyclable. Tissu TPE artisans, commerces, hébergeurs, PME services, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Jorioz (74), commune de la rive ouest du lac d'Annecy en Haute-Savoie, allie cadre résidentiel prisé et tourisme lacustre. Plage de Saint-Jorioz, réserve naturelle du Bout du Lac, piste cyclable. Tissu TPE artisans, commerces, hébergeurs, PME services, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Saint-Jorioz (74), commune de la rive ouest du lac d'Annecy en Haute-Savoie, allie cadre résidentiel prisé et tourisme lacustre. Plage de Saint-Jorioz, réserve naturelle du Bout du Lac, piste cyclable. Tissu TPE artisans, commerces, hébergeurs, PME services, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Jorioz (74), commune de la rive ouest du lac d'Annecy en Haute-Savoie, allie cadre résidentiel prisé et tourisme lacustre. Plage de Saint-Jorioz, réserve naturelle du Bout du Lac, piste cyclable. Tissu TPE artisans, commerces, hébergeurs, PME services, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jorioz (74). Nous accompagnons TPE et PME : hébergeurs et restaurateurs du lac d'Annecy, commerces de proximité, artisans BTP, professions libérales, PME services et acteurs du tourisme lacustre rive ouest.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const SAINT_JORIOZ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Jorioz : diagnostic adapté aux hébergeurs et restaurateurs du lac d'Annecy, commerces saisonniers, TPE artisans, professions libérales et PME services rive ouest. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Jorioz : diagnostic adapté aux hébergeurs et restaurateurs du lac d'Annecy, commerces saisonniers, TPE artisans, professions libérales et PME services rive ouest. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Jorioz : diagnostic adapté aux hébergeurs et restaurateurs du lac d'Annecy, commerces saisonniers, TPE artisans, professions libérales et PME services rive ouest. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Saint-Jorioz : diagnostic adapté aux hébergeurs et restaurateurs du lac d'Annecy, commerces saisonniers, TPE artisans, professions libérales et PME services rive ouest. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Jorioz : formats adaptés hôtel-restaurant, commerce, cabinet libéral ou agence immobilière. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Saint-Jorioz : formats adaptés hôtel-restaurant, commerce, cabinet libéral ou agence immobilière. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Saint-Jorioz : formats adaptés hôtel-restaurant, commerce, cabinet libéral ou agence immobilière. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Saint-Jorioz : formats adaptés hôtel-restaurant, commerce, cabinet libéral ou agence immobilière. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Jorioz : agents conversationnels multilingues touristes (lac d'Annecy), automatisation réservations, gestion saisonnalité, classification avis clients, chatbot immobilier résidentiel. Adapté tourisme lacustre + services.",

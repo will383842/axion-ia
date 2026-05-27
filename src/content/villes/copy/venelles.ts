@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VENELLES_COPY: VilleCopy = {
   pitchFr:
-    "Venelles (13), commune résidentielle au nord d'Aix-en-Provence, accueille des familles et cadres travaillant dans le bassin aixois. Tissu de TPE artisans, commerçants, professions libérales et PME tertiaires. Axion-IA y intervient pour tous types d'activités.",
+    "Venelles (13), commune résidentielle au nord d'Aix-en-Provence, accueille des familles et cadres travaillant dans le bassin aixois. Tissu de TPE artisans, commerçants, professions libérales et PME tertiaires. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Venelles (13), commune résidentielle au nord d'Aix-en-Provence, accueille des familles et cadres travaillant dans le bassin aixois. Tissu de TPE artisans, commerçants, professions libérales et PME tertiaires. Axion-IA y intervient pour tous types d'activités.",
+    "Venelles (13), commune résidentielle au nord d'Aix-en-Provence, accueille des familles et cadres travaillant dans le bassin aixois. Tissu de TPE artisans, commerçants, professions libérales et PME tertiaires. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Venelles (13). Nous accompagnons TPE artisans, commerçants, professions libérales, PME tertiaires et entreprises du bassin nord-aixois. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const VENELLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Venelles : diagnostic adapté aux TPE artisans, professions libérales et PME tertiaires du nord-aixois. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
-      en: "Audit IA à Venelles : diagnostic adapté aux TPE artisans, professions libérales et PME tertiaires du nord-aixois. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
+      fr: "Audit IA à Venelles : diagnostic adapté aux TPE artisans, professions libérales et PME tertiaires du nord-aixois. Audit Flash 490 € HT, ROI documenté en chiffres accessible aux petites structures.",
+      en: "Audit IA à Venelles : diagnostic adapté aux TPE artisans, professions libérales et PME tertiaires du nord-aixois. Audit Flash 490 € HT, ROI documenté en chiffres accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Venelles : ateliers pour équipes PME, cabinets libéraux ou artisans. Format demi-journée ou journée, outils IA configurés métier réel.",

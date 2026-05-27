@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PORTET_SUR_GARONNE_COPY: VilleCopy = {
   pitchFr:
-    "Portet-sur-Garonne (31), commune au confluent de la Garonne et de l'Ariège, près de 10 000 habitants. Pôle commercial majeur du sud toulousain, tissu TPE artisans, PME commerciales et logistiques, professions libérales. Axion-IA y intervient pour tous types d'activités du sud de Toulouse.",
+    "Portet-sur-Garonne (31), commune au confluent de la Garonne et de l'Ariège, près de 10 000 habitants. Pôle commercial majeur du sud toulousain, tissu TPE artisans, PME commerciales et logistiques, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du sud de Toulouse.",
   pitchEn:
-    "Portet-sur-Garonne (31), commune au confluent de la Garonne et de l'Ariège, près de 10 000 habitants. Pôle commercial majeur du sud toulousain, tissu TPE artisans, PME commerciales et logistiques, professions libérales. Axion-IA y intervient pour tous types d'activités du sud de Toulouse.",
+    "Portet-sur-Garonne (31), commune au confluent de la Garonne et de l'Ariège, près de 10 000 habitants. Pôle commercial majeur du sud toulousain, tissu TPE artisans, PME commerciales et logistiques, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du sud de Toulouse.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Portet-sur-Garonne (31). Nous accompagnons TPE artisans, PME commerciales et logistiques, professions libérales et commerçants du sud Toulouse. Audit Flash dès 490 € HT.",
   directAnswerEn:

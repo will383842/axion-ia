@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FORCALQUIER_COPY: VilleCopy = {
   pitchFr:
-    "Forcalquier (04), sous-préfecture des Alpes-de-Haute-Provence, est ville-phare de la Haute-Provence avec sa filière cosmétique naturelle, sa lavande et son marché provençal reconnu. Tissu TPE artisans, PME cosmétique/distillation, agriculteurs lavandicoles, commerçants et services. Axion-IA y intervient pour tous types d'activités du Pays de Forcalquier.",
+    "Forcalquier (04), sous-préfecture des Alpes-de-Haute-Provence, est ville-phare de la Haute-Provence avec sa filière cosmétique naturelle, sa lavande et son marché provençal reconnu. Tissu TPE artisans, PME cosmétique/distillation, agriculteurs lavandicoles, commerçants et services. Axion-IA opère pour toutes les structures économiques de la commune du Pays de Forcalquier.",
   pitchEn:
-    "Forcalquier (04), sous-préfecture des Alpes-de-Haute-Provence, est ville-phare de la Haute-Provence avec sa filière cosmétique naturelle, sa lavande et son marché provençal reconnu. Tissu TPE artisans, PME cosmétique/distillation, agriculteurs lavandicoles, commerçants et services. Axion-IA y intervient pour tous types d'activités du Pays de Forcalquier.",
+    "Forcalquier (04), sous-préfecture des Alpes-de-Haute-Provence, est ville-phare de la Haute-Provence avec sa filière cosmétique naturelle, sa lavande et son marché provençal reconnu. Tissu TPE artisans, PME cosmétique/distillation, agriculteurs lavandicoles, commerçants et services. Axion-IA opère pour toutes les structures économiques de la commune du Pays de Forcalquier.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Forcalquier (04). Nous accompagnons tous types d'activités : TPE artisans, PME cosmétique naturelle et distillation, agriculteurs lavandicoles, commerçants, indépendants et services aux entreprises de la sous-préfecture de Haute-Provence.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const FORCALQUIER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Forcalquier : diagnostic adapté aux TPE artisans, PME cosmétique/distillation, agriculteurs lavandicoles et commerçants de Haute-Provence. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Forcalquier : diagnostic adapté aux TPE artisans, PME cosmétique/distillation, agriculteurs lavandicoles et commerçants de Haute-Provence. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Forcalquier : diagnostic adapté aux TPE artisans, PME cosmétique/distillation, agriculteurs lavandicoles et commerçants de Haute-Provence. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
+      en: "Audit IA à Forcalquier : diagnostic adapté aux TPE artisans, PME cosmétique/distillation, agriculteurs lavandicoles et commerçants de Haute-Provence. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Forcalquier : formats adaptés aux laboratoires cosmétiques, distilleries, exploitations lavande ou commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",

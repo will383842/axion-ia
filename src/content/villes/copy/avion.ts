@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const AVION_COPY: VilleCopy = {
   pitchFr:
-    "Avion (62), commune de l'agglomération de Lens dans le bassin minier du Pas-de-Calais (patrimoine UNESCO), présente un tissu de TPE artisanales, PME tertiaires et de services, commerces de proximité et acteurs de la reconversion économique post-minière. Axion-IA y intervient pour tous types d'activités de l'agglo Lens-Liévin.",
+    "Avion (62), commune de l'agglomération de Lens dans le bassin minier du Pas-de-Calais (patrimoine UNESCO), présente un tissu de TPE artisanales, PME tertiaires et de services, commerces de proximité et acteurs de la reconversion économique post-minière. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglo Lens-Liévin.",
   pitchEn:
-    "Avion (62), commune de l'agglomération de Lens dans le bassin minier du Pas-de-Calais (patrimoine UNESCO), présente un tissu de TPE artisanales, PME tertiaires et de services, commerces de proximité et acteurs de la reconversion économique post-minière. Axion-IA y intervient pour tous types d'activités de l'agglo Lens-Liévin.",
+    "Avion (62), commune de l'agglomération de Lens dans le bassin minier du Pas-de-Calais (patrimoine UNESCO), présente un tissu de TPE artisanales, PME tertiaires et de services, commerces de proximité et acteurs de la reconversion économique post-minière. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglo Lens-Liévin.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Avion (62). Nous accompagnons tous types d'activités : TPE artisans, PME de services et tertiaires, commerçants, indépendants, professions libérales et acteurs de la reconversion économique de l'agglomération Lens-Liévin / bassin minier.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const AVION_COPY: VilleCopy = {
       en: "Audit IA à Avion : diagnostic adapté aux TPE artisans, PME de services, commerçants et acteurs ESS de l'agglo Lens-Liévin. ROI chiffré, audit Flash 490 € HT accessible.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Avion : formats adaptés à l'atelier artisanal, cabinet, commerce ou structure ESS. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Avion : formats adaptés à l'atelier artisanal, cabinet, commerce ou structure ESS. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Avion : formats adaptés à l'atelier artisanal, cabinet, commerce ou structure ESS. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Avion : formats adaptés à l'atelier artisanal, cabinet, commerce ou structure ESS. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Avion : automatisation devis BTP, agents conversationnels accueil, classification documents santé/social, optimisation planning, outils IA métier. Agglo Lens-Liévin.",
@@ -64,7 +64,7 @@ export const AVION_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lille ou Paris ?",
-      a: "Nos consultants viennent de Lille (45 min A21/A26) ou Paris (1h10 TGV direct Lens + 5 min). Frais de déplacement facturés à part du forfait, tarifs publics. Hébergement local possible (hôtels Lens).",
+      a: "Nos consultants viennent de Lille (45 min A21/A26) ou Paris (1h10 TGV direct Lens + 5 min). Déplacements facturés séparément, grille tarifaire publique. Hébergement local possible (hôtels Lens).",
     },
   ],
 };

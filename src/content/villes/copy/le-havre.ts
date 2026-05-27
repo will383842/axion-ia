@@ -57,6 +57,8 @@ export const LE_HAVRE_COPY: VilleCopy = {
   directAnswerEn:
     "Axion-IA is a senior AI architects consultancy that intervenes in Le Havre (76) on site across the city and the Seine Estuaire basin (Gonfreville-l'Orcher, Montivilliers, Harfleur, Sandouville). We support Le Havre micro-businesses and SMEs in trade and services, industrial mid-caps in the Port Industrial Zone (logistics, petrochemicals, aeronautics) and large enterprises in the HAROPA cluster on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
+  seoHook: "port, logistique & énergie",
+
   topSectorsNaf: [
     "Logistique & Supply Chain maritime",
     "Pétrochimie & Énergie industrielle",

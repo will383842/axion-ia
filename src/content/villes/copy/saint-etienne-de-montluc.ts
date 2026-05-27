@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_ETIENNE_DE_MONTLUC_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Étienne-de-Montluc (44), commune du nord-ouest de Nantes Métropole en Loire-Atlantique, entre estuaire de la Loire et bocage, accueille TPE artisanales, commerces, PME tertiaires et professions libérales. Axion-IA y intervient pour tous types d'activités du bassin nantais nord-ouest.",
+    "Saint-Étienne-de-Montluc (44), commune du nord-ouest de Nantes Métropole en Loire-Atlantique, entre estuaire de la Loire et bocage, accueille TPE artisanales, commerces, PME tertiaires et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin nantais nord-ouest.",
   pitchEn:
-    "Saint-Étienne-de-Montluc (44), commune du nord-ouest de Nantes Métropole en Loire-Atlantique, entre estuaire de la Loire et bocage, accueille TPE artisanales, commerces, PME tertiaires et professions libérales. Axion-IA y intervient pour tous types d'activités du bassin nantais nord-ouest.",
+    "Saint-Étienne-de-Montluc (44), commune du nord-ouest de Nantes Métropole en Loire-Atlantique, entre estuaire de la Loire et bocage, accueille TPE artisanales, commerces, PME tertiaires et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin nantais nord-ouest.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Étienne-de-Montluc (44). Nous accompagnons les TPE, indépendants, PME tertiaires, commerçants et professions libérales du nord-ouest nantais sur leurs cas IA opérationnels. Audit Flash dès 490 € HT.",
   directAnswerEn:

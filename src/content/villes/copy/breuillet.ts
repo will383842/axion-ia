@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BREUILLET_COPY: VilleCopy = {
   pitchFr:
-    "Breuillet (91), commune résidentielle rurale du sud de l'Essonne dans la vallée de la Renarde, accueille un tissu de TPE artisans, commerces de proximité, professions libérales, exploitants agricoles et PME de services. Axion-IA y intervient pour tous types d'activités du sud-essonnien.",
+    "Breuillet (91), commune résidentielle rurale du sud de l'Essonne dans la vallée de la Renarde, accueille un tissu de TPE artisans, commerces de proximité, professions libérales, exploitants agricoles et PME de services. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud-essonnien.",
   pitchEn:
-    "Breuillet (91), commune résidentielle rurale du sud de l'Essonne dans la vallée de la Renarde, accueille un tissu de TPE artisans, commerces de proximité, professions libérales, exploitants agricoles et PME de services. Axion-IA y intervient pour tous types d'activités du sud-essonnien.",
+    "Breuillet (91), commune résidentielle rurale du sud de l'Essonne dans la vallée de la Renarde, accueille un tissu de TPE artisans, commerces de proximité, professions libérales, exploitants agricoles et PME de services. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud-essonnien.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Breuillet (91). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, professions libérales, exploitants agricoles de la vallée de la Renarde, indépendants et PME de services du sud Essonne. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const BREUILLET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Breuillet : diagnostic adapté aux TPE artisans, commerçants, professions libérales, exploitants agricoles et PME du sud Essonne. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Breuillet : diagnostic adapté aux TPE artisans, commerçants, professions libérales, exploitants agricoles et PME du sud Essonne. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Breuillet : diagnostic adapté aux TPE artisans, commerçants, professions libérales, exploitants agricoles et PME du sud Essonne. Audit Flash 490 € HT avec ROI quantifié accessible.",
+      en: "Audit IA à Breuillet : diagnostic adapté aux TPE artisans, commerçants, professions libérales, exploitants agricoles et PME du sud Essonne. Audit Flash 490 € HT avec ROI quantifié accessible.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Breuillet : formats adaptés au commerce, cabinet professionnel, atelier artisan ou exploitation agricole. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Breuillet : formats adaptés au commerce, cabinet professionnel, atelier artisan ou exploitation agricole. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Breuillet : formats adaptés au commerce, cabinet professionnel, atelier artisan ou exploitation agricole. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Breuillet : formats adaptés au commerce, cabinet professionnel, atelier artisan ou exploitation agricole. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Breuillet : agents conversationnels client, automatisation devis BTP, gestion RDV professions libérales, traçabilité agricole, CRM augmentés pour TPE/PME du sud-essonnien.",
@@ -64,7 +64,7 @@ export const BREUILLET_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Breuillet depuis Paris ?",
-      a: "Nos consultants accèdent à Breuillet en 50 min via le RER C (gare de Breuillet - Bruyères-le-Châtel). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants accèdent à Breuillet en 50 min via le RER C (gare de Breuillet - Bruyères-le-Châtel). Pour les multi-jours, hébergement local possible. Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

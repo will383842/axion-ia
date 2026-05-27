@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CAUDAN_COPY: VilleCopy = {
   pitchFr:
-    "Caudan (56), commune de Lorient Agglomération réputée pour ses zones d'activités économiques (Manebos, Kerpont), accueille un tissu de TPE/PME industrielles, logistiques, artisans BTP, commerces, professions libérales et entreprises tertiaires du bassin lorientais. Axion-IA y intervient pour tous types d'activités de l'agglomération de Lorient.",
+    "Caudan (56), commune de Lorient Agglomération réputée pour ses zones d'activités économiques (Manebos, Kerpont), accueille un tissu de TPE/PME industrielles, logistiques, artisans BTP, commerces, professions libérales et entreprises tertiaires du bassin lorientais. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération de Lorient.",
   pitchEn:
-    "Caudan (56), commune de Lorient Agglomération réputée pour ses zones d'activités économiques (Manebos, Kerpont), accueille un tissu de TPE/PME industrielles, logistiques, artisans BTP, commerces, professions libérales et entreprises tertiaires du bassin lorientais. Axion-IA y intervient pour tous types d'activités de l'agglomération de Lorient.",
+    "Caudan (56), commune de Lorient Agglomération réputée pour ses zones d'activités économiques (Manebos, Kerpont), accueille un tissu de TPE/PME industrielles, logistiques, artisans BTP, commerces, professions libérales et entreprises tertiaires du bassin lorientais. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération de Lorient.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Caudan (56). Nous accompagnons TPE et PME : PME industrielles des zones Manebos et Kerpont, logistique, artisans BTP, commerçants, professions libérales et entreprises tertiaires de Lorient Agglomération.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const CAUDAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Caudan : diagnostic adapté aux PME industrielles des zones Manebos/Kerpont, plateformes logistiques, TPE artisans BTP, commerces et professions libérales de Lorient Agglomération. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Caudan : diagnostic adapté aux PME industrielles des zones Manebos/Kerpont, plateformes logistiques, TPE artisans BTP, commerces et professions libérales de Lorient Agglomération. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Caudan : diagnostic adapté aux PME industrielles des zones Manebos/Kerpont, plateformes logistiques, TPE artisans BTP, commerces et professions libérales de Lorient Agglomération. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Caudan : diagnostic adapté aux PME industrielles des zones Manebos/Kerpont, plateformes logistiques, TPE artisans BTP, commerces et professions libérales de Lorient Agglomération. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Caudan : formats adaptés aux PME industrielles, plateformes logistiques, artisans BTP et cabinets du bassin lorientais. Vos équipes repartent autonomes sur outils IA configurés métier.",

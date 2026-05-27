@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_FARGEAU_PONTHIERRY_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Fargeau-Ponthierry (77), commune résidentielle de Seine-et-Marne en bords de Seine au sud de Melun, abrite un tissu économique de TPE artisanales, PME de services, commerces de proximité, professions libérales et prestataires BtoB. Proximité directe de Melun et du bassin d'emploi sud francilien. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Fargeau-Ponthierry (77), commune résidentielle de Seine-et-Marne en bords de Seine au sud de Melun, abrite un tissu économique de TPE artisanales, PME de services, commerces de proximité, professions libérales et prestataires BtoB. Proximité directe de Melun et du bassin d'emploi sud francilien. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Saint-Fargeau-Ponthierry (77), commune résidentielle de Seine-et-Marne en bords de Seine au sud de Melun, abrite un tissu économique de TPE artisanales, PME de services, commerces de proximité, professions libérales et prestataires BtoB. Proximité directe de Melun et du bassin d'emploi sud francilien. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Fargeau-Ponthierry (77), commune résidentielle de Seine-et-Marne en bords de Seine au sud de Melun, abrite un tissu économique de TPE artisanales, PME de services, commerces de proximité, professions libérales et prestataires BtoB. Proximité directe de Melun et du bassin d'emploi sud francilien. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Fargeau-Ponthierry (77). Nous accompagnons TPE et PME : artisans, commerçants, PME de services aux entreprises, professions libérales et indépendants du bassin sud Melun. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const SAINT_FARGEAU_PONTHIERRY_COPY: VilleCopy = {
       en: "Audit IA à Saint-Fargeau-Ponthierry : diagnostic adapté aux TPE artisanales, PME de services, commerçants et professions libérales du bassin sud Melun. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Fargeau-Ponthierry : formats adaptés atelier artisan, bureau PME, commerce ou cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Saint-Fargeau-Ponthierry : formats adaptés atelier artisan, bureau PME, commerce ou cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Saint-Fargeau-Ponthierry : formats adaptés atelier artisan, bureau PME, commerce ou cabinet libéral. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Saint-Fargeau-Ponthierry : formats adaptés atelier artisan, bureau PME, commerce ou cabinet libéral. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Fargeau-Ponthierry : automatisation gestion commerciale, CRM, classification documentaire, outils IA métier. Adapté TPE/PME bassin Melun sud francilien.",

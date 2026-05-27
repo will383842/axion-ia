@@ -30,12 +30,12 @@ export const FENAIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fenain : diagnostic adapté aux TPE artisans BTP, PME logistique et services, commerçants du bassin minier Douai-Denain. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Fenain : diagnostic adapté aux TPE artisans BTP, PME logistique et services, commerçants du bassin minier Douai-Denain. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Fenain : diagnostic adapté aux TPE artisans BTP, PME logistique et services, commerçants du bassin minier Douai-Denain. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Fenain : diagnostic adapté aux TPE artisans BTP, PME logistique et services, commerçants du bassin minier Douai-Denain. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Fenain : formats adaptés aux entrepôts logistique, ateliers artisans BTP, commerces et cabinets. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Fenain : formats adaptés aux entrepôts logistique, ateliers artisans BTP, commerces et cabinets. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Fenain : formats adaptés aux entrepôts logistique, ateliers artisans BTP, commerces et cabinets. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Fenain : formats adaptés aux entrepôts logistique, ateliers artisans BTP, commerces et cabinets. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Fenain : automatisation flux logistique entrepôts, prédiction maintenance équipements, agents IA prise de RDV artisans et commerces, classification documents. Adapté TPE/PME bassin minier.",

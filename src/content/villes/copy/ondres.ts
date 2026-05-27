@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ONDRES_COPY: VilleCopy = {
   pitchFr:
-    "Ondres (40), village touristique du littoral landais dans l'agglomération bayonnaise, possède une plage sur l'océan Atlantique. Tourisme balnéaire, résidentiel, TPE hébergement, commerces, artisans BTP, services de proximité. Axion-IA y intervient pour tous types d'activités.",
+    "Ondres (40), village touristique du littoral landais dans l'agglomération bayonnaise, possède une plage sur l'océan Atlantique. Tourisme balnéaire, résidentiel, TPE hébergement, commerces, artisans BTP, services de proximité. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Ondres (40), village touristique du littoral landais dans l'agglomération bayonnaise, possède une plage sur l'océan Atlantique. Tourisme balnéaire, résidentiel, TPE hébergement, commerces, artisans BTP, services de proximité. Axion-IA y intervient pour tous types d'activités.",
+    "Ondres (40), village touristique du littoral landais dans l'agglomération bayonnaise, possède une plage sur l'océan Atlantique. Tourisme balnéaire, résidentiel, TPE hébergement, commerces, artisans BTP, services de proximité. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ondres (40). Nous accompagnons TPE et PME du tourisme balnéaire, hébergeurs saisonniers, campings, commerçants, artisans BTP, professions libérales et prestataires de services du littoral landais sud.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const ONDRES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ondres : diagnostic adapté aux TPE du tourisme balnéaire, hébergeurs saisonniers, commerçants, artisans BTP et professions libérales du littoral landais sud. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Ondres : diagnostic adapté aux TPE du tourisme balnéaire, hébergeurs saisonniers, commerçants, artisans BTP et professions libérales du littoral landais sud. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Ondres : diagnostic adapté aux TPE du tourisme balnéaire, hébergeurs saisonniers, commerçants, artisans BTP et professions libérales du littoral landais sud. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Ondres : diagnostic adapté aux TPE du tourisme balnéaire, hébergeurs saisonniers, commerçants, artisans BTP et professions libérales du littoral landais sud. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ondres : formations adaptées aux campings, hébergeurs, commerces et artisans. Vos équipes repartent autonomes sur les outils IA configurés métier.",

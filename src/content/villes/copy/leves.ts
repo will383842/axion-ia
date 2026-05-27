@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LEVES_COPY: VilleCopy = {
   pitchFr:
-    "Lèves (28), commune résidentielle de l'agglomération de Chartres nord en Eure-et-Loir, accueille TPE artisans, PME de services, commerçants, professions libérales et indépendants tournés vers le bassin chartrain. Sa proximité immédiate avec Chartres en fait un pôle de vie complémentaire, entre tissu pavillonnaire et zones d'activités. Axion-IA y intervient pour tous types d'activités de l'agglomération chartraine.",
+    "Lèves (28), commune résidentielle de l'agglomération de Chartres nord en Eure-et-Loir, accueille TPE artisans, PME de services, commerçants, professions libérales et indépendants tournés vers le bassin chartrain. Sa proximité immédiate avec Chartres en fait un pôle de vie complémentaire, entre tissu pavillonnaire et zones d'activités. Axion-IA opère pour toutes les structures économiques de la commune de l'agglomération chartraine.",
   pitchEn:
-    "Lèves (28), commune résidentielle de l'agglomération de Chartres nord en Eure-et-Loir, accueille TPE artisans, PME de services, commerçants, professions libérales et indépendants tournés vers le bassin chartrain. Sa proximité immédiate avec Chartres en fait un pôle de vie complémentaire, entre tissu pavillonnaire et zones d'activités. Axion-IA y intervient pour tous types d'activités de l'agglomération chartraine.",
+    "Lèves (28), commune résidentielle de l'agglomération de Chartres nord en Eure-et-Loir, accueille TPE artisans, PME de services, commerçants, professions libérales et indépendants tournés vers le bassin chartrain. Sa proximité immédiate avec Chartres en fait un pôle de vie complémentaire, entre tissu pavillonnaire et zones d'activités. Axion-IA opère pour toutes les structures économiques de la commune de l'agglomération chartraine.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lèves (28), dans l'agglomération de Chartres nord. Nous accompagnons tous types d'activités : TPE artisans, PME de services et négoce, commerçants, professions libérales, indépendants et entreprises du bassin chartrain.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LEVES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lèves : diagnostic adapté aux TPE artisans, PME de services du bassin chartrain, commerçants, professions libérales et entreprises de l'agglomération de Chartres. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Lèves : diagnostic adapté aux TPE artisans, PME de services du bassin chartrain, commerçants, professions libérales et entreprises de l'agglomération de Chartres. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Lèves : diagnostic adapté aux TPE artisans, PME de services du bassin chartrain, commerçants, professions libérales et entreprises de l'agglomération de Chartres. Audit Flash 490 € HT avec ROI quantifié accessible.",
+      en: "Audit IA à Lèves : diagnostic adapté aux TPE artisans, PME de services du bassin chartrain, commerçants, professions libérales et entreprises de l'agglomération de Chartres. Audit Flash 490 € HT avec ROI quantifié accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lèves : formats adaptés aux PME de services, TPE artisans BTP, cabinets libéraux et commerces de l'agglomération chartraine. Vos équipes repartent autonomes sur les outils IA métier.",

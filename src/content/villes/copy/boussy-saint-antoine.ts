@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BOUSSY_SAINT_ANTOINE_COPY: VilleCopy = {
   pitchFr:
-    "Boussy-Saint-Antoine (91), commune résidentielle en lisière de la forêt de Sénart à 23 km au sud-est de Paris. Tissu TPE artisanat, commerces de proximité, PME services, professions libérales, activités liées au cadre forestier. Axion-IA y intervient pour tous types d'activités.",
+    "Boussy-Saint-Antoine (91), commune résidentielle en lisière de la forêt de Sénart à 23 km au sud-est de Paris. Tissu TPE artisanat, commerces de proximité, PME services, professions libérales, activités liées au cadre forestier. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Boussy-Saint-Antoine (91), commune résidentielle en lisière de la forêt de Sénart à 23 km au sud-est de Paris. Tissu TPE artisanat, commerces de proximité, PME services, professions libérales, activités liées au cadre forestier. Axion-IA y intervient pour tous types d'activités.",
+    "Boussy-Saint-Antoine (91), commune résidentielle en lisière de la forêt de Sénart à 23 km au sud-est de Paris. Tissu TPE artisanat, commerces de proximité, PME services, professions libérales, activités liées au cadre forestier. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Boussy-Saint-Antoine (91). Nous accompagnons TPE et PME : artisans, commerçants de proximité, prestataires de services, professions libérales, entreprises tertiaires du sud-est francilien. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const BOUSSY_SAINT_ANTOINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Boussy-Saint-Antoine : diagnostic adapté aux TPE artisanat, commerces de proximité, PME services, professions libérales, entreprises tertiaires. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Boussy-Saint-Antoine : diagnostic adapté aux TPE artisanat, commerces de proximité, PME services, professions libérales, entreprises tertiaires. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Boussy-Saint-Antoine : diagnostic adapté aux TPE artisanat, commerces de proximité, PME services, professions libérales, entreprises tertiaires. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Boussy-Saint-Antoine : diagnostic adapté aux TPE artisanat, commerces de proximité, PME services, professions libérales, entreprises tertiaires. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Boussy-Saint-Antoine : formats adaptés atelier artisan, commerce, cabinet libéral, siège PME, bureau tertiaire. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Boussy-Saint-Antoine : formats adaptés atelier artisan, commerce, cabinet libéral, siège PME, bureau tertiaire. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Boussy-Saint-Antoine : formats adaptés atelier artisan, commerce, cabinet libéral, siège PME, bureau tertiaire. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Boussy-Saint-Antoine : formats adaptés atelier artisan, commerce, cabinet libéral, siège PME, bureau tertiaire. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Boussy-Saint-Antoine : automatisation devis et facturation artisans, CRM augmenté PME, gestion stocks commerce, planning professions libérales.",

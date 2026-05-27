@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const TERRASSON_LAVILLEDIEU_COPY: VilleCopy = {
   pitchFr:
-    "Terrasson-Lavilledieu (24), bourg du Périgord Noir en Dordogne sur la Vézère, entre Brive et Montignac-Lascaux. Tissu TPE/PME commerce, artisanat, agroalimentaire (noix, fraises), tourisme et services. Axion-IA y intervient pour tous types d'activités.",
+    "Terrasson-Lavilledieu (24), bourg du Périgord Noir en Dordogne sur la Vézère, entre Brive et Montignac-Lascaux. Tissu TPE/PME commerce, artisanat, agroalimentaire (noix, fraises), tourisme et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Terrasson-Lavilledieu (24), bourg du Périgord Noir en Dordogne sur la Vézère, entre Brive et Montignac-Lascaux. Tissu TPE/PME commerce, artisanat, agroalimentaire (noix, fraises), tourisme et services. Axion-IA y intervient pour tous types d'activités.",
+    "Terrasson-Lavilledieu (24), bourg du Périgord Noir en Dordogne sur la Vézère, entre Brive et Montignac-Lascaux. Tissu TPE/PME commerce, artisanat, agroalimentaire (noix, fraises), tourisme et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Terrasson-Lavilledieu (24). Nous accompagnons TPE/PME du commerce, de l'artisanat, de l'agroalimentaire périgourdin et du tourisme en vallée de la Vézère. Audit Flash dès 490 € HT.",
   directAnswerEn:

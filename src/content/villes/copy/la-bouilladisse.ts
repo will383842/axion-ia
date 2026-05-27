@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_BOUILLADISSE_COPY: VilleCopy = {
   pitchFr:
-    "La Bouilladisse (13), commune résidentielle de l'est marseillais nichée entre Aubagne et le massif de la Sainte-Baume, accueille familles et cadres. Tissu de TPE artisans BTP, commerçants, PME services et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "La Bouilladisse (13), commune résidentielle de l'est marseillais nichée entre Aubagne et le massif de la Sainte-Baume, accueille familles et cadres. Tissu de TPE artisans BTP, commerçants, PME services et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "La Bouilladisse (13), commune résidentielle de l'est marseillais nichée entre Aubagne et le massif de la Sainte-Baume, accueille familles et cadres. Tissu de TPE artisans BTP, commerçants, PME services et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "La Bouilladisse (13), commune résidentielle de l'est marseillais nichée entre Aubagne et le massif de la Sainte-Baume, accueille familles et cadres. Tissu de TPE artisans BTP, commerçants, PME services et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Bouilladisse (13). Nous accompagnons TPE artisans BTP, commerçants, PME de services et professions libérales de l'est marseillais. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -64,7 +64,7 @@ export const LA_BOUILLADISSE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à La Bouilladisse ?",
-      a: "La Bouilladisse est à 10 min d'Aubagne et 30 min de Marseille par A52. Nos consultants se déplacent dans vos locaux. Frais de déplacement facturés à part, tarifs publics.",
+      a: "La Bouilladisse est à 10 min d'Aubagne et 30 min de Marseille par A52. Nos consultants se déplacent dans vos locaux. Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

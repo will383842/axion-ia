@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const AIRE_SUR_LA_LYS_COPY: VilleCopy = {
   pitchFr:
-    "Aire-sur-la-Lys (62), cité historique du Pas-de-Calais au beffroi inscrit UNESCO, mêle patrimoine, agriculture, TPE artisanales et PME de services sur les bords de la Lys. Axion-IA y intervient pour tous types d'activités.",
+    "Aire-sur-la-Lys (62), cité historique du Pas-de-Calais au beffroi inscrit UNESCO, mêle patrimoine, agriculture, TPE artisanales et PME de services sur les bords de la Lys. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Aire-sur-la-Lys (62), cité historique du Pas-de-Calais au beffroi inscrit UNESCO, mêle patrimoine, agriculture, TPE artisanales et PME de services sur les bords de la Lys. Axion-IA y intervient pour tous types d'activités.",
+    "Aire-sur-la-Lys (62), cité historique du Pas-de-Calais au beffroi inscrit UNESCO, mêle patrimoine, agriculture, TPE artisanales et PME de services sur les bords de la Lys. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aire-sur-la-Lys (62). Nous accompagnons TPE artisanales, PME agroalimentaires, commerçants et professions libérales de la vallée de la Lys. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:

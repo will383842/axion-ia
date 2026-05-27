@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const TARARE_COPY: VilleCopy = {
   pitchFr:
-    "Tarare (69), commune du nord-ouest lyonnais dans le Rhône, est historiquement réputée pour la mousseline de Tarare (tradition textile fine, savoir-faire local). Tissu PME industrielles diversifiées (héritage textile), TPE artisans BTP, commerces, agriculture montagne (monts du Beaujolais ouest). Axion-IA y intervient pour tous types d'activités.",
+    "Tarare (69), commune du nord-ouest lyonnais dans le Rhône, est historiquement réputée pour la mousseline de Tarare (tradition textile fine, savoir-faire local). Tissu PME industrielles diversifiées (héritage textile), TPE artisans BTP, commerces, agriculture montagne (monts du Beaujolais ouest). Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Tarare (69), commune du nord-ouest lyonnais dans le Rhône, est historiquement réputée pour la mousseline de Tarare (tradition textile fine, savoir-faire local). Tissu PME industrielles diversifiées (héritage textile), TPE artisans BTP, commerces, agriculture montagne (monts du Beaujolais ouest). Axion-IA y intervient pour tous types d'activités.",
+    "Tarare (69), commune du nord-ouest lyonnais dans le Rhône, est historiquement réputée pour la mousseline de Tarare (tradition textile fine, savoir-faire local). Tissu PME industrielles diversifiées (héritage textile), TPE artisans BTP, commerces, agriculture montagne (monts du Beaujolais ouest). Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tarare (69). Nous accompagnons tous types d'activités : PME industrielles (héritage textile mousseline de Tarare), agriculteurs montagne, TPE artisans BTP, commerçants, indépendants et services aux entreprises du NO lyonnais.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const TARARE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Tarare : diagnostic adapté aux PME industrielles (textile/diversifiées), agriculteurs montagne, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Tarare : diagnostic adapté aux PME industrielles (textile/diversifiées), agriculteurs montagne, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Tarare : diagnostic adapté aux PME industrielles (textile/diversifiées), agriculteurs montagne, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Tarare : diagnostic adapté aux PME industrielles (textile/diversifiées), agriculteurs montagne, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Tarare : formats adaptés à l'atelier industriel/textile, exploitation agricole montagne, commerce. Vos équipes repartent autonomes sur outils IA.",

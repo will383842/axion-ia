@@ -1,0 +1,53 @@
+{
+  "date": "2026-05-24T10:59:23.197Z",
+  "results": [
+    {
+      "id": "QL-T1-case-study-paris",
+      "status": "PASS",
+      "contentType": "case_study_local",
+      "wordCount": 421,
+      "qualityScore": 46,
+      "seoScore": 42,
+      "readabilityScore": 50,
+      "indexationTier": "tier_3_noindex_nofollow",
+      "costUsd": 0.0558675,
+      "durationMs": 31646
+    },
+    {
+      "id": "QL-T2-how-to-rag",
+      "status": "PASS",
+      "contentType": "how_to_x_in_y",
+      "wordCount": 378,
+      "qualityScore": 42,
+      "seoScore": 47,
+      "readabilityScore": 37,
+      "indexationTier": "tier_3_noindex_nofollow",
+      "costUsd": 0.0516575,
+      "durationMs": 26985
+    },
+    {
+      "id": "QL-T3-glossary-llm",
+      "status": "PASS",
+      "contentType": "glossary_term",
+      "wordCount": 335,
+      "qualityScore": 48,
+      "seoScore": 52,
+      "readabilityScore": 43,
+      "indexationTier": "tier_3_noindex_nofollow",
+      "costUsd": 0.05233750000000001,
+      "durationMs": 40229
+    },
+    {
+      "id": "QL-T4-landing-audits-lyon",
+      "status": "PASS",
+      "contentType": "landing_ville",
+      "wordCount": 513,
+      "qualityScore": 49,
+      "seoScore": 42,
+      "readabilityScore": 55,
+      "indexationTier": "tier_3_noindex_nofollow",
+      "costUsd": 0.0546625,
+      "durationMs": 33435
+    }
+  ]
+}

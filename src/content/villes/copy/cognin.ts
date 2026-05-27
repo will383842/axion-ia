@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const COGNIN_COPY: VilleCopy = {
   pitchFr:
-    "Cognin (73), 4e commune de l'agglomération de Chambéry en Savoie, est une ville chargée d'histoire au tissu économique diversifié. PME tertiaires, TPE artisanat BTP, commerces de proximité, professions libérales, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Cognin (73), 4e commune de l'agglomération de Chambéry en Savoie, est une ville chargée d'histoire au tissu économique diversifié. PME tertiaires, TPE artisanat BTP, commerces de proximité, professions libérales, services aux entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Cognin (73), 4e commune de l'agglomération de Chambéry en Savoie, est une ville chargée d'histoire au tissu économique diversifié. PME tertiaires, TPE artisanat BTP, commerces de proximité, professions libérales, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Cognin (73), 4e commune de l'agglomération de Chambéry en Savoie, est une ville chargée d'histoire au tissu économique diversifié. PME tertiaires, TPE artisanat BTP, commerces de proximité, professions libérales, services aux entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cognin (73). Nous accompagnons TPE et PME : entreprises tertiaires de l'agglomération chambérienne, artisans BTP, commerçants de proximité, professions libérales et sociétés de services.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const COGNIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cognin : diagnostic adapté aux PME tertiaires de l'agglomération chambérienne, TPE artisans BTP, commerçants et professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Cognin : diagnostic adapté aux PME tertiaires de l'agglomération chambérienne, TPE artisans BTP, commerçants et professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Cognin : diagnostic adapté aux PME tertiaires de l'agglomération chambérienne, TPE artisans BTP, commerçants et professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Cognin : diagnostic adapté aux PME tertiaires de l'agglomération chambérienne, TPE artisans BTP, commerçants et professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Cognin : formats adaptés aux bureaux tertiaires, ateliers artisans BTP, commerces ou cabinets libéraux. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Cognin : formats adaptés aux bureaux tertiaires, ateliers artisans BTP, commerces ou cabinets libéraux. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Cognin : formats adaptés aux bureaux tertiaires, ateliers artisans BTP, commerces ou cabinets libéraux. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Cognin : formats adaptés aux bureaux tertiaires, ateliers artisans BTP, commerces ou cabinets libéraux. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Cognin : automatisation back-office PME tertiaires, agents IA relation client, classification documentaire, optimisation gestion de chantier BTP, outils prédictifs services aux entreprises.",

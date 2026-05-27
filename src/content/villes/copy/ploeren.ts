@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PLOEREN_COPY: VilleCopy = {
   pitchFr:
-    "Ploeren (56), commune résidentielle de l'agglomération de Vannes à proximité du golfe du Morbihan, accueille un tissu économique dynamique de services et d'artisanat porté par la croissance du bassin vannetais. TPE artisanales, PME de services, commerces, professions libérales et prestataires tertiaires composent son économie. Axion-IA y intervient pour tous types d'activités de l'agglomération vannetaise.",
+    "Ploeren (56), commune résidentielle de l'agglomération de Vannes à proximité du golfe du Morbihan, accueille un tissu économique dynamique de services et d'artisanat porté par la croissance du bassin vannetais. TPE artisanales, PME de services, commerces, professions libérales et prestataires tertiaires composent son économie. Axion-IA y déploie ses missions auprès de toutes les organisations de l'agglomération vannetaise.",
   pitchEn:
-    "Ploeren (56), commune résidentielle de l'agglomération de Vannes à proximité du golfe du Morbihan, accueille un tissu économique dynamique de services et d'artisanat porté par la croissance du bassin vannetais. TPE artisanales, PME de services, commerces, professions libérales et prestataires tertiaires composent son économie. Axion-IA y intervient pour tous types d'activités de l'agglomération vannetaise.",
+    "Ploeren (56), commune résidentielle de l'agglomération de Vannes à proximité du golfe du Morbihan, accueille un tissu économique dynamique de services et d'artisanat porté par la croissance du bassin vannetais. TPE artisanales, PME de services, commerces, professions libérales et prestataires tertiaires composent son économie. Axion-IA y déploie ses missions auprès de toutes les organisations de l'agglomération vannetaise.",
   seoHook: "services, tertiaire & artisanat",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ploeren (56). Nous accompagnons tous types d'activités : TPE artisanales, PME de services, commerces, professions libérales et prestataires tertiaires du bassin vannetais. Audit Flash dès 490 € HT, démarrage sous 5 jours.",

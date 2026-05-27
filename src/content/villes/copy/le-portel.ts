@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_PORTEL_COPY: VilleCopy = {
   pitchFr:
-    "Le Portel (62), station balnéaire de la Côte d'Opale dans le Pas-de-Calais, associe tourisme côtier, pêche artisanale, TPE commerciales et services de proximité. Axion-IA y intervient pour tous types d'activités du littoral boulonnais.",
+    "Le Portel (62), station balnéaire de la Côte d'Opale dans le Pas-de-Calais, associe tourisme côtier, pêche artisanale, TPE commerciales et services de proximité. Axion-IA couvre l'ensemble des activités professionnelles présentes du littoral boulonnais.",
   pitchEn:
-    "Le Portel (62), station balnéaire de la Côte d'Opale dans le Pas-de-Calais, associe tourisme côtier, pêche artisanale, TPE commerciales et services de proximité. Axion-IA y intervient pour tous types d'activités du littoral boulonnais.",
+    "Le Portel (62), station balnéaire de la Côte d'Opale dans le Pas-de-Calais, associe tourisme côtier, pêche artisanale, TPE commerciales et services de proximité. Axion-IA couvre l'ensemble des activités professionnelles présentes du littoral boulonnais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Portel (62). Nous accompagnons TPE du tourisme côtier, commerçants, artisans, PME de services et professions libérales du littoral boulonnais. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:

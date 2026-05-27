@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_JULIEN_DE_CONCELLES_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Julien-de-Concelles (44), commune du vignoble nantais en Loire-Atlantique, conjugue viticulture Muscadet, maraîchage (premier bassin maraîcher de France), artisanat et commerces. Axion-IA y intervient pour tous types d'activités du vignoble et du maraîchage nantais.",
+    "Saint-Julien-de-Concelles (44), commune du vignoble nantais en Loire-Atlantique, conjugue viticulture Muscadet, maraîchage (premier bassin maraîcher de France), artisanat et commerces. Axion-IA y déploie ses missions auprès de toutes les organisations du vignoble et du maraîchage nantais.",
   pitchEn:
-    "Saint-Julien-de-Concelles (44), commune du vignoble nantais en Loire-Atlantique, conjugue viticulture Muscadet, maraîchage (premier bassin maraîcher de France), artisanat et commerces. Axion-IA y intervient pour tous types d'activités du vignoble et du maraîchage nantais.",
+    "Saint-Julien-de-Concelles (44), commune du vignoble nantais en Loire-Atlantique, conjugue viticulture Muscadet, maraîchage (premier bassin maraîcher de France), artisanat et commerces. Axion-IA y déploie ses missions auprès de toutes les organisations du vignoble et du maraîchage nantais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Julien-de-Concelles (44). Nous accompagnons les TPE maraîchères, vignerons, artisans, commerçants et PME du bassin nantais est sur leurs cas IA opérationnels. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const SAINT_JULIEN_DE_CONCELLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Julien-de-Concelles : diagnostic adapté aux TPE maraîchères, vignerons, artisans et PME agroalimentaires du vignoble nantais. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Julien-de-Concelles : diagnostic adapté aux TPE maraîchères, vignerons, artisans et PME agroalimentaires du vignoble nantais. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Julien-de-Concelles : diagnostic adapté aux TPE maraîchères, vignerons, artisans et PME agroalimentaires du vignoble nantais. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Saint-Julien-de-Concelles : diagnostic adapté aux TPE maraîchères, vignerons, artisans et PME agroalimentaires du vignoble nantais. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Julien-de-Concelles : formats courts adaptés exploitations maraîchères, domaines viticoles, ateliers artisans et PME. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Saint-Julien-de-Concelles : formats courts adaptés exploitations maraîchères, domaines viticoles, ateliers artisans et PME. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Saint-Julien-de-Concelles : formats courts adaptés exploitations maraîchères, domaines viticoles, ateliers artisans et PME. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Saint-Julien-de-Concelles : formats courts adaptés exploitations maraîchères, domaines viticoles, ateliers artisans et PME. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Julien-de-Concelles : automatisation traçabilité parcellaire, gestion stocks maraîchage, agents conversationnels clients, facturation et logistique agroalimentaire.",

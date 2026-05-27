@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LANTON_COPY: VilleCopy = {
   pitchFr:
-    "Lanton (33), commune du Bassin d'Arcachon entre Audenge et Andernos-les-Bains, combine tissu résidentiel en croissance, ostréiculture, artisanat BTP et commerces de proximité. Axion-IA y intervient pour tous types d'activités du nord du Bassin d'Arcachon.",
+    "Lanton (33), commune du Bassin d'Arcachon entre Audenge et Andernos-les-Bains, combine tissu résidentiel en croissance, ostréiculture, artisanat BTP et commerces de proximité. Axion-IA y déploie ses missions auprès de toutes les organisations du nord du Bassin d'Arcachon.",
   pitchEn:
-    "Lanton (33), commune du Bassin d'Arcachon entre Audenge et Andernos-les-Bains, combine tissu résidentiel en croissance, ostréiculture, artisanat BTP et commerces de proximité. Axion-IA y intervient pour tous types d'activités du nord du Bassin d'Arcachon.",
+    "Lanton (33), commune du Bassin d'Arcachon entre Audenge et Andernos-les-Bains, combine tissu résidentiel en croissance, ostréiculture, artisanat BTP et commerces de proximité. Axion-IA y déploie ses missions auprès de toutes les organisations du nord du Bassin d'Arcachon.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lanton (33). Nous accompagnons TPE et PME du nord Bassin d'Arcachon : ostréiculteurs, artisans BTP, commerçants, professions libérales et entreprises de services. Audit Flash dès 490 € HT.",
   directAnswerEn:

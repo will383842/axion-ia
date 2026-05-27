@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BRIGNAIS_COPY: VilleCopy = {
   pitchFr:
-    "Brignais (69), commune en banlieue sud-ouest de Lyon dans le Rhône, est positionnée dans la vallée du Garon. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités du SO lyonnais.",
+    "Brignais (69), commune en banlieue sud-ouest de Lyon dans le Rhône, est positionnée dans la vallée du Garon. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du SO lyonnais.",
   pitchEn:
-    "Brignais (69), commune en banlieue sud-ouest de Lyon dans le Rhône, est positionnée dans la vallée du Garon. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités du SO lyonnais.",
+    "Brignais (69), commune en banlieue sud-ouest de Lyon dans le Rhône, est positionnée dans la vallée du Garon. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du SO lyonnais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Brignais (69). Nous accompagnons tous types d'activités : PME tertiaires SO lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la banlieue sud-ouest lyonnaise.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const BRIGNAIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Brignais : diagnostic adapté aux PME tertiaires SO lyonnais, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Brignais : diagnostic adapté aux PME tertiaires SO lyonnais, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Brignais : diagnostic adapté aux PME tertiaires SO lyonnais, professions libérales, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Brignais : diagnostic adapté aux PME tertiaires SO lyonnais, professions libérales, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Brignais : formats adaptés au bureau, cabinet professionnel, commerce. Vos équipes repartent autonomes sur outils IA métier.",
@@ -64,7 +64,7 @@ export const BRIGNAIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (20 min). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (20 min). Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

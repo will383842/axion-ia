@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const DOL_DE_BRETAGNE_COPY: VilleCopy = {
   pitchFr:
-    "Dol-de-Bretagne (35), cité médiévale d'Ille-et-Vilaine célèbre pour sa cathédrale Saint-Samson, le marais de Dol et le Mont-Dol, conjugue tourisme patrimonial, artisanat, commerces de centre-ville historique, agriculture maraîchère et PME de services. Axion-IA y intervient pour tous types d'activités.",
+    "Dol-de-Bretagne (35), cité médiévale d'Ille-et-Vilaine célèbre pour sa cathédrale Saint-Samson, le marais de Dol et le Mont-Dol, conjugue tourisme patrimonial, artisanat, commerces de centre-ville historique, agriculture maraîchère et PME de services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Dol-de-Bretagne (35), cité médiévale d'Ille-et-Vilaine célèbre pour sa cathédrale Saint-Samson, le marais de Dol et le Mont-Dol, conjugue tourisme patrimonial, artisanat, commerces de centre-ville historique, agriculture maraîchère et PME de services. Axion-IA y intervient pour tous types d'activités.",
+    "Dol-de-Bretagne (35), cité médiévale d'Ille-et-Vilaine célèbre pour sa cathédrale Saint-Samson, le marais de Dol et le Mont-Dol, conjugue tourisme patrimonial, artisanat, commerces de centre-ville historique, agriculture maraîchère et PME de services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Dol-de-Bretagne (35). Nous accompagnons TPE et PME : hôteliers-restaurateurs, commerces du centre historique, artisans, maraîchers du marais de Dol et PME de services. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const DOL_DE_BRETAGNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Dol-de-Bretagne : diagnostic adapté aux hôteliers-restaurateurs, commerces du centre historique, artisans, maraîchers du marais de Dol et PME de services. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Dol-de-Bretagne : diagnostic adapté aux hôteliers-restaurateurs, commerces du centre historique, artisans, maraîchers du marais de Dol et PME de services. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Dol-de-Bretagne : diagnostic adapté aux hôteliers-restaurateurs, commerces du centre historique, artisans, maraîchers du marais de Dol et PME de services. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Dol-de-Bretagne : diagnostic adapté aux hôteliers-restaurateurs, commerces du centre historique, artisans, maraîchers du marais de Dol et PME de services. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Dol-de-Bretagne : formations pratiques pour hôteliers, restaurateurs, commerçants, artisans et exploitants agricoles. Vos équipes repartent autonomes sur outils IA métier.",
@@ -65,7 +65,7 @@ export const DOL_DE_BRETAGNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ou Rennes ?",
-      a: "Paris-Rennes en 1h25 (TGV direct), puis Rennes-Dol en 30 min (TER). Saint-Malo à 25 min. Mission sur site 1 à 5 jours selon le format. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Paris-Rennes en 1h25 (TGV direct), puis Rennes-Dol en 30 min (TER). Saint-Malo à 25 min. Mission sur site 1 à 5 jours selon le format. Frais de mission en sus, grille tarifaire publique.",
     },
   ],
 };

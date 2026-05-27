@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ANCENIS_SAINT_GEREON_COPY: VilleCopy = {
   pitchFr:
-    "Ancenis-Saint-Géréon (44), commune nouvelle en bords de Loire, près de 12 000 habitants. Sous-préfecture historique, vignoble, industrie agroalimentaire, logistique, commerces et professions libérales. Tissu TPE artisans, PME viticoles et industrielles. Axion-IA y intervient pour tous types d'activités du bassin ancenien.",
+    "Ancenis-Saint-Géréon (44), commune nouvelle en bords de Loire, près de 12 000 habitants. Sous-préfecture historique, vignoble, industrie agroalimentaire, logistique, commerces et professions libérales. Tissu TPE artisans, PME viticoles et industrielles. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin ancenien.",
   pitchEn:
-    "Ancenis-Saint-Géréon (44), commune nouvelle en bords de Loire, près de 12 000 habitants. Sous-préfecture historique, vignoble, industrie agroalimentaire, logistique, commerces et professions libérales. Tissu TPE artisans, PME viticoles et industrielles. Axion-IA y intervient pour tous types d'activités du bassin ancenien.",
+    "Ancenis-Saint-Géréon (44), commune nouvelle en bords de Loire, près de 12 000 habitants. Sous-préfecture historique, vignoble, industrie agroalimentaire, logistique, commerces et professions libérales. Tissu TPE artisans, PME viticoles et industrielles. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin ancenien.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ancenis-Saint-Géréon (44), commune nouvelle en bords de Loire. Nous accompagnons TPE artisans, PME viticoles et agroalimentaires, commerçants et professions libérales du pays d'Ancenis. Audit Flash dès 490 € HT.",
   directAnswerEn:

@@ -30,12 +30,12 @@ export const TERGNIER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Tergnier : diagnostic adapté aux TPE/PME logistique ferroviaire, maintenance, sous-traitants industriels, artisans BTP, commerces et services. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Tergnier : diagnostic adapté aux TPE/PME logistique ferroviaire, maintenance, sous-traitants industriels, artisans BTP, commerces et services. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Tergnier : diagnostic adapté aux TPE/PME logistique ferroviaire, maintenance, sous-traitants industriels, artisans BTP, commerces et services. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Tergnier : diagnostic adapté aux TPE/PME logistique ferroviaire, maintenance, sous-traitants industriels, artisans BTP, commerces et services. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Tergnier : formats adaptés à l''atelier de maintenance, l''entrepôt logistique, l''atelier industriel, le chantier, le bureau, le commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Tergnier : formats adaptés à l''atelier de maintenance, l''entrepôt logistique, l''atelier industriel, le chantier, le bureau, le commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Tergnier : formats adaptés à l''atelier de maintenance, l''entrepôt logistique, l''atelier industriel, le chantier, le bureau, le commerce. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Tergnier : formats adaptés à l''atelier de maintenance, l''entrepôt logistique, l''atelier industriel, le chantier, le bureau, le commerce. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Tergnier : optimisation maintenance prédictive, traçabilité logistique multimodale, automatisation devis BTP, agents conversationnels B2B, gestion fournisseurs et donneurs d''ordres ferroviaires.",

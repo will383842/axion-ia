@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_EGREVE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Égrève (38), au nord-ouest de l'agglomération grenobloise au pied du massif de la Chartreuse, abrite le Centre hospitalier Alpes-Isère (CHAI, important centre psychiatrique). Tissu PME tertiaires, santé, TPE artisans et commerces. Labellisée « Ville internet 5@ » (niveau le plus élevé). Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Égrève (38), au nord-ouest de l'agglomération grenobloise au pied du massif de la Chartreuse, abrite le Centre hospitalier Alpes-Isère (CHAI, important centre psychiatrique). Tissu PME tertiaires, santé, TPE artisans et commerces. Labellisée « Ville internet 5@ » (niveau le plus élevé). Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Saint-Égrève (38), au nord-ouest de l'agglomération grenobloise au pied du massif de la Chartreuse, abrite le Centre hospitalier Alpes-Isère (CHAI, important centre psychiatrique). Tissu PME tertiaires, santé, TPE artisans et commerces. Labellisée « Ville internet 5@ » (niveau le plus élevé). Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Égrève (38), au nord-ouest de l'agglomération grenobloise au pied du massif de la Chartreuse, abrite le Centre hospitalier Alpes-Isère (CHAI, important centre psychiatrique). Tissu PME tertiaires, santé, TPE artisans et commerces. Labellisée « Ville internet 5@ » (niveau le plus élevé). Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Égrève (38). Nous accompagnons tous types d'activités : structures de santé (CHAI, professions libérales médicales), TPE artisans BTP, commerçants, indépendants, PME tertiaires saint-égréviennes et entreprises du bassin nord-ouest grenoblois adhérant à Grenoble-Alpes Métropole.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const SAINT_EGREVE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Égrève : diagnostic adapté aux structures de santé (CHAI), TPE artisans, professions libérales et PME tertiaires du bassin grenoblois. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
-      en: "Audit IA à Saint-Égrève : diagnostic adapté aux structures de santé (CHAI), TPE artisans, professions libérales et PME tertiaires du bassin grenoblois. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
+      fr: "Audit IA à Saint-Égrève : diagnostic adapté aux structures de santé (CHAI), TPE artisans, professions libérales et PME tertiaires du bassin grenoblois. Audit Flash à 490 € HT, retour sur investissement chiffré accessible aux petites structures.",
+      en: "Audit IA à Saint-Égrève : diagnostic adapté aux structures de santé (CHAI), TPE artisans, professions libérales et PME tertiaires du bassin grenoblois. Audit Flash à 490 € HT, retour sur investissement chiffré accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Égrève : formats adaptés à l'environnement médical (CHAI, cabinets), atelier artisan ou bureau PME. Vos équipes repartent avec outils IA configurés métier réel.",

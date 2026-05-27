@@ -29,12 +29,12 @@ export const VINDRY_SUR_TURDINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vindry-sur-Turdine : diagnostic adapté aux PME industrielles/tertiaires NO lyonnais, agriculteurs montagne, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Vindry-sur-Turdine : diagnostic adapté aux PME industrielles/tertiaires NO lyonnais, agriculteurs montagne, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Vindry-sur-Turdine : diagnostic adapté aux PME industrielles/tertiaires NO lyonnais, agriculteurs montagne, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Vindry-sur-Turdine : diagnostic adapté aux PME industrielles/tertiaires NO lyonnais, agriculteurs montagne, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Vindry-sur-Turdine : formats adaptés à l'atelier, exploitation agricole, bureau, commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Vindry-sur-Turdine : formats adaptés à l'atelier, exploitation agricole, bureau, commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Vindry-sur-Turdine : formats adaptés à l'atelier, exploitation agricole, bureau, commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Vindry-sur-Turdine : formats adaptés à l'atelier, exploitation agricole, bureau, commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Vindry-sur-Turdine : prédiction maintenance industrielle, classification photos cultures, agents conversationnels B2B, automatisation workflow.",
@@ -64,7 +64,7 @@ export const VINDRY_SUR_TURDINE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (40 min). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (40 min). Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BEZANNES_COPY: VilleCopy = {
   pitchFr:
-    "Bezannes (51), commune dynamique aux portes de Reims, accueille la gare TGV Champagne-Ardenne et un pôle tertiaire en pleine expansion. TPE et PME tertiaires, startups et ESN, cabinets conseil, entreprises logistique, commerces et services de la zone Farman. Axion-IA y intervient pour tous types d'activités.",
+    "Bezannes (51), commune dynamique aux portes de Reims, accueille la gare TGV Champagne-Ardenne et un pôle tertiaire en pleine expansion. TPE et PME tertiaires, startups et ESN, cabinets conseil, entreprises logistique, commerces et services de la zone Farman. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Bezannes (51), commune dynamique aux portes de Reims, accueille la gare TGV Champagne-Ardenne et un pôle tertiaire en pleine expansion. TPE et PME tertiaires, startups et ESN, cabinets conseil, entreprises logistique, commerces et services de la zone Farman. Axion-IA y intervient pour tous types d'activités.",
+    "Bezannes (51), commune dynamique aux portes de Reims, accueille la gare TGV Champagne-Ardenne et un pôle tertiaire en pleine expansion. TPE et PME tertiaires, startups et ESN, cabinets conseil, entreprises logistique, commerces et services de la zone Farman. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bezannes (51). Nous accompagnons TPE et PME : sociétés tertiaires du pôle gare TGV, startups et ESN, cabinets conseil, PME logistique, commerces de la zone Farman. Audit Flash dès 490 € HT.",
   directAnswerEn:

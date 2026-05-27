@@ -29,12 +29,12 @@ export const LA_GAUDE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Gaude : diagnostic adapté aux TPE artisans BTP, professions libérales, indépendants tech et PME services du moyen-pays niçois. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
-      en: "Audit IA à La Gaude : diagnostic adapté aux TPE artisans BTP, professions libérales, indépendants tech et PME services du moyen-pays niçois. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
+      fr: "Audit IA à La Gaude : diagnostic adapté aux TPE artisans BTP, professions libérales, indépendants tech et PME services du moyen-pays niçois. Audit Flash 490 € HT, ROI documenté en chiffres accessible aux petites structures.",
+      en: "Audit IA à La Gaude : diagnostic adapté aux TPE artisans BTP, professions libérales, indépendants tech et PME services du moyen-pays niçois. Audit Flash 490 € HT, ROI documenté en chiffres accessible aux petites structures.",
     },
     interventions: {
-      fr: "Interventions IA sur site à La Gaude : formats adaptés au cabinet libéral, atelier artisan ou bureau PME. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à La Gaude : formats adaptés au cabinet libéral, atelier artisan ou bureau PME. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à La Gaude : formats adaptés au cabinet libéral, atelier artisan ou bureau PME. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à La Gaude : formats adaptés au cabinet libéral, atelier artisan ou bureau PME. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à La Gaude : automatisation secrétariat libéral, agents conversationnels client, CRM augmenté, outils productivité R&D, classification documents. Adapté aux TPE/PME et professions libérales.",

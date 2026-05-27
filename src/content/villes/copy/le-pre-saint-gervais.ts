@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_PRE_SAINT_GERVAIS_COPY: VilleCopy = {
   pitchFr:
-    "Le Pré-Saint-Gervais (93), plus petite commune de France métropolitaine en superficie, est un village urbain de première couronne est-parisienne au tissu dense de TPE commerçantes, artisans, professions libérales et PME de services. Limitrophe du 19e et 20e arrondissements de Paris, des Lilas et de Pantin. Axion-IA y intervient pour tous types d'activités.",
+    "Le Pré-Saint-Gervais (93), plus petite commune de France métropolitaine en superficie, est un village urbain de première couronne est-parisienne au tissu dense de TPE commerçantes, artisans, professions libérales et PME de services. Limitrophe du 19e et 20e arrondissements de Paris, des Lilas et de Pantin. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Le Pré-Saint-Gervais (93), plus petite commune de France métropolitaine en superficie, est un village urbain de première couronne est-parisienne au tissu dense de TPE commerçantes, artisans, professions libérales et PME de services. Limitrophe du 19e et 20e arrondissements de Paris, des Lilas et de Pantin. Axion-IA y intervient pour tous types d'activités.",
+    "Le Pré-Saint-Gervais (93), plus petite commune de France métropolitaine en superficie, est un village urbain de première couronne est-parisienne au tissu dense de TPE commerçantes, artisans, professions libérales et PME de services. Limitrophe du 19e et 20e arrondissements de Paris, des Lilas et de Pantin. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Pré-Saint-Gervais (93). Nous accompagnons tous types d'activités : TPE commerçantes, artisans, professions libérales, PME de services, indépendants et structures associatives de cette commune à forte densité urbaine de première couronne parisienne. Audit Flash à partir de 490 € HT.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ONNAING_COPY: VilleCopy = {
   pitchFr:
-    "Onnaing (59), commune de l'agglomération de Valenciennes abritant l'usine Toyota et le pôle automobile du Hainaut-Cambrésis. Tissu économique : TPE et PME de la sous-traitance automobile, équipementiers, logistique industrielle, services aux entreprises, commerce et artisanat local. Axion-IA y intervient pour tous types d'activités du pôle industriel valenciennois et automobile.",
+    "Onnaing (59), commune de l'agglomération de Valenciennes abritant l'usine Toyota et le pôle automobile du Hainaut-Cambrésis. Tissu économique : TPE et PME de la sous-traitance automobile, équipementiers, logistique industrielle, services aux entreprises, commerce et artisanat local. Axion-IA couvre l'ensemble des activités professionnelles présentes du pôle industriel valenciennois et automobile.",
   pitchEn:
-    "Onnaing (59), commune de l'agglomération de Valenciennes abritant l'usine Toyota et le pôle automobile du Hainaut-Cambrésis. Tissu économique : TPE et PME de la sous-traitance automobile, équipementiers, logistique industrielle, services aux entreprises, commerce et artisanat local. Axion-IA y intervient pour tous types d'activités du pôle industriel valenciennois et automobile.",
+    "Onnaing (59), commune de l'agglomération de Valenciennes abritant l'usine Toyota et le pôle automobile du Hainaut-Cambrésis. Tissu économique : TPE et PME de la sous-traitance automobile, équipementiers, logistique industrielle, services aux entreprises, commerce et artisanat local. Axion-IA couvre l'ensemble des activités professionnelles présentes du pôle industriel valenciennois et automobile.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Onnaing (59). Nous accompagnons TPE et PME : sous-traitants automobile et équipementiers du pôle Toyota, logisticiens industriels, prestataires de services aux entreprises, commerçants et artisans de l'agglo valenciennoise.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const ONNAING_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Onnaing : diagnostic adapté aux TPE et PME de la sous-traitance automobile, équipementiers, logisticiens industriels, services aux entreprises et artisans du pôle valenciennois. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Onnaing : diagnostic adapté aux TPE et PME de la sous-traitance automobile, équipementiers, logisticiens industriels, services aux entreprises et artisans du pôle valenciennois. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Onnaing : diagnostic adapté aux TPE et PME de la sous-traitance automobile, équipementiers, logisticiens industriels, services aux entreprises et artisans du pôle valenciennois. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Onnaing : diagnostic adapté aux TPE et PME de la sous-traitance automobile, équipementiers, logisticiens industriels, services aux entreprises et artisans du pôle valenciennois. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Onnaing : formats adaptés au sous-traitant auto, à l'équipementier, au logisticien industriel ou au prestataire B2B. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Onnaing : formats adaptés au sous-traitant auto, à l'équipementier, au logisticien industriel ou au prestataire B2B. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Onnaing : formats adaptés au sous-traitant auto, à l'équipementier, au logisticien industriel ou au prestataire B2B. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Onnaing : formats adaptés au sous-traitant auto, à l'équipementier, au logisticien industriel ou au prestataire B2B. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Onnaing : maintenance prédictive lignes de production auto, contrôle qualité visuel pièces, optimisation supply chain just-in-time, agents conversationnels gestion fournisseurs, CRM augmenté équipementiers, automatisation traçabilité composants.",

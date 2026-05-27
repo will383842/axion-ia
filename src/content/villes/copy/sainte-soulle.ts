@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINTE_SOULLE_COPY: VilleCopy = {
   pitchFr:
-    "Sainte-Soulle (17), commune périurbaine de l'agglomération de La Rochelle en Charente-Maritime, cadre de vie rural aux portes de la ville. Tissu de TPE artisans, PME tertiaires, commerces de proximité, exploitants agricoles et services. Axion-IA y intervient pour tous types d'activités de l'agglomération rochelaise.",
+    "Sainte-Soulle (17), commune périurbaine de l'agglomération de La Rochelle en Charente-Maritime, cadre de vie rural aux portes de la ville. Tissu de TPE artisans, PME tertiaires, commerces de proximité, exploitants agricoles et services. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération rochelaise.",
   pitchEn:
-    "Sainte-Soulle (17), commune périurbaine de l'agglomération de La Rochelle en Charente-Maritime, cadre de vie rural aux portes de la ville. Tissu de TPE artisans, PME tertiaires, commerces de proximité, exploitants agricoles et services. Axion-IA y intervient pour tous types d'activités de l'agglomération rochelaise.",
+    "Sainte-Soulle (17), commune périurbaine de l'agglomération de La Rochelle en Charente-Maritime, cadre de vie rural aux portes de la ville. Tissu de TPE artisans, PME tertiaires, commerces de proximité, exploitants agricoles et services. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération rochelaise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sainte-Soulle (17). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, exploitants agricoles, commerçants et indépendants de cette commune périurbaine de l'agglomération de La Rochelle.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const SAINTE_SOULLE_COPY: VilleCopy = {
       en: "Audit IA à Sainte-Soulle : diagnostic adapté aux exploitants agricoles, TPE artisans, PME tertiaires et commerces de l'agglomération de La Rochelle. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Sainte-Soulle : formats adaptés à l'exploitation agricole, à l'atelier, au bureau ou au commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Sainte-Soulle : formats adaptés à l'exploitation agricole, à l'atelier, au bureau ou au commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Sainte-Soulle : formats adaptés à l'exploitation agricole, à l'atelier, au bureau ou au commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Sainte-Soulle : formats adaptés à l'exploitation agricole, à l'atelier, au bureau ou au commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Sainte-Soulle : automatisation traçabilité agricole, prédiction rendements, gestion stocks, agents conversationnels gestion administrative PME, optimisation planification.",

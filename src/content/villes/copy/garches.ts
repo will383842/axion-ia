@@ -29,12 +29,12 @@ export const GARCHES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Garches : diagnostic adapté aux professions libérales de santé, cabinets conseil, PME tertiaires et commerçants de l'ouest Hauts-de-Seine. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Garches : diagnostic adapté aux professions libérales de santé, cabinets conseil, PME tertiaires et commerçants de l'ouest Hauts-de-Seine. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Garches : diagnostic adapté aux professions libérales de santé, cabinets conseil, PME tertiaires et commerçants de l'ouest Hauts-de-Seine. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Garches : diagnostic adapté aux professions libérales de santé, cabinets conseil, PME tertiaires et commerçants de l'ouest Hauts-de-Seine. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Garches : formats adaptés au cabinet médical, bureau conseil, commerce ou PME tertiaire. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Garches : formats adaptés au cabinet médical, bureau conseil, commerce ou PME tertiaire. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Garches : formats adaptés au cabinet médical, bureau conseil, commerce ou PME tertiaire. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Garches : formats adaptés au cabinet médical, bureau conseil, commerce ou PME tertiaire. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Garches : agents conversationnels patient/client, automatisation secrétariat médical, classification dossiers juridiques, CRM augmenté cabinets, gestion patrimoine assistée IA.",

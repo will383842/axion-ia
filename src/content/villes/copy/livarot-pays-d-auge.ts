@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LIVAROT_PAYS_D_AUGE_COPY: VilleCopy = {
   pitchFr:
-    "Livarot-Pays-d'Auge (14), commune nouvelle du Calvados, est le berceau du fromage Livarot AOP, l'un des quatre grands fromages normands. Au cœur du Pays d'Auge, terre de traditions laitières, cidricoles et calvados. Tissu TPE artisans, PME fromagères, exploitations agricoles, commerces de proximité. Axion-IA y intervient pour tous types d'activités.",
+    "Livarot-Pays-d'Auge (14), commune nouvelle du Calvados, est le berceau du fromage Livarot AOP, l'un des quatre grands fromages normands. Au cœur du Pays d'Auge, terre de traditions laitières, cidricoles et calvados. Tissu TPE artisans, PME fromagères, exploitations agricoles, commerces de proximité. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Livarot-Pays-d'Auge (14), commune nouvelle du Calvados, est le berceau du fromage Livarot AOP, l'un des quatre grands fromages normands. Au cœur du Pays d'Auge, terre de traditions laitières, cidricoles et calvados. Tissu TPE artisans, PME fromagères, exploitations agricoles, commerces de proximité. Axion-IA y intervient pour tous types d'activités.",
+    "Livarot-Pays-d'Auge (14), commune nouvelle du Calvados, est le berceau du fromage Livarot AOP, l'un des quatre grands fromages normands. Au cœur du Pays d'Auge, terre de traditions laitières, cidricoles et calvados. Tissu TPE artisans, PME fromagères, exploitations agricoles, commerces de proximité. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Livarot-Pays-d'Auge (14). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME fromagères (Livarot AOP) et laitières, exploitations agricoles, cidreries, professions libérales et services aux entreprises du Pays d'Auge.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LIVAROT_PAYS_D_AUGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Livarot-Pays-d'Auge : diagnostic adapté aux PME fromagères AOP (Livarot, Camembert), exploitations laitières, cidreries, TPE artisans et commerçants. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Livarot-Pays-d'Auge : diagnostic adapté aux PME fromagères AOP (Livarot, Camembert), exploitations laitières, cidreries, TPE artisans et commerçants. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Livarot-Pays-d'Auge : diagnostic adapté aux PME fromagères AOP (Livarot, Camembert), exploitations laitières, cidreries, TPE artisans et commerçants. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Livarot-Pays-d'Auge : diagnostic adapté aux PME fromagères AOP (Livarot, Camembert), exploitations laitières, cidreries, TPE artisans et commerçants. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Livarot-Pays-d'Auge : formats adaptés à la fromagerie, laiterie, cidrerie, exploitation agricole ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",

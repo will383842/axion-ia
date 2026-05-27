@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MIGNALOUX_BEAUVOIR_COPY: VilleCopy = {
   pitchFr:
-    "Mignaloux-Beauvoir (86), commune résidentielle de l'est de l'agglomération de Poitiers, est intégrée à Grand Poitiers. Tissu TPE artisans, PME tertiaires, professions libérales, commerces de proximité et services aux entreprises. Axion-IA y intervient pour tous types d'activités de l'agglo poitevine est.",
+    "Mignaloux-Beauvoir (86), commune résidentielle de l'est de l'agglomération de Poitiers, est intégrée à Grand Poitiers. Tissu TPE artisans, PME tertiaires, professions libérales, commerces de proximité et services aux entreprises. Axion-IA y déploie ses missions auprès de toutes les organisations de l'agglo poitevine est.",
   pitchEn:
-    "Mignaloux-Beauvoir (86), commune résidentielle de l'est de l'agglomération de Poitiers, est intégrée à Grand Poitiers. Tissu TPE artisans, PME tertiaires, professions libérales, commerces de proximité et services aux entreprises. Axion-IA y intervient pour tous types d'activités de l'agglo poitevine est.",
+    "Mignaloux-Beauvoir (86), commune résidentielle de l'est de l'agglomération de Poitiers, est intégrée à Grand Poitiers. Tissu TPE artisans, PME tertiaires, professions libérales, commerces de proximité et services aux entreprises. Axion-IA y déploie ses missions auprès de toutes les organisations de l'agglo poitevine est.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mignaloux-Beauvoir (86). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, professions libérales, commerçants, indépendants et services aux entreprises de l'agglomération de Poitiers est.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const MIGNALOUX_BEAUVOIR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mignaloux-Beauvoir : diagnostic adapté aux TPE artisans, PME tertiaires, professions libérales et commerçants de l'agglo poitevine est. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Mignaloux-Beauvoir : diagnostic adapté aux TPE artisans, PME tertiaires, professions libérales et commerçants de l'agglo poitevine est. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Mignaloux-Beauvoir : diagnostic adapté aux TPE artisans, PME tertiaires, professions libérales et commerçants de l'agglo poitevine est. Audit Flash 490 € HT avec ROI quantifié accessible.",
+      en: "Audit IA à Mignaloux-Beauvoir : diagnostic adapté aux TPE artisans, PME tertiaires, professions libérales et commerçants de l'agglo poitevine est. Audit Flash 490 € HT avec ROI quantifié accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mignaloux-Beauvoir : formats adaptés au cabinet libéral, bureau tertiaire, commerce ou atelier artisan. Vos équipes repartent autonomes sur outils IA configurés métier.",

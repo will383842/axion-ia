@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CESSON_COPY: VilleCopy = {
   pitchFr:
-    "Cesson, commune des bords de Seine en Seine-et-Marne (77) intégrée à l'agglomération de Melun, 45 km au sud-est de Paris. Tissu TPE artisans, commerçants, PME tertiaires, professions libérales et activités fluviales. Axion-IA y intervient pour tous types d'activités de l'agglomération melunaise.",
+    "Cesson, commune des bords de Seine en Seine-et-Marne (77) intégrée à l'agglomération de Melun, 45 km au sud-est de Paris. Tissu TPE artisans, commerçants, PME tertiaires, professions libérales et activités fluviales. Axion-IA opère pour toutes les structures économiques de la commune de l'agglomération melunaise.",
   pitchEn:
-    "Cesson, commune des bords de Seine en Seine-et-Marne (77) intégrée à l'agglomération de Melun, 45 km au sud-est de Paris. Tissu TPE artisans, commerçants, PME tertiaires, professions libérales et activités fluviales. Axion-IA y intervient pour tous types d'activités de l'agglomération melunaise.",
+    "Cesson, commune des bords de Seine en Seine-et-Marne (77) intégrée à l'agglomération de Melun, 45 km au sud-est de Paris. Tissu TPE artisans, commerçants, PME tertiaires, professions libérales et activités fluviales. Axion-IA opère pour toutes les structures économiques de la commune de l'agglomération melunaise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cesson (77). Nous accompagnons tous types d'activités : TPE artisans, commerçants, PME tertiaires, professions libérales et prestataires de services de l'agglomération melunaise. Audit Flash dès 490 € HT.",
   directAnswerEn:

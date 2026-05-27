@@ -33,8 +33,8 @@ export const BEDARRIDES_COPY: VilleCopy = {
       en: "Audit IA à Bédarrides : diagnostic adapté aux TPE artisans, domaines viticoles AOC Châteauneuf-du-Pape, PME agroalimentaires et hébergements oenotouristiques. ROI chiffré, Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Bédarrides : formats adaptés aux domaines viticoles Châteauneuf-du-Pape, hébergements oenotouristiques, PME agroalimentaires et artisans. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Bédarrides : formats adaptés aux domaines viticoles Châteauneuf-du-Pape, hébergements oenotouristiques, PME agroalimentaires et artisans. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Bédarrides : formats adaptés aux domaines viticoles Châteauneuf-du-Pape, hébergements oenotouristiques, PME agroalimentaires et artisans. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Bédarrides : formats adaptés aux domaines viticoles Châteauneuf-du-Pape, hébergements oenotouristiques, PME agroalimentaires et artisans. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Bédarrides : traçabilité parcellaire AOC Châteauneuf-du-Pape, gestion vendanges et cave, relation client B2B export, oenotourisme, agents conversationnels multilingues, fiches Google Business. Adapté TPE/PME vallée Ouvèze.",

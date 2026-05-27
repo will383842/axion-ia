@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const OLLIOULES_COPY: VilleCopy = {
   pitchFr:
-    "Ollioules (83), commune de l'agglomération toulonnaise ouest dans la vallée du Reppe, compte plus de 14 500 habitants. Capitale historique de la fleur coupée et de l'horticulture, zones d'activités, tissu de TPE artisanales, PME horticoles et agroalimentaires, commerces et services. Axion-IA y intervient pour tous types d'activités.",
+    "Ollioules (83), commune de l'agglomération toulonnaise ouest dans la vallée du Reppe, compte plus de 14 500 habitants. Capitale historique de la fleur coupée et de l'horticulture, zones d'activités, tissu de TPE artisanales, PME horticoles et agroalimentaires, commerces et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Ollioules (83), commune de l'agglomération toulonnaise ouest dans la vallée du Reppe, compte plus de 14 500 habitants. Capitale historique de la fleur coupée et de l'horticulture, zones d'activités, tissu de TPE artisanales, PME horticoles et agroalimentaires, commerces et services. Axion-IA y intervient pour tous types d'activités.",
+    "Ollioules (83), commune de l'agglomération toulonnaise ouest dans la vallée du Reppe, compte plus de 14 500 habitants. Capitale historique de la fleur coupée et de l'horticulture, zones d'activités, tissu de TPE artisanales, PME horticoles et agroalimentaires, commerces et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ollioules (83). Nous accompagnons tous types d'activités : TPE horticulteurs et artisans, PME agroalimentaires vallée du Reppe, commerces, professions libérales et services de l'agglo Toulon ouest.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_VERPILLIERE_COPY: VilleCopy = {
   pitchFr:
-    "La Verpillière (38), commune de l'unité urbaine de Villefontaine en Isère, est dans la partie orientale de l'aire urbaine de Lyon. Membre de la Communauté d'agglomération Porte de l'Isère (CAPI). Tissu PME logistiques (proximité Saint-Exupéry), industries, TPE artisans, commerces. Axion-IA y intervient pour tous types d'activités du Nord-Isère.",
+    "La Verpillière (38), commune de l'unité urbaine de Villefontaine en Isère, est dans la partie orientale de l'aire urbaine de Lyon. Membre de la Communauté d'agglomération Porte de l'Isère (CAPI). Tissu PME logistiques (proximité Saint-Exupéry), industries, TPE artisans, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs du Nord-Isère.",
   pitchEn:
-    "La Verpillière (38), commune de l'unité urbaine de Villefontaine en Isère, est dans la partie orientale de l'aire urbaine de Lyon. Membre de la Communauté d'agglomération Porte de l'Isère (CAPI). Tissu PME logistiques (proximité Saint-Exupéry), industries, TPE artisans, commerces. Axion-IA y intervient pour tous types d'activités du Nord-Isère.",
+    "La Verpillière (38), commune de l'unité urbaine de Villefontaine en Isère, est dans la partie orientale de l'aire urbaine de Lyon. Membre de la Communauté d'agglomération Porte de l'Isère (CAPI). Tissu PME logistiques (proximité Saint-Exupéry), industries, TPE artisans, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs du Nord-Isère.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Verpillière (38). Nous accompagnons tous types d'activités : opérateurs logistiques aéroportuaires Saint-Exupéry, PME industrielles Nord-Isère, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de la CAPI.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LA_VERPILLIERE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Verpillière : diagnostic adapté aux opérateurs logistiques Saint-Exupéry, PME industrielles, TPE artisans et commerçants de la CAPI. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à La Verpillière : diagnostic adapté aux opérateurs logistiques Saint-Exupéry, PME industrielles, TPE artisans et commerçants de la CAPI. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à La Verpillière : diagnostic adapté aux opérateurs logistiques Saint-Exupéry, PME industrielles, TPE artisans et commerçants de la CAPI. Audit Flash 490 € HT avec ROI quantifié accessible.",
+      en: "Audit IA à La Verpillière : diagnostic adapté aux opérateurs logistiques Saint-Exupéry, PME industrielles, TPE artisans et commerçants de la CAPI. Audit Flash 490 € HT avec ROI quantifié accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Verpillière : formats adaptés à l'entrepôt logistique aéroportuaire, atelier industriel ou commerce. Vos équipes terrain et back-office repartent autonomes sur outils IA.",

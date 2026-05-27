@@ -54,6 +54,8 @@ export const LIMOGES_COPY: VilleCopy = {
   directAnswerEn:
     "Axion-IA is a senior AI architects consultancy that intervenes in Limoges (87) on site — city centre, ESTER Technopole, industrial zones and basin communes (Couzeix, Panazol, Isle, Condat-sur-Vienne, Aixe-sur-Vienne). We support Limoges micro-businesses, SMEs, mid-caps and large enterprises (electrical industry, porcelain, ceramics, agri-food, health, services) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
+  seoHook: "porcelaine, cuir & santé",
+
   topSectorsNaf: [
     "Industrie électrique & domotique (Legrand CAC 40)",
     "Céramique technique & porcelaine (Bernardaud, Haviland, Royal Limoges)",

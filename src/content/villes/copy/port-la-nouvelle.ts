@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PORT_LA_NOUVELLE_COPY: VilleCopy = {
   pitchFr:
-    "Port-la-Nouvelle (11), commune littorale de l'Aude sur la Méditerranée, dotée d'un port de commerce et de plaisance stratégique pour le sud de la France. Tissu TPE artisans maritimes, PME logistique et transport, commerces saisonniers, hôtellerie-restauration balnéaire, ostréiculture et pêche. Axion-IA y intervient pour tous types d'activités.",
+    "Port-la-Nouvelle (11), commune littorale de l'Aude sur la Méditerranée, dotée d'un port de commerce et de plaisance stratégique pour le sud de la France. Tissu TPE artisans maritimes, PME logistique et transport, commerces saisonniers, hôtellerie-restauration balnéaire, ostréiculture et pêche. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Port-la-Nouvelle (11), commune littorale de l'Aude sur la Méditerranée, dotée d'un port de commerce et de plaisance stratégique pour le sud de la France. Tissu TPE artisans maritimes, PME logistique et transport, commerces saisonniers, hôtellerie-restauration balnéaire, ostréiculture et pêche. Axion-IA y intervient pour tous types d'activités.",
+    "Port-la-Nouvelle (11), commune littorale de l'Aude sur la Méditerranée, dotée d'un port de commerce et de plaisance stratégique pour le sud de la France. Tissu TPE artisans maritimes, PME logistique et transport, commerces saisonniers, hôtellerie-restauration balnéaire, ostréiculture et pêche. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Port-la-Nouvelle (11). Nous accompagnons TPE artisans maritimes, PME logistique portuaire, commerces saisonniers, hôteliers-restaurateurs du littoral audois, ostréiculteurs et professionnels de la pêche. Audit Flash dès 490 € HT.",
   directAnswerEn:

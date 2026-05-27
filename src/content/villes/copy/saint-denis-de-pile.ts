@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_DENIS_DE_PILE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Denis-de-Pile (33), commune résidentielle du Libournais, combine vignoble bordelais, artisanat BTP en croissance, commerces et professions libérales. Axion-IA y intervient pour tous types d'activités du bassin libournais.",
+    "Saint-Denis-de-Pile (33), commune résidentielle du Libournais, combine vignoble bordelais, artisanat BTP en croissance, commerces et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune du bassin libournais.",
   pitchEn:
-    "Saint-Denis-de-Pile (33), commune résidentielle du Libournais, combine vignoble bordelais, artisanat BTP en croissance, commerces et professions libérales. Axion-IA y intervient pour tous types d'activités du bassin libournais.",
+    "Saint-Denis-de-Pile (33), commune résidentielle du Libournais, combine vignoble bordelais, artisanat BTP en croissance, commerces et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune du bassin libournais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Denis-de-Pile (33). Nous accompagnons TPE et PME du Libournais : vignerons, artisans BTP, commerçants, professions libérales et PME de services. Audit Flash dès 490 € HT.",
   directAnswerEn:

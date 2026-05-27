@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const TIGNIEU_JAMEYZIEU_COPY: VilleCopy = {
   pitchFr:
-    "Tignieu-Jameyzieu (38), une des trois villes-centres de l'unité urbaine de Charvieu-Chavagneux, est dans l'aire d'attraction est de Lyon. Tissu PME industrielles, logistique (axe vallée du Rhône), TPE artisans BTP, commerces et services. Axion-IA y intervient pour tous types d'activités du Nord-Isère limitrophe du Rhône.",
+    "Tignieu-Jameyzieu (38), une des trois villes-centres de l'unité urbaine de Charvieu-Chavagneux, est dans l'aire d'attraction est de Lyon. Tissu PME industrielles, logistique (axe vallée du Rhône), TPE artisans BTP, commerces et services. Axion-IA couvre l'ensemble des activités professionnelles présentes du Nord-Isère limitrophe du Rhône.",
   pitchEn:
-    "Tignieu-Jameyzieu (38), une des trois villes-centres de l'unité urbaine de Charvieu-Chavagneux, est dans l'aire d'attraction est de Lyon. Tissu PME industrielles, logistique (axe vallée du Rhône), TPE artisans BTP, commerces et services. Axion-IA y intervient pour tous types d'activités du Nord-Isère limitrophe du Rhône.",
+    "Tignieu-Jameyzieu (38), une des trois villes-centres de l'unité urbaine de Charvieu-Chavagneux, est dans l'aire d'attraction est de Lyon. Tissu PME industrielles, logistique (axe vallée du Rhône), TPE artisans BTP, commerces et services. Axion-IA couvre l'ensemble des activités professionnelles présentes du Nord-Isère limitrophe du Rhône.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tignieu-Jameyzieu (38). Nous accompagnons tous types d'activités : PME industrielles et logistiques Nord-Isère, TPE artisans BTP, commerçants, indépendants, agriculteurs périphériques, professions libérales et services aux entreprises de l'aire lyonnaise est.",
   directAnswerEn:

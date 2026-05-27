@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FEYZIN_COPY: VilleCopy = {
   pitchFr:
-    "Feyzin (69), commune en banlieue sud de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Positionnée dans la « Vallée de la Chimie » lyonnaise, abrite une raffinerie pétrolière historique (site Seveso seuil haut). Tissu PME industrielles et sous-traitants techniques, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Feyzin (69), commune en banlieue sud de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Positionnée dans la « Vallée de la Chimie » lyonnaise, abrite une raffinerie pétrolière historique (site Seveso seuil haut). Tissu PME industrielles et sous-traitants techniques, TPE artisans BTP, commerces. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Feyzin (69), commune en banlieue sud de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Positionnée dans la « Vallée de la Chimie » lyonnaise, abrite une raffinerie pétrolière historique (site Seveso seuil haut). Tissu PME industrielles et sous-traitants techniques, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Feyzin (69), commune en banlieue sud de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Positionnée dans la « Vallée de la Chimie » lyonnaise, abrite une raffinerie pétrolière historique (site Seveso seuil haut). Tissu PME industrielles et sous-traitants techniques, TPE artisans BTP, commerces. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Feyzin (69). Nous accompagnons tous types d'activités : PME industrielles et sous-traitants techniques Vallée de la Chimie (site Seveso raffinerie), TPE artisans BTP, commerçants, indépendants et services aux entreprises de la Métropole de Lyon sud.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const FEYZIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Feyzin : diagnostic adapté aux sous-traitants techniques Vallée de la Chimie (site Seveso), PME industrielles, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Feyzin : diagnostic adapté aux sous-traitants techniques Vallée de la Chimie (site Seveso), PME industrielles, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Feyzin : diagnostic adapté aux sous-traitants techniques Vallée de la Chimie (site Seveso), PME industrielles, TPE artisans. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Feyzin : diagnostic adapté aux sous-traitants techniques Vallée de la Chimie (site Seveso), PME industrielles, TPE artisans. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Feyzin : formats adaptés aux sous-traitants industriels (exigences sécurité Seveso), atelier, commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Feyzin : formats adaptés aux sous-traitants industriels (exigences sécurité Seveso), atelier, commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Feyzin : formats adaptés aux sous-traitants industriels (exigences sécurité Seveso), atelier, commerce. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Feyzin : formats adaptés aux sous-traitants industriels (exigences sécurité Seveso), atelier, commerce. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Feyzin : prédiction maintenance équipements pétrochimiques, classification incidents HSE, contrôle qualité par vision, agents conversationnels B2B sous-traitance.",
@@ -64,7 +64,7 @@ export const FEYZIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (15 min). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (15 min). Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

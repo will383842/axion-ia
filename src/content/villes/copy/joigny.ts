@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const JOIGNY_COPY: VilleCopy = {
   pitchFr:
-    "Joigny (89), sous-préfecture de l'Yonne en bord de rivière, allie patrimoine Renaissance, vignoble jovinien et activité économique diversifiée. Tissu de TPE/PME commerce, artisanat BTP, services, agroalimentaire et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Joigny (89), sous-préfecture de l'Yonne en bord de rivière, allie patrimoine Renaissance, vignoble jovinien et activité économique diversifiée. Tissu de TPE/PME commerce, artisanat BTP, services, agroalimentaire et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Joigny (89), sous-préfecture de l'Yonne en bord de rivière, allie patrimoine Renaissance, vignoble jovinien et activité économique diversifiée. Tissu de TPE/PME commerce, artisanat BTP, services, agroalimentaire et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Joigny (89), sous-préfecture de l'Yonne en bord de rivière, allie patrimoine Renaissance, vignoble jovinien et activité économique diversifiée. Tissu de TPE/PME commerce, artisanat BTP, services, agroalimentaire et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Joigny (89). Nous accompagnons TPE et PME : commerçants de centre-ville, artisans BTP, prestataires de services, viticulteurs joviniens et professions libérales de la sous-préfecture de l'Yonne. Audit Flash dès 490 € HT.",
   directAnswerEn:

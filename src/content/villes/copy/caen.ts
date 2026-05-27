@@ -54,6 +54,8 @@ export const CAEN_COPY: VilleCopy = {
   directAnswerEn:
     "Axion-IA is a senior AI architects consultancy that intervenes in Caen (14) on site — city centre, EffiScience technopole, Plateau Nord (UCN/ENSICAEN/CHU), ZAC Presqu'île and communes across the Caen la Mer area. We support Caen micro-businesses, SMEs, mid-caps and large enterprises (industry, electronics, health, services) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
+  seoHook: "agro, défense & santé",
+
   topSectorsNaf: [
     "Industrie & Électronique embarquée",
     "Semi-conducteurs & R&D circuits intégrés",

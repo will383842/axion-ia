@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FOS_SUR_MER_COPY: VilleCopy = {
   pitchFr:
-    "Fos-sur-Mer (13) est l'un des plus grands pôles industrialo-portuaires d'Europe avec le Grand Port Maritime de Marseille-Fos, la sidérurgie (ArcelorMittal voisine), la pétrochimie et la logistique conteneurs. TPE artisans, sous-traitants industriels, PME logistiques, transporteurs et commerces de proximité. Axion-IA y intervient pour tous types d'activités.",
+    "Fos-sur-Mer (13) est l'un des plus grands pôles industrialo-portuaires d'Europe avec le Grand Port Maritime de Marseille-Fos, la sidérurgie (ArcelorMittal voisine), la pétrochimie et la logistique conteneurs. TPE artisans, sous-traitants industriels, PME logistiques, transporteurs et commerces de proximité. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Fos-sur-Mer (13) est l'un des plus grands pôles industrialo-portuaires d'Europe avec le Grand Port Maritime de Marseille-Fos, la sidérurgie (ArcelorMittal voisine), la pétrochimie et la logistique conteneurs. TPE artisans, sous-traitants industriels, PME logistiques, transporteurs et commerces de proximité. Axion-IA y intervient pour tous types d'activités.",
+    "Fos-sur-Mer (13) est l'un des plus grands pôles industrialo-portuaires d'Europe avec le Grand Port Maritime de Marseille-Fos, la sidérurgie (ArcelorMittal voisine), la pétrochimie et la logistique conteneurs. TPE artisans, sous-traitants industriels, PME logistiques, transporteurs et commerces de proximité. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fos-sur-Mer (13). Nous accompagnons TPE artisans, sous-traitants sidérurgie/pétrochimie, PME logistiques, transporteurs portuaires et commerces du bassin de Fos. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const FOS_SUR_MER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fos-sur-Mer : diagnostic adapté aux PME logistiques, transporteurs portuaires, sous-traitants industriels, TPE artisans et commerces du bassin de Fos. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Fos-sur-Mer : diagnostic adapté aux PME logistiques, transporteurs portuaires, sous-traitants industriels, TPE artisans et commerces du bassin de Fos. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Fos-sur-Mer : diagnostic adapté aux PME logistiques, transporteurs portuaires, sous-traitants industriels, TPE artisans et commerces du bassin de Fos. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Fos-sur-Mer : diagnostic adapté aux PME logistiques, transporteurs portuaires, sous-traitants industriels, TPE artisans et commerces du bassin de Fos. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Fos-sur-Mer : ateliers pour équipes logistiques portuaires, sous-traitants industriels, transporteurs et PME locales. Outils IA configurés métier réel.",
@@ -64,7 +64,7 @@ export const FOS_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Fos-sur-Mer ?",
-      a: "Fos-sur-Mer est à 30 min de l'aéroport Marseille-Provence et 50 min de Marseille via A55. Nos consultants se déplacent dans vos locaux ou sur site portuaire. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Fos-sur-Mer est à 30 min de l'aéroport Marseille-Provence et 50 min de Marseille via A55. Nos consultants se déplacent dans vos locaux ou sur site portuaire. Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

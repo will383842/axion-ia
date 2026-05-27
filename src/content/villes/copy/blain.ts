@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BLAIN_COPY: VilleCopy = {
   pitchFr:
-    "Blain (44), commune de Loire-Atlantique traversée par le canal de Nantes à Brest et limitrophe de la forêt domaniale du Gâvre (la plus grande forêt de Loire-Atlantique), possède un château médiéval (château de la Groulais). Tissu de TPE artisans, PME bois/agroalimentaire, exploitations agricoles, commerces ruraux. Axion-IA y intervient pour tous types d'activités.",
+    "Blain (44), commune de Loire-Atlantique traversée par le canal de Nantes à Brest et limitrophe de la forêt domaniale du Gâvre (la plus grande forêt de Loire-Atlantique), possède un château médiéval (château de la Groulais). Tissu de TPE artisans, PME bois/agroalimentaire, exploitations agricoles, commerces ruraux. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Blain (44), commune de Loire-Atlantique traversée par le canal de Nantes à Brest et limitrophe de la forêt domaniale du Gâvre (la plus grande forêt de Loire-Atlantique), possède un château médiéval (château de la Groulais). Tissu de TPE artisans, PME bois/agroalimentaire, exploitations agricoles, commerces ruraux. Axion-IA y intervient pour tous types d'activités.",
+    "Blain (44), commune de Loire-Atlantique traversée par le canal de Nantes à Brest et limitrophe de la forêt domaniale du Gâvre (la plus grande forêt de Loire-Atlantique), possède un château médiéval (château de la Groulais). Tissu de TPE artisans, PME bois/agroalimentaire, exploitations agricoles, commerces ruraux. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Blain (44). Nous accompagnons tous types d'activités : TPE artisans BTP, PME filière bois et agroalimentaire, exploitants agricoles (élevage, polyculture), commerçants, acteurs du tourisme fluvial (canal Nantes-Brest) et services aux entreprises du nord Loire-Atlantique.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const BLAIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Blain : diagnostic adapté aux TPE artisans, PME bois/agroalimentaire, exploitants agricoles et commerçants du nord Loire-Atlantique. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Blain : diagnostic adapté aux TPE artisans, PME bois/agroalimentaire, exploitants agricoles et commerçants du nord Loire-Atlantique. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Blain : diagnostic adapté aux TPE artisans, PME bois/agroalimentaire, exploitants agricoles et commerçants du nord Loire-Atlantique. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Blain : diagnostic adapté aux TPE artisans, PME bois/agroalimentaire, exploitants agricoles et commerçants du nord Loire-Atlantique. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Blain : formats adaptés à la scierie, exploitation agricole, commerce ou site touristique canal Nantes-Brest. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Blain : formats adaptés à la scierie, exploitation agricole, commerce ou site touristique canal Nantes-Brest. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Blain : formats adaptés à la scierie, exploitation agricole, commerce ou site touristique canal Nantes-Brest. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Blain : formats adaptés à la scierie, exploitation agricole, commerce ou site touristique canal Nantes-Brest. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Blain : traçabilité bois/scieries, prédiction rendements cultures, agents conversationnels tourisme fluvial, automatisation devis BTP, classification documents exploitation forestière.",
@@ -64,7 +64,7 @@ export const BLAIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Nantes ?",
-      a: "Nos consultants viennent de Nantes en 40 min via la D164. Pour les multi-jours, hébergement local possible (gîtes canal Nantes-Brest). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Nantes en 40 min via la D164. Pour les multi-jours, hébergement local possible (gîtes canal Nantes-Brest). Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

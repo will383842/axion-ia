@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_SYMPHORIEN_D_OZON_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Symphorien-d'Ozon (69), commune en banlieue sud-est de Lyon dans le Rhône, est positionnée sur l'axe Lyon-Vienne. Tissu péri-urbain : PME tertiaires et logistiques, TPE artisans BTP, commerces, agriculture résiduelle. Axion-IA y intervient pour tous types d'activités du SE lyonnais.",
+    "Saint-Symphorien-d'Ozon (69), commune en banlieue sud-est de Lyon dans le Rhône, est positionnée sur l'axe Lyon-Vienne. Tissu péri-urbain : PME tertiaires et logistiques, TPE artisans BTP, commerces, agriculture résiduelle. Axion-IA accompagne entreprises et indépendants de tous secteurs du SE lyonnais.",
   pitchEn:
-    "Saint-Symphorien-d'Ozon (69), commune en banlieue sud-est de Lyon dans le Rhône, est positionnée sur l'axe Lyon-Vienne. Tissu péri-urbain : PME tertiaires et logistiques, TPE artisans BTP, commerces, agriculture résiduelle. Axion-IA y intervient pour tous types d'activités du SE lyonnais.",
+    "Saint-Symphorien-d'Ozon (69), commune en banlieue sud-est de Lyon dans le Rhône, est positionnée sur l'axe Lyon-Vienne. Tissu péri-urbain : PME tertiaires et logistiques, TPE artisans BTP, commerces, agriculture résiduelle. Axion-IA accompagne entreprises et indépendants de tous secteurs du SE lyonnais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Symphorien-d'Ozon (69). Nous accompagnons tous types d'activités : PME tertiaires et logistiques SE lyonnais, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const SAINT_SYMPHORIEN_D_OZON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Symphorien-d'Ozon : diagnostic adapté aux PME tertiaires/logistiques SE lyonnais, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Symphorien-d'Ozon : diagnostic adapté aux PME tertiaires/logistiques SE lyonnais, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Symphorien-d'Ozon : diagnostic adapté aux PME tertiaires/logistiques SE lyonnais, professions libérales, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Saint-Symphorien-d'Ozon : diagnostic adapté aux PME tertiaires/logistiques SE lyonnais, professions libérales, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Symphorien-d'Ozon : formats adaptés au bureau, entrepôt, cabinet, commerce. Vos équipes repartent autonomes sur outils IA.",

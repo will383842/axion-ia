@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GERZAT_COPY: VilleCopy = {
   pitchFr:
-    "Gerzat (63), commune du nord-est de Clermont Auvergne Métropole, dispose d'une zone logistique nord dynamique. Logistique et entreposage, PME industrielles, TPE artisanat BTP, commerces de proximité, services. Axion-IA y intervient pour tous types d'activités.",
+    "Gerzat (63), commune du nord-est de Clermont Auvergne Métropole, dispose d'une zone logistique nord dynamique. Logistique et entreposage, PME industrielles, TPE artisanat BTP, commerces de proximité, services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Gerzat (63), commune du nord-est de Clermont Auvergne Métropole, dispose d'une zone logistique nord dynamique. Logistique et entreposage, PME industrielles, TPE artisanat BTP, commerces de proximité, services. Axion-IA y intervient pour tous types d'activités.",
+    "Gerzat (63), commune du nord-est de Clermont Auvergne Métropole, dispose d'une zone logistique nord dynamique. Logistique et entreposage, PME industrielles, TPE artisanat BTP, commerces de proximité, services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gerzat (63). Nous accompagnons TPE et PME : entreprises logistique et entreposage zone nord, PME industrielles, artisans BTP, commerçants de proximité, prestataires de services.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const GERZAT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gerzat : diagnostic adapté aux entrepôts logistiques zone nord, PME industrielles, TPE artisans BTP, commerces de proximité. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Gerzat : diagnostic adapté aux entrepôts logistiques zone nord, PME industrielles, TPE artisans BTP, commerces de proximité. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Gerzat : diagnostic adapté aux entrepôts logistiques zone nord, PME industrielles, TPE artisans BTP, commerces de proximité. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Gerzat : diagnostic adapté aux entrepôts logistiques zone nord, PME industrielles, TPE artisans BTP, commerces de proximité. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Gerzat : formats adaptés entrepôt, usine, chantier, commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Gerzat : formats adaptés entrepôt, usine, chantier, commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Gerzat : formats adaptés entrepôt, usine, chantier, commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Gerzat : formats adaptés entrepôt, usine, chantier, commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Gerzat : automatisation flux logistiques, maintenance prédictive PME industrielles, gestion stocks entrepôts, CRM augmentés, outils devis artisans.",

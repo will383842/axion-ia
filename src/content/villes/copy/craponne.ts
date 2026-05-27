@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CRAPONNE_COPY: VilleCopy = {
   pitchFr:
-    "Craponne (69), commune en banlieue ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités de l'ouest lyonnais.",
+    "Craponne (69), commune en banlieue ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations de l'ouest lyonnais.",
   pitchEn:
-    "Craponne (69), commune en banlieue ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités de l'ouest lyonnais.",
+    "Craponne (69), commune en banlieue ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations de l'ouest lyonnais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Craponne (69). Nous accompagnons tous types d'activités : PME tertiaires ouest lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const CRAPONNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Craponne : diagnostic adapté aux PME tertiaires ouest lyonnais, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Craponne : diagnostic adapté aux PME tertiaires ouest lyonnais, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Craponne : diagnostic adapté aux PME tertiaires ouest lyonnais, professions libérales, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Craponne : diagnostic adapté aux PME tertiaires ouest lyonnais, professions libérales, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Craponne : formats adaptés au bureau, cabinet, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Craponne : formats adaptés au bureau, cabinet, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Craponne : formats adaptés au bureau, cabinet, commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Craponne : formats adaptés au bureau, cabinet, commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Craponne : agents conversationnels patient/client, automatisation workflow, classification dossiers, CRM augmentés. Métropole de Lyon ouest.",

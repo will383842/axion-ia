@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PACY_SUR_EURE_COPY: VilleCopy = {
   pitchFr:
-    "Pacy-sur-Eure (27), bourg de l'Eure niché dans la vallée de l'Eure entre Évreux et Vernon, carrefour entre Normandie et Île-de-France. Tissu TPE artisans, PME services et commerce, agriculture vallée de l'Eure, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Pacy-sur-Eure (27), bourg de l'Eure niché dans la vallée de l'Eure entre Évreux et Vernon, carrefour entre Normandie et Île-de-France. Tissu TPE artisans, PME services et commerce, agriculture vallée de l'Eure, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Pacy-sur-Eure (27), bourg de l'Eure niché dans la vallée de l'Eure entre Évreux et Vernon, carrefour entre Normandie et Île-de-France. Tissu TPE artisans, PME services et commerce, agriculture vallée de l'Eure, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Pacy-sur-Eure (27), bourg de l'Eure niché dans la vallée de l'Eure entre Évreux et Vernon, carrefour entre Normandie et Île-de-France. Tissu TPE artisans, PME services et commerce, agriculture vallée de l'Eure, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pacy-sur-Eure (27). Nous accompagnons tous types d'activités : TPE artisans, PME services et commerce, exploitants agricoles vallée de l'Eure, professions libérales, indépendants et services aux entreprises du secteur Évreux-Vernon.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const PACY_SUR_EURE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pacy-sur-Eure : diagnostic adapté aux TPE artisans, PME commerces et services, exploitants agricoles vallée de l'Eure, professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Pacy-sur-Eure : diagnostic adapté aux TPE artisans, PME commerces et services, exploitants agricoles vallée de l'Eure, professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Pacy-sur-Eure : diagnostic adapté aux TPE artisans, PME commerces et services, exploitants agricoles vallée de l'Eure, professions libérales. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Pacy-sur-Eure : diagnostic adapté aux TPE artisans, PME commerces et services, exploitants agricoles vallée de l'Eure, professions libérales. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pacy-sur-Eure : formats adaptés au commerce, à l'exploitation agricole, à l'atelier, au cabinet. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const PACY_SUR_EURE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou Évreux ?",
-      a: "Nos consultants viennent de Paris (1h20 A13, ou train via Vernon-Giverny à 20 min) ou d'Évreux (20 min). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Paris (1h20 A13, ou train via Vernon-Giverny à 20 min) ou d'Évreux (20 min). Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

@@ -33,8 +33,8 @@ export const CARRIERES_SUR_SEINE_COPY: VilleCopy = {
       en: "Audit IA à Carrières-sur-Seine : diagnostic adapté aux commerçants et artisans, PME services et conseil, professions libérales, agences immobilières, restaurateurs boucle de Seine. ROI chiffré, audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Carrières-sur-Seine : formats adaptés boutique, bureau conseil, cabinet, agence immobilière, restaurant. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Carrières-sur-Seine : formats adaptés boutique, bureau conseil, cabinet, agence immobilière, restaurant. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Carrières-sur-Seine : formats adaptés boutique, bureau conseil, cabinet, agence immobilière, restaurant. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Carrières-sur-Seine : formats adaptés boutique, bureau conseil, cabinet, agence immobilière, restaurant. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Carrières-sur-Seine : CRM augmenté commerçants, automatisation back-office PME conseil, gestion cabinet, outils estimation immobilière IA, réservation restauration.",

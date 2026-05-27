@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ILLE_SUR_TET_COPY: VilleCopy = {
   pitchFr:
-    "Ille-sur-Têt (66), bourg de la vallée de la Têt célèbre pour ses orgues de calcaire (cheminées de fées), fait partie de la Communauté de communes Roussillon Conflent. Tissu TPE artisans, PME agriculture et arboriculture, commerces, tourisme nature. Axion-IA y intervient pour tous types d'activités de la vallée de la Têt.",
+    "Ille-sur-Têt (66), bourg de la vallée de la Têt célèbre pour ses orgues de calcaire (cheminées de fées), fait partie de la Communauté de communes Roussillon Conflent. Tissu TPE artisans, PME agriculture et arboriculture, commerces, tourisme nature. Axion-IA y déploie ses missions auprès de toutes les organisations de la vallée de la Têt.",
   pitchEn:
-    "Ille-sur-Têt (66), bourg de la vallée de la Têt célèbre pour ses orgues de calcaire (cheminées de fées), fait partie de la Communauté de communes Roussillon Conflent. Tissu TPE artisans, PME agriculture et arboriculture, commerces, tourisme nature. Axion-IA y intervient pour tous types d'activités de la vallée de la Têt.",
+    "Ille-sur-Têt (66), bourg de la vallée de la Têt célèbre pour ses orgues de calcaire (cheminées de fées), fait partie de la Communauté de communes Roussillon Conflent. Tissu TPE artisans, PME agriculture et arboriculture, commerces, tourisme nature. Axion-IA y déploie ses missions auprès de toutes les organisations de la vallée de la Têt.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ille-sur-Têt (66). Nous accompagnons tous types d'activités : TPE artisans, PME agriculture et arboriculture, commerçants, acteurs du tourisme nature, indépendants et professions libérales de la vallée de la Têt.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const ILLE_SUR_TET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ille-sur-Têt : diagnostic adapté aux TPE artisans, PME arboriculture, agriculteurs et commerçants de la vallée de la Têt. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Ille-sur-Têt : diagnostic adapté aux TPE artisans, PME arboriculture, agriculteurs et commerçants de la vallée de la Têt. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Ille-sur-Têt : diagnostic adapté aux TPE artisans, PME arboriculture, agriculteurs et commerçants de la vallée de la Têt. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Ille-sur-Têt : diagnostic adapté aux TPE artisans, PME arboriculture, agriculteurs et commerçants de la vallée de la Têt. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Ille-sur-Têt : formats adaptés à l'exploitation fruitière, commerce, atelier, hébergement tourisme. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Ille-sur-Têt : formats adaptés à l'exploitation fruitière, commerce, atelier, hébergement tourisme. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Ille-sur-Têt : formats adaptés à l'exploitation fruitière, commerce, atelier, hébergement tourisme. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Ille-sur-Têt : formats adaptés à l'exploitation fruitière, commerce, atelier, hébergement tourisme. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Ille-sur-Têt : tri qualité fruits par vision, prédiction récoltes, chatbots tourisme nature, automatisation traçabilité arboricole. Vallée de la Têt.",
@@ -64,7 +64,7 @@ export const ILLE_SUR_TET_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Ille-sur-Têt ?",
-      a: "Nos consultants viennent de Perpignan (25 min). Missions sur site dans votre exploitation, commerce ou atelier. Visio possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Perpignan (25 min). Missions sur site dans votre exploitation, commerce ou atelier. Visio possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

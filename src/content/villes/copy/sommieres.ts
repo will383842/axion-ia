@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SOMMIERES_COPY: VilleCopy = {
   pitchFr:
-    "Sommières (30), bourg médiéval du Gard sur le Vidourle, entre Nîmes et Montpellier. Patrimoine médiéval remarquable (château, pont romain). Tissu TPE artisans, PME viticoles et agroalimentaires, commerces de proximité, tourisme patrimoine, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Sommières (30), bourg médiéval du Gard sur le Vidourle, entre Nîmes et Montpellier. Patrimoine médiéval remarquable (château, pont romain). Tissu TPE artisans, PME viticoles et agroalimentaires, commerces de proximité, tourisme patrimoine, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Sommières (30), bourg médiéval du Gard sur le Vidourle, entre Nîmes et Montpellier. Patrimoine médiéval remarquable (château, pont romain). Tissu TPE artisans, PME viticoles et agroalimentaires, commerces de proximité, tourisme patrimoine, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Sommières (30), bourg médiéval du Gard sur le Vidourle, entre Nîmes et Montpellier. Patrimoine médiéval remarquable (château, pont romain). Tissu TPE artisans, PME viticoles et agroalimentaires, commerces de proximité, tourisme patrimoine, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sommières (30). Nous accompagnons tous types d'activités : domaines viticoles, PME agroalimentaires, TPE artisans, commerçants du centre médiéval, restaurateurs, indépendants, professions libérales et acteurs du tourisme patrimoine gardois.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const SOMMIERES_COPY: VilleCopy = {
       en: "Audit IA à Sommières : diagnostic adapté aux domaines viticoles, PME agroalimentaires, TPE artisans, commerçants du centre médiéval et acteurs du tourisme patrimoine gardois. ROI chiffré, audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Sommières : formats adaptés aux domaines viticoles, commerces patrimoine, restaurants ou ateliers artisanaux. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Sommières : formats adaptés aux domaines viticoles, commerces patrimoine, restaurants ou ateliers artisanaux. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Sommières : formats adaptés aux domaines viticoles, commerces patrimoine, restaurants ou ateliers artisanaux. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Sommières : formats adaptés aux domaines viticoles, commerces patrimoine, restaurants ou ateliers artisanaux. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Sommières : traçabilité cave automatisée, chatbot tourisme patrimoine multilingue, automatisation réservations événementiel, classification avis visiteurs. Adapté viticulture + tourisme + artisanat.",

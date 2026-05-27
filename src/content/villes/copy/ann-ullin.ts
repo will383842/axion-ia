@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ANN_ULLIN_COPY: VilleCopy = {
   pitchFr:
-    "Annœullin (59), commune du Nord en agglomération Lille sud, est issue du bassin minier reconverti. Tissu mixte : TPE artisans BTP, PME industrielles reconverties, commerces de proximité, professions libérales, services péri-urbains. Axion-IA y intervient pour tous types d'activités.",
+    "Annœullin (59), commune du Nord en agglomération Lille sud, est issue du bassin minier reconverti. Tissu mixte : TPE artisans BTP, PME industrielles reconverties, commerces de proximité, professions libérales, services péri-urbains. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Annœullin (59), commune du Nord en agglomération Lille sud, est issue du bassin minier reconverti. Tissu mixte : TPE artisans BTP, PME industrielles reconverties, commerces de proximité, professions libérales, services péri-urbains. Axion-IA y intervient pour tous types d'activités.",
+    "Annœullin (59), commune du Nord en agglomération Lille sud, est issue du bassin minier reconverti. Tissu mixte : TPE artisans BTP, PME industrielles reconverties, commerces de proximité, professions libérales, services péri-urbains. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Annœullin (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles reconverties, commerçants de proximité, professions libérales, indépendants et services aux entreprises du sud lillois.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const ANN_ULLIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Annœullin : diagnostic adapté aux TPE artisans BTP, PME industrielles reconverties, commerces et professions libérales du sud lillois. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Annœullin : diagnostic adapté aux TPE artisans BTP, PME industrielles reconverties, commerces et professions libérales du sud lillois. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Annœullin : diagnostic adapté aux TPE artisans BTP, PME industrielles reconverties, commerces et professions libérales du sud lillois. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Annœullin : diagnostic adapté aux TPE artisans BTP, PME industrielles reconverties, commerces et professions libérales du sud lillois. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Annœullin : formats adaptés à l'atelier, au chantier, au commerce, au cabinet. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const ANN_ULLIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lille ?",
-      a: "Nos consultants viennent de Lille (25 min). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lille (25 min). Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

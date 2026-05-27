@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const NOYON_COPY: VilleCopy = {
   pitchFr:
-    "Noyon (60), cité historique de l'Oise où fut couronné Charlemagne et naquit Calvin, dotée d'une cathédrale gothique majeure. Tissu TPE/PME commerce, artisanat, BTP, agroalimentaire, logistique et services sur l'axe Compiègne–Saint-Quentin. Axion-IA y intervient pour tous types d'activités.",
+    "Noyon (60), cité historique de l'Oise où fut couronné Charlemagne et naquit Calvin, dotée d'une cathédrale gothique majeure. Tissu TPE/PME commerce, artisanat, BTP, agroalimentaire, logistique et services sur l'axe Compiègne–Saint-Quentin. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Noyon (60), cité historique de l'Oise où fut couronné Charlemagne et naquit Calvin, dotée d'une cathédrale gothique majeure. Tissu TPE/PME commerce, artisanat, BTP, agroalimentaire, logistique et services sur l'axe Compiègne–Saint-Quentin. Axion-IA y intervient pour tous types d'activités.",
+    "Noyon (60), cité historique de l'Oise où fut couronné Charlemagne et naquit Calvin, dotée d'une cathédrale gothique majeure. Tissu TPE/PME commerce, artisanat, BTP, agroalimentaire, logistique et services sur l'axe Compiègne–Saint-Quentin. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Noyon (60). Nous accompagnons tous types d'activités : TPE/PME du commerce et de l'artisanat, entreprises agroalimentaires, acteurs BTP et logistique, professions de services et acteurs du tourisme patrimonial noyonnais. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -34,8 +34,8 @@ export const NOYON_COPY: VilleCopy = {
       en: "Audit IA à Noyon : diagnostic adapté aux TPE/PME du commerce, de l'artisanat, de l'agroalimentaire et de la logistique noyonnaise. ROI chiffré, Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Noyon : formats adaptés au commerce, à l'agroalimentaire, au BTP et aux services. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Noyon : formats adaptés au commerce, à l'agroalimentaire, au BTP et aux services. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Noyon : formats adaptés au commerce, à l'agroalimentaire, au BTP et aux services. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Noyon : formats adaptés au commerce, à l'agroalimentaire, au BTP et aux services. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Noyon : automatisation chaîne agroalimentaire, gestion stock commerce, planification logistique, devis BTP, outils IA tourisme patrimonial.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const THOUARS_COPY: VilleCopy = {
   pitchFr:
-    "Thouars (79), sous-préfecture des Deux-Sèvres sur les bords du Thouet, 13 891 habitants. Château médiéval, tissu de TPE artisans, PME industrielles (agroalimentaire, mécanique), commerces de centre-ville et services. Axion-IA y intervient pour tous types d'activités du Thouarsais.",
+    "Thouars (79), sous-préfecture des Deux-Sèvres sur les bords du Thouet, 13 891 habitants. Château médiéval, tissu de TPE artisans, PME industrielles (agroalimentaire, mécanique), commerces de centre-ville et services. Axion-IA couvre l'ensemble des activités professionnelles présentes du Thouarsais.",
   pitchEn:
-    "Thouars (79), sous-préfecture des Deux-Sèvres sur les bords du Thouet, 13 891 habitants. Château médiéval, tissu de TPE artisans, PME industrielles (agroalimentaire, mécanique), commerces de centre-ville et services. Axion-IA y intervient pour tous types d'activités du Thouarsais.",
+    "Thouars (79), sous-préfecture des Deux-Sèvres sur les bords du Thouet, 13 891 habitants. Château médiéval, tissu de TPE artisans, PME industrielles (agroalimentaire, mécanique), commerces de centre-ville et services. Axion-IA couvre l'ensemble des activités professionnelles présentes du Thouarsais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thouars (79). Nous accompagnons TPE, PME et artisans du Thouarsais : agroalimentaire, industrie mécanique, artisanat, commerces. Audit Flash à partir de 490 € HT.",
   directAnswerEn:

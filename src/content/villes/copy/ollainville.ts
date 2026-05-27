@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const OLLAINVILLE_COPY: VilleCopy = {
   pitchFr:
-    "Ollainville (91), commune résidentielle et rurale du sud de l'Essonne, allie cadre champêtre et bassin d'activités locales. Tissu TPE artisanat et commerces de proximité, PME services, professions libérales, exploitations agricoles, prestataires BTP. Axion-IA y intervient pour tous types d'activités.",
+    "Ollainville (91), commune résidentielle et rurale du sud de l'Essonne, allie cadre champêtre et bassin d'activités locales. Tissu TPE artisanat et commerces de proximité, PME services, professions libérales, exploitations agricoles, prestataires BTP. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Ollainville (91), commune résidentielle et rurale du sud de l'Essonne, allie cadre champêtre et bassin d'activités locales. Tissu TPE artisanat et commerces de proximité, PME services, professions libérales, exploitations agricoles, prestataires BTP. Axion-IA y intervient pour tous types d'activités.",
+    "Ollainville (91), commune résidentielle et rurale du sud de l'Essonne, allie cadre champêtre et bassin d'activités locales. Tissu TPE artisanat et commerces de proximité, PME services, professions libérales, exploitations agricoles, prestataires BTP. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ollainville (91). Nous accompagnons TPE et PME : artisans et commerçants de proximité, PME services aux entreprises, professions libérales, exploitants agricoles, prestataires BTP sud Essonne. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -64,7 +64,7 @@ export const OLLAINVILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Arpajon ou Évry ?",
-      a: "Arpajon (5 min). Brétigny-sur-Orge (10 min). Évry-Courcouronnes (20 min). Paris centre (45 min). Orly (25 min). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Arpajon (5 min). Brétigny-sur-Orge (10 min). Évry-Courcouronnes (20 min). Paris centre (45 min). Orly (25 min). Coûts de déplacement à part, tarification transparente.",
     },
   ],
 };

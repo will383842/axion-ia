@@ -29,12 +29,12 @@ export const SAINT_GREGOIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Grégoire : diagnostic adapté aux PME tertiaires zones d'activités nord rennais, services B2B, cabinets de conseil, TPE artisans et professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Grégoire : diagnostic adapté aux PME tertiaires zones d'activités nord rennais, services B2B, cabinets de conseil, TPE artisans et professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Grégoire : diagnostic adapté aux PME tertiaires zones d'activités nord rennais, services B2B, cabinets de conseil, TPE artisans et professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Saint-Grégoire : diagnostic adapté aux PME tertiaires zones d'activités nord rennais, services B2B, cabinets de conseil, TPE artisans et professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Grégoire : formats adaptés au bureau tertiaire, plateau entreprise, cabinet conseil ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Saint-Grégoire : formats adaptés au bureau tertiaire, plateau entreprise, cabinet conseil ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Saint-Grégoire : formats adaptés au bureau tertiaire, plateau entreprise, cabinet conseil ou commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Saint-Grégoire : formats adaptés au bureau tertiaire, plateau entreprise, cabinet conseil ou commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Grégoire : automatisation workflow tertiaire, agents conversationnels B2B, outils IA cabinets conseil (analyse documentaire, veille augmentée), CRM augmenté, reporting automatisé.",

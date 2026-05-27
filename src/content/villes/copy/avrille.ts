@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const AVRILLE_COPY: VilleCopy = {
   pitchFr:
-    "Avrillé (49), commune résidentielle prisée au nord d'Angers, accueille plus de 15 000 habitants et un tissu économique dynamique de TPE, PME tertiaires et commerces. Axion-IA y intervient pour tous types d'activités : services, conseil, santé, commerce et artisanat.",
+    "Avrillé (49), commune résidentielle prisée au nord d'Angers, accueille plus de 15 000 habitants et un tissu économique dynamique de TPE, PME tertiaires et commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes : services, conseil, santé, commerce et artisanat.",
   pitchEn:
-    "Avrillé (49), commune résidentielle prisée au nord d'Angers, accueille plus de 15 000 habitants et un tissu économique dynamique de TPE, PME tertiaires et commerces. Axion-IA y intervient pour tous types d'activités : services, conseil, santé, commerce et artisanat.",
+    "Avrillé (49), commune résidentielle prisée au nord d'Angers, accueille plus de 15 000 habitants et un tissu économique dynamique de TPE, PME tertiaires et commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes : services, conseil, santé, commerce et artisanat.",
   directAnswerFr:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Avrillé (49). Nous accompagnons les TPE, PME et professions libérales avrillaises dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict, tarifs publics.",
   directAnswerEn:

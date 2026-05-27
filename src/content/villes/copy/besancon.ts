@@ -53,6 +53,8 @@ export const BESANCON_COPY: VilleCopy = {
   directAnswerEn:
     "Axion-IA is an senior AI architects consultancy that intervenes in Besançon (25) on site — TEMIS Innovation, TEMIS Santé, Châteaufarine, Trépillot, historic centre and Grand Besançon communes. We support Besançon micro-businesses, SMEs, mid-caps and large enterprises (microtechnologies, medical devices, research, services) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
+  seoHook: "horlogerie, microtech & santé",
+
   topSectorsNaf: [
     "Microtechniques, horlogerie & optique de précision",
     "Dispositifs médicaux & santé connectée",

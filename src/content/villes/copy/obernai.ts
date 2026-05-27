@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const OBERNAI_COPY: VilleCopy = {
   pitchFr:
-    "Obernai (67), ville-étape majeure de la Route des Vins d'Alsace au pied du Mont Sainte-Odile en Bas-Rhin, conjugue patrimoine médiéval préservé, vignoble Riesling et tissu économique diversifié. TPE/PME viticoles, brasserie, tourisme, commerce et artisanat alsacien rayonnent sur le Piémont des Vosges. Axion-IA y intervient pour tous types d'activités.",
+    "Obernai (67), ville-étape majeure de la Route des Vins d'Alsace au pied du Mont Sainte-Odile en Bas-Rhin, conjugue patrimoine médiéval préservé, vignoble Riesling et tissu économique diversifié. TPE/PME viticoles, brasserie, tourisme, commerce et artisanat alsacien rayonnent sur le Piémont des Vosges. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Obernai (67), ville-étape majeure de la Route des Vins d'Alsace au pied du Mont Sainte-Odile en Bas-Rhin, conjugue patrimoine médiéval préservé, vignoble Riesling et tissu économique diversifié. TPE/PME viticoles, brasserie, tourisme, commerce et artisanat alsacien rayonnent sur le Piémont des Vosges. Axion-IA y intervient pour tous types d'activités.",
+    "Obernai (67), ville-étape majeure de la Route des Vins d'Alsace au pied du Mont Sainte-Odile en Bas-Rhin, conjugue patrimoine médiéval préservé, vignoble Riesling et tissu économique diversifié. TPE/PME viticoles, brasserie, tourisme, commerce et artisanat alsacien rayonnent sur le Piémont des Vosges. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Obernai (67). Nous accompagnons TPE et PME : viticulteurs et domaines de la Route des Vins, brasseurs, hôteliers-restaurateurs, commerces du centre médiéval, artisans et professions libérales du Bas-Rhin. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const OBERNAI_COPY: VilleCopy = {
       en: "Audit IA à Obernai : diagnostic adapté aux viticulteurs Route des Vins, brasseurs, hôteliers-restaurateurs, commerces médiévaux et artisans du Bas-Rhin. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Obernai : formats adaptés au domaine viticole, à la brasserie, à l'hôtel-restaurant ou au commerce du centre historique. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Obernai : formats adaptés au domaine viticole, à la brasserie, à l'hôtel-restaurant ou au commerce du centre historique. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Obernai : formats adaptés au domaine viticole, à la brasserie, à l'hôtel-restaurant ou au commerce du centre historique. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Obernai : formats adaptés au domaine viticole, à la brasserie, à l'hôtel-restaurant ou au commerce du centre historique. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Obernai : automatisation réservations œnotouristiques et hôtelières, gestion vendanges et stocks bouteilles, traçabilité AOC, agents conversationnels multilingues pour clientèle touristique allemande/suisse.",

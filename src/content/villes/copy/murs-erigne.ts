@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MURS_ERIGNE_COPY: VilleCopy = {
   pitchFr:
-    "Mûrs-Erigné (49), commune résidentielle en bords de Loire au sud d'Angers, accueille plus de 6 400 habitants dans un cadre verdoyant entre vignoble et fleuve. Axion-IA y intervient pour tous types d'activités : PME tertiaires, professions libérales, commerces, artisanat et services.",
+    "Mûrs-Erigné (49), commune résidentielle en bords de Loire au sud d'Angers, accueille plus de 6 400 habitants dans un cadre verdoyant entre vignoble et fleuve. Axion-IA accompagne entreprises et indépendants de tous secteurs : PME tertiaires, professions libérales, commerces, artisanat et services.",
   pitchEn:
-    "Mûrs-Erigné (49), commune résidentielle en bords de Loire au sud d'Angers, accueille plus de 6 400 habitants dans un cadre verdoyant entre vignoble et fleuve. Axion-IA y intervient pour tous types d'activités : PME tertiaires, professions libérales, commerces, artisanat et services.",
+    "Mûrs-Erigné (49), commune résidentielle en bords de Loire au sud d'Angers, accueille plus de 6 400 habitants dans un cadre verdoyant entre vignoble et fleuve. Axion-IA accompagne entreprises et indépendants de tous secteurs : PME tertiaires, professions libérales, commerces, artisanat et services.",
   directAnswerFr:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Mûrs-Erigné (49). Nous accompagnons les TPE, PME et professions libérales du sud angevin dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict, tarifs publics.",
   directAnswerEn:

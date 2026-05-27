@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LEMPDES_COPY: VilleCopy = {
   pitchFr:
-    "Lempdes (63), commune de l'est de l'agglomération clermontoise en Puy-de-Dôme, dispose d'une zone d'activités importante à proximité immédiate de l'aéroport Clermont-Ferrand Auvergne. Logistique aéroportuaire, zones d'activités industrielles, PME tertiaires, TPE artisanat, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Lempdes (63), commune de l'est de l'agglomération clermontoise en Puy-de-Dôme, dispose d'une zone d'activités importante à proximité immédiate de l'aéroport Clermont-Ferrand Auvergne. Logistique aéroportuaire, zones d'activités industrielles, PME tertiaires, TPE artisanat, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Lempdes (63), commune de l'est de l'agglomération clermontoise en Puy-de-Dôme, dispose d'une zone d'activités importante à proximité immédiate de l'aéroport Clermont-Ferrand Auvergne. Logistique aéroportuaire, zones d'activités industrielles, PME tertiaires, TPE artisanat, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Lempdes (63), commune de l'est de l'agglomération clermontoise en Puy-de-Dôme, dispose d'une zone d'activités importante à proximité immédiate de l'aéroport Clermont-Ferrand Auvergne. Logistique aéroportuaire, zones d'activités industrielles, PME tertiaires, TPE artisanat, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lempdes (63). Nous accompagnons TPE et PME : entreprises logistique aéroportuaire, PME industrielles et tertiaires des zones d'activités, artisans, commerçants et sociétés de services de l'est clermontois.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const LEMPDES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lempdes : diagnostic adapté aux entreprises logistique aéroportuaire, PME industrielles et tertiaires des zones d'activités, TPE artisans et commerçants de l'est clermontois. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Lempdes : diagnostic adapté aux entreprises logistique aéroportuaire, PME industrielles et tertiaires des zones d'activités, TPE artisans et commerçants de l'est clermontois. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Lempdes : diagnostic adapté aux entreprises logistique aéroportuaire, PME industrielles et tertiaires des zones d'activités, TPE artisans et commerçants de l'est clermontois. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Lempdes : diagnostic adapté aux entreprises logistique aéroportuaire, PME industrielles et tertiaires des zones d'activités, TPE artisans et commerçants de l'est clermontois. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Lempdes : formats adaptés aux entrepôts logistiques, bureaux tertiaires, ateliers industriels ou commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Lempdes : formats adaptés aux entrepôts logistiques, bureaux tertiaires, ateliers industriels ou commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Lempdes : formats adaptés aux entrepôts logistiques, bureaux tertiaires, ateliers industriels ou commerces. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Lempdes : formats adaptés aux entrepôts logistiques, bureaux tertiaires, ateliers industriels ou commerces. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Lempdes : optimisation chaîne logistique aéroportuaire, prédiction maintenance industrielle, automatisation back-office PME tertiaires, agents IA gestion fret et expéditions.",
@@ -64,7 +64,7 @@ export const LEMPDES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Clermont-Ferrand ?",
-      a: "Nos consultants interviennent depuis Clermont-Ferrand (10 min voiture). Proximité immédiate aéroport Clermont-Ferrand Auvergne pour consultants hors région. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants interviennent depuis Clermont-Ferrand (10 min voiture). Proximité immédiate aéroport Clermont-Ferrand Auvergne pour consultants hors région. Coûts de déplacement à part, tarification transparente.",
     },
   ],
 };

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const DOUVAINE_COPY: VilleCopy = {
   pitchFr:
-    "Douvaine (74), commune du Chablais au coeur du Grand Genève, allie dynamique transfrontalière et terroir viticole (vin de Savoie, Chablais). Tissu économique mixte : services frontaliers, viticulture, agriculture, TPE commerces et PME tertiaires. Axion-IA y intervient pour tous types d'activités du bassin lémanique frontalier.",
+    "Douvaine (74), commune du Chablais au coeur du Grand Genève, allie dynamique transfrontalière et terroir viticole (vin de Savoie, Chablais). Tissu économique mixte : services frontaliers, viticulture, agriculture, TPE commerces et PME tertiaires. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin lémanique frontalier.",
   pitchEn:
-    "Douvaine (74), commune du Chablais au coeur du Grand Genève, allie dynamique transfrontalière et terroir viticole (vin de Savoie, Chablais). Tissu économique mixte : services frontaliers, viticulture, agriculture, TPE commerces et PME tertiaires. Axion-IA y intervient pour tous types d'activités du bassin lémanique frontalier.",
+    "Douvaine (74), commune du Chablais au coeur du Grand Genève, allie dynamique transfrontalière et terroir viticole (vin de Savoie, Chablais). Tissu économique mixte : services frontaliers, viticulture, agriculture, TPE commerces et PME tertiaires. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin lémanique frontalier.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Douvaine (74). Nous accompagnons TPE et PME : entreprises de services transfrontaliers, viticulteurs du Chablais (vin de Savoie), exploitants agricoles, commerces locaux et PME tertiaires du Grand Genève.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const DOUVAINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Douvaine : diagnostic adapté aux services transfrontaliers, viticulteurs du Chablais, exploitants agricoles et TPE/PME du Grand Genève. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Douvaine : diagnostic adapté aux services transfrontaliers, viticulteurs du Chablais, exploitants agricoles et TPE/PME du Grand Genève. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Douvaine : diagnostic adapté aux services transfrontaliers, viticulteurs du Chablais, exploitants agricoles et TPE/PME du Grand Genève. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Douvaine : diagnostic adapté aux services transfrontaliers, viticulteurs du Chablais, exploitants agricoles et TPE/PME du Grand Genève. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Douvaine : formats adaptés au domaine viticole, à l'exploitation agricole, au cabinet conseil transfrontalier ou au commerce local. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Douvaine : formats adaptés au domaine viticole, à l'exploitation agricole, au cabinet conseil transfrontalier ou au commerce local. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Douvaine : formats adaptés au domaine viticole, à l'exploitation agricole, au cabinet conseil transfrontalier ou au commerce local. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Douvaine : formats adaptés au domaine viticole, à l'exploitation agricole, au cabinet conseil transfrontalier ou au commerce local. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Douvaine : traçabilité viticole automatisée, agents conversationnels caveau de vente, automatisation comptabilité transfrontalière EUR/CHF, CRM augmenté et outils IA cabinets professionnels.",

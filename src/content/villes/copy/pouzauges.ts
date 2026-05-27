@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const POUZAUGES_COPY: VilleCopy = {
   pitchFr:
-    "Pouzauges (85), petite ville du bocage vendéen perchée sur les collines à l'est de la Vendée, structure un bassin économique rural-industriel où prospèrent TPE artisans, PME agroalimentaires et industrielles, commerces, professions libérales et prestataires du haut bocage. Axion-IA y intervient pour tous types d'activités.",
+    "Pouzauges (85), petite ville du bocage vendéen perchée sur les collines à l'est de la Vendée, structure un bassin économique rural-industriel où prospèrent TPE artisans, PME agroalimentaires et industrielles, commerces, professions libérales et prestataires du haut bocage. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Pouzauges (85), petite ville du bocage vendéen perchée sur les collines à l'est de la Vendée, structure un bassin économique rural-industriel où prospèrent TPE artisans, PME agroalimentaires et industrielles, commerces, professions libérales et prestataires du haut bocage. Axion-IA y intervient pour tous types d'activités.",
+    "Pouzauges (85), petite ville du bocage vendéen perchée sur les collines à l'est de la Vendée, structure un bassin économique rural-industriel où prospèrent TPE artisans, PME agroalimentaires et industrielles, commerces, professions libérales et prestataires du haut bocage. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pouzauges (85). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles (volaille, charcuterie, laiterie), commerces, professions libérales et prestataires du haut bocage vendéen.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const POUZAUGES_COPY: VilleCopy = {
       en: "Audit IA à Pouzauges : diagnostic adapté aux TPE artisans, PME agroalimentaires, industries mécaniques et commerces du haut bocage vendéen. ROI chiffré, Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Pouzauges : formations adaptées aux PME agroalimentaires, industries mécaniques, artisans BTP et commerces du haut bocage. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Pouzauges : formations adaptées aux PME agroalimentaires, industries mécaniques, artisans BTP et commerces du haut bocage. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Pouzauges : formations adaptées aux PME agroalimentaires, industries mécaniques, artisans BTP et commerces du haut bocage. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Pouzauges : formations adaptées aux PME agroalimentaires, industries mécaniques, artisans BTP et commerces du haut bocage. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Pouzauges : vision industrielle qualité agroalimentaire, maintenance prédictive mécanique, optimisation logistique, agents conversationnels commerces et outils IA artisanat BTP.",

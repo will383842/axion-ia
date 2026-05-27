@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BELIN_BELIET_COPY: VilleCopy = {
   pitchFr:
-    "Belin-Béliet (33), commune de la forêt landaise traversée par la Leyre, combine exploitation forestière, artisanat BTP, commerces de bourg et tourisme nature. Axion-IA y intervient pour tous types d'activités du sud Bordeaux et de la vallée de la Leyre.",
+    "Belin-Béliet (33), commune de la forêt landaise traversée par la Leyre, combine exploitation forestière, artisanat BTP, commerces de bourg et tourisme nature. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud Bordeaux et de la vallée de la Leyre.",
   pitchEn:
-    "Belin-Béliet (33), commune de la forêt landaise traversée par la Leyre, combine exploitation forestière, artisanat BTP, commerces de bourg et tourisme nature. Axion-IA y intervient pour tous types d'activités du sud Bordeaux et de la vallée de la Leyre.",
+    "Belin-Béliet (33), commune de la forêt landaise traversée par la Leyre, combine exploitation forestière, artisanat BTP, commerces de bourg et tourisme nature. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud Bordeaux et de la vallée de la Leyre.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Belin-Béliet (33). Nous accompagnons TPE et PME de la forêt landaise : entreprises forestières, artisans BTP, commerçants, prestataires tourisme nature et professions libérales. Audit Flash dès 490 € HT.",
   directAnswerEn:

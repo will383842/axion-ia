@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const TAIN_L_HERMITAGE_COPY: VilleCopy = {
   pitchFr:
-    "Tain-l'Hermitage (26), commune de la vallée du Rhône drômoise face à Tournon-sur-Rhône, est mondialement réputée pour la viticulture (AOC Hermitage, Crozes-Hermitage et Saint-Joseph en rive opposée). Tissu viticole haut de gamme, oenotourisme, TPE artisans, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Tain-l'Hermitage (26), commune de la vallée du Rhône drômoise face à Tournon-sur-Rhône, est mondialement réputée pour la viticulture (AOC Hermitage, Crozes-Hermitage et Saint-Joseph en rive opposée). Tissu viticole haut de gamme, oenotourisme, TPE artisans, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Tain-l'Hermitage (26), commune de la vallée du Rhône drômoise face à Tournon-sur-Rhône, est mondialement réputée pour la viticulture (AOC Hermitage, Crozes-Hermitage et Saint-Joseph en rive opposée). Tissu viticole haut de gamme, oenotourisme, TPE artisans, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Tain-l'Hermitage (26), commune de la vallée du Rhône drômoise face à Tournon-sur-Rhône, est mondialement réputée pour la viticulture (AOC Hermitage, Crozes-Hermitage et Saint-Joseph en rive opposée). Tissu viticole haut de gamme, oenotourisme, TPE artisans, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tain-l'Hermitage (26). Nous accompagnons tous types d'activités : viticulteurs AOC Hermitage / Crozes-Hermitage / Saint-Joseph, négociants en vins, acteurs oenotourisme, PME agroalimentaires (chocolat Valrhona, etc.), TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const TAIN_L_HERMITAGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Tain-l'Hermitage : diagnostic adapté aux viticulteurs AOC Hermitage / Crozes-Hermitage / Saint-Joseph, négociants en vins, PME agroalimentaires, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Tain-l'Hermitage : diagnostic adapté aux viticulteurs AOC Hermitage / Crozes-Hermitage / Saint-Joseph, négociants en vins, PME agroalimentaires, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Tain-l'Hermitage : diagnostic adapté aux viticulteurs AOC Hermitage / Crozes-Hermitage / Saint-Joseph, négociants en vins, PME agroalimentaires, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Tain-l'Hermitage : diagnostic adapté aux viticulteurs AOC Hermitage / Crozes-Hermitage / Saint-Joseph, négociants en vins, PME agroalimentaires, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Tain-l'Hermitage : formats adaptés au domaine viticole, négoce en vins, atelier agroalimentaire. Vos équipes repartent autonomes sur outils IA métier.",
@@ -64,7 +64,7 @@ export const TAIN_L_HERMITAGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Valence ?",
-      a: "Nos consultants viennent de Lyon (1h A7) ou Valence (25 min). Pour les multi-jours, hébergement local possible (gîtes domaines). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (1h A7) ou Valence (25 min). Pour les multi-jours, hébergement local possible (gîtes domaines). Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

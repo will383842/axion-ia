@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GUINGAMP_COPY: VilleCopy = {
   pitchFr:
-    "Guingamp (22), sous-préfecture des Côtes-d'Armor au carrefour du Trégor et du Goëlo, est un pôle agroalimentaire et de services. TPE artisans, PME agroalimentaires, commerces de centre-ville, professions libérales, services publics. Axion-IA y intervient pour tous types d'activités.",
+    "Guingamp (22), sous-préfecture des Côtes-d'Armor au carrefour du Trégor et du Goëlo, est un pôle agroalimentaire et de services. TPE artisans, PME agroalimentaires, commerces de centre-ville, professions libérales, services publics. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Guingamp (22), sous-préfecture des Côtes-d'Armor au carrefour du Trégor et du Goëlo, est un pôle agroalimentaire et de services. TPE artisans, PME agroalimentaires, commerces de centre-ville, professions libérales, services publics. Axion-IA y intervient pour tous types d'activités.",
+    "Guingamp (22), sous-préfecture des Côtes-d'Armor au carrefour du Trégor et du Goëlo, est un pôle agroalimentaire et de services. TPE artisans, PME agroalimentaires, commerces de centre-ville, professions libérales, services publics. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guingamp (22). Nous accompagnons TPE et PME : entreprises agroalimentaires, artisans, commerçants de centre-ville, professions libérales, prestataires de services du bassin guingampais et du Trégor. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const GUINGAMP_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Guingamp : diagnostic adapté aux PME agroalimentaires, TPE artisans, commerçants de centre-ville, professions libérales et prestataires de services du Trégor. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Guingamp : diagnostic adapté aux PME agroalimentaires, TPE artisans, commerçants de centre-ville, professions libérales et prestataires de services du Trégor. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Guingamp : diagnostic adapté aux PME agroalimentaires, TPE artisans, commerçants de centre-ville, professions libérales et prestataires de services du Trégor. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Guingamp : diagnostic adapté aux PME agroalimentaires, TPE artisans, commerçants de centre-ville, professions libérales et prestataires de services du Trégor. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Guingamp : formats adaptés site agroalimentaire, commerce, cabinet, atelier artisan. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Guingamp : formats adaptés site agroalimentaire, commerce, cabinet, atelier artisan. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Guingamp : formats adaptés site agroalimentaire, commerce, cabinet, atelier artisan. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Guingamp : formats adaptés site agroalimentaire, commerce, cabinet, atelier artisan. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Guingamp : traçabilité et qualité agroalimentaire, prédiction maintenance industrielle, CRM augmenté commerces, automatisation devis artisans, agents conversationnels PME.",
@@ -64,7 +64,7 @@ export const GUINGAMP_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Guingamp ?",
-      a: "TGV Paris-Guingamp en 3h (direct, noeud TER Lannion/Paimpol/Carhaix). Saint-Brieuc à 30 min. Hébergement local disponible. Frais de déplacement facturés à part, tarifs publics.",
+      a: "TGV Paris-Guingamp en 3h (direct, noeud TER Lannion/Paimpol/Carhaix). Saint-Brieuc à 30 min. Hébergement local disponible. Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

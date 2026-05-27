@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LYS_LEZ_LANNOY_COPY: VilleCopy = {
   pitchFr:
-    "Lys-lez-Lannoy (59), commune de la Métropole Européenne de Lille dans l'agglomération Roubaix-Tourcoing, au cœur du bassin historique textile du Nord. Tissu économique : TPE et PME du commerce de gros et détail, services aux entreprises, sous-traitance industrielle textile-confection, logistique, artisanat local. Axion-IA y intervient pour tous types d'activités de l'agglo roubaisienne.",
+    "Lys-lez-Lannoy (59), commune de la Métropole Européenne de Lille dans l'agglomération Roubaix-Tourcoing, au cœur du bassin historique textile du Nord. Tissu économique : TPE et PME du commerce de gros et détail, services aux entreprises, sous-traitance industrielle textile-confection, logistique, artisanat local. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglo roubaisienne.",
   pitchEn:
-    "Lys-lez-Lannoy (59), commune de la Métropole Européenne de Lille dans l'agglomération Roubaix-Tourcoing, au cœur du bassin historique textile du Nord. Tissu économique : TPE et PME du commerce de gros et détail, services aux entreprises, sous-traitance industrielle textile-confection, logistique, artisanat local. Axion-IA y intervient pour tous types d'activités de l'agglo roubaisienne.",
+    "Lys-lez-Lannoy (59), commune de la Métropole Européenne de Lille dans l'agglomération Roubaix-Tourcoing, au cœur du bassin historique textile du Nord. Tissu économique : TPE et PME du commerce de gros et détail, services aux entreprises, sous-traitance industrielle textile-confection, logistique, artisanat local. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglo roubaisienne.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lys-lez-Lannoy (59). Nous accompagnons TPE et PME : commerce de gros et détail roubaisien, sous-traitants industriels textile-confection, prestataires de services aux entreprises, logisticiens, artisans et professions libérales de l'agglo lilloise.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const LYS_LEZ_LANNOY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lys-lez-Lannoy : diagnostic adapté aux TPE et PME du commerce roubaisien, sous-traitants textile-confection, prestataires de services B2B, logisticiens et artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Lys-lez-Lannoy : diagnostic adapté aux TPE et PME du commerce roubaisien, sous-traitants textile-confection, prestataires de services B2B, logisticiens et artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Lys-lez-Lannoy : diagnostic adapté aux TPE et PME du commerce roubaisien, sous-traitants textile-confection, prestataires de services B2B, logisticiens et artisans. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Lys-lez-Lannoy : diagnostic adapté aux TPE et PME du commerce roubaisien, sous-traitants textile-confection, prestataires de services B2B, logisticiens et artisans. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Lys-lez-Lannoy : formats adaptés au commerce, à la sous-traitance industrielle, au prestataire B2B ou à l'artisan. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Lys-lez-Lannoy : formats adaptés au commerce, à la sous-traitance industrielle, au prestataire B2B ou à l'artisan. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Lys-lez-Lannoy : formats adaptés au commerce, à la sous-traitance industrielle, au prestataire B2B ou à l'artisan. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Lys-lez-Lannoy : formats adaptés au commerce, à la sous-traitance industrielle, au prestataire B2B ou à l'artisan. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Lys-lez-Lannoy : automatisation gestion stocks commerce, génération fiches produits textile, CRM augmenté PME B2B, agents conversationnels service client, optimisation logistique dernière mile agglo roubaisienne.",

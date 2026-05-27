@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LENTILLY_COPY: VilleCopy = {
   pitchFr:
-    "Lentilly (69), commune en banlieue nord-ouest de Lyon dans le Rhône, est positionnée aux portes des monts du Lyonnais. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités du NO lyonnais.",
+    "Lentilly (69), commune en banlieue nord-ouest de Lyon dans le Rhône, est positionnée aux portes des monts du Lyonnais. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du NO lyonnais.",
   pitchEn:
-    "Lentilly (69), commune en banlieue nord-ouest de Lyon dans le Rhône, est positionnée aux portes des monts du Lyonnais. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités du NO lyonnais.",
+    "Lentilly (69), commune en banlieue nord-ouest de Lyon dans le Rhône, est positionnée aux portes des monts du Lyonnais. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du NO lyonnais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lentilly (69). Nous accompagnons tous types d'activités : PME tertiaires NO lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la banlieue nord-ouest lyonnaise.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LENTILLY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lentilly : diagnostic adapté aux PME tertiaires NO lyonnais, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Lentilly : diagnostic adapté aux PME tertiaires NO lyonnais, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Lentilly : diagnostic adapté aux PME tertiaires NO lyonnais, professions libérales, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Lentilly : diagnostic adapté aux PME tertiaires NO lyonnais, professions libérales, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lentilly : formats adaptés au bureau, cabinet, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const LENTILLY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (25 min). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (25 min). Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

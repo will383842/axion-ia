@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CLISSON_COPY: VilleCopy = {
   pitchFr:
-    "Clisson (44), cité de caractère du vignoble nantais en Loire-Atlantique, connue pour le Hellfest et son château médiéval. Tissu TPE viticulteurs et artisans, PME tourisme et événementiel, commerces de centre-bourg, restauration, professions libérales. Axion-IA y intervient pour tous types d'activités du vignoble nantais.",
+    "Clisson (44), cité de caractère du vignoble nantais en Loire-Atlantique, connue pour le Hellfest et son château médiéval. Tissu TPE viticulteurs et artisans, PME tourisme et événementiel, commerces de centre-bourg, restauration, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations du vignoble nantais.",
   pitchEn:
-    "Clisson (44), cité de caractère du vignoble nantais en Loire-Atlantique, connue pour le Hellfest et son château médiéval. Tissu TPE viticulteurs et artisans, PME tourisme et événementiel, commerces de centre-bourg, restauration, professions libérales. Axion-IA y intervient pour tous types d'activités du vignoble nantais.",
+    "Clisson (44), cité de caractère du vignoble nantais en Loire-Atlantique, connue pour le Hellfest et son château médiéval. Tissu TPE viticulteurs et artisans, PME tourisme et événementiel, commerces de centre-bourg, restauration, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations du vignoble nantais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Clisson (44). Nous accompagnons tous types d'activités : TPE viticulteurs et artisans du Muscadet, PME tourisme et événementiel (dont l'écosystème Hellfest), commerces de centre-bourg, restauration, professions libérales et entreprises du vignoble nantais.",
   directAnswerEn:

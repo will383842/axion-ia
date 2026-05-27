@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BINIC_ETABLES_SUR_MER_COPY: VilleCopy = {
   pitchFr:
-    "Binic-Étables-sur-Mer (22), commune nouvelle littorale des Côtes-d'Armor créée en 2016, est réputée pour son port de plaisance et son tourisme balnéaire sur la baie de Saint-Brieuc. TPE du nautisme, PME de l'hôtellerie-restauration, commerces saisonniers, artisans du bâtiment et professions libérales animent son économie. Axion-IA y intervient pour tous types d'activités du littoral briochin.",
+    "Binic-Étables-sur-Mer (22), commune nouvelle littorale des Côtes-d'Armor créée en 2016, est réputée pour son port de plaisance et son tourisme balnéaire sur la baie de Saint-Brieuc. TPE du nautisme, PME de l'hôtellerie-restauration, commerces saisonniers, artisans du bâtiment et professions libérales animent son économie. Axion-IA y déploie ses missions auprès de toutes les organisations du littoral briochin.",
   pitchEn:
-    "Binic-Étables-sur-Mer (22), commune nouvelle littorale des Côtes-d'Armor créée en 2016, est réputée pour son port de plaisance et son tourisme balnéaire sur la baie de Saint-Brieuc. TPE du nautisme, PME de l'hôtellerie-restauration, commerces saisonniers, artisans du bâtiment et professions libérales animent son économie. Axion-IA y intervient pour tous types d'activités du littoral briochin.",
+    "Binic-Étables-sur-Mer (22), commune nouvelle littorale des Côtes-d'Armor créée en 2016, est réputée pour son port de plaisance et son tourisme balnéaire sur la baie de Saint-Brieuc. TPE du nautisme, PME de l'hôtellerie-restauration, commerces saisonniers, artisans du bâtiment et professions libérales animent son économie. Axion-IA y déploie ses missions auprès de toutes les organisations du littoral briochin.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Binic-Étables-sur-Mer (22). Nous accompagnons tous types d'activités : TPE du nautisme et de la plaisance, PME hôtelières et restaurateurs de la côte, commerces saisonniers, artisans BTP, professions libérales et prestataires touristiques du littoral briochin.",
   directAnswerEn:

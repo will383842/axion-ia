@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BLAYE_COPY: VilleCopy = {
   pitchFr:
-    "Blaye (33), cité historique sur l'estuaire de la Gironde, est connue pour sa citadelle Vauban classée UNESCO et son vignoble AOC Côtes de Blaye. Axion-IA y intervient pour tous types d'activités : TPE viticoles, hébergeurs touristiques, commerçants, artisans BTP et professions libérales du Blayais.",
+    "Blaye (33), cité historique sur l'estuaire de la Gironde, est connue pour sa citadelle Vauban classée UNESCO et son vignoble AOC Côtes de Blaye. Axion-IA y déploie ses missions auprès de toutes les organisations : TPE viticoles, hébergeurs touristiques, commerçants, artisans BTP et professions libérales du Blayais.",
   pitchEn:
-    "Blaye (33), cité historique sur l'estuaire de la Gironde, est connue pour sa citadelle Vauban classée UNESCO et son vignoble AOC Côtes de Blaye. Axion-IA y intervient pour tous types d'activités : TPE viticoles, hébergeurs touristiques, commerçants, artisans BTP et professions libérales du Blayais.",
+    "Blaye (33), cité historique sur l'estuaire de la Gironde, est connue pour sa citadelle Vauban classée UNESCO et son vignoble AOC Côtes de Blaye. Axion-IA y déploie ses missions auprès de toutes les organisations : TPE viticoles, hébergeurs touristiques, commerçants, artisans BTP et professions libérales du Blayais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Blaye (33). Nous accompagnons TPE et PME du Blayais : vignerons de Côtes de Blaye, hébergeurs touristiques (citadelle UNESCO), commerçants, artisans BTP et professions libérales. Audit Flash dès 490 € HT.",
   directAnswerEn:

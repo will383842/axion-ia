@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PUBLIER_COPY: VilleCopy = {
   pitchFr:
-    "Publier (74), commune du Chablais sur les rives du lac Léman, accueille la station thermale d'Amphion-les-Bains et un tissu économique tourné vers le thermalisme, le tourisme lacustre et l'hôtellerie. Croissance démographique soutenue (+2,5 %/an). Axion-IA y intervient pour tous types d'activités du bassin lémanique haut-savoyard.",
+    "Publier (74), commune du Chablais sur les rives du lac Léman, accueille la station thermale d'Amphion-les-Bains et un tissu économique tourné vers le thermalisme, le tourisme lacustre et l'hôtellerie. Croissance démographique soutenue (+2,5 %/an). Axion-IA opère pour toutes les structures économiques de la commune du bassin lémanique haut-savoyard.",
   pitchEn:
-    "Publier (74), commune du Chablais sur les rives du lac Léman, accueille la station thermale d'Amphion-les-Bains et un tissu économique tourné vers le thermalisme, le tourisme lacustre et l'hôtellerie. Croissance démographique soutenue (+2,5 %/an). Axion-IA y intervient pour tous types d'activités du bassin lémanique haut-savoyard.",
+    "Publier (74), commune du Chablais sur les rives du lac Léman, accueille la station thermale d'Amphion-les-Bains et un tissu économique tourné vers le thermalisme, le tourisme lacustre et l'hôtellerie. Croissance démographique soutenue (+2,5 %/an). Axion-IA opère pour toutes les structures économiques de la commune du bassin lémanique haut-savoyard.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Publier (74). Nous accompagnons TPE et PME : établissements thermaux d'Amphion-les-Bains, hôteliers et restaurateurs du lac Léman, commerces touristiques, prestataires de loisirs nautiques et entreprises de services du Chablais.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const PUBLIER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Publier : diagnostic adapté aux établissements thermaux d'Amphion, hôteliers du Léman, commerces touristiques et TPE de services du Chablais. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Publier : diagnostic adapté aux établissements thermaux d'Amphion, hôteliers du Léman, commerces touristiques et TPE de services du Chablais. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Publier : diagnostic adapté aux établissements thermaux d'Amphion, hôteliers du Léman, commerces touristiques et TPE de services du Chablais. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Publier : diagnostic adapté aux établissements thermaux d'Amphion, hôteliers du Léman, commerces touristiques et TPE de services du Chablais. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Publier : formats adaptés à l'hôtellerie, au thermalisme, aux prestataires touristiques et commerces lacustres. Vos équipes repartent autonomes sur outils IA configurés métier.",

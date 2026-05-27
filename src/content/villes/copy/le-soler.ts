@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_SOLER_COPY: VilleCopy = {
   pitchFr:
-    "Le Soler (66), commune résidentielle en périphérie sud de Perpignan sur la vallée de la Têt, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME tertiaires, commerces, zones d'activités, agriculture. Axion-IA y intervient pour tous types d'activités de l'agglomération perpignanaise.",
+    "Le Soler (66), commune résidentielle en périphérie sud de Perpignan sur la vallée de la Têt, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME tertiaires, commerces, zones d'activités, agriculture. Axion-IA y déploie ses missions auprès de toutes les organisations de l'agglomération perpignanaise.",
   pitchEn:
-    "Le Soler (66), commune résidentielle en périphérie sud de Perpignan sur la vallée de la Têt, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME tertiaires, commerces, zones d'activités, agriculture. Axion-IA y intervient pour tous types d'activités de l'agglomération perpignanaise.",
+    "Le Soler (66), commune résidentielle en périphérie sud de Perpignan sur la vallée de la Têt, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME tertiaires, commerces, zones d'activités, agriculture. Axion-IA y déploie ses missions auprès de toutes les organisations de l'agglomération perpignanaise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Soler (66). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, commerçants, agriculteurs, indépendants et professions libérales de l'agglo Perpignan sud.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LE_SOLER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Soler : diagnostic adapté aux TPE artisans, PME tertiaires, agriculteurs et commerçants de l'agglo Perpignan sud. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA au Soler : diagnostic adapté aux TPE artisans, PME tertiaires, agriculteurs et commerçants de l'agglo Perpignan sud. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA au Soler : diagnostic adapté aux TPE artisans, PME tertiaires, agriculteurs et commerçants de l'agglo Perpignan sud. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA au Soler : diagnostic adapté aux TPE artisans, PME tertiaires, agriculteurs et commerçants de l'agglo Perpignan sud. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site au Soler : formats adaptés au bureau, atelier, exploitation agricole, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -64,7 +64,7 @@ export const LE_SOLER_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission au Soler ?",
-      a: "Nos consultants interviennent depuis Perpignan (10 min). Missions sur site dans votre bureau, atelier ou exploitation. Visio possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants interviennent depuis Perpignan (10 min). Missions sur site dans votre bureau, atelier ou exploitation. Visio possible. Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

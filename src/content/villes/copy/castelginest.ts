@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CASTELGINEST_COPY: VilleCopy = {
   pitchFr:
-    "Castelginest (31), commune du nord toulousain avec plus de 11 000 habitants. Tissu TPE artisans, PME de services et logistique, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités de la couronne nord de Toulouse.",
+    "Castelginest (31), commune du nord toulousain avec plus de 11 000 habitants. Tissu TPE artisans, PME de services et logistique, commerces de proximité, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de la couronne nord de Toulouse.",
   pitchEn:
-    "Castelginest (31), commune du nord toulousain avec plus de 11 000 habitants. Tissu TPE artisans, PME de services et logistique, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités de la couronne nord de Toulouse.",
+    "Castelginest (31), commune du nord toulousain avec plus de 11 000 habitants. Tissu TPE artisans, PME de services et logistique, commerces de proximité, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de la couronne nord de Toulouse.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Castelginest (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord de Toulouse. Audit Flash dès 490 € HT.",
   directAnswerEn:

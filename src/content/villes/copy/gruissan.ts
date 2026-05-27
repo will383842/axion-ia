@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GRUISSAN_COPY: VilleCopy = {
   pitchFr:
-    "Gruissan (11), station balnéaire audoise entre Méditerranée et étang de Gruissan, connue pour ses salins, son village circulaire médiéval et ses chalets sur pilotis. Tissu TPE artisans, PME tourisme balnéaire, commerces saisonniers, hôtellerie-restauration, viticulture (La Clape). Axion-IA y intervient pour tous types d'activités.",
+    "Gruissan (11), station balnéaire audoise entre Méditerranée et étang de Gruissan, connue pour ses salins, son village circulaire médiéval et ses chalets sur pilotis. Tissu TPE artisans, PME tourisme balnéaire, commerces saisonniers, hôtellerie-restauration, viticulture (La Clape). Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Gruissan (11), station balnéaire audoise entre Méditerranée et étang de Gruissan, connue pour ses salins, son village circulaire médiéval et ses chalets sur pilotis. Tissu TPE artisans, PME tourisme balnéaire, commerces saisonniers, hôtellerie-restauration, viticulture (La Clape). Axion-IA y intervient pour tous types d'activités.",
+    "Gruissan (11), station balnéaire audoise entre Méditerranée et étang de Gruissan, connue pour ses salins, son village circulaire médiéval et ses chalets sur pilotis. Tissu TPE artisans, PME tourisme balnéaire, commerces saisonniers, hôtellerie-restauration, viticulture (La Clape). Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gruissan (11). Nous accompagnons TPE artisans, PME tourisme balnéaire, commerçants saisonniers, hôteliers-restaurateurs, viticulteurs La Clape et professionnels des salins. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const GRUISSAN_COPY: VilleCopy = {
       en: "Audit IA à Gruissan : diagnostic adapté aux TPE tourisme balnéaire, PME hébergement saisonnier, viticulteurs La Clape et commerçants du littoral audois. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Gruissan : formats adaptés au camping, à la résidence de tourisme, au domaine viticole ou au commerce saisonnier. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Gruissan : formats adaptés au camping, à la résidence de tourisme, au domaine viticole ou au commerce saisonnier. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Gruissan : formats adaptés au camping, à la résidence de tourisme, au domaine viticole ou au commerce saisonnier. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Gruissan : formats adaptés au camping, à la résidence de tourisme, au domaine viticole ou au commerce saisonnier. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Gruissan : agents conversationnels réservation multilingues, gestion saisonnalité hébergements, automatisation billetterie sports nautiques, prédiction fréquentation plage.",

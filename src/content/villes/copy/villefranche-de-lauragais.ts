@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VILLEFRANCHE_DE_LAURAGAIS_COPY: VilleCopy = {
   pitchFr:
-    "Villefranche-de-Lauragais (31), bastide médiévale et sous-préfecture du Lauragais, plus de 5 000 habitants. Tissu TPE artisans, PME agroalimentaires et de services, commerces de centre-ville, professions libérales. Axion-IA y intervient pour tous types d'activités du Lauragais.",
+    "Villefranche-de-Lauragais (31), bastide médiévale et sous-préfecture du Lauragais, plus de 5 000 habitants. Tissu TPE artisans, PME agroalimentaires et de services, commerces de centre-ville, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du Lauragais.",
   pitchEn:
-    "Villefranche-de-Lauragais (31), bastide médiévale et sous-préfecture du Lauragais, plus de 5 000 habitants. Tissu TPE artisans, PME agroalimentaires et de services, commerces de centre-ville, professions libérales. Axion-IA y intervient pour tous types d'activités du Lauragais.",
+    "Villefranche-de-Lauragais (31), bastide médiévale et sous-préfecture du Lauragais, plus de 5 000 habitants. Tissu TPE artisans, PME agroalimentaires et de services, commerces de centre-ville, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du Lauragais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villefranche-de-Lauragais (31). Nous accompagnons TPE artisans, PME agroalimentaires, commerçants et professions libérales du Lauragais. Audit Flash dès 490 € HT.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const AVALLON_COPY: VilleCopy = {
   pitchFr:
-    "Avallon (89), sous-préfecture de l'Yonne et porte nord du parc naturel régional du Morvan, est une cité médiévale animée par le tourisme vert. TPE artisanat et hôtellerie-restauration, commerces de centre-bourg historique, PME agroalimentaires et viticoles, professions libérales, prestataires touristiques. Axion-IA y intervient pour tous types d'activités.",
+    "Avallon (89), sous-préfecture de l'Yonne et porte nord du parc naturel régional du Morvan, est une cité médiévale animée par le tourisme vert. TPE artisanat et hôtellerie-restauration, commerces de centre-bourg historique, PME agroalimentaires et viticoles, professions libérales, prestataires touristiques. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Avallon (89), sous-préfecture de l'Yonne et porte nord du parc naturel régional du Morvan, est une cité médiévale animée par le tourisme vert. TPE artisanat et hôtellerie-restauration, commerces de centre-bourg historique, PME agroalimentaires et viticoles, professions libérales, prestataires touristiques. Axion-IA y intervient pour tous types d'activités.",
+    "Avallon (89), sous-préfecture de l'Yonne et porte nord du parc naturel régional du Morvan, est une cité médiévale animée par le tourisme vert. TPE artisanat et hôtellerie-restauration, commerces de centre-bourg historique, PME agroalimentaires et viticoles, professions libérales, prestataires touristiques. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Avallon (89). Nous accompagnons TPE et PME : hôteliers et restaurateurs du Morvan, artisans et commerçants du centre-bourg médiéval, PME agroalimentaires et viticoles, professions libérales, prestataires touristiques. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const AVALLON_COPY: VilleCopy = {
       en: "Audit IA à Avallon : diagnostic adapté aux TPE hôteliers et restaurateurs du Morvan, artisans et commerçants centre-bourg, PME agroalimentaires et viticoles, professions libérales. ROI chiffré, audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Avallon : formats adaptés hôtel, restaurant, commerce, cabinet, exploitation viticole. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Avallon : formats adaptés hôtel, restaurant, commerce, cabinet, exploitation viticole. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Avallon : formats adaptés hôtel, restaurant, commerce, cabinet, exploitation viticole. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Avallon : formats adaptés hôtel, restaurant, commerce, cabinet, exploitation viticole. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Avallon : gestion réservations et avis clients tourisme, CRM augmenté hôtellerie-restauration, automatisation traçabilité agroalimentaire, outils viticulture, prise de rendez-vous IA professions libérales.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LIFFRE_COPY: VilleCopy = {
   pitchFr:
-    "Liffré (35), commune du nord-est de Rennes en lisière de la forêt de Rennes, fait partie de Liffré-Cormier Communauté. Tissu résidentiel en croissance avec TPE artisans BTP, commerces de proximité, PME de services, professions libérales et exploitants agricoles. Axion-IA y intervient pour tous types d'activités du nord-est rennais.",
+    "Liffré (35), commune du nord-est de Rennes en lisière de la forêt de Rennes, fait partie de Liffré-Cormier Communauté. Tissu résidentiel en croissance avec TPE artisans BTP, commerces de proximité, PME de services, professions libérales et exploitants agricoles. Axion-IA opère pour toutes les structures économiques de la commune du nord-est rennais.",
   pitchEn:
-    "Liffré (35), commune du nord-est de Rennes en lisière de la forêt de Rennes, fait partie de Liffré-Cormier Communauté. Tissu résidentiel en croissance avec TPE artisans BTP, commerces de proximité, PME de services, professions libérales et exploitants agricoles. Axion-IA y intervient pour tous types d'activités du nord-est rennais.",
+    "Liffré (35), commune du nord-est de Rennes en lisière de la forêt de Rennes, fait partie de Liffré-Cormier Communauté. Tissu résidentiel en croissance avec TPE artisans BTP, commerces de proximité, PME de services, professions libérales et exploitants agricoles. Axion-IA opère pour toutes les structures économiques de la commune du nord-est rennais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Liffré (35). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, PME de services nord-est Rennes, professions libérales, indépendants et exploitants agricoles de Liffré-Cormier Communauté.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LIFFRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Liffré : diagnostic adapté aux TPE artisans, PME de services nord-est Rennes et commerçants de proximité. ROI chiffré, audit Flash 490 € HT accessible à toute structure.",
-      en: "Audit IA à Liffré : diagnostic adapté aux TPE artisans, PME de services nord-est Rennes et commerçants de proximité. ROI chiffré, audit Flash 490 € HT accessible à toute structure.",
+      fr: "Audit IA à Liffré : diagnostic adapté aux TPE artisans, PME de services nord-est Rennes et commerçants de proximité. Audit Flash 490 € HT, ROI documenté en chiffres accessible à toute structure.",
+      en: "Audit IA à Liffré : diagnostic adapté aux TPE artisans, PME de services nord-est Rennes et commerçants de proximité. Audit Flash 490 € HT, ROI documenté en chiffres accessible à toute structure.",
     },
     interventions: {
       fr: "Interventions IA sur site à Liffré : formats adaptés aux TPE artisans BTP, commerces, cabinets libéraux ou PME de services. Vos équipes repartent autonomes sur les outils IA configurés métier.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BAILLY_ROMAINVILLIERS_COPY: VilleCopy = {
   pitchFr:
-    "Bailly-Romainvilliers (77), commune de Seine-et-Marne au coeur du Val d'Europe (Marne-la-Vallée secteur IV), bénéficie du dynamisme du centre commercial international et de la proximité de Disneyland Paris. Tissu TPE et PME commerce, hôtellerie-restauration, services aux entreprises, immobilier et activités tertiaires. Axion-IA y intervient pour tous types d'activités.",
+    "Bailly-Romainvilliers (77), commune de Seine-et-Marne au coeur du Val d'Europe (Marne-la-Vallée secteur IV), bénéficie du dynamisme du centre commercial international et de la proximité de Disneyland Paris. Tissu TPE et PME commerce, hôtellerie-restauration, services aux entreprises, immobilier et activités tertiaires. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Bailly-Romainvilliers (77), commune de Seine-et-Marne au coeur du Val d'Europe (Marne-la-Vallée secteur IV), bénéficie du dynamisme du centre commercial international et de la proximité de Disneyland Paris. Tissu TPE et PME commerce, hôtellerie-restauration, services aux entreprises, immobilier et activités tertiaires. Axion-IA y intervient pour tous types d'activités.",
+    "Bailly-Romainvilliers (77), commune de Seine-et-Marne au coeur du Val d'Europe (Marne-la-Vallée secteur IV), bénéficie du dynamisme du centre commercial international et de la proximité de Disneyland Paris. Tissu TPE et PME commerce, hôtellerie-restauration, services aux entreprises, immobilier et activités tertiaires. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bailly-Romainvilliers (77). Nous accompagnons TPE et PME : commerçants du Val d'Europe, hôteliers et restaurateurs, agences immobilières, prestataires de services aux entreprises et sociétés tertiaires. Audit Flash dès 490 € HT.",
   directAnswerEn:

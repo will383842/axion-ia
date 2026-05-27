@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LES_SORINIERES_COPY: VilleCopy = {
   pitchFr:
-    "Les Sorinières (44), commune de la première couronne sud de Nantes Métropole en Loire-Atlantique, est un bourg résidentiel en croissance avec zones d'activités (proximité périphérique sud et route de Clisson). Tissu de TPE tertiaires, PME services, professions libérales, artisans et commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Les Sorinières (44), commune de la première couronne sud de Nantes Métropole en Loire-Atlantique, est un bourg résidentiel en croissance avec zones d'activités (proximité périphérique sud et route de Clisson). Tissu de TPE tertiaires, PME services, professions libérales, artisans et commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Les Sorinières (44), commune de la première couronne sud de Nantes Métropole en Loire-Atlantique, est un bourg résidentiel en croissance avec zones d'activités (proximité périphérique sud et route de Clisson). Tissu de TPE tertiaires, PME services, professions libérales, artisans et commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Les Sorinières (44), commune de la première couronne sud de Nantes Métropole en Loire-Atlantique, est un bourg résidentiel en croissance avec zones d'activités (proximité périphérique sud et route de Clisson). Tissu de TPE tertiaires, PME services, professions libérales, artisans et commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient aux Sorinières (44). Nous accompagnons tous types d'activités : TPE tertiaires, PME services et logistique, professions libérales, artisans BTP, commerçants et entreprises de la couronne sud de Nantes Métropole (axe Nantes-Clisson).",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const LES_SORINIERES_COPY: VilleCopy = {
       en: "Audit IA aux Sorinières : diagnostic adapté aux TPE tertiaires, PME services/logistique, professions libérales et artisans de la couronne sud nantaise. ROI chiffré, audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site aux Sorinières : formats adaptés au bureau tertiaire, entrepôt logistique, cabinet libéral ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site aux Sorinières : formats adaptés au bureau tertiaire, entrepôt logistique, cabinet libéral ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site aux Sorinières : formats adaptés au bureau tertiaire, entrepôt logistique, cabinet libéral ou commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site aux Sorinières : formats adaptés au bureau tertiaire, entrepôt logistique, cabinet libéral ou commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA aux Sorinières : automatisation processus tertiaires, optimisation tournées logistiques, agents conversationnels cabinets libéraux, automatisation devis BTP, chatbots service client commerces.",

@@ -55,6 +55,8 @@ export const METZ_COPY: VilleCopy = {
   directAnswerEn:
     "Axion-IA is a senior AI architects consultancy that intervenes in Metz (57) on site â€” TechnopÃ´le Metz 2000, Quartier de l'AmphithÃ©Ã¢tre, ActipÃ´le Metz Nord, Montigny-lÃ¨s-Metz, Woippy and EuromÃ©tropole communes. We support Metz micro-businesses, SMEs, mid-caps and large enterprises (automotive industry, banking, digital, services) on their operational AI use cases â€” costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
+  seoHook: "transfrontalier, automotive & numérique",
+
   topSectorsNaf: [
     "Commerce, transports & services aux entreprises",
     "ActivitÃ©s spÃ©cialisÃ©es, scientifiques & techniques",

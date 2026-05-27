@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GIBERVILLE_COPY: VilleCopy = {
   pitchFr:
-    "Giberville (14), commune de l'agglomération Caen est en Calvados, pôle urbain dynamique adossé à la métropole caennaise. Tissu TPE artisans BTP, PME industrie et logistique zone Colombelles, commerces, services aux entreprises, professionnels de santé. Axion-IA y intervient pour tous types d'activités.",
+    "Giberville (14), commune de l'agglomération Caen est en Calvados, pôle urbain dynamique adossé à la métropole caennaise. Tissu TPE artisans BTP, PME industrie et logistique zone Colombelles, commerces, services aux entreprises, professionnels de santé. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Giberville (14), commune de l'agglomération Caen est en Calvados, pôle urbain dynamique adossé à la métropole caennaise. Tissu TPE artisans BTP, PME industrie et logistique zone Colombelles, commerces, services aux entreprises, professionnels de santé. Axion-IA y intervient pour tous types d'activités.",
+    "Giberville (14), commune de l'agglomération Caen est en Calvados, pôle urbain dynamique adossé à la métropole caennaise. Tissu TPE artisans BTP, PME industrie et logistique zone Colombelles, commerces, services aux entreprises, professionnels de santé. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Giberville (14). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrie et logistique zone Colombelles-Mondeville, commerces, professionnels de santé, indépendants et services aux entreprises de Caen la Mer.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const GIBERVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Giberville : diagnostic adapté aux TPE artisans BTP, PME industrie et logistique zone Colombelles-Mondeville, commerces, professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Giberville : diagnostic adapté aux TPE artisans BTP, PME industrie et logistique zone Colombelles-Mondeville, commerces, professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Giberville : diagnostic adapté aux TPE artisans BTP, PME industrie et logistique zone Colombelles-Mondeville, commerces, professions libérales. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Giberville : diagnostic adapté aux TPE artisans BTP, PME industrie et logistique zone Colombelles-Mondeville, commerces, professions libérales. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Giberville : formats adaptés à l'entrepôt logistique, l'atelier industriel, le cabinet, le commerce. Vos équipes repartent autonomes sur outils IA.",

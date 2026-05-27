@@ -30,8 +30,8 @@ export const SAINT_POL_DE_LEON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Pol-de-Léon : diagnostic adapté aux TPE maraîchères, PME agroalimentaires de la Ceinture dorée, coopératives légumières et commerçants de centre-ville. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Saint-Pol-de-Léon : diagnostic adapté aux TPE maraîchères, PME agroalimentaires de la Ceinture dorée, coopératives légumières et commerçants de centre-ville. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Saint-Pol-de-Léon : diagnostic adapté aux TPE maraîchères, PME agroalimentaires de la Ceinture dorée, coopératives légumières et commerçants de centre-ville. ROI mesurable, audit Flash dès 490 € HT accessible.",
+      en: "Audit IA à Saint-Pol-de-Léon : diagnostic adapté aux TPE maraîchères, PME agroalimentaires de la Ceinture dorée, coopératives légumières et commerçants de centre-ville. ROI mesurable, audit Flash dès 490 € HT accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Pol-de-Léon : formats adaptés aux coopératives maraîchères, TPE agricoles, PME agroalimentaires ou commerces de centre-bourg. Vos équipes repartent autonomes sur les outils IA métier.",

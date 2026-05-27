@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ARGELES_SUR_MER_COPY: VilleCopy = {
   pitchFr:
-    "Argelès-sur-Mer (66), station balnéaire majeure de la Côte Vermeille avec la plus grande concentration de campings d'Europe, fait partie de la Communauté de communes des Albères, de la Côte Vermeille et de l'Illibéris. Tissu TPE tourisme, PME campings-hôtellerie, commerces saisonniers, viticulture. Axion-IA y intervient pour tous types d'activités du littoral catalan.",
+    "Argelès-sur-Mer (66), station balnéaire majeure de la Côte Vermeille avec la plus grande concentration de campings d'Europe, fait partie de la Communauté de communes des Albères, de la Côte Vermeille et de l'Illibéris. Tissu TPE tourisme, PME campings-hôtellerie, commerces saisonniers, viticulture. Axion-IA couvre l'ensemble des activités professionnelles présentes du littoral catalan.",
   pitchEn:
-    "Argelès-sur-Mer (66), station balnéaire majeure de la Côte Vermeille avec la plus grande concentration de campings d'Europe, fait partie de la Communauté de communes des Albères, de la Côte Vermeille et de l'Illibéris. Tissu TPE tourisme, PME campings-hôtellerie, commerces saisonniers, viticulture. Axion-IA y intervient pour tous types d'activités du littoral catalan.",
+    "Argelès-sur-Mer (66), station balnéaire majeure de la Côte Vermeille avec la plus grande concentration de campings d'Europe, fait partie de la Communauté de communes des Albères, de la Côte Vermeille et de l'Illibéris. Tissu TPE tourisme, PME campings-hôtellerie, commerces saisonniers, viticulture. Axion-IA couvre l'ensemble des activités professionnelles présentes du littoral catalan.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Argelès-sur-Mer (66). Nous accompagnons tous types d'activités : TPE tourisme, PME campings et hôtellerie, commerces saisonniers, viticulteurs, indépendants et professions libérales de la Côte Vermeille.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const ARGELES_SUR_MER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Argelès-sur-Mer : diagnostic adapté aux TPE tourisme, PME campings-hôtellerie, viticulteurs et commerces saisonniers de la Côte Vermeille. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Argelès-sur-Mer : diagnostic adapté aux TPE tourisme, PME campings-hôtellerie, viticulteurs et commerces saisonniers de la Côte Vermeille. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Argelès-sur-Mer : diagnostic adapté aux TPE tourisme, PME campings-hôtellerie, viticulteurs et commerces saisonniers de la Côte Vermeille. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Argelès-sur-Mer : diagnostic adapté aux TPE tourisme, PME campings-hôtellerie, viticulteurs et commerces saisonniers de la Côte Vermeille. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Argelès-sur-Mer : formats adaptés au camping, hôtel, restaurant, cave viticole, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Argelès-sur-Mer : formats adaptés au camping, hôtel, restaurant, cave viticole, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Argelès-sur-Mer : formats adaptés au camping, hôtel, restaurant, cave viticole, commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Argelès-sur-Mer : formats adaptés au camping, hôtel, restaurant, cave viticole, commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Argelès-sur-Mer : yield management campings, chatbots réservation multilingues, prédiction remplissage saisonnier, classification qualité vignoble. Côte Vermeille.",
@@ -64,7 +64,7 @@ export const ARGELES_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Argelès-sur-Mer ?",
-      a: "Nos consultants interviennent depuis Perpignan (25 min). Missions sur site dans votre camping, établissement ou commerce. Visio possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants interviennent depuis Perpignan (25 min). Missions sur site dans votre camping, établissement ou commerce. Visio possible. Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_CRAU_COPY: VilleCopy = {
   pitchFr:
-    "La Crau (83), commune de l'agglomération toulonnaise, compte près de 19 600 habitants. Agriculture maraîchère, viticulture Côtes de Provence, zones d'activités tournées vers Toulon est, tissu de TPE artisanales, PME agroalimentaires, commerces et services. Axion-IA y intervient pour tous types d'activités.",
+    "La Crau (83), commune de l'agglomération toulonnaise, compte près de 19 600 habitants. Agriculture maraîchère, viticulture Côtes de Provence, zones d'activités tournées vers Toulon est, tissu de TPE artisanales, PME agroalimentaires, commerces et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "La Crau (83), commune de l'agglomération toulonnaise, compte près de 19 600 habitants. Agriculture maraîchère, viticulture Côtes de Provence, zones d'activités tournées vers Toulon est, tissu de TPE artisanales, PME agroalimentaires, commerces et services. Axion-IA y intervient pour tous types d'activités.",
+    "La Crau (83), commune de l'agglomération toulonnaise, compte près de 19 600 habitants. Agriculture maraîchère, viticulture Côtes de Provence, zones d'activités tournées vers Toulon est, tissu de TPE artisanales, PME agroalimentaires, commerces et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Crau (83). Nous accompagnons tous types d'activités : TPE maraîchers et artisans, PME viticoles et agroalimentaires Côtes de Provence, commerces, professions libérales et services de l'agglo Toulon est.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const LA_CRAU_COPY: VilleCopy = {
       en: "Audit IA à La Crau : diagnostic adapté aux TPE maraîchers, domaines viticoles, PME agroalimentaires et commerces de l'agglo Toulon est. ROI chiffré, Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à La Crau : formats adaptés aux maraîchers, domaines viticoles, PME agroalimentaires et artisans. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à La Crau : formats adaptés aux maraîchers, domaines viticoles, PME agroalimentaires et artisans. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à La Crau : formats adaptés aux maraîchers, domaines viticoles, PME agroalimentaires et artisans. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à La Crau : formats adaptés aux maraîchers, domaines viticoles, PME agroalimentaires et artisans. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à La Crau : automatisation devis maraîchers, traçabilité viticole Côtes de Provence, outils prédictifs PME agroalimentaires, gestion commerciale. Adapté TPE/PME agglo Toulon est.",

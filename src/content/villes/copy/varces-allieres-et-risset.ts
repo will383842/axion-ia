@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VARCES_ALLIERES_ET_RISSET_COPY: VilleCopy = {
   pitchFr:
-    "Varces-Allières-et-Risset (38), commune du sud-Grenoble dans la vallée de la Gresse (affluent du Drac), conjugue tissu résidentiel péri-urbain et activités locales rurales. Tissu TPE artisans, commerces de proximité, professions libérales, agriculture résiduelle et PME services. Axion-IA y intervient pour tous types d'activités sud-grenobloises.",
+    "Varces-Allières-et-Risset (38), commune du sud-Grenoble dans la vallée de la Gresse (affluent du Drac), conjugue tissu résidentiel péri-urbain et activités locales rurales. Tissu TPE artisans, commerces de proximité, professions libérales, agriculture résiduelle et PME services. Axion-IA y déploie ses missions auprès de toutes les organisations sud-grenobloises.",
   pitchEn:
-    "Varces-Allières-et-Risset (38), commune du sud-Grenoble dans la vallée de la Gresse (affluent du Drac), conjugue tissu résidentiel péri-urbain et activités locales rurales. Tissu TPE artisans, commerces de proximité, professions libérales, agriculture résiduelle et PME services. Axion-IA y intervient pour tous types d'activités sud-grenobloises.",
+    "Varces-Allières-et-Risset (38), commune du sud-Grenoble dans la vallée de la Gresse (affluent du Drac), conjugue tissu résidentiel péri-urbain et activités locales rurales. Tissu TPE artisans, commerces de proximité, professions libérales, agriculture résiduelle et PME services. Axion-IA y déploie ses missions auprès de toutes les organisations sud-grenobloises.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Varces-Allières-et-Risset (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, agriculteurs résiduels de la vallée de la Gresse, professions libérales, indépendants, PME tertiaires et services du sud Grenoble-Alpes Métropole.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const VARCES_ALLIERES_ET_RISSET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Varces-Allières-et-Risset : diagnostic adapté aux TPE artisans, commerçants, professions libérales et agriculteurs du sud-grenoblois. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Varces-Allières-et-Risset : diagnostic adapté aux TPE artisans, commerçants, professions libérales et agriculteurs du sud-grenoblois. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Varces-Allières-et-Risset : diagnostic adapté aux TPE artisans, commerçants, professions libérales et agriculteurs du sud-grenoblois. ROI mesurable, audit Flash dès 490 € HT accessible.",
+      en: "Audit IA à Varces-Allières-et-Risset : diagnostic adapté aux TPE artisans, commerçants, professions libérales et agriculteurs du sud-grenoblois. ROI mesurable, audit Flash dès 490 € HT accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Varces : formats adaptés au commerce, atelier artisan, cabinet professionnel ou exploitation agricole. Vos équipes repartent autonomes sur outils IA configurés métier.",

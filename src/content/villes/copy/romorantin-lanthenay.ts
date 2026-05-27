@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ROMORANTIN_LANTHENAY_COPY: VilleCopy = {
   pitchFr:
-    "Romorantin-Lanthenay (41), sous-préfecture du Loir-et-Cher au cœur de la Sologne, est historiquement liée à l'industrie automobile (Matra, aujourd'hui reconversion industrielle). Musée Matra, rivière Sauldre, patrimoine Renaissance. Tissu PME industrielles, TPE artisans, commerces, services et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Romorantin-Lanthenay (41), sous-préfecture du Loir-et-Cher au cœur de la Sologne, est historiquement liée à l'industrie automobile (Matra, aujourd'hui reconversion industrielle). Musée Matra, rivière Sauldre, patrimoine Renaissance. Tissu PME industrielles, TPE artisans, commerces, services et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Romorantin-Lanthenay (41), sous-préfecture du Loir-et-Cher au cœur de la Sologne, est historiquement liée à l'industrie automobile (Matra, aujourd'hui reconversion industrielle). Musée Matra, rivière Sauldre, patrimoine Renaissance. Tissu PME industrielles, TPE artisans, commerces, services et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Romorantin-Lanthenay (41), sous-préfecture du Loir-et-Cher au cœur de la Sologne, est historiquement liée à l'industrie automobile (Matra, aujourd'hui reconversion industrielle). Musée Matra, rivière Sauldre, patrimoine Renaissance. Tissu PME industrielles, TPE artisans, commerces, services et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Romorantin-Lanthenay (41). Nous accompagnons tous types d'activités : PME industrielles en reconversion, TPE artisans BTP, commerçants centre-ville, acteurs du tourisme solognot, professions libérales, indépendants et services aux entreprises de la sous-préfecture.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const ROMORANTIN_LANTHENAY_COPY: VilleCopy = {
       en: "Audit IA à Romorantin-Lanthenay : diagnostic adapté aux PME industrielles en reconversion, TPE artisans, acteurs tourisme solognot, commerçants et professions libérales de la sous-préfecture. ROI chiffré, audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Romorantin-Lanthenay : formats adaptés à l'atelier industriel, commerce centre-ville, hébergement touristique ou cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Romorantin-Lanthenay : formats adaptés à l'atelier industriel, commerce centre-ville, hébergement touristique ou cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Romorantin-Lanthenay : formats adaptés à l'atelier industriel, commerce centre-ville, hébergement touristique ou cabinet libéral. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Romorantin-Lanthenay : formats adaptés à l'atelier industriel, commerce centre-ville, hébergement touristique ou cabinet libéral. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Romorantin-Lanthenay : prédiction maintenance industrielle, automatisation supply chain reconversion, agents conversationnels tourisme Sologne, classification documents administratifs. Adapté bassin solognot.",
@@ -64,7 +64,7 @@ export const ROMORANTIN_LANTHENAY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Romorantin-Lanthenay ?",
-      a: "Nos consultants se déplacent à Romorantin-Lanthenay (Blois 40 min, Tours 1h15). Pour les multi-jours, hébergement local en Sologne. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants se déplacent à Romorantin-Lanthenay (Blois 40 min, Tours 1h15). Pour les multi-jours, hébergement local en Sologne. Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

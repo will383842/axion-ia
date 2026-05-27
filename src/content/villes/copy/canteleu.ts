@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CANTELEU_COPY: VilleCopy = {
   pitchFr:
-    "Canteleu (76), commune de l'agglomération rouennaise ouest en Seine-Maritime, surplombe la Seine face à Rouen. Membre de la Métropole Rouen Normandie, tissu TPE artisans, PME tertiaires et logistiques, commerces de quartier, professions libérales. Axion-IA y intervient pour tous types d'activités de l'agglo rouennaise ouest.",
+    "Canteleu (76), commune de l'agglomération rouennaise ouest en Seine-Maritime, surplombe la Seine face à Rouen. Membre de la Métropole Rouen Normandie, tissu TPE artisans, PME tertiaires et logistiques, commerces de quartier, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglo rouennaise ouest.",
   pitchEn:
-    "Canteleu (76), commune de l'agglomération rouennaise ouest en Seine-Maritime, surplombe la Seine face à Rouen. Membre de la Métropole Rouen Normandie, tissu TPE artisans, PME tertiaires et logistiques, commerces de quartier, professions libérales. Axion-IA y intervient pour tous types d'activités de l'agglo rouennaise ouest.",
+    "Canteleu (76), commune de l'agglomération rouennaise ouest en Seine-Maritime, surplombe la Seine face à Rouen. Membre de la Métropole Rouen Normandie, tissu TPE artisans, PME tertiaires et logistiques, commerces de quartier, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglo rouennaise ouest.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Canteleu (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires et logistiques, professions libérales, services aux entreprises de l'agglo rouennaise ouest (Métropole Rouen Normandie). Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const CANTELEU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Canteleu : diagnostic adapté aux TPE artisans, PME tertiaires/logistiques agglo Rouen ouest, professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Canteleu : diagnostic adapté aux TPE artisans, PME tertiaires/logistiques agglo Rouen ouest, professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Canteleu : diagnostic adapté aux TPE artisans, PME tertiaires/logistiques agglo Rouen ouest, professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Canteleu : diagnostic adapté aux TPE artisans, PME tertiaires/logistiques agglo Rouen ouest, professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Canteleu : formats adaptés au bureau, entrepôt bords de Seine, commerce. Vos équipes repartent autonomes sur outils IA.",

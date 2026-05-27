@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const JUVIGNAC_COPY: VilleCopy = {
   pitchFr:
-    "Juvignac (34), commune de 14 055 habitants dans l'agglomération de Montpellier ouest. Son économie repose sur un tissu de TPE et PME du commerce (zone Ode à la Mer), des services aux entreprises, de la restauration, de la santé, du sport et de l'immobilier résidentiel en forte croissance. Axion-IA y intervient pour tous types d'activités.",
+    "Juvignac (34), commune de 14 055 habitants dans l'agglomération de Montpellier ouest. Son économie repose sur un tissu de TPE et PME du commerce (zone Ode à la Mer), des services aux entreprises, de la restauration, de la santé, du sport et de l'immobilier résidentiel en forte croissance. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Juvignac (34), commune de 14 055 habitants dans l'agglomération de Montpellier ouest. Son économie repose sur un tissu de TPE et PME du commerce (zone Ode à la Mer), des services aux entreprises, de la restauration, de la santé, du sport et de l'immobilier résidentiel en forte croissance. Axion-IA y intervient pour tous types d'activités.",
+    "Juvignac (34), commune de 14 055 habitants dans l'agglomération de Montpellier ouest. Son économie repose sur un tissu de TPE et PME du commerce (zone Ode à la Mer), des services aux entreprises, de la restauration, de la santé, du sport et de l'immobilier résidentiel en forte croissance. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Juvignac (34). Nous accompagnons TPE et PME de l'agglo Montpellier ouest : enseignes commerciales, prestataires de services, professions libérales, restaurateurs et entreprises du tertiaire. Audit Flash dès 490 € HT.",
   directAnswerEn:

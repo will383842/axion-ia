@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LUXEUIL_LES_BAINS_COPY: VilleCopy = {
   pitchFr:
-    "Luxeuil-les-Bains (70), cité thermale et touristique de Haute-Saône, compte environ 6 700 habitants. Station thermale historique, base aérienne 116, abbaye médiévale et tissu de TPE/PME tourisme, bien-être, artisanat, commerces et services. Axion-IA y intervient pour tous types d'activités du Pays de Luxeuil.",
+    "Luxeuil-les-Bains (70), cité thermale et touristique de Haute-Saône, compte environ 6 700 habitants. Station thermale historique, base aérienne 116, abbaye médiévale et tissu de TPE/PME tourisme, bien-être, artisanat, commerces et services. Axion-IA opère pour toutes les structures économiques de la commune du Pays de Luxeuil.",
   pitchEn:
-    "Luxeuil-les-Bains (70), cité thermale et touristique de Haute-Saône, compte environ 6 700 habitants. Station thermale historique, base aérienne 116, abbaye médiévale et tissu de TPE/PME tourisme, bien-être, artisanat, commerces et services. Axion-IA y intervient pour tous types d'activités du Pays de Luxeuil.",
+    "Luxeuil-les-Bains (70), cité thermale et touristique de Haute-Saône, compte environ 6 700 habitants. Station thermale historique, base aérienne 116, abbaye médiévale et tissu de TPE/PME tourisme, bien-être, artisanat, commerces et services. Axion-IA opère pour toutes les structures économiques de la commune du Pays de Luxeuil.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Luxeuil-les-Bains (70). Nous accompagnons TPE et PME : établissements thermaux et hôteliers, commerçants, artisans, professions libérales, prestataires tourisme et services aux entreprises du Pays de Luxeuil.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const LUXEUIL_LES_BAINS_COPY: VilleCopy = {
       en: "Audit IA à Luxeuil-les-Bains : diagnostic adapté aux TPE/PME tourisme thermal, hôteliers-restaurateurs, commerçants, artisans et professions libérales. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Luxeuil-les-Bains : formats adaptés à l'établissement thermal, hôtel, commerce, cabinet. Vos équipes repartent autonomes sur outils IA configurés métier tourisme / bien-être.",
-      en: "Interventions IA sur site à Luxeuil-les-Bains : formats adaptés à l'établissement thermal, hôtel, commerce, cabinet. Vos équipes repartent autonomes sur outils IA configurés métier tourisme / bien-être.",
+      fr: "Interventions IA sur site à Luxeuil-les-Bains : formats adaptés à l'établissement thermal, hôtel, commerce, cabinet. Vos équipes acquièrent l'autonomie sur les outils IA déployés tourisme / bien-être.",
+      en: "Interventions IA sur site à Luxeuil-les-Bains : formats adaptés à l'établissement thermal, hôtel, commerce, cabinet. Vos équipes acquièrent l'autonomie sur les outils IA déployés tourisme / bien-être.",
     },
     implementation: {
       fr: "Implémentation IA à Luxeuil-les-Bains : agents conversationnels réservation thermale, optimisation planning hôtelier, marketing tourisme automatisé, gestion avis clients, chatbots patrimoine abbaye.",

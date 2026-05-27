@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const RIVESALTES_COPY: VilleCopy = {
   pitchFr:
-    "Rivesaltes (66), cité viticole réputée pour son AOC Muscat et ville natale du Maréchal Joffre, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME viticulture et négoce, zones d'activités, commerces, logistique. Axion-IA y intervient pour tous types d'activités de la vallée de l'Agly.",
+    "Rivesaltes (66), cité viticole réputée pour son AOC Muscat et ville natale du Maréchal Joffre, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME viticulture et négoce, zones d'activités, commerces, logistique. Axion-IA accompagne entreprises et indépendants de tous secteurs de la vallée de l'Agly.",
   pitchEn:
-    "Rivesaltes (66), cité viticole réputée pour son AOC Muscat et ville natale du Maréchal Joffre, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME viticulture et négoce, zones d'activités, commerces, logistique. Axion-IA y intervient pour tous types d'activités de la vallée de l'Agly.",
+    "Rivesaltes (66), cité viticole réputée pour son AOC Muscat et ville natale du Maréchal Joffre, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME viticulture et négoce, zones d'activités, commerces, logistique. Axion-IA accompagne entreprises et indépendants de tous secteurs de la vallée de l'Agly.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rivesaltes (66). Nous accompagnons tous types d'activités : TPE artisans, PME viticulture et négoce, commerçants, professionnels des zones d'activités, indépendants et professions libérales de Perpignan Méditerranée Métropole.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const RIVESALTES_COPY: VilleCopy = {
       en: "Audit IA à Rivesaltes : diagnostic adapté aux TPE artisans, PME viticulture et négoce, commerçants et professionnels des zones d'activités. ROI chiffré, audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Rivesaltes : formats adaptés à la cave viticole, négoce, entrepôt, commerce, bureau. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Rivesaltes : formats adaptés à la cave viticole, négoce, entrepôt, commerce, bureau. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Rivesaltes : formats adaptés à la cave viticole, négoce, entrepôt, commerce, bureau. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Rivesaltes : formats adaptés à la cave viticole, négoce, entrepôt, commerce, bureau. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Rivesaltes : gestion cave et stocks viticoles, classification qualité raisin, automatisation négoce export, optimisation logistique. Perpignan Méditerranée Métropole.",

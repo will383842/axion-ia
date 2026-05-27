@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BRIE_COMTE_ROBERT_COPY: VilleCopy = {
   pitchFr:
-    "Brie-Comte-Robert (77), capitale historique de la Brie française au sud-est de Paris, conjugue patrimoine médiéval (château des Comtes de Brie) et tissu économique diversifié. TPE commerces et artisanat, PME tertiaire et logistique, professions libérales, restauration, exploitants agricoles Brie. Axion-IA y intervient pour tous types d'activités.",
+    "Brie-Comte-Robert (77), capitale historique de la Brie française au sud-est de Paris, conjugue patrimoine médiéval (château des Comtes de Brie) et tissu économique diversifié. TPE commerces et artisanat, PME tertiaire et logistique, professions libérales, restauration, exploitants agricoles Brie. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Brie-Comte-Robert (77), capitale historique de la Brie française au sud-est de Paris, conjugue patrimoine médiéval (château des Comtes de Brie) et tissu économique diversifié. TPE commerces et artisanat, PME tertiaire et logistique, professions libérales, restauration, exploitants agricoles Brie. Axion-IA y intervient pour tous types d'activités.",
+    "Brie-Comte-Robert (77), capitale historique de la Brie française au sud-est de Paris, conjugue patrimoine médiéval (château des Comtes de Brie) et tissu économique diversifié. TPE commerces et artisanat, PME tertiaire et logistique, professions libérales, restauration, exploitants agricoles Brie. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Brie-Comte-Robert (77). Nous accompagnons TPE et PME : commerçants et artisans centre-ville, PME tertiaire et logistique, professions libérales, restaurateurs, exploitants agricoles Brie française. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const BRIE_COMTE_ROBERT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Brie-Comte-Robert : diagnostic adapté aux commerçants et artisans centre-ville, PME tertiaire et logistique, professions libérales, restaurateurs, exploitants agricoles Brie. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Brie-Comte-Robert : diagnostic adapté aux commerçants et artisans centre-ville, PME tertiaire et logistique, professions libérales, restaurateurs, exploitants agricoles Brie. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Brie-Comte-Robert : diagnostic adapté aux commerçants et artisans centre-ville, PME tertiaire et logistique, professions libérales, restaurateurs, exploitants agricoles Brie. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Brie-Comte-Robert : diagnostic adapté aux commerçants et artisans centre-ville, PME tertiaire et logistique, professions libérales, restaurateurs, exploitants agricoles Brie. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Brie-Comte-Robert : formats adaptés boutique, bureau tertiaire, cabinet, restaurant, exploitation agricole, entrepôt logistique. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Brie-Comte-Robert : formats adaptés boutique, bureau tertiaire, cabinet, restaurant, exploitation agricole, entrepôt logistique. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Brie-Comte-Robert : formats adaptés boutique, bureau tertiaire, cabinet, restaurant, exploitation agricole, entrepôt logistique. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Brie-Comte-Robert : formats adaptés boutique, bureau tertiaire, cabinet, restaurant, exploitation agricole, entrepôt logistique. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Brie-Comte-Robert : CRM augmenté commerçants, automatisation back-office PME, outils réservation restauration, optimisation flux logistique, gestion exploitation agricole.",

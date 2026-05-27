@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CLERMONT_COPY: VilleCopy = {
   pitchFr:
-    "Clermont (60), commune de 10 564 habitants dans l'Oise, est une sous-préfecture historique dominée par son donjon médiéval. Carrefour administratif et commercial du Clermontois, la ville concentre un tissu de TPE/PME services publics, commerce, artisanat, santé et services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Clermont (60), commune de 10 564 habitants dans l'Oise, est une sous-préfecture historique dominée par son donjon médiéval. Carrefour administratif et commercial du Clermontois, la ville concentre un tissu de TPE/PME services publics, commerce, artisanat, santé et services aux entreprises. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Clermont (60), commune de 10 564 habitants dans l'Oise, est une sous-préfecture historique dominée par son donjon médiéval. Carrefour administratif et commercial du Clermontois, la ville concentre un tissu de TPE/PME services publics, commerce, artisanat, santé et services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Clermont (60), commune de 10 564 habitants dans l'Oise, est une sous-préfecture historique dominée par son donjon médiéval. Carrefour administratif et commercial du Clermontois, la ville concentre un tissu de TPE/PME services publics, commerce, artisanat, santé et services aux entreprises. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Clermont (60). Nous accompagnons TPE et PME du Clermontois : commerçants, artisans, professionnels de santé, prestataires de services et acteurs du secteur public local. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -34,8 +34,8 @@ export const CLERMONT_COPY: VilleCopy = {
       en: "Audit IA à Clermont : diagnostic adapté aux TPE/PME commerce, artisanat, santé, services aux entreprises et acteurs publics du Clermontois. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Clermont : formats adaptés au commerce, au cabinet médical, à l'atelier artisan, au bureau ou à la collectivité. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Clermont : formats adaptés au commerce, au cabinet médical, à l'atelier artisan, au bureau ou à la collectivité. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Clermont : formats adaptés au commerce, au cabinet médical, à l'atelier artisan, au bureau ou à la collectivité. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Clermont : formats adaptés au commerce, au cabinet médical, à l'atelier artisan, au bureau ou à la collectivité. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Clermont : gestion stocks commerce, automatisation dossiers patients santé, OCR documents administratifs, optimisation planning artisans BTP, facturation et comptabilité.",

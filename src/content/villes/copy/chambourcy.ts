@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHAMBOURCY_COPY: VilleCopy = {
   pitchFr:
-    "Chambourcy (78), commune résidentielle en lisière de la forêt de Marly, à l'ouest de Paris dans les Yvelines. Tissu de TPE artisans, PME de services, commerces de village, professions libérales et prestataires tertiaires bénéficiant de la proximité de Saint-Germain-en-Laye et Poissy. Axion-IA y intervient pour tous types d'activités de l'ouest parisien.",
+    "Chambourcy (78), commune résidentielle en lisière de la forêt de Marly, à l'ouest de Paris dans les Yvelines. Tissu de TPE artisans, PME de services, commerces de village, professions libérales et prestataires tertiaires bénéficiant de la proximité de Saint-Germain-en-Laye et Poissy. Axion-IA y déploie ses missions auprès de toutes les organisations de l'ouest parisien.",
   pitchEn:
-    "Chambourcy (78), commune résidentielle en lisière de la forêt de Marly, à l'ouest de Paris dans les Yvelines. Tissu de TPE artisans, PME de services, commerces de village, professions libérales et prestataires tertiaires bénéficiant de la proximité de Saint-Germain-en-Laye et Poissy. Axion-IA y intervient pour tous types d'activités de l'ouest parisien.",
+    "Chambourcy (78), commune résidentielle en lisière de la forêt de Marly, à l'ouest de Paris dans les Yvelines. Tissu de TPE artisans, PME de services, commerces de village, professions libérales et prestataires tertiaires bénéficiant de la proximité de Saint-Germain-en-Laye et Poissy. Axion-IA y déploie ses missions auprès de toutes les organisations de l'ouest parisien.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chambourcy (78). Nous accompagnons TPE et PME : artisans, commerces de village, PME de services et professions libérales de cette commune résidentielle en lisière de la forêt de Marly, entre Saint-Germain-en-Laye et Poissy. Audit Flash dès 490 € HT.",
   directAnswerEn:

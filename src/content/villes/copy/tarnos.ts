@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const TARNOS_COPY: VilleCopy = {
   pitchFr:
-    "Tarnos (40), commune industrielle du sud des Landes aux portes du Pays basque, fait partie de l'agglomération de Bayonne. Cinquième commune du département. Zone industrielle et logistique, chimie, métallurgie, TPE artisans, PME sous-traitance industrielle, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Tarnos (40), commune industrielle du sud des Landes aux portes du Pays basque, fait partie de l'agglomération de Bayonne. Cinquième commune du département. Zone industrielle et logistique, chimie, métallurgie, TPE artisans, PME sous-traitance industrielle, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Tarnos (40), commune industrielle du sud des Landes aux portes du Pays basque, fait partie de l'agglomération de Bayonne. Cinquième commune du département. Zone industrielle et logistique, chimie, métallurgie, TPE artisans, PME sous-traitance industrielle, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Tarnos (40), commune industrielle du sud des Landes aux portes du Pays basque, fait partie de l'agglomération de Bayonne. Cinquième commune du département. Zone industrielle et logistique, chimie, métallurgie, TPE artisans, PME sous-traitance industrielle, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tarnos (40). Nous accompagnons TPE et PME de l'industrie (chimie, métallurgie), entreprises logistiques, sous-traitants industriels, artisans BTP, commerçants et prestataires de services du sud des Landes et de l'agglomération bayonnaise.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const TARNOS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Tarnos : diagnostic adapté aux PME industrielles (chimie, métallurgie, sous-traitance), entreprises logistiques, TPE artisans BTP et commerçants du sud des Landes. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Tarnos : diagnostic adapté aux PME industrielles (chimie, métallurgie, sous-traitance), entreprises logistiques, TPE artisans BTP et commerçants du sud des Landes. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Tarnos : diagnostic adapté aux PME industrielles (chimie, métallurgie, sous-traitance), entreprises logistiques, TPE artisans BTP et commerçants du sud des Landes. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Tarnos : diagnostic adapté aux PME industrielles (chimie, métallurgie, sous-traitance), entreprises logistiques, TPE artisans BTP et commerçants du sud des Landes. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Tarnos : formations adaptées aux ateliers industriels, entrepôts logistiques, TPE artisans et commerces. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -65,7 +65,7 @@ export const TARNOS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Tarnos depuis Bayonne ?",
-      a: "Tarnos est à 10 min de Bayonne centre. Nos consultants interviennent facilement sur site (zone industrielle ou bureau). Gare Bayonne à 15 min, aéroport Biarritz à 20 min. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Tarnos est à 10 min de Bayonne centre. Nos consultants interviennent facilement sur site (zone industrielle ou bureau). Gare Bayonne à 15 min, aéroport Biarritz à 20 min. Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

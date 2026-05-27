@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_COURONNE_COPY: VilleCopy = {
   pitchFr:
-    "La Couronne (16), commune au sud de l'agglomération d'Angoulême en Charente, pôle industriel et résidentiel du GrandAngoulême. Tissu de TPE artisans, PME industrielles, papeterie, commerces de proximité et services. Axion-IA y intervient pour tous types d'activités de l'agglomération angoumoisine.",
+    "La Couronne (16), commune au sud de l'agglomération d'Angoulême en Charente, pôle industriel et résidentiel du GrandAngoulême. Tissu de TPE artisans, PME industrielles, papeterie, commerces de proximité et services. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération angoumoisine.",
   pitchEn:
-    "La Couronne (16), commune au sud de l'agglomération d'Angoulême en Charente, pôle industriel et résidentiel du GrandAngoulême. Tissu de TPE artisans, PME industrielles, papeterie, commerces de proximité et services. Axion-IA y intervient pour tous types d'activités de l'agglomération angoumoisine.",
+    "La Couronne (16), commune au sud de l'agglomération d'Angoulême en Charente, pôle industriel et résidentiel du GrandAngoulême. Tissu de TPE artisans, PME industrielles, papeterie, commerces de proximité et services. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération angoumoisine.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Couronne (16). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles, professionnels de la papeterie et de l'imprimerie, commerçants et indépendants de cette commune dynamique de l'agglomération d'Angoulême.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const LA_COURONNE_COPY: VilleCopy = {
       en: "Audit IA à La Couronne : diagnostic adapté aux PME industrielles, TPE artisans, professionnels de la papeterie et commerces de l'agglomération GrandAngoulême sud. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à La Couronne : formats adaptés à l'atelier industriel, à l'imprimerie, au bureau ou au commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à La Couronne : formats adaptés à l'atelier industriel, à l'imprimerie, au bureau ou au commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à La Couronne : formats adaptés à l'atelier industriel, à l'imprimerie, au bureau ou au commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à La Couronne : formats adaptés à l'atelier industriel, à l'imprimerie, au bureau ou au commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à La Couronne : automatisation contrôle qualité papeterie, optimisation flux production industrielle, gestion stocks prédictive, agents conversationnels relation client.",

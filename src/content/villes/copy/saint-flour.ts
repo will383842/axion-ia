@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_FLOUR_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Flour (15), sous-préfecture du Cantal, est une ville perchée caractéristique (ville haute sur plateau basaltique, ville basse en vallée). Tissu administration, agriculture montagne (élevage Salers/Aubrac, Planèze), TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités cantaliennes.",
+    "Saint-Flour (15), sous-préfecture du Cantal, est une ville perchée caractéristique (ville haute sur plateau basaltique, ville basse en vallée). Tissu administration, agriculture montagne (élevage Salers/Aubrac, Planèze), TPE artisans BTP, commerces. Axion-IA opère pour toutes les structures économiques de la commune cantaliennes.",
   pitchEn:
-    "Saint-Flour (15), sous-préfecture du Cantal, est une ville perchée caractéristique (ville haute sur plateau basaltique, ville basse en vallée). Tissu administration, agriculture montagne (élevage Salers/Aubrac, Planèze), TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités cantaliennes.",
+    "Saint-Flour (15), sous-préfecture du Cantal, est une ville perchée caractéristique (ville haute sur plateau basaltique, ville basse en vallée). Tissu administration, agriculture montagne (élevage Salers/Aubrac, Planèze), TPE artisans BTP, commerces. Axion-IA opère pour toutes les structures économiques de la commune cantaliennes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Flour (15). Nous accompagnons tous types d'activités : administration sous-préfecture, éleveurs Salers/Aubrac montagne Cantal, agriculteurs Planèze, TPE artisans BTP, commerçants et services aux entreprises cantaliennes.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const SAINT_FLOUR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Flour : diagnostic adapté à l'administration, éleveurs Salers/Aubrac, agriculteurs Planèze, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Flour : diagnostic adapté à l'administration, éleveurs Salers/Aubrac, agriculteurs Planèze, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Flour : diagnostic adapté à l'administration, éleveurs Salers/Aubrac, agriculteurs Planèze, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Saint-Flour : diagnostic adapté à l'administration, éleveurs Salers/Aubrac, agriculteurs Planèze, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Flour : formats adaptés à l'administration, exploitation élevage montagne, commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Saint-Flour : formats adaptés à l'administration, exploitation élevage montagne, commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Saint-Flour : formats adaptés à l'administration, exploitation élevage montagne, commerce. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Saint-Flour : formats adaptés à l'administration, exploitation élevage montagne, commerce. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Flour : traçabilité élevage Salers/Aubrac, classification photos animaux, automatisation flux administratifs, agents conversationnels tourisme montagne.",
@@ -64,7 +64,7 @@ export const SAINT_FLOUR_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Clermont ?",
-      a: "Clermont-Ferrand (1h30 A75). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Clermont-Ferrand (1h30 A75). Coûts de déplacement à part, tarification transparente.",
     },
   ],
 };

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BRECH_COPY: VilleCopy = {
   pitchFr:
-    "Brech (56), commune du pays d'Auray aux portes du sanctuaire de Sainte-Anne-d'Auray, s'appuie sur un tissu économique mêlant tourisme religieux, artisanat, agriculture et services de proximité. TPE artisanales, PME touristiques, commerces, exploitants agricoles et professions libérales composent son économie. Axion-IA y intervient pour tous types d'activités du pays d'Auray.",
+    "Brech (56), commune du pays d'Auray aux portes du sanctuaire de Sainte-Anne-d'Auray, s'appuie sur un tissu économique mêlant tourisme religieux, artisanat, agriculture et services de proximité. TPE artisanales, PME touristiques, commerces, exploitants agricoles et professions libérales composent son économie. Axion-IA couvre l'ensemble des activités professionnelles présentes du pays d'Auray.",
   pitchEn:
-    "Brech (56), commune du pays d'Auray aux portes du sanctuaire de Sainte-Anne-d'Auray, s'appuie sur un tissu économique mêlant tourisme religieux, artisanat, agriculture et services de proximité. TPE artisanales, PME touristiques, commerces, exploitants agricoles et professions libérales composent son économie. Axion-IA y intervient pour tous types d'activités du pays d'Auray.",
+    "Brech (56), commune du pays d'Auray aux portes du sanctuaire de Sainte-Anne-d'Auray, s'appuie sur un tissu économique mêlant tourisme religieux, artisanat, agriculture et services de proximité. TPE artisanales, PME touristiques, commerces, exploitants agricoles et professions libérales composent son économie. Axion-IA couvre l'ensemble des activités professionnelles présentes du pays d'Auray.",
   seoHook: "tourisme, artisanat & agriculture",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Brech (56). Nous accompagnons tous types d'activités : TPE artisanales, PME touristiques, commerces, exploitants agricoles et professions libérales du pays d'Auray. Audit Flash dès 490 € HT, démarrage sous 5 jours.",

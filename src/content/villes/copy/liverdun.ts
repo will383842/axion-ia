@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LIVERDUN_COPY: VilleCopy = {
   pitchFr:
-    "Liverdun (54), cité médiévale perchée sur un méandre de la Moselle en Meurthe-et-Moselle, est connue pour son viaduc ferroviaire et son patrimoine historique. Tissu TPE/PME artisans, commerces, services, tourisme patrimonial, viticulture locale et acteurs résidentiels. Axion-IA y intervient pour tous types d'activités.",
+    "Liverdun (54), cité médiévale perchée sur un méandre de la Moselle en Meurthe-et-Moselle, est connue pour son viaduc ferroviaire et son patrimoine historique. Tissu TPE/PME artisans, commerces, services, tourisme patrimonial, viticulture locale et acteurs résidentiels. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Liverdun (54), cité médiévale perchée sur un méandre de la Moselle en Meurthe-et-Moselle, est connue pour son viaduc ferroviaire et son patrimoine historique. Tissu TPE/PME artisans, commerces, services, tourisme patrimonial, viticulture locale et acteurs résidentiels. Axion-IA y intervient pour tous types d'activités.",
+    "Liverdun (54), cité médiévale perchée sur un méandre de la Moselle en Meurthe-et-Moselle, est connue pour son viaduc ferroviaire et son patrimoine historique. Tissu TPE/PME artisans, commerces, services, tourisme patrimonial, viticulture locale et acteurs résidentiels. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Liverdun (54). Nous accompagnons tous types d'activités : TPE/PME artisans et commerces, professions de services, acteurs du tourisme patrimonial, viticulteurs et entrepreneurs liverdunois.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const LIVERDUN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Liverdun : diagnostic adapté aux TPE/PME artisans, commerçants, professions de services, acteurs touristiques et viticulteurs. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Liverdun : diagnostic adapté aux TPE/PME artisans, commerçants, professions de services, acteurs touristiques et viticulteurs. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Liverdun : diagnostic adapté aux TPE/PME artisans, commerçants, professions de services, acteurs touristiques et viticulteurs. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Liverdun : diagnostic adapté aux TPE/PME artisans, commerçants, professions de services, acteurs touristiques et viticulteurs. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Liverdun : formats adaptés à l'atelier, le commerce, l'hébergement touristique, le bureau. Vos équipes repartent autonomes.",

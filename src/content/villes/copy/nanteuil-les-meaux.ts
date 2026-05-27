@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const NANTEUIL_LES_MEAUX_COPY: VilleCopy = {
   pitchFr:
-    "Nanteuil-lès-Meaux (77), commune de Seine-et-Marne intégrée à l'agglomération de Meaux, dispose d'un tissu économique de TPE et PME diversifié. Artisanat, commerces, services à la personne, professions libérales et agriculture périurbaine. Axion-IA y intervient pour tous types d'activités.",
+    "Nanteuil-lès-Meaux (77), commune de Seine-et-Marne intégrée à l'agglomération de Meaux, dispose d'un tissu économique de TPE et PME diversifié. Artisanat, commerces, services à la personne, professions libérales et agriculture périurbaine. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Nanteuil-lès-Meaux (77), commune de Seine-et-Marne intégrée à l'agglomération de Meaux, dispose d'un tissu économique de TPE et PME diversifié. Artisanat, commerces, services à la personne, professions libérales et agriculture périurbaine. Axion-IA y intervient pour tous types d'activités.",
+    "Nanteuil-lès-Meaux (77), commune de Seine-et-Marne intégrée à l'agglomération de Meaux, dispose d'un tissu économique de TPE et PME diversifié. Artisanat, commerces, services à la personne, professions libérales et agriculture périurbaine. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nanteuil-lès-Meaux (77). Nous accompagnons TPE et PME : artisans et commerçants du bassin meldois, prestataires services à la personne, professions libérales et exploitants agricoles périurbains. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const NANTEUIL_LES_MEAUX_COPY: VilleCopy = {
       en: "Audit IA à Nanteuil-lès-Meaux : diagnostic adapté aux artisans, commerçants, prestataires de services et professions libérales du bassin meldois. ROI chiffré, Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Nanteuil-lès-Meaux : formats adaptés atelier artisan, commerce, cabinet libéral et exploitation agricole. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Nanteuil-lès-Meaux : formats adaptés atelier artisan, commerce, cabinet libéral et exploitation agricole. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Nanteuil-lès-Meaux : formats adaptés atelier artisan, commerce, cabinet libéral et exploitation agricole. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Nanteuil-lès-Meaux : formats adaptés atelier artisan, commerce, cabinet libéral et exploitation agricole. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Nanteuil-lès-Meaux : automatisation devis artisans, CRM professions libérales, gestion planning services, optimisation logistique agricole périurbaine.",

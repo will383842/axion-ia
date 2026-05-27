@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PLOUMAGOAR_COPY: VilleCopy = {
   pitchFr:
-    "Ploumagoar (22), commune résidentielle de l'agglomération de Guingamp dans les Côtes-d'Armor, bénéficie du dynamisme économique du bassin guingampais et de la proximité du stade du Roudourou. TPE artisans, PME de services, commerces de proximité, professions libérales et exploitants agricoles composent son économie. Axion-IA y intervient pour tous types d'activités du bassin guingampais.",
+    "Ploumagoar (22), commune résidentielle de l'agglomération de Guingamp dans les Côtes-d'Armor, bénéficie du dynamisme économique du bassin guingampais et de la proximité du stade du Roudourou. TPE artisans, PME de services, commerces de proximité, professions libérales et exploitants agricoles composent son économie. Axion-IA opère pour toutes les structures économiques de la commune du bassin guingampais.",
   pitchEn:
-    "Ploumagoar (22), commune résidentielle de l'agglomération de Guingamp dans les Côtes-d'Armor, bénéficie du dynamisme économique du bassin guingampais et de la proximité du stade du Roudourou. TPE artisans, PME de services, commerces de proximité, professions libérales et exploitants agricoles composent son économie. Axion-IA y intervient pour tous types d'activités du bassin guingampais.",
+    "Ploumagoar (22), commune résidentielle de l'agglomération de Guingamp dans les Côtes-d'Armor, bénéficie du dynamisme économique du bassin guingampais et de la proximité du stade du Roudourou. TPE artisans, PME de services, commerces de proximité, professions libérales et exploitants agricoles composent son économie. Axion-IA opère pour toutes les structures économiques de la commune du bassin guingampais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ploumagoar (22). Nous accompagnons tous types d'activités : TPE artisans, PME de services et agroalimentaires du bassin guingampais, commerces de proximité, professions libérales, indépendants et exploitants agricoles du secteur.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CARENTAN_LES_MARAIS_COPY: VilleCopy = {
   pitchFr:
-    "Carentan-les-Marais (50), commune nouvelle au cœur des marais du Cotentin dans la Manche (Normandie), est un haut lieu du Débarquement de 1944 et un bourg-centre agricole historique. Tissu TPE agricoles et éleveurs, PME agroalimentaires, commerces de bourg, tourisme mémoriel et nature. Axion-IA y intervient pour tous types d'activités.",
+    "Carentan-les-Marais (50), commune nouvelle au cœur des marais du Cotentin dans la Manche (Normandie), est un haut lieu du Débarquement de 1944 et un bourg-centre agricole historique. Tissu TPE agricoles et éleveurs, PME agroalimentaires, commerces de bourg, tourisme mémoriel et nature. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Carentan-les-Marais (50), commune nouvelle au cœur des marais du Cotentin dans la Manche (Normandie), est un haut lieu du Débarquement de 1944 et un bourg-centre agricole historique. Tissu TPE agricoles et éleveurs, PME agroalimentaires, commerces de bourg, tourisme mémoriel et nature. Axion-IA y intervient pour tous types d'activités.",
+    "Carentan-les-Marais (50), commune nouvelle au cœur des marais du Cotentin dans la Manche (Normandie), est un haut lieu du Débarquement de 1944 et un bourg-centre agricole historique. Tissu TPE agricoles et éleveurs, PME agroalimentaires, commerces de bourg, tourisme mémoriel et nature. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carentan-les-Marais (50). Nous accompagnons tous types d'activités : TPE éleveurs et agriculteurs des marais du Cotentin, PME agroalimentaires (lait, viande), commerçants de bourg, prestataires tourisme mémoriel D-Day, artisans et professions libérales.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const CARENTAN_LES_MARAIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Carentan-les-Marais : diagnostic adapté aux TPE éleveurs marais du Cotentin, PME agroalimentaires, prestataires tourisme mémoriel D-Day, commerçants de bourg. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Carentan-les-Marais : diagnostic adapté aux TPE éleveurs marais du Cotentin, PME agroalimentaires, prestataires tourisme mémoriel D-Day, commerçants de bourg. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Carentan-les-Marais : diagnostic adapté aux TPE éleveurs marais du Cotentin, PME agroalimentaires, prestataires tourisme mémoriel D-Day, commerçants de bourg. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Carentan-les-Marais : diagnostic adapté aux TPE éleveurs marais du Cotentin, PME agroalimentaires, prestataires tourisme mémoriel D-Day, commerçants de bourg. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Carentan-les-Marais : formats adaptés à l'exploitation laitière, la laiterie, le musée, le commerce. Vos équipes repartent autonomes sur les outils IA.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CONDE_EN_NORMANDIE_COPY: VilleCopy = {
   pitchFr:
-    "Condé-en-Normandie (14), commune nouvelle du Calvados au confluent du Noireau et de la Druance, est un pôle du bocage normand sud. Territoire industriel et artisanal historique (textile, métallurgie), tissu TPE artisans BTP, PME industrielles, commerces de centre-ville, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Condé-en-Normandie (14), commune nouvelle du Calvados au confluent du Noireau et de la Druance, est un pôle du bocage normand sud. Territoire industriel et artisanal historique (textile, métallurgie), tissu TPE artisans BTP, PME industrielles, commerces de centre-ville, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Condé-en-Normandie (14), commune nouvelle du Calvados au confluent du Noireau et de la Druance, est un pôle du bocage normand sud. Territoire industriel et artisanal historique (textile, métallurgie), tissu TPE artisans BTP, PME industrielles, commerces de centre-ville, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Condé-en-Normandie (14), commune nouvelle du Calvados au confluent du Noireau et de la Druance, est un pôle du bocage normand sud. Territoire industriel et artisanal historique (textile, métallurgie), tissu TPE artisans BTP, PME industrielles, commerces de centre-ville, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Condé-en-Normandie (14). Nous accompagnons tous types d'activités : TPE artisans BTP et commerçants, PME industrielles du bocage (métallurgie, mécanique), exploitations agricoles, professions libérales et services aux entreprises du sud-Calvados.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const CONDE_EN_NORMANDIE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Condé-en-Normandie : diagnostic adapté aux PME industrielles bocage (métallurgie, mécanique), exploitations agricoles, TPE artisans BTP et commerçants. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Condé-en-Normandie : diagnostic adapté aux PME industrielles bocage (métallurgie, mécanique), exploitations agricoles, TPE artisans BTP et commerçants. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Condé-en-Normandie : diagnostic adapté aux PME industrielles bocage (métallurgie, mécanique), exploitations agricoles, TPE artisans BTP et commerçants. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Condé-en-Normandie : diagnostic adapté aux PME industrielles bocage (métallurgie, mécanique), exploitations agricoles, TPE artisans BTP et commerçants. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Condé-en-Normandie : formats adaptés à l'usine, atelier industriel, exploitation agricole ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",

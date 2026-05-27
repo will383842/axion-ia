@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BEAUCOUZE_COPY: VilleCopy = {
   pitchFr:
-    "Beaucouzé (49), commune de l'ouest d'Angers en Maine-et-Loire, accueille d'importantes zones d'activités commerciales et tertiaires (Atoll, parc technologique) qui concentrent TPE de services, PME du numérique, commerces, professions libérales et prestataires B2B. Axion-IA y intervient pour tous types d'activités.",
+    "Beaucouzé (49), commune de l'ouest d'Angers en Maine-et-Loire, accueille d'importantes zones d'activités commerciales et tertiaires (Atoll, parc technologique) qui concentrent TPE de services, PME du numérique, commerces, professions libérales et prestataires B2B. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Beaucouzé (49), commune de l'ouest d'Angers en Maine-et-Loire, accueille d'importantes zones d'activités commerciales et tertiaires (Atoll, parc technologique) qui concentrent TPE de services, PME du numérique, commerces, professions libérales et prestataires B2B. Axion-IA y intervient pour tous types d'activités.",
+    "Beaucouzé (49), commune de l'ouest d'Angers en Maine-et-Loire, accueille d'importantes zones d'activités commerciales et tertiaires (Atoll, parc technologique) qui concentrent TPE de services, PME du numérique, commerces, professions libérales et prestataires B2B. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beaucouzé (49). Nous accompagnons tous types d'activités : TPE de services, PME du numérique et du tertiaire, commerces des zones Atoll et parc d'activités, professions libérales, prestataires B2B et entreprises du pôle technologique ouest angevin.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const BEAUCOUZE_COPY: VilleCopy = {
       en: "Audit IA à Beaucouzé : diagnostic adapté aux TPE de services, PME du numérique et commerces des zones d'activités ouest Angers. ROI chiffré, Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Beaucouzé : formations adaptées aux PME numériques, prestataires B2B, commerces et professions libérales du pôle ouest angevin. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Beaucouzé : formations adaptées aux PME numériques, prestataires B2B, commerces et professions libérales du pôle ouest angevin. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Beaucouzé : formations adaptées aux PME numériques, prestataires B2B, commerces et professions libérales du pôle ouest angevin. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Beaucouzé : formations adaptées aux PME numériques, prestataires B2B, commerces et professions libérales du pôle ouest angevin. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Beaucouzé : automatisation processus tertiaires, agents conversationnels commerce, optimisation logistique, outils IA pour prestataires B2B et professions libérales.",

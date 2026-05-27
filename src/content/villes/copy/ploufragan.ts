@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PLOUFRAGAN_COPY: VilleCopy = {
   pitchFr:
-    "Ploufragan (22), commune de l'agglomération de Saint-Brieuc abritant le Zoopôle, pôle d'excellence agroalimentaire et vétérinaire des Côtes-d'Armor. Tissu de TPE et PME agroalimentaires, laboratoires, entreprises de services, artisans et professions libérales. Axion-IA y intervient pour tous types d'activités de l'agglo briochine.",
+    "Ploufragan (22), commune de l'agglomération de Saint-Brieuc abritant le Zoopôle, pôle d'excellence agroalimentaire et vétérinaire des Côtes-d'Armor. Tissu de TPE et PME agroalimentaires, laboratoires, entreprises de services, artisans et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de l'agglo briochine.",
   pitchEn:
-    "Ploufragan (22), commune de l'agglomération de Saint-Brieuc abritant le Zoopôle, pôle d'excellence agroalimentaire et vétérinaire des Côtes-d'Armor. Tissu de TPE et PME agroalimentaires, laboratoires, entreprises de services, artisans et professions libérales. Axion-IA y intervient pour tous types d'activités de l'agglo briochine.",
+    "Ploufragan (22), commune de l'agglomération de Saint-Brieuc abritant le Zoopôle, pôle d'excellence agroalimentaire et vétérinaire des Côtes-d'Armor. Tissu de TPE et PME agroalimentaires, laboratoires, entreprises de services, artisans et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de l'agglo briochine.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ploufragan (22). Nous accompagnons TPE et PME : entreprises agroalimentaires, laboratoires du Zoopôle, artisans, PME de services et professions libérales de l'agglomération de Saint-Brieuc. Audit Flash dès 490 € HT.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CUINCY_COPY: VilleCopy = {
   pitchFr:
-    "Cuincy (59), commune résidentielle de 6 467 habitants de l'agglomération de Douai dans le Nord, intégrée à la Communauté d'Agglomération du Douaisis. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales et indépendants du bassin douaisien. Axion-IA y intervient pour tous types d'activités du Douaisis.",
+    "Cuincy (59), commune résidentielle de 6 467 habitants de l'agglomération de Douai dans le Nord, intégrée à la Communauté d'Agglomération du Douaisis. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales et indépendants du bassin douaisien. Axion-IA y déploie ses missions auprès de toutes les organisations du Douaisis.",
   pitchEn:
-    "Cuincy (59), commune résidentielle de 6 467 habitants de l'agglomération de Douai dans le Nord, intégrée à la Communauté d'Agglomération du Douaisis. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales et indépendants du bassin douaisien. Axion-IA y intervient pour tous types d'activités du Douaisis.",
+    "Cuincy (59), commune résidentielle de 6 467 habitants de l'agglomération de Douai dans le Nord, intégrée à la Communauté d'Agglomération du Douaisis. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales et indépendants du bassin douaisien. Axion-IA y déploie ses missions auprès de toutes les organisations du Douaisis.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cuincy (59). Nous accompagnons TPE artisans, PME de services, commerçants, professions libérales et indépendants de l'agglomération de Douai. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
   directAnswerEn:

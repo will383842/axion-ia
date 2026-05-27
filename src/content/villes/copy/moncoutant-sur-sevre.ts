@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MONCOUTANT_SUR_SEVRE_COPY: VilleCopy = {
   pitchFr:
-    "Moncoutant-sur-Sèvre (79), commune nouvelle du Bocage bressuirais en Deux-Sèvres, née de la fusion de Moncoutant et Le Breuil-Bernard (2019). Tissu PME industrielles (mécanique, agroalimentaire), TPE artisans BTP, commerces ruraux, exploitations agricoles bocagères et services. Axion-IA y intervient pour tous types d'activités du Bocage bressuirais.",
+    "Moncoutant-sur-Sèvre (79), commune nouvelle du Bocage bressuirais en Deux-Sèvres, née de la fusion de Moncoutant et Le Breuil-Bernard (2019). Tissu PME industrielles (mécanique, agroalimentaire), TPE artisans BTP, commerces ruraux, exploitations agricoles bocagères et services. Axion-IA couvre l'ensemble des activités professionnelles présentes du Bocage bressuirais.",
   pitchEn:
-    "Moncoutant-sur-Sèvre (79), commune nouvelle du Bocage bressuirais en Deux-Sèvres, née de la fusion de Moncoutant et Le Breuil-Bernard (2019). Tissu PME industrielles (mécanique, agroalimentaire), TPE artisans BTP, commerces ruraux, exploitations agricoles bocagères et services. Axion-IA y intervient pour tous types d'activités du Bocage bressuirais.",
+    "Moncoutant-sur-Sèvre (79), commune nouvelle du Bocage bressuirais en Deux-Sèvres, née de la fusion de Moncoutant et Le Breuil-Bernard (2019). Tissu PME industrielles (mécanique, agroalimentaire), TPE artisans BTP, commerces ruraux, exploitations agricoles bocagères et services. Axion-IA couvre l'ensemble des activités professionnelles présentes du Bocage bressuirais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Moncoutant-sur-Sèvre (79). Nous accompagnons tous types d'activités : PME industrielles mécanique/agroalimentaire, TPE artisans BTP, commerçants ruraux, exploitations agricoles bocagères, professions libérales et services aux entreprises du Bocage bressuirais.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const MONCOUTANT_SUR_SEVRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Moncoutant-sur-Sèvre : diagnostic adapté aux PME industrielles mécanique/agroalimentaire, TPE artisans BTP, exploitations agricoles et commerçants du Bocage bressuirais. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Moncoutant-sur-Sèvre : diagnostic adapté aux PME industrielles mécanique/agroalimentaire, TPE artisans BTP, exploitations agricoles et commerçants du Bocage bressuirais. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Moncoutant-sur-Sèvre : diagnostic adapté aux PME industrielles mécanique/agroalimentaire, TPE artisans BTP, exploitations agricoles et commerçants du Bocage bressuirais. ROI mesurable, audit Flash dès 490 € HT accessible.",
+      en: "Audit IA à Moncoutant-sur-Sèvre : diagnostic adapté aux PME industrielles mécanique/agroalimentaire, TPE artisans BTP, exploitations agricoles et commerçants du Bocage bressuirais. ROI mesurable, audit Flash dès 490 € HT accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Moncoutant-sur-Sèvre : formats adaptés à l'atelier mécanique, ligne agroalimentaire, exploitation agricole ou commerce rural. Vos équipes terrain et back-office repartent autonomes sur outils IA.",

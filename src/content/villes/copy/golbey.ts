@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GOLBEY_COPY: VilleCopy = {
   pitchFr:
-    "Golbey (88), commune de l'agglomération d'Épinal nord, est un pôle industriel papetier majeur des Vosges (papeterie Norske Skog, zones d'activités étendues). Tissu de TPE/PME industrie papier-carton, logistique, sous-traitance, services aux entreprises, commerce et artisanat BTP. Axion-IA y intervient pour tous types d'activités.",
+    "Golbey (88), commune de l'agglomération d'Épinal nord, est un pôle industriel papetier majeur des Vosges (papeterie Norske Skog, zones d'activités étendues). Tissu de TPE/PME industrie papier-carton, logistique, sous-traitance, services aux entreprises, commerce et artisanat BTP. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Golbey (88), commune de l'agglomération d'Épinal nord, est un pôle industriel papetier majeur des Vosges (papeterie Norske Skog, zones d'activités étendues). Tissu de TPE/PME industrie papier-carton, logistique, sous-traitance, services aux entreprises, commerce et artisanat BTP. Axion-IA y intervient pour tous types d'activités.",
+    "Golbey (88), commune de l'agglomération d'Épinal nord, est un pôle industriel papetier majeur des Vosges (papeterie Norske Skog, zones d'activités étendues). Tissu de TPE/PME industrie papier-carton, logistique, sous-traitance, services aux entreprises, commerce et artisanat BTP. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Golbey (88). Nous accompagnons TPE et PME : industriels papier-carton, sous-traitants industriels, transporteurs-logisticiens, artisans BTP et prestataires de services de l'agglomération d'Épinal. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const GOLBEY_COPY: VilleCopy = {
       en: "Audit IA à Golbey : diagnostic adapté aux industriels papier-carton, sous-traitants industriels, transporteurs-logisticiens, artisans BTP et prestataires de services de l'agglomération d'Épinal. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Golbey : formats adaptés à l'usine papetière, à l'atelier de sous-traitance, à l'entrepôt logistique ou à la TPE de services. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Golbey : formats adaptés à l'usine papetière, à l'atelier de sous-traitance, à l'entrepôt logistique ou à la TPE de services. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Golbey : formats adaptés à l'usine papetière, à l'atelier de sous-traitance, à l'entrepôt logistique ou à la TPE de services. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Golbey : formats adaptés à l'usine papetière, à l'atelier de sous-traitance, à l'entrepôt logistique ou à la TPE de services. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Golbey : automatisation maintenance prédictive papeterie, optimisation production papier-carton, gestion stocks et tournées logistiques, agents conversationnels et automatisations administratives pour PME industrielles.",

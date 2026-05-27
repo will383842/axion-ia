@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LOUHANS_CHATEAURENAUD_COPY: VilleCopy = {
   pitchFr:
-    "Louhans-Châteaurenaud (71), capitale de la Bresse bourguignonne en Saône-et-Loire, est réputée pour son marché aux volailles AOC Bresse et ses arcades historiques (Grande Rue aux 157 arcades). Tissu TPE/PME agriculture Bresse, agroalimentaire volaille, commerces, artisans. Axion-IA y intervient pour tous types d'activités.",
+    "Louhans-Châteaurenaud (71), capitale de la Bresse bourguignonne en Saône-et-Loire, est réputée pour son marché aux volailles AOC Bresse et ses arcades historiques (Grande Rue aux 157 arcades). Tissu TPE/PME agriculture Bresse, agroalimentaire volaille, commerces, artisans. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Louhans-Châteaurenaud (71), capitale de la Bresse bourguignonne en Saône-et-Loire, est réputée pour son marché aux volailles AOC Bresse et ses arcades historiques (Grande Rue aux 157 arcades). Tissu TPE/PME agriculture Bresse, agroalimentaire volaille, commerces, artisans. Axion-IA y intervient pour tous types d'activités.",
+    "Louhans-Châteaurenaud (71), capitale de la Bresse bourguignonne en Saône-et-Loire, est réputée pour son marché aux volailles AOC Bresse et ses arcades historiques (Grande Rue aux 157 arcades). Tissu TPE/PME agriculture Bresse, agroalimentaire volaille, commerces, artisans. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Louhans-Châteaurenaud (71). Nous accompagnons tous types d'activités : éleveurs volailles AOC Bresse, TPE/PME agroalimentaire, commerçants arcades, artisans, services aux entreprises de la Bresse bourguignonne.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LOUHANS_CHATEAURENAUD_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Louhans-Châteaurenaud : diagnostic adapté aux éleveurs volailles AOC Bresse, TPE/PME agroalimentaire, commerçants arcades, artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Louhans-Châteaurenaud : diagnostic adapté aux éleveurs volailles AOC Bresse, TPE/PME agroalimentaire, commerçants arcades, artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Louhans-Châteaurenaud : diagnostic adapté aux éleveurs volailles AOC Bresse, TPE/PME agroalimentaire, commerçants arcades, artisans. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Louhans-Châteaurenaud : diagnostic adapté aux éleveurs volailles AOC Bresse, TPE/PME agroalimentaire, commerçants arcades, artisans. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Louhans-Châteaurenaud : formats adaptés à l'exploitation agricole, atelier agroalimentaire, commerce. Vos équipes repartent autonomes.",
@@ -64,7 +64,7 @@ export const LOUHANS_CHATEAURENAUD_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Louhans-Châteaurenaud ?",
-      a: "Nos consultants se déplacent depuis Lyon (1h40) ou Chalon-sur-Saône (35 min). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants se déplacent depuis Lyon (1h40) ou Chalon-sur-Saône (35 min). Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

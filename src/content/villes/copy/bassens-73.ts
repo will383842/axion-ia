@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BASSENS_73_COPY: VilleCopy = {
   pitchFr:
-    "Bassens (73), commune résidentielle de l'agglomération de Chambéry en Savoie, abrite un tissu dynamique de PME tertiaires, professions libérales, TPE artisanat BTP, commerces de proximité et services aux entreprises. Axion-IA y intervient pour tous types d'activités du Grand Chambéry.",
+    "Bassens (73), commune résidentielle de l'agglomération de Chambéry en Savoie, abrite un tissu dynamique de PME tertiaires, professions libérales, TPE artisanat BTP, commerces de proximité et services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes du Grand Chambéry.",
   pitchEn:
-    "Bassens (73), commune résidentielle de l'agglomération de Chambéry en Savoie, abrite un tissu dynamique de PME tertiaires, professions libérales, TPE artisanat BTP, commerces de proximité et services aux entreprises. Axion-IA y intervient pour tous types d'activités du Grand Chambéry.",
+    "Bassens (73), commune résidentielle de l'agglomération de Chambéry en Savoie, abrite un tissu dynamique de PME tertiaires, professions libérales, TPE artisanat BTP, commerces de proximité et services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes du Grand Chambéry.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bassens (73). Nous accompagnons TPE et PME : cabinets de professions libérales, PME tertiaires, artisans BTP, commerçants de proximité et prestataires de services aux entreprises du Grand Chambéry. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const BASSENS_73_COPY: VilleCopy = {
       en: "Audit IA à Bassens : diagnostic adapté aux PME tertiaires, cabinets libéraux, TPE artisans BTP et commerçants du Grand Chambéry. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Bassens : formats adaptés aux cabinets libéraux, PME conseil, artisans BTP et commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Bassens : formats adaptés aux cabinets libéraux, PME conseil, artisans BTP et commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Bassens : formats adaptés aux cabinets libéraux, PME conseil, artisans BTP et commerces. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Bassens : formats adaptés aux cabinets libéraux, PME conseil, artisans BTP et commerces. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Bassens : automatisation tâches administratives, agents conversationnels, classification documents juridiques/comptables, chatbots clients, devis automatisés BTP.",

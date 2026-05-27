@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FLERS_EN_ESCREBIEUX_COPY: VilleCopy = {
   pitchFr:
-    "Flers-en-Escrebieux (59), commune de l'agglomération de Douai dans le bassin minier du Nord, compte 5 424 habitants. Tissu TPE artisans BTP, PME logistiques (A21/A1), commerces de proximité, services aux entreprises et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Flers-en-Escrebieux (59), commune de l'agglomération de Douai dans le bassin minier du Nord, compte 5 424 habitants. Tissu TPE artisans BTP, PME logistiques (A21/A1), commerces de proximité, services aux entreprises et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Flers-en-Escrebieux (59), commune de l'agglomération de Douai dans le bassin minier du Nord, compte 5 424 habitants. Tissu TPE artisans BTP, PME logistiques (A21/A1), commerces de proximité, services aux entreprises et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Flers-en-Escrebieux (59), commune de l'agglomération de Douai dans le bassin minier du Nord, compte 5 424 habitants. Tissu TPE artisans BTP, PME logistiques (A21/A1), commerces de proximité, services aux entreprises et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Flers-en-Escrebieux (59). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants centre-ville, PME logistiques et transport (carrefour A21/A1), professions libérales, services aux entreprises et acteurs de la reconversion du bassin minier du Douaisis.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const FLERS_EN_ESCREBIEUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Flers-en-Escrebieux : diagnostic adapté aux TPE artisans, PME logistiques, commerçants et professions libérales du Douaisis. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Flers-en-Escrebieux : diagnostic adapté aux TPE artisans, PME logistiques, commerçants et professions libérales du Douaisis. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Flers-en-Escrebieux : diagnostic adapté aux TPE artisans, PME logistiques, commerçants et professions libérales du Douaisis. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Flers-en-Escrebieux : diagnostic adapté aux TPE artisans, PME logistiques, commerçants et professions libérales du Douaisis. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Flers-en-Escrebieux : formats adaptés à l'atelier, l'entrepôt logistique ou le cabinet. Vos équipes repartent avec des outils IA configurés pour leur métier.",

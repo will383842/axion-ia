@@ -30,12 +30,12 @@ export const GUEBWILLER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Guebwiller : diagnostic adapté aux TPE/PME viticulture Grand Cru, tourisme, industrie, artisans, commerces. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Guebwiller : diagnostic adapté aux TPE/PME viticulture Grand Cru, tourisme, industrie, artisans, commerces. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Guebwiller : diagnostic adapté aux TPE/PME viticulture Grand Cru, tourisme, industrie, artisans, commerces. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Guebwiller : diagnostic adapté aux TPE/PME viticulture Grand Cru, tourisme, industrie, artisans, commerces. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Guebwiller : formats adaptés au domaine viticole, à l'hébergement patrimonial, à l'atelier industriel, au commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Guebwiller : formats adaptés au domaine viticole, à l'hébergement patrimonial, à l'atelier industriel, au commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Guebwiller : formats adaptés au domaine viticole, à l'hébergement patrimonial, à l'atelier industriel, au commerce. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Guebwiller : formats adaptés au domaine viticole, à l'hébergement patrimonial, à l'atelier industriel, au commerce. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Guebwiller : automatisation gestion cave Grand Cru, réservations touristiques multilingues (FR/EN/DE), traçabilité production, agents conversationnels, vente en ligne.",

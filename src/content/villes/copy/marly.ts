@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MARLY_COPY: VilleCopy = {
   pitchFr:
-    "Marly (59), commune résidentielle et commerciale de l'agglomération de Valenciennes sud, entre Valenciennes et la forêt de Raismes-Saint-Amand. Tissu économique : TPE et PME du commerce, grande distribution, services aux entreprises, professions libérales, artisanat, sous-traitance industrielle du Valenciennois. Axion-IA y intervient pour tous types d'activités du sud de l'agglo valenciennoise.",
+    "Marly (59), commune résidentielle et commerciale de l'agglomération de Valenciennes sud, entre Valenciennes et la forêt de Raismes-Saint-Amand. Tissu économique : TPE et PME du commerce, grande distribution, services aux entreprises, professions libérales, artisanat, sous-traitance industrielle du Valenciennois. Axion-IA opère pour toutes les structures économiques de la commune du sud de l'agglo valenciennoise.",
   pitchEn:
-    "Marly (59), commune résidentielle et commerciale de l'agglomération de Valenciennes sud, entre Valenciennes et la forêt de Raismes-Saint-Amand. Tissu économique : TPE et PME du commerce, grande distribution, services aux entreprises, professions libérales, artisanat, sous-traitance industrielle du Valenciennois. Axion-IA y intervient pour tous types d'activités du sud de l'agglo valenciennoise.",
+    "Marly (59), commune résidentielle et commerciale de l'agglomération de Valenciennes sud, entre Valenciennes et la forêt de Raismes-Saint-Amand. Tissu économique : TPE et PME du commerce, grande distribution, services aux entreprises, professions libérales, artisanat, sous-traitance industrielle du Valenciennois. Axion-IA opère pour toutes les structures économiques de la commune du sud de l'agglo valenciennoise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marly (59). Nous accompagnons TPE et PME : commerces et enseignes de la zone commerciale, prestataires de services aux entreprises, professions libérales, artisans, sous-traitants industriels du Valenciennois.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const MARLY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Marly : diagnostic adapté aux TPE et PME du commerce, enseignes de la zone commerciale, prestataires de services, professions libérales, artisans et sous-traitants industriels. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Marly : diagnostic adapté aux TPE et PME du commerce, enseignes de la zone commerciale, prestataires de services, professions libérales, artisans et sous-traitants industriels. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Marly : diagnostic adapté aux TPE et PME du commerce, enseignes de la zone commerciale, prestataires de services, professions libérales, artisans et sous-traitants industriels. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Marly : diagnostic adapté aux TPE et PME du commerce, enseignes de la zone commerciale, prestataires de services, professions libérales, artisans et sous-traitants industriels. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Marly : formats adaptés à l'enseigne commerciale, au cabinet libéral, au prestataire de services ou à l'artisan. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Marly : formats adaptés à l'enseigne commerciale, au cabinet libéral, au prestataire de services ou à l'artisan. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Marly : formats adaptés à l'enseigne commerciale, au cabinet libéral, au prestataire de services ou à l'artisan. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Marly : formats adaptés à l'enseigne commerciale, au cabinet libéral, au prestataire de services ou à l'artisan. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Marly : automatisation gestion stocks commerce et grande distribution, agents IA prise de rendez-vous cabinets libéraux, CRM augmenté prestataires B2B, copilotes comptables, chatbots accueil zone commerciale.",

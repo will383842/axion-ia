@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ORGEVAL_COPY: VilleCopy = {
   pitchFr:
-    "Orgeval (78), commune résidentielle de la plaine de Versailles dans les Yvelines, accueille TPE artisans, PME de services et conseil, commerces de proximité, professions libérales et auto-entrepreneurs. Axion-IA y intervient pour tous types d'activités de l'ouest francilien.",
+    "Orgeval (78), commune résidentielle de la plaine de Versailles dans les Yvelines, accueille TPE artisans, PME de services et conseil, commerces de proximité, professions libérales et auto-entrepreneurs. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'ouest francilien.",
   pitchEn:
-    "Orgeval (78), commune résidentielle de la plaine de Versailles dans les Yvelines, accueille TPE artisans, PME de services et conseil, commerces de proximité, professions libérales et auto-entrepreneurs. Axion-IA y intervient pour tous types d'activités de l'ouest francilien.",
+    "Orgeval (78), commune résidentielle de la plaine de Versailles dans les Yvelines, accueille TPE artisans, PME de services et conseil, commerces de proximité, professions libérales et auto-entrepreneurs. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'ouest francilien.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Orgeval (78). Nous accompagnons TPE et PME : artisans locaux, PME de services et conseil, commerces de centre-village, professions libérales et prestataires de cette commune résidentielle entre Poissy et Maule.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const ORGEVAL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Orgeval : diagnostic adapté aux TPE artisans, PME conseil, commerçants et professions libérales de la plaine de Versailles. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Orgeval : diagnostic adapté aux TPE artisans, PME conseil, commerçants et professions libérales de la plaine de Versailles. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Orgeval : diagnostic adapté aux TPE artisans, PME conseil, commerçants et professions libérales de la plaine de Versailles. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Orgeval : diagnostic adapté aux TPE artisans, PME conseil, commerçants et professions libérales de la plaine de Versailles. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Orgeval : formats adaptés au bureau conseil, à l'atelier artisan, au commerce ou au cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Orgeval : formats adaptés au bureau conseil, à l'atelier artisan, au commerce ou au cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Orgeval : formats adaptés au bureau conseil, à l'atelier artisan, au commerce ou au cabinet libéral. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Orgeval : formats adaptés au bureau conseil, à l'atelier artisan, au commerce ou au cabinet libéral. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Orgeval : automatisation workflows conseil, agents conversationnels clients, CRM augmenté PME, gestion documentaire cabinets, planification artisans plaine de Versailles.",

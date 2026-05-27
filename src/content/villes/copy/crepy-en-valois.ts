@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CREPY_EN_VALOIS_COPY: VilleCopy = {
   pitchFr:
-    "Crépy-en-Valois (60), sous-préfecture de l'Oise au cœur du Valois, territoire de patrimoine médiéval et de dynamisme économique entre Senlis et Villers-Cotterêts. Tissu TPE/PME artisanat, commerce de proximité, BTP, logistique, services et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Crépy-en-Valois (60), sous-préfecture de l'Oise au cœur du Valois, territoire de patrimoine médiéval et de dynamisme économique entre Senlis et Villers-Cotterêts. Tissu TPE/PME artisanat, commerce de proximité, BTP, logistique, services et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Crépy-en-Valois (60), sous-préfecture de l'Oise au cœur du Valois, territoire de patrimoine médiéval et de dynamisme économique entre Senlis et Villers-Cotterêts. Tissu TPE/PME artisanat, commerce de proximité, BTP, logistique, services et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Crépy-en-Valois (60), sous-préfecture de l'Oise au cœur du Valois, territoire de patrimoine médiéval et de dynamisme économique entre Senlis et Villers-Cotterêts. Tissu TPE/PME artisanat, commerce de proximité, BTP, logistique, services et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Crépy-en-Valois (60). Nous accompagnons tous types d'activités : TPE/PME du commerce et de l'artisanat, entreprises BTP et logistique, professions libérales, services aux entreprises et acteurs du tourisme patrimonial du Valois. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -34,8 +34,8 @@ export const CREPY_EN_VALOIS_COPY: VilleCopy = {
       en: "Audit IA à Crépy-en-Valois : diagnostic adapté aux TPE/PME artisanales, commerçants, entreprises BTP et logistique du Valois. ROI chiffré, Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Crépy-en-Valois : formats adaptés au commerce, à l'artisanat, au BTP et aux services. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Crépy-en-Valois : formats adaptés au commerce, à l'artisanat, au BTP et aux services. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Crépy-en-Valois : formats adaptés au commerce, à l'artisanat, au BTP et aux services. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Crépy-en-Valois : formats adaptés au commerce, à l'artisanat, au BTP et aux services. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Crépy-en-Valois : automatisation devis BTP, gestion stock commerce, planification logistique, outils IA pour professions libérales et tourisme.",

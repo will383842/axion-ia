@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SALLAUMINES_COPY: VilleCopy = {
   pitchFr:
-    "Sallaumines (62), commune du bassin minier lensois dans le Pas-de-Calais, s'est reconvertie vers les services, le commerce et l'artisanat. TPE, PME de proximité et professions libérales. Axion-IA y intervient pour tous types d'activités du bassin minier.",
+    "Sallaumines (62), commune du bassin minier lensois dans le Pas-de-Calais, s'est reconvertie vers les services, le commerce et l'artisanat. TPE, PME de proximité et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin minier.",
   pitchEn:
-    "Sallaumines (62), commune du bassin minier lensois dans le Pas-de-Calais, s'est reconvertie vers les services, le commerce et l'artisanat. TPE, PME de proximité et professions libérales. Axion-IA y intervient pour tous types d'activités du bassin minier.",
+    "Sallaumines (62), commune du bassin minier lensois dans le Pas-de-Calais, s'est reconvertie vers les services, le commerce et l'artisanat. TPE, PME de proximité et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin minier.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sallaumines (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier lensois. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:

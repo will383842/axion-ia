@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ROQUEMAURE_COPY: VilleCopy = {
   pitchFr:
-    "Roquemaure (30), commune viticole du Gard en bords de Rhône, berceau historique des vins Côtes du Rhône. Tissu TPE/PME viticulture, agriculture, commerces, artisanat BTP et tourisme viticole. Axion-IA y intervient pour tous types d'activités du Gard rhodanien viticole.",
+    "Roquemaure (30), commune viticole du Gard en bords de Rhône, berceau historique des vins Côtes du Rhône. Tissu TPE/PME viticulture, agriculture, commerces, artisanat BTP et tourisme viticole. Axion-IA accompagne entreprises et indépendants de tous secteurs du Gard rhodanien viticole.",
   pitchEn:
-    "Roquemaure (30), commune viticole du Gard en bords de Rhône, berceau historique des vins Côtes du Rhône. Tissu TPE/PME viticulture, agriculture, commerces, artisanat BTP et tourisme viticole. Axion-IA y intervient pour tous types d'activités du Gard rhodanien viticole.",
+    "Roquemaure (30), commune viticole du Gard en bords de Rhône, berceau historique des vins Côtes du Rhône. Tissu TPE/PME viticulture, agriculture, commerces, artisanat BTP et tourisme viticole. Axion-IA accompagne entreprises et indépendants de tous secteurs du Gard rhodanien viticole.",
   directAnswerFr:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Roquemaure (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs Côtes du Rhône, commerçants, artisans BTP, professions libérales et acteurs oenotouristiques du Gard rhodanien. Audit Flash à partir de 490 € HT.",
   directAnswerEn:

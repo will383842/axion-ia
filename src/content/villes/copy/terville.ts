@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const TERVILLE_COPY: VilleCopy = {
   pitchFr:
-    "Terville (57), commune de l'agglomération de Thionville adossée au centre commercial Géric, pôle commercial et de services majeur du nord mosellan. Tissu TPE/PME commerce, services, restauration, professions libérales, BTP et artisanat. Axion-IA y intervient pour tous types d'activités.",
+    "Terville (57), commune de l'agglomération de Thionville adossée au centre commercial Géric, pôle commercial et de services majeur du nord mosellan. Tissu TPE/PME commerce, services, restauration, professions libérales, BTP et artisanat. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Terville (57), commune de l'agglomération de Thionville adossée au centre commercial Géric, pôle commercial et de services majeur du nord mosellan. Tissu TPE/PME commerce, services, restauration, professions libérales, BTP et artisanat. Axion-IA y intervient pour tous types d'activités.",
+    "Terville (57), commune de l'agglomération de Thionville adossée au centre commercial Géric, pôle commercial et de services majeur du nord mosellan. Tissu TPE/PME commerce, services, restauration, professions libérales, BTP et artisanat. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Terville (57). Nous accompagnons tous types d'activités : TPE/PME commerce et restauration, services, professions libérales, artisans BTP et enseignes du pôle commercial Géric dans l'agglomération de Thionville.",
   directAnswerEn:
@@ -30,12 +30,12 @@ export const TERVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Terville : diagnostic adapté aux TPE/PME commerce, restauration, services, professions libérales et artisans BTP du pôle Géric et de l'agglomération thionvilloise. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Terville : diagnostic adapté aux TPE/PME commerce, restauration, services, professions libérales et artisans BTP du pôle Géric et de l'agglomération thionvilloise. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Terville : diagnostic adapté aux TPE/PME commerce, restauration, services, professions libérales et artisans BTP du pôle Géric et de l'agglomération thionvilloise. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Terville : diagnostic adapté aux TPE/PME commerce, restauration, services, professions libérales et artisans BTP du pôle Géric et de l'agglomération thionvilloise. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Terville : formats adaptés au commerce, restaurant, bureau tertiaire, atelier BTP ou cabinet libéral. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Terville : formats adaptés au commerce, restaurant, bureau tertiaire, atelier BTP ou cabinet libéral. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Terville : formats adaptés au commerce, restaurant, bureau tertiaire, atelier BTP ou cabinet libéral. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Terville : formats adaptés au commerce, restaurant, bureau tertiaire, atelier BTP ou cabinet libéral. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Terville : automatisation gestion stocks commerce, réservations restauration, CRM services, devis BTP, agents conversationnels pôle commercial Géric.",

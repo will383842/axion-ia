@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const DONZERE_COPY: VilleCopy = {
   pitchFr:
-    "Donzère (26), commune du sud-Drôme à l'entrée du défilé de Donzère, est associée au grand aménagement hydraulique du canal Donzère-Mondragon (Compagnie Nationale du Rhône). Tissu agricole vallée Rhône, PME industrielles bassin Tricastin, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités tricastines.",
+    "Donzère (26), commune du sud-Drôme à l'entrée du défilé de Donzère, est associée au grand aménagement hydraulique du canal Donzère-Mondragon (Compagnie Nationale du Rhône). Tissu agricole vallée Rhône, PME industrielles bassin Tricastin, TPE artisans BTP, commerces. Axion-IA opère pour toutes les structures économiques de la commune tricastines.",
   pitchEn:
-    "Donzère (26), commune du sud-Drôme à l'entrée du défilé de Donzère, est associée au grand aménagement hydraulique du canal Donzère-Mondragon (Compagnie Nationale du Rhône). Tissu agricole vallée Rhône, PME industrielles bassin Tricastin, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités tricastines.",
+    "Donzère (26), commune du sud-Drôme à l'entrée du défilé de Donzère, est associée au grand aménagement hydraulique du canal Donzère-Mondragon (Compagnie Nationale du Rhône). Tissu agricole vallée Rhône, PME industrielles bassin Tricastin, TPE artisans BTP, commerces. Axion-IA opère pour toutes les structures économiques de la commune tricastines.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Donzère (26). Nous accompagnons tous types d'activités : PME industrielles bassin Tricastin, agriculteurs et viticulteurs vallée du Rhône (AOC Grignan-les-Adhémar à proximité), TPE artisans BTP, commerçants, indépendants et services aux entreprises sud-Drôme.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const DONZERE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Donzère : diagnostic adapté aux PME industrielles bassin Tricastin, agriculteurs/viticulteurs vallée Rhône, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Donzère : diagnostic adapté aux PME industrielles bassin Tricastin, agriculteurs/viticulteurs vallée Rhône, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Donzère : diagnostic adapté aux PME industrielles bassin Tricastin, agriculteurs/viticulteurs vallée Rhône, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Donzère : diagnostic adapté aux PME industrielles bassin Tricastin, agriculteurs/viticulteurs vallée Rhône, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Donzère : formats adaptés à l'atelier industriel, exploitation agricole/viticole, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Donzère : formats adaptés à l'atelier industriel, exploitation agricole/viticole, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Donzère : formats adaptés à l'atelier industriel, exploitation agricole/viticole, commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Donzère : formats adaptés à l'atelier industriel, exploitation agricole/viticole, commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Donzère : prédiction maintenance industrielle, classification photos vignobles/cultures, traçabilité AOC, agents conversationnels. Sud-Drôme Tricastin.",
@@ -64,7 +64,7 @@ export const DONZERE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Valence ?",
-      a: "Nos consultants viennent de Lyon (1h45 A7) ou Valence (45 min). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (1h45 A7) ou Valence (45 min). Pour les multi-jours, hébergement local possible. Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

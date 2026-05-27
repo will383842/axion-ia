@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHARTRES_DE_BRETAGNE_COPY: VilleCopy = {
   pitchFr:
-    "Chartres-de-Bretagne (35), commune du sud de Rennes Métropole, est un pôle économique dynamique grâce à ses zones d'activités (ZA de la Janais, pôle tertiaire). Tissu PME industrielles et tertiaires, TPE artisans BTP, sous-traitance automobile, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités du sud de Rennes Métropole.",
+    "Chartres-de-Bretagne (35), commune du sud de Rennes Métropole, est un pôle économique dynamique grâce à ses zones d'activités (ZA de la Janais, pôle tertiaire). Tissu PME industrielles et tertiaires, TPE artisans BTP, sous-traitance automobile, commerces, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud de Rennes Métropole.",
   pitchEn:
-    "Chartres-de-Bretagne (35), commune du sud de Rennes Métropole, est un pôle économique dynamique grâce à ses zones d'activités (ZA de la Janais, pôle tertiaire). Tissu PME industrielles et tertiaires, TPE artisans BTP, sous-traitance automobile, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités du sud de Rennes Métropole.",
+    "Chartres-de-Bretagne (35), commune du sud de Rennes Métropole, est un pôle économique dynamique grâce à ses zones d'activités (ZA de la Janais, pôle tertiaire). Tissu PME industrielles et tertiaires, TPE artisans BTP, sous-traitance automobile, commerces, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud de Rennes Métropole.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chartres-de-Bretagne (35). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles et tertiaires des zones d'activités, sous-traitants automobile, professions libérales, indépendants et services aux entreprises du sud de Rennes Métropole.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const CHARTRES_DE_BRETAGNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chartres-de-Bretagne : diagnostic adapté aux PME industrielles des zones d'activités, TPE artisans et commerçants. ROI chiffré, audit Flash 490 € HT accessible à toute structure.",
-      en: "Audit IA à Chartres-de-Bretagne : diagnostic adapté aux PME industrielles des zones d'activités, TPE artisans et commerçants. ROI chiffré, audit Flash 490 € HT accessible à toute structure.",
+      fr: "Audit IA à Chartres-de-Bretagne : diagnostic adapté aux PME industrielles des zones d'activités, TPE artisans et commerçants. Audit Flash à 490 € HT, retour sur investissement chiffré accessible à toute structure.",
+      en: "Audit IA à Chartres-de-Bretagne : diagnostic adapté aux PME industrielles des zones d'activités, TPE artisans et commerçants. Audit Flash à 490 € HT, retour sur investissement chiffré accessible à toute structure.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chartres-de-Bretagne : formats adaptés à l'atelier industriel, TPE artisan BTP, bureau tertiaire ou commerce. Vos équipes repartent autonomes sur les outils IA configurés métier.",

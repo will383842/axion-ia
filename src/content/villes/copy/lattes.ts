@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LATTES_COPY: VilleCopy = {
   pitchFr:
-    "Lattes (34), commune de 17 351 habitants dans l'agglomération de Montpellier sud, entre ville et lagune. Son économie repose sur un tissu de TPE et PME du commerce (zone Boirargues), de la restauration, des services aux entreprises, de la santé, du sport et des activités liées à la zone lagunaire. Axion-IA y intervient pour tous types d'activités.",
+    "Lattes (34), commune de 17 351 habitants dans l'agglomération de Montpellier sud, entre ville et lagune. Son économie repose sur un tissu de TPE et PME du commerce (zone Boirargues), de la restauration, des services aux entreprises, de la santé, du sport et des activités liées à la zone lagunaire. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Lattes (34), commune de 17 351 habitants dans l'agglomération de Montpellier sud, entre ville et lagune. Son économie repose sur un tissu de TPE et PME du commerce (zone Boirargues), de la restauration, des services aux entreprises, de la santé, du sport et des activités liées à la zone lagunaire. Axion-IA y intervient pour tous types d'activités.",
+    "Lattes (34), commune de 17 351 habitants dans l'agglomération de Montpellier sud, entre ville et lagune. Son économie repose sur un tissu de TPE et PME du commerce (zone Boirargues), de la restauration, des services aux entreprises, de la santé, du sport et des activités liées à la zone lagunaire. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lattes (34). Nous accompagnons TPE et PME de l'agglo Montpellier sud : enseignes commerciales, restaurateurs, prestataires de services, professions libérales et entreprises de la zone Boirargues. Audit Flash dès 490 € HT.",
   directAnswerEn:

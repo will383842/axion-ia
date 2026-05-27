@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LIMOURS_COPY: VilleCopy = {
   pitchFr:
-    "Limours (91), commune résidentielle du Hurepoix en Essonne, nichée entre vallons et forêts aux portes du Parc naturel régional de la Haute Vallée de Chevreuse. Tissu TPE artisans, commerces de proximité, PME services, professions libérales, exploitants forestiers. Axion-IA y intervient pour tous types d'activités.",
+    "Limours (91), commune résidentielle du Hurepoix en Essonne, nichée entre vallons et forêts aux portes du Parc naturel régional de la Haute Vallée de Chevreuse. Tissu TPE artisans, commerces de proximité, PME services, professions libérales, exploitants forestiers. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Limours (91), commune résidentielle du Hurepoix en Essonne, nichée entre vallons et forêts aux portes du Parc naturel régional de la Haute Vallée de Chevreuse. Tissu TPE artisans, commerces de proximité, PME services, professions libérales, exploitants forestiers. Axion-IA y intervient pour tous types d'activités.",
+    "Limours (91), commune résidentielle du Hurepoix en Essonne, nichée entre vallons et forêts aux portes du Parc naturel régional de la Haute Vallée de Chevreuse. Tissu TPE artisans, commerces de proximité, PME services, professions libérales, exploitants forestiers. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Limours (91). Nous accompagnons TPE et PME : artisans BTP du Hurepoix, commerces de proximité, professions libérales, PME services, exploitants agricoles et forestiers. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const LIMOURS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Limours : diagnostic adapté aux artisans BTP, commerces du Hurepoix, professions libérales, PME services, exploitants agricoles et forestiers. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Limours : diagnostic adapté aux artisans BTP, commerces du Hurepoix, professions libérales, PME services, exploitants agricoles et forestiers. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Limours : diagnostic adapté aux artisans BTP, commerces du Hurepoix, professions libérales, PME services, exploitants agricoles et forestiers. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Limours : diagnostic adapté aux artisans BTP, commerces du Hurepoix, professions libérales, PME services, exploitants agricoles et forestiers. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Limours : formats adaptés atelier artisan, cabinet libéral, commerce ou exploitation agricole. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Limours : formats adaptés atelier artisan, cabinet libéral, commerce ou exploitation agricole. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Limours : formats adaptés atelier artisan, cabinet libéral, commerce ou exploitation agricole. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Limours : formats adaptés atelier artisan, cabinet libéral, commerce ou exploitation agricole. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Limours : automatisation devis artisans, gestion RDV professions libérales, CRM commerces, traçabilité agricole/forestière, outils pilotage PME.",
@@ -64,7 +64,7 @@ export const LIMOURS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou Massy ?",
-      a: "Massy TGV (20 min). Paris centre (40 min par N118 ou A10). Orly (25 min). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Massy TGV (20 min). Paris centre (40 min par N118 ou A10). Orly (25 min). Coûts de déplacement à part, tarification transparente.",
     },
   ],
 };

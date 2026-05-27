@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const JAUNAY_MARIGNY_COPY: VilleCopy = {
   pitchFr:
-    "Jaunay-Marigny (86), commune nouvelle de la Vienne née de la fusion de Jaunay-Clan et Marigny-Brizay (2019), accueille le Futuroscope et sa technopole. Tissu PME tech/numérique (technopole Futuroscope), tourisme, hôtellerie-restauration, TPE artisans, commerces et services. Axion-IA y intervient pour tous types d'activités du pôle Futuroscope.",
+    "Jaunay-Marigny (86), commune nouvelle de la Vienne née de la fusion de Jaunay-Clan et Marigny-Brizay (2019), accueille le Futuroscope et sa technopole. Tissu PME tech/numérique (technopole Futuroscope), tourisme, hôtellerie-restauration, TPE artisans, commerces et services. Axion-IA y déploie ses missions auprès de toutes les organisations du pôle Futuroscope.",
   pitchEn:
-    "Jaunay-Marigny (86), commune nouvelle de la Vienne née de la fusion de Jaunay-Clan et Marigny-Brizay (2019), accueille le Futuroscope et sa technopole. Tissu PME tech/numérique (technopole Futuroscope), tourisme, hôtellerie-restauration, TPE artisans, commerces et services. Axion-IA y intervient pour tous types d'activités du pôle Futuroscope.",
+    "Jaunay-Marigny (86), commune nouvelle de la Vienne née de la fusion de Jaunay-Clan et Marigny-Brizay (2019), accueille le Futuroscope et sa technopole. Tissu PME tech/numérique (technopole Futuroscope), tourisme, hôtellerie-restauration, TPE artisans, commerces et services. Axion-IA y déploie ses missions auprès de toutes les organisations du pôle Futuroscope.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jaunay-Marigny (86). Nous accompagnons tous types d'activités : PME tech/numérique de la technopole du Futuroscope, acteurs tourisme et hôtellerie-restauration, TPE artisans, commerçants, professions libérales et services aux entreprises du Grand Poitiers nord.",
   directAnswerEn:

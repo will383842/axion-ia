@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_GERMAIN_LES_ARPAJON_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Germain-lès-Arpajon (91), commune résidentielle du sud-ouest de l'Essonne limitrophe d'Arpajon, bénéficie du dynamisme du Hurepoix et de la proximité de l'axe N20. Tissu TPE artisanat et commerces, PME services, professions libérales, restauration et services de proximité. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Germain-lès-Arpajon (91), commune résidentielle du sud-ouest de l'Essonne limitrophe d'Arpajon, bénéficie du dynamisme du Hurepoix et de la proximité de l'axe N20. Tissu TPE artisanat et commerces, PME services, professions libérales, restauration et services de proximité. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Saint-Germain-lès-Arpajon (91), commune résidentielle du sud-ouest de l'Essonne limitrophe d'Arpajon, bénéficie du dynamisme du Hurepoix et de la proximité de l'axe N20. Tissu TPE artisanat et commerces, PME services, professions libérales, restauration et services de proximité. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Germain-lès-Arpajon (91), commune résidentielle du sud-ouest de l'Essonne limitrophe d'Arpajon, bénéficie du dynamisme du Hurepoix et de la proximité de l'axe N20. Tissu TPE artisanat et commerces, PME services, professions libérales, restauration et services de proximité. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Germain-lès-Arpajon (91). Nous accompagnons TPE et PME : artisans, commerçants de proximité, PME services aux entreprises, professions libérales, restaurateurs et prestataires du Hurepoix. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const SAINT_GERMAIN_LES_ARPAJON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Germain-lès-Arpajon : diagnostic adapté aux TPE artisans, commerçants, PME services et professions libérales du Hurepoix. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Germain-lès-Arpajon : diagnostic adapté aux TPE artisans, commerçants, PME services et professions libérales du Hurepoix. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Germain-lès-Arpajon : diagnostic adapté aux TPE artisans, commerçants, PME services et professions libérales du Hurepoix. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Saint-Germain-lès-Arpajon : diagnostic adapté aux TPE artisans, commerçants, PME services et professions libérales du Hurepoix. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Germain-lès-Arpajon : formats adaptés atelier, boutique, cabinet, bureau PME. Vos équipes repartent autonomes sur outils IA métier.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHAZELLES_SUR_LYON_COPY: VilleCopy = {
   pitchFr:
-    "Chazelles-sur-Lyon (42), commune des monts du Lyonnais dans la Loire, est historiquement réputée comme l'une des capitales françaises du chapeau en feutre (filière chapellerie traditionnelle, savoir-faire local). Tissu PME industrielles diversifiées (héritage textile/chapellerie), TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Chazelles-sur-Lyon (42), commune des monts du Lyonnais dans la Loire, est historiquement réputée comme l'une des capitales françaises du chapeau en feutre (filière chapellerie traditionnelle, savoir-faire local). Tissu PME industrielles diversifiées (héritage textile/chapellerie), TPE artisans BTP, commerces. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Chazelles-sur-Lyon (42), commune des monts du Lyonnais dans la Loire, est historiquement réputée comme l'une des capitales françaises du chapeau en feutre (filière chapellerie traditionnelle, savoir-faire local). Tissu PME industrielles diversifiées (héritage textile/chapellerie), TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Chazelles-sur-Lyon (42), commune des monts du Lyonnais dans la Loire, est historiquement réputée comme l'une des capitales françaises du chapeau en feutre (filière chapellerie traditionnelle, savoir-faire local). Tissu PME industrielles diversifiées (héritage textile/chapellerie), TPE artisans BTP, commerces. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chazelles-sur-Lyon (42). Nous accompagnons tous types d'activités : PME industrielles diversifiées (filière chapellerie/textile historique), TPE artisans BTP, commerçants, agriculteurs monts du Lyonnais, indépendants et services aux entreprises.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const CHAZELLES_SUR_LYON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chazelles-sur-Lyon : diagnostic adapté aux PME industrielles (filière chapellerie/textile), agriculteurs monts Lyonnais, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Chazelles-sur-Lyon : diagnostic adapté aux PME industrielles (filière chapellerie/textile), agriculteurs monts Lyonnais, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Chazelles-sur-Lyon : diagnostic adapté aux PME industrielles (filière chapellerie/textile), agriculteurs monts Lyonnais, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Chazelles-sur-Lyon : diagnostic adapté aux PME industrielles (filière chapellerie/textile), agriculteurs monts Lyonnais, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chazelles-sur-Lyon : formats adaptés à l'atelier chapellerie/industriel, exploitation agricole, commerce. Vos équipes repartent autonomes sur outils IA métier.",
@@ -64,7 +64,7 @@ export const CHAZELLES_SUR_LYON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",
-      a: "Nos consultants viennent de Lyon (50 min) ou Saint-Étienne (30 min). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (50 min) ou Saint-Étienne (30 min). Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

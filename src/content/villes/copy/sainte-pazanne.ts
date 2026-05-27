@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINTE_PAZANNE_COPY: VilleCopy = {
   pitchFr:
-    "Sainte-Pazanne (44), bourg central du Pays de Retz en Loire-Atlantique, carrefour entre Nantes, Pornic et Machecoul. Tissu TPE artisans et commerçants, PME services et bâtiment, exploitations agricoles, professions libérales, services de santé. Axion-IA y intervient pour tous types d'activités du Pays de Retz.",
+    "Sainte-Pazanne (44), bourg central du Pays de Retz en Loire-Atlantique, carrefour entre Nantes, Pornic et Machecoul. Tissu TPE artisans et commerçants, PME services et bâtiment, exploitations agricoles, professions libérales, services de santé. Axion-IA accompagne entreprises et indépendants de tous secteurs du Pays de Retz.",
   pitchEn:
-    "Sainte-Pazanne (44), bourg central du Pays de Retz en Loire-Atlantique, carrefour entre Nantes, Pornic et Machecoul. Tissu TPE artisans et commerçants, PME services et bâtiment, exploitations agricoles, professions libérales, services de santé. Axion-IA y intervient pour tous types d'activités du Pays de Retz.",
+    "Sainte-Pazanne (44), bourg central du Pays de Retz en Loire-Atlantique, carrefour entre Nantes, Pornic et Machecoul. Tissu TPE artisans et commerçants, PME services et bâtiment, exploitations agricoles, professions libérales, services de santé. Axion-IA accompagne entreprises et indépendants de tous secteurs du Pays de Retz.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sainte-Pazanne (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME services et bâtiment, exploitations agricoles, professions libérales et services de santé du Pays de Retz.",
   directAnswerEn:

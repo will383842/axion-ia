@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const OMBREE_D_ANJOU_COPY: VilleCopy = {
   pitchFr:
-    "Ombrée d'Anjou (49), commune nouvelle de l'Anjou bleu, regroupe un vaste territoire rural de près de 9 000 habitants entre Segréen et Haut-Anjou. Axion-IA y intervient pour tous types d'activités : agriculture, artisanat, commerces, PME industrielles et services de proximité.",
+    "Ombrée d'Anjou (49), commune nouvelle de l'Anjou bleu, regroupe un vaste territoire rural de près de 9 000 habitants entre Segréen et Haut-Anjou. Axion-IA couvre l'ensemble des activités professionnelles présentes : agriculture, artisanat, commerces, PME industrielles et services de proximité.",
   pitchEn:
-    "Ombrée d'Anjou (49), commune nouvelle de l'Anjou bleu, regroupe un vaste territoire rural de près de 9 000 habitants entre Segréen et Haut-Anjou. Axion-IA y intervient pour tous types d'activités : agriculture, artisanat, commerces, PME industrielles et services de proximité.",
+    "Ombrée d'Anjou (49), commune nouvelle de l'Anjou bleu, regroupe un vaste territoire rural de près de 9 000 habitants entre Segréen et Haut-Anjou. Axion-IA couvre l'ensemble des activités professionnelles présentes : agriculture, artisanat, commerces, PME industrielles et services de proximité.",
   directAnswerFr:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Ombrée d'Anjou (49). Nous accompagnons les TPE, PME et exploitants agricoles de l'Anjou bleu dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
   directAnswerEn:

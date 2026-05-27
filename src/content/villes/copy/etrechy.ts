@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ETRECHY_COPY: VilleCopy = {
   pitchFr:
-    "Étréchy (91), commune semi-rurale de la Vallée de la Juine en Essonne, dessert le sud du département via le RER C. Résidentielle avec tissu TPE artisans, commerces de proximité, PME services, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Étréchy (91), commune semi-rurale de la Vallée de la Juine en Essonne, dessert le sud du département via le RER C. Résidentielle avec tissu TPE artisans, commerces de proximité, PME services, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Étréchy (91), commune semi-rurale de la Vallée de la Juine en Essonne, dessert le sud du département via le RER C. Résidentielle avec tissu TPE artisans, commerces de proximité, PME services, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Étréchy (91), commune semi-rurale de la Vallée de la Juine en Essonne, dessert le sud du département via le RER C. Résidentielle avec tissu TPE artisans, commerces de proximité, PME services, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Étréchy (91). Nous accompagnons TPE et PME : artisans BTP Vallée de la Juine, commerces de proximité, professions libérales, PME services locaux, exploitants agricoles du sud Essonne. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const ETRECHY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Étréchy : diagnostic adapté aux artisans BTP, commerces, professions libérales, PME services du sud Essonne. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Étréchy : diagnostic adapté aux artisans BTP, commerces, professions libérales, PME services du sud Essonne. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Étréchy : diagnostic adapté aux artisans BTP, commerces, professions libérales, PME services du sud Essonne. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Étréchy : diagnostic adapté aux artisans BTP, commerces, professions libérales, PME services du sud Essonne. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Étréchy : formats adaptés cabinet libéral, atelier artisan, commerce ou bureau PME. Vos équipes repartent autonomes sur outils IA configurés métier.",

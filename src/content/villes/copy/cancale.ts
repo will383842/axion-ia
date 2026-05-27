@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CANCALE_COPY: VilleCopy = {
   pitchFr:
-    "Cancale (35), commune emblématique de la Côte d'Émeraude peuplée de 5 672 habitants, est mondialement réputée pour ses huîtres plates sauvages et son port de pêche. TPE et PME ostréicoles, pêcheurs, restaurateurs, hôteliers, commerçants, artisans et professions libérales animent son économie. Axion-IA y intervient pour tous types d'activités du nord-Ille-et-Vilaine littoral.",
+    "Cancale (35), commune emblématique de la Côte d'Émeraude peuplée de 5 672 habitants, est mondialement réputée pour ses huîtres plates sauvages et son port de pêche. TPE et PME ostréicoles, pêcheurs, restaurateurs, hôteliers, commerçants, artisans et professions libérales animent son économie. Axion-IA opère pour toutes les structures économiques de la commune du nord-Ille-et-Vilaine littoral.",
   pitchEn:
-    "Cancale (35), commune emblématique de la Côte d'Émeraude peuplée de 5 672 habitants, est mondialement réputée pour ses huîtres plates sauvages et son port de pêche. TPE et PME ostréicoles, pêcheurs, restaurateurs, hôteliers, commerçants, artisans et professions libérales animent son économie. Axion-IA y intervient pour tous types d'activités du nord-Ille-et-Vilaine littoral.",
+    "Cancale (35), commune emblématique de la Côte d'Émeraude peuplée de 5 672 habitants, est mondialement réputée pour ses huîtres plates sauvages et son port de pêche. TPE et PME ostréicoles, pêcheurs, restaurateurs, hôteliers, commerçants, artisans et professions libérales animent son économie. Axion-IA opère pour toutes les structures économiques de la commune du nord-Ille-et-Vilaine littoral.",
   seoHook: "ostréiculture, pêche & tourisme Côte d'Émeraude",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cancale (35). Nous accompagnons tous types d'activités : TPE et PME ostréicoles, pêcheurs, restaurateurs, hôteliers, commerçants et artisans de la Côte d'Émeraude. Audit Flash dès 490 € HT, démarrage sous 5 jours.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MONTBRISON_COPY: VilleCopy = {
   pitchFr:
-    "Montbrison (42), sous-préfecture de la Loire et capitale historique du Forez, est positionnée dans la plaine du Forez. Tissu administration et services publics, PME tertiaires et industrielles, agriculture forézienne (fourme de Montbrison AOP), TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités du Forez.",
+    "Montbrison (42), sous-préfecture de la Loire et capitale historique du Forez, est positionnée dans la plaine du Forez. Tissu administration et services publics, PME tertiaires et industrielles, agriculture forézienne (fourme de Montbrison AOP), TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations du Forez.",
   pitchEn:
-    "Montbrison (42), sous-préfecture de la Loire et capitale historique du Forez, est positionnée dans la plaine du Forez. Tissu administration et services publics, PME tertiaires et industrielles, agriculture forézienne (fourme de Montbrison AOP), TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités du Forez.",
+    "Montbrison (42), sous-préfecture de la Loire et capitale historique du Forez, est positionnée dans la plaine du Forez. Tissu administration et services publics, PME tertiaires et industrielles, agriculture forézienne (fourme de Montbrison AOP), TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations du Forez.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montbrison (42). Nous accompagnons tous types d'activités : administration et services publics sous-préfecture, PME tertiaires/industrielles, producteurs fromagers AOP Fourme de Montbrison, agriculteurs forez, TPE artisans BTP, commerçants et services aux entreprises Loire Forez Agglo.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const MONTBRISON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montbrison : diagnostic adapté aux administrations/services publics, producteurs AOP, PME, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Montbrison : diagnostic adapté aux administrations/services publics, producteurs AOP, PME, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Montbrison : diagnostic adapté aux administrations/services publics, producteurs AOP, PME, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Montbrison : diagnostic adapté aux administrations/services publics, producteurs AOP, PME, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montbrison : formats adaptés à l'administration, fromagerie AOP, exploitation agricole, atelier artisan. Vos équipes repartent autonomes sur outils IA métier.",
@@ -64,7 +64,7 @@ export const MONTBRISON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",
-      a: "Nos consultants viennent de Lyon (1h15) ou Saint-Étienne (30 min). Pour les multi-jours, hébergement local possible (hôtels Forez). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (1h15) ou Saint-Étienne (30 min). Pour les multi-jours, hébergement local possible (hôtels Forez). Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

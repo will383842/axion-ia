@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MAZAN_COPY: VilleCopy = {
   pitchFr:
-    "Mazan (84), commune du Comtat Venaissin au pied sud du Mont Ventoux, compte près de 6 285 habitants. Vignoble AOC Ventoux, agriculture, tourisme oenologique et patrimonial, tissu de TPE artisanales, domaines viticoles familiaux, PME agroalimentaires et commerces de proximité. Axion-IA y intervient pour tous types d'activités.",
+    "Mazan (84), commune du Comtat Venaissin au pied sud du Mont Ventoux, compte près de 6 285 habitants. Vignoble AOC Ventoux, agriculture, tourisme oenologique et patrimonial, tissu de TPE artisanales, domaines viticoles familiaux, PME agroalimentaires et commerces de proximité. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Mazan (84), commune du Comtat Venaissin au pied sud du Mont Ventoux, compte près de 6 285 habitants. Vignoble AOC Ventoux, agriculture, tourisme oenologique et patrimonial, tissu de TPE artisanales, domaines viticoles familiaux, PME agroalimentaires et commerces de proximité. Axion-IA y intervient pour tous types d'activités.",
+    "Mazan (84), commune du Comtat Venaissin au pied sud du Mont Ventoux, compte près de 6 285 habitants. Vignoble AOC Ventoux, agriculture, tourisme oenologique et patrimonial, tissu de TPE artisanales, domaines viticoles familiaux, PME agroalimentaires et commerces de proximité. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mazan (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles, domaines viticoles AOC Ventoux, PME agroalimentaires, hébergements touristiques, commerces et services du Comtat Venaissin. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const MAZAN_COPY: VilleCopy = {
       en: "Audit IA à Mazan : diagnostic adapté aux TPE artisans, domaines viticoles AOC Ventoux, PME agroalimentaires et hébergements du Comtat. ROI chiffré, Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Mazan : formats adaptés aux domaines viticoles, exploitations agricoles, PME agroalimentaires, hébergements touristiques et artisans. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Mazan : formats adaptés aux domaines viticoles, exploitations agricoles, PME agroalimentaires, hébergements touristiques et artisans. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Mazan : formats adaptés aux domaines viticoles, exploitations agricoles, PME agroalimentaires, hébergements touristiques et artisans. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Mazan : formats adaptés aux domaines viticoles, exploitations agricoles, PME agroalimentaires, hébergements touristiques et artisans. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Mazan : traçabilité parcellaire AOC Ventoux, gestion vendanges et cave, automatisation devis artisans, fiches Google Business hébergements, gestion réservations oenotourisme. Adapté TPE/PME Comtat.",

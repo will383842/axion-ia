@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BELLEVILLE_EN_BEAUJOLAIS_COPY: VilleCopy = {
   pitchFr:
-    "Belleville-en-Beaujolais (69), commune au cœur du vignoble du Beaujolais dans le Rhône, est un centre viticole majeur (AOC Beaujolais, Beaujolais-Villages, crus du Beaujolais). Tissu PME viticoles et négoce en vins, oenotourisme, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités beaujolaises.",
+    "Belleville-en-Beaujolais (69), commune au cœur du vignoble du Beaujolais dans le Rhône, est un centre viticole majeur (AOC Beaujolais, Beaujolais-Villages, crus du Beaujolais). Tissu PME viticoles et négoce en vins, oenotourisme, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations beaujolaises.",
   pitchEn:
-    "Belleville-en-Beaujolais (69), commune au cœur du vignoble du Beaujolais dans le Rhône, est un centre viticole majeur (AOC Beaujolais, Beaujolais-Villages, crus du Beaujolais). Tissu PME viticoles et négoce en vins, oenotourisme, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités beaujolaises.",
+    "Belleville-en-Beaujolais (69), commune au cœur du vignoble du Beaujolais dans le Rhône, est un centre viticole majeur (AOC Beaujolais, Beaujolais-Villages, crus du Beaujolais). Tissu PME viticoles et négoce en vins, oenotourisme, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations beaujolaises.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Belleville-en-Beaujolais (69). Nous accompagnons tous types d'activités : viticulteurs AOC Beaujolais / Beaujolais-Villages / crus, négociants en vins, acteurs oenotourisme, PME agroalimentaires, TPE artisans BTP, commerçants et services aux entreprises beaujolaises.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const BELLEVILLE_EN_BEAUJOLAIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Belleville-en-Beaujolais : diagnostic adapté aux viticulteurs AOC Beaujolais/crus, négociants, acteurs oenotourisme, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Belleville-en-Beaujolais : diagnostic adapté aux viticulteurs AOC Beaujolais/crus, négociants, acteurs oenotourisme, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Belleville-en-Beaujolais : diagnostic adapté aux viticulteurs AOC Beaujolais/crus, négociants, acteurs oenotourisme, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Belleville-en-Beaujolais : diagnostic adapté aux viticulteurs AOC Beaujolais/crus, négociants, acteurs oenotourisme, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Belleville-en-Beaujolais : formats adaptés au domaine viticole, cave coopérative, négoce, gîte oenotouristique. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const BELLEVILLE_EN_BEAUJOLAIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (50 min A6). Pour les multi-jours, hébergement local possible (gîtes vignoble). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (50 min A6). Pour les multi-jours, hébergement local possible (gîtes vignoble). Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

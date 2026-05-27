@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SEVREMONT_COPY: VilleCopy = {
   pitchFr:
-    "Sèvremont (85), commune nouvelle du bocage vendéen, compte plus de 6 300 habitants. Née de la fusion de quatre communes, entre Les Herbiers et Pouzauges. Tissu de TPE artisanales, PME industrielles et agroalimentaires, exploitations agricoles et commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Sèvremont (85), commune nouvelle du bocage vendéen, compte plus de 6 300 habitants. Née de la fusion de quatre communes, entre Les Herbiers et Pouzauges. Tissu de TPE artisanales, PME industrielles et agroalimentaires, exploitations agricoles et commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Sèvremont (85), commune nouvelle du bocage vendéen, compte plus de 6 300 habitants. Née de la fusion de quatre communes, entre Les Herbiers et Pouzauges. Tissu de TPE artisanales, PME industrielles et agroalimentaires, exploitations agricoles et commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Sèvremont (85), commune nouvelle du bocage vendéen, compte plus de 6 300 habitants. Née de la fusion de quatre communes, entre Les Herbiers et Pouzauges. Tissu de TPE artisanales, PME industrielles et agroalimentaires, exploitations agricoles et commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sèvremont (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles du bocage, exploitations agricoles, professions libérales et services de proximité.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const SEVREMONT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sèvremont : diagnostic adapté aux TPE artisans, PME industrielles, exploitations agricoles et commerces du haut bocage vendéen. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Sèvremont : diagnostic adapté aux TPE artisans, PME industrielles, exploitations agricoles et commerces du haut bocage vendéen. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Sèvremont : diagnostic adapté aux TPE artisans, PME industrielles, exploitations agricoles et commerces du haut bocage vendéen. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Sèvremont : diagnostic adapté aux TPE artisans, PME industrielles, exploitations agricoles et commerces du haut bocage vendéen. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sèvremont : formats adaptés aux exploitations agricoles, PME industrielles, artisans et commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAVERNE_COPY: VilleCopy = {
   pitchFr:
-    "Saverne (67), sous-préfecture du Bas-Rhin au pied du col de Saverne dans les Vosges du Nord, conjugue patrimoine historique (château des Rohan), porte d'entrée Alsace-Lorraine et tissu économique diversifié. TPE/PME industrielles, commerces de centre-ville, hôtellerie-restauration, artisans et services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Saverne (67), sous-préfecture du Bas-Rhin au pied du col de Saverne dans les Vosges du Nord, conjugue patrimoine historique (château des Rohan), porte d'entrée Alsace-Lorraine et tissu économique diversifié. TPE/PME industrielles, commerces de centre-ville, hôtellerie-restauration, artisans et services aux entreprises. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Saverne (67), sous-préfecture du Bas-Rhin au pied du col de Saverne dans les Vosges du Nord, conjugue patrimoine historique (château des Rohan), porte d'entrée Alsace-Lorraine et tissu économique diversifié. TPE/PME industrielles, commerces de centre-ville, hôtellerie-restauration, artisans et services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Saverne (67), sous-préfecture du Bas-Rhin au pied du col de Saverne dans les Vosges du Nord, conjugue patrimoine historique (château des Rohan), porte d'entrée Alsace-Lorraine et tissu économique diversifié. TPE/PME industrielles, commerces de centre-ville, hôtellerie-restauration, artisans et services aux entreprises. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saverne (67). Nous accompagnons TPE et PME : industriels, commerçants du centre-ville, hôteliers-restaurateurs, artisans BTP, professions libérales et services aux entreprises du Pays de Saverne. Audit Flash dès 490 € HT.",
   directAnswerEn:

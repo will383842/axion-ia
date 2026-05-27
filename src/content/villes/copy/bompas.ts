@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BOMPAS_COPY: VilleCopy = {
   pitchFr:
-    "Bompas (66), commune résidentielle en périphérie nord-est de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME zones d'activités, commerces, agriculture, services. Axion-IA y intervient pour tous types d'activités de l'agglomération perpignanaise.",
+    "Bompas (66), commune résidentielle en périphérie nord-est de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME zones d'activités, commerces, agriculture, services. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération perpignanaise.",
   pitchEn:
-    "Bompas (66), commune résidentielle en périphérie nord-est de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME zones d'activités, commerces, agriculture, services. Axion-IA y intervient pour tous types d'activités de l'agglomération perpignanaise.",
+    "Bompas (66), commune résidentielle en périphérie nord-est de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME zones d'activités, commerces, agriculture, services. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération perpignanaise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bompas (66). Nous accompagnons tous types d'activités : TPE artisans, PME zones d'activités, commerçants, agriculteurs, indépendants et professions libérales de l'agglo Perpignan nord-est.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const BOMPAS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bompas : diagnostic adapté aux TPE artisans, PME zones d'activités, agriculteurs et commerçants de l'agglo Perpignan nord-est. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Bompas : diagnostic adapté aux TPE artisans, PME zones d'activités, agriculteurs et commerçants de l'agglo Perpignan nord-est. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Bompas : diagnostic adapté aux TPE artisans, PME zones d'activités, agriculteurs et commerçants de l'agglo Perpignan nord-est. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Bompas : diagnostic adapté aux TPE artisans, PME zones d'activités, agriculteurs et commerçants de l'agglo Perpignan nord-est. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Bompas : formats adaptés au bureau, atelier, exploitation agricole, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Bompas : formats adaptés au bureau, atelier, exploitation agricole, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Bompas : formats adaptés au bureau, atelier, exploitation agricole, commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Bompas : formats adaptés au bureau, atelier, exploitation agricole, commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Bompas : agents conversationnels B2B, automatisation devis BTP, CRM augmentés, classification documents, gestion stocks. Perpignan Méditerranée Métropole.",
@@ -64,7 +64,7 @@ export const BOMPAS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Bompas ?",
-      a: "Nos consultants interviennent depuis Perpignan (8 min). Missions sur site dans votre bureau, atelier ou commerce. Visio possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants interviennent depuis Perpignan (8 min). Missions sur site dans votre bureau, atelier ou commerce. Visio possible. Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

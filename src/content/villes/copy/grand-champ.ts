@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GRAND_CHAMP_COPY: VilleCopy = {
   pitchFr:
-    "Grand-Champ (56), commune rurale de l'arrière-pays vannetais dans le Morbihan, allie agriculture, TPE artisanales, PME agroalimentaires et commerces de bourg au coeur d'un territoire en croissance résidentielle. Axion-IA y intervient pour tous types d'activités.",
+    "Grand-Champ (56), commune rurale de l'arrière-pays vannetais dans le Morbihan, allie agriculture, TPE artisanales, PME agroalimentaires et commerces de bourg au coeur d'un territoire en croissance résidentielle. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Grand-Champ (56), commune rurale de l'arrière-pays vannetais dans le Morbihan, allie agriculture, TPE artisanales, PME agroalimentaires et commerces de bourg au coeur d'un territoire en croissance résidentielle. Axion-IA y intervient pour tous types d'activités.",
+    "Grand-Champ (56), commune rurale de l'arrière-pays vannetais dans le Morbihan, allie agriculture, TPE artisanales, PME agroalimentaires et commerces de bourg au coeur d'un territoire en croissance résidentielle. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Grand-Champ (56). Nous accompagnons tous types d'activités : exploitations agricoles, TPE artisanales, PME agroalimentaires, commerces de bourg, professions libérales et indépendants de l'arrière-pays vannetais.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const GRAND_CHAMP_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Grand-Champ : diagnostic adapté aux exploitations agricoles, TPE artisanales, PME agroalimentaires et commerces de l'arrière-pays vannetais. ROI chiffré, audit Flash 490 € HT accessible à toute structure.",
-      en: "Audit IA à Grand-Champ : diagnostic adapté aux exploitations agricoles, TPE artisanales, PME agroalimentaires et commerces de l'arrière-pays vannetais. ROI chiffré, audit Flash 490 € HT accessible à toute structure.",
+      fr: "Audit IA à Grand-Champ : diagnostic adapté aux exploitations agricoles, TPE artisanales, PME agroalimentaires et commerces de l'arrière-pays vannetais. Audit Flash à 490 € HT, retour sur investissement chiffré accessible à toute structure.",
+      en: "Audit IA à Grand-Champ : diagnostic adapté aux exploitations agricoles, TPE artisanales, PME agroalimentaires et commerces de l'arrière-pays vannetais. Audit Flash à 490 € HT, retour sur investissement chiffré accessible à toute structure.",
     },
     interventions: {
       fr: "Interventions IA sur site à Grand-Champ : formats adaptés à l'exploitation agricole, à l'atelier artisanal ou au bureau PME. Vos équipes repartent autonomes sur les outils IA métier adaptés à votre activité.",

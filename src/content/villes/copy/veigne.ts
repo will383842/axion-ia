@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VEIGNE_COPY: VilleCopy = {
   pitchFr:
-    "Veigné (37), commune de la vallée de l'Indre au sud de Tours, offre un cadre résidentiel prisé entre Montbazon et Tours Métropole. Tissu TPE artisans BTP, commerçants, PME de services, professions libérales et entreprises périurbaines. Proximité directe des châteaux de la Loire (Azay-le-Rideau, Chenonceau). Axion-IA y intervient pour tous types d'activités.",
+    "Veigné (37), commune de la vallée de l'Indre au sud de Tours, offre un cadre résidentiel prisé entre Montbazon et Tours Métropole. Tissu TPE artisans BTP, commerçants, PME de services, professions libérales et entreprises périurbaines. Proximité directe des châteaux de la Loire (Azay-le-Rideau, Chenonceau). Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Veigné (37), commune de la vallée de l'Indre au sud de Tours, offre un cadre résidentiel prisé entre Montbazon et Tours Métropole. Tissu TPE artisans BTP, commerçants, PME de services, professions libérales et entreprises périurbaines. Proximité directe des châteaux de la Loire (Azay-le-Rideau, Chenonceau). Axion-IA y intervient pour tous types d'activités.",
+    "Veigné (37), commune de la vallée de l'Indre au sud de Tours, offre un cadre résidentiel prisé entre Montbazon et Tours Métropole. Tissu TPE artisans BTP, commerçants, PME de services, professions libérales et entreprises périurbaines. Proximité directe des châteaux de la Loire (Azay-le-Rideau, Chenonceau). Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Veigné (37). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, PME de services, professions libérales, indépendants, prestataires touristiques vallée de l'Indre et entreprises sud-tourangelles.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const VEIGNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Veigné : diagnostic adapté aux TPE artisans, commerçants, PME de services et professions libérales de la vallée de l'Indre sud-tourangelle. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Veigné : diagnostic adapté aux TPE artisans, commerçants, PME de services et professions libérales de la vallée de l'Indre sud-tourangelle. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Veigné : diagnostic adapté aux TPE artisans, commerçants, PME de services et professions libérales de la vallée de l'Indre sud-tourangelle. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Veigné : diagnostic adapté aux TPE artisans, commerçants, PME de services et professions libérales de la vallée de l'Indre sud-tourangelle. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Veigné : formats adaptés à l'atelier artisan, au commerce, au cabinet professionnel ou à la PME de services. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Veigné : formats adaptés à l'atelier artisan, au commerce, au cabinet professionnel ou à la PME de services. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Veigné : formats adaptés à l'atelier artisan, au commerce, au cabinet professionnel ou à la PME de services. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Veigné : formats adaptés à l'atelier artisan, au commerce, au cabinet professionnel ou à la PME de services. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Veigné : automatisation devis et facturation, agents conversationnels prise de RDV, classification documents, gestion planning. Adapté aux TPE/PME de la vallée de l'Indre.",

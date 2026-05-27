@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ILLZACH_COPY: VilleCopy = {
   pitchFr:
-    "Illzach (68), commune industrielle au nord de Mulhouse en Haut-Rhin, fait partie de Mulhouse Alsace Agglomération (m2A) avec d'importantes zones d'activités. Tissu TPE artisans, PME industrielles et de services, commerces de proximité, professions libérales et indépendants. Axion-IA y intervient pour tous types d'activités de l'agglomération nord mulhousienne.",
+    "Illzach (68), commune industrielle au nord de Mulhouse en Haut-Rhin, fait partie de Mulhouse Alsace Agglomération (m2A) avec d'importantes zones d'activités. Tissu TPE artisans, PME industrielles et de services, commerces de proximité, professions libérales et indépendants. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération nord mulhousienne.",
   pitchEn:
-    "Illzach (68), commune industrielle au nord de Mulhouse en Haut-Rhin, fait partie de Mulhouse Alsace Agglomération (m2A) avec d'importantes zones d'activités. Tissu TPE artisans, PME industrielles et de services, commerces de proximité, professions libérales et indépendants. Axion-IA y intervient pour tous types d'activités de l'agglomération nord mulhousienne.",
+    "Illzach (68), commune industrielle au nord de Mulhouse en Haut-Rhin, fait partie de Mulhouse Alsace Agglomération (m2A) avec d'importantes zones d'activités. Tissu TPE artisans, PME industrielles et de services, commerces de proximité, professions libérales et indépendants. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération nord mulhousienne.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Illzach (68). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants, professions libérales et indépendants des zones industrielles de l'agglomération nord de Mulhouse. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
   directAnswerEn:

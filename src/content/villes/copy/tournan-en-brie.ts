@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const TOURNAN_EN_BRIE_COPY: VilleCopy = {
   pitchFr:
-    "Tournan-en-Brie (77), bourg historique de la Brie en Seine-et-Marne, pôle de services et commerce local. Tissu TPE artisans, PME de services, commerces de centre-bourg, professions libérales et prestataires. Axion-IA y intervient pour tous types d'activités.",
+    "Tournan-en-Brie (77), bourg historique de la Brie en Seine-et-Marne, pôle de services et commerce local. Tissu TPE artisans, PME de services, commerces de centre-bourg, professions libérales et prestataires. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Tournan-en-Brie (77), bourg historique de la Brie en Seine-et-Marne, pôle de services et commerce local. Tissu TPE artisans, PME de services, commerces de centre-bourg, professions libérales et prestataires. Axion-IA y intervient pour tous types d'activités.",
+    "Tournan-en-Brie (77), bourg historique de la Brie en Seine-et-Marne, pôle de services et commerce local. Tissu TPE artisans, PME de services, commerces de centre-bourg, professions libérales et prestataires. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tournan-en-Brie (77). Nous accompagnons TPE et PME : artisans du bâtiment, commerces de centre-bourg, professions libérales, prestataires de services et entreprises de la Brie est francilienne. Audit Flash dès 490 € HT.",
   directAnswerEn:

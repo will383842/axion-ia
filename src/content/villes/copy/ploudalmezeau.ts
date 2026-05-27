@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PLOUDALMEZEAU_COPY: VilleCopy = {
   pitchFr:
-    "Ploudalmézeau (29), bourg-centre du pays d'Iroise dans le nord-ouest Finistère, est historiquement lié à la récolte du goémon et aux activités maritimes. TPE artisans, PME de la filière algues, commerces de proximité, professions libérales, exploitants agricoles et acteurs du tourisme littoral composent son tissu économique. Axion-IA y intervient pour tous types d'activités du pays d'Iroise.",
+    "Ploudalmézeau (29), bourg-centre du pays d'Iroise dans le nord-ouest Finistère, est historiquement lié à la récolte du goémon et aux activités maritimes. TPE artisans, PME de la filière algues, commerces de proximité, professions libérales, exploitants agricoles et acteurs du tourisme littoral composent son tissu économique. Axion-IA y déploie ses missions auprès de toutes les organisations du pays d'Iroise.",
   pitchEn:
-    "Ploudalmézeau (29), bourg-centre du pays d'Iroise dans le nord-ouest Finistère, est historiquement lié à la récolte du goémon et aux activités maritimes. TPE artisans, PME de la filière algues, commerces de proximité, professions libérales, exploitants agricoles et acteurs du tourisme littoral composent son tissu économique. Axion-IA y intervient pour tous types d'activités du pays d'Iroise.",
+    "Ploudalmézeau (29), bourg-centre du pays d'Iroise dans le nord-ouest Finistère, est historiquement lié à la récolte du goémon et aux activités maritimes. TPE artisans, PME de la filière algues, commerces de proximité, professions libérales, exploitants agricoles et acteurs du tourisme littoral composent son tissu économique. Axion-IA y déploie ses missions auprès de toutes les organisations du pays d'Iroise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ploudalmézeau (29). Nous accompagnons tous types d'activités : TPE artisans et goémoniers du pays d'Iroise, PME de la filière algues, commerçants de bourg, professions libérales, exploitants agricoles et indépendants du secteur.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const PLOUDALMEZEAU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ploudalmézeau : diagnostic adapté aux TPE goémonières, PME de la filière algues, artisans BTP, commerçants et exploitants agricoles du pays d'Iroise. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Ploudalmézeau : diagnostic adapté aux TPE goémonières, PME de la filière algues, artisans BTP, commerçants et exploitants agricoles du pays d'Iroise. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Ploudalmézeau : diagnostic adapté aux TPE goémonières, PME de la filière algues, artisans BTP, commerçants et exploitants agricoles du pays d'Iroise. Audit Flash 490 € HT avec ROI quantifié accessible.",
+      en: "Audit IA à Ploudalmézeau : diagnostic adapté aux TPE goémonières, PME de la filière algues, artisans BTP, commerçants et exploitants agricoles du pays d'Iroise. Audit Flash 490 € HT avec ROI quantifié accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ploudalmézeau : formats adaptés aux goémoniers, TPE artisans, PME agricoles ou commerces de bourg du pays d'Iroise. Vos équipes repartent autonomes sur les outils IA métier.",

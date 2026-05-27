@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VALDOIE_COPY: VilleCopy = {
   pitchFr:
-    "Valdoie (90), commune du Territoire de Belfort intégrée à l'agglomération belfortaine, est principalement résidentielle avec un tissu de TPE artisans, commerces de proximité et services. Proximité industries Belfort-Montbéliard (énergie, transport ferroviaire, automobile). Axion-IA y intervient pour tous types d'activités.",
+    "Valdoie (90), commune du Territoire de Belfort intégrée à l'agglomération belfortaine, est principalement résidentielle avec un tissu de TPE artisans, commerces de proximité et services. Proximité industries Belfort-Montbéliard (énergie, transport ferroviaire, automobile). Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Valdoie (90), commune du Territoire de Belfort intégrée à l'agglomération belfortaine, est principalement résidentielle avec un tissu de TPE artisans, commerces de proximité et services. Proximité industries Belfort-Montbéliard (énergie, transport ferroviaire, automobile). Axion-IA y intervient pour tous types d'activités.",
+    "Valdoie (90), commune du Territoire de Belfort intégrée à l'agglomération belfortaine, est principalement résidentielle avec un tissu de TPE artisans, commerces de proximité et services. Proximité industries Belfort-Montbéliard (énergie, transport ferroviaire, automobile). Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Valdoie (90). Nous accompagnons TPE et PME : TPE artisans, commerces de proximité, services valdoyens, PME sous-traitantes industries Belfort (énergie, ferroviaire, automobile). Audit Flash 490 € HT.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const VALDOIE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Valdoie : diagnostic adapté aux TPE artisans, commerces, services valdoyens, PME sous-traitantes industries Belfort. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Valdoie : diagnostic adapté aux TPE artisans, commerces, services valdoyens, PME sous-traitantes industries Belfort. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Valdoie : diagnostic adapté aux TPE artisans, commerces, services valdoyens, PME sous-traitantes industries Belfort. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Valdoie : diagnostic adapté aux TPE artisans, commerces, services valdoyens, PME sous-traitantes industries Belfort. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Valdoie : formats adaptés à l'atelier artisan, commerce, PME sous-traitante. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Valdoie : formats adaptés à l'atelier artisan, commerce, PME sous-traitante. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Valdoie : formats adaptés à l'atelier artisan, commerce, PME sous-traitante. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Valdoie : formats adaptés à l'atelier artisan, commerce, PME sous-traitante. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Valdoie : optimisation production sous-traitance, contrôle qualité vision, maintenance prédictive, automatisation gestion commerce, CRM clients.",
@@ -64,7 +64,7 @@ export const VALDOIE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Belfort ?",
-      a: "Belfort centre (5 min) ou TGV Belfort-Montbéliard (15 min). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Belfort centre (5 min) ou TGV Belfort-Montbéliard (15 min). Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

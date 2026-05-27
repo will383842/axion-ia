@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SIGEAN_COPY: VilleCopy = {
   pitchFr:
-    "Sigean (11), commune audoise entre littoral méditerranéen et garrigue, connue pour sa Réserve Africaine (parc animalier majeur du sud de la France). Tissu TPE artisans, PME tourisme animalier, commerces de proximité, viticulture (Corbières), hôtellerie-restauration. Axion-IA y intervient pour tous types d'activités.",
+    "Sigean (11), commune audoise entre littoral méditerranéen et garrigue, connue pour sa Réserve Africaine (parc animalier majeur du sud de la France). Tissu TPE artisans, PME tourisme animalier, commerces de proximité, viticulture (Corbières), hôtellerie-restauration. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Sigean (11), commune audoise entre littoral méditerranéen et garrigue, connue pour sa Réserve Africaine (parc animalier majeur du sud de la France). Tissu TPE artisans, PME tourisme animalier, commerces de proximité, viticulture (Corbières), hôtellerie-restauration. Axion-IA y intervient pour tous types d'activités.",
+    "Sigean (11), commune audoise entre littoral méditerranéen et garrigue, connue pour sa Réserve Africaine (parc animalier majeur du sud de la France). Tissu TPE artisans, PME tourisme animalier, commerces de proximité, viticulture (Corbières), hôtellerie-restauration. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sigean (11). Nous accompagnons TPE artisans, PME tourisme (Réserve Africaine), viticulteurs Corbières, commerçants, hôteliers-restaurateurs et professionnels du littoral audois. Audit Flash dès 490 € HT.",
   directAnswerEn:

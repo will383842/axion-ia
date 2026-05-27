@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ROQUEFORT_LA_BEDOULE_COPY: VilleCopy = {
   pitchFr:
-    "Roquefort-la-Bédoule (13), commune au sud-est de Marseille marquée par son passé de carrières de pierre et son cadre périurbain provençal, conjugue tissu de TPE artisans bâtiment, PME services, commerces et professions libérales. Bassin résidentiel des actifs marseillais et ciotadens. Axion-IA y intervient pour tous types d'activités du bassin est marseillais.",
+    "Roquefort-la-Bédoule (13), commune au sud-est de Marseille marquée par son passé de carrières de pierre et son cadre périurbain provençal, conjugue tissu de TPE artisans bâtiment, PME services, commerces et professions libérales. Bassin résidentiel des actifs marseillais et ciotadens. Axion-IA opère pour toutes les structures économiques de la commune du bassin est marseillais.",
   pitchEn:
-    "Roquefort-la-Bédoule (13), commune au sud-est de Marseille marquée par son passé de carrières de pierre et son cadre périurbain provençal, conjugue tissu de TPE artisans bâtiment, PME services, commerces et professions libérales. Bassin résidentiel des actifs marseillais et ciotadens. Axion-IA y intervient pour tous types d'activités du bassin est marseillais.",
+    "Roquefort-la-Bédoule (13), commune au sud-est de Marseille marquée par son passé de carrières de pierre et son cadre périurbain provençal, conjugue tissu de TPE artisans bâtiment, PME services, commerces et professions libérales. Bassin résidentiel des actifs marseillais et ciotadens. Axion-IA opère pour toutes les structures économiques de la commune du bassin est marseillais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Roquefort-la-Bédoule (13). Nous accompagnons TPE artisans, PME services, commerçants et professions libérales du sud-est marseillais. Audit Flash dès 490 € HT, sans engagement.",
   directAnswerEn:

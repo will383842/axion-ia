@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FIRMINY_COPY: VilleCopy = {
   pitchFr:
-    "Firminy (42), commune de la vallée de l'Ondaine dans la Loire, est intégrée à Saint-Étienne Métropole. Réputée internationalement pour le Site Le Corbusier (ensemble architectural Firminy-Vert, inscrit au patrimoine mondial UNESCO). Tissu PME industrielles, TPE artisans BTP, tourisme architectural, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Firminy (42), commune de la vallée de l'Ondaine dans la Loire, est intégrée à Saint-Étienne Métropole. Réputée internationalement pour le Site Le Corbusier (ensemble architectural Firminy-Vert, inscrit au patrimoine mondial UNESCO). Tissu PME industrielles, TPE artisans BTP, tourisme architectural, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Firminy (42), commune de la vallée de l'Ondaine dans la Loire, est intégrée à Saint-Étienne Métropole. Réputée internationalement pour le Site Le Corbusier (ensemble architectural Firminy-Vert, inscrit au patrimoine mondial UNESCO). Tissu PME industrielles, TPE artisans BTP, tourisme architectural, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Firminy (42), commune de la vallée de l'Ondaine dans la Loire, est intégrée à Saint-Étienne Métropole. Réputée internationalement pour le Site Le Corbusier (ensemble architectural Firminy-Vert, inscrit au patrimoine mondial UNESCO). Tissu PME industrielles, TPE artisans BTP, tourisme architectural, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Firminy (42). Nous accompagnons tous types d'activités : PME industrielles héritage métallurgique vallée Ondaine, acteurs tourisme architectural Site Le Corbusier UNESCO, TPE artisans BTP, commerçants, indépendants et services aux entreprises de Saint-Étienne Métropole.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const FIRMINY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Firminy : diagnostic adapté aux PME industrielles vallée Ondaine, acteurs tourisme architectural Le Corbusier, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Firminy : diagnostic adapté aux PME industrielles vallée Ondaine, acteurs tourisme architectural Le Corbusier, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Firminy : diagnostic adapté aux PME industrielles vallée Ondaine, acteurs tourisme architectural Le Corbusier, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Firminy : diagnostic adapté aux PME industrielles vallée Ondaine, acteurs tourisme architectural Le Corbusier, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Firminy : formats adaptés à l'atelier industriel, site touristique architectural, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Firminy : formats adaptés à l'atelier industriel, site touristique architectural, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Firminy : formats adaptés à l'atelier industriel, site touristique architectural, commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Firminy : formats adaptés à l'atelier industriel, site touristique architectural, commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Firminy : agents conversationnels visiteurs Site Le Corbusier multilingue, prédiction maintenance industrielle, automatisation devis BTP. Saint-Étienne Métropole.",
@@ -64,7 +64,7 @@ export const FIRMINY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",
-      a: "Nos consultants viennent de Lyon (1h) ou Saint-Étienne (20 min). Pour les multi-jours, hébergement local possible (hôtels Saint-Étienne). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (1h) ou Saint-Étienne (20 min). Pour les multi-jours, hébergement local possible (hôtels Saint-Étienne). Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

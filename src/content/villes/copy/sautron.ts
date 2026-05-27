@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAUTRON_COPY: VilleCopy = {
   pitchFr:
-    "Sautron (44), commune résidentielle à l'ouest de Nantes en Loire-Atlantique, accueille un tissu de TPE artisanales, commerces de proximité, PME tertiaires et professions libérales. Axion-IA y intervient pour tous types d'activités du bassin nantais ouest.",
+    "Sautron (44), commune résidentielle à l'ouest de Nantes en Loire-Atlantique, accueille un tissu de TPE artisanales, commerces de proximité, PME tertiaires et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin nantais ouest.",
   pitchEn:
-    "Sautron (44), commune résidentielle à l'ouest de Nantes en Loire-Atlantique, accueille un tissu de TPE artisanales, commerces de proximité, PME tertiaires et professions libérales. Axion-IA y intervient pour tous types d'activités du bassin nantais ouest.",
+    "Sautron (44), commune résidentielle à l'ouest de Nantes en Loire-Atlantique, accueille un tissu de TPE artisanales, commerces de proximité, PME tertiaires et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin nantais ouest.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sautron (44). Nous accompagnons les TPE, indépendants, PME tertiaires, professions libérales et commerçants de cette commune résidentielle de l'ouest nantais sur leurs cas IA opérationnels. Audit Flash dès 490 € HT.",
   directAnswerEn:

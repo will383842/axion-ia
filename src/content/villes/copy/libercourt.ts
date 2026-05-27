@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LIBERCOURT_COPY: VilleCopy = {
   pitchFr:
-    "Libercourt (62), commune du bassin minier du Pas-de-Calais sur l'axe A1, combine logistique, TPE artisanales, commerces et PME de services. Axion-IA y intervient pour tous types d'activités du bassin minier.",
+    "Libercourt (62), commune du bassin minier du Pas-de-Calais sur l'axe A1, combine logistique, TPE artisanales, commerces et PME de services. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin minier.",
   pitchEn:
-    "Libercourt (62), commune du bassin minier du Pas-de-Calais sur l'axe A1, combine logistique, TPE artisanales, commerces et PME de services. Axion-IA y intervient pour tous types d'activités du bassin minier.",
+    "Libercourt (62), commune du bassin minier du Pas-de-Calais sur l'axe A1, combine logistique, TPE artisanales, commerces et PME de services. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin minier.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Libercourt (62). Nous accompagnons TPE artisanales, PME logistiques et de services, commerçants et professions libérales du bassin minier. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:

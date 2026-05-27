@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const YSSINGEAUX_COPY: VilleCopy = {
   pitchFr:
-    "Yssingeaux (43), sous-préfecture de la Haute-Loire, est une commune rurale du Velay méridional. Drainée par le Lignon du Velay, environnement naturel remarquable (Natura 2000 gorges de la Loire). Tissu agroalimentaire, PME bois/menuiserie, TPE artisans, commerces, services. Axion-IA y intervient pour tous types d'activités.",
+    "Yssingeaux (43), sous-préfecture de la Haute-Loire, est une commune rurale du Velay méridional. Drainée par le Lignon du Velay, environnement naturel remarquable (Natura 2000 gorges de la Loire). Tissu agroalimentaire, PME bois/menuiserie, TPE artisans, commerces, services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Yssingeaux (43), sous-préfecture de la Haute-Loire, est une commune rurale du Velay méridional. Drainée par le Lignon du Velay, environnement naturel remarquable (Natura 2000 gorges de la Loire). Tissu agroalimentaire, PME bois/menuiserie, TPE artisans, commerces, services. Axion-IA y intervient pour tous types d'activités.",
+    "Yssingeaux (43), sous-préfecture de la Haute-Loire, est une commune rurale du Velay méridional. Drainée par le Lignon du Velay, environnement naturel remarquable (Natura 2000 gorges de la Loire). Tissu agroalimentaire, PME bois/menuiserie, TPE artisans, commerces, services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Yssingeaux (43). Nous accompagnons TPE et PME : entreprises agroalimentaire, filière bois/menuiserie, administration sous-préfecture, artisans BTP, commerçants et services aux entreprises yssingelais.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const YSSINGEAUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Yssingeaux : diagnostic adapté aux entreprises agroalimentaire, filière bois/menuiserie, administration, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Yssingeaux : diagnostic adapté aux entreprises agroalimentaire, filière bois/menuiserie, administration, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Yssingeaux : diagnostic adapté aux entreprises agroalimentaire, filière bois/menuiserie, administration, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Yssingeaux : diagnostic adapté aux entreprises agroalimentaire, filière bois/menuiserie, administration, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Yssingeaux : formats adaptés à l'atelier bois, exploitation agroalimentaire, administration, commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Yssingeaux : formats adaptés à l'atelier bois, exploitation agroalimentaire, administration, commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Yssingeaux : formats adaptés à l'atelier bois, exploitation agroalimentaire, administration, commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Yssingeaux : formats adaptés à l'atelier bois, exploitation agroalimentaire, administration, commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Yssingeaux : traçabilité filière bois, contrôle qualité agroalimentaire vision, automatisation gestion stocks menuiserie, prédiction commandes.",
@@ -64,7 +64,7 @@ export const YSSINGEAUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Saint-Étienne ?",
-      a: "Saint-Étienne (50 min) ou Lyon (1h30). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Saint-Étienne (50 min) ou Lyon (1h30). Frais de mission en sus, grille tarifaire publique.",
     },
   ],
 };

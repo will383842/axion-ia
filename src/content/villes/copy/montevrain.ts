@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MONTEVRAIN_COPY: VilleCopy = {
   pitchFr:
-    "Montévrain (77), commune de Seine-et-Marne au coeur de Marne-la-Vallée, bénéficie de la dynamique économique liée à la proximité de Disneyland Paris et du pôle Val d'Europe. Tissu de TPE/PME hôtellerie-restauration, commerce, services aux entreprises, tourisme et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Montévrain (77), commune de Seine-et-Marne au coeur de Marne-la-Vallée, bénéficie de la dynamique économique liée à la proximité de Disneyland Paris et du pôle Val d'Europe. Tissu de TPE/PME hôtellerie-restauration, commerce, services aux entreprises, tourisme et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Montévrain (77), commune de Seine-et-Marne au coeur de Marne-la-Vallée, bénéficie de la dynamique économique liée à la proximité de Disneyland Paris et du pôle Val d'Europe. Tissu de TPE/PME hôtellerie-restauration, commerce, services aux entreprises, tourisme et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Montévrain (77), commune de Seine-et-Marne au coeur de Marne-la-Vallée, bénéficie de la dynamique économique liée à la proximité de Disneyland Paris et du pôle Val d'Europe. Tissu de TPE/PME hôtellerie-restauration, commerce, services aux entreprises, tourisme et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montévrain (77). Nous accompagnons TPE et PME : hôteliers et restaurateurs, commerçants, prestataires tourisme, services aux entreprises, professions libérales et indépendants du pôle Val d'Europe / Marne-la-Vallée. Audit Flash dès 490 € HT.",
   directAnswerEn:

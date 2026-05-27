@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ARQUES_COPY: VilleCopy = {
   pitchFr:
-    "Arques (62), commune industrielle du Pas-de-Calais célèbre pour son ascenseur à bateaux et sa cristallerie, accueille PME industrielles, TPE artisanales et services. Axion-IA y intervient pour tous types d'activités de l'agglomération audomaroise.",
+    "Arques (62), commune industrielle du Pas-de-Calais célèbre pour son ascenseur à bateaux et sa cristallerie, accueille PME industrielles, TPE artisanales et services. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération audomaroise.",
   pitchEn:
-    "Arques (62), commune industrielle du Pas-de-Calais célèbre pour son ascenseur à bateaux et sa cristallerie, accueille PME industrielles, TPE artisanales et services. Axion-IA y intervient pour tous types d'activités de l'agglomération audomaroise.",
+    "Arques (62), commune industrielle du Pas-de-Calais célèbre pour son ascenseur à bateaux et sa cristallerie, accueille PME industrielles, TPE artisanales et services. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération audomaroise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arques (62). Nous accompagnons PME industrielles, TPE artisanales, commerçants et professions libérales de l'agglomération de Saint-Omer. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_PRIVAT_DES_VIEUX_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Privat-des-Vieux (30), commune résidentielle de l'agglomération d'Alès aux portes des Cévennes. Tissu TPE/PME services aux entreprises, commerces, artisanat BTP, professions libérales et sous-traitance industrielle. Axion-IA y intervient pour tous types d'activités du bassin alésien.",
+    "Saint-Privat-des-Vieux (30), commune résidentielle de l'agglomération d'Alès aux portes des Cévennes. Tissu TPE/PME services aux entreprises, commerces, artisanat BTP, professions libérales et sous-traitance industrielle. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin alésien.",
   pitchEn:
-    "Saint-Privat-des-Vieux (30), commune résidentielle de l'agglomération d'Alès aux portes des Cévennes. Tissu TPE/PME services aux entreprises, commerces, artisanat BTP, professions libérales et sous-traitance industrielle. Axion-IA y intervient pour tous types d'activités du bassin alésien.",
+    "Saint-Privat-des-Vieux (30), commune résidentielle de l'agglomération d'Alès aux portes des Cévennes. Tissu TPE/PME services aux entreprises, commerces, artisanat BTP, professions libérales et sous-traitance industrielle. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin alésien.",
   directAnswerFr:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Saint-Privat-des-Vieux (30). Nous accompagnons les TPE, PME et ETI locales : entreprises de services, commerçants, artisans BTP, professions libérales et sous-traitants industriels du bassin alésien. Audit Flash à partir de 490 € HT.",
   directAnswerEn:

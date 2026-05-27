@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PONT_A_MOUSSON_COPY: VilleCopy = {
   pitchFr:
-    "Pont-à-Mousson (54), ville industrielle historique au bord de la Moselle en Meurthe-et-Moselle, est marquée par l'héritage de Saint-Gobain PAM (canalisations fonte) et l'abbaye des Prémontrés. Tissu TPE/PME industrie, métallurgie, sous-traitance, services, commerces de centre-ville. Axion-IA y intervient pour tous types d'activités.",
+    "Pont-à-Mousson (54), ville industrielle historique au bord de la Moselle en Meurthe-et-Moselle, est marquée par l'héritage de Saint-Gobain PAM (canalisations fonte) et l'abbaye des Prémontrés. Tissu TPE/PME industrie, métallurgie, sous-traitance, services, commerces de centre-ville. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Pont-à-Mousson (54), ville industrielle historique au bord de la Moselle en Meurthe-et-Moselle, est marquée par l'héritage de Saint-Gobain PAM (canalisations fonte) et l'abbaye des Prémontrés. Tissu TPE/PME industrie, métallurgie, sous-traitance, services, commerces de centre-ville. Axion-IA y intervient pour tous types d'activités.",
+    "Pont-à-Mousson (54), ville industrielle historique au bord de la Moselle en Meurthe-et-Moselle, est marquée par l'héritage de Saint-Gobain PAM (canalisations fonte) et l'abbaye des Prémontrés. Tissu TPE/PME industrie, métallurgie, sous-traitance, services, commerces de centre-ville. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pont-à-Mousson (54). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance, artisans métallurgie, commerces du centre-ville, professions de services et acteurs du tourisme patrimonial mussipontain.",
   directAnswerEn:
@@ -30,12 +30,12 @@ export const PONT_A_MOUSSON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pont-à-Mousson : diagnostic adapté aux TPE/PME industrie, sous-traitants métallurgie, commerces centre-ville, artisans et services. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Pont-à-Mousson : diagnostic adapté aux TPE/PME industrie, sous-traitants métallurgie, commerces centre-ville, artisans et services. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Pont-à-Mousson : diagnostic adapté aux TPE/PME industrie, sous-traitants métallurgie, commerces centre-ville, artisans et services. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Pont-à-Mousson : diagnostic adapté aux TPE/PME industrie, sous-traitants métallurgie, commerces centre-ville, artisans et services. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Pont-à-Mousson : formats adaptés à l'atelier industriel, bureau, commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Pont-à-Mousson : formats adaptés à l'atelier industriel, bureau, commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Pont-à-Mousson : formats adaptés à l'atelier industriel, bureau, commerce. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Pont-à-Mousson : formats adaptés à l'atelier industriel, bureau, commerce. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Pont-à-Mousson : contrôle qualité production, traçabilité industrielle, automatisation gestion commerciale, agents conversationnels B2B, workflow sous-traitance.",

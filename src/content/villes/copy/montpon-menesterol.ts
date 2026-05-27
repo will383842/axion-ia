@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MONTPON_MENESTEROL_COPY: VilleCopy = {
   pitchFr:
-    "Montpon-Ménestérol (24), bourg de la Double en Dordogne au confluent de l'Isle et de la Crempse, entre Périgueux et Libourne. Tissu TPE/PME commerce, artisanat, agroalimentaire, BTP et services. Axion-IA y intervient pour tous types d'activités.",
+    "Montpon-Ménestérol (24), bourg de la Double en Dordogne au confluent de l'Isle et de la Crempse, entre Périgueux et Libourne. Tissu TPE/PME commerce, artisanat, agroalimentaire, BTP et services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Montpon-Ménestérol (24), bourg de la Double en Dordogne au confluent de l'Isle et de la Crempse, entre Périgueux et Libourne. Tissu TPE/PME commerce, artisanat, agroalimentaire, BTP et services. Axion-IA y intervient pour tous types d'activités.",
+    "Montpon-Ménestérol (24), bourg de la Double en Dordogne au confluent de l'Isle et de la Crempse, entre Périgueux et Libourne. Tissu TPE/PME commerce, artisanat, agroalimentaire, BTP et services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montpon-Ménestérol (24). Nous accompagnons TPE/PME du commerce, de l'artisanat, de l'agroalimentaire et du BTP de l'ouest périgourdin. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:

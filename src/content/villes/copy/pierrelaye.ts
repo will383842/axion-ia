@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PIERRELAYE_COPY: VilleCopy = {
   pitchFr:
-    "Pierrelaye (95), commune de l'agglomération Val Parisis dans le Val-d'Oise, est caractérisée par sa plaine maraîchère historique et son tissu résidentiel. TPE artisanales, PME de services, commerces de proximité, professions libérales et exploitants agricoles. Axion-IA y intervient pour tous types d'activités.",
+    "Pierrelaye (95), commune de l'agglomération Val Parisis dans le Val-d'Oise, est caractérisée par sa plaine maraîchère historique et son tissu résidentiel. TPE artisanales, PME de services, commerces de proximité, professions libérales et exploitants agricoles. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Pierrelaye (95), commune de l'agglomération Val Parisis dans le Val-d'Oise, est caractérisée par sa plaine maraîchère historique et son tissu résidentiel. TPE artisanales, PME de services, commerces de proximité, professions libérales et exploitants agricoles. Axion-IA y intervient pour tous types d'activités.",
+    "Pierrelaye (95), commune de l'agglomération Val Parisis dans le Val-d'Oise, est caractérisée par sa plaine maraîchère historique et son tissu résidentiel. TPE artisanales, PME de services, commerces de proximité, professions libérales et exploitants agricoles. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pierrelaye (95). Nous accompagnons TPE et PME : artisans, commerçants de proximité, PME de services, professions libérales et entreprises de l'agglomération Val Parisis. Audit Flash dès 490 € HT.",
   directAnswerEn:

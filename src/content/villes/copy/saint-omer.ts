@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_OMER_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Omer (62), sous-préfecture du Pas-de-Calais, est un pôle administratif et économique de l'Audomarois avec son patrimoine remarquable (cathédrale, marais audomarois classé Ramsar). Tissu TPE artisanales, PME agroalimentaires et industrielles, commerces, tourisme et services publics. Axion-IA y intervient pour tous types d'activités de l'Audomarois.",
+    "Saint-Omer (62), sous-préfecture du Pas-de-Calais, est un pôle administratif et économique de l'Audomarois avec son patrimoine remarquable (cathédrale, marais audomarois classé Ramsar). Tissu TPE artisanales, PME agroalimentaires et industrielles, commerces, tourisme et services publics. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'Audomarois.",
   pitchEn:
-    "Saint-Omer (62), sous-préfecture du Pas-de-Calais, est un pôle administratif et économique de l'Audomarois avec son patrimoine remarquable (cathédrale, marais audomarois classé Ramsar). Tissu TPE artisanales, PME agroalimentaires et industrielles, commerces, tourisme et services publics. Axion-IA y intervient pour tous types d'activités de l'Audomarois.",
+    "Saint-Omer (62), sous-préfecture du Pas-de-Calais, est un pôle administratif et économique de l'Audomarois avec son patrimoine remarquable (cathédrale, marais audomarois classé Ramsar). Tissu TPE artisanales, PME agroalimentaires et industrielles, commerces, tourisme et services publics. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'Audomarois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Omer (62). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles, commerçants, professionnels du tourisme, indépendants, professions libérales et services aux entreprises de l'Audomarois.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const SAINT_OMER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Omer : diagnostic adapté aux PME agroalimentaires, TPE artisans, commerçants, professionnels du tourisme et services de l'Audomarois. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Saint-Omer : diagnostic adapté aux PME agroalimentaires, TPE artisans, commerçants, professionnels du tourisme et services de l'Audomarois. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Saint-Omer : diagnostic adapté aux PME agroalimentaires, TPE artisans, commerçants, professionnels du tourisme et services de l'Audomarois. Audit Flash 490 € HT, ROI documenté en chiffres accessible.",
+      en: "Audit IA à Saint-Omer : diagnostic adapté aux PME agroalimentaires, TPE artisans, commerçants, professionnels du tourisme et services de l'Audomarois. Audit Flash 490 € HT, ROI documenté en chiffres accessible.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Omer : formats adaptés à l'exploitation maraîchère, atelier artisanal, commerce, hôtel ou bureau. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Saint-Omer : formats adaptés à l'exploitation maraîchère, atelier artisanal, commerce, hôtel ou bureau. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Saint-Omer : formats adaptés à l'exploitation maraîchère, atelier artisanal, commerce, hôtel ou bureau. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Saint-Omer : formats adaptés à l'exploitation maraîchère, atelier artisanal, commerce, hôtel ou bureau. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Omer : optimisation traçabilité agroalimentaire, agents conversationnels tourisme/patrimoine, automatisation devis BTP, classification documents, prédiction stocks. Audomarois.",

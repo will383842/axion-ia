@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHANTEPIE_COPY: VilleCopy = {
   pitchFr:
-    "Chantepie (35), commune résidentielle au sud-est de Rennes en Ille-et-Vilaine, accueille des zones d'activités tertiaires dynamiques en périphérie immédiate de la métropole. Tissu de TPE/PME tertiaires, services aux entreprises, artisans BTP, commerces et professions libérales. Axion-IA y intervient pour tous types d'activités du sud-est rennais.",
+    "Chantepie (35), commune résidentielle au sud-est de Rennes en Ille-et-Vilaine, accueille des zones d'activités tertiaires dynamiques en périphérie immédiate de la métropole. Tissu de TPE/PME tertiaires, services aux entreprises, artisans BTP, commerces et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud-est rennais.",
   pitchEn:
-    "Chantepie (35), commune résidentielle au sud-est de Rennes en Ille-et-Vilaine, accueille des zones d'activités tertiaires dynamiques en périphérie immédiate de la métropole. Tissu de TPE/PME tertiaires, services aux entreprises, artisans BTP, commerces et professions libérales. Axion-IA y intervient pour tous types d'activités du sud-est rennais.",
+    "Chantepie (35), commune résidentielle au sud-est de Rennes en Ille-et-Vilaine, accueille des zones d'activités tertiaires dynamiques en périphérie immédiate de la métropole. Tissu de TPE/PME tertiaires, services aux entreprises, artisans BTP, commerces et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud-est rennais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chantepie (35). Nous accompagnons TPE et PME : entreprises tertiaires des zones d'activités sud-est rennais, services aux entreprises, artisans BTP, commerçants, professions libérales et indépendants de Rennes Métropole sud.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const CHANTEPIE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chantepie : diagnostic adapté aux PME tertiaires zones d'activités sud-est rennais, bureaux d'études, TPE artisans BTP et professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Chantepie : diagnostic adapté aux PME tertiaires zones d'activités sud-est rennais, bureaux d'études, TPE artisans BTP et professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Chantepie : diagnostic adapté aux PME tertiaires zones d'activités sud-est rennais, bureaux d'études, TPE artisans BTP et professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Chantepie : diagnostic adapté aux PME tertiaires zones d'activités sud-est rennais, bureaux d'études, TPE artisans BTP et professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Chantepie : formats adaptés au bureau tertiaire, plateau open-space, atelier artisan ou cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Chantepie : formats adaptés au bureau tertiaire, plateau open-space, atelier artisan ou cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Chantepie : formats adaptés au bureau tertiaire, plateau open-space, atelier artisan ou cabinet libéral. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Chantepie : formats adaptés au bureau tertiaire, plateau open-space, atelier artisan ou cabinet libéral. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Chantepie : automatisation workflow tertiaire, agents conversationnels B2B, outils IA bureaux d'études (CAO augmentée, analyse documentaire), CRM augmenté, gestion devis BTP.",

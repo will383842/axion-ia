@@ -59,6 +59,8 @@ export const LILLE_COPY: VilleCopy = {
   directAnswerEn:
     "Axion-IA is a senior AI architects consultancy that delivers on site in Lille (59350) across the metropolitan area: Euralille, Vieux-Lille, Villeneuve-d'Ascq, Roubaix, Tourcoing and surrounding communes. We support Lille micro-businesses, SMEs, mid-caps and large enterprises — from EuraTechnologies startups to major retail HQs (Decathlon, Auchan, La Redoute) — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
+  seoHook: "distribution, retail tech & transfrontalier",
+
   topSectorsNaf: [
     "Retail & E-commerce",
     "Logistique & Supply Chain",

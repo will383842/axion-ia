@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_BOURGET_COPY: VilleCopy = {
   pitchFr:
-    "Le Bourget (93), ville emblématique de l'aéronautique française avec son musée de l'Air et de l'Espace et l'aéroport d'affaires du Bourget (salon international de l'aéronautique), abrite un tissu de TPE prestataires, PME industrielles et de services, sous-traitants aéronautiques et commerces de proximité. Axion-IA y intervient pour tous types d'activités.",
+    "Le Bourget (93), ville emblématique de l'aéronautique française avec son musée de l'Air et de l'Espace et l'aéroport d'affaires du Bourget (salon international de l'aéronautique), abrite un tissu de TPE prestataires, PME industrielles et de services, sous-traitants aéronautiques et commerces de proximité. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Le Bourget (93), ville emblématique de l'aéronautique française avec son musée de l'Air et de l'Espace et l'aéroport d'affaires du Bourget (salon international de l'aéronautique), abrite un tissu de TPE prestataires, PME industrielles et de services, sous-traitants aéronautiques et commerces de proximité. Axion-IA y intervient pour tous types d'activités.",
+    "Le Bourget (93), ville emblématique de l'aéronautique française avec son musée de l'Air et de l'Espace et l'aéroport d'affaires du Bourget (salon international de l'aéronautique), abrite un tissu de TPE prestataires, PME industrielles et de services, sous-traitants aéronautiques et commerces de proximité. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Bourget (93). Nous accompagnons tous types d'activités : TPE prestataires, PME industrielles et de services, sous-traitants aéronautiques, commerçants, artisans et professions libérales de cette ville historique de l'aviation. Audit Flash à partir de 490 € HT.",
   directAnswerEn:

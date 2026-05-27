@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_MARCEL_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Marcel (71), commune de l'agglomération de Chalon-sur-Saône en Saône-et-Loire, abrite d'importantes zones industrielles et tertiaires. Tissu TPE/PME industrie, métallurgie, logistique, services aux entreprises, artisans BTP. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Marcel (71), commune de l'agglomération de Chalon-sur-Saône en Saône-et-Loire, abrite d'importantes zones industrielles et tertiaires. Tissu TPE/PME industrie, métallurgie, logistique, services aux entreprises, artisans BTP. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Saint-Marcel (71), commune de l'agglomération de Chalon-sur-Saône en Saône-et-Loire, abrite d'importantes zones industrielles et tertiaires. Tissu TPE/PME industrie, métallurgie, logistique, services aux entreprises, artisans BTP. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Marcel (71), commune de l'agglomération de Chalon-sur-Saône en Saône-et-Loire, abrite d'importantes zones industrielles et tertiaires. Tissu TPE/PME industrie, métallurgie, logistique, services aux entreprises, artisans BTP. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Marcel (71). Nous accompagnons tous types d'activités : TPE/PME des zones industrielles Grand Chalon, sous-traitants industrie, logisticiens, artisans BTP et services aux entreprises.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const SAINT_MARCEL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Marcel : diagnostic adapté aux TPE/PME zones industrielles, sous-traitants métallurgie, logisticiens, artisans BTP. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Marcel : diagnostic adapté aux TPE/PME zones industrielles, sous-traitants métallurgie, logisticiens, artisans BTP. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Marcel : diagnostic adapté aux TPE/PME zones industrielles, sous-traitants métallurgie, logisticiens, artisans BTP. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Saint-Marcel : diagnostic adapté aux TPE/PME zones industrielles, sous-traitants métallurgie, logisticiens, artisans BTP. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Marcel : formats adaptés à l'atelier industriel, entrepôt, bureau. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Saint-Marcel : formats adaptés à l'atelier industriel, entrepôt, bureau. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Saint-Marcel : formats adaptés à l'atelier industriel, entrepôt, bureau. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Saint-Marcel : formats adaptés à l'atelier industriel, entrepôt, bureau. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Marcel : contrôle qualité visuel production, traçabilité industrielle, optimisation logistique, agents conversationnels B2B, workflow sous-traitance.",
@@ -64,7 +64,7 @@ export const SAINT_MARCEL_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Saint-Marcel ?",
-      a: "Nos consultants se déplacent depuis Lyon (1h30) ou via gare TGV Le Creusot (30 min). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants se déplacent depuis Lyon (1h30) ou via gare TGV Le Creusot (30 min). Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

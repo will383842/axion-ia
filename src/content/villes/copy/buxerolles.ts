@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BUXEROLLES_COPY: VilleCopy = {
   pitchFr:
-    "Buxerolles (86), commune de l'agglomération de Poitiers nord en Vienne, est l'une des plus peuplées du Grand Poitiers. Tissu TPE artisans, commerces de proximité, PME tertiaires, professions libérales (santé, droit), services aux entreprises et associations. Axion-IA y intervient pour tous types d'activités du nord de l'agglomération poitevine.",
+    "Buxerolles (86), commune de l'agglomération de Poitiers nord en Vienne, est l'une des plus peuplées du Grand Poitiers. Tissu TPE artisans, commerces de proximité, PME tertiaires, professions libérales (santé, droit), services aux entreprises et associations. Axion-IA accompagne entreprises et indépendants de tous secteurs du nord de l'agglomération poitevine.",
   pitchEn:
-    "Buxerolles (86), commune de l'agglomération de Poitiers nord en Vienne, est l'une des plus peuplées du Grand Poitiers. Tissu TPE artisans, commerces de proximité, PME tertiaires, professions libérales (santé, droit), services aux entreprises et associations. Axion-IA y intervient pour tous types d'activités du nord de l'agglomération poitevine.",
+    "Buxerolles (86), commune de l'agglomération de Poitiers nord en Vienne, est l'une des plus peuplées du Grand Poitiers. Tissu TPE artisans, commerces de proximité, PME tertiaires, professions libérales (santé, droit), services aux entreprises et associations. Axion-IA accompagne entreprises et indépendants de tous secteurs du nord de l'agglomération poitevine.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Buxerolles (86). Nous accompagnons tous types d'activités : TPE artisans, commerçants de proximité, PME tertiaires, professions libérales (médecins, avocats, experts-comptables), services aux entreprises et associations du Grand Poitiers nord.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const BUXEROLLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Buxerolles : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires, professions libérales et associations du Grand Poitiers nord. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Buxerolles : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires, professions libérales et associations du Grand Poitiers nord. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Buxerolles : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires, professions libérales et associations du Grand Poitiers nord. Audit Flash 490 € HT avec ROI quantifié accessible.",
+      en: "Audit IA à Buxerolles : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires, professions libérales et associations du Grand Poitiers nord. Audit Flash 490 € HT avec ROI quantifié accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Buxerolles : formats adaptés aux cabinets libéraux, commerces, PME tertiaires ou associations. Vos équipes administratives et terrain repartent autonomes sur outils IA.",

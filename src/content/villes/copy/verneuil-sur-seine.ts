@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VERNEUIL_SUR_SEINE_COPY: VilleCopy = {
   pitchFr:
-    "Verneuil-sur-Seine (78), commune résidentielle des Yvelines en bords de Seine, offre un cadre de vie prisé entre forêt et fleuve. Tissu de TPE/PME tertiaires, professions libérales, commerces de proximité, artisans et services aux particuliers. Axion-IA y intervient pour tous types d'activités.",
+    "Verneuil-sur-Seine (78), commune résidentielle des Yvelines en bords de Seine, offre un cadre de vie prisé entre forêt et fleuve. Tissu de TPE/PME tertiaires, professions libérales, commerces de proximité, artisans et services aux particuliers. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Verneuil-sur-Seine (78), commune résidentielle des Yvelines en bords de Seine, offre un cadre de vie prisé entre forêt et fleuve. Tissu de TPE/PME tertiaires, professions libérales, commerces de proximité, artisans et services aux particuliers. Axion-IA y intervient pour tous types d'activités.",
+    "Verneuil-sur-Seine (78), commune résidentielle des Yvelines en bords de Seine, offre un cadre de vie prisé entre forêt et fleuve. Tissu de TPE/PME tertiaires, professions libérales, commerces de proximité, artisans et services aux particuliers. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Verneuil-sur-Seine (78). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, professions libérales, commerçants de proximité, indépendants et entreprises de la boucle de Seine yvelinoise.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const VERNEUIL_SUR_SEINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Verneuil-sur-Seine : diagnostic adapté aux TPE/PME tertiaires, professions libérales, commerçants et artisans de la boucle de Seine yvelinoise. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Verneuil-sur-Seine : diagnostic adapté aux TPE/PME tertiaires, professions libérales, commerçants et artisans de la boucle de Seine yvelinoise. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Verneuil-sur-Seine : diagnostic adapté aux TPE/PME tertiaires, professions libérales, commerçants et artisans de la boucle de Seine yvelinoise. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Verneuil-sur-Seine : diagnostic adapté aux TPE/PME tertiaires, professions libérales, commerçants et artisans de la boucle de Seine yvelinoise. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Verneuil-sur-Seine : formats adaptés au cabinet libéral, commerce, atelier artisan ou PME tertiaire. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Verneuil-sur-Seine : formats adaptés au cabinet libéral, commerce, atelier artisan ou PME tertiaire. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Verneuil-sur-Seine : formats adaptés au cabinet libéral, commerce, atelier artisan ou PME tertiaire. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Verneuil-sur-Seine : formats adaptés au cabinet libéral, commerce, atelier artisan ou PME tertiaire. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Verneuil-sur-Seine : agents conversationnels clients, automatisation gestion RDV, CRM augmentés, classification documents, devis BTP automatisés. Adapté tissu résidentiel bords de Seine.",

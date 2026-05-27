@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VILLEFRANCHE_SUR_MER_COPY: VilleCopy = {
   pitchFr:
-    "Villefranche-sur-Mer (06), commune littorale limitrophe de Nice en région Provence-Alpes-Côte d'Azur, plus de 5 000 habitants à l'année. Rade mythique de la Riviera, escale croisières internationales, patrimoine Cocteau et tourisme haut de gamme. Tissu TPE artisans, PME tourisme/hôtellerie haut de gamme, commerces, restauration et professions libérales. Axion-IA y intervient pour tous types d'activités de la Côte d'Azur.",
+    "Villefranche-sur-Mer (06), commune littorale limitrophe de Nice en région Provence-Alpes-Côte d'Azur, plus de 5 000 habitants à l'année. Rade mythique de la Riviera, escale croisières internationales, patrimoine Cocteau et tourisme haut de gamme. Tissu TPE artisans, PME tourisme/hôtellerie haut de gamme, commerces, restauration et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de la Côte d'Azur.",
   pitchEn:
-    "Villefranche-sur-Mer (06), commune littorale limitrophe de Nice en région Provence-Alpes-Côte d'Azur, plus de 5 000 habitants à l'année. Rade mythique de la Riviera, escale croisières internationales, patrimoine Cocteau et tourisme haut de gamme. Tissu TPE artisans, PME tourisme/hôtellerie haut de gamme, commerces, restauration et professions libérales. Axion-IA y intervient pour tous types d'activités de la Côte d'Azur.",
+    "Villefranche-sur-Mer (06), commune littorale limitrophe de Nice en région Provence-Alpes-Côte d'Azur, plus de 5 000 habitants à l'année. Rade mythique de la Riviera, escale croisières internationales, patrimoine Cocteau et tourisme haut de gamme. Tissu TPE artisans, PME tourisme/hôtellerie haut de gamme, commerces, restauration et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de la Côte d'Azur.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villefranche-sur-Mer (06). Nous accompagnons TPE artisans, PME tourisme et hôtellerie haut de gamme, restaurateurs, commerçants et professions libérales de la Riviera azuréenne. Audit Flash dès 490 € HT.",
   directAnswerEn:

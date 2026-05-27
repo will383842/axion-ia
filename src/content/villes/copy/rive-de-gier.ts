@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const RIVE_DE_GIER_COPY: VilleCopy = {
   pitchFr:
-    "Rive-de-Gier (42), commune de la vallée du Gier dans la Loire, est intégrée à Saint-Étienne Métropole. Héritage industriel notable (verrerie historique au XIXème, mécanique). Tissu PME industrielles diversifiées, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités de la vallée du Gier.",
+    "Rive-de-Gier (42), commune de la vallée du Gier dans la Loire, est intégrée à Saint-Étienne Métropole. Héritage industriel notable (verrerie historique au XIXème, mécanique). Tissu PME industrielles diversifiées, TPE artisans BTP, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes de la vallée du Gier.",
   pitchEn:
-    "Rive-de-Gier (42), commune de la vallée du Gier dans la Loire, est intégrée à Saint-Étienne Métropole. Héritage industriel notable (verrerie historique au XIXème, mécanique). Tissu PME industrielles diversifiées, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités de la vallée du Gier.",
+    "Rive-de-Gier (42), commune de la vallée du Gier dans la Loire, est intégrée à Saint-Étienne Métropole. Héritage industriel notable (verrerie historique au XIXème, mécanique). Tissu PME industrielles diversifiées, TPE artisans BTP, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes de la vallée du Gier.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rive-de-Gier (42). Nous accompagnons tous types d'activités : PME industrielles diversifiées vallée Gier (héritage verrier/mécanique), TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de Saint-Étienne Métropole.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const RIVE_DE_GIER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Rive-de-Gier : diagnostic adapté aux PME industrielles vallée Gier (héritage verrier/mécanique), TPE artisans, commerçants. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Rive-de-Gier : diagnostic adapté aux PME industrielles vallée Gier (héritage verrier/mécanique), TPE artisans, commerçants. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Rive-de-Gier : diagnostic adapté aux PME industrielles vallée Gier (héritage verrier/mécanique), TPE artisans, commerçants. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Rive-de-Gier : diagnostic adapté aux PME industrielles vallée Gier (héritage verrier/mécanique), TPE artisans, commerçants. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Rive-de-Gier : formats adaptés à l'atelier industriel, commerce, bureau. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Rive-de-Gier : formats adaptés à l'atelier industriel, commerce, bureau. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Rive-de-Gier : formats adaptés à l'atelier industriel, commerce, bureau. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Rive-de-Gier : formats adaptés à l'atelier industriel, commerce, bureau. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Rive-de-Gier : prédiction maintenance industrielle, contrôle qualité par vision (héritage verre/mécanique de précision), agents conversationnels B2B. Saint-Étienne Métropole vallée Gier.",
@@ -64,7 +64,7 @@ export const RIVE_DE_GIER_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",
-      a: "Nos consultants viennent de Lyon (35 min A47) ou Saint-Étienne (25 min). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (35 min A47) ou Saint-Étienne (25 min). Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

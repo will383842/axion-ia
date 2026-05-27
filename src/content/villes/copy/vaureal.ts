@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VAUREAL_COPY: VilleCopy = {
   pitchFr:
-    "Vauréal, commune résidentielle du Val-d'Oise (95) au cœur de la ville nouvelle de Cergy-Pontoise. Tissu TPE artisans, commerçants de quartier, PME de services, professions libérales et indépendants. Axion-IA y intervient pour tous types d'activités du bassin Cergy-Pontoise.",
+    "Vauréal, commune résidentielle du Val-d'Oise (95) au cœur de la ville nouvelle de Cergy-Pontoise. Tissu TPE artisans, commerçants de quartier, PME de services, professions libérales et indépendants. Axion-IA opère pour toutes les structures économiques de la commune du bassin Cergy-Pontoise.",
   pitchEn:
-    "Vauréal, commune résidentielle du Val-d'Oise (95) au cœur de la ville nouvelle de Cergy-Pontoise. Tissu TPE artisans, commerçants de quartier, PME de services, professions libérales et indépendants. Axion-IA y intervient pour tous types d'activités du bassin Cergy-Pontoise.",
+    "Vauréal, commune résidentielle du Val-d'Oise (95) au cœur de la ville nouvelle de Cergy-Pontoise. Tissu TPE artisans, commerçants de quartier, PME de services, professions libérales et indépendants. Axion-IA opère pour toutes les structures économiques de la commune du bassin Cergy-Pontoise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vauréal (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME de services, professions libérales et indépendants de l'agglomération Cergy-Pontoise. Audit Flash dès 490 € HT.",
   directAnswerEn:

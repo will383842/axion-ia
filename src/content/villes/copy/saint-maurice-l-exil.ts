@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_MAURICE_L_EXIL_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Maurice-l'Exil (38), commune du sud-Isère dans la vallée du Rhône, est ancrée dans le bassin industriel rhodanien (proximité plateformes industrielles historiques). Tissu PME industrielles, logistique, TPE artisans BTP, commerces, agriculture. Axion-IA y intervient pour tous types d'activités samauritaines et du sud-Isère.",
+    "Saint-Maurice-l'Exil (38), commune du sud-Isère dans la vallée du Rhône, est ancrée dans le bassin industriel rhodanien (proximité plateformes industrielles historiques). Tissu PME industrielles, logistique, TPE artisans BTP, commerces, agriculture. Axion-IA accompagne entreprises et indépendants de tous secteurs samauritaines et du sud-Isère.",
   pitchEn:
-    "Saint-Maurice-l'Exil (38), commune du sud-Isère dans la vallée du Rhône, est ancrée dans le bassin industriel rhodanien (proximité plateformes industrielles historiques). Tissu PME industrielles, logistique, TPE artisans BTP, commerces, agriculture. Axion-IA y intervient pour tous types d'activités samauritaines et du sud-Isère.",
+    "Saint-Maurice-l'Exil (38), commune du sud-Isère dans la vallée du Rhône, est ancrée dans le bassin industriel rhodanien (proximité plateformes industrielles historiques). Tissu PME industrielles, logistique, TPE artisans BTP, commerces, agriculture. Axion-IA accompagne entreprises et indépendants de tous secteurs samauritaines et du sud-Isère.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Maurice-l'Exil (38). Nous accompagnons tous types d'activités : PME industrielles et sous-traitants techniques du bassin rhodanien, TPE artisans BTP, commerçants, agriculteurs/arboriculteurs vallée du Rhône, indépendants, professions libérales et services.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const SAINT_MAURICE_L_EXIL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Maurice-l'Exil : diagnostic adapté aux PME industrielles, sous-traitants techniques, agriculteurs et TPE artisans du sud-Isère / bassin rhodanien. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Maurice-l'Exil : diagnostic adapté aux PME industrielles, sous-traitants techniques, agriculteurs et TPE artisans du sud-Isère / bassin rhodanien. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Maurice-l'Exil : diagnostic adapté aux PME industrielles, sous-traitants techniques, agriculteurs et TPE artisans du sud-Isère / bassin rhodanien. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Saint-Maurice-l'Exil : diagnostic adapté aux PME industrielles, sous-traitants techniques, agriculteurs et TPE artisans du sud-Isère / bassin rhodanien. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Maurice-l'Exil : formats adaptés à l'atelier industriel, exploitation agricole, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Saint-Maurice-l'Exil : formats adaptés à l'atelier industriel, exploitation agricole, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Saint-Maurice-l'Exil : formats adaptés à l'atelier industriel, exploitation agricole, commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Saint-Maurice-l'Exil : formats adaptés à l'atelier industriel, exploitation agricole, commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Maurice-l'Exil : prédiction maintenance industrielle, optimisation supply chain rhodanien, classification photos vergers/cultures, automatisation devis BTP. Tous secteurs.",
@@ -64,7 +64,7 @@ export const SAINT_MAURICE_L_EXIL_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Valence ?",
-      a: "Nos consultants viennent de Lyon (45 min A7) ou Valence (50 min A7). Pour les multi-jours, hébergement local possible (hôtels Pays Roussillonnais). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (45 min A7) ou Valence (50 min A7). Pour les multi-jours, hébergement local possible (hôtels Pays Roussillonnais). Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

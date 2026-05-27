@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BANNALEC_COPY: VilleCopy = {
   pitchFr:
-    "Bannalec (29), commune de l'est Cornouaille en Finistère, est un bourg rural dynamique entre Quimperlé et Rosporden. Tissu TPE agricoles (élevage, polyculture), PME agroalimentaires (volailles, transformation), artisans BTP, commerces de proximité et services. Axion-IA y intervient pour tous types d'activités de l'Est Cornouaille.",
+    "Bannalec (29), commune de l'est Cornouaille en Finistère, est un bourg rural dynamique entre Quimperlé et Rosporden. Tissu TPE agricoles (élevage, polyculture), PME agroalimentaires (volailles, transformation), artisans BTP, commerces de proximité et services. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'Est Cornouaille.",
   pitchEn:
-    "Bannalec (29), commune de l'est Cornouaille en Finistère, est un bourg rural dynamique entre Quimperlé et Rosporden. Tissu TPE agricoles (élevage, polyculture), PME agroalimentaires (volailles, transformation), artisans BTP, commerces de proximité et services. Axion-IA y intervient pour tous types d'activités de l'Est Cornouaille.",
+    "Bannalec (29), commune de l'est Cornouaille en Finistère, est un bourg rural dynamique entre Quimperlé et Rosporden. Tissu TPE agricoles (élevage, polyculture), PME agroalimentaires (volailles, transformation), artisans BTP, commerces de proximité et services. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'Est Cornouaille.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bannalec (29). Nous accompagnons tous types d'activités : TPE agricoles et éleveurs, PME agroalimentaires (volailles, transformation), artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de l'Est Cornouaille / Quimperlé.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const BANNALEC_COPY: VilleCopy = {
       en: "Audit IA à Bannalec : diagnostic adapté aux TPE agricoles, éleveurs avicoles, PME agroalimentaires, artisans et commerçants de l'Est Cornouaille. ROI chiffré, audit Flash 490 € HT accessible.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Bannalec : formats adaptés à l'exploitation agricole, l'atelier agroalimentaire, le chantier BTP ou le commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Bannalec : formats adaptés à l'exploitation agricole, l'atelier agroalimentaire, le chantier BTP ou le commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Bannalec : formats adaptés à l'exploitation agricole, l'atelier agroalimentaire, le chantier BTP ou le commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Bannalec : formats adaptés à l'exploitation agricole, l'atelier agroalimentaire, le chantier BTP ou le commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Bannalec : suivi sanitaire élevage avicole, contrôle qualité agroalimentaire par vision, automatisation traçabilité, agents conversationnels, optimisation logistique RN165. Est Cornouaille.",
@@ -64,7 +64,7 @@ export const BANNALEC_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Quimper ou Lorient ?",
-      a: "Nos consultants viennent de Quimper (45 min voiture) ou Lorient (40 min). Gare Bannalec desservie par TER Quimper-Lorient. Pour les multi-jours, hébergement local possible (hôtels Quimperlé). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Quimper (45 min voiture) ou Lorient (40 min). Gare Bannalec desservie par TER Quimper-Lorient. Pour les multi-jours, hébergement local possible (hôtels Quimperlé). Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

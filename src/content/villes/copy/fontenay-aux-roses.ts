@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FONTENAY_AUX_ROSES_COPY: VilleCopy = {
   pitchFr:
-    "Fontenay-aux-Roses, ville des Hauts-de-Seine (92) au sud-ouest de Paris, mêle pôle recherche (CEA Fontenay-aux-Roses, École Centrale-Supélec à proximité), résidentiel familial et tissu TPE/PME tous secteurs (artisanat BTP, commerces, professions libérales, industries périphériques). Axion-IA y intervient pour tous types d'activités fontenaysiennes.",
+    "Fontenay-aux-Roses, ville des Hauts-de-Seine (92) au sud-ouest de Paris, mêle pôle recherche (CEA Fontenay-aux-Roses, École Centrale-Supélec à proximité), résidentiel familial et tissu TPE/PME tous secteurs (artisanat BTP, commerces, professions libérales, industries périphériques). Axion-IA opère pour toutes les structures économiques de la commune fontenaysiennes.",
   pitchEn:
-    "Fontenay-aux-Roses, ville des Hauts-de-Seine (92) au sud-ouest de Paris, mêle pôle recherche (CEA Fontenay-aux-Roses, École Centrale-Supélec à proximité), résidentiel familial et tissu TPE/PME tous secteurs (artisanat BTP, commerces, professions libérales, industries périphériques). Axion-IA y intervient pour tous types d'activités fontenaysiennes.",
+    "Fontenay-aux-Roses, ville des Hauts-de-Seine (92) au sud-ouest de Paris, mêle pôle recherche (CEA Fontenay-aux-Roses, École Centrale-Supélec à proximité), résidentiel familial et tissu TPE/PME tous secteurs (artisanat BTP, commerces, professions libérales, industries périphériques). Axion-IA opère pour toutes les structures économiques de la commune fontenaysiennes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fontenay-aux-Roses (92). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales (médecins, avocats), PME tertiaires fontenaysiennes, structures de recherche (CEA, école supérieure), industries périphériques et indépendants du bassin sud-ouest 92.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const FONTENAY_AUX_ROSES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fontenay-aux-Roses : diagnostic adapté à tous types d'activités — TPE artisans, commerçants, PME, structures recherche, professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Fontenay-aux-Roses : diagnostic adapté à tous types d'activités — TPE artisans, commerçants, PME, structures recherche, professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Fontenay-aux-Roses : diagnostic adapté à tous types d'activités — TPE artisans, commerçants, PME, structures recherche, professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Fontenay-aux-Roses : diagnostic adapté à tous types d'activités — TPE artisans, commerçants, PME, structures recherche, professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Fontenay : formats adaptés à votre métier réel (atelier, commerce, cabinet, laboratoire). Vos équipes repartent avec outils IA configurés pour vos tâches concrètes.",

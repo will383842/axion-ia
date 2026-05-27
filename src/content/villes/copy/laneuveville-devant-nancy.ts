@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LANEUVEVILLE_DEVANT_NANCY_COPY: VilleCopy = {
   pitchFr:
-    "Laneuveville-devant-Nancy (54), commune du sud-est de l'agglomération nancéienne en Meurthe-et-Moselle, est traversée par le canal de la Marne au Rhin et accueille des zones d'activités mixtes. Tissu TPE/PME industrie & services, BTP, logistique, commerce, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Laneuveville-devant-Nancy (54), commune du sud-est de l'agglomération nancéienne en Meurthe-et-Moselle, est traversée par le canal de la Marne au Rhin et accueille des zones d'activités mixtes. Tissu TPE/PME industrie & services, BTP, logistique, commerce, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Laneuveville-devant-Nancy (54), commune du sud-est de l'agglomération nancéienne en Meurthe-et-Moselle, est traversée par le canal de la Marne au Rhin et accueille des zones d'activités mixtes. Tissu TPE/PME industrie & services, BTP, logistique, commerce, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Laneuveville-devant-Nancy (54), commune du sud-est de l'agglomération nancéienne en Meurthe-et-Moselle, est traversée par le canal de la Marne au Rhin et accueille des zones d'activités mixtes. Tissu TPE/PME industrie & services, BTP, logistique, commerce, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Laneuveville-devant-Nancy (54). Nous accompagnons tous types d'activités : TPE/PME industrie & services, artisans BTP, logistique, commerçants et professions libérales du sud-est de l'agglomération nancéienne.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const LANEUVEVILLE_DEVANT_NANCY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Laneuveville-devant-Nancy : diagnostic adapté aux TPE/PME industrie & services, artisans BTP, logistique et commerçants du sud-est nancéien. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Laneuveville-devant-Nancy : diagnostic adapté aux TPE/PME industrie & services, artisans BTP, logistique et commerçants du sud-est nancéien. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Laneuveville-devant-Nancy : diagnostic adapté aux TPE/PME industrie & services, artisans BTP, logistique et commerçants du sud-est nancéien. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Laneuveville-devant-Nancy : diagnostic adapté aux TPE/PME industrie & services, artisans BTP, logistique et commerçants du sud-est nancéien. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Laneuveville-devant-Nancy : formats adaptés à l'atelier industriel, au bureau tertiaire, au chantier BTP, à l'entrepôt logistique ou au commerce. Vos équipes repartent autonomes sur les outils IA métier.",

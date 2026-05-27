@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const NERAC_COPY: VilleCopy = {
   pitchFr:
-    "Nérac (47), sous-préfecture du Lot-et-Garonne, est une cité historique du pays d'Albret célèbre pour son château Henri IV et ses bords de Baïse. Ville de 6 992 habitants, son économie repose sur un tissu de TPE commerçants et artisans, PME agroalimentaires et viticoles, tourisme patrimonial, professions libérales et services. Axion-IA y intervient pour tous types d'activités.",
+    "Nérac (47), sous-préfecture du Lot-et-Garonne, est une cité historique du pays d'Albret célèbre pour son château Henri IV et ses bords de Baïse. Ville de 6 992 habitants, son économie repose sur un tissu de TPE commerçants et artisans, PME agroalimentaires et viticoles, tourisme patrimonial, professions libérales et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Nérac (47), sous-préfecture du Lot-et-Garonne, est une cité historique du pays d'Albret célèbre pour son château Henri IV et ses bords de Baïse. Ville de 6 992 habitants, son économie repose sur un tissu de TPE commerçants et artisans, PME agroalimentaires et viticoles, tourisme patrimonial, professions libérales et services. Axion-IA y intervient pour tous types d'activités.",
+    "Nérac (47), sous-préfecture du Lot-et-Garonne, est une cité historique du pays d'Albret célèbre pour son château Henri IV et ses bords de Baïse. Ville de 6 992 habitants, son économie repose sur un tissu de TPE commerçants et artisans, PME agroalimentaires et viticoles, tourisme patrimonial, professions libérales et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nérac (47). Nous accompagnons TPE et PME du pays d'Albret : acteurs du tourisme patrimonial, viticulteurs, entreprises agroalimentaires, commerçants, artisans et professions libérales du Néracais. Audit Flash dès 490 € HT.",
   directAnswerEn:

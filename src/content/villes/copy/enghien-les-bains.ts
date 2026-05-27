@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ENGHIEN_LES_BAINS_COPY: VilleCopy = {
   pitchFr:
-    "Enghien-les-Bains (95), unique station thermale d'Île-de-France, est connue pour son casino, son lac et ses établissements de bien-être. Tissu de TPE commerçantes, PME hôtellerie-restauration, professions libérales, prestataires événementiels et services de santé. Axion-IA y intervient pour tous types d'activités.",
+    "Enghien-les-Bains (95), unique station thermale d'Île-de-France, est connue pour son casino, son lac et ses établissements de bien-être. Tissu de TPE commerçantes, PME hôtellerie-restauration, professions libérales, prestataires événementiels et services de santé. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Enghien-les-Bains (95), unique station thermale d'Île-de-France, est connue pour son casino, son lac et ses établissements de bien-être. Tissu de TPE commerçantes, PME hôtellerie-restauration, professions libérales, prestataires événementiels et services de santé. Axion-IA y intervient pour tous types d'activités.",
+    "Enghien-les-Bains (95), unique station thermale d'Île-de-France, est connue pour son casino, son lac et ses établissements de bien-être. Tissu de TPE commerçantes, PME hôtellerie-restauration, professions libérales, prestataires événementiels et services de santé. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Enghien-les-Bains (95). Nous accompagnons TPE et PME : hôteliers et restaurateurs, commerçants du centre-ville, professions libérales, prestataires événementiels et établissements de bien-être de la station thermale. Audit Flash dès 490 € HT.",
   directAnswerEn:

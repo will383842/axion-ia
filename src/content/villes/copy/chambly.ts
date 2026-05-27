@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHAMBLY_COPY: VilleCopy = {
   pitchFr:
-    "Chambly (60), commune de 9 959 habitants dans le sud de l'Oise, est une ville résidentielle dynamique aux portes de l'Île-de-France. Son économie repose sur un tissu de TPE/PME commerce, artisanat, BTP, services aux particuliers et aux entreprises, profitant de la proximité de Méru, Persan et de l'axe Paris-Beauvais. Axion-IA y intervient pour tous types d'activités.",
+    "Chambly (60), commune de 9 959 habitants dans le sud de l'Oise, est une ville résidentielle dynamique aux portes de l'Île-de-France. Son économie repose sur un tissu de TPE/PME commerce, artisanat, BTP, services aux particuliers et aux entreprises, profitant de la proximité de Méru, Persan et de l'axe Paris-Beauvais. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Chambly (60), commune de 9 959 habitants dans le sud de l'Oise, est une ville résidentielle dynamique aux portes de l'Île-de-France. Son économie repose sur un tissu de TPE/PME commerce, artisanat, BTP, services aux particuliers et aux entreprises, profitant de la proximité de Méru, Persan et de l'axe Paris-Beauvais. Axion-IA y intervient pour tous types d'activités.",
+    "Chambly (60), commune de 9 959 habitants dans le sud de l'Oise, est une ville résidentielle dynamique aux portes de l'Île-de-France. Son économie repose sur un tissu de TPE/PME commerce, artisanat, BTP, services aux particuliers et aux entreprises, profitant de la proximité de Méru, Persan et de l'axe Paris-Beauvais. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chambly (60). Nous accompagnons TPE et PME du sud de l'Oise : commerçants, artisans du BTP, prestataires de services aux particuliers et aux entreprises. Audit Flash dès 490 € HT.",
   directAnswerEn:

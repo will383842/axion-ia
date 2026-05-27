@@ -29,12 +29,12 @@ export const FLINES_LEZ_RACHES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Flines-lez-Râches : diagnostic adapté aux TPE et PME agricoles et agroalimentaires de la Pévèle, artisans du bâtiment, commerçants et prestataires B2B du Douaisis. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Flines-lez-Râches : diagnostic adapté aux TPE et PME agricoles et agroalimentaires de la Pévèle, artisans du bâtiment, commerçants et prestataires B2B du Douaisis. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Flines-lez-Râches : diagnostic adapté aux TPE et PME agricoles et agroalimentaires de la Pévèle, artisans du bâtiment, commerçants et prestataires B2B du Douaisis. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Flines-lez-Râches : diagnostic adapté aux TPE et PME agricoles et agroalimentaires de la Pévèle, artisans du bâtiment, commerçants et prestataires B2B du Douaisis. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Flines-lez-Râches : formats adaptés à l'exploitation agricole, à la PME agroalimentaire, à l'artisan ou au commerce de bourg. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Flines-lez-Râches : formats adaptés à l'exploitation agricole, à la PME agroalimentaire, à l'artisan ou au commerce de bourg. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Flines-lez-Râches : formats adaptés à l'exploitation agricole, à la PME agroalimentaire, à l'artisan ou au commerce de bourg. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Flines-lez-Râches : formats adaptés à l'exploitation agricole, à la PME agroalimentaire, à l'artisan ou au commerce de bourg. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Flines-lez-Râches : prévision rendements et planification assolements agricoles, traçabilité agroalimentaire automatisée, gestion stocks et approvisionnements PME, CRM augmenté artisans-commerçants, automatisation devis-facturation prestataires Douaisis.",

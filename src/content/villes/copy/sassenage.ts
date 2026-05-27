@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SASSENAGE_COPY: VilleCopy = {
   pitchFr:
-    "Sassenage (38), nord-ouest de Grenoble, fut une des quatre baronnies du Dauphiné et donne son nom au Bleu du Vercors-Sassenage (AOC fromagère). Sites patrimoniaux remarquables : château XVIIe, Cuves de Sassenage (l'une des 7 merveilles du Dauphiné). Tissu PME tertiaires, TPE artisans, professions libérales et commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Sassenage (38), nord-ouest de Grenoble, fut une des quatre baronnies du Dauphiné et donne son nom au Bleu du Vercors-Sassenage (AOC fromagère). Sites patrimoniaux remarquables : château XVIIe, Cuves de Sassenage (l'une des 7 merveilles du Dauphiné). Tissu PME tertiaires, TPE artisans, professions libérales et commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Sassenage (38), nord-ouest de Grenoble, fut une des quatre baronnies du Dauphiné et donne son nom au Bleu du Vercors-Sassenage (AOC fromagère). Sites patrimoniaux remarquables : château XVIIe, Cuves de Sassenage (l'une des 7 merveilles du Dauphiné). Tissu PME tertiaires, TPE artisans, professions libérales et commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Sassenage (38), nord-ouest de Grenoble, fut une des quatre baronnies du Dauphiné et donne son nom au Bleu du Vercors-Sassenage (AOC fromagère). Sites patrimoniaux remarquables : château XVIIe, Cuves de Sassenage (l'une des 7 merveilles du Dauphiné). Tissu PME tertiaires, TPE artisans, professions libérales et commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sassenage (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, fromagers producteurs Bleu du Vercors-Sassenage AOC, acteurs touristiques (château, Cuves), professions libérales, PME tertiaires sassenageoises et entreprises de Grenoble-Alpes Métropole.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const SASSENAGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sassenage : diagnostic adapté aux producteurs Bleu du Vercors-Sassenage AOC, acteurs touristiques patrimoine, TPE artisans et PME tertiaires sassenageoises. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Sassenage : diagnostic adapté aux producteurs Bleu du Vercors-Sassenage AOC, acteurs touristiques patrimoine, TPE artisans et PME tertiaires sassenageoises. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Sassenage : diagnostic adapté aux producteurs Bleu du Vercors-Sassenage AOC, acteurs touristiques patrimoine, TPE artisans et PME tertiaires sassenageoises. Audit Flash 490 € HT avec ROI quantifié accessible.",
+      en: "Audit IA à Sassenage : diagnostic adapté aux producteurs Bleu du Vercors-Sassenage AOC, acteurs touristiques patrimoine, TPE artisans et PME tertiaires sassenageoises. Audit Flash 490 € HT avec ROI quantifié accessible.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Sassenage : formats adaptés à la fromagerie, au château touristique, atelier artisan ou cabinet professionnel. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Sassenage : formats adaptés à la fromagerie, au château touristique, atelier artisan ou cabinet professionnel. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Sassenage : formats adaptés à la fromagerie, au château touristique, atelier artisan ou cabinet professionnel. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Sassenage : formats adaptés à la fromagerie, au château touristique, atelier artisan ou cabinet professionnel. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Sassenage : agents conversationnels touristiques multilingues (château, Cuves), traçabilité Bleu Vercors-Sassenage AOC, automatisation devis BTP, classification photos. Tissu Vercors.",

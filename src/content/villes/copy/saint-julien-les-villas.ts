@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_JULIEN_LES_VILLAS_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Julien-les-Villas (10), commune de l'Aube intégrée à l'agglomération troyenne, est une ville résidentielle dotée d'un tissu commercial et tertiaire dynamique. TPE/PME tertiaires, commerces de zone et de proximité, services aux entreprises, artisanat BTP, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Julien-les-Villas (10), commune de l'Aube intégrée à l'agglomération troyenne, est une ville résidentielle dotée d'un tissu commercial et tertiaire dynamique. TPE/PME tertiaires, commerces de zone et de proximité, services aux entreprises, artisanat BTP, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Saint-Julien-les-Villas (10), commune de l'Aube intégrée à l'agglomération troyenne, est une ville résidentielle dotée d'un tissu commercial et tertiaire dynamique. TPE/PME tertiaires, commerces de zone et de proximité, services aux entreprises, artisanat BTP, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Julien-les-Villas (10), commune de l'Aube intégrée à l'agglomération troyenne, est une ville résidentielle dotée d'un tissu commercial et tertiaire dynamique. TPE/PME tertiaires, commerces de zone et de proximité, services aux entreprises, artisanat BTP, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Julien-les-Villas (10). Nous accompagnons TPE et PME : sociétés tertiaires agglo Troyes, commerçants de zone, artisans BTP, services aux entreprises, professions libérales. Audit Flash dès 490 € HT.",
   directAnswerEn:

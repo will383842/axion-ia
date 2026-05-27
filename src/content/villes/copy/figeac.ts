@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FIGEAC_COPY: VilleCopy = {
   pitchFr:
-    "Figeac (46), sous-préfecture du Lot, cité médiévale de Champollion sur le chemin de Saint-Jacques-de-Compostelle. Pôle aéronautique majeur (usinage de précision). Tissu PME aéronautiques, TPE artisans, commerces patrimoine, tourisme culturel et pèlerin. Axion-IA y intervient pour tous types d'activités.",
+    "Figeac (46), sous-préfecture du Lot, cité médiévale de Champollion sur le chemin de Saint-Jacques-de-Compostelle. Pôle aéronautique majeur (usinage de précision). Tissu PME aéronautiques, TPE artisans, commerces patrimoine, tourisme culturel et pèlerin. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Figeac (46), sous-préfecture du Lot, cité médiévale de Champollion sur le chemin de Saint-Jacques-de-Compostelle. Pôle aéronautique majeur (usinage de précision). Tissu PME aéronautiques, TPE artisans, commerces patrimoine, tourisme culturel et pèlerin. Axion-IA y intervient pour tous types d'activités.",
+    "Figeac (46), sous-préfecture du Lot, cité médiévale de Champollion sur le chemin de Saint-Jacques-de-Compostelle. Pôle aéronautique majeur (usinage de précision). Tissu PME aéronautiques, TPE artisans, commerces patrimoine, tourisme culturel et pèlerin. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Figeac (46). Nous accompagnons tous types d'activités : PME sous-traitance aéronautique, TPE artisans, commerçants du centre médiéval, indépendants, professions libérales, acteurs du tourisme patrimoine et pèlerinage.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const FIGEAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Figeac : diagnostic adapté aux PME aéronautiques et mécanique de précision, TPE artisans, commerçants du centre médiéval et acteurs du tourisme patrimoine lotois. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Figeac : diagnostic adapté aux PME aéronautiques et mécanique de précision, TPE artisans, commerçants du centre médiéval et acteurs du tourisme patrimoine lotois. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Figeac : diagnostic adapté aux PME aéronautiques et mécanique de précision, TPE artisans, commerçants du centre médiéval et acteurs du tourisme patrimoine lotois. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Figeac : diagnostic adapté aux PME aéronautiques et mécanique de précision, TPE artisans, commerçants du centre médiéval et acteurs du tourisme patrimoine lotois. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Figeac : formats adaptés à l'atelier aéronautique, commerce patrimoine, hôtellerie ou cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Figeac : formats adaptés à l'atelier aéronautique, commerce patrimoine, hôtellerie ou cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Figeac : formats adaptés à l'atelier aéronautique, commerce patrimoine, hôtellerie ou cabinet. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Figeac : formats adaptés à l'atelier aéronautique, commerce patrimoine, hôtellerie ou cabinet. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Figeac : contrôle qualité vision pièces usinées, prédiction maintenance machines-outils, automatisation traçabilité aéronautique, chatbot tourisme multilingue pèlerins. Adapté aéro + patrimoine.",
@@ -64,7 +64,7 @@ export const FIGEAC_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Figeac depuis Toulouse ?",
-      a: "Figeac est à 1h40 de Toulouse par A20. Gare SNCF Figeac (ligne Brive-Toulouse). Pour missions multi-jours, hébergement local centre médiéval. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Figeac est à 1h40 de Toulouse par A20. Gare SNCF Figeac (ligne Brive-Toulouse). Pour missions multi-jours, hébergement local centre médiéval. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

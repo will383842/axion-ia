@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BISCHHEIM_COPY: VilleCopy = {
   pitchFr:
-    "Bischheim (67), commune de 18 558 habitants en Bas-Rhin, située dans la proche couronne nord de l'Eurométropole de Strasbourg, conjugue zones d'activités, tissu industriel, commerces et services tournés vers la métropole. Tissu TPE/PME industrie, logistique, BTP, commerces, artisans, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Bischheim (67), commune de 18 558 habitants en Bas-Rhin, située dans la proche couronne nord de l'Eurométropole de Strasbourg, conjugue zones d'activités, tissu industriel, commerces et services tournés vers la métropole. Tissu TPE/PME industrie, logistique, BTP, commerces, artisans, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Bischheim (67), commune de 18 558 habitants en Bas-Rhin, située dans la proche couronne nord de l'Eurométropole de Strasbourg, conjugue zones d'activités, tissu industriel, commerces et services tournés vers la métropole. Tissu TPE/PME industrie, logistique, BTP, commerces, artisans, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Bischheim (67), commune de 18 558 habitants en Bas-Rhin, située dans la proche couronne nord de l'Eurométropole de Strasbourg, conjugue zones d'activités, tissu industriel, commerces et services tournés vers la métropole. Tissu TPE/PME industrie, logistique, BTP, commerces, artisans, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bischheim (67). Nous accompagnons tous types d'activités : TPE/PME industrie, logistique, BTP, artisans, commerces, professions de services et acteurs des zones d'activités de la proche couronne nord de l'Eurométropole de Strasbourg.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const BISCHHEIM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bischheim : diagnostic adapté aux TPE/PME industrie, logistique, BTP, commerces, artisans, services. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Bischheim : diagnostic adapté aux TPE/PME industrie, logistique, BTP, commerces, artisans, services. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Bischheim : diagnostic adapté aux TPE/PME industrie, logistique, BTP, commerces, artisans, services. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Bischheim : diagnostic adapté aux TPE/PME industrie, logistique, BTP, commerces, artisans, services. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bischheim : formats adaptés à l'atelier industriel, l'entrepôt logistique, le chantier BTP, le commerce, l'agence, le bureau. Vos équipes repartent autonomes.",

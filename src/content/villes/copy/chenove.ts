@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHENOVE_COPY: VilleCopy = {
   pitchFr:
-    "Chenôve (21), commune limitrophe sud de Dijon au pied de la Côte de Nuits, hérite d'une tradition viticole séculaire (ancienne cuverie des ducs de Bourgogne). Tissu économique mixte : TPE/PME commerce, artisanat, services, logistique. Axion-IA y intervient pour tous types d'activités de l'agglomération dijonnaise.",
+    "Chenôve (21), commune limitrophe sud de Dijon au pied de la Côte de Nuits, hérite d'une tradition viticole séculaire (ancienne cuverie des ducs de Bourgogne). Tissu économique mixte : TPE/PME commerce, artisanat, services, logistique. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération dijonnaise.",
   pitchEn:
-    "Chenôve (21), commune limitrophe sud de Dijon au pied de la Côte de Nuits, hérite d'une tradition viticole séculaire (ancienne cuverie des ducs de Bourgogne). Tissu économique mixte : TPE/PME commerce, artisanat, services, logistique. Axion-IA y intervient pour tous types d'activités de l'agglomération dijonnaise.",
+    "Chenôve (21), commune limitrophe sud de Dijon au pied de la Côte de Nuits, hérite d'une tradition viticole séculaire (ancienne cuverie des ducs de Bourgogne). Tissu économique mixte : TPE/PME commerce, artisanat, services, logistique. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération dijonnaise.",
   seoHook: "commerce, artisanat & viticulture",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chenôve (21). Nous accompagnons TPE, PME et indépendants du sud dijonnais : commerçants, artisans, professions libérales, acteurs de la logistique et de la viticulture Côte de Nuits. Audit Flash dès 490 € HT, démarrage sous 5 jours.",

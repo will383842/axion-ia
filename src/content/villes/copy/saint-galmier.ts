@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_GALMIER_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Galmier (42), commune de la plaine du Forez dans la Loire, est mondialement connue pour la source d'eau minérale Badoit (eau gazeuse naturellement pétillante d'origine locale). Tissu PME industrielles agroalimentaires (eau minérale, embouteillage), tourisme thermal/oenologie, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Galmier (42), commune de la plaine du Forez dans la Loire, est mondialement connue pour la source d'eau minérale Badoit (eau gazeuse naturellement pétillante d'origine locale). Tissu PME industrielles agroalimentaires (eau minérale, embouteillage), tourisme thermal/oenologie, TPE artisans BTP, commerces. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Saint-Galmier (42), commune de la plaine du Forez dans la Loire, est mondialement connue pour la source d'eau minérale Badoit (eau gazeuse naturellement pétillante d'origine locale). Tissu PME industrielles agroalimentaires (eau minérale, embouteillage), tourisme thermal/oenologie, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Galmier (42), commune de la plaine du Forez dans la Loire, est mondialement connue pour la source d'eau minérale Badoit (eau gazeuse naturellement pétillante d'origine locale). Tissu PME industrielles agroalimentaires (eau minérale, embouteillage), tourisme thermal/oenologie, TPE artisans BTP, commerces. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Galmier (42). Nous accompagnons tous types d'activités : PME industrielles agroalimentaires (filière eau minérale Badoit), acteurs tourisme et oenologie, TPE artisans BTP, commerçants, indépendants et services aux entreprises foréziennes.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const SAINT_GALMIER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Galmier : diagnostic adapté aux PME agroalimentaires (filière eau minérale Badoit), acteurs tourisme thermal, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Galmier : diagnostic adapté aux PME agroalimentaires (filière eau minérale Badoit), acteurs tourisme thermal, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Galmier : diagnostic adapté aux PME agroalimentaires (filière eau minérale Badoit), acteurs tourisme thermal, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Saint-Galmier : diagnostic adapté aux PME agroalimentaires (filière eau minérale Badoit), acteurs tourisme thermal, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Galmier : formats adaptés à l'usine d'embouteillage agroalimentaire, hôtel, casino, atelier artisan. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const SAINT_GALMIER_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",
-      a: "Nos consultants viennent de Lyon (50 min) ou Saint-Étienne (25 min). Pour les multi-jours, hébergement local possible (hôtels Saint-Galmier). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (50 min) ou Saint-Étienne (25 min). Pour les multi-jours, hébergement local possible (hôtels Saint-Galmier). Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

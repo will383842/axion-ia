@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SERIGNAN_COPY: VilleCopy = {
   pitchFr:
-    "Sérignan (34), commune du littoral héraultais entre Béziers et Valras-Plage, connue pour le MRAC (musée régional d'art contemporain) et son vignoble AOC. Plage naturelle, tourisme estival, viticulture. Tissu TPE commerçants, PME viticoles, artisans, hôtellerie-restauration. Axion-IA y intervient pour tous types d'activités.",
+    "Sérignan (34), commune du littoral héraultais entre Béziers et Valras-Plage, connue pour le MRAC (musée régional d'art contemporain) et son vignoble AOC. Plage naturelle, tourisme estival, viticulture. Tissu TPE commerçants, PME viticoles, artisans, hôtellerie-restauration. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Sérignan (34), commune du littoral héraultais entre Béziers et Valras-Plage, connue pour le MRAC (musée régional d'art contemporain) et son vignoble AOC. Plage naturelle, tourisme estival, viticulture. Tissu TPE commerçants, PME viticoles, artisans, hôtellerie-restauration. Axion-IA y intervient pour tous types d'activités.",
+    "Sérignan (34), commune du littoral héraultais entre Béziers et Valras-Plage, connue pour le MRAC (musée régional d'art contemporain) et son vignoble AOC. Plage naturelle, tourisme estival, viticulture. Tissu TPE commerçants, PME viticoles, artisans, hôtellerie-restauration. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sérignan (34). Nous accompagnons TPE commerçants, PME viticoles, artisans, acteurs du tourisme littoral et hôtellerie-restauration du bassin biterrois.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LORGUES_COPY: VilleCopy = {
   pitchFr:
-    "Lorgues (83), bourg du centre-Var réputé pour son marché provençal du mardi et son vignoble Côtes de Provence, structure un tissu de TPE viticulteurs, restaurateurs, artisans et PME du tourisme rural. Axion-IA y intervient pour tous types d'activités.",
+    "Lorgues (83), bourg du centre-Var réputé pour son marché provençal du mardi et son vignoble Côtes de Provence, structure un tissu de TPE viticulteurs, restaurateurs, artisans et PME du tourisme rural. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Lorgues (83), bourg du centre-Var réputé pour son marché provençal du mardi et son vignoble Côtes de Provence, structure un tissu de TPE viticulteurs, restaurateurs, artisans et PME du tourisme rural. Axion-IA y intervient pour tous types d'activités.",
+    "Lorgues (83), bourg du centre-Var réputé pour son marché provençal du mardi et son vignoble Côtes de Provence, structure un tissu de TPE viticulteurs, restaurateurs, artisans et PME du tourisme rural. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lorgues (83). Nous accompagnons TPE viticulteurs Côtes de Provence, restaurateurs, artisans, commerçants du marché provençal et PME du tourisme rural du centre-Var. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LORGUES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lorgues : diagnostic adapté aux domaines viticoles, restaurateurs, artisans et TPE du tourisme rural. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Lorgues : diagnostic adapté aux domaines viticoles, restaurateurs, artisans et TPE du tourisme rural. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Lorgues : diagnostic adapté aux domaines viticoles, restaurateurs, artisans et TPE du tourisme rural. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Lorgues : diagnostic adapté aux domaines viticoles, restaurateurs, artisans et TPE du tourisme rural. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lorgues : ateliers pour vignerons, restaurateurs, commerçants du marché et artisans. Outils IA configurés métier réel.",

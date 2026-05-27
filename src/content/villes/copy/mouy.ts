@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MOUY_COPY: VilleCopy = {
   pitchFr:
-    "Mouy (60), bourg rural du Pays de Thelle en Oise, rassemble un tissu de TPE artisanales, PME industrielles légères, commerces de proximité et exploitations agricoles (grandes cultures picardes). Axion-IA y intervient pour tous types d'activités du Pays de Thelle et du sud de l'Oise.",
+    "Mouy (60), bourg rural du Pays de Thelle en Oise, rassemble un tissu de TPE artisanales, PME industrielles légères, commerces de proximité et exploitations agricoles (grandes cultures picardes). Axion-IA couvre l'ensemble des activités professionnelles présentes du Pays de Thelle et du sud de l'Oise.",
   pitchEn:
-    "Mouy (60), bourg rural du Pays de Thelle en Oise, rassemble un tissu de TPE artisanales, PME industrielles légères, commerces de proximité et exploitations agricoles (grandes cultures picardes). Axion-IA y intervient pour tous types d'activités du Pays de Thelle et du sud de l'Oise.",
+    "Mouy (60), bourg rural du Pays de Thelle en Oise, rassemble un tissu de TPE artisanales, PME industrielles légères, commerces de proximité et exploitations agricoles (grandes cultures picardes). Axion-IA couvre l'ensemble des activités professionnelles présentes du Pays de Thelle et du sud de l'Oise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mouy (60). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles légères, commerçants, agriculteurs grandes cultures, indépendants, professions libérales et services aux entreprises du Pays de Thelle / sud Oise.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const MOUY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mouy : diagnostic adapté aux TPE artisanales, PME industrielles légères, agriculteurs grandes cultures et commerçants du Pays de Thelle. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Mouy : diagnostic adapté aux TPE artisanales, PME industrielles légères, agriculteurs grandes cultures et commerçants du Pays de Thelle. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Mouy : diagnostic adapté aux TPE artisanales, PME industrielles légères, agriculteurs grandes cultures et commerçants du Pays de Thelle. ROI mesurable, audit Flash dès 490 € HT accessible.",
+      en: "Audit IA à Mouy : diagnostic adapté aux TPE artisanales, PME industrielles légères, agriculteurs grandes cultures et commerçants du Pays de Thelle. ROI mesurable, audit Flash dès 490 € HT accessible.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Mouy : formats adaptés à l'atelier artisanal, PME industrielle, exploitation agricole ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Mouy : formats adaptés à l'atelier artisanal, PME industrielle, exploitation agricole ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Mouy : formats adaptés à l'atelier artisanal, PME industrielle, exploitation agricole ou commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Mouy : formats adaptés à l'atelier artisanal, PME industrielle, exploitation agricole ou commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Mouy : automatisation devis BTP, prédiction rendements agricoles, classification documents, agents conversationnels prise de RDV, optimisation gestion stocks. Pays de Thelle / sud Oise.",

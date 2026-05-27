@@ -3,9 +3,9 @@ import type { VilleCopy } from "./types";
 
 export const COGOLIN_COPY: VilleCopy = {
   pitchFr:
-    "Cogolin (83, Var), porte du Golfe de Saint-Tropez et capitale historique de la fabrication de tapis et de pipes en bruyère, accueille TPE artisanales, PME du nautisme, commerces, hôtellerie, restauration et professions libérales. Axion-IA y intervient pour tous types d'activités du Golfe de Saint-Tropez.",
+    "Cogolin (83, Var), porte du Golfe de Saint-Tropez et capitale historique de la fabrication de tapis et de pipes en bruyère, accueille TPE artisanales, PME du nautisme, commerces, hôtellerie, restauration et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du Golfe de Saint-Tropez.",
   pitchEn:
-    "Cogolin (83, Var), porte du Golfe de Saint-Tropez et capitale historique de la fabrication de tapis et de pipes en bruyère, accueille TPE artisanales, PME du nautisme, commerces, hôtellerie, restauration et professions libérales. Axion-IA y intervient pour tous types d'activités du Golfe de Saint-Tropez.",
+    "Cogolin (83, Var), porte du Golfe de Saint-Tropez et capitale historique de la fabrication de tapis et de pipes en bruyère, accueille TPE artisanales, PME du nautisme, commerces, hôtellerie, restauration et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du Golfe de Saint-Tropez.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cogolin (83). Nous accompagnons TPE artisanales, PME nautisme, commerces et hôtellerie-restauration du Golfe de Saint-Tropez. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:

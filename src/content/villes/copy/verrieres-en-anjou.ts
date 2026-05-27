@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VERRIERES_EN_ANJOU_COPY: VilleCopy = {
   pitchFr:
-    "Verrières-en-Anjou (49), commune dynamique au nord-est d'Angers, accueille plus de 8 100 habitants et des zones d'activités en croissance. Axion-IA y intervient pour tous types d'activités : PME tertiaires, artisanat, logistique, commerces et services aux entreprises.",
+    "Verrières-en-Anjou (49), commune dynamique au nord-est d'Angers, accueille plus de 8 100 habitants et des zones d'activités en croissance. Axion-IA accompagne entreprises et indépendants de tous secteurs : PME tertiaires, artisanat, logistique, commerces et services aux entreprises.",
   pitchEn:
-    "Verrières-en-Anjou (49), commune dynamique au nord-est d'Angers, accueille plus de 8 100 habitants et des zones d'activités en croissance. Axion-IA y intervient pour tous types d'activités : PME tertiaires, artisanat, logistique, commerces et services aux entreprises.",
+    "Verrières-en-Anjou (49), commune dynamique au nord-est d'Angers, accueille plus de 8 100 habitants et des zones d'activités en croissance. Axion-IA accompagne entreprises et indépendants de tous secteurs : PME tertiaires, artisanat, logistique, commerces et services aux entreprises.",
   directAnswerFr:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Verrières-en-Anjou (49). Nous accompagnons les TPE, PME et entreprises du nord-est angevin dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Tarifs publics, RGPD strict.",
   directAnswerEn:

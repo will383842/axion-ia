@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const WITTENHEIM_COPY: VilleCopy = {
   pitchFr:
-    "Wittenheim (68), commune du bassin potassique reconverti au nord de Mulhouse en Haut-Rhin, fait partie de Mulhouse Alsace Agglomération (m2A). Tissu TPE artisans, PME industrielles et de services, commerces de proximité, professions libérales et indépendants. Axion-IA y intervient pour tous types d'activités de l'agglomération nord mulhousienne.",
+    "Wittenheim (68), commune du bassin potassique reconverti au nord de Mulhouse en Haut-Rhin, fait partie de Mulhouse Alsace Agglomération (m2A). Tissu TPE artisans, PME industrielles et de services, commerces de proximité, professions libérales et indépendants. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération nord mulhousienne.",
   pitchEn:
-    "Wittenheim (68), commune du bassin potassique reconverti au nord de Mulhouse en Haut-Rhin, fait partie de Mulhouse Alsace Agglomération (m2A). Tissu TPE artisans, PME industrielles et de services, commerces de proximité, professions libérales et indépendants. Axion-IA y intervient pour tous types d'activités de l'agglomération nord mulhousienne.",
+    "Wittenheim (68), commune du bassin potassique reconverti au nord de Mulhouse en Haut-Rhin, fait partie de Mulhouse Alsace Agglomération (m2A). Tissu TPE artisans, PME industrielles et de services, commerces de proximité, professions libérales et indépendants. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération nord mulhousienne.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wittenheim (68). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants, professions libérales et indépendants du bassin potassique reconverti, agglomération nord de Mulhouse. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
   directAnswerEn:

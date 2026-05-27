@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CROZON_COPY: VilleCopy = {
   pitchFr:
-    "Crozon (29), commune principale de la presqu'île de Crozon dans le Finistère, est intégrée au Parc naturel régional d'Armorique. Tourisme nature et balnéaire (plages, sentiers côtiers GR34), TPE artisans, commerces saisonniers, activités nautiques et services. Axion-IA y intervient pour tous types d'activités.",
+    "Crozon (29), commune principale de la presqu'île de Crozon dans le Finistère, est intégrée au Parc naturel régional d'Armorique. Tourisme nature et balnéaire (plages, sentiers côtiers GR34), TPE artisans, commerces saisonniers, activités nautiques et services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Crozon (29), commune principale de la presqu'île de Crozon dans le Finistère, est intégrée au Parc naturel régional d'Armorique. Tourisme nature et balnéaire (plages, sentiers côtiers GR34), TPE artisans, commerces saisonniers, activités nautiques et services. Axion-IA y intervient pour tous types d'activités.",
+    "Crozon (29), commune principale de la presqu'île de Crozon dans le Finistère, est intégrée au Parc naturel régional d'Armorique. Tourisme nature et balnéaire (plages, sentiers côtiers GR34), TPE artisans, commerces saisonniers, activités nautiques et services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Crozon (29). Nous accompagnons tous types d'activités : TPE artisans, hébergeurs et acteurs du tourisme nature (presqu'île de Crozon, PNR Armorique), commerçants saisonniers, activités nautiques, professions libérales et services. Audit Flash à 490 € HT.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const CROZON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Crozon : diagnostic adapté aux TPE artisans, hébergeurs touristiques, commerçants saisonniers et acteurs nautiques de la presqu'île. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Crozon : diagnostic adapté aux TPE artisans, hébergeurs touristiques, commerçants saisonniers et acteurs nautiques de la presqu'île. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Crozon : diagnostic adapté aux TPE artisans, hébergeurs touristiques, commerçants saisonniers et acteurs nautiques de la presqu'île. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Crozon : diagnostic adapté aux TPE artisans, hébergeurs touristiques, commerçants saisonniers et acteurs nautiques de la presqu'île. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Crozon : formats adaptés à l'hébergement touristique, au commerce saisonnier, à l'activité nautique ou à l'atelier artisan. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Crozon : formats adaptés à l'hébergement touristique, au commerce saisonnier, à l'activité nautique ou à l'atelier artisan. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Crozon : formats adaptés à l'hébergement touristique, au commerce saisonnier, à l'activité nautique ou à l'atelier artisan. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Crozon : formats adaptés à l'hébergement touristique, au commerce saisonnier, à l'activité nautique ou à l'atelier artisan. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Crozon : agents conversationnels réservation multilingues, tarification dynamique saisonnière, gestion avis clients, automatisation planning nautique. Adapté tourisme presqu'île + PNR Armorique.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_MARTIN_LE_VINOUX_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Martin-le-Vinoux (38), commune limitrophe au nord-ouest de Grenoble, est membre de Grenoble-Alpes Métropole. Position résidentielle péri-urbaine à proximité immédiate du centre-ville grenoblois, au pied du massif de la Chartreuse. Tissu PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Martin-le-Vinoux (38), commune limitrophe au nord-ouest de Grenoble, est membre de Grenoble-Alpes Métropole. Position résidentielle péri-urbaine à proximité immédiate du centre-ville grenoblois, au pied du massif de la Chartreuse. Tissu PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Saint-Martin-le-Vinoux (38), commune limitrophe au nord-ouest de Grenoble, est membre de Grenoble-Alpes Métropole. Position résidentielle péri-urbaine à proximité immédiate du centre-ville grenoblois, au pied du massif de la Chartreuse. Tissu PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Martin-le-Vinoux (38), commune limitrophe au nord-ouest de Grenoble, est membre de Grenoble-Alpes Métropole. Position résidentielle péri-urbaine à proximité immédiate du centre-ville grenoblois, au pied du massif de la Chartreuse. Tissu PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Martin-le-Vinoux (38). Nous accompagnons tous types d'activités : PME tertiaires, TPE artisans BTP, commerçants, professions libérales (médecins, avocats), indépendants et services aux entreprises de Grenoble-Alpes Métropole en zone nord-ouest.",
   directAnswerEn:
@@ -64,7 +64,7 @@ export const SAINT_MARTIN_LE_VINOUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Grenoble ?",
-      a: "Nos consultants viennent de Grenoble (10 min tramway E). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Grenoble (10 min tramway E). Pour les multi-jours, hébergement local possible. Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

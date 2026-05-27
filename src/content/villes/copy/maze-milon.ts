@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MAZE_MILON_COPY: VilleCopy = {
   pitchFr:
-    "Mazé-Milon (49), commune nouvelle du Maine-et-Loire dans le val d'Authion entre Angers et Saumur, concentre un tissu de TPE horticoles, PME maraîchères et semencières, artisans, commerces ruraux et exploitations agricoles de la plaine Authion. Axion-IA y intervient pour tous types d'activités.",
+    "Mazé-Milon (49), commune nouvelle du Maine-et-Loire dans le val d'Authion entre Angers et Saumur, concentre un tissu de TPE horticoles, PME maraîchères et semencières, artisans, commerces ruraux et exploitations agricoles de la plaine Authion. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Mazé-Milon (49), commune nouvelle du Maine-et-Loire dans le val d'Authion entre Angers et Saumur, concentre un tissu de TPE horticoles, PME maraîchères et semencières, artisans, commerces ruraux et exploitations agricoles de la plaine Authion. Axion-IA y intervient pour tous types d'activités.",
+    "Mazé-Milon (49), commune nouvelle du Maine-et-Loire dans le val d'Authion entre Angers et Saumur, concentre un tissu de TPE horticoles, PME maraîchères et semencières, artisans, commerces ruraux et exploitations agricoles de la plaine Authion. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mazé-Milon (49). Nous accompagnons tous types d'activités : TPE horticoles, PME maraîchères et semencières, exploitants agricoles du val d'Authion, artisans, commerçants de proximité, professions libérales et prestataires de services entre Angers et Saumur.",
   directAnswerEn:

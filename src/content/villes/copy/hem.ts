@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const HEM_COPY: VilleCopy = {
   pitchFr:
-    "Hem (59), commune résidentielle de la Métropole Européenne de Lille à l'est, conjugue tissu pavillonnaire, ZA dynamiques, artisanat actif et commerces de proximité. TPE, PME, artisans BTP, professions libérales, commerçants et sous-traitants industriels rayonnent entre Roubaix, Lys-lez-Lannoy et Croix. Axion-IA y intervient pour tous types d'activités.",
+    "Hem (59), commune résidentielle de la Métropole Européenne de Lille à l'est, conjugue tissu pavillonnaire, ZA dynamiques, artisanat actif et commerces de proximité. TPE, PME, artisans BTP, professions libérales, commerçants et sous-traitants industriels rayonnent entre Roubaix, Lys-lez-Lannoy et Croix. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Hem (59), commune résidentielle de la Métropole Européenne de Lille à l'est, conjugue tissu pavillonnaire, ZA dynamiques, artisanat actif et commerces de proximité. TPE, PME, artisans BTP, professions libérales, commerçants et sous-traitants industriels rayonnent entre Roubaix, Lys-lez-Lannoy et Croix. Axion-IA y intervient pour tous types d'activités.",
+    "Hem (59), commune résidentielle de la Métropole Européenne de Lille à l'est, conjugue tissu pavillonnaire, ZA dynamiques, artisanat actif et commerces de proximité. TPE, PME, artisans BTP, professions libérales, commerçants et sous-traitants industriels rayonnent entre Roubaix, Lys-lez-Lannoy et Croix. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hem (59). Nous accompagnons TPE et PME : artisans BTP, sous-traitants textile et industriels, PME de services, commerçants et professions libérales de l'agglomération lilloise est. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const HEM_COPY: VilleCopy = {
       en: "Audit IA à Hem : diagnostic adapté aux artisans BTP, sous-traitants textile-industriels, PME de services et commerçants de l'agglomération lilloise est. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Hem : formats adaptés à l'atelier artisan, à la PME sous-traitante, au cabinet libéral ou au commerce de proximité. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Hem : formats adaptés à l'atelier artisan, à la PME sous-traitante, au cabinet libéral ou au commerce de proximité. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Hem : formats adaptés à l'atelier artisan, à la PME sous-traitante, au cabinet libéral ou au commerce de proximité. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Hem : formats adaptés à l'atelier artisan, à la PME sous-traitante, au cabinet libéral ou au commerce de proximité. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Hem : automatisation devis et chiffrage, planification chantiers, gestion stocks, chatbot SAV et accueil, agents conversationnels relances commerciales pour artisans, sous-traitants et PME de l'agglomération lilloise est.",

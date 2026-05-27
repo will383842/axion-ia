@@ -29,8 +29,8 @@ export const LE_CHESNAY_ROCQUENCOURT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Chesnay-Rocquencourt : diagnostic adapté aux TPE professions libérales et PME tertiaires versaillaises. ROI chiffré, audit Flash 490 € HT accessible aux indépendants et cabinets.",
-      en: "Audit IA au Chesnay-Rocquencourt : diagnostic adapté aux TPE professions libérales et PME tertiaires versaillaises. ROI chiffré, audit Flash 490 € HT accessible aux indépendants et cabinets.",
+      fr: "Audit IA au Chesnay-Rocquencourt : diagnostic adapté aux TPE professions libérales et PME tertiaires versaillaises. ROI mesurable, audit Flash dès 490 € HT accessible aux indépendants et cabinets.",
+      en: "Audit IA au Chesnay-Rocquencourt : diagnostic adapté aux TPE professions libérales et PME tertiaires versaillaises. ROI mesurable, audit Flash dès 490 € HT accessible aux indépendants et cabinets.",
     },
     interventions: {
       fr: "Interventions IA sur site au Chesnay : sessions adaptées aux cabinets professionnels et PME tertiaires. Formats demi-journée à 2 jours, vos équipes (assistants, secrétaires médicales, juristes) repartent autonomes.",

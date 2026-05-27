@@ -29,8 +29,8 @@ export const BAUME_LES_DAMES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Baume-les-Dames : diagnostic adapté aux TPE artisans, PME industrielles de la vallée du Doubs, commerçants et prestataires touristiques. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Baume-les-Dames : diagnostic adapté aux TPE artisans, PME industrielles de la vallée du Doubs, commerçants et prestataires touristiques. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Baume-les-Dames : diagnostic adapté aux TPE artisans, PME industrielles de la vallée du Doubs, commerçants et prestataires touristiques. ROI mesurable, audit Flash dès 490 € HT accessible.",
+      en: "Audit IA à Baume-les-Dames : diagnostic adapté aux TPE artisans, PME industrielles de la vallée du Doubs, commerçants et prestataires touristiques. ROI mesurable, audit Flash dès 490 € HT accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Baume-les-Dames : formats adaptés à l'atelier industriel, TPE artisan BTP ou commerce de centre-bourg. Vos équipes repartent autonomes sur les outils IA métier.",

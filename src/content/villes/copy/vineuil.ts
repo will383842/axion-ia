@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VINEUIL_COPY: VilleCopy = {
   pitchFr:
-    "Vineuil (41), commune résidentielle de l'agglomération de Blois en Loir-et-Cher, accueille un tissu de TPE et PME diversifié entre services aux entreprises, artisanat BTP, commerces de proximité et activités tertiaires. Axion-IA y intervient pour tous types d'activités de l'agglo blésoise.",
+    "Vineuil (41), commune résidentielle de l'agglomération de Blois en Loir-et-Cher, accueille un tissu de TPE et PME diversifié entre services aux entreprises, artisanat BTP, commerces de proximité et activités tertiaires. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglo blésoise.",
   pitchEn:
-    "Vineuil (41), commune résidentielle de l'agglomération de Blois en Loir-et-Cher, accueille un tissu de TPE et PME diversifié entre services aux entreprises, artisanat BTP, commerces de proximité et activités tertiaires. Axion-IA y intervient pour tous types d'activités de l'agglo blésoise.",
+    "Vineuil (41), commune résidentielle de l'agglomération de Blois en Loir-et-Cher, accueille un tissu de TPE et PME diversifié entre services aux entreprises, artisanat BTP, commerces de proximité et activités tertiaires. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglo blésoise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vineuil (41), dans l'agglomération de Blois. Nous accompagnons TPE artisans, PME tertiaires et de services, commerces, professions libérales. Audit Flash dès 490 € HT, démarrage sous 10 jours.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const VINEUIL_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous des formations IA sur site à Vineuil ?",
-      a: "Oui, interventions en atelier, bureau ou commerce. Formats demi-journée ou journée complète. Vos équipes repartent autonomes.",
+      a: "Oui, interventions en atelier, bureau ou commerce. Formats demi-journée ou journée complète. Vos équipes maîtrisent les outils déployés.",
     },
     {
       q: "Comment se déroule un accompagnement IA pour une TPE à Vineuil ?",

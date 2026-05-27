@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LEERS_COPY: VilleCopy = {
   pitchFr:
-    "Leers (59), commune de la Métropole Européenne de Lille dans l'agglomération de Roubaix, accolée à la frontière belge (Estaimpuis à 3 min). Tissu économique : TPE et PME du textile-distribution, commerce transfrontalier franco-belge, artisanat, services de proximité, sous-traitance industrielle roubaisienne. Axion-IA y intervient pour tous types d'activités du bassin roubaisien et transfrontalier.",
+    "Leers (59), commune de la Métropole Européenne de Lille dans l'agglomération de Roubaix, accolée à la frontière belge (Estaimpuis à 3 min). Tissu économique : TPE et PME du textile-distribution, commerce transfrontalier franco-belge, artisanat, services de proximité, sous-traitance industrielle roubaisienne. Axion-IA opère pour toutes les structures économiques de la commune du bassin roubaisien et transfrontalier.",
   pitchEn:
-    "Leers (59), commune de la Métropole Européenne de Lille dans l'agglomération de Roubaix, accolée à la frontière belge (Estaimpuis à 3 min). Tissu économique : TPE et PME du textile-distribution, commerce transfrontalier franco-belge, artisanat, services de proximité, sous-traitance industrielle roubaisienne. Axion-IA y intervient pour tous types d'activités du bassin roubaisien et transfrontalier.",
+    "Leers (59), commune de la Métropole Européenne de Lille dans l'agglomération de Roubaix, accolée à la frontière belge (Estaimpuis à 3 min). Tissu économique : TPE et PME du textile-distribution, commerce transfrontalier franco-belge, artisanat, services de proximité, sous-traitance industrielle roubaisienne. Axion-IA opère pour toutes les structures économiques de la commune du bassin roubaisien et transfrontalier.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Leers (59). Nous accompagnons TPE et PME : PME textile-distribution héritières du bassin roubaisien, commerçants transfrontaliers franco-belges, artisans, prestataires de services de proximité et sous-traitants industriels.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const LEERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Leers : diagnostic adapté aux TPE et PME du textile-distribution roubaisien, commerçants transfrontaliers franco-belges, artisans, services de proximité et sous-traitants industriels. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Leers : diagnostic adapté aux TPE et PME du textile-distribution roubaisien, commerçants transfrontaliers franco-belges, artisans, services de proximité et sous-traitants industriels. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Leers : diagnostic adapté aux TPE et PME du textile-distribution roubaisien, commerçants transfrontaliers franco-belges, artisans, services de proximité et sous-traitants industriels. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Leers : diagnostic adapté aux TPE et PME du textile-distribution roubaisien, commerçants transfrontaliers franco-belges, artisans, services de proximité et sous-traitants industriels. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Leers : formats adaptés à la PME textile, au commerçant transfrontalier, à l'artisan ou au sous-traitant industriel. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Leers : formats adaptés à la PME textile, au commerçant transfrontalier, à l'artisan ou au sous-traitant industriel. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Leers : formats adaptés à la PME textile, au commerçant transfrontalier, à l'artisan ou au sous-traitant industriel. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Leers : formats adaptés à la PME textile, au commerçant transfrontalier, à l'artisan ou au sous-traitant industriel. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Leers : génération fiches produits textile multilingues, agents conversationnels bilingues FR-NL commerce transfrontalier, CRM augmenté PME B2B, automatisation devis-facturation cross-border, contrôle qualité visuel production.",

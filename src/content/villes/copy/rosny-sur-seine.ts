@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ROSNY_SUR_SEINE_COPY: VilleCopy = {
   pitchFr:
-    "Rosny-sur-Seine (78), commune des bords de Seine à l'ouest de Mantes-la-Jolie dans les Yvelines, accueille TPE artisans, PME industrielles et logistiques, commerces de proximité et professions libérales. Axion-IA y intervient pour tous types d'activités du bassin mantois.",
+    "Rosny-sur-Seine (78), commune des bords de Seine à l'ouest de Mantes-la-Jolie dans les Yvelines, accueille TPE artisans, PME industrielles et logistiques, commerces de proximité et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin mantois.",
   pitchEn:
-    "Rosny-sur-Seine (78), commune des bords de Seine à l'ouest de Mantes-la-Jolie dans les Yvelines, accueille TPE artisans, PME industrielles et logistiques, commerces de proximité et professions libérales. Axion-IA y intervient pour tous types d'activités du bassin mantois.",
+    "Rosny-sur-Seine (78), commune des bords de Seine à l'ouest de Mantes-la-Jolie dans les Yvelines, accueille TPE artisans, PME industrielles et logistiques, commerces de proximité et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin mantois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rosny-sur-Seine (78). Nous accompagnons TPE et PME : artisans bords de Seine, PME industrielles et logistiques du bassin mantois, commerçants et professions libérales de ce pôle résidentiel historique près du château de Sully.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const ROSNY_SUR_SEINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Rosny-sur-Seine : diagnostic adapté aux TPE artisans, PME industrielles et logistiques du bassin mantois, commerçants et professions libérales bords de Seine. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Rosny-sur-Seine : diagnostic adapté aux TPE artisans, PME industrielles et logistiques du bassin mantois, commerçants et professions libérales bords de Seine. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Rosny-sur-Seine : diagnostic adapté aux TPE artisans, PME industrielles et logistiques du bassin mantois, commerçants et professions libérales bords de Seine. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Rosny-sur-Seine : diagnostic adapté aux TPE artisans, PME industrielles et logistiques du bassin mantois, commerçants et professions libérales bords de Seine. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Rosny-sur-Seine : formats adaptés à l'atelier artisan, l'entrepôt logistique, le commerce ou le cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Rosny-sur-Seine : formats adaptés à l'atelier artisan, l'entrepôt logistique, le commerce ou le cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Rosny-sur-Seine : formats adaptés à l'atelier artisan, l'entrepôt logistique, le commerce ou le cabinet libéral. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Rosny-sur-Seine : formats adaptés à l'atelier artisan, l'entrepôt logistique, le commerce ou le cabinet libéral. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Rosny-sur-Seine : automatisation flux logistiques, gestion stocks PME industrielle, agents conversationnels artisans, CRM augmenté commerçants, planification tournées bords de Seine.",

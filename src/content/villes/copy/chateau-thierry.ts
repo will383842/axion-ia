@@ -30,12 +30,12 @@ export const CHATEAU_THIERRY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Château-Thierry : diagnostic adapté aux TPE/PME vignerons champenois, caves, agroalimentaire, hébergeurs touristiques, artisans BTP, commerces et services. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Château-Thierry : diagnostic adapté aux TPE/PME vignerons champenois, caves, agroalimentaire, hébergeurs touristiques, artisans BTP, commerces et services. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Château-Thierry : diagnostic adapté aux TPE/PME vignerons champenois, caves, agroalimentaire, hébergeurs touristiques, artisans BTP, commerces et services. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Château-Thierry : diagnostic adapté aux TPE/PME vignerons champenois, caves, agroalimentaire, hébergeurs touristiques, artisans BTP, commerces et services. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Château-Thierry : formats adaptés à la cave viticole, l''atelier agroalimentaire, l''hôtel/gîte, le chantier, le bureau, le commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Château-Thierry : formats adaptés à la cave viticole, l''atelier agroalimentaire, l''hôtel/gîte, le chantier, le bureau, le commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Château-Thierry : formats adaptés à la cave viticole, l''atelier agroalimentaire, l''hôtel/gîte, le chantier, le bureau, le commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Château-Thierry : formats adaptés à la cave viticole, l''atelier agroalimentaire, l''hôtel/gîte, le chantier, le bureau, le commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Château-Thierry : gestion vendanges et cave, traçabilité Champagne AOC, marketing oenotouristique multilingue, automatisation devis BTP, agents conversationnels, gestion fournisseurs.",

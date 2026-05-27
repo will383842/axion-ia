@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_PENNE_SUR_HUVEAUNE_COPY: VilleCopy = {
   pitchFr:
-    "La Penne-sur-Huveaune (13), commune de la vallée de l'Huveaune à l'est de Marseille, bénéficie d'une position stratégique entre Marseille, Aubagne et le massif de Saint-Cyr. Tissu de TPE artisans, commerçants, PME tertiaires et services. Axion-IA y intervient pour tous types d'activités.",
+    "La Penne-sur-Huveaune (13), commune de la vallée de l'Huveaune à l'est de Marseille, bénéficie d'une position stratégique entre Marseille, Aubagne et le massif de Saint-Cyr. Tissu de TPE artisans, commerçants, PME tertiaires et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "La Penne-sur-Huveaune (13), commune de la vallée de l'Huveaune à l'est de Marseille, bénéficie d'une position stratégique entre Marseille, Aubagne et le massif de Saint-Cyr. Tissu de TPE artisans, commerçants, PME tertiaires et services. Axion-IA y intervient pour tous types d'activités.",
+    "La Penne-sur-Huveaune (13), commune de la vallée de l'Huveaune à l'est de Marseille, bénéficie d'une position stratégique entre Marseille, Aubagne et le massif de Saint-Cyr. Tissu de TPE artisans, commerçants, PME tertiaires et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Penne-sur-Huveaune (13). Nous accompagnons TPE artisans, commerçants, PME tertiaires et entreprises de la vallée de l'Huveaune. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LA_PENNE_SUR_HUVEAUNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Penne-sur-Huveaune : diagnostic adapté aux TPE artisans, commerçants et PME tertiaires de la vallée de l'Huveaune. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à La Penne-sur-Huveaune : diagnostic adapté aux TPE artisans, commerçants et PME tertiaires de la vallée de l'Huveaune. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à La Penne-sur-Huveaune : diagnostic adapté aux TPE artisans, commerçants et PME tertiaires de la vallée de l'Huveaune. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à La Penne-sur-Huveaune : diagnostic adapté aux TPE artisans, commerçants et PME tertiaires de la vallée de l'Huveaune. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Penne-sur-Huveaune : ateliers pratiques pour commerçants, artisans et équipes PME. Outils IA configurés métier réel.",
@@ -64,7 +64,7 @@ export const LA_PENNE_SUR_HUVEAUNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à La Penne-sur-Huveaune ?",
-      a: "La Penne est à 20 min de Marseille par A50 et 10 min d'Aubagne. Nos consultants se déplacent dans vos locaux. Frais de déplacement facturés à part, tarifs publics.",
+      a: "La Penne est à 20 min de Marseille par A50 et 10 min d'Aubagne. Nos consultants se déplacent dans vos locaux. Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

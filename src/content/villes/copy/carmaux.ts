@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CARMAUX_COPY: VilleCopy = {
   pitchFr:
-    "Carmaux (81), ancienne cité minière et verrière du Tarn liée à Jaurès, près de 10 000 habitants. Bassin en reconversion économique, tissu TPE artisans, PME services et industrie légère, commerces, professions libérales et économie sociale. Axion-IA y intervient pour tous types d'activités du Carmausin.",
+    "Carmaux (81), ancienne cité minière et verrière du Tarn liée à Jaurès, près de 10 000 habitants. Bassin en reconversion économique, tissu TPE artisans, PME services et industrie légère, commerces, professions libérales et économie sociale. Axion-IA y déploie ses missions auprès de toutes les organisations du Carmausin.",
   pitchEn:
-    "Carmaux (81), ancienne cité minière et verrière du Tarn liée à Jaurès, près de 10 000 habitants. Bassin en reconversion économique, tissu TPE artisans, PME services et industrie légère, commerces, professions libérales et économie sociale. Axion-IA y intervient pour tous types d'activités du Carmausin.",
+    "Carmaux (81), ancienne cité minière et verrière du Tarn liée à Jaurès, près de 10 000 habitants. Bassin en reconversion économique, tissu TPE artisans, PME services et industrie légère, commerces, professions libérales et économie sociale. Axion-IA y déploie ses missions auprès de toutes les organisations du Carmausin.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carmaux (81). Nous accompagnons TPE artisans, PME en reconversion, commerçants, acteurs de l'économie sociale et professions libérales du Carmausin. Audit Flash dès 490 € HT.",
   directAnswerEn:

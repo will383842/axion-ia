@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PIERRELATTE_COPY: VilleCopy = {
   pitchFr:
-    "Pierrelatte (26), commune du sud-Drôme dans la plaine du Tricastin, est ancrée dans un bassin industriel notable (plateforme nucléaire civile Tricastin) et agricole (vergers, vignobles AOC Grignan-les-Adhémar). Tissu PME industrielles, agriculture, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités tricastines.",
+    "Pierrelatte (26), commune du sud-Drôme dans la plaine du Tricastin, est ancrée dans un bassin industriel notable (plateforme nucléaire civile Tricastin) et agricole (vergers, vignobles AOC Grignan-les-Adhémar). Tissu PME industrielles, agriculture, TPE artisans BTP, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes tricastines.",
   pitchEn:
-    "Pierrelatte (26), commune du sud-Drôme dans la plaine du Tricastin, est ancrée dans un bassin industriel notable (plateforme nucléaire civile Tricastin) et agricole (vergers, vignobles AOC Grignan-les-Adhémar). Tissu PME industrielles, agriculture, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités tricastines.",
+    "Pierrelatte (26), commune du sud-Drôme dans la plaine du Tricastin, est ancrée dans un bassin industriel notable (plateforme nucléaire civile Tricastin) et agricole (vergers, vignobles AOC Grignan-les-Adhémar). Tissu PME industrielles, agriculture, TPE artisans BTP, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes tricastines.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pierrelatte (26). Nous accompagnons tous types d'activités : PME industrielles bassin Tricastin (sous-traitants techniques), agriculteurs et viticulteurs (AOC Grignan-les-Adhémar), TPE artisans BTP, commerçants, indépendants et services aux entreprises sud-Drôme.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const PIERRELATTE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pierrelatte : diagnostic adapté aux PME industrielles bassin Tricastin (sous-traitants techniques), viticulteurs, agriculteurs, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Pierrelatte : diagnostic adapté aux PME industrielles bassin Tricastin (sous-traitants techniques), viticulteurs, agriculteurs, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Pierrelatte : diagnostic adapté aux PME industrielles bassin Tricastin (sous-traitants techniques), viticulteurs, agriculteurs, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Pierrelatte : diagnostic adapté aux PME industrielles bassin Tricastin (sous-traitants techniques), viticulteurs, agriculteurs, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Pierrelatte : formats adaptés aux sous-traitants techniques (avec exigences sécurité Tricastin), exploitation agricole, atelier artisan. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Pierrelatte : formats adaptés aux sous-traitants techniques (avec exigences sécurité Tricastin), exploitation agricole, atelier artisan. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Pierrelatte : formats adaptés aux sous-traitants techniques (avec exigences sécurité Tricastin), exploitation agricole, atelier artisan. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Pierrelatte : formats adaptés aux sous-traitants techniques (avec exigences sécurité Tricastin), exploitation agricole, atelier artisan. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Pierrelatte : prédiction maintenance industrielle, classification photos vignobles/cultures, traçabilité AOC, agents conversationnels oenotourisme. Sud-Drôme Tricastin.",
@@ -64,7 +64,7 @@ export const PIERRELATTE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Valence ?",
-      a: "Nos consultants viennent de Lyon (1h45 A7) ou Valence (50 min A7). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (1h45 A7) ou Valence (50 min A7). Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

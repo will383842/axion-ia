@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FENOUILLET_COPY: VilleCopy = {
   pitchFr:
-    "Fenouillet (31), commune du nord de Toulouse avec près de 5 800 habitants. Tissu TPE artisans, PME de services et commerciales, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités de la couronne nord de Toulouse.",
+    "Fenouillet (31), commune du nord de Toulouse avec près de 5 800 habitants. Tissu TPE artisans, PME de services et commerciales, commerces de proximité, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de la couronne nord de Toulouse.",
   pitchEn:
-    "Fenouillet (31), commune du nord de Toulouse avec près de 5 800 habitants. Tissu TPE artisans, PME de services et commerciales, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités de la couronne nord de Toulouse.",
+    "Fenouillet (31), commune du nord de Toulouse avec près de 5 800 habitants. Tissu TPE artisans, PME de services et commerciales, commerces de proximité, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de la couronne nord de Toulouse.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fenouillet (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const FENOUILLET_COPY: VilleCopy = {
       en: "Audit IA à Fenouillet : diagnostic adapté aux PME commerciales, TPE artisans et professions libérales du nord Toulouse. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Fenouillet : formats adaptés au commerce, à l'artisan, au cabinet libéral. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Fenouillet : formats adaptés au commerce, à l'artisan, au cabinet libéral. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Fenouillet : formats adaptés au commerce, à l'artisan, au cabinet libéral. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Fenouillet : formats adaptés au commerce, à l'artisan, au cabinet libéral. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Fenouillet : automatisation gestion stocks commerce, classification documents, agents conversationnels clients, reporting pour PME du nord Toulouse.",

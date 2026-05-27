@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BORGO_COPY: VilleCopy = {
   pitchFr:
-    "Borgo (2B), commune de la plaine orientale en Haute-Corse, fait partie de l'agglomération de Bastia (sud). Elle accueille l'aéroport Bastia-Poretta, principal aéroport de Haute-Corse, et une zone commerciale/logistique majeure. Tissu TPE/PME logistique, transport, commerce, BTP, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Borgo (2B), commune de la plaine orientale en Haute-Corse, fait partie de l'agglomération de Bastia (sud). Elle accueille l'aéroport Bastia-Poretta, principal aéroport de Haute-Corse, et une zone commerciale/logistique majeure. Tissu TPE/PME logistique, transport, commerce, BTP, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Borgo (2B), commune de la plaine orientale en Haute-Corse, fait partie de l'agglomération de Bastia (sud). Elle accueille l'aéroport Bastia-Poretta, principal aéroport de Haute-Corse, et une zone commerciale/logistique majeure. Tissu TPE/PME logistique, transport, commerce, BTP, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Borgo (2B), commune de la plaine orientale en Haute-Corse, fait partie de l'agglomération de Bastia (sud). Elle accueille l'aéroport Bastia-Poretta, principal aéroport de Haute-Corse, et une zone commerciale/logistique majeure. Tissu TPE/PME logistique, transport, commerce, BTP, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Borgo (2B). Nous accompagnons tous types d'activités : TPE/PME logistique et transport (zone aéroport Bastia-Poretta), commerces zone commerciale, artisans BTP, indépendants, professions libérales et services aux entreprises de l'agglomération bastiaise sud.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const BORGO_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Borgo : diagnostic adapté aux TPE/PME logistique aéroportuaire, commerces zone commerciale, artisans BTP et services aux entreprises de l'agglo Bastia sud. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Borgo : diagnostic adapté aux TPE/PME logistique aéroportuaire, commerces zone commerciale, artisans BTP et services aux entreprises de l'agglo Bastia sud. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Borgo : diagnostic adapté aux TPE/PME logistique aéroportuaire, commerces zone commerciale, artisans BTP et services aux entreprises de l'agglo Bastia sud. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Borgo : diagnostic adapté aux TPE/PME logistique aéroportuaire, commerces zone commerciale, artisans BTP et services aux entreprises de l'agglo Bastia sud. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Borgo : formats adaptés à l'entrepôt logistique, commerce, atelier BTP ou bureau tertiaire. Vos équipes repartent autonomes sur outils IA configurés métier.",

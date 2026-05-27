@@ -30,8 +30,8 @@ export const DOMBASLE_SUR_MEURTHE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Dombasle-sur-Meurthe : diagnostic adapté aux TPE/PME industrielles, sous-traitants chimie et maintenance, artisans BTP, commerçants du bassin salifère. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Dombasle-sur-Meurthe : diagnostic adapté aux TPE/PME industrielles, sous-traitants chimie et maintenance, artisans BTP, commerçants du bassin salifère. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Dombasle-sur-Meurthe : diagnostic adapté aux TPE/PME industrielles, sous-traitants chimie et maintenance, artisans BTP, commerçants du bassin salifère. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Dombasle-sur-Meurthe : diagnostic adapté aux TPE/PME industrielles, sous-traitants chimie et maintenance, artisans BTP, commerçants du bassin salifère. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Dombasle-sur-Meurthe : formats adaptés à l'atelier industriel, au bureau PME ou au commerce. Vos équipes repartent autonomes sur les outils IA métier.",

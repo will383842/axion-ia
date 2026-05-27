@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CALVI_COPY: VilleCopy = {
   pitchFr:
-    "Calvi (2B), station balnéaire de Balagne dominée par sa citadelle génoise du XIIIe siècle, abrite la base aérienne de la Légion étrangère et l'un des plus beaux ports de plaisance de Corse. TPE artisans, PME hôtelières, restaurateurs, commerçants saisonniers et acteurs nautiques forment le tissu économique local. Axion-IA y intervient pour tous types d'activités de la Balagne.",
+    "Calvi (2B), station balnéaire de Balagne dominée par sa citadelle génoise du XIIIe siècle, abrite la base aérienne de la Légion étrangère et l'un des plus beaux ports de plaisance de Corse. TPE artisans, PME hôtelières, restaurateurs, commerçants saisonniers et acteurs nautiques forment le tissu économique local. Axion-IA accompagne entreprises et indépendants de tous secteurs de la Balagne.",
   pitchEn:
-    "Calvi (2B), station balnéaire de Balagne dominée par sa citadelle génoise du XIIIe siècle, abrite la base aérienne de la Légion étrangère et l'un des plus beaux ports de plaisance de Corse. TPE artisans, PME hôtelières, restaurateurs, commerçants saisonniers et acteurs nautiques forment le tissu économique local. Axion-IA y intervient pour tous types d'activités de la Balagne.",
+    "Calvi (2B), station balnéaire de Balagne dominée par sa citadelle génoise du XIIIe siècle, abrite la base aérienne de la Légion étrangère et l'un des plus beaux ports de plaisance de Corse. TPE artisans, PME hôtelières, restaurateurs, commerçants saisonniers et acteurs nautiques forment le tissu économique local. Axion-IA accompagne entreprises et indépendants de tous secteurs de la Balagne.",
   seoHook: "tourisme balnéaire & nautisme corse",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Calvi (2B). Nous accompagnons tous types d'activités : TPE artisans, PME hôtelières, restaurateurs, commerçants saisonniers, acteurs nautiques et professionnels du tourisme de Balagne. Audit Flash dès 490 € HT, démarrage sous 5 jours.",

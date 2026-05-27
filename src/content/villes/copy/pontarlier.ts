@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PONTARLIER_COPY: VilleCopy = {
   pitchFr:
-    "Pontarlier (25), sous-préfecture du Haut-Doubs, est une ville frontalière de la Suisse réputée pour l'absinthe et le fort de Joux. Position stratégique transfrontalière vers Lausanne et Neuchâtel. Tissu PME industrie agroalimentaire, TPE artisans bois Jura, commerces frontaliers, services aux travailleurs transfrontaliers, tourisme montagne et patrimoine. Axion-IA y intervient pour tous types d'activités.",
+    "Pontarlier (25), sous-préfecture du Haut-Doubs, est une ville frontalière de la Suisse réputée pour l'absinthe et le fort de Joux. Position stratégique transfrontalière vers Lausanne et Neuchâtel. Tissu PME industrie agroalimentaire, TPE artisans bois Jura, commerces frontaliers, services aux travailleurs transfrontaliers, tourisme montagne et patrimoine. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Pontarlier (25), sous-préfecture du Haut-Doubs, est une ville frontalière de la Suisse réputée pour l'absinthe et le fort de Joux. Position stratégique transfrontalière vers Lausanne et Neuchâtel. Tissu PME industrie agroalimentaire, TPE artisans bois Jura, commerces frontaliers, services aux travailleurs transfrontaliers, tourisme montagne et patrimoine. Axion-IA y intervient pour tous types d'activités.",
+    "Pontarlier (25), sous-préfecture du Haut-Doubs, est une ville frontalière de la Suisse réputée pour l'absinthe et le fort de Joux. Position stratégique transfrontalière vers Lausanne et Neuchâtel. Tissu PME industrie agroalimentaire, TPE artisans bois Jura, commerces frontaliers, services aux travailleurs transfrontaliers, tourisme montagne et patrimoine. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pontarlier (25). Nous accompagnons TPE et PME du Haut-Doubs : industriels agroalimentaire et distilleries, artisans bois du Jura, commerçants frontaliers, prestataires services aux transfrontaliers Suisse, acteurs tourisme montagne et patrimoine fort de Joux.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const PONTARLIER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pontarlier : diagnostic adapté aux industriels agroalimentaire, artisans bois Jura, commerçants frontaliers, prestataires services transfrontaliers et acteurs tourisme Haut-Doubs. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Pontarlier : diagnostic adapté aux industriels agroalimentaire, artisans bois Jura, commerçants frontaliers, prestataires services transfrontaliers et acteurs tourisme Haut-Doubs. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Pontarlier : diagnostic adapté aux industriels agroalimentaire, artisans bois Jura, commerçants frontaliers, prestataires services transfrontaliers et acteurs tourisme Haut-Doubs. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Pontarlier : diagnostic adapté aux industriels agroalimentaire, artisans bois Jura, commerçants frontaliers, prestataires services transfrontaliers et acteurs tourisme Haut-Doubs. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Pontarlier : ateliers dans vos locaux usine, atelier bois, commerce ou bureau. Vos équipes repartent autonomes sur outils IA configurés métier agroalimentaire, artisanat et services transfrontaliers.",
-      en: "Interventions IA sur site à Pontarlier : ateliers dans vos locaux usine, atelier bois, commerce ou bureau. Vos équipes repartent autonomes sur outils IA configurés métier agroalimentaire, artisanat et services transfrontaliers.",
+      fr: "Interventions IA sur site à Pontarlier : ateliers dans vos locaux usine, atelier bois, commerce ou bureau. Vos collaborateurs maîtrisent leurs outils IA après notre intervention agroalimentaire, artisanat et services transfrontaliers.",
+      en: "Interventions IA sur site à Pontarlier : ateliers dans vos locaux usine, atelier bois, commerce ou bureau. Vos collaborateurs maîtrisent leurs outils IA après notre intervention agroalimentaire, artisanat et services transfrontaliers.",
     },
     implementation: {
       fr: "Implémentation IA à Pontarlier : contrôle qualité production agroalimentaire, optimisation découpe bois assistée IA, agents conversationnels bilingues FR/DE commerce frontalier, automatisation gestion transfrontalière, prédiction affluence touristique fort de Joux.",

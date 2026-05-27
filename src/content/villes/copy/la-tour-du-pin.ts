@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_TOUR_DU_PIN_COPY: VilleCopy = {
   pitchFr:
-    "La Tour-du-Pin (38), sous-préfecture de l'Isère en Bas-Dauphiné (Nord-Isère), occupe une position carrefour entre Lyon, Grenoble et Chambéry. Tissu PME industrielles, services administratifs, TPE artisans BTP, commerces et agriculture périphérique. Axion-IA y intervient pour tous types d'activités du Nord-Isère.",
+    "La Tour-du-Pin (38), sous-préfecture de l'Isère en Bas-Dauphiné (Nord-Isère), occupe une position carrefour entre Lyon, Grenoble et Chambéry. Tissu PME industrielles, services administratifs, TPE artisans BTP, commerces et agriculture périphérique. Axion-IA couvre l'ensemble des activités professionnelles présentes du Nord-Isère.",
   pitchEn:
-    "La Tour-du-Pin (38), sous-préfecture de l'Isère en Bas-Dauphiné (Nord-Isère), occupe une position carrefour entre Lyon, Grenoble et Chambéry. Tissu PME industrielles, services administratifs, TPE artisans BTP, commerces et agriculture périphérique. Axion-IA y intervient pour tous types d'activités du Nord-Isère.",
+    "La Tour-du-Pin (38), sous-préfecture de l'Isère en Bas-Dauphiné (Nord-Isère), occupe une position carrefour entre Lyon, Grenoble et Chambéry. Tissu PME industrielles, services administratifs, TPE artisans BTP, commerces et agriculture périphérique. Axion-IA couvre l'ensemble des activités professionnelles présentes du Nord-Isère.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Tour-du-Pin (38). Nous accompagnons tous types d'activités : services publics (sous-préfecture, tribunal d'instance), PME industrielles Nord-Isère, TPE artisans BTP, commerçants, professions libérales, agriculteurs/éleveurs périphériques et entreprises du Bas-Dauphiné.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LA_TOUR_DU_PIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Tour-du-Pin : diagnostic adapté aux services publics, PME industrielles Nord-Isère, TPE artisans et agriculteurs du Bas-Dauphiné. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à La Tour-du-Pin : diagnostic adapté aux services publics, PME industrielles Nord-Isère, TPE artisans et agriculteurs du Bas-Dauphiné. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à La Tour-du-Pin : diagnostic adapté aux services publics, PME industrielles Nord-Isère, TPE artisans et agriculteurs du Bas-Dauphiné. ROI mesurable, audit Flash dès 490 € HT accessible.",
+      en: "Audit IA à La Tour-du-Pin : diagnostic adapté aux services publics, PME industrielles Nord-Isère, TPE artisans et agriculteurs du Bas-Dauphiné. ROI mesurable, audit Flash dès 490 € HT accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Tour-du-Pin : formats adaptés à la sous-préfecture, atelier industriel, exploitation agricole, commerce ou cabinet professionnel. Vos équipes repartent autonomes sur outils IA.",

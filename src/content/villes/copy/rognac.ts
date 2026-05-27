@@ -34,8 +34,8 @@ export const ROGNAC_COPY: VilleCopy = {
       en: "Audit IA à Rognac : diagnostic adapté aux TPE artisans, PME logistique et services des zones d'activités nord étang de Berre. ROI chiffré, Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Rognac : formats adaptés à l'entrepôt logistique, l'atelier artisan et le bureau tertiaire. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Rognac : formats adaptés à l'entrepôt logistique, l'atelier artisan et le bureau tertiaire. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Rognac : formats adaptés à l'entrepôt logistique, l'atelier artisan et le bureau tertiaire. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Rognac : formats adaptés à l'entrepôt logistique, l'atelier artisan et le bureau tertiaire. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Rognac : automatisation flux logistique, agents IA suivi livraisons, extraction données transport, optimisation planning artisan.",

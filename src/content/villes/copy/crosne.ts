@@ -33,8 +33,8 @@ export const CROSNE_COPY: VilleCopy = {
       en: "Audit IA à Crosne : diagnostic adapté aux TPE artisans, commerçants, professions libérales et PME de services de l'est Essonne. ROI chiffré, audit Flash 490 € HT accessible.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Crosne : formats adaptés au commerce, cabinet professionnel, atelier artisan ou bureau PME. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Crosne : formats adaptés au commerce, cabinet professionnel, atelier artisan ou bureau PME. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Crosne : formats adaptés au commerce, cabinet professionnel, atelier artisan ou bureau PME. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Crosne : formats adaptés au commerce, cabinet professionnel, atelier artisan ou bureau PME. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Crosne : agents conversationnels client, automatisation devis BTP, classification documents, gestion RDV professions libérales, CRM augmentés pour PME est-essonniennes.",
@@ -64,7 +64,7 @@ export const CROSNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Crosne depuis Paris ?",
-      a: "Nos consultants accèdent à Crosne en 35 min via le RER D (gare de Crosne). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants accèdent à Crosne en 35 min via le RER D (gare de Crosne). Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

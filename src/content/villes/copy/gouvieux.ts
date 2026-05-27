@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GOUVIEUX_COPY: VilleCopy = {
   pitchFr:
-    "Gouvieux (60), commune de 8 867 habitants dans l'Oise, est située au pied du domaine de Chantilly et accueille de nombreux centres d'entraînement hippiques de renommée internationale. Ville résidentielle et touristique, son économie repose sur un tissu de TPE/PME filière équestre, hôtellerie-restauration, tourisme, services et artisanat. Axion-IA y intervient pour tous types d'activités.",
+    "Gouvieux (60), commune de 8 867 habitants dans l'Oise, est située au pied du domaine de Chantilly et accueille de nombreux centres d'entraînement hippiques de renommée internationale. Ville résidentielle et touristique, son économie repose sur un tissu de TPE/PME filière équestre, hôtellerie-restauration, tourisme, services et artisanat. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Gouvieux (60), commune de 8 867 habitants dans l'Oise, est située au pied du domaine de Chantilly et accueille de nombreux centres d'entraînement hippiques de renommée internationale. Ville résidentielle et touristique, son économie repose sur un tissu de TPE/PME filière équestre, hôtellerie-restauration, tourisme, services et artisanat. Axion-IA y intervient pour tous types d'activités.",
+    "Gouvieux (60), commune de 8 867 habitants dans l'Oise, est située au pied du domaine de Chantilly et accueille de nombreux centres d'entraînement hippiques de renommée internationale. Ville résidentielle et touristique, son économie repose sur un tissu de TPE/PME filière équestre, hôtellerie-restauration, tourisme, services et artisanat. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gouvieux (60). Nous accompagnons TPE et PME du bassin de Chantilly : professionnels de la filière équestre, hôteliers, restaurateurs, prestataires de services et artisans. Audit Flash dès 490 € HT.",
   directAnswerEn:

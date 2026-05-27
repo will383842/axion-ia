@@ -59,6 +59,8 @@ export const ANNECY_COPY: VilleCopy = {
   directAnswerEn:
     "Axion-IA is an senior AI architects consultancy that intervenes in Annecy (74) on site across the Annecy basin, the Vallée de l'Arve and the cross-border area up to Geneva. We support micro-businesses, SMEs, mid-caps and large enterprises in Savoie — outdoor equipment makers, precision industry, B2B services — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. Public pricing, no tech lock-in, your teams stay autonomous.",
 
+  seoHook: "décolletage, tech & tourisme lacustre",
+
   topSectorsNaf: [
     "Industries outdoor & équipements sportifs",
     "Mécanique de précision & mécatronique",

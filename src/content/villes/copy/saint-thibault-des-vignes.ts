@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_THIBAULT_DES_VIGNES_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Thibault-des-Vignes (77), commune résidentielle et commerciale de l'est Seine-et-Marne proche de Lagny-sur-Marne, concentre zones d'activités commerciales, TPE artisanales, PME de négoce et de services, commerçants et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Thibault-des-Vignes (77), commune résidentielle et commerciale de l'est Seine-et-Marne proche de Lagny-sur-Marne, concentre zones d'activités commerciales, TPE artisanales, PME de négoce et de services, commerçants et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Saint-Thibault-des-Vignes (77), commune résidentielle et commerciale de l'est Seine-et-Marne proche de Lagny-sur-Marne, concentre zones d'activités commerciales, TPE artisanales, PME de négoce et de services, commerçants et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Thibault-des-Vignes (77), commune résidentielle et commerciale de l'est Seine-et-Marne proche de Lagny-sur-Marne, concentre zones d'activités commerciales, TPE artisanales, PME de négoce et de services, commerçants et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Thibault-des-Vignes (77). Nous accompagnons TPE et PME : enseignes commerciales, TPE artisanales, PME de négoce et services, professions libérales et restaurateurs du secteur Lagny–Marne-la-Vallée.",
   directAnswerEn:

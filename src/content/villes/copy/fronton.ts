@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FRONTON_COPY: VilleCopy = {
   pitchFr:
-    "Fronton (31), cité viticole du nord de Toulouse célèbre pour son AOC négrette, plus de 6 600 habitants. Tissu TPE viticulteurs, PME agroalimentaires, commerces de centre-ville, professions libérales, tourisme viticole. Axion-IA y intervient pour tous types d'activités du Frontonnais.",
+    "Fronton (31), cité viticole du nord de Toulouse célèbre pour son AOC négrette, plus de 6 600 habitants. Tissu TPE viticulteurs, PME agroalimentaires, commerces de centre-ville, professions libérales, tourisme viticole. Axion-IA y déploie ses missions auprès de toutes les organisations du Frontonnais.",
   pitchEn:
-    "Fronton (31), cité viticole du nord de Toulouse célèbre pour son AOC négrette, plus de 6 600 habitants. Tissu TPE viticulteurs, PME agroalimentaires, commerces de centre-ville, professions libérales, tourisme viticole. Axion-IA y intervient pour tous types d'activités du Frontonnais.",
+    "Fronton (31), cité viticole du nord de Toulouse célèbre pour son AOC négrette, plus de 6 600 habitants. Tissu TPE viticulteurs, PME agroalimentaires, commerces de centre-ville, professions libérales, tourisme viticole. Axion-IA y déploie ses missions auprès de toutes les organisations du Frontonnais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fronton (31). Nous accompagnons TPE viticulteurs, PME agroalimentaires, commerçants, professions libérales et acteurs du tourisme viticole. Audit Flash dès 490 € HT.",
   directAnswerEn:

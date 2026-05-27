@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHAMPNIERS_COPY: VilleCopy = {
   pitchFr:
-    "Champniers (16), commune au nord de l'agglomération d'Angoulême en Charente, pôle de zones d'activités du GrandAngoulême (parc Agora, ZI). Tissu de TPE artisans, PME industrielles et logistiques, commerces et services aux entreprises. Axion-IA y intervient pour tous types d'activités de l'agglomération angoumoisine.",
+    "Champniers (16), commune au nord de l'agglomération d'Angoulême en Charente, pôle de zones d'activités du GrandAngoulême (parc Agora, ZI). Tissu de TPE artisans, PME industrielles et logistiques, commerces et services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération angoumoisine.",
   pitchEn:
-    "Champniers (16), commune au nord de l'agglomération d'Angoulême en Charente, pôle de zones d'activités du GrandAngoulême (parc Agora, ZI). Tissu de TPE artisans, PME industrielles et logistiques, commerces et services aux entreprises. Axion-IA y intervient pour tous types d'activités de l'agglomération angoumoisine.",
+    "Champniers (16), commune au nord de l'agglomération d'Angoulême en Charente, pôle de zones d'activités du GrandAngoulême (parc Agora, ZI). Tissu de TPE artisans, PME industrielles et logistiques, commerces et services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération angoumoisine.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Champniers (16). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et logistiques, entreprises des zones d'activités, commerçants et indépendants de cette commune dynamique du nord de l'agglomération d'Angoulême.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const CHAMPNIERS_COPY: VilleCopy = {
       en: "Audit IA à Champniers : diagnostic adapté aux PME industrielles et logistiques, TPE artisans, entreprises des zones d'activités et commerces du nord de l'agglomération GrandAngoulême. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Champniers : formats adaptés à l'entrepôt logistique, à l'atelier industriel, au bureau ou au commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Champniers : formats adaptés à l'entrepôt logistique, à l'atelier industriel, au bureau ou au commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Champniers : formats adaptés à l'entrepôt logistique, à l'atelier industriel, au bureau ou au commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Champniers : formats adaptés à l'entrepôt logistique, à l'atelier industriel, au bureau ou au commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Champniers : optimisation flux logistiques, automatisation gestion stocks entrepôts, maintenance prédictive équipements industriels, agents conversationnels gestion commandes.",

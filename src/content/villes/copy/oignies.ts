@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const OIGNIES_COPY: VilleCopy = {
   pitchFr:
-    "Oignies (62), commune du bassin minier du Pas-de-Calais inscrit UNESCO, s'est reconvertie vers le tertiaire et la logistique. TPE artisanales, PME de services, commerces et professions libérales. Axion-IA y intervient pour tous types d'activités du bassin minier.",
+    "Oignies (62), commune du bassin minier du Pas-de-Calais inscrit UNESCO, s'est reconvertie vers le tertiaire et la logistique. TPE artisanales, PME de services, commerces et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin minier.",
   pitchEn:
-    "Oignies (62), commune du bassin minier du Pas-de-Calais inscrit UNESCO, s'est reconvertie vers le tertiaire et la logistique. TPE artisanales, PME de services, commerces et professions libérales. Axion-IA y intervient pour tous types d'activités du bassin minier.",
+    "Oignies (62), commune du bassin minier du Pas-de-Calais inscrit UNESCO, s'est reconvertie vers le tertiaire et la logistique. TPE artisanales, PME de services, commerces et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin minier.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Oignies (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:

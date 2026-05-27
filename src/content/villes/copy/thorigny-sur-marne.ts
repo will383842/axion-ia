@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const THORIGNY_SUR_MARNE_COPY: VilleCopy = {
   pitchFr:
-    "Thorigny-sur-Marne, commune résidentielle des bords de Marne en Seine-et-Marne (77), 30 km à l'est de Paris. Tissu TPE artisans, commerçants de centre-ville, PME tertiaires, professions libérales et indépendants. Axion-IA y intervient pour tous types d'activités du secteur Marne-la-Vallée ouest.",
+    "Thorigny-sur-Marne, commune résidentielle des bords de Marne en Seine-et-Marne (77), 30 km à l'est de Paris. Tissu TPE artisans, commerçants de centre-ville, PME tertiaires, professions libérales et indépendants. Axion-IA couvre l'ensemble des activités professionnelles présentes du secteur Marne-la-Vallée ouest.",
   pitchEn:
-    "Thorigny-sur-Marne, commune résidentielle des bords de Marne en Seine-et-Marne (77), 30 km à l'est de Paris. Tissu TPE artisans, commerçants de centre-ville, PME tertiaires, professions libérales et indépendants. Axion-IA y intervient pour tous types d'activités du secteur Marne-la-Vallée ouest.",
+    "Thorigny-sur-Marne, commune résidentielle des bords de Marne en Seine-et-Marne (77), 30 km à l'est de Paris. Tissu TPE artisans, commerçants de centre-ville, PME tertiaires, professions libérales et indépendants. Axion-IA couvre l'ensemble des activités professionnelles présentes du secteur Marne-la-Vallée ouest.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thorigny-sur-Marne (77). Nous accompagnons tous types d'activités : TPE artisans, commerçants, PME tertiaires, professions libérales et indépendants des bords de Marne. Audit Flash dès 490 € HT.",
   directAnswerEn:

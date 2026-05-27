@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CLOYES_LES_TROIS_RIVIERES_COPY: VilleCopy = {
   pitchFr:
-    "Cloyes-les-Trois-Rivières (28), commune nouvelle d'Eure-et-Loir aux portes de la Beauce et du Perche, est traversée par le Loir et ses affluents. TPE artisans, PME agricoles et agroalimentaires, commerçants, professions libérales, indépendants et acteurs du tourisme vert composent son tissu économique rural dynamique. Axion-IA y intervient pour tous types d'activités de la vallée du Loir.",
+    "Cloyes-les-Trois-Rivières (28), commune nouvelle d'Eure-et-Loir aux portes de la Beauce et du Perche, est traversée par le Loir et ses affluents. TPE artisans, PME agricoles et agroalimentaires, commerçants, professions libérales, indépendants et acteurs du tourisme vert composent son tissu économique rural dynamique. Axion-IA y déploie ses missions auprès de toutes les organisations de la vallée du Loir.",
   pitchEn:
-    "Cloyes-les-Trois-Rivières (28), commune nouvelle d'Eure-et-Loir aux portes de la Beauce et du Perche, est traversée par le Loir et ses affluents. TPE artisans, PME agricoles et agroalimentaires, commerçants, professions libérales, indépendants et acteurs du tourisme vert composent son tissu économique rural dynamique. Axion-IA y intervient pour tous types d'activités de la vallée du Loir.",
+    "Cloyes-les-Trois-Rivières (28), commune nouvelle d'Eure-et-Loir aux portes de la Beauce et du Perche, est traversée par le Loir et ses affluents. TPE artisans, PME agricoles et agroalimentaires, commerçants, professions libérales, indépendants et acteurs du tourisme vert composent son tissu économique rural dynamique. Axion-IA y déploie ses missions auprès de toutes les organisations de la vallée du Loir.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cloyes-les-Trois-Rivières (28), commune nouvelle d'Eure-et-Loir. Nous accompagnons tous types d'activités : TPE artisans, PME agricoles et agroalimentaires, commerçants, acteurs du tourisme vert, professions libérales et indépendants de la vallée du Loir.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const CLOYES_LES_TROIS_RIVIERES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cloyes-les-Trois-Rivières : diagnostic adapté aux TPE artisans, PME agricoles et agroalimentaires de la vallée du Loir, commerçants, professions libérales et acteurs du tourisme vert. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Cloyes-les-Trois-Rivières : diagnostic adapté aux TPE artisans, PME agricoles et agroalimentaires de la vallée du Loir, commerçants, professions libérales et acteurs du tourisme vert. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Cloyes-les-Trois-Rivières : diagnostic adapté aux TPE artisans, PME agricoles et agroalimentaires de la vallée du Loir, commerçants, professions libérales et acteurs du tourisme vert. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
+      en: "Audit IA à Cloyes-les-Trois-Rivières : diagnostic adapté aux TPE artisans, PME agricoles et agroalimentaires de la vallée du Loir, commerçants, professions libérales et acteurs du tourisme vert. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cloyes-les-Trois-Rivières : formats adaptés aux exploitations agricoles, PME agroalimentaires, TPE artisans et commerces ruraux. Vos équipes repartent autonomes sur les outils IA métier.",

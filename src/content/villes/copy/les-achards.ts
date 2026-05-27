@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LES_ACHARDS_COPY: VilleCopy = {
   pitchFr:
-    "Les Achards (85), commune nouvelle du bocage vendéen au sud-ouest de La Roche-sur-Yon, structure un bassin économique rural-périurbain où prospèrent TPE artisans, PME industrielles et agroalimentaires, commerces, professions libérales et prestataires du littoral vendéen intérieur. Axion-IA y intervient pour tous types d'activités.",
+    "Les Achards (85), commune nouvelle du bocage vendéen au sud-ouest de La Roche-sur-Yon, structure un bassin économique rural-périurbain où prospèrent TPE artisans, PME industrielles et agroalimentaires, commerces, professions libérales et prestataires du littoral vendéen intérieur. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Les Achards (85), commune nouvelle du bocage vendéen au sud-ouest de La Roche-sur-Yon, structure un bassin économique rural-périurbain où prospèrent TPE artisans, PME industrielles et agroalimentaires, commerces, professions libérales et prestataires du littoral vendéen intérieur. Axion-IA y intervient pour tous types d'activités.",
+    "Les Achards (85), commune nouvelle du bocage vendéen au sud-ouest de La Roche-sur-Yon, structure un bassin économique rural-périurbain où prospèrent TPE artisans, PME industrielles et agroalimentaires, commerces, professions libérales et prestataires du littoral vendéen intérieur. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient aux Achards (85). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles (mécanique, agroalimentaire), commerces, professions libérales et prestataires du bocage vendéen entre La Roche-sur-Yon et le littoral.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const LES_ACHARDS_COPY: VilleCopy = {
       en: "Audit IA aux Achards : diagnostic adapté aux TPE artisans, PME industrielles, agroalimentaires et commerces du bocage vendéen entre La Roche et le littoral. ROI chiffré, Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site aux Achards : formations adaptées aux PME industrielles, agroalimentaires, artisans BTP et commerces du bocage vendéen. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site aux Achards : formations adaptées aux PME industrielles, agroalimentaires, artisans BTP et commerces du bocage vendéen. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site aux Achards : formations adaptées aux PME industrielles, agroalimentaires, artisans BTP et commerces du bocage vendéen. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site aux Achards : formations adaptées aux PME industrielles, agroalimentaires, artisans BTP et commerces du bocage vendéen. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA aux Achards : maintenance prédictive mécanique, vision industrielle agroalimentaire, optimisation logistique, agents conversationnels commerces et outils IA artisanat BTP.",

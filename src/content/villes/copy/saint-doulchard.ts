@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_DOULCHARD_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Doulchard (18), commune de l'agglomération de Bourges nord dans le Cher, concentre zones d'activités commerciales et tertiaires. TPE artisans, PME tertiaires, grandes surfaces, logistique, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Doulchard (18), commune de l'agglomération de Bourges nord dans le Cher, concentre zones d'activités commerciales et tertiaires. TPE artisans, PME tertiaires, grandes surfaces, logistique, services aux entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Saint-Doulchard (18), commune de l'agglomération de Bourges nord dans le Cher, concentre zones d'activités commerciales et tertiaires. TPE artisans, PME tertiaires, grandes surfaces, logistique, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Doulchard (18), commune de l'agglomération de Bourges nord dans le Cher, concentre zones d'activités commerciales et tertiaires. TPE artisans, PME tertiaires, grandes surfaces, logistique, services aux entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Doulchard (18). Nous accompagnons TPE artisans, PME tertiaires des zones d'activités, commerces, acteurs logistique et toutes les activités de l'agglomération nord de Bourges. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const SAINT_DOULCHARD_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Doulchard : diagnostic adapté aux TPE artisans, PME tertiaires des zones d'activités, commerces et acteurs logistique de l'agglo Bourges nord. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Doulchard : diagnostic adapté aux TPE artisans, PME tertiaires des zones d'activités, commerces et acteurs logistique de l'agglo Bourges nord. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Doulchard : diagnostic adapté aux TPE artisans, PME tertiaires des zones d'activités, commerces et acteurs logistique de l'agglo Bourges nord. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Saint-Doulchard : diagnostic adapté aux TPE artisans, PME tertiaires des zones d'activités, commerces et acteurs logistique de l'agglo Bourges nord. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Doulchard : formats adaptés aux PME tertiaires, commerçants zones d'activités, artisans, logisticiens. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const SAINT_DOULCHARD_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Doulchard ?",
-      a: "Nos consultants interviennent directement dans vos locaux zones d'activités de Saint-Doulchard (10 min de Bourges centre). Également accessible depuis Paris via A71 (2h15). Visio possible. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants interviennent directement dans vos locaux zones d'activités de Saint-Doulchard (10 min de Bourges centre). Également accessible depuis Paris via A71 (2h15). Visio possible. Frais de mission en sus, grille tarifaire publique.",
     },
   ],
 };

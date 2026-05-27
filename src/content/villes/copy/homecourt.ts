@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const HOMECOURT_COPY: VilleCopy = {
   pitchFr:
-    "Homécourt (54), commune du Pays Haut en Meurthe-et-Moselle, est une ancienne ville sidérurgique reconvertie au cœur du bassin transfrontalier lorrain-luxembourgeois. Tissu de TPE/PME industrie reconvertie, artisanat, commerce, services et frontaliers. Axion-IA y intervient pour tous types d'activités.",
+    "Homécourt (54), commune du Pays Haut en Meurthe-et-Moselle, est une ancienne ville sidérurgique reconvertie au cœur du bassin transfrontalier lorrain-luxembourgeois. Tissu de TPE/PME industrie reconvertie, artisanat, commerce, services et frontaliers. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Homécourt (54), commune du Pays Haut en Meurthe-et-Moselle, est une ancienne ville sidérurgique reconvertie au cœur du bassin transfrontalier lorrain-luxembourgeois. Tissu de TPE/PME industrie reconvertie, artisanat, commerce, services et frontaliers. Axion-IA y intervient pour tous types d'activités.",
+    "Homécourt (54), commune du Pays Haut en Meurthe-et-Moselle, est une ancienne ville sidérurgique reconvertie au cœur du bassin transfrontalier lorrain-luxembourgeois. Tissu de TPE/PME industrie reconvertie, artisanat, commerce, services et frontaliers. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Homécourt (54). Nous accompagnons TPE et PME : industriels, artisans, commerçants, prestataires de services et frontaliers du Pays Haut lorrain. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const HOMECOURT_COPY: VilleCopy = {
       en: "Audit IA à Homécourt : diagnostic adapté aux industriels reconvertis, artisans, commerçants, prestataires de services et entreprises frontalières du Pays Haut lorrain. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Homécourt : formats adaptés à l'industrie reconvertie, à la PME sous-traitante, au commerce ou à la TPE artisanale. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Homécourt : formats adaptés à l'industrie reconvertie, à la PME sous-traitante, au commerce ou à la TPE artisanale. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Homécourt : formats adaptés à l'industrie reconvertie, à la PME sous-traitante, au commerce ou à la TPE artisanale. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Homécourt : formats adaptés à l'industrie reconvertie, à la PME sous-traitante, au commerce ou à la TPE artisanale. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Homécourt : automatisation devis sous-traitance industrielle, OCR documents transfrontaliers, agents conversationnels relation client B2B, gestion RH frontalière, prévision production.",

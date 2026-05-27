@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BOUC_BEL_AIR_COPY: VilleCopy = {
   pitchFr:
-    "Bouc-Bel-Air (13), commune résidentielle et tertiaire au nord de Marseille dans les Bouches-du-Rhône, bénéficie de sa position entre Aix-en-Provence et Marseille sur l'axe A51. Tissu TPE professions libérales, PME tertiaires, commerces de proximité et prestataires de services. Axion-IA y intervient pour tous types d'activités de l'axe Aix-Marseille.",
+    "Bouc-Bel-Air (13), commune résidentielle et tertiaire au nord de Marseille dans les Bouches-du-Rhône, bénéficie de sa position entre Aix-en-Provence et Marseille sur l'axe A51. Tissu TPE professions libérales, PME tertiaires, commerces de proximité et prestataires de services. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'axe Aix-Marseille.",
   pitchEn:
-    "Bouc-Bel-Air (13), commune résidentielle et tertiaire au nord de Marseille dans les Bouches-du-Rhône, bénéficie de sa position entre Aix-en-Provence et Marseille sur l'axe A51. Tissu TPE professions libérales, PME tertiaires, commerces de proximité et prestataires de services. Axion-IA y intervient pour tous types d'activités de l'axe Aix-Marseille.",
+    "Bouc-Bel-Air (13), commune résidentielle et tertiaire au nord de Marseille dans les Bouches-du-Rhône, bénéficie de sa position entre Aix-en-Provence et Marseille sur l'axe A51. Tissu TPE professions libérales, PME tertiaires, commerces de proximité et prestataires de services. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'axe Aix-Marseille.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bouc-Bel-Air (13). Nous accompagnons TPE professions libérales, PME tertiaires de l'axe Aix-Marseille, commerces de proximité et prestataires de services. Audit Flash dès 490 € HT, sans engagement.",
   directAnswerEn:

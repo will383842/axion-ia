@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHAMPIGNEULLES_COPY: VilleCopy = {
   pitchFr:
-    "Champigneulles (54), commune de la périphérie nord de Nancy en Meurthe-et-Moselle, est un pôle industriel et logistique connu pour sa brasserie historique et ses zones d'activités. Tissu de TPE/PME industrie, logistique, commerce, artisanat et services. Axion-IA y intervient pour tous types d'activités.",
+    "Champigneulles (54), commune de la périphérie nord de Nancy en Meurthe-et-Moselle, est un pôle industriel et logistique connu pour sa brasserie historique et ses zones d'activités. Tissu de TPE/PME industrie, logistique, commerce, artisanat et services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Champigneulles (54), commune de la périphérie nord de Nancy en Meurthe-et-Moselle, est un pôle industriel et logistique connu pour sa brasserie historique et ses zones d'activités. Tissu de TPE/PME industrie, logistique, commerce, artisanat et services. Axion-IA y intervient pour tous types d'activités.",
+    "Champigneulles (54), commune de la périphérie nord de Nancy en Meurthe-et-Moselle, est un pôle industriel et logistique connu pour sa brasserie historique et ses zones d'activités. Tissu de TPE/PME industrie, logistique, commerce, artisanat et services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Champigneulles (54). Nous accompagnons TPE et PME : industriels, logisticiens, commerçants, artisans et prestataires de services de la périphérie nord de Nancy en Lorraine. Audit Flash dès 490 € HT.",
   directAnswerEn:

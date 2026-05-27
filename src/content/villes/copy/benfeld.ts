@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BENFELD_COPY: VilleCopy = {
   pitchFr:
-    "Benfeld (67), commune de 5 973 habitants en Bas-Rhin, située dans le Ried au bord de l'Ill, est ancrée dans un tissu rural et agricole structurant, complété par l'artisanat, le commerce et les services. Tissu TPE/PME agriculture, agroalimentaire, artisanat, commerces, services, restauration. Axion-IA y intervient pour tous types d'activités.",
+    "Benfeld (67), commune de 5 973 habitants en Bas-Rhin, située dans le Ried au bord de l'Ill, est ancrée dans un tissu rural et agricole structurant, complété par l'artisanat, le commerce et les services. Tissu TPE/PME agriculture, agroalimentaire, artisanat, commerces, services, restauration. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Benfeld (67), commune de 5 973 habitants en Bas-Rhin, située dans le Ried au bord de l'Ill, est ancrée dans un tissu rural et agricole structurant, complété par l'artisanat, le commerce et les services. Tissu TPE/PME agriculture, agroalimentaire, artisanat, commerces, services, restauration. Axion-IA y intervient pour tous types d'activités.",
+    "Benfeld (67), commune de 5 973 habitants en Bas-Rhin, située dans le Ried au bord de l'Ill, est ancrée dans un tissu rural et agricole structurant, complété par l'artisanat, le commerce et les services. Tissu TPE/PME agriculture, agroalimentaire, artisanat, commerces, services, restauration. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Benfeld (67). Nous accompagnons tous types d'activités : TPE/PME agriculture et agroalimentaire du Ried, artisans, commerces, restaurateurs, professions de services et acteurs économiques des bords de l'Ill.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const BENFELD_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Benfeld : diagnostic adapté aux TPE/PME agriculture, agroalimentaire, artisans, commerces, restaurateurs. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Benfeld : diagnostic adapté aux TPE/PME agriculture, agroalimentaire, artisans, commerces, restaurateurs. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Benfeld : diagnostic adapté aux TPE/PME agriculture, agroalimentaire, artisans, commerces, restaurateurs. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Benfeld : diagnostic adapté aux TPE/PME agriculture, agroalimentaire, artisans, commerces, restaurateurs. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Benfeld : formats adaptés à l'exploitation agricole, à l'atelier agroalimentaire, à l'artisan, au commerce, au restaurant. Vos équipes repartent autonomes.",

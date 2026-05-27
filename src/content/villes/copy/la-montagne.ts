@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_MONTAGNE_COPY: VilleCopy = {
   pitchFr:
-    "La Montagne (44), commune de l'agglomération nantaise sud-ouest en Loire-Atlantique, en bords de Loire face à Indre. Tissu TPE artisans et commerçants, PME tertiaires, professions libérales, services à la personne, restauration. Axion-IA y intervient pour tous types d'activités du sud-ouest nantais.",
+    "La Montagne (44), commune de l'agglomération nantaise sud-ouest en Loire-Atlantique, en bords de Loire face à Indre. Tissu TPE artisans et commerçants, PME tertiaires, professions libérales, services à la personne, restauration. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud-ouest nantais.",
   pitchEn:
-    "La Montagne (44), commune de l'agglomération nantaise sud-ouest en Loire-Atlantique, en bords de Loire face à Indre. Tissu TPE artisans et commerçants, PME tertiaires, professions libérales, services à la personne, restauration. Axion-IA y intervient pour tous types d'activités du sud-ouest nantais.",
+    "La Montagne (44), commune de l'agglomération nantaise sud-ouest en Loire-Atlantique, en bords de Loire face à Indre. Tissu TPE artisans et commerçants, PME tertiaires, professions libérales, services à la personne, restauration. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud-ouest nantais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Montagne (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires, professions libérales, services à la personne et entreprises du sud-ouest de l'agglomération nantaise.",
   directAnswerEn:

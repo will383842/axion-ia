@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FLOIRAC_COPY: VilleCopy = {
   pitchFr:
-    "Floirac (33), commune de la rive droite de Bordeaux Métropole, connaît une reconversion urbaine majeure avec de nouveaux quartiers résidentiels et tertiaires. Axion-IA y intervient pour tous types d'activités : TPE artisans, PME en reconversion numérique, commerces de proximité et professions libérales du bassin rive droite.",
+    "Floirac (33), commune de la rive droite de Bordeaux Métropole, connaît une reconversion urbaine majeure avec de nouveaux quartiers résidentiels et tertiaires. Axion-IA y déploie ses missions auprès de toutes les organisations : TPE artisans, PME en reconversion numérique, commerces de proximité et professions libérales du bassin rive droite.",
   pitchEn:
-    "Floirac (33), commune de la rive droite de Bordeaux Métropole, connaît une reconversion urbaine majeure avec de nouveaux quartiers résidentiels et tertiaires. Axion-IA y intervient pour tous types d'activités : TPE artisans, PME en reconversion numérique, commerces de proximité et professions libérales du bassin rive droite.",
+    "Floirac (33), commune de la rive droite de Bordeaux Métropole, connaît une reconversion urbaine majeure avec de nouveaux quartiers résidentiels et tertiaires. Axion-IA y déploie ses missions auprès de toutes les organisations : TPE artisans, PME en reconversion numérique, commerces de proximité et professions libérales du bassin rive droite.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Floirac (33). Nous accompagnons TPE et PME de la rive droite bordelaise : artisans BTP, commerces de proximité, PME tertiaires des nouveaux quartiers, professions libérales et startups de la reconversion numérique floiracaise. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const FLOIRAC_COPY: VilleCopy = {
       en: "Audit IA à Floirac : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales de la rive droite bordelaise. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Floirac : formats adaptés à votre métier (atelier, commerce, cabinet, bureau). Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Floirac : formats adaptés à votre métier (atelier, commerce, cabinet, bureau). Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Floirac : formats adaptés à votre métier (atelier, commerce, cabinet, bureau). Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Floirac : formats adaptés à votre métier (atelier, commerce, cabinet, bureau). Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Floirac : agents conversationnels, automatisation devis BTP, classification documents, CRM augmentés. Tous secteurs rive droite bordelaise.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const L_ISLE_JOURDAIN_COPY: VilleCopy = {
   pitchFr:
-    "L'Isle-Jourdain (32), bourg de 9 537 habitants situé dans le Gers entre Toulouse et Auch, sur les bords de la Save. Son économie repose sur un tissu de TPE artisans, commerçants et professions libérales, PME agroalimentaires et de services, coopératives agricoles et entreprises du bassin gersois nord. Axion-IA y intervient pour tous types d'activités.",
+    "L'Isle-Jourdain (32), bourg de 9 537 habitants situé dans le Gers entre Toulouse et Auch, sur les bords de la Save. Son économie repose sur un tissu de TPE artisans, commerçants et professions libérales, PME agroalimentaires et de services, coopératives agricoles et entreprises du bassin gersois nord. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "L'Isle-Jourdain (32), bourg de 9 537 habitants situé dans le Gers entre Toulouse et Auch, sur les bords de la Save. Son économie repose sur un tissu de TPE artisans, commerçants et professions libérales, PME agroalimentaires et de services, coopératives agricoles et entreprises du bassin gersois nord. Axion-IA y intervient pour tous types d'activités.",
+    "L'Isle-Jourdain (32), bourg de 9 537 habitants situé dans le Gers entre Toulouse et Auch, sur les bords de la Save. Son économie repose sur un tissu de TPE artisans, commerçants et professions libérales, PME agroalimentaires et de services, coopératives agricoles et entreprises du bassin gersois nord. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à L'Isle-Jourdain (32). Nous accompagnons TPE et PME du bassin gersois nord entre Toulouse et Auch : commerçants, artisans, professions libérales, coopératives agricoles et entreprises agroalimentaires. Audit Flash dès 490 € HT.",
   directAnswerEn:

@@ -64,7 +64,7 @@ export const MERICOURT_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Méricourt depuis Lille ?",
-      a: "Nos consultants viennent de Lille (30 min A21/A1) ou Arras (25 min). Lens est à 5 min. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lille (30 min A21/A1) ou Arras (25 min). Lens est à 5 min. Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

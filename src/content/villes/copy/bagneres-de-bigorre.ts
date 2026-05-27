@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BAGNERES_DE_BIGORRE_COPY: VilleCopy = {
   pitchFr:
-    "Bagnères-de-Bigorre (65), station thermale des Hautes-Pyrénées au pied du col du Tourmalet et du Pic du Midi de Bigorre. Thermalisme, cyclisme, tourisme montagne. Tissu TPE artisans, PME thermalisme et tourisme, commerces de proximité, hôtellerie, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Bagnères-de-Bigorre (65), station thermale des Hautes-Pyrénées au pied du col du Tourmalet et du Pic du Midi de Bigorre. Thermalisme, cyclisme, tourisme montagne. Tissu TPE artisans, PME thermalisme et tourisme, commerces de proximité, hôtellerie, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Bagnères-de-Bigorre (65), station thermale des Hautes-Pyrénées au pied du col du Tourmalet et du Pic du Midi de Bigorre. Thermalisme, cyclisme, tourisme montagne. Tissu TPE artisans, PME thermalisme et tourisme, commerces de proximité, hôtellerie, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Bagnères-de-Bigorre (65), station thermale des Hautes-Pyrénées au pied du col du Tourmalet et du Pic du Midi de Bigorre. Thermalisme, cyclisme, tourisme montagne. Tissu TPE artisans, PME thermalisme et tourisme, commerces de proximité, hôtellerie, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bagnères-de-Bigorre (65). Nous accompagnons tous types d'activités : établissements thermaux, PME hôtelières, TPE artisans, commerçants, restaurateurs, indépendants, professions libérales et acteurs du tourisme montagne pyrénéen.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const BAGNERES_DE_BIGORRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bagnères-de-Bigorre : diagnostic adapté aux établissements thermaux, PME hôtelières, TPE artisans, commerçants et acteurs du tourisme montagne pyrénéen. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Bagnères-de-Bigorre : diagnostic adapté aux établissements thermaux, PME hôtelières, TPE artisans, commerçants et acteurs du tourisme montagne pyrénéen. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Bagnères-de-Bigorre : diagnostic adapté aux établissements thermaux, PME hôtelières, TPE artisans, commerçants et acteurs du tourisme montagne pyrénéen. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Bagnères-de-Bigorre : diagnostic adapté aux établissements thermaux, PME hôtelières, TPE artisans, commerçants et acteurs du tourisme montagne pyrénéen. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Bagnères-de-Bigorre : formats adaptés aux thermes, hôtels, commerces ou structures touristiques. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Bagnères-de-Bigorre : formats adaptés aux thermes, hôtels, commerces ou structures touristiques. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Bagnères-de-Bigorre : formats adaptés aux thermes, hôtels, commerces ou structures touristiques. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Bagnères-de-Bigorre : formats adaptés aux thermes, hôtels, commerces ou structures touristiques. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Bagnères-de-Bigorre : automatisation réservations cures thermales, yield management hôtelier saisonnier, chatbot tourisme multilingue montagne, prédiction affluence saisons. Adapté thermalisme + tourisme montagne.",

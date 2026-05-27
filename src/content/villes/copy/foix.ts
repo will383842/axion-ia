@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FOIX_COPY: VilleCopy = {
   pitchFr:
-    "Foix (09), préfecture de l'Ariège, ville historique dominée par son château cathare au confluent de l'Ariège et de l'Arget. Tissu TPE artisans, PME services publics et tertiaire, commerces centre-ville, tourisme patrimonial, agriculture montagne. Axion-IA y intervient pour tous types d'activités du bassin fuxéen.",
+    "Foix (09), préfecture de l'Ariège, ville historique dominée par son château cathare au confluent de l'Ariège et de l'Arget. Tissu TPE artisans, PME services publics et tertiaire, commerces centre-ville, tourisme patrimonial, agriculture montagne. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin fuxéen.",
   pitchEn:
-    "Foix (09), préfecture de l'Ariège, ville historique dominée par son château cathare au confluent de l'Ariège et de l'Arget. Tissu TPE artisans, PME services publics et tertiaire, commerces centre-ville, tourisme patrimonial, agriculture montagne. Axion-IA y intervient pour tous types d'activités du bassin fuxéen.",
+    "Foix (09), préfecture de l'Ariège, ville historique dominée par son château cathare au confluent de l'Ariège et de l'Arget. Tissu TPE artisans, PME services publics et tertiaire, commerces centre-ville, tourisme patrimonial, agriculture montagne. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin fuxéen.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Foix (09), préfecture de l'Ariège. Nous accompagnons TPE artisans, PME tertiaire, commerçants, acteurs du tourisme patrimonial (château de Foix, grottes) et professions libérales du bassin fuxéen. Audit Flash dès 490 € HT.",
   directAnswerEn:

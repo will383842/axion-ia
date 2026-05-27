@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LAVELANET_COPY: VilleCopy = {
   pitchFr:
-    "Lavelanet (09), commune du Pays d'Olmes en Ariège, est un bourg industriel historiquement lié au textile (laine cardée, draperie) en reconversion économique. Tissu TPE artisans, PME textile reconverties, commerces, agriculture piémont, tourisme Montségur. Axion-IA y intervient pour tous types d'activités du Pays d'Olmes.",
+    "Lavelanet (09), commune du Pays d'Olmes en Ariège, est un bourg industriel historiquement lié au textile (laine cardée, draperie) en reconversion économique. Tissu TPE artisans, PME textile reconverties, commerces, agriculture piémont, tourisme Montségur. Axion-IA accompagne entreprises et indépendants de tous secteurs du Pays d'Olmes.",
   pitchEn:
-    "Lavelanet (09), commune du Pays d'Olmes en Ariège, est un bourg industriel historiquement lié au textile (laine cardée, draperie) en reconversion économique. Tissu TPE artisans, PME textile reconverties, commerces, agriculture piémont, tourisme Montségur. Axion-IA y intervient pour tous types d'activités du Pays d'Olmes.",
+    "Lavelanet (09), commune du Pays d'Olmes en Ariège, est un bourg industriel historiquement lié au textile (laine cardée, draperie) en reconversion économique. Tissu TPE artisans, PME textile reconverties, commerces, agriculture piémont, tourisme Montségur. Axion-IA accompagne entreprises et indépendants de tous secteurs du Pays d'Olmes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lavelanet (09), Pays d'Olmes en Ariège. Nous accompagnons TPE artisans, PME textile reconverties et nouvelles industries, commerçants, agriculteurs et acteurs du tourisme Montségur. Audit Flash dès 490 € HT.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LACROIX_SAINT_OUEN_COPY: VilleCopy = {
   pitchFr:
-    "Lacroix-Saint-Ouen (60), commune de 5 415 habitants dans l'Oise, est située en lisière de la forêt de Compiègne, dans l'agglomération compiégnoise. Tissu économique de TPE/PME : artisanat BTP, services aux entreprises, commerces de proximité, filière bois et activités liées au tourisme vert forêt de Compiègne. Axion-IA y intervient pour tous types d'activités.",
+    "Lacroix-Saint-Ouen (60), commune de 5 415 habitants dans l'Oise, est située en lisière de la forêt de Compiègne, dans l'agglomération compiégnoise. Tissu économique de TPE/PME : artisanat BTP, services aux entreprises, commerces de proximité, filière bois et activités liées au tourisme vert forêt de Compiègne. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Lacroix-Saint-Ouen (60), commune de 5 415 habitants dans l'Oise, est située en lisière de la forêt de Compiègne, dans l'agglomération compiégnoise. Tissu économique de TPE/PME : artisanat BTP, services aux entreprises, commerces de proximité, filière bois et activités liées au tourisme vert forêt de Compiègne. Axion-IA y intervient pour tous types d'activités.",
+    "Lacroix-Saint-Ouen (60), commune de 5 415 habitants dans l'Oise, est située en lisière de la forêt de Compiègne, dans l'agglomération compiégnoise. Tissu économique de TPE/PME : artisanat BTP, services aux entreprises, commerces de proximité, filière bois et activités liées au tourisme vert forêt de Compiègne. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lacroix-Saint-Ouen (60). Nous accompagnons TPE et PME de l'agglomération compiégnoise : artisans BTP, prestataires de services, commerçants, acteurs filière bois et tourisme vert. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -34,8 +34,8 @@ export const LACROIX_SAINT_OUEN_COPY: VilleCopy = {
       en: "Audit IA à Lacroix-Saint-Ouen : diagnostic adapté aux TPE/PME artisanat BTP, services, commerce, filière bois et tourisme de l'agglomération compiégnoise. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Lacroix-Saint-Ouen : formats adaptés au chantier BTP, au bureau services, au commerce ou à l'atelier bois. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Lacroix-Saint-Ouen : formats adaptés au chantier BTP, au bureau services, au commerce ou à l'atelier bois. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Lacroix-Saint-Ouen : formats adaptés au chantier BTP, au bureau services, au commerce ou à l'atelier bois. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Lacroix-Saint-Ouen : formats adaptés au chantier BTP, au bureau services, au commerce ou à l'atelier bois. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Lacroix-Saint-Ouen : automatisation devis et planification chantiers BTP, CRM et facturation PME services, gestion stocks commerce, optimisation découpe bois et réservation tourisme vert.",

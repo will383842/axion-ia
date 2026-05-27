@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SALLES_COPY: VilleCopy = {
   pitchFr:
-    "Salles (33), commune de la forêt landaise traversée par la Leyre, combine exploitation forestière, artisanat BTP, commerces de bourg et services aux habitants. Axion-IA y intervient pour tous types d'activités du sud Bordeaux et de la vallée de la Leyre.",
+    "Salles (33), commune de la forêt landaise traversée par la Leyre, combine exploitation forestière, artisanat BTP, commerces de bourg et services aux habitants. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud Bordeaux et de la vallée de la Leyre.",
   pitchEn:
-    "Salles (33), commune de la forêt landaise traversée par la Leyre, combine exploitation forestière, artisanat BTP, commerces de bourg et services aux habitants. Axion-IA y intervient pour tous types d'activités du sud Bordeaux et de la vallée de la Leyre.",
+    "Salles (33), commune de la forêt landaise traversée par la Leyre, combine exploitation forestière, artisanat BTP, commerces de bourg et services aux habitants. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud Bordeaux et de la vallée de la Leyre.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Salles (33). Nous accompagnons TPE et PME de la vallée de la Leyre : entreprises forestières, artisans BTP, commerçants, professions libérales et prestataires de services. Audit Flash dès 490 € HT.",
   directAnswerEn:

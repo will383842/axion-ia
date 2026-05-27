@@ -14,6 +14,7 @@ export const POITIERS_COPY: VilleCopy = {
     "Axion-IA se déplace à Poitiers pour accompagner les entreprises locales dans leur transformation numérique. Avec des acteurs comme l'Université de Poitiers et le Technopole du Futuroscope, nous proposons des audits, interventions et implémentations IA adaptés à vos besoins. Nos tarifs publics incluent l'Audit Flash à partir de 490 € HT et l'Intervention Essentielle dès 590 € HT.",
   directAnswerEn:
     "Axion-IA se déplace à Poitiers pour accompagner les entreprises locales dans leur transformation numérique. Avec des acteurs comme l'Université de Poitiers et le Technopole du Futuroscope, nous proposons des audits, interventions et implémentations IA adaptés à vos besoins. Nos tarifs publics incluent l'Audit Flash à partir de 490 € HT et l'Intervention Essentielle dès 590 € HT.",
+  seoHook: "université, assurance & tourisme",
   ecosystemFr:
     "Poitiers est un centre d'enseignement et de recherche avec l'Université de Poitiers et le Laboratoire de Mathématiques et Applications. Le Technopole du Futuroscope soutient l'innovation locale.",
   ecosystemEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SISTERON_COPY: VilleCopy = {
   pitchFr:
-    "Sisteron (04), sous-préfecture des Alpes-de-Haute-Provence, est la « Porte de la Provence » dominée par sa citadelle historique sur la Durance. Tissu TPE artisans, PME tourisme/hôtellerie, agriculteurs, commerçants et services. Axion-IA y intervient pour tous types d'activités du Sisteronais.",
+    "Sisteron (04), sous-préfecture des Alpes-de-Haute-Provence, est la « Porte de la Provence » dominée par sa citadelle historique sur la Durance. Tissu TPE artisans, PME tourisme/hôtellerie, agriculteurs, commerçants et services. Axion-IA y déploie ses missions auprès de toutes les organisations du Sisteronais.",
   pitchEn:
-    "Sisteron (04), sous-préfecture des Alpes-de-Haute-Provence, est la « Porte de la Provence » dominée par sa citadelle historique sur la Durance. Tissu TPE artisans, PME tourisme/hôtellerie, agriculteurs, commerçants et services. Axion-IA y intervient pour tous types d'activités du Sisteronais.",
+    "Sisteron (04), sous-préfecture des Alpes-de-Haute-Provence, est la « Porte de la Provence » dominée par sa citadelle historique sur la Durance. Tissu TPE artisans, PME tourisme/hôtellerie, agriculteurs, commerçants et services. Axion-IA y déploie ses missions auprès de toutes les organisations du Sisteronais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sisteron (04). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et hôtellerie (citadelle, Nuits de la Citadelle), agriculteurs, commerçants, indépendants et services aux entreprises de la sous-préfecture des Alpes-de-Haute-Provence.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const SISTERON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sisteron : diagnostic adapté aux TPE artisans, PME tourisme/hôtellerie, agriculteurs et commerçants du Sisteronais. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Sisteron : diagnostic adapté aux TPE artisans, PME tourisme/hôtellerie, agriculteurs et commerçants du Sisteronais. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Sisteron : diagnostic adapté aux TPE artisans, PME tourisme/hôtellerie, agriculteurs et commerçants du Sisteronais. ROI mesurable, audit Flash dès 490 € HT accessible.",
+      en: "Audit IA à Sisteron : diagnostic adapté aux TPE artisans, PME tourisme/hôtellerie, agriculteurs et commerçants du Sisteronais. ROI mesurable, audit Flash dès 490 € HT accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sisteron : formats adaptés aux hébergements touristiques, exploitations fruitières, ateliers artisanaux ou commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",

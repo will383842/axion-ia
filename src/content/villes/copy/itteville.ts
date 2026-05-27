@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ITTEVILLE_COPY: VilleCopy = {
   pitchFr:
-    "Itteville (91), commune résidentielle rurale de l'Essonne à 38 km au sud de Paris, s'inscrit dans un cadre verdoyant entre La Ferté-Alais et Mennecy. Tissu TPE artisans, commerces de proximité, PME services, exploitants agricoles. Axion-IA y intervient pour tous types d'activités.",
+    "Itteville (91), commune résidentielle rurale de l'Essonne à 38 km au sud de Paris, s'inscrit dans un cadre verdoyant entre La Ferté-Alais et Mennecy. Tissu TPE artisans, commerces de proximité, PME services, exploitants agricoles. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Itteville (91), commune résidentielle rurale de l'Essonne à 38 km au sud de Paris, s'inscrit dans un cadre verdoyant entre La Ferté-Alais et Mennecy. Tissu TPE artisans, commerces de proximité, PME services, exploitants agricoles. Axion-IA y intervient pour tous types d'activités.",
+    "Itteville (91), commune résidentielle rurale de l'Essonne à 38 km au sud de Paris, s'inscrit dans un cadre verdoyant entre La Ferté-Alais et Mennecy. Tissu TPE artisans, commerces de proximité, PME services, exploitants agricoles. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Itteville (91). Nous accompagnons TPE et PME : artisans BTP, commerces ruraux, professions libérales, PME services, exploitants agricoles du sud Essonne entre Mennecy et La Ferté-Alais. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const ITTEVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Itteville : diagnostic adapté aux artisans BTP, commerces ruraux, professions libérales, PME services du sud Essonne. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Itteville : diagnostic adapté aux artisans BTP, commerces ruraux, professions libérales, PME services du sud Essonne. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Itteville : diagnostic adapté aux artisans BTP, commerces ruraux, professions libérales, PME services du sud Essonne. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Itteville : diagnostic adapté aux artisans BTP, commerces ruraux, professions libérales, PME services du sud Essonne. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Itteville : formats adaptés atelier artisan, cabinet libéral, commerce ou exploitation agricole. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -64,7 +64,7 @@ export const ITTEVILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou Évry ?",
-      a: "Évry-Courcouronnes (20 min). Corbeil-Essonnes (15 min). Paris centre (45 min par N104/A6). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Évry-Courcouronnes (20 min). Corbeil-Essonnes (15 min). Paris centre (45 min par N104/A6). Coûts de déplacement à part, tarification transparente.",
     },
   ],
 };

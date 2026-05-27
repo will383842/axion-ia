@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VALBONNE_COPY: VilleCopy = {
   pitchFr:
-    "Valbonne (06), au cœur de la technopôle Sophia Antipolis (première technopôle d'Europe, 2 500+ entreprises, 38 000 emplois), conjugue innovation deeptech et village provençal médiéval classé. Tissu TPE/PME tech, R&D, startups IA, biotech, services numériques et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Valbonne (06), au cœur de la technopôle Sophia Antipolis (première technopôle d'Europe, 2 500+ entreprises, 38 000 emplois), conjugue innovation deeptech et village provençal médiéval classé. Tissu TPE/PME tech, R&D, startups IA, biotech, services numériques et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Valbonne (06), au cœur de la technopôle Sophia Antipolis (première technopôle d'Europe, 2 500+ entreprises, 38 000 emplois), conjugue innovation deeptech et village provençal médiéval classé. Tissu TPE/PME tech, R&D, startups IA, biotech, services numériques et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Valbonne (06), au cœur de la technopôle Sophia Antipolis (première technopôle d'Europe, 2 500+ entreprises, 38 000 emplois), conjugue innovation deeptech et village provençal médiéval classé. Tissu TPE/PME tech, R&D, startups IA, biotech, services numériques et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Valbonne (06). Nous accompagnons tous types d'activités : startups tech et IA de Sophia Antipolis, TPE/PME R&D, biotech, éditeurs logiciels, services numériques, professions libérales et commerces du village provençal.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const VALBONNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Valbonne : diagnostic adapté aux startups tech Sophia Antipolis, TPE/PME R&D, biotech et éditeurs logiciels du parc technologique. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
-      en: "Audit IA à Valbonne : diagnostic adapté aux startups tech Sophia Antipolis, TPE/PME R&D, biotech et éditeurs logiciels du parc technologique. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
+      fr: "Audit IA à Valbonne : diagnostic adapté aux startups tech Sophia Antipolis, TPE/PME R&D, biotech et éditeurs logiciels du parc technologique. Audit Flash 490 € HT avec ROI quantifié accessible aux petites structures.",
+      en: "Audit IA à Valbonne : diagnostic adapté aux startups tech Sophia Antipolis, TPE/PME R&D, biotech et éditeurs logiciels du parc technologique. Audit Flash 490 € HT avec ROI quantifié accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Valbonne : formats adaptés au bureau Sophia Antipolis, lab R&D ou espace coworking tech. Vos équipes dev et produit repartent avec intégrations IA configurées sur votre stack.",

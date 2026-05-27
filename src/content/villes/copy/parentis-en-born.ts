@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PARENTIS_EN_BORN_COPY: VilleCopy = {
   pitchFr:
-    "Parentis-en-Born (40), troisième ville du pays de Born dans les Landes, s'étend sur la rive est du lac de Parentis-Biscarrosse (deuxième lac landais). Exploitation pétrolière historique, forêt landaise, tourisme lacustre, agriculture, TPE artisans, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Parentis-en-Born (40), troisième ville du pays de Born dans les Landes, s'étend sur la rive est du lac de Parentis-Biscarrosse (deuxième lac landais). Exploitation pétrolière historique, forêt landaise, tourisme lacustre, agriculture, TPE artisans, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Parentis-en-Born (40), troisième ville du pays de Born dans les Landes, s'étend sur la rive est du lac de Parentis-Biscarrosse (deuxième lac landais). Exploitation pétrolière historique, forêt landaise, tourisme lacustre, agriculture, TPE artisans, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Parentis-en-Born (40), troisième ville du pays de Born dans les Landes, s'étend sur la rive est du lac de Parentis-Biscarrosse (deuxième lac landais). Exploitation pétrolière historique, forêt landaise, tourisme lacustre, agriculture, TPE artisans, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Parentis-en-Born (40). Nous accompagnons TPE et PME du tourisme lacustre, exploitants forestiers, entreprises pétrolières et parapétrolières, agriculteurs, commerçants, artisans BTP et professions libérales du pays de Born.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const PARENTIS_EN_BORN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Parentis-en-Born : diagnostic adapté aux entreprises pétrolières et parapétrolières, exploitants forestiers, TPE tourisme lacustre, agriculteurs et commerçants du pays de Born. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Parentis-en-Born : diagnostic adapté aux entreprises pétrolières et parapétrolières, exploitants forestiers, TPE tourisme lacustre, agriculteurs et commerçants du pays de Born. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Parentis-en-Born : diagnostic adapté aux entreprises pétrolières et parapétrolières, exploitants forestiers, TPE tourisme lacustre, agriculteurs et commerçants du pays de Born. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Parentis-en-Born : diagnostic adapté aux entreprises pétrolières et parapétrolières, exploitants forestiers, TPE tourisme lacustre, agriculteurs et commerçants du pays de Born. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Parentis-en-Born : formations adaptées aux sites industriels pétroliers, exploitations forestières, hébergeurs lacustres et commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",

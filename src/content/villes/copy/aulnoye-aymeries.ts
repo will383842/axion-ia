@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const AULNOYE_AYMERIES_COPY: VilleCopy = {
   pitchFr:
-    "Aulnoye-Aymeries (59), commune de la vallée de la Sambre dans l'Avesnois, nœud ferroviaire historique du Nord. Tissu économique : TPE et PME de l'industrie métallurgique et mécanique héritières du bassin sambrien, artisanat, commerce de centre-bourg, services de proximité, transport ferroviaire et logistique. Axion-IA y intervient pour tous types d'activités du bassin sambrien et de l'Avesnois.",
+    "Aulnoye-Aymeries (59), commune de la vallée de la Sambre dans l'Avesnois, nœud ferroviaire historique du Nord. Tissu économique : TPE et PME de l'industrie métallurgique et mécanique héritières du bassin sambrien, artisanat, commerce de centre-bourg, services de proximité, transport ferroviaire et logistique. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin sambrien et de l'Avesnois.",
   pitchEn:
-    "Aulnoye-Aymeries (59), commune de la vallée de la Sambre dans l'Avesnois, nœud ferroviaire historique du Nord. Tissu économique : TPE et PME de l'industrie métallurgique et mécanique héritières du bassin sambrien, artisanat, commerce de centre-bourg, services de proximité, transport ferroviaire et logistique. Axion-IA y intervient pour tous types d'activités du bassin sambrien et de l'Avesnois.",
+    "Aulnoye-Aymeries (59), commune de la vallée de la Sambre dans l'Avesnois, nœud ferroviaire historique du Nord. Tissu économique : TPE et PME de l'industrie métallurgique et mécanique héritières du bassin sambrien, artisanat, commerce de centre-bourg, services de proximité, transport ferroviaire et logistique. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin sambrien et de l'Avesnois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aulnoye-Aymeries (59). Nous accompagnons TPE et PME : industrie métallurgique et mécanique du bassin sambrien, artisans, commerçants de centre-bourg, prestataires logistiques ferroviaires et services de proximité de l'Avesnois.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const AULNOYE_AYMERIES_COPY: VilleCopy = {
       en: "Audit IA à Aulnoye-Aymeries : diagnostic adapté aux TPE et PME de l'industrie métallurgique sambrienne, artisans, commerçants, logisticiens ferroviaires et prestataires de services de l'Avesnois. ROI chiffré, audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Aulnoye-Aymeries : formats adaptés à l'industriel métallurgique, à l'artisan, au commerçant ou au logisticien ferroviaire. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Aulnoye-Aymeries : formats adaptés à l'industriel métallurgique, à l'artisan, au commerçant ou au logisticien ferroviaire. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Aulnoye-Aymeries : formats adaptés à l'industriel métallurgique, à l'artisan, au commerçant ou au logisticien ferroviaire. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Aulnoye-Aymeries : formats adaptés à l'industriel métallurgique, à l'artisan, au commerçant ou au logisticien ferroviaire. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Aulnoye-Aymeries : maintenance prédictive lignes métallurgiques, contrôle qualité visuel pièces mécaniques, optimisation planification logistique ferroviaire, CRM augmenté PME industrielles, agents conversationnels SAV et gestion fournisseurs.",

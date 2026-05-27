@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ROMBAS_COPY: VilleCopy = {
   pitchFr:
-    "Rombas (57), commune française du département de la Moselle (région Grand Est) située en vallée de l'Orne, est une ancienne ville sidérurgique reconvertie en pôle PME industrielles diversifiées, logistique et services. Tissu TPE artisans BTP, PME industrielles reconverties, commerces, services aux entreprises, professions libérales. Ses habitants sont les Rombasiens. Axion-IA y intervient pour tous types d'activités.",
+    "Rombas (57), commune française du département de la Moselle (région Grand Est) située en vallée de l'Orne, est une ancienne ville sidérurgique reconvertie en pôle PME industrielles diversifiées, logistique et services. Tissu TPE artisans BTP, PME industrielles reconverties, commerces, services aux entreprises, professions libérales. Ses habitants sont les Rombasiens. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Rombas (57), commune française du département de la Moselle (région Grand Est) située en vallée de l'Orne, est une ancienne ville sidérurgique reconvertie en pôle PME industrielles diversifiées, logistique et services. Tissu TPE artisans BTP, PME industrielles reconverties, commerces, services aux entreprises, professions libérales. Ses habitants sont les Rombasiens. Axion-IA y intervient pour tous types d'activités.",
+    "Rombas (57), commune française du département de la Moselle (région Grand Est) située en vallée de l'Orne, est une ancienne ville sidérurgique reconvertie en pôle PME industrielles diversifiées, logistique et services. Tissu TPE artisans BTP, PME industrielles reconverties, commerces, services aux entreprises, professions libérales. Ses habitants sont les Rombasiens. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rombas (57). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles vallée de l'Orne issues de la reconversion sidérurgique, logistique sillon mosellan, commerçants, services aux entreprises de la Communauté de communes Rives de Moselle et Pays Orne-Moselle.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const ROMBAS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Rombas : diagnostic adapté aux TPE artisans BTP, PME industrielles reconverties vallée de l'Orne, logistique, commerces. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Rombas : diagnostic adapté aux TPE artisans BTP, PME industrielles reconverties vallée de l'Orne, logistique, commerces. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Rombas : diagnostic adapté aux TPE artisans BTP, PME industrielles reconverties vallée de l'Orne, logistique, commerces. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Rombas : diagnostic adapté aux TPE artisans BTP, PME industrielles reconverties vallée de l'Orne, logistique, commerces. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Rombas : formats adaptés à l'atelier industriel, entrepôt logistique, chantier BTP, commerce. Vos équipes repartent autonomes sur outils IA usage quotidien.",

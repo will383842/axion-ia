@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MONTFORT_SUR_MEU_COPY: VilleCopy = {
   pitchFr:
-    "Montfort-sur-Meu (35), chef-lieu de canton à l'ouest de Rennes au confluent du Meu et du Garun, est une petite ville de caractère avec son écomusée du pays de Montfort et sa tour du Papegaut. Tissu de TPE artisans, PME de services, commerces de centre-bourg, professions libérales et exploitants agricoles du pays de Brocéliande. Axion-IA y intervient pour tous types d'activités.",
+    "Montfort-sur-Meu (35), chef-lieu de canton à l'ouest de Rennes au confluent du Meu et du Garun, est une petite ville de caractère avec son écomusée du pays de Montfort et sa tour du Papegaut. Tissu de TPE artisans, PME de services, commerces de centre-bourg, professions libérales et exploitants agricoles du pays de Brocéliande. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Montfort-sur-Meu (35), chef-lieu de canton à l'ouest de Rennes au confluent du Meu et du Garun, est une petite ville de caractère avec son écomusée du pays de Montfort et sa tour du Papegaut. Tissu de TPE artisans, PME de services, commerces de centre-bourg, professions libérales et exploitants agricoles du pays de Brocéliande. Axion-IA y intervient pour tous types d'activités.",
+    "Montfort-sur-Meu (35), chef-lieu de canton à l'ouest de Rennes au confluent du Meu et du Garun, est une petite ville de caractère avec son écomusée du pays de Montfort et sa tour du Papegaut. Tissu de TPE artisans, PME de services, commerces de centre-bourg, professions libérales et exploitants agricoles du pays de Brocéliande. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montfort-sur-Meu (35). Nous accompagnons tous types d'activités : TPE artisans et commerçants du centre-bourg, PME de services ouest Rennes, professions libérales, acteurs du tourisme patrimonial (écomusée, Brocéliande) et exploitants agricoles du pays de Montfort.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const MONTFORT_SUR_MEU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montfort-sur-Meu : diagnostic adapté aux TPE artisans, commerçants de centre-bourg, PME de services ouest Rennes et acteurs tourisme Brocéliande. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Montfort-sur-Meu : diagnostic adapté aux TPE artisans, commerçants de centre-bourg, PME de services ouest Rennes et acteurs tourisme Brocéliande. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Montfort-sur-Meu : diagnostic adapté aux TPE artisans, commerçants de centre-bourg, PME de services ouest Rennes et acteurs tourisme Brocéliande. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Montfort-sur-Meu : diagnostic adapté aux TPE artisans, commerçants de centre-bourg, PME de services ouest Rennes et acteurs tourisme Brocéliande. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montfort-sur-Meu : formats adaptés aux TPE artisans, commerces de proximité, cabinets libéraux ou PME de services. Vos équipes repartent autonomes sur les outils IA métier.",

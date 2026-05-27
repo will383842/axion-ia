@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LAILLE_COPY: VilleCopy = {
   pitchFr:
-    "Laillé (35), commune résidentielle et rurale au sud de Rennes en Ille-et-Vilaine, s'appuie sur un tissu économique de TPE artisanales, commerces de proximité, exploitations agricoles, PME de services et professions libérales du bassin rennais. Axion-IA y intervient pour tous types d'activités.",
+    "Laillé (35), commune résidentielle et rurale au sud de Rennes en Ille-et-Vilaine, s'appuie sur un tissu économique de TPE artisanales, commerces de proximité, exploitations agricoles, PME de services et professions libérales du bassin rennais. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Laillé (35), commune résidentielle et rurale au sud de Rennes en Ille-et-Vilaine, s'appuie sur un tissu économique de TPE artisanales, commerces de proximité, exploitations agricoles, PME de services et professions libérales du bassin rennais. Axion-IA y intervient pour tous types d'activités.",
+    "Laillé (35), commune résidentielle et rurale au sud de Rennes en Ille-et-Vilaine, s'appuie sur un tissu économique de TPE artisanales, commerces de proximité, exploitations agricoles, PME de services et professions libérales du bassin rennais. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Laillé (35). Nous accompagnons TPE et PME du sud rennais : artisans, commerçants, exploitants agricoles, professions libérales, prestataires de services et PME adossées au dynamisme de Rennes Métropole. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const LAILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Laillé : diagnostic adapté aux TPE artisans, exploitants agricoles, commerçants et PME de services du bassin sud-rennais. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Laillé : diagnostic adapté aux TPE artisans, exploitants agricoles, commerçants et PME de services du bassin sud-rennais. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Laillé : diagnostic adapté aux TPE artisans, exploitants agricoles, commerçants et PME de services du bassin sud-rennais. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Laillé : diagnostic adapté aux TPE artisans, exploitants agricoles, commerçants et PME de services du bassin sud-rennais. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Laillé : formats adaptés exploitation agricole, atelier artisan, commerce ou bureau PME. Vos équipes repartent autonomes sur outils IA métier.",

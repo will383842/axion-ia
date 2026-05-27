@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_JEAN_DE_VEDAS_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Jean-de-Védas (34), commune de 13 328 habitants dans l'agglomération de Montpellier sud-ouest. Son économie repose sur un tissu de TPE et PME du tertiaire, du commerce (zone Via Domitia), des services aux entreprises, de la santé, de la restauration et de l'artisanat. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Jean-de-Védas (34), commune de 13 328 habitants dans l'agglomération de Montpellier sud-ouest. Son économie repose sur un tissu de TPE et PME du tertiaire, du commerce (zone Via Domitia), des services aux entreprises, de la santé, de la restauration et de l'artisanat. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Saint-Jean-de-Védas (34), commune de 13 328 habitants dans l'agglomération de Montpellier sud-ouest. Son économie repose sur un tissu de TPE et PME du tertiaire, du commerce (zone Via Domitia), des services aux entreprises, de la santé, de la restauration et de l'artisanat. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Jean-de-Védas (34), commune de 13 328 habitants dans l'agglomération de Montpellier sud-ouest. Son économie repose sur un tissu de TPE et PME du tertiaire, du commerce (zone Via Domitia), des services aux entreprises, de la santé, de la restauration et de l'artisanat. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean-de-Védas (34). Nous accompagnons TPE et PME de l'agglo Montpellier sud-ouest : entreprises tertiaires, enseignes commerciales, prestataires de services, professions libérales et artisans. Audit Flash dès 490 € HT.",
   directAnswerEn:

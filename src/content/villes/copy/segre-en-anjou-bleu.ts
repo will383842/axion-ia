@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SEGRE_EN_ANJOU_BLEU_COPY: VilleCopy = {
   pitchFr:
-    "Segré-en-Anjou Bleu (49), commune nouvelle de plus de 17 600 habitants dans le Haut-Anjou, regroupe Segré et 14 communes déléguées. Héritage ardoisier et industriel, tissu PME agroalimentaires et manufacturières, TPE artisanales, exploitations agricoles et d'élevage, commerces de bourg. Axion-IA y intervient pour tous types d'activités de l'Anjou bleu.",
+    "Segré-en-Anjou Bleu (49), commune nouvelle de plus de 17 600 habitants dans le Haut-Anjou, regroupe Segré et 14 communes déléguées. Héritage ardoisier et industriel, tissu PME agroalimentaires et manufacturières, TPE artisanales, exploitations agricoles et d'élevage, commerces de bourg. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'Anjou bleu.",
   pitchEn:
-    "Segré-en-Anjou Bleu (49), commune nouvelle de plus de 17 600 habitants dans le Haut-Anjou, regroupe Segré et 14 communes déléguées. Héritage ardoisier et industriel, tissu PME agroalimentaires et manufacturières, TPE artisanales, exploitations agricoles et d'élevage, commerces de bourg. Axion-IA y intervient pour tous types d'activités de l'Anjou bleu.",
+    "Segré-en-Anjou Bleu (49), commune nouvelle de plus de 17 600 habitants dans le Haut-Anjou, regroupe Segré et 14 communes déléguées. Héritage ardoisier et industriel, tissu PME agroalimentaires et manufacturières, TPE artisanales, exploitations agricoles et d'élevage, commerces de bourg. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'Anjou bleu.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Segré-en-Anjou Bleu (49). Nous accompagnons tous types d'activités : PME industrielles et agroalimentaires, TPE artisans et commerçants, exploitations agricoles et d'élevage, professionnels de santé, services aux entreprises du Haut-Anjou. Audit Flash accessible dès 490 € HT.",
   directAnswerEn:

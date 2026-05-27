@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FLEURY_MEROGIS_COPY: VilleCopy = {
   pitchFr:
-    "Fleury-Mérogis (91), commune de l'Essonne disposant de zones d'activités économiques actives, allie tissu industriel et logistique à un cadre semi-rural. PME industrielles, TPE artisanat BTP, logistique et entreposage, commerces de proximité, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Fleury-Mérogis (91), commune de l'Essonne disposant de zones d'activités économiques actives, allie tissu industriel et logistique à un cadre semi-rural. PME industrielles, TPE artisanat BTP, logistique et entreposage, commerces de proximité, services aux entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Fleury-Mérogis (91), commune de l'Essonne disposant de zones d'activités économiques actives, allie tissu industriel et logistique à un cadre semi-rural. PME industrielles, TPE artisanat BTP, logistique et entreposage, commerces de proximité, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Fleury-Mérogis (91), commune de l'Essonne disposant de zones d'activités économiques actives, allie tissu industriel et logistique à un cadre semi-rural. PME industrielles, TPE artisanat BTP, logistique et entreposage, commerces de proximité, services aux entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fleury-Mérogis (91). Nous accompagnons TPE et PME : PME industrielles zones d'activités, entreprises logistique et entreposage, artisans BTP, commerçants de proximité, prestataires services aux entreprises. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -64,7 +64,7 @@ export const FLEURY_MEROGIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Évry ou Paris ?",
-      a: "Évry-Courcouronnes (10 min). Aéroport Paris-Orly (15 min). Paris centre (30 min). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Évry-Courcouronnes (10 min). Aéroport Paris-Orly (15 min). Paris centre (30 min). Coûts de déplacement à part, tarification transparente.",
     },
   ],
 };

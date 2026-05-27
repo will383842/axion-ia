@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const NEUFCHATEAU_COPY: VilleCopy = {
   pitchFr:
-    "Neufchâteau (88), sous-préfecture des Vosges, 6 732 habitants, est un pôle administratif et commercial de l'ouest vosgien. Reconnue pour son industrie du mobilier et de l'ameublement, la ville accueille un tissu de TPE/PME bois, ameublement, agroalimentaire, artisanat, commerce et services. Axion-IA y intervient pour tous types d'activités.",
+    "Neufchâteau (88), sous-préfecture des Vosges, 6 732 habitants, est un pôle administratif et commercial de l'ouest vosgien. Reconnue pour son industrie du mobilier et de l'ameublement, la ville accueille un tissu de TPE/PME bois, ameublement, agroalimentaire, artisanat, commerce et services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Neufchâteau (88), sous-préfecture des Vosges, 6 732 habitants, est un pôle administratif et commercial de l'ouest vosgien. Reconnue pour son industrie du mobilier et de l'ameublement, la ville accueille un tissu de TPE/PME bois, ameublement, agroalimentaire, artisanat, commerce et services. Axion-IA y intervient pour tous types d'activités.",
+    "Neufchâteau (88), sous-préfecture des Vosges, 6 732 habitants, est un pôle administratif et commercial de l'ouest vosgien. Reconnue pour son industrie du mobilier et de l'ameublement, la ville accueille un tissu de TPE/PME bois, ameublement, agroalimentaire, artisanat, commerce et services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Neufchâteau (88). Nous accompagnons TPE et PME de l'ouest vosgien : fabricants de mobilier, artisans du bois, agroalimentaire, commerçants et prestataires de services. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -34,8 +34,8 @@ export const NEUFCHATEAU_COPY: VilleCopy = {
       en: "Audit IA à Neufchâteau : diagnostic adapté aux TPE/PME mobilier, ameublement, bois, agroalimentaire, commerce et services de l'ouest vosgien. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Neufchâteau : formats adaptés à l'usine de mobilier, la menuiserie, l'atelier artisanal, le commerce ou le bureau. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Neufchâteau : formats adaptés à l'usine de mobilier, la menuiserie, l'atelier artisanal, le commerce ou le bureau. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Neufchâteau : formats adaptés à l'usine de mobilier, la menuiserie, l'atelier artisanal, le commerce ou le bureau. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Neufchâteau : formats adaptés à l'usine de mobilier, la menuiserie, l'atelier artisanal, le commerce ou le bureau. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Neufchâteau : optimisation production mobilier, gestion stocks bois, automatisation devis agencement, contrôle qualité ameublement, OCR documents et facturation.",

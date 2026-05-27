@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_YRIEIX_LA_PERCHE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Yrieix-la-Perche (87), sous-préfecture du sud de la Haute-Vienne, est historiquement liée au kaolin et à la porcelaine limousine. Tissu TPE artisans, PME manufacturières, commerces centre-ville, agriculture (élevage limousin), professions libérales et services. Axion-IA y intervient pour tous types d'activités du sud Haute-Vienne.",
+    "Saint-Yrieix-la-Perche (87), sous-préfecture du sud de la Haute-Vienne, est historiquement liée au kaolin et à la porcelaine limousine. Tissu TPE artisans, PME manufacturières, commerces centre-ville, agriculture (élevage limousin), professions libérales et services. Axion-IA accompagne entreprises et indépendants de tous secteurs du sud Haute-Vienne.",
   pitchEn:
-    "Saint-Yrieix-la-Perche (87), sous-préfecture du sud de la Haute-Vienne, est historiquement liée au kaolin et à la porcelaine limousine. Tissu TPE artisans, PME manufacturières, commerces centre-ville, agriculture (élevage limousin), professions libérales et services. Axion-IA y intervient pour tous types d'activités du sud Haute-Vienne.",
+    "Saint-Yrieix-la-Perche (87), sous-préfecture du sud de la Haute-Vienne, est historiquement liée au kaolin et à la porcelaine limousine. Tissu TPE artisans, PME manufacturières, commerces centre-ville, agriculture (élevage limousin), professions libérales et services. Axion-IA accompagne entreprises et indépendants de tous secteurs du sud Haute-Vienne.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Yrieix-la-Perche (87). Nous accompagnons tous types d'activités : TPE artisans, PME manufacturières, éleveurs limousins, commerçants, professions libérales, indépendants et services aux entreprises du sud Haute-Vienne.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const SAINT_YRIEIX_LA_PERCHE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Yrieix-la-Perche : diagnostic adapté aux TPE artisans, PME manufacturières, éleveurs limousins et commerçants du sud Haute-Vienne. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Saint-Yrieix-la-Perche : diagnostic adapté aux TPE artisans, PME manufacturières, éleveurs limousins et commerçants du sud Haute-Vienne. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Saint-Yrieix-la-Perche : diagnostic adapté aux TPE artisans, PME manufacturières, éleveurs limousins et commerçants du sud Haute-Vienne. Audit Flash 490 € HT, ROI documenté en chiffres accessible.",
+      en: "Audit IA à Saint-Yrieix-la-Perche : diagnostic adapté aux TPE artisans, PME manufacturières, éleveurs limousins et commerçants du sud Haute-Vienne. Audit Flash 490 € HT, ROI documenté en chiffres accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Yrieix-la-Perche : formats adaptés à l'atelier manufacturier, exploitation agricole, commerce ou cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",

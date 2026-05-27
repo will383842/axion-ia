@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ROCHEFORT_DU_GARD_COPY: VilleCopy = {
   pitchFr:
-    "Rochefort-du-Gard (30), commune résidentielle entre Nîmes et Avignon, adossée à la garrigue. Tissu TPE/PME services aux entreprises, professions libérales, commerces, artisanat BTP et viticulture. Axion-IA y intervient pour tous types d'activités entre Nîmes et Avignon.",
+    "Rochefort-du-Gard (30), commune résidentielle entre Nîmes et Avignon, adossée à la garrigue. Tissu TPE/PME services aux entreprises, professions libérales, commerces, artisanat BTP et viticulture. Axion-IA y déploie ses missions auprès de toutes les organisations entre Nîmes et Avignon.",
   pitchEn:
-    "Rochefort-du-Gard (30), commune résidentielle entre Nîmes et Avignon, adossée à la garrigue. Tissu TPE/PME services aux entreprises, professions libérales, commerces, artisanat BTP et viticulture. Axion-IA y intervient pour tous types d'activités entre Nîmes et Avignon.",
+    "Rochefort-du-Gard (30), commune résidentielle entre Nîmes et Avignon, adossée à la garrigue. Tissu TPE/PME services aux entreprises, professions libérales, commerces, artisanat BTP et viticulture. Axion-IA y déploie ses missions auprès de toutes les organisations entre Nîmes et Avignon.",
   directAnswerFr:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Rochefort-du-Gard (30). Nous accompagnons les TPE, PME et ETI locales : professions libérales, entreprises de services, commerçants, artisans BTP et viticulteurs entre Nîmes et Avignon. Audit Flash à partir de 490 € HT.",
   directAnswerEn:

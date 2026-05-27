@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const COURTRY_COPY: VilleCopy = {
   pitchFr:
-    "Courtry (77), commune résidentielle du nord-ouest de la Seine-et-Marne, bénéficie de la proximité de Meaux et de l'aéroport Roissy-CDG. Tissu TPE et PME artisanat, commerces de proximité, services à la personne, BTP et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Courtry (77), commune résidentielle du nord-ouest de la Seine-et-Marne, bénéficie de la proximité de Meaux et de l'aéroport Roissy-CDG. Tissu TPE et PME artisanat, commerces de proximité, services à la personne, BTP et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Courtry (77), commune résidentielle du nord-ouest de la Seine-et-Marne, bénéficie de la proximité de Meaux et de l'aéroport Roissy-CDG. Tissu TPE et PME artisanat, commerces de proximité, services à la personne, BTP et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Courtry (77), commune résidentielle du nord-ouest de la Seine-et-Marne, bénéficie de la proximité de Meaux et de l'aéroport Roissy-CDG. Tissu TPE et PME artisanat, commerces de proximité, services à la personne, BTP et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Courtry (77). Nous accompagnons TPE et PME : artisans et entreprises BTP, commerçants de proximité, prestataires services à la personne, professions libérales et entreprises de services. Audit Flash dès 490 € HT.",
   directAnswerEn:

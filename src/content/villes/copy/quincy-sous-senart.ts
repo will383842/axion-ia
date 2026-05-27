@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const QUINCY_SOUS_SENART_COPY: VilleCopy = {
   pitchFr:
-    "Quincy-sous-Sénart (91), commune résidentielle à 25 km au sud-est de Paris en lisière de la forêt de Sénart, accueille un tissu de TPE artisans, commerces de proximité, professions libérales et PME de services. Axion-IA y intervient pour tous types d'activités du sud-est essonnien.",
+    "Quincy-sous-Sénart (91), commune résidentielle à 25 km au sud-est de Paris en lisière de la forêt de Sénart, accueille un tissu de TPE artisans, commerces de proximité, professions libérales et PME de services. Axion-IA y déploie ses missions auprès de toutes les organisations du sud-est essonnien.",
   pitchEn:
-    "Quincy-sous-Sénart (91), commune résidentielle à 25 km au sud-est de Paris en lisière de la forêt de Sénart, accueille un tissu de TPE artisans, commerces de proximité, professions libérales et PME de services. Axion-IA y intervient pour tous types d'activités du sud-est essonnien.",
+    "Quincy-sous-Sénart (91), commune résidentielle à 25 km au sud-est de Paris en lisière de la forêt de Sénart, accueille un tissu de TPE artisans, commerces de proximité, professions libérales et PME de services. Axion-IA y déploie ses missions auprès de toutes les organisations du sud-est essonnien.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Quincy-sous-Sénart (91). Nous accompagnons tous types d'activités : TPE artisans, commerçants de proximité, professions libérales, indépendants, PME tertiaires et services du sud-est de l'Essonne en lisière de la forêt de Sénart. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const QUINCY_SOUS_SENART_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Quincy-sous-Sénart : diagnostic adapté aux TPE artisans, commerçants, professions libérales et PME de services du sud-est Essonne. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Quincy-sous-Sénart : diagnostic adapté aux TPE artisans, commerçants, professions libérales et PME de services du sud-est Essonne. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Quincy-sous-Sénart : diagnostic adapté aux TPE artisans, commerçants, professions libérales et PME de services du sud-est Essonne. ROI mesurable, audit Flash dès 490 € HT accessible.",
+      en: "Audit IA à Quincy-sous-Sénart : diagnostic adapté aux TPE artisans, commerçants, professions libérales et PME de services du sud-est Essonne. ROI mesurable, audit Flash dès 490 € HT accessible.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Quincy-sous-Sénart : formats adaptés au commerce, cabinet professionnel, atelier artisan ou bureau PME. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Quincy-sous-Sénart : formats adaptés au commerce, cabinet professionnel, atelier artisan ou bureau PME. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Quincy-sous-Sénart : formats adaptés au commerce, cabinet professionnel, atelier artisan ou bureau PME. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Quincy-sous-Sénart : formats adaptés au commerce, cabinet professionnel, atelier artisan ou bureau PME. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Quincy-sous-Sénart : agents conversationnels client, automatisation devis BTP, classification documents, gestion RDV professions libérales, CRM augmentés pour PME sud-est essonniennes.",

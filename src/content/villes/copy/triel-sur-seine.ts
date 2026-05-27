@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const TRIEL_SUR_SEINE_COPY: VilleCopy = {
   pitchFr:
-    "Triel-sur-Seine (78), commune résidentielle des bords de Seine à 35 km au nord-ouest de Paris, compte plus de 12 400 habitants. TPE artisanat et services, PME conseil et ingénierie, commerces de centre-ville, professions libérales, restauration. Axion-IA y intervient pour tous types d'activités.",
+    "Triel-sur-Seine (78), commune résidentielle des bords de Seine à 35 km au nord-ouest de Paris, compte plus de 12 400 habitants. TPE artisanat et services, PME conseil et ingénierie, commerces de centre-ville, professions libérales, restauration. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Triel-sur-Seine (78), commune résidentielle des bords de Seine à 35 km au nord-ouest de Paris, compte plus de 12 400 habitants. TPE artisanat et services, PME conseil et ingénierie, commerces de centre-ville, professions libérales, restauration. Axion-IA y intervient pour tous types d'activités.",
+    "Triel-sur-Seine (78), commune résidentielle des bords de Seine à 35 km au nord-ouest de Paris, compte plus de 12 400 habitants. TPE artisanat et services, PME conseil et ingénierie, commerces de centre-ville, professions libérales, restauration. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Triel-sur-Seine (78). Nous accompagnons TPE et PME : artisans et services de proximité, PME conseil et ingénierie, commerçants de centre-ville, professions libérales, restaurateurs. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const TRIEL_SUR_SEINE_COPY: VilleCopy = {
       en: "Audit IA à Triel-sur-Seine : diagnostic adapté aux TPE artisans, PME conseil et ingénierie, commerçants, professions libérales, restaurateurs. ROI chiffré, audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Triel-sur-Seine : formats adaptés bureau, commerce, cabinet, restaurant. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Triel-sur-Seine : formats adaptés bureau, commerce, cabinet, restaurant. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Triel-sur-Seine : formats adaptés bureau, commerce, cabinet, restaurant. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Triel-sur-Seine : formats adaptés bureau, commerce, cabinet, restaurant. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Triel-sur-Seine : automatisation gestion clients PME, CRM augmenté commerces, outils devis artisans, prise de rendez-vous professions libérales, commandes restauration.",

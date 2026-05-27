@@ -51,6 +51,8 @@ export const NIMES_COPY: VilleCopy = {
   directAnswerEn:
     "Axion-IA is a senior AI architects consultancy that intervenes in Nîmes (30) on site. We support micro-businesses, SMEs, mid-caps and large companies in the Gard — trade, services, construction, agri-food, engineering — on their concrete AI use cases: costed diagnosis, demos on your real data, actionable plan. Parc Georges Besse, the Grézan zone and companies around CHU Carémeau are part of our regular intervention area. Public pricing, no lock-in.",
 
+  seoHook: "viticole, tourisme romain & textile",
+
   topSectorsNaf: [
     "Commerce & Distribution",
     "Services aux entreprises",

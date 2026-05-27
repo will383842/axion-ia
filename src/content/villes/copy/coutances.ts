@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const COUTANCES_COPY: VilleCopy = {
   pitchFr:
-    "Coutances (50), sous-préfecture de la Manche en Normandie, est célèbre pour sa cathédrale gothique et son festival Jazz sous les Pommiers. Tissu TPE artisanales et commerçants, PME agroalimentaires du bocage coutançais, services publics, tourisme patrimonial et culturel. Axion-IA y intervient pour tous types d'activités.",
+    "Coutances (50), sous-préfecture de la Manche en Normandie, est célèbre pour sa cathédrale gothique et son festival Jazz sous les Pommiers. Tissu TPE artisanales et commerçants, PME agroalimentaires du bocage coutançais, services publics, tourisme patrimonial et culturel. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Coutances (50), sous-préfecture de la Manche en Normandie, est célèbre pour sa cathédrale gothique et son festival Jazz sous les Pommiers. Tissu TPE artisanales et commerçants, PME agroalimentaires du bocage coutançais, services publics, tourisme patrimonial et culturel. Axion-IA y intervient pour tous types d'activités.",
+    "Coutances (50), sous-préfecture de la Manche en Normandie, est célèbre pour sa cathédrale gothique et son festival Jazz sous les Pommiers. Tissu TPE artisanales et commerçants, PME agroalimentaires du bocage coutançais, services publics, tourisme patrimonial et culturel. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coutances (50). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agroalimentaires du bocage coutançais, prestataires tourisme et culture (Jazz sous les Pommiers, cathédrale), professions libérales et services publics.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const COUTANCES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Coutances : diagnostic adapté aux TPE artisans et commerçants, PME agroalimentaires du bocage, prestataires tourisme et culture, professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Coutances : diagnostic adapté aux TPE artisans et commerçants, PME agroalimentaires du bocage, prestataires tourisme et culture, professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Coutances : diagnostic adapté aux TPE artisans et commerçants, PME agroalimentaires du bocage, prestataires tourisme et culture, professions libérales. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Coutances : diagnostic adapté aux TPE artisans et commerçants, PME agroalimentaires du bocage, prestataires tourisme et culture, professions libérales. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Coutances : formats adaptés à la laiterie, au commerce, au cabinet, à l'organisation culturelle. Vos équipes repartent autonomes sur les outils IA.",

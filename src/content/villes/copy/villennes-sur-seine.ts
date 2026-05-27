@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VILLENNES_SUR_SEINE_COPY: VilleCopy = {
   pitchFr:
-    "Villennes-sur-Seine (78), commune résidentielle verdoyante en bord de Seine dans les Yvelines, entre Poissy et Médan. Tissu de TPE artisans, PME de services, commerces de village, professions libérales et activités liées au cadre fluvial et résidentiel haut de gamme. Axion-IA y intervient pour tous types d'activités de la boucle de Seine.",
+    "Villennes-sur-Seine (78), commune résidentielle verdoyante en bord de Seine dans les Yvelines, entre Poissy et Médan. Tissu de TPE artisans, PME de services, commerces de village, professions libérales et activités liées au cadre fluvial et résidentiel haut de gamme. Axion-IA y déploie ses missions auprès de toutes les organisations de la boucle de Seine.",
   pitchEn:
-    "Villennes-sur-Seine (78), commune résidentielle verdoyante en bord de Seine dans les Yvelines, entre Poissy et Médan. Tissu de TPE artisans, PME de services, commerces de village, professions libérales et activités liées au cadre fluvial et résidentiel haut de gamme. Axion-IA y intervient pour tous types d'activités de la boucle de Seine.",
+    "Villennes-sur-Seine (78), commune résidentielle verdoyante en bord de Seine dans les Yvelines, entre Poissy et Médan. Tissu de TPE artisans, PME de services, commerces de village, professions libérales et activités liées au cadre fluvial et résidentiel haut de gamme. Axion-IA y déploie ses missions auprès de toutes les organisations de la boucle de Seine.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villennes-sur-Seine (78). Nous accompagnons TPE et PME : artisans, commerces de village, PME de services et professions libérales de cette commune résidentielle verdoyante en bord de Seine, entre Poissy et Orgeval. Audit Flash dès 490 € HT.",
   directAnswerEn:

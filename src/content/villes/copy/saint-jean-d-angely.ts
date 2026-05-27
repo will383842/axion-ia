@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_JEAN_D_ANGELY_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Jean-d'Angély (17), sous-préfecture de Charente-Maritime, étape historique du chemin de Compostelle (abbaye royale UNESCO). Tissu de TPE artisans, PME agroalimentaires, agriculture (céréales, élevage), commerces de centre-ville et services publics. Axion-IA y intervient pour tous types d'activités du bassin angérien.",
+    "Saint-Jean-d'Angély (17), sous-préfecture de Charente-Maritime, étape historique du chemin de Compostelle (abbaye royale UNESCO). Tissu de TPE artisans, PME agroalimentaires, agriculture (céréales, élevage), commerces de centre-ville et services publics. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin angérien.",
   pitchEn:
-    "Saint-Jean-d'Angély (17), sous-préfecture de Charente-Maritime, étape historique du chemin de Compostelle (abbaye royale UNESCO). Tissu de TPE artisans, PME agroalimentaires, agriculture (céréales, élevage), commerces de centre-ville et services publics. Axion-IA y intervient pour tous types d'activités du bassin angérien.",
+    "Saint-Jean-d'Angély (17), sous-préfecture de Charente-Maritime, étape historique du chemin de Compostelle (abbaye royale UNESCO). Tissu de TPE artisans, PME agroalimentaires, agriculture (céréales, élevage), commerces de centre-ville et services publics. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin angérien.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean-d'Angély (17). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires, exploitants agricoles, commerçants, professions libérales et indépendants de cette sous-préfecture historique du chemin de Compostelle.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const SAINT_JEAN_D_ANGELY_COPY: VilleCopy = {
       en: "Audit IA à Saint-Jean-d'Angély : diagnostic adapté aux PME agroalimentaires, exploitants agricoles, TPE artisans patrimoine et commerces du bassin angérien. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Jean-d'Angély : formats adaptés à l'exploitation agricole, à l'atelier agroalimentaire, au commerce ou au bureau. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Saint-Jean-d'Angély : formats adaptés à l'exploitation agricole, à l'atelier agroalimentaire, au commerce ou au bureau. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Saint-Jean-d'Angély : formats adaptés à l'exploitation agricole, à l'atelier agroalimentaire, au commerce ou au bureau. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Saint-Jean-d'Angély : formats adaptés à l'exploitation agricole, à l'atelier agroalimentaire, au commerce ou au bureau. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Jean-d'Angély : traçabilité production agroalimentaire, prédiction rendements agricoles, automatisation gestion coopérative, agents conversationnels accueil touristique Compostelle.",

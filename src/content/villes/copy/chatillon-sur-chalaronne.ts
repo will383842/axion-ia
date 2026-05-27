@@ -29,12 +29,12 @@ export const CHATILLON_SUR_CHALARONNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Châtillon-sur-Chalaronne : diagnostic adapté aux acteurs tourisme médiéval, pisciculteurs Dombes, agriculteurs, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Châtillon-sur-Chalaronne : diagnostic adapté aux acteurs tourisme médiéval, pisciculteurs Dombes, agriculteurs, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Châtillon-sur-Chalaronne : diagnostic adapté aux acteurs tourisme médiéval, pisciculteurs Dombes, agriculteurs, TPE artisans. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Châtillon-sur-Chalaronne : diagnostic adapté aux acteurs tourisme médiéval, pisciculteurs Dombes, agriculteurs, TPE artisans. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Châtillon-sur-Chalaronne : formats adaptés au site patrimonial, exploitation piscicole/agricole, commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Châtillon-sur-Chalaronne : formats adaptés au site patrimonial, exploitation piscicole/agricole, commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Châtillon-sur-Chalaronne : formats adaptés au site patrimonial, exploitation piscicole/agricole, commerce. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Châtillon-sur-Chalaronne : formats adaptés au site patrimonial, exploitation piscicole/agricole, commerce. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Châtillon-sur-Chalaronne : agents conversationnels visiteurs patrimoine médiéval multilingue, classification photos pisciculture, traçabilité poissons Dombes, automatisation réservations.",
@@ -64,7 +64,7 @@ export const CHATILLON_SUR_CHALARONNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (50 min). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (50 min). Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

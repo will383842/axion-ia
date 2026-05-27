@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BRINDAS_COPY: VilleCopy = {
   pitchFr:
-    "Brindas (69), commune en banlieue ouest de Lyon dans le Rhône, est positionnée aux portes des monts du Lyonnais. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales, agriculture résiduelle. Axion-IA y intervient pour tous types d'activités de l'ouest lyonnais.",
+    "Brindas (69), commune en banlieue ouest de Lyon dans le Rhône, est positionnée aux portes des monts du Lyonnais. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales, agriculture résiduelle. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'ouest lyonnais.",
   pitchEn:
-    "Brindas (69), commune en banlieue ouest de Lyon dans le Rhône, est positionnée aux portes des monts du Lyonnais. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales, agriculture résiduelle. Axion-IA y intervient pour tous types d'activités de l'ouest lyonnais.",
+    "Brindas (69), commune en banlieue ouest de Lyon dans le Rhône, est positionnée aux portes des monts du Lyonnais. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales, agriculture résiduelle. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'ouest lyonnais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Brindas (69). Nous accompagnons tous types d'activités : PME tertiaires ouest lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants, agriculteurs monts du Lyonnais et services aux entreprises.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const BRINDAS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Brindas : diagnostic adapté aux PME tertiaires ouest lyonnais, professions libérales, agriculteurs monts Lyonnais, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Brindas : diagnostic adapté aux PME tertiaires ouest lyonnais, professions libérales, agriculteurs monts Lyonnais, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Brindas : diagnostic adapté aux PME tertiaires ouest lyonnais, professions libérales, agriculteurs monts Lyonnais, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Brindas : diagnostic adapté aux PME tertiaires ouest lyonnais, professions libérales, agriculteurs monts Lyonnais, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Brindas : formats adaptés au bureau, cabinet, exploitation agricole, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const BRINDAS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (25 min). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (25 min). Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

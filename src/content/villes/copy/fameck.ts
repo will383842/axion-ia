@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FAMECK_COPY: VilleCopy = {
   pitchFr:
-    "Fameck (57), commune mosellane de la Vallée de la Fensch dans l'agglomération de Thionville, héritière d'un passé sidérurgique majeur reconverti vers le commerce, les services et la sous-traitance industrielle. Tissu TPE/PME industrie, commerces, BTP, services, et nombreux frontaliers du Luxembourg. Axion-IA y intervient pour tous types d'activités.",
+    "Fameck (57), commune mosellane de la Vallée de la Fensch dans l'agglomération de Thionville, héritière d'un passé sidérurgique majeur reconverti vers le commerce, les services et la sous-traitance industrielle. Tissu TPE/PME industrie, commerces, BTP, services, et nombreux frontaliers du Luxembourg. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Fameck (57), commune mosellane de la Vallée de la Fensch dans l'agglomération de Thionville, héritière d'un passé sidérurgique majeur reconverti vers le commerce, les services et la sous-traitance industrielle. Tissu TPE/PME industrie, commerces, BTP, services, et nombreux frontaliers du Luxembourg. Axion-IA y intervient pour tous types d'activités.",
+    "Fameck (57), commune mosellane de la Vallée de la Fensch dans l'agglomération de Thionville, héritière d'un passé sidérurgique majeur reconverti vers le commerce, les services et la sous-traitance industrielle. Tissu TPE/PME industrie, commerces, BTP, services, et nombreux frontaliers du Luxembourg. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fameck (57). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance, artisans BTP, commerces de proximité, professions de services et entrepreneurs frontaliers de la Vallée de la Fensch.",
   directAnswerEn:
@@ -30,12 +30,12 @@ export const FAMECK_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fameck : diagnostic adapté aux TPE/PME industrie, sous-traitants, artisans BTP, commerces et services. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Fameck : diagnostic adapté aux TPE/PME industrie, sous-traitants, artisans BTP, commerces et services. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Fameck : diagnostic adapté aux TPE/PME industrie, sous-traitants, artisans BTP, commerces et services. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Fameck : diagnostic adapté aux TPE/PME industrie, sous-traitants, artisans BTP, commerces et services. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Fameck : formats adaptés à l'atelier industriel, chantier, bureau, commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Fameck : formats adaptés à l'atelier industriel, chantier, bureau, commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Fameck : formats adaptés à l'atelier industriel, chantier, bureau, commerce. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Fameck : formats adaptés à l'atelier industriel, chantier, bureau, commerce. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Fameck : contrôle qualité production, traçabilité sous-traitance, automatisation devis BTP, agents conversationnels B2B, gestion fournisseurs.",

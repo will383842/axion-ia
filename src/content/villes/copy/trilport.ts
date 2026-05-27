@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const TRILPORT_COPY: VilleCopy = {
   pitchFr:
-    "Trilport (77), commune des bords de Marne dans l'agglomération de Meaux, conjugue cadre résidentiel verdoyant et tissu local de TPE/PME. Activité économique mixte : artisanat, commerces de proximité, professions libérales, services aux entreprises, BTP. Axion-IA y intervient pour tous types d'activités du Pays de Meaux.",
+    "Trilport (77), commune des bords de Marne dans l'agglomération de Meaux, conjugue cadre résidentiel verdoyant et tissu local de TPE/PME. Activité économique mixte : artisanat, commerces de proximité, professions libérales, services aux entreprises, BTP. Axion-IA y déploie ses missions auprès de toutes les organisations du Pays de Meaux.",
   pitchEn:
-    "Trilport (77), commune des bords de Marne dans l'agglomération de Meaux, conjugue cadre résidentiel verdoyant et tissu local de TPE/PME. Activité économique mixte : artisanat, commerces de proximité, professions libérales, services aux entreprises, BTP. Axion-IA y intervient pour tous types d'activités du Pays de Meaux.",
+    "Trilport (77), commune des bords de Marne dans l'agglomération de Meaux, conjugue cadre résidentiel verdoyant et tissu local de TPE/PME. Activité économique mixte : artisanat, commerces de proximité, professions libérales, services aux entreprises, BTP. Axion-IA y déploie ses missions auprès de toutes les organisations du Pays de Meaux.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trilport (77). Nous accompagnons tous types d'activités : TPE artisans et commerçants des bords de Marne, PME tertiaires du bassin de Meaux, professions libérales, indépendants, entreprises BTP et prestataires de services locaux.",
   directAnswerEn:

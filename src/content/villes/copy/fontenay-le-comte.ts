@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FONTENAY_LE_COMTE_COPY: VilleCopy = {
   pitchFr:
-    "Fontenay-le-Comte (85), sous-préfecture de la Vendée, est surnommée la « fontaine poétique » pour son riche passé Renaissance. Plus de 14 000 habitants, pôle administratif et commercial du sud-Vendée, tissu de TPE artisanales, PME, commerces et services aux portes du marais poitevin. Axion-IA y intervient pour tous types d'activités.",
+    "Fontenay-le-Comte (85), sous-préfecture de la Vendée, est surnommée la « fontaine poétique » pour son riche passé Renaissance. Plus de 14 000 habitants, pôle administratif et commercial du sud-Vendée, tissu de TPE artisanales, PME, commerces et services aux portes du marais poitevin. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Fontenay-le-Comte (85), sous-préfecture de la Vendée, est surnommée la « fontaine poétique » pour son riche passé Renaissance. Plus de 14 000 habitants, pôle administratif et commercial du sud-Vendée, tissu de TPE artisanales, PME, commerces et services aux portes du marais poitevin. Axion-IA y intervient pour tous types d'activités.",
+    "Fontenay-le-Comte (85), sous-préfecture de la Vendée, est surnommée la « fontaine poétique » pour son riche passé Renaissance. Plus de 14 000 habitants, pôle administratif et commercial du sud-Vendée, tissu de TPE artisanales, PME, commerces et services aux portes du marais poitevin. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fontenay-le-Comte (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME sud-Vendée, professions libérales, acteurs du tourisme marais poitevin, administrations et services de proximité.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const FONTENAY_LE_COMTE_COPY: VilleCopy = {
       en: "Audit IA à Fontenay-le-Comte : diagnostic adapté aux TPE artisans, PME commerciales et industrielles sud-Vendée, professions libérales et acteurs tourisme marais poitevin. ROI chiffré, audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Fontenay-le-Comte : formats adaptés aux commerces, professions libérales, PME industrielles et acteurs tourisme. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Fontenay-le-Comte : formats adaptés aux commerces, professions libérales, PME industrielles et acteurs tourisme. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Fontenay-le-Comte : formats adaptés aux commerces, professions libérales, PME industrielles et acteurs tourisme. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Fontenay-le-Comte : formats adaptés aux commerces, professions libérales, PME industrielles et acteurs tourisme. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Fontenay-le-Comte : automatisation gestion clients commerces, agents conversationnels tourisme marais poitevin, outils prédictifs PME. Adapté TPE/PME sud-Vendée.",

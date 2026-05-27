@@ -29,8 +29,8 @@ export const ARNOUVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Arnouville : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires nord-francilien, professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Arnouville : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires nord-francilien, professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Arnouville : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires nord-francilien, professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Arnouville : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires nord-francilien, professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Arnouville : formats adaptés au bureau, cabinet, commerce ou atelier. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const ARNOUVILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris (20 min Transilien H Gare du Nord → Arnouville ou voiture A1). Proximité Roissy-CDG (15 min). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Paris (20 min Transilien H Gare du Nord → Arnouville ou voiture A1). Proximité Roissy-CDG (15 min). Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

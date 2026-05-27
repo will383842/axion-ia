@@ -29,8 +29,8 @@ export const LE_CASTELLET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Castellet : diagnostic adapté aux domaines viticoles AOC Bandol, hôtels, restaurants et PME événementiel sports mécaniques. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA au Castellet : diagnostic adapté aux domaines viticoles AOC Bandol, hôtels, restaurants et PME événementiel sports mécaniques. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA au Castellet : diagnostic adapté aux domaines viticoles AOC Bandol, hôtels, restaurants et PME événementiel sports mécaniques. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA au Castellet : diagnostic adapté aux domaines viticoles AOC Bandol, hôtels, restaurants et PME événementiel sports mécaniques. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site au Castellet : ateliers pour viticulteurs Bandol, hôteliers, restaurateurs et prestataires événementiels. Outils IA configurés métier réel premium.",

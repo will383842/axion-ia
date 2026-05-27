@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MESNILS_SUR_ITON_COPY: VilleCopy = {
   pitchFr:
-    "Mesnils-sur-Iton (27), commune nouvelle de l'Eure dans l'agglomération d'Évreux, le long de la vallée de l'Iton. Tissu TPE artisans, PME services et tertiaire agglo Évreux, agriculture, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Mesnils-sur-Iton (27), commune nouvelle de l'Eure dans l'agglomération d'Évreux, le long de la vallée de l'Iton. Tissu TPE artisans, PME services et tertiaire agglo Évreux, agriculture, commerces de proximité, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Mesnils-sur-Iton (27), commune nouvelle de l'Eure dans l'agglomération d'Évreux, le long de la vallée de l'Iton. Tissu TPE artisans, PME services et tertiaire agglo Évreux, agriculture, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Mesnils-sur-Iton (27), commune nouvelle de l'Eure dans l'agglomération d'Évreux, le long de la vallée de l'Iton. Tissu TPE artisans, PME services et tertiaire agglo Évreux, agriculture, commerces de proximité, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mesnils-sur-Iton (27). Nous accompagnons tous types d'activités : TPE artisans, PME services et tertiaire agglo Évreux, exploitants agricoles vallée de l'Iton, commerces, indépendants et professions libérales d'Évreux Portes de Normandie.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const MESNILS_SUR_ITON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mesnils-sur-Iton : diagnostic adapté aux TPE artisans, PME services agglo Évreux, exploitants agricoles vallée de l'Iton, commerces, professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Mesnils-sur-Iton : diagnostic adapté aux TPE artisans, PME services agglo Évreux, exploitants agricoles vallée de l'Iton, commerces, professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Mesnils-sur-Iton : diagnostic adapté aux TPE artisans, PME services agglo Évreux, exploitants agricoles vallée de l'Iton, commerces, professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Mesnils-sur-Iton : diagnostic adapté aux TPE artisans, PME services agglo Évreux, exploitants agricoles vallée de l'Iton, commerces, professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mesnils-sur-Iton : formats adaptés au bureau, à l'exploitation agricole, à l'atelier, au cabinet. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const MESNILS_SUR_ITON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou Évreux ?",
-      a: "Nos consultants viennent de Paris (1h15 train gare Évreux-Normandie) ou d'Évreux centre (10 min). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Paris (1h15 train gare Évreux-Normandie) ou d'Évreux centre (10 min). Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

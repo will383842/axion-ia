@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VERNOUILLET_COPY: VilleCopy = {
   pitchFr:
-    "Vernouillet (28), commune d'Eure-et-Loir dans l'agglomération de Dreux, est une ville résidentielle dynamique adossée au bassin économique drouais. Tissu TPE/PME tertiaires, commerces de proximité, PME industrielles zone Dreux, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Vernouillet (28), commune d'Eure-et-Loir dans l'agglomération de Dreux, est une ville résidentielle dynamique adossée au bassin économique drouais. Tissu TPE/PME tertiaires, commerces de proximité, PME industrielles zone Dreux, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Vernouillet (28), commune d'Eure-et-Loir dans l'agglomération de Dreux, est une ville résidentielle dynamique adossée au bassin économique drouais. Tissu TPE/PME tertiaires, commerces de proximité, PME industrielles zone Dreux, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Vernouillet (28), commune d'Eure-et-Loir dans l'agglomération de Dreux, est une ville résidentielle dynamique adossée au bassin économique drouais. Tissu TPE/PME tertiaires, commerces de proximité, PME industrielles zone Dreux, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vernouillet (28). Nous accompagnons tous types d'activités : TPE/PME tertiaires agglomération Dreux, commerçants de proximité, PME industrielles bassin drouais, services aux entreprises.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const VERNOUILLET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vernouillet : diagnostic adapté aux TPE/PME tertiaires agglo Dreux, commerçants, PME industrielles bassin drouais. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Vernouillet : diagnostic adapté aux TPE/PME tertiaires agglo Dreux, commerçants, PME industrielles bassin drouais. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Vernouillet : diagnostic adapté aux TPE/PME tertiaires agglo Dreux, commerçants, PME industrielles bassin drouais. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Vernouillet : diagnostic adapté aux TPE/PME tertiaires agglo Dreux, commerçants, PME industrielles bassin drouais. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vernouillet : formats adaptés au bureau tertiaire, commerce, site industriel. Vos équipes repartent autonomes.",
@@ -64,7 +64,7 @@ export const VERNOUILLET_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Chartres ou Paris ?",
-      a: "Chartres (35 min) ou Paris Montparnasse (1h15 TER via Dreux). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Chartres (35 min) ou Paris Montparnasse (1h15 TER via Dreux). Frais de mission en sus, grille tarifaire publique.",
     },
   ],
 };

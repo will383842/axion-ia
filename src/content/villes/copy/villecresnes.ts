@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VILLECRESNES_COPY: VilleCopy = {
   pitchFr:
-    "Villecresnes (94), commune résidentielle du sud-est du Val-de-Marne, bénéficie d'un tissu économique de proximité entre Boissy-Saint-Léger et Mandres-les-Roses. TPE artisanat et services, PME tertiaires, commerces de proximité, professions libérales, petite logistique. Axion-IA y intervient pour tous types d'activités.",
+    "Villecresnes (94), commune résidentielle du sud-est du Val-de-Marne, bénéficie d'un tissu économique de proximité entre Boissy-Saint-Léger et Mandres-les-Roses. TPE artisanat et services, PME tertiaires, commerces de proximité, professions libérales, petite logistique. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Villecresnes (94), commune résidentielle du sud-est du Val-de-Marne, bénéficie d'un tissu économique de proximité entre Boissy-Saint-Léger et Mandres-les-Roses. TPE artisanat et services, PME tertiaires, commerces de proximité, professions libérales, petite logistique. Axion-IA y intervient pour tous types d'activités.",
+    "Villecresnes (94), commune résidentielle du sud-est du Val-de-Marne, bénéficie d'un tissu économique de proximité entre Boissy-Saint-Léger et Mandres-les-Roses. TPE artisanat et services, PME tertiaires, commerces de proximité, professions libérales, petite logistique. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villecresnes (94). Nous accompagnons TPE et PME : artisans et prestataires de services, PME tertiaires, commerçants de proximité, professions libérales, entreprises de logistique locale. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const VILLECRESNES_COPY: VilleCopy = {
       en: "Audit IA à Villecresnes : diagnostic adapté aux TPE artisans, PME tertiaires, commerces de proximité, professions libérales, logistique locale. ROI chiffré, audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Villecresnes : formats adaptés bureau, commerce, cabinet, entrepôt. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Villecresnes : formats adaptés bureau, commerce, cabinet, entrepôt. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Villecresnes : formats adaptés bureau, commerce, cabinet, entrepôt. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Villecresnes : formats adaptés bureau, commerce, cabinet, entrepôt. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Villecresnes : automatisation gestion clients PME tertiaires, outils devis artisans, CRM augmentés commerces, facturation automatisée professions libérales.",
@@ -64,7 +64,7 @@ export const VILLECRESNES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",
-      a: "Paris-Gare de Lyon (30 min RER A via Boissy-Saint-Léger). Aéroport Orly à 20 min. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Paris-Gare de Lyon (30 min RER A via Boissy-Saint-Léger). Aéroport Orly à 20 min. Frais de mission en sus, grille tarifaire publique.",
     },
   ],
 };

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VIC_LE_COMTE_COPY: VilleCopy = {
   pitchFr:
-    "Vic-le-Comte (63), bourg du sud clermontois dans la vallée de l'Allier (Sainte-Chapelle classée monument historique). Tissu agriculture vallée Allier, TPE artisanat, commerce rural, tourisme patrimoine, services. Axion-IA y intervient pour tous types d'activités.",
+    "Vic-le-Comte (63), bourg du sud clermontois dans la vallée de l'Allier (Sainte-Chapelle classée monument historique). Tissu agriculture vallée Allier, TPE artisanat, commerce rural, tourisme patrimoine, services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Vic-le-Comte (63), bourg du sud clermontois dans la vallée de l'Allier (Sainte-Chapelle classée monument historique). Tissu agriculture vallée Allier, TPE artisanat, commerce rural, tourisme patrimoine, services. Axion-IA y intervient pour tous types d'activités.",
+    "Vic-le-Comte (63), bourg du sud clermontois dans la vallée de l'Allier (Sainte-Chapelle classée monument historique). Tissu agriculture vallée Allier, TPE artisanat, commerce rural, tourisme patrimoine, services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vic-le-Comte (63). Nous accompagnons TPE et PME : exploitants agricoles vallée Allier, artisans et commerçants ruraux, acteurs tourisme patrimoine (Sainte-Chapelle), prestataires de services. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const VIC_LE_COMTE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vic-le-Comte : diagnostic adapté aux exploitations agricoles vallée Allier, TPE artisans, commerçants ruraux, acteurs tourisme patrimoine. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Vic-le-Comte : diagnostic adapté aux exploitations agricoles vallée Allier, TPE artisans, commerçants ruraux, acteurs tourisme patrimoine. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Vic-le-Comte : diagnostic adapté aux exploitations agricoles vallée Allier, TPE artisans, commerçants ruraux, acteurs tourisme patrimoine. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Vic-le-Comte : diagnostic adapté aux exploitations agricoles vallée Allier, TPE artisans, commerçants ruraux, acteurs tourisme patrimoine. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vic-le-Comte : formats adaptés exploitation agricole, atelier artisan, commerce, site patrimonial. Vos équipes repartent autonomes.",

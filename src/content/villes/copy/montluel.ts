@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MONTLUEL_COPY: VilleCopy = {
   pitchFr:
-    "Montluel (01), commune de la Côtière dans l'Ain, est positionnée à proximité de l'aéroport Lyon-Saint-Exupéry. Tissu PME tertiaires et logistiques, TPE artisans BTP, commerces, agriculture plaine de l'Ain. Axion-IA y intervient pour tous types d'activités de la Côtière.",
+    "Montluel (01), commune de la Côtière dans l'Ain, est positionnée à proximité de l'aéroport Lyon-Saint-Exupéry. Tissu PME tertiaires et logistiques, TPE artisans BTP, commerces, agriculture plaine de l'Ain. Axion-IA couvre l'ensemble des activités professionnelles présentes de la Côtière.",
   pitchEn:
-    "Montluel (01), commune de la Côtière dans l'Ain, est positionnée à proximité de l'aéroport Lyon-Saint-Exupéry. Tissu PME tertiaires et logistiques, TPE artisans BTP, commerces, agriculture plaine de l'Ain. Axion-IA y intervient pour tous types d'activités de la Côtière.",
+    "Montluel (01), commune de la Côtière dans l'Ain, est positionnée à proximité de l'aéroport Lyon-Saint-Exupéry. Tissu PME tertiaires et logistiques, TPE artisans BTP, commerces, agriculture plaine de l'Ain. Axion-IA couvre l'ensemble des activités professionnelles présentes de la Côtière.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montluel (01). Nous accompagnons tous types d'activités : PME tertiaires et logistiques Côtière Ain, agriculteurs plaine de l'Ain, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const MONTLUEL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montluel : diagnostic adapté aux PME tertiaires/logistiques Côtière Ain, agriculteurs, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Montluel : diagnostic adapté aux PME tertiaires/logistiques Côtière Ain, agriculteurs, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Montluel : diagnostic adapté aux PME tertiaires/logistiques Côtière Ain, agriculteurs, TPE artisans. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Montluel : diagnostic adapté aux PME tertiaires/logistiques Côtière Ain, agriculteurs, TPE artisans. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montluel : formats adaptés au bureau, entrepôt, exploitation, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const MONTLUEL_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (30 min). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (30 min). Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

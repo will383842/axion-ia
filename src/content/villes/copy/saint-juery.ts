@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_JUERY_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Juéry (81), commune industrielle de l'agglomération d'Albi sur le Tarn, plus de 6 500 habitants. Héritage métallurgique (Saut de Sabo), tissu TPE artisans, PME industrielles et de services, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités de l'agglo albigeoise est.",
+    "Saint-Juéry (81), commune industrielle de l'agglomération d'Albi sur le Tarn, plus de 6 500 habitants. Héritage métallurgique (Saut de Sabo), tissu TPE artisans, PME industrielles et de services, commerces, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglo albigeoise est.",
   pitchEn:
-    "Saint-Juéry (81), commune industrielle de l'agglomération d'Albi sur le Tarn, plus de 6 500 habitants. Héritage métallurgique (Saut de Sabo), tissu TPE artisans, PME industrielles et de services, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités de l'agglo albigeoise est.",
+    "Saint-Juéry (81), commune industrielle de l'agglomération d'Albi sur le Tarn, plus de 6 500 habitants. Héritage métallurgique (Saut de Sabo), tissu TPE artisans, PME industrielles et de services, commerces, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglo albigeoise est.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Juéry (81). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants et professions libérales de l'agglomération d'Albi. Audit Flash dès 490 € HT.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MIMIZAN_COPY: VilleCopy = {
   pitchFr:
-    "Mimizan (40), station balnéaire de la côte d'Argent dans les Landes, se partage entre Mimizan-Bourg et Mimizan-Plage. Surf, lac d'Aureilhan, forêt landaise, papeterie industrielle, tourisme balnéaire, TPE camping/hébergement, commerces saisonniers, artisans. Axion-IA y intervient pour tous types d'activités.",
+    "Mimizan (40), station balnéaire de la côte d'Argent dans les Landes, se partage entre Mimizan-Bourg et Mimizan-Plage. Surf, lac d'Aureilhan, forêt landaise, papeterie industrielle, tourisme balnéaire, TPE camping/hébergement, commerces saisonniers, artisans. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Mimizan (40), station balnéaire de la côte d'Argent dans les Landes, se partage entre Mimizan-Bourg et Mimizan-Plage. Surf, lac d'Aureilhan, forêt landaise, papeterie industrielle, tourisme balnéaire, TPE camping/hébergement, commerces saisonniers, artisans. Axion-IA y intervient pour tous types d'activités.",
+    "Mimizan (40), station balnéaire de la côte d'Argent dans les Landes, se partage entre Mimizan-Bourg et Mimizan-Plage. Surf, lac d'Aureilhan, forêt landaise, papeterie industrielle, tourisme balnéaire, TPE camping/hébergement, commerces saisonniers, artisans. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mimizan (40). Nous accompagnons TPE et PME du tourisme balnéaire (campings, surf, lac), PME papetière et forestière, commerçants saisonniers, artisans BTP et professions libérales du pays de Born.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const MIMIZAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mimizan : diagnostic adapté aux TPE du tourisme balnéaire (campings, surf), PME papetière et forestière, commerçants saisonniers et artisans du pays de Born. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Mimizan : diagnostic adapté aux TPE du tourisme balnéaire (campings, surf), PME papetière et forestière, commerçants saisonniers et artisans du pays de Born. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Mimizan : diagnostic adapté aux TPE du tourisme balnéaire (campings, surf), PME papetière et forestière, commerçants saisonniers et artisans du pays de Born. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Mimizan : diagnostic adapté aux TPE du tourisme balnéaire (campings, surf), PME papetière et forestière, commerçants saisonniers et artisans du pays de Born. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mimizan : formations adaptées aux campings, hébergeurs, industrie papetière, commerces et artisans. Vos équipes repartent autonomes sur les outils IA configurés métier.",

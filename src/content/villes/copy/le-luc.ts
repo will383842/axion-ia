@@ -3,9 +3,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_LUC_COPY: VilleCopy = {
   pitchFr:
-    "Le Luc (83, Var), commune du centre Var sur l'axe A8 et siège de la base aéronavale, accueille TPE artisanales, PME viticoles, commerces, professions libérales, logistique et services à la base militaire. Axion-IA y intervient pour tous types d'activités du centre Var.",
+    "Le Luc (83, Var), commune du centre Var sur l'axe A8 et siège de la base aéronavale, accueille TPE artisanales, PME viticoles, commerces, professions libérales, logistique et services à la base militaire. Axion-IA accompagne entreprises et indépendants de tous secteurs du centre Var.",
   pitchEn:
-    "Le Luc (83, Var), commune du centre Var sur l'axe A8 et siège de la base aéronavale, accueille TPE artisanales, PME viticoles, commerces, professions libérales, logistique et services à la base militaire. Axion-IA y intervient pour tous types d'activités du centre Var.",
+    "Le Luc (83, Var), commune du centre Var sur l'axe A8 et siège de la base aéronavale, accueille TPE artisanales, PME viticoles, commerces, professions libérales, logistique et services à la base militaire. Axion-IA accompagne entreprises et indépendants de tous secteurs du centre Var.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Luc (83). Nous accompagnons TPE artisanales, PME viticoles, commerces, professions libérales et logistique du centre Var. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:

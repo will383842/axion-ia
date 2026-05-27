@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FEIGNIES_COPY: VilleCopy = {
   pitchFr:
-    "Feignies (59), commune du département du Nord (région Hauts-de-France) dans l'agglomération de Maubeuge-Val de Sambre, à proximité de la frontière belge et des fortifications Vauban. Tissu TPE artisanat BTP, PME industrie métallurgique et sous-traitance automobile, commerces, services et activités liées au bassin transfrontalier franco-belge. Axion-IA y intervient pour tous types d'activités.",
+    "Feignies (59), commune du département du Nord (région Hauts-de-France) dans l'agglomération de Maubeuge-Val de Sambre, à proximité de la frontière belge et des fortifications Vauban. Tissu TPE artisanat BTP, PME industrie métallurgique et sous-traitance automobile, commerces, services et activités liées au bassin transfrontalier franco-belge. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Feignies (59), commune du département du Nord (région Hauts-de-France) dans l'agglomération de Maubeuge-Val de Sambre, à proximité de la frontière belge et des fortifications Vauban. Tissu TPE artisanat BTP, PME industrie métallurgique et sous-traitance automobile, commerces, services et activités liées au bassin transfrontalier franco-belge. Axion-IA y intervient pour tous types d'activités.",
+    "Feignies (59), commune du département du Nord (région Hauts-de-France) dans l'agglomération de Maubeuge-Val de Sambre, à proximité de la frontière belge et des fortifications Vauban. Tissu TPE artisanat BTP, PME industrie métallurgique et sous-traitance automobile, commerces, services et activités liées au bassin transfrontalier franco-belge. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Feignies (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrie métallurgique et sous-traitance automobile, commerçants, services et entreprises du bassin transfrontalier Maubeuge-Val de Sambre.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const FEIGNIES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Feignies : diagnostic adapté aux TPE artisans BTP, PME industrie métallurgique et sous-traitance automobile, commerçants et services du Val de Sambre. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Feignies : diagnostic adapté aux TPE artisans BTP, PME industrie métallurgique et sous-traitance automobile, commerçants et services du Val de Sambre. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Feignies : diagnostic adapté aux TPE artisans BTP, PME industrie métallurgique et sous-traitance automobile, commerçants et services du Val de Sambre. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Feignies : diagnostic adapté aux TPE artisans BTP, PME industrie métallurgique et sous-traitance automobile, commerçants et services du Val de Sambre. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Feignies : formats adaptés à l'atelier industriel, chantier BTP, commerce, bureau. Vos équipes repartent autonomes sur les outils IA du quotidien.",
@@ -65,7 +65,7 @@ export const FEIGNIES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission transfrontalière depuis Feignies ?",
-      a: "Nos consultants viennent via gare de Maubeuge (TER Lille/Paris, 5 min) ou N2/A2. Mons (Belgique) à 20 min, Charleroi à 45 min. Expertise transfrontalière FR/BE incluse. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants viennent via gare de Maubeuge (TER Lille/Paris, 5 min) ou N2/A2. Mons (Belgique) à 20 min, Charleroi à 45 min. Expertise transfrontalière FR/BE incluse. Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

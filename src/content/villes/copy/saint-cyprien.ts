@@ -29,12 +29,12 @@ export const SAINT_CYPRIEN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Cyprien : diagnostic adapté aux TPE tourisme, PME hôtellerie, activités portuaires et golfiques du Sud Roussillon. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Cyprien : diagnostic adapté aux TPE tourisme, PME hôtellerie, activités portuaires et golfiques du Sud Roussillon. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Cyprien : diagnostic adapté aux TPE tourisme, PME hôtellerie, activités portuaires et golfiques du Sud Roussillon. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Saint-Cyprien : diagnostic adapté aux TPE tourisme, PME hôtellerie, activités portuaires et golfiques du Sud Roussillon. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Cyprien : formats adaptés à l'hôtel, restaurant, marina, golf, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Saint-Cyprien : formats adaptés à l'hôtel, restaurant, marina, golf, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Saint-Cyprien : formats adaptés à l'hôtel, restaurant, marina, golf, commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Saint-Cyprien : formats adaptés à l'hôtel, restaurant, marina, golf, commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Cyprien : chatbots réservation multilingues, yield management hôtelier, gestion marina portuaire, automatisation parcours golfeur. Sud Roussillon.",
@@ -64,7 +64,7 @@ export const SAINT_CYPRIEN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Cyprien ?",
-      a: "Nos consultants interviennent depuis Perpignan (20 min). Missions sur site dans votre établissement, marina ou bureau. Visio possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants interviennent depuis Perpignan (20 min). Missions sur site dans votre établissement, marina ou bureau. Visio possible. Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

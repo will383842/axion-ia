@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BEAUREPAIRE_COPY: VilleCopy = {
   pitchFr:
-    "Beaurepaire (38), commune du sud-Isère dans la plaine du Bas-Dauphiné, est positionnée entre Vienne et Romans-sur-Isère sur l'axe Lyon-Valence. Tissu agricole céréalier majeur, PME industrielles agroalimentaires, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités du Bas-Dauphiné méridional.",
+    "Beaurepaire (38), commune du sud-Isère dans la plaine du Bas-Dauphiné, est positionnée entre Vienne et Romans-sur-Isère sur l'axe Lyon-Valence. Tissu agricole céréalier majeur, PME industrielles agroalimentaires, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations du Bas-Dauphiné méridional.",
   pitchEn:
-    "Beaurepaire (38), commune du sud-Isère dans la plaine du Bas-Dauphiné, est positionnée entre Vienne et Romans-sur-Isère sur l'axe Lyon-Valence. Tissu agricole céréalier majeur, PME industrielles agroalimentaires, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités du Bas-Dauphiné méridional.",
+    "Beaurepaire (38), commune du sud-Isère dans la plaine du Bas-Dauphiné, est positionnée entre Vienne et Romans-sur-Isère sur l'axe Lyon-Valence. Tissu agricole céréalier majeur, PME industrielles agroalimentaires, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations du Bas-Dauphiné méridional.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beaurepaire (38). Nous accompagnons tous types d'activités : agriculteurs céréaliers Bas-Dauphiné, PME agroalimentaires, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises du sud-Isère plaine.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const BEAUREPAIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Beaurepaire : diagnostic adapté aux agriculteurs céréaliers, PME agroalimentaires, TPE artisans et commerçants du Bas-Dauphiné. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Beaurepaire : diagnostic adapté aux agriculteurs céréaliers, PME agroalimentaires, TPE artisans et commerçants du Bas-Dauphiné. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Beaurepaire : diagnostic adapté aux agriculteurs céréaliers, PME agroalimentaires, TPE artisans et commerçants du Bas-Dauphiné. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Beaurepaire : diagnostic adapté aux agriculteurs céréaliers, PME agroalimentaires, TPE artisans et commerçants du Bas-Dauphiné. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Beaurepaire : formats adaptés à l'exploitation agricole, atelier agroalimentaire, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Beaurepaire : formats adaptés à l'exploitation agricole, atelier agroalimentaire, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Beaurepaire : formats adaptés à l'exploitation agricole, atelier agroalimentaire, commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Beaurepaire : formats adaptés à l'exploitation agricole, atelier agroalimentaire, commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Beaurepaire : prédiction récoltes céréalières, optimisation irrigation, classification photos cultures, traçabilité agroalimentaire, agents conversationnels. Bas-Dauphiné agricole.",
@@ -64,7 +64,7 @@ export const BEAUREPAIRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Valence ?",
-      a: "Nos consultants viennent de Lyon (1h) ou Valence (50 min). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (1h) ou Valence (50 min). Pour les multi-jours, hébergement local possible. Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

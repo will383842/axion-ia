@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_PORT_MARLY_COPY: VilleCopy = {
   pitchFr:
-    "Le Port-Marly (78), commune des Yvelines en bord de Seine face à la forêt de Saint-Germain-en-Laye, entre Marly-le-Roi et Louveciennes. Tissu de TPE artisans et commerçants, PME de services, professions libérales, activités nautiques et restauration. Axion-IA y intervient pour tous types d'activités.",
+    "Le Port-Marly (78), commune des Yvelines en bord de Seine face à la forêt de Saint-Germain-en-Laye, entre Marly-le-Roi et Louveciennes. Tissu de TPE artisans et commerçants, PME de services, professions libérales, activités nautiques et restauration. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Le Port-Marly (78), commune des Yvelines en bord de Seine face à la forêt de Saint-Germain-en-Laye, entre Marly-le-Roi et Louveciennes. Tissu de TPE artisans et commerçants, PME de services, professions libérales, activités nautiques et restauration. Axion-IA y intervient pour tous types d'activités.",
+    "Le Port-Marly (78), commune des Yvelines en bord de Seine face à la forêt de Saint-Germain-en-Laye, entre Marly-le-Roi et Louveciennes. Tissu de TPE artisans et commerçants, PME de services, professions libérales, activités nautiques et restauration. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Port-Marly (78). Nous accompagnons TPE et PME : artisans et commerçants du centre-ville, PME de services boucle de Seine, professions libérales, activités nautiques et restaurateurs des bords de Seine. Audit Flash dès 490 € HT.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ROCHE_LA_MOLIERE_COPY: VilleCopy = {
   pitchFr:
-    "Roche-la-Molière (42), commune en banlieue ouest de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Héritage minier (ancien bassin charbonnier stéphanois). Tissu PME industrielles diversifiées, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités stéphanoises.",
+    "Roche-la-Molière (42), commune en banlieue ouest de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Héritage minier (ancien bassin charbonnier stéphanois). Tissu PME industrielles diversifiées, TPE artisans BTP, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes stéphanoises.",
   pitchEn:
-    "Roche-la-Molière (42), commune en banlieue ouest de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Héritage minier (ancien bassin charbonnier stéphanois). Tissu PME industrielles diversifiées, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités stéphanoises.",
+    "Roche-la-Molière (42), commune en banlieue ouest de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Héritage minier (ancien bassin charbonnier stéphanois). Tissu PME industrielles diversifiées, TPE artisans BTP, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes stéphanoises.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Roche-la-Molière (42). Nous accompagnons tous types d'activités : PME industrielles diversifiées Saint-Étienne Métropole, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de la banlieue ouest stéphanoise.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const ROCHE_LA_MOLIERE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Roche-la-Molière : diagnostic adapté aux PME industrielles diversifiées Saint-Étienne Métropole, TPE artisans, commerçants. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Roche-la-Molière : diagnostic adapté aux PME industrielles diversifiées Saint-Étienne Métropole, TPE artisans, commerçants. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Roche-la-Molière : diagnostic adapté aux PME industrielles diversifiées Saint-Étienne Métropole, TPE artisans, commerçants. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Roche-la-Molière : diagnostic adapté aux PME industrielles diversifiées Saint-Étienne Métropole, TPE artisans, commerçants. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Roche-la-Molière : formats adaptés à l'atelier industriel, commerce, bureau. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Roche-la-Molière : formats adaptés à l'atelier industriel, commerce, bureau. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Roche-la-Molière : formats adaptés à l'atelier industriel, commerce, bureau. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Roche-la-Molière : formats adaptés à l'atelier industriel, commerce, bureau. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Roche-la-Molière : prédiction maintenance industrielle, agents conversationnels B2B, automatisation workflow, classification documents. Saint-Étienne Métropole.",

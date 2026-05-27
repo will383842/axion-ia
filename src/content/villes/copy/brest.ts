@@ -59,6 +59,8 @@ export const BREST_COPY: VilleCopy = {
   directAnswerEn:
     "Axion-IA is a senior AI architects consultancy that intervenes in Brest (29019) on site across Brest Métropole and Finistère. We support local micro-businesses, industrial SMEs, maritime-sector mid-caps and large groups (Naval Group, Thales Underwater, IFREMER) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
+  seoHook: "naval, défense & maritime",
+
   topSectorsNaf: [
     "Défense maritime & construction navale militaire",
     "Sciences de la mer & océanographie",

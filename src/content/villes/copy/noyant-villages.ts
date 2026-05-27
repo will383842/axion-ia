@@ -33,8 +33,8 @@ export const NOYANT_VILLAGES_COPY: VilleCopy = {
       en: "Audit IA à Noyant-Villages : diagnostic adapté aux TPE artisans, PME agricoles, éleveurs et commerçants du Baugeois. ROI chiffré, Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Noyant-Villages : formations adaptées aux exploitations agricoles, artisans, commerces et hébergeurs touristiques du Baugeois. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Noyant-Villages : formations adaptées aux exploitations agricoles, artisans, commerces et hébergeurs touristiques du Baugeois. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Noyant-Villages : formations adaptées aux exploitations agricoles, artisans, commerces et hébergeurs touristiques du Baugeois. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Noyant-Villages : formations adaptées aux exploitations agricoles, artisans, commerces et hébergeurs touristiques du Baugeois. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Noyant-Villages : traçabilité troupeau, optimisation assolement, agents conversationnels tourisme patrimonial, automatisation devis artisans et gestion stocks.",

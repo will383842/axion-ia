@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LANCON_PROVENCE_COPY: VilleCopy = {
   pitchFr:
-    "Lançon-Provence (13), commune provençale aux portes de la Crau et de l'étang de Berre, accueille zones logistiques stratégiques sur l'axe A7-A8. Tissu de TPE artisans, PME logistique et transport, commerçants, professions libérales, entrepôts et exploitations agricoles. Axion-IA y intervient pour tous types d'activités.",
+    "Lançon-Provence (13), commune provençale aux portes de la Crau et de l'étang de Berre, accueille zones logistiques stratégiques sur l'axe A7-A8. Tissu de TPE artisans, PME logistique et transport, commerçants, professions libérales, entrepôts et exploitations agricoles. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Lançon-Provence (13), commune provençale aux portes de la Crau et de l'étang de Berre, accueille zones logistiques stratégiques sur l'axe A7-A8. Tissu de TPE artisans, PME logistique et transport, commerçants, professions libérales, entrepôts et exploitations agricoles. Axion-IA y intervient pour tous types d'activités.",
+    "Lançon-Provence (13), commune provençale aux portes de la Crau et de l'étang de Berre, accueille zones logistiques stratégiques sur l'axe A7-A8. Tissu de TPE artisans, PME logistique et transport, commerçants, professions libérales, entrepôts et exploitations agricoles. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lançon-Provence (13). Nous accompagnons TPE artisans, PME logistique et transport, professions libérales, commerçants et exploitants agricoles de la Crau et du bassin de Berre. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LANCON_PROVENCE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lançon-Provence : diagnostic adapté aux PME logistique, transporteurs, TPE artisans, viticulteurs et professions libérales de la Crau. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Lançon-Provence : diagnostic adapté aux PME logistique, transporteurs, TPE artisans, viticulteurs et professions libérales de la Crau. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Lançon-Provence : diagnostic adapté aux PME logistique, transporteurs, TPE artisans, viticulteurs et professions libérales de la Crau. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Lançon-Provence : diagnostic adapté aux PME logistique, transporteurs, TPE artisans, viticulteurs et professions libérales de la Crau. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lançon-Provence : ateliers pour PME logistique, entrepôts, transporteurs, domaines viticoles et équipes tertiaires. Outils IA configurés métier réel.",
@@ -64,7 +64,7 @@ export const LANCON_PROVENCE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Lançon-Provence ?",
-      a: "Lançon-Provence est à 10 min de Salon et 35 min de Marseille via A7-A8. Nos consultants se déplacent dans vos locaux. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Lançon-Provence est à 10 min de Salon et 35 min de Marseille via A7-A8. Nos consultants se déplacent dans vos locaux. Frais de mission en sus, grille tarifaire publique.",
     },
   ],
 };

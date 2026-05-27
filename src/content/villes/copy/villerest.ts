@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VILLEREST_COPY: VilleCopy = {
   pitchFr:
-    "Villerest (42), commune en banlieue sud-ouest de Roanne dans la Loire, est intégrée à Roannais Agglomération. Connue pour le barrage de Villerest (grand aménagement hydraulique sur la Loire), site touristique. Tissu PME tertiaires, TPE artisans BTP, tourisme, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Villerest (42), commune en banlieue sud-ouest de Roanne dans la Loire, est intégrée à Roannais Agglomération. Connue pour le barrage de Villerest (grand aménagement hydraulique sur la Loire), site touristique. Tissu PME tertiaires, TPE artisans BTP, tourisme, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Villerest (42), commune en banlieue sud-ouest de Roanne dans la Loire, est intégrée à Roannais Agglomération. Connue pour le barrage de Villerest (grand aménagement hydraulique sur la Loire), site touristique. Tissu PME tertiaires, TPE artisans BTP, tourisme, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Villerest (42), commune en banlieue sud-ouest de Roanne dans la Loire, est intégrée à Roannais Agglomération. Connue pour le barrage de Villerest (grand aménagement hydraulique sur la Loire), site touristique. Tissu PME tertiaires, TPE artisans BTP, tourisme, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villerest (42). Nous accompagnons tous types d'activités : PME tertiaires Roannais, acteurs tourisme (barrage de Villerest, plan d'eau), TPE artisans BTP, commerçants, indépendants et services aux entreprises de Roannais Agglomération.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const VILLEREST_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villerest : diagnostic adapté aux acteurs tourisme/loisirs barrage de Villerest, PME tertiaires Roannais, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Villerest : diagnostic adapté aux acteurs tourisme/loisirs barrage de Villerest, PME tertiaires Roannais, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Villerest : diagnostic adapté aux acteurs tourisme/loisirs barrage de Villerest, PME tertiaires Roannais, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Villerest : diagnostic adapté aux acteurs tourisme/loisirs barrage de Villerest, PME tertiaires Roannais, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Villerest : formats adaptés au site touristique, bureau tertiaire, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Villerest : formats adaptés au site touristique, bureau tertiaire, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Villerest : formats adaptés au site touristique, bureau tertiaire, commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Villerest : formats adaptés au site touristique, bureau tertiaire, commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Villerest : agents conversationnels touristes multilingue (plan d'eau, loisirs), automatisation réservations activités, classification feedback, recommandations parcours.",
@@ -64,7 +64,7 @@ export const VILLEREST_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",
-      a: "Nos consultants viennent de Lyon (1h30) ou Saint-Étienne (1h). Pour les multi-jours, hébergement local possible (hôtels Roanne). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (1h30) ou Saint-Étienne (1h). Pour les multi-jours, hébergement local possible (hôtels Roanne). Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ARPAJON_SUR_CERE_COPY: VilleCopy = {
   pitchFr:
-    "Arpajon-sur-Cère (15), commune en banlieue immédiate d'Aurillac dans le Cantal, est positionnée en vallée de la Cère. Tissu PME tertiaires, agriculture Cantal (élevage Salers), TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités cantaliennes.",
+    "Arpajon-sur-Cère (15), commune en banlieue immédiate d'Aurillac dans le Cantal, est positionnée en vallée de la Cère. Tissu PME tertiaires, agriculture Cantal (élevage Salers), TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations cantaliennes.",
   pitchEn:
-    "Arpajon-sur-Cère (15), commune en banlieue immédiate d'Aurillac dans le Cantal, est positionnée en vallée de la Cère. Tissu PME tertiaires, agriculture Cantal (élevage Salers), TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités cantaliennes.",
+    "Arpajon-sur-Cère (15), commune en banlieue immédiate d'Aurillac dans le Cantal, est positionnée en vallée de la Cère. Tissu PME tertiaires, agriculture Cantal (élevage Salers), TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations cantaliennes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arpajon-sur-Cère (15). Nous accompagnons tous types d'activités : PME tertiaires agglomération Aurillac, éleveurs Salers Cantal, agriculteurs, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const ARPAJON_SUR_CERE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Arpajon-sur-Cère : diagnostic adapté aux PME tertiaires Aurillac, éleveurs Salers, agriculteurs, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Arpajon-sur-Cère : diagnostic adapté aux PME tertiaires Aurillac, éleveurs Salers, agriculteurs, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Arpajon-sur-Cère : diagnostic adapté aux PME tertiaires Aurillac, éleveurs Salers, agriculteurs, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Arpajon-sur-Cère : diagnostic adapté aux PME tertiaires Aurillac, éleveurs Salers, agriculteurs, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Arpajon-sur-Cère : formats adaptés au bureau, exploitation élevage, commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Arpajon-sur-Cère : formats adaptés au bureau, exploitation élevage, commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Arpajon-sur-Cère : formats adaptés au bureau, exploitation élevage, commerce. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Arpajon-sur-Cère : formats adaptés au bureau, exploitation élevage, commerce. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Arpajon-sur-Cère : traçabilité élevage Salers, classification photos animaux, agents conversationnels B2B, automatisation workflow. Cantal.",

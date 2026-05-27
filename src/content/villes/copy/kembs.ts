@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const KEMBS_COPY: VilleCopy = {
   pitchFr:
-    "Kembs (68), commune située sur les bords du Rhin avec ses écluses historiques, en zone frontalière France-Allemagne-Suisse au sud du Haut-Rhin. Tissu TPE artisanat et commerce, PME logistique et services, professions libérales, commerçants frontaliers, restaurateurs et indépendants du Sud-Alsace. Axion-IA y intervient pour tous types d'activités.",
+    "Kembs (68), commune située sur les bords du Rhin avec ses écluses historiques, en zone frontalière France-Allemagne-Suisse au sud du Haut-Rhin. Tissu TPE artisanat et commerce, PME logistique et services, professions libérales, commerçants frontaliers, restaurateurs et indépendants du Sud-Alsace. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Kembs (68), commune située sur les bords du Rhin avec ses écluses historiques, en zone frontalière France-Allemagne-Suisse au sud du Haut-Rhin. Tissu TPE artisanat et commerce, PME logistique et services, professions libérales, commerçants frontaliers, restaurateurs et indépendants du Sud-Alsace. Axion-IA y intervient pour tous types d'activités.",
+    "Kembs (68), commune située sur les bords du Rhin avec ses écluses historiques, en zone frontalière France-Allemagne-Suisse au sud du Haut-Rhin. Tissu TPE artisanat et commerce, PME logistique et services, professions libérales, commerçants frontaliers, restaurateurs et indépendants du Sud-Alsace. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Kembs (68). Nous accompagnons tous types d'activités : TPE artisanat et commerce, PME logistique et services, professions libérales, commerçants frontaliers et indépendants du Sud-Alsace tri-frontalier. Audit Flash dès 490 € HT.",
   directAnswerEn:

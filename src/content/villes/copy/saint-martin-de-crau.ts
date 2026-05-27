@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_MARTIN_DE_CRAU_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Martin-de-Crau (13), commune agricole de la plaine de la Crau dans les Bouches-du-Rhône, est renommée pour son foin de Crau AOC et ses activités logistiques. TPE exploitants agricoles, PME agroalimentaire et logistique, commerces de bourg. Axion-IA y intervient pour tous types d'activités du bassin craurais.",
+    "Saint-Martin-de-Crau (13), commune agricole de la plaine de la Crau dans les Bouches-du-Rhône, est renommée pour son foin de Crau AOC et ses activités logistiques. TPE exploitants agricoles, PME agroalimentaire et logistique, commerces de bourg. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin craurais.",
   pitchEn:
-    "Saint-Martin-de-Crau (13), commune agricole de la plaine de la Crau dans les Bouches-du-Rhône, est renommée pour son foin de Crau AOC et ses activités logistiques. TPE exploitants agricoles, PME agroalimentaire et logistique, commerces de bourg. Axion-IA y intervient pour tous types d'activités du bassin craurais.",
+    "Saint-Martin-de-Crau (13), commune agricole de la plaine de la Crau dans les Bouches-du-Rhône, est renommée pour son foin de Crau AOC et ses activités logistiques. TPE exploitants agricoles, PME agroalimentaire et logistique, commerces de bourg. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin craurais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Martin-de-Crau (13). Nous accompagnons TPE exploitants agricoles, PME agroalimentaire et logistique de la plaine de la Crau, commerces de proximité et entreprises de la zone. Audit Flash dès 490 € HT, sans engagement.",
   directAnswerEn:
@@ -34,8 +34,8 @@ export const SAINT_MARTIN_DE_CRAU_COPY: VilleCopy = {
       en: "Audit IA à Saint-Martin-de-Crau : diagnostic adapté aux exploitants agricoles, PME agroalimentaire et entreprises logistiques de la plaine de la Crau. ROI chiffré, Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Martin-de-Crau : formats adaptés à l'exploitation agricole, l'entrepôt logistique et le commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Saint-Martin-de-Crau : formats adaptés à l'exploitation agricole, l'entrepôt logistique et le commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Saint-Martin-de-Crau : formats adaptés à l'exploitation agricole, l'entrepôt logistique et le commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Saint-Martin-de-Crau : formats adaptés à l'exploitation agricole, l'entrepôt logistique et le commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Martin-de-Crau : automatisation traçabilité AOC, optimisation logistique entrepôts, agents IA gestion stocks agroalimentaire.",

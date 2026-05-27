@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PLESSE_COPY: VilleCopy = {
   pitchFr:
-    "Plessé (44), commune rurale du nord de la Loire-Atlantique, se situe entre Redon et Blain aux portes de la forêt du Gâvre. Tissu de TPE agricoles, éleveurs, artisans BTP, commerces de proximité et PME agroalimentaires. Axion-IA y intervient pour tous types d'activités du pays de Redon–Loire-Atlantique.",
+    "Plessé (44), commune rurale du nord de la Loire-Atlantique, se situe entre Redon et Blain aux portes de la forêt du Gâvre. Tissu de TPE agricoles, éleveurs, artisans BTP, commerces de proximité et PME agroalimentaires. Axion-IA opère pour toutes les structures économiques de la commune du pays de Redon–Loire-Atlantique.",
   pitchEn:
-    "Plessé (44), commune rurale du nord de la Loire-Atlantique, se situe entre Redon et Blain aux portes de la forêt du Gâvre. Tissu de TPE agricoles, éleveurs, artisans BTP, commerces de proximité et PME agroalimentaires. Axion-IA y intervient pour tous types d'activités du pays de Redon–Loire-Atlantique.",
+    "Plessé (44), commune rurale du nord de la Loire-Atlantique, se situe entre Redon et Blain aux portes de la forêt du Gâvre. Tissu de TPE agricoles, éleveurs, artisans BTP, commerces de proximité et PME agroalimentaires. Axion-IA opère pour toutes les structures économiques de la commune du pays de Redon–Loire-Atlantique.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plessé (44). Nous accompagnons tous types d'activités : exploitations agricoles et éleveurs laitiers, artisans BTP et menuisiers, commerçants de bourg, PME agroalimentaires, professions libérales de santé et services aux entreprises du nord Loire-Atlantique. Audit Flash accessible dès 490 € HT.",
   directAnswerEn:

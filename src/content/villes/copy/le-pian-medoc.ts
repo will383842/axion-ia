@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_PIAN_MEDOC_COPY: VilleCopy = {
   pitchFr:
-    "Le Pian-Médoc (33), commune résidentielle entre Bordeaux Métropole nord et le Médoc viticole, combine vignoble AOC Haut-Médoc, artisanat BTP, commerces de proximité et professions libérales. Axion-IA y intervient pour tous types d'activités de l'entrée du Médoc.",
+    "Le Pian-Médoc (33), commune résidentielle entre Bordeaux Métropole nord et le Médoc viticole, combine vignoble AOC Haut-Médoc, artisanat BTP, commerces de proximité et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'entrée du Médoc.",
   pitchEn:
-    "Le Pian-Médoc (33), commune résidentielle entre Bordeaux Métropole nord et le Médoc viticole, combine vignoble AOC Haut-Médoc, artisanat BTP, commerces de proximité et professions libérales. Axion-IA y intervient pour tous types d'activités de l'entrée du Médoc.",
+    "Le Pian-Médoc (33), commune résidentielle entre Bordeaux Métropole nord et le Médoc viticole, combine vignoble AOC Haut-Médoc, artisanat BTP, commerces de proximité et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'entrée du Médoc.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Pian-Médoc (33). Nous accompagnons TPE et PME de l'entrée du Médoc : vignerons, artisans BTP, commerçants, professions libérales et PME de services. Audit Flash dès 490 € HT.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const HIRSON_COPY: VilleCopy = {
   pitchFr:
-    "Hirson (02), commune de la Thiérache axonaise proche de la frontière belge, ancien pôle métallurgique et ferroviaire reconverti vers le commerce, les services et la sous-traitance industrielle. Tissu TPE/PME industrie, artisans BTP, commerces de proximité, professions de services, agriculteurs et frontaliers belges. Axion-IA y intervient pour tous types d'activités.",
+    "Hirson (02), commune de la Thiérache axonaise proche de la frontière belge, ancien pôle métallurgique et ferroviaire reconverti vers le commerce, les services et la sous-traitance industrielle. Tissu TPE/PME industrie, artisans BTP, commerces de proximité, professions de services, agriculteurs et frontaliers belges. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Hirson (02), commune de la Thiérache axonaise proche de la frontière belge, ancien pôle métallurgique et ferroviaire reconverti vers le commerce, les services et la sous-traitance industrielle. Tissu TPE/PME industrie, artisans BTP, commerces de proximité, professions de services, agriculteurs et frontaliers belges. Axion-IA y intervient pour tous types d'activités.",
+    "Hirson (02), commune de la Thiérache axonaise proche de la frontière belge, ancien pôle métallurgique et ferroviaire reconverti vers le commerce, les services et la sous-traitance industrielle. Tissu TPE/PME industrie, artisans BTP, commerces de proximité, professions de services, agriculteurs et frontaliers belges. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hirson (02). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance, artisans BTP, commerces de proximité, professions de services, exploitations agricoles thiérachiennes et entrepreneurs frontaliers de la Belgique.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const HIRSON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Hirson : diagnostic adapté aux TPE/PME industrie, sous-traitants, artisans BTP, commerces, services et exploitations agricoles thiérachiennes. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Hirson : diagnostic adapté aux TPE/PME industrie, sous-traitants, artisans BTP, commerces, services et exploitations agricoles thiérachiennes. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Hirson : diagnostic adapté aux TPE/PME industrie, sous-traitants, artisans BTP, commerces, services et exploitations agricoles thiérachiennes. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Hirson : diagnostic adapté aux TPE/PME industrie, sous-traitants, artisans BTP, commerces, services et exploitations agricoles thiérachiennes. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Hirson : formats adaptés à l'atelier industriel, chantier, boutique, ferme ou bureau. Vos équipes repartent autonomes.",

@@ -30,12 +30,12 @@ export const ARRADON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Arradon : diagnostic adapté aux PME conseil, professions libérales, TPE artisans nautiques et hébergeurs du golfe du Morbihan. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Arradon : diagnostic adapté aux PME conseil, professions libérales, TPE artisans nautiques et hébergeurs du golfe du Morbihan. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Arradon : diagnostic adapté aux PME conseil, professions libérales, TPE artisans nautiques et hébergeurs du golfe du Morbihan. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Arradon : diagnostic adapté aux PME conseil, professions libérales, TPE artisans nautiques et hébergeurs du golfe du Morbihan. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Arradon : formats adaptés au cabinet de conseil, étude libérale, atelier nautique ou hébergement de charme. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Arradon : formats adaptés au cabinet de conseil, étude libérale, atelier nautique ou hébergement de charme. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Arradon : formats adaptés au cabinet de conseil, étude libérale, atelier nautique ou hébergement de charme. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Arradon : formats adaptés au cabinet de conseil, étude libérale, atelier nautique ou hébergement de charme. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Arradon : automatisation gestion clientèle haut de gamme, agents conversationnels réservation nautique, classification documents cabinets, optimisation planning libéral. Adapté conseil + tourisme premium golfe.",

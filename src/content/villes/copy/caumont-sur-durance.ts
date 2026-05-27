@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CAUMONT_SUR_DURANCE_COPY: VilleCopy = {
   pitchFr:
-    "Caumont-sur-Durance (84), commune des bords de Durance au sud d'Avignon, compte près de 5 667 habitants. Agglomération du Grand Avignon, agriculture maraîchère et fruitière, tissu de TPE artisanales, PME services, commerces de proximité et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Caumont-sur-Durance (84), commune des bords de Durance au sud d'Avignon, compte près de 5 667 habitants. Agglomération du Grand Avignon, agriculture maraîchère et fruitière, tissu de TPE artisanales, PME services, commerces de proximité et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Caumont-sur-Durance (84), commune des bords de Durance au sud d'Avignon, compte près de 5 667 habitants. Agglomération du Grand Avignon, agriculture maraîchère et fruitière, tissu de TPE artisanales, PME services, commerces de proximité et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Caumont-sur-Durance (84), commune des bords de Durance au sud d'Avignon, compte près de 5 667 habitants. Agglomération du Grand Avignon, agriculture maraîchère et fruitière, tissu de TPE artisanales, PME services, commerces de proximité et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Caumont-sur-Durance (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles, PME services et agroalimentaires, commerces, professions libérales et services de l'agglo Grand Avignon. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const CAUMONT_SUR_DURANCE_COPY: VilleCopy = {
       en: "Audit IA à Caumont-sur-Durance : diagnostic adapté aux TPE artisans, exploitations agricoles, PME services, professions libérales et commerces de l'agglo Grand Avignon. ROI chiffré, Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Caumont-sur-Durance : formats adaptés aux exploitations agricoles, PME services, artisans, professions libérales et commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Caumont-sur-Durance : formats adaptés aux exploitations agricoles, PME services, artisans, professions libérales et commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Caumont-sur-Durance : formats adaptés aux exploitations agricoles, PME services, artisans, professions libérales et commerces. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Caumont-sur-Durance : formats adaptés aux exploitations agricoles, PME services, artisans, professions libérales et commerces. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Caumont-sur-Durance : automatisation devis artisans, traçabilité maraîchage, gestion administrative TPE, agents conversationnels SAV, fiches Google Business commerces, gestion commerciale PME. Adapté TPE/PME Grand Avignon.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const WALLERS_COPY: VilleCopy = {
   pitchFr:
-    "Wallers (59), commune du Parc naturel régional Scarpe-Escaut au cœur du bassin minier du Nord-Pas-de-Calais (patrimoine UNESCO), célèbre pour la trouée d'Arenberg du Paris-Roubaix. Tissu économique : TPE et PME de services et industrie reconvertie du bassin minier, artisanat, commerce de proximité, tourisme patrimonial et sportif, professions libérales. Axion-IA y intervient pour tous types d'activités du bassin minier et du Parc Scarpe-Escaut.",
+    "Wallers (59), commune du Parc naturel régional Scarpe-Escaut au cœur du bassin minier du Nord-Pas-de-Calais (patrimoine UNESCO), célèbre pour la trouée d'Arenberg du Paris-Roubaix. Tissu économique : TPE et PME de services et industrie reconvertie du bassin minier, artisanat, commerce de proximité, tourisme patrimonial et sportif, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin minier et du Parc Scarpe-Escaut.",
   pitchEn:
-    "Wallers (59), commune du Parc naturel régional Scarpe-Escaut au cœur du bassin minier du Nord-Pas-de-Calais (patrimoine UNESCO), célèbre pour la trouée d'Arenberg du Paris-Roubaix. Tissu économique : TPE et PME de services et industrie reconvertie du bassin minier, artisanat, commerce de proximité, tourisme patrimonial et sportif, professions libérales. Axion-IA y intervient pour tous types d'activités du bassin minier et du Parc Scarpe-Escaut.",
+    "Wallers (59), commune du Parc naturel régional Scarpe-Escaut au cœur du bassin minier du Nord-Pas-de-Calais (patrimoine UNESCO), célèbre pour la trouée d'Arenberg du Paris-Roubaix. Tissu économique : TPE et PME de services et industrie reconvertie du bassin minier, artisanat, commerce de proximité, tourisme patrimonial et sportif, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin minier et du Parc Scarpe-Escaut.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wallers (59). Nous accompagnons TPE et PME : PME industrielles reconverties du bassin minier, acteurs du tourisme patrimonial et sportif (trouée d'Arenberg, Parc Scarpe-Escaut), artisans, commerçants et professions libérales.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const WALLERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Wallers : diagnostic adapté aux TPE et PME industrielles reconverties du bassin minier, acteurs du tourisme patrimonial Scarpe-Escaut, commerçants, artisans et professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Wallers : diagnostic adapté aux TPE et PME industrielles reconverties du bassin minier, acteurs du tourisme patrimonial Scarpe-Escaut, commerçants, artisans et professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Wallers : diagnostic adapté aux TPE et PME industrielles reconverties du bassin minier, acteurs du tourisme patrimonial Scarpe-Escaut, commerçants, artisans et professions libérales. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Wallers : diagnostic adapté aux TPE et PME industrielles reconverties du bassin minier, acteurs du tourisme patrimonial Scarpe-Escaut, commerçants, artisans et professions libérales. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Wallers : formats adaptés à la PME industrielle reconvertie, à l'acteur touristique, à l'artisan ou au commerce de proximité. Vos équipes repartent autonomes sur outils IA configurés métier.",

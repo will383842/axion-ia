@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_PUY_EN_VELAY_COPY: VilleCopy = {
   pitchFr:
-    "Le Puy-en-Velay (43), préfecture de la Haute-Loire, est une ville patrimoine inscrite UNESCO (cathédrale, rocher Corneille). Réputée pour la dentelle du Puy, la lentille verte AOP et le départ de la Via Podiensis (Compostelle). Tissu tourisme pèlerin, artisanat dentelle, agroalimentaire lentille verte, TPE commerces, PME tertiaires. Axion-IA y intervient pour tous types d'activités.",
+    "Le Puy-en-Velay (43), préfecture de la Haute-Loire, est une ville patrimoine inscrite UNESCO (cathédrale, rocher Corneille). Réputée pour la dentelle du Puy, la lentille verte AOP et le départ de la Via Podiensis (Compostelle). Tissu tourisme pèlerin, artisanat dentelle, agroalimentaire lentille verte, TPE commerces, PME tertiaires. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Le Puy-en-Velay (43), préfecture de la Haute-Loire, est une ville patrimoine inscrite UNESCO (cathédrale, rocher Corneille). Réputée pour la dentelle du Puy, la lentille verte AOP et le départ de la Via Podiensis (Compostelle). Tissu tourisme pèlerin, artisanat dentelle, agroalimentaire lentille verte, TPE commerces, PME tertiaires. Axion-IA y intervient pour tous types d'activités.",
+    "Le Puy-en-Velay (43), préfecture de la Haute-Loire, est une ville patrimoine inscrite UNESCO (cathédrale, rocher Corneille). Réputée pour la dentelle du Puy, la lentille verte AOP et le départ de la Via Podiensis (Compostelle). Tissu tourisme pèlerin, artisanat dentelle, agroalimentaire lentille verte, TPE commerces, PME tertiaires. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Puy-en-Velay (43). Nous accompagnons TPE et PME : acteurs tourisme pèlerin (Via Podiensis Compostelle), artisans dentelle du Puy, producteurs lentille verte AOP, administration préfecture, commerçants centre-ville et services aux entreprises.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LE_PUY_EN_VELAY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Puy-en-Velay : diagnostic adapté aux acteurs tourisme pèlerin Compostelle, artisans dentelle, producteurs lentille verte AOP, TPE commerçants. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA au Puy-en-Velay : diagnostic adapté aux acteurs tourisme pèlerin Compostelle, artisans dentelle, producteurs lentille verte AOP, TPE commerçants. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA au Puy-en-Velay : diagnostic adapté aux acteurs tourisme pèlerin Compostelle, artisans dentelle, producteurs lentille verte AOP, TPE commerçants. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA au Puy-en-Velay : diagnostic adapté aux acteurs tourisme pèlerin Compostelle, artisans dentelle, producteurs lentille verte AOP, TPE commerçants. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site au Puy-en-Velay : formats adaptés à l'hébergement pèlerin, atelier dentelle, exploitation agroalimentaire, commerce. Vos équipes repartent autonomes.",

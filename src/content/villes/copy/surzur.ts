@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SURZUR_COPY: VilleCopy = {
   pitchFr:
-    "Surzur (56), commune aux portes de la presqu'île de Rhuys et du golfe du Morbihan, conjugue ruralité et proximité littorale. Tissu TPE artisans BTP, exploitations agricoles (maraîchage, élevage), PME services, commerces, tourisme vert et hébergements. Axion-IA y intervient pour tous types d'activités.",
+    "Surzur (56), commune aux portes de la presqu'île de Rhuys et du golfe du Morbihan, conjugue ruralité et proximité littorale. Tissu TPE artisans BTP, exploitations agricoles (maraîchage, élevage), PME services, commerces, tourisme vert et hébergements. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Surzur (56), commune aux portes de la presqu'île de Rhuys et du golfe du Morbihan, conjugue ruralité et proximité littorale. Tissu TPE artisans BTP, exploitations agricoles (maraîchage, élevage), PME services, commerces, tourisme vert et hébergements. Axion-IA y intervient pour tous types d'activités.",
+    "Surzur (56), commune aux portes de la presqu'île de Rhuys et du golfe du Morbihan, conjugue ruralité et proximité littorale. Tissu TPE artisans BTP, exploitations agricoles (maraîchage, élevage), PME services, commerces, tourisme vert et hébergements. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Surzur (56). Nous accompagnons tous types d'activités : TPE artisans BTP, exploitants agricoles (maraîchage, élevage), PME de services, commerçants, hébergeurs touristiques, indépendants et entreprises de la presqu'île de Rhuys et du bassin vannetais.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const SURZUR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Surzur : diagnostic adapté aux exploitants agricoles, TPE artisans BTP, PME de services et commerçants de la presqu'île de Rhuys nord. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Surzur : diagnostic adapté aux exploitants agricoles, TPE artisans BTP, PME de services et commerçants de la presqu'île de Rhuys nord. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Surzur : diagnostic adapté aux exploitants agricoles, TPE artisans BTP, PME de services et commerçants de la presqu'île de Rhuys nord. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Surzur : diagnostic adapté aux exploitants agricoles, TPE artisans BTP, PME de services et commerçants de la presqu'île de Rhuys nord. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Surzur : formats adaptés à l'exploitation agricole, chantier BTP, entreprise de services ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",

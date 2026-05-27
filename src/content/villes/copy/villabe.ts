@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VILLABE_COPY: VilleCopy = {
   pitchFr:
-    "Villabé (91), commune de l'Essonne à 31 km au sud-est de Paris, dispose d'importantes zones d'activités commerciales et logistiques. Tissu TPE artisanales, commerces, PME distribution et logistique, services aux entreprises. Axion-IA y intervient pour tous types d'activités de la zone Villabé–Corbeil.",
+    "Villabé (91), commune de l'Essonne à 31 km au sud-est de Paris, dispose d'importantes zones d'activités commerciales et logistiques. Tissu TPE artisanales, commerces, PME distribution et logistique, services aux entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs de la zone Villabé–Corbeil.",
   pitchEn:
-    "Villabé (91), commune de l'Essonne à 31 km au sud-est de Paris, dispose d'importantes zones d'activités commerciales et logistiques. Tissu TPE artisanales, commerces, PME distribution et logistique, services aux entreprises. Axion-IA y intervient pour tous types d'activités de la zone Villabé–Corbeil.",
+    "Villabé (91), commune de l'Essonne à 31 km au sud-est de Paris, dispose d'importantes zones d'activités commerciales et logistiques. Tissu TPE artisanales, commerces, PME distribution et logistique, services aux entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs de la zone Villabé–Corbeil.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villabé (91). Nous accompagnons tous types d'activités : TPE artisanales, commerces, PME distribution et logistique, services aux entreprises, indépendants et professions libérales de la zone Villabé–Corbeil.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const VILLABE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villabé : diagnostic adapté aux TPE artisanales, PME distribution et logistique, commerces de la zone d'activités. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Villabé : diagnostic adapté aux TPE artisanales, PME distribution et logistique, commerces de la zone d'activités. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Villabé : diagnostic adapté aux TPE artisanales, PME distribution et logistique, commerces de la zone d'activités. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Villabé : diagnostic adapté aux TPE artisanales, PME distribution et logistique, commerces de la zone d'activités. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villabé : formats adaptés aux TPE/PME et enseignes distribution. Demi-journée à 2 jours, vos équipes repartent autonomes sur outils IA métier.",

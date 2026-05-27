@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SIN_LE_NOBLE_COPY: VilleCopy = {
   pitchFr:
-    "Sin-le-Noble (59), commune périurbaine de Douai en ancien bassin minier reconverti, conjugue ZAC dynamiques, tissu industriel hérité, artisanat actif et commerces de proximité. TPE, PME, artisans BTP, sous-traitants automobile et ferroviaire, professions libérales et commerçants rayonnent entre Douai, Waziers et Aniche. Axion-IA y intervient pour tous types d'activités.",
+    "Sin-le-Noble (59), commune périurbaine de Douai en ancien bassin minier reconverti, conjugue ZAC dynamiques, tissu industriel hérité, artisanat actif et commerces de proximité. TPE, PME, artisans BTP, sous-traitants automobile et ferroviaire, professions libérales et commerçants rayonnent entre Douai, Waziers et Aniche. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Sin-le-Noble (59), commune périurbaine de Douai en ancien bassin minier reconverti, conjugue ZAC dynamiques, tissu industriel hérité, artisanat actif et commerces de proximité. TPE, PME, artisans BTP, sous-traitants automobile et ferroviaire, professions libérales et commerçants rayonnent entre Douai, Waziers et Aniche. Axion-IA y intervient pour tous types d'activités.",
+    "Sin-le-Noble (59), commune périurbaine de Douai en ancien bassin minier reconverti, conjugue ZAC dynamiques, tissu industriel hérité, artisanat actif et commerces de proximité. TPE, PME, artisans BTP, sous-traitants automobile et ferroviaire, professions libérales et commerçants rayonnent entre Douai, Waziers et Aniche. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sin-le-Noble (59). Nous accompagnons TPE et PME : artisans BTP, sous-traitants automobile et ferroviaire, PME logistiques, commerçants et professions libérales du Douaisis. Audit Flash dès 490 € HT.",
   directAnswerEn:

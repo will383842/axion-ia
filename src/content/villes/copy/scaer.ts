@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SCAER_COPY: VilleCopy = {
   pitchFr:
-    "Scaër (29), commune du centre Finistère au cœur d'un vaste massif forestier, est un pôle agroalimentaire historique de la Bretagne intérieure. TPE agricoles, PME agroalimentaires, artisans, commerces de bourg et exploitants forestiers composent son économie. Axion-IA y intervient pour tous types d'activités du centre Finistère.",
+    "Scaër (29), commune du centre Finistère au cœur d'un vaste massif forestier, est un pôle agroalimentaire historique de la Bretagne intérieure. TPE agricoles, PME agroalimentaires, artisans, commerces de bourg et exploitants forestiers composent son économie. Axion-IA accompagne entreprises et indépendants de tous secteurs du centre Finistère.",
   pitchEn:
-    "Scaër (29), commune du centre Finistère au cœur d'un vaste massif forestier, est un pôle agroalimentaire historique de la Bretagne intérieure. TPE agricoles, PME agroalimentaires, artisans, commerces de bourg et exploitants forestiers composent son économie. Axion-IA y intervient pour tous types d'activités du centre Finistère.",
+    "Scaër (29), commune du centre Finistère au cœur d'un vaste massif forestier, est un pôle agroalimentaire historique de la Bretagne intérieure. TPE agricoles, PME agroalimentaires, artisans, commerces de bourg et exploitants forestiers composent son économie. Axion-IA accompagne entreprises et indépendants de tous secteurs du centre Finistère.",
   seoHook: "agroalimentaire, forêt & agriculture",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Scaër (29). Nous accompagnons tous types d'activités : TPE agricoles, PME agroalimentaires, artisans, commerçants de bourg, exploitants forestiers et indépendants du centre Finistère. Audit Flash dès 490 € HT, démarrage sous 5 jours.",

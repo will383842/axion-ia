@@ -29,8 +29,8 @@ export const TRITH_SAINT_LEGER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Trith-Saint-Léger : diagnostic adapté aux TPE artisans BTP, PME industrielles métallurgie-mécanique, sous-traitants automobile, commerces et professions libérales de l'agglomération valenciennoise. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Trith-Saint-Léger : diagnostic adapté aux TPE artisans BTP, PME industrielles métallurgie-mécanique, sous-traitants automobile, commerces et professions libérales de l'agglomération valenciennoise. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Trith-Saint-Léger : diagnostic adapté aux TPE artisans BTP, PME industrielles métallurgie-mécanique, sous-traitants automobile, commerces et professions libérales de l'agglomération valenciennoise. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Trith-Saint-Léger : diagnostic adapté aux TPE artisans BTP, PME industrielles métallurgie-mécanique, sous-traitants automobile, commerces et professions libérales de l'agglomération valenciennoise. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Trith-Saint-Léger : formats adaptés à l'atelier industriel, au chantier, à la ligne de production, au commerce, au cabinet. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const TRITH_SAINT_LEGER_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lille ?",
-      a: "Nos consultants viennent de Lille (45 min). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lille (45 min). Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

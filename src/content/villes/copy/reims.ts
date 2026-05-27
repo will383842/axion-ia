@@ -54,6 +54,8 @@ export const REIMS_COPY: VilleCopy = {
   directAnswerEn:
     "Axion-IA is a senior AI architects consultancy delivering on site in Reims (51100) across Greater Reims and the Champagne basin. We support micro-businesses, SMEs, mid-caps and large enterprises — Champagne houses (LVMH/MHCS, Taittinger, Vranken-Pommery), bioeconomy industries (Pomacle-Bazancourt), tertiary sector (NEOMA, Sciences Po) — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. Champagne-Ardenne TGV station, 45 min from Paris. No tech lock-in, your teams stay in control.",
 
+  seoHook: "champagne, logistique & santé",
+
   topSectorsNaf: [
     "Champagne & Vins de prestige",
     "Agroalimentaire & Bioéconomie",

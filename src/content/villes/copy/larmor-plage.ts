@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LARMOR_PLAGE_COPY: VilleCopy = {
   pitchFr:
-    "Larmor-Plage (56), station balnéaire de l'agglomération de Lorient en Morbihan, allie tourisme côtier et tissu économique diversifié. TPE hôtelières, commerces de proximité, PME nautiques, artisans BTP, professions libérales et services. Axion-IA y intervient pour tous types d'activités du littoral lorientais.",
+    "Larmor-Plage (56), station balnéaire de l'agglomération de Lorient en Morbihan, allie tourisme côtier et tissu économique diversifié. TPE hôtelières, commerces de proximité, PME nautiques, artisans BTP, professions libérales et services. Axion-IA opère pour toutes les structures économiques de la commune du littoral lorientais.",
   pitchEn:
-    "Larmor-Plage (56), station balnéaire de l'agglomération de Lorient en Morbihan, allie tourisme côtier et tissu économique diversifié. TPE hôtelières, commerces de proximité, PME nautiques, artisans BTP, professions libérales et services. Axion-IA y intervient pour tous types d'activités du littoral lorientais.",
+    "Larmor-Plage (56), station balnéaire de l'agglomération de Lorient en Morbihan, allie tourisme côtier et tissu économique diversifié. TPE hôtelières, commerces de proximité, PME nautiques, artisans BTP, professions libérales et services. Axion-IA opère pour toutes les structures économiques de la commune du littoral lorientais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Larmor-Plage (56). Nous accompagnons tous types d'activités : TPE hôtelières et restauration balnéaire, commerces du centre-bourg, PME nautiques et ostréicoles, artisans BTP, professions libérales, indépendants et services aux entreprises de Lorient Agglomération.",
   directAnswerEn:

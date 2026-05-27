@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const WOIPPY_COPY: VilleCopy = {
   pitchFr:
-    "Woippy (57), commune mosellane au nord de l'agglomération messine, connue historiquement pour ses vergers et la fraise de Woippy, aujourd'hui pôle résidentiel et économique dynamique de Metz Métropole. Tissu TPE/PME services, commerces, logistique, BTP, agroalimentaire, et nombreux artisans. Axion-IA y intervient pour tous types d'activités.",
+    "Woippy (57), commune mosellane au nord de l'agglomération messine, connue historiquement pour ses vergers et la fraise de Woippy, aujourd'hui pôle résidentiel et économique dynamique de Metz Métropole. Tissu TPE/PME services, commerces, logistique, BTP, agroalimentaire, et nombreux artisans. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Woippy (57), commune mosellane au nord de l'agglomération messine, connue historiquement pour ses vergers et la fraise de Woippy, aujourd'hui pôle résidentiel et économique dynamique de Metz Métropole. Tissu TPE/PME services, commerces, logistique, BTP, agroalimentaire, et nombreux artisans. Axion-IA y intervient pour tous types d'activités.",
+    "Woippy (57), commune mosellane au nord de l'agglomération messine, connue historiquement pour ses vergers et la fraise de Woippy, aujourd'hui pôle résidentiel et économique dynamique de Metz Métropole. Tissu TPE/PME services, commerces, logistique, BTP, agroalimentaire, et nombreux artisans. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Woippy (57). Nous accompagnons tous types d'activités : TPE/PME services et logistique, artisans BTP, commerces de proximité, acteurs agroalimentaires et professions libérales de Metz Métropole.",
   directAnswerEn:
@@ -34,8 +34,8 @@ export const WOIPPY_COPY: VilleCopy = {
       en: "Audit IA à Woippy : diagnostic adapté aux TPE/PME services, logistique, artisans BTP, commerces et acteurs agroalimentaires. ROI chiffré, audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Woippy : formats adaptés à l'entrepôt logistique, bureau, atelier, commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Woippy : formats adaptés à l'entrepôt logistique, bureau, atelier, commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Woippy : formats adaptés à l'entrepôt logistique, bureau, atelier, commerce. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Woippy : formats adaptés à l'entrepôt logistique, bureau, atelier, commerce. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Woippy : optimisation tournées logistiques, traçabilité supply chain, automatisation gestion commerciale, agents conversationnels B2B, gestion devis BTP.",

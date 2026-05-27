@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GAN_COPY: VilleCopy = {
   pitchFr:
-    "Gan (64), commune de l'agglomération de Pau sud, 5 676 habitants. Cœur du vignoble AOC Jurançon (cave coopérative), TPE viticoles, artisans, PME agroalimentaires et commerces. Axion-IA y intervient pour tous types d'activités du vignoble jurançonnais et de l'agglomération paloise.",
+    "Gan (64), commune de l'agglomération de Pau sud, 5 676 habitants. Cœur du vignoble AOC Jurançon (cave coopérative), TPE viticoles, artisans, PME agroalimentaires et commerces. Axion-IA y déploie ses missions auprès de toutes les organisations du vignoble jurançonnais et de l'agglomération paloise.",
   pitchEn:
-    "Gan (64), commune de l'agglomération de Pau sud, 5 676 habitants. Cœur du vignoble AOC Jurançon (cave coopérative), TPE viticoles, artisans, PME agroalimentaires et commerces. Axion-IA y intervient pour tous types d'activités du vignoble jurançonnais et de l'agglomération paloise.",
+    "Gan (64), commune de l'agglomération de Pau sud, 5 676 habitants. Cœur du vignoble AOC Jurançon (cave coopérative), TPE viticoles, artisans, PME agroalimentaires et commerces. Axion-IA y déploie ses missions auprès de toutes les organisations du vignoble jurançonnais et de l'agglomération paloise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gan (64). Nous accompagnons TPE viticoles, PME agroalimentaires, artisans et commerçants du vignoble jurançonnais. Audit Flash à partir de 490 € HT.",
   directAnswerEn:

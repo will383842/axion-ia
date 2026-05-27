@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MONTMORILLON_COPY: VilleCopy = {
   pitchFr:
-    "Montmorillon (86), cité de l'Écrit et des métiers du livre sur les bords de la Gartempe, est un pôle culturel et économique du sud-est de la Vienne. Tissu TPE artisans (métiers du livre, BTP), PME agroalimentaires, tourisme culturel, commerces, administration et professions libérales. Axion-IA y intervient pour tous types d'activités du Montmorillonnais.",
+    "Montmorillon (86), cité de l'Écrit et des métiers du livre sur les bords de la Gartempe, est un pôle culturel et économique du sud-est de la Vienne. Tissu TPE artisans (métiers du livre, BTP), PME agroalimentaires, tourisme culturel, commerces, administration et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du Montmorillonnais.",
   pitchEn:
-    "Montmorillon (86), cité de l'Écrit et des métiers du livre sur les bords de la Gartempe, est un pôle culturel et économique du sud-est de la Vienne. Tissu TPE artisans (métiers du livre, BTP), PME agroalimentaires, tourisme culturel, commerces, administration et professions libérales. Axion-IA y intervient pour tous types d'activités du Montmorillonnais.",
+    "Montmorillon (86), cité de l'Écrit et des métiers du livre sur les bords de la Gartempe, est un pôle culturel et économique du sud-est de la Vienne. Tissu TPE artisans (métiers du livre, BTP), PME agroalimentaires, tourisme culturel, commerces, administration et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du Montmorillonnais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montmorillon (86). Nous accompagnons tous types d'activités : TPE artisans métiers du livre et BTP, PME agroalimentaires, acteurs tourisme culturel (Cité de l'Écrit), commerçants, professions libérales et services aux entreprises du sud-est Vienne.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const MONTMORILLON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montmorillon : diagnostic adapté aux artisans métiers du livre, PME agroalimentaires, acteurs tourisme culturel, TPE BTP et commerçants du Montmorillonnais. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Montmorillon : diagnostic adapté aux artisans métiers du livre, PME agroalimentaires, acteurs tourisme culturel, TPE BTP et commerçants du Montmorillonnais. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Montmorillon : diagnostic adapté aux artisans métiers du livre, PME agroalimentaires, acteurs tourisme culturel, TPE BTP et commerçants du Montmorillonnais. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
+      en: "Audit IA à Montmorillon : diagnostic adapté aux artisans métiers du livre, PME agroalimentaires, acteurs tourisme culturel, TPE BTP et commerçants du Montmorillonnais. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montmorillon : formats adaptés aux ateliers du livre, sites agroalimentaires, offices tourisme ou commerces. Vos équipes repartent autonomes sur outils IA métier.",
@@ -64,7 +64,7 @@ export const MONTMORILLON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris en TGV gare Poitiers (1h40) puis 50 min route vers Montmorillon. Alternative : Limoges (1h15 route). Pour les multi-jours, hébergement local. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Paris en TGV gare Poitiers (1h40) puis 50 min route vers Montmorillon. Alternative : Limoges (1h15 route). Pour les multi-jours, hébergement local. Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VENTABREN_COPY: VilleCopy = {
   pitchFr:
-    "Ventabren (13), commune perchée à l'ouest d'Aix-en-Provence proche du célèbre aqueduc de Roquefavour, conjugue cadre résidentiel haut de gamme, tissu de TPE artisans, PME tertiaires et professions libérales travaillant à Aix, Marseille et au technopôle de l'Arbois. Axion-IA y intervient pour tous types d'activités du bassin aixois ouest.",
+    "Ventabren (13), commune perchée à l'ouest d'Aix-en-Provence proche du célèbre aqueduc de Roquefavour, conjugue cadre résidentiel haut de gamme, tissu de TPE artisans, PME tertiaires et professions libérales travaillant à Aix, Marseille et au technopôle de l'Arbois. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin aixois ouest.",
   pitchEn:
-    "Ventabren (13), commune perchée à l'ouest d'Aix-en-Provence proche du célèbre aqueduc de Roquefavour, conjugue cadre résidentiel haut de gamme, tissu de TPE artisans, PME tertiaires et professions libérales travaillant à Aix, Marseille et au technopôle de l'Arbois. Axion-IA y intervient pour tous types d'activités du bassin aixois ouest.",
+    "Ventabren (13), commune perchée à l'ouest d'Aix-en-Provence proche du célèbre aqueduc de Roquefavour, conjugue cadre résidentiel haut de gamme, tissu de TPE artisans, PME tertiaires et professions libérales travaillant à Aix, Marseille et au technopôle de l'Arbois. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin aixois ouest.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ventabren (13). Nous accompagnons TPE artisans, professions libérales, PME tertiaires, commerçants et exploitations viticoles de l'ouest aixois. Audit Flash dès 490 € HT, sans engagement.",
   directAnswerEn:

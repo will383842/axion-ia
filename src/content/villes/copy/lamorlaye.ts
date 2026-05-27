@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LAMORLAYE_COPY: VilleCopy = {
   pitchFr:
-    "Lamorlaye (60), commune de 9 082 habitants dans l'Oise, est nichée en lisière de la forêt de Chantilly, au cœur du bassin hippique picard. Ville résidentielle prisée, son économie repose sur un tissu de TPE/PME filière équestre, services aux particuliers, commerce, professions libérales et artisanat. Axion-IA y intervient pour tous types d'activités.",
+    "Lamorlaye (60), commune de 9 082 habitants dans l'Oise, est nichée en lisière de la forêt de Chantilly, au cœur du bassin hippique picard. Ville résidentielle prisée, son économie repose sur un tissu de TPE/PME filière équestre, services aux particuliers, commerce, professions libérales et artisanat. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Lamorlaye (60), commune de 9 082 habitants dans l'Oise, est nichée en lisière de la forêt de Chantilly, au cœur du bassin hippique picard. Ville résidentielle prisée, son économie repose sur un tissu de TPE/PME filière équestre, services aux particuliers, commerce, professions libérales et artisanat. Axion-IA y intervient pour tous types d'activités.",
+    "Lamorlaye (60), commune de 9 082 habitants dans l'Oise, est nichée en lisière de la forêt de Chantilly, au cœur du bassin hippique picard. Ville résidentielle prisée, son économie repose sur un tissu de TPE/PME filière équestre, services aux particuliers, commerce, professions libérales et artisanat. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lamorlaye (60). Nous accompagnons TPE et PME du bassin de Chantilly : professionnels de la filière équestre, commerçants, prestataires de services et professions libérales. Audit Flash dès 490 € HT.",
   directAnswerEn:

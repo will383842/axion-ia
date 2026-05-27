@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LANGRES_COPY: VilleCopy = {
   pitchFr:
-    "Langres (52), sous-préfecture de la Haute-Marne, est une cité fortifiée historique sur un éperon dominant le plateau de Langres. Berceau de Diderot, coutellerie centenaire, patrimoine fortifié, TPE artisans, PME agroalimentaires et tourisme culturel. Axion-IA y intervient pour tous types d'activités du Sud-Haute-Marne.",
+    "Langres (52), sous-préfecture de la Haute-Marne, est une cité fortifiée historique sur un éperon dominant le plateau de Langres. Berceau de Diderot, coutellerie centenaire, patrimoine fortifié, TPE artisans, PME agroalimentaires et tourisme culturel. Axion-IA couvre l'ensemble des activités professionnelles présentes du Sud-Haute-Marne.",
   pitchEn:
-    "Langres (52), sous-préfecture de la Haute-Marne, est une cité fortifiée historique sur un éperon dominant le plateau de Langres. Berceau de Diderot, coutellerie centenaire, patrimoine fortifié, TPE artisans, PME agroalimentaires et tourisme culturel. Axion-IA y intervient pour tous types d'activités du Sud-Haute-Marne.",
+    "Langres (52), sous-préfecture de la Haute-Marne, est une cité fortifiée historique sur un éperon dominant le plateau de Langres. Berceau de Diderot, coutellerie centenaire, patrimoine fortifié, TPE artisans, PME agroalimentaires et tourisme culturel. Axion-IA couvre l'ensemble des activités professionnelles présentes du Sud-Haute-Marne.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Langres (52). Nous accompagnons tous types d'activités : TPE artisans couteliers, PME agroalimentaires, acteurs du tourisme patrimonial, commerçants centre fortifié, professions libérales et services publics sous-préfecture.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LANGRES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Langres : diagnostic adapté aux TPE artisans couteliers, PME agroalimentaires, acteurs tourisme patrimonial et commerçants centre fortifié. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Langres : diagnostic adapté aux TPE artisans couteliers, PME agroalimentaires, acteurs tourisme patrimonial et commerçants centre fortifié. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Langres : diagnostic adapté aux TPE artisans couteliers, PME agroalimentaires, acteurs tourisme patrimonial et commerçants centre fortifié. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Langres : diagnostic adapté aux TPE artisans couteliers, PME agroalimentaires, acteurs tourisme patrimonial et commerçants centre fortifié. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Langres : formats adaptés à l'atelier coutelier, exploitation agroalimentaire, office de tourisme, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const LANGRES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Langres depuis Dijon ou Paris ?",
-      a: "Nos consultants viennent de Dijon (1h10) ou Paris (3h TGV via Chaumont). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Dijon (1h10) ou Paris (3h TGV via Chaumont). Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CARROS_COPY: VilleCopy = {
   pitchFr:
-    "Carros (06), située dans le moyen-pays niçois à la confluence du Var et de l'Estéron, abrite la plus grande zone industrielle du département des Alpes-Maritimes (ZI de Carros-Le Broc, 450+ entreprises). Tissu TPE/PME industriel diversifié, logistique, BTP, agroalimentaire et services. Axion-IA y intervient pour tous types d'activités.",
+    "Carros (06), située dans le moyen-pays niçois à la confluence du Var et de l'Estéron, abrite la plus grande zone industrielle du département des Alpes-Maritimes (ZI de Carros-Le Broc, 450+ entreprises). Tissu TPE/PME industriel diversifié, logistique, BTP, agroalimentaire et services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Carros (06), située dans le moyen-pays niçois à la confluence du Var et de l'Estéron, abrite la plus grande zone industrielle du département des Alpes-Maritimes (ZI de Carros-Le Broc, 450+ entreprises). Tissu TPE/PME industriel diversifié, logistique, BTP, agroalimentaire et services. Axion-IA y intervient pour tous types d'activités.",
+    "Carros (06), située dans le moyen-pays niçois à la confluence du Var et de l'Estéron, abrite la plus grande zone industrielle du département des Alpes-Maritimes (ZI de Carros-Le Broc, 450+ entreprises). Tissu TPE/PME industriel diversifié, logistique, BTP, agroalimentaire et services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carros (06). Nous accompagnons tous types d'activités : TPE/PME industrielles de la ZI Carros-Le Broc, artisans BTP, logisticiens, agroalimentaire, commerces du village et entreprises de services du moyen-pays niçois.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const CARROS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Carros : diagnostic adapté aux TPE/PME industrielles de la ZI Carros-Le Broc, artisans BTP, logisticiens et agroalimentaire du moyen-pays niçois. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
-      en: "Audit IA à Carros : diagnostic adapté aux TPE/PME industrielles de la ZI Carros-Le Broc, artisans BTP, logisticiens et agroalimentaire du moyen-pays niçois. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
+      fr: "Audit IA à Carros : diagnostic adapté aux TPE/PME industrielles de la ZI Carros-Le Broc, artisans BTP, logisticiens et agroalimentaire du moyen-pays niçois. Audit Flash 490 € HT avec ROI quantifié accessible aux petites structures.",
+      en: "Audit IA à Carros : diagnostic adapté aux TPE/PME industrielles de la ZI Carros-Le Broc, artisans BTP, logisticiens et agroalimentaire du moyen-pays niçois. Audit Flash 490 € HT avec ROI quantifié accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Carros : formats adaptés à l'atelier industriel, entrepôt logistique ou bureau PME de la ZI. Vos équipes terrain et back-office repartent autonomes sur outils IA configurés métier.",

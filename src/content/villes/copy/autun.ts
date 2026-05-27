@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const AUTUN_COPY: VilleCopy = {
   pitchFr:
-    "Autun (71), cité gallo-romaine et sous-préfecture de Saône-et-Loire aux portes du Morvan. Cathédrale Saint-Lazare, vestiges romains (temple de Janus, portes d'Arroux). Tissu TPE artisanat, PME tertiaires, tourisme patrimonial, services publics, commerce centre-bourg. Axion-IA y intervient pour tous types d'activités.",
+    "Autun (71), cité gallo-romaine et sous-préfecture de Saône-et-Loire aux portes du Morvan. Cathédrale Saint-Lazare, vestiges romains (temple de Janus, portes d'Arroux). Tissu TPE artisanat, PME tertiaires, tourisme patrimonial, services publics, commerce centre-bourg. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Autun (71), cité gallo-romaine et sous-préfecture de Saône-et-Loire aux portes du Morvan. Cathédrale Saint-Lazare, vestiges romains (temple de Janus, portes d'Arroux). Tissu TPE artisanat, PME tertiaires, tourisme patrimonial, services publics, commerce centre-bourg. Axion-IA y intervient pour tous types d'activités.",
+    "Autun (71), cité gallo-romaine et sous-préfecture de Saône-et-Loire aux portes du Morvan. Cathédrale Saint-Lazare, vestiges romains (temple de Janus, portes d'Arroux). Tissu TPE artisanat, PME tertiaires, tourisme patrimonial, services publics, commerce centre-bourg. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Autun (71). Nous accompagnons TPE et PME : artisans et commerçants centre-bourg, acteurs tourisme patrimonial (cathédrale Saint-Lazare, vestiges romains), PME tertiaires, services publics sous-préfecture, professionnels Morvan. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const AUTUN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Autun : diagnostic adapté aux TPE artisans et commerçants centre-bourg, acteurs tourisme patrimonial (cathédrale Saint-Lazare), PME tertiaires, filière bois Morvan. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Autun : diagnostic adapté aux TPE artisans et commerçants centre-bourg, acteurs tourisme patrimonial (cathédrale Saint-Lazare), PME tertiaires, filière bois Morvan. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Autun : diagnostic adapté aux TPE artisans et commerçants centre-bourg, acteurs tourisme patrimonial (cathédrale Saint-Lazare), PME tertiaires, filière bois Morvan. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Autun : diagnostic adapté aux TPE artisans et commerçants centre-bourg, acteurs tourisme patrimonial (cathédrale Saint-Lazare), PME tertiaires, filière bois Morvan. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Autun : formats adaptés commerce centre-bourg, bureau tertiaire, site patrimonial, atelier artisan. Vos équipes repartent autonomes sur outils IA.",
@@ -65,7 +65,7 @@ export const AUTUN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Dijon ou Lyon ?",
-      a: "Nos consultants viennent de Dijon (1h15) ou Lyon (2h) via Le Creusot-TGV (30 min d'Autun). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Dijon (1h15) ou Lyon (2h) via Le Creusot-TGV (30 min d'Autun). Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SANARY_SUR_MER_COPY: VilleCopy = {
   pitchFr:
-    "Sanary-sur-Mer (83), station balnéaire de la côte varoise, compte plus de 18 500 habitants. Port de pêche actif, marché provençal réputé, tourisme balnéaire, tissu de TPE artisanales, PME hôtellerie-restauration, commerces et services. Axion-IA y intervient pour tous types d'activités.",
+    "Sanary-sur-Mer (83), station balnéaire de la côte varoise, compte plus de 18 500 habitants. Port de pêche actif, marché provençal réputé, tourisme balnéaire, tissu de TPE artisanales, PME hôtellerie-restauration, commerces et services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Sanary-sur-Mer (83), station balnéaire de la côte varoise, compte plus de 18 500 habitants. Port de pêche actif, marché provençal réputé, tourisme balnéaire, tissu de TPE artisanales, PME hôtellerie-restauration, commerces et services. Axion-IA y intervient pour tous types d'activités.",
+    "Sanary-sur-Mer (83), station balnéaire de la côte varoise, compte plus de 18 500 habitants. Port de pêche actif, marché provençal réputé, tourisme balnéaire, tissu de TPE artisanales, PME hôtellerie-restauration, commerces et services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sanary-sur-Mer (83). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME hôtellerie-restauration, professionnels du tourisme balnéaire, pêcheurs et services côte varoise.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const SANARY_SUR_MER_COPY: VilleCopy = {
       en: "Audit IA à Sanary-sur-Mer : diagnostic adapté aux TPE hôtellerie-restauration, commerces, pêcheurs et artisans de la côte varoise. ROI chiffré, Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Sanary-sur-Mer : formats adaptés aux hôtels, restaurants, commerces et professionnels du tourisme. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Sanary-sur-Mer : formats adaptés aux hôtels, restaurants, commerces et professionnels du tourisme. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Sanary-sur-Mer : formats adaptés aux hôtels, restaurants, commerces et professionnels du tourisme. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Sanary-sur-Mer : formats adaptés aux hôtels, restaurants, commerces et professionnels du tourisme. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Sanary-sur-Mer : gestion réservations hôtelières, optimisation occupation, automatisation devis artisans, outils prédictifs commerce. Adapté TPE/PME côte varoise.",

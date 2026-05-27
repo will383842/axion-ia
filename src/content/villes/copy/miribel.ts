@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MIRIBEL_COPY: VilleCopy = {
   pitchFr:
-    "Miribel (01), commune de la Côtière dans l'Ain, est positionnée en banlieue nord-est immédiate de Lyon. Connue pour le Grand Parc Miribel Jonage (espace naturel majeur de l'agglomération lyonnaise). Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Miribel (01), commune de la Côtière dans l'Ain, est positionnée en banlieue nord-est immédiate de Lyon. Connue pour le Grand Parc Miribel Jonage (espace naturel majeur de l'agglomération lyonnaise). Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Miribel (01), commune de la Côtière dans l'Ain, est positionnée en banlieue nord-est immédiate de Lyon. Connue pour le Grand Parc Miribel Jonage (espace naturel majeur de l'agglomération lyonnaise). Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Miribel (01), commune de la Côtière dans l'Ain, est positionnée en banlieue nord-est immédiate de Lyon. Connue pour le Grand Parc Miribel Jonage (espace naturel majeur de l'agglomération lyonnaise). Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Miribel (01). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Côtière Ain, acteurs loisirs Grand Parc Miribel Jonage, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const MIRIBEL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Miribel : diagnostic adapté aux PME tertiaires/industrielles Côtière Ain, acteurs loisirs, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Miribel : diagnostic adapté aux PME tertiaires/industrielles Côtière Ain, acteurs loisirs, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Miribel : diagnostic adapté aux PME tertiaires/industrielles Côtière Ain, acteurs loisirs, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Miribel : diagnostic adapté aux PME tertiaires/industrielles Côtière Ain, acteurs loisirs, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Miribel : formats adaptés au bureau, atelier, site loisirs, commerce. Vos équipes repartent autonomes sur outils IA.",

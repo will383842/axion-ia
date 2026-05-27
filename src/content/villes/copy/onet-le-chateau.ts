@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ONET_LE_CHATEAU_COPY: VilleCopy = {
   pitchFr:
-    "Onet-le-Château (12), première commune périurbaine de l'agglomération ruthénoise avec plus de 12 000 habitants. Zones commerciales et tertiaires majeures (centre commercial Cap de Crès), TPE artisans, PME services aux entreprises, professions libérales, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Onet-le-Château (12), première commune périurbaine de l'agglomération ruthénoise avec plus de 12 000 habitants. Zones commerciales et tertiaires majeures (centre commercial Cap de Crès), TPE artisans, PME services aux entreprises, professions libérales, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Onet-le-Château (12), première commune périurbaine de l'agglomération ruthénoise avec plus de 12 000 habitants. Zones commerciales et tertiaires majeures (centre commercial Cap de Crès), TPE artisans, PME services aux entreprises, professions libérales, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Onet-le-Château (12), première commune périurbaine de l'agglomération ruthénoise avec plus de 12 000 habitants. Zones commerciales et tertiaires majeures (centre commercial Cap de Crès), TPE artisans, PME services aux entreprises, professions libérales, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Onet-le-Château (12). Nous accompagnons TPE artisans, PME tertiaires et commerciales, professions libérales, commerçants et services de l'agglomération de Rodez. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const ONET_LE_CHATEAU_COPY: VilleCopy = {
       en: "Audit IA à Onet-le-Château : diagnostic adapté aux PME commerciales, TPE artisans, professions libérales et services de l'agglomération ruthénoise. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Onet-le-Château : formats adaptés à la PME tertiaire, au commerce, au cabinet libéral ou à l'atelier artisan. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Onet-le-Château : formats adaptés à la PME tertiaire, au commerce, au cabinet libéral ou à l'atelier artisan. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Onet-le-Château : formats adaptés à la PME tertiaire, au commerce, au cabinet libéral ou à l'atelier artisan. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Onet-le-Château : formats adaptés à la PME tertiaire, au commerce, au cabinet libéral ou à l'atelier artisan. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Onet-le-Château : automatisation gestion documentaire, agents conversationnels clients, pilotage stocks commerce, classification courriers pour les PME de l'agglo Rodez.",

@@ -29,8 +29,8 @@ export const SOULEUVRE_EN_BOCAGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Souleuvre en Bocage : diagnostic adapté aux exploitations agricoles, PME agroalimentaires bocage, TPE artisans BTP, acteurs tourisme vert et commerçants. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Souleuvre en Bocage : diagnostic adapté aux exploitations agricoles, PME agroalimentaires bocage, TPE artisans BTP, acteurs tourisme vert et commerçants. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Souleuvre en Bocage : diagnostic adapté aux exploitations agricoles, PME agroalimentaires bocage, TPE artisans BTP, acteurs tourisme vert et commerçants. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Souleuvre en Bocage : diagnostic adapté aux exploitations agricoles, PME agroalimentaires bocage, TPE artisans BTP, acteurs tourisme vert et commerçants. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Souleuvre en Bocage : formats adaptés à l'exploitation agricole, atelier agroalimentaire, commerce rural ou site touristique. Vos équipes repartent autonomes sur outils IA.",

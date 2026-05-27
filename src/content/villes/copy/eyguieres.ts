@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const EYGUIERES_COPY: VilleCopy = {
   pitchFr:
-    "Eyguières (13), village provençal au pied des Alpilles entre Salon-de-Provence et Cavaillon, vit de l'agriculture (oliveraies, vergers, maraîchage), de l'artisanat et du tourisme rural. Tissu de TPE agricoles, artisans, commerçants et PME services. Axion-IA y intervient pour tous types d'activités.",
+    "Eyguières (13), village provençal au pied des Alpilles entre Salon-de-Provence et Cavaillon, vit de l'agriculture (oliveraies, vergers, maraîchage), de l'artisanat et du tourisme rural. Tissu de TPE agricoles, artisans, commerçants et PME services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Eyguières (13), village provençal au pied des Alpilles entre Salon-de-Provence et Cavaillon, vit de l'agriculture (oliveraies, vergers, maraîchage), de l'artisanat et du tourisme rural. Tissu de TPE agricoles, artisans, commerçants et PME services. Axion-IA y intervient pour tous types d'activités.",
+    "Eyguières (13), village provençal au pied des Alpilles entre Salon-de-Provence et Cavaillon, vit de l'agriculture (oliveraies, vergers, maraîchage), de l'artisanat et du tourisme rural. Tissu de TPE agricoles, artisans, commerçants et PME services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Eyguières (13). Nous accompagnons TPE agricoles, artisans, commerçants, PME de services et acteurs du tourisme rural des Alpilles. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const EYGUIERES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Eyguières : diagnostic adapté aux TPE agricoles, artisans, commerçants et PME des Alpilles. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
-      en: "Audit IA à Eyguières : diagnostic adapté aux TPE agricoles, artisans, commerçants et PME des Alpilles. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
+      fr: "Audit IA à Eyguières : diagnostic adapté aux TPE agricoles, artisans, commerçants et PME des Alpilles. Audit Flash 490 € HT avec ROI quantifié accessible aux petites structures.",
+      en: "Audit IA à Eyguières : diagnostic adapté aux TPE agricoles, artisans, commerçants et PME des Alpilles. Audit Flash 490 € HT avec ROI quantifié accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Eyguières : ateliers pratiques pour exploitants agricoles, artisans et commerçants. Outils IA configurés métier réel, de l'exploitation au point de vente.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BASSE_GOULAINE_COPY: VilleCopy = {
   pitchFr:
-    "Basse-Goulaine (44), commune de la première couronne sud-est de Nantes Métropole en Loire-Atlantique, est au coeur du vignoble Muscadet Sèvre-et-Maine. Tissu de TPE tertiaires, PME services/conseil, viticulteurs, professions libérales et commerces résidentiels. Axion-IA y intervient pour tous types d'activités.",
+    "Basse-Goulaine (44), commune de la première couronne sud-est de Nantes Métropole en Loire-Atlantique, est au coeur du vignoble Muscadet Sèvre-et-Maine. Tissu de TPE tertiaires, PME services/conseil, viticulteurs, professions libérales et commerces résidentiels. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Basse-Goulaine (44), commune de la première couronne sud-est de Nantes Métropole en Loire-Atlantique, est au coeur du vignoble Muscadet Sèvre-et-Maine. Tissu de TPE tertiaires, PME services/conseil, viticulteurs, professions libérales et commerces résidentiels. Axion-IA y intervient pour tous types d'activités.",
+    "Basse-Goulaine (44), commune de la première couronne sud-est de Nantes Métropole en Loire-Atlantique, est au coeur du vignoble Muscadet Sèvre-et-Maine. Tissu de TPE tertiaires, PME services/conseil, viticulteurs, professions libérales et commerces résidentiels. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Basse-Goulaine (44). Nous accompagnons tous types d'activités : TPE tertiaires, PME services et conseil, viticulteurs Muscadet Sèvre-et-Maine, professions libérales, commerçants, artisans et entreprises de la couronne sud-est de Nantes Métropole.",
   directAnswerEn:

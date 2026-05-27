@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BLOTZHEIM_COPY: VilleCopy = {
   pitchFr:
-    "Blotzheim (68), commune frontalière du Haut-Rhin, 5 282 habitants, est située aux portes de Bâle et à proximité immédiate de l'aéroport EuroAirport Bâle-Mulhouse-Fribourg. La commune bénéficie d'un statut transfrontalier privilégié avec un tissu de TPE/PME industrie aéronautique, logistique, sous-traitance suisse, services frontaliers et commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Blotzheim (68), commune frontalière du Haut-Rhin, 5 282 habitants, est située aux portes de Bâle et à proximité immédiate de l'aéroport EuroAirport Bâle-Mulhouse-Fribourg. La commune bénéficie d'un statut transfrontalier privilégié avec un tissu de TPE/PME industrie aéronautique, logistique, sous-traitance suisse, services frontaliers et commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Blotzheim (68), commune frontalière du Haut-Rhin, 5 282 habitants, est située aux portes de Bâle et à proximité immédiate de l'aéroport EuroAirport Bâle-Mulhouse-Fribourg. La commune bénéficie d'un statut transfrontalier privilégié avec un tissu de TPE/PME industrie aéronautique, logistique, sous-traitance suisse, services frontaliers et commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Blotzheim (68), commune frontalière du Haut-Rhin, 5 282 habitants, est située aux portes de Bâle et à proximité immédiate de l'aéroport EuroAirport Bâle-Mulhouse-Fribourg. La commune bénéficie d'un statut transfrontalier privilégié avec un tissu de TPE/PME industrie aéronautique, logistique, sous-traitance suisse, services frontaliers et commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Blotzheim (68). Nous accompagnons TPE et PME : industriels aéronautiques, logisticiens, sous-traitants des industries suisses, prestataires de services frontaliers FR/CH/DE et commerçants. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -34,8 +34,8 @@ export const BLOTZHEIM_COPY: VilleCopy = {
       en: "Audit IA à Blotzheim : diagnostic adapté aux TPE/PME aéronautiques, logisticiens EuroAirport, sous-traitants industries suisses et services frontaliers. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Blotzheim : formats adaptés au hangar aéroportuaire, à l'entrepôt fret, à l'atelier sous-traitant ou au bureau frontalier. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Blotzheim : formats adaptés au hangar aéroportuaire, à l'entrepôt fret, à l'atelier sous-traitant ou au bureau frontalier. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Blotzheim : formats adaptés au hangar aéroportuaire, à l'entrepôt fret, à l'atelier sous-traitant ou au bureau frontalier. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Blotzheim : formats adaptés au hangar aéroportuaire, à l'entrepôt fret, à l'atelier sous-traitant ou au bureau frontalier. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Blotzheim : maintenance prédictive aéronautique, optimisation fret aérien, contrôle qualité sous-traitance, agents conversationnels trilingues FR/DE/EN, automatisation déclarations douanières frontalières.",

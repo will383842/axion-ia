@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CROISSY_SUR_SEINE_COPY: VilleCopy = {
   pitchFr:
-    "Croissy-sur-Seine (78), commune résidentielle de prestige en bord de Seine à proximité immédiate du Vésinet et de Chatou, compte plus de 10 500 habitants. PME conseil et gestion de patrimoine, professions libérales, TPE services haut de gamme, commerces de centre-ville, restauration. Axion-IA y intervient pour tous types d'activités.",
+    "Croissy-sur-Seine (78), commune résidentielle de prestige en bord de Seine à proximité immédiate du Vésinet et de Chatou, compte plus de 10 500 habitants. PME conseil et gestion de patrimoine, professions libérales, TPE services haut de gamme, commerces de centre-ville, restauration. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Croissy-sur-Seine (78), commune résidentielle de prestige en bord de Seine à proximité immédiate du Vésinet et de Chatou, compte plus de 10 500 habitants. PME conseil et gestion de patrimoine, professions libérales, TPE services haut de gamme, commerces de centre-ville, restauration. Axion-IA y intervient pour tous types d'activités.",
+    "Croissy-sur-Seine (78), commune résidentielle de prestige en bord de Seine à proximité immédiate du Vésinet et de Chatou, compte plus de 10 500 habitants. PME conseil et gestion de patrimoine, professions libérales, TPE services haut de gamme, commerces de centre-ville, restauration. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Croissy-sur-Seine (78). Nous accompagnons TPE et PME : cabinets conseil et gestion de patrimoine, professions libérales, TPE services haut de gamme, commerçants de centre-ville, restaurateurs. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const CROISSY_SUR_SEINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Croissy-sur-Seine : diagnostic adapté aux cabinets conseil, professions libérales, TPE services haut de gamme, commerçants, restaurateurs. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Croissy-sur-Seine : diagnostic adapté aux cabinets conseil, professions libérales, TPE services haut de gamme, commerçants, restaurateurs. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Croissy-sur-Seine : diagnostic adapté aux cabinets conseil, professions libérales, TPE services haut de gamme, commerçants, restaurateurs. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Croissy-sur-Seine : diagnostic adapté aux cabinets conseil, professions libérales, TPE services haut de gamme, commerçants, restaurateurs. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Croissy-sur-Seine : formats adaptés cabinet, bureau, commerce, restaurant. Vos équipes repartent autonomes.",

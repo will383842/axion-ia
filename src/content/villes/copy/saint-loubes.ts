@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_LOUBES_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Loubès (33), commune au nord-est de Bordeaux Métropole aux portes de l'Entre-deux-Mers, combine zones d'activités logistiques, vignoble, artisanat BTP et tissu résidentiel en croissance. Axion-IA y intervient pour tous types d'activités du bassin nord-est bordelais.",
+    "Saint-Loubès (33), commune au nord-est de Bordeaux Métropole aux portes de l'Entre-deux-Mers, combine zones d'activités logistiques, vignoble, artisanat BTP et tissu résidentiel en croissance. Axion-IA opère pour toutes les structures économiques de la commune du bassin nord-est bordelais.",
   pitchEn:
-    "Saint-Loubès (33), commune au nord-est de Bordeaux Métropole aux portes de l'Entre-deux-Mers, combine zones d'activités logistiques, vignoble, artisanat BTP et tissu résidentiel en croissance. Axion-IA y intervient pour tous types d'activités du bassin nord-est bordelais.",
+    "Saint-Loubès (33), commune au nord-est de Bordeaux Métropole aux portes de l'Entre-deux-Mers, combine zones d'activités logistiques, vignoble, artisanat BTP et tissu résidentiel en croissance. Axion-IA opère pour toutes les structures économiques de la commune du bassin nord-est bordelais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Loubès (33). Nous accompagnons TPE et PME du nord-est Bordeaux : entreprises logistiques, vignerons de l'Entre-deux-Mers, artisans BTP, commerçants et professions libérales. Audit Flash dès 490 € HT.",
   directAnswerEn:

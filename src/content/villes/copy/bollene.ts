@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BOLLENE_COPY: VilleCopy = {
   pitchFr:
-    "Bollène (84), commune du nord Vaucluse dans la vallée du Rhône, conjugue tissu agricole viticole (Côtes du Rhône), zones d'activités logistiques A7 et économie de service liée à la proximité du site nucléaire du Tricastin. TPE artisans, PME viticoles, services aux entreprises, logistique, professions libérales et commerces de proximité dans un bassin de 14 000 habitants à mi-chemin Avignon-Montélimar. Axion-IA y intervient pour tous types d'activités.",
+    "Bollène (84), commune du nord Vaucluse dans la vallée du Rhône, conjugue tissu agricole viticole (Côtes du Rhône), zones d'activités logistiques A7 et économie de service liée à la proximité du site nucléaire du Tricastin. TPE artisans, PME viticoles, services aux entreprises, logistique, professions libérales et commerces de proximité dans un bassin de 14 000 habitants à mi-chemin Avignon-Montélimar. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Bollène (84), commune du nord Vaucluse dans la vallée du Rhône, conjugue tissu agricole viticole (Côtes du Rhône), zones d'activités logistiques A7 et économie de service liée à la proximité du site nucléaire du Tricastin. TPE artisans, PME viticoles, services aux entreprises, logistique, professions libérales et commerces de proximité dans un bassin de 14 000 habitants à mi-chemin Avignon-Montélimar. Axion-IA y intervient pour tous types d'activités.",
+    "Bollène (84), commune du nord Vaucluse dans la vallée du Rhône, conjugue tissu agricole viticole (Côtes du Rhône), zones d'activités logistiques A7 et économie de service liée à la proximité du site nucléaire du Tricastin. TPE artisans, PME viticoles, services aux entreprises, logistique, professions libérales et commerces de proximité dans un bassin de 14 000 habitants à mi-chemin Avignon-Montélimar. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bollène (84). Nous accompagnons TPE artisans, PME viticoles, logistique, services aux entreprises, professions libérales et commerces du nord Vaucluse et de la vallée du Rhône. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const BOLLENE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bollène : diagnostic adapté aux TPE artisans, PME viticoles, logistique, sous-traitance industrielle, services aux entreprises et commerces du nord Vaucluse. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Bollène : diagnostic adapté aux TPE artisans, PME viticoles, logistique, sous-traitance industrielle, services aux entreprises et commerces du nord Vaucluse. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Bollène : diagnostic adapté aux TPE artisans, PME viticoles, logistique, sous-traitance industrielle, services aux entreprises et commerces du nord Vaucluse. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Bollène : diagnostic adapté aux TPE artisans, PME viticoles, logistique, sous-traitance industrielle, services aux entreprises et commerces du nord Vaucluse. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bollène : ateliers pour équipes TPE/PME, vignerons, logisticiens, sous-traitants industriels, artisans et professions libérales. Outils IA configurés métier réel, dans vos locaux.",
@@ -64,7 +64,7 @@ export const BOLLENE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Bollène ?",
-      a: "Bollène est à 10 min de Pierrelatte et 25 min d'Orange via A7. Nos consultants se déplacent dans vos locaux ou domaines. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Bollène est à 10 min de Pierrelatte et 25 min d'Orange via A7. Nos consultants se déplacent dans vos locaux ou domaines. Coûts de déplacement à part, tarification transparente.",
     },
   ],
 };

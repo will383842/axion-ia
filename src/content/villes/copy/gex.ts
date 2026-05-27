@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GEX_COPY: VilleCopy = {
   pitchFr:
-    "Gex (01), sous-préfecture de l'Ain et chef-lieu du pays de Gex, est positionnée au pied du Jura avec panorama sur le Mont-Blanc, à proximité de la frontière suisse et de Genève. Tissu économie frontalière, PME tertiaires, tourisme montagne, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités gessiens.",
+    "Gex (01), sous-préfecture de l'Ain et chef-lieu du pays de Gex, est positionnée au pied du Jura avec panorama sur le Mont-Blanc, à proximité de la frontière suisse et de Genève. Tissu économie frontalière, PME tertiaires, tourisme montagne, TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs gessiens.",
   pitchEn:
-    "Gex (01), sous-préfecture de l'Ain et chef-lieu du pays de Gex, est positionnée au pied du Jura avec panorama sur le Mont-Blanc, à proximité de la frontière suisse et de Genève. Tissu économie frontalière, PME tertiaires, tourisme montagne, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités gessiens.",
+    "Gex (01), sous-préfecture de l'Ain et chef-lieu du pays de Gex, est positionnée au pied du Jura avec panorama sur le Mont-Blanc, à proximité de la frontière suisse et de Genève. Tissu économie frontalière, PME tertiaires, tourisme montagne, TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs gessiens.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gex (01). Nous accompagnons tous types d'activités : PME tertiaires et administration sous-préfecture, économie frontalière Genève, acteurs tourisme montagne Jura, TPE artisans BTP, commerçants et services aux entreprises du pays de Gex.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const GEX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gex : diagnostic adapté aux PME tertiaires pays de Gex, administration, frontaliers Genève, acteurs tourisme Jura, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Gex : diagnostic adapté aux PME tertiaires pays de Gex, administration, frontaliers Genève, acteurs tourisme Jura, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Gex : diagnostic adapté aux PME tertiaires pays de Gex, administration, frontaliers Genève, acteurs tourisme Jura, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Gex : diagnostic adapté aux PME tertiaires pays de Gex, administration, frontaliers Genève, acteurs tourisme Jura, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gex : formats adaptés à l'administration, bureau tertiaire, station tourisme, commerce. Vos équipes repartent autonomes sur outils IA.",

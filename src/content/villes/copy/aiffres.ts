@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const AIFFRES_COPY: VilleCopy = {
   pitchFr:
-    "Aiffres (79), commune résidentielle au sud de l'agglomération niortaise dans les Deux-Sèvres, bénéficie du dynamisme économique du bassin de Niort (mutuelles, assurances, services). Tissu TPE artisans, commerçants, PME tertiaires, professions libérales, services à la personne. Axion-IA y intervient pour tous types d'activités de l'agglomération niortaise sud.",
+    "Aiffres (79), commune résidentielle au sud de l'agglomération niortaise dans les Deux-Sèvres, bénéficie du dynamisme économique du bassin de Niort (mutuelles, assurances, services). Tissu TPE artisans, commerçants, PME tertiaires, professions libérales, services à la personne. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération niortaise sud.",
   pitchEn:
-    "Aiffres (79), commune résidentielle au sud de l'agglomération niortaise dans les Deux-Sèvres, bénéficie du dynamisme économique du bassin de Niort (mutuelles, assurances, services). Tissu TPE artisans, commerçants, PME tertiaires, professions libérales, services à la personne. Axion-IA y intervient pour tous types d'activités de l'agglomération niortaise sud.",
+    "Aiffres (79), commune résidentielle au sud de l'agglomération niortaise dans les Deux-Sèvres, bénéficie du dynamisme économique du bassin de Niort (mutuelles, assurances, services). Tissu TPE artisans, commerçants, PME tertiaires, professions libérales, services à la personne. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération niortaise sud.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aiffres (79). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires et prestataires du bassin niortais mutuelles/assurances, professions libérales, services à la personne et entreprises de l'agglomération sud de Niort.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const AIFFRES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Aiffres : diagnostic adapté aux TPE artisans, PME tertiaires du bassin niortais, professions libérales et commerçants de l'agglomération sud. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Aiffres : diagnostic adapté aux TPE artisans, PME tertiaires du bassin niortais, professions libérales et commerçants de l'agglomération sud. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Aiffres : diagnostic adapté aux TPE artisans, PME tertiaires du bassin niortais, professions libérales et commerçants de l'agglomération sud. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Aiffres : diagnostic adapté aux TPE artisans, PME tertiaires du bassin niortais, professions libérales et commerçants de l'agglomération sud. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Aiffres : formats adaptés au bureau, commerce, cabinet ou atelier. Vos équipes repartent autonomes sur outils IA métier.",

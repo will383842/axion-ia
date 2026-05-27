@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BORMES_LES_MIMOSAS_COPY: VilleCopy = {
   pitchFr:
-    "Bormes-les-Mimosas (83), village fleuri du littoral varois célèbre pour son mimosa, son village médiéval et la résidence d'été présidentielle du fort de Brégançon, structure un tissu de TPE viticulteurs, fleuristes-mimosa, restaurateurs et PME du tourisme haut de gamme. Axion-IA y intervient pour tous types d'activités.",
+    "Bormes-les-Mimosas (83), village fleuri du littoral varois célèbre pour son mimosa, son village médiéval et la résidence d'été présidentielle du fort de Brégançon, structure un tissu de TPE viticulteurs, fleuristes-mimosa, restaurateurs et PME du tourisme haut de gamme. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Bormes-les-Mimosas (83), village fleuri du littoral varois célèbre pour son mimosa, son village médiéval et la résidence d'été présidentielle du fort de Brégançon, structure un tissu de TPE viticulteurs, fleuristes-mimosa, restaurateurs et PME du tourisme haut de gamme. Axion-IA y intervient pour tous types d'activités.",
+    "Bormes-les-Mimosas (83), village fleuri du littoral varois célèbre pour son mimosa, son village médiéval et la résidence d'été présidentielle du fort de Brégançon, structure un tissu de TPE viticulteurs, fleuristes-mimosa, restaurateurs et PME du tourisme haut de gamme. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bormes-les-Mimosas (83). Nous accompagnons TPE viticulteurs Côtes de Provence, mimosistes, restaurateurs et PME du tourisme haut de gamme du littoral varois oriental. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const BORMES_LES_MIMOSAS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bormes-les-Mimosas : diagnostic adapté aux domaines viticoles, mimosistes, restaurateurs et PME du tourisme haut de gamme. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Bormes-les-Mimosas : diagnostic adapté aux domaines viticoles, mimosistes, restaurateurs et PME du tourisme haut de gamme. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Bormes-les-Mimosas : diagnostic adapté aux domaines viticoles, mimosistes, restaurateurs et PME du tourisme haut de gamme. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Bormes-les-Mimosas : diagnostic adapté aux domaines viticoles, mimosistes, restaurateurs et PME du tourisme haut de gamme. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bormes-les-Mimosas : ateliers pour vignerons, mimosistes, restaurateurs et hôteliers du village fleuri. Outils IA configurés métier réel.",

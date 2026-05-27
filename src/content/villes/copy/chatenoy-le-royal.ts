@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHATENOY_LE_ROYAL_COPY: VilleCopy = {
   pitchFr:
-    "Châtenoy-le-Royal (71), commune de l'agglomération de Chalon-sur-Saône en Saône-et-Loire, accueille d'importantes zones d'activités commerciales et tertiaires. Tissu TPE/PME commerce, logistique, services aux entreprises, artisans BTP. Axion-IA y intervient pour tous types d'activités.",
+    "Châtenoy-le-Royal (71), commune de l'agglomération de Chalon-sur-Saône en Saône-et-Loire, accueille d'importantes zones d'activités commerciales et tertiaires. Tissu TPE/PME commerce, logistique, services aux entreprises, artisans BTP. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Châtenoy-le-Royal (71), commune de l'agglomération de Chalon-sur-Saône en Saône-et-Loire, accueille d'importantes zones d'activités commerciales et tertiaires. Tissu TPE/PME commerce, logistique, services aux entreprises, artisans BTP. Axion-IA y intervient pour tous types d'activités.",
+    "Châtenoy-le-Royal (71), commune de l'agglomération de Chalon-sur-Saône en Saône-et-Loire, accueille d'importantes zones d'activités commerciales et tertiaires. Tissu TPE/PME commerce, logistique, services aux entreprises, artisans BTP. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châtenoy-le-Royal (71). Nous accompagnons tous types d'activités : TPE/PME des zones commerciales et tertiaires Grand Chalon, enseignes retail, logisticiens, artisans BTP et services aux entreprises.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const CHATENOY_LE_ROYAL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Châtenoy-le-Royal : diagnostic adapté aux TPE/PME zones commerciales, enseignes retail, logisticiens, artisans BTP. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Châtenoy-le-Royal : diagnostic adapté aux TPE/PME zones commerciales, enseignes retail, logisticiens, artisans BTP. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Châtenoy-le-Royal : diagnostic adapté aux TPE/PME zones commerciales, enseignes retail, logisticiens, artisans BTP. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Châtenoy-le-Royal : diagnostic adapté aux TPE/PME zones commerciales, enseignes retail, logisticiens, artisans BTP. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Châtenoy-le-Royal : formats adaptés au point de vente, entrepôt, bureau. Vos équipes repartent autonomes.",
@@ -64,7 +64,7 @@ export const CHATENOY_LE_ROYAL_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Châtenoy-le-Royal ?",
-      a: "Nos consultants se déplacent depuis Lyon (1h30) ou via gare TGV Le Creusot (25 min). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants se déplacent depuis Lyon (1h30) ou via gare TGV Le Creusot (25 min). Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

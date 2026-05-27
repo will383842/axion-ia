@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MAGNANVILLE_COPY: VilleCopy = {
   pitchFr:
-    "Magnanville (78), commune résidentielle de l'agglomération de Mantes, dans le nord-ouest des Yvelines. Tissu de TPE artisans, PME de services, commerces de quartier, professions libérales et activités tertiaires liées au bassin mantais. Axion-IA y intervient pour tous types d'activités du Mantois.",
+    "Magnanville (78), commune résidentielle de l'agglomération de Mantes, dans le nord-ouest des Yvelines. Tissu de TPE artisans, PME de services, commerces de quartier, professions libérales et activités tertiaires liées au bassin mantais. Axion-IA opère pour toutes les structures économiques de la commune du Mantois.",
   pitchEn:
-    "Magnanville (78), commune résidentielle de l'agglomération de Mantes, dans le nord-ouest des Yvelines. Tissu de TPE artisans, PME de services, commerces de quartier, professions libérales et activités tertiaires liées au bassin mantais. Axion-IA y intervient pour tous types d'activités du Mantois.",
+    "Magnanville (78), commune résidentielle de l'agglomération de Mantes, dans le nord-ouest des Yvelines. Tissu de TPE artisans, PME de services, commerces de quartier, professions libérales et activités tertiaires liées au bassin mantais. Axion-IA opère pour toutes les structures économiques de la commune du Mantois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Magnanville (78). Nous accompagnons TPE et PME : artisans, commerces de quartier, PME de services et professions libérales de cette commune résidentielle de l'agglomération mantaise. Audit Flash dès 490 € HT.",
   directAnswerEn:

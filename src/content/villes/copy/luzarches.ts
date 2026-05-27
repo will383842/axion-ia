@@ -29,8 +29,8 @@ export const LUZARCHES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Luzarches : diagnostic adapté aux commerçants et artisans centre-bourg, PME services, professions libérales, restaurateurs, prestataires BTP Pays de France. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Luzarches : diagnostic adapté aux commerçants et artisans centre-bourg, PME services, professions libérales, restaurateurs, prestataires BTP Pays de France. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Luzarches : diagnostic adapté aux commerçants et artisans centre-bourg, PME services, professions libérales, restaurateurs, prestataires BTP Pays de France. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Luzarches : diagnostic adapté aux commerçants et artisans centre-bourg, PME services, professions libérales, restaurateurs, prestataires BTP Pays de France. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Luzarches : formats adaptés boutique, cabinet, restaurant, bureau PME, entreprise BTP. Vos équipes repartent autonomes.",
@@ -64,7 +64,7 @@ export const LUZARCHES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Chantilly ou Paris ?",
-      a: "Chantilly (10 min). Sarcelles (20 min). Paris Gare du Nord (45 min). CDG (20 min). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Chantilly (10 min). Sarcelles (20 min). Paris Gare du Nord (45 min). CDG (20 min). Coûts de déplacement à part, tarification transparente.",
     },
   ],
 };

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const UZES_COPY: VilleCopy = {
   pitchFr:
-    "Uzès (30), premier duché de France, cité patrimoniale du Gard entre garrigue et vallée du Gardon. Tissu TPE/PME tourisme culturel, artisanat d'art, commerces premium, viticulture Duché d'Uzès AOP et professions libérales. Axion-IA y intervient pour tous types d'activités de l'Uzège.",
+    "Uzès (30), premier duché de France, cité patrimoniale du Gard entre garrigue et vallée du Gardon. Tissu TPE/PME tourisme culturel, artisanat d'art, commerces premium, viticulture Duché d'Uzès AOP et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations de l'Uzège.",
   pitchEn:
-    "Uzès (30), premier duché de France, cité patrimoniale du Gard entre garrigue et vallée du Gardon. Tissu TPE/PME tourisme culturel, artisanat d'art, commerces premium, viticulture Duché d'Uzès AOP et professions libérales. Axion-IA y intervient pour tous types d'activités de l'Uzège.",
+    "Uzès (30), premier duché de France, cité patrimoniale du Gard entre garrigue et vallée du Gardon. Tissu TPE/PME tourisme culturel, artisanat d'art, commerces premium, viticulture Duché d'Uzès AOP et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations de l'Uzège.",
   directAnswerFr:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Uzès (30). Nous accompagnons les TPE, PME et ETI locales : acteurs tourisme culturel, artisans d'art, commerçants, viticulteurs Duché d'Uzès, professions libérales et services aux entreprises de l'Uzège. Audit Flash à partir de 490 € HT.",
   directAnswerEn:

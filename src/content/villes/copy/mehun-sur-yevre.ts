@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MEHUN_SUR_YEVRE_COPY: VilleCopy = {
   pitchFr:
-    "Mehun-sur-Yèvre (18), commune du Cher en Berry, est célèbre pour son château de Charles VII (ruines classées) et sa tradition porcelainière historique. Tissu TPE artisanat porcelaine/céramique, PME industrielles, commerces de proximité, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Mehun-sur-Yèvre (18), commune du Cher en Berry, est célèbre pour son château de Charles VII (ruines classées) et sa tradition porcelainière historique. Tissu TPE artisanat porcelaine/céramique, PME industrielles, commerces de proximité, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Mehun-sur-Yèvre (18), commune du Cher en Berry, est célèbre pour son château de Charles VII (ruines classées) et sa tradition porcelainière historique. Tissu TPE artisanat porcelaine/céramique, PME industrielles, commerces de proximité, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Mehun-sur-Yèvre (18), commune du Cher en Berry, est célèbre pour son château de Charles VII (ruines classées) et sa tradition porcelainière historique. Tissu TPE artisanat porcelaine/céramique, PME industrielles, commerces de proximité, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mehun-sur-Yèvre (18). Nous accompagnons tous types d'activités : TPE artisans porcelaine/céramique, PME industrielles Berry, commerçants, acteurs tourisme patrimonial (château Charles VII), services aux entreprises du bassin berruyer.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const MEHUN_SUR_YEVRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mehun-sur-Yèvre : diagnostic adapté aux TPE artisans porcelaine/céramique, PME industrielles, commerçants et acteurs tourisme Berry. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Mehun-sur-Yèvre : diagnostic adapté aux TPE artisans porcelaine/céramique, PME industrielles, commerçants et acteurs tourisme Berry. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Mehun-sur-Yèvre : diagnostic adapté aux TPE artisans porcelaine/céramique, PME industrielles, commerçants et acteurs tourisme Berry. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Mehun-sur-Yèvre : diagnostic adapté aux TPE artisans porcelaine/céramique, PME industrielles, commerçants et acteurs tourisme Berry. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Mehun-sur-Yèvre : formats adaptés à l'atelier porcelaine, PME industrielle, commerce, bureau tertiaire. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Mehun-sur-Yèvre : formats adaptés à l'atelier porcelaine, PME industrielle, commerce, bureau tertiaire. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Mehun-sur-Yèvre : formats adaptés à l'atelier porcelaine, PME industrielle, commerce, bureau tertiaire. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Mehun-sur-Yèvre : formats adaptés à l'atelier porcelaine, PME industrielle, commerce, bureau tertiaire. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Mehun-sur-Yèvre : classification visuelle défauts porcelaine, automatisation gestion stocks artisanat, agents conversationnels tourisme château Charles VII, CRM augmenté PME Berry.",
@@ -64,7 +64,7 @@ export const MEHUN_SUR_YEVRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Bourges ?",
-      a: "Nos consultants viennent de Bourges (15 min). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Bourges (15 min). Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

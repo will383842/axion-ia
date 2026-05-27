@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MOUILLERON_LE_CAPTIF_COPY: VilleCopy = {
   pitchFr:
-    "Mouilleron-le-Captif (85), commune périurbaine au nord de l'agglomération de La Roche-sur-Yon en Pays de la Loire, plus de 5 200 habitants. Pôle résidentiel et économique dynamique avec zones d'activités, équipements sportifs (Vendéspace) et habitat attractif. Tissu TPE artisans, PME industrielles et services, commerces et professions libérales. Axion-IA y intervient pour tous types d'activités de l'agglomération yonnaise.",
+    "Mouilleron-le-Captif (85), commune périurbaine au nord de l'agglomération de La Roche-sur-Yon en Pays de la Loire, plus de 5 200 habitants. Pôle résidentiel et économique dynamique avec zones d'activités, équipements sportifs (Vendéspace) et habitat attractif. Tissu TPE artisans, PME industrielles et services, commerces et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations de l'agglomération yonnaise.",
   pitchEn:
-    "Mouilleron-le-Captif (85), commune périurbaine au nord de l'agglomération de La Roche-sur-Yon en Pays de la Loire, plus de 5 200 habitants. Pôle résidentiel et économique dynamique avec zones d'activités, équipements sportifs (Vendéspace) et habitat attractif. Tissu TPE artisans, PME industrielles et services, commerces et professions libérales. Axion-IA y intervient pour tous types d'activités de l'agglomération yonnaise.",
+    "Mouilleron-le-Captif (85), commune périurbaine au nord de l'agglomération de La Roche-sur-Yon en Pays de la Loire, plus de 5 200 habitants. Pôle résidentiel et économique dynamique avec zones d'activités, équipements sportifs (Vendéspace) et habitat attractif. Tissu TPE artisans, PME industrielles et services, commerces et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations de l'agglomération yonnaise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mouilleron-le-Captif (85). Nous accompagnons TPE artisans, PME industrielles et services, commerçants et professions libérales de l'agglomération de La Roche-sur-Yon nord. Audit Flash dès 490 € HT.",
   directAnswerEn:

@@ -30,8 +30,8 @@ export const VAL_DE_BRIEY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Val de Briey : diagnostic adapté aux TPE/PME industrie, sous-traitants mécanique, artisans BTP et commerçants du Pays Haut. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Val de Briey : diagnostic adapté aux TPE/PME industrie, sous-traitants mécanique, artisans BTP et commerçants du Pays Haut. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Val de Briey : diagnostic adapté aux TPE/PME industrie, sous-traitants mécanique, artisans BTP et commerçants du Pays Haut. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Val de Briey : diagnostic adapté aux TPE/PME industrie, sous-traitants mécanique, artisans BTP et commerçants du Pays Haut. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Val de Briey : formats adaptés à l'atelier industriel, au chantier BTP, au commerce ou au bureau tertiaire. Vos équipes repartent autonomes sur les outils IA métier.",

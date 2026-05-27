@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VILLENEUVE_LOUBET_COPY: VilleCopy = {
   pitchFr:
-    "Villeneuve-Loubet (06), commune littorale des Alpes-Maritimes entre Nice et Antibes, est connue pour la Marina Baie des Anges et le musée Escoffier (père de la cuisine moderne). Tissu TPE artisans, PME tourisme/hôtellerie balnéaire, commerçants, professions libérales et services. Axion-IA y intervient pour tous types d'activités du bassin villeneuvois.",
+    "Villeneuve-Loubet (06), commune littorale des Alpes-Maritimes entre Nice et Antibes, est connue pour la Marina Baie des Anges et le musée Escoffier (père de la cuisine moderne). Tissu TPE artisans, PME tourisme/hôtellerie balnéaire, commerçants, professions libérales et services. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin villeneuvois.",
   pitchEn:
-    "Villeneuve-Loubet (06), commune littorale des Alpes-Maritimes entre Nice et Antibes, est connue pour la Marina Baie des Anges et le musée Escoffier (père de la cuisine moderne). Tissu TPE artisans, PME tourisme/hôtellerie balnéaire, commerçants, professions libérales et services. Axion-IA y intervient pour tous types d'activités du bassin villeneuvois.",
+    "Villeneuve-Loubet (06), commune littorale des Alpes-Maritimes entre Nice et Antibes, est connue pour la Marina Baie des Anges et le musée Escoffier (père de la cuisine moderne). Tissu TPE artisans, PME tourisme/hôtellerie balnéaire, commerçants, professions libérales et services. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin villeneuvois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villeneuve-Loubet (06). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme balnéaire et hôtellerie, commerçants, restaurateurs, professions libérales, indépendants et services aux entreprises du littoral entre Nice et Antibes.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const VILLENEUVE_LOUBET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villeneuve-Loubet : diagnostic adapté aux TPE artisans, PME tourisme balnéaire, restaurateurs, professions libérales et commerçants du littoral azuréen. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Villeneuve-Loubet : diagnostic adapté aux TPE artisans, PME tourisme balnéaire, restaurateurs, professions libérales et commerçants du littoral azuréen. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Villeneuve-Loubet : diagnostic adapté aux TPE artisans, PME tourisme balnéaire, restaurateurs, professions libérales et commerçants du littoral azuréen. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
+      en: "Audit IA à Villeneuve-Loubet : diagnostic adapté aux TPE artisans, PME tourisme balnéaire, restaurateurs, professions libérales et commerçants du littoral azuréen. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Villeneuve-Loubet : formats adaptés aux hébergements balnéaires, restaurants, cabinets ou commerces littoraux. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Villeneuve-Loubet : formats adaptés aux hébergements balnéaires, restaurants, cabinets ou commerces littoraux. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Villeneuve-Loubet : formats adaptés aux hébergements balnéaires, restaurants, cabinets ou commerces littoraux. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Villeneuve-Loubet : formats adaptés aux hébergements balnéaires, restaurants, cabinets ou commerces littoraux. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Villeneuve-Loubet : agents conversationnels réservation hôtel/restaurant multilingue, automatisation gestion locative saisonnière Marina, classification avis clients, optimisation taux occupation.",

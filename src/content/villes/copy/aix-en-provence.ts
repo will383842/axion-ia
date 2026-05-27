@@ -59,6 +59,8 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
   directAnswerEn:
     "Axion-IA is an senior AI architects consultancy that intervenes in Aix-en-Provence (13001) and across the Aix-Marseille basin on site. We support micro-businesses, SMEs, mid-caps and large enterprises in Aix — scientific and technical activities, aerospace industry, energy, education, B2B services — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
+  seoHook: "conseil, recherche & tourisme",
+
   topSectorsNaf: [
     "Activités scientifiques, techniques & conseil",
     "Aérospatial & Défense",

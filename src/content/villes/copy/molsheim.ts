@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MOLSHEIM_COPY: VilleCopy = {
   pitchFr:
-    "Molsheim (67), sous-préfecture du Bas-Rhin, capitale historique de la route des Vins d'Alsace, riche de son patrimoine médiéval (château épiscopal) et de son ancrage industriel automobile haut de gamme. Tissu TPE/PME industrie, viticulture, tourisme, BTP, commerces, services et artisanat. Axion-IA y intervient pour tous types d'activités.",
+    "Molsheim (67), sous-préfecture du Bas-Rhin, capitale historique de la route des Vins d'Alsace, riche de son patrimoine médiéval (château épiscopal) et de son ancrage industriel automobile haut de gamme. Tissu TPE/PME industrie, viticulture, tourisme, BTP, commerces, services et artisanat. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Molsheim (67), sous-préfecture du Bas-Rhin, capitale historique de la route des Vins d'Alsace, riche de son patrimoine médiéval (château épiscopal) et de son ancrage industriel automobile haut de gamme. Tissu TPE/PME industrie, viticulture, tourisme, BTP, commerces, services et artisanat. Axion-IA y intervient pour tous types d'activités.",
+    "Molsheim (67), sous-préfecture du Bas-Rhin, capitale historique de la route des Vins d'Alsace, riche de son patrimoine médiéval (château épiscopal) et de son ancrage industriel automobile haut de gamme. Tissu TPE/PME industrie, viticulture, tourisme, BTP, commerces, services et artisanat. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Molsheim (67). Nous accompagnons tous types d'activités : TPE/PME industrie haut de gamme, viticulteurs, professionnels du tourisme, artisans BTP, commerces de proximité et entrepreneurs de la sous-préfecture bas-rhinoise.",
   directAnswerEn:
@@ -34,8 +34,8 @@ export const MOLSHEIM_COPY: VilleCopy = {
       en: "Audit IA à Molsheim : diagnostic adapté aux TPE/PME industrie de précision, viticulteurs, professionnels du tourisme, artisans BTP et commerces. ROI chiffré, audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Molsheim : formats adaptés à l'atelier industriel, domaine viticole, hôtel-restaurant, chantier ou commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Molsheim : formats adaptés à l'atelier industriel, domaine viticole, hôtel-restaurant, chantier ou commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Molsheim : formats adaptés à l'atelier industriel, domaine viticole, hôtel-restaurant, chantier ou commerce. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Molsheim : formats adaptés à l'atelier industriel, domaine viticole, hôtel-restaurant, chantier ou commerce. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Molsheim : contrôle qualité industrie de précision, gestion vendanges et stocks viticoles, automatisation réservations tourisme, agents conversationnels B2B et B2C.",

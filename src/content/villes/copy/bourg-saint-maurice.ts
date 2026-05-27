@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BOURG_SAINT_MAURICE_COPY: VilleCopy = {
   pitchFr:
-    "Bourg-Saint-Maurice (73), commune de Haute-Tarentaise en Savoie, est la porte d'accès à la station Les Arcs et au domaine Paradiski. Sports de montagne majeurs, funiculaire vers Arc 1600, gare SNCF TGV direct Paris (hiver). Tissu tourisme sports d'hiver, hôtellerie montagne, remontées mécaniques, TPE commerces station, services saisonniers. Axion-IA y intervient pour tous types d'activités.",
+    "Bourg-Saint-Maurice (73), commune de Haute-Tarentaise en Savoie, est la porte d'accès à la station Les Arcs et au domaine Paradiski. Sports de montagne majeurs, funiculaire vers Arc 1600, gare SNCF TGV direct Paris (hiver). Tissu tourisme sports d'hiver, hôtellerie montagne, remontées mécaniques, TPE commerces station, services saisonniers. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Bourg-Saint-Maurice (73), commune de Haute-Tarentaise en Savoie, est la porte d'accès à la station Les Arcs et au domaine Paradiski. Sports de montagne majeurs, funiculaire vers Arc 1600, gare SNCF TGV direct Paris (hiver). Tissu tourisme sports d'hiver, hôtellerie montagne, remontées mécaniques, TPE commerces station, services saisonniers. Axion-IA y intervient pour tous types d'activités.",
+    "Bourg-Saint-Maurice (73), commune de Haute-Tarentaise en Savoie, est la porte d'accès à la station Les Arcs et au domaine Paradiski. Sports de montagne majeurs, funiculaire vers Arc 1600, gare SNCF TGV direct Paris (hiver). Tissu tourisme sports d'hiver, hôtellerie montagne, remontées mécaniques, TPE commerces station, services saisonniers. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bourg-Saint-Maurice (73). Nous accompagnons TPE et PME de la Haute-Tarentaise : opérateurs touristiques Les Arcs/Paradiski, hôteliers et résidences de montagne, exploitants remontées mécaniques, commerçants de station, prestataires saisonniers et services aux entreprises.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const BOURG_SAINT_MAURICE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bourg-Saint-Maurice : diagnostic adapté aux opérateurs touristiques Les Arcs/Paradiski, hôteliers montagne, exploitants remontées mécaniques, TPE commerces station et prestataires saisonniers. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Bourg-Saint-Maurice : diagnostic adapté aux opérateurs touristiques Les Arcs/Paradiski, hôteliers montagne, exploitants remontées mécaniques, TPE commerces station et prestataires saisonniers. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Bourg-Saint-Maurice : diagnostic adapté aux opérateurs touristiques Les Arcs/Paradiski, hôteliers montagne, exploitants remontées mécaniques, TPE commerces station et prestataires saisonniers. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Bourg-Saint-Maurice : diagnostic adapté aux opérateurs touristiques Les Arcs/Paradiski, hôteliers montagne, exploitants remontées mécaniques, TPE commerces station et prestataires saisonniers. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bourg-Saint-Maurice : ateliers dans vos locaux hôteliers, bureau exploitation ou commerce de station. Vos équipes repartent autonomes sur outils IA configurés métier tourisme et montagne.",

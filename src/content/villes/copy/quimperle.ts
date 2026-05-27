@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const QUIMPERLE_COPY: VilleCopy = {
   pitchFr:
-    "Quimperlé (29), cité finistérienne au confluent de l'Ellé et de l'Isole, est connue pour son abbaye Sainte-Croix et son héritage papetier industriel. Tissu TPE artisans, PME agroalimentaires et papetières, commerces centre-ville, services et tourisme. Axion-IA y intervient pour tous types d'activités du Pays de Quimperlé et du sud Finistère.",
+    "Quimperlé (29), cité finistérienne au confluent de l'Ellé et de l'Isole, est connue pour son abbaye Sainte-Croix et son héritage papetier industriel. Tissu TPE artisans, PME agroalimentaires et papetières, commerces centre-ville, services et tourisme. Axion-IA accompagne entreprises et indépendants de tous secteurs du Pays de Quimperlé et du sud Finistère.",
   pitchEn:
-    "Quimperlé (29), cité finistérienne au confluent de l'Ellé et de l'Isole, est connue pour son abbaye Sainte-Croix et son héritage papetier industriel. Tissu TPE artisans, PME agroalimentaires et papetières, commerces centre-ville, services et tourisme. Axion-IA y intervient pour tous types d'activités du Pays de Quimperlé et du sud Finistère.",
+    "Quimperlé (29), cité finistérienne au confluent de l'Ellé et de l'Isole, est connue pour son abbaye Sainte-Croix et son héritage papetier industriel. Tissu TPE artisans, PME agroalimentaires et papetières, commerces centre-ville, services et tourisme. Axion-IA accompagne entreprises et indépendants de tous secteurs du Pays de Quimperlé et du sud Finistère.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Quimperlé (29). Nous accompagnons tous types d'activités : TPE artisans et commerçants centre-ville, PME agroalimentaires et papetières, indépendants, professions libérales, acteurs du tourisme et services aux entreprises du Pays de Quimperlé et du sud Finistère.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const QUIMPERLE_COPY: VilleCopy = {
       en: "Audit IA à Quimperlé : diagnostic adapté aux TPE artisans, PME agroalimentaires et papetières, commerçants centre-ville et acteurs tourisme du Pays de Quimperlé. ROI chiffré, audit Flash 490 € HT accessible.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Quimperlé : formats adaptés à l'atelier agroalimentaire, l'usine, le commerce ou l'établissement touristique. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Quimperlé : formats adaptés à l'atelier agroalimentaire, l'usine, le commerce ou l'établissement touristique. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Quimperlé : formats adaptés à l'atelier agroalimentaire, l'usine, le commerce ou l'établissement touristique. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Quimperlé : formats adaptés à l'atelier agroalimentaire, l'usine, le commerce ou l'établissement touristique. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Quimperlé : contrôle qualité agroalimentaire par vision, automatisation traçabilité, agents conversationnels, gestion stocks, optimisation planning production. Pays de Quimperlé et sud Finistère.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_VESINET_COPY: VilleCopy = {
   pitchFr:
-    "Le Vésinet (78), ville-parc des Yvelines fondée en 1875 avec ses lacs et pelouses classés, est l'une des communes résidentielles les plus prisées de l'ouest parisien. Tissu de TPE/PME tertiaires, professions libérales haut de gamme, commerces de centre-ville, services aux particuliers. Axion-IA y intervient pour tous types d'activités.",
+    "Le Vésinet (78), ville-parc des Yvelines fondée en 1875 avec ses lacs et pelouses classés, est l'une des communes résidentielles les plus prisées de l'ouest parisien. Tissu de TPE/PME tertiaires, professions libérales haut de gamme, commerces de centre-ville, services aux particuliers. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Le Vésinet (78), ville-parc des Yvelines fondée en 1875 avec ses lacs et pelouses classés, est l'une des communes résidentielles les plus prisées de l'ouest parisien. Tissu de TPE/PME tertiaires, professions libérales haut de gamme, commerces de centre-ville, services aux particuliers. Axion-IA y intervient pour tous types d'activités.",
+    "Le Vésinet (78), ville-parc des Yvelines fondée en 1875 avec ses lacs et pelouses classés, est l'une des communes résidentielles les plus prisées de l'ouest parisien. Tissu de TPE/PME tertiaires, professions libérales haut de gamme, commerces de centre-ville, services aux particuliers. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Vésinet (78). Nous accompagnons tous types d'activités : TPE et PME tertiaires, professions libérales haut de gamme (santé, juridique, patrimoine), commerces de centre-ville, agences immobilières prestige, indépendants et services aux particuliers de cette ville-parc de l'ouest parisien.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LE_VESINET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Vésinet : diagnostic adapté aux professions libérales haut de gamme, agences immobilières prestige, commerçants et TPE/PME tertiaires de cette ville-parc de l'ouest parisien. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA au Vésinet : diagnostic adapté aux professions libérales haut de gamme, agences immobilières prestige, commerçants et TPE/PME tertiaires de cette ville-parc de l'ouest parisien. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA au Vésinet : diagnostic adapté aux professions libérales haut de gamme, agences immobilières prestige, commerçants et TPE/PME tertiaires de cette ville-parc de l'ouest parisien. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA au Vésinet : diagnostic adapté aux professions libérales haut de gamme, agences immobilières prestige, commerçants et TPE/PME tertiaires de cette ville-parc de l'ouest parisien. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site au Vésinet : formats adaptés au cabinet médical, étude juridique, agence immobilière ou commerce de centre-ville. Vos équipes repartent autonomes sur outils IA configurés métier.",

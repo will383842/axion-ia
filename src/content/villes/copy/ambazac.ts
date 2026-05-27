@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const AMBAZAC_COPY: VilleCopy = {
   pitchFr:
-    "Ambazac (87), commune des Monts d'Ambazac en Haute-Vienne, est un bourg dynamique au nord-est de Limoges. Tissu TPE artisans, PME bois et granit, commerces centre-bourg, agriculture, tourisme vert (tourbières, randonnée). Axion-IA y intervient pour tous types d'activités du piémont nord-est limougeaud.",
+    "Ambazac (87), commune des Monts d'Ambazac en Haute-Vienne, est un bourg dynamique au nord-est de Limoges. Tissu TPE artisans, PME bois et granit, commerces centre-bourg, agriculture, tourisme vert (tourbières, randonnée). Axion-IA couvre l'ensemble des activités professionnelles présentes du piémont nord-est limougeaud.",
   pitchEn:
-    "Ambazac (87), commune des Monts d'Ambazac en Haute-Vienne, est un bourg dynamique au nord-est de Limoges. Tissu TPE artisans, PME bois et granit, commerces centre-bourg, agriculture, tourisme vert (tourbières, randonnée). Axion-IA y intervient pour tous types d'activités du piémont nord-est limougeaud.",
+    "Ambazac (87), commune des Monts d'Ambazac en Haute-Vienne, est un bourg dynamique au nord-est de Limoges. Tissu TPE artisans, PME bois et granit, commerces centre-bourg, agriculture, tourisme vert (tourbières, randonnée). Axion-IA couvre l'ensemble des activités professionnelles présentes du piémont nord-est limougeaud.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ambazac (87). Nous accompagnons TPE artisans, PME filière bois et granit, commerçants, agriculteurs et acteurs du tourisme vert des Monts d'Ambazac. Audit Flash dès 490 € HT.",
   directAnswerEn:

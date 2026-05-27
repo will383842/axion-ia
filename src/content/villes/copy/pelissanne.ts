@@ -34,8 +34,8 @@ export const PELISSANNE_COPY: VilleCopy = {
       en: "Audit IA à Pélissanne : diagnostic adapté aux TPE artisans, PME de services du bassin salonais et professions libérales. ROI chiffré, Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Pélissanne : formats adaptés à l'atelier artisan, au cabinet et au commerce de bourg. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Pélissanne : formats adaptés à l'atelier artisan, au cabinet et au commerce de bourg. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Pélissanne : formats adaptés à l'atelier artisan, au cabinet et au commerce de bourg. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Pélissanne : formats adaptés à l'atelier artisan, au cabinet et au commerce de bourg. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Pélissanne : automatisation gestion cabinet, agents conversationnels commerce, CRM intelligent, extraction données. Bassin salonais.",

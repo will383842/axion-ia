@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const L_UNION_COPY: VilleCopy = {
   pitchFr:
-    "L'Union (31), commune résidentielle du nord-est toulousain avec plus de 12 000 habitants. Tissu TPE services, PME tertiaires, professions libérales, commerces de proximité. Axion-IA y intervient pour tous types d'activités de la couronne nord-est de Toulouse.",
+    "L'Union (31), commune résidentielle du nord-est toulousain avec plus de 12 000 habitants. Tissu TPE services, PME tertiaires, professions libérales, commerces de proximité. Axion-IA couvre l'ensemble des activités professionnelles présentes de la couronne nord-est de Toulouse.",
   pitchEn:
-    "L'Union (31), commune résidentielle du nord-est toulousain avec plus de 12 000 habitants. Tissu TPE services, PME tertiaires, professions libérales, commerces de proximité. Axion-IA y intervient pour tous types d'activités de la couronne nord-est de Toulouse.",
+    "L'Union (31), commune résidentielle du nord-est toulousain avec plus de 12 000 habitants. Tissu TPE services, PME tertiaires, professions libérales, commerces de proximité. Axion-IA couvre l'ensemble des activités professionnelles présentes de la couronne nord-est de Toulouse.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à L'Union (31). Nous accompagnons TPE de services, PME tertiaires, professions libérales et commerçants du nord-est de Toulouse. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const L_UNION_COPY: VilleCopy = {
       en: "Audit IA à L'Union : diagnostic adapté aux TPE de services, PME tertiaires et professions libérales du nord-est toulousain. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à L'Union : formats adaptés au cabinet de conseil, au commerce, à la PME tertiaire. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à L'Union : formats adaptés au cabinet de conseil, au commerce, à la PME tertiaire. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à L'Union : formats adaptés au cabinet de conseil, au commerce, à la PME tertiaire. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à L'Union : formats adaptés au cabinet de conseil, au commerce, à la PME tertiaire. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à L'Union : automatisation gestion documentaire, agents conversationnels, classification courriers, reporting automatisé pour PME du nord-est Toulouse.",

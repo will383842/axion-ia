@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_RICHE_COPY: VilleCopy = {
   pitchFr:
-    "La Riche (37), commune de l'agglomération tourangelle en Indre-et-Loire, abrite le prieuré Saint-Cosme (dernière demeure de Ronsard, monument historique). Tissu TPE artisans BTP, PME tertiaires et services, commerces, économie résidentielle péri-urbaine Tours. Axion-IA y intervient pour tous types d'activités.",
+    "La Riche (37), commune de l'agglomération tourangelle en Indre-et-Loire, abrite le prieuré Saint-Cosme (dernière demeure de Ronsard, monument historique). Tissu TPE artisans BTP, PME tertiaires et services, commerces, économie résidentielle péri-urbaine Tours. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "La Riche (37), commune de l'agglomération tourangelle en Indre-et-Loire, abrite le prieuré Saint-Cosme (dernière demeure de Ronsard, monument historique). Tissu TPE artisans BTP, PME tertiaires et services, commerces, économie résidentielle péri-urbaine Tours. Axion-IA y intervient pour tous types d'activités.",
+    "La Riche (37), commune de l'agglomération tourangelle en Indre-et-Loire, abrite le prieuré Saint-Cosme (dernière demeure de Ronsard, monument historique). Tissu TPE artisans BTP, PME tertiaires et services, commerces, économie résidentielle péri-urbaine Tours. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Riche (37). Nous accompagnons tous types d'activités : TPE artisans BTP, PME tertiaires de Tours Métropole, commerçants, professions libérales et acteurs tourisme patrimonial (prieuré Saint-Cosme).",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LA_RICHE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Riche : diagnostic adapté aux TPE artisans BTP, PME tertiaires Tours Métropole, commerçants, professions libérales, acteurs tourisme patrimonial. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à La Riche : diagnostic adapté aux TPE artisans BTP, PME tertiaires Tours Métropole, commerçants, professions libérales, acteurs tourisme patrimonial. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à La Riche : diagnostic adapté aux TPE artisans BTP, PME tertiaires Tours Métropole, commerçants, professions libérales, acteurs tourisme patrimonial. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à La Riche : diagnostic adapté aux TPE artisans BTP, PME tertiaires Tours Métropole, commerçants, professions libérales, acteurs tourisme patrimonial. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Riche : formats adaptés au bureau tertiaire, atelier artisan, commerce, cabinet. Vos équipes repartent autonomes sur outils IA.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_SEBASTIEN_DE_MORSENT_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Sébastien-de-Morsent (27), commune résidentielle de l'agglomération d'Évreux en Eure, cadre de vie prisé aux portes de la préfecture. Tissu TPE artisans, PME services et tertiaire agglo Évreux, commerces, professions libérales, santé. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Sébastien-de-Morsent (27), commune résidentielle de l'agglomération d'Évreux en Eure, cadre de vie prisé aux portes de la préfecture. Tissu TPE artisans, PME services et tertiaire agglo Évreux, commerces, professions libérales, santé. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Saint-Sébastien-de-Morsent (27), commune résidentielle de l'agglomération d'Évreux en Eure, cadre de vie prisé aux portes de la préfecture. Tissu TPE artisans, PME services et tertiaire agglo Évreux, commerces, professions libérales, santé. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Sébastien-de-Morsent (27), commune résidentielle de l'agglomération d'Évreux en Eure, cadre de vie prisé aux portes de la préfecture. Tissu TPE artisans, PME services et tertiaire agglo Évreux, commerces, professions libérales, santé. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Sébastien-de-Morsent (27). Nous accompagnons tous types d'activités : TPE artisans, PME services et tertiaire agglo Évreux, commerces, professions libérales et de santé, indépendants et services aux entreprises d'Évreux Portes de Normandie.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const SAINT_SEBASTIEN_DE_MORSENT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Sébastien-de-Morsent : diagnostic adapté aux TPE artisans, PME services agglo Évreux, professions libérales et de santé, commerces. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Sébastien-de-Morsent : diagnostic adapté aux TPE artisans, PME services agglo Évreux, professions libérales et de santé, commerces. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Sébastien-de-Morsent : diagnostic adapté aux TPE artisans, PME services agglo Évreux, professions libérales et de santé, commerces. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Saint-Sébastien-de-Morsent : diagnostic adapté aux TPE artisans, PME services agglo Évreux, professions libérales et de santé, commerces. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Sébastien-de-Morsent : formats adaptés au cabinet, au bureau, au commerce, à l'atelier. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const SAINT_SEBASTIEN_DE_MORSENT_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou Évreux ?",
-      a: "Nos consultants viennent de Paris (1h10 train gare Évreux-Normandie, puis 10 min) ou d'Évreux centre (5 min). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Paris (1h10 train gare Évreux-Normandie, puis 10 min) ou d'Évreux centre (5 min). Pour les multi-jours, hébergement local possible. Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

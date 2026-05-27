@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FONTENAY_LE_FLEURY_COPY: VilleCopy = {
   pitchFr:
-    "Fontenay-le-Fleury (78), commune résidentielle des Yvelines dans la plaine de Versailles, proche du château et des zones d'activités de Vélizy-Villacoublay, allie cadre de vie et accessibilité économique. Tissu TPE commerces et artisanat, PME services et conseil, professions libérales, restauration, services à la personne. Axion-IA y intervient pour tous types d'activités.",
+    "Fontenay-le-Fleury (78), commune résidentielle des Yvelines dans la plaine de Versailles, proche du château et des zones d'activités de Vélizy-Villacoublay, allie cadre de vie et accessibilité économique. Tissu TPE commerces et artisanat, PME services et conseil, professions libérales, restauration, services à la personne. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Fontenay-le-Fleury (78), commune résidentielle des Yvelines dans la plaine de Versailles, proche du château et des zones d'activités de Vélizy-Villacoublay, allie cadre de vie et accessibilité économique. Tissu TPE commerces et artisanat, PME services et conseil, professions libérales, restauration, services à la personne. Axion-IA y intervient pour tous types d'activités.",
+    "Fontenay-le-Fleury (78), commune résidentielle des Yvelines dans la plaine de Versailles, proche du château et des zones d'activités de Vélizy-Villacoublay, allie cadre de vie et accessibilité économique. Tissu TPE commerces et artisanat, PME services et conseil, professions libérales, restauration, services à la personne. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fontenay-le-Fleury (78). Nous accompagnons TPE et PME : commerçants et artisans du centre-bourg, PME services et conseil plaine de Versailles, professions libérales, restaurateurs, prestataires services à la personne. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const FONTENAY_LE_FLEURY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fontenay-le-Fleury : diagnostic adapté aux commerçants et artisans, PME services et conseil, professions libérales, restaurateurs, prestataires services à la personne plaine de Versailles. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Fontenay-le-Fleury : diagnostic adapté aux commerçants et artisans, PME services et conseil, professions libérales, restaurateurs, prestataires services à la personne plaine de Versailles. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Fontenay-le-Fleury : diagnostic adapté aux commerçants et artisans, PME services et conseil, professions libérales, restaurateurs, prestataires services à la personne plaine de Versailles. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Fontenay-le-Fleury : diagnostic adapté aux commerçants et artisans, PME services et conseil, professions libérales, restaurateurs, prestataires services à la personne plaine de Versailles. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Fontenay-le-Fleury : formats adaptés boutique, bureau conseil, cabinet, restaurant, structure services à la personne. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Fontenay-le-Fleury : formats adaptés boutique, bureau conseil, cabinet, restaurant, structure services à la personne. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Fontenay-le-Fleury : formats adaptés boutique, bureau conseil, cabinet, restaurant, structure services à la personne. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Fontenay-le-Fleury : formats adaptés boutique, bureau conseil, cabinet, restaurant, structure services à la personne. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Fontenay-le-Fleury : CRM augmenté commerçants, automatisation back-office PME conseil, gestion cabinet, outils réservation restauration, planification services à la personne IA.",
@@ -64,7 +64,7 @@ export const FONTENAY_LE_FLEURY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Versailles ou Paris ?",
-      a: "Versailles (5 min). Vélizy-Villacoublay (10 min). Paris La Défense (25 min). Paris Montparnasse (30 min transilien N/U). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Versailles (5 min). Vélizy-Villacoublay (10 min). Paris La Défense (25 min). Paris Montparnasse (30 min transilien N/U). Coûts de déplacement à part, tarification transparente.",
     },
   ],
 };

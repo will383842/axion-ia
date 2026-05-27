@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PONT_EVEQUE_COPY: VilleCopy = {
   pitchFr:
-    "Pont-Évêque (38), commune du sud-Isère adhérente à Vienne Condrieu Agglomération, est positionnée dans le bassin économique rhodanien autour de Vienne. Tissu PME industrielles, TPE artisans BTP, commerces, agriculture (vignobles AOC proches sur rive droite). Axion-IA y intervient pour tous types d'activités.",
+    "Pont-Évêque (38), commune du sud-Isère adhérente à Vienne Condrieu Agglomération, est positionnée dans le bassin économique rhodanien autour de Vienne. Tissu PME industrielles, TPE artisans BTP, commerces, agriculture (vignobles AOC proches sur rive droite). Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Pont-Évêque (38), commune du sud-Isère adhérente à Vienne Condrieu Agglomération, est positionnée dans le bassin économique rhodanien autour de Vienne. Tissu PME industrielles, TPE artisans BTP, commerces, agriculture (vignobles AOC proches sur rive droite). Axion-IA y intervient pour tous types d'activités.",
+    "Pont-Évêque (38), commune du sud-Isère adhérente à Vienne Condrieu Agglomération, est positionnée dans le bassin économique rhodanien autour de Vienne. Tissu PME industrielles, TPE artisans BTP, commerces, agriculture (vignobles AOC proches sur rive droite). Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pont-Évêque (38). Nous accompagnons tous types d'activités : PME industrielles bassin rhodanien Vienne, TPE artisans BTP, commerçants, viticulteurs proximité (Côte-Rôtie, Condrieu), professions libérales et services aux entreprises de Vienne Condrieu Agglomération.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const PONT_EVEQUE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pont-Évêque : diagnostic adapté aux PME industrielles, TPE artisans, viticulteurs et commerçants de Vienne Condrieu Agglomération. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Pont-Évêque : diagnostic adapté aux PME industrielles, TPE artisans, viticulteurs et commerçants de Vienne Condrieu Agglomération. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Pont-Évêque : diagnostic adapté aux PME industrielles, TPE artisans, viticulteurs et commerçants de Vienne Condrieu Agglomération. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Pont-Évêque : diagnostic adapté aux PME industrielles, TPE artisans, viticulteurs et commerçants de Vienne Condrieu Agglomération. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Pont-Évêque : formats adaptés à l'atelier industriel, exploitation viticole, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Pont-Évêque : formats adaptés à l'atelier industriel, exploitation viticole, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Pont-Évêque : formats adaptés à l'atelier industriel, exploitation viticole, commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Pont-Évêque : formats adaptés à l'atelier industriel, exploitation viticole, commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Pont-Évêque : prédiction maintenance industrielle, classification photos cépages, traçabilité bouteilles, agents conversationnels oenotourisme. Bassin Vienne.",
@@ -64,7 +64,7 @@ export const PONT_EVEQUE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",
-      a: "Nos consultants viennent de Lyon (35 min A7) ou Saint-Étienne (40 min A47). Pour les multi-jours, hébergement local possible (hôtels Vienne). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (35 min A7) ou Saint-Étienne (40 min A47). Pour les multi-jours, hébergement local possible (hôtels Vienne). Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

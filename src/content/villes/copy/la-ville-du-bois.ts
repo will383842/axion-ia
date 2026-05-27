@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_VILLE_DU_BOIS_COPY: VilleCopy = {
   pitchFr:
-    "La Ville-du-Bois (91), commune résidentielle du Hurepoix à 23 km au sud-ouest de Paris. Tissu TPE/PME tertiaires, commerces zone commerciale, professions libérales, artisanat, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "La Ville-du-Bois (91), commune résidentielle du Hurepoix à 23 km au sud-ouest de Paris. Tissu TPE/PME tertiaires, commerces zone commerciale, professions libérales, artisanat, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "La Ville-du-Bois (91), commune résidentielle du Hurepoix à 23 km au sud-ouest de Paris. Tissu TPE/PME tertiaires, commerces zone commerciale, professions libérales, artisanat, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "La Ville-du-Bois (91), commune résidentielle du Hurepoix à 23 km au sud-ouest de Paris. Tissu TPE/PME tertiaires, commerces zone commerciale, professions libérales, artisanat, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Ville-du-Bois (91). Nous accompagnons TPE et PME : entreprises tertiaires, commerces zone commerciale, professions libérales, artisans, prestataires de services du Hurepoix. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const LA_VILLE_DU_BOIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Ville-du-Bois : diagnostic adapté aux PME tertiaires, commerces zone commerciale, professions libérales, artisans, prestataires services. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à La Ville-du-Bois : diagnostic adapté aux PME tertiaires, commerces zone commerciale, professions libérales, artisans, prestataires services. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à La Ville-du-Bois : diagnostic adapté aux PME tertiaires, commerces zone commerciale, professions libérales, artisans, prestataires services. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à La Ville-du-Bois : diagnostic adapté aux PME tertiaires, commerces zone commerciale, professions libérales, artisans, prestataires services. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
-      fr: "Interventions IA sur site à La Ville-du-Bois : formats adaptés bureau tertiaire, commerce, cabinet libéral, atelier artisan, siège PME Hurepoix. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à La Ville-du-Bois : formats adaptés bureau tertiaire, commerce, cabinet libéral, atelier artisan, siège PME Hurepoix. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à La Ville-du-Bois : formats adaptés bureau tertiaire, commerce, cabinet libéral, atelier artisan, siège PME Hurepoix. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à La Ville-du-Bois : formats adaptés bureau tertiaire, commerce, cabinet libéral, atelier artisan, siège PME Hurepoix. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à La Ville-du-Bois : automatisation facturation et relances, CRM augmenté PME, gestion stocks commerces, planning professions libérales, devis artisans.",
@@ -64,7 +64,7 @@ export const LA_VILLE_DU_BOIS_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi à Longjumeau et Montlhéry ?",
-      a: "Oui, nous couvrons La Ville-du-Bois, Longjumeau, Montlhéry, Linas, Ballainvilliers et tout le Hurepoix essonnien. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Oui, nous couvrons La Ville-du-Bois, Longjumeau, Montlhéry, Linas, Ballainvilliers et tout le Hurepoix essonnien. Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

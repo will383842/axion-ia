@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GENNES_VAL_DE_LOIRE_COPY: VilleCopy = {
   pitchFr:
-    "Gennes-Val-de-Loire (49), commune nouvelle en bords de Loire classée UNESCO, réunit plus de 8 400 habitants entre patrimoine troglodytique et vignoble angevin. Axion-IA y intervient pour tous types d'activités : tourisme, viticulture, artisanat, commerces et services.",
+    "Gennes-Val-de-Loire (49), commune nouvelle en bords de Loire classée UNESCO, réunit plus de 8 400 habitants entre patrimoine troglodytique et vignoble angevin. Axion-IA opère pour toutes les structures économiques de la commune : tourisme, viticulture, artisanat, commerces et services.",
   pitchEn:
-    "Gennes-Val-de-Loire (49), commune nouvelle en bords de Loire classée UNESCO, réunit plus de 8 400 habitants entre patrimoine troglodytique et vignoble angevin. Axion-IA y intervient pour tous types d'activités : tourisme, viticulture, artisanat, commerces et services.",
+    "Gennes-Val-de-Loire (49), commune nouvelle en bords de Loire classée UNESCO, réunit plus de 8 400 habitants entre patrimoine troglodytique et vignoble angevin. Axion-IA opère pour toutes les structures économiques de la commune : tourisme, viticulture, artisanat, commerces et services.",
   directAnswerFr:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Gennes-Val-de-Loire (49). Nous accompagnons les TPE, PME et acteurs touristiques du Val de Loire angevin dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
   directAnswerEn:

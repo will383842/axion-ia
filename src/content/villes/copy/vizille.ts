@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VIZILLE_COPY: VilleCopy = {
   pitchFr:
-    "Vizille (38), commune de la vallée de la Romanche en Isère, est historiquement le berceau de la Révolution française (Assemblée des États du Dauphiné, 21 juillet 1788, au château de Vizille). Elle abrite le Musée de la Révolution française. Route Napoléon. Tissu PME industrielles, tourisme patrimoine, TPE artisans, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Vizille (38), commune de la vallée de la Romanche en Isère, est historiquement le berceau de la Révolution française (Assemblée des États du Dauphiné, 21 juillet 1788, au château de Vizille). Elle abrite le Musée de la Révolution française. Route Napoléon. Tissu PME industrielles, tourisme patrimoine, TPE artisans, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Vizille (38), commune de la vallée de la Romanche en Isère, est historiquement le berceau de la Révolution française (Assemblée des États du Dauphiné, 21 juillet 1788, au château de Vizille). Elle abrite le Musée de la Révolution française. Route Napoléon. Tissu PME industrielles, tourisme patrimoine, TPE artisans, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Vizille (38), commune de la vallée de la Romanche en Isère, est historiquement le berceau de la Révolution française (Assemblée des États du Dauphiné, 21 juillet 1788, au château de Vizille). Elle abrite le Musée de la Révolution française. Route Napoléon. Tissu PME industrielles, tourisme patrimoine, TPE artisans, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vizille (38). Nous accompagnons tous types d'activités : acteurs du tourisme patrimoine (Musée Révolution française, château de Vizille), PME industrielles vallée Romanche, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises sud-grenobloises.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const VIZILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vizille : diagnostic adapté aux acteurs touristiques patrimoine (Musée Révolution, château), PME industrielles, TPE artisans et commerçants du sud-grenoblois. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Vizille : diagnostic adapté aux acteurs touristiques patrimoine (Musée Révolution, château), PME industrielles, TPE artisans et commerçants du sud-grenoblois. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Vizille : diagnostic adapté aux acteurs touristiques patrimoine (Musée Révolution, château), PME industrielles, TPE artisans et commerçants du sud-grenoblois. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Vizille : diagnostic adapté aux acteurs touristiques patrimoine (Musée Révolution, château), PME industrielles, TPE artisans et commerçants du sud-grenoblois. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Vizille : formats adaptés au site touristique patrimoine, atelier industriel, commerce ou hôtel. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Vizille : formats adaptés au site touristique patrimoine, atelier industriel, commerce ou hôtel. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Vizille : formats adaptés au site touristique patrimoine, atelier industriel, commerce ou hôtel. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Vizille : formats adaptés au site touristique patrimoine, atelier industriel, commerce ou hôtel. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Vizille : agents conversationnels multilingues visiteurs (château, Musée Révolution), automatisation billetterie, classification feedback, prédiction maintenance industrielle. Adapté tourisme patrimoine + industrie.",
@@ -64,7 +64,7 @@ export const VIZILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Grenoble ?",
-      a: "Nos consultants viennent de Grenoble (20 min voiture N85, route Napoléon). Pour les multi-jours, hébergement local possible (hôtels Vizille ou Oisans). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Grenoble (20 min voiture N85, route Napoléon). Pour les multi-jours, hébergement local possible (hôtels Vizille ou Oisans). Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

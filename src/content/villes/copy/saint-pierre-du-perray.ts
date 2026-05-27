@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_PIERRE_DU_PERRAY_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Pierre-du-Perray (91), commune résidentielle de l'Essonne à 30 km au sud-est de Paris dans l'arrondissement d'Évry, allie cadre pavillonnaire et proximité du pôle économique Évry-Sénart. Tissu TPE artisanat BTP, PME services, commerces de proximité, professions libérales, activités péri-urbaines. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Pierre-du-Perray (91), commune résidentielle de l'Essonne à 30 km au sud-est de Paris dans l'arrondissement d'Évry, allie cadre pavillonnaire et proximité du pôle économique Évry-Sénart. Tissu TPE artisanat BTP, PME services, commerces de proximité, professions libérales, activités péri-urbaines. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Saint-Pierre-du-Perray (91), commune résidentielle de l'Essonne à 30 km au sud-est de Paris dans l'arrondissement d'Évry, allie cadre pavillonnaire et proximité du pôle économique Évry-Sénart. Tissu TPE artisanat BTP, PME services, commerces de proximité, professions libérales, activités péri-urbaines. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Pierre-du-Perray (91), commune résidentielle de l'Essonne à 30 km au sud-est de Paris dans l'arrondissement d'Évry, allie cadre pavillonnaire et proximité du pôle économique Évry-Sénart. Tissu TPE artisanat BTP, PME services, commerces de proximité, professions libérales, activités péri-urbaines. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Pierre-du-Perray (91). Nous accompagnons TPE et PME : artisans BTP, commerçants, professions libérales, PME services aux entreprises, prestataires péri-urbains du bassin Évry-Sénart. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const SAINT_PIERRE_DU_PERRAY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Pierre-du-Perray : diagnostic adapté aux TPE artisans BTP, commerçants, PME services et professions libérales du bassin Évry-Sénart. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Pierre-du-Perray : diagnostic adapté aux TPE artisans BTP, commerçants, PME services et professions libérales du bassin Évry-Sénart. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Pierre-du-Perray : diagnostic adapté aux TPE artisans BTP, commerçants, PME services et professions libérales du bassin Évry-Sénart. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Saint-Pierre-du-Perray : diagnostic adapté aux TPE artisans BTP, commerçants, PME services et professions libérales du bassin Évry-Sénart. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Pierre-du-Perray : formats adaptés atelier BTP, boutique, cabinet, bureau PME. Vos équipes repartent autonomes sur outils IA métier.",
@@ -64,7 +64,7 @@ export const SAINT_PIERRE_DU_PERRAY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou Évry ?",
-      a: "Évry-Courcouronnes à 10 min. Paris centre à 40 min (A6 direct). Orly à 25 min. Gare RER D Lieusaint-Moissy à 10 min. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Évry-Courcouronnes à 10 min. Paris centre à 40 min (A6 direct). Orly à 25 min. Gare RER D Lieusaint-Moissy à 10 min. Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

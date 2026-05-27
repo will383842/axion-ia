@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VAL_DE_REUIL_COPY: VilleCopy = {
   pitchFr:
-    "Val-de-Reuil (27), ville nouvelle de l'Eure en Normandie, pôle industriel pharmaceutique et logistique de la vallée de la Seine. Tissu TPE artisans, PME industrie pharmaceutique et chimie, logistique, commerces, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Val-de-Reuil (27), ville nouvelle de l'Eure en Normandie, pôle industriel pharmaceutique et logistique de la vallée de la Seine. Tissu TPE artisans, PME industrie pharmaceutique et chimie, logistique, commerces, services aux entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Val-de-Reuil (27), ville nouvelle de l'Eure en Normandie, pôle industriel pharmaceutique et logistique de la vallée de la Seine. Tissu TPE artisans, PME industrie pharmaceutique et chimie, logistique, commerces, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Val-de-Reuil (27), ville nouvelle de l'Eure en Normandie, pôle industriel pharmaceutique et logistique de la vallée de la Seine. Tissu TPE artisans, PME industrie pharmaceutique et chimie, logistique, commerces, services aux entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Val-de-Reuil (27). Nous accompagnons tous types d'activités : TPE artisans, PME industrie pharmaceutique et chimie, logistique vallée de Seine, commerces, indépendants et services aux entreprises de l'agglomération Seine-Eure.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const VAL_DE_REUIL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Val-de-Reuil : diagnostic adapté aux TPE artisans, PME industrie pharmaceutique et chimie, logistique vallée de Seine, commerces. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Val-de-Reuil : diagnostic adapté aux TPE artisans, PME industrie pharmaceutique et chimie, logistique vallée de Seine, commerces. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Val-de-Reuil : diagnostic adapté aux TPE artisans, PME industrie pharmaceutique et chimie, logistique vallée de Seine, commerces. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Val-de-Reuil : diagnostic adapté aux TPE artisans, PME industrie pharmaceutique et chimie, logistique vallée de Seine, commerces. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Val-de-Reuil : formats adaptés au site pharmaceutique, à l'entrepôt logistique, à l'atelier, au commerce. Vos équipes repartent autonomes sur outils IA.",

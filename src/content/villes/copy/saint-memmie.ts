@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_MEMMIE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Memmie (51), commune limitrophe de Châlons-en-Champagne, bénéficie de zones commerciales et d'activités importantes. TPE commerces et services, PME distribution et logistique, artisans BTP, entreprises tertiaires, professions libérales du bassin châlonnais. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Memmie (51), commune limitrophe de Châlons-en-Champagne, bénéficie de zones commerciales et d'activités importantes. TPE commerces et services, PME distribution et logistique, artisans BTP, entreprises tertiaires, professions libérales du bassin châlonnais. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Saint-Memmie (51), commune limitrophe de Châlons-en-Champagne, bénéficie de zones commerciales et d'activités importantes. TPE commerces et services, PME distribution et logistique, artisans BTP, entreprises tertiaires, professions libérales du bassin châlonnais. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Memmie (51), commune limitrophe de Châlons-en-Champagne, bénéficie de zones commerciales et d'activités importantes. TPE commerces et services, PME distribution et logistique, artisans BTP, entreprises tertiaires, professions libérales du bassin châlonnais. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Memmie (51). Nous accompagnons TPE et PME : commerces de zone, PME distribution et logistique, artisans BTP, entreprises tertiaires, professions libérales du bassin châlonnais. Audit Flash dès 490 € HT.",
   directAnswerEn:

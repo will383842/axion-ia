@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LES_HAUTS_D_ANJOU_COPY: VilleCopy = {
   pitchFr:
-    "Les Hauts-d'Anjou (49), commune nouvelle au nord d'Angers, fédère un vaste territoire rural de près de 9 000 habitants entre Sarthe et Mayenne. Axion-IA y intervient pour tous types d'activités : agriculture, artisanat, commerces de bourg, PME et services de proximité.",
+    "Les Hauts-d'Anjou (49), commune nouvelle au nord d'Angers, fédère un vaste territoire rural de près de 9 000 habitants entre Sarthe et Mayenne. Axion-IA accompagne entreprises et indépendants de tous secteurs : agriculture, artisanat, commerces de bourg, PME et services de proximité.",
   pitchEn:
-    "Les Hauts-d'Anjou (49), commune nouvelle au nord d'Angers, fédère un vaste territoire rural de près de 9 000 habitants entre Sarthe et Mayenne. Axion-IA y intervient pour tous types d'activités : agriculture, artisanat, commerces de bourg, PME et services de proximité.",
+    "Les Hauts-d'Anjou (49), commune nouvelle au nord d'Angers, fédère un vaste territoire rural de près de 9 000 habitants entre Sarthe et Mayenne. Axion-IA accompagne entreprises et indépendants de tous secteurs : agriculture, artisanat, commerces de bourg, PME et services de proximité.",
   directAnswerFr:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient aux Hauts-d'Anjou (49). Nous accompagnons les TPE, PME et exploitants agricoles du nord angevin dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
   directAnswerEn:

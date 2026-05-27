@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CESSON_SEVIGNE_COPY: VilleCopy = {
   pitchFr:
-    "Cesson-Sévigné (35), commune de l'est de Rennes Métropole, accueille le technopôle Rennes Atalante et un écosystème numérique/télécoms de premier plan breton. Tissu TPE/PME tech, ESN, startups, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Cesson-Sévigné (35), commune de l'est de Rennes Métropole, accueille le technopôle Rennes Atalante et un écosystème numérique/télécoms de premier plan breton. Tissu TPE/PME tech, ESN, startups, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Cesson-Sévigné (35), commune de l'est de Rennes Métropole, accueille le technopôle Rennes Atalante et un écosystème numérique/télécoms de premier plan breton. Tissu TPE/PME tech, ESN, startups, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Cesson-Sévigné (35), commune de l'est de Rennes Métropole, accueille le technopôle Rennes Atalante et un écosystème numérique/télécoms de premier plan breton. Tissu TPE/PME tech, ESN, startups, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cesson-Sévigné (35). Nous accompagnons tous types d'activités : TPE et PME du numérique, ESN, startups Rennes Atalante, éditeurs logiciels, télécoms, commerçants, indépendants et services aux entreprises de la métropole rennaise.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const CESSON_SEVIGNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cesson-Sévigné : diagnostic adapté aux TPE et PME tech, ESN, startups Rennes Atalante et éditeurs logiciels. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Cesson-Sévigné : diagnostic adapté aux TPE et PME tech, ESN, startups Rennes Atalante et éditeurs logiciels. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Cesson-Sévigné : diagnostic adapté aux TPE et PME tech, ESN, startups Rennes Atalante et éditeurs logiciels. Audit Flash 490 € HT avec ROI quantifié accessible.",
+      en: "Audit IA à Cesson-Sévigné : diagnostic adapté aux TPE et PME tech, ESN, startups Rennes Atalante et éditeurs logiciels. Audit Flash 490 € HT avec ROI quantifié accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cesson-Sévigné : formats adaptés aux équipes tech, ESN, startups. Vos développeurs et data scientists repartent autonomes sur les derniers outils IA.",

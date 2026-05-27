@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BEYNOST_COPY: VilleCopy = {
   pitchFr:
-    "Beynost (01), commune de la Côtière dans l'Ain, est positionnée en banlieue nord-est de Lyon. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités de la Côtière Ain.",
+    "Beynost (01), commune de la Côtière dans l'Ain, est positionnée en banlieue nord-est de Lyon. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de la Côtière Ain.",
   pitchEn:
-    "Beynost (01), commune de la Côtière dans l'Ain, est positionnée en banlieue nord-est de Lyon. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités de la Côtière Ain.",
+    "Beynost (01), commune de la Côtière dans l'Ain, est positionnée en banlieue nord-est de Lyon. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de la Côtière Ain.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beynost (01). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Côtière Ain, TPE artisans BTP, commerçants, professions libérales et services aux entreprises.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const BEYNOST_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Beynost : diagnostic adapté aux PME tertiaires/industrielles Côtière Ain, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Beynost : diagnostic adapté aux PME tertiaires/industrielles Côtière Ain, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Beynost : diagnostic adapté aux PME tertiaires/industrielles Côtière Ain, professions libérales, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Beynost : diagnostic adapté aux PME tertiaires/industrielles Côtière Ain, professions libérales, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Beynost : formats adaptés au bureau, atelier, cabinet, commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Beynost : formats adaptés au bureau, atelier, cabinet, commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Beynost : formats adaptés au bureau, atelier, cabinet, commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Beynost : formats adaptés au bureau, atelier, cabinet, commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Beynost : agents conversationnels B2B, prédiction maintenance, automatisation workflow, classification documents. Côtière Ain.",
@@ -64,7 +64,7 @@ export const BEYNOST_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (20 min). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (20 min). Frais de mission en sus, grille tarifaire publique.",
     },
   ],
 };

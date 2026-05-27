@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const RUMILLY_COPY: VilleCopy = {
   pitchFr:
-    "Rumilly (74), capitale de l'Albanais en Haute-Savoie, est un pôle agroalimentaire laitier et fromager majeur, entre Annecy et Aix-les-Bains. PME industrielles, TPE artisanat, commerces de bourg et agriculture Albanais composent un tissu économique diversifié. Axion-IA y intervient pour tous types d'activités de l'Albanais.",
+    "Rumilly (74), capitale de l'Albanais en Haute-Savoie, est un pôle agroalimentaire laitier et fromager majeur, entre Annecy et Aix-les-Bains. PME industrielles, TPE artisanat, commerces de bourg et agriculture Albanais composent un tissu économique diversifié. Axion-IA y déploie ses missions auprès de toutes les organisations de l'Albanais.",
   pitchEn:
-    "Rumilly (74), capitale de l'Albanais en Haute-Savoie, est un pôle agroalimentaire laitier et fromager majeur, entre Annecy et Aix-les-Bains. PME industrielles, TPE artisanat, commerces de bourg et agriculture Albanais composent un tissu économique diversifié. Axion-IA y intervient pour tous types d'activités de l'Albanais.",
+    "Rumilly (74), capitale de l'Albanais en Haute-Savoie, est un pôle agroalimentaire laitier et fromager majeur, entre Annecy et Aix-les-Bains. PME industrielles, TPE artisanat, commerces de bourg et agriculture Albanais composent un tissu économique diversifié. Axion-IA y déploie ses missions auprès de toutes les organisations de l'Albanais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rumilly (74). Nous accompagnons TPE et PME : industriels agroalimentaires laitiers et fromagers, PME manufacturières, artisans, commerçants du bourg, agriculteurs de l'Albanais et prestataires de services. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const RUMILLY_COPY: VilleCopy = {
       en: "Audit IA à Rumilly : diagnostic adapté aux PME agroalimentaires, industriels, TPE artisans, commerçants et agriculteurs de l'Albanais. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Rumilly : formats adaptés à l'usine agroalimentaire, atelier industriel, exploitation agricole et commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Rumilly : formats adaptés à l'usine agroalimentaire, atelier industriel, exploitation agricole et commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Rumilly : formats adaptés à l'usine agroalimentaire, atelier industriel, exploitation agricole et commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Rumilly : formats adaptés à l'usine agroalimentaire, atelier industriel, exploitation agricole et commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Rumilly : contrôle qualité laitier par vision, traçabilité production fromagère, prédiction maintenance industrielle, automatisation traçabilité agricole, agents conversationnels. Albanais.",

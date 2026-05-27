@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const TRELISSAC_COPY: VilleCopy = {
   pitchFr:
-    "Trélissac (24), commune de l'est de l'agglomération de Périgueux en Dordogne, dotée de zones commerciales et d'activités dynamiques. Tissu TPE/PME commerce, artisanat, services, logistique et agroalimentaire. Axion-IA y intervient pour tous types d'activités.",
+    "Trélissac (24), commune de l'est de l'agglomération de Périgueux en Dordogne, dotée de zones commerciales et d'activités dynamiques. Tissu TPE/PME commerce, artisanat, services, logistique et agroalimentaire. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Trélissac (24), commune de l'est de l'agglomération de Périgueux en Dordogne, dotée de zones commerciales et d'activités dynamiques. Tissu TPE/PME commerce, artisanat, services, logistique et agroalimentaire. Axion-IA y intervient pour tous types d'activités.",
+    "Trélissac (24), commune de l'est de l'agglomération de Périgueux en Dordogne, dotée de zones commerciales et d'activités dynamiques. Tissu TPE/PME commerce, artisanat, services, logistique et agroalimentaire. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trélissac (24). Nous accompagnons TPE/PME du commerce, de l'artisanat, des services et de la logistique de l'est de l'agglomération périgourdine. Audit Flash dès 490 € HT.",
   directAnswerEn:

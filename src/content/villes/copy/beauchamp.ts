@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BEAUCHAMP_COPY: VilleCopy = {
   pitchFr:
-    "Beauchamp (95), commune résidentielle de la vallée de Montmorency en Val-d'Oise, possède un tissu économique de TPE artisanales, PME de services, commerces de centre-ville et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Beauchamp (95), commune résidentielle de la vallée de Montmorency en Val-d'Oise, possède un tissu économique de TPE artisanales, PME de services, commerces de centre-ville et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Beauchamp (95), commune résidentielle de la vallée de Montmorency en Val-d'Oise, possède un tissu économique de TPE artisanales, PME de services, commerces de centre-ville et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Beauchamp (95), commune résidentielle de la vallée de Montmorency en Val-d'Oise, possède un tissu économique de TPE artisanales, PME de services, commerces de centre-ville et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beauchamp (95). Nous accompagnons tous types d'activités : TPE artisanales, PME de services et conseil, commerçants, professions libérales de santé et indépendants de la vallée de Montmorency.",
   directAnswerEn:

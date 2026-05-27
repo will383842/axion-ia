@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_ROVE_COPY: VilleCopy = {
   pitchFr:
-    "Le Rove (13), commune de la Côte Bleue à l'ouest de Marseille, conjugue calanques préservées (Niolon, La Vesse), élevage caprin traditionnel (chèvre du Rove, brousse AOP) et tissu de TPE tourisme, restauration, plaisance et commerces de proximité. Cadre nature aux portes de Marseille. Axion-IA y intervient pour tous types d'activités.",
+    "Le Rove (13), commune de la Côte Bleue à l'ouest de Marseille, conjugue calanques préservées (Niolon, La Vesse), élevage caprin traditionnel (chèvre du Rove, brousse AOP) et tissu de TPE tourisme, restauration, plaisance et commerces de proximité. Cadre nature aux portes de Marseille. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Le Rove (13), commune de la Côte Bleue à l'ouest de Marseille, conjugue calanques préservées (Niolon, La Vesse), élevage caprin traditionnel (chèvre du Rove, brousse AOP) et tissu de TPE tourisme, restauration, plaisance et commerces de proximité. Cadre nature aux portes de Marseille. Axion-IA y intervient pour tous types d'activités.",
+    "Le Rove (13), commune de la Côte Bleue à l'ouest de Marseille, conjugue calanques préservées (Niolon, La Vesse), élevage caprin traditionnel (chèvre du Rove, brousse AOP) et tissu de TPE tourisme, restauration, plaisance et commerces de proximité. Cadre nature aux portes de Marseille. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Rove (13). Nous accompagnons TPE tourisme et restauration, PME services, éleveurs de chèvres du Rove, plaisanciers et commerces de proximité de la Côte Bleue. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LE_ROVE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Rove : diagnostic adapté aux TPE tourisme, restaurateurs, éleveurs caprins (chèvre du Rove), plaisanciers, clubs de plongée et commerces de la Côte Bleue. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA au Rove : diagnostic adapté aux TPE tourisme, restaurateurs, éleveurs caprins (chèvre du Rove), plaisanciers, clubs de plongée et commerces de la Côte Bleue. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA au Rove : diagnostic adapté aux TPE tourisme, restaurateurs, éleveurs caprins (chèvre du Rove), plaisanciers, clubs de plongée et commerces de la Côte Bleue. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA au Rove : diagnostic adapté aux TPE tourisme, restaurateurs, éleveurs caprins (chèvre du Rove), plaisanciers, clubs de plongée et commerces de la Côte Bleue. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site au Rove : ateliers pour équipes tourisme, restauration, élevage, plaisance et TPE locales. Outils IA configurés métier réel, dans vos locaux ou à Marseille.",
@@ -64,7 +64,7 @@ export const LE_ROVE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA au Rove ?",
-      a: "Le Rove est à 20 min de Marseille via A55 et accessible par le TER Côte Bleue. Nos consultants se déplacent dans vos locaux. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Le Rove est à 20 min de Marseille via A55 et accessible par le TER Côte Bleue. Nos consultants se déplacent dans vos locaux. Coûts de déplacement à part, tarification transparente.",
     },
   ],
 };

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHANTILLY_COPY: VilleCopy = {
   pitchFr:
-    "Chantilly (60), commune de 10 591 habitants dans l'Oise, est mondialement connue pour son château, son hippodrome et le domaine de Condé. Haut lieu du tourisme de prestige, du monde équestre et de la gastronomie, la ville concentre un tissu de TPE/PME hôtellerie-restauration, tourisme, commerce de luxe, artisanat et services. Axion-IA y intervient pour tous types d'activités.",
+    "Chantilly (60), commune de 10 591 habitants dans l'Oise, est mondialement connue pour son château, son hippodrome et le domaine de Condé. Haut lieu du tourisme de prestige, du monde équestre et de la gastronomie, la ville concentre un tissu de TPE/PME hôtellerie-restauration, tourisme, commerce de luxe, artisanat et services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Chantilly (60), commune de 10 591 habitants dans l'Oise, est mondialement connue pour son château, son hippodrome et le domaine de Condé. Haut lieu du tourisme de prestige, du monde équestre et de la gastronomie, la ville concentre un tissu de TPE/PME hôtellerie-restauration, tourisme, commerce de luxe, artisanat et services. Axion-IA y intervient pour tous types d'activités.",
+    "Chantilly (60), commune de 10 591 habitants dans l'Oise, est mondialement connue pour son château, son hippodrome et le domaine de Condé. Haut lieu du tourisme de prestige, du monde équestre et de la gastronomie, la ville concentre un tissu de TPE/PME hôtellerie-restauration, tourisme, commerce de luxe, artisanat et services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chantilly (60). Nous accompagnons TPE et PME du sud de l'Oise : hôteliers, restaurateurs, acteurs du tourisme et du monde équestre, commerçants et prestataires de services. Audit Flash dès 490 € HT.",
   directAnswerEn:

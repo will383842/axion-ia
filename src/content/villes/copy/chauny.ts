@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHAUNY_COPY: VilleCopy = {
   pitchFr:
-    "Chauny (02), commune de 11 596 habitants dans l'Aisne, est implantée sur les bords de l'Oise au cœur du sud de la Picardie. Pôle industriel historique (chimie, verrerie, métallurgie), la ville concentre un tissu de TPE/PME industrie chimique, agroalimentaire, logistique fluviale, commerce et services. Axion-IA y intervient pour tous types d'activités.",
+    "Chauny (02), commune de 11 596 habitants dans l'Aisne, est implantée sur les bords de l'Oise au cœur du sud de la Picardie. Pôle industriel historique (chimie, verrerie, métallurgie), la ville concentre un tissu de TPE/PME industrie chimique, agroalimentaire, logistique fluviale, commerce et services. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Chauny (02), commune de 11 596 habitants dans l'Aisne, est implantée sur les bords de l'Oise au cœur du sud de la Picardie. Pôle industriel historique (chimie, verrerie, métallurgie), la ville concentre un tissu de TPE/PME industrie chimique, agroalimentaire, logistique fluviale, commerce et services. Axion-IA y intervient pour tous types d'activités.",
+    "Chauny (02), commune de 11 596 habitants dans l'Aisne, est implantée sur les bords de l'Oise au cœur du sud de la Picardie. Pôle industriel historique (chimie, verrerie, métallurgie), la ville concentre un tissu de TPE/PME industrie chimique, agroalimentaire, logistique fluviale, commerce et services. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chauny (02). Nous accompagnons TPE et PME du sud de l'Aisne : industriels chimie, agroalimentaire, logisticiens, commerçants et prestataires de services. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -34,8 +34,8 @@ export const CHAUNY_COPY: VilleCopy = {
       en: "Audit IA à Chauny : diagnostic adapté aux TPE/PME industrie chimique, agroalimentaire, logistique, commerce et services du sud de l'Aisne. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Chauny : formats adaptés au site chimique, à l'usine agroalimentaire, à l'entrepôt logistique, au commerce ou au bureau. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Chauny : formats adaptés au site chimique, à l'usine agroalimentaire, à l'entrepôt logistique, au commerce ou au bureau. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Chauny : formats adaptés au site chimique, à l'usine agroalimentaire, à l'entrepôt logistique, au commerce ou au bureau. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Chauny : formats adaptés au site chimique, à l'usine agroalimentaire, à l'entrepôt logistique, au commerce ou au bureau. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Chauny : contrôle qualité chimie, optimisation chaîne agroalimentaire, gestion flux logistique fluvial Oise, automatisation devis BTP/métallurgie, OCR documents et facturation.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_MEZIERE_COPY: VilleCopy = {
   pitchFr:
-    "La Mézière (35), commune du nord de Rennes Métropole peuplée de 5 033 habitants, conjugue cadre résidentiel paisible et proximité du grand pôle économique rennais. TPE, PME, artisans, commerçants et professions libérales y constituent l'essentiel du tissu économique. Axion-IA y intervient pour tous types d'activités du nord-rennais.",
+    "La Mézière (35), commune du nord de Rennes Métropole peuplée de 5 033 habitants, conjugue cadre résidentiel paisible et proximité du grand pôle économique rennais. TPE, PME, artisans, commerçants et professions libérales y constituent l'essentiel du tissu économique. Axion-IA y déploie ses missions auprès de toutes les organisations du nord-rennais.",
   pitchEn:
-    "La Mézière (35), commune du nord de Rennes Métropole peuplée de 5 033 habitants, conjugue cadre résidentiel paisible et proximité du grand pôle économique rennais. TPE, PME, artisans, commerçants et professions libérales y constituent l'essentiel du tissu économique. Axion-IA y intervient pour tous types d'activités du nord-rennais.",
+    "La Mézière (35), commune du nord de Rennes Métropole peuplée de 5 033 habitants, conjugue cadre résidentiel paisible et proximité du grand pôle économique rennais. TPE, PME, artisans, commerçants et professions libérales y constituent l'essentiel du tissu économique. Axion-IA y déploie ses missions auprès de toutes les organisations du nord-rennais.",
   seoHook: "résidentiel & proximité nord Rennes",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Mézière (35). Nous accompagnons tous types d'activités : TPE et PME locales, artisans, commerçants et professions libérales du nord de Rennes Métropole. Audit Flash dès 490 € HT, démarrage sous 5 jours.",

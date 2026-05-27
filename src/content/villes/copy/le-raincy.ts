@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_RAINCY_COPY: VilleCopy = {
   pitchFr:
-    "Le Raincy (93), sous-préfecture de Seine-Saint-Denis, est une commune résidentielle atypique du département avec son allée de tilleuls, son église Notre-Dame (béton armé des frères Perret) et son tissu de professions libérales, TPE commerçantes, cabinets spécialisés et PME tertiaires. Axion-IA y intervient pour tous types d'activités.",
+    "Le Raincy (93), sous-préfecture de Seine-Saint-Denis, est une commune résidentielle atypique du département avec son allée de tilleuls, son église Notre-Dame (béton armé des frères Perret) et son tissu de professions libérales, TPE commerçantes, cabinets spécialisés et PME tertiaires. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Le Raincy (93), sous-préfecture de Seine-Saint-Denis, est une commune résidentielle atypique du département avec son allée de tilleuls, son église Notre-Dame (béton armé des frères Perret) et son tissu de professions libérales, TPE commerçantes, cabinets spécialisés et PME tertiaires. Axion-IA y intervient pour tous types d'activités.",
+    "Le Raincy (93), sous-préfecture de Seine-Saint-Denis, est une commune résidentielle atypique du département avec son allée de tilleuls, son église Notre-Dame (béton armé des frères Perret) et son tissu de professions libérales, TPE commerçantes, cabinets spécialisés et PME tertiaires. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Raincy (93). Nous accompagnons tous types d'activités : professions libérales, TPE commerçantes, cabinets spécialisés, PME tertiaires, artisans et indépendants de cette sous-préfecture résidentielle de Seine-Saint-Denis. Audit Flash à partir de 490 € HT.",
   directAnswerEn:

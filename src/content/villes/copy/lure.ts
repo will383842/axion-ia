@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LURE_COPY: VilleCopy = {
   pitchFr:
-    "Lure (70), sous-préfecture de Haute-Saône, compte environ 7 900 habitants au carrefour des vallées de l'Ognon et du Breuchin. Tissu de TPE/PME industrielles, artisanat BTP, commerces, services de santé et professions libérales. Axion-IA y intervient pour tous types d'activités du Pays de Lure et nord Haute-Saône.",
+    "Lure (70), sous-préfecture de Haute-Saône, compte environ 7 900 habitants au carrefour des vallées de l'Ognon et du Breuchin. Tissu de TPE/PME industrielles, artisanat BTP, commerces, services de santé et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du Pays de Lure et nord Haute-Saône.",
   pitchEn:
-    "Lure (70), sous-préfecture de Haute-Saône, compte environ 7 900 habitants au carrefour des vallées de l'Ognon et du Breuchin. Tissu de TPE/PME industrielles, artisanat BTP, commerces, services de santé et professions libérales. Axion-IA y intervient pour tous types d'activités du Pays de Lure et nord Haute-Saône.",
+    "Lure (70), sous-préfecture de Haute-Saône, compte environ 7 900 habitants au carrefour des vallées de l'Ognon et du Breuchin. Tissu de TPE/PME industrielles, artisanat BTP, commerces, services de santé et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du Pays de Lure et nord Haute-Saône.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lure (70), sous-préfecture de Haute-Saône. Nous accompagnons TPE et PME : industries locales, artisans BTP, commerçants, professionnels de santé, professions libérales et services aux entreprises du Pays de Lure.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const LURE_COPY: VilleCopy = {
       en: "Audit IA à Lure : diagnostic adapté aux TPE/PME industrielles, artisans BTP, commerçants et professionnels de santé du Pays de Lure. Audit Flash 490 € HT, ROI chiffré, livrable sous 5 jours.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Lure : formats adaptés à l'atelier industriel, cabinet médical, commerce, bureau artisan. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Lure : formats adaptés à l'atelier industriel, cabinet médical, commerce, bureau artisan. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Lure : formats adaptés à l'atelier industriel, cabinet médical, commerce, bureau artisan. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Lure : formats adaptés à l'atelier industriel, cabinet médical, commerce, bureau artisan. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Lure : automatisation devis BTP, gestion stocks commerce, prédiction maintenance industrielle, agents conversationnels, optimisation planning santé. Pays de Lure et nord Haute-Saône.",

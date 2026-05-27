@@ -50,6 +50,8 @@ export const GRENOBLE_COPY: VilleCopy = {
   directAnswerEn:
     "Axion-IA is an senior AI architects consultancy that intervenes in Grenoble (38) on site, covering the city and the Grenoble basin (Meylan, Échirolles, Saint-Martin-d'Hères, Inovallée). We support deep-tech micro-businesses and CEA/CNRS spin-offs, industrial and services SMEs, deep-tech mid-caps (Soitec, Poma, Petzl and their supply chains) plus large groups (STMicroelectronics, Schneider Electric, Atos) on their operational AI initiatives — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
+  seoHook: "nano, hydrogène & sports nature",
+
   topSectorsNaf: [
     "Micro-nanoélectronique & semi-conducteurs",
     "R&D & Ingénierie (CEA-Leti, ESRF, ILL, Inria)",

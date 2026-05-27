@@ -29,12 +29,12 @@ export const COUBLEVIE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Coublevie : diagnostic adapté aux PME tertiaires Pays voironnais, TPE artisans, professions libérales. ROI chiffré, audit Flash 490 € HT accessible aux indépendants.",
-      en: "Audit IA à Coublevie : diagnostic adapté aux PME tertiaires Pays voironnais, TPE artisans, professions libérales. ROI chiffré, audit Flash 490 € HT accessible aux indépendants.",
+      fr: "Audit IA à Coublevie : diagnostic adapté aux PME tertiaires Pays voironnais, TPE artisans, professions libérales. Audit Flash 490 € HT, ROI documenté en chiffres accessible aux indépendants.",
+      en: "Audit IA à Coublevie : diagnostic adapté aux PME tertiaires Pays voironnais, TPE artisans, professions libérales. Audit Flash 490 € HT, ROI documenté en chiffres accessible aux indépendants.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Coublevie : formats adaptés au cabinet professionnel, commerce, atelier artisan ou bureau PME. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Coublevie : formats adaptés au cabinet professionnel, commerce, atelier artisan ou bureau PME. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Coublevie : formats adaptés au cabinet professionnel, commerce, atelier artisan ou bureau PME. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Coublevie : formats adaptés au cabinet professionnel, commerce, atelier artisan ou bureau PME. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Coublevie : agents conversationnels client/patient, automatisation devis BTP, classification dossiers, CRM augmentés. Tissu péri-urbain Voironnais.",
@@ -64,7 +64,7 @@ export const COUBLEVIE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Grenoble ?",
-      a: "Nos consultants viennent de Lyon (1h A48) ou Grenoble (30 min A48). Pour les multi-jours, hébergement local possible (hôtels Voiron). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (1h A48) ou Grenoble (30 min A48). Pour les multi-jours, hébergement local possible (hôtels Voiron). Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

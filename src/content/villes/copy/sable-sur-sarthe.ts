@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SABLE_SUR_SARTHE_COPY: VilleCopy = {
   pitchFr:
-    "Sablé-sur-Sarthe (72), sous-préfecture de la Sarthe desservie par le TGV aux bords de la Sarthe, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-ville, professions libérales, prestataires logistiques et services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Sablé-sur-Sarthe (72), sous-préfecture de la Sarthe desservie par le TGV aux bords de la Sarthe, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-ville, professions libérales, prestataires logistiques et services aux entreprises. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Sablé-sur-Sarthe (72), sous-préfecture de la Sarthe desservie par le TGV aux bords de la Sarthe, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-ville, professions libérales, prestataires logistiques et services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Sablé-sur-Sarthe (72), sous-préfecture de la Sarthe desservie par le TGV aux bords de la Sarthe, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-ville, professions libérales, prestataires logistiques et services aux entreprises. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sablé-sur-Sarthe (72). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles, commerçants, professions libérales, prestataires logistiques et services aux entreprises du bassin sabolien.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const SABLE_SUR_SARTHE_COPY: VilleCopy = {
       en: "Audit IA à Sablé-sur-Sarthe : diagnostic adapté aux TPE artisans, PME agroalimentaires, industriels et logisticiens du bassin sabolien. ROI chiffré, Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Sablé-sur-Sarthe : formations adaptées aux PME agroalimentaires, imprimeries, logisticiens, artisans et commerçants du bassin sabolien. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Sablé-sur-Sarthe : formations adaptées aux PME agroalimentaires, imprimeries, logisticiens, artisans et commerçants du bassin sabolien. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Sablé-sur-Sarthe : formations adaptées aux PME agroalimentaires, imprimeries, logisticiens, artisans et commerçants du bassin sabolien. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Sablé-sur-Sarthe : formations adaptées aux PME agroalimentaires, imprimeries, logisticiens, artisans et commerçants du bassin sabolien. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Sablé-sur-Sarthe : contrôle qualité agroalimentaire, automatisation imprimerie, optimisation logistique, maintenance prédictive et agents conversationnels commerces.",

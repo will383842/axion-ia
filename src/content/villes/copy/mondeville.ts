@@ -29,8 +29,8 @@ export const MONDEVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mondeville : diagnostic adapté aux PME industrielles et services agglo Caen est, TPE artisans BTP, commerçants zones d'activités et professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Mondeville : diagnostic adapté aux PME industrielles et services agglo Caen est, TPE artisans BTP, commerçants zones d'activités et professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Mondeville : diagnostic adapté aux PME industrielles et services agglo Caen est, TPE artisans BTP, commerçants zones d'activités et professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Mondeville : diagnostic adapté aux PME industrielles et services agglo Caen est, TPE artisans BTP, commerçants zones d'activités et professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mondeville : formats adaptés à l'usine, atelier BTP, bureau tertiaire ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -64,7 +64,7 @@ export const MONDEVILLE_COPY: VilleCopy = {
     },
     {
       q: "Êtes-vous accessibles en transport depuis Mondeville ?",
-      a: "Oui, Mondeville est desservie par le tramway T2 depuis Caen centre. Nos consultants se déplacent directement sur site. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Oui, Mondeville est desservie par le tramway T2 depuis Caen centre. Nos consultants se déplacent directement sur site. Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

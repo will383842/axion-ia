@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SURGERES_COPY: VilleCopy = {
   pitchFr:
-    "Surgères (17), commune de Charente-Maritime, capitale du beurre Charentes-Poitou AOP et pôle agroalimentaire laitier. Tissu de TPE artisans, PME agroalimentaires et laitières, coopératives, commerces de proximité et services. Axion-IA y intervient pour tous types d'activités du bassin de Surgères.",
+    "Surgères (17), commune de Charente-Maritime, capitale du beurre Charentes-Poitou AOP et pôle agroalimentaire laitier. Tissu de TPE artisans, PME agroalimentaires et laitières, coopératives, commerces de proximité et services. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin de Surgères.",
   pitchEn:
-    "Surgères (17), commune de Charente-Maritime, capitale du beurre Charentes-Poitou AOP et pôle agroalimentaire laitier. Tissu de TPE artisans, PME agroalimentaires et laitières, coopératives, commerces de proximité et services. Axion-IA y intervient pour tous types d'activités du bassin de Surgères.",
+    "Surgères (17), commune de Charente-Maritime, capitale du beurre Charentes-Poitou AOP et pôle agroalimentaire laitier. Tissu de TPE artisans, PME agroalimentaires et laitières, coopératives, commerces de proximité et services. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin de Surgères.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Surgères (17). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et laitières, coopératives agricoles, commerçants et indépendants de cette capitale du beurre AOP Charentes-Poitou.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const SURGERES_COPY: VilleCopy = {
       en: "Audit IA à Surgères : diagnostic adapté aux PME agroalimentaires laitières, coopératives, exploitants agricoles, TPE artisans et commerces du bassin de Surgères. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Surgères : formats adaptés à la laiterie, à la coopérative, à l'exploitation agricole ou au commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Surgères : formats adaptés à la laiterie, à la coopérative, à l'exploitation agricole ou au commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Surgères : formats adaptés à la laiterie, à la coopérative, à l'exploitation agricole ou au commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Surgères : formats adaptés à la laiterie, à la coopérative, à l'exploitation agricole ou au commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Surgères : traçabilité lait-beurre AOP, contrôle qualité production laitière, optimisation logistique coopérative, prédiction rendements élevage, automatisation gestion stocks.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const EGUILLES_COPY: VilleCopy = {
   pitchFr:
-    "Éguilles (13), village résidentiel perché au nord d'Aix-en-Provence, offre un cadre provençal prisé des cadres et professions libérales du bassin aixois. Tissu de TPE indépendants, professions libérales, commerçants et PME tertiaires. Axion-IA y intervient pour tous types d'activités.",
+    "Éguilles (13), village résidentiel perché au nord d'Aix-en-Provence, offre un cadre provençal prisé des cadres et professions libérales du bassin aixois. Tissu de TPE indépendants, professions libérales, commerçants et PME tertiaires. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Éguilles (13), village résidentiel perché au nord d'Aix-en-Provence, offre un cadre provençal prisé des cadres et professions libérales du bassin aixois. Tissu de TPE indépendants, professions libérales, commerçants et PME tertiaires. Axion-IA y intervient pour tous types d'activités.",
+    "Éguilles (13), village résidentiel perché au nord d'Aix-en-Provence, offre un cadre provençal prisé des cadres et professions libérales du bassin aixois. Tissu de TPE indépendants, professions libérales, commerçants et PME tertiaires. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Éguilles (13). Nous accompagnons TPE indépendants, professions libérales, commerçants, PME tertiaires et entreprises du bassin nord-aixois. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const EGUILLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Éguilles : diagnostic adapté aux professions libérales, TPE indépendants et PME tertiaires du bassin nord-aixois. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Éguilles : diagnostic adapté aux professions libérales, TPE indépendants et PME tertiaires du bassin nord-aixois. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Éguilles : diagnostic adapté aux professions libérales, TPE indépendants et PME tertiaires du bassin nord-aixois. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Éguilles : diagnostic adapté aux professions libérales, TPE indépendants et PME tertiaires du bassin nord-aixois. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Éguilles : ateliers adaptés aux cabinets libéraux, bureaux PME ou en visio pour indépendants en télétravail. Outils IA configurés métier réel.",

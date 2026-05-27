@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FERRIERE_LA_GRANDE_COPY: VilleCopy = {
   pitchFr:
-    "Ferrière-la-Grande (59), commune de l'agglomération de Maubeuge dans la vallée de la Sambre, compte 5 131 habitants. Tissu TPE artisans, PME industrielles (métallurgie, mécanique), commerces de proximité, professions libérales et services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Ferrière-la-Grande (59), commune de l'agglomération de Maubeuge dans la vallée de la Sambre, compte 5 131 habitants. Tissu TPE artisans, PME industrielles (métallurgie, mécanique), commerces de proximité, professions libérales et services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Ferrière-la-Grande (59), commune de l'agglomération de Maubeuge dans la vallée de la Sambre, compte 5 131 habitants. Tissu TPE artisans, PME industrielles (métallurgie, mécanique), commerces de proximité, professions libérales et services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Ferrière-la-Grande (59), commune de l'agglomération de Maubeuge dans la vallée de la Sambre, compte 5 131 habitants. Tissu TPE artisans, PME industrielles (métallurgie, mécanique), commerces de proximité, professions libérales et services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ferrière-la-Grande (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles métallurgiques et mécaniques de la Sambre, commerçants, professions libérales et acteurs de la reconversion du bassin sambre-avesnois.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const FERRIERE_LA_GRANDE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ferrière-la-Grande : diagnostic adapté aux TPE artisans, PME métallurgiques, sous-traitants auto et commerçants du val de Sambre. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Ferrière-la-Grande : diagnostic adapté aux TPE artisans, PME métallurgiques, sous-traitants auto et commerçants du val de Sambre. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Ferrière-la-Grande : diagnostic adapté aux TPE artisans, PME métallurgiques, sous-traitants auto et commerçants du val de Sambre. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Ferrière-la-Grande : diagnostic adapté aux TPE artisans, PME métallurgiques, sous-traitants auto et commerçants du val de Sambre. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ferrière-la-Grande : formats adaptés à l'atelier industriel, l'usine mécanique ou le commerce. Vos équipes repartent avec des outils IA configurés métier.",

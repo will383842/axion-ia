@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_JUST_SAINT_RAMBERT_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Just-Saint-Rambert (42), commune issue de la fusion de Saint-Just-sur-Loire et Saint-Rambert-sur-Loire (Loire), est intégrée à Loire Forez Agglo. Position plaine du Forez à proximité de Saint-Étienne. Tissu PME tertiaires et industrielles, TPE artisans BTP, agriculture forézienne, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Just-Saint-Rambert (42), commune issue de la fusion de Saint-Just-sur-Loire et Saint-Rambert-sur-Loire (Loire), est intégrée à Loire Forez Agglo. Position plaine du Forez à proximité de Saint-Étienne. Tissu PME tertiaires et industrielles, TPE artisans BTP, agriculture forézienne, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Saint-Just-Saint-Rambert (42), commune issue de la fusion de Saint-Just-sur-Loire et Saint-Rambert-sur-Loire (Loire), est intégrée à Loire Forez Agglo. Position plaine du Forez à proximité de Saint-Étienne. Tissu PME tertiaires et industrielles, TPE artisans BTP, agriculture forézienne, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Just-Saint-Rambert (42), commune issue de la fusion de Saint-Just-sur-Loire et Saint-Rambert-sur-Loire (Loire), est intégrée à Loire Forez Agglo. Position plaine du Forez à proximité de Saint-Étienne. Tissu PME tertiaires et industrielles, TPE artisans BTP, agriculture forézienne, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Just-Saint-Rambert (42). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Loire Forez Agglo, TPE artisans BTP, commerçants, agriculteurs plaine du Forez, indépendants, professions libérales et services aux entreprises foréziennes.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const SAINT_JUST_SAINT_RAMBERT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Just-Saint-Rambert : diagnostic adapté aux PME tertiaires/industrielles Loire Forez Agglo, agriculteurs forez, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Just-Saint-Rambert : diagnostic adapté aux PME tertiaires/industrielles Loire Forez Agglo, agriculteurs forez, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Just-Saint-Rambert : diagnostic adapté aux PME tertiaires/industrielles Loire Forez Agglo, agriculteurs forez, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Saint-Just-Saint-Rambert : diagnostic adapté aux PME tertiaires/industrielles Loire Forez Agglo, agriculteurs forez, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Just-Saint-Rambert : formats adaptés au bureau tertiaire, atelier industriel, exploitation agricole. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const SAINT_JUST_SAINT_RAMBERT_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",
-      a: "Nos consultants viennent de Lyon (1h) ou Saint-Étienne (25 min). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (1h) ou Saint-Étienne (25 min). Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

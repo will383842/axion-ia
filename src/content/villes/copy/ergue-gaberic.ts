@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ERGUE_GABERIC_COPY: VilleCopy = {
   pitchFr:
-    "Ergué-Gabéric (29), commune résidentielle et industrielle de l'agglomération quimpéroise dans le Finistère sud, conjugue zones d'activités économiques et cadre de vie attractif. TPE artisanales, PME industrielles et tertiaires, commerces, services aux particuliers. Axion-IA y intervient pour tous types d'activités de l'agglomération de Quimper.",
+    "Ergué-Gabéric (29), commune résidentielle et industrielle de l'agglomération quimpéroise dans le Finistère sud, conjugue zones d'activités économiques et cadre de vie attractif. TPE artisanales, PME industrielles et tertiaires, commerces, services aux particuliers. Axion-IA opère pour toutes les structures économiques de la commune de l'agglomération de Quimper.",
   pitchEn:
-    "Ergué-Gabéric (29), commune résidentielle et industrielle de l'agglomération quimpéroise dans le Finistère sud, conjugue zones d'activités économiques et cadre de vie attractif. TPE artisanales, PME industrielles et tertiaires, commerces, services aux particuliers. Axion-IA y intervient pour tous types d'activités de l'agglomération de Quimper.",
+    "Ergué-Gabéric (29), commune résidentielle et industrielle de l'agglomération quimpéroise dans le Finistère sud, conjugue zones d'activités économiques et cadre de vie attractif. TPE artisanales, PME industrielles et tertiaires, commerces, services aux particuliers. Axion-IA opère pour toutes les structures économiques de la commune de l'agglomération de Quimper.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ergué-Gabéric (29). Nous accompagnons tous types d'activités : TPE artisanales, PME industrielles et tertiaires des zones d'activités gabéricoises, commerçants, indépendants, professions libérales et prestataires de services de l'agglomération quimpéroise.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const ERGUE_GABERIC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ergué-Gabéric : diagnostic adapté aux PME industrielles des zones d'activités gabéricoises, TPE artisanales, tertiaire et commerces de l'agglo Quimper. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Ergué-Gabéric : diagnostic adapté aux PME industrielles des zones d'activités gabéricoises, TPE artisanales, tertiaire et commerces de l'agglo Quimper. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Ergué-Gabéric : diagnostic adapté aux PME industrielles des zones d'activités gabéricoises, TPE artisanales, tertiaire et commerces de l'agglo Quimper. ROI mesurable, audit Flash dès 490 € HT accessible.",
+      en: "Audit IA à Ergué-Gabéric : diagnostic adapté aux PME industrielles des zones d'activités gabéricoises, TPE artisanales, tertiaire et commerces de l'agglo Quimper. ROI mesurable, audit Flash dès 490 € HT accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ergué-Gabéric : formats adaptés à l'atelier industriel, au bureau PME tertiaire ou à la TPE artisan. Vos équipes repartent autonomes sur les outils IA métier.",

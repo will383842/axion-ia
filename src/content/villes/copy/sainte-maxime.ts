@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINTE_MAXIME_COPY: VilleCopy = {
   pitchFr:
-    "Sainte-Maxime (83), station balnéaire du Var face au golfe de Saint-Tropez, compte plus de 14 100 habitants. Tourisme balnéaire haut de gamme, plaisance, port, tissu de TPE artisanales, PME hôtellerie-restauration, commerces de luxe et services. Axion-IA y intervient pour tous types d'activités.",
+    "Sainte-Maxime (83), station balnéaire du Var face au golfe de Saint-Tropez, compte plus de 14 100 habitants. Tourisme balnéaire haut de gamme, plaisance, port, tissu de TPE artisanales, PME hôtellerie-restauration, commerces de luxe et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Sainte-Maxime (83), station balnéaire du Var face au golfe de Saint-Tropez, compte plus de 14 100 habitants. Tourisme balnéaire haut de gamme, plaisance, port, tissu de TPE artisanales, PME hôtellerie-restauration, commerces de luxe et services. Axion-IA y intervient pour tous types d'activités.",
+    "Sainte-Maxime (83), station balnéaire du Var face au golfe de Saint-Tropez, compte plus de 14 100 habitants. Tourisme balnéaire haut de gamme, plaisance, port, tissu de TPE artisanales, PME hôtellerie-restauration, commerces de luxe et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sainte-Maxime (83). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME hôtellerie-restauration, professionnels du tourisme balnéaire et de la plaisance, commerces et services golfe de Saint-Tropez.",
   directAnswerEn:

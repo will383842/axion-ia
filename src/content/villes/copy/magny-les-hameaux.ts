@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MAGNY_LES_HAMEAUX_COPY: VilleCopy = {
   pitchFr:
-    "Magny-les-Hameaux (78), commune résidentielle au cœur de la vallée de Chevreuse dans les Yvelines, à 27 km au sud-ouest de Paris. Tissu de TPE artisans, PME tertiaires, professions libérales, consultants indépendants et commerces de proximité adossés au parc naturel régional. Axion-IA y intervient pour tous types d'activités du plateau de Saclay et de la haute vallée de Chevreuse.",
+    "Magny-les-Hameaux (78), commune résidentielle au cœur de la vallée de Chevreuse dans les Yvelines, à 27 km au sud-ouest de Paris. Tissu de TPE artisans, PME tertiaires, professions libérales, consultants indépendants et commerces de proximité adossés au parc naturel régional. Axion-IA couvre l'ensemble des activités professionnelles présentes du plateau de Saclay et de la haute vallée de Chevreuse.",
   pitchEn:
-    "Magny-les-Hameaux (78), commune résidentielle au cœur de la vallée de Chevreuse dans les Yvelines, à 27 km au sud-ouest de Paris. Tissu de TPE artisans, PME tertiaires, professions libérales, consultants indépendants et commerces de proximité adossés au parc naturel régional. Axion-IA y intervient pour tous types d'activités du plateau de Saclay et de la haute vallée de Chevreuse.",
+    "Magny-les-Hameaux (78), commune résidentielle au cœur de la vallée de Chevreuse dans les Yvelines, à 27 km au sud-ouest de Paris. Tissu de TPE artisans, PME tertiaires, professions libérales, consultants indépendants et commerces de proximité adossés au parc naturel régional. Axion-IA couvre l'ensemble des activités professionnelles présentes du plateau de Saclay et de la haute vallée de Chevreuse.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Magny-les-Hameaux (78). Nous accompagnons TPE et PME : consultants, professions libérales, PME tertiaires, artisans et commerces de cette commune résidentielle de la vallée de Chevreuse, proche du plateau de Saclay. Audit Flash dès 490 € HT.",
   directAnswerEn:

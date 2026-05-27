@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const DOMENE_COPY: VilleCopy = {
   pitchFr:
-    "Domène (38), commune de la vallée du Grésivaudan à l'est immédiat de Grenoble, est intégrée à Grenoble-Alpes Métropole. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités domenoises du Grésivaudan.",
+    "Domène (38), commune de la vallée du Grésivaudan à l'est immédiat de Grenoble, est intégrée à Grenoble-Alpes Métropole. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes domenoises du Grésivaudan.",
   pitchEn:
-    "Domène (38), commune de la vallée du Grésivaudan à l'est immédiat de Grenoble, est intégrée à Grenoble-Alpes Métropole. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités domenoises du Grésivaudan.",
+    "Domène (38), commune de la vallée du Grésivaudan à l'est immédiat de Grenoble, est intégrée à Grenoble-Alpes Métropole. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes domenoises du Grésivaudan.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Domène (38). Nous accompagnons tous types d'activités : PME tertiaires et industrielles du Grésivaudan, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de Grenoble-Alpes Métropole en zone est.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const DOMENE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Domène : diagnostic adapté aux PME tertiaires/industrielles, TPE artisans, professions libérales du bassin grenoblois est. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Domène : diagnostic adapté aux PME tertiaires/industrielles, TPE artisans, professions libérales du bassin grenoblois est. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Domène : diagnostic adapté aux PME tertiaires/industrielles, TPE artisans, professions libérales du bassin grenoblois est. Audit Flash 490 € HT, ROI documenté en chiffres accessible.",
+      en: "Audit IA à Domène : diagnostic adapté aux PME tertiaires/industrielles, TPE artisans, professions libérales du bassin grenoblois est. Audit Flash 490 € HT, ROI documenté en chiffres accessible.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Domène : formats adaptés au bureau PME, atelier industriel, cabinet professionnel. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Domène : formats adaptés au bureau PME, atelier industriel, cabinet professionnel. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Domène : formats adaptés au bureau PME, atelier industriel, cabinet professionnel. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Domène : formats adaptés au bureau PME, atelier industriel, cabinet professionnel. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Domène : agents conversationnels, automatisation workflow, classification documents, prédiction maintenance industrielle, CRM augmentés. Tissu Grésivaudan / Métro.",

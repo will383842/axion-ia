@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_ISMIER_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Ismier (38), commune de la vallée du Grésivaudan en banlieue est de Grenoble, mêle résidentiel haut de gamme, tissu tertiaire et activités locales. Tissu PME tertiaires, TPE artisans BTP haut de gamme, professions libérales et commerces. Axion-IA y intervient pour tous types d'activités du Grésivaudan.",
+    "Saint-Ismier (38), commune de la vallée du Grésivaudan en banlieue est de Grenoble, mêle résidentiel haut de gamme, tissu tertiaire et activités locales. Tissu PME tertiaires, TPE artisans BTP haut de gamme, professions libérales et commerces. Axion-IA y déploie ses missions auprès de toutes les organisations du Grésivaudan.",
   pitchEn:
-    "Saint-Ismier (38), commune de la vallée du Grésivaudan en banlieue est de Grenoble, mêle résidentiel haut de gamme, tissu tertiaire et activités locales. Tissu PME tertiaires, TPE artisans BTP haut de gamme, professions libérales et commerces. Axion-IA y intervient pour tous types d'activités du Grésivaudan.",
+    "Saint-Ismier (38), commune de la vallée du Grésivaudan en banlieue est de Grenoble, mêle résidentiel haut de gamme, tissu tertiaire et activités locales. Tissu PME tertiaires, TPE artisans BTP haut de gamme, professions libérales et commerces. Axion-IA y déploie ses missions auprès de toutes les organisations du Grésivaudan.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Ismier (38). Nous accompagnons tous types d'activités : TPE artisans BTP haut de gamme, commerçants, professions libérales (médecins, avocats, expert-comptables), PME tertiaires saint-ismiéroises, indépendants et services aux entreprises du Grésivaudan.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const SAINT_ISMIER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Ismier : diagnostic adapté aux PME tertiaires, TPE artisans haut de gamme, professions libérales du Grésivaudan. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Saint-Ismier : diagnostic adapté aux PME tertiaires, TPE artisans haut de gamme, professions libérales du Grésivaudan. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Saint-Ismier : diagnostic adapté aux PME tertiaires, TPE artisans haut de gamme, professions libérales du Grésivaudan. ROI mesurable, audit Flash dès 490 € HT accessible.",
+      en: "Audit IA à Saint-Ismier : diagnostic adapté aux PME tertiaires, TPE artisans haut de gamme, professions libérales du Grésivaudan. ROI mesurable, audit Flash dès 490 € HT accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Ismier : formats adaptés au cabinet professionnel, atelier artisan haut de gamme, bureau PME tertiaire. Vos équipes repartent autonomes sur outils IA métier.",

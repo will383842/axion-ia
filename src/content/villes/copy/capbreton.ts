@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CAPBRETON_COPY: VilleCopy = {
   pitchFr:
-    "Capbreton (40), port de pêche et de plaisance des Landes, est une station balnéaire réputée face à l'océan Atlantique. Le gouf de Capbreton (canyon sous-marin) est un patrimoine naturel unique. Surf, tourisme, pêche artisanale, TPE nautiques, commerces, restauration. Axion-IA y intervient pour tous types d'activités.",
+    "Capbreton (40), port de pêche et de plaisance des Landes, est une station balnéaire réputée face à l'océan Atlantique. Le gouf de Capbreton (canyon sous-marin) est un patrimoine naturel unique. Surf, tourisme, pêche artisanale, TPE nautiques, commerces, restauration. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Capbreton (40), port de pêche et de plaisance des Landes, est une station balnéaire réputée face à l'océan Atlantique. Le gouf de Capbreton (canyon sous-marin) est un patrimoine naturel unique. Surf, tourisme, pêche artisanale, TPE nautiques, commerces, restauration. Axion-IA y intervient pour tous types d'activités.",
+    "Capbreton (40), port de pêche et de plaisance des Landes, est une station balnéaire réputée face à l'océan Atlantique. Le gouf de Capbreton (canyon sous-marin) est un patrimoine naturel unique. Surf, tourisme, pêche artisanale, TPE nautiques, commerces, restauration. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Capbreton (40). Nous accompagnons TPE et PME de la pêche artisanale et du port de plaisance, hébergeurs balnéaires, écoles de surf, restaurateurs, commerçants saisonniers et artisans de la côte landaise sud.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const CAPBRETON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Capbreton : diagnostic adapté aux TPE de la pêche et du nautisme, restaurateurs produits de la mer, hébergeurs saisonniers, écoles de surf et commerçants du littoral landais sud. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Capbreton : diagnostic adapté aux TPE de la pêche et du nautisme, restaurateurs produits de la mer, hébergeurs saisonniers, écoles de surf et commerçants du littoral landais sud. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Capbreton : diagnostic adapté aux TPE de la pêche et du nautisme, restaurateurs produits de la mer, hébergeurs saisonniers, écoles de surf et commerçants du littoral landais sud. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Capbreton : diagnostic adapté aux TPE de la pêche et du nautisme, restaurateurs produits de la mer, hébergeurs saisonniers, écoles de surf et commerçants du littoral landais sud. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Capbreton : formations adaptées aux professionnels du port, restaurateurs, hébergeurs, commerces saisonniers et écoles de surf. Vos équipes repartent autonomes sur les outils IA configurés métier.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const EGLY_COPY: VilleCopy = {
   pitchFr:
-    "Égly (91), commune résidentielle du Hurepoix dans le sud de l'Essonne, est positionnée entre Arpajon et Brétigny-sur-Orge sur l'axe RN20. Tissu TPE artisans, commerçants, professions libérales, PME de services et indépendants. Axion-IA y intervient pour tous types d'activités du sud Essonne / Hurepoix.",
+    "Égly (91), commune résidentielle du Hurepoix dans le sud de l'Essonne, est positionnée entre Arpajon et Brétigny-sur-Orge sur l'axe RN20. Tissu TPE artisans, commerçants, professions libérales, PME de services et indépendants. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud Essonne / Hurepoix.",
   pitchEn:
-    "Égly (91), commune résidentielle du Hurepoix dans le sud de l'Essonne, est positionnée entre Arpajon et Brétigny-sur-Orge sur l'axe RN20. Tissu TPE artisans, commerçants, professions libérales, PME de services et indépendants. Axion-IA y intervient pour tous types d'activités du sud Essonne / Hurepoix.",
+    "Égly (91), commune résidentielle du Hurepoix dans le sud de l'Essonne, est positionnée entre Arpajon et Brétigny-sur-Orge sur l'axe RN20. Tissu TPE artisans, commerçants, professions libérales, PME de services et indépendants. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud Essonne / Hurepoix.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Égly (91). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, PME de services, agriculteurs et indépendants du sud Essonne entre Arpajon et Brétigny-sur-Orge, cœur du Hurepoix.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const EGLY_COPY: VilleCopy = {
       en: "Audit IA à Égly : diagnostic adapté aux TPE artisans, commerçants, professions libérales et PME de services du sud Essonne / Hurepoix. ROI chiffré, audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Égly : formats adaptés au cabinet, commerce, atelier ou exploitation agricole. Vos équipes repartent autonomes sur outils IA configurés métier réel.",
-      en: "Interventions IA sur site à Égly : formats adaptés au cabinet, commerce, atelier ou exploitation agricole. Vos équipes repartent autonomes sur outils IA configurés métier réel.",
+      fr: "Interventions IA sur site à Égly : formats adaptés au cabinet, commerce, atelier ou exploitation agricole. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure réel.",
+      en: "Interventions IA sur site à Égly : formats adaptés au cabinet, commerce, atelier ou exploitation agricole. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure réel.",
     },
     implementation: {
       fr: "Implémentation IA à Égly : automatisation devis BTP, agents conversationnels cabinet libéral, classification documents, gestion planning, traçabilité agricole. Tous secteurs sud Essonne.",

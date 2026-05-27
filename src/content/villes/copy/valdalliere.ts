@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VALDALLIERE_COPY: VilleCopy = {
   pitchFr:
-    "Valdallière (14), commune nouvelle du Calvados dans le bocage normand sud-ouest, regroupe plusieurs communes rurales autour de la vallée de l'Allière. Territoire agricole et artisanal, tissu TPE artisans BTP, exploitations agricoles, PME agroalimentaires, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Valdallière (14), commune nouvelle du Calvados dans le bocage normand sud-ouest, regroupe plusieurs communes rurales autour de la vallée de l'Allière. Territoire agricole et artisanal, tissu TPE artisans BTP, exploitations agricoles, PME agroalimentaires, commerces de proximité, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Valdallière (14), commune nouvelle du Calvados dans le bocage normand sud-ouest, regroupe plusieurs communes rurales autour de la vallée de l'Allière. Territoire agricole et artisanal, tissu TPE artisans BTP, exploitations agricoles, PME agroalimentaires, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Valdallière (14), commune nouvelle du Calvados dans le bocage normand sud-ouest, regroupe plusieurs communes rurales autour de la vallée de l'Allière. Territoire agricole et artisanal, tissu TPE artisans BTP, exploitations agricoles, PME agroalimentaires, commerces de proximité, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Valdallière (14). Nous accompagnons tous types d'activités : TPE artisans BTP et commerçants du bocage, exploitations agricoles, PME agroalimentaires, professions libérales, indépendants et services aux entreprises rurales du sud-ouest Calvados.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const VALDALLIERE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Valdallière : diagnostic adapté aux exploitations agricoles bocage, PME agroalimentaires (laiteries), TPE artisans BTP et commerçants ruraux. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Valdallière : diagnostic adapté aux exploitations agricoles bocage, PME agroalimentaires (laiteries), TPE artisans BTP et commerçants ruraux. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Valdallière : diagnostic adapté aux exploitations agricoles bocage, PME agroalimentaires (laiteries), TPE artisans BTP et commerçants ruraux. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Valdallière : diagnostic adapté aux exploitations agricoles bocage, PME agroalimentaires (laiteries), TPE artisans BTP et commerçants ruraux. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Valdallière : formats adaptés à l'exploitation agricole, laiterie, atelier BTP ou commerce rural. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Valdallière : formats adaptés à l'exploitation agricole, laiterie, atelier BTP ou commerce rural. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Valdallière : formats adaptés à l'exploitation agricole, laiterie, atelier BTP ou commerce rural. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Valdallière : formats adaptés à l'exploitation agricole, laiterie, atelier BTP ou commerce rural. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Valdallière : gestion troupeaux bovin, prédiction production laitière, automatisation traçabilité, agents conversationnels vente directe. Adapté TPE/PME bocage.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHAUVIGNY_COPY: VilleCopy = {
   pitchFr:
-    "Chauvigny (86), cité médiévale aux cinq châteaux surplombant la Vienne, est un pôle patrimonial et économique de l'est du département. Tissu TPE artisans (pierre de Chauvigny, BTP), PME industrielles/carrières, tourisme patrimonial, commerces, professions libérales et services. Axion-IA y intervient pour tous types d'activités du Chauvinois.",
+    "Chauvigny (86), cité médiévale aux cinq châteaux surplombant la Vienne, est un pôle patrimonial et économique de l'est du département. Tissu TPE artisans (pierre de Chauvigny, BTP), PME industrielles/carrières, tourisme patrimonial, commerces, professions libérales et services. Axion-IA y déploie ses missions auprès de toutes les organisations du Chauvinois.",
   pitchEn:
-    "Chauvigny (86), cité médiévale aux cinq châteaux surplombant la Vienne, est un pôle patrimonial et économique de l'est du département. Tissu TPE artisans (pierre de Chauvigny, BTP), PME industrielles/carrières, tourisme patrimonial, commerces, professions libérales et services. Axion-IA y intervient pour tous types d'activités du Chauvinois.",
+    "Chauvigny (86), cité médiévale aux cinq châteaux surplombant la Vienne, est un pôle patrimonial et économique de l'est du département. Tissu TPE artisans (pierre de Chauvigny, BTP), PME industrielles/carrières, tourisme patrimonial, commerces, professions libérales et services. Axion-IA y déploie ses missions auprès de toutes les organisations du Chauvinois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chauvigny (86). Nous accompagnons tous types d'activités : TPE artisans pierre/BTP, PME industrielles et carriers, acteurs tourisme patrimonial (5 châteaux médiévaux), commerçants, professions libérales et services aux entreprises de l'est Vienne.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const CHAUVIGNY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chauvigny : diagnostic adapté aux TPE artisans pierre/BTP, PME carriers, acteurs tourisme patrimonial, commerçants et professions libérales du Chauvinois. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Chauvigny : diagnostic adapté aux TPE artisans pierre/BTP, PME carriers, acteurs tourisme patrimonial, commerçants et professions libérales du Chauvinois. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Chauvigny : diagnostic adapté aux TPE artisans pierre/BTP, PME carriers, acteurs tourisme patrimonial, commerçants et professions libérales du Chauvinois. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
+      en: "Audit IA à Chauvigny : diagnostic adapté aux TPE artisans pierre/BTP, PME carriers, acteurs tourisme patrimonial, commerçants et professions libérales du Chauvinois. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chauvigny : formats adaptés aux ateliers de taille de pierre, exploitations carrières, sites touristiques ou commerces. Vos équipes terrain et back-office repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const CHAUVIGNY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris en TGV direct gare Poitiers (1h40) puis 25 min route vers Chauvigny. Pour les multi-jours, hébergement local ou Poitiers centre. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Paris en TGV direct gare Poitiers (1h40) puis 25 min route vers Chauvigny. Pour les multi-jours, hébergement local ou Poitiers centre. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

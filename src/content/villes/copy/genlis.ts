@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GENLIS_COPY: VilleCopy = {
   pitchFr:
-    "Genlis (21), bourg de la plaine de Saône à l'est de Dijon en Côte-d'Or, est un pôle résidentiel et de services pour l'est dijonnais. Tissu TPE artisans BTP, PME services aux entreprises, commerces de proximité, agriculture céréalière plaine de Saône, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Genlis (21), bourg de la plaine de Saône à l'est de Dijon en Côte-d'Or, est un pôle résidentiel et de services pour l'est dijonnais. Tissu TPE artisans BTP, PME services aux entreprises, commerces de proximité, agriculture céréalière plaine de Saône, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Genlis (21), bourg de la plaine de Saône à l'est de Dijon en Côte-d'Or, est un pôle résidentiel et de services pour l'est dijonnais. Tissu TPE artisans BTP, PME services aux entreprises, commerces de proximité, agriculture céréalière plaine de Saône, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Genlis (21), bourg de la plaine de Saône à l'est de Dijon en Côte-d'Or, est un pôle résidentiel et de services pour l'est dijonnais. Tissu TPE artisans BTP, PME services aux entreprises, commerces de proximité, agriculture céréalière plaine de Saône, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Genlis (21). Nous accompagnons TPE et PME de la plaine de Saône est dijonnais : artisans BTP, prestataires services aux entreprises, commerçants, exploitants agricoles céréaliers et professions libérales.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const GENLIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Genlis : diagnostic adapté aux artisans BTP, PME services, commerçants, exploitants agricoles et professions libérales de la plaine de Saône. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Genlis : diagnostic adapté aux artisans BTP, PME services, commerçants, exploitants agricoles et professions libérales de la plaine de Saône. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Genlis : diagnostic adapté aux artisans BTP, PME services, commerçants, exploitants agricoles et professions libérales de la plaine de Saône. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Genlis : diagnostic adapté aux artisans BTP, PME services, commerçants, exploitants agricoles et professions libérales de la plaine de Saône. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Genlis : ateliers dans vos locaux atelier BTP, bureau PME ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier artisanat, tertiaire et agriculture.",
-      en: "Interventions IA sur site à Genlis : ateliers dans vos locaux atelier BTP, bureau PME ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier artisanat, tertiaire et agriculture.",
+      fr: "Interventions IA sur site à Genlis : ateliers dans vos locaux atelier BTP, bureau PME ou commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention artisanat, tertiaire et agriculture.",
+      en: "Interventions IA sur site à Genlis : ateliers dans vos locaux atelier BTP, bureau PME ou commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention artisanat, tertiaire et agriculture.",
     },
     implementation: {
       fr: "Implémentation IA à Genlis : automatisation devis et planification chantiers BTP, CRM augmenté PME, gestion stocks commerce, outils prédictifs cultures céréalières, secrétariat IA professions libérales.",

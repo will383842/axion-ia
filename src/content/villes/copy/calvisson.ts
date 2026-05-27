@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CALVISSON_COPY: VilleCopy = {
   pitchFr:
-    "Calvisson (30), commune viticole de la Vaunage gardoise entre Nîmes et Sommières. Tissu TPE/PME viticulture, agriculture méditerranéenne, commerces, artisanat BTP et professions libérales. Axion-IA y intervient pour tous types d'activités de la Vaunage.",
+    "Calvisson (30), commune viticole de la Vaunage gardoise entre Nîmes et Sommières. Tissu TPE/PME viticulture, agriculture méditerranéenne, commerces, artisanat BTP et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs de la Vaunage.",
   pitchEn:
-    "Calvisson (30), commune viticole de la Vaunage gardoise entre Nîmes et Sommières. Tissu TPE/PME viticulture, agriculture méditerranéenne, commerces, artisanat BTP et professions libérales. Axion-IA y intervient pour tous types d'activités de la Vaunage.",
+    "Calvisson (30), commune viticole de la Vaunage gardoise entre Nîmes et Sommières. Tissu TPE/PME viticulture, agriculture méditerranéenne, commerces, artisanat BTP et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs de la Vaunage.",
   directAnswerFr:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Calvisson (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs, agriculteurs, commerçants, artisans BTP et professions libérales de la Vaunage gardoise. Audit Flash à partir de 490 € HT.",
   directAnswerEn:

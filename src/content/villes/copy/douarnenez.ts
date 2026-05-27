@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const DOUARNENEZ_COPY: VilleCopy = {
   pitchFr:
-    "Douarnenez (29), ville portuaire du Finistère célèbre pour sa baie, son histoire sardinière et le Port-Musée. Tissu de TPE artisanales, PME de la pêche et de la transformation des produits de la mer, commerces de centre-ville, acteurs du tourisme littoral et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Douarnenez (29), ville portuaire du Finistère célèbre pour sa baie, son histoire sardinière et le Port-Musée. Tissu de TPE artisanales, PME de la pêche et de la transformation des produits de la mer, commerces de centre-ville, acteurs du tourisme littoral et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Douarnenez (29), ville portuaire du Finistère célèbre pour sa baie, son histoire sardinière et le Port-Musée. Tissu de TPE artisanales, PME de la pêche et de la transformation des produits de la mer, commerces de centre-ville, acteurs du tourisme littoral et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Douarnenez (29), ville portuaire du Finistère célèbre pour sa baie, son histoire sardinière et le Port-Musée. Tissu de TPE artisanales, PME de la pêche et de la transformation des produits de la mer, commerces de centre-ville, acteurs du tourisme littoral et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   seoHook: "pêche, produits de la mer & tourisme littoral",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Douarnenez (29). Nous accompagnons TPE et PME : conserveries, mareyeurs, commerces de centre-ville, acteurs du tourisme littoral et professions libérales de cette cité portuaire de la baie de Douarnenez. Audit Flash dès 490 € HT.",

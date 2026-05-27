@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GRAVELINES_COPY: VilleCopy = {
   pitchFr:
-    "Gravelines (59), commune littorale de la Mer du Nord abritant la citadelle Vauban et la plus puissante centrale nucléaire d'Europe occidentale. Tissu TPE/PME énergie, sous-traitance nucléaire, pêche, tourisme balnéaire (Petit-Fort-Philippe), logistique portuaire (port de Dunkerque). Axion-IA y intervient pour tous types d'activités.",
+    "Gravelines (59), commune littorale de la Mer du Nord abritant la citadelle Vauban et la plus puissante centrale nucléaire d'Europe occidentale. Tissu TPE/PME énergie, sous-traitance nucléaire, pêche, tourisme balnéaire (Petit-Fort-Philippe), logistique portuaire (port de Dunkerque). Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Gravelines (59), commune littorale de la Mer du Nord abritant la citadelle Vauban et la plus puissante centrale nucléaire d'Europe occidentale. Tissu TPE/PME énergie, sous-traitance nucléaire, pêche, tourisme balnéaire (Petit-Fort-Philippe), logistique portuaire (port de Dunkerque). Axion-IA y intervient pour tous types d'activités.",
+    "Gravelines (59), commune littorale de la Mer du Nord abritant la citadelle Vauban et la plus puissante centrale nucléaire d'Europe occidentale. Tissu TPE/PME énergie, sous-traitance nucléaire, pêche, tourisme balnéaire (Petit-Fort-Philippe), logistique portuaire (port de Dunkerque). Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gravelines (59). Nous accompagnons TPE et PME : sous-traitance nucléaire et énergie, pêche et mareyage, tourisme balnéaire, logistique portuaire dunkerquoise, commerces de proximité et artisans.",
   directAnswerEn:
@@ -34,8 +34,8 @@ export const GRAVELINES_COPY: VilleCopy = {
       en: "Audit IA à Gravelines : diagnostic adapté aux TPE/PME sous-traitance nucléaire, pêche-mareyage, tourisme balnéaire, logistique portuaire et commerces du littoral dunkerquois. ROI chiffré, audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Gravelines : formats adaptés au site industriel nucléaire, à la criée, à l'hôtel-restaurant balnéaire ou à l'entrepôt portuaire. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Gravelines : formats adaptés au site industriel nucléaire, à la criée, à l'hôtel-restaurant balnéaire ou à l'entrepôt portuaire. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Gravelines : formats adaptés au site industriel nucléaire, à la criée, à l'hôtel-restaurant balnéaire ou à l'entrepôt portuaire. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Gravelines : formats adaptés au site industriel nucléaire, à la criée, à l'hôtel-restaurant balnéaire ou à l'entrepôt portuaire. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Gravelines : maintenance prédictive sous-traitance énergie, traçabilité pêche-mareyage, revenue management tourisme balnéaire, optimisation flux logistiques portuaires, automatisation administrative PME.",

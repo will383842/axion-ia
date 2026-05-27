@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LES_ABRETS_EN_DAUPHINE_COPY: VilleCopy = {
   pitchFr:
-    "Les Abrets en Dauphiné (38), commune nouvelle issue de fusions communales en Nord-Isère / Bas-Dauphiné, fait partie de la Communauté de communes Les Vals du Dauphiné. Tissu PME industrielles, agriculture, TPE artisans BTP, commerces et services. Axion-IA y intervient pour tous types d'activités du Bas-Dauphiné.",
+    "Les Abrets en Dauphiné (38), commune nouvelle issue de fusions communales en Nord-Isère / Bas-Dauphiné, fait partie de la Communauté de communes Les Vals du Dauphiné. Tissu PME industrielles, agriculture, TPE artisans BTP, commerces et services. Axion-IA y déploie ses missions auprès de toutes les organisations du Bas-Dauphiné.",
   pitchEn:
-    "Les Abrets en Dauphiné (38), commune nouvelle issue de fusions communales en Nord-Isère / Bas-Dauphiné, fait partie de la Communauté de communes Les Vals du Dauphiné. Tissu PME industrielles, agriculture, TPE artisans BTP, commerces et services. Axion-IA y intervient pour tous types d'activités du Bas-Dauphiné.",
+    "Les Abrets en Dauphiné (38), commune nouvelle issue de fusions communales en Nord-Isère / Bas-Dauphiné, fait partie de la Communauté de communes Les Vals du Dauphiné. Tissu PME industrielles, agriculture, TPE artisans BTP, commerces et services. Axion-IA y déploie ses missions auprès de toutes les organisations du Bas-Dauphiné.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient aux Abrets en Dauphiné (38). Nous accompagnons tous types d'activités : PME industrielles Bas-Dauphiné, TPE artisans BTP, commerçants, agriculteurs/éleveurs, indépendants, professions libérales et services aux entreprises des Vals du Dauphiné.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const LES_ABRETS_EN_DAUPHINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA aux Abrets en Dauphiné : diagnostic adapté aux PME industrielles, agriculteurs, TPE artisans et commerçants des Vals du Dauphiné. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA aux Abrets en Dauphiné : diagnostic adapté aux PME industrielles, agriculteurs, TPE artisans et commerçants des Vals du Dauphiné. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA aux Abrets en Dauphiné : diagnostic adapté aux PME industrielles, agriculteurs, TPE artisans et commerçants des Vals du Dauphiné. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA aux Abrets en Dauphiné : diagnostic adapté aux PME industrielles, agriculteurs, TPE artisans et commerçants des Vals du Dauphiné. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site aux Abrets : formats adaptés à l'atelier industriel, exploitation agricole, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site aux Abrets : formats adaptés à l'atelier industriel, exploitation agricole, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site aux Abrets : formats adaptés à l'atelier industriel, exploitation agricole, commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site aux Abrets : formats adaptés à l'atelier industriel, exploitation agricole, commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA aux Abrets : prédiction maintenance industrielle, classification photos cultures/animaux, automatisation devis BTP, agents conversationnels. Bas-Dauphiné.",
@@ -64,7 +64,7 @@ export const LES_ABRETS_EN_DAUPHINE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Chambéry ?",
-      a: "Nos consultants viennent de Lyon (1h A43) ou Chambéry (50 min A43). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (1h A43) ou Chambéry (50 min A43). Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

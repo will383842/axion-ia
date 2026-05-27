@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MONTREVAULT_SUR_EVRE_COPY: VilleCopy = {
   pitchFr:
-    "Montrevault-sur-Èvre (49), commune nouvelle au cœur des Mauges, fédère un territoire rural dynamique de plus de 15 000 habitants entre bocage angevin et vallée de l'Èvre. Axion-IA y intervient pour tous types d'activités : agriculture, artisanat, industrie locale, commerces et services.",
+    "Montrevault-sur-Èvre (49), commune nouvelle au cœur des Mauges, fédère un territoire rural dynamique de plus de 15 000 habitants entre bocage angevin et vallée de l'Èvre. Axion-IA opère pour toutes les structures économiques de la commune : agriculture, artisanat, industrie locale, commerces et services.",
   pitchEn:
-    "Montrevault-sur-Èvre (49), commune nouvelle au cœur des Mauges, fédère un territoire rural dynamique de plus de 15 000 habitants entre bocage angevin et vallée de l'Èvre. Axion-IA y intervient pour tous types d'activités : agriculture, artisanat, industrie locale, commerces et services.",
+    "Montrevault-sur-Èvre (49), commune nouvelle au cœur des Mauges, fédère un territoire rural dynamique de plus de 15 000 habitants entre bocage angevin et vallée de l'Èvre. Axion-IA opère pour toutes les structures économiques de la commune : agriculture, artisanat, industrie locale, commerces et services.",
   directAnswerFr:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Montrevault-sur-Èvre (49). Nous accompagnons les TPE, PME et exploitants agricoles des Mauges dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict.",
   directAnswerEn:

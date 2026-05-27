@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LESNEVEN_COPY: VilleCopy = {
   pitchFr:
-    "Lesneven (29), bourg-centre du Pays de Léon dans le nord Finistère, est un pôle de services et de commerces pour tout le bassin lesnevien. Tissu TPE artisans, PME agroalimentaires, commerces de proximité, professions libérales et services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Lesneven (29), bourg-centre du Pays de Léon dans le nord Finistère, est un pôle de services et de commerces pour tout le bassin lesnevien. Tissu TPE artisans, PME agroalimentaires, commerces de proximité, professions libérales et services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Lesneven (29), bourg-centre du Pays de Léon dans le nord Finistère, est un pôle de services et de commerces pour tout le bassin lesnevien. Tissu TPE artisans, PME agroalimentaires, commerces de proximité, professions libérales et services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Lesneven (29), bourg-centre du Pays de Léon dans le nord Finistère, est un pôle de services et de commerces pour tout le bassin lesnevien. Tissu TPE artisans, PME agroalimentaires, commerces de proximité, professions libérales et services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lesneven (29). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires Pays de Léon, commerçants centre bourg, professions libérales, agriculteurs, services aux entreprises du nord Finistère. Audit Flash à 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LESNEVEN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lesneven : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et professions libérales du Pays de Léon. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Lesneven : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et professions libérales du Pays de Léon. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Lesneven : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et professions libérales du Pays de Léon. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Lesneven : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et professions libérales du Pays de Léon. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lesneven : formats adaptés à l'atelier artisan, l'exploitation agricole, le commerce ou le cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -64,7 +64,7 @@ export const LESNEVEN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Lesneven ?",
-      a: "Nos consultants viennent de Brest (30 min D788). Pour les multi-jours, hébergement local possible (hôtels Lesneven ou côte des Abers). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Brest (30 min D788). Pour les multi-jours, hébergement local possible (hôtels Lesneven ou côte des Abers). Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const THANN_COPY: VilleCopy = {
   pitchFr:
-    "Thann (68), sous-préfecture du Haut-Rhin, est connue pour sa collégiale Saint-Thiébaut et son vignoble grand cru Rangen, le plus méridional d'Alsace. Tissu de TPE/PME en industrie chimique et mécanique, viticulture, tourisme patrimonial, artisanat et services. Axion-IA y intervient pour tous types d'activités.",
+    "Thann (68), sous-préfecture du Haut-Rhin, est connue pour sa collégiale Saint-Thiébaut et son vignoble grand cru Rangen, le plus méridional d'Alsace. Tissu de TPE/PME en industrie chimique et mécanique, viticulture, tourisme patrimonial, artisanat et services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Thann (68), sous-préfecture du Haut-Rhin, est connue pour sa collégiale Saint-Thiébaut et son vignoble grand cru Rangen, le plus méridional d'Alsace. Tissu de TPE/PME en industrie chimique et mécanique, viticulture, tourisme patrimonial, artisanat et services. Axion-IA y intervient pour tous types d'activités.",
+    "Thann (68), sous-préfecture du Haut-Rhin, est connue pour sa collégiale Saint-Thiébaut et son vignoble grand cru Rangen, le plus méridional d'Alsace. Tissu de TPE/PME en industrie chimique et mécanique, viticulture, tourisme patrimonial, artisanat et services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thann (68). Nous accompagnons TPE et PME : industriels (chimie, mécanique), domaines viticoles AOC, hôtels-restaurants, artisans, commerçants et prestataires de services de la vallée de la Thur et du sud du vignoble alsacien. Audit Flash dès 490 € HT.",
   directAnswerEn:

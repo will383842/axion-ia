@@ -14,6 +14,7 @@ export const VANNES_COPY: VilleCopy = {
     "À Vannes, Axion-IA propose des interventions sur site pour les entreprises locales. Le parc d'activités de Laroiseau et l'incubateur Vipe Vannes constituent des pôles stratégiques pour l'innovation. Nous offrons des audits dès 490 € HT et des interventions à partir de 590 € HT, permettant une intégration rapide de solutions IA adaptées à vos besoins spécifiques.",
   directAnswerEn:
     "À Vannes, Axion-IA propose des interventions sur site pour les entreprises locales. Le parc d'activités de Laroiseau et l'incubateur Vipe Vannes constituent des pôles stratégiques pour l'innovation. Nous offrons des audits dès 490 € HT et des interventions à partir de 590 € HT, permettant une intégration rapide de solutions IA adaptées à vos besoins spécifiques.",
+  seoHook: "tourisme golfe & agro",
   ecosystemFr:
     "Vannes héberge Yves Rocher et SNCF, contribuant à un tissu économique diversifié. L'Université Bretagne Sud renforce le secteur de la programmation informatique.",
   ecosystemEn:

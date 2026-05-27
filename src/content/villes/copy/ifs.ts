@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const IFS_COPY: VilleCopy = {
   pitchFr:
-    "Ifs (14), commune de l'agglomération de Caen sud dans le Calvados, est une ville résidentielle dynamique en forte croissance démographique. Tissu TPE artisans BTP, PME services aux entreprises, commerces zones commerciales, professions libérales, indépendants. Axion-IA y intervient pour tous types d'activités.",
+    "Ifs (14), commune de l'agglomération de Caen sud dans le Calvados, est une ville résidentielle dynamique en forte croissance démographique. Tissu TPE artisans BTP, PME services aux entreprises, commerces zones commerciales, professions libérales, indépendants. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Ifs (14), commune de l'agglomération de Caen sud dans le Calvados, est une ville résidentielle dynamique en forte croissance démographique. Tissu TPE artisans BTP, PME services aux entreprises, commerces zones commerciales, professions libérales, indépendants. Axion-IA y intervient pour tous types d'activités.",
+    "Ifs (14), commune de l'agglomération de Caen sud dans le Calvados, est une ville résidentielle dynamique en forte croissance démographique. Tissu TPE artisans BTP, PME services aux entreprises, commerces zones commerciales, professions libérales, indépendants. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ifs (14). Nous accompagnons tous types d'activités : TPE artisans BTP, PME services aux entreprises de l'agglomération caennaise, commerçants zones commerciales sud Caen, professions libérales, indépendants et prestataires du secteur tertiaire.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const IFS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ifs : diagnostic adapté aux PME services caennaises, TPE artisans BTP, commerçants zones d'activités sud Caen et professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Ifs : diagnostic adapté aux PME services caennaises, TPE artisans BTP, commerçants zones d'activités sud Caen et professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Ifs : diagnostic adapté aux PME services caennaises, TPE artisans BTP, commerçants zones d'activités sud Caen et professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Ifs : diagnostic adapté aux PME services caennaises, TPE artisans BTP, commerçants zones d'activités sud Caen et professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ifs : formats adaptés au bureau tertiaire, atelier BTP, commerce ou cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BULLY_LES_MINES_COPY: VilleCopy = {
   pitchFr:
-    "Bully-les-Mines (62), commune du Pas-de-Calais dans l'agglomération Lens-Liévin (région Hauts-de-France), porte l'héritage du bassin minier reconverti inscrit UNESCO. Tissu TPE artisanat BTP et services, PME industrie reconvertie et sous-traitance, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Bully-les-Mines (62), commune du Pas-de-Calais dans l'agglomération Lens-Liévin (région Hauts-de-France), porte l'héritage du bassin minier reconverti inscrit UNESCO. Tissu TPE artisanat BTP et services, PME industrie reconvertie et sous-traitance, commerces de proximité, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Bully-les-Mines (62), commune du Pas-de-Calais dans l'agglomération Lens-Liévin (région Hauts-de-France), porte l'héritage du bassin minier reconverti inscrit UNESCO. Tissu TPE artisanat BTP et services, PME industrie reconvertie et sous-traitance, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Bully-les-Mines (62), commune du Pas-de-Calais dans l'agglomération Lens-Liévin (région Hauts-de-France), porte l'héritage du bassin minier reconverti inscrit UNESCO. Tissu TPE artisanat BTP et services, PME industrie reconvertie et sous-traitance, commerces de proximité, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bully-les-Mines (62). Nous accompagnons tous types d'activités : TPE artisans BTP et services du bassin minier, PME industrie reconvertie et sous-traitance, commerçants de proximité, professions libérales de l'agglomération Lens-Liévin.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const BULLY_LES_MINES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bully-les-Mines : diagnostic adapté aux TPE artisans BTP, PME industrie reconvertie et sous-traitance, commerçants, professions libérales du bassin minier Lens-Liévin. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Bully-les-Mines : diagnostic adapté aux TPE artisans BTP, PME industrie reconvertie et sous-traitance, commerçants, professions libérales du bassin minier Lens-Liévin. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Bully-les-Mines : diagnostic adapté aux TPE artisans BTP, PME industrie reconvertie et sous-traitance, commerçants, professions libérales du bassin minier Lens-Liévin. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Bully-les-Mines : diagnostic adapté aux TPE artisans BTP, PME industrie reconvertie et sous-traitance, commerçants, professions libérales du bassin minier Lens-Liévin. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bully-les-Mines : formats adaptés à l'atelier BTP, l'usine reconvertie, le commerce, le cabinet. Vos équipes repartent autonomes sur les outils IA.",

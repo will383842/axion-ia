@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_MALESHERBOIS_COPY: VilleCopy = {
   pitchFr:
-    "Le Malesherbois (45), commune nouvelle du sud Loiret née de la fusion de Malesherbes et communes voisines, se situe aux portes du Gâtinais entre Pithiviers et Fontainebleau. Tissu TPE artisans, commerçants de proximité, PME logistiques et agro-alimentaires, professions libérales, exploitants agricoles Beauce-Gâtinais. Axion-IA y intervient pour tous types d'activités.",
+    "Le Malesherbois (45), commune nouvelle du sud Loiret née de la fusion de Malesherbes et communes voisines, se situe aux portes du Gâtinais entre Pithiviers et Fontainebleau. Tissu TPE artisans, commerçants de proximité, PME logistiques et agro-alimentaires, professions libérales, exploitants agricoles Beauce-Gâtinais. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Le Malesherbois (45), commune nouvelle du sud Loiret née de la fusion de Malesherbes et communes voisines, se situe aux portes du Gâtinais entre Pithiviers et Fontainebleau. Tissu TPE artisans, commerçants de proximité, PME logistiques et agro-alimentaires, professions libérales, exploitants agricoles Beauce-Gâtinais. Axion-IA y intervient pour tous types d'activités.",
+    "Le Malesherbois (45), commune nouvelle du sud Loiret née de la fusion de Malesherbes et communes voisines, se situe aux portes du Gâtinais entre Pithiviers et Fontainebleau. Tissu TPE artisans, commerçants de proximité, PME logistiques et agro-alimentaires, professions libérales, exploitants agricoles Beauce-Gâtinais. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Malesherbois (45). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME logistiques et agro-alimentaires du Gâtinais, professions libérales, exploitants agricoles, entreprises de services. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -30,12 +30,12 @@ export const LE_MALESHERBOIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Malesherbois : diagnostic adapté aux TPE commerçants, PME logistiques et agro-alimentaires, exploitants agricoles du Gâtinais sud-Loiret. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
-      en: "Audit IA au Malesherbois : diagnostic adapté aux TPE commerçants, PME logistiques et agro-alimentaires, exploitants agricoles du Gâtinais sud-Loiret. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
+      fr: "Audit IA au Malesherbois : diagnostic adapté aux TPE commerçants, PME logistiques et agro-alimentaires, exploitants agricoles du Gâtinais sud-Loiret. Audit Flash 490 € HT avec ROI quantifié accessible aux petites structures.",
+      en: "Audit IA au Malesherbois : diagnostic adapté aux TPE commerçants, PME logistiques et agro-alimentaires, exploitants agricoles du Gâtinais sud-Loiret. Audit Flash 490 € HT avec ROI quantifié accessible aux petites structures.",
     },
     interventions: {
-      fr: "Interventions IA sur site au Malesherbois : formats adaptés à l'entrepôt logistique, au bureau PME, au commerce ou à l'exploitation agricole. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site au Malesherbois : formats adaptés à l'entrepôt logistique, au bureau PME, au commerce ou à l'exploitation agricole. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site au Malesherbois : formats adaptés à l'entrepôt logistique, au bureau PME, au commerce ou à l'exploitation agricole. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site au Malesherbois : formats adaptés à l'entrepôt logistique, au bureau PME, au commerce ou à l'exploitation agricole. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA au Malesherbois : automatisation supply chain, prédiction stocks, agents conversationnels client, CRM augmentés, outils IA agricoles. Adapté aux TPE/PME du Gâtinais et navetteurs Île-de-France.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const AUCAMVILLE_COPY: VilleCopy = {
   pitchFr:
-    "Aucamville (31), commune du nord de Toulouse avec plus de 9 600 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités de la couronne nord de Toulouse.",
+    "Aucamville (31), commune du nord de Toulouse avec plus de 9 600 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de la couronne nord de Toulouse.",
   pitchEn:
-    "Aucamville (31), commune du nord de Toulouse avec plus de 9 600 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités de la couronne nord de Toulouse.",
+    "Aucamville (31), commune du nord de Toulouse avec plus de 9 600 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de la couronne nord de Toulouse.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aucamville (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const AUCAMVILLE_COPY: VilleCopy = {
       en: "Audit IA à Aucamville : diagnostic adapté aux TPE artisans, PME de services et professions libérales du nord Toulouse. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Aucamville : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Aucamville : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Aucamville : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Aucamville : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Aucamville : automatisation gestion clients, classification documents, agents conversationnels, optimisation planning pour TPE-PME du nord Toulouse.",

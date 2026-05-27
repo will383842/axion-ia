@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_DENIS_EN_VAL_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Denis-en-Val (45), commune résidentielle de l'agglomération Orléans Métropole en rive sud de Loire, bénéficie de la proximité directe du pôle économique orléanais tout en conservant un cadre de vie semi-rural Val de Loire. Tissu TPE professions libérales, commerçants de proximité, PME services aux entreprises, artisans, maraîchers et horticulteurs. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Denis-en-Val (45), commune résidentielle de l'agglomération Orléans Métropole en rive sud de Loire, bénéficie de la proximité directe du pôle économique orléanais tout en conservant un cadre de vie semi-rural Val de Loire. Tissu TPE professions libérales, commerçants de proximité, PME services aux entreprises, artisans, maraîchers et horticulteurs. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Saint-Denis-en-Val (45), commune résidentielle de l'agglomération Orléans Métropole en rive sud de Loire, bénéficie de la proximité directe du pôle économique orléanais tout en conservant un cadre de vie semi-rural Val de Loire. Tissu TPE professions libérales, commerçants de proximité, PME services aux entreprises, artisans, maraîchers et horticulteurs. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Denis-en-Val (45), commune résidentielle de l'agglomération Orléans Métropole en rive sud de Loire, bénéficie de la proximité directe du pôle économique orléanais tout en conservant un cadre de vie semi-rural Val de Loire. Tissu TPE professions libérales, commerçants de proximité, PME services aux entreprises, artisans, maraîchers et horticulteurs. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Denis-en-Val (45). Nous accompagnons tous types d'activités : TPE professions libérales et commerçants, PME services aux entreprises de l'agglo Orléans sud, artisans, maraîchers, horticulteurs Val de Loire. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const SAINT_DENIS_EN_VAL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Denis-en-Val : diagnostic adapté aux TPE professions libérales, PME services aux entreprises, commerçants et maraîchers de l'agglo Orléans sud. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
-      en: "Audit IA à Saint-Denis-en-Val : diagnostic adapté aux TPE professions libérales, PME services aux entreprises, commerçants et maraîchers de l'agglo Orléans sud. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
+      fr: "Audit IA à Saint-Denis-en-Val : diagnostic adapté aux TPE professions libérales, PME services aux entreprises, commerçants et maraîchers de l'agglo Orléans sud. Audit Flash à 490 € HT, retour sur investissement chiffré accessible aux petites structures.",
+      en: "Audit IA à Saint-Denis-en-Val : diagnostic adapté aux TPE professions libérales, PME services aux entreprises, commerçants et maraîchers de l'agglo Orléans sud. Audit Flash à 490 € HT, retour sur investissement chiffré accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Denis-en-Val : formats adaptés au cabinet libéral, au commerce de proximité ou à la PME tertiaire. Vos équipes terrain et back-office repartent autonomes sur outils IA configurés métier.",

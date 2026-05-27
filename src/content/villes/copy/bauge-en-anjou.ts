@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BAUGE_EN_ANJOU_COPY: VilleCopy = {
   pitchFr:
-    "Baugé-en-Anjou (49), commune nouvelle du Baugeois regroupant 16 communes déléguées, rassemble près de 12 000 habitants en territoire rural actif. Axion-IA y intervient pour tous types d'activités : agriculture, artisanat, commerces de bourg, PME industrielles et services.",
+    "Baugé-en-Anjou (49), commune nouvelle du Baugeois regroupant 16 communes déléguées, rassemble près de 12 000 habitants en territoire rural actif. Axion-IA accompagne entreprises et indépendants de tous secteurs : agriculture, artisanat, commerces de bourg, PME industrielles et services.",
   pitchEn:
-    "Baugé-en-Anjou (49), commune nouvelle du Baugeois regroupant 16 communes déléguées, rassemble près de 12 000 habitants en territoire rural actif. Axion-IA y intervient pour tous types d'activités : agriculture, artisanat, commerces de bourg, PME industrielles et services.",
+    "Baugé-en-Anjou (49), commune nouvelle du Baugeois regroupant 16 communes déléguées, rassemble près de 12 000 habitants en territoire rural actif. Axion-IA accompagne entreprises et indépendants de tous secteurs : agriculture, artisanat, commerces de bourg, PME industrielles et services.",
   directAnswerFr:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Baugé-en-Anjou (49). Nous accompagnons les TPE, PME et exploitants agricoles du Baugeois dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict.",
   directAnswerEn:

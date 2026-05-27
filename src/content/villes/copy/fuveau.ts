@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FUVEAU_COPY: VilleCopy = {
   pitchFr:
-    "Fuveau (13), commune de l'est aixois au pied de la Sainte-Victoire, est un ancien bassin minier reconverti vers le résidentiel, le tertiaire et les zones d'activités. TPE artisans, professions libérales, PME tertiaires, commerces et viticulteurs AOC Côtes-de-Provence. Axion-IA y intervient pour tous types d'activités.",
+    "Fuveau (13), commune de l'est aixois au pied de la Sainte-Victoire, est un ancien bassin minier reconverti vers le résidentiel, le tertiaire et les zones d'activités. TPE artisans, professions libérales, PME tertiaires, commerces et viticulteurs AOC Côtes-de-Provence. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Fuveau (13), commune de l'est aixois au pied de la Sainte-Victoire, est un ancien bassin minier reconverti vers le résidentiel, le tertiaire et les zones d'activités. TPE artisans, professions libérales, PME tertiaires, commerces et viticulteurs AOC Côtes-de-Provence. Axion-IA y intervient pour tous types d'activités.",
+    "Fuveau (13), commune de l'est aixois au pied de la Sainte-Victoire, est un ancien bassin minier reconverti vers le résidentiel, le tertiaire et les zones d'activités. TPE artisans, professions libérales, PME tertiaires, commerces et viticulteurs AOC Côtes-de-Provence. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fuveau (13). Nous accompagnons TPE artisans, professions libérales, PME tertiaires, viticulteurs AOC et commerces du bassin minier reconverti de l'est aixois. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -64,7 +64,7 @@ export const FUVEAU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Fuveau ?",
-      a: "Fuveau est à 20 min d'Aix et 35 min de Marseille via A52. Nos consultants se déplacent dans vos locaux. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Fuveau est à 20 min d'Aix et 35 min de Marseille via A52. Nos consultants se déplacent dans vos locaux. Coûts de déplacement à part, tarification transparente.",
     },
   ],
 };

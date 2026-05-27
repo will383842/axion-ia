@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BISCARROSSE_COPY: VilleCopy = {
   pitchFr:
-    "Biscarrosse (40), capitale de l'hydraviation et station balnéaire de la côte d'Argent dans les Landes, est la plus grande commune du département (160 km²). Trois lacs, surf océan, forêt landaise, tourisme balnéaire et nautique. Tissu TPE tourisme/nautisme, PME papetière et forestière, commerces saisonniers. Axion-IA y intervient pour tous types d'activités.",
+    "Biscarrosse (40), capitale de l'hydraviation et station balnéaire de la côte d'Argent dans les Landes, est la plus grande commune du département (160 km²). Trois lacs, surf océan, forêt landaise, tourisme balnéaire et nautique. Tissu TPE tourisme/nautisme, PME papetière et forestière, commerces saisonniers. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Biscarrosse (40), capitale de l'hydraviation et station balnéaire de la côte d'Argent dans les Landes, est la plus grande commune du département (160 km²). Trois lacs, surf océan, forêt landaise, tourisme balnéaire et nautique. Tissu TPE tourisme/nautisme, PME papetière et forestière, commerces saisonniers. Axion-IA y intervient pour tous types d'activités.",
+    "Biscarrosse (40), capitale de l'hydraviation et station balnéaire de la côte d'Argent dans les Landes, est la plus grande commune du département (160 km²). Trois lacs, surf océan, forêt landaise, tourisme balnéaire et nautique. Tissu TPE tourisme/nautisme, PME papetière et forestière, commerces saisonniers. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Biscarrosse (40). Nous accompagnons TPE et PME du tourisme balnéaire et nautique (surf, lac, hydraviation), hébergeurs saisonniers, campings, PME papetières et forestières, commerçants, artisans BTP et professions libérales de la côte d'Argent.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const BISCARROSSE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Biscarrosse : diagnostic adapté aux TPE du tourisme balnéaire (campings, surf shops, hébergeurs saisonniers), PME papetières et forestières, commerçants côte d'Argent. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Biscarrosse : diagnostic adapté aux TPE du tourisme balnéaire (campings, surf shops, hébergeurs saisonniers), PME papetières et forestières, commerçants côte d'Argent. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Biscarrosse : diagnostic adapté aux TPE du tourisme balnéaire (campings, surf shops, hébergeurs saisonniers), PME papetières et forestières, commerçants côte d'Argent. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Biscarrosse : diagnostic adapté aux TPE du tourisme balnéaire (campings, surf shops, hébergeurs saisonniers), PME papetières et forestières, commerçants côte d'Argent. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Biscarrosse : formations adaptées aux campings, hébergeurs, écoles de surf, commerces saisonniers et PME industrielles. Vos équipes repartent autonomes sur les outils IA configurés métier.",

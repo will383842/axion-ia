@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const TULLE_COPY: VilleCopy = {
   pitchFr:
-    "Tulle (19), préfecture de la Corrèze, cité de la dentelle, de la manufacture d'armes et capitale de l'accordéon. Tissu TPE/PME commerce, artisanat, services publics, agroalimentaire et tourisme vert sur la Corrèze. Axion-IA y intervient pour tous types d'activités.",
+    "Tulle (19), préfecture de la Corrèze, cité de la dentelle, de la manufacture d'armes et capitale de l'accordéon. Tissu TPE/PME commerce, artisanat, services publics, agroalimentaire et tourisme vert sur la Corrèze. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Tulle (19), préfecture de la Corrèze, cité de la dentelle, de la manufacture d'armes et capitale de l'accordéon. Tissu TPE/PME commerce, artisanat, services publics, agroalimentaire et tourisme vert sur la Corrèze. Axion-IA y intervient pour tous types d'activités.",
+    "Tulle (19), préfecture de la Corrèze, cité de la dentelle, de la manufacture d'armes et capitale de l'accordéon. Tissu TPE/PME commerce, artisanat, services publics, agroalimentaire et tourisme vert sur la Corrèze. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tulle (19). Nous accompagnons TPE/PME du commerce, de l'artisanat, des services publics, de l'agroalimentaire corrézien et du tourisme vert. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:
@@ -34,8 +34,8 @@ export const TULLE_COPY: VilleCopy = {
       en: "Audit IA à Tulle : diagnostic adapté aux TPE/PME du commerce, de l'artisanat, des services publics et de l'agroalimentaire corrézien. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Tulle : formations pratiques adaptées au commerce, à l'artisanat et aux services publics corréziens. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Tulle : formations pratiques adaptées au commerce, à l'artisanat et aux services publics corréziens. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Tulle : formations pratiques adaptées au commerce, à l'artisanat et aux services publics corréziens. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Tulle : formations pratiques adaptées au commerce, à l'artisanat et aux services publics corréziens. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Tulle : automatisation administrative, gestion stock commerce, traçabilité agroalimentaire, optimisation accueil tourisme vert, outils IA sur mesure.",

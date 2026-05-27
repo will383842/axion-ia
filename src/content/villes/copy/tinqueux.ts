@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const TINQUEUX_COPY: VilleCopy = {
   pitchFr:
-    "Tinqueux (51), commune de l'agglomération rémoise dans la Marne, concentre d'importantes zones commerciales et d'activités aux portes de Reims. Tissu de TPE commerciales, PME distribution et services aux entreprises, artisans et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Tinqueux (51), commune de l'agglomération rémoise dans la Marne, concentre d'importantes zones commerciales et d'activités aux portes de Reims. Tissu de TPE commerciales, PME distribution et services aux entreprises, artisans et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Tinqueux (51), commune de l'agglomération rémoise dans la Marne, concentre d'importantes zones commerciales et d'activités aux portes de Reims. Tissu de TPE commerciales, PME distribution et services aux entreprises, artisans et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Tinqueux (51), commune de l'agglomération rémoise dans la Marne, concentre d'importantes zones commerciales et d'activités aux portes de Reims. Tissu de TPE commerciales, PME distribution et services aux entreprises, artisans et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   seoHook: "zones commerciales & services agglo Reims",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tinqueux (51). Nous accompagnons TPE et PME de l'agglo rémoise : enseignes commerciales, PME distribution et services, artisans, professions libérales et prestataires tertiaires. Audit Flash dès 490 € HT.",
@@ -34,8 +34,8 @@ export const TINQUEUX_COPY: VilleCopy = {
       en: "Audit IA à Tinqueux : diagnostic adapté aux enseignes commerciales, PME distribution et services, TPE artisanales et professions libérales de l'agglo rémoise. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Tinqueux : formats adaptés au commerce, à la PME de services, à la TPE artisanale ou au cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Tinqueux : formats adaptés au commerce, à la PME de services, à la TPE artisanale ou au cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Tinqueux : formats adaptés au commerce, à la PME de services, à la TPE artisanale ou au cabinet libéral. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Tinqueux : formats adaptés au commerce, à la PME de services, à la TPE artisanale ou au cabinet libéral. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Tinqueux : prévision de stocks retail, personnalisation parcours client enseignes, automatisation gestion cabinets libéraux, agents conversationnels services aux entreprises.",

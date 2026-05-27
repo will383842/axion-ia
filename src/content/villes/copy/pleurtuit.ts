@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PLEURTUIT_COPY: VilleCopy = {
   pitchFr:
-    "Pleurtuit (35), commune de la Côte d'Émeraude en Ille-et-Vilaine, accueille l'aéroport Dinard-Bretagne et se situe entre Saint-Malo et Dinan. Tissu TPE artisans, PME tourisme et hôtellerie, commerces, services et entreprises de la zone aéroportuaire. Axion-IA y intervient pour tous types d'activités de la Côte d'Émeraude.",
+    "Pleurtuit (35), commune de la Côte d'Émeraude en Ille-et-Vilaine, accueille l'aéroport Dinard-Bretagne et se situe entre Saint-Malo et Dinan. Tissu TPE artisans, PME tourisme et hôtellerie, commerces, services et entreprises de la zone aéroportuaire. Axion-IA couvre l'ensemble des activités professionnelles présentes de la Côte d'Émeraude.",
   pitchEn:
-    "Pleurtuit (35), commune de la Côte d'Émeraude en Ille-et-Vilaine, accueille l'aéroport Dinard-Bretagne et se situe entre Saint-Malo et Dinan. Tissu TPE artisans, PME tourisme et hôtellerie, commerces, services et entreprises de la zone aéroportuaire. Axion-IA y intervient pour tous types d'activités de la Côte d'Émeraude.",
+    "Pleurtuit (35), commune de la Côte d'Émeraude en Ille-et-Vilaine, accueille l'aéroport Dinard-Bretagne et se situe entre Saint-Malo et Dinan. Tissu TPE artisans, PME tourisme et hôtellerie, commerces, services et entreprises de la zone aéroportuaire. Axion-IA couvre l'ensemble des activités professionnelles présentes de la Côte d'Émeraude.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pleurtuit (35). Nous accompagnons TPE artisans, PME tourisme et hôtellerie, commerçants et entreprises de la Côte d'Émeraude, proche Saint-Malo et Dinard. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ANZIN_COPY: VilleCopy = {
   pitchFr:
-    "Anzin (59), commune de l'agglomération de Valenciennes au cœur du bassin minier du Nord, inscrit au Patrimoine mondial UNESCO. Tissu économique : TPE et PME de la construction et du BTP, commerce, services à la personne, sous-traitance industrielle automobile (filière valenciannoise), artisanat, économie sociale et solidaire. Axion-IA y intervient pour tous types d'activités du bassin minier valenciennois.",
+    "Anzin (59), commune de l'agglomération de Valenciennes au cœur du bassin minier du Nord, inscrit au Patrimoine mondial UNESCO. Tissu économique : TPE et PME de la construction et du BTP, commerce, services à la personne, sous-traitance industrielle automobile (filière valenciannoise), artisanat, économie sociale et solidaire. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin minier valenciennois.",
   pitchEn:
-    "Anzin (59), commune de l'agglomération de Valenciennes au cœur du bassin minier du Nord, inscrit au Patrimoine mondial UNESCO. Tissu économique : TPE et PME de la construction et du BTP, commerce, services à la personne, sous-traitance industrielle automobile (filière valenciannoise), artisanat, économie sociale et solidaire. Axion-IA y intervient pour tous types d'activités du bassin minier valenciennois.",
+    "Anzin (59), commune de l'agglomération de Valenciennes au cœur du bassin minier du Nord, inscrit au Patrimoine mondial UNESCO. Tissu économique : TPE et PME de la construction et du BTP, commerce, services à la personne, sous-traitance industrielle automobile (filière valenciannoise), artisanat, économie sociale et solidaire. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin minier valenciennois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Anzin (59). Nous accompagnons TPE et PME : entreprises BTP et construction, sous-traitants de la filière automobile valenciannoise, commerçants, artisans, prestataires de services à la personne et structures de l'économie sociale et solidaire du bassin minier.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const ANZIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Anzin : diagnostic adapté aux TPE et PME du BTP, sous-traitants automobile, commerçants, artisans et structures ESS du bassin minier valenciennois. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Anzin : diagnostic adapté aux TPE et PME du BTP, sous-traitants automobile, commerçants, artisans et structures ESS du bassin minier valenciennois. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Anzin : diagnostic adapté aux TPE et PME du BTP, sous-traitants automobile, commerçants, artisans et structures ESS du bassin minier valenciennois. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Anzin : diagnostic adapté aux TPE et PME du BTP, sous-traitants automobile, commerçants, artisans et structures ESS du bassin minier valenciennois. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Anzin : formats adaptés à l'entreprise BTP, au sous-traitant industriel, au commerce ou à l'artisan. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Anzin : formats adaptés à l'entreprise BTP, au sous-traitant industriel, au commerce ou à l'artisan. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Anzin : formats adaptés à l'entreprise BTP, au sous-traitant industriel, au commerce ou à l'artisan. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Anzin : formats adaptés à l'entreprise BTP, au sous-traitant industriel, au commerce ou à l'artisan. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Anzin : automatisation devis-facturation BTP, contrôle qualité visuel sous-traitance automobile, agents conversationnels service client commerce, planification tournées services à la personne, CRM augmenté PME B2B bassin minier.",

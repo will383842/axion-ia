@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BAR_LE_DUC_COPY: VilleCopy = {
   pitchFr:
-    "Bar-le-Duc (55), préfecture de la Meuse, conjugue patrimoine Renaissance de sa ville haute médiévale et savoir-faire artisanal renommé (confitures de groseilles épépinées à la plume). Tissu de TPE/PME administration, services, commerce, agroalimentaire, artisanat et tourisme. Axion-IA y intervient pour tous types d'activités.",
+    "Bar-le-Duc (55), préfecture de la Meuse, conjugue patrimoine Renaissance de sa ville haute médiévale et savoir-faire artisanal renommé (confitures de groseilles épépinées à la plume). Tissu de TPE/PME administration, services, commerce, agroalimentaire, artisanat et tourisme. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Bar-le-Duc (55), préfecture de la Meuse, conjugue patrimoine Renaissance de sa ville haute médiévale et savoir-faire artisanal renommé (confitures de groseilles épépinées à la plume). Tissu de TPE/PME administration, services, commerce, agroalimentaire, artisanat et tourisme. Axion-IA y intervient pour tous types d'activités.",
+    "Bar-le-Duc (55), préfecture de la Meuse, conjugue patrimoine Renaissance de sa ville haute médiévale et savoir-faire artisanal renommé (confitures de groseilles épépinées à la plume). Tissu de TPE/PME administration, services, commerce, agroalimentaire, artisanat et tourisme. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bar-le-Duc (55). Nous accompagnons TPE et PME : artisans agroalimentaires, commerçants, hôteliers-restaurateurs, professions libérales et prestataires de services de la Meuse. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const BAR_LE_DUC_COPY: VilleCopy = {
       en: "Audit IA à Bar-le-Duc : diagnostic adapté aux artisans agroalimentaires, commerçants, hôteliers-restaurateurs, professions libérales et prestataires de services de la Meuse. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Bar-le-Duc : formats adaptés à l'atelier artisanal, au commerce, à l'hôtel-restaurant ou à la TPE de services. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Bar-le-Duc : formats adaptés à l'atelier artisanal, au commerce, à l'hôtel-restaurant ou à la TPE de services. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Bar-le-Duc : formats adaptés à l'atelier artisanal, au commerce, à l'hôtel-restaurant ou à la TPE de services. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Bar-le-Duc : formats adaptés à l'atelier artisanal, au commerce, à l'hôtel-restaurant ou à la TPE de services. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Bar-le-Duc : automatisation e-commerce produits artisanaux, gestion stocks et expéditions, CRM touristique patrimonial, agents conversationnels et automatisations administratives pour PME meusiennes.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const NANGIS_COPY: VilleCopy = {
   pitchFr:
-    "Nangis (77), bourg de la Brie en Seine-et-Marne, pôle agricole et artisanal avec zones d'activités. Tissu TPE agriculteurs et artisans, PME agroalimentaire, commerces de centre-bourg, transporteurs et services. Axion-IA y intervient pour tous types d'activités.",
+    "Nangis (77), bourg de la Brie en Seine-et-Marne, pôle agricole et artisanal avec zones d'activités. Tissu TPE agriculteurs et artisans, PME agroalimentaire, commerces de centre-bourg, transporteurs et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Nangis (77), bourg de la Brie en Seine-et-Marne, pôle agricole et artisanal avec zones d'activités. Tissu TPE agriculteurs et artisans, PME agroalimentaire, commerces de centre-bourg, transporteurs et services. Axion-IA y intervient pour tous types d'activités.",
+    "Nangis (77), bourg de la Brie en Seine-et-Marne, pôle agricole et artisanal avec zones d'activités. Tissu TPE agriculteurs et artisans, PME agroalimentaire, commerces de centre-bourg, transporteurs et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nangis (77). Nous accompagnons TPE et PME : exploitations agricoles, artisans, entreprises agroalimentaires, commerces de centre-bourg, transporteurs et prestataires de services de la Brie seine-et-marnaise. Audit Flash dès 490 € HT.",
   directAnswerEn:

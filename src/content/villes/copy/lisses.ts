@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LISSES_COPY: VilleCopy = {
   pitchFr:
-    "Lisses (91), commune de l'agglomération d'Évry-Courcouronnes dotée de zones d'activités économiques dynamiques, est un pôle PME et TPE du sud francilien. Logistique, commerce de gros, industrie légère, services aux entreprises et artisanat. Axion-IA y intervient pour tous types d'activités du bassin Évry / Grand Paris Sud.",
+    "Lisses (91), commune de l'agglomération d'Évry-Courcouronnes dotée de zones d'activités économiques dynamiques, est un pôle PME et TPE du sud francilien. Logistique, commerce de gros, industrie légère, services aux entreprises et artisanat. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin Évry / Grand Paris Sud.",
   pitchEn:
-    "Lisses (91), commune de l'agglomération d'Évry-Courcouronnes dotée de zones d'activités économiques dynamiques, est un pôle PME et TPE du sud francilien. Logistique, commerce de gros, industrie légère, services aux entreprises et artisanat. Axion-IA y intervient pour tous types d'activités du bassin Évry / Grand Paris Sud.",
+    "Lisses (91), commune de l'agglomération d'Évry-Courcouronnes dotée de zones d'activités économiques dynamiques, est un pôle PME et TPE du sud francilien. Logistique, commerce de gros, industrie légère, services aux entreprises et artisanat. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin Évry / Grand Paris Sud.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lisses (91). Nous accompagnons tous types d'activités : PME logistiques et commerce de gros des zones d'activités, TPE artisans BTP, industriels légers, services aux entreprises, commerçants et indépendants du bassin Évry / Grand Paris Sud.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const LISSES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lisses : diagnostic adapté aux PME logistiques des ZAE, TPE artisans, industriels légers et commerçants du bassin Évry / Grand Paris Sud. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Lisses : diagnostic adapté aux PME logistiques des ZAE, TPE artisans, industriels légers et commerçants du bassin Évry / Grand Paris Sud. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Lisses : diagnostic adapté aux PME logistiques des ZAE, TPE artisans, industriels légers et commerçants du bassin Évry / Grand Paris Sud. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Lisses : diagnostic adapté aux PME logistiques des ZAE, TPE artisans, industriels légers et commerçants du bassin Évry / Grand Paris Sud. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Lisses : formats adaptés à l'entrepôt logistique, l'atelier industriel ou le bureau PME. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Lisses : formats adaptés à l'entrepôt logistique, l'atelier industriel ou le bureau PME. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Lisses : formats adaptés à l'entrepôt logistique, l'atelier industriel ou le bureau PME. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Lisses : formats adaptés à l'entrepôt logistique, l'atelier industriel ou le bureau PME. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Lisses : optimisation tournées logistiques, prédiction stocks commerce de gros, automatisation devis BTP, agents conversationnels, classification documents. Tous secteurs Grand Paris Sud.",

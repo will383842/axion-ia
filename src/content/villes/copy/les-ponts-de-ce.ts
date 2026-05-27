@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LES_PONTS_DE_CE_COPY: VilleCopy = {
   pitchFr:
-    "Les Ponts-de-Cé (49), cité historique au confluent de la Loire et de la Maine au sud d'Angers, compte plus de 13 000 habitants. Axion-IA y intervient pour tous types d'activités : commerces, artisanat, PME industrielles, services et professions libérales.",
+    "Les Ponts-de-Cé (49), cité historique au confluent de la Loire et de la Maine au sud d'Angers, compte plus de 13 000 habitants. Axion-IA opère pour toutes les structures économiques de la commune : commerces, artisanat, PME industrielles, services et professions libérales.",
   pitchEn:
-    "Les Ponts-de-Cé (49), cité historique au confluent de la Loire et de la Maine au sud d'Angers, compte plus de 13 000 habitants. Axion-IA y intervient pour tous types d'activités : commerces, artisanat, PME industrielles, services et professions libérales.",
+    "Les Ponts-de-Cé (49), cité historique au confluent de la Loire et de la Maine au sud d'Angers, compte plus de 13 000 habitants. Axion-IA opère pour toutes les structures économiques de la commune : commerces, artisanat, PME industrielles, services et professions libérales.",
   directAnswerFr:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient aux Ponts-de-Cé (49). Nous accompagnons les TPE, PME et commerçants pontdecéens dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict, tarifs publics.",
   directAnswerEn:

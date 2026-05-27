@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PLUVIGNER_COPY: VilleCopy = {
   pitchFr:
-    "Pluvigner (56), bourg rural du centre Morbihan entre Auray et Baud, accueille un tissu de TPE/PME agricoles, agroalimentaires, artisans BTP, commerces, professions libérales et entreprises touristiques et tertiaires du pays d'Auray. Axion-IA y intervient pour tous types d'activités du Morbihan rural.",
+    "Pluvigner (56), bourg rural du centre Morbihan entre Auray et Baud, accueille un tissu de TPE/PME agricoles, agroalimentaires, artisans BTP, commerces, professions libérales et entreprises touristiques et tertiaires du pays d'Auray. Axion-IA couvre l'ensemble des activités professionnelles présentes du Morbihan rural.",
   pitchEn:
-    "Pluvigner (56), bourg rural du centre Morbihan entre Auray et Baud, accueille un tissu de TPE/PME agricoles, agroalimentaires, artisans BTP, commerces, professions libérales et entreprises touristiques et tertiaires du pays d'Auray. Axion-IA y intervient pour tous types d'activités du Morbihan rural.",
+    "Pluvigner (56), bourg rural du centre Morbihan entre Auray et Baud, accueille un tissu de TPE/PME agricoles, agroalimentaires, artisans BTP, commerces, professions libérales et entreprises touristiques et tertiaires du pays d'Auray. Axion-IA couvre l'ensemble des activités professionnelles présentes du Morbihan rural.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pluvigner (56). Nous accompagnons TPE et PME : exploitations agricoles, PME agroalimentaires, artisans BTP, commerçants du bourg, professions libérales, entreprises touristiques et tertiaires du pays d'Auray.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const PLUVIGNER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pluvigner : diagnostic adapté aux exploitations agricoles, PME agroalimentaires, TPE artisans BTP, commerçants et professions libérales du pays d'Auray. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Pluvigner : diagnostic adapté aux exploitations agricoles, PME agroalimentaires, TPE artisans BTP, commerçants et professions libérales du pays d'Auray. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Pluvigner : diagnostic adapté aux exploitations agricoles, PME agroalimentaires, TPE artisans BTP, commerçants et professions libérales du pays d'Auray. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Pluvigner : diagnostic adapté aux exploitations agricoles, PME agroalimentaires, TPE artisans BTP, commerçants et professions libérales du pays d'Auray. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Pluvigner : formats adaptés aux exploitations agricoles, PME agroalimentaires, artisans BTP, hébergements touristiques et cabinets du pays d'Auray. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Pluvigner : formats adaptés aux exploitations agricoles, PME agroalimentaires, artisans BTP, hébergements touristiques et cabinets du pays d'Auray. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Pluvigner : formats adaptés aux exploitations agricoles, PME agroalimentaires, artisans BTP, hébergements touristiques et cabinets du pays d'Auray. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Pluvigner : formats adaptés aux exploitations agricoles, PME agroalimentaires, artisans BTP, hébergements touristiques et cabinets du pays d'Auray. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Pluvigner : outils IA traçabilité agroalimentaire, gestion troupeau, agents conversationnels réservation touristique, automatisation gestion locative saisonnière, gestion devis BTP, CRM augmenté commerce et libéral.",

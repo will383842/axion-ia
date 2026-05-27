@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CUGES_LES_PINS_COPY: VilleCopy = {
   pitchFr:
-    "Cuges-les-Pins (13), village provençal au piémont du massif de la Sainte-Baume, se situe entre Aubagne et le parc OK Corral. Tissu de TPE artisans, commerçants, exploitants agricoles (vignes, oliviers), PME tourisme et services. Axion-IA y intervient pour tous types d'activités.",
+    "Cuges-les-Pins (13), village provençal au piémont du massif de la Sainte-Baume, se situe entre Aubagne et le parc OK Corral. Tissu de TPE artisans, commerçants, exploitants agricoles (vignes, oliviers), PME tourisme et services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Cuges-les-Pins (13), village provençal au piémont du massif de la Sainte-Baume, se situe entre Aubagne et le parc OK Corral. Tissu de TPE artisans, commerçants, exploitants agricoles (vignes, oliviers), PME tourisme et services. Axion-IA y intervient pour tous types d'activités.",
+    "Cuges-les-Pins (13), village provençal au piémont du massif de la Sainte-Baume, se situe entre Aubagne et le parc OK Corral. Tissu de TPE artisans, commerçants, exploitants agricoles (vignes, oliviers), PME tourisme et services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cuges-les-Pins (13). Nous accompagnons TPE artisans, commerçants, exploitants agricoles, PME du tourisme et entreprises du piémont de la Sainte-Baume. Audit Flash dès 490 € HT.",
   directAnswerEn:

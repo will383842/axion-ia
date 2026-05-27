@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const THUE_ET_MUE_COPY: VilleCopy = {
   pitchFr:
-    "Thue et Mue (14), commune nouvelle du Calvados dans la plaine de Caen nord-ouest, regroupe plusieurs villages entre les rivières Thue et Mue. Territoire résidentiel périurbain attractif, tissu TPE artisans BTP, PME services et agriculture céréalière, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Thue et Mue (14), commune nouvelle du Calvados dans la plaine de Caen nord-ouest, regroupe plusieurs villages entre les rivières Thue et Mue. Territoire résidentiel périurbain attractif, tissu TPE artisans BTP, PME services et agriculture céréalière, commerces de proximité, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Thue et Mue (14), commune nouvelle du Calvados dans la plaine de Caen nord-ouest, regroupe plusieurs villages entre les rivières Thue et Mue. Territoire résidentiel périurbain attractif, tissu TPE artisans BTP, PME services et agriculture céréalière, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Thue et Mue (14), commune nouvelle du Calvados dans la plaine de Caen nord-ouest, regroupe plusieurs villages entre les rivières Thue et Mue. Territoire résidentiel périurbain attractif, tissu TPE artisans BTP, PME services et agriculture céréalière, commerces de proximité, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thue et Mue (14). Nous accompagnons tous types d'activités : TPE artisans BTP et commerçants, PME services agglomération caennaise, exploitations céréalières plaine de Caen, professions libérales, indépendants et services aux entreprises périurbaines.",
   directAnswerEn:
@@ -64,7 +64,7 @@ export const THUE_ET_MUE_COPY: VilleCopy = {
     },
     {
       q: "Êtes-vous proches de l'aéroport Caen-Carpiquet ?",
-      a: "Oui, Thue et Mue est à 10 min de l'aéroport Caen-Carpiquet. Nos consultants sont à 15 min de Caen centre. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Oui, Thue et Mue est à 10 min de l'aéroport Caen-Carpiquet. Nos consultants sont à 15 min de Caen centre. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

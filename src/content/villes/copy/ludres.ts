@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LUDRES_COPY: VilleCopy = {
   pitchFr:
-    "Ludres (54), commune périurbaine au sud de Nancy en Meurthe-et-Moselle, accueille d'importantes zones d'activités (parc industriel et tertiaire) et un tissu résidentiel familial. Tissu TPE/PME industrie, logistique, commerces, services aux entreprises, artisans. Axion-IA y intervient pour tous types d'activités.",
+    "Ludres (54), commune périurbaine au sud de Nancy en Meurthe-et-Moselle, accueille d'importantes zones d'activités (parc industriel et tertiaire) et un tissu résidentiel familial. Tissu TPE/PME industrie, logistique, commerces, services aux entreprises, artisans. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Ludres (54), commune périurbaine au sud de Nancy en Meurthe-et-Moselle, accueille d'importantes zones d'activités (parc industriel et tertiaire) et un tissu résidentiel familial. Tissu TPE/PME industrie, logistique, commerces, services aux entreprises, artisans. Axion-IA y intervient pour tous types d'activités.",
+    "Ludres (54), commune périurbaine au sud de Nancy en Meurthe-et-Moselle, accueille d'importantes zones d'activités (parc industriel et tertiaire) et un tissu résidentiel familial. Tissu TPE/PME industrie, logistique, commerces, services aux entreprises, artisans. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ludres (54). Nous accompagnons tous types d'activités : TPE/PME des zones d'activités sud-Nancy, sous-traitants industriels, logisticiens, commerces, artisans et professions de services ludréennes.",
   directAnswerEn:
@@ -30,12 +30,12 @@ export const LUDRES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ludres : diagnostic adapté aux TPE/PME des zones d'activités sud-Nancy, sous-traitants industriels, logisticiens, commerces et artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Ludres : diagnostic adapté aux TPE/PME des zones d'activités sud-Nancy, sous-traitants industriels, logisticiens, commerces et artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Ludres : diagnostic adapté aux TPE/PME des zones d'activités sud-Nancy, sous-traitants industriels, logisticiens, commerces et artisans. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Ludres : diagnostic adapté aux TPE/PME des zones d'activités sud-Nancy, sous-traitants industriels, logisticiens, commerces et artisans. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Ludres : formats adaptés à l'atelier, l'entrepôt logistique, le bureau, le commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Ludres : formats adaptés à l'atelier, l'entrepôt logistique, le bureau, le commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Ludres : formats adaptés à l'atelier, l'entrepôt logistique, le bureau, le commerce. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Ludres : formats adaptés à l'atelier, l'entrepôt logistique, le bureau, le commerce. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Ludres : contrôle qualité production, optimisation logistique, automatisation gestion commerciale, agents conversationnels B2B, workflow sous-traitance.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const STIRING_WENDEL_COPY: VilleCopy = {
   pitchFr:
-    "Stiring-Wendel (57), commune frontalière de 10 956 habitants en Moselle dans l'agglomération de Sarrebruck-Forbach, est ancrée dans l'héritage du bassin houiller lorrain et limitrophe de la Sarre allemande. Tissu TPE/PME industrie reconvertie, logistique transfrontalière, commerces, artisanat, services. Axion-IA y intervient pour tous types d'activités.",
+    "Stiring-Wendel (57), commune frontalière de 10 956 habitants en Moselle dans l'agglomération de Sarrebruck-Forbach, est ancrée dans l'héritage du bassin houiller lorrain et limitrophe de la Sarre allemande. Tissu TPE/PME industrie reconvertie, logistique transfrontalière, commerces, artisanat, services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Stiring-Wendel (57), commune frontalière de 10 956 habitants en Moselle dans l'agglomération de Sarrebruck-Forbach, est ancrée dans l'héritage du bassin houiller lorrain et limitrophe de la Sarre allemande. Tissu TPE/PME industrie reconvertie, logistique transfrontalière, commerces, artisanat, services. Axion-IA y intervient pour tous types d'activités.",
+    "Stiring-Wendel (57), commune frontalière de 10 956 habitants en Moselle dans l'agglomération de Sarrebruck-Forbach, est ancrée dans l'héritage du bassin houiller lorrain et limitrophe de la Sarre allemande. Tissu TPE/PME industrie reconvertie, logistique transfrontalière, commerces, artisanat, services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Stiring-Wendel (57). Nous accompagnons tous types d'activités : TPE/PME industrie reconvertie et logistique transfrontalière, artisans, commerces de proximité, professions de services et acteurs du bassin Sarrebruck-Forbach.",
   directAnswerEn:
@@ -34,8 +34,8 @@ export const STIRING_WENDEL_COPY: VilleCopy = {
       en: "Audit IA à Stiring-Wendel : diagnostic adapté aux TPE/PME industrie reconvertie, logistique transfrontalière, commerces, artisans, services. ROI chiffré, audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Stiring-Wendel : formats adaptés à l'atelier industriel, l'entrepôt logistique, le commerce, le bureau. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Stiring-Wendel : formats adaptés à l'atelier industriel, l'entrepôt logistique, le commerce, le bureau. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Stiring-Wendel : formats adaptés à l'atelier industriel, l'entrepôt logistique, le commerce, le bureau. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Stiring-Wendel : formats adaptés à l'atelier industriel, l'entrepôt logistique, le commerce, le bureau. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Stiring-Wendel : automatisation gestion logistique transfrontalière, agents conversationnels bilingues FR/DE, workflow douanier, traçabilité industrielle, gestion commerciale.",

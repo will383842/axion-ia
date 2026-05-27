@@ -33,8 +33,8 @@ export const J_UF_COPY: VilleCopy = {
       en: "Audit IA à Jœuf : diagnostic adapté aux industriels, artisans, commerçants, prestataires de services et entreprises frontalières du Pays Haut lorrain. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Jœuf : formats adaptés à l'industrie reconvertie, à la PME sous-traitante, au commerce ou à la TPE artisanale. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Jœuf : formats adaptés à l'industrie reconvertie, à la PME sous-traitante, au commerce ou à la TPE artisanale. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Jœuf : formats adaptés à l'industrie reconvertie, à la PME sous-traitante, au commerce ou à la TPE artisanale. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Jœuf : formats adaptés à l'industrie reconvertie, à la PME sous-traitante, au commerce ou à la TPE artisanale. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Jœuf : automatisation devis sous-traitance industrielle, OCR documents transfrontaliers, agents conversationnels relation client B2B, gestion RH frontalière, prévision production.",

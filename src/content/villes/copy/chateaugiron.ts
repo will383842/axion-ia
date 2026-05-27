@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHATEAUGIRON_COPY: VilleCopy = {
   pitchFr:
-    "Châteaugiron (35), bourg historique à l'est de Rennes en Ille-et-Vilaine, conjugue patrimoine médiéval (château classé) et dynamisme économique périurbain. Tissu de TPE/PME tertiaires, artisans BTP, commerces, professions libérales et exploitants agricoles. Axion-IA y intervient pour tous types d'activités du bassin rennais est.",
+    "Châteaugiron (35), bourg historique à l'est de Rennes en Ille-et-Vilaine, conjugue patrimoine médiéval (château classé) et dynamisme économique périurbain. Tissu de TPE/PME tertiaires, artisans BTP, commerces, professions libérales et exploitants agricoles. Axion-IA opère pour toutes les structures économiques de la commune du bassin rennais est.",
   pitchEn:
-    "Châteaugiron (35), bourg historique à l'est de Rennes en Ille-et-Vilaine, conjugue patrimoine médiéval (château classé) et dynamisme économique périurbain. Tissu de TPE/PME tertiaires, artisans BTP, commerces, professions libérales et exploitants agricoles. Axion-IA y intervient pour tous types d'activités du bassin rennais est.",
+    "Châteaugiron (35), bourg historique à l'est de Rennes en Ille-et-Vilaine, conjugue patrimoine médiéval (château classé) et dynamisme économique périurbain. Tissu de TPE/PME tertiaires, artisans BTP, commerces, professions libérales et exploitants agricoles. Axion-IA opère pour toutes les structures économiques de la commune du bassin rennais est.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châteaugiron (35). Nous accompagnons TPE et PME : entreprises tertiaires du bassin rennais est, artisans BTP, commerçants, professions libérales, exploitants agricoles et acteurs du tourisme patrimonial de la communauté de communes autour du château médiéval.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const CHATEAUGIRON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Châteaugiron : diagnostic adapté aux PME tertiaires du bassin rennais est, artisans BTP, commerçants et professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Châteaugiron : diagnostic adapté aux PME tertiaires du bassin rennais est, artisans BTP, commerçants et professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Châteaugiron : diagnostic adapté aux PME tertiaires du bassin rennais est, artisans BTP, commerçants et professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Châteaugiron : diagnostic adapté aux PME tertiaires du bassin rennais est, artisans BTP, commerçants et professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Châteaugiron : formats adaptés au bureau PME, atelier artisan, commerce ou cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Châteaugiron : formats adaptés au bureau PME, atelier artisan, commerce ou cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Châteaugiron : formats adaptés au bureau PME, atelier artisan, commerce ou cabinet libéral. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Châteaugiron : formats adaptés au bureau PME, atelier artisan, commerce ou cabinet libéral. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Châteaugiron : automatisation workflow tertiaire, agents conversationnels client, gestion devis BTP, CRM augmenté, outils IA professions libérales et gestion stocks commerce.",

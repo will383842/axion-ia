@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LOIREAUXENCE_COPY: VilleCopy = {
   pitchFr:
-    "Loireauxence (44), commune nouvelle de Loire-Atlantique en bords de Loire entre Nantes et Ancenis, regroupe TPE artisanales, commerces de proximité, PME tertiaires et exploitations agricoles. Axion-IA y intervient pour tous types d'activités du bassin nantais est.",
+    "Loireauxence (44), commune nouvelle de Loire-Atlantique en bords de Loire entre Nantes et Ancenis, regroupe TPE artisanales, commerces de proximité, PME tertiaires et exploitations agricoles. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin nantais est.",
   pitchEn:
-    "Loireauxence (44), commune nouvelle de Loire-Atlantique en bords de Loire entre Nantes et Ancenis, regroupe TPE artisanales, commerces de proximité, PME tertiaires et exploitations agricoles. Axion-IA y intervient pour tous types d'activités du bassin nantais est.",
+    "Loireauxence (44), commune nouvelle de Loire-Atlantique en bords de Loire entre Nantes et Ancenis, regroupe TPE artisanales, commerces de proximité, PME tertiaires et exploitations agricoles. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin nantais est.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Loireauxence (44). Nous accompagnons les TPE artisans, commerçants, PME tertiaires, professions libérales et exploitants agricoles de cette commune nouvelle en bords de Loire. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LOIREAUXENCE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Loireauxence : diagnostic adapté aux TPE artisans, exploitants agricoles, commerçants et PME tertiaires du bassin nantais est. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Loireauxence : diagnostic adapté aux TPE artisans, exploitants agricoles, commerçants et PME tertiaires du bassin nantais est. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Loireauxence : diagnostic adapté aux TPE artisans, exploitants agricoles, commerçants et PME tertiaires du bassin nantais est. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Loireauxence : diagnostic adapté aux TPE artisans, exploitants agricoles, commerçants et PME tertiaires du bassin nantais est. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Loireauxence : formats courts adaptés atelier, exploitation, bureau ou commerce. Vos équipes repartent autonomes sur outils IA métier.",

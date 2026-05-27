@@ -33,8 +33,8 @@ export const VILLEMUR_SUR_TARN_COPY: VilleCopy = {
       en: "Audit IA à Villemur-sur-Tarn : diagnostic adapté aux PME industrielles, TPE artisans et commerçants du nord Haute-Garonne. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Villemur-sur-Tarn : formats adaptés à l'atelier industriel, au commerce, à l'artisan. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Villemur-sur-Tarn : formats adaptés à l'atelier industriel, au commerce, à l'artisan. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Villemur-sur-Tarn : formats adaptés à l'atelier industriel, au commerce, à l'artisan. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Villemur-sur-Tarn : formats adaptés à l'atelier industriel, au commerce, à l'artisan. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Villemur-sur-Tarn : automatisation contrôle qualité, gestion stocks, classification documents, agents conversationnels pour PME du nord 31.",

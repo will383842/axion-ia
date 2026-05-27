@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const NEUVES_MAISONS_COPY: VilleCopy = {
   pitchFr:
-    "Neuves-Maisons (54), commune de la vallée de la Moselle au sud de Nancy en Meurthe-et-Moselle, est un ancien bastion sidérurgique reconverti vers la métallurgie spécialisée et les services. Tissu de TPE/PME industrie, métallurgie, artisanat, commerce et services. Axion-IA y intervient pour tous types d'activités.",
+    "Neuves-Maisons (54), commune de la vallée de la Moselle au sud de Nancy en Meurthe-et-Moselle, est un ancien bastion sidérurgique reconverti vers la métallurgie spécialisée et les services. Tissu de TPE/PME industrie, métallurgie, artisanat, commerce et services. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Neuves-Maisons (54), commune de la vallée de la Moselle au sud de Nancy en Meurthe-et-Moselle, est un ancien bastion sidérurgique reconverti vers la métallurgie spécialisée et les services. Tissu de TPE/PME industrie, métallurgie, artisanat, commerce et services. Axion-IA y intervient pour tous types d'activités.",
+    "Neuves-Maisons (54), commune de la vallée de la Moselle au sud de Nancy en Meurthe-et-Moselle, est un ancien bastion sidérurgique reconverti vers la métallurgie spécialisée et les services. Tissu de TPE/PME industrie, métallurgie, artisanat, commerce et services. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Neuves-Maisons (54). Nous accompagnons TPE et PME : industriels métallurgistes, artisans, commerçants et prestataires de services de la vallée de la Moselle au sud de Nancy en Lorraine. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const NEUVES_MAISONS_COPY: VilleCopy = {
       en: "Audit IA à Neuves-Maisons : diagnostic adapté aux industriels métallurgistes, ateliers mécaniques, artisans, commerçants et prestataires de services de la vallée de la Moselle. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Neuves-Maisons : formats adaptés à l'aciérie, à l'atelier mécanique, à la PME industrielle ou à la TPE artisanale. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Neuves-Maisons : formats adaptés à l'aciérie, à l'atelier mécanique, à la PME industrielle ou à la TPE artisanale. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Neuves-Maisons : formats adaptés à l'aciérie, à l'atelier mécanique, à la PME industrielle ou à la TPE artisanale. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Neuves-Maisons : formats adaptés à l'aciérie, à l'atelier mécanique, à la PME industrielle ou à la TPE artisanale. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Neuves-Maisons : maintenance prédictive métallurgie, optimisation production aciérie, automatisation devis mécanique, agents conversationnels relation client B2B industriel.",

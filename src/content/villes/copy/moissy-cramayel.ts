@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MOISSY_CRAMAYEL_COPY: VilleCopy = {
   pitchFr:
-    "Moissy-Cramayel (77), commune de Seine-et-Marne au sein de l'agglomération Grand Paris Sud, concentre un tissu dense de TPE/PME dans la logistique, le commerce, les services aux entreprises et l'artisanat BTP. Ses zones d'activités (Chanteloup, Lugny, Plain de l'Aunette) attirent entreprises et prestataires. Axion-IA y intervient pour tous types d'activités.",
+    "Moissy-Cramayel (77), commune de Seine-et-Marne au sein de l'agglomération Grand Paris Sud, concentre un tissu dense de TPE/PME dans la logistique, le commerce, les services aux entreprises et l'artisanat BTP. Ses zones d'activités (Chanteloup, Lugny, Plain de l'Aunette) attirent entreprises et prestataires. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Moissy-Cramayel (77), commune de Seine-et-Marne au sein de l'agglomération Grand Paris Sud, concentre un tissu dense de TPE/PME dans la logistique, le commerce, les services aux entreprises et l'artisanat BTP. Ses zones d'activités (Chanteloup, Lugny, Plain de l'Aunette) attirent entreprises et prestataires. Axion-IA y intervient pour tous types d'activités.",
+    "Moissy-Cramayel (77), commune de Seine-et-Marne au sein de l'agglomération Grand Paris Sud, concentre un tissu dense de TPE/PME dans la logistique, le commerce, les services aux entreprises et l'artisanat BTP. Ses zones d'activités (Chanteloup, Lugny, Plain de l'Aunette) attirent entreprises et prestataires. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Moissy-Cramayel (77). Nous accompagnons TPE et PME : entreprises logistique et transport des zones d'activités, commerces, artisans BTP, services aux entreprises et prestataires du bassin Grand Paris Sud. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const MOISSY_CRAMAYEL_COPY: VilleCopy = {
       en: "Audit IA à Moissy-Cramayel : diagnostic adapté aux TPE/PME logistique, commerces, artisans BTP et services du bassin Grand Paris Sud. Audit Flash 490 € HT, ROI chiffré sur vos cas métier.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Moissy-Cramayel : formats adaptés entrepôt logistique, bureau PME, commerce ou atelier artisan. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Moissy-Cramayel : formats adaptés entrepôt logistique, bureau PME, commerce ou atelier artisan. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Moissy-Cramayel : formats adaptés entrepôt logistique, bureau PME, commerce ou atelier artisan. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Moissy-Cramayel : formats adaptés entrepôt logistique, bureau PME, commerce ou atelier artisan. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Moissy-Cramayel : automatisation flux logistiques, gestion stocks, CRM commercial, classification documents transport. Adapté TPE/PME zones d'activités Grand Paris Sud.",

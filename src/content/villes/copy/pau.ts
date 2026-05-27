@@ -14,6 +14,7 @@ export const PAU_COPY: VilleCopy = {
     "Axion-IA propose des services d'IA sur site à Pau, où le tissu économique est enrichi par des entreprises comme TotalEnergies et la Technopole Hélioparc. Nos interventions incluent des audits, des implémentations et des formations, adaptées aux besoins spécifiques des entreprises locales. Nos consultants se déplacent dans les 5 jours ouvrés pour une prise en charge rapide et efficace.",
   directAnswerEn:
     "Axion-IA propose des services d'IA sur site à Pau, où le tissu économique est enrichi par des entreprises comme TotalEnergies et la Technopole Hélioparc. Nos interventions incluent des audits, des implémentations et des formations, adaptées aux besoins spécifiques des entreprises locales. Nos consultants se déplacent dans les 5 jours ouvrés pour une prise en charge rapide et efficace.",
+  seoHook: "énergie, aéronautique & rugby",
   ecosystemFr:
     "Pau se distingue par un écosystème économique diversifié, abritant des entreprises comme TotalEnergies et Safran Helicopter Engines. La Technopole Hélioparc et l'Université de Pau et des Pays de l'Adour contribuent également à l'innovation et à la recherche dans la région.",
   ecosystemEn:

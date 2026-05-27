@@ -720,7 +720,11 @@ export default async function VilleHubPage({ params }: Props) {
             >
               {ville.nameFr}
             </h2>
-            <p className="text-fg-soft mx-auto mt-4 max-w-2xl text-sm leading-relaxed sm:text-base">
+            <p
+              id="axion-direct-answer"
+              data-speakable-hero
+              className="text-fg-soft mx-auto mt-4 max-w-2xl text-sm leading-relaxed sm:text-base"
+            >
               {isFr ? (copy.directAnswerFr ?? copy.pitchFr) : (copy.directAnswerEn ?? copy.pitchEn)}
             </p>
             <div className="text-fg-muted mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs sm:text-sm">
@@ -746,21 +750,41 @@ export default async function VilleHubPage({ params }: Props) {
       {/* AI Act art. 50 disclosure */}
       <AiContentDisclaimer locale={loc} />
 
-      {/* JSON-LD globaux page — 5 schemas @graph, afterInteractive (-300 ms TBT).
+      {/* JSON-LD globaux page — schemas @graph, afterInteractive (-300 ms TBT).
+          WebPage relie tous les schemas via isPartOf vers l'Organization root
+          (signal hiérarchique fort pour LLMs / AI Overviews).
           Note : VilleFaqGeolocalisee émet déjà son propre FAQPage JSON-LD inline,
           on n'ajoute donc pas faqSpeakableJsonLd au @graph (anti-doublon Google).
-          Les composants ville (EcosystemeLocal, TissuEconomique, CommunesProches)
-          émettent leurs ItemList propres ; ici on émet uniquement l'ItemList des
-          5 verticales (différent scope). */}
+          Speakable est porté ici par le WebPage (selectors hero + direct-answer). */}
       <JsonLdGraph
         schemas={[
+          {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "@id": `${url}#webpage`,
+            url,
+            name: isFr
+              ? `Axion-IA · Architectes IA seniors à ${ville.nameFr}`
+              : `Axion-IA · AI architects in ${ville.nameFr}`,
+            description: isFr ? copy.pitchFr : copy.pitchEn,
+            inLanguage: loc === "fr" ? "fr-FR" : "en-GB",
+            isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
+            about: { "@type": "City", name: ville.nameFr },
+            breadcrumb: { "@id": `${url}#breadcrumb` },
+            primaryImageOfPage: { "@id": `${url}#hero-image` },
+            speakable: {
+              "@type": "SpeakableSpecification",
+              cssSelector: ["[data-speakable-hero]", "#axion-direct-answer"],
+            },
+            datePublished: "2026-05-26",
+            dateModified: new Date().toISOString().slice(0, 10),
+          } as const,
           serviceJsonLd,
           placeJsonLd,
           breadcrumbJsonLd,
           verticalesItemList,
           heroImageJsonLd,
           aggregateOfferJsonLd,
-          faqSpeakableJsonLd ?? null,
         ]}
         strategy="afterInteractive"
         scriptId={`jsonld-ville-hub-${ville.slug}`}

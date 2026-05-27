@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const RIANTEC_COPY: VilleCopy = {
   pitchFr:
-    "Riantec (56), commune littorale du Morbihan bordant la ria d'Étel, est un territoire ostréicole et maritime historique. Tissu TPE artisans (ostréiculture, pêche, mytiliculture), PME nautiques, commerces, tourisme balnéaire et services aux entreprises du bassin de Lorient. Axion-IA y intervient pour tous types d'activités.",
+    "Riantec (56), commune littorale du Morbihan bordant la ria d'Étel, est un territoire ostréicole et maritime historique. Tissu TPE artisans (ostréiculture, pêche, mytiliculture), PME nautiques, commerces, tourisme balnéaire et services aux entreprises du bassin de Lorient. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Riantec (56), commune littorale du Morbihan bordant la ria d'Étel, est un territoire ostréicole et maritime historique. Tissu TPE artisans (ostréiculture, pêche, mytiliculture), PME nautiques, commerces, tourisme balnéaire et services aux entreprises du bassin de Lorient. Axion-IA y intervient pour tous types d'activités.",
+    "Riantec (56), commune littorale du Morbihan bordant la ria d'Étel, est un territoire ostréicole et maritime historique. Tissu TPE artisans (ostréiculture, pêche, mytiliculture), PME nautiques, commerces, tourisme balnéaire et services aux entreprises du bassin de Lorient. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Riantec (56). Nous accompagnons tous types d'activités : ostréiculteurs et mytiliculteurs de la ria d'Étel, TPE artisans pêche et conchyliculture, PME nautiques, commerçants, hébergeurs touristiques littoraux, indépendants et services aux entreprises du bassin lorientais.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const RIANTEC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Riantec : diagnostic adapté aux ostréiculteurs, mytiliculteurs, PME nautiques, TPE artisans pêche et commerçants du littoral ria d'Étel. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Riantec : diagnostic adapté aux ostréiculteurs, mytiliculteurs, PME nautiques, TPE artisans pêche et commerçants du littoral ria d'Étel. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Riantec : diagnostic adapté aux ostréiculteurs, mytiliculteurs, PME nautiques, TPE artisans pêche et commerçants du littoral ria d'Étel. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Riantec : diagnostic adapté aux ostréiculteurs, mytiliculteurs, PME nautiques, TPE artisans pêche et commerçants du littoral ria d'Étel. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Riantec : formats adaptés à l'exploitation ostréicole, atelier nautique, commerce ou hébergement littoral. Vos équipes repartent autonomes sur outils IA configurés métier.",

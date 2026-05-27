@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_LOROUX_BOTTEREAU_COPY: VilleCopy = {
   pitchFr:
-    "Le Loroux-Bottereau (44), bourg du vignoble Muscadet à l'est de Nantes en Loire-Atlantique, vit de la viticulture, du maraîchage, de l'artisanat et des commerces de proximité. Axion-IA y intervient pour tous types d'activités du vignoble nantais.",
+    "Le Loroux-Bottereau (44), bourg du vignoble Muscadet à l'est de Nantes en Loire-Atlantique, vit de la viticulture, du maraîchage, de l'artisanat et des commerces de proximité. Axion-IA accompagne entreprises et indépendants de tous secteurs du vignoble nantais.",
   pitchEn:
-    "Le Loroux-Bottereau (44), bourg du vignoble Muscadet à l'est de Nantes en Loire-Atlantique, vit de la viticulture, du maraîchage, de l'artisanat et des commerces de proximité. Axion-IA y intervient pour tous types d'activités du vignoble nantais.",
+    "Le Loroux-Bottereau (44), bourg du vignoble Muscadet à l'est de Nantes en Loire-Atlantique, vit de la viticulture, du maraîchage, de l'artisanat et des commerces de proximité. Axion-IA accompagne entreprises et indépendants de tous secteurs du vignoble nantais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Loroux-Bottereau (44). Nous accompagnons les TPE viticoles, artisans, commerçants, PME du vignoble nantais et exploitations agricoles sur leurs cas IA opérationnels. Audit Flash dès 490 € HT.",
   directAnswerEn:

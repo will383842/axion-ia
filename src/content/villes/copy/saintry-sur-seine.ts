@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINTRY_SUR_SEINE_COPY: VilleCopy = {
   pitchFr:
-    "Saintry-sur-Seine (91), commune résidentielle de l'Essonne en bord de Seine, à 30 km au sud-est de Paris. Tissu TPE artisanales, commerces de proximité, PME tertiaires, indépendants. Axion-IA y intervient pour tous types d'activités de la vallée de Seine essonnienne.",
+    "Saintry-sur-Seine (91), commune résidentielle de l'Essonne en bord de Seine, à 30 km au sud-est de Paris. Tissu TPE artisanales, commerces de proximité, PME tertiaires, indépendants. Axion-IA accompagne entreprises et indépendants de tous secteurs de la vallée de Seine essonnienne.",
   pitchEn:
-    "Saintry-sur-Seine (91), commune résidentielle de l'Essonne en bord de Seine, à 30 km au sud-est de Paris. Tissu TPE artisanales, commerces de proximité, PME tertiaires, indépendants. Axion-IA y intervient pour tous types d'activités de la vallée de Seine essonnienne.",
+    "Saintry-sur-Seine (91), commune résidentielle de l'Essonne en bord de Seine, à 30 km au sud-est de Paris. Tissu TPE artisanales, commerces de proximité, PME tertiaires, indépendants. Axion-IA accompagne entreprises et indépendants de tous secteurs de la vallée de Seine essonnienne.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saintry-sur-Seine (91). Nous accompagnons tous types d'activités : TPE artisanales, commerces de proximité, PME tertiaires, indépendants, professions libérales et services aux entreprises de la vallée de Seine.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const SAINTRY_SUR_SEINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saintry-sur-Seine : diagnostic adapté aux TPE artisanales, commerces, PME tertiaires et indépendants de la vallée de Seine. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saintry-sur-Seine : diagnostic adapté aux TPE artisanales, commerces, PME tertiaires et indépendants de la vallée de Seine. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saintry-sur-Seine : diagnostic adapté aux TPE artisanales, commerces, PME tertiaires et indépendants de la vallée de Seine. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Saintry-sur-Seine : diagnostic adapté aux TPE artisanales, commerces, PME tertiaires et indépendants de la vallée de Seine. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saintry-sur-Seine : formats adaptés aux TPE/PME. Demi-journée à 2 jours, vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -64,7 +64,7 @@ export const SAINTRY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris en RER D via Corbeil-Essonnes (40 min Gare de Lyon) ou en voiture par A6/N7 (45 min). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Paris en RER D via Corbeil-Essonnes (40 min Gare de Lyon) ou en voiture par A6/N7 (45 min). Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

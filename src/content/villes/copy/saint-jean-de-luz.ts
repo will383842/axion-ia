@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_JEAN_DE_LUZ_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Jean-de-Luz (64), commune de 14 857 habitants dans les Pyrénées-Atlantiques, est un port de pêche historique et une station balnéaire prisée de la Côte Basque. Célèbre pour la maison Louis XIV et le mariage du Roi-Soleil, son économie repose sur un tissu de TPE commerçants et artisans, PME tourisme et hôtellerie-restauration, pêche et filière halieutique, professions libérales et services. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Jean-de-Luz (64), commune de 14 857 habitants dans les Pyrénées-Atlantiques, est un port de pêche historique et une station balnéaire prisée de la Côte Basque. Célèbre pour la maison Louis XIV et le mariage du Roi-Soleil, son économie repose sur un tissu de TPE commerçants et artisans, PME tourisme et hôtellerie-restauration, pêche et filière halieutique, professions libérales et services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Saint-Jean-de-Luz (64), commune de 14 857 habitants dans les Pyrénées-Atlantiques, est un port de pêche historique et une station balnéaire prisée de la Côte Basque. Célèbre pour la maison Louis XIV et le mariage du Roi-Soleil, son économie repose sur un tissu de TPE commerçants et artisans, PME tourisme et hôtellerie-restauration, pêche et filière halieutique, professions libérales et services. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Jean-de-Luz (64), commune de 14 857 habitants dans les Pyrénées-Atlantiques, est un port de pêche historique et une station balnéaire prisée de la Côte Basque. Célèbre pour la maison Louis XIV et le mariage du Roi-Soleil, son économie repose sur un tissu de TPE commerçants et artisans, PME tourisme et hôtellerie-restauration, pêche et filière halieutique, professions libérales et services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean-de-Luz (64). Nous accompagnons TPE et PME de la Côte Basque : acteurs du tourisme balnéaire, hôteliers-restaurateurs, commerçants centre-ville, professionnels de la pêche, artisans et professions libérales du bassin luzien. Audit Flash dès 490 € HT.",
   directAnswerEn:

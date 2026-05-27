@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const OUISTREHAM_COPY: VilleCopy = {
   pitchFr:
-    "Ouistreham (14), station balnéaire du Calvados, est le port ferry de Caen (liaison Caen-Portsmouth Brittany Ferries) et l'une des plages du Débarquement (Sword Beach, 6 juin 1944). Tissu TPE artisans, PME tourisme et nautisme, hôtellerie-restauration, commerces, activités portuaires. Axion-IA y intervient pour tous types d'activités.",
+    "Ouistreham (14), station balnéaire du Calvados, est le port ferry de Caen (liaison Caen-Portsmouth Brittany Ferries) et l'une des plages du Débarquement (Sword Beach, 6 juin 1944). Tissu TPE artisans, PME tourisme et nautisme, hôtellerie-restauration, commerces, activités portuaires. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Ouistreham (14), station balnéaire du Calvados, est le port ferry de Caen (liaison Caen-Portsmouth Brittany Ferries) et l'une des plages du Débarquement (Sword Beach, 6 juin 1944). Tissu TPE artisans, PME tourisme et nautisme, hôtellerie-restauration, commerces, activités portuaires. Axion-IA y intervient pour tous types d'activités.",
+    "Ouistreham (14), station balnéaire du Calvados, est le port ferry de Caen (liaison Caen-Portsmouth Brittany Ferries) et l'une des plages du Débarquement (Sword Beach, 6 juin 1944). Tissu TPE artisans, PME tourisme et nautisme, hôtellerie-restauration, commerces, activités portuaires. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ouistreham (14). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tourisme balnéaire et nautisme, hôteliers-restaurateurs Sword Beach, acteurs portuaires ferry, professions libérales et services aux entreprises de la Côte de Nacre.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const OUISTREHAM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ouistreham : diagnostic adapté aux acteurs du tourisme balnéaire et Débarquement, hôteliers-restaurateurs, PME nautiques, TPE artisans et commerçants Côte de Nacre. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Ouistreham : diagnostic adapté aux acteurs du tourisme balnéaire et Débarquement, hôteliers-restaurateurs, PME nautiques, TPE artisans et commerçants Côte de Nacre. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Ouistreham : diagnostic adapté aux acteurs du tourisme balnéaire et Débarquement, hôteliers-restaurateurs, PME nautiques, TPE artisans et commerçants Côte de Nacre. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Ouistreham : diagnostic adapté aux acteurs du tourisme balnéaire et Débarquement, hôteliers-restaurateurs, PME nautiques, TPE artisans et commerçants Côte de Nacre. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ouistreham : formats adaptés à l'hôtel, restaurant, port de plaisance, commerce saisonnier ou site touristique. Vos équipes repartent autonomes sur outils IA.",

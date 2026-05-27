@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_CHAMAS_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Chamas (13), village provençal sur les rives de l'étang de Berre, est célèbre pour son pont Flavien, monument romain classé du Ier siècle. Tissu de TPE artisans, commerçants, pêcheurs, PME services et agriculture (oliveraies). Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Chamas (13), village provençal sur les rives de l'étang de Berre, est célèbre pour son pont Flavien, monument romain classé du Ier siècle. Tissu de TPE artisans, commerçants, pêcheurs, PME services et agriculture (oliveraies). Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Saint-Chamas (13), village provençal sur les rives de l'étang de Berre, est célèbre pour son pont Flavien, monument romain classé du Ier siècle. Tissu de TPE artisans, commerçants, pêcheurs, PME services et agriculture (oliveraies). Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Chamas (13), village provençal sur les rives de l'étang de Berre, est célèbre pour son pont Flavien, monument romain classé du Ier siècle. Tissu de TPE artisans, commerçants, pêcheurs, PME services et agriculture (oliveraies). Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Chamas (13). Nous accompagnons TPE artisans, commerçants, pêcheurs, PME de services, exploitants agricoles (oliveraies, maraîchage) et entreprises du bassin de l'étang de Berre. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const SAINT_CHAMAS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Chamas : diagnostic adapté aux TPE artisans, commerçants, exploitants agricoles et PME du bassin de l'étang de Berre. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Chamas : diagnostic adapté aux TPE artisans, commerçants, exploitants agricoles et PME du bassin de l'étang de Berre. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Chamas : diagnostic adapté aux TPE artisans, commerçants, exploitants agricoles et PME du bassin de l'étang de Berre. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Saint-Chamas : diagnostic adapté aux TPE artisans, commerçants, exploitants agricoles et PME du bassin de l'étang de Berre. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Chamas : ateliers pratiques pour artisans, commerçants et exploitants agricoles. Vos équipes repartent avec des outils IA configurés pour votre métier réel.",

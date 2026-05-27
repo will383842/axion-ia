@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const AVRANCHES_COPY: VilleCopy = {
   pitchFr:
-    "Avranches (50), sous-préfecture de la Manche en Normandie, offre une vue emblématique sur le Mont-Saint-Michel depuis son jardin des plantes. Tissu TPE commerces et artisanat, PME agroalimentaires du bocage, tourisme lié au Mont-Saint-Michel, services publics de sous-préfecture. Axion-IA y intervient pour tous types d'activités.",
+    "Avranches (50), sous-préfecture de la Manche en Normandie, offre une vue emblématique sur le Mont-Saint-Michel depuis son jardin des plantes. Tissu TPE commerces et artisanat, PME agroalimentaires du bocage, tourisme lié au Mont-Saint-Michel, services publics de sous-préfecture. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Avranches (50), sous-préfecture de la Manche en Normandie, offre une vue emblématique sur le Mont-Saint-Michel depuis son jardin des plantes. Tissu TPE commerces et artisanat, PME agroalimentaires du bocage, tourisme lié au Mont-Saint-Michel, services publics de sous-préfecture. Axion-IA y intervient pour tous types d'activités.",
+    "Avranches (50), sous-préfecture de la Manche en Normandie, offre une vue emblématique sur le Mont-Saint-Michel depuis son jardin des plantes. Tissu TPE commerces et artisanat, PME agroalimentaires du bocage, tourisme lié au Mont-Saint-Michel, services publics de sous-préfecture. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Avranches (50). Nous accompagnons tous types d'activités : TPE commerçants et artisans du centre-ville, PME agroalimentaires du bocage avranchin, prestataires tourisme Mont-Saint-Michel, professions libérales, services publics et associations.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const AVRANCHES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Avranches : diagnostic adapté aux TPE commerçants et artisans, PME agroalimentaires bocage, prestataires tourisme Mont-Saint-Michel, professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Avranches : diagnostic adapté aux TPE commerçants et artisans, PME agroalimentaires bocage, prestataires tourisme Mont-Saint-Michel, professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Avranches : diagnostic adapté aux TPE commerçants et artisans, PME agroalimentaires bocage, prestataires tourisme Mont-Saint-Michel, professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Avranches : diagnostic adapté aux TPE commerçants et artisans, PME agroalimentaires bocage, prestataires tourisme Mont-Saint-Michel, professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Avranches : formats adaptés au commerce, à l'exploitation agricole, à l'hôtel, au cabinet. Vos équipes repartent autonomes sur les outils IA.",
@@ -64,7 +64,7 @@ export const AVRANCHES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Avranches ?",
-      a: "Nos consultants viennent de Rennes (55 min A84) ou Caen (1 h 20). Gare d'Avranches (TER Caen-Granville). Multi-jours : hébergement local. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Rennes (55 min A84) ou Caen (1 h 20). Gare d'Avranches (TER Caen-Granville). Multi-jours : hébergement local. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

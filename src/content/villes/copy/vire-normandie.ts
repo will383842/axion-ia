@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VIRE_NORMANDIE_COPY: VilleCopy = {
   pitchFr:
-    "Vire Normandie (14), commune nouvelle du bocage normand dans le Calvados, est la sous-préfecture sud du département. Célèbre pour l'andouille de Vire (IGP), la commune rayonne sur un bassin d'emploi agroalimentaire, industriel et artisanal. Tissu TPE artisans, PME agroalimentaires et industrielles, commerces de centre-ville. Axion-IA y intervient pour tous types d'activités.",
+    "Vire Normandie (14), commune nouvelle du bocage normand dans le Calvados, est la sous-préfecture sud du département. Célèbre pour l'andouille de Vire (IGP), la commune rayonne sur un bassin d'emploi agroalimentaire, industriel et artisanal. Tissu TPE artisans, PME agroalimentaires et industrielles, commerces de centre-ville. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Vire Normandie (14), commune nouvelle du bocage normand dans le Calvados, est la sous-préfecture sud du département. Célèbre pour l'andouille de Vire (IGP), la commune rayonne sur un bassin d'emploi agroalimentaire, industriel et artisanal. Tissu TPE artisans, PME agroalimentaires et industrielles, commerces de centre-ville. Axion-IA y intervient pour tous types d'activités.",
+    "Vire Normandie (14), commune nouvelle du bocage normand dans le Calvados, est la sous-préfecture sud du département. Célèbre pour l'andouille de Vire (IGP), la commune rayonne sur un bassin d'emploi agroalimentaire, industriel et artisanal. Tissu TPE artisans, PME agroalimentaires et industrielles, commerces de centre-ville. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vire Normandie (14). Nous accompagnons tous types d'activités : TPE artisans et commerçants du bocage, PME agroalimentaires (andouille de Vire IGP, produits laitiers), industriels, professions libérales, indépendants et services aux entreprises du sud-Calvados.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const VIRE_NORMANDIE_COPY: VilleCopy = {
       en: "Audit IA à Vire Normandie : diagnostic adapté aux PME agroalimentaires (andouille de Vire IGP, laiteries), TPE artisans, commerçants et industriels du bocage. ROI chiffré, audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Vire Normandie : formats adaptés à l'usine agroalimentaire, atelier industriel, commerce ou cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Vire Normandie : formats adaptés à l'usine agroalimentaire, atelier industriel, commerce ou cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Vire Normandie : formats adaptés à l'usine agroalimentaire, atelier industriel, commerce ou cabinet. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Vire Normandie : formats adaptés à l'usine agroalimentaire, atelier industriel, commerce ou cabinet. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Vire Normandie : traçabilité agroalimentaire, contrôle qualité par vision, automatisation supply chain laitière, agents conversationnels. Adapté TPE/PME du bocage.",
@@ -64,7 +64,7 @@ export const VIRE_NORMANDIE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA depuis Caen ?",
-      a: "Nos consultants viennent de Caen (1h A84) ou Flers (25 min). Pour les missions multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Caen (1h A84) ou Flers (25 min). Pour les missions multi-jours, hébergement local possible. Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

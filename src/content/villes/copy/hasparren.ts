@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const HASPARREN_COPY: VilleCopy = {
   pitchFr:
-    "Hasparren (64), commune du Labourd intérieur en Pays Basque, 7 626 habitants. Capitale historique du cuir et de la chaussure basque, tissu de TPE artisans, PME industrielles (cuir, textile), agriculture et commerces. Axion-IA y intervient pour tous types d'activités du Labourd intérieur.",
+    "Hasparren (64), commune du Labourd intérieur en Pays Basque, 7 626 habitants. Capitale historique du cuir et de la chaussure basque, tissu de TPE artisans, PME industrielles (cuir, textile), agriculture et commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs du Labourd intérieur.",
   pitchEn:
-    "Hasparren (64), commune du Labourd intérieur en Pays Basque, 7 626 habitants. Capitale historique du cuir et de la chaussure basque, tissu de TPE artisans, PME industrielles (cuir, textile), agriculture et commerces. Axion-IA y intervient pour tous types d'activités du Labourd intérieur.",
+    "Hasparren (64), commune du Labourd intérieur en Pays Basque, 7 626 habitants. Capitale historique du cuir et de la chaussure basque, tissu de TPE artisans, PME industrielles (cuir, textile), agriculture et commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs du Labourd intérieur.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hasparren (64). Nous accompagnons TPE, PME et artisans du Labourd intérieur : cuir/chaussure, agriculture basque, agroalimentaire, commerces. Audit Flash à partir de 490 € HT.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LEOGNAN_COPY: VilleCopy = {
   pitchFr:
-    "Léognan (33), commune viticole prestigieuse au sud de Bordeaux, abrite l'AOC Pessac-Léognan (grands crus classés) et un tissu économique diversifié : exploitations viticoles, PME agroalimentaires, artisanat, commerces et professions libérales. Axion-IA y intervient pour tous types d'activités du sud bordelais.",
+    "Léognan (33), commune viticole prestigieuse au sud de Bordeaux, abrite l'AOC Pessac-Léognan (grands crus classés) et un tissu économique diversifié : exploitations viticoles, PME agroalimentaires, artisanat, commerces et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations du sud bordelais.",
   pitchEn:
-    "Léognan (33), commune viticole prestigieuse au sud de Bordeaux, abrite l'AOC Pessac-Léognan (grands crus classés) et un tissu économique diversifié : exploitations viticoles, PME agroalimentaires, artisanat, commerces et professions libérales. Axion-IA y intervient pour tous types d'activités du sud bordelais.",
+    "Léognan (33), commune viticole prestigieuse au sud de Bordeaux, abrite l'AOC Pessac-Léognan (grands crus classés) et un tissu économique diversifié : exploitations viticoles, PME agroalimentaires, artisanat, commerces et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations du sud bordelais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Léognan (33). Nous accompagnons TPE et PME du vignoble Pessac-Léognan : domaines viticoles grands crus, PME agroalimentaires, artisans BTP, commerçants et professions libérales. Audit Flash dès 490 € HT.",
   directAnswerEn:

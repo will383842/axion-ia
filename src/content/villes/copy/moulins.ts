@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MOULINS_COPY: VilleCopy = {
   pitchFr:
-    "Moulins (03), préfecture de l'Allier et capitale historique du Bourbonnais, est positionnée au bord de l'Allier. Patrimoine ducal remarquable (cathédrale, château des ducs de Bourbon). Tissu administration et services publics, PME tertiaires, TPE artisans BTP, agriculture bourbonnaise, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Moulins (03), préfecture de l'Allier et capitale historique du Bourbonnais, est positionnée au bord de l'Allier. Patrimoine ducal remarquable (cathédrale, château des ducs de Bourbon). Tissu administration et services publics, PME tertiaires, TPE artisans BTP, agriculture bourbonnaise, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Moulins (03), préfecture de l'Allier et capitale historique du Bourbonnais, est positionnée au bord de l'Allier. Patrimoine ducal remarquable (cathédrale, château des ducs de Bourbon). Tissu administration et services publics, PME tertiaires, TPE artisans BTP, agriculture bourbonnaise, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Moulins (03), préfecture de l'Allier et capitale historique du Bourbonnais, est positionnée au bord de l'Allier. Patrimoine ducal remarquable (cathédrale, château des ducs de Bourbon). Tissu administration et services publics, PME tertiaires, TPE artisans BTP, agriculture bourbonnaise, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Moulins (03). Nous accompagnons tous types d'activités : administration préfecture, PME tertiaires Bourbonnais, agriculteurs/éleveurs allier, acteurs tourisme patrimonial, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const MOULINS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Moulins : diagnostic adapté à l'administration préfecture, PME tertiaires, agriculteurs/éleveurs, acteurs tourisme, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Moulins : diagnostic adapté à l'administration préfecture, PME tertiaires, agriculteurs/éleveurs, acteurs tourisme, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Moulins : diagnostic adapté à l'administration préfecture, PME tertiaires, agriculteurs/éleveurs, acteurs tourisme, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Moulins : diagnostic adapté à l'administration préfecture, PME tertiaires, agriculteurs/éleveurs, acteurs tourisme, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Moulins : formats adaptés à l'administration, exploitation élevage, site patrimonial, bureau, commerce. Vos équipes repartent autonomes.",

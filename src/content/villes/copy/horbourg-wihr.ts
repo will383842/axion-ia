@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const HORBOURG_WIHR_COPY: VilleCopy = {
   pitchFr:
-    "Horbourg-Wihr (68), commune située à l'est de Colmar dans le vignoble alsacien et la Collectivité européenne d'Alsace. Tissu TPE viticulture et artisanat, PME services et industrie légère, commerçants, professions libérales, restaurateurs et indépendants de l'agglomération colmarienne. Axion-IA y intervient pour tous types d'activités.",
+    "Horbourg-Wihr (68), commune située à l'est de Colmar dans le vignoble alsacien et la Collectivité européenne d'Alsace. Tissu TPE viticulture et artisanat, PME services et industrie légère, commerçants, professions libérales, restaurateurs et indépendants de l'agglomération colmarienne. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Horbourg-Wihr (68), commune située à l'est de Colmar dans le vignoble alsacien et la Collectivité européenne d'Alsace. Tissu TPE viticulture et artisanat, PME services et industrie légère, commerçants, professions libérales, restaurateurs et indépendants de l'agglomération colmarienne. Axion-IA y intervient pour tous types d'activités.",
+    "Horbourg-Wihr (68), commune située à l'est de Colmar dans le vignoble alsacien et la Collectivité européenne d'Alsace. Tissu TPE viticulture et artisanat, PME services et industrie légère, commerçants, professions libérales, restaurateurs et indépendants de l'agglomération colmarienne. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Horbourg-Wihr (68). Nous accompagnons tous types d'activités : TPE viticulture et artisanat, PME services et industrie légère, commerçants, professions libérales, restaurateurs et indépendants de l'agglomération colmarienne. Audit Flash dès 490 € HT.",
   directAnswerEn:

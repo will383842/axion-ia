@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LUC_LA_PRIMAUBE_COPY: VilleCopy = {
   pitchFr:
-    "Luc-la-Primaube (12), commune résidentielle au sud de l'agglomération ruthénoise avec plus de 6 000 habitants. Tissu TPE artisans BTP, PME services et négoce, commerces de proximité, professions libérales, agriculture. Axion-IA y intervient pour tous types d'activités.",
+    "Luc-la-Primaube (12), commune résidentielle au sud de l'agglomération ruthénoise avec plus de 6 000 habitants. Tissu TPE artisans BTP, PME services et négoce, commerces de proximité, professions libérales, agriculture. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Luc-la-Primaube (12), commune résidentielle au sud de l'agglomération ruthénoise avec plus de 6 000 habitants. Tissu TPE artisans BTP, PME services et négoce, commerces de proximité, professions libérales, agriculture. Axion-IA y intervient pour tous types d'activités.",
+    "Luc-la-Primaube (12), commune résidentielle au sud de l'agglomération ruthénoise avec plus de 6 000 habitants. Tissu TPE artisans BTP, PME services et négoce, commerces de proximité, professions libérales, agriculture. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Luc-la-Primaube (12). Nous accompagnons TPE artisans, PME services et négoce, commerçants, professions libérales et agriculteurs de l'agglomération sud de Rodez. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const LUC_LA_PRIMAUBE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Luc-la-Primaube ?",
-      a: "Nos consultants se déplacent depuis Rodez centre (10 min). Intervention 1 journée minimum, format atelier pratique dans vos locaux (atelier, bureau, commerce). Vos équipes repartent autonomes.",
+      a: "Nos consultants se déplacent depuis Rodez centre (10 min). Intervention 1 journée minimum, format atelier pratique dans vos locaux (atelier, bureau, commerce). Vos collaborateurs sont autonomes ensuite.",
     },
     {
       q: "Proposez-vous du coaching individuel IA à Luc-la-Primaube ?",

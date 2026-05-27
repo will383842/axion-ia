@@ -33,8 +33,8 @@ export const OBERHAUSBERGEN_COPY: VilleCopy = {
       en: "Audit IA à Oberhausbergen : diagnostic adapté aux TPE/PME des zones d''activités de l''ouest strasbourgeois, sous-traitants industriels, prestataires de services et artisans BTP du Bas-Rhin. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Oberhausbergen : formats adaptés à l''atelier industriel, au prestataire de services, au commerce ou à la TPE BTP. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Oberhausbergen : formats adaptés à l''atelier industriel, au prestataire de services, au commerce ou à la TPE BTP. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Oberhausbergen : formats adaptés à l''atelier industriel, au prestataire de services, au commerce ou à la TPE BTP. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Oberhausbergen : formats adaptés à l''atelier industriel, au prestataire de services, au commerce ou à la TPE BTP. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Oberhausbergen : automatisation devis et facturation BTP, gestion production sous-traitance industrielle, agents conversationnels services, CRM B2B et outils IA métier pour PME alsaciennes.",

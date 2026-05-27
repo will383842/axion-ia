@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const EPONE_COPY: VilleCopy = {
   pitchFr:
-    "Épône (78), commune des bords de Seine rive gauche à 45 km à l'ouest de Paris dans les Yvelines, accueille TPE artisans, PME industrielles et logistiques, commerces de proximité et exploitants agricoles. Axion-IA y intervient pour tous types d'activités de la vallée de Seine yvelinoise.",
+    "Épône (78), commune des bords de Seine rive gauche à 45 km à l'ouest de Paris dans les Yvelines, accueille TPE artisans, PME industrielles et logistiques, commerces de proximité et exploitants agricoles. Axion-IA accompagne entreprises et indépendants de tous secteurs de la vallée de Seine yvelinoise.",
   pitchEn:
-    "Épône (78), commune des bords de Seine rive gauche à 45 km à l'ouest de Paris dans les Yvelines, accueille TPE artisans, PME industrielles et logistiques, commerces de proximité et exploitants agricoles. Axion-IA y intervient pour tous types d'activités de la vallée de Seine yvelinoise.",
+    "Épône (78), commune des bords de Seine rive gauche à 45 km à l'ouest de Paris dans les Yvelines, accueille TPE artisans, PME industrielles et logistiques, commerces de proximité et exploitants agricoles. Axion-IA accompagne entreprises et indépendants de tous secteurs de la vallée de Seine yvelinoise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Épône (78). Nous accompagnons TPE et PME : artisans locaux, PME industrielles et logistiques de la vallée de Seine, commerçants et professions libérales de cette commune dynamique entre Mantes-la-Jolie et Les Mureaux.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const EPONE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Épône : diagnostic adapté aux PME industrielles et logistiques, TPE artisans, commerçants et professions libérales de la vallée de Seine yvelinoise. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Épône : diagnostic adapté aux PME industrielles et logistiques, TPE artisans, commerçants et professions libérales de la vallée de Seine yvelinoise. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Épône : diagnostic adapté aux PME industrielles et logistiques, TPE artisans, commerçants et professions libérales de la vallée de Seine yvelinoise. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Épône : diagnostic adapté aux PME industrielles et logistiques, TPE artisans, commerçants et professions libérales de la vallée de Seine yvelinoise. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Épône : formats adaptés à l'entrepôt logistique, l'atelier industriel, le commerce ou le cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Épône : formats adaptés à l'entrepôt logistique, l'atelier industriel, le commerce ou le cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Épône : formats adaptés à l'entrepôt logistique, l'atelier industriel, le commerce ou le cabinet libéral. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Épône : formats adaptés à l'entrepôt logistique, l'atelier industriel, le commerce ou le cabinet libéral. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Épône : automatisation flux logistiques Seine, gestion stocks PME industrielle, agents conversationnels artisans, CRM augmenté commerçants, maintenance prédictive équipements.",

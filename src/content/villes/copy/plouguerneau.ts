@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PLOUGUERNEAU_COPY: VilleCopy = {
   pitchFr:
-    "Plouguerneau (29), commune littorale du pays des Abers dans le nord Finistère, abrite le phare de l'Île Vierge, le plus haut phare en pierre d'Europe. TPE artisans, PME touristiques, commerces de proximité, ostréiculteurs, goémoniers, professions libérales et exploitants agricoles composent son économie. Axion-IA y intervient pour tous types d'activités du pays des Abers.",
+    "Plouguerneau (29), commune littorale du pays des Abers dans le nord Finistère, abrite le phare de l'Île Vierge, le plus haut phare en pierre d'Europe. TPE artisans, PME touristiques, commerces de proximité, ostréiculteurs, goémoniers, professions libérales et exploitants agricoles composent son économie. Axion-IA y déploie ses missions auprès de toutes les organisations du pays des Abers.",
   pitchEn:
-    "Plouguerneau (29), commune littorale du pays des Abers dans le nord Finistère, abrite le phare de l'Île Vierge, le plus haut phare en pierre d'Europe. TPE artisans, PME touristiques, commerces de proximité, ostréiculteurs, goémoniers, professions libérales et exploitants agricoles composent son économie. Axion-IA y intervient pour tous types d'activités du pays des Abers.",
+    "Plouguerneau (29), commune littorale du pays des Abers dans le nord Finistère, abrite le phare de l'Île Vierge, le plus haut phare en pierre d'Europe. TPE artisans, PME touristiques, commerces de proximité, ostréiculteurs, goémoniers, professions libérales et exploitants agricoles composent son économie. Axion-IA y déploie ses missions auprès de toutes les organisations du pays des Abers.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plouguerneau (29). Nous accompagnons tous types d'activités : TPE artisans et goémoniers du littoral, PME touristiques du pays des Abers, ostréiculteurs, commerçants, professions libérales, exploitants agricoles et indépendants du secteur.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const PLOUGUERNEAU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Plouguerneau : diagnostic adapté aux TPE touristiques, goémoniers, ostréiculteurs, PME du pays des Abers et commerçants de proximité. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Plouguerneau : diagnostic adapté aux TPE touristiques, goémoniers, ostréiculteurs, PME du pays des Abers et commerçants de proximité. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Plouguerneau : diagnostic adapté aux TPE touristiques, goémoniers, ostréiculteurs, PME du pays des Abers et commerçants de proximité. Audit Flash 490 € HT avec ROI quantifié accessible.",
+      en: "Audit IA à Plouguerneau : diagnostic adapté aux TPE touristiques, goémoniers, ostréiculteurs, PME du pays des Abers et commerçants de proximité. Audit Flash 490 € HT avec ROI quantifié accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Plouguerneau : formats adaptés aux hébergeurs touristiques, goémoniers, ostréiculteurs ou commerces littoraux. Vos équipes repartent autonomes sur les outils IA métier.",

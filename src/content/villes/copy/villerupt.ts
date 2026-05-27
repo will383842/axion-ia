@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VILLERUPT_COPY: VilleCopy = {
   pitchFr:
-    "Villerupt (54), commune du Pays Haut en Meurthe-et-Moselle, est frontalière du Luxembourg et marquée par son héritage sidérurgique et son festival du film italien. Tissu TPE/PME services, commerces, travailleurs frontaliers, artisans BTP, professions de santé. Axion-IA y intervient pour tous types d'activités.",
+    "Villerupt (54), commune du Pays Haut en Meurthe-et-Moselle, est frontalière du Luxembourg et marquée par son héritage sidérurgique et son festival du film italien. Tissu TPE/PME services, commerces, travailleurs frontaliers, artisans BTP, professions de santé. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Villerupt (54), commune du Pays Haut en Meurthe-et-Moselle, est frontalière du Luxembourg et marquée par son héritage sidérurgique et son festival du film italien. Tissu TPE/PME services, commerces, travailleurs frontaliers, artisans BTP, professions de santé. Axion-IA y intervient pour tous types d'activités.",
+    "Villerupt (54), commune du Pays Haut en Meurthe-et-Moselle, est frontalière du Luxembourg et marquée par son héritage sidérurgique et son festival du film italien. Tissu TPE/PME services, commerces, travailleurs frontaliers, artisans BTP, professions de santé. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villerupt (54). Nous accompagnons tous types d'activités : TPE/PME du Pays Haut, commerces de proximité, artisans BTP, professions de santé et prestataires de services aux travailleurs frontaliers Luxembourg.",
   directAnswerEn:
@@ -30,12 +30,12 @@ export const VILLERUPT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villerupt : diagnostic adapté aux TPE/PME Pays Haut, commerces, artisans BTP, professions de santé et prestataires frontaliers Luxembourg. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Villerupt : diagnostic adapté aux TPE/PME Pays Haut, commerces, artisans BTP, professions de santé et prestataires frontaliers Luxembourg. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Villerupt : diagnostic adapté aux TPE/PME Pays Haut, commerces, artisans BTP, professions de santé et prestataires frontaliers Luxembourg. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Villerupt : diagnostic adapté aux TPE/PME Pays Haut, commerces, artisans BTP, professions de santé et prestataires frontaliers Luxembourg. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Villerupt : formats adaptés au bureau, commerce, cabinet ou chantier. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Villerupt : formats adaptés au bureau, commerce, cabinet ou chantier. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Villerupt : formats adaptés au bureau, commerce, cabinet ou chantier. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Villerupt : formats adaptés au bureau, commerce, cabinet ou chantier. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Villerupt : automatisation gestion commerciale, relation client bilingue FR/LU, agents conversationnels, workflow artisans BTP, gestion cabinet santé.",

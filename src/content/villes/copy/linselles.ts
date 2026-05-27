@@ -29,12 +29,12 @@ export const LINSELLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Linselles : diagnostic adapté aux PME textile-confection lilloises, prestataires transfrontaliers franco-belges, commerçants, artisans et exploitations agricoles. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Linselles : diagnostic adapté aux PME textile-confection lilloises, prestataires transfrontaliers franco-belges, commerçants, artisans et exploitations agricoles. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Linselles : diagnostic adapté aux PME textile-confection lilloises, prestataires transfrontaliers franco-belges, commerçants, artisans et exploitations agricoles. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Linselles : diagnostic adapté aux PME textile-confection lilloises, prestataires transfrontaliers franco-belges, commerçants, artisans et exploitations agricoles. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Linselles : formats adaptés à la PME textile, au prestataire B2B transfrontalier, au commerce ou à l'artisan. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Linselles : formats adaptés à la PME textile, au prestataire B2B transfrontalier, au commerce ou à l'artisan. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Linselles : formats adaptés à la PME textile, au prestataire B2B transfrontalier, au commerce ou à l'artisan. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Linselles : formats adaptés à la PME textile, au prestataire B2B transfrontalier, au commerce ou à l'artisan. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Linselles : génération fiches produits textile-confection, contrôle qualité visuel atelier, agents conversationnels multilingues FR-NL-EN transfrontaliers, CRM augmenté PME B2B, automatisation devis-facturation cross-border.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const NIEUL_SUR_MER_COPY: VilleCopy = {
   pitchFr:
-    "Nieul-sur-Mer (17), commune résidentielle au nord de l'agglomération de La Rochelle en Charente-Maritime, cadre de vie littoral prisé. Tissu de TPE artisans, PME tertiaires, commerces de proximité, services à la personne et professions libérales. Axion-IA y intervient pour tous types d'activités de l'agglomération rochelaise.",
+    "Nieul-sur-Mer (17), commune résidentielle au nord de l'agglomération de La Rochelle en Charente-Maritime, cadre de vie littoral prisé. Tissu de TPE artisans, PME tertiaires, commerces de proximité, services à la personne et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de l'agglomération rochelaise.",
   pitchEn:
-    "Nieul-sur-Mer (17), commune résidentielle au nord de l'agglomération de La Rochelle en Charente-Maritime, cadre de vie littoral prisé. Tissu de TPE artisans, PME tertiaires, commerces de proximité, services à la personne et professions libérales. Axion-IA y intervient pour tous types d'activités de l'agglomération rochelaise.",
+    "Nieul-sur-Mer (17), commune résidentielle au nord de l'agglomération de La Rochelle en Charente-Maritime, cadre de vie littoral prisé. Tissu de TPE artisans, PME tertiaires, commerces de proximité, services à la personne et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de l'agglomération rochelaise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nieul-sur-Mer (17). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, prestataires de services, commerçants, professions libérales et indépendants de cette commune littorale prisée de l'agglomération de La Rochelle.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const NIEUL_SUR_MER_COPY: VilleCopy = {
       en: "Audit IA à Nieul-sur-Mer : diagnostic adapté aux PME tertiaires, professions libérales, TPE artisans et commerces de l'agglomération de La Rochelle nord. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Nieul-sur-Mer : formats adaptés au cabinet, au bureau, à l'atelier ou au commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Nieul-sur-Mer : formats adaptés au cabinet, au bureau, à l'atelier ou au commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Nieul-sur-Mer : formats adaptés au cabinet, au bureau, à l'atelier ou au commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Nieul-sur-Mer : formats adaptés au cabinet, au bureau, à l'atelier ou au commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Nieul-sur-Mer : automatisation secrétariat médical/juridique, agents conversationnels prise de rendez-vous, classification documents, optimisation planification services.",

@@ -29,12 +29,12 @@ export const OUTREAU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Outreau : diagnostic adapté aux TPE artisans, PME de services, commerçants et professionnels de la filière halieutique de l'agglo boulonnaise. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Outreau : diagnostic adapté aux TPE artisans, PME de services, commerçants et professionnels de la filière halieutique de l'agglo boulonnaise. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Outreau : diagnostic adapté aux TPE artisans, PME de services, commerçants et professionnels de la filière halieutique de l'agglo boulonnaise. Audit Flash 490 € HT, ROI documenté en chiffres accessible.",
+      en: "Audit IA à Outreau : diagnostic adapté aux TPE artisans, PME de services, commerçants et professionnels de la filière halieutique de l'agglo boulonnaise. Audit Flash 490 € HT, ROI documenté en chiffres accessible.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Outreau : formats adaptés à l'atelier artisanal, cabinet, commerce ou entreprise agroalimentaire. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Outreau : formats adaptés à l'atelier artisanal, cabinet, commerce ou entreprise agroalimentaire. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Outreau : formats adaptés à l'atelier artisanal, cabinet, commerce ou entreprise agroalimentaire. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Outreau : formats adaptés à l'atelier artisanal, cabinet, commerce ou entreprise agroalimentaire. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Outreau : automatisation devis BTP, traçabilité filière halieutique, agents conversationnels tourisme, classification documents, optimisation planning. Agglo boulonnaise.",
@@ -64,7 +64,7 @@ export const OUTREAU_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lille ou Calais ?",
-      a: "Nos consultants viennent de Lille (1h40 TER ou A16) ou Calais (30 min A16). Gare TGV Calais-Fréthun à 30 min. Frais de déplacement facturés à part du forfait, tarifs publics. Hébergement local possible (hôtels Boulogne).",
+      a: "Nos consultants viennent de Lille (1h40 TER ou A16) ou Calais (30 min A16). Gare TGV Calais-Fréthun à 30 min. Déplacements facturés séparément, grille tarifaire publique. Hébergement local possible (hôtels Boulogne).",
     },
   ],
 };

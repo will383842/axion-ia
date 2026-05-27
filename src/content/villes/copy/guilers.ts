@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GUILERS_COPY: VilleCopy = {
   pitchFr:
-    "Guilers (29), commune résidentielle de Brest Métropole dans le Finistère, offre un cadre de vie attractif en périphérie ouest de Brest. TPE artisanales, commerces de proximité, professions libérales, PME de services et prestataires. Axion-IA y intervient pour tous types d'activités de la métropole brestoise.",
+    "Guilers (29), commune résidentielle de Brest Métropole dans le Finistère, offre un cadre de vie attractif en périphérie ouest de Brest. TPE artisanales, commerces de proximité, professions libérales, PME de services et prestataires. Axion-IA couvre l'ensemble des activités professionnelles présentes de la métropole brestoise.",
   pitchEn:
-    "Guilers (29), commune résidentielle de Brest Métropole dans le Finistère, offre un cadre de vie attractif en périphérie ouest de Brest. TPE artisanales, commerces de proximité, professions libérales, PME de services et prestataires. Axion-IA y intervient pour tous types d'activités de la métropole brestoise.",
+    "Guilers (29), commune résidentielle de Brest Métropole dans le Finistère, offre un cadre de vie attractif en périphérie ouest de Brest. TPE artisanales, commerces de proximité, professions libérales, PME de services et prestataires. Axion-IA couvre l'ensemble des activités professionnelles présentes de la métropole brestoise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guilers (29). Nous accompagnons tous types d'activités : TPE artisanales et commerçants guilériens, PME de services de Brest Métropole, professions libérales, indépendants et prestataires implantés sur la commune.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const GUILERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Guilers : diagnostic adapté aux TPE artisanales, commerçants, professions libérales et PME de services de Brest Métropole. ROI chiffré, audit Flash 490 € HT accessible à toute structure.",
-      en: "Audit IA à Guilers : diagnostic adapté aux TPE artisanales, commerçants, professions libérales et PME de services de Brest Métropole. ROI chiffré, audit Flash 490 € HT accessible à toute structure.",
+      fr: "Audit IA à Guilers : diagnostic adapté aux TPE artisanales, commerçants, professions libérales et PME de services de Brest Métropole. Audit Flash 490 € HT, ROI documenté en chiffres accessible à toute structure.",
+      en: "Audit IA à Guilers : diagnostic adapté aux TPE artisanales, commerçants, professions libérales et PME de services de Brest Métropole. Audit Flash 490 € HT, ROI documenté en chiffres accessible à toute structure.",
     },
     interventions: {
       fr: "Interventions IA sur site à Guilers : formats adaptés au cabinet libéral, au commerce de proximité ou au bureau PME. Vos équipes repartent autonomes sur les outils IA métier adaptés à votre activité.",

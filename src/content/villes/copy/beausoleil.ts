@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BEAUSOLEIL_COPY: VilleCopy = {
   pitchFr:
-    "Beausoleil (06), perchée au-dessus de Monaco sur les pentes du Mont Agel, est une ville résidentielle étroitement liée à la Principauté. Tissu TPE/PME commerces de proximité, services à la personne, professions libérales, hôtellerie et restauration transfrontalière. Axion-IA y intervient pour tous types d'activités.",
+    "Beausoleil (06), perchée au-dessus de Monaco sur les pentes du Mont Agel, est une ville résidentielle étroitement liée à la Principauté. Tissu TPE/PME commerces de proximité, services à la personne, professions libérales, hôtellerie et restauration transfrontalière. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Beausoleil (06), perchée au-dessus de Monaco sur les pentes du Mont Agel, est une ville résidentielle étroitement liée à la Principauté. Tissu TPE/PME commerces de proximité, services à la personne, professions libérales, hôtellerie et restauration transfrontalière. Axion-IA y intervient pour tous types d'activités.",
+    "Beausoleil (06), perchée au-dessus de Monaco sur les pentes du Mont Agel, est une ville résidentielle étroitement liée à la Principauté. Tissu TPE/PME commerces de proximité, services à la personne, professions libérales, hôtellerie et restauration transfrontalière. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beausoleil (06). Nous accompagnons tous types d'activités : TPE commerces de proximité, professions libérales, services à la personne, PME hôtellerie-restauration et entreprises liées à l'économie transfrontalière Monaco-France.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const BEAUSOLEIL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Beausoleil : diagnostic adapté aux TPE commerces de proximité, professions libérales et PME services transfrontaliers Monaco-France. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
-      en: "Audit IA à Beausoleil : diagnostic adapté aux TPE commerces de proximité, professions libérales et PME services transfrontaliers Monaco-France. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
+      fr: "Audit IA à Beausoleil : diagnostic adapté aux TPE commerces de proximité, professions libérales et PME services transfrontaliers Monaco-France. ROI mesurable, audit Flash dès 490 € HT accessible aux petites structures.",
+      en: "Audit IA à Beausoleil : diagnostic adapté aux TPE commerces de proximité, professions libérales et PME services transfrontaliers Monaco-France. ROI mesurable, audit Flash dès 490 € HT accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Beausoleil : formats adaptés au commerce, cabinet libéral ou bureau PME. Vos équipes repartent autonomes sur outils IA configurés métier, contexte bilingue FR/IT fréquent.",

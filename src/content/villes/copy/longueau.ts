@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LONGUEAU_COPY: VilleCopy = {
   pitchFr:
-    "Longueau (80), commune limitrophe d'Amiens dans la Somme, nœud ferroviaire historique SNCF (gare de triage). Tissu de TPE artisans, PME logistique et transport, sous-traitants ferroviaires, commerces de proximité et services aux entreprises. Axion-IA y intervient pour tous types d'activités de l'agglomération amiénoise.",
+    "Longueau (80), commune limitrophe d'Amiens dans la Somme, nœud ferroviaire historique SNCF (gare de triage). Tissu de TPE artisans, PME logistique et transport, sous-traitants ferroviaires, commerces de proximité et services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération amiénoise.",
   pitchEn:
-    "Longueau (80), commune limitrophe d'Amiens dans la Somme, nœud ferroviaire historique SNCF (gare de triage). Tissu de TPE artisans, PME logistique et transport, sous-traitants ferroviaires, commerces de proximité et services aux entreprises. Axion-IA y intervient pour tous types d'activités de l'agglomération amiénoise.",
+    "Longueau (80), commune limitrophe d'Amiens dans la Somme, nœud ferroviaire historique SNCF (gare de triage). Tissu de TPE artisans, PME logistique et transport, sous-traitants ferroviaires, commerces de proximité et services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération amiénoise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Longueau (80). Nous accompagnons tous types d'activités : TPE artisans, PME logistique et transport, sous-traitants ferroviaires SNCF, commerçants, indépendants et services aux entreprises de cette commune stratégique de l'agglomération amiénoise.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const LONGUEAU_COPY: VilleCopy = {
       en: "Audit IA à Longueau : diagnostic adapté aux sous-traitants ferroviaires, PME logistique, TPE artisans et commerces de l'agglomération amiénoise. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Longueau : formats adaptés à l'atelier ferroviaire, l'entrepôt logistique, le commerce ou le bureau. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Longueau : formats adaptés à l'atelier ferroviaire, l'entrepôt logistique, le commerce ou le bureau. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Longueau : formats adaptés à l'atelier ferroviaire, l'entrepôt logistique, le commerce ou le bureau. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Longueau : formats adaptés à l'atelier ferroviaire, l'entrepôt logistique, le commerce ou le bureau. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Longueau : maintenance prédictive matériel ferroviaire, optimisation flux logistiques, automatisation planification transport, agents conversationnels gestion clientèle.",

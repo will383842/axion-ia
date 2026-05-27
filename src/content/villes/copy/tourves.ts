@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const TOURVES_COPY: VilleCopy = {
   pitchFr:
-    "Tourves (83), commune viticole du Centre-Var sur l'axe Brignoles–Saint-Maximin, conjugue patrimoine castral et tissu agricole tourné vers les AOP Côtes de Provence. TPE artisans, PME viticoles, exploitations agricoles, professions libérales et commerces de proximité dans un bassin de vie ancré entre la Provence verte et la vallée de l'Arc. Axion-IA y intervient pour tous types d'activités.",
+    "Tourves (83), commune viticole du Centre-Var sur l'axe Brignoles–Saint-Maximin, conjugue patrimoine castral et tissu agricole tourné vers les AOP Côtes de Provence. TPE artisans, PME viticoles, exploitations agricoles, professions libérales et commerces de proximité dans un bassin de vie ancré entre la Provence verte et la vallée de l'Arc. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Tourves (83), commune viticole du Centre-Var sur l'axe Brignoles–Saint-Maximin, conjugue patrimoine castral et tissu agricole tourné vers les AOP Côtes de Provence. TPE artisans, PME viticoles, exploitations agricoles, professions libérales et commerces de proximité dans un bassin de vie ancré entre la Provence verte et la vallée de l'Arc. Axion-IA y intervient pour tous types d'activités.",
+    "Tourves (83), commune viticole du Centre-Var sur l'axe Brignoles–Saint-Maximin, conjugue patrimoine castral et tissu agricole tourné vers les AOP Côtes de Provence. TPE artisans, PME viticoles, exploitations agricoles, professions libérales et commerces de proximité dans un bassin de vie ancré entre la Provence verte et la vallée de l'Arc. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tourves (83). Nous accompagnons TPE artisans, PME viticoles, exploitations agricoles, professions libérales et commerces du Centre-Var. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const TOURVES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Tourves : diagnostic adapté aux TPE artisans, PME viticoles, exploitations agricoles, oléiculteurs et commerces du Centre-Var. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Tourves : diagnostic adapté aux TPE artisans, PME viticoles, exploitations agricoles, oléiculteurs et commerces du Centre-Var. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Tourves : diagnostic adapté aux TPE artisans, PME viticoles, exploitations agricoles, oléiculteurs et commerces du Centre-Var. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Tourves : diagnostic adapté aux TPE artisans, PME viticoles, exploitations agricoles, oléiculteurs et commerces du Centre-Var. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Tourves : ateliers pour équipes TPE/PME, vignerons, agriculteurs, oléiculteurs et artisans. Outils IA configurés métier réel, dans vos locaux ou à Brignoles.",

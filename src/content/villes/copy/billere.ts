@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BILLERE_COPY: VilleCopy = {
   pitchFr:
-    "Billère (64), commune résidentielle de l'agglomération de Pau en Béarn, 14 384 habitants. Tissu de TPE artisans, PME de services, commerces de proximité et professions libérales adossé au bassin d'emploi palois. Axion-IA y intervient pour tous types d'activités de l'agglomération Pau Béarn Pyrénées.",
+    "Billère (64), commune résidentielle de l'agglomération de Pau en Béarn, 14 384 habitants. Tissu de TPE artisans, PME de services, commerces de proximité et professions libérales adossé au bassin d'emploi palois. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération Pau Béarn Pyrénées.",
   pitchEn:
-    "Billère (64), commune résidentielle de l'agglomération de Pau en Béarn, 14 384 habitants. Tissu de TPE artisans, PME de services, commerces de proximité et professions libérales adossé au bassin d'emploi palois. Axion-IA y intervient pour tous types d'activités de l'agglomération Pau Béarn Pyrénées.",
+    "Billère (64), commune résidentielle de l'agglomération de Pau en Béarn, 14 384 habitants. Tissu de TPE artisans, PME de services, commerces de proximité et professions libérales adossé au bassin d'emploi palois. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération Pau Béarn Pyrénées.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Billère (64). Nous accompagnons TPE, PME et professions libérales de l'agglomération paloise : commerces, services aux entreprises, artisans, santé. Audit Flash à partir de 490 € HT, déplacement sur site inclus dans l'agglo Pau.",
   directAnswerEn:

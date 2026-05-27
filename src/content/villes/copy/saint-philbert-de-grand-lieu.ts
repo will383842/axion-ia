@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_PHILBERT_DE_GRAND_LIEU_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Philbert-de-Grand-Lieu (44), commune de Loire-Atlantique en bordure du lac de Grand-Lieu (plus grand lac naturel de plaine en hiver en France, réserve naturelle), abrite une abbatiale carolingienne du IXe siècle. Tissu de TPE artisans, PME agroalimentaires, exploitations agricoles (maraîchage, élevage), commerces et tourisme nature. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Philbert-de-Grand-Lieu (44), commune de Loire-Atlantique en bordure du lac de Grand-Lieu (plus grand lac naturel de plaine en hiver en France, réserve naturelle), abrite une abbatiale carolingienne du IXe siècle. Tissu de TPE artisans, PME agroalimentaires, exploitations agricoles (maraîchage, élevage), commerces et tourisme nature. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Saint-Philbert-de-Grand-Lieu (44), commune de Loire-Atlantique en bordure du lac de Grand-Lieu (plus grand lac naturel de plaine en hiver en France, réserve naturelle), abrite une abbatiale carolingienne du IXe siècle. Tissu de TPE artisans, PME agroalimentaires, exploitations agricoles (maraîchage, élevage), commerces et tourisme nature. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Philbert-de-Grand-Lieu (44), commune de Loire-Atlantique en bordure du lac de Grand-Lieu (plus grand lac naturel de plaine en hiver en France, réserve naturelle), abrite une abbatiale carolingienne du IXe siècle. Tissu de TPE artisans, PME agroalimentaires, exploitations agricoles (maraîchage, élevage), commerces et tourisme nature. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Philbert-de-Grand-Lieu (44). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires, maraîchers et éleveurs du sud nantais, commerçants, professions libérales, acteurs du tourisme nature lac de Grand-Lieu et services aux entreprises du pays de Retz.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const SAINT_PHILBERT_DE_GRAND_LIEU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Philbert-de-Grand-Lieu : diagnostic adapté aux TPE artisans, PME agroalimentaires, maraîchers et commerçants du sud nantais / pays de Retz. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Philbert-de-Grand-Lieu : diagnostic adapté aux TPE artisans, PME agroalimentaires, maraîchers et commerçants du sud nantais / pays de Retz. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Philbert-de-Grand-Lieu : diagnostic adapté aux TPE artisans, PME agroalimentaires, maraîchers et commerçants du sud nantais / pays de Retz. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Saint-Philbert-de-Grand-Lieu : diagnostic adapté aux TPE artisans, PME agroalimentaires, maraîchers et commerçants du sud nantais / pays de Retz. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Philbert-de-Grand-Lieu : formats adaptés à l'exploitation maraîchère, atelier agroalimentaire, commerce ou structure tourisme nature. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Saint-Philbert-de-Grand-Lieu : formats adaptés à l'exploitation maraîchère, atelier agroalimentaire, commerce ou structure tourisme nature. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Saint-Philbert-de-Grand-Lieu : formats adaptés à l'exploitation maraîchère, atelier agroalimentaire, commerce ou structure tourisme nature. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Saint-Philbert-de-Grand-Lieu : formats adaptés à l'exploitation maraîchère, atelier agroalimentaire, commerce ou structure tourisme nature. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Philbert-de-Grand-Lieu : prédiction récoltes maraîchères, traçabilité lots agroalimentaires, agents conversationnels tourisme lac Grand-Lieu, automatisation devis BTP, classification photos ornithologie.",
@@ -64,7 +64,7 @@ export const SAINT_PHILBERT_DE_GRAND_LIEU_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Nantes ?",
-      a: "Nos consultants viennent de Nantes en 25 min via la D178. Aéroport Nantes-Atlantique à 15 min seulement. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Nantes en 25 min via la D178. Aéroport Nantes-Atlantique à 15 min seulement. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

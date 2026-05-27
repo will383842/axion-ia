@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FAYENCE_COPY: VilleCopy = {
   pitchFr:
-    "Fayence (83), chef-lieu du Pays de Fayence dans l'arrière-pays varois, est un village perché renommé pour son centre de vol à voile (planeurs) et son patrimoine provençal. Tissu de TPE artisans, restaurateurs, hôteliers, commerçants et PME tourisme, agriculture et services. Axion-IA y intervient pour tous types d'activités.",
+    "Fayence (83), chef-lieu du Pays de Fayence dans l'arrière-pays varois, est un village perché renommé pour son centre de vol à voile (planeurs) et son patrimoine provençal. Tissu de TPE artisans, restaurateurs, hôteliers, commerçants et PME tourisme, agriculture et services. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Fayence (83), chef-lieu du Pays de Fayence dans l'arrière-pays varois, est un village perché renommé pour son centre de vol à voile (planeurs) et son patrimoine provençal. Tissu de TPE artisans, restaurateurs, hôteliers, commerçants et PME tourisme, agriculture et services. Axion-IA y intervient pour tous types d'activités.",
+    "Fayence (83), chef-lieu du Pays de Fayence dans l'arrière-pays varois, est un village perché renommé pour son centre de vol à voile (planeurs) et son patrimoine provençal. Tissu de TPE artisans, restaurateurs, hôteliers, commerçants et PME tourisme, agriculture et services. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fayence (83). Nous accompagnons TPE artisans, restaurateurs, hôteliers, commerçants et PME du tourisme, de l'agriculture et des services du Pays de Fayence et de l'arrière-pays varois. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const FAYENCE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fayence : diagnostic adapté aux gîtes ruraux, oléiculteurs, artisans d'art et PME tourisme du Pays de Fayence. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Fayence : diagnostic adapté aux gîtes ruraux, oléiculteurs, artisans d'art et PME tourisme du Pays de Fayence. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Fayence : diagnostic adapté aux gîtes ruraux, oléiculteurs, artisans d'art et PME tourisme du Pays de Fayence. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Fayence : diagnostic adapté aux gîtes ruraux, oléiculteurs, artisans d'art et PME tourisme du Pays de Fayence. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Fayence : ateliers pour hôteliers, gîtes ruraux, artisans d'art, oléiculteurs et commerçants. Outils IA configurés métier réel rural et touristique.",

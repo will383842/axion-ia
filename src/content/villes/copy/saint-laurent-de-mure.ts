@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_LAURENT_DE_MURE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Laurent-de-Mure (69), commune en banlieue est de Lyon dans le Rhône, est positionnée à proximité immédiate de l'aéroport Lyon-Saint-Exupéry. Tissu PME logistiques et tertiaires (zones d'activités), TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités de l'est lyonnais.",
+    "Saint-Laurent-de-Mure (69), commune en banlieue est de Lyon dans le Rhône, est positionnée à proximité immédiate de l'aéroport Lyon-Saint-Exupéry. Tissu PME logistiques et tertiaires (zones d'activités), TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'est lyonnais.",
   pitchEn:
-    "Saint-Laurent-de-Mure (69), commune en banlieue est de Lyon dans le Rhône, est positionnée à proximité immédiate de l'aéroport Lyon-Saint-Exupéry. Tissu PME logistiques et tertiaires (zones d'activités), TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités de l'est lyonnais.",
+    "Saint-Laurent-de-Mure (69), commune en banlieue est de Lyon dans le Rhône, est positionnée à proximité immédiate de l'aéroport Lyon-Saint-Exupéry. Tissu PME logistiques et tertiaires (zones d'activités), TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'est lyonnais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Laurent-de-Mure (69). Nous accompagnons tous types d'activités : PME logistiques et tertiaires aire Saint-Exupéry, TPE artisans BTP, commerçants, indépendants et services aux entreprises est lyonnais.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const SAINT_LAURENT_DE_MURE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Laurent-de-Mure : diagnostic adapté aux PME logistiques/tertiaires aire Saint-Exupéry, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Laurent-de-Mure : diagnostic adapté aux PME logistiques/tertiaires aire Saint-Exupéry, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Laurent-de-Mure : diagnostic adapté aux PME logistiques/tertiaires aire Saint-Exupéry, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Saint-Laurent-de-Mure : diagnostic adapté aux PME logistiques/tertiaires aire Saint-Exupéry, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Laurent-de-Mure : formats adaptés à l'entrepôt, bureau, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const SAINT_LAURENT_DE_MURE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (25 min). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (25 min). Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

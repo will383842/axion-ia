@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const COURNON_D_AUVERGNE_COPY: VilleCopy = {
   pitchFr:
-    "Cournon-d'Auvergne (63), commune en banlieue sud de Clermont-Ferrand dans le Puy-de-Dôme, est intégrée à Clermont Auvergne Métropole. Abrite des zones d'activités majeures et le zénith d'Auvergne. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Cournon-d'Auvergne (63), commune en banlieue sud de Clermont-Ferrand dans le Puy-de-Dôme, est intégrée à Clermont Auvergne Métropole. Abrite des zones d'activités majeures et le zénith d'Auvergne. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Cournon-d'Auvergne (63), commune en banlieue sud de Clermont-Ferrand dans le Puy-de-Dôme, est intégrée à Clermont Auvergne Métropole. Abrite des zones d'activités majeures et le zénith d'Auvergne. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Cournon-d'Auvergne (63), commune en banlieue sud de Clermont-Ferrand dans le Puy-de-Dôme, est intégrée à Clermont Auvergne Métropole. Abrite des zones d'activités majeures et le zénith d'Auvergne. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cournon-d'Auvergne (63). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Clermont Auvergne Métropole, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const COURNON_D_AUVERGNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cournon-d'Auvergne : diagnostic adapté aux PME tertiaires/industrielles Clermont Métropole, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Cournon-d'Auvergne : diagnostic adapté aux PME tertiaires/industrielles Clermont Métropole, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Cournon-d'Auvergne : diagnostic adapté aux PME tertiaires/industrielles Clermont Métropole, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Cournon-d'Auvergne : diagnostic adapté aux PME tertiaires/industrielles Clermont Métropole, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cournon-d'Auvergne : formats adaptés au bureau, atelier, zone d'activités, commerce. Vos équipes repartent autonomes.",
@@ -64,7 +64,7 @@ export const COURNON_D_AUVERGNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Lyon (1h45). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Lyon (1h45). Coûts de déplacement à part, tarification transparente.",
     },
   ],
 };

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_MARCELLIN_EN_FOREZ_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Marcellin-en-Forez (42), commune de la plaine du Forez sud dans la Loire, est intégrée à Loire Forez Agglo. Tissu péri-urbain : PME tertiaires, TPE artisans BTP, agriculture forézienne, commerces. Axion-IA y intervient pour tous types d'activités foréziennes.",
+    "Saint-Marcellin-en-Forez (42), commune de la plaine du Forez sud dans la Loire, est intégrée à Loire Forez Agglo. Tissu péri-urbain : PME tertiaires, TPE artisans BTP, agriculture forézienne, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes foréziennes.",
   pitchEn:
-    "Saint-Marcellin-en-Forez (42), commune de la plaine du Forez sud dans la Loire, est intégrée à Loire Forez Agglo. Tissu péri-urbain : PME tertiaires, TPE artisans BTP, agriculture forézienne, commerces. Axion-IA y intervient pour tous types d'activités foréziennes.",
+    "Saint-Marcellin-en-Forez (42), commune de la plaine du Forez sud dans la Loire, est intégrée à Loire Forez Agglo. Tissu péri-urbain : PME tertiaires, TPE artisans BTP, agriculture forézienne, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes foréziennes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Marcellin-en-Forez (42). Nous accompagnons tous types d'activités : PME tertiaires Loire Forez Agglo, TPE artisans BTP, commerçants, agriculteurs plaine Forez, indépendants, professions libérales et services aux entreprises foréziennes.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const SAINT_MARCELLIN_EN_FOREZ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Marcellin-en-Forez : diagnostic adapté aux PME tertiaires Loire Forez Agglo, agriculteurs forez, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Marcellin-en-Forez : diagnostic adapté aux PME tertiaires Loire Forez Agglo, agriculteurs forez, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Marcellin-en-Forez : diagnostic adapté aux PME tertiaires Loire Forez Agglo, agriculteurs forez, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Saint-Marcellin-en-Forez : diagnostic adapté aux PME tertiaires Loire Forez Agglo, agriculteurs forez, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Marcellin-en-Forez : formats adaptés au bureau tertiaire, exploitation agricole, commerce, atelier. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const SAINT_MARCELLIN_EN_FOREZ_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",
-      a: "Nos consultants viennent de Lyon (1h) ou Saint-Étienne (25 min). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (1h) ou Saint-Étienne (25 min). Pour les multi-jours, hébergement local possible. Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

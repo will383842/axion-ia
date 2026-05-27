@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BAILLEUL_COPY: VilleCopy = {
   pitchFr:
-    "Bailleul (59), sous-préfecture de Flandre française dans le Nord, est connue pour son beffroi inscrit UNESCO, son marché flamand et sa brasserie tradition. Tissu TPE artisans, PME agroalimentaire et brasserie, commerces de centre-ville, professions libérales et indépendants. Axion-IA y intervient pour tous types d'activités de la Flandre intérieure.",
+    "Bailleul (59), sous-préfecture de Flandre française dans le Nord, est connue pour son beffroi inscrit UNESCO, son marché flamand et sa brasserie tradition. Tissu TPE artisans, PME agroalimentaire et brasserie, commerces de centre-ville, professions libérales et indépendants. Axion-IA y déploie ses missions auprès de toutes les organisations de la Flandre intérieure.",
   pitchEn:
-    "Bailleul (59), sous-préfecture de Flandre française dans le Nord, est connue pour son beffroi inscrit UNESCO, son marché flamand et sa brasserie tradition. Tissu TPE artisans, PME agroalimentaire et brasserie, commerces de centre-ville, professions libérales et indépendants. Axion-IA y intervient pour tous types d'activités de la Flandre intérieure.",
+    "Bailleul (59), sous-préfecture de Flandre française dans le Nord, est connue pour son beffroi inscrit UNESCO, son marché flamand et sa brasserie tradition. Tissu TPE artisans, PME agroalimentaire et brasserie, commerces de centre-ville, professions libérales et indépendants. Axion-IA y déploie ses missions auprès de toutes les organisations de la Flandre intérieure.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bailleul (59). Nous accompagnons TPE artisans, PME agroalimentaire et brasserie, commerçants, professions libérales et indépendants de la Flandre française. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
   directAnswerEn:

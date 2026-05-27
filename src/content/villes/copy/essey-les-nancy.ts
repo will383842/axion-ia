@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ESSEY_LES_NANCY_COPY: VilleCopy = {
   pitchFr:
-    "Essey-lès-Nancy (54), commune de Meurthe-et-Moselle à l'est de Nancy, est intégrée à la Métropole du Grand Nancy avec un pôle commercial structurant (zone Saint-Sébastien) et un tissu tertiaire dynamique. TPE et PME tertiaires, commerces de zone et de proximité, services aux entreprises, artisanat BTP, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Essey-lès-Nancy (54), commune de Meurthe-et-Moselle à l'est de Nancy, est intégrée à la Métropole du Grand Nancy avec un pôle commercial structurant (zone Saint-Sébastien) et un tissu tertiaire dynamique. TPE et PME tertiaires, commerces de zone et de proximité, services aux entreprises, artisanat BTP, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Essey-lès-Nancy (54), commune de Meurthe-et-Moselle à l'est de Nancy, est intégrée à la Métropole du Grand Nancy avec un pôle commercial structurant (zone Saint-Sébastien) et un tissu tertiaire dynamique. TPE et PME tertiaires, commerces de zone et de proximité, services aux entreprises, artisanat BTP, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Essey-lès-Nancy (54), commune de Meurthe-et-Moselle à l'est de Nancy, est intégrée à la Métropole du Grand Nancy avec un pôle commercial structurant (zone Saint-Sébastien) et un tissu tertiaire dynamique. TPE et PME tertiaires, commerces de zone et de proximité, services aux entreprises, artisanat BTP, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Essey-lès-Nancy (54). Nous accompagnons TPE et PME : commerçants de la zone Saint-Sébastien, sociétés tertiaires de l'est nancéien, artisans BTP, services aux entreprises, professions libérales. Audit Flash dès 490 € HT.",
   directAnswerEn:

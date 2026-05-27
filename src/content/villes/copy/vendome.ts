@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VENDOME_COPY: VilleCopy = {
   pitchFr:
-    "Vendôme (41), sous-préfecture du Loir-et-Cher en bords du Loir, bénéficie d'une desserte TGV exceptionnelle (Paris 42 min, gare TGV Vendôme-Villiers). Abbaye de la Trinité, patrimoine médiéval, tissu TPE/PME diversifié. Axion-IA y intervient pour tous types d'activités.",
+    "Vendôme (41), sous-préfecture du Loir-et-Cher en bords du Loir, bénéficie d'une desserte TGV exceptionnelle (Paris 42 min, gare TGV Vendôme-Villiers). Abbaye de la Trinité, patrimoine médiéval, tissu TPE/PME diversifié. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Vendôme (41), sous-préfecture du Loir-et-Cher en bords du Loir, bénéficie d'une desserte TGV exceptionnelle (Paris 42 min, gare TGV Vendôme-Villiers). Abbaye de la Trinité, patrimoine médiéval, tissu TPE/PME diversifié. Axion-IA y intervient pour tous types d'activités.",
+    "Vendôme (41), sous-préfecture du Loir-et-Cher en bords du Loir, bénéficie d'une desserte TGV exceptionnelle (Paris 42 min, gare TGV Vendôme-Villiers). Abbaye de la Trinité, patrimoine médiéval, tissu TPE/PME diversifié. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vendôme (41). Nous accompagnons tous types d'activités : PME industrielles du Vendômois, TPE artisans BTP, commerçants centre-ville, acteurs du tourisme patrimonial (abbaye de la Trinité), professions libérales, indépendants et services aux entreprises. TGV Paris 42 min.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const VENDOME_COPY: VilleCopy = {
       en: "Audit IA à Vendôme : diagnostic adapté aux PME industrielles du Vendômois, TPE artisans, commerçants centre-ville, acteurs tourisme patrimonial et professions libérales. ROI chiffré, audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Vendôme : formats adaptés à l'atelier industriel, commerce centre-ville, hébergement touristique ou cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Vendôme : formats adaptés à l'atelier industriel, commerce centre-ville, hébergement touristique ou cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Vendôme : formats adaptés à l'atelier industriel, commerce centre-ville, hébergement touristique ou cabinet libéral. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Vendôme : formats adaptés à l'atelier industriel, commerce centre-ville, hébergement touristique ou cabinet libéral. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Vendôme : automatisation production agroalimentaire, agents conversationnels tourisme patrimonial, classification documents administratifs, optimisation gestion cabinet libéral. Atout TGV Paris 42 min.",

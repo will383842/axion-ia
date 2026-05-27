@@ -29,8 +29,8 @@ export const BOURG_DE_PEAGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bourg-de-Péage : diagnostic adapté aux PME industrielles cuir/diversifiées, tertiaires, TPE artisans du bassin Romans-Valence. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Bourg-de-Péage : diagnostic adapté aux PME industrielles cuir/diversifiées, tertiaires, TPE artisans du bassin Romans-Valence. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Bourg-de-Péage : diagnostic adapté aux PME industrielles cuir/diversifiées, tertiaires, TPE artisans du bassin Romans-Valence. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Bourg-de-Péage : diagnostic adapté aux PME industrielles cuir/diversifiées, tertiaires, TPE artisans du bassin Romans-Valence. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bourg-de-Péage : formats adaptés à l'atelier industriel (filière cuir/chaussure), bureau tertiaire, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const BOURG_DE_PEAGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Paris ?",
-      a: "Nos consultants viennent de Lyon (1h15) ou Paris (TGV Valence 2h15 + 20 min voiture). Pour les multi-jours, hébergement local possible (hôtels Romans-Valence). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (1h15) ou Paris (TGV Valence 2h15 + 20 min voiture). Pour les multi-jours, hébergement local possible (hôtels Romans-Valence). Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

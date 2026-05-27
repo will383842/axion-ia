@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const OSNY_COPY: VilleCopy = {
   pitchFr:
-    "Osny (95), commune de l'agglomération Cergy-Pontoise traversée par la Viosne, allie patrimoine rural et dynamisme économique tertiaire. Tissu TPE commerces et artisanat, PME services et conseil, professions libérales, restauration, prestataires formation. Axion-IA y intervient pour tous types d'activités.",
+    "Osny (95), commune de l'agglomération Cergy-Pontoise traversée par la Viosne, allie patrimoine rural et dynamisme économique tertiaire. Tissu TPE commerces et artisanat, PME services et conseil, professions libérales, restauration, prestataires formation. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Osny (95), commune de l'agglomération Cergy-Pontoise traversée par la Viosne, allie patrimoine rural et dynamisme économique tertiaire. Tissu TPE commerces et artisanat, PME services et conseil, professions libérales, restauration, prestataires formation. Axion-IA y intervient pour tous types d'activités.",
+    "Osny (95), commune de l'agglomération Cergy-Pontoise traversée par la Viosne, allie patrimoine rural et dynamisme économique tertiaire. Tissu TPE commerces et artisanat, PME services et conseil, professions libérales, restauration, prestataires formation. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Osny (95). Nous accompagnons TPE et PME : commerçants et artisans centre-bourg, PME services et conseil agglo Cergy-Pontoise, professions libérales, restaurateurs, prestataires formation Val-d'Oise. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const OSNY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Osny : diagnostic adapté aux commerçants et artisans, PME services et conseil, professions libérales, restaurateurs, prestataires formation agglo Cergy-Pontoise. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Osny : diagnostic adapté aux commerçants et artisans, PME services et conseil, professions libérales, restaurateurs, prestataires formation agglo Cergy-Pontoise. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Osny : diagnostic adapté aux commerçants et artisans, PME services et conseil, professions libérales, restaurateurs, prestataires formation agglo Cergy-Pontoise. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Osny : diagnostic adapté aux commerçants et artisans, PME services et conseil, professions libérales, restaurateurs, prestataires formation agglo Cergy-Pontoise. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Osny : formats adaptés boutique, bureau conseil, cabinet, restaurant, centre de formation. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Osny : formats adaptés boutique, bureau conseil, cabinet, restaurant, centre de formation. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Osny : formats adaptés boutique, bureau conseil, cabinet, restaurant, centre de formation. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Osny : formats adaptés boutique, bureau conseil, cabinet, restaurant, centre de formation. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Osny : CRM augmenté commerçants, automatisation back-office PME conseil, gestion cabinet, outils réservation restauration, plateformes e-learning IA.",
@@ -64,7 +64,7 @@ export const OSNY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Cergy ou Paris ?",
-      a: "Cergy-Pontoise (5 min). Paris La Défense (35 min). Paris Saint-Lazare (40 min transilien J). CDG (45 min). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Cergy-Pontoise (5 min). Paris La Défense (35 min). Paris Saint-Lazare (40 min transilien J). CDG (45 min). Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

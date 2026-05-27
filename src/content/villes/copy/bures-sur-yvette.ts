@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BURES_SUR_YVETTE_COPY: VilleCopy = {
   pitchFr:
-    "Bures-sur-Yvette (91), commune résidentielle de la vallée de Chevreuse aux portes du campus Paris-Saclay, accueille un tissu de TPE, professions libérales, commerces de proximité et PME liées à l'écosystème universitaire et scientifique. Axion-IA y intervient pour tous types d'activités du sud-ouest essonnien.",
+    "Bures-sur-Yvette (91), commune résidentielle de la vallée de Chevreuse aux portes du campus Paris-Saclay, accueille un tissu de TPE, professions libérales, commerces de proximité et PME liées à l'écosystème universitaire et scientifique. Axion-IA y déploie ses missions auprès de toutes les organisations du sud-ouest essonnien.",
   pitchEn:
-    "Bures-sur-Yvette (91), commune résidentielle de la vallée de Chevreuse aux portes du campus Paris-Saclay, accueille un tissu de TPE, professions libérales, commerces de proximité et PME liées à l'écosystème universitaire et scientifique. Axion-IA y intervient pour tous types d'activités du sud-ouest essonnien.",
+    "Bures-sur-Yvette (91), commune résidentielle de la vallée de Chevreuse aux portes du campus Paris-Saclay, accueille un tissu de TPE, professions libérales, commerces de proximité et PME liées à l'écosystème universitaire et scientifique. Axion-IA y déploie ses missions auprès de toutes les organisations du sud-ouest essonnien.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bures-sur-Yvette (91). Nous accompagnons tous types d'activités : TPE, professions libérales, commerçants de la vallée de Chevreuse, PME de services, indépendants et structures proches du campus Paris-Saclay. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const BURES_SUR_YVETTE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bures-sur-Yvette : diagnostic adapté aux TPE, professions libérales, commerçants et PME de la vallée de Chevreuse. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Bures-sur-Yvette : diagnostic adapté aux TPE, professions libérales, commerçants et PME de la vallée de Chevreuse. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Bures-sur-Yvette : diagnostic adapté aux TPE, professions libérales, commerçants et PME de la vallée de Chevreuse. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
+      en: "Audit IA à Bures-sur-Yvette : diagnostic adapté aux TPE, professions libérales, commerçants et PME de la vallée de Chevreuse. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Bures-sur-Yvette : formats adaptés au cabinet professionnel, commerce, bureau d'études ou atelier artisan. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Bures-sur-Yvette : formats adaptés au cabinet professionnel, commerce, bureau d'études ou atelier artisan. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Bures-sur-Yvette : formats adaptés au cabinet professionnel, commerce, bureau d'études ou atelier artisan. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Bures-sur-Yvette : formats adaptés au cabinet professionnel, commerce, bureau d'études ou atelier artisan. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Bures-sur-Yvette : agents conversationnels client, automatisation documents scientifiques, gestion RDV professions libérales, CRM augmentés pour PME du bassin Paris-Saclay.",

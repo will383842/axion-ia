@@ -33,8 +33,8 @@ export const BONCHAMP_LES_LAVAL_COPY: VilleCopy = {
       en: "Audit IA à Bonchamp-lès-Laval : diagnostic adapté aux TPE artisans, PME industrielles, agroalimentaires et prestataires B2B de l'est lavallois. ROI chiffré, Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Bonchamp-lès-Laval : formations adaptées aux PME industrielles, agroalimentaires, artisans BTP et commerces du bassin lavallois est. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Bonchamp-lès-Laval : formations adaptées aux PME industrielles, agroalimentaires, artisans BTP et commerces du bassin lavallois est. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Bonchamp-lès-Laval : formations adaptées aux PME industrielles, agroalimentaires, artisans BTP et commerces du bassin lavallois est. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Bonchamp-lès-Laval : formations adaptées aux PME industrielles, agroalimentaires, artisans BTP et commerces du bassin lavallois est. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Bonchamp-lès-Laval : automatisation processus industriels, contrôle qualité agroalimentaire, optimisation logistique A81, agents conversationnels B2B.",

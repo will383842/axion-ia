@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VILLERS_LE_LAC_COPY: VilleCopy = {
   pitchFr:
-    "Villers-le-Lac (25), commune du Haut-Doubs frontalière de la Suisse, est connue pour le Saut du Doubs et sa tradition horlogère héritée du Val de Morteau. TPE artisans, PME horlogères et de micro-mécanique, commerces touristiques, professions libérales et indépendants transfrontaliers composent son tissu économique. Axion-IA y intervient pour tous types d'activités du Haut-Doubs.",
+    "Villers-le-Lac (25), commune du Haut-Doubs frontalière de la Suisse, est connue pour le Saut du Doubs et sa tradition horlogère héritée du Val de Morteau. TPE artisans, PME horlogères et de micro-mécanique, commerces touristiques, professions libérales et indépendants transfrontaliers composent son tissu économique. Axion-IA accompagne entreprises et indépendants de tous secteurs du Haut-Doubs.",
   pitchEn:
-    "Villers-le-Lac (25), commune du Haut-Doubs frontalière de la Suisse, est connue pour le Saut du Doubs et sa tradition horlogère héritée du Val de Morteau. TPE artisans, PME horlogères et de micro-mécanique, commerces touristiques, professions libérales et indépendants transfrontaliers composent son tissu économique. Axion-IA y intervient pour tous types d'activités du Haut-Doubs.",
+    "Villers-le-Lac (25), commune du Haut-Doubs frontalière de la Suisse, est connue pour le Saut du Doubs et sa tradition horlogère héritée du Val de Morteau. TPE artisans, PME horlogères et de micro-mécanique, commerces touristiques, professions libérales et indépendants transfrontaliers composent son tissu économique. Axion-IA accompagne entreprises et indépendants de tous secteurs du Haut-Doubs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villers-le-Lac (25). Nous accompagnons tous types d'activités : TPE artisans, PME horlogères et de micro-mécanique du Val de Morteau, commerçants du secteur touristique du Saut du Doubs, indépendants, professions libérales et travailleurs frontaliers vers la Suisse.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const VILLERS_LE_LAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villers-le-Lac : diagnostic adapté aux TPE artisans, PME horlogères et de micro-mécanique du Val de Morteau, commerçants touristiques du Saut du Doubs. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Villers-le-Lac : diagnostic adapté aux TPE artisans, PME horlogères et de micro-mécanique du Val de Morteau, commerçants touristiques du Saut du Doubs. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Villers-le-Lac : diagnostic adapté aux TPE artisans, PME horlogères et de micro-mécanique du Val de Morteau, commerçants touristiques du Saut du Doubs. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
+      en: "Audit IA à Villers-le-Lac : diagnostic adapté aux TPE artisans, PME horlogères et de micro-mécanique du Val de Morteau, commerçants touristiques du Saut du Doubs. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villers-le-Lac : formats adaptés à l'atelier horloger, PME micro-mécanique ou TPE artisan du Haut-Doubs. Vos équipes repartent autonomes sur les outils IA métier.",

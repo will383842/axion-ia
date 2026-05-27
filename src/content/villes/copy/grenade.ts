@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GRENADE_COPY: VilleCopy = {
   pitchFr:
-    "Grenade (31), bastide médiévale des bords de Garonne au nord de Toulouse, plus de 9 000 habitants. Tissu TPE artisans, PME agroalimentaires et de services, commerces de centre-ville, professions libérales. Axion-IA y intervient pour tous types d'activités du nord de la Haute-Garonne.",
+    "Grenade (31), bastide médiévale des bords de Garonne au nord de Toulouse, plus de 9 000 habitants. Tissu TPE artisans, PME agroalimentaires et de services, commerces de centre-ville, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du nord de la Haute-Garonne.",
   pitchEn:
-    "Grenade (31), bastide médiévale des bords de Garonne au nord de Toulouse, plus de 9 000 habitants. Tissu TPE artisans, PME agroalimentaires et de services, commerces de centre-ville, professions libérales. Axion-IA y intervient pour tous types d'activités du nord de la Haute-Garonne.",
+    "Grenade (31), bastide médiévale des bords de Garonne au nord de Toulouse, plus de 9 000 habitants. Tissu TPE artisans, PME agroalimentaires et de services, commerces de centre-ville, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du nord de la Haute-Garonne.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Grenade (31). Nous accompagnons TPE artisans, PME agroalimentaires, commerçants et professions libérales du nord de la Haute-Garonne. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const GRENADE_COPY: VilleCopy = {
       en: "Audit IA à Grenade : diagnostic adapté aux TPE artisans, PME agroalimentaires et commerçants du nord Haute-Garonne. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Grenade : formats adaptés à l'exploitation agricole, au commerce, à l'artisan. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Grenade : formats adaptés à l'exploitation agricole, au commerce, à l'artisan. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Grenade : formats adaptés à l'exploitation agricole, au commerce, à l'artisan. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Grenade : formats adaptés à l'exploitation agricole, au commerce, à l'artisan. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Grenade : automatisation traçabilité agroalimentaire, gestion stocks commerce, classification documents, agents conversationnels pour TPE-PME du nord 31.",

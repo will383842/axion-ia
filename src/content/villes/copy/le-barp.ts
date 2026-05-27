@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_BARP_COPY: VilleCopy = {
   pitchFr:
-    "Le Barp (33), commune de la forêt landaise au sud de Bordeaux, combine activités liées au site CEA/CESTA (défense, laser), exploitation forestière, artisanat BTP et commerces. Axion-IA y intervient pour tous types d'activités du sud bordelais.",
+    "Le Barp (33), commune de la forêt landaise au sud de Bordeaux, combine activités liées au site CEA/CESTA (défense, laser), exploitation forestière, artisanat BTP et commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs du sud bordelais.",
   pitchEn:
-    "Le Barp (33), commune de la forêt landaise au sud de Bordeaux, combine activités liées au site CEA/CESTA (défense, laser), exploitation forestière, artisanat BTP et commerces. Axion-IA y intervient pour tous types d'activités du sud bordelais.",
+    "Le Barp (33), commune de la forêt landaise au sud de Bordeaux, combine activités liées au site CEA/CESTA (défense, laser), exploitation forestière, artisanat BTP et commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs du sud bordelais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Barp (33). Nous accompagnons TPE et PME du sud bordelais : sous-traitants défense/tech, entreprises forestières, artisans BTP, commerçants et professions libérales. Audit Flash dès 490 € HT.",
   directAnswerEn:

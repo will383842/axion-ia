@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PUILBOREAU_COPY: VilleCopy = {
   pitchFr:
-    "Puilboreau (17), commune de l'agglomération de La Rochelle en Charente-Maritime, pôle commercial majeur (zone commerciale Beaulieu). Tissu de TPE artisans, PME commerciales et de distribution, enseignes, services aux entreprises et professions libérales. Axion-IA y intervient pour tous types d'activités de l'agglomération rochelaise.",
+    "Puilboreau (17), commune de l'agglomération de La Rochelle en Charente-Maritime, pôle commercial majeur (zone commerciale Beaulieu). Tissu de TPE artisans, PME commerciales et de distribution, enseignes, services aux entreprises et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération rochelaise.",
   pitchEn:
-    "Puilboreau (17), commune de l'agglomération de La Rochelle en Charente-Maritime, pôle commercial majeur (zone commerciale Beaulieu). Tissu de TPE artisans, PME commerciales et de distribution, enseignes, services aux entreprises et professions libérales. Axion-IA y intervient pour tous types d'activités de l'agglomération rochelaise.",
+    "Puilboreau (17), commune de l'agglomération de La Rochelle en Charente-Maritime, pôle commercial majeur (zone commerciale Beaulieu). Tissu de TPE artisans, PME commerciales et de distribution, enseignes, services aux entreprises et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération rochelaise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Puilboreau (17). Nous accompagnons tous types d'activités : TPE artisans, PME commerciales et de distribution, enseignes, prestataires de services et indépendants de ce pôle commercial majeur de l'agglomération de La Rochelle.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const PUILBOREAU_COPY: VilleCopy = {
       en: "Audit IA à Puilboreau : diagnostic adapté aux enseignes commerciales, PME distribution, TPE artisans et services de l'agglomération de La Rochelle. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Puilboreau : formats adaptés au magasin, à l'entrepôt, au bureau ou au cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Puilboreau : formats adaptés au magasin, à l'entrepôt, au bureau ou au cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Puilboreau : formats adaptés au magasin, à l'entrepôt, au bureau ou au cabinet. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Puilboreau : formats adaptés au magasin, à l'entrepôt, au bureau ou au cabinet. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Puilboreau : automatisation gestion stocks distribution, prédiction fréquentation zone commerciale, agents conversationnels accueil client, optimisation logistique livraison et marketing IA.",

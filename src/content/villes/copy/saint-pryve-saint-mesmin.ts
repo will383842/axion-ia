@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_PRYVE_SAINT_MESMIN_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Pryvé-Saint-Mesmin (45), commune résidentielle de l'agglomération orléanaise sud-ouest en bords de Loire et du Loiret, offre un cadre verdoyant prisé des familles et professions libérales. Tissu TPE artisans, commerçants, professions libérales, PME tertiaires, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Pryvé-Saint-Mesmin (45), commune résidentielle de l'agglomération orléanaise sud-ouest en bords de Loire et du Loiret, offre un cadre verdoyant prisé des familles et professions libérales. Tissu TPE artisans, commerçants, professions libérales, PME tertiaires, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Saint-Pryvé-Saint-Mesmin (45), commune résidentielle de l'agglomération orléanaise sud-ouest en bords de Loire et du Loiret, offre un cadre verdoyant prisé des familles et professions libérales. Tissu TPE artisans, commerçants, professions libérales, PME tertiaires, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Pryvé-Saint-Mesmin (45), commune résidentielle de l'agglomération orléanaise sud-ouest en bords de Loire et du Loiret, offre un cadre verdoyant prisé des familles et professions libérales. Tissu TPE artisans, commerçants, professions libérales, PME tertiaires, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Pryvé-Saint-Mesmin (45). Nous accompagnons tous types d'activités : professions libérales, TPE artisans et commerçants, PME tertiaires et de services, indépendants, cabinets conseil et entreprises de l'agglomération orléanaise sud-ouest.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const SAINT_PRYVE_SAINT_MESMIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Pryvé-Saint-Mesmin : diagnostic adapté aux professions libérales, TPE artisans, commerçants et PME tertiaires de l'agglo orléanaise sud-ouest. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Pryvé-Saint-Mesmin : diagnostic adapté aux professions libérales, TPE artisans, commerçants et PME tertiaires de l'agglo orléanaise sud-ouest. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Pryvé-Saint-Mesmin : diagnostic adapté aux professions libérales, TPE artisans, commerçants et PME tertiaires de l'agglo orléanaise sud-ouest. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Saint-Pryvé-Saint-Mesmin : diagnostic adapté aux professions libérales, TPE artisans, commerçants et PME tertiaires de l'agglo orléanaise sud-ouest. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Pryvé-Saint-Mesmin : formats adaptés au cabinet libéral, commerce, PME tertiaire ou atelier. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Saint-Pryvé-Saint-Mesmin : formats adaptés au cabinet libéral, commerce, PME tertiaire ou atelier. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Saint-Pryvé-Saint-Mesmin : formats adaptés au cabinet libéral, commerce, PME tertiaire ou atelier. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Saint-Pryvé-Saint-Mesmin : formats adaptés au cabinet libéral, commerce, PME tertiaire ou atelier. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Pryvé-Saint-Mesmin : automatisation secrétariat médical, classification dossiers juridiques, agents conversationnels clients, reporting automatisé PME tertiaires. Adapté professions libérales et TPE/PME orléanaises.",

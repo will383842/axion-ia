@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LUNEVILLE_COPY: VilleCopy = {
   pitchFr:
-    "Lunéville (54), sous-préfecture de Meurthe-et-Moselle, est connue pour son château surnommé le Versailles lorrain et sa faïencerie historique. Tissu TPE artisans, PME industrielles diversifiées, tourisme patrimonial, commerces et services publics. Axion-IA y intervient pour tous types d'activités du Lunévillois.",
+    "Lunéville (54), sous-préfecture de Meurthe-et-Moselle, est connue pour son château surnommé le Versailles lorrain et sa faïencerie historique. Tissu TPE artisans, PME industrielles diversifiées, tourisme patrimonial, commerces et services publics. Axion-IA opère pour toutes les structures économiques de la commune du Lunévillois.",
   pitchEn:
-    "Lunéville (54), sous-préfecture de Meurthe-et-Moselle, est connue pour son château surnommé le Versailles lorrain et sa faïencerie historique. Tissu TPE artisans, PME industrielles diversifiées, tourisme patrimonial, commerces et services publics. Axion-IA y intervient pour tous types d'activités du Lunévillois.",
+    "Lunéville (54), sous-préfecture de Meurthe-et-Moselle, est connue pour son château surnommé le Versailles lorrain et sa faïencerie historique. Tissu TPE artisans, PME industrielles diversifiées, tourisme patrimonial, commerces et services publics. Axion-IA opère pour toutes les structures économiques de la commune du Lunévillois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lunéville (54). Nous accompagnons tous types d'activités : TPE artisans faïenciers, PME industrielles lorraines, acteurs du tourisme patrimonial (château), commerçants centre-ville, professions libérales et services publics sous-préfecture.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LUNEVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lunéville : diagnostic adapté aux TPE artisans faïenciers, PME industrielles, acteurs tourisme patrimonial et commerçants centre-ville. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Lunéville : diagnostic adapté aux TPE artisans faïenciers, PME industrielles, acteurs tourisme patrimonial et commerçants centre-ville. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Lunéville : diagnostic adapté aux TPE artisans faïenciers, PME industrielles, acteurs tourisme patrimonial et commerçants centre-ville. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Lunéville : diagnostic adapté aux TPE artisans faïenciers, PME industrielles, acteurs tourisme patrimonial et commerçants centre-ville. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lunéville : formats adaptés à l'atelier faïencier, usine, office de tourisme, commerce ou cabinet professionnel. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const LUNEVILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Lunéville depuis Nancy ?",
-      a: "Nos consultants viennent de Nancy (30 min TER direct). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Nancy (30 min TER direct). Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

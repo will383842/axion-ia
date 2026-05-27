@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const OREE_D_ANJOU_COPY: VilleCopy = {
   pitchFr:
-    "Orée d'Anjou (49), commune nouvelle de plus de 17 100 habitants aux portes de Nantes, borde la Loire et regroupe Champtoceaux, Drain, Landemont, Liré, Bouzillé et Saint-Christophe-la-Couperie. Tissu PME industrielles, TPE artisanales, exploitations viticoles (muscadet, coteaux-d'ancenis), commerces et services. Axion-IA y intervient pour tous types d'activités.",
+    "Orée d'Anjou (49), commune nouvelle de plus de 17 100 habitants aux portes de Nantes, borde la Loire et regroupe Champtoceaux, Drain, Landemont, Liré, Bouzillé et Saint-Christophe-la-Couperie. Tissu PME industrielles, TPE artisanales, exploitations viticoles (muscadet, coteaux-d'ancenis), commerces et services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Orée d'Anjou (49), commune nouvelle de plus de 17 100 habitants aux portes de Nantes, borde la Loire et regroupe Champtoceaux, Drain, Landemont, Liré, Bouzillé et Saint-Christophe-la-Couperie. Tissu PME industrielles, TPE artisanales, exploitations viticoles (muscadet, coteaux-d'ancenis), commerces et services. Axion-IA y intervient pour tous types d'activités.",
+    "Orée d'Anjou (49), commune nouvelle de plus de 17 100 habitants aux portes de Nantes, borde la Loire et regroupe Champtoceaux, Drain, Landemont, Liré, Bouzillé et Saint-Christophe-la-Couperie. Tissu PME industrielles, TPE artisanales, exploitations viticoles (muscadet, coteaux-d'ancenis), commerces et services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Orée d'Anjou (49). Nous accompagnons tous types d'activités : PME industrielles et logistiques, TPE artisans BTP, domaines viticoles coteaux-d'ancenis et muscadet, commerçants, professions libérales et services aux entreprises du val de Loire entre Ancenis et Nantes. Audit Flash accessible dès 490 € HT.",
   directAnswerEn:

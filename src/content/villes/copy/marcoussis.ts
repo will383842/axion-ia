@@ -29,8 +29,8 @@ export const MARCOUSSIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Marcoussis : diagnostic adapté aux TPE artisans, commerçants, professions libérales et PME de services du Hurepoix. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Marcoussis : diagnostic adapté aux TPE artisans, commerçants, professions libérales et PME de services du Hurepoix. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Marcoussis : diagnostic adapté aux TPE artisans, commerçants, professions libérales et PME de services du Hurepoix. ROI mesurable, audit Flash dès 490 € HT accessible.",
+      en: "Audit IA à Marcoussis : diagnostic adapté aux TPE artisans, commerçants, professions libérales et PME de services du Hurepoix. ROI mesurable, audit Flash dès 490 € HT accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Marcoussis : formats adaptés au commerce, cabinet professionnel, atelier artisan ou bureau PME. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -64,7 +64,7 @@ export const MARCOUSSIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Marcoussis depuis Paris ?",
-      a: "Nos consultants accèdent à Marcoussis en 30 min depuis Paris (A10/N20). Gare RER B Massy-Palaiseau à 15 min, gare RER C Arpajon à 10 min. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants accèdent à Marcoussis en 30 min depuis Paris (A10/N20). Gare RER B Massy-Palaiseau à 15 min, gare RER C Arpajon à 10 min. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const DIVONNE_LES_BAINS_COPY: VilleCopy = {
   pitchFr:
-    "Divonne-les-Bains (01), commune du pays de Gex dans l'Ain, est une station thermale historique avec casino, positionnée à la frontière suisse avec vue sur le lac Léman et le Mont-Blanc. Tissu tourisme thermal haut de gamme, économie frontalière Genève, PME tertiaires, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Divonne-les-Bains (01), commune du pays de Gex dans l'Ain, est une station thermale historique avec casino, positionnée à la frontière suisse avec vue sur le lac Léman et le Mont-Blanc. Tissu tourisme thermal haut de gamme, économie frontalière Genève, PME tertiaires, TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Divonne-les-Bains (01), commune du pays de Gex dans l'Ain, est une station thermale historique avec casino, positionnée à la frontière suisse avec vue sur le lac Léman et le Mont-Blanc. Tissu tourisme thermal haut de gamme, économie frontalière Genève, PME tertiaires, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Divonne-les-Bains (01), commune du pays de Gex dans l'Ain, est une station thermale historique avec casino, positionnée à la frontière suisse avec vue sur le lac Léman et le Mont-Blanc. Tissu tourisme thermal haut de gamme, économie frontalière Genève, PME tertiaires, TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Divonne-les-Bains (01). Nous accompagnons tous types d'activités : acteurs tourisme thermal haut de gamme et casino, PME tertiaires pays de Gex, économie frontalière Genève, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const DIVONNE_LES_BAINS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Divonne-les-Bains : diagnostic adapté aux acteurs tourisme thermal/casino, hôteliers, frontaliers Genève, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Divonne-les-Bains : diagnostic adapté aux acteurs tourisme thermal/casino, hôteliers, frontaliers Genève, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Divonne-les-Bains : diagnostic adapté aux acteurs tourisme thermal/casino, hôteliers, frontaliers Genève, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Divonne-les-Bains : diagnostic adapté aux acteurs tourisme thermal/casino, hôteliers, frontaliers Genève, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Divonne-les-Bains : formats adaptés à l'hôtel thermal, casino, golf, bureau. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const DIVONNE_LES_BAINS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Genève ?",
-      a: "Nos consultants viennent de Lyon (1h40) ou Genève (20 min). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (1h40) ou Genève (20 min). Frais de mission en sus, grille tarifaire publique.",
     },
   ],
 };

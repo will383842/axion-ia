@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_BASSEE_COPY: VilleCopy = {
   pitchFr:
-    "La Bassée (59), commune du département du Nord (région Hauts-de-France) dans le sud-ouest de la métropole lilloise, bourg historique du pays de Weppes aux portes du bassin minier. Tissu TPE artisanat BTP et services, PME logistique et transport routier, agriculture périurbaine, commerces de centre-bourg et activités liées au bassin d'emploi lillois. Axion-IA y intervient pour tous types d'activités.",
+    "La Bassée (59), commune du département du Nord (région Hauts-de-France) dans le sud-ouest de la métropole lilloise, bourg historique du pays de Weppes aux portes du bassin minier. Tissu TPE artisanat BTP et services, PME logistique et transport routier, agriculture périurbaine, commerces de centre-bourg et activités liées au bassin d'emploi lillois. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "La Bassée (59), commune du département du Nord (région Hauts-de-France) dans le sud-ouest de la métropole lilloise, bourg historique du pays de Weppes aux portes du bassin minier. Tissu TPE artisanat BTP et services, PME logistique et transport routier, agriculture périurbaine, commerces de centre-bourg et activités liées au bassin d'emploi lillois. Axion-IA y intervient pour tous types d'activités.",
+    "La Bassée (59), commune du département du Nord (région Hauts-de-France) dans le sud-ouest de la métropole lilloise, bourg historique du pays de Weppes aux portes du bassin minier. Tissu TPE artisanat BTP et services, PME logistique et transport routier, agriculture périurbaine, commerces de centre-bourg et activités liées au bassin d'emploi lillois. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Bassée (59). Nous accompagnons tous types d'activités : TPE artisans BTP et services, PME logistique et transport routier, agriculteurs, commerçants et entreprises du sud-ouest de la métropole lilloise aux portes du bassin minier.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const LA_BASSEE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Bassée : diagnostic adapté aux TPE artisans BTP, PME logistique et transport, agriculteurs, commerçants et services du pays de Weppes. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à La Bassée : diagnostic adapté aux TPE artisans BTP, PME logistique et transport, agriculteurs, commerçants et services du pays de Weppes. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à La Bassée : diagnostic adapté aux TPE artisans BTP, PME logistique et transport, agriculteurs, commerçants et services du pays de Weppes. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à La Bassée : diagnostic adapté aux TPE artisans BTP, PME logistique et transport, agriculteurs, commerçants et services du pays de Weppes. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Bassée : formats adaptés à l'entrepôt logistique, chantier BTP, exploitation agricole, commerce. Vos équipes repartent autonomes sur les outils IA du quotidien.",

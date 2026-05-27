@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BONS_EN_CHABLAIS_COPY: VilleCopy = {
   pitchFr:
-    "Bons-en-Chablais (74), commune du Chablais haut-savoyard entre Thonon-les-Bains et Annemasse, fait partie de Thonon Agglomération. Carrefour routier D903/D35, ZAC commerciale, tissu TPE artisans, commerces, PME services, professions libérales, agriculture. Axion-IA y intervient pour tous types d'activités.",
+    "Bons-en-Chablais (74), commune du Chablais haut-savoyard entre Thonon-les-Bains et Annemasse, fait partie de Thonon Agglomération. Carrefour routier D903/D35, ZAC commerciale, tissu TPE artisans, commerces, PME services, professions libérales, agriculture. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Bons-en-Chablais (74), commune du Chablais haut-savoyard entre Thonon-les-Bains et Annemasse, fait partie de Thonon Agglomération. Carrefour routier D903/D35, ZAC commerciale, tissu TPE artisans, commerces, PME services, professions libérales, agriculture. Axion-IA y intervient pour tous types d'activités.",
+    "Bons-en-Chablais (74), commune du Chablais haut-savoyard entre Thonon-les-Bains et Annemasse, fait partie de Thonon Agglomération. Carrefour routier D903/D35, ZAC commerciale, tissu TPE artisans, commerces, PME services, professions libérales, agriculture. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bons-en-Chablais (74). Nous accompagnons TPE et PME : commerces de la ZAC, artisans BTP, PME services, professions libérales, exploitants agricoles et acteurs du bassin Thonon-Annemasse.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const BONS_EN_CHABLAIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bons-en-Chablais : diagnostic adapté aux commerces ZAC, TPE artisans, PME services, professions libérales et exploitants agricoles du Chablais. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Bons-en-Chablais : diagnostic adapté aux commerces ZAC, TPE artisans, PME services, professions libérales et exploitants agricoles du Chablais. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Bons-en-Chablais : diagnostic adapté aux commerces ZAC, TPE artisans, PME services, professions libérales et exploitants agricoles du Chablais. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Bons-en-Chablais : diagnostic adapté aux commerces ZAC, TPE artisans, PME services, professions libérales et exploitants agricoles du Chablais. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bons-en-Chablais : formats adaptés commerce, atelier artisan, cabinet libéral ou exploitation agricole. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -64,7 +64,7 @@ export const BONS_EN_CHABLAIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Thonon ou Annemasse ?",
-      a: "Nos consultants rejoignent Bons-en-Chablais depuis Thonon (15 min D903) ou Annemasse (20 min). Genève à 30 min via A40. Multi-jours : hébergement local possible. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants rejoignent Bons-en-Chablais depuis Thonon (15 min D903) ou Annemasse (20 min). Genève à 30 min via A40. Multi-jours : hébergement local possible. Frais de mission en sus, grille tarifaire publique.",
     },
   ],
 };

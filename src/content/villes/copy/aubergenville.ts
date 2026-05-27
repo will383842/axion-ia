@@ -29,12 +29,12 @@ export const AUBERGENVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Aubergenville : diagnostic adapté aux commerçants et artisans, PME industrie et logistique, services aux entreprises, professions libérales, restaurateurs vallée de Seine. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Aubergenville : diagnostic adapté aux commerçants et artisans, PME industrie et logistique, services aux entreprises, professions libérales, restaurateurs vallée de Seine. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Aubergenville : diagnostic adapté aux commerçants et artisans, PME industrie et logistique, services aux entreprises, professions libérales, restaurateurs vallée de Seine. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Aubergenville : diagnostic adapté aux commerçants et artisans, PME industrie et logistique, services aux entreprises, professions libérales, restaurateurs vallée de Seine. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Aubergenville : formats adaptés boutique, entrepôt logistique, bureau PME, cabinet, restaurant. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Aubergenville : formats adaptés boutique, entrepôt logistique, bureau PME, cabinet, restaurant. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Aubergenville : formats adaptés boutique, entrepôt logistique, bureau PME, cabinet, restaurant. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Aubergenville : formats adaptés boutique, entrepôt logistique, bureau PME, cabinet, restaurant. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Aubergenville : CRM augmenté commerçants, automatisation chaîne logistique PME, gestion production industrielle IA, facturation intelligente, outils réservation restauration.",
@@ -64,7 +64,7 @@ export const AUBERGENVILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Mantes ou Paris ?",
-      a: "Mantes-la-Jolie (10 min). Poissy (15 min). Paris Saint-Lazare (45 min transilien J). A13 accès direct. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Mantes-la-Jolie (10 min). Poissy (15 min). Paris Saint-Lazare (45 min transilien J). A13 accès direct. Frais de mission en sus, grille tarifaire publique.",
     },
   ],
 };

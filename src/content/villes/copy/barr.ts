@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BARR_COPY: VilleCopy = {
   pitchFr:
-    "Barr (67), commune de 7 057 habitants en Bas-Rhin, située sur la Route des Vins d'Alsace au pied du Mont Sainte-Odile, est ancrée dans le vignoble alsacien et l'héritage des tanneries historiques. Tissu TPE/PME viticulture, tourisme, artisanat, commerces, restauration, services. Axion-IA y intervient pour tous types d'activités.",
+    "Barr (67), commune de 7 057 habitants en Bas-Rhin, située sur la Route des Vins d'Alsace au pied du Mont Sainte-Odile, est ancrée dans le vignoble alsacien et l'héritage des tanneries historiques. Tissu TPE/PME viticulture, tourisme, artisanat, commerces, restauration, services. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Barr (67), commune de 7 057 habitants en Bas-Rhin, située sur la Route des Vins d'Alsace au pied du Mont Sainte-Odile, est ancrée dans le vignoble alsacien et l'héritage des tanneries historiques. Tissu TPE/PME viticulture, tourisme, artisanat, commerces, restauration, services. Axion-IA y intervient pour tous types d'activités.",
+    "Barr (67), commune de 7 057 habitants en Bas-Rhin, située sur la Route des Vins d'Alsace au pied du Mont Sainte-Odile, est ancrée dans le vignoble alsacien et l'héritage des tanneries historiques. Tissu TPE/PME viticulture, tourisme, artisanat, commerces, restauration, services. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Barr (67). Nous accompagnons tous types d'activités : TPE/PME viticulture et tourisme du Piémont des Vosges, artisans, commerces, restaurateurs, professions de services et acteurs économiques de la Route des Vins d'Alsace.",
   directAnswerEn:
@@ -30,12 +30,12 @@ export const BARR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Barr : diagnostic adapté aux TPE/PME viticulture, tourisme, artisans, commerces, restaurateurs. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Barr : diagnostic adapté aux TPE/PME viticulture, tourisme, artisans, commerces, restaurateurs. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Barr : diagnostic adapté aux TPE/PME viticulture, tourisme, artisans, commerces, restaurateurs. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Barr : diagnostic adapté aux TPE/PME viticulture, tourisme, artisans, commerces, restaurateurs. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Barr : formats adaptés au domaine viticole, à l'hôtel-restaurant, au gîte, au commerce, à l'atelier d'artisan. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Barr : formats adaptés au domaine viticole, à l'hôtel-restaurant, au gîte, au commerce, à l'atelier d'artisan. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Barr : formats adaptés au domaine viticole, à l'hôtel-restaurant, au gîte, au commerce, à l'atelier d'artisan. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Barr : formats adaptés au domaine viticole, à l'hôtel-restaurant, au gîte, au commerce, à l'atelier d'artisan. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Barr : automatisation gestion viticole, réservation tourisme, agents conversationnels multilingues, gestion commerciale, traçabilité des cuvées, relation client.",

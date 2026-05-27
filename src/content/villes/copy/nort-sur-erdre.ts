@@ -29,12 +29,12 @@ export const NORT_SUR_ERDRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Nort-sur-Erdre : diagnostic adapté aux TPE artisans, PME agroalimentaires, agriculteurs et commerçants du nord nantais / bords de l'Erdre. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Nort-sur-Erdre : diagnostic adapté aux TPE artisans, PME agroalimentaires, agriculteurs et commerçants du nord nantais / bords de l'Erdre. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Nort-sur-Erdre : diagnostic adapté aux TPE artisans, PME agroalimentaires, agriculteurs et commerçants du nord nantais / bords de l'Erdre. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Nort-sur-Erdre : diagnostic adapté aux TPE artisans, PME agroalimentaires, agriculteurs et commerçants du nord nantais / bords de l'Erdre. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Nort-sur-Erdre : formats adaptés à l'exploitation agricole, atelier agroalimentaire, commerce ou base nautique Erdre. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Nort-sur-Erdre : formats adaptés à l'exploitation agricole, atelier agroalimentaire, commerce ou base nautique Erdre. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Nort-sur-Erdre : formats adaptés à l'exploitation agricole, atelier agroalimentaire, commerce ou base nautique Erdre. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Nort-sur-Erdre : formats adaptés à l'exploitation agricole, atelier agroalimentaire, commerce ou base nautique Erdre. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Nort-sur-Erdre : traçabilité élevage/laitier, optimisation planning récoltes, agents conversationnels tourisme fluvial Erdre, automatisation devis BTP, gestion réservations nautiques.",

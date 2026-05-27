@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LONGWY_COPY: VilleCopy = {
   pitchFr:
-    "Longwy (54), commune frontalière de Meurthe-et-Moselle aux portes du Luxembourg et de la Belgique, allie patrimoine industriel reconverti (sidérurgie, Émaux de Longwy) et dynamique transfrontalière. TPE et PME industrielles reconverties, artisanat d'art (faïence), commerces frontaliers, services aux travailleurs frontaliers, logistique. Axion-IA y intervient pour tous types d'activités.",
+    "Longwy (54), commune frontalière de Meurthe-et-Moselle aux portes du Luxembourg et de la Belgique, allie patrimoine industriel reconverti (sidérurgie, Émaux de Longwy) et dynamique transfrontalière. TPE et PME industrielles reconverties, artisanat d'art (faïence), commerces frontaliers, services aux travailleurs frontaliers, logistique. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Longwy (54), commune frontalière de Meurthe-et-Moselle aux portes du Luxembourg et de la Belgique, allie patrimoine industriel reconverti (sidérurgie, Émaux de Longwy) et dynamique transfrontalière. TPE et PME industrielles reconverties, artisanat d'art (faïence), commerces frontaliers, services aux travailleurs frontaliers, logistique. Axion-IA y intervient pour tous types d'activités.",
+    "Longwy (54), commune frontalière de Meurthe-et-Moselle aux portes du Luxembourg et de la Belgique, allie patrimoine industriel reconverti (sidérurgie, Émaux de Longwy) et dynamique transfrontalière. TPE et PME industrielles reconverties, artisanat d'art (faïence), commerces frontaliers, services aux travailleurs frontaliers, logistique. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Longwy (54). Nous accompagnons TPE et PME : industriels reconvertis du bassin sidérurgique, artisans d'art (Émaux de Longwy), commerces frontaliers, PME logistique transfrontalière, services aux frontaliers Luxembourg. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const LONGWY_COPY: VilleCopy = {
       en: "Audit IA à Longwy : diagnostic adapté aux TPE/PME industrielles reconverties, artisans d'art, commerces frontaliers, PME logistique transfrontalière. ROI chiffré, Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Longwy : formats adaptés à l'atelier industriel, atelier de faïence, commerce frontalier, entrepôt logistique. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Longwy : formats adaptés à l'atelier industriel, atelier de faïence, commerce frontalier, entrepôt logistique. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Longwy : formats adaptés à l'atelier industriel, atelier de faïence, commerce frontalier, entrepôt logistique. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Longwy : formats adaptés à l'atelier industriel, atelier de faïence, commerce frontalier, entrepôt logistique. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Longwy : maintenance prédictive industrielle, optimisation supply chain transfrontalière, agents conversationnels multilingues (FR/LU/DE), gestion documentaire douane, CRM commerce frontalier.",

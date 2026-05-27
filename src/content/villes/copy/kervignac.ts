@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const KERVIGNAC_COPY: VilleCopy = {
   pitchFr:
-    "Kervignac (56), commune résidentielle de l'agglomération de Lorient en bordure de la ria d'Étel, bénéficie d'un tissu économique dynamique porté par la proximité du bassin lorientais. TPE artisanales, PME de services, commerces de proximité, professions libérales et ostréiculteurs composent son économie. Axion-IA y intervient pour tous types d'activités de l'agglomération lorientaise.",
+    "Kervignac (56), commune résidentielle de l'agglomération de Lorient en bordure de la ria d'Étel, bénéficie d'un tissu économique dynamique porté par la proximité du bassin lorientais. TPE artisanales, PME de services, commerces de proximité, professions libérales et ostréiculteurs composent son économie. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération lorientaise.",
   pitchEn:
-    "Kervignac (56), commune résidentielle de l'agglomération de Lorient en bordure de la ria d'Étel, bénéficie d'un tissu économique dynamique porté par la proximité du bassin lorientais. TPE artisanales, PME de services, commerces de proximité, professions libérales et ostréiculteurs composent son économie. Axion-IA y intervient pour tous types d'activités de l'agglomération lorientaise.",
+    "Kervignac (56), commune résidentielle de l'agglomération de Lorient en bordure de la ria d'Étel, bénéficie d'un tissu économique dynamique porté par la proximité du bassin lorientais. TPE artisanales, PME de services, commerces de proximité, professions libérales et ostréiculteurs composent son économie. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération lorientaise.",
   seoHook: "services, artisanat & ostréiculture",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Kervignac (56). Nous accompagnons tous types d'activités : TPE artisanales, PME de services, commerces, professions libérales et ostréiculteurs du bassin lorientais. Audit Flash dès 490 € HT, démarrage sous 5 jours.",

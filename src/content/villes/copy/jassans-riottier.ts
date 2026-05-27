@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const JASSANS_RIOTTIER_COPY: VilleCopy = {
   pitchFr:
-    "Jassans-Riottier (01), commune du val de Saône dans l'Ain, est positionnée face à Villefranche-sur-Saône (rive gauche de la Saône). Tissu péri-urbain : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités du val de Saône Ain.",
+    "Jassans-Riottier (01), commune du val de Saône dans l'Ain, est positionnée face à Villefranche-sur-Saône (rive gauche de la Saône). Tissu péri-urbain : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du val de Saône Ain.",
   pitchEn:
-    "Jassans-Riottier (01), commune du val de Saône dans l'Ain, est positionnée face à Villefranche-sur-Saône (rive gauche de la Saône). Tissu péri-urbain : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités du val de Saône Ain.",
+    "Jassans-Riottier (01), commune du val de Saône dans l'Ain, est positionnée face à Villefranche-sur-Saône (rive gauche de la Saône). Tissu péri-urbain : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du val de Saône Ain.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jassans-Riottier (01). Nous accompagnons tous types d'activités : PME tertiaires val de Saône, TPE artisans BTP, commerçants, professions libérales et services aux entreprises.",
   directAnswerEn:
@@ -64,7 +64,7 @@ export const JASSANS_RIOTTIER_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (35 min). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (35 min). Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

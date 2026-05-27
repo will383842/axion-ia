@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_MARTIN_BOULOGNE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Martin-Boulogne (62), commune de l'agglomération boulonnaise dans le Pas-de-Calais, concentre un tissu de TPE commerciales, PME de services, professions libérales et activités tertiaires péri-urbaines. Axion-IA y intervient pour tous types d'activités du Boulonnais.",
+    "Saint-Martin-Boulogne (62), commune de l'agglomération boulonnaise dans le Pas-de-Calais, concentre un tissu de TPE commerciales, PME de services, professions libérales et activités tertiaires péri-urbaines. Axion-IA opère pour toutes les structures économiques de la commune du Boulonnais.",
   pitchEn:
-    "Saint-Martin-Boulogne (62), commune de l'agglomération boulonnaise dans le Pas-de-Calais, concentre un tissu de TPE commerciales, PME de services, professions libérales et activités tertiaires péri-urbaines. Axion-IA y intervient pour tous types d'activités du Boulonnais.",
+    "Saint-Martin-Boulogne (62), commune de l'agglomération boulonnaise dans le Pas-de-Calais, concentre un tissu de TPE commerciales, PME de services, professions libérales et activités tertiaires péri-urbaines. Axion-IA opère pour toutes les structures économiques de la commune du Boulonnais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Martin-Boulogne (62). Nous accompagnons TPE commerçantes, PME de services, professions libérales, artisans et entreprises tertiaires de l'agglomération boulonnaise. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:

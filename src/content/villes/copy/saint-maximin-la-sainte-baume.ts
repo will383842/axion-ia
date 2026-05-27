@@ -33,8 +33,8 @@ export const SAINT_MAXIMIN_LA_SAINTE_BAUME_COPY: VilleCopy = {
       en: "Audit IA à Saint-Maximin-la-Sainte-Baume : diagnostic adapté aux TPE artisans, PME industrielles, hôtels-restaurants et commerces du centre-Var. ROI chiffré, Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Maximin-la-Sainte-Baume : formats adaptés aux artisans, PME industrielles, hôtels-restaurants et commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Saint-Maximin-la-Sainte-Baume : formats adaptés aux artisans, PME industrielles, hôtels-restaurants et commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Saint-Maximin-la-Sainte-Baume : formats adaptés aux artisans, PME industrielles, hôtels-restaurants et commerces. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Saint-Maximin-la-Sainte-Baume : formats adaptés aux artisans, PME industrielles, hôtels-restaurants et commerces. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Maximin-la-Sainte-Baume : automatisation devis artisans, outils prédictifs PME industrielles, gestion réservations hôtelières, optimisation flux pèlerinages. Adapté TPE/PME centre-Var.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ERNEE_COPY: VilleCopy = {
   pitchFr:
-    "Ernée (53), bourg du nord-ouest de la Mayenne aux marches de la Bretagne, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-bourg, exploitations d'élevage (bovin laitier) et prestataires de services. Axion-IA y intervient pour tous types d'activités.",
+    "Ernée (53), bourg du nord-ouest de la Mayenne aux marches de la Bretagne, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-bourg, exploitations d'élevage (bovin laitier) et prestataires de services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Ernée (53), bourg du nord-ouest de la Mayenne aux marches de la Bretagne, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-bourg, exploitations d'élevage (bovin laitier) et prestataires de services. Axion-IA y intervient pour tous types d'activités.",
+    "Ernée (53), bourg du nord-ouest de la Mayenne aux marches de la Bretagne, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-bourg, exploitations d'élevage (bovin laitier) et prestataires de services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ernée (53). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles, éleveurs laitiers, commerçants de bourg, professions libérales et prestataires de services des marches Bretagne-Mayenne.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const ERNEE_COPY: VilleCopy = {
       en: "Audit IA à Ernée : diagnostic adapté aux TPE artisans, PME agroalimentaires, industriels et éleveurs laitiers des marches Bretagne-Mayenne. ROI chiffré, Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Ernée : formations adaptées aux PME laitières, industriels plasturgie, artisans, éleveurs et commerçants du nord-ouest Mayenne. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Ernée : formations adaptées aux PME laitières, industriels plasturgie, artisans, éleveurs et commerçants du nord-ouest Mayenne. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Ernée : formations adaptées aux PME laitières, industriels plasturgie, artisans, éleveurs et commerçants du nord-ouest Mayenne. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Ernée : formations adaptées aux PME laitières, industriels plasturgie, artisans, éleveurs et commerçants du nord-ouest Mayenne. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Ernée : traçabilité laitière, maintenance prédictive agroéquipement, contrôle qualité plasturgie, automatisation gestion élevage et logistique froide.",

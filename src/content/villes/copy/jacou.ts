@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const JACOU_COPY: VilleCopy = {
   pitchFr:
-    "Jacou (34), commune résidentielle du nord-est de Montpellier, desservie par le tramway T2. Cadre de vie prisé, commerces, services. Tissu TPE professions libérales, PME services, artisans, commerces de proximité. Axion-IA y intervient pour tous types d'activités.",
+    "Jacou (34), commune résidentielle du nord-est de Montpellier, desservie par le tramway T2. Cadre de vie prisé, commerces, services. Tissu TPE professions libérales, PME services, artisans, commerces de proximité. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Jacou (34), commune résidentielle du nord-est de Montpellier, desservie par le tramway T2. Cadre de vie prisé, commerces, services. Tissu TPE professions libérales, PME services, artisans, commerces de proximité. Axion-IA y intervient pour tous types d'activités.",
+    "Jacou (34), commune résidentielle du nord-est de Montpellier, desservie par le tramway T2. Cadre de vie prisé, commerces, services. Tissu TPE professions libérales, PME services, artisans, commerces de proximité. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jacou (34). Nous accompagnons TPE professions libérales, PME de services, artisans, commerces et entreprises du nord-est montpelliérain.",
   directAnswerEn:

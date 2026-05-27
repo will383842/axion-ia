@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ANDRESY_COPY: VilleCopy = {
   pitchFr:
-    "Andrésy (78), commune des Yvelines à la confluence de la Seine et de l'Oise, à 20 km de Paris, allie patrimoine fluvial et vie économique locale dynamique. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, activités nautiques et tourisme fluvial. Axion-IA y intervient pour tous types d'activités.",
+    "Andrésy (78), commune des Yvelines à la confluence de la Seine et de l'Oise, à 20 km de Paris, allie patrimoine fluvial et vie économique locale dynamique. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, activités nautiques et tourisme fluvial. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Andrésy (78), commune des Yvelines à la confluence de la Seine et de l'Oise, à 20 km de Paris, allie patrimoine fluvial et vie économique locale dynamique. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, activités nautiques et tourisme fluvial. Axion-IA y intervient pour tous types d'activités.",
+    "Andrésy (78), commune des Yvelines à la confluence de la Seine et de l'Oise, à 20 km de Paris, allie patrimoine fluvial et vie économique locale dynamique. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, activités nautiques et tourisme fluvial. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Andrésy (78). Nous accompagnons TPE et PME : commerçants et artisans du centre-bourg, PME services confluence Seine-Oise, professions libérales, restaurateurs, prestataires nautiques et tourisme fluvial. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const ANDRESY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Andrésy : diagnostic adapté aux commerçants et artisans, PME services, professions libérales, restaurateurs, prestataires nautiques confluence Seine-Oise. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Andrésy : diagnostic adapté aux commerçants et artisans, PME services, professions libérales, restaurateurs, prestataires nautiques confluence Seine-Oise. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Andrésy : diagnostic adapté aux commerçants et artisans, PME services, professions libérales, restaurateurs, prestataires nautiques confluence Seine-Oise. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Andrésy : diagnostic adapté aux commerçants et artisans, PME services, professions libérales, restaurateurs, prestataires nautiques confluence Seine-Oise. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Andrésy : formats adaptés boutique, bureau PME, cabinet, restaurant, base nautique. Vos équipes repartent autonomes.",
@@ -64,7 +64,7 @@ export const ANDRESY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou La Défense ?",
-      a: "Conflans-Sainte-Honorine (5 min). Poissy (10 min). Paris La Défense (25 min). Paris Saint-Lazare (35 min transilien J). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Conflans-Sainte-Honorine (5 min). Poissy (10 min). Paris La Défense (25 min). Paris Saint-Lazare (35 min transilien J). Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

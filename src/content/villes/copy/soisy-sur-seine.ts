@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SOISY_SUR_SEINE_COPY: VilleCopy = {
   pitchFr:
-    "Soisy-sur-Seine (91), commune résidentielle entre Seine et forêt de Sénart à 24 km au sud-est de Paris, est intégrée au bassin d'emploi Évry-Corbeil. Tissu TPE artisans, PME tertiaires, commerces, professions libérales et indépendants. Axion-IA y intervient pour tous types d'activités du sud francilien.",
+    "Soisy-sur-Seine (91), commune résidentielle entre Seine et forêt de Sénart à 24 km au sud-est de Paris, est intégrée au bassin d'emploi Évry-Corbeil. Tissu TPE artisans, PME tertiaires, commerces, professions libérales et indépendants. Axion-IA accompagne entreprises et indépendants de tous secteurs du sud francilien.",
   pitchEn:
-    "Soisy-sur-Seine (91), commune résidentielle entre Seine et forêt de Sénart à 24 km au sud-est de Paris, est intégrée au bassin d'emploi Évry-Corbeil. Tissu TPE artisans, PME tertiaires, commerces, professions libérales et indépendants. Axion-IA y intervient pour tous types d'activités du sud francilien.",
+    "Soisy-sur-Seine (91), commune résidentielle entre Seine et forêt de Sénart à 24 km au sud-est de Paris, est intégrée au bassin d'emploi Évry-Corbeil. Tissu TPE artisans, PME tertiaires, commerces, professions libérales et indépendants. Axion-IA accompagne entreprises et indépendants de tous secteurs du sud francilien.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Soisy-sur-Seine (91). Nous accompagnons tous types d'activités : TPE artisans, commerçants, professions libérales, PME tertiaires, indépendants et structures du bassin Évry-Corbeil en bord de Seine et lisière de la forêt de Sénart.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const SOISY_SUR_SEINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Soisy-sur-Seine : diagnostic adapté aux professions libérales, TPE artisans, commerçants et PME tertiaires du bassin Évry-Corbeil. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Soisy-sur-Seine : diagnostic adapté aux professions libérales, TPE artisans, commerçants et PME tertiaires du bassin Évry-Corbeil. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Soisy-sur-Seine : diagnostic adapté aux professions libérales, TPE artisans, commerçants et PME tertiaires du bassin Évry-Corbeil. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Soisy-sur-Seine : diagnostic adapté aux professions libérales, TPE artisans, commerçants et PME tertiaires du bassin Évry-Corbeil. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Soisy-sur-Seine : formats adaptés au cabinet, commerce ou bureau. Vos équipes repartent autonomes sur outils IA configurés métier réel.",

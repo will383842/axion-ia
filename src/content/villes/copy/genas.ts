@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GENAS_COPY: VilleCopy = {
   pitchFr:
-    "Genas (69), commune en banlieue est de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position entre Lyon et aéroport Saint-Exupéry. Tissu PME tertiaires et logistiques, zones d'activités, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités de l'est lyonnais.",
+    "Genas (69), commune en banlieue est de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position entre Lyon et aéroport Saint-Exupéry. Tissu PME tertiaires et logistiques, zones d'activités, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations de l'est lyonnais.",
   pitchEn:
-    "Genas (69), commune en banlieue est de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position entre Lyon et aéroport Saint-Exupéry. Tissu PME tertiaires et logistiques, zones d'activités, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités de l'est lyonnais.",
+    "Genas (69), commune en banlieue est de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position entre Lyon et aéroport Saint-Exupéry. Tissu PME tertiaires et logistiques, zones d'activités, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations de l'est lyonnais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Genas (69). Nous accompagnons tous types d'activités : PME tertiaires et logistiques est lyonnais, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const GENAS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Genas : diagnostic adapté aux PME tertiaires/logistiques est lyonnais, TPE artisans, professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Genas : diagnostic adapté aux PME tertiaires/logistiques est lyonnais, TPE artisans, professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Genas : diagnostic adapté aux PME tertiaires/logistiques est lyonnais, TPE artisans, professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Genas : diagnostic adapté aux PME tertiaires/logistiques est lyonnais, TPE artisans, professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Genas : formats adaptés au bureau, entrepôt, cabinet, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const GENAS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (20 min). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (20 min). Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

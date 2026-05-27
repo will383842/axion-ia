@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const HENDAYE_COPY: VilleCopy = {
   pitchFr:
-    "Hendaye (64), commune de 18 102 habitants dans les Pyrénées-Atlantiques, est la ville-frontière franco-espagnole sur les bords de la Bidassoa et de l'océan Atlantique. Station balnéaire de la Côte Basque, son économie repose sur un tissu de TPE commerçants et artisans, PME tourisme et hôtellerie-restauration, commerce transfrontalier, services aux entreprises et transport. Axion-IA y intervient pour tous types d'activités.",
+    "Hendaye (64), commune de 18 102 habitants dans les Pyrénées-Atlantiques, est la ville-frontière franco-espagnole sur les bords de la Bidassoa et de l'océan Atlantique. Station balnéaire de la Côte Basque, son économie repose sur un tissu de TPE commerçants et artisans, PME tourisme et hôtellerie-restauration, commerce transfrontalier, services aux entreprises et transport. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Hendaye (64), commune de 18 102 habitants dans les Pyrénées-Atlantiques, est la ville-frontière franco-espagnole sur les bords de la Bidassoa et de l'océan Atlantique. Station balnéaire de la Côte Basque, son économie repose sur un tissu de TPE commerçants et artisans, PME tourisme et hôtellerie-restauration, commerce transfrontalier, services aux entreprises et transport. Axion-IA y intervient pour tous types d'activités.",
+    "Hendaye (64), commune de 18 102 habitants dans les Pyrénées-Atlantiques, est la ville-frontière franco-espagnole sur les bords de la Bidassoa et de l'océan Atlantique. Station balnéaire de la Côte Basque, son économie repose sur un tissu de TPE commerçants et artisans, PME tourisme et hôtellerie-restauration, commerce transfrontalier, services aux entreprises et transport. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hendaye (64). Nous accompagnons TPE et PME de la Côte Basque sud : acteurs du tourisme balnéaire, hôteliers-restaurateurs, commerçants transfrontaliers, artisans, transporteurs et professions libérales. Audit Flash dès 490 € HT.",
   directAnswerEn:

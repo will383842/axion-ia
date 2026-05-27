@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ROYE_COPY: VilleCopy = {
   pitchFr:
-    "Roye (80), bourg picard de la Somme au cœur du Santerre, pôle agroalimentaire historique (conserveries, sucreries). Tissu de TPE artisans, PME industrielles agroalimentaires, exploitations agricoles grandes cultures, commerces et logistique. Axion-IA y intervient pour tous types d'activités du Santerre Est.",
+    "Roye (80), bourg picard de la Somme au cœur du Santerre, pôle agroalimentaire historique (conserveries, sucreries). Tissu de TPE artisans, PME industrielles agroalimentaires, exploitations agricoles grandes cultures, commerces et logistique. Axion-IA y déploie ses missions auprès de toutes les organisations du Santerre Est.",
   pitchEn:
-    "Roye (80), bourg picard de la Somme au cœur du Santerre, pôle agroalimentaire historique (conserveries, sucreries). Tissu de TPE artisans, PME industrielles agroalimentaires, exploitations agricoles grandes cultures, commerces et logistique. Axion-IA y intervient pour tous types d'activités du Santerre Est.",
+    "Roye (80), bourg picard de la Somme au cœur du Santerre, pôle agroalimentaire historique (conserveries, sucreries). Tissu de TPE artisans, PME industrielles agroalimentaires, exploitations agricoles grandes cultures, commerces et logistique. Axion-IA y déploie ses missions auprès de toutes les organisations du Santerre Est.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Roye (80). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires (conserveries, sucreries), exploitations agricoles grandes cultures, entreprises de logistique, commerçants et indépendants du Santerre.",
   directAnswerEn:

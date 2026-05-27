@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GISORS_COPY: VilleCopy = {
   pitchFr:
-    "Gisors (27), sous-préfecture de l'Eure et capitale historique du Vexin normand, dominée par son château fort médiéval. Tissu TPE artisans, PME agriculture et agroalimentaire Vexin, commerces centre-ville, services aux entreprises, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Gisors (27), sous-préfecture de l'Eure et capitale historique du Vexin normand, dominée par son château fort médiéval. Tissu TPE artisans, PME agriculture et agroalimentaire Vexin, commerces centre-ville, services aux entreprises, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Gisors (27), sous-préfecture de l'Eure et capitale historique du Vexin normand, dominée par son château fort médiéval. Tissu TPE artisans, PME agriculture et agroalimentaire Vexin, commerces centre-ville, services aux entreprises, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Gisors (27), sous-préfecture de l'Eure et capitale historique du Vexin normand, dominée par son château fort médiéval. Tissu TPE artisans, PME agriculture et agroalimentaire Vexin, commerces centre-ville, services aux entreprises, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gisors (27). Nous accompagnons tous types d'activités : TPE artisans, PME agriculture et agroalimentaire Vexin normand, commerces centre-ville, professions libérales, indépendants et services aux entreprises de l'arrondissement des Andelys.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const GISORS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gisors : diagnostic adapté aux TPE artisans, PME agriculture et agroalimentaire Vexin normand, commerces, professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Gisors : diagnostic adapté aux TPE artisans, PME agriculture et agroalimentaire Vexin normand, commerces, professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Gisors : diagnostic adapté aux TPE artisans, PME agriculture et agroalimentaire Vexin normand, commerces, professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Gisors : diagnostic adapté aux TPE artisans, PME agriculture et agroalimentaire Vexin normand, commerces, professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gisors : formats adaptés à l'exploitation agricole, l'atelier agroalimentaire, le cabinet, le commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const GISORS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou Rouen ?",
-      a: "Nos consultants viennent de Paris (1h15 train direct gare Gisors) ou Rouen (55 min). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Paris (1h15 train direct gare Gisors) ou Rouen (55 min). Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

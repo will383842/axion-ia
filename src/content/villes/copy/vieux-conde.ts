@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VIEUX_CONDE_COPY: VilleCopy = {
   pitchFr:
-    "Vieux-Condé (59), commune du Nord en agglomération Valenciennes, est située sur les bords de l'Escaut près de la frontière belge. Tissu mixte : TPE artisans BTP, PME industrielles, commerces de proximité, professions libérales, services péri-urbains. Axion-IA y intervient pour tous types d'activités.",
+    "Vieux-Condé (59), commune du Nord en agglomération Valenciennes, est située sur les bords de l'Escaut près de la frontière belge. Tissu mixte : TPE artisans BTP, PME industrielles, commerces de proximité, professions libérales, services péri-urbains. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Vieux-Condé (59), commune du Nord en agglomération Valenciennes, est située sur les bords de l'Escaut près de la frontière belge. Tissu mixte : TPE artisans BTP, PME industrielles, commerces de proximité, professions libérales, services péri-urbains. Axion-IA y intervient pour tous types d'activités.",
+    "Vieux-Condé (59), commune du Nord en agglomération Valenciennes, est située sur les bords de l'Escaut près de la frontière belge. Tissu mixte : TPE artisans BTP, PME industrielles, commerces de proximité, professions libérales, services péri-urbains. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vieux-Condé (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles, commerçants de proximité, professions libérales, indépendants et services aux entreprises du Valenciennois.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const VIEUX_CONDE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vieux-Condé : diagnostic adapté aux TPE artisans BTP, PME industrielles, commerces et professions libérales du Valenciennois. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Vieux-Condé : diagnostic adapté aux TPE artisans BTP, PME industrielles, commerces et professions libérales du Valenciennois. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Vieux-Condé : diagnostic adapté aux TPE artisans BTP, PME industrielles, commerces et professions libérales du Valenciennois. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Vieux-Condé : diagnostic adapté aux TPE artisans BTP, PME industrielles, commerces et professions libérales du Valenciennois. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vieux-Condé : formats adaptés à l'atelier, au chantier, au commerce, au cabinet. Vos équipes repartent autonomes sur outils IA.",

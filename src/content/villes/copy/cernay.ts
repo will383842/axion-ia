@@ -30,12 +30,12 @@ export const CERNAY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cernay : diagnostic adapté aux TPE/PME industrie textile-mécanique, viticulteurs, acteurs du tourisme, artisans, commerces. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Cernay : diagnostic adapté aux TPE/PME industrie textile-mécanique, viticulteurs, acteurs du tourisme, artisans, commerces. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Cernay : diagnostic adapté aux TPE/PME industrie textile-mécanique, viticulteurs, acteurs du tourisme, artisans, commerces. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Cernay : diagnostic adapté aux TPE/PME industrie textile-mécanique, viticulteurs, acteurs du tourisme, artisans, commerces. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Cernay : formats adaptés à l'atelier industriel, au domaine viticole, à l'hébergement touristique, au commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Cernay : formats adaptés à l'atelier industriel, au domaine viticole, à l'hébergement touristique, au commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Cernay : formats adaptés à l'atelier industriel, au domaine viticole, à l'hébergement touristique, au commerce. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Cernay : formats adaptés à l'atelier industriel, au domaine viticole, à l'hébergement touristique, au commerce. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Cernay : automatisation traçabilité production, gestion cave et stocks viticoles, réservations touristiques multilingues, gestion commerciale, agents conversationnels.",

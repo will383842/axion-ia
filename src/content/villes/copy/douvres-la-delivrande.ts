@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const DOUVRES_LA_DELIVRANDE_COPY: VilleCopy = {
   pitchFr:
-    "Douvres-la-Délivrande (14), commune du Calvados sur la Côte de Nacre, est un bourg historique entre Caen et la mer. Sa basilique Notre-Dame-de-la-Délivrande est un lieu de pèlerinage. Proximité des plages du Débarquement. Tissu TPE artisans BTP, PME services, commerces, professions libérales, tourisme. Axion-IA y intervient pour tous types d'activités.",
+    "Douvres-la-Délivrande (14), commune du Calvados sur la Côte de Nacre, est un bourg historique entre Caen et la mer. Sa basilique Notre-Dame-de-la-Délivrande est un lieu de pèlerinage. Proximité des plages du Débarquement. Tissu TPE artisans BTP, PME services, commerces, professions libérales, tourisme. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Douvres-la-Délivrande (14), commune du Calvados sur la Côte de Nacre, est un bourg historique entre Caen et la mer. Sa basilique Notre-Dame-de-la-Délivrande est un lieu de pèlerinage. Proximité des plages du Débarquement. Tissu TPE artisans BTP, PME services, commerces, professions libérales, tourisme. Axion-IA y intervient pour tous types d'activités.",
+    "Douvres-la-Délivrande (14), commune du Calvados sur la Côte de Nacre, est un bourg historique entre Caen et la mer. Sa basilique Notre-Dame-de-la-Délivrande est un lieu de pèlerinage. Proximité des plages du Débarquement. Tissu TPE artisans BTP, PME services, commerces, professions libérales, tourisme. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Douvres-la-Délivrande (14). Nous accompagnons tous types d'activités : TPE artisans BTP et commerçants, PME services et tourisme Côte de Nacre, acteurs du Débarquement, professions libérales, indépendants et services aux entreprises littorales.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const DOUVRES_LA_DELIVRANDE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Douvres-la-Délivrande : diagnostic adapté aux acteurs tourisme Côte de Nacre, PME services, TPE artisans BTP, commerçants et professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Douvres-la-Délivrande : diagnostic adapté aux acteurs tourisme Côte de Nacre, PME services, TPE artisans BTP, commerçants et professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Douvres-la-Délivrande : diagnostic adapté aux acteurs tourisme Côte de Nacre, PME services, TPE artisans BTP, commerçants et professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Douvres-la-Délivrande : diagnostic adapté aux acteurs tourisme Côte de Nacre, PME services, TPE artisans BTP, commerçants et professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Douvres-la-Délivrande : formats adaptés au site touristique, bureau tertiaire, commerce ou cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Douvres-la-Délivrande : formats adaptés au site touristique, bureau tertiaire, commerce ou cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Douvres-la-Délivrande : formats adaptés au site touristique, bureau tertiaire, commerce ou cabinet. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Douvres-la-Délivrande : formats adaptés au site touristique, bureau tertiaire, commerce ou cabinet. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Douvres-la-Délivrande : agents conversationnels tourisme patrimonial, automatisation processus tertiaires, classification documents, gestion saisonnalité. Adapté TPE/PME Côte de Nacre.",
@@ -64,7 +64,7 @@ export const DOUVRES_LA_DELIVRANDE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Douvres-la-Délivrande ?",
-      a: "Nos consultants viennent de Caen (15 min D7). Déplacement direct sur site (site touristique, bureau, commerce, cabinet). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Caen (15 min D7). Déplacement direct sur site (site touristique, bureau, commerce, cabinet). Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

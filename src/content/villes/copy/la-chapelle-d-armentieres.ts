@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_CHAPELLE_D_ARMENTIERES_COPY: VilleCopy = {
   pitchFr:
-    "La Chapelle-d'Armentières (59), commune des bords de Lys dans l'agglomération de Lille ouest, frontalière de la Belgique, dispose d'un tissu économique de proximité. TPE artisanat et services, commerces de centre-bourg, professions libérales, petites PME tertiaires, restauration. Axion-IA y intervient pour tous types d'activités.",
+    "La Chapelle-d'Armentières (59), commune des bords de Lys dans l'agglomération de Lille ouest, frontalière de la Belgique, dispose d'un tissu économique de proximité. TPE artisanat et services, commerces de centre-bourg, professions libérales, petites PME tertiaires, restauration. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "La Chapelle-d'Armentières (59), commune des bords de Lys dans l'agglomération de Lille ouest, frontalière de la Belgique, dispose d'un tissu économique de proximité. TPE artisanat et services, commerces de centre-bourg, professions libérales, petites PME tertiaires, restauration. Axion-IA y intervient pour tous types d'activités.",
+    "La Chapelle-d'Armentières (59), commune des bords de Lys dans l'agglomération de Lille ouest, frontalière de la Belgique, dispose d'un tissu économique de proximité. TPE artisanat et services, commerces de centre-bourg, professions libérales, petites PME tertiaires, restauration. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Chapelle-d'Armentières (59). Nous accompagnons TPE et PME : artisans et prestataires de services, commerçants de centre-bourg, professions libérales, PME tertiaires, restaurateurs. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const LA_CHAPELLE_D_ARMENTIERES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Chapelle-d'Armentières : diagnostic adapté aux TPE artisans, commerçants de centre-bourg, professions libérales, PME tertiaires, restaurateurs. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à La Chapelle-d'Armentières : diagnostic adapté aux TPE artisans, commerçants de centre-bourg, professions libérales, PME tertiaires, restaurateurs. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à La Chapelle-d'Armentières : diagnostic adapté aux TPE artisans, commerçants de centre-bourg, professions libérales, PME tertiaires, restaurateurs. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à La Chapelle-d'Armentières : diagnostic adapté aux TPE artisans, commerçants de centre-bourg, professions libérales, PME tertiaires, restaurateurs. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à La Chapelle-d'Armentières : formats adaptés commerce, cabinet, bureau, restaurant. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à La Chapelle-d'Armentières : formats adaptés commerce, cabinet, bureau, restaurant. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à La Chapelle-d'Armentières : formats adaptés commerce, cabinet, bureau, restaurant. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à La Chapelle-d'Armentières : formats adaptés commerce, cabinet, bureau, restaurant. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à La Chapelle-d'Armentières : automatisation gestion clients PME, CRM augmenté commerces, prise de rendez-vous IA professions libérales, commandes et réservations restauration.",
@@ -64,7 +64,7 @@ export const LA_CHAPELLE_D_ARMENTIERES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",
-      a: "Paris-Nord (1h05 via TGV Lille-Europe puis 20 min route). Frontière belge à 5 min. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Paris-Nord (1h05 via TGV Lille-Europe puis 20 min route). Frontière belge à 5 min. Frais de mission en sus, grille tarifaire publique.",
     },
   ],
 };

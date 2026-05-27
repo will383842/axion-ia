@@ -19,7 +19,10 @@
         "http://localhost:3000/fr/contact",
         "http://localhost:3000/en/contact",
         "http://localhost:3000/fr/galerie",
-        "http://localhost:3000/en/gallery"
+        "http://localhost:3000/en/gallery",
+        "http://localhost:3000/fr/implantations/ile-de-france/paris",
+        "http://localhost:3000/fr/implantations/auvergne-rhone-alpes/chamonix-mont-blanc",
+        "http://localhost:3000/fr/implantations/provence-alpes-cote-d-azur/simiane-collongue"
       ],
       "startServerCommand": "pnpm start",
       "startServerReadyPattern": "Ready",

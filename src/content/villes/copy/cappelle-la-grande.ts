@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CAPPELLE_LA_GRANDE_COPY: VilleCopy = {
   pitchFr:
-    "Cappelle-la-Grande (59), commune de 7 839 habitants dans le Nord, intégrée à l'agglomération de Dunkerque, est une ville résidentielle adossée au pôle industrialo-portuaire dunkerquois et à son tissu TPE/PME de services, commerces et artisanat. Tissu TPE/PME services, commerces de proximité, artisanat, restauration, sous-traitance industrielle, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Cappelle-la-Grande (59), commune de 7 839 habitants dans le Nord, intégrée à l'agglomération de Dunkerque, est une ville résidentielle adossée au pôle industrialo-portuaire dunkerquois et à son tissu TPE/PME de services, commerces et artisanat. Tissu TPE/PME services, commerces de proximité, artisanat, restauration, sous-traitance industrielle, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Cappelle-la-Grande (59), commune de 7 839 habitants dans le Nord, intégrée à l'agglomération de Dunkerque, est une ville résidentielle adossée au pôle industrialo-portuaire dunkerquois et à son tissu TPE/PME de services, commerces et artisanat. Tissu TPE/PME services, commerces de proximité, artisanat, restauration, sous-traitance industrielle, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Cappelle-la-Grande (59), commune de 7 839 habitants dans le Nord, intégrée à l'agglomération de Dunkerque, est une ville résidentielle adossée au pôle industrialo-portuaire dunkerquois et à son tissu TPE/PME de services, commerces et artisanat. Tissu TPE/PME services, commerces de proximité, artisanat, restauration, sous-traitance industrielle, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cappelle-la-Grande (59). Nous accompagnons tous types d'activités : TPE/PME services et commerces cappellois, artisans, restaurateurs, professions libérales, sous-traitants industriels et acteurs économiques de l'agglomération de Dunkerque.",
   directAnswerEn:
@@ -30,12 +30,12 @@ export const CAPPELLE_LA_GRANDE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cappelle-la-Grande : diagnostic adapté aux TPE/PME services, commerces, artisans, restaurateurs, sous-traitants industriels et professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Cappelle-la-Grande : diagnostic adapté aux TPE/PME services, commerces, artisans, restaurateurs, sous-traitants industriels et professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Cappelle-la-Grande : diagnostic adapté aux TPE/PME services, commerces, artisans, restaurateurs, sous-traitants industriels et professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Cappelle-la-Grande : diagnostic adapté aux TPE/PME services, commerces, artisans, restaurateurs, sous-traitants industriels et professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Cappelle-la-Grande : formats adaptés au bureau de services, au commerce, à l'atelier artisanal, au restaurant, à l'atelier sous-traitant. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Cappelle-la-Grande : formats adaptés au bureau de services, au commerce, à l'atelier artisanal, au restaurant, à l'atelier sous-traitant. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Cappelle-la-Grande : formats adaptés au bureau de services, au commerce, à l'atelier artisanal, au restaurant, à l'atelier sous-traitant. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Cappelle-la-Grande : formats adaptés au bureau de services, au commerce, à l'atelier artisanal, au restaurant, à l'atelier sous-traitant. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Cappelle-la-Grande : automatisation administrative, gestion commerciale, agents conversationnels, prise de rendez-vous, suivi des stocks, optimisation des devis et de la facturation.",

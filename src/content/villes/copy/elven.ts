@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ELVEN_COPY: VilleCopy = {
   pitchFr:
-    "Elven (56), commune du Morbihan au nord de Vannes, est connue pour les tours d'Elven (forteresse médiévale de Largoët) et son label Village étape. Tissu agricole breton, TPE artisanat, commerces de proximité, tourisme patrimonial (forteresse), acteurs du parc naturel régional du golfe du Morbihan. Axion-IA y intervient pour tous types d'activités.",
+    "Elven (56), commune du Morbihan au nord de Vannes, est connue pour les tours d'Elven (forteresse médiévale de Largoët) et son label Village étape. Tissu agricole breton, TPE artisanat, commerces de proximité, tourisme patrimonial (forteresse), acteurs du parc naturel régional du golfe du Morbihan. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Elven (56), commune du Morbihan au nord de Vannes, est connue pour les tours d'Elven (forteresse médiévale de Largoët) et son label Village étape. Tissu agricole breton, TPE artisanat, commerces de proximité, tourisme patrimonial (forteresse), acteurs du parc naturel régional du golfe du Morbihan. Axion-IA y intervient pour tous types d'activités.",
+    "Elven (56), commune du Morbihan au nord de Vannes, est connue pour les tours d'Elven (forteresse médiévale de Largoët) et son label Village étape. Tissu agricole breton, TPE artisanat, commerces de proximité, tourisme patrimonial (forteresse), acteurs du parc naturel régional du golfe du Morbihan. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Elven (56). Nous accompagnons TPE et PME : exploitants agricoles bretons, artisans et commerçants de proximité, acteurs du tourisme patrimonial (tours d'Elven), opérateurs Village étape, acteurs du parc naturel régional du golfe du Morbihan. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const ELVEN_COPY: VilleCopy = {
       en: "Audit IA à Elven : diagnostic adapté aux exploitations agricoles, TPE artisans, commerces de proximité, acteurs tourisme patrimonial. ROI chiffré, audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Elven : formats adaptés exploitation agricole, atelier artisan, commerce, structure touristique. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Elven : formats adaptés exploitation agricole, atelier artisan, commerce, structure touristique. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Elven : formats adaptés exploitation agricole, atelier artisan, commerce, structure touristique. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Elven : formats adaptés exploitation agricole, atelier artisan, commerce, structure touristique. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Elven : automatisation gestion exploitation agricole, CRM artisans et commerces, billetterie et expérience visiteur tours d'Elven, parcours Village étape.",
@@ -64,7 +64,7 @@ export const ELVEN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Vannes ou Rennes ?",
-      a: "Vannes (20 min), Rennes (1h). Gare TGV Vannes à 20 min. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Vannes (20 min), Rennes (1h). Gare TGV Vannes à 20 min. Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

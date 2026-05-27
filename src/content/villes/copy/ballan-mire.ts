@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BALLAN_MIRE_COPY: VilleCopy = {
   pitchFr:
-    "Ballan-Miré (37), commune résidentielle du sud-ouest de Tours Métropole en Indre-et-Loire, allie cadre de vie verdoyant et proximité immédiate de l'agglomération tourangelle. Tissu TPE artisans BTP, PME tertiaires et services, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Ballan-Miré (37), commune résidentielle du sud-ouest de Tours Métropole en Indre-et-Loire, allie cadre de vie verdoyant et proximité immédiate de l'agglomération tourangelle. Tissu TPE artisans BTP, PME tertiaires et services, commerces de proximité, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Ballan-Miré (37), commune résidentielle du sud-ouest de Tours Métropole en Indre-et-Loire, allie cadre de vie verdoyant et proximité immédiate de l'agglomération tourangelle. Tissu TPE artisans BTP, PME tertiaires et services, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Ballan-Miré (37), commune résidentielle du sud-ouest de Tours Métropole en Indre-et-Loire, allie cadre de vie verdoyant et proximité immédiate de l'agglomération tourangelle. Tissu TPE artisans BTP, PME tertiaires et services, commerces de proximité, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ballan-Miré (37). Nous accompagnons tous types d'activités : TPE artisans BTP, PME tertiaires de Tours Métropole sud-ouest, commerçants, professions libérales et services aux entreprises ballanais.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const BALLAN_MIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ballan-Miré : diagnostic adapté aux TPE artisans BTP, PME tertiaires Tours Métropole, commerçants, professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Ballan-Miré : diagnostic adapté aux TPE artisans BTP, PME tertiaires Tours Métropole, commerçants, professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Ballan-Miré : diagnostic adapté aux TPE artisans BTP, PME tertiaires Tours Métropole, commerçants, professions libérales. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Ballan-Miré : diagnostic adapté aux TPE artisans BTP, PME tertiaires Tours Métropole, commerçants, professions libérales. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ballan-Miré : formats adaptés au bureau tertiaire, atelier artisan, cabinet, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const BALLAN_MIRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Ballan-Miré ?",
-      a: "Nos consultants interviennent sur site à Ballan-Miré (Tours centre à 12 min). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants interviennent sur site à Ballan-Miré (Tours centre à 12 min). Frais de mission en sus, grille tarifaire publique.",
     },
   ],
 };

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const AUTERIVE_COPY: VilleCopy = {
   pitchFr:
-    "Auterive (31), commune des bords de l'Ariège au sud de Toulouse avec plus de 10 000 habitants. Tissu TPE artisans, PME industrielles et agroalimentaires, commerces de centre-ville, professions libérales. Axion-IA y intervient pour tous types d'activités du sud de la Haute-Garonne.",
+    "Auterive (31), commune des bords de l'Ariège au sud de Toulouse avec plus de 10 000 habitants. Tissu TPE artisans, PME industrielles et agroalimentaires, commerces de centre-ville, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du sud de la Haute-Garonne.",
   pitchEn:
-    "Auterive (31), commune des bords de l'Ariège au sud de Toulouse avec plus de 10 000 habitants. Tissu TPE artisans, PME industrielles et agroalimentaires, commerces de centre-ville, professions libérales. Axion-IA y intervient pour tous types d'activités du sud de la Haute-Garonne.",
+    "Auterive (31), commune des bords de l'Ariège au sud de Toulouse avec plus de 10 000 habitants. Tissu TPE artisans, PME industrielles et agroalimentaires, commerces de centre-ville, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du sud de la Haute-Garonne.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auterive (31). Nous accompagnons TPE artisans, PME industrielles et agroalimentaires, commerçants et professions libérales du sud Toulouse. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const AUTERIVE_COPY: VilleCopy = {
       en: "Audit IA à Auterive : diagnostic adapté aux TPE artisans, PME industrielles et agroalimentaires du sud Haute-Garonne. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Auterive : formats adaptés à l'atelier industriel, à l'exploitation agroalimentaire, au commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Auterive : formats adaptés à l'atelier industriel, à l'exploitation agroalimentaire, au commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Auterive : formats adaptés à l'atelier industriel, à l'exploitation agroalimentaire, au commerce. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Auterive : formats adaptés à l'atelier industriel, à l'exploitation agroalimentaire, au commerce. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Auterive : automatisation contrôle qualité, gestion stocks agroalimentaire, classification documents, optimisation logistique pour PME du sud Toulouse.",

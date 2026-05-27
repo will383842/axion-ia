@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_FLORENT_SUR_CHER_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Florent-sur-Cher (18), commune de la vallée du Cher au sud de Bourges, possède un tissu industriel historique et tertiaire. TPE artisans, PME industrielles, commerces, agriculture céréalière, services. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Florent-sur-Cher (18), commune de la vallée du Cher au sud de Bourges, possède un tissu industriel historique et tertiaire. TPE artisans, PME industrielles, commerces, agriculture céréalière, services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Saint-Florent-sur-Cher (18), commune de la vallée du Cher au sud de Bourges, possède un tissu industriel historique et tertiaire. TPE artisans, PME industrielles, commerces, agriculture céréalière, services. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Florent-sur-Cher (18), commune de la vallée du Cher au sud de Bourges, possède un tissu industriel historique et tertiaire. TPE artisans, PME industrielles, commerces, agriculture céréalière, services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Florent-sur-Cher (18). Nous accompagnons TPE artisans, PME industrielles, commerçants, exploitants agricoles et toutes les activités de la vallée du Cher au sud de Bourges. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const SAINT_FLORENT_SUR_CHER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Florent-sur-Cher : diagnostic adapté aux TPE artisans, PME industrielles (métallurgie, mécanique), commerçants et exploitants agricoles de la vallée du Cher. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Florent-sur-Cher : diagnostic adapté aux TPE artisans, PME industrielles (métallurgie, mécanique), commerçants et exploitants agricoles de la vallée du Cher. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Florent-sur-Cher : diagnostic adapté aux TPE artisans, PME industrielles (métallurgie, mécanique), commerçants et exploitants agricoles de la vallée du Cher. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Saint-Florent-sur-Cher : diagnostic adapté aux TPE artisans, PME industrielles (métallurgie, mécanique), commerçants et exploitants agricoles de la vallée du Cher. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Florent-sur-Cher : formats adaptés aux industriels, artisans, commerçants, exploitants agricoles. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const SAINT_FLORENT_SUR_CHER_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Florent-sur-Cher ?",
-      a: "Nos consultants viennent de Bourges (15 min) ou de Paris via A71 (2h20). Intervention sur site dans vos locaux industriels ou en visio. Multi-jours possibles. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants viennent de Bourges (15 min) ou de Paris via A71 (2h20). Intervention sur site dans vos locaux industriels ou en visio. Multi-jours possibles. Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

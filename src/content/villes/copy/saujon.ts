@@ -33,8 +33,8 @@ export const SAUJON_COPY: VilleCopy = {
       en: "Audit IA à Saujon : diagnostic adapté aux professionnels du thermalisme, de la santé, de l'hébergement curistes, TPE artisans et commerces du bassin Saujon-Royan. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saujon : formats adaptés à l'établissement thermal, au cabinet de santé, à l'hébergement ou au commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Saujon : formats adaptés à l'établissement thermal, au cabinet de santé, à l'hébergement ou au commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Saujon : formats adaptés à l'établissement thermal, au cabinet de santé, à l'hébergement ou au commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Saujon : formats adaptés à l'établissement thermal, au cabinet de santé, à l'hébergement ou au commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Saujon : automatisation gestion réservations curistes, agents conversationnels accueil thermal multilingue, optimisation planning soins, classification dossiers patients, marketing IA fidélisation.",

@@ -30,12 +30,12 @@ export const SAINT_MARTIN_DE_SEIGNANX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Martin-de-Seignanx : diagnostic adapté aux TPE services et commerces des zones d'activités, artisans BTP, agriculteurs et professions libérales du Seignanx. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Martin-de-Seignanx : diagnostic adapté aux TPE services et commerces des zones d'activités, artisans BTP, agriculteurs et professions libérales du Seignanx. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Martin-de-Seignanx : diagnostic adapté aux TPE services et commerces des zones d'activités, artisans BTP, agriculteurs et professions libérales du Seignanx. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Saint-Martin-de-Seignanx : diagnostic adapté aux TPE services et commerces des zones d'activités, artisans BTP, agriculteurs et professions libérales du Seignanx. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Martin-de-Seignanx : formations adaptées aux entreprises des zones d'activités, exploitations agricoles, commerces et artisans. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Saint-Martin-de-Seignanx : formations adaptées aux entreprises des zones d'activités, exploitations agricoles, commerces et artisans. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Saint-Martin-de-Seignanx : formations adaptées aux entreprises des zones d'activités, exploitations agricoles, commerces et artisans. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Saint-Martin-de-Seignanx : formations adaptées aux entreprises des zones d'activités, exploitations agricoles, commerces et artisans. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Martin-de-Seignanx : automatisation gestion commerciale, chatbot clients, optimisation stocks et approvisionnement, classification documents comptables, gestion exploitation agricole (kiwi, maïs).",
@@ -65,7 +65,7 @@ export const SAINT_MARTIN_DE_SEIGNANX_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Saint-Martin-de-Seignanx ?",
-      a: "Nos consultants se déplacent facilement : Bayonne à 15 min, accès A63. Mission sur site dans votre établissement ou zone d'activités. Aéroport Biarritz à 25 min. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants se déplacent facilement : Bayonne à 15 min, accès A63. Mission sur site dans votre établissement ou zone d'activités. Aéroport Biarritz à 25 min. Coûts de déplacement à part, tarification transparente.",
     },
   ],
 };

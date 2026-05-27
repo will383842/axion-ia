@@ -29,8 +29,8 @@ export const GENAY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Genay : diagnostic adapté aux PME tertiaires/industrielles nord lyonnais, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Genay : diagnostic adapté aux PME tertiaires/industrielles nord lyonnais, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Genay : diagnostic adapté aux PME tertiaires/industrielles nord lyonnais, professions libérales, TPE artisans. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Genay : diagnostic adapté aux PME tertiaires/industrielles nord lyonnais, professions libérales, TPE artisans. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Genay : formats adaptés au bureau, atelier, cabinet, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const GENAY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (25 min). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (25 min). Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

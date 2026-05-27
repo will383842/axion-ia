@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHASSIEU_COPY: VilleCopy = {
   pitchFr:
-    "Chassieu (69), commune en banlieue est de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Abrite Eurexpo (parc des expositions de Lyon, l'un des plus grands de France) et des zones d'activités majeures. Tissu PME événementielles et logistiques, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Chassieu (69), commune en banlieue est de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Abrite Eurexpo (parc des expositions de Lyon, l'un des plus grands de France) et des zones d'activités majeures. Tissu PME événementielles et logistiques, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Chassieu (69), commune en banlieue est de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Abrite Eurexpo (parc des expositions de Lyon, l'un des plus grands de France) et des zones d'activités majeures. Tissu PME événementielles et logistiques, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Chassieu (69), commune en banlieue est de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Abrite Eurexpo (parc des expositions de Lyon, l'un des plus grands de France) et des zones d'activités majeures. Tissu PME événementielles et logistiques, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chassieu (69). Nous accompagnons tous types d'activités : acteurs événementiels Eurexpo, PME logistiques et tertiaires zones d'activités, TPE artisans BTP, commerçants, indépendants et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const CHASSIEU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chassieu : diagnostic adapté aux acteurs événementiels Eurexpo, PME logistiques/tertiaires, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Chassieu : diagnostic adapté aux acteurs événementiels Eurexpo, PME logistiques/tertiaires, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Chassieu : diagnostic adapté aux acteurs événementiels Eurexpo, PME logistiques/tertiaires, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Chassieu : diagnostic adapté aux acteurs événementiels Eurexpo, PME logistiques/tertiaires, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chassieu : formats adaptés au parc expo, entrepôt, bureau tertiaire, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const CHASSIEU_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (15 min). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (15 min). Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

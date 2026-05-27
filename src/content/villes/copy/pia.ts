@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PIA_COPY: VilleCopy = {
   pitchFr:
-    "Pia (66), commune résidentielle de la Salanque en périphérie nord de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME zones d'activités, commerces, agriculture maraîchère Salanque. Axion-IA y intervient pour tous types d'activités de l'agglomération perpignanaise.",
+    "Pia (66), commune résidentielle de la Salanque en périphérie nord de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME zones d'activités, commerces, agriculture maraîchère Salanque. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération perpignanaise.",
   pitchEn:
-    "Pia (66), commune résidentielle de la Salanque en périphérie nord de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME zones d'activités, commerces, agriculture maraîchère Salanque. Axion-IA y intervient pour tous types d'activités de l'agglomération perpignanaise.",
+    "Pia (66), commune résidentielle de la Salanque en périphérie nord de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME zones d'activités, commerces, agriculture maraîchère Salanque. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération perpignanaise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pia (66). Nous accompagnons tous types d'activités : TPE artisans, PME zones d'activités, commerçants, agriculteurs maraîchers Salanque, indépendants et professions libérales de l'agglo Perpignan nord.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const PIA_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pia : diagnostic adapté aux TPE artisans, PME zones d'activités, agriculteurs maraîchers et commerçants de la Salanque perpignanaise. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Pia : diagnostic adapté aux TPE artisans, PME zones d'activités, agriculteurs maraîchers et commerçants de la Salanque perpignanaise. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Pia : diagnostic adapté aux TPE artisans, PME zones d'activités, agriculteurs maraîchers et commerçants de la Salanque perpignanaise. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Pia : diagnostic adapté aux TPE artisans, PME zones d'activités, agriculteurs maraîchers et commerçants de la Salanque perpignanaise. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Pia : formats adaptés à l'atelier, exploitation maraîchère, commerce, bureau. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Pia : formats adaptés à l'atelier, exploitation maraîchère, commerce, bureau. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Pia : formats adaptés à l'atelier, exploitation maraîchère, commerce, bureau. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Pia : formats adaptés à l'atelier, exploitation maraîchère, commerce, bureau. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Pia : automatisation devis BTP, tri qualité fruits/légumes par vision, agents conversationnels B2B, CRM augmentés. Perpignan Méditerranée Métropole.",
@@ -64,7 +64,7 @@ export const PIA_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Pia ?",
-      a: "Nos consultants interviennent depuis Perpignan (10 min). Missions sur site dans votre atelier, exploitation ou bureau. Visio possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants interviennent depuis Perpignan (10 min). Missions sur site dans votre atelier, exploitation ou bureau. Visio possible. Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

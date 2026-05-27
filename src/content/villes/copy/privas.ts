@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PRIVAS_COPY: VilleCopy = {
   pitchFr:
-    "Privas (07), préfecture de l'Ardèche, est réputée pour les marrons glacés (spécialité locale historique, confiserie artisanale). Tissu administration et services publics, agriculture (châtaigneraie ardéchoise), TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités ardéchoises.",
+    "Privas (07), préfecture de l'Ardèche, est réputée pour les marrons glacés (spécialité locale historique, confiserie artisanale). Tissu administration et services publics, agriculture (châtaigneraie ardéchoise), TPE artisans BTP, commerces. Axion-IA opère pour toutes les structures économiques de la commune ardéchoises.",
   pitchEn:
-    "Privas (07), préfecture de l'Ardèche, est réputée pour les marrons glacés (spécialité locale historique, confiserie artisanale). Tissu administration et services publics, agriculture (châtaigneraie ardéchoise), TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités ardéchoises.",
+    "Privas (07), préfecture de l'Ardèche, est réputée pour les marrons glacés (spécialité locale historique, confiserie artisanale). Tissu administration et services publics, agriculture (châtaigneraie ardéchoise), TPE artisans BTP, commerces. Axion-IA opère pour toutes les structures économiques de la commune ardéchoises.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Privas (07). Nous accompagnons tous types d'activités : administration préfecture, confiseurs marrons glacés, agriculteurs châtaigneraie, TPE artisans BTP, commerçants et services aux entreprises ardéchois.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const PRIVAS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Privas : diagnostic adapté à l'administration, confiseurs marrons glacés, agriculteurs châtaigneraie, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Privas : diagnostic adapté à l'administration, confiseurs marrons glacés, agriculteurs châtaigneraie, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Privas : diagnostic adapté à l'administration, confiseurs marrons glacés, agriculteurs châtaigneraie, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Privas : diagnostic adapté à l'administration, confiseurs marrons glacés, agriculteurs châtaigneraie, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Privas : formats adaptés à l'administration, atelier confiserie, exploitation, commerce. Vos équipes repartent autonomes.",

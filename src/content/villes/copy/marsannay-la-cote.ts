@@ -29,12 +29,12 @@ export const MARSANNAY_LA_COTE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Marsannay-la-Côte : diagnostic adapté aux domaines viticoles AOC, oenotourisme, PME services dijonnaises, TPE artisans, commerçants. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Marsannay-la-Côte : diagnostic adapté aux domaines viticoles AOC, oenotourisme, PME services dijonnaises, TPE artisans, commerçants. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Marsannay-la-Côte : diagnostic adapté aux domaines viticoles AOC, oenotourisme, PME services dijonnaises, TPE artisans, commerçants. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Marsannay-la-Côte : diagnostic adapté aux domaines viticoles AOC, oenotourisme, PME services dijonnaises, TPE artisans, commerçants. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Marsannay-la-Côte : formats adaptés au domaine viticole, cave, gîte oenotouristique, PME, TPE. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Marsannay-la-Côte : formats adaptés au domaine viticole, cave, gîte oenotouristique, PME, TPE. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Marsannay-la-Côte : formats adaptés au domaine viticole, cave, gîte oenotouristique, PME, TPE. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Marsannay-la-Côte : formats adaptés au domaine viticole, cave, gîte oenotouristique, PME, TPE. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Marsannay-la-Côte : optimisation vinification, traçabilité parcellaire, prédiction millésime, automatisation vente caveau, CRM oenotourisme.",
@@ -64,7 +64,7 @@ export const MARSANNAY_LA_COTE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Dijon ?",
-      a: "Dijon centre (10 min). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Dijon centre (10 min). Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

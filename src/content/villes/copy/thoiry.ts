@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const THOIRY_COPY: VilleCopy = {
   pitchFr:
-    "Thoiry (01), commune du pays de Gex dans l'Ain, est positionnée à la frontière suisse à proximité de Genève. Tissu économie frontalière, PME tertiaires, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités gessiennes.",
+    "Thoiry (01), commune du pays de Gex dans l'Ain, est positionnée à la frontière suisse à proximité de Genève. Tissu économie frontalière, PME tertiaires, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations gessiennes.",
   pitchEn:
-    "Thoiry (01), commune du pays de Gex dans l'Ain, est positionnée à la frontière suisse à proximité de Genève. Tissu économie frontalière, PME tertiaires, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités gessiennes.",
+    "Thoiry (01), commune du pays de Gex dans l'Ain, est positionnée à la frontière suisse à proximité de Genève. Tissu économie frontalière, PME tertiaires, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations gessiennes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thoiry (01). Nous accompagnons tous types d'activités : PME tertiaires pays de Gex, économie frontalière Genève, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const THOIRY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Thoiry : diagnostic adapté aux PME tertiaires pays de Gex, frontaliers Genève, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Thoiry : diagnostic adapté aux PME tertiaires pays de Gex, frontaliers Genève, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Thoiry : diagnostic adapté aux PME tertiaires pays de Gex, frontaliers Genève, TPE artisans. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Thoiry : diagnostic adapté aux PME tertiaires pays de Gex, frontaliers Genève, TPE artisans. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Thoiry : formats adaptés au bureau, commerce transfrontalier, atelier. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const THOIRY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Genève ?",
-      a: "Nos consultants viennent de Lyon (1h30) ou Genève (15 min). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (1h30) ou Genève (15 min). Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

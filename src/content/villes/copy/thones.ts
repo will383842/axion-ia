@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const THONES_COPY: VilleCopy = {
   pitchFr:
-    "Thônes (74), capitale des Aravis et berceau du Reblochon AOP, est un carrefour montagnard entre Annecy, La Clusaz et Le Grand-Bornand. Tissu économique ancré : agroalimentaire fromager, tourisme montagne, commerce de bourg, artisanat et hôtellerie. Axion-IA y intervient pour tous types d'activités du massif des Aravis.",
+    "Thônes (74), capitale des Aravis et berceau du Reblochon AOP, est un carrefour montagnard entre Annecy, La Clusaz et Le Grand-Bornand. Tissu économique ancré : agroalimentaire fromager, tourisme montagne, commerce de bourg, artisanat et hôtellerie. Axion-IA y déploie ses missions auprès de toutes les organisations du massif des Aravis.",
   pitchEn:
-    "Thônes (74), capitale des Aravis et berceau du Reblochon AOP, est un carrefour montagnard entre Annecy, La Clusaz et Le Grand-Bornand. Tissu économique ancré : agroalimentaire fromager, tourisme montagne, commerce de bourg, artisanat et hôtellerie. Axion-IA y intervient pour tous types d'activités du massif des Aravis.",
+    "Thônes (74), capitale des Aravis et berceau du Reblochon AOP, est un carrefour montagnard entre Annecy, La Clusaz et Le Grand-Bornand. Tissu économique ancré : agroalimentaire fromager, tourisme montagne, commerce de bourg, artisanat et hôtellerie. Axion-IA y déploie ses missions auprès de toutes les organisations du massif des Aravis.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thônes (74). Nous accompagnons TPE et PME : entreprises agroalimentaires fromagers (Reblochon AOP), prestataires tourisme montagne Aravis, commerçants du bourg, artisans locaux et hôteliers-restaurateurs.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const THONES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Thônes : diagnostic adapté aux fromageries Reblochon AOP, prestataires tourisme Aravis, commerçants du bourg, artisans et hôteliers-restaurateurs de montagne. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Thônes : diagnostic adapté aux fromageries Reblochon AOP, prestataires tourisme Aravis, commerçants du bourg, artisans et hôteliers-restaurateurs de montagne. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Thônes : diagnostic adapté aux fromageries Reblochon AOP, prestataires tourisme Aravis, commerçants du bourg, artisans et hôteliers-restaurateurs de montagne. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Thônes : diagnostic adapté aux fromageries Reblochon AOP, prestataires tourisme Aravis, commerçants du bourg, artisans et hôteliers-restaurateurs de montagne. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Thônes : formats adaptés à la fromagerie, l'hôtel-restaurant, le commerce de bourg ou l'artisan montagnard. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Thônes : formats adaptés à la fromagerie, l'hôtel-restaurant, le commerce de bourg ou l'artisan montagnard. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Thônes : formats adaptés à la fromagerie, l'hôtel-restaurant, le commerce de bourg ou l'artisan montagnard. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Thônes : formats adaptés à la fromagerie, l'hôtel-restaurant, le commerce de bourg ou l'artisan montagnard. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Thônes : traçabilité AOP automatisée, contrôle qualité visuel affinage, agents conversationnels vente fromage en ligne, chatbot réservation montagne, CRM augmenté commerces de bourg.",

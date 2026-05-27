@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const EMBRUN_COPY: VilleCopy = {
   pitchFr:
-    "Embrun (05), sous-préfecture des Hautes-Alpes, surplombe le lac de Serre-Ponçon (plus grand lac artificiel de France métropolitaine). Tissu TPE artisans, PME tourisme/sports nautiques/nature, commerçants, agriculteurs montagne et services. Axion-IA y intervient pour tous types d'activités de l'Embrunais.",
+    "Embrun (05), sous-préfecture des Hautes-Alpes, surplombe le lac de Serre-Ponçon (plus grand lac artificiel de France métropolitaine). Tissu TPE artisans, PME tourisme/sports nautiques/nature, commerçants, agriculteurs montagne et services. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'Embrunais.",
   pitchEn:
-    "Embrun (05), sous-préfecture des Hautes-Alpes, surplombe le lac de Serre-Ponçon (plus grand lac artificiel de France métropolitaine). Tissu TPE artisans, PME tourisme/sports nautiques/nature, commerçants, agriculteurs montagne et services. Axion-IA y intervient pour tous types d'activités de l'Embrunais.",
+    "Embrun (05), sous-préfecture des Hautes-Alpes, surplombe le lac de Serre-Ponçon (plus grand lac artificiel de France métropolitaine). Tissu TPE artisans, PME tourisme/sports nautiques/nature, commerçants, agriculteurs montagne et services. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'Embrunais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Embrun (05). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et sports nature (lac Serre-Ponçon, bases nautiques), commerçants, hébergeurs, agriculteurs montagne, indépendants et services aux entreprises de l'Embrunais.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const EMBRUN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Embrun : diagnostic adapté aux TPE artisans, PME tourisme/sports nature lac Serre-Ponçon, hébergeurs et commerçants de l'Embrunais. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Embrun : diagnostic adapté aux TPE artisans, PME tourisme/sports nature lac Serre-Ponçon, hébergeurs et commerçants de l'Embrunais. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Embrun : diagnostic adapté aux TPE artisans, PME tourisme/sports nature lac Serre-Ponçon, hébergeurs et commerçants de l'Embrunais. Audit Flash 490 € HT avec ROI quantifié accessible.",
+      en: "Audit IA à Embrun : diagnostic adapté aux TPE artisans, PME tourisme/sports nature lac Serre-Ponçon, hébergeurs et commerçants de l'Embrunais. Audit Flash 490 € HT avec ROI quantifié accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Embrun : formats adaptés aux bases nautiques, campings, hébergements ou commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",

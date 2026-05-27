@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VILLARS_COPY: VilleCopy = {
   pitchFr:
-    "Villars (42), commune en banlieue nord-ouest de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Tissu péri-urbain mixte : PME tertiaires et industrielles, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités stéphanoises.",
+    "Villars (42), commune en banlieue nord-ouest de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Tissu péri-urbain mixte : PME tertiaires et industrielles, TPE artisans BTP, commerces, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations stéphanoises.",
   pitchEn:
-    "Villars (42), commune en banlieue nord-ouest de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Tissu péri-urbain mixte : PME tertiaires et industrielles, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités stéphanoises.",
+    "Villars (42), commune en banlieue nord-ouest de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Tissu péri-urbain mixte : PME tertiaires et industrielles, TPE artisans BTP, commerces, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations stéphanoises.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villars (42). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Saint-Étienne Métropole, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la banlieue nord-ouest stéphanoise.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const VILLARS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villars : diagnostic adapté aux PME tertiaires/industrielles Saint-Étienne Métropole, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Villars : diagnostic adapté aux PME tertiaires/industrielles Saint-Étienne Métropole, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Villars : diagnostic adapté aux PME tertiaires/industrielles Saint-Étienne Métropole, professions libérales, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Villars : diagnostic adapté aux PME tertiaires/industrielles Saint-Étienne Métropole, professions libérales, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Villars : formats adaptés au bureau, cabinet professionnel, atelier industriel, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Villars : formats adaptés au bureau, cabinet professionnel, atelier industriel, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Villars : formats adaptés au bureau, cabinet professionnel, atelier industriel, commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Villars : formats adaptés au bureau, cabinet professionnel, atelier industriel, commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Villars : agents conversationnels B2B/patient, automatisation workflow tertiaire, prédiction maintenance industrielle, classification dossiers. Saint-Étienne Métropole.",
@@ -64,7 +64,7 @@ export const VILLARS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",
-      a: "Nos consultants viennent de Lyon (50 min) ou Saint-Étienne (10 min). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (50 min) ou Saint-Étienne (10 min). Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

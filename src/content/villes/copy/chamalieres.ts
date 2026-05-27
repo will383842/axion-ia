@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHAMALIERES_COPY: VilleCopy = {
   pitchFr:
-    "Chamalières (63), commune en banlieue ouest immédiate de Clermont-Ferrand dans le Puy-de-Dôme, est intégrée à Clermont Auvergne Métropole. Position résidentielle. Tissu PME tertiaires, professions libérales, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités clermontoises.",
+    "Chamalières (63), commune en banlieue ouest immédiate de Clermont-Ferrand dans le Puy-de-Dôme, est intégrée à Clermont Auvergne Métropole. Position résidentielle. Tissu PME tertiaires, professions libérales, TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs clermontoises.",
   pitchEn:
-    "Chamalières (63), commune en banlieue ouest immédiate de Clermont-Ferrand dans le Puy-de-Dôme, est intégrée à Clermont Auvergne Métropole. Position résidentielle. Tissu PME tertiaires, professions libérales, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités clermontoises.",
+    "Chamalières (63), commune en banlieue ouest immédiate de Clermont-Ferrand dans le Puy-de-Dôme, est intégrée à Clermont Auvergne Métropole. Position résidentielle. Tissu PME tertiaires, professions libérales, TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs clermontoises.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chamalières (63). Nous accompagnons tous types d'activités : PME tertiaires Clermont Métropole ouest, professions libérales, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const CHAMALIERES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chamalières : diagnostic adapté aux PME tertiaires Clermont Métropole, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Chamalières : diagnostic adapté aux PME tertiaires Clermont Métropole, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Chamalières : diagnostic adapté aux PME tertiaires Clermont Métropole, professions libérales, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Chamalières : diagnostic adapté aux PME tertiaires Clermont Métropole, professions libérales, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Chamalières : formats adaptés au bureau, cabinet, commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Chamalières : formats adaptés au bureau, cabinet, commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Chamalières : formats adaptés au bureau, cabinet, commerce. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Chamalières : formats adaptés au bureau, cabinet, commerce. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Chamalières : agents conversationnels B2B/patient, automatisation workflow, classification dossiers, CRM augmentés. Clermont Métropole.",
@@ -64,7 +64,7 @@ export const CHAMALIERES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Lyon (2h). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Lyon (2h). Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

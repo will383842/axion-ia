@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FREYMING_MERLEBACH_COPY: VilleCopy = {
   pitchFr:
-    "Freyming-Merlebach (57), commune mosellane du bassin houiller lorrain en reconversion, frontalière de la Sarre allemande. Tissu TPE/PME industrie, sous-traitance, logistique transfrontalière, BTP, commerces de proximité, services, et nombreux frontaliers actifs en Allemagne. Axion-IA y intervient pour tous types d'activités.",
+    "Freyming-Merlebach (57), commune mosellane du bassin houiller lorrain en reconversion, frontalière de la Sarre allemande. Tissu TPE/PME industrie, sous-traitance, logistique transfrontalière, BTP, commerces de proximité, services, et nombreux frontaliers actifs en Allemagne. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Freyming-Merlebach (57), commune mosellane du bassin houiller lorrain en reconversion, frontalière de la Sarre allemande. Tissu TPE/PME industrie, sous-traitance, logistique transfrontalière, BTP, commerces de proximité, services, et nombreux frontaliers actifs en Allemagne. Axion-IA y intervient pour tous types d'activités.",
+    "Freyming-Merlebach (57), commune mosellane du bassin houiller lorrain en reconversion, frontalière de la Sarre allemande. Tissu TPE/PME industrie, sous-traitance, logistique transfrontalière, BTP, commerces de proximité, services, et nombreux frontaliers actifs en Allemagne. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Freyming-Merlebach (57). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance, acteurs logistique transfrontalière, artisans BTP, commerces de proximité, professions de services et entrepreneurs frontaliers de la Sarre.",
   directAnswerEn:
@@ -30,12 +30,12 @@ export const FREYMING_MERLEBACH_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Freyming-Merlebach : diagnostic adapté aux TPE/PME industrie, sous-traitants, logistique transfrontalière, artisans BTP, commerces et services. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Freyming-Merlebach : diagnostic adapté aux TPE/PME industrie, sous-traitants, logistique transfrontalière, artisans BTP, commerces et services. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Freyming-Merlebach : diagnostic adapté aux TPE/PME industrie, sous-traitants, logistique transfrontalière, artisans BTP, commerces et services. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Freyming-Merlebach : diagnostic adapté aux TPE/PME industrie, sous-traitants, logistique transfrontalière, artisans BTP, commerces et services. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Freyming-Merlebach : formats adaptés à l'atelier industriel, entrepôt logistique, chantier, bureau, commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Freyming-Merlebach : formats adaptés à l'atelier industriel, entrepôt logistique, chantier, bureau, commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Freyming-Merlebach : formats adaptés à l'atelier industriel, entrepôt logistique, chantier, bureau, commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Freyming-Merlebach : formats adaptés à l'atelier industriel, entrepôt logistique, chantier, bureau, commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Freyming-Merlebach : contrôle qualité production, traçabilité supply chain transfrontalière, automatisation devis BTP, agents conversationnels B2B multilingues, gestion fournisseurs Sarre.",

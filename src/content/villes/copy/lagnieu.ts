@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LAGNIEU_COPY: VilleCopy = {
   pitchFr:
-    "Lagnieu (01), commune du Bugey dans l'Ain, est positionnée dans la vallée du Rhône entre Ambérieu-en-Bugey et Belley. Tissu PME industrielles, agriculture vallée, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités du Bugey.",
+    "Lagnieu (01), commune du Bugey dans l'Ain, est positionnée dans la vallée du Rhône entre Ambérieu-en-Bugey et Belley. Tissu PME industrielles, agriculture vallée, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations du Bugey.",
   pitchEn:
-    "Lagnieu (01), commune du Bugey dans l'Ain, est positionnée dans la vallée du Rhône entre Ambérieu-en-Bugey et Belley. Tissu PME industrielles, agriculture vallée, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités du Bugey.",
+    "Lagnieu (01), commune du Bugey dans l'Ain, est positionnée dans la vallée du Rhône entre Ambérieu-en-Bugey et Belley. Tissu PME industrielles, agriculture vallée, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations du Bugey.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lagnieu (01). Nous accompagnons tous types d'activités : PME industrielles Bugey, agriculteurs vallée du Rhône, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LAGNIEU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lagnieu : diagnostic adapté aux PME industrielles Bugey, agriculteurs, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Lagnieu : diagnostic adapté aux PME industrielles Bugey, agriculteurs, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Lagnieu : diagnostic adapté aux PME industrielles Bugey, agriculteurs, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Lagnieu : diagnostic adapté aux PME industrielles Bugey, agriculteurs, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lagnieu : formats adaptés à l'atelier, exploitation agricole, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const LAGNIEU_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (1h). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (1h). Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

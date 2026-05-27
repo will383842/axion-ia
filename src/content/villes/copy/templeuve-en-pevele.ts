@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const TEMPLEUVE_EN_PEVELE_COPY: VilleCopy = {
   pitchFr:
-    "Templeuve-en-Pévèle (59), commune française du département du Nord (région Hauts-de-France) située au cœur du pays de Pévèle entre Lille et Douai, conjugue caractère rural, terroir agricole et tissu économique diversifié. Tissu TPE artisanat BTP et services, PME agroalimentaire et industrie, exploitations agricoles, commerces de proximité, services aux entreprises de la métropole lilloise. Axion-IA y intervient pour tous types d'activités.",
+    "Templeuve-en-Pévèle (59), commune française du département du Nord (région Hauts-de-France) située au cœur du pays de Pévèle entre Lille et Douai, conjugue caractère rural, terroir agricole et tissu économique diversifié. Tissu TPE artisanat BTP et services, PME agroalimentaire et industrie, exploitations agricoles, commerces de proximité, services aux entreprises de la métropole lilloise. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Templeuve-en-Pévèle (59), commune française du département du Nord (région Hauts-de-France) située au cœur du pays de Pévèle entre Lille et Douai, conjugue caractère rural, terroir agricole et tissu économique diversifié. Tissu TPE artisanat BTP et services, PME agroalimentaire et industrie, exploitations agricoles, commerces de proximité, services aux entreprises de la métropole lilloise. Axion-IA y intervient pour tous types d'activités.",
+    "Templeuve-en-Pévèle (59), commune française du département du Nord (région Hauts-de-France) située au cœur du pays de Pévèle entre Lille et Douai, conjugue caractère rural, terroir agricole et tissu économique diversifié. Tissu TPE artisanat BTP et services, PME agroalimentaire et industrie, exploitations agricoles, commerces de proximité, services aux entreprises de la métropole lilloise. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Templeuve-en-Pévèle (59). Nous accompagnons tous types d'activités : TPE artisans BTP et services du pays de Pévèle, PME agroalimentaire et industrie, exploitations agricoles, commerçants et services aux entreprises de la métropole lilloise et de l'arrondissement de Lille.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const TEMPLEUVE_EN_PEVELE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Templeuve-en-Pévèle : diagnostic adapté aux TPE artisans BTP et services du pays de Pévèle, PME agroalimentaire et industrie, exploitations agricoles, commerçants. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Templeuve-en-Pévèle : diagnostic adapté aux TPE artisans BTP et services du pays de Pévèle, PME agroalimentaire et industrie, exploitations agricoles, commerçants. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Templeuve-en-Pévèle : diagnostic adapté aux TPE artisans BTP et services du pays de Pévèle, PME agroalimentaire et industrie, exploitations agricoles, commerçants. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Templeuve-en-Pévèle : diagnostic adapté aux TPE artisans BTP et services du pays de Pévèle, PME agroalimentaire et industrie, exploitations agricoles, commerçants. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Templeuve-en-Pévèle : formats adaptés à l'atelier artisan, l'exploitation agricole, le commerce, la PME. Vos équipes repartent autonomes sur les outils IA usage quotidien.",
@@ -64,7 +64,7 @@ export const TEMPLEUVE_EN_PEVELE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lille ou Douai ?",
-      a: "Nos consultants viennent de Lille (20 min A23), Douai (20 min) ou Orchies (10 min). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lille (20 min A23), Douai (20 min) ou Orchies (10 min). Pour les multi-jours, hébergement local possible. Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

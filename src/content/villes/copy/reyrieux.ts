@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const REYRIEUX_COPY: VilleCopy = {
   pitchFr:
-    "Reyrieux (01), commune du val de Saône dans l'Ain, est positionnée aux portes de la Dombes. Tissu péri-urbain : PME tertiaires, TPE artisans BTP, commerces, professions libérales, agriculture Dombes. Axion-IA y intervient pour tous types d'activités du val de Saône Ain.",
+    "Reyrieux (01), commune du val de Saône dans l'Ain, est positionnée aux portes de la Dombes. Tissu péri-urbain : PME tertiaires, TPE artisans BTP, commerces, professions libérales, agriculture Dombes. Axion-IA accompagne entreprises et indépendants de tous secteurs du val de Saône Ain.",
   pitchEn:
-    "Reyrieux (01), commune du val de Saône dans l'Ain, est positionnée aux portes de la Dombes. Tissu péri-urbain : PME tertiaires, TPE artisans BTP, commerces, professions libérales, agriculture Dombes. Axion-IA y intervient pour tous types d'activités du val de Saône Ain.",
+    "Reyrieux (01), commune du val de Saône dans l'Ain, est positionnée aux portes de la Dombes. Tissu péri-urbain : PME tertiaires, TPE artisans BTP, commerces, professions libérales, agriculture Dombes. Axion-IA accompagne entreprises et indépendants de tous secteurs du val de Saône Ain.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Reyrieux (01). Nous accompagnons tous types d'activités : PME tertiaires val de Saône, agriculteurs Dombes, TPE artisans BTP, commerçants, professions libérales et services aux entreprises.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const REYRIEUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Reyrieux : diagnostic adapté aux PME tertiaires, agriculteurs Dombes, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Reyrieux : diagnostic adapté aux PME tertiaires, agriculteurs Dombes, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Reyrieux : diagnostic adapté aux PME tertiaires, agriculteurs Dombes, professions libérales, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Reyrieux : diagnostic adapté aux PME tertiaires, agriculteurs Dombes, professions libérales, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Reyrieux : formats adaptés au bureau, exploitation, cabinet, commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Reyrieux : formats adaptés au bureau, exploitation, cabinet, commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Reyrieux : formats adaptés au bureau, exploitation, cabinet, commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Reyrieux : formats adaptés au bureau, exploitation, cabinet, commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Reyrieux : agents conversationnels B2B/patient, classification photos Dombes, automatisation workflow, CRM augmentés.",
@@ -64,7 +64,7 @@ export const REYRIEUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (30 min). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (30 min). Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

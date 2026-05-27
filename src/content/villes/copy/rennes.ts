@@ -60,6 +60,8 @@ export const RENNES_COPY: VilleCopy = {
   directAnswerEn:
     "Axion-IA is a senior AI architects consultancy that intervenes in Rennes (35) on site — Atalante Beaulieu technopole, ZAC ViaSilva, historic city centre, La Janais zone. We support micro-businesses, SMEs, mid-caps and large enterprises in the Rennes basin (digital, agri-food, industry, banking) along with French Tech Rennes Saint-Malo scale-ups on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
+  seoHook: "numérique, agroalimentaire & cyber",
+
   topSectorsNaf: [
     "Numérique & Édition logicielle",
     "Cybersécurité & Télécoms",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MALZEVILLE_COPY: VilleCopy = {
   pitchFr:
-    "Malzéville (54), commune résidentielle du nord de l'agglomération nancéienne en Meurthe-et-Moselle, est adossée au plateau de Haye et offre un cadre périurbain prisé. Tissu TPE/PME services, commerce de proximité, artisans BTP, professions libérales, restauration. Axion-IA y intervient pour tous types d'activités.",
+    "Malzéville (54), commune résidentielle du nord de l'agglomération nancéienne en Meurthe-et-Moselle, est adossée au plateau de Haye et offre un cadre périurbain prisé. Tissu TPE/PME services, commerce de proximité, artisans BTP, professions libérales, restauration. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Malzéville (54), commune résidentielle du nord de l'agglomération nancéienne en Meurthe-et-Moselle, est adossée au plateau de Haye et offre un cadre périurbain prisé. Tissu TPE/PME services, commerce de proximité, artisans BTP, professions libérales, restauration. Axion-IA y intervient pour tous types d'activités.",
+    "Malzéville (54), commune résidentielle du nord de l'agglomération nancéienne en Meurthe-et-Moselle, est adossée au plateau de Haye et offre un cadre périurbain prisé. Tissu TPE/PME services, commerce de proximité, artisans BTP, professions libérales, restauration. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Malzéville (54). Nous accompagnons tous types d'activités : TPE/PME de services, commerçants, artisans BTP, professions libérales et restaurateurs du nord de l'agglomération nancéienne.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const MALZEVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Malzéville : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et professions libérales du nord nancéien. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Malzéville : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et professions libérales du nord nancéien. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Malzéville : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et professions libérales du nord nancéien. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Malzéville : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et professions libérales du nord nancéien. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Malzéville : formats adaptés au bureau tertiaire, au commerce de proximité ou au cabinet libéral. Vos équipes repartent autonomes sur les outils IA métier.",

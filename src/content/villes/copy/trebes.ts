@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const TREBES_COPY: VilleCopy = {
   pitchFr:
-    "Trèbes (11), commune de l'agglomération carcassonnaise en Aude, traversée par le canal du Midi (patrimoine UNESCO) et l'Aude. Vignoble Minervois, tissu TPE artisans, PME viticoles et agroalimentaires, commerces de proximité, services. Axion-IA y intervient pour tous types d'activités.",
+    "Trèbes (11), commune de l'agglomération carcassonnaise en Aude, traversée par le canal du Midi (patrimoine UNESCO) et l'Aude. Vignoble Minervois, tissu TPE artisans, PME viticoles et agroalimentaires, commerces de proximité, services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Trèbes (11), commune de l'agglomération carcassonnaise en Aude, traversée par le canal du Midi (patrimoine UNESCO) et l'Aude. Vignoble Minervois, tissu TPE artisans, PME viticoles et agroalimentaires, commerces de proximité, services. Axion-IA y intervient pour tous types d'activités.",
+    "Trèbes (11), commune de l'agglomération carcassonnaise en Aude, traversée par le canal du Midi (patrimoine UNESCO) et l'Aude. Vignoble Minervois, tissu TPE artisans, PME viticoles et agroalimentaires, commerces de proximité, services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trèbes (11). Nous accompagnons TPE artisans, PME viticoles Minervois, professionnels du canal du Midi, commerçants, restaurateurs et services de l'agglomération carcassonnaise. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const TREBES_COPY: VilleCopy = {
       en: "Audit IA à Trèbes : diagnostic adapté aux TPE artisans, PME viticoles Minervois, professionnels du tourisme fluvial et commerçants de l'agglo carcassonnaise. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Trèbes : formats adaptés au domaine viticole, à la base nautique canal du Midi, au commerce ou à l'atelier artisan. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Trèbes : formats adaptés au domaine viticole, à la base nautique canal du Midi, au commerce ou à l'atelier artisan. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Trèbes : formats adaptés au domaine viticole, à la base nautique canal du Midi, au commerce ou à l'atelier artisan. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Trèbes : formats adaptés au domaine viticole, à la base nautique canal du Midi, au commerce ou à l'atelier artisan. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Trèbes : automatisation traçabilité viticole, agents conversationnels tourisme fluvial, gestion réservations canal du Midi, classification qualité agroalimentaire.",

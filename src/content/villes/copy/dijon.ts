@@ -52,6 +52,8 @@ export const DIJON_COPY: VilleCopy = {
   directAnswerEn:
     "Axion-IA is a senior AI architects consultancy that intervenes in Dijon (21) on site across the Dijon metropolitan area and the Burgundy basin (Chenôve, Talant, Quetigny, Saint-Apollinaire). We support Côte-d'Or micro-businesses, SMEs, mid-caps and large enterprises on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. Priority sectors: agri-food, pharma-healthcare, viticulture, consulting, training. No tech lock-in, your teams stay in control.",
 
+  seoHook: "vignoble, agroalimentaire & santé",
+
   topSectorsNaf: [
     "Agroalimentaire & Foodtech",
     "Santé & Pharmacie (URGO, pharma Côte-d'Or)",

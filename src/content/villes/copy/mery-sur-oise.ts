@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MERY_SUR_OISE_COPY: VilleCopy = {
   pitchFr:
-    "Méry-sur-Oise (95), commune résidentielle des bords de l'Oise dans le Val-d'Oise, bénéficie de la proximité de Pontoise et de l'agglomération de Cergy-Pontoise. Tissu de TPE artisanales, PME de services, commerces de proximité, professions libérales et prestataires tertiaires. Axion-IA y intervient pour tous types d'activités.",
+    "Méry-sur-Oise (95), commune résidentielle des bords de l'Oise dans le Val-d'Oise, bénéficie de la proximité de Pontoise et de l'agglomération de Cergy-Pontoise. Tissu de TPE artisanales, PME de services, commerces de proximité, professions libérales et prestataires tertiaires. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Méry-sur-Oise (95), commune résidentielle des bords de l'Oise dans le Val-d'Oise, bénéficie de la proximité de Pontoise et de l'agglomération de Cergy-Pontoise. Tissu de TPE artisanales, PME de services, commerces de proximité, professions libérales et prestataires tertiaires. Axion-IA y intervient pour tous types d'activités.",
+    "Méry-sur-Oise (95), commune résidentielle des bords de l'Oise dans le Val-d'Oise, bénéficie de la proximité de Pontoise et de l'agglomération de Cergy-Pontoise. Tissu de TPE artisanales, PME de services, commerces de proximité, professions libérales et prestataires tertiaires. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Méry-sur-Oise (95). Nous accompagnons TPE et PME : artisans, commerçants de proximité, PME de services, professions libérales et prestataires de l'axe Pontoise-Auvers-sur-Oise. Audit Flash dès 490 € HT.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FLERS_COPY: VilleCopy = {
   pitchFr:
-    "Flers (61), sous-préfecture de l'Orne en Normandie, est une ville industrielle historiquement liée au textile (drap, toile), aujourd'hui reconvertie vers la mécanique, l'agroalimentaire et les services. Tissu TPE artisans, PME industrielles reconverties, commerces centre-ville. Axion-IA y intervient pour tous types d'activités du bocage ornais.",
+    "Flers (61), sous-préfecture de l'Orne en Normandie, est une ville industrielle historiquement liée au textile (drap, toile), aujourd'hui reconvertie vers la mécanique, l'agroalimentaire et les services. Tissu TPE artisans, PME industrielles reconverties, commerces centre-ville. Axion-IA opère pour toutes les structures économiques de la commune du bocage ornais.",
   pitchEn:
-    "Flers (61), sous-préfecture de l'Orne en Normandie, est une ville industrielle historiquement liée au textile (drap, toile), aujourd'hui reconvertie vers la mécanique, l'agroalimentaire et les services. Tissu TPE artisans, PME industrielles reconverties, commerces centre-ville. Axion-IA y intervient pour tous types d'activités du bocage ornais.",
+    "Flers (61), sous-préfecture de l'Orne en Normandie, est une ville industrielle historiquement liée au textile (drap, toile), aujourd'hui reconvertie vers la mécanique, l'agroalimentaire et les services. Tissu TPE artisans, PME industrielles reconverties, commerces centre-ville. Axion-IA opère pour toutes les structures économiques de la commune du bocage ornais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Flers (61). Nous accompagnons tous types d'activités : TPE artisans BTP et commerces, PME industrielles reconverties (mécanique, agroalimentaire), professions libérales, services aux entreprises du bocage ornais. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const FLERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Flers : diagnostic adapté aux TPE artisans, PME industrielles reconverties (mécanique, agroalimentaire), commerces de centre-ville. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Flers : diagnostic adapté aux TPE artisans, PME industrielles reconverties (mécanique, agroalimentaire), commerces de centre-ville. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Flers : diagnostic adapté aux TPE artisans, PME industrielles reconverties (mécanique, agroalimentaire), commerces de centre-ville. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Flers : diagnostic adapté aux TPE artisans, PME industrielles reconverties (mécanique, agroalimentaire), commerces de centre-ville. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Flers : formats adaptés à l'atelier mécanique, bureau PME, commerce. Vos équipes repartent autonomes sur outils IA.",

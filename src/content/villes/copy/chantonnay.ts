@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHANTONNAY_COPY: VilleCopy = {
   pitchFr:
-    "Chantonnay (85), bourg important du bocage vendéen, compte plus de 8 500 habitants. Carrefour commercial entre La Roche-sur-Yon et Fontenay-le-Comte, tissu de TPE artisanales, PME industrielles et agroalimentaires, commerces, exploitations agricoles et services. Axion-IA y intervient pour tous types d'activités.",
+    "Chantonnay (85), bourg important du bocage vendéen, compte plus de 8 500 habitants. Carrefour commercial entre La Roche-sur-Yon et Fontenay-le-Comte, tissu de TPE artisanales, PME industrielles et agroalimentaires, commerces, exploitations agricoles et services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Chantonnay (85), bourg important du bocage vendéen, compte plus de 8 500 habitants. Carrefour commercial entre La Roche-sur-Yon et Fontenay-le-Comte, tissu de TPE artisanales, PME industrielles et agroalimentaires, commerces, exploitations agricoles et services. Axion-IA y intervient pour tous types d'activités.",
+    "Chantonnay (85), bourg important du bocage vendéen, compte plus de 8 500 habitants. Carrefour commercial entre La Roche-sur-Yon et Fontenay-le-Comte, tissu de TPE artisanales, PME industrielles et agroalimentaires, commerces, exploitations agricoles et services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chantonnay (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles et agroalimentaires du bocage, exploitations agricoles, professions libérales et services.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const CHANTONNAY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chantonnay : diagnostic adapté aux TPE artisans, PME industrielles et agroalimentaires, exploitations agricoles et commerces du bocage vendéen. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Chantonnay : diagnostic adapté aux TPE artisans, PME industrielles et agroalimentaires, exploitations agricoles et commerces du bocage vendéen. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Chantonnay : diagnostic adapté aux TPE artisans, PME industrielles et agroalimentaires, exploitations agricoles et commerces du bocage vendéen. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Chantonnay : diagnostic adapté aux TPE artisans, PME industrielles et agroalimentaires, exploitations agricoles et commerces du bocage vendéen. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Chantonnay : formats adaptés aux PME industrielles, exploitations agricoles, artisans BTP et commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Chantonnay : formats adaptés aux PME industrielles, exploitations agricoles, artisans BTP et commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Chantonnay : formats adaptés aux PME industrielles, exploitations agricoles, artisans BTP et commerces. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Chantonnay : formats adaptés aux PME industrielles, exploitations agricoles, artisans BTP et commerces. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Chantonnay : gestion élevage prédictive, automatisation PME agroalimentaires, optimisation chaîne industrielle, outils artisans BTP. Adapté TPE/PME bocage vendéen.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_MICHEL_CHEF_CHEF_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Michel-Chef-Chef (44), station balnéaire de la Côte de Jade en Loire-Atlantique, connue pour sa plage de Tharon et ses campings. Tissu TPE artisans et commerçants, PME tourisme balnéaire, hébergements, restauration, professions libérales. Axion-IA y intervient pour tous types d'activités de la Côte de Jade.",
+    "Saint-Michel-Chef-Chef (44), station balnéaire de la Côte de Jade en Loire-Atlantique, connue pour sa plage de Tharon et ses campings. Tissu TPE artisans et commerçants, PME tourisme balnéaire, hébergements, restauration, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de la Côte de Jade.",
   pitchEn:
-    "Saint-Michel-Chef-Chef (44), station balnéaire de la Côte de Jade en Loire-Atlantique, connue pour sa plage de Tharon et ses campings. Tissu TPE artisans et commerçants, PME tourisme balnéaire, hébergements, restauration, professions libérales. Axion-IA y intervient pour tous types d'activités de la Côte de Jade.",
+    "Saint-Michel-Chef-Chef (44), station balnéaire de la Côte de Jade en Loire-Atlantique, connue pour sa plage de Tharon et ses campings. Tissu TPE artisans et commerçants, PME tourisme balnéaire, hébergements, restauration, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de la Côte de Jade.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Michel-Chef-Chef (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tourisme balnéaire, campings et hébergements, restauration, professions libérales et entreprises de la Côte de Jade.",
   directAnswerEn:

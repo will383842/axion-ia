@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PONT_L_ABBE_COPY: VilleCopy = {
   pitchFr:
-    "Pont-l'Abbé (29), sous-préfecture du Finistère et capitale historique du Pays Bigouden, est un pôle administratif et commercial réputé pour sa tradition de dentelle. TPE artisanales, commerçants, PME agroalimentaires, services publics et tourisme culturel. Axion-IA y intervient pour tous types d'activités du Pays Bigouden.",
+    "Pont-l'Abbé (29), sous-préfecture du Finistère et capitale historique du Pays Bigouden, est un pôle administratif et commercial réputé pour sa tradition de dentelle. TPE artisanales, commerçants, PME agroalimentaires, services publics et tourisme culturel. Axion-IA couvre l'ensemble des activités professionnelles présentes du Pays Bigouden.",
   pitchEn:
-    "Pont-l'Abbé (29), sous-préfecture du Finistère et capitale historique du Pays Bigouden, est un pôle administratif et commercial réputé pour sa tradition de dentelle. TPE artisanales, commerçants, PME agroalimentaires, services publics et tourisme culturel. Axion-IA y intervient pour tous types d'activités du Pays Bigouden.",
+    "Pont-l'Abbé (29), sous-préfecture du Finistère et capitale historique du Pays Bigouden, est un pôle administratif et commercial réputé pour sa tradition de dentelle. TPE artisanales, commerçants, PME agroalimentaires, services publics et tourisme culturel. Axion-IA couvre l'ensemble des activités professionnelles présentes du Pays Bigouden.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pont-l'Abbé (29). Nous accompagnons tous types d'activités : TPE artisanales et commerçants du centre-ville bigouden, PME agroalimentaires, acteurs du tourisme culturel, professions libérales, indépendants et services publics de la sous-préfecture.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const PONT_L_ABBE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pont-l'Abbé : diagnostic adapté aux commerçants et artisans du Pays Bigouden, PME agroalimentaires, acteurs du tourisme et professions libérales. ROI chiffré, audit Flash 490 € HT accessible à toute structure.",
-      en: "Audit IA à Pont-l'Abbé : diagnostic adapté aux commerçants et artisans du Pays Bigouden, PME agroalimentaires, acteurs du tourisme et professions libérales. ROI chiffré, audit Flash 490 € HT accessible à toute structure.",
+      fr: "Audit IA à Pont-l'Abbé : diagnostic adapté aux commerçants et artisans du Pays Bigouden, PME agroalimentaires, acteurs du tourisme et professions libérales. Audit Flash 490 € HT, ROI documenté en chiffres accessible à toute structure.",
+      en: "Audit IA à Pont-l'Abbé : diagnostic adapté aux commerçants et artisans du Pays Bigouden, PME agroalimentaires, acteurs du tourisme et professions libérales. Audit Flash 490 € HT, ROI documenté en chiffres accessible à toute structure.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pont-l'Abbé : formats adaptés au commerce de centre-ville, à l'atelier artisanal, à l'établissement touristique ou au bureau PME. Vos équipes repartent autonomes sur les outils IA métier.",

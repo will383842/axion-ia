@@ -33,8 +33,8 @@ export const FEYTIAT_COPY: VilleCopy = {
       en: "Audit IA à Feytiat : diagnostic adapté aux TPE artisans, PME tertiaires et technologiques, commerçants et professions libérales de l'agglo limougeaude sud. ROI chiffré, audit Flash 490 € HT accessible.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Feytiat : formats adaptés au bureau tech, cabinet libéral, commerce ou atelier artisan. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Feytiat : formats adaptés au bureau tech, cabinet libéral, commerce ou atelier artisan. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Feytiat : formats adaptés au bureau tech, cabinet libéral, commerce ou atelier artisan. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Feytiat : formats adaptés au bureau tech, cabinet libéral, commerce ou atelier artisan. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Feytiat : automatisation process R&D, CRM augmenté, agents conversationnels, gestion documentaire, prédiction maintenance. Tous secteurs agglo Limoges sud et Ester Technopole.",

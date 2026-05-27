@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const HENNEBONT_COPY: VilleCopy = {
   pitchFr:
-    "Hennebont (56), cité médiévale des bords du Blavet (15 910 hab), conjugue patrimoine (basilique, remparts, haras national) et tissu économique diversifié de l'agglomération de Lorient. TPE et PME industrie, commerces du centre historique, artisans, services à la personne, tourisme patrimonial. Axion-IA y intervient pour tous types d'activités.",
+    "Hennebont (56), cité médiévale des bords du Blavet (15 910 hab), conjugue patrimoine (basilique, remparts, haras national) et tissu économique diversifié de l'agglomération de Lorient. TPE et PME industrie, commerces du centre historique, artisans, services à la personne, tourisme patrimonial. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Hennebont (56), cité médiévale des bords du Blavet (15 910 hab), conjugue patrimoine (basilique, remparts, haras national) et tissu économique diversifié de l'agglomération de Lorient. TPE et PME industrie, commerces du centre historique, artisans, services à la personne, tourisme patrimonial. Axion-IA y intervient pour tous types d'activités.",
+    "Hennebont (56), cité médiévale des bords du Blavet (15 910 hab), conjugue patrimoine (basilique, remparts, haras national) et tissu économique diversifié de l'agglomération de Lorient. TPE et PME industrie, commerces du centre historique, artisans, services à la personne, tourisme patrimonial. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hennebont (56). Nous accompagnons TPE et PME : industries des bords du Blavet, commerces du centre médiéval, artisans, services à la personne, acteurs du tourisme patrimonial et du haras national. Audit Flash dès 490 € HT.",
   directAnswerEn:

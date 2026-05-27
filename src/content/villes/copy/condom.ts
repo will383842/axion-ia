@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CONDOM_COPY: VilleCopy = {
   pitchFr:
-    "Condom (32), sous-préfecture du Gers de 6 473 habitants, capitale de l'Armagnac sur les bords de la Baïse. Son économie repose sur un tissu de TPE viticoles et artisanales, PME agroalimentaires, négoce de spiritueux, tourisme fluvial et patrimonial, et commerces de centre-bourg. Axion-IA y intervient pour tous types d'activités.",
+    "Condom (32), sous-préfecture du Gers de 6 473 habitants, capitale de l'Armagnac sur les bords de la Baïse. Son économie repose sur un tissu de TPE viticoles et artisanales, PME agroalimentaires, négoce de spiritueux, tourisme fluvial et patrimonial, et commerces de centre-bourg. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Condom (32), sous-préfecture du Gers de 6 473 habitants, capitale de l'Armagnac sur les bords de la Baïse. Son économie repose sur un tissu de TPE viticoles et artisanales, PME agroalimentaires, négoce de spiritueux, tourisme fluvial et patrimonial, et commerces de centre-bourg. Axion-IA y intervient pour tous types d'activités.",
+    "Condom (32), sous-préfecture du Gers de 6 473 habitants, capitale de l'Armagnac sur les bords de la Baïse. Son économie repose sur un tissu de TPE viticoles et artisanales, PME agroalimentaires, négoce de spiritueux, tourisme fluvial et patrimonial, et commerces de centre-bourg. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Condom (32). Nous accompagnons TPE et PME de la capitale de l'Armagnac : domaines viticoles, négoce spiritueux, entreprises agroalimentaires, commerces et professionnels du tourisme fluvial. Audit Flash dès 490 € HT.",
   directAnswerEn:

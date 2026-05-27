@@ -3,9 +3,9 @@ import type { VilleCopy } from "./types";
 
 export const SOLLIES_PONT_COPY: VilleCopy = {
   pitchFr:
-    "Solliès-Pont (83, Var), capitale de la figue AOP au cœur de la vallée du Gapeau, accueille TPE agricoles, PME agroalimentaires, coopératives, commerces de proximité et artisans. Axion-IA y intervient pour tous types d'activités de la vallée du Gapeau.",
+    "Solliès-Pont (83, Var), capitale de la figue AOP au cœur de la vallée du Gapeau, accueille TPE agricoles, PME agroalimentaires, coopératives, commerces de proximité et artisans. Axion-IA opère pour toutes les structures économiques de la commune de la vallée du Gapeau.",
   pitchEn:
-    "Solliès-Pont (83, Var), capitale de la figue AOP au cœur de la vallée du Gapeau, accueille TPE agricoles, PME agroalimentaires, coopératives, commerces de proximité et artisans. Axion-IA y intervient pour tous types d'activités de la vallée du Gapeau.",
+    "Solliès-Pont (83, Var), capitale de la figue AOP au cœur de la vallée du Gapeau, accueille TPE agricoles, PME agroalimentaires, coopératives, commerces de proximité et artisans. Axion-IA opère pour toutes les structures économiques de la commune de la vallée du Gapeau.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Solliès-Pont (83). Nous accompagnons TPE agricoles, PME agroalimentaires, coopératives et commerces de la vallée du Gapeau. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHEVIGNY_SAINT_SAUVEUR_COPY: VilleCopy = {
   pitchFr:
-    "Chevigny-Saint-Sauveur (21), pôle dynamique à l'est de Dijon, concentre plusieurs zones d'activités majeures de la Métropole : Cap Nord, Valmy, et de nombreuses PME industrielles et tertiaires. Axion-IA y intervient pour tous types d'activités du bassin est-dijonnais.",
+    "Chevigny-Saint-Sauveur (21), pôle dynamique à l'est de Dijon, concentre plusieurs zones d'activités majeures de la Métropole : Cap Nord, Valmy, et de nombreuses PME industrielles et tertiaires. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin est-dijonnais.",
   pitchEn:
-    "Chevigny-Saint-Sauveur (21), pôle dynamique à l'est de Dijon, concentre plusieurs zones d'activités majeures de la Métropole : Cap Nord, Valmy, et de nombreuses PME industrielles et tertiaires. Axion-IA y intervient pour tous types d'activités du bassin est-dijonnais.",
+    "Chevigny-Saint-Sauveur (21), pôle dynamique à l'est de Dijon, concentre plusieurs zones d'activités majeures de la Métropole : Cap Nord, Valmy, et de nombreuses PME industrielles et tertiaires. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin est-dijonnais.",
   seoHook: "zones d'activités, logistique & industrie",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chevigny-Saint-Sauveur (21). Nous accompagnons TPE, PME et ETI des zones d'activités est-dijonnaises : logistique, industrie, négoce, services aux entreprises, commerce. Audit Flash dès 490 € HT, démarrage sous 5 jours.",

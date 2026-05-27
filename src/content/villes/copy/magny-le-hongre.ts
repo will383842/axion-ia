@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MAGNY_LE_HONGRE_COPY: VilleCopy = {
   pitchFr:
-    "Magny-le-Hongre (77), commune du Val d'Europe en Seine-et-Marne, aux portes de Disneyland Paris. Tissu TPE et PME tourisme, hôtellerie, restauration, commerces Val d'Europe, prestataires événementiels et services. Axion-IA y intervient pour tous types d'activités.",
+    "Magny-le-Hongre (77), commune du Val d'Europe en Seine-et-Marne, aux portes de Disneyland Paris. Tissu TPE et PME tourisme, hôtellerie, restauration, commerces Val d'Europe, prestataires événementiels et services. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Magny-le-Hongre (77), commune du Val d'Europe en Seine-et-Marne, aux portes de Disneyland Paris. Tissu TPE et PME tourisme, hôtellerie, restauration, commerces Val d'Europe, prestataires événementiels et services. Axion-IA y intervient pour tous types d'activités.",
+    "Magny-le-Hongre (77), commune du Val d'Europe en Seine-et-Marne, aux portes de Disneyland Paris. Tissu TPE et PME tourisme, hôtellerie, restauration, commerces Val d'Europe, prestataires événementiels et services. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Magny-le-Hongre (77). Nous accompagnons TPE et PME : hôtels et résidences touristiques, restauration, commerces du Val d'Europe, prestataires événementiels et entreprises de services à proximité de Disneyland Paris. Audit Flash dès 490 € HT.",
   directAnswerEn:

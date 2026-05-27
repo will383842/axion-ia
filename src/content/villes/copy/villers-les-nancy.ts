@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VILLERS_LES_NANCY_COPY: VilleCopy = {
   pitchFr:
-    "Villers-lès-Nancy (54), commune résidentielle de l'agglomération nancéienne en Meurthe-et-Moselle, accueille le campus de la faculté des sciences de l'Université de Lorraine et le parc de Brabois. Tissu TPE/PME services, recherche, santé de proximité, commerces, artisans. Axion-IA y intervient pour tous types d'activités.",
+    "Villers-lès-Nancy (54), commune résidentielle de l'agglomération nancéienne en Meurthe-et-Moselle, accueille le campus de la faculté des sciences de l'Université de Lorraine et le parc de Brabois. Tissu TPE/PME services, recherche, santé de proximité, commerces, artisans. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Villers-lès-Nancy (54), commune résidentielle de l'agglomération nancéienne en Meurthe-et-Moselle, accueille le campus de la faculté des sciences de l'Université de Lorraine et le parc de Brabois. Tissu TPE/PME services, recherche, santé de proximité, commerces, artisans. Axion-IA y intervient pour tous types d'activités.",
+    "Villers-lès-Nancy (54), commune résidentielle de l'agglomération nancéienne en Meurthe-et-Moselle, accueille le campus de la faculté des sciences de l'Université de Lorraine et le parc de Brabois. Tissu TPE/PME services, recherche, santé de proximité, commerces, artisans. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villers-lès-Nancy (54). Nous accompagnons tous types d'activités : TPE/PME du campus Brabois, chercheurs et labos universitaires, professions de santé, commerces de proximité et artisans villarois.",
   directAnswerEn:
@@ -30,12 +30,12 @@ export const VILLERS_LES_NANCY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villers-lès-Nancy : diagnostic adapté aux TPE/PME campus Brabois, labos recherche, professions de santé, commerces et artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Villers-lès-Nancy : diagnostic adapté aux TPE/PME campus Brabois, labos recherche, professions de santé, commerces et artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Villers-lès-Nancy : diagnostic adapté aux TPE/PME campus Brabois, labos recherche, professions de santé, commerces et artisans. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Villers-lès-Nancy : diagnostic adapté aux TPE/PME campus Brabois, labos recherche, professions de santé, commerces et artisans. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Villers-lès-Nancy : formats adaptés au bureau, cabinet, labo ou commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Villers-lès-Nancy : formats adaptés au bureau, cabinet, labo ou commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Villers-lès-Nancy : formats adaptés au bureau, cabinet, labo ou commerce. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Villers-lès-Nancy : formats adaptés au bureau, cabinet, labo ou commerce. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Villers-lès-Nancy : automatisation documentaire recherche, gestion cabinet santé, agents conversationnels B2B, workflow PME tertiaires campus Brabois.",

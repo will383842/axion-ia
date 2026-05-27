@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ESVRES_COPY: VilleCopy = {
   pitchFr:
-    "Esvres (37), commune résidentielle de la vallée de l'Indre au sud-est de Tours, bénéficie d'un cadre de vie entre campagne tourangelle et agglomération. Tissu TPE artisans BTP, commerçants de proximité, PME tertiaires, professions libérales, exploitations agricoles et entreprises de services. Axion-IA y intervient pour tous types d'activités.",
+    "Esvres (37), commune résidentielle de la vallée de l'Indre au sud-est de Tours, bénéficie d'un cadre de vie entre campagne tourangelle et agglomération. Tissu TPE artisans BTP, commerçants de proximité, PME tertiaires, professions libérales, exploitations agricoles et entreprises de services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Esvres (37), commune résidentielle de la vallée de l'Indre au sud-est de Tours, bénéficie d'un cadre de vie entre campagne tourangelle et agglomération. Tissu TPE artisans BTP, commerçants de proximité, PME tertiaires, professions libérales, exploitations agricoles et entreprises de services. Axion-IA y intervient pour tous types d'activités.",
+    "Esvres (37), commune résidentielle de la vallée de l'Indre au sud-est de Tours, bénéficie d'un cadre de vie entre campagne tourangelle et agglomération. Tissu TPE artisans BTP, commerçants de proximité, PME tertiaires, professions libérales, exploitations agricoles et entreprises de services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Esvres (37). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, PME tertiaires, professions libérales, exploitants agricoles, prestataires de services et entreprises de la vallée de l'Indre sud-tourangelle.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const ESVRES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Esvres : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires, professions libérales et exploitants agricoles de la vallée de l'Indre sud-tourangelle. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Esvres : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires, professions libérales et exploitants agricoles de la vallée de l'Indre sud-tourangelle. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Esvres : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires, professions libérales et exploitants agricoles de la vallée de l'Indre sud-tourangelle. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Esvres : diagnostic adapté aux TPE artisans, commerçants, PME tertiaires, professions libérales et exploitants agricoles de la vallée de l'Indre sud-tourangelle. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Esvres : formats adaptés à l'atelier artisan, au commerce, à l'exploitation agricole ou au cabinet professionnel. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Esvres : formats adaptés à l'atelier artisan, au commerce, à l'exploitation agricole ou au cabinet professionnel. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Esvres : formats adaptés à l'atelier artisan, au commerce, à l'exploitation agricole ou au cabinet professionnel. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Esvres : formats adaptés à l'atelier artisan, au commerce, à l'exploitation agricole ou au cabinet professionnel. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Esvres : automatisation devis et facturation, agents conversationnels prise de RDV, classification documents, gestion planning, suivi parcellaire agricole. Adapté aux TPE/PME vallée de l'Indre.",

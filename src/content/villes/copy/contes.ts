@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CONTES_COPY: VilleCopy = {
   pitchFr:
-    "Contes (06), village provençal de la vallée du Paillon dans le moyen-pays niçois, est un bourg résidentiel et commercial dynamique entre mer et montagne. Tissu TPE/PME artisanat BTP, commerces de proximité, professions libérales, services et agriculture (oléiculture). Axion-IA y intervient pour tous types d'activités.",
+    "Contes (06), village provençal de la vallée du Paillon dans le moyen-pays niçois, est un bourg résidentiel et commercial dynamique entre mer et montagne. Tissu TPE/PME artisanat BTP, commerces de proximité, professions libérales, services et agriculture (oléiculture). Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Contes (06), village provençal de la vallée du Paillon dans le moyen-pays niçois, est un bourg résidentiel et commercial dynamique entre mer et montagne. Tissu TPE/PME artisanat BTP, commerces de proximité, professions libérales, services et agriculture (oléiculture). Axion-IA y intervient pour tous types d'activités.",
+    "Contes (06), village provençal de la vallée du Paillon dans le moyen-pays niçois, est un bourg résidentiel et commercial dynamique entre mer et montagne. Tissu TPE/PME artisanat BTP, commerces de proximité, professions libérales, services et agriculture (oléiculture). Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Contes (06). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, oléiculteurs, PME services et entreprises de la vallée du Paillon.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const CONTES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Contes : diagnostic adapté aux TPE artisans BTP, commerçants, oléiculteurs et professions libérales de la vallée du Paillon. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
-      en: "Audit IA à Contes : diagnostic adapté aux TPE artisans BTP, commerçants, oléiculteurs et professions libérales de la vallée du Paillon. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
+      fr: "Audit IA à Contes : diagnostic adapté aux TPE artisans BTP, commerçants, oléiculteurs et professions libérales de la vallée du Paillon. Audit Flash 490 € HT avec ROI quantifié accessible aux petites structures.",
+      en: "Audit IA à Contes : diagnostic adapté aux TPE artisans BTP, commerçants, oléiculteurs et professions libérales de la vallée du Paillon. Audit Flash 490 € HT avec ROI quantifié accessible aux petites structures.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Contes : formats adaptés à l'atelier artisan, commerce de village ou cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Contes : formats adaptés à l'atelier artisan, commerce de village ou cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Contes : formats adaptés à l'atelier artisan, commerce de village ou cabinet libéral. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Contes : formats adaptés à l'atelier artisan, commerce de village ou cabinet libéral. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Contes : automatisation devis BTP, gestion commandes agricoles, agents conversationnels client, CRM augmenté, classification documents. Adapté aux TPE/PME du moyen-pays niçois.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FECAMP_COPY: VilleCopy = {
   pitchFr:
-    "Fécamp (76), commune littorale de Seine-Maritime, est un port de pêche historique connu pour la liqueur Bénédictine et ses falaises de la Côte d'Albâtre. Tissu TPE artisans, PME agroalimentaires et maritimes, commerces, tourisme côtier, professions libérales. Axion-IA y intervient pour tous types d'activités du littoral cauchois.",
+    "Fécamp (76), commune littorale de Seine-Maritime, est un port de pêche historique connu pour la liqueur Bénédictine et ses falaises de la Côte d'Albâtre. Tissu TPE artisans, PME agroalimentaires et maritimes, commerces, tourisme côtier, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations du littoral cauchois.",
   pitchEn:
-    "Fécamp (76), commune littorale de Seine-Maritime, est un port de pêche historique connu pour la liqueur Bénédictine et ses falaises de la Côte d'Albâtre. Tissu TPE artisans, PME agroalimentaires et maritimes, commerces, tourisme côtier, professions libérales. Axion-IA y intervient pour tous types d'activités du littoral cauchois.",
+    "Fécamp (76), commune littorale de Seine-Maritime, est un port de pêche historique connu pour la liqueur Bénédictine et ses falaises de la Côte d'Albâtre. Tissu TPE artisans, PME agroalimentaires et maritimes, commerces, tourisme côtier, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations du littoral cauchois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fécamp (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agroalimentaires et maritimes, acteurs tourisme littoral (Côte d'Albâtre), professions libérales, services du Pays de Caux. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const FECAMP_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fécamp : diagnostic adapté aux TPE artisans, PME agroalimentaires/maritimes, acteurs tourisme littoral Côte d'Albâtre et professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Fécamp : diagnostic adapté aux TPE artisans, PME agroalimentaires/maritimes, acteurs tourisme littoral Côte d'Albâtre et professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Fécamp : diagnostic adapté aux TPE artisans, PME agroalimentaires/maritimes, acteurs tourisme littoral Côte d'Albâtre et professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Fécamp : diagnostic adapté aux TPE artisans, PME agroalimentaires/maritimes, acteurs tourisme littoral Côte d'Albâtre et professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Fécamp : formats adaptés au bureau, atelier, criée, commerce, hébergement touristique. Vos équipes repartent autonomes sur outils IA.",

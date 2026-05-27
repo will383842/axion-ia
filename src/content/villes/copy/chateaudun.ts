@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHATEAUDUN_COPY: VilleCopy = {
   pitchFr:
-    "Châteaudun (28), sous-préfecture d'Eure-et-Loir, est une cité historique dominée par son château médiéval (donjon XIIe siècle). Tissu TPE/PME industrielles, services défense (base aérienne 279), commerces centre-ville, agroalimentaire Beauce. Axion-IA y intervient pour tous types d'activités.",
+    "Châteaudun (28), sous-préfecture d'Eure-et-Loir, est une cité historique dominée par son château médiéval (donjon XIIe siècle). Tissu TPE/PME industrielles, services défense (base aérienne 279), commerces centre-ville, agroalimentaire Beauce. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Châteaudun (28), sous-préfecture d'Eure-et-Loir, est une cité historique dominée par son château médiéval (donjon XIIe siècle). Tissu TPE/PME industrielles, services défense (base aérienne 279), commerces centre-ville, agroalimentaire Beauce. Axion-IA y intervient pour tous types d'activités.",
+    "Châteaudun (28), sous-préfecture d'Eure-et-Loir, est une cité historique dominée par son château médiéval (donjon XIIe siècle). Tissu TPE/PME industrielles, services défense (base aérienne 279), commerces centre-ville, agroalimentaire Beauce. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châteaudun (28). Nous accompagnons tous types d'activités : TPE/PME industrielles, sous-traitants défense, commerçants centre-ville, acteurs agroalimentaires Beauce, services aux entreprises du Dunois.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const CHATEAUDUN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Châteaudun : diagnostic adapté aux TPE/PME industrielles, sous-traitants défense, acteurs agroalimentaires Beauce, commerçants. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Châteaudun : diagnostic adapté aux TPE/PME industrielles, sous-traitants défense, acteurs agroalimentaires Beauce, commerçants. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Châteaudun : diagnostic adapté aux TPE/PME industrielles, sous-traitants défense, acteurs agroalimentaires Beauce, commerçants. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Châteaudun : diagnostic adapté aux TPE/PME industrielles, sous-traitants défense, acteurs agroalimentaires Beauce, commerçants. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Châteaudun : formats adaptés à l'atelier industriel, bureau tertiaire, exploitation agricole, commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Châteaudun : formats adaptés à l'atelier industriel, bureau tertiaire, exploitation agricole, commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Châteaudun : formats adaptés à l'atelier industriel, bureau tertiaire, exploitation agricole, commerce. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Châteaudun : formats adaptés à l'atelier industriel, bureau tertiaire, exploitation agricole, commerce. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Châteaudun : automatisation processus industriels, maintenance prédictive, traçabilité agroalimentaire Beauce, CRM augmenté, classification documents PME dunoise.",

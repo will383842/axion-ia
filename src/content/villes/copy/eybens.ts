@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const EYBENS_COPY: VilleCopy = {
   pitchFr:
-    "Eybens (38), banlieue sud-est de Grenoble, est intégrée à Grenoble-Alpes Métropole. Son territoire est traversé par l'historique route Napoléon (retour de l'Empereur depuis l'Île d'Elbe en 1815). Tissu PME tertiaires, TPE artisans, professions libérales et commerces. Axion-IA y intervient pour tous types d'activités du bassin grenoblois.",
+    "Eybens (38), banlieue sud-est de Grenoble, est intégrée à Grenoble-Alpes Métropole. Son territoire est traversé par l'historique route Napoléon (retour de l'Empereur depuis l'Île d'Elbe en 1815). Tissu PME tertiaires, TPE artisans, professions libérales et commerces. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin grenoblois.",
   pitchEn:
-    "Eybens (38), banlieue sud-est de Grenoble, est intégrée à Grenoble-Alpes Métropole. Son territoire est traversé par l'historique route Napoléon (retour de l'Empereur depuis l'Île d'Elbe en 1815). Tissu PME tertiaires, TPE artisans, professions libérales et commerces. Axion-IA y intervient pour tous types d'activités du bassin grenoblois.",
+    "Eybens (38), banlieue sud-est de Grenoble, est intégrée à Grenoble-Alpes Métropole. Son territoire est traversé par l'historique route Napoléon (retour de l'Empereur depuis l'Île d'Elbe en 1815). Tissu PME tertiaires, TPE artisans, professions libérales et commerces. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin grenoblois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Eybens (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales (médecins, avocats, expert-comptables), PME tertiaires eybinois, indépendants et entreprises de Grenoble-Alpes Métropole en zone sud-est.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const EYBENS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Eybens : diagnostic adapté aux TPE artisans, professions libérales et PME tertiaires du bassin grenoblois sud-est. ROI chiffré, audit Flash 490 € HT accessible aux indépendants et cabinets.",
-      en: "Audit IA à Eybens : diagnostic adapté aux TPE artisans, professions libérales et PME tertiaires du bassin grenoblois sud-est. ROI chiffré, audit Flash 490 € HT accessible aux indépendants et cabinets.",
+      fr: "Audit IA à Eybens : diagnostic adapté aux TPE artisans, professions libérales et PME tertiaires du bassin grenoblois sud-est. Audit Flash 490 € HT, ROI documenté en chiffres accessible aux indépendants et cabinets.",
+      en: "Audit IA à Eybens : diagnostic adapté aux TPE artisans, professions libérales et PME tertiaires du bassin grenoblois sud-est. Audit Flash 490 € HT, ROI documenté en chiffres accessible aux indépendants et cabinets.",
     },
     interventions: {
       fr: "Interventions IA sur site à Eybens : formats adaptés au cabinet professionnel, commerce, atelier artisan ou bureau PME. Vos équipes (assistants, secrétaires médicales, commerciaux) repartent autonomes sur outils IA.",

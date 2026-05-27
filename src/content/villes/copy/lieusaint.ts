@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LIEUSAINT_COPY: VilleCopy = {
   pitchFr:
-    "Lieusaint (77), commune de Seine-et-Marne au coeur de la ville nouvelle de Sénart, accueille le Carré Sénart, l'un des plus grands centres commerciaux d'Île-de-France. Zones d'activités commerciales et logistiques, TPE artisans et prestataires, PME distribution et services, commerçants et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Lieusaint (77), commune de Seine-et-Marne au coeur de la ville nouvelle de Sénart, accueille le Carré Sénart, l'un des plus grands centres commerciaux d'Île-de-France. Zones d'activités commerciales et logistiques, TPE artisans et prestataires, PME distribution et services, commerçants et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Lieusaint (77), commune de Seine-et-Marne au coeur de la ville nouvelle de Sénart, accueille le Carré Sénart, l'un des plus grands centres commerciaux d'Île-de-France. Zones d'activités commerciales et logistiques, TPE artisans et prestataires, PME distribution et services, commerçants et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Lieusaint (77), commune de Seine-et-Marne au coeur de la ville nouvelle de Sénart, accueille le Carré Sénart, l'un des plus grands centres commerciaux d'Île-de-France. Zones d'activités commerciales et logistiques, TPE artisans et prestataires, PME distribution et services, commerçants et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lieusaint (77). Nous accompagnons tous types d'activités : TPE artisans et prestataires, PME distribution et logistique du pôle Carré Sénart, commerçants, professions libérales et entreprises de services du sud Seine-et-Marne. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -64,7 +64,7 @@ export const LIEUSAINT_COPY: VilleCopy = {
     },
     {
       q: "Comment accédez-vous à Lieusaint depuis Paris ?",
-      a: "Nos consultants rejoignent Lieusaint en 40 min depuis Paris Gare de Lyon (RER D, station Lieusaint-Moissy). Accès direct A5 et Francilienne N104. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants rejoignent Lieusaint en 40 min depuis Paris Gare de Lyon (RER D, station Lieusaint-Moissy). Accès direct A5 et Francilienne N104. Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

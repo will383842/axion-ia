@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const TARASCON_COPY: VilleCopy = {
   pitchFr:
-    "Tarascon (13), cité historique au bord du Rhône dans les Bouches-du-Rhône, allie patrimoine (château du roi René) et économie locale dynamique autour du textile, de l'agroalimentaire et du commerce. TPE artisans, PME textile et négoce, commerçants du centre ancien. Axion-IA y intervient pour tous types d'activités du bassin tarasconnais.",
+    "Tarascon (13), cité historique au bord du Rhône dans les Bouches-du-Rhône, allie patrimoine (château du roi René) et économie locale dynamique autour du textile, de l'agroalimentaire et du commerce. TPE artisans, PME textile et négoce, commerçants du centre ancien. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin tarasconnais.",
   pitchEn:
-    "Tarascon (13), cité historique au bord du Rhône dans les Bouches-du-Rhône, allie patrimoine (château du roi René) et économie locale dynamique autour du textile, de l'agroalimentaire et du commerce. TPE artisans, PME textile et négoce, commerçants du centre ancien. Axion-IA y intervient pour tous types d'activités du bassin tarasconnais.",
+    "Tarascon (13), cité historique au bord du Rhône dans les Bouches-du-Rhône, allie patrimoine (château du roi René) et économie locale dynamique autour du textile, de l'agroalimentaire et du commerce. TPE artisans, PME textile et négoce, commerçants du centre ancien. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin tarasconnais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tarascon (13). Nous accompagnons TPE artisans et commerçants du centre ancien, PME textile et agroalimentaire, entreprises de négoce rhodanien et professions libérales. Audit Flash dès 490 € HT, sans engagement.",
   directAnswerEn:
@@ -34,8 +34,8 @@ export const TARASCON_COPY: VilleCopy = {
       en: "Audit IA à Tarascon : diagnostic adapté aux TPE artisans, PME textile et agroalimentaire du bassin rhodanien. ROI chiffré, Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Tarascon : formats adaptés à l'atelier textile, au commerce de centre-ville et à l'entreprise agroalimentaire. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Tarascon : formats adaptés à l'atelier textile, au commerce de centre-ville et à l'entreprise agroalimentaire. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Tarascon : formats adaptés à l'atelier textile, au commerce de centre-ville et à l'entreprise agroalimentaire. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Tarascon : formats adaptés à l'atelier textile, au commerce de centre-ville et à l'entreprise agroalimentaire. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Tarascon : automatisation gestion stocks textile, agents conversationnels négoce, extraction données agroalimentaires, optimisation logistique rhodanienne.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const RIEDISHEIM_COPY: VilleCopy = {
   pitchFr:
-    "Riedisheim (68), ville résidentielle de 12 200 habitants à l'est immédiat de Mulhouse en Haut-Rhin, est un bassin de vie tourné vers les services, l'artisanat et le commerce de proximité. Tissu TPE/PME services, professions libérales, commerces, artisanat. Axion-IA y intervient pour tous types d'activités.",
+    "Riedisheim (68), ville résidentielle de 12 200 habitants à l'est immédiat de Mulhouse en Haut-Rhin, est un bassin de vie tourné vers les services, l'artisanat et le commerce de proximité. Tissu TPE/PME services, professions libérales, commerces, artisanat. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Riedisheim (68), ville résidentielle de 12 200 habitants à l'est immédiat de Mulhouse en Haut-Rhin, est un bassin de vie tourné vers les services, l'artisanat et le commerce de proximité. Tissu TPE/PME services, professions libérales, commerces, artisanat. Axion-IA y intervient pour tous types d'activités.",
+    "Riedisheim (68), ville résidentielle de 12 200 habitants à l'est immédiat de Mulhouse en Haut-Rhin, est un bassin de vie tourné vers les services, l'artisanat et le commerce de proximité. Tissu TPE/PME services, professions libérales, commerces, artisanat. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Riedisheim (68). Nous accompagnons tous types d'activités : TPE/PME services et professions libérales, artisans, commerces de proximité et acteurs du bassin de vie mulhousien est.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const RIEDISHEIM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Riedisheim : diagnostic adapté aux TPE/PME services, professions libérales, santé, artisans, commerces. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Riedisheim : diagnostic adapté aux TPE/PME services, professions libérales, santé, artisans, commerces. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Riedisheim : diagnostic adapté aux TPE/PME services, professions libérales, santé, artisans, commerces. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Riedisheim : diagnostic adapté aux TPE/PME services, professions libérales, santé, artisans, commerces. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Riedisheim : formats adaptés au cabinet, au commerce, à l'atelier d'artisan, au bureau. Vos équipes repartent autonomes.",

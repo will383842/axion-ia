@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const WAMBRECHIES_COPY: VilleCopy = {
   pitchFr:
-    "Wambrechies (59), commune résidentielle au nord de Lille sur les bords de la Deûle, connue pour sa distillerie de genièvre et son cadre de vie prisé. Tissu TPE/PME services aux entreprises, conseil, professions libérales, commerces, artisanat et activités liées à la Métropole Européenne de Lille. Axion-IA y intervient pour tous types d'activités.",
+    "Wambrechies (59), commune résidentielle au nord de Lille sur les bords de la Deûle, connue pour sa distillerie de genièvre et son cadre de vie prisé. Tissu TPE/PME services aux entreprises, conseil, professions libérales, commerces, artisanat et activités liées à la Métropole Européenne de Lille. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Wambrechies (59), commune résidentielle au nord de Lille sur les bords de la Deûle, connue pour sa distillerie de genièvre et son cadre de vie prisé. Tissu TPE/PME services aux entreprises, conseil, professions libérales, commerces, artisanat et activités liées à la Métropole Européenne de Lille. Axion-IA y intervient pour tous types d'activités.",
+    "Wambrechies (59), commune résidentielle au nord de Lille sur les bords de la Deûle, connue pour sa distillerie de genièvre et son cadre de vie prisé. Tissu TPE/PME services aux entreprises, conseil, professions libérales, commerces, artisanat et activités liées à la Métropole Européenne de Lille. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wambrechies (59). Nous accompagnons TPE et PME : cabinets conseil et professions libérales, prestataires B2B de la MEL, commerces, artisans, entreprises agroalimentaires et de services du nord lillois.",
   directAnswerEn:
@@ -30,12 +30,12 @@ export const WAMBRECHIES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Wambrechies : diagnostic adapté aux cabinets conseil, professions libérales, prestataires B2B, commerces et artisans du nord lillois. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Wambrechies : diagnostic adapté aux cabinets conseil, professions libérales, prestataires B2B, commerces et artisans du nord lillois. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Wambrechies : diagnostic adapté aux cabinets conseil, professions libérales, prestataires B2B, commerces et artisans du nord lillois. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Wambrechies : diagnostic adapté aux cabinets conseil, professions libérales, prestataires B2B, commerces et artisans du nord lillois. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Wambrechies : formats adaptés au cabinet conseil, à l'étude libérale, au commerce ou à l'atelier artisanal. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Wambrechies : formats adaptés au cabinet conseil, à l'étude libérale, au commerce ou à l'atelier artisanal. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Wambrechies : formats adaptés au cabinet conseil, à l'étude libérale, au commerce ou à l'atelier artisanal. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Wambrechies : formats adaptés au cabinet conseil, à l'étude libérale, au commerce ou à l'atelier artisanal. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Wambrechies : automatisation reporting conseil, copilotes IA professions libérales, CRM augmenté prestataires B2B, agents conversationnels clients, gestion documentaire intelligente.",

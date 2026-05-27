@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_GRAU_DU_ROI_COPY: VilleCopy = {
   pitchFr:
-    "Le Grau-du-Roi (30), station balnéaire du Gard entre Camargue et Méditerranée, port de pêche actif et plage de l'Espiguette. Tissu TPE/PME tourisme balnéaire, hôtellerie-restauration, pêche, commerces saisonniers et services aux entreprises. Axion-IA y intervient pour tous types d'activités du littoral gardois.",
+    "Le Grau-du-Roi (30), station balnéaire du Gard entre Camargue et Méditerranée, port de pêche actif et plage de l'Espiguette. Tissu TPE/PME tourisme balnéaire, hôtellerie-restauration, pêche, commerces saisonniers et services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune du littoral gardois.",
   pitchEn:
-    "Le Grau-du-Roi (30), station balnéaire du Gard entre Camargue et Méditerranée, port de pêche actif et plage de l'Espiguette. Tissu TPE/PME tourisme balnéaire, hôtellerie-restauration, pêche, commerces saisonniers et services aux entreprises. Axion-IA y intervient pour tous types d'activités du littoral gardois.",
+    "Le Grau-du-Roi (30), station balnéaire du Gard entre Camargue et Méditerranée, port de pêche actif et plage de l'Espiguette. Tissu TPE/PME tourisme balnéaire, hôtellerie-restauration, pêche, commerces saisonniers et services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune du littoral gardois.",
   directAnswerFr:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient au Grau-du-Roi (30). Nous accompagnons les TPE, PME et ETI locales : acteurs tourisme balnéaire, hôteliers-restaurateurs, pêcheurs, commerçants saisonniers et professions libérales du littoral gardois. Audit Flash à partir de 490 € HT.",
   directAnswerEn:

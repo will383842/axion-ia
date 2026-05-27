@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const DIGOIN_COPY: VilleCopy = {
   pitchFr:
-    "Digoin (71), commune de Saône-et-Loire à la confluence de la Loire et de l'Arroux. Pont-canal emblématique, tradition céramique et faïence. Tissu TPE artisanat, PME industrielles céramique, commerce centre-bourg, tourisme fluvial, agriculture. Axion-IA y intervient pour tous types d'activités.",
+    "Digoin (71), commune de Saône-et-Loire à la confluence de la Loire et de l'Arroux. Pont-canal emblématique, tradition céramique et faïence. Tissu TPE artisanat, PME industrielles céramique, commerce centre-bourg, tourisme fluvial, agriculture. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Digoin (71), commune de Saône-et-Loire à la confluence de la Loire et de l'Arroux. Pont-canal emblématique, tradition céramique et faïence. Tissu TPE artisanat, PME industrielles céramique, commerce centre-bourg, tourisme fluvial, agriculture. Axion-IA y intervient pour tous types d'activités.",
+    "Digoin (71), commune de Saône-et-Loire à la confluence de la Loire et de l'Arroux. Pont-canal emblématique, tradition céramique et faïence. Tissu TPE artisanat, PME industrielles céramique, commerce centre-bourg, tourisme fluvial, agriculture. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Digoin (71). Nous accompagnons TPE et PME : artisans céramistes et faïenciers, commerçants centre-bourg, acteurs tourisme fluvial (pont-canal, Loire), PME industrielles, agriculteurs. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -30,12 +30,12 @@ export const DIGOIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Digoin : diagnostic adapté aux artisans céramistes et faïenciers, TPE commerçants, acteurs tourisme fluvial (pont-canal, Loire), PME industrielles, agriculteurs. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Digoin : diagnostic adapté aux artisans céramistes et faïenciers, TPE commerçants, acteurs tourisme fluvial (pont-canal, Loire), PME industrielles, agriculteurs. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Digoin : diagnostic adapté aux artisans céramistes et faïenciers, TPE commerçants, acteurs tourisme fluvial (pont-canal, Loire), PME industrielles, agriculteurs. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Digoin : diagnostic adapté aux artisans céramistes et faïenciers, TPE commerçants, acteurs tourisme fluvial (pont-canal, Loire), PME industrielles, agriculteurs. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Digoin : formats adaptés atelier céramique, commerce centre-bourg, site touristique fluvial, exploitation agricole. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Digoin : formats adaptés atelier céramique, commerce centre-bourg, site touristique fluvial, exploitation agricole. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Digoin : formats adaptés atelier céramique, commerce centre-bourg, site touristique fluvial, exploitation agricole. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Digoin : formats adaptés atelier céramique, commerce centre-bourg, site touristique fluvial, exploitation agricole. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Digoin : gestion vente directe céramique artisanale, chatbot visiteurs pont-canal multilingue, CRM commerçants, traçabilité exploitation agricole Charolais.",

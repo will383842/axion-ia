@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ECULLY_COPY: VilleCopy = {
   pitchFr:
-    "Écully (69), commune en banlieue ouest immédiate de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position résidentielle prestigieuse, accueille de grandes écoles supérieures (notamment commerce) et des sièges sociaux. Tissu PME tertiaires haut de gamme, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Écully (69), commune en banlieue ouest immédiate de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position résidentielle prestigieuse, accueille de grandes écoles supérieures (notamment commerce) et des sièges sociaux. Tissu PME tertiaires haut de gamme, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Écully (69), commune en banlieue ouest immédiate de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position résidentielle prestigieuse, accueille de grandes écoles supérieures (notamment commerce) et des sièges sociaux. Tissu PME tertiaires haut de gamme, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Écully (69), commune en banlieue ouest immédiate de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position résidentielle prestigieuse, accueille de grandes écoles supérieures (notamment commerce) et des sièges sociaux. Tissu PME tertiaires haut de gamme, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Écully (69). Nous accompagnons tous types d'activités : PME tertiaires haut de gamme et sièges sociaux ouest lyonnais, écoles supérieures, TPE artisans BTP, commerçants, professions libérales et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const ECULLY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Écully : diagnostic adapté aux PME tertiaires haut de gamme, sièges sociaux, écoles supérieures, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Écully : diagnostic adapté aux PME tertiaires haut de gamme, sièges sociaux, écoles supérieures, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Écully : diagnostic adapté aux PME tertiaires haut de gamme, sièges sociaux, écoles supérieures, professions libérales, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Écully : diagnostic adapté aux PME tertiaires haut de gamme, sièges sociaux, écoles supérieures, professions libérales, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Écully : formats adaptés au siège social, cabinet professionnel, école supérieure, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Écully : formats adaptés au siège social, cabinet professionnel, école supérieure, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Écully : formats adaptés au siège social, cabinet professionnel, école supérieure, commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Écully : formats adaptés au siège social, cabinet professionnel, école supérieure, commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Écully : agents conversationnels B2B haut de gamme, automatisation workflow corporate, classification documents stratégiques, CRM augmentés. Métropole de Lyon ouest.",
@@ -64,7 +64,7 @@ export const ECULLY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (15 min). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (15 min). Pour les multi-jours, hébergement local possible. Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

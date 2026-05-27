@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_GERVAIS_LES_BAINS_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Gervais-les-Bains (74), station thermale et de ski au pied du Mont-Blanc en Haute-Savoie, conjugue tourisme quatre saisons et thermalisme. Tissu TPE hôtellerie-restauration, PME tourisme et bien-être, commerces saisonniers, professions libérales et prestataires montagne. Axion-IA y intervient pour tous types d'activités du Val Montjoie.",
+    "Saint-Gervais-les-Bains (74), station thermale et de ski au pied du Mont-Blanc en Haute-Savoie, conjugue tourisme quatre saisons et thermalisme. Tissu TPE hôtellerie-restauration, PME tourisme et bien-être, commerces saisonniers, professions libérales et prestataires montagne. Axion-IA y déploie ses missions auprès de toutes les organisations du Val Montjoie.",
   pitchEn:
-    "Saint-Gervais-les-Bains (74), station thermale et de ski au pied du Mont-Blanc en Haute-Savoie, conjugue tourisme quatre saisons et thermalisme. Tissu TPE hôtellerie-restauration, PME tourisme et bien-être, commerces saisonniers, professions libérales et prestataires montagne. Axion-IA y intervient pour tous types d'activités du Val Montjoie.",
+    "Saint-Gervais-les-Bains (74), station thermale et de ski au pied du Mont-Blanc en Haute-Savoie, conjugue tourisme quatre saisons et thermalisme. Tissu TPE hôtellerie-restauration, PME tourisme et bien-être, commerces saisonniers, professions libérales et prestataires montagne. Axion-IA y déploie ses missions auprès de toutes les organisations du Val Montjoie.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Gervais-les-Bains (74). Nous accompagnons tous types d'activités : TPE hôtellerie-restauration, PME tourisme et thermalisme, commerces saisonniers, indépendants, professions libérales et prestataires montagne du Val Montjoie.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const SAINT_GERVAIS_LES_BAINS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Gervais-les-Bains : diagnostic adapté aux TPE hôtellerie-restauration, PME tourisme et thermalisme, commerces saisonniers et professions libérales. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Saint-Gervais-les-Bains : diagnostic adapté aux TPE hôtellerie-restauration, PME tourisme et thermalisme, commerces saisonniers et professions libérales. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Saint-Gervais-les-Bains : diagnostic adapté aux TPE hôtellerie-restauration, PME tourisme et thermalisme, commerces saisonniers et professions libérales. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
+      en: "Audit IA à Saint-Gervais-les-Bains : diagnostic adapté aux TPE hôtellerie-restauration, PME tourisme et thermalisme, commerces saisonniers et professions libérales. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Gervais-les-Bains : formats adaptés à l'hôtel, restaurant, commerce saisonnier ou cabinet. Vos équipes repartent autonomes sur outils IA configurés métier tourisme et montagne.",
-      en: "Interventions IA sur site à Saint-Gervais-les-Bains : formats adaptés à l'hôtel, restaurant, commerce saisonnier ou cabinet. Vos équipes repartent autonomes sur outils IA configurés métier tourisme et montagne.",
+      fr: "Interventions IA sur site à Saint-Gervais-les-Bains : formats adaptés à l'hôtel, restaurant, commerce saisonnier ou cabinet. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure tourisme et montagne.",
+      en: "Interventions IA sur site à Saint-Gervais-les-Bains : formats adaptés à l'hôtel, restaurant, commerce saisonnier ou cabinet. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure tourisme et montagne.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Gervais-les-Bains : revenue management hôtelier, agents conversationnels multilingues touristes, automatisation réservations, optimisation planning saisonnier. Tissu tourisme Val Montjoie.",

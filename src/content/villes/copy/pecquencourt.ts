@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PECQUENCOURT_COPY: VilleCopy = {
   pitchFr:
-    "Pecquencourt (59), commune de 6 092 habitants dans le Nord (Hauts-de-France), au coeur du bassin minier Nord-Pas-de-Calais (UNESCO), limitrophe de Douai et Sin-le-Noble. Tissu TPE artisans BTP et rénovation, PME industrie et sous-traitance, commerces de proximité, services aux entreprises du bassin douaisien. Axion-IA y intervient pour tous types d'activités.",
+    "Pecquencourt (59), commune de 6 092 habitants dans le Nord (Hauts-de-France), au coeur du bassin minier Nord-Pas-de-Calais (UNESCO), limitrophe de Douai et Sin-le-Noble. Tissu TPE artisans BTP et rénovation, PME industrie et sous-traitance, commerces de proximité, services aux entreprises du bassin douaisien. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Pecquencourt (59), commune de 6 092 habitants dans le Nord (Hauts-de-France), au coeur du bassin minier Nord-Pas-de-Calais (UNESCO), limitrophe de Douai et Sin-le-Noble. Tissu TPE artisans BTP et rénovation, PME industrie et sous-traitance, commerces de proximité, services aux entreprises du bassin douaisien. Axion-IA y intervient pour tous types d'activités.",
+    "Pecquencourt (59), commune de 6 092 habitants dans le Nord (Hauts-de-France), au coeur du bassin minier Nord-Pas-de-Calais (UNESCO), limitrophe de Douai et Sin-le-Noble. Tissu TPE artisans BTP et rénovation, PME industrie et sous-traitance, commerces de proximité, services aux entreprises du bassin douaisien. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pecquencourt (59). Nous accompagnons TPE artisans BTP du bassin minier, PME industrie et sous-traitance, commerçants et services aux entreprises de l'agglomération de Douai. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const PECQUENCOURT_COPY: VilleCopy = {
       en: "Audit IA à Pecquencourt : diagnostic adapté aux TPE artisans BTP, PME industrie et sous-traitance, commerçants du bassin minier douaisien. Audit Flash 490 € HT, ROI chiffré sous 10 jours.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Pecquencourt : formations pratiques adaptées TPE/PME du bassin minier, ateliers outils IA métier industrie et BTP. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Pecquencourt : formations pratiques adaptées TPE/PME du bassin minier, ateliers outils IA métier industrie et BTP. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Pecquencourt : formations pratiques adaptées TPE/PME du bassin minier, ateliers outils IA métier industrie et BTP. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Pecquencourt : formations pratiques adaptées TPE/PME du bassin minier, ateliers outils IA métier industrie et BTP. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Pecquencourt : automatisation devis BTP, contrôle qualité industriel par vision, optimisation planification sous-traitance, agents conversationnels commerce de proximité.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_GENEST_LERPT_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Genest-Lerpt (42), commune en banlieue ouest immédiate de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités stéphanoises ouest.",
+    "Saint-Genest-Lerpt (42), commune en banlieue ouest immédiate de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes stéphanoises ouest.",
   pitchEn:
-    "Saint-Genest-Lerpt (42), commune en banlieue ouest immédiate de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités stéphanoises ouest.",
+    "Saint-Genest-Lerpt (42), commune en banlieue ouest immédiate de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes stéphanoises ouest.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Genest-Lerpt (42). Nous accompagnons tous types d'activités : PME tertiaires Saint-Étienne Métropole, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la banlieue ouest stéphanoise.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const SAINT_GENEST_LERPT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Genest-Lerpt : diagnostic adapté aux PME tertiaires Saint-Étienne Métropole, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Genest-Lerpt : diagnostic adapté aux PME tertiaires Saint-Étienne Métropole, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Genest-Lerpt : diagnostic adapté aux PME tertiaires Saint-Étienne Métropole, professions libérales, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Saint-Genest-Lerpt : diagnostic adapté aux PME tertiaires Saint-Étienne Métropole, professions libérales, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Genest-Lerpt : formats adaptés au bureau, cabinet, commerce, atelier. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Saint-Genest-Lerpt : formats adaptés au bureau, cabinet, commerce, atelier. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Saint-Genest-Lerpt : formats adaptés au bureau, cabinet, commerce, atelier. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Saint-Genest-Lerpt : formats adaptés au bureau, cabinet, commerce, atelier. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Genest-Lerpt : agents conversationnels patient/client, automatisation gestion RDV, classification dossiers, CRM augmentés. Saint-Étienne Métropole ouest.",
@@ -64,7 +64,7 @@ export const SAINT_GENEST_LERPT_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",
-      a: "Nos consultants viennent de Lyon (1h) ou Saint-Étienne (10 min). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (1h) ou Saint-Étienne (10 min). Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

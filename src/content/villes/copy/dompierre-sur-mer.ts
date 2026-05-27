@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const DOMPIERRE_SUR_MER_COPY: VilleCopy = {
   pitchFr:
-    "Dompierre-sur-Mer (17), commune résidentielle de l'agglomération de La Rochelle en Charente-Maritime, cadre de vie prisé aux portes de La Rochelle. Tissu de TPE artisans, PME tertiaires, commerces de proximité, services à la personne et professions libérales. Axion-IA y intervient pour tous types d'activités de l'agglomération rochelaise.",
+    "Dompierre-sur-Mer (17), commune résidentielle de l'agglomération de La Rochelle en Charente-Maritime, cadre de vie prisé aux portes de La Rochelle. Tissu de TPE artisans, PME tertiaires, commerces de proximité, services à la personne et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de l'agglomération rochelaise.",
   pitchEn:
-    "Dompierre-sur-Mer (17), commune résidentielle de l'agglomération de La Rochelle en Charente-Maritime, cadre de vie prisé aux portes de La Rochelle. Tissu de TPE artisans, PME tertiaires, commerces de proximité, services à la personne et professions libérales. Axion-IA y intervient pour tous types d'activités de l'agglomération rochelaise.",
+    "Dompierre-sur-Mer (17), commune résidentielle de l'agglomération de La Rochelle en Charente-Maritime, cadre de vie prisé aux portes de La Rochelle. Tissu de TPE artisans, PME tertiaires, commerces de proximité, services à la personne et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de l'agglomération rochelaise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Dompierre-sur-Mer (17). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, prestataires de services, commerçants et indépendants de cette commune résidentielle prisée de l'agglomération de La Rochelle.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const DOMPIERRE_SUR_MER_COPY: VilleCopy = {
       en: "Audit IA à Dompierre-sur-Mer : diagnostic adapté aux PME tertiaires, TPE artisans, professions libérales et commerces de l'agglomération de La Rochelle. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Dompierre-sur-Mer : formats adaptés au bureau, au cabinet, à l'atelier ou au commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Dompierre-sur-Mer : formats adaptés au bureau, au cabinet, à l'atelier ou au commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Dompierre-sur-Mer : formats adaptés au bureau, au cabinet, à l'atelier ou au commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Dompierre-sur-Mer : formats adaptés au bureau, au cabinet, à l'atelier ou au commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Dompierre-sur-Mer : automatisation gestion administrative, agents conversationnels prise de rendez-vous, classification documents, optimisation planification services et marketing IA.",

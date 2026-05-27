@@ -33,8 +33,8 @@ export const BEAUZELLE_COPY: VilleCopy = {
       en: "Audit IA à Beauzelle : diagnostic adapté aux TPE de services, PME tertiaires et professions libérales du nord-ouest Toulouse. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Beauzelle : formats adaptés au cabinet de conseil, au commerce, à la PME tertiaire. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Beauzelle : formats adaptés au cabinet de conseil, au commerce, à la PME tertiaire. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Beauzelle : formats adaptés au cabinet de conseil, au commerce, à la PME tertiaire. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Beauzelle : formats adaptés au cabinet de conseil, au commerce, à la PME tertiaire. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Beauzelle : automatisation gestion documentaire, agents conversationnels, classification courriers, reporting pour PME du nord-ouest Toulouse.",

@@ -29,12 +29,12 @@ export const AUXONNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Auxonne : diagnostic adapté aux agriculteurs plaine Saône, PME industrielles, TPE artisans, commerçants. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Auxonne : diagnostic adapté aux agriculteurs plaine Saône, PME industrielles, TPE artisans, commerçants. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Auxonne : diagnostic adapté aux agriculteurs plaine Saône, PME industrielles, TPE artisans, commerçants. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Auxonne : diagnostic adapté aux agriculteurs plaine Saône, PME industrielles, TPE artisans, commerçants. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Auxonne : formats adaptés à l'exploitation agricole, atelier industriel, commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Auxonne : formats adaptés à l'exploitation agricole, atelier industriel, commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Auxonne : formats adaptés à l'exploitation agricole, atelier industriel, commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Auxonne : formats adaptés à l'exploitation agricole, atelier industriel, commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Auxonne : optimisation rendements céréaliers, traçabilité production, automatisation gestion exploitation, contrôle qualité vision.",
@@ -64,7 +64,7 @@ export const AUXONNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Dijon ?",
-      a: "Dijon (30 min A39) ou Dole (20 min). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Dijon (30 min A39) ou Dole (20 min). Coûts de déplacement à part, tarification transparente.",
     },
   ],
 };

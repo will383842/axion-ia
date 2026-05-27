@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_REMY_DE_PROVENCE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Rémy-de-Provence (13), cité historique des Alpilles, terre de Van Gogh et Nostradamus, conjugue tourisme patrimonial international, art de vivre provençal et art contemporain. Tissu de TPE artisans d'art, hôtellerie-restauration, professions libérales, galeries, oléiculteurs, viticulteurs et PME tertiaires. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Rémy-de-Provence (13), cité historique des Alpilles, terre de Van Gogh et Nostradamus, conjugue tourisme patrimonial international, art de vivre provençal et art contemporain. Tissu de TPE artisans d'art, hôtellerie-restauration, professions libérales, galeries, oléiculteurs, viticulteurs et PME tertiaires. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Saint-Rémy-de-Provence (13), cité historique des Alpilles, terre de Van Gogh et Nostradamus, conjugue tourisme patrimonial international, art de vivre provençal et art contemporain. Tissu de TPE artisans d'art, hôtellerie-restauration, professions libérales, galeries, oléiculteurs, viticulteurs et PME tertiaires. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Rémy-de-Provence (13), cité historique des Alpilles, terre de Van Gogh et Nostradamus, conjugue tourisme patrimonial international, art de vivre provençal et art contemporain. Tissu de TPE artisans d'art, hôtellerie-restauration, professions libérales, galeries, oléiculteurs, viticulteurs et PME tertiaires. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Rémy-de-Provence (13). Nous accompagnons TPE artisans d'art, hôteliers, restaurateurs, professions libérales, oléiculteurs, viticulteurs et PME tertiaires des Alpilles. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const SAINT_REMY_DE_PROVENCE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Rémy-de-Provence : diagnostic adapté aux hôteliers, restaurateurs, galeristes, TPE artisans d'art, oléiculteurs et professions libérales des Alpilles. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Rémy-de-Provence : diagnostic adapté aux hôteliers, restaurateurs, galeristes, TPE artisans d'art, oléiculteurs et professions libérales des Alpilles. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Rémy-de-Provence : diagnostic adapté aux hôteliers, restaurateurs, galeristes, TPE artisans d'art, oléiculteurs et professions libérales des Alpilles. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Saint-Rémy-de-Provence : diagnostic adapté aux hôteliers, restaurateurs, galeristes, TPE artisans d'art, oléiculteurs et professions libérales des Alpilles. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Rémy-de-Provence : ateliers pour hôtels, restaurants, galeries, domaines oléicoles et viticoles, cabinets libéraux. Outils IA configurés métier réel.",
@@ -64,7 +64,7 @@ export const SAINT_REMY_DE_PROVENCE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Saint-Rémy-de-Provence ?",
-      a: "Saint-Rémy-de-Provence est à 25 min d'Avignon et d'Arles via D5/D99. Nos consultants se déplacent dans vos locaux. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Saint-Rémy-de-Provence est à 25 min d'Avignon et d'Arles via D5/D99. Nos consultants se déplacent dans vos locaux. Frais de mission en sus, grille tarifaire publique.",
     },
   ],
 };

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SORBIERS_COPY: VilleCopy = {
   pitchFr:
-    "Sorbiers (42), commune en banlieue nord-est de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Tissu péri-urbain résidentiel, PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités du nord-est stéphanois.",
+    "Sorbiers (42), commune en banlieue nord-est de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Tissu péri-urbain résidentiel, PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune du nord-est stéphanois.",
   pitchEn:
-    "Sorbiers (42), commune en banlieue nord-est de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Tissu péri-urbain résidentiel, PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités du nord-est stéphanois.",
+    "Sorbiers (42), commune en banlieue nord-est de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Tissu péri-urbain résidentiel, PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune du nord-est stéphanois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sorbiers (42). Nous accompagnons tous types d'activités : PME tertiaires Saint-Étienne Métropole, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la banlieue nord-est stéphanoise.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const SORBIERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sorbiers : diagnostic adapté aux PME tertiaires Saint-Étienne Métropole, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Sorbiers : diagnostic adapté aux PME tertiaires Saint-Étienne Métropole, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Sorbiers : diagnostic adapté aux PME tertiaires Saint-Étienne Métropole, professions libérales, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Sorbiers : diagnostic adapté aux PME tertiaires Saint-Étienne Métropole, professions libérales, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Sorbiers : formats adaptés au cabinet professionnel, commerce, atelier artisan. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Sorbiers : formats adaptés au cabinet professionnel, commerce, atelier artisan. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Sorbiers : formats adaptés au cabinet professionnel, commerce, atelier artisan. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Sorbiers : formats adaptés au cabinet professionnel, commerce, atelier artisan. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Sorbiers : agents conversationnels patient/client, automatisation gestion RDV, classification dossiers, CRM augmentés. Saint-Étienne Métropole nord-est.",
@@ -64,7 +64,7 @@ export const SORBIERS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",
-      a: "Nos consultants viennent de Lyon (50 min) ou Saint-Étienne (15 min). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (50 min) ou Saint-Étienne (15 min). Pour les multi-jours, hébergement local possible. Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

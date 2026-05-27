@@ -29,12 +29,12 @@ export const JOUY_EN_JOSAS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Jouy-en-Josas : diagnostic adapté aux TPE conseil, PME technologiques proches HEC, professions libérales et commerçants de la vallée de la Bièvre. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Jouy-en-Josas : diagnostic adapté aux TPE conseil, PME technologiques proches HEC, professions libérales et commerçants de la vallée de la Bièvre. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Jouy-en-Josas : diagnostic adapté aux TPE conseil, PME technologiques proches HEC, professions libérales et commerçants de la vallée de la Bièvre. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Jouy-en-Josas : diagnostic adapté aux TPE conseil, PME technologiques proches HEC, professions libérales et commerçants de la vallée de la Bièvre. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Jouy-en-Josas : formats adaptés aux cabinets conseil, startups, PME tech et professions libérales. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Jouy-en-Josas : formats adaptés aux cabinets conseil, startups, PME tech et professions libérales. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Jouy-en-Josas : formats adaptés aux cabinets conseil, startups, PME tech et professions libérales. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Jouy-en-Josas : formats adaptés aux cabinets conseil, startups, PME tech et professions libérales. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Jouy-en-Josas : agents conversationnels, automatisation processus conseil, CRM augmenté, classification documentaire, outils IA sur mesure pour TPE et PME de la vallée de la Bièvre.",

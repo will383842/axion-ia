@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LONGUE_JUMELLES_COPY: VilleCopy = {
   pitchFr:
-    "Longué-Jumelles (49), bourg-centre du Baugeois en Val de Loire, compte plus de 6 500 habitants dans un territoire agricole et commerçant. Axion-IA y intervient pour tous types d'activités : agriculture, artisanat, commerces de bourg, PME agroalimentaires et services.",
+    "Longué-Jumelles (49), bourg-centre du Baugeois en Val de Loire, compte plus de 6 500 habitants dans un territoire agricole et commerçant. Axion-IA opère pour toutes les structures économiques de la commune : agriculture, artisanat, commerces de bourg, PME agroalimentaires et services.",
   pitchEn:
-    "Longué-Jumelles (49), bourg-centre du Baugeois en Val de Loire, compte plus de 6 500 habitants dans un territoire agricole et commerçant. Axion-IA y intervient pour tous types d'activités : agriculture, artisanat, commerces de bourg, PME agroalimentaires et services.",
+    "Longué-Jumelles (49), bourg-centre du Baugeois en Val de Loire, compte plus de 6 500 habitants dans un territoire agricole et commerçant. Axion-IA opère pour toutes les structures économiques de la commune : agriculture, artisanat, commerces de bourg, PME agroalimentaires et services.",
   directAnswerFr:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Longué-Jumelles (49). Nous accompagnons les TPE, PME et exploitants agricoles du Baugeois dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict, tarifs publics.",
   directAnswerEn:

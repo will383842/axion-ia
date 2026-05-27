@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MAZAMET_COPY: VilleCopy = {
   pitchFr:
-    "Mazamet (81), ancienne capitale mondiale du délainage au pied de la Montagne Noire, plus de 10 000 habitants. Tissu TPE artisans, PME industrielles en reconversion textile, commerces, services et professions libérales. Axion-IA y intervient pour tous types d'activités du bassin mazamétain.",
+    "Mazamet (81), ancienne capitale mondiale du délainage au pied de la Montagne Noire, plus de 10 000 habitants. Tissu TPE artisans, PME industrielles en reconversion textile, commerces, services et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune du bassin mazamétain.",
   pitchEn:
-    "Mazamet (81), ancienne capitale mondiale du délainage au pied de la Montagne Noire, plus de 10 000 habitants. Tissu TPE artisans, PME industrielles en reconversion textile, commerces, services et professions libérales. Axion-IA y intervient pour tous types d'activités du bassin mazamétain.",
+    "Mazamet (81), ancienne capitale mondiale du délainage au pied de la Montagne Noire, plus de 10 000 habitants. Tissu TPE artisans, PME industrielles en reconversion textile, commerces, services et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune du bassin mazamétain.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mazamet (81). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants et professions libérales du bassin mazamétain. Audit Flash dès 490 € HT.",
   directAnswerEn:

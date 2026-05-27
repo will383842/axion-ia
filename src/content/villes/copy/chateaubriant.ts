@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHATEAUBRIANT_COPY: VilleCopy = {
   pitchFr:
-    "Châteaubriant (44), sous-préfecture de Loire-Atlantique aux marches de Bretagne, plus de 12 000 habitants. Château Renaissance, industrie agroalimentaire, commerces, artisanat et professions libérales. Tissu TPE artisans, PME agroalimentaires et industrielles. Axion-IA y intervient pour tous types d'activités du bassin castelbriantais.",
+    "Châteaubriant (44), sous-préfecture de Loire-Atlantique aux marches de Bretagne, plus de 12 000 habitants. Château Renaissance, industrie agroalimentaire, commerces, artisanat et professions libérales. Tissu TPE artisans, PME agroalimentaires et industrielles. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin castelbriantais.",
   pitchEn:
-    "Châteaubriant (44), sous-préfecture de Loire-Atlantique aux marches de Bretagne, plus de 12 000 habitants. Château Renaissance, industrie agroalimentaire, commerces, artisanat et professions libérales. Tissu TPE artisans, PME agroalimentaires et industrielles. Axion-IA y intervient pour tous types d'activités du bassin castelbriantais.",
+    "Châteaubriant (44), sous-préfecture de Loire-Atlantique aux marches de Bretagne, plus de 12 000 habitants. Château Renaissance, industrie agroalimentaire, commerces, artisanat et professions libérales. Tissu TPE artisans, PME agroalimentaires et industrielles. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin castelbriantais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châteaubriant (44), sous-préfecture de Loire-Atlantique. Nous accompagnons TPE artisans, PME agroalimentaires et industrielles, commerçants et professions libérales des marches de Bretagne. Audit Flash dès 490 € HT.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const OISSEL_SUR_SEINE_COPY: VilleCopy = {
   pitchFr:
-    "Oissel-sur-Seine (76), commune de l'agglomération rouennaise sud en Seine-Maritime, est située en bords de Seine, membre de la Métropole Rouen Normandie. Tissu TPE artisans, PME industrielles et logistiques, commerces de quartier, professions libérales. Axion-IA y intervient pour tous types d'activités de l'agglo rouennaise sud.",
+    "Oissel-sur-Seine (76), commune de l'agglomération rouennaise sud en Seine-Maritime, est située en bords de Seine, membre de la Métropole Rouen Normandie. Tissu TPE artisans, PME industrielles et logistiques, commerces de quartier, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglo rouennaise sud.",
   pitchEn:
-    "Oissel-sur-Seine (76), commune de l'agglomération rouennaise sud en Seine-Maritime, est située en bords de Seine, membre de la Métropole Rouen Normandie. Tissu TPE artisans, PME industrielles et logistiques, commerces de quartier, professions libérales. Axion-IA y intervient pour tous types d'activités de l'agglo rouennaise sud.",
+    "Oissel-sur-Seine (76), commune de l'agglomération rouennaise sud en Seine-Maritime, est située en bords de Seine, membre de la Métropole Rouen Normandie. Tissu TPE artisans, PME industrielles et logistiques, commerces de quartier, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglo rouennaise sud.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Oissel-sur-Seine (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles et logistiques bords de Seine, professions libérales, services aux entreprises de l'agglo rouennaise sud. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const OISSEL_SUR_SEINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Oissel-sur-Seine : diagnostic adapté aux TPE artisans, PME industrielles/logistiques bords de Seine, professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Oissel-sur-Seine : diagnostic adapté aux TPE artisans, PME industrielles/logistiques bords de Seine, professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Oissel-sur-Seine : diagnostic adapté aux TPE artisans, PME industrielles/logistiques bords de Seine, professions libérales. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Oissel-sur-Seine : diagnostic adapté aux TPE artisans, PME industrielles/logistiques bords de Seine, professions libérales. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Oissel-sur-Seine : formats adaptés à l'atelier, entrepôt, bureau PME, commerce. Vos équipes repartent autonomes sur outils IA.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BESSAN_COPY: VilleCopy = {
   pitchFr:
-    "Bessan (34), commune de l'agglomération d'Agde dans la basse vallée de l'Hérault. Vignoble, traditions taurines camarguaises, agriculture. Tissu TPE commerçants, PME viticoles et agricoles, artisans BTP, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Bessan (34), commune de l'agglomération d'Agde dans la basse vallée de l'Hérault. Vignoble, traditions taurines camarguaises, agriculture. Tissu TPE commerçants, PME viticoles et agricoles, artisans BTP, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Bessan (34), commune de l'agglomération d'Agde dans la basse vallée de l'Hérault. Vignoble, traditions taurines camarguaises, agriculture. Tissu TPE commerçants, PME viticoles et agricoles, artisans BTP, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Bessan (34), commune de l'agglomération d'Agde dans la basse vallée de l'Hérault. Vignoble, traditions taurines camarguaises, agriculture. Tissu TPE commerçants, PME viticoles et agricoles, artisans BTP, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bessan (34). Nous accompagnons TPE commerçants, PME viticoles et agricoles, artisans BTP, professions libérales et entreprises de l'agglomération Agde.",
   directAnswerEn:

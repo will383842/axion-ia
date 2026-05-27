@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ROSHEIM_COPY: VilleCopy = {
   pitchFr:
-    "Rosheim (67), commune de 5 457 habitants sur la Route des Vins d'Alsace, est un pôle viticole et patrimonial du Bas-Rhin. Centre médiéval préservé (Maison romane, église Saints-Pierre-et-Paul). Tissu viticulture AOC Alsace, TPE artisans-vignerons, PME oenotourisme, hôtellerie-restauration, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Rosheim (67), commune de 5 457 habitants sur la Route des Vins d'Alsace, est un pôle viticole et patrimonial du Bas-Rhin. Centre médiéval préservé (Maison romane, église Saints-Pierre-et-Paul). Tissu viticulture AOC Alsace, TPE artisans-vignerons, PME oenotourisme, hôtellerie-restauration, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Rosheim (67), commune de 5 457 habitants sur la Route des Vins d'Alsace, est un pôle viticole et patrimonial du Bas-Rhin. Centre médiéval préservé (Maison romane, église Saints-Pierre-et-Paul). Tissu viticulture AOC Alsace, TPE artisans-vignerons, PME oenotourisme, hôtellerie-restauration, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Rosheim (67), commune de 5 457 habitants sur la Route des Vins d'Alsace, est un pôle viticole et patrimonial du Bas-Rhin. Centre médiéval préservé (Maison romane, église Saints-Pierre-et-Paul). Tissu viticulture AOC Alsace, TPE artisans-vignerons, PME oenotourisme, hôtellerie-restauration, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rosheim (67). Nous accompagnons tous types d'activités : TPE viticulteurs AOC Alsace de la Route des Vins, artisans-vignerons, PME oenotourisme, hôteliers-restaurateurs, commerçants et services aux entreprises du piémont des Vosges alsacien.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const ROSHEIM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Rosheim : diagnostic adapté aux TPE viticulteurs AOC Alsace, artisans-vignerons, PME oenotourisme, hôteliers-restaurateurs et commerçants. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Rosheim : diagnostic adapté aux TPE viticulteurs AOC Alsace, artisans-vignerons, PME oenotourisme, hôteliers-restaurateurs et commerçants. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Rosheim : diagnostic adapté aux TPE viticulteurs AOC Alsace, artisans-vignerons, PME oenotourisme, hôteliers-restaurateurs et commerçants. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Rosheim : diagnostic adapté aux TPE viticulteurs AOC Alsace, artisans-vignerons, PME oenotourisme, hôteliers-restaurateurs et commerçants. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Rosheim : formats adaptés au domaine viticole, cave coopérative, hôtellerie-restauration, commerce local. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Rosheim : formats adaptés au domaine viticole, cave coopérative, hôtellerie-restauration, commerce local. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Rosheim : formats adaptés au domaine viticole, cave coopérative, hôtellerie-restauration, commerce local. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Rosheim : formats adaptés au domaine viticole, cave coopérative, hôtellerie-restauration, commerce local. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Rosheim : prédiction vendanges AOC Alsace, agents conversationnels oenotourisme multilingue (DE/EN/FR), traçabilité vinification, yield management hôtelier, automatisation réservations.",

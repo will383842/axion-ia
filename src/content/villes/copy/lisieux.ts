@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LISIEUX_COPY: VilleCopy = {
   pitchFr:
-    "Lisieux (14), sous-préfecture du Calvados en Normandie, deuxième ville du département. Pôle de pèlerinage (basilique Sainte-Thérèse), tissu de TPE artisans, PME industrielles, agroalimentaire normand (fromages, cidre), tourisme religieux et commerces. Axion-IA y intervient pour tous types d'activités du Pays d'Auge.",
+    "Lisieux (14), sous-préfecture du Calvados en Normandie, deuxième ville du département. Pôle de pèlerinage (basilique Sainte-Thérèse), tissu de TPE artisans, PME industrielles, agroalimentaire normand (fromages, cidre), tourisme religieux et commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes du Pays d'Auge.",
   pitchEn:
-    "Lisieux (14), sous-préfecture du Calvados en Normandie, deuxième ville du département. Pôle de pèlerinage (basilique Sainte-Thérèse), tissu de TPE artisans, PME industrielles, agroalimentaire normand (fromages, cidre), tourisme religieux et commerces. Axion-IA y intervient pour tous types d'activités du Pays d'Auge.",
+    "Lisieux (14), sous-préfecture du Calvados en Normandie, deuxième ville du département. Pôle de pèlerinage (basilique Sainte-Thérèse), tissu de TPE artisans, PME industrielles, agroalimentaire normand (fromages, cidre), tourisme religieux et commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes du Pays d'Auge.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lisieux (14). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles, producteurs agroalimentaires normands (fromages AOP, cidre), professionnels du tourisme et pèlerinage, commerçants et indépendants du Pays d'Auge.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const LISIEUX_COPY: VilleCopy = {
       en: "Audit IA à Lisieux : diagnostic adapté aux producteurs agroalimentaires normands (fromages AOP, cidreries), professionnels du tourisme/pèlerinage, PME industrielles et TPE artisans du Pays d'Auge. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Lisieux : formats adaptés à la fromagerie, la cidrerie, l'hôtel/hébergement touristique, l'atelier industriel ou le commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Lisieux : formats adaptés à la fromagerie, la cidrerie, l'hôtel/hébergement touristique, l'atelier industriel ou le commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Lisieux : formats adaptés à la fromagerie, la cidrerie, l'hôtel/hébergement touristique, l'atelier industriel ou le commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Lisieux : formats adaptés à la fromagerie, la cidrerie, l'hôtel/hébergement touristique, l'atelier industriel ou le commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Lisieux : traçabilité fromages AOP Pont-l'Évêque/Livarot, optimisation accueil pèlerins (agents conversationnels multilingues), classification photos produits normands, automatisation gestion réservations touristiques.",

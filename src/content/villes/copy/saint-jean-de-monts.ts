@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_JEAN_DE_MONTS_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Jean-de-Monts (85), grande station balnéaire de la côte vendéenne, rassemble près de 8 900 habitants à l'année. Plages immenses, forêt domaniale, haute densité touristique (campings, hôtels, résidences). Tissu de TPE et PME tourisme, commerce saisonnier, santé et services. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Jean-de-Monts (85), grande station balnéaire de la côte vendéenne, rassemble près de 8 900 habitants à l'année. Plages immenses, forêt domaniale, haute densité touristique (campings, hôtels, résidences). Tissu de TPE et PME tourisme, commerce saisonnier, santé et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Saint-Jean-de-Monts (85), grande station balnéaire de la côte vendéenne, rassemble près de 8 900 habitants à l'année. Plages immenses, forêt domaniale, haute densité touristique (campings, hôtels, résidences). Tissu de TPE et PME tourisme, commerce saisonnier, santé et services. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Jean-de-Monts (85), grande station balnéaire de la côte vendéenne, rassemble près de 8 900 habitants à l'année. Plages immenses, forêt domaniale, haute densité touristique (campings, hôtels, résidences). Tissu de TPE et PME tourisme, commerce saisonnier, santé et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean-de-Monts (85). Nous accompagnons tous types d'activités : TPE et PME touristiques, campings, hôteliers-restaurateurs, commerces saisonniers, thalasso et bien-être, services de proximité.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const SAINT_JEAN_DE_MONTS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Jean-de-Monts : diagnostic adapté aux TPE campings, PME hôtellerie-restauration, commerces saisonniers et centres thalasso littoral vendéen. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Jean-de-Monts : diagnostic adapté aux TPE campings, PME hôtellerie-restauration, commerces saisonniers et centres thalasso littoral vendéen. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Jean-de-Monts : diagnostic adapté aux TPE campings, PME hôtellerie-restauration, commerces saisonniers et centres thalasso littoral vendéen. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Saint-Jean-de-Monts : diagnostic adapté aux TPE campings, PME hôtellerie-restauration, commerces saisonniers et centres thalasso littoral vendéen. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Jean-de-Monts : formats adaptés aux campings, hôtels, restaurants, commerces saisonniers et centres bien-être. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Saint-Jean-de-Monts : formats adaptés aux campings, hôtels, restaurants, commerces saisonniers et centres bien-être. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Saint-Jean-de-Monts : formats adaptés aux campings, hôtels, restaurants, commerces saisonniers et centres bien-être. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Saint-Jean-de-Monts : formats adaptés aux campings, hôtels, restaurants, commerces saisonniers et centres bien-être. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Jean-de-Monts : yield management campings, agents réservation multilingues, prédiction affluence estivale, automatisation avis et marketing saisonnier. Adapté TPE/PME tourisme.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ALLINGES_COPY: VilleCopy = {
   pitchFr:
-    "Allinges (74), commune résidentielle du Chablais haut-savoyard entre Thonon-les-Bains et le lac Léman, accueille un tissu de TPE/PME tertiaires, artisans BTP, commerces, professions libérales et entreprises liées au tourisme lacustre et thermal. Axion-IA y intervient pour tous types d'activités du bassin thononais.",
+    "Allinges (74), commune résidentielle du Chablais haut-savoyard entre Thonon-les-Bains et le lac Léman, accueille un tissu de TPE/PME tertiaires, artisans BTP, commerces, professions libérales et entreprises liées au tourisme lacustre et thermal. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin thononais.",
   pitchEn:
-    "Allinges (74), commune résidentielle du Chablais haut-savoyard entre Thonon-les-Bains et le lac Léman, accueille un tissu de TPE/PME tertiaires, artisans BTP, commerces, professions libérales et entreprises liées au tourisme lacustre et thermal. Axion-IA y intervient pour tous types d'activités du bassin thononais.",
+    "Allinges (74), commune résidentielle du Chablais haut-savoyard entre Thonon-les-Bains et le lac Léman, accueille un tissu de TPE/PME tertiaires, artisans BTP, commerces, professions libérales et entreprises liées au tourisme lacustre et thermal. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin thononais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Allinges (74). Nous accompagnons TPE et PME : PME tertiaires du Chablais, artisans BTP, commerçants, professions libérales, entreprises touristiques et de services du bassin thononais proche Genève.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const ALLINGES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Allinges : diagnostic adapté aux PME tertiaires du Chablais, artisans BTP, commerces, professions libérales et entreprises touristiques du bassin thononais. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Allinges : diagnostic adapté aux PME tertiaires du Chablais, artisans BTP, commerces, professions libérales et entreprises touristiques du bassin thononais. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Allinges : diagnostic adapté aux PME tertiaires du Chablais, artisans BTP, commerces, professions libérales et entreprises touristiques du bassin thononais. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Allinges : diagnostic adapté aux PME tertiaires du Chablais, artisans BTP, commerces, professions libérales et entreprises touristiques du bassin thononais. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Allinges : formats adaptés aux PME tertiaires, cabinets, hébergements touristiques et artisans du Chablais. Vos équipes repartent autonomes sur outils IA configurés métier.",

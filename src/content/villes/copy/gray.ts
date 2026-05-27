@@ -33,8 +33,8 @@ export const GRAY_COPY: VilleCopy = {
       en: "Audit IA à Gray : diagnostic adapté aux TPE/PME commerçants, artisans BTP, agriculteurs et professions libérales du Pays de Gray et val de Saône. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Gray : formats adaptés au commerce, atelier artisan, exploitation agricole, cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Gray : formats adaptés au commerce, atelier artisan, exploitation agricole, cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Gray : formats adaptés au commerce, atelier artisan, exploitation agricole, cabinet. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Gray : formats adaptés au commerce, atelier artisan, exploitation agricole, cabinet. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Gray : automatisation devis artisans, gestion stocks commerce, prédiction rendements agricoles, agents conversationnels tourisme fluvial, optimisation planning services. Val de Saône.",

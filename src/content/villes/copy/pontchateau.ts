@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PONTCHATEAU_COPY: VilleCopy = {
   pitchFr:
-    "Pontchâteau (44), bourg historique de Loire-Atlantique situé entre Nantes et Saint-Nazaire aux portes du parc naturel régional de Brière, concentre un tissu de TPE artisans BTP, PME agroalimentaires, commerces ruraux et exploitations agricoles (élevage, maraîchage). Axion-IA y intervient pour tous types d'activités.",
+    "Pontchâteau (44), bourg historique de Loire-Atlantique situé entre Nantes et Saint-Nazaire aux portes du parc naturel régional de Brière, concentre un tissu de TPE artisans BTP, PME agroalimentaires, commerces ruraux et exploitations agricoles (élevage, maraîchage). Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Pontchâteau (44), bourg historique de Loire-Atlantique situé entre Nantes et Saint-Nazaire aux portes du parc naturel régional de Brière, concentre un tissu de TPE artisans BTP, PME agroalimentaires, commerces ruraux et exploitations agricoles (élevage, maraîchage). Axion-IA y intervient pour tous types d'activités.",
+    "Pontchâteau (44), bourg historique de Loire-Atlantique situé entre Nantes et Saint-Nazaire aux portes du parc naturel régional de Brière, concentre un tissu de TPE artisans BTP, PME agroalimentaires, commerces ruraux et exploitations agricoles (élevage, maraîchage). Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pontchâteau (44). Nous accompagnons tous types d'activités : TPE artisans BTP, PME agroalimentaires, exploitants agricoles (élevage, maraîchage), commerçants de centre-bourg, professions libérales, acteurs du tourisme Brière et services aux entreprises du bassin Nantes-Saint-Nazaire.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const PONTCHATEAU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pontchâteau : diagnostic adapté aux TPE artisans, PME agroalimentaires, exploitants agricoles et commerçants du bassin Brière / Nantes-Saint-Nazaire. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Pontchâteau : diagnostic adapté aux TPE artisans, PME agroalimentaires, exploitants agricoles et commerçants du bassin Brière / Nantes-Saint-Nazaire. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Pontchâteau : diagnostic adapté aux TPE artisans, PME agroalimentaires, exploitants agricoles et commerçants du bassin Brière / Nantes-Saint-Nazaire. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Pontchâteau : diagnostic adapté aux TPE artisans, PME agroalimentaires, exploitants agricoles et commerçants du bassin Brière / Nantes-Saint-Nazaire. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Pontchâteau : formats adaptés à l'exploitation agricole, atelier agroalimentaire, commerce ou hébergement touristique Brière. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Pontchâteau : formats adaptés à l'exploitation agricole, atelier agroalimentaire, commerce ou hébergement touristique Brière. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Pontchâteau : formats adaptés à l'exploitation agricole, atelier agroalimentaire, commerce ou hébergement touristique Brière. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Pontchâteau : formats adaptés à l'exploitation agricole, atelier agroalimentaire, commerce ou hébergement touristique Brière. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Pontchâteau : traçabilité élevage/laitier, optimisation planning récoltes maraîchères, agents conversationnels tourisme Brière, automatisation devis BTP artisans.",
@@ -64,7 +64,7 @@ export const PONTCHATEAU_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Nantes ou Saint-Nazaire ?",
-      a: "Nos consultants viennent de Nantes (35 min N165) ou Saint-Nazaire (20 min). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Nantes (35 min N165) ou Saint-Nazaire (20 min). Pour les multi-jours, hébergement local possible. Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHAGNY_COPY: VilleCopy = {
   pitchFr:
-    "Chagny (71), commune au carrefour de la Côte chalonnaise et du canal du Centre en Saône-et-Loire, est un pôle viticole et gastronomique bourguignon. Tissu de TPE/PME viticulture, restauration, commerce, artisanat et services. Axion-IA y intervient pour tous types d'activités.",
+    "Chagny (71), commune au carrefour de la Côte chalonnaise et du canal du Centre en Saône-et-Loire, est un pôle viticole et gastronomique bourguignon. Tissu de TPE/PME viticulture, restauration, commerce, artisanat et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Chagny (71), commune au carrefour de la Côte chalonnaise et du canal du Centre en Saône-et-Loire, est un pôle viticole et gastronomique bourguignon. Tissu de TPE/PME viticulture, restauration, commerce, artisanat et services. Axion-IA y intervient pour tous types d'activités.",
+    "Chagny (71), commune au carrefour de la Côte chalonnaise et du canal du Centre en Saône-et-Loire, est un pôle viticole et gastronomique bourguignon. Tissu de TPE/PME viticulture, restauration, commerce, artisanat et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chagny (71). Nous accompagnons TPE et PME : viticulteurs, restaurateurs, commerçants de centre-ville, artisans et prestataires de services de la Côte chalonnaise en Bourgogne. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const CHAGNY_COPY: VilleCopy = {
       en: "Audit IA à Chagny : diagnostic adapté aux domaines viticoles, restaurateurs, commerçants, artisans et prestataires de services de la Côte chalonnaise. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Chagny : formats adaptés au domaine viticole, au restaurant, au commerce ou à la TPE artisanale. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Chagny : formats adaptés au domaine viticole, au restaurant, au commerce ou à la TPE artisanale. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Chagny : formats adaptés au domaine viticole, au restaurant, au commerce ou à la TPE artisanale. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Chagny : formats adaptés au domaine viticole, au restaurant, au commerce ou à la TPE artisanale. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Chagny : gestion parcellaire viticole, prévision réservations restauration, automatisation stocks commerce, agents conversationnels accueil touristique Côte chalonnaise.",

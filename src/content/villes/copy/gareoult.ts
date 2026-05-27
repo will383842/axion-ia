@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GAREOULT_COPY: VilleCopy = {
   pitchFr:
-    "Garéoult (83), commune du centre-Var dans le bassin de Brignoles, est un bourg rural à dominante agricole et résidentielle. Tissu de TPE viticulteurs Côtes-de-Provence, maraîchers, artisans, commerçants et PME services et BTP de l'arrière-pays varois. Axion-IA y intervient pour tous types d'activités.",
+    "Garéoult (83), commune du centre-Var dans le bassin de Brignoles, est un bourg rural à dominante agricole et résidentielle. Tissu de TPE viticulteurs Côtes-de-Provence, maraîchers, artisans, commerçants et PME services et BTP de l'arrière-pays varois. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Garéoult (83), commune du centre-Var dans le bassin de Brignoles, est un bourg rural à dominante agricole et résidentielle. Tissu de TPE viticulteurs Côtes-de-Provence, maraîchers, artisans, commerçants et PME services et BTP de l'arrière-pays varois. Axion-IA y intervient pour tous types d'activités.",
+    "Garéoult (83), commune du centre-Var dans le bassin de Brignoles, est un bourg rural à dominante agricole et résidentielle. Tissu de TPE viticulteurs Côtes-de-Provence, maraîchers, artisans, commerçants et PME services et BTP de l'arrière-pays varois. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Garéoult (83). Nous accompagnons TPE viticulteurs Côtes-de-Provence, maraîchers, artisans et PME des services, du commerce et du BTP du centre-Var et du bassin de Brignoles. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const GAREOULT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Garéoult : diagnostic adapté aux domaines viticoles AOC, maraîchers, artisans et PME services du centre-Var. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Garéoult : diagnostic adapté aux domaines viticoles AOC, maraîchers, artisans et PME services du centre-Var. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Garéoult : diagnostic adapté aux domaines viticoles AOC, maraîchers, artisans et PME services du centre-Var. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Garéoult : diagnostic adapté aux domaines viticoles AOC, maraîchers, artisans et PME services du centre-Var. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Garéoult : ateliers pour viticulteurs, maraîchers, artisans BTP, commerçants et restaurateurs. Outils IA configurés métier réel agricole et services.",

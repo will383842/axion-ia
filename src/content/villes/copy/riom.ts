@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const RIOM_COPY: VilleCopy = {
   pitchFr:
-    "Riom (63), sous-préfecture du Puy-de-Dôme, est une ancienne capitale judiciaire de l'Auvergne (patrimoine Renaissance remarquable, Sainte-Chapelle). Tissu administration et services publics, PME tertiaires, agriculture Limagne, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Riom (63), sous-préfecture du Puy-de-Dôme, est une ancienne capitale judiciaire de l'Auvergne (patrimoine Renaissance remarquable, Sainte-Chapelle). Tissu administration et services publics, PME tertiaires, agriculture Limagne, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Riom (63), sous-préfecture du Puy-de-Dôme, est une ancienne capitale judiciaire de l'Auvergne (patrimoine Renaissance remarquable, Sainte-Chapelle). Tissu administration et services publics, PME tertiaires, agriculture Limagne, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Riom (63), sous-préfecture du Puy-de-Dôme, est une ancienne capitale judiciaire de l'Auvergne (patrimoine Renaissance remarquable, Sainte-Chapelle). Tissu administration et services publics, PME tertiaires, agriculture Limagne, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Riom (63). Nous accompagnons tous types d'activités : administration sous-préfecture, PME tertiaires Clermont Métropole nord, acteurs tourisme patrimonial Renaissance, agriculteurs Limagne, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const RIOM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Riom : diagnostic adapté à l'administration, PME tertiaires, acteurs tourisme Renaissance, agriculteurs Limagne, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Riom : diagnostic adapté à l'administration, PME tertiaires, acteurs tourisme Renaissance, agriculteurs Limagne, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Riom : diagnostic adapté à l'administration, PME tertiaires, acteurs tourisme Renaissance, agriculteurs Limagne, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Riom : diagnostic adapté à l'administration, PME tertiaires, acteurs tourisme Renaissance, agriculteurs Limagne, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Riom : formats adaptés à l'administration, site patrimonial, exploitation, bureau, commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Riom : formats adaptés à l'administration, site patrimonial, exploitation, bureau, commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Riom : formats adaptés à l'administration, site patrimonial, exploitation, bureau, commerce. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Riom : formats adaptés à l'administration, site patrimonial, exploitation, bureau, commerce. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Riom : automatisation flux administratifs, agents conversationnels visiteurs patrimoine multilingue, classification photos cultures Limagne, CRM augmentés.",
@@ -64,7 +64,7 @@ export const RIOM_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Clermont ?",
-      a: "Clermont (15 min). Aéroport Clermont à 10 min. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Clermont (15 min). Aéroport Clermont à 10 min. Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

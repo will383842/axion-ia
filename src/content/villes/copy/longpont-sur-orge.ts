@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LONGPONT_SUR_ORGE_COPY: VilleCopy = {
   pitchFr:
-    "Longpont-sur-Orge (91), commune du Hurepoix en Essonne, est située à 25 km au sud-ouest de Paris. Connue pour sa Basilique Notre-Dame de Bonne Garde, tissu TPE artisanales, commerces de proximité, PME tertiaires, professions libérales. Axion-IA y intervient pour tous types d'activités du Hurepoix.",
+    "Longpont-sur-Orge (91), commune du Hurepoix en Essonne, est située à 25 km au sud-ouest de Paris. Connue pour sa Basilique Notre-Dame de Bonne Garde, tissu TPE artisanales, commerces de proximité, PME tertiaires, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune du Hurepoix.",
   pitchEn:
-    "Longpont-sur-Orge (91), commune du Hurepoix en Essonne, est située à 25 km au sud-ouest de Paris. Connue pour sa Basilique Notre-Dame de Bonne Garde, tissu TPE artisanales, commerces de proximité, PME tertiaires, professions libérales. Axion-IA y intervient pour tous types d'activités du Hurepoix.",
+    "Longpont-sur-Orge (91), commune du Hurepoix en Essonne, est située à 25 km au sud-ouest de Paris. Connue pour sa Basilique Notre-Dame de Bonne Garde, tissu TPE artisanales, commerces de proximité, PME tertiaires, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune du Hurepoix.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Longpont-sur-Orge (91). Nous accompagnons tous types d'activités : TPE artisanales, commerces de proximité, PME tertiaires, professions libérales, indépendants et services aux entreprises du Hurepoix.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LONGPONT_SUR_ORGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Longpont-sur-Orge : diagnostic adapté aux TPE artisanales, commerces, PME tertiaires et professions libérales du Hurepoix. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Longpont-sur-Orge : diagnostic adapté aux TPE artisanales, commerces, PME tertiaires et professions libérales du Hurepoix. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Longpont-sur-Orge : diagnostic adapté aux TPE artisanales, commerces, PME tertiaires et professions libérales du Hurepoix. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Longpont-sur-Orge : diagnostic adapté aux TPE artisanales, commerces, PME tertiaires et professions libérales du Hurepoix. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Longpont-sur-Orge : formats adaptés aux TPE/PME. Demi-journée à 2 jours, vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -64,7 +64,7 @@ export const LONGPONT_SUR_ORGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris en RER C (35 min Gare d'Austerlitz) ou en voiture via A6/N20 (40 min). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Paris en RER C (35 min Gare d'Austerlitz) ou en voiture via A6/N20 (40 min). Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

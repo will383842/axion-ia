@@ -30,12 +30,12 @@ export const FLORANGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Florange : diagnostic adapté aux TPE/PME industrie reconvertie, sous-traitants métallurgie, logisticiens, commerces, artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Florange : diagnostic adapté aux TPE/PME industrie reconvertie, sous-traitants métallurgie, logisticiens, commerces, artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Florange : diagnostic adapté aux TPE/PME industrie reconvertie, sous-traitants métallurgie, logisticiens, commerces, artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Florange : diagnostic adapté aux TPE/PME industrie reconvertie, sous-traitants métallurgie, logisticiens, commerces, artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Florange : formats adaptés à l'atelier industriel, l'entrepôt logistique, le commerce, le bureau. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Florange : formats adaptés à l'atelier industriel, l'entrepôt logistique, le commerce, le bureau. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Florange : formats adaptés à l'atelier industriel, l'entrepôt logistique, le commerce, le bureau. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Florange : formats adaptés à l'atelier industriel, l'entrepôt logistique, le commerce, le bureau. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Florange : contrôle qualité production, traçabilité industrielle, automatisation workflow sous-traitance, agents conversationnels B2B, gestion logistique transfrontalière.",

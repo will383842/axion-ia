@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LOUVROIL_COPY: VilleCopy = {
   pitchFr:
-    "Louvroil (59), commune du département du Nord (région Hauts-de-France) dans l'agglomération de Maubeuge-Val de Sambre, historiquement liée à la métallurgie et la sidérurgie. Tissu TPE artisanat BTP et services, PME industrie métallurgique et mécanique, sous-traitance, commerces de proximité et activités liées au bassin industriel de la Sambre. Axion-IA y intervient pour tous types d'activités.",
+    "Louvroil (59), commune du département du Nord (région Hauts-de-France) dans l'agglomération de Maubeuge-Val de Sambre, historiquement liée à la métallurgie et la sidérurgie. Tissu TPE artisanat BTP et services, PME industrie métallurgique et mécanique, sous-traitance, commerces de proximité et activités liées au bassin industriel de la Sambre. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Louvroil (59), commune du département du Nord (région Hauts-de-France) dans l'agglomération de Maubeuge-Val de Sambre, historiquement liée à la métallurgie et la sidérurgie. Tissu TPE artisanat BTP et services, PME industrie métallurgique et mécanique, sous-traitance, commerces de proximité et activités liées au bassin industriel de la Sambre. Axion-IA y intervient pour tous types d'activités.",
+    "Louvroil (59), commune du département du Nord (région Hauts-de-France) dans l'agglomération de Maubeuge-Val de Sambre, historiquement liée à la métallurgie et la sidérurgie. Tissu TPE artisanat BTP et services, PME industrie métallurgique et mécanique, sous-traitance, commerces de proximité et activités liées au bassin industriel de la Sambre. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Louvroil (59). Nous accompagnons tous types d'activités : TPE artisans BTP et services, PME industrie métallurgique et mécanique, sous-traitants, commerçants et entreprises du bassin industriel Maubeuge-Val de Sambre.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const LOUVROIL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Louvroil : diagnostic adapté aux TPE artisans BTP, PME métallurgie et mécanique, sous-traitants industriels, commerçants et services du Val de Sambre. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Louvroil : diagnostic adapté aux TPE artisans BTP, PME métallurgie et mécanique, sous-traitants industriels, commerçants et services du Val de Sambre. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Louvroil : diagnostic adapté aux TPE artisans BTP, PME métallurgie et mécanique, sous-traitants industriels, commerçants et services du Val de Sambre. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Louvroil : diagnostic adapté aux TPE artisans BTP, PME métallurgie et mécanique, sous-traitants industriels, commerçants et services du Val de Sambre. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Louvroil : formats adaptés à l'atelier métallurgique, l'usine mécanique, le chantier BTP, le commerce. Vos équipes repartent autonomes sur les outils IA du quotidien.",

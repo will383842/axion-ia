@@ -30,12 +30,12 @@ export const AIRE_SUR_L_ADOUR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Aire-sur-l'Adour : diagnostic adapté aux TPE et PME agroalimentaires (foie gras, volaille), agriculteurs, commerçants, artisans BTP et professions libérales de cette sous-préfecture landaise. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Aire-sur-l'Adour : diagnostic adapté aux TPE et PME agroalimentaires (foie gras, volaille), agriculteurs, commerçants, artisans BTP et professions libérales de cette sous-préfecture landaise. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Aire-sur-l'Adour : diagnostic adapté aux TPE et PME agroalimentaires (foie gras, volaille), agriculteurs, commerçants, artisans BTP et professions libérales de cette sous-préfecture landaise. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Aire-sur-l'Adour : diagnostic adapté aux TPE et PME agroalimentaires (foie gras, volaille), agriculteurs, commerçants, artisans BTP et professions libérales de cette sous-préfecture landaise. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Aire-sur-l'Adour : formations adaptées aux ateliers agroalimentaires, exploitations agricoles, commerces et services publics. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Aire-sur-l'Adour : formations adaptées aux ateliers agroalimentaires, exploitations agricoles, commerces et services publics. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Aire-sur-l'Adour : formations adaptées aux ateliers agroalimentaires, exploitations agricoles, commerces et services publics. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Aire-sur-l'Adour : formations adaptées aux ateliers agroalimentaires, exploitations agricoles, commerces et services publics. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Aire-sur-l'Adour : traçabilité agroalimentaire automatisée, prédiction production élevage, optimisation chaîne du froid, classification documents qualité, gestion stocks conserverie, automatisation facturation.",

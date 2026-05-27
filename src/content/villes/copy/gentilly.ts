@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GENTILLY_COPY: VilleCopy = {
   pitchFr:
-    "Gentilly (94), commune limitrophe sud de Paris en Val-de-Marne, adossée à la Cité internationale universitaire et au campus de Gentilly. Tissu TPE prestataires tertiaires, PME conseil et services numériques, commerçants, professions libérales et startups. Axion-IA y intervient pour tous types d'activités du sud parisien.",
+    "Gentilly (94), commune limitrophe sud de Paris en Val-de-Marne, adossée à la Cité internationale universitaire et au campus de Gentilly. Tissu TPE prestataires tertiaires, PME conseil et services numériques, commerçants, professions libérales et startups. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud parisien.",
   pitchEn:
-    "Gentilly (94), commune limitrophe sud de Paris en Val-de-Marne, adossée à la Cité internationale universitaire et au campus de Gentilly. Tissu TPE prestataires tertiaires, PME conseil et services numériques, commerçants, professions libérales et startups. Axion-IA y intervient pour tous types d'activités du sud parisien.",
+    "Gentilly (94), commune limitrophe sud de Paris en Val-de-Marne, adossée à la Cité internationale universitaire et au campus de Gentilly. Tissu TPE prestataires tertiaires, PME conseil et services numériques, commerçants, professions libérales et startups. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud parisien.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gentilly (94). Nous accompagnons tous types d'activités : TPE prestataires tertiaires, PME de conseil et services numériques, commerçants, professions libérales, startups et indépendants du sud de Paris. Audit Flash dès 490 € HT.",
   directAnswerEn:

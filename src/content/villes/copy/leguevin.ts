@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LEGUEVIN_COPY: VilleCopy = {
   pitchFr:
-    "Léguevin (31), commune dynamique de l'ouest toulousain avec près de 10 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales, quelques activités agricoles. Axion-IA y intervient pour tous types d'activités de la couronne ouest de Toulouse.",
+    "Léguevin (31), commune dynamique de l'ouest toulousain avec près de 10 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales, quelques activités agricoles. Axion-IA opère pour toutes les structures économiques de la commune de la couronne ouest de Toulouse.",
   pitchEn:
-    "Léguevin (31), commune dynamique de l'ouest toulousain avec près de 10 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales, quelques activités agricoles. Axion-IA y intervient pour tous types d'activités de la couronne ouest de Toulouse.",
+    "Léguevin (31), commune dynamique de l'ouest toulousain avec près de 10 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales, quelques activités agricoles. Axion-IA opère pour toutes les structures économiques de la commune de la couronne ouest de Toulouse.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Léguevin (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'ouest Toulouse. Audit Flash dès 490 € HT.",
   directAnswerEn:

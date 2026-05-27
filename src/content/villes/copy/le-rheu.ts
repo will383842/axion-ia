@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_RHEU_COPY: VilleCopy = {
   pitchFr:
-    "Le Rheu (35), commune résidentielle à l'ouest de Rennes en Ille-et-Vilaine, intégrée à Rennes Métropole. Tissu de TPE/PME tertiaires, services aux entreprises, artisans BTP portés par le développement pavillonnaire, commerces de proximité et professions libérales. Axion-IA y intervient pour tous types d'activités de l'ouest rennais.",
+    "Le Rheu (35), commune résidentielle à l'ouest de Rennes en Ille-et-Vilaine, intégrée à Rennes Métropole. Tissu de TPE/PME tertiaires, services aux entreprises, artisans BTP portés par le développement pavillonnaire, commerces de proximité et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations de l'ouest rennais.",
   pitchEn:
-    "Le Rheu (35), commune résidentielle à l'ouest de Rennes en Ille-et-Vilaine, intégrée à Rennes Métropole. Tissu de TPE/PME tertiaires, services aux entreprises, artisans BTP portés par le développement pavillonnaire, commerces de proximité et professions libérales. Axion-IA y intervient pour tous types d'activités de l'ouest rennais.",
+    "Le Rheu (35), commune résidentielle à l'ouest de Rennes en Ille-et-Vilaine, intégrée à Rennes Métropole. Tissu de TPE/PME tertiaires, services aux entreprises, artisans BTP portés par le développement pavillonnaire, commerces de proximité et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations de l'ouest rennais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Rheu (35). Nous accompagnons TPE et PME : entreprises tertiaires de l'ouest rennais, artisans BTP, commerçants, professions libérales, services aux entreprises et indépendants de Rennes Métropole ouest.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const LE_RHEU_COPY: VilleCopy = {
       en: "Audit IA au Rheu : diagnostic adapté aux PME tertiaires ouest rennais, TPE artisans BTP, commerçants et professions libérales. ROI chiffré, audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site au Rheu : formats adaptés au bureau PME, atelier artisan BTP, commerce ou cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site au Rheu : formats adaptés au bureau PME, atelier artisan BTP, commerce ou cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site au Rheu : formats adaptés au bureau PME, atelier artisan BTP, commerce ou cabinet libéral. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site au Rheu : formats adaptés au bureau PME, atelier artisan BTP, commerce ou cabinet libéral. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA au Rheu : automatisation workflow tertiaire, agents conversationnels client, gestion devis BTP, CRM augmenté, outils IA professions libérales et gestion stocks commerce.",

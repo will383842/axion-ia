@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ROQUEVAIRE_COPY: VilleCopy = {
   pitchFr:
-    "Roquevaire (13), commune de la vallée de l'Huveaune à l'est de Marseille, conjugue cadre périurbain et tissu de TPE artisanales, PME services, commerces et professions libérales. Bassin résidentiel des actifs marseillais et aubagnais. Axion-IA y intervient pour tous types d'activités de la vallée de l'Huveaune.",
+    "Roquevaire (13), commune de la vallée de l'Huveaune à l'est de Marseille, conjugue cadre périurbain et tissu de TPE artisanales, PME services, commerces et professions libérales. Bassin résidentiel des actifs marseillais et aubagnais. Axion-IA y déploie ses missions auprès de toutes les organisations de la vallée de l'Huveaune.",
   pitchEn:
-    "Roquevaire (13), commune de la vallée de l'Huveaune à l'est de Marseille, conjugue cadre périurbain et tissu de TPE artisanales, PME services, commerces et professions libérales. Bassin résidentiel des actifs marseillais et aubagnais. Axion-IA y intervient pour tous types d'activités de la vallée de l'Huveaune.",
+    "Roquevaire (13), commune de la vallée de l'Huveaune à l'est de Marseille, conjugue cadre périurbain et tissu de TPE artisanales, PME services, commerces et professions libérales. Bassin résidentiel des actifs marseillais et aubagnais. Axion-IA y déploie ses missions auprès de toutes les organisations de la vallée de l'Huveaune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Roquevaire (13). Nous accompagnons TPE artisans, PME de services, commerçants et professions libérales de la vallée de l'Huveaune. Audit Flash dès 490 € HT, sans engagement.",
   directAnswerEn:

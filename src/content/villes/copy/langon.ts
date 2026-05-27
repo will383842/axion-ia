@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LANGON_COPY: VilleCopy = {
   pitchFr:
-    "Langon (33), sous-préfecture de la Gironde au bord de la Garonne, est le pôle économique du sud-Gironde avec un commerce de centre-ville dynamique, un vignoble prestigieux (AOC Sauternes, Graves) et un tissu de TPE/PME diversifié. Axion-IA y intervient pour tous types d'activités du sud-Gironde.",
+    "Langon (33), sous-préfecture de la Gironde au bord de la Garonne, est le pôle économique du sud-Gironde avec un commerce de centre-ville dynamique, un vignoble prestigieux (AOC Sauternes, Graves) et un tissu de TPE/PME diversifié. Axion-IA opère pour toutes les structures économiques de la commune du sud-Gironde.",
   pitchEn:
-    "Langon (33), sous-préfecture de la Gironde au bord de la Garonne, est le pôle économique du sud-Gironde avec un commerce de centre-ville dynamique, un vignoble prestigieux (AOC Sauternes, Graves) et un tissu de TPE/PME diversifié. Axion-IA y intervient pour tous types d'activités du sud-Gironde.",
+    "Langon (33), sous-préfecture de la Gironde au bord de la Garonne, est le pôle économique du sud-Gironde avec un commerce de centre-ville dynamique, un vignoble prestigieux (AOC Sauternes, Graves) et un tissu de TPE/PME diversifié. Axion-IA opère pour toutes les structures économiques de la commune du sud-Gironde.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Langon (33). Nous accompagnons TPE et PME du sud-Gironde : vignerons de Sauternes et Graves, commerçants, PME de services, artisans BTP et professions libérales. Audit Flash dès 490 € HT.",
   directAnswerEn:

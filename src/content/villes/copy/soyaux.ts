@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SOYAUX_COPY: VilleCopy = {
   pitchFr:
-    "Soyaux (16), commune de l'agglomération d'Angoulême en Charente, deuxième ville du GrandAngoulême. Tissu de TPE artisans, PME tertiaires, services aux entreprises, commerces de proximité et équipements publics. Axion-IA y intervient pour tous types d'activités de l'agglomération angoumoisine.",
+    "Soyaux (16), commune de l'agglomération d'Angoulême en Charente, deuxième ville du GrandAngoulême. Tissu de TPE artisans, PME tertiaires, services aux entreprises, commerces de proximité et équipements publics. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération angoumoisine.",
   pitchEn:
-    "Soyaux (16), commune de l'agglomération d'Angoulême en Charente, deuxième ville du GrandAngoulême. Tissu de TPE artisans, PME tertiaires, services aux entreprises, commerces de proximité et équipements publics. Axion-IA y intervient pour tous types d'activités de l'agglomération angoumoisine.",
+    "Soyaux (16), commune de l'agglomération d'Angoulême en Charente, deuxième ville du GrandAngoulême. Tissu de TPE artisans, PME tertiaires, services aux entreprises, commerces de proximité et équipements publics. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération angoumoisine.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Soyaux (16). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, prestataires de services, commerçants et indépendants de cette commune résidentielle stratégique de l'agglomération d'Angoulême.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const SOYAUX_COPY: VilleCopy = {
       en: "Audit IA à Soyaux : diagnostic adapté aux PME tertiaires, TPE artisans, prestataires de services et commerces de l'agglomération GrandAngoulême. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Soyaux : formats adaptés au cabinet, au bureau, à l'atelier ou au commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Soyaux : formats adaptés au cabinet, au bureau, à l'atelier ou au commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Soyaux : formats adaptés au cabinet, au bureau, à l'atelier ou au commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Soyaux : formats adaptés au cabinet, au bureau, à l'atelier ou au commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Soyaux : automatisation gestion administrative PME, agents conversationnels accueil client, classification documents, optimisation planification services à la personne.",

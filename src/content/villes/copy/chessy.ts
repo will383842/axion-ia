@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHESSY_COPY: VilleCopy = {
   pitchFr:
-    "Chessy (77), commune de Seine-et-Marne au coeur de Marne-la-Vallée, accueille la gare TGV/RER Marne-la-Vallée-Chessy et le complexe Disneyland Paris. Tissu TPE et PME tourisme, hôtellerie-restauration, commerce Val d'Europe, services aux entreprises, logistique événementielle. Axion-IA y intervient pour tous types d'activités.",
+    "Chessy (77), commune de Seine-et-Marne au coeur de Marne-la-Vallée, accueille la gare TGV/RER Marne-la-Vallée-Chessy et le complexe Disneyland Paris. Tissu TPE et PME tourisme, hôtellerie-restauration, commerce Val d'Europe, services aux entreprises, logistique événementielle. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Chessy (77), commune de Seine-et-Marne au coeur de Marne-la-Vallée, accueille la gare TGV/RER Marne-la-Vallée-Chessy et le complexe Disneyland Paris. Tissu TPE et PME tourisme, hôtellerie-restauration, commerce Val d'Europe, services aux entreprises, logistique événementielle. Axion-IA y intervient pour tous types d'activités.",
+    "Chessy (77), commune de Seine-et-Marne au coeur de Marne-la-Vallée, accueille la gare TGV/RER Marne-la-Vallée-Chessy et le complexe Disneyland Paris. Tissu TPE et PME tourisme, hôtellerie-restauration, commerce Val d'Europe, services aux entreprises, logistique événementielle. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chessy (77). Nous accompagnons TPE et PME : hôteliers et restaurateurs du pôle Disneyland, commerçants du Val d'Europe, prestataires tourisme et événementiel, entreprises de services et logistique. Audit Flash dès 490 € HT.",
   directAnswerEn:

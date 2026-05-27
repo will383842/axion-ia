@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PLEDRAN_COPY: VilleCopy = {
   pitchFr:
-    "Plédran (22), commune résidentielle de l'agglomération de Saint-Brieuc dans les Côtes-d'Armor, allie cadre de vie péri-urbain et dynamisme économique de la métropole briochine. TPE artisans, PME de services, commerces de proximité, professions libérales et exploitants agricoles composent son tissu économique. Axion-IA y intervient pour tous types d'activités de l'agglomération briochine.",
+    "Plédran (22), commune résidentielle de l'agglomération de Saint-Brieuc dans les Côtes-d'Armor, allie cadre de vie péri-urbain et dynamisme économique de la métropole briochine. TPE artisans, PME de services, commerces de proximité, professions libérales et exploitants agricoles composent son tissu économique. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération briochine.",
   pitchEn:
-    "Plédran (22), commune résidentielle de l'agglomération de Saint-Brieuc dans les Côtes-d'Armor, allie cadre de vie péri-urbain et dynamisme économique de la métropole briochine. TPE artisans, PME de services, commerces de proximité, professions libérales et exploitants agricoles composent son tissu économique. Axion-IA y intervient pour tous types d'activités de l'agglomération briochine.",
+    "Plédran (22), commune résidentielle de l'agglomération de Saint-Brieuc dans les Côtes-d'Armor, allie cadre de vie péri-urbain et dynamisme économique de la métropole briochine. TPE artisans, PME de services, commerces de proximité, professions libérales et exploitants agricoles composent son tissu économique. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération briochine.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plédran (22). Nous accompagnons tous types d'activités : TPE artisans, PME de services de l'agglomération briochine, commerces de proximité, professions libérales, indépendants et exploitants agricoles du secteur.",
   directAnswerEn:

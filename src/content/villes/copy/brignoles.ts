@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BRIGNOLES_COPY: VilleCopy = {
   pitchFr:
-    "Brignoles (83), sous-préfecture du Var et capitale historique de la bauxite, compte près de 17 850 habitants. Pôle administratif et économique du centre-Var, zones d'activités industrielles, tissu de TPE artisanales, PME industrielles, commerces et services. Axion-IA y intervient pour tous types d'activités.",
+    "Brignoles (83), sous-préfecture du Var et capitale historique de la bauxite, compte près de 17 850 habitants. Pôle administratif et économique du centre-Var, zones d'activités industrielles, tissu de TPE artisanales, PME industrielles, commerces et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Brignoles (83), sous-préfecture du Var et capitale historique de la bauxite, compte près de 17 850 habitants. Pôle administratif et économique du centre-Var, zones d'activités industrielles, tissu de TPE artisanales, PME industrielles, commerces et services. Axion-IA y intervient pour tous types d'activités.",
+    "Brignoles (83), sous-préfecture du Var et capitale historique de la bauxite, compte près de 17 850 habitants. Pôle administratif et économique du centre-Var, zones d'activités industrielles, tissu de TPE artisanales, PME industrielles, commerces et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Brignoles (83). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles centre-Var, professions libérales, exploitations viticoles Côtes de Provence et services administratifs.",
   directAnswerEn:

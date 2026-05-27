@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CORNEBARRIEU_COPY: VilleCopy = {
   pitchFr:
-    "Cornebarrieu (31), commune à proximité immédiate de l'aéroport Toulouse-Blagnac, près de 9 000 habitants. Tissu TPE et PME aéronautiques, sous-traitants industriels, services aux entreprises, professions libérales, commerces. Axion-IA y intervient pour tous types d'activités du pôle aéroportuaire toulousain.",
+    "Cornebarrieu (31), commune à proximité immédiate de l'aéroport Toulouse-Blagnac, près de 9 000 habitants. Tissu TPE et PME aéronautiques, sous-traitants industriels, services aux entreprises, professions libérales, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs du pôle aéroportuaire toulousain.",
   pitchEn:
-    "Cornebarrieu (31), commune à proximité immédiate de l'aéroport Toulouse-Blagnac, près de 9 000 habitants. Tissu TPE et PME aéronautiques, sous-traitants industriels, services aux entreprises, professions libérales, commerces. Axion-IA y intervient pour tous types d'activités du pôle aéroportuaire toulousain.",
+    "Cornebarrieu (31), commune à proximité immédiate de l'aéroport Toulouse-Blagnac, près de 9 000 habitants. Tissu TPE et PME aéronautiques, sous-traitants industriels, services aux entreprises, professions libérales, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs du pôle aéroportuaire toulousain.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cornebarrieu (31). Nous accompagnons TPE et PME aéronautiques, sous-traitants industriels, professions libérales et commerçants du pôle aéroportuaire Toulouse. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const CORNEBARRIEU_COPY: VilleCopy = {
       en: "Audit IA à Cornebarrieu : diagnostic adapté aux PME aéronautiques, sous-traitants industriels et TPE de services du pôle aéroportuaire. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Cornebarrieu : formats adaptés au sous-traitant aéronautique, à la PME tech, au cabinet de conseil. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Cornebarrieu : formats adaptés au sous-traitant aéronautique, à la PME tech, au cabinet de conseil. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Cornebarrieu : formats adaptés au sous-traitant aéronautique, à la PME tech, au cabinet de conseil. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Cornebarrieu : formats adaptés au sous-traitant aéronautique, à la PME tech, au cabinet de conseil. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Cornebarrieu : automatisation contrôle qualité aéronautique, gestion documentation technique, agents conversationnels, optimisation supply chain.",

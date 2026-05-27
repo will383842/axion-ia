@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PULNOY_COPY: VilleCopy = {
   pitchFr:
-    "Pulnoy (54), commune résidentielle de la métropole du Grand Nancy à l'est de l'agglomération en Meurthe-et-Moselle, conjugue cadre de vie pavillonnaire et proximité immédiate des pôles d'emploi nancéiens. Tissu de TPE/PME services aux particuliers, commerce, artisanat et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Pulnoy (54), commune résidentielle de la métropole du Grand Nancy à l'est de l'agglomération en Meurthe-et-Moselle, conjugue cadre de vie pavillonnaire et proximité immédiate des pôles d'emploi nancéiens. Tissu de TPE/PME services aux particuliers, commerce, artisanat et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Pulnoy (54), commune résidentielle de la métropole du Grand Nancy à l'est de l'agglomération en Meurthe-et-Moselle, conjugue cadre de vie pavillonnaire et proximité immédiate des pôles d'emploi nancéiens. Tissu de TPE/PME services aux particuliers, commerce, artisanat et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Pulnoy (54), commune résidentielle de la métropole du Grand Nancy à l'est de l'agglomération en Meurthe-et-Moselle, conjugue cadre de vie pavillonnaire et proximité immédiate des pôles d'emploi nancéiens. Tissu de TPE/PME services aux particuliers, commerce, artisanat et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pulnoy (54). Nous accompagnons TPE et PME : commerçants, artisans BTP, professions libérales, services aux particuliers et prestataires de services de la métropole du Grand Nancy. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const PULNOY_COPY: VilleCopy = {
       en: "Audit IA à Pulnoy : diagnostic adapté aux commerçants, artisans, professions libérales et prestataires de services de la métropole du Grand Nancy. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Pulnoy : formats adaptés au commerce, à l'artisanat, au cabinet libéral ou à la TPE de services. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Pulnoy : formats adaptés au commerce, à l'artisanat, au cabinet libéral ou à la TPE de services. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Pulnoy : formats adaptés au commerce, à l'artisanat, au cabinet libéral ou à la TPE de services. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Pulnoy : formats adaptés au commerce, à l'artisanat, au cabinet libéral ou à la TPE de services. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Pulnoy : automatisation prise de rendez-vous cabinets libéraux, gestion stocks commerce, devis artisans, agents conversationnels accueil clients pour TPE/PME du Grand Nancy.",

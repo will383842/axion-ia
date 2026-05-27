@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MAEN_ROCH_COPY: VilleCopy = {
   pitchFr:
-    "Maen Roch (35), commune nouvelle du nord de l'Ille-et-Vilaine née de la fusion d'Antrain, Tremblay et Saint-Ouen-la-Rouërie, se situe dans le bassin de Fougères entre Bretagne et Normandie. TPE artisanales, PME agroalimentaires, commerces ruraux, exploitations agricoles. Axion-IA y intervient pour tous types d'activités.",
+    "Maen Roch (35), commune nouvelle du nord de l'Ille-et-Vilaine née de la fusion d'Antrain, Tremblay et Saint-Ouen-la-Rouërie, se situe dans le bassin de Fougères entre Bretagne et Normandie. TPE artisanales, PME agroalimentaires, commerces ruraux, exploitations agricoles. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Maen Roch (35), commune nouvelle du nord de l'Ille-et-Vilaine née de la fusion d'Antrain, Tremblay et Saint-Ouen-la-Rouërie, se situe dans le bassin de Fougères entre Bretagne et Normandie. TPE artisanales, PME agroalimentaires, commerces ruraux, exploitations agricoles. Axion-IA y intervient pour tous types d'activités.",
+    "Maen Roch (35), commune nouvelle du nord de l'Ille-et-Vilaine née de la fusion d'Antrain, Tremblay et Saint-Ouen-la-Rouërie, se situe dans le bassin de Fougères entre Bretagne et Normandie. TPE artisanales, PME agroalimentaires, commerces ruraux, exploitations agricoles. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Maen Roch (35). Nous accompagnons TPE et PME du nord-est breton : exploitants agricoles, PME agroalimentaires, artisans, commerçants ruraux et prestataires du bassin de Fougères. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const MAEN_ROCH_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Maen Roch : diagnostic adapté aux exploitations agricoles, PME agroalimentaires, artisans BTP et commerçants du nord Ille-et-Vilaine. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Maen Roch : diagnostic adapté aux exploitations agricoles, PME agroalimentaires, artisans BTP et commerçants du nord Ille-et-Vilaine. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Maen Roch : diagnostic adapté aux exploitations agricoles, PME agroalimentaires, artisans BTP et commerçants du nord Ille-et-Vilaine. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Maen Roch : diagnostic adapté aux exploitations agricoles, PME agroalimentaires, artisans BTP et commerçants du nord Ille-et-Vilaine. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Maen Roch : formats adaptés exploitation agricole, atelier agroalimentaire, commerce de bourg ou bureau PME. Vos équipes repartent autonomes sur outils IA métier.",
@@ -65,7 +65,7 @@ export const MAEN_ROCH_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Maen Roch depuis Rennes ?",
-      a: "Rennes-Maen Roch en 50 min par A84. Nos consultants se déplacent sur site pour les missions audit, formation et implémentation. Sessions en visio également possibles. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Rennes-Maen Roch en 50 min par A84. Nos consultants se déplacent sur site pour les missions audit, formation et implémentation. Sessions en visio également possibles. Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

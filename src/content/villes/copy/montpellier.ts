@@ -52,6 +52,8 @@ export const MONTPELLIER_COPY: VilleCopy = {
   directAnswerEn:
     "Axion-IA is a senior AI architects consultancy delivering on site in Montpellier (34) across the metropolis and the Hérault basin. We support digital micro-businesses (Cap Omega, Cap Alpha), health-biotech SMEs and mid-caps (Euromédecine, CHU, Sanofi R&D), video-game studios, agritech players and IT groups (Dell, IBM) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
+  seoHook: "medtech, agronomie & numérique",
+
   topSectorsNaf: [
     "Santé & Biotech",
     "Numérique & IT",

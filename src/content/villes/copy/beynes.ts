@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BEYNES_COPY: VilleCopy = {
   pitchFr:
-    "Beynes (78), commune résidentielle de la plaine de Versailles ouest dans les Yvelines, rassemble un tissu de TPE artisanales, professions libérales, PME de services et commerces de proximité dans un cadre semi-rural entre Plaisir et Thiverval-Grignon. Axion-IA y intervient pour tous types d'activités de l'ouest yvelinois.",
+    "Beynes (78), commune résidentielle de la plaine de Versailles ouest dans les Yvelines, rassemble un tissu de TPE artisanales, professions libérales, PME de services et commerces de proximité dans un cadre semi-rural entre Plaisir et Thiverval-Grignon. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'ouest yvelinois.",
   pitchEn:
-    "Beynes (78), commune résidentielle de la plaine de Versailles ouest dans les Yvelines, rassemble un tissu de TPE artisanales, professions libérales, PME de services et commerces de proximité dans un cadre semi-rural entre Plaisir et Thiverval-Grignon. Axion-IA y intervient pour tous types d'activités de l'ouest yvelinois.",
+    "Beynes (78), commune résidentielle de la plaine de Versailles ouest dans les Yvelines, rassemble un tissu de TPE artisanales, professions libérales, PME de services et commerces de proximité dans un cadre semi-rural entre Plaisir et Thiverval-Grignon. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'ouest yvelinois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beynes (78). Nous accompagnons TPE et PME : artisans, professions libérales, PME de services, commerçants et entreprises de la plaine de Versailles ouest entre Plaisir et Jouars-Pontchartrain.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const BEYNES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Beynes : diagnostic adapté aux TPE artisanales, professions libérales, PME de services et commerçants de la plaine de Versailles ouest. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Beynes : diagnostic adapté aux TPE artisanales, professions libérales, PME de services et commerçants de la plaine de Versailles ouest. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Beynes : diagnostic adapté aux TPE artisanales, professions libérales, PME de services et commerçants de la plaine de Versailles ouest. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Beynes : diagnostic adapté aux TPE artisanales, professions libérales, PME de services et commerçants de la plaine de Versailles ouest. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Beynes : formats adaptés aux artisans, professions libérales et PME de services de l'ouest Yvelines. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Beynes : formats adaptés aux artisans, professions libérales et PME de services de l'ouest Yvelines. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Beynes : formats adaptés aux artisans, professions libérales et PME de services de l'ouest Yvelines. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Beynes : formats adaptés aux artisans, professions libérales et PME de services de l'ouest Yvelines. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Beynes : automatisation devis et facturation artisans, CRM augmenté PME, gestion planning services à la personne, outils IA sur mesure pour TPE et PME de la plaine de Versailles.",

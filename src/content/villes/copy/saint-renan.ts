@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_RENAN_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Renan (29), pôle commercial majeur du Pays d'Iroise dans le Finistère, concentre commerces, services et PME tertiaires à l'ouest de Brest. TPE commerçantes, artisans, professions libérales, PME de services. Axion-IA y intervient pour tous types d'activités du Pays d'Iroise.",
+    "Saint-Renan (29), pôle commercial majeur du Pays d'Iroise dans le Finistère, concentre commerces, services et PME tertiaires à l'ouest de Brest. TPE commerçantes, artisans, professions libérales, PME de services. Axion-IA opère pour toutes les structures économiques de la commune du Pays d'Iroise.",
   pitchEn:
-    "Saint-Renan (29), pôle commercial majeur du Pays d'Iroise dans le Finistère, concentre commerces, services et PME tertiaires à l'ouest de Brest. TPE commerçantes, artisans, professions libérales, PME de services. Axion-IA y intervient pour tous types d'activités du Pays d'Iroise.",
+    "Saint-Renan (29), pôle commercial majeur du Pays d'Iroise dans le Finistère, concentre commerces, services et PME tertiaires à l'ouest de Brest. TPE commerçantes, artisans, professions libérales, PME de services. Axion-IA opère pour toutes les structures économiques de la commune du Pays d'Iroise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Renan (29). Nous accompagnons tous types d'activités : commerçants et enseignes du centre commercial du Pays d'Iroise, TPE artisanales, PME de services, professions libérales, indépendants et prestataires du territoire iroisien.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const SAINT_RENAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Renan : diagnostic adapté aux commerçants du Pays d'Iroise, TPE artisanales, PME de services et professions libérales. ROI chiffré, audit Flash 490 € HT accessible à toute structure.",
-      en: "Audit IA à Saint-Renan : diagnostic adapté aux commerçants du Pays d'Iroise, TPE artisanales, PME de services et professions libérales. ROI chiffré, audit Flash 490 € HT accessible à toute structure.",
+      fr: "Audit IA à Saint-Renan : diagnostic adapté aux commerçants du Pays d'Iroise, TPE artisanales, PME de services et professions libérales. ROI mesurable, audit Flash dès 490 € HT accessible à toute structure.",
+      en: "Audit IA à Saint-Renan : diagnostic adapté aux commerçants du Pays d'Iroise, TPE artisanales, PME de services et professions libérales. ROI mesurable, audit Flash dès 490 € HT accessible à toute structure.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Renan : formats adaptés au commerce, au cabinet libéral ou au bureau PME. Vos équipes repartent autonomes sur les outils IA métier adaptés à votre activité.",

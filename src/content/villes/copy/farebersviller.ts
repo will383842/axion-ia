@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FAREBERSVILLER_COPY: VilleCopy = {
   pitchFr:
-    "Farébersviller (57), commune mosellane du Bassin houiller lorrain, à proximité de Freyming-Merlebach et Saint-Avold, dans un tissu économique de reconversion post-minière. TPE/PME commerce, services, BTP, artisanat et logistique. Axion-IA y intervient pour tous types d'activités.",
+    "Farébersviller (57), commune mosellane du Bassin houiller lorrain, à proximité de Freyming-Merlebach et Saint-Avold, dans un tissu économique de reconversion post-minière. TPE/PME commerce, services, BTP, artisanat et logistique. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Farébersviller (57), commune mosellane du Bassin houiller lorrain, à proximité de Freyming-Merlebach et Saint-Avold, dans un tissu économique de reconversion post-minière. TPE/PME commerce, services, BTP, artisanat et logistique. Axion-IA y intervient pour tous types d'activités.",
+    "Farébersviller (57), commune mosellane du Bassin houiller lorrain, à proximité de Freyming-Merlebach et Saint-Avold, dans un tissu économique de reconversion post-minière. TPE/PME commerce, services, BTP, artisanat et logistique. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Farébersviller (57). Nous accompagnons tous types d'activités : TPE/PME commerce et services, artisans BTP, professions libérales et entrepreneurs du Bassin houiller mosellan en reconversion.",
   directAnswerEn:
@@ -30,12 +30,12 @@ export const FAREBERSVILLER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Farébersviller : diagnostic adapté aux TPE/PME commerce, services, artisans BTP et logisticiens du Bassin houiller. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Farébersviller : diagnostic adapté aux TPE/PME commerce, services, artisans BTP et logisticiens du Bassin houiller. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Farébersviller : diagnostic adapté aux TPE/PME commerce, services, artisans BTP et logisticiens du Bassin houiller. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Farébersviller : diagnostic adapté aux TPE/PME commerce, services, artisans BTP et logisticiens du Bassin houiller. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Farébersviller : formats adaptés au bureau, commerce, entrepôt, chantier. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Farébersviller : formats adaptés au bureau, commerce, entrepôt, chantier. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Farébersviller : formats adaptés au bureau, commerce, entrepôt, chantier. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Farébersviller : formats adaptés au bureau, commerce, entrepôt, chantier. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Farébersviller : automatisation gestion commerciale, optimisation logistique, devis BTP automatisés, agents conversationnels B2B, gestion stocks.",

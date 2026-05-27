@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VALENTIGNEY_COPY: VilleCopy = {
   pitchFr:
-    "Valentigney (25), commune du Pays de Montbéliard dans le Doubs, est le berceau historique de Peugeot (fondé en 1810). Tissu PME sous-traitance automobile et mécanique, TPE usinage de précision, industrie métallurgique, commerces, services aux entreprises du bassin industriel. Axion-IA y intervient pour tous types d'activités.",
+    "Valentigney (25), commune du Pays de Montbéliard dans le Doubs, est le berceau historique de Peugeot (fondé en 1810). Tissu PME sous-traitance automobile et mécanique, TPE usinage de précision, industrie métallurgique, commerces, services aux entreprises du bassin industriel. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Valentigney (25), commune du Pays de Montbéliard dans le Doubs, est le berceau historique de Peugeot (fondé en 1810). Tissu PME sous-traitance automobile et mécanique, TPE usinage de précision, industrie métallurgique, commerces, services aux entreprises du bassin industriel. Axion-IA y intervient pour tous types d'activités.",
+    "Valentigney (25), commune du Pays de Montbéliard dans le Doubs, est le berceau historique de Peugeot (fondé en 1810). Tissu PME sous-traitance automobile et mécanique, TPE usinage de précision, industrie métallurgique, commerces, services aux entreprises du bassin industriel. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Valentigney (25). Nous accompagnons TPE et PME du Pays de Montbéliard : sous-traitants automobile et mécanique, usineurs de précision, métallurgistes, commerçants et prestataires services aux entreprises du bassin industriel historique.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const VALENTIGNEY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Valentigney : diagnostic adapté aux sous-traitants automobile, usineurs de précision, métallurgistes, TPE mécanique et services aux entreprises industrielles du Pays de Montbéliard. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Valentigney : diagnostic adapté aux sous-traitants automobile, usineurs de précision, métallurgistes, TPE mécanique et services aux entreprises industrielles du Pays de Montbéliard. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Valentigney : diagnostic adapté aux sous-traitants automobile, usineurs de précision, métallurgistes, TPE mécanique et services aux entreprises industrielles du Pays de Montbéliard. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Valentigney : diagnostic adapté aux sous-traitants automobile, usineurs de précision, métallurgistes, TPE mécanique et services aux entreprises industrielles du Pays de Montbéliard. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Valentigney : ateliers dans vos locaux usine, atelier usinage ou bureau. Vos équipes repartent autonomes sur outils IA configurés métier automobile, mécanique de précision et métallurgie.",
-      en: "Interventions IA sur site à Valentigney : ateliers dans vos locaux usine, atelier usinage ou bureau. Vos équipes repartent autonomes sur outils IA configurés métier automobile, mécanique de précision et métallurgie.",
+      fr: "Interventions IA sur site à Valentigney : ateliers dans vos locaux usine, atelier usinage ou bureau. Vos collaborateurs maîtrisent leurs outils IA après notre intervention automobile, mécanique de précision et métallurgie.",
+      en: "Interventions IA sur site à Valentigney : ateliers dans vos locaux usine, atelier usinage ou bureau. Vos collaborateurs maîtrisent leurs outils IA après notre intervention automobile, mécanique de précision et métallurgie.",
     },
     implementation: {
       fr: "Implémentation IA à Valentigney : contrôle qualité visuel pièces automobile, maintenance prédictive parc machines, optimisation ordonnancement production, automatisation traçabilité industrielle, agents IA pilotage atelier.",

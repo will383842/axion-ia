@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PERSAN_COPY: VilleCopy = {
   pitchFr:
-    "Persan (95), commune du nord du Val-d'Oise en bords de l'Oise, concentre un tissu de TPE artisans, PME industrielles et tertiaires, commerçants et professions libérales autour de ses zones d'activités. Axion-IA y intervient pour tous types d'activités.",
+    "Persan (95), commune du nord du Val-d'Oise en bords de l'Oise, concentre un tissu de TPE artisans, PME industrielles et tertiaires, commerçants et professions libérales autour de ses zones d'activités. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Persan (95), commune du nord du Val-d'Oise en bords de l'Oise, concentre un tissu de TPE artisans, PME industrielles et tertiaires, commerçants et professions libérales autour de ses zones d'activités. Axion-IA y intervient pour tous types d'activités.",
+    "Persan (95), commune du nord du Val-d'Oise en bords de l'Oise, concentre un tissu de TPE artisans, PME industrielles et tertiaires, commerçants et professions libérales autour de ses zones d'activités. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Persan (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME industrielles et tertiaires des zones d'activités persanaises, professions libérales, indépendants et entreprises du nord Val-d'Oise.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const PERSAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Persan : diagnostic adapté aux TPE artisans, PME industrielles zones d'activités, commerçants, professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Persan : diagnostic adapté aux TPE artisans, PME industrielles zones d'activités, commerçants, professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Persan : diagnostic adapté aux TPE artisans, PME industrielles zones d'activités, commerçants, professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Persan : diagnostic adapté aux TPE artisans, PME industrielles zones d'activités, commerçants, professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Persan : formats adaptés à l'atelier industriel, bureau, cabinet ou commerce. Vos équipes repartent autonomes sur outils IA.",

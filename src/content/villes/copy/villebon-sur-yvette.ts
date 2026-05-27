@@ -29,12 +29,12 @@ export const VILLEBON_SUR_YVETTE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villebon-sur-Yvette : diagnostic adapté aux enseignes commerciales, PME ingénierie Courtaboeuf, professions libérales et TPE services du plateau de Saclay. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Villebon-sur-Yvette : diagnostic adapté aux enseignes commerciales, PME ingénierie Courtaboeuf, professions libérales et TPE services du plateau de Saclay. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Villebon-sur-Yvette : diagnostic adapté aux enseignes commerciales, PME ingénierie Courtaboeuf, professions libérales et TPE services du plateau de Saclay. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Villebon-sur-Yvette : diagnostic adapté aux enseignes commerciales, PME ingénierie Courtaboeuf, professions libérales et TPE services du plateau de Saclay. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Villebon-sur-Yvette : formats adaptés bureau zone Courtaboeuf, enseigne commerciale, cabinet ou siège. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Villebon-sur-Yvette : formats adaptés bureau zone Courtaboeuf, enseigne commerciale, cabinet ou siège. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Villebon-sur-Yvette : formats adaptés bureau zone Courtaboeuf, enseigne commerciale, cabinet ou siège. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Villebon-sur-Yvette : formats adaptés bureau zone Courtaboeuf, enseigne commerciale, cabinet ou siège. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Villebon-sur-Yvette : CRM commercial, automatisation supply chain retail, prédiction fréquentation, classification tickets SAV. Adapté commerce, ingénierie, TPE services.",

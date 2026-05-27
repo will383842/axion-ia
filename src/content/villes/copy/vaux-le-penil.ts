@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VAUX_LE_PENIL_COPY: VilleCopy = {
   pitchFr:
-    "Vaux-le-Pénil, commune résidentielle de Seine-et-Marne (77) intégrée à l'agglomération de Melun, 45 km au sud-est de Paris. Tissu TPE artisans, commerçants de proximité, PME tertiaires, professions libérales et prestataires de services. Axion-IA y intervient pour tous types d'activités de l'agglomération melunaise.",
+    "Vaux-le-Pénil, commune résidentielle de Seine-et-Marne (77) intégrée à l'agglomération de Melun, 45 km au sud-est de Paris. Tissu TPE artisans, commerçants de proximité, PME tertiaires, professions libérales et prestataires de services. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération melunaise.",
   pitchEn:
-    "Vaux-le-Pénil, commune résidentielle de Seine-et-Marne (77) intégrée à l'agglomération de Melun, 45 km au sud-est de Paris. Tissu TPE artisans, commerçants de proximité, PME tertiaires, professions libérales et prestataires de services. Axion-IA y intervient pour tous types d'activités de l'agglomération melunaise.",
+    "Vaux-le-Pénil, commune résidentielle de Seine-et-Marne (77) intégrée à l'agglomération de Melun, 45 km au sud-est de Paris. Tissu TPE artisans, commerçants de proximité, PME tertiaires, professions libérales et prestataires de services. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération melunaise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vaux-le-Pénil (77). Nous accompagnons tous types d'activités : TPE artisans, commerçants, PME tertiaires, professions libérales et prestataires de services de l'agglomération melunaise. Audit Flash dès 490 € HT.",
   directAnswerEn:

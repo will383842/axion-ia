@@ -29,12 +29,12 @@ export const VILLARS_LES_DOMBES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villars-les-Dombes : diagnostic adapté aux acteurs tourisme Parc des Oiseaux, pisciculteurs Dombes, agriculteurs, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Villars-les-Dombes : diagnostic adapté aux acteurs tourisme Parc des Oiseaux, pisciculteurs Dombes, agriculteurs, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Villars-les-Dombes : diagnostic adapté aux acteurs tourisme Parc des Oiseaux, pisciculteurs Dombes, agriculteurs, TPE artisans. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Villars-les-Dombes : diagnostic adapté aux acteurs tourisme Parc des Oiseaux, pisciculteurs Dombes, agriculteurs, TPE artisans. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Villars-les-Dombes : formats adaptés au parc animalier, exploitation piscicole, commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Villars-les-Dombes : formats adaptés au parc animalier, exploitation piscicole, commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Villars-les-Dombes : formats adaptés au parc animalier, exploitation piscicole, commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Villars-les-Dombes : formats adaptés au parc animalier, exploitation piscicole, commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Villars-les-Dombes : agents conversationnels visiteurs Parc des Oiseaux multilingue, classification photos ornithologie, traçabilité pisciculture, automatisation réservations.",
@@ -64,7 +64,7 @@ export const VILLARS_LES_DOMBES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (40 min). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (40 min). Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const USTARITZ_COPY: VilleCopy = {
   pitchFr:
-    "Ustaritz (64), commune du Labourd en Pays Basque intérieur, 7 897 habitants. Berceau de la pelote basque, tissu de TPE agricoles, artisans, PME agroalimentaires et commerces locaux. Axion-IA y intervient pour tous types d'activités du Labourd intérieur.",
+    "Ustaritz (64), commune du Labourd en Pays Basque intérieur, 7 897 habitants. Berceau de la pelote basque, tissu de TPE agricoles, artisans, PME agroalimentaires et commerces locaux. Axion-IA opère pour toutes les structures économiques de la commune du Labourd intérieur.",
   pitchEn:
-    "Ustaritz (64), commune du Labourd en Pays Basque intérieur, 7 897 habitants. Berceau de la pelote basque, tissu de TPE agricoles, artisans, PME agroalimentaires et commerces locaux. Axion-IA y intervient pour tous types d'activités du Labourd intérieur.",
+    "Ustaritz (64), commune du Labourd en Pays Basque intérieur, 7 897 habitants. Berceau de la pelote basque, tissu de TPE agricoles, artisans, PME agroalimentaires et commerces locaux. Axion-IA opère pour toutes les structures économiques de la commune du Labourd intérieur.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ustaritz (64). Nous accompagnons TPE, PME et artisans du Labourd intérieur : agriculture basque, agroalimentaire, artisanat, commerces. Audit Flash à partir de 490 € HT.",
   directAnswerEn:

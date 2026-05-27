@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_PIERRE_LES_NEMOURS_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Pierre-lès-Nemours (77), commune de Seine-et-Marne en bordure du Loing et à proximité de Nemours, entre forêt de Fontainebleau et Gâtinais. TPE artisanat, commerces de proximité, PME industrie légère, professions libérales, tourisme vert. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Pierre-lès-Nemours (77), commune de Seine-et-Marne en bordure du Loing et à proximité de Nemours, entre forêt de Fontainebleau et Gâtinais. TPE artisanat, commerces de proximité, PME industrie légère, professions libérales, tourisme vert. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Saint-Pierre-lès-Nemours (77), commune de Seine-et-Marne en bordure du Loing et à proximité de Nemours, entre forêt de Fontainebleau et Gâtinais. TPE artisanat, commerces de proximité, PME industrie légère, professions libérales, tourisme vert. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Pierre-lès-Nemours (77), commune de Seine-et-Marne en bordure du Loing et à proximité de Nemours, entre forêt de Fontainebleau et Gâtinais. TPE artisanat, commerces de proximité, PME industrie légère, professions libérales, tourisme vert. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Pierre-lès-Nemours (77). Nous accompagnons TPE et PME : artisans, commerçants de proximité, PME industrie légère, professions libérales, acteurs du tourisme vert bords du Loing et Gâtinais. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const SAINT_PIERRE_LES_NEMOURS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Pierre-lès-Nemours : diagnostic adapté aux TPE artisanat, commerces de proximité, PME industrie légère, professions libérales, acteurs du tourisme vert. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Pierre-lès-Nemours : diagnostic adapté aux TPE artisanat, commerces de proximité, PME industrie légère, professions libérales, acteurs du tourisme vert. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Pierre-lès-Nemours : diagnostic adapté aux TPE artisanat, commerces de proximité, PME industrie légère, professions libérales, acteurs du tourisme vert. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Saint-Pierre-lès-Nemours : diagnostic adapté aux TPE artisanat, commerces de proximité, PME industrie légère, professions libérales, acteurs du tourisme vert. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Pierre-lès-Nemours : formats adaptés atelier artisan, commerce, usine PME, cabinet libéral, hébergement touristique. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Saint-Pierre-lès-Nemours : formats adaptés atelier artisan, commerce, usine PME, cabinet libéral, hébergement touristique. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Saint-Pierre-lès-Nemours : formats adaptés atelier artisan, commerce, usine PME, cabinet libéral, hébergement touristique. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Saint-Pierre-lès-Nemours : formats adaptés atelier artisan, commerce, usine PME, cabinet libéral, hébergement touristique. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Pierre-lès-Nemours : automatisation devis artisans, gestion stocks commerce, optimisation production PME, planning professions libérales, réservation tourisme.",
@@ -64,7 +64,7 @@ export const SAINT_PIERRE_LES_NEMOURS_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi à Nemours et Fontainebleau ?",
-      a: "Oui, nous couvrons Saint-Pierre-lès-Nemours, Nemours, Fontainebleau, Moret-Loing-et-Orvanne et tout le Gâtinais. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Oui, nous couvrons Saint-Pierre-lès-Nemours, Nemours, Fontainebleau, Moret-Loing-et-Orvanne et tout le Gâtinais. Frais de mission en sus, grille tarifaire publique.",
     },
   ],
 };

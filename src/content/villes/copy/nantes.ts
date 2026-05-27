@@ -59,6 +59,8 @@ export const NANTES_COPY: VilleCopy = {
   directAnswerEn:
     "Axion-IA is a senior AI architects consultancy that intervenes in Nantes (44) on site across the metropolitan area and Greater West. We support Nantes micro-businesses, SMEs, mid-caps and large enterprises — industry (Airbus, aeronautics, shipyards), agri-food (LU, canneries), digital (French Tech, Île de Nantes), biotech (Atlanpole) — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
+  seoHook: "naval, agroalimentaire & numérique",
+
   topSectorsNaf: [
     "Industrie aéronautique & navale",
     "Agroalimentaire & IAA",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MELESSE_COPY: VilleCopy = {
   pitchFr:
-    "Melesse (35), commune résidentielle au nord de Rennes en Ille-et-Vilaine, bénéficie de la dynamique de Rennes Métropole. Tissu TPE artisans, PME services, commerces de proximité, professions libérales et entreprises tertiaires. Axion-IA y intervient pour tous types d'activités du nord rennais.",
+    "Melesse (35), commune résidentielle au nord de Rennes en Ille-et-Vilaine, bénéficie de la dynamique de Rennes Métropole. Tissu TPE artisans, PME services, commerces de proximité, professions libérales et entreprises tertiaires. Axion-IA y déploie ses missions auprès de toutes les organisations du nord rennais.",
   pitchEn:
-    "Melesse (35), commune résidentielle au nord de Rennes en Ille-et-Vilaine, bénéficie de la dynamique de Rennes Métropole. Tissu TPE artisans, PME services, commerces de proximité, professions libérales et entreprises tertiaires. Axion-IA y intervient pour tous types d'activités du nord rennais.",
+    "Melesse (35), commune résidentielle au nord de Rennes en Ille-et-Vilaine, bénéficie de la dynamique de Rennes Métropole. Tissu TPE artisans, PME services, commerces de proximité, professions libérales et entreprises tertiaires. Axion-IA y déploie ses missions auprès de toutes les organisations du nord rennais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Melesse (35). Nous accompagnons TPE artisans, PME de services, commerçants, professions libérales et entreprises tertiaires du nord rennais. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
   directAnswerEn:

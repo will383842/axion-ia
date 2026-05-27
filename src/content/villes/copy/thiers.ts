@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const THIERS_COPY: VilleCopy = {
   pitchFr:
-    "Thiers (63), sous-préfecture du Puy-de-Dôme, est la capitale mondiale de la coutellerie (80 % de la production française, plus de 100 entreprises). Vallée des usines, métallurgie fine, TPE artisans couteliers, tourisme industriel, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Thiers (63), sous-préfecture du Puy-de-Dôme, est la capitale mondiale de la coutellerie (80 % de la production française, plus de 100 entreprises). Vallée des usines, métallurgie fine, TPE artisans couteliers, tourisme industriel, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Thiers (63), sous-préfecture du Puy-de-Dôme, est la capitale mondiale de la coutellerie (80 % de la production française, plus de 100 entreprises). Vallée des usines, métallurgie fine, TPE artisans couteliers, tourisme industriel, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Thiers (63), sous-préfecture du Puy-de-Dôme, est la capitale mondiale de la coutellerie (80 % de la production française, plus de 100 entreprises). Vallée des usines, métallurgie fine, TPE artisans couteliers, tourisme industriel, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thiers (63). Nous accompagnons TPE et PME : couteliers et métallurgistes, artisans couteliers indépendants, acteurs tourisme industriel (vallée des usines), commerçants et prestataires de services.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const THIERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Thiers : diagnostic adapté aux couteliers, métallurgistes, artisans couteliers indépendants, acteurs tourisme industriel. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Thiers : diagnostic adapté aux couteliers, métallurgistes, artisans couteliers indépendants, acteurs tourisme industriel. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Thiers : diagnostic adapté aux couteliers, métallurgistes, artisans couteliers indépendants, acteurs tourisme industriel. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Thiers : diagnostic adapté aux couteliers, métallurgistes, artisans couteliers indépendants, acteurs tourisme industriel. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Thiers : formats adaptés atelier coutellerie, usine métallurgie, site touristique vallée des usines, commerce. Vos équipes repartent autonomes.",
@@ -64,7 +64,7 @@ export const THIERS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Clermont-Ferrand ?",
-      a: "Clermont-Ferrand (45 min). Aéroport Clermont à 55 min. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Clermont-Ferrand (45 min). Aéroport Clermont à 55 min. Frais de mission en sus, grille tarifaire publique.",
     },
   ],
 };

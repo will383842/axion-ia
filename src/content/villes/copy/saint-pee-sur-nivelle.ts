@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_PEE_SUR_NIVELLE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Pée-sur-Nivelle (64), commune du Labourd en Pays Basque, 7 264 habitants. Village basque au pied de la Rhune, lac de Saint-Pée, tourisme vert, TPE agricoles, artisans du terroir et commerces locaux. Axion-IA y intervient pour tous types d'activités du Labourd.",
+    "Saint-Pée-sur-Nivelle (64), commune du Labourd en Pays Basque, 7 264 habitants. Village basque au pied de la Rhune, lac de Saint-Pée, tourisme vert, TPE agricoles, artisans du terroir et commerces locaux. Axion-IA y déploie ses missions auprès de toutes les organisations du Labourd.",
   pitchEn:
-    "Saint-Pée-sur-Nivelle (64), commune du Labourd en Pays Basque, 7 264 habitants. Village basque au pied de la Rhune, lac de Saint-Pée, tourisme vert, TPE agricoles, artisans du terroir et commerces locaux. Axion-IA y intervient pour tous types d'activités du Labourd.",
+    "Saint-Pée-sur-Nivelle (64), commune du Labourd en Pays Basque, 7 264 habitants. Village basque au pied de la Rhune, lac de Saint-Pée, tourisme vert, TPE agricoles, artisans du terroir et commerces locaux. Axion-IA y déploie ses missions auprès de toutes les organisations du Labourd.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Pée-sur-Nivelle (64). Nous accompagnons TPE, PME et artisans du Labourd : agriculture basque, tourisme vert, produits du terroir, hébergements. Audit Flash à partir de 490 € HT.",
   directAnswerEn:

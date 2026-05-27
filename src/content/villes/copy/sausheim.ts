@@ -34,8 +34,8 @@ export const SAUSHEIM_COPY: VilleCopy = {
       en: "Audit IA à Sausheim : diagnostic adapté aux TPE/PME industrie automobile, sous-traitants, logisticiens et services aux entreprises de l'est mulhousien. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Sausheim : formats adaptés à l'atelier automobile, à la ligne de production, à l'entrepôt logistique ou au bureau d'études. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Sausheim : formats adaptés à l'atelier automobile, à la ligne de production, à l'entrepôt logistique ou au bureau d'études. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Sausheim : formats adaptés à l'atelier automobile, à la ligne de production, à l'entrepôt logistique ou au bureau d'études. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Sausheim : formats adaptés à l'atelier automobile, à la ligne de production, à l'entrepôt logistique ou au bureau d'études. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Sausheim : maintenance prédictive lignes automobiles, contrôle qualité vision industrielle, optimisation supply chain, OCR documents logistiques, agents B2B transfrontaliers FR/DE.",

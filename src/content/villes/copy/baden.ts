@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BADEN_COPY: VilleCopy = {
   pitchFr:
-    "Baden (56), commune du golfe du Morbihan face à l'île Gavrinis, est un pôle de tourisme nautique et résidentiel. TPE artisans, PME tertiaires, commerces, ostréiculture, tourisme nautique et patrimonial. Axion-IA y intervient pour tous types d'activités.",
+    "Baden (56), commune du golfe du Morbihan face à l'île Gavrinis, est un pôle de tourisme nautique et résidentiel. TPE artisans, PME tertiaires, commerces, ostréiculture, tourisme nautique et patrimonial. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Baden (56), commune du golfe du Morbihan face à l'île Gavrinis, est un pôle de tourisme nautique et résidentiel. TPE artisans, PME tertiaires, commerces, ostréiculture, tourisme nautique et patrimonial. Axion-IA y intervient pour tous types d'activités.",
+    "Baden (56), commune du golfe du Morbihan face à l'île Gavrinis, est un pôle de tourisme nautique et résidentiel. TPE artisans, PME tertiaires, commerces, ostréiculture, tourisme nautique et patrimonial. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Baden (56). Nous accompagnons TPE artisans, PME tertiaires, ostréiculteurs, acteurs du tourisme nautique et patrimonial (île Gavrinis), commerçants et toutes les activités du golfe du Morbihan. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const BADEN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Baden : diagnostic adapté aux TPE artisans, PME tertiaires, ostréiculteurs et acteurs du tourisme nautique du golfe du Morbihan. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Baden : diagnostic adapté aux TPE artisans, PME tertiaires, ostréiculteurs et acteurs du tourisme nautique du golfe du Morbihan. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Baden : diagnostic adapté aux TPE artisans, PME tertiaires, ostréiculteurs et acteurs du tourisme nautique du golfe du Morbihan. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Baden : diagnostic adapté aux TPE artisans, PME tertiaires, ostréiculteurs et acteurs du tourisme nautique du golfe du Morbihan. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Baden : formats adaptés aux professionnels du tourisme nautique, ostréiculteurs, commerçants du golfe du Morbihan. Vos équipes repartent autonomes.",
@@ -64,7 +64,7 @@ export const BADEN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Baden ?",
-      a: "Nos consultants viennent de Vannes (15 min) ou Auray (15 min). Intervention sur site dans vos locaux ou en visio. Multi-jours possibles avec hébergement local. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants viennent de Vannes (15 min) ou Auray (15 min). Intervention sur site dans vos locaux ou en visio. Multi-jours possibles avec hébergement local. Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

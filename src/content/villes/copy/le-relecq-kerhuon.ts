@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_RELECQ_KERHUON_COPY: VilleCopy = {
   pitchFr:
-    "Le Relecq-Kerhuon (29), commune résidentielle et économique de Brest Métropole, borde la rade de Brest et accueille plusieurs zones d'activités dynamiques. Tissu TPE artisans BTP, PME tertiaires et industrielles, commerces, services et économie maritime. Axion-IA y intervient pour tous types d'activités de la rive droite brestoise et de la métropole.",
+    "Le Relecq-Kerhuon (29), commune résidentielle et économique de Brest Métropole, borde la rade de Brest et accueille plusieurs zones d'activités dynamiques. Tissu TPE artisans BTP, PME tertiaires et industrielles, commerces, services et économie maritime. Axion-IA y déploie ses missions auprès de toutes les organisations de la rive droite brestoise et de la métropole.",
   pitchEn:
-    "Le Relecq-Kerhuon (29), commune résidentielle et économique de Brest Métropole, borde la rade de Brest et accueille plusieurs zones d'activités dynamiques. Tissu TPE artisans BTP, PME tertiaires et industrielles, commerces, services et économie maritime. Axion-IA y intervient pour tous types d'activités de la rive droite brestoise et de la métropole.",
+    "Le Relecq-Kerhuon (29), commune résidentielle et économique de Brest Métropole, borde la rade de Brest et accueille plusieurs zones d'activités dynamiques. Tissu TPE artisans BTP, PME tertiaires et industrielles, commerces, services et économie maritime. Axion-IA y déploie ses missions auprès de toutes les organisations de la rive droite brestoise et de la métropole.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Relecq-Kerhuon (29). Nous accompagnons tous types d'activités : TPE artisans BTP, PME tertiaires et industrielles des zones d'activités, commerçants, indépendants, professions libérales, acteurs maritimes et services aux entreprises de Brest Métropole rive droite.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const LE_RELECQ_KERHUON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Relecq-Kerhuon : diagnostic adapté aux TPE artisans, PME tertiaires et industrielles des zones d'activités, sous-traitants navals et commerçants de Brest Métropole rive droite. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA au Relecq-Kerhuon : diagnostic adapté aux TPE artisans, PME tertiaires et industrielles des zones d'activités, sous-traitants navals et commerçants de Brest Métropole rive droite. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA au Relecq-Kerhuon : diagnostic adapté aux TPE artisans, PME tertiaires et industrielles des zones d'activités, sous-traitants navals et commerçants de Brest Métropole rive droite. ROI mesurable, audit Flash dès 490 € HT accessible.",
+      en: "Audit IA au Relecq-Kerhuon : diagnostic adapté aux TPE artisans, PME tertiaires et industrielles des zones d'activités, sous-traitants navals et commerçants de Brest Métropole rive droite. ROI mesurable, audit Flash dès 490 € HT accessible.",
     },
     interventions: {
-      fr: "Interventions IA sur site au Relecq-Kerhuon : formats adaptés au bureau tertiaire, à l'atelier naval ou au commerce. Vos équipes repartent autonomes sur outils IA configurés métier réel.",
-      en: "Interventions IA sur site au Relecq-Kerhuon : formats adaptés au bureau tertiaire, à l'atelier naval ou au commerce. Vos équipes repartent autonomes sur outils IA configurés métier réel.",
+      fr: "Interventions IA sur site au Relecq-Kerhuon : formats adaptés au bureau tertiaire, à l'atelier naval ou au commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure réel.",
+      en: "Interventions IA sur site au Relecq-Kerhuon : formats adaptés au bureau tertiaire, à l'atelier naval ou au commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure réel.",
     },
     implementation: {
       fr: "Implémentation IA au Relecq-Kerhuon : automatisation workflows tertiaires, maintenance prédictive navale, agents conversationnels, classification documents, optimisation planning. Brest Métropole rive droite.",

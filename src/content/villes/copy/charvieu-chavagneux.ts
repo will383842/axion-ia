@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHARVIEU_CHAVAGNEUX_COPY: VilleCopy = {
   pitchFr:
-    "Charvieu-Chavagneux (38), à la frontière nord du département de l'Isère avec le Rhône, est intégrée à l'aire d'attraction de Lyon (partie orientale). Tissu PME industrielles et logistique (axe vallée du Rhône), TPE artisans BTP, commerces, services aux entreprises. Axion-IA y intervient pour tous types d'activités du Nord-Isère.",
+    "Charvieu-Chavagneux (38), à la frontière nord du département de l'Isère avec le Rhône, est intégrée à l'aire d'attraction de Lyon (partie orientale). Tissu PME industrielles et logistique (axe vallée du Rhône), TPE artisans BTP, commerces, services aux entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs du Nord-Isère.",
   pitchEn:
-    "Charvieu-Chavagneux (38), à la frontière nord du département de l'Isère avec le Rhône, est intégrée à l'aire d'attraction de Lyon (partie orientale). Tissu PME industrielles et logistique (axe vallée du Rhône), TPE artisans BTP, commerces, services aux entreprises. Axion-IA y intervient pour tous types d'activités du Nord-Isère.",
+    "Charvieu-Chavagneux (38), à la frontière nord du département de l'Isère avec le Rhône, est intégrée à l'aire d'attraction de Lyon (partie orientale). Tissu PME industrielles et logistique (axe vallée du Rhône), TPE artisans BTP, commerces, services aux entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs du Nord-Isère.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Charvieu-Chavagneux (38). Nous accompagnons tous types d'activités : PME industrielles et logistiques de l'axe vallée du Rhône, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises du Nord-Isère limitrophe du Rhône.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const CHARVIEU_CHAVAGNEUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Charvieu-Chavagneux : diagnostic adapté aux PME industrielles/logistiques Nord-Isère, TPE artisans et commerçants de l'aire lyonnaise est. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Charvieu-Chavagneux : diagnostic adapté aux PME industrielles/logistiques Nord-Isère, TPE artisans et commerçants de l'aire lyonnaise est. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Charvieu-Chavagneux : diagnostic adapté aux PME industrielles/logistiques Nord-Isère, TPE artisans et commerçants de l'aire lyonnaise est. ROI mesurable, audit Flash dès 490 € HT accessible.",
+      en: "Audit IA à Charvieu-Chavagneux : diagnostic adapté aux PME industrielles/logistiques Nord-Isère, TPE artisans et commerçants de l'aire lyonnaise est. ROI mesurable, audit Flash dès 490 € HT accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Charvieu-Chavagneux : formats adaptés à l'atelier industriel, entrepôt logistique ou commerce. Vos équipes terrain et back-office repartent autonomes sur outils IA.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GUIDEL_COPY: VilleCopy = {
   pitchFr:
-    "Guidel (56), commune littorale de l'agglomération de Lorient (12 338 hab), conjugue les plages de Guidel-Plages, un cadre de vie attractif et un tissu économique varié. TPE et PME tourisme balnéaire, hôtellerie-restauration, commerces, artisanat, BTP, services, nautisme, agriculture. Axion-IA y intervient pour tous types d'activités.",
+    "Guidel (56), commune littorale de l'agglomération de Lorient (12 338 hab), conjugue les plages de Guidel-Plages, un cadre de vie attractif et un tissu économique varié. TPE et PME tourisme balnéaire, hôtellerie-restauration, commerces, artisanat, BTP, services, nautisme, agriculture. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Guidel (56), commune littorale de l'agglomération de Lorient (12 338 hab), conjugue les plages de Guidel-Plages, un cadre de vie attractif et un tissu économique varié. TPE et PME tourisme balnéaire, hôtellerie-restauration, commerces, artisanat, BTP, services, nautisme, agriculture. Axion-IA y intervient pour tous types d'activités.",
+    "Guidel (56), commune littorale de l'agglomération de Lorient (12 338 hab), conjugue les plages de Guidel-Plages, un cadre de vie attractif et un tissu économique varié. TPE et PME tourisme balnéaire, hôtellerie-restauration, commerces, artisanat, BTP, services, nautisme, agriculture. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guidel (56). Nous accompagnons TPE et PME : tourisme balnéaire et hôtellerie-restauration de Guidel-Plages, commerces, artisans, BTP, services, nautisme, agriculteurs de l'agglomération de Lorient. Audit Flash dès 490 € HT.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const DIGNE_LES_BAINS_COPY: VilleCopy = {
   pitchFr:
-    "Digne-les-Bains (04), préfecture des Alpes-de-Haute-Provence, est au carrefour de la lavande, du thermalisme et du Géoparc UNESCO de Haute-Provence. Tissu TPE artisans, PME tourisme/thermalisme, agriculteurs lavandicoles, commerces et services de santé. Axion-IA y intervient pour tous types d'activités de la préfecture dignoise.",
+    "Digne-les-Bains (04), préfecture des Alpes-de-Haute-Provence, est au carrefour de la lavande, du thermalisme et du Géoparc UNESCO de Haute-Provence. Tissu TPE artisans, PME tourisme/thermalisme, agriculteurs lavandicoles, commerces et services de santé. Axion-IA opère pour toutes les structures économiques de la commune de la préfecture dignoise.",
   pitchEn:
-    "Digne-les-Bains (04), préfecture des Alpes-de-Haute-Provence, est au carrefour de la lavande, du thermalisme et du Géoparc UNESCO de Haute-Provence. Tissu TPE artisans, PME tourisme/thermalisme, agriculteurs lavandicoles, commerces et services de santé. Axion-IA y intervient pour tous types d'activités de la préfecture dignoise.",
+    "Digne-les-Bains (04), préfecture des Alpes-de-Haute-Provence, est au carrefour de la lavande, du thermalisme et du Géoparc UNESCO de Haute-Provence. Tissu TPE artisans, PME tourisme/thermalisme, agriculteurs lavandicoles, commerces et services de santé. Axion-IA opère pour toutes les structures économiques de la commune de la préfecture dignoise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Digne-les-Bains (04). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et thermalisme, agriculteurs lavandicoles, commerçants, professionnels de santé thermale, indépendants et services aux entreprises de la préfecture des Alpes-de-Haute-Provence.",
   directAnswerEn:

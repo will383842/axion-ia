@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MONTROND_LES_BAINS_COPY: VilleCopy = {
   pitchFr:
-    "Montrond-les-Bains (42), commune de la plaine du Forez dans la Loire, est une station thermale historique (sources thermales, casino). Tissu thermal et hôtelier, PME tertiaires, TPE artisans BTP, commerces, agriculture périphérique. Axion-IA y intervient pour tous types d'activités foréziennes.",
+    "Montrond-les-Bains (42), commune de la plaine du Forez dans la Loire, est une station thermale historique (sources thermales, casino). Tissu thermal et hôtelier, PME tertiaires, TPE artisans BTP, commerces, agriculture périphérique. Axion-IA y déploie ses missions auprès de toutes les organisations foréziennes.",
   pitchEn:
-    "Montrond-les-Bains (42), commune de la plaine du Forez dans la Loire, est une station thermale historique (sources thermales, casino). Tissu thermal et hôtelier, PME tertiaires, TPE artisans BTP, commerces, agriculture périphérique. Axion-IA y intervient pour tous types d'activités foréziennes.",
+    "Montrond-les-Bains (42), commune de la plaine du Forez dans la Loire, est une station thermale historique (sources thermales, casino). Tissu thermal et hôtelier, PME tertiaires, TPE artisans BTP, commerces, agriculture périphérique. Axion-IA y déploie ses missions auprès de toutes les organisations foréziennes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montrond-les-Bains (42). Nous accompagnons tous types d'activités : acteurs thermalisme et hôtellerie (sources thermales, casino), PME tertiaires Loire Forez Agglo, TPE artisans BTP, commerçants, agriculteurs périphériques et services aux entreprises foréziennes.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const MONTROND_LES_BAINS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montrond-les-Bains : diagnostic adapté aux acteurs thermalisme (établissement thermal, casino, hôtels), PME tertiaires, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Montrond-les-Bains : diagnostic adapté aux acteurs thermalisme (établissement thermal, casino, hôtels), PME tertiaires, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Montrond-les-Bains : diagnostic adapté aux acteurs thermalisme (établissement thermal, casino, hôtels), PME tertiaires, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Montrond-les-Bains : diagnostic adapté aux acteurs thermalisme (établissement thermal, casino, hôtels), PME tertiaires, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montrond-les-Bains : formats adaptés à l'établissement thermal, hôtel de cure, casino, commerce. Vos équipes repartent autonomes sur outils IA.",

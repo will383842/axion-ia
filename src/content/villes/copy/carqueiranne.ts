@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CARQUEIRANNE_COPY: VilleCopy = {
   pitchFr:
-    "Carqueiranne (83), station balnéaire du littoral toulonnais entre Hyères et Le Pradet, est connue pour son port de plaisance, sa pêche traditionnelle et son cadre méditerranéen. Tissu de TPE pêche, nautisme, restauration et PME du tourisme et de l'hôtellerie. Axion-IA y intervient pour tous types d'activités.",
+    "Carqueiranne (83), station balnéaire du littoral toulonnais entre Hyères et Le Pradet, est connue pour son port de plaisance, sa pêche traditionnelle et son cadre méditerranéen. Tissu de TPE pêche, nautisme, restauration et PME du tourisme et de l'hôtellerie. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Carqueiranne (83), station balnéaire du littoral toulonnais entre Hyères et Le Pradet, est connue pour son port de plaisance, sa pêche traditionnelle et son cadre méditerranéen. Tissu de TPE pêche, nautisme, restauration et PME du tourisme et de l'hôtellerie. Axion-IA y intervient pour tous types d'activités.",
+    "Carqueiranne (83), station balnéaire du littoral toulonnais entre Hyères et Le Pradet, est connue pour son port de plaisance, sa pêche traditionnelle et son cadre méditerranéen. Tissu de TPE pêche, nautisme, restauration et PME du tourisme et de l'hôtellerie. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carqueiranne (83). Nous accompagnons TPE pêcheurs, restaurateurs, professionnels du nautisme et PME du tourisme et de l'hôtellerie du littoral toulonnais. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const CARQUEIRANNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Carqueiranne : diagnostic adapté aux TPE pêche, restaurateurs de poisson, professionnels du nautisme et PME tourisme. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Carqueiranne : diagnostic adapté aux TPE pêche, restaurateurs de poisson, professionnels du nautisme et PME tourisme. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Carqueiranne : diagnostic adapté aux TPE pêche, restaurateurs de poisson, professionnels du nautisme et PME tourisme. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Carqueiranne : diagnostic adapté aux TPE pêche, restaurateurs de poisson, professionnels du nautisme et PME tourisme. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Carqueiranne : ateliers pour pêcheurs, restaurateurs, professionnels du nautisme et hôteliers. Outils IA configurés métier réel.",

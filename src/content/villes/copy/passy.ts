@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PASSY_COPY: VilleCopy = {
   pitchFr:
-    "Passy (74), commune de la vallée de l'Arve en Haute-Savoie, est implantée face au Mont-Blanc avec son célèbre plateau d'Assy (sanatoriums historiques, église d'art moderne classée). Tissu tourisme montagne Mont-Blanc, hôtellerie et hébergement, patrimoine culturel, TPE artisanat, commerces de proximité. Axion-IA y intervient pour tous types d'activités.",
+    "Passy (74), commune de la vallée de l'Arve en Haute-Savoie, est implantée face au Mont-Blanc avec son célèbre plateau d'Assy (sanatoriums historiques, église d'art moderne classée). Tissu tourisme montagne Mont-Blanc, hôtellerie et hébergement, patrimoine culturel, TPE artisanat, commerces de proximité. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Passy (74), commune de la vallée de l'Arve en Haute-Savoie, est implantée face au Mont-Blanc avec son célèbre plateau d'Assy (sanatoriums historiques, église d'art moderne classée). Tissu tourisme montagne Mont-Blanc, hôtellerie et hébergement, patrimoine culturel, TPE artisanat, commerces de proximité. Axion-IA y intervient pour tous types d'activités.",
+    "Passy (74), commune de la vallée de l'Arve en Haute-Savoie, est implantée face au Mont-Blanc avec son célèbre plateau d'Assy (sanatoriums historiques, église d'art moderne classée). Tissu tourisme montagne Mont-Blanc, hôtellerie et hébergement, patrimoine culturel, TPE artisanat, commerces de proximité. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Passy (74). Nous accompagnons TPE et PME : acteurs tourisme montagne Mont-Blanc, hébergeurs et hôteliers de la vallée de l'Arve, artisans du bâtiment, commerçants, acteurs patrimoine culturel plateau d'Assy.",
   directAnswerEn:

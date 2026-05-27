@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_JEAN_DE_LA_RUELLE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Jean-de-la-Ruelle (45), commune de l'ouest de l'agglomération orléanaise dans le Loiret, accueille un tissu économique diversifié entre TPE artisans, PME industrielles et de services, commerces de quartier et activités tertiaires. Axion-IA y intervient pour tous types d'activités de l'ouest orléanais.",
+    "Saint-Jean-de-la-Ruelle (45), commune de l'ouest de l'agglomération orléanaise dans le Loiret, accueille un tissu économique diversifié entre TPE artisans, PME industrielles et de services, commerces de quartier et activités tertiaires. Axion-IA opère pour toutes les structures économiques de la commune de l'ouest orléanais.",
   pitchEn:
-    "Saint-Jean-de-la-Ruelle (45), commune de l'ouest de l'agglomération orléanaise dans le Loiret, accueille un tissu économique diversifié entre TPE artisans, PME industrielles et de services, commerces de quartier et activités tertiaires. Axion-IA y intervient pour tous types d'activités de l'ouest orléanais.",
+    "Saint-Jean-de-la-Ruelle (45), commune de l'ouest de l'agglomération orléanaise dans le Loiret, accueille un tissu économique diversifié entre TPE artisans, PME industrielles et de services, commerces de quartier et activités tertiaires. Axion-IA opère pour toutes les structures économiques de la commune de l'ouest orléanais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean-de-la-Ruelle (45), dans l'agglomération d'Orléans. Nous accompagnons TPE artisans, PME industrielles et de services, commerces et professions libérales. Audit Flash dès 490 € HT, démarrage sous 10 jours.",
   directAnswerEn:
@@ -34,8 +34,8 @@ export const SAINT_JEAN_DE_LA_RUELLE_COPY: VilleCopy = {
       en: "Audit IA à Saint-Jean-de-la-Ruelle : diagnostic adapté aux TPE artisans, PME industrielles et de services de l'ouest orléanais. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Jean-de-la-Ruelle : formations en atelier industriel, bureau PME ou commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Saint-Jean-de-la-Ruelle : formations en atelier industriel, bureau PME ou commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Saint-Jean-de-la-Ruelle : formations en atelier industriel, bureau PME ou commerce. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Saint-Jean-de-la-Ruelle : formations en atelier industriel, bureau PME ou commerce. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Jean-de-la-Ruelle : automatisation production, agents conversationnels, classification documents, optimisation workflow PME.",

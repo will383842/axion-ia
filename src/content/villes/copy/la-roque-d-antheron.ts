@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_ROQUE_D_ANTHERON_COPY: VilleCopy = {
   pitchFr:
-    "La Roque-d'Anthéron (13), commune de la vallée de la Durance célèbre pour son Festival international de piano et l'abbaye cistercienne de Silvacane, conjugue patrimoine, tourisme culturel et tissu de TPE artisans, PME services, restauration et commerces de proximité. Bassin d'emploi tourné vers Aix, Salon et Pertuis. Axion-IA y intervient pour tous types d'activités.",
+    "La Roque-d'Anthéron (13), commune de la vallée de la Durance célèbre pour son Festival international de piano et l'abbaye cistercienne de Silvacane, conjugue patrimoine, tourisme culturel et tissu de TPE artisans, PME services, restauration et commerces de proximité. Bassin d'emploi tourné vers Aix, Salon et Pertuis. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "La Roque-d'Anthéron (13), commune de la vallée de la Durance célèbre pour son Festival international de piano et l'abbaye cistercienne de Silvacane, conjugue patrimoine, tourisme culturel et tissu de TPE artisans, PME services, restauration et commerces de proximité. Bassin d'emploi tourné vers Aix, Salon et Pertuis. Axion-IA y intervient pour tous types d'activités.",
+    "La Roque-d'Anthéron (13), commune de la vallée de la Durance célèbre pour son Festival international de piano et l'abbaye cistercienne de Silvacane, conjugue patrimoine, tourisme culturel et tissu de TPE artisans, PME services, restauration et commerces de proximité. Bassin d'emploi tourné vers Aix, Salon et Pertuis. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Roque-d'Anthéron (13). Nous accompagnons TPE tourisme culturel, restauration, artisans, PME services, hébergements et commerces de proximité de la vallée de la Durance. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LA_ROQUE_D_ANTHERON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Roque-d'Anthéron : diagnostic adapté aux TPE tourisme culturel (festival de piano), restaurateurs, hébergeurs, artisans et commerces de la vallée de la Durance. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à La Roque-d'Anthéron : diagnostic adapté aux TPE tourisme culturel (festival de piano), restaurateurs, hébergeurs, artisans et commerces de la vallée de la Durance. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à La Roque-d'Anthéron : diagnostic adapté aux TPE tourisme culturel (festival de piano), restaurateurs, hébergeurs, artisans et commerces de la vallée de la Durance. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à La Roque-d'Anthéron : diagnostic adapté aux TPE tourisme culturel (festival de piano), restaurateurs, hébergeurs, artisans et commerces de la vallée de la Durance. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Roque-d'Anthéron : ateliers pour équipes tourisme, restauration, événementiel festival et TPE locales. Outils IA configurés métier réel, dans vos locaux.",

@@ -33,8 +33,8 @@ export const ESCALQUENS_COPY: VilleCopy = {
       en: "Audit IA à Escalquens : diagnostic adapté aux TPE artisans, PME de services et professions libérales du Sicoval. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Escalquens : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Escalquens : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Escalquens : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Escalquens : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Escalquens : automatisation gestion clients, classification documents, agents conversationnels, optimisation planning pour TPE-PME du Sicoval.",

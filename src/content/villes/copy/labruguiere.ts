@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LABRUGUIERE_COPY: VilleCopy = {
   pitchFr:
-    "Labruguière (81), commune de l'agglomération de Castres dans le Tarn, plus de 6 500 habitants. Tissu TPE artisans, PME industrie et services, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités du bassin castrais sud.",
+    "Labruguière (81), commune de l'agglomération de Castres dans le Tarn, plus de 6 500 habitants. Tissu TPE artisans, PME industrie et services, commerces de proximité, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin castrais sud.",
   pitchEn:
-    "Labruguière (81), commune de l'agglomération de Castres dans le Tarn, plus de 6 500 habitants. Tissu TPE artisans, PME industrie et services, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités du bassin castrais sud.",
+    "Labruguière (81), commune de l'agglomération de Castres dans le Tarn, plus de 6 500 habitants. Tissu TPE artisans, PME industrie et services, commerces de proximité, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin castrais sud.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Labruguière (81). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants et professions libérales de l'agglomération de Castres. Audit Flash dès 490 € HT.",
   directAnswerEn:

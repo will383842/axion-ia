@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const HAUBOURDIN_COPY: VilleCopy = {
   pitchFr:
-    "Haubourdin (59), commune de l'agglomération lilloise à l'ouest de Lille en bord de Deûle dans le Nord, fait partie de la Métropole Européenne de Lille. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales et indépendants. Axion-IA y intervient pour tous types d'activités de l'ouest lillois.",
+    "Haubourdin (59), commune de l'agglomération lilloise à l'ouest de Lille en bord de Deûle dans le Nord, fait partie de la Métropole Européenne de Lille. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales et indépendants. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'ouest lillois.",
   pitchEn:
-    "Haubourdin (59), commune de l'agglomération lilloise à l'ouest de Lille en bord de Deûle dans le Nord, fait partie de la Métropole Européenne de Lille. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales et indépendants. Axion-IA y intervient pour tous types d'activités de l'ouest lillois.",
+    "Haubourdin (59), commune de l'agglomération lilloise à l'ouest de Lille en bord de Deûle dans le Nord, fait partie de la Métropole Européenne de Lille. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales et indépendants. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'ouest lillois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Haubourdin (59). Nous accompagnons TPE artisans, PME de services, commerçants, professions libérales et indépendants de l'ouest lillois, bords de Deûle. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
   directAnswerEn:

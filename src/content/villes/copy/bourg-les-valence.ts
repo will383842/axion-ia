@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BOURG_LES_VALENCE_COPY: VilleCopy = {
   pitchFr:
-    "Bourg-lès-Valence (26), commune en banlieue nord immédiate de Valence dans la Drôme, occupe une position stratégique dans la vallée du Rhône. Tissu PME industrielles et commerciales, TPE artisans BTP, agriculture vallée, professions libérales. Axion-IA y intervient pour tous types d'activités de l'agglomération valentinoise.",
+    "Bourg-lès-Valence (26), commune en banlieue nord immédiate de Valence dans la Drôme, occupe une position stratégique dans la vallée du Rhône. Tissu PME industrielles et commerciales, TPE artisans BTP, agriculture vallée, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations de l'agglomération valentinoise.",
   pitchEn:
-    "Bourg-lès-Valence (26), commune en banlieue nord immédiate de Valence dans la Drôme, occupe une position stratégique dans la vallée du Rhône. Tissu PME industrielles et commerciales, TPE artisans BTP, agriculture vallée, professions libérales. Axion-IA y intervient pour tous types d'activités de l'agglomération valentinoise.",
+    "Bourg-lès-Valence (26), commune en banlieue nord immédiate de Valence dans la Drôme, occupe une position stratégique dans la vallée du Rhône. Tissu PME industrielles et commerciales, TPE artisans BTP, agriculture vallée, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations de l'agglomération valentinoise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bourg-lès-Valence (26). Nous accompagnons tous types d'activités : PME industrielles et commerciales agglomération Valence Romans Agglo, TPE artisans BTP, commerçants, agriculteurs vallée du Rhône, indépendants, professions libérales et services aux entreprises drômoises.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const BOURG_LES_VALENCE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bourg-lès-Valence : diagnostic adapté aux PME industrielles/commerciales Valence Romans Agglo, TPE artisans, agriculteurs vallée Rhône. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Bourg-lès-Valence : diagnostic adapté aux PME industrielles/commerciales Valence Romans Agglo, TPE artisans, agriculteurs vallée Rhône. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Bourg-lès-Valence : diagnostic adapté aux PME industrielles/commerciales Valence Romans Agglo, TPE artisans, agriculteurs vallée Rhône. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Bourg-lès-Valence : diagnostic adapté aux PME industrielles/commerciales Valence Romans Agglo, TPE artisans, agriculteurs vallée Rhône. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bourg-lès-Valence : formats adaptés à l'atelier industriel, commerce, exploitation agricole. Vos équipes repartent autonomes sur outils IA métier.",

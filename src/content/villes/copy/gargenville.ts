@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GARGENVILLE_COPY: VilleCopy = {
   pitchFr:
-    "Gargenville (78), commune des bords de Seine dans les Yvelines à 45 km ouest de Paris, rassemble un tissu de TPE artisanales, PME de services, professions libérales et commerces de proximité dans un cadre résidentiel entre Mantes et Poissy. Axion-IA y intervient pour tous types d'activités du Mantois.",
+    "Gargenville (78), commune des bords de Seine dans les Yvelines à 45 km ouest de Paris, rassemble un tissu de TPE artisanales, PME de services, professions libérales et commerces de proximité dans un cadre résidentiel entre Mantes et Poissy. Axion-IA accompagne entreprises et indépendants de tous secteurs du Mantois.",
   pitchEn:
-    "Gargenville (78), commune des bords de Seine dans les Yvelines à 45 km ouest de Paris, rassemble un tissu de TPE artisanales, PME de services, professions libérales et commerces de proximité dans un cadre résidentiel entre Mantes et Poissy. Axion-IA y intervient pour tous types d'activités du Mantois.",
+    "Gargenville (78), commune des bords de Seine dans les Yvelines à 45 km ouest de Paris, rassemble un tissu de TPE artisanales, PME de services, professions libérales et commerces de proximité dans un cadre résidentiel entre Mantes et Poissy. Axion-IA accompagne entreprises et indépendants de tous secteurs du Mantois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gargenville (78). Nous accompagnons TPE et PME : artisans, PME de services, professions libérales, commerçants et entreprises du bassin Mantois entre Seine et campagne yvelinoise.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const GARGENVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gargenville : diagnostic adapté aux TPE artisanales, PME de services, professions libérales et commerçants du Mantois yvelinois. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Gargenville : diagnostic adapté aux TPE artisanales, PME de services, professions libérales et commerçants du Mantois yvelinois. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Gargenville : diagnostic adapté aux TPE artisanales, PME de services, professions libérales et commerçants du Mantois yvelinois. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Gargenville : diagnostic adapté aux TPE artisanales, PME de services, professions libérales et commerçants du Mantois yvelinois. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Gargenville : formats adaptés aux artisans, PME de services et professions libérales du Mantois. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Gargenville : formats adaptés aux artisans, PME de services et professions libérales du Mantois. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Gargenville : formats adaptés aux artisans, PME de services et professions libérales du Mantois. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Gargenville : formats adaptés aux artisans, PME de services et professions libérales du Mantois. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Gargenville : automatisation devis et facturation artisans, CRM augmenté PME, agents conversationnels, gestion documentaire professions libérales, outils IA sur mesure pour le bassin Mantois.",

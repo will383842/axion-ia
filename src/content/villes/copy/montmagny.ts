@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MONTMAGNY_COPY: VilleCopy = {
   pitchFr:
-    "Montmagny, commune résidentielle du Val-d'Oise (95) en proche banlieue nord de Paris, entre Deuil-la-Barre et Groslay. Tissu TPE artisans BTP, commerçants de proximité, PME de services, professions libérales et indépendants. Axion-IA y intervient pour tous types d'activités du sud Val-d'Oise.",
+    "Montmagny, commune résidentielle du Val-d'Oise (95) en proche banlieue nord de Paris, entre Deuil-la-Barre et Groslay. Tissu TPE artisans BTP, commerçants de proximité, PME de services, professions libérales et indépendants. Axion-IA y déploie ses missions auprès de toutes les organisations du sud Val-d'Oise.",
   pitchEn:
-    "Montmagny, commune résidentielle du Val-d'Oise (95) en proche banlieue nord de Paris, entre Deuil-la-Barre et Groslay. Tissu TPE artisans BTP, commerçants de proximité, PME de services, professions libérales et indépendants. Axion-IA y intervient pour tous types d'activités du sud Val-d'Oise.",
+    "Montmagny, commune résidentielle du Val-d'Oise (95) en proche banlieue nord de Paris, entre Deuil-la-Barre et Groslay. Tissu TPE artisans BTP, commerçants de proximité, PME de services, professions libérales et indépendants. Axion-IA y déploie ses missions auprès de toutes les organisations du sud Val-d'Oise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montmagny (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME de services, professions libérales et indépendants du sud Val-d'Oise et nord parisien. Audit Flash dès 490 € HT.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_JAMES_COPY: VilleCopy = {
   pitchFr:
-    "Saint-James (50), bourg du bocage normand dans la Manche (Normandie), abrite un cimetière militaire américain de la Seconde Guerre mondiale. Tissu TPE agriculteurs et éleveurs, PME agroalimentaires du bocage, artisans, commerces de bourg et tourisme mémoriel. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-James (50), bourg du bocage normand dans la Manche (Normandie), abrite un cimetière militaire américain de la Seconde Guerre mondiale. Tissu TPE agriculteurs et éleveurs, PME agroalimentaires du bocage, artisans, commerces de bourg et tourisme mémoriel. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Saint-James (50), bourg du bocage normand dans la Manche (Normandie), abrite un cimetière militaire américain de la Seconde Guerre mondiale. Tissu TPE agriculteurs et éleveurs, PME agroalimentaires du bocage, artisans, commerces de bourg et tourisme mémoriel. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-James (50), bourg du bocage normand dans la Manche (Normandie), abrite un cimetière militaire américain de la Seconde Guerre mondiale. Tissu TPE agriculteurs et éleveurs, PME agroalimentaires du bocage, artisans, commerces de bourg et tourisme mémoriel. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-James (50). Nous accompagnons tous types d'activités : TPE éleveurs et agriculteurs du bocage, PME agroalimentaires, artisans BTP, commerçants de bourg, prestataires tourisme mémoriel, professions libérales et services du sud Manche.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const SAINT_JAMES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-James : diagnostic adapté aux TPE éleveurs et agriculteurs du bocage, PME agroalimentaires, artisans BTP, commerçants de bourg et prestataires tourisme mémoriel. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-James : diagnostic adapté aux TPE éleveurs et agriculteurs du bocage, PME agroalimentaires, artisans BTP, commerçants de bourg et prestataires tourisme mémoriel. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-James : diagnostic adapté aux TPE éleveurs et agriculteurs du bocage, PME agroalimentaires, artisans BTP, commerçants de bourg et prestataires tourisme mémoriel. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Saint-James : diagnostic adapté aux TPE éleveurs et agriculteurs du bocage, PME agroalimentaires, artisans BTP, commerçants de bourg et prestataires tourisme mémoriel. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-James : formats adaptés à l'exploitation agricole, l'atelier artisanal, le commerce, le prestataire touristique. Vos équipes repartent autonomes sur les outils IA.",

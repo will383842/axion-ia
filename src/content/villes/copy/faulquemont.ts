@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FAULQUEMONT_COPY: VilleCopy = {
   pitchFr:
-    "Faulquemont (57), commune de 5 109 habitants en Moselle, bureau centralisateur du canton et siège du district urbain, ancrée dans le bassin houiller lorrain reconverti vers l'industrie diversifiée, la logistique et les services. Tissu TPE/PME industrie reconvertie, sous-traitance, commerces de proximité, artisans, services. Axion-IA y intervient pour tous types d'activités.",
+    "Faulquemont (57), commune de 5 109 habitants en Moselle, bureau centralisateur du canton et siège du district urbain, ancrée dans le bassin houiller lorrain reconverti vers l'industrie diversifiée, la logistique et les services. Tissu TPE/PME industrie reconvertie, sous-traitance, commerces de proximité, artisans, services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Faulquemont (57), commune de 5 109 habitants en Moselle, bureau centralisateur du canton et siège du district urbain, ancrée dans le bassin houiller lorrain reconverti vers l'industrie diversifiée, la logistique et les services. Tissu TPE/PME industrie reconvertie, sous-traitance, commerces de proximité, artisans, services. Axion-IA y intervient pour tous types d'activités.",
+    "Faulquemont (57), commune de 5 109 habitants en Moselle, bureau centralisateur du canton et siège du district urbain, ancrée dans le bassin houiller lorrain reconverti vers l'industrie diversifiée, la logistique et les services. Tissu TPE/PME industrie reconvertie, sous-traitance, commerces de proximité, artisans, services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Faulquemont (57). Nous accompagnons tous types d'activités : TPE/PME industrie reconvertie, sous-traitance, logistique, artisans, commerces du centre, professions de services et acteurs du district urbain et du pays de Nied.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const FAULQUEMONT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Faulquemont : diagnostic adapté aux TPE/PME industrie reconvertie, sous-traitance, logistique, commerces, artisans, services. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Faulquemont : diagnostic adapté aux TPE/PME industrie reconvertie, sous-traitance, logistique, commerces, artisans, services. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Faulquemont : diagnostic adapté aux TPE/PME industrie reconvertie, sous-traitance, logistique, commerces, artisans, services. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Faulquemont : diagnostic adapté aux TPE/PME industrie reconvertie, sous-traitance, logistique, commerces, artisans, services. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Faulquemont : formats adaptés à l'atelier industriel, l'entrepôt, le commerce, l'agence, le bureau. Vos équipes repartent autonomes.",

@@ -33,8 +33,8 @@ export const DIVATTE_SUR_LOIRE_COPY: VilleCopy = {
       en: "Audit IA à Divatte-sur-Loire : diagnostic adapté aux TPE viticulteurs et maraîchers, PME agroalimentaires, commerçants et professions libérales du vignoble nantais est. ROI chiffré, Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Divatte-sur-Loire : formats adaptés au domaine viticole, à l'exploitation maraîchère, au commerce ou au bureau. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Divatte-sur-Loire : formats adaptés au domaine viticole, à l'exploitation maraîchère, au commerce ou au bureau. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Divatte-sur-Loire : formats adaptés au domaine viticole, à l'exploitation maraîchère, au commerce ou au bureau. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Divatte-sur-Loire : formats adaptés au domaine viticole, à l'exploitation maraîchère, au commerce ou au bureau. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Divatte-sur-Loire : automatisation gestion parcellaire, traçabilité récoltes, agents conversationnels vente directe, extraction données commerciales. Vignoble nantais est.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const TRIGNAC_COPY: VilleCopy = {
   pitchFr:
-    "Trignac (44), commune industrielle de l'agglomération de Saint-Nazaire en Loire-Atlantique, hérite d'un passé sidérurgique reconverti en zones d'activités. Tissu TPE artisans, PME industrielles, commerces et services. Axion-IA y intervient pour tous types d'activités du bassin nazairien.",
+    "Trignac (44), commune industrielle de l'agglomération de Saint-Nazaire en Loire-Atlantique, hérite d'un passé sidérurgique reconverti en zones d'activités. Tissu TPE artisans, PME industrielles, commerces et services. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin nazairien.",
   pitchEn:
-    "Trignac (44), commune industrielle de l'agglomération de Saint-Nazaire en Loire-Atlantique, hérite d'un passé sidérurgique reconverti en zones d'activités. Tissu TPE artisans, PME industrielles, commerces et services. Axion-IA y intervient pour tous types d'activités du bassin nazairien.",
+    "Trignac (44), commune industrielle de l'agglomération de Saint-Nazaire en Loire-Atlantique, hérite d'un passé sidérurgique reconverti en zones d'activités. Tissu TPE artisans, PME industrielles, commerces et services. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin nazairien.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trignac (44). Nous accompagnons les TPE artisans, PME industrielles et tertiaires, commerçants et prestataires du bassin nazairien sur leurs cas IA opérationnels. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -64,7 +64,7 @@ export const TRIGNAC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Trignac ?",
-      a: "Nos consultants se déplacent sur site à Trignac (55 min depuis Nantes, 5 min depuis Saint-Nazaire). Hébergement local pour les missions multi-jours. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants se déplacent sur site à Trignac (55 min depuis Nantes, 5 min depuis Saint-Nazaire). Hébergement local pour les missions multi-jours. Frais de mission en sus, grille tarifaire publique.",
     },
   ],
 };

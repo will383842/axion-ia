@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GUICHEN_COPY: VilleCopy = {
   pitchFr:
-    "Guichen (35), commune du sud de Rennes dans la vallée de la Vilaine, fait partie de Rennes Métropole. Tissu résidentiel dynamique avec TPE artisans BTP, commerces de proximité, PME de services, professions libérales et exploitants agricoles périurbains. Axion-IA y intervient pour tous types d'activités du sud de Rennes Métropole.",
+    "Guichen (35), commune du sud de Rennes dans la vallée de la Vilaine, fait partie de Rennes Métropole. Tissu résidentiel dynamique avec TPE artisans BTP, commerces de proximité, PME de services, professions libérales et exploitants agricoles périurbains. Axion-IA y déploie ses missions auprès de toutes les organisations du sud de Rennes Métropole.",
   pitchEn:
-    "Guichen (35), commune du sud de Rennes dans la vallée de la Vilaine, fait partie de Rennes Métropole. Tissu résidentiel dynamique avec TPE artisans BTP, commerces de proximité, PME de services, professions libérales et exploitants agricoles périurbains. Axion-IA y intervient pour tous types d'activités du sud de Rennes Métropole.",
+    "Guichen (35), commune du sud de Rennes dans la vallée de la Vilaine, fait partie de Rennes Métropole. Tissu résidentiel dynamique avec TPE artisans BTP, commerces de proximité, PME de services, professions libérales et exploitants agricoles périurbains. Axion-IA y déploie ses missions auprès de toutes les organisations du sud de Rennes Métropole.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guichen (35). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, PME de services et tertiaire sud Rennes, professions libérales, indépendants et exploitants agricoles périurbains du sud de Rennes Métropole.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const GUICHEN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Guichen : diagnostic adapté aux TPE artisans, PME de services sud Rennes et commerçants de proximité. ROI chiffré, audit Flash 490 € HT accessible à toute structure.",
-      en: "Audit IA à Guichen : diagnostic adapté aux TPE artisans, PME de services sud Rennes et commerçants de proximité. ROI chiffré, audit Flash 490 € HT accessible à toute structure.",
+      fr: "Audit IA à Guichen : diagnostic adapté aux TPE artisans, PME de services sud Rennes et commerçants de proximité. Audit Flash à 490 € HT, retour sur investissement chiffré accessible à toute structure.",
+      en: "Audit IA à Guichen : diagnostic adapté aux TPE artisans, PME de services sud Rennes et commerçants de proximité. Audit Flash à 490 € HT, retour sur investissement chiffré accessible à toute structure.",
     },
     interventions: {
       fr: "Interventions IA sur site à Guichen : formats adaptés aux TPE artisans BTP, commerces de proximité, cabinets libéraux ou PME de services. Vos équipes repartent autonomes sur les outils IA métier.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GRANS_COPY: VilleCopy = {
   pitchFr:
-    "Grans (13), commune de la plaine de la Crau dans l'agglomération de Salon-de-Provence, conjugue cadre rural provençal, agriculture (foin de Crau AOP) et tissu de TPE artisans, PME services et commerces de proximité. Bassin d'emploi tourné vers Salon, Istres et la base aérienne 701. Axion-IA y intervient pour tous types d'activités.",
+    "Grans (13), commune de la plaine de la Crau dans l'agglomération de Salon-de-Provence, conjugue cadre rural provençal, agriculture (foin de Crau AOP) et tissu de TPE artisans, PME services et commerces de proximité. Bassin d'emploi tourné vers Salon, Istres et la base aérienne 701. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Grans (13), commune de la plaine de la Crau dans l'agglomération de Salon-de-Provence, conjugue cadre rural provençal, agriculture (foin de Crau AOP) et tissu de TPE artisans, PME services et commerces de proximité. Bassin d'emploi tourné vers Salon, Istres et la base aérienne 701. Axion-IA y intervient pour tous types d'activités.",
+    "Grans (13), commune de la plaine de la Crau dans l'agglomération de Salon-de-Provence, conjugue cadre rural provençal, agriculture (foin de Crau AOP) et tissu de TPE artisans, PME services et commerces de proximité. Bassin d'emploi tourné vers Salon, Istres et la base aérienne 701. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Grans (13). Nous accompagnons TPE artisans, PME services, agriculteurs (foin de Crau, oliveraies) et commerces de proximité du pays salonais et de la Crau. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -64,7 +64,7 @@ export const GRANS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Grans ?",
-      a: "Grans est à 10 min de Salon-de-Provence et 30 min d'Aix-en-Provence via A54. Nos consultants se déplacent dans vos locaux. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Grans est à 10 min de Salon-de-Provence et 30 min d'Aix-en-Provence via A54. Nos consultants se déplacent dans vos locaux. Coûts de déplacement à part, tarification transparente.",
     },
   ],
 };

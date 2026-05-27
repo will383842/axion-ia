@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const OSTRICOURT_COPY: VilleCopy = {
   pitchFr:
-    "Ostricourt (59), commune de 6 097 habitants dans le Nord (Hauts-de-France), au coeur du bassin minier Nord-Pas-de-Calais (UNESCO), entre Douai et Lens. Tissu TPE artisans BTP et rénovation, PME sous-traitance industrielle, commerces de proximité, logistique et transport routier sur l'axe A1. Axion-IA y intervient pour tous types d'activités.",
+    "Ostricourt (59), commune de 6 097 habitants dans le Nord (Hauts-de-France), au coeur du bassin minier Nord-Pas-de-Calais (UNESCO), entre Douai et Lens. Tissu TPE artisans BTP et rénovation, PME sous-traitance industrielle, commerces de proximité, logistique et transport routier sur l'axe A1. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Ostricourt (59), commune de 6 097 habitants dans le Nord (Hauts-de-France), au coeur du bassin minier Nord-Pas-de-Calais (UNESCO), entre Douai et Lens. Tissu TPE artisans BTP et rénovation, PME sous-traitance industrielle, commerces de proximité, logistique et transport routier sur l'axe A1. Axion-IA y intervient pour tous types d'activités.",
+    "Ostricourt (59), commune de 6 097 habitants dans le Nord (Hauts-de-France), au coeur du bassin minier Nord-Pas-de-Calais (UNESCO), entre Douai et Lens. Tissu TPE artisans BTP et rénovation, PME sous-traitance industrielle, commerces de proximité, logistique et transport routier sur l'axe A1. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ostricourt (59). Nous accompagnons TPE artisans BTP du bassin minier, PME sous-traitance industrielle et logistique, commerçants et indépendants entre Douai et Lens. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const OSTRICOURT_COPY: VilleCopy = {
       en: "Audit IA à Ostricourt : diagnostic adapté aux TPE artisans BTP, PME sous-traitance industrielle et logistique du bassin minier entre Douai et Lens. Audit Flash 490 € HT, ROI chiffré sous 10 jours.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Ostricourt : formations pratiques adaptées TPE/PME du bassin minier, ateliers outils IA métier logistique et BTP. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Ostricourt : formations pratiques adaptées TPE/PME du bassin minier, ateliers outils IA métier logistique et BTP. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Ostricourt : formations pratiques adaptées TPE/PME du bassin minier, ateliers outils IA métier logistique et BTP. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Ostricourt : formations pratiques adaptées TPE/PME du bassin minier, ateliers outils IA métier logistique et BTP. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Ostricourt : automatisation devis BTP, optimisation tournées transport routier A1, contrôle qualité sous-traitance par vision, agents conversationnels commerce local.",

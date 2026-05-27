@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VENCE_COPY: VilleCopy = {
   pitchFr:
-    "Vence (06), cité d'art de l'arrière-pays niçois en Alpes-Maritimes, est célèbre pour la chapelle du Rosaire décorée par Matisse. Tissu TPE artisans d'art, PME tourisme/hôtellerie, commerçants, professions libérales et services. Axion-IA y intervient pour tous types d'activités du Pays vençois.",
+    "Vence (06), cité d'art de l'arrière-pays niçois en Alpes-Maritimes, est célèbre pour la chapelle du Rosaire décorée par Matisse. Tissu TPE artisans d'art, PME tourisme/hôtellerie, commerçants, professions libérales et services. Axion-IA couvre l'ensemble des activités professionnelles présentes du Pays vençois.",
   pitchEn:
-    "Vence (06), cité d'art de l'arrière-pays niçois en Alpes-Maritimes, est célèbre pour la chapelle du Rosaire décorée par Matisse. Tissu TPE artisans d'art, PME tourisme/hôtellerie, commerçants, professions libérales et services. Axion-IA y intervient pour tous types d'activités du Pays vençois.",
+    "Vence (06), cité d'art de l'arrière-pays niçois en Alpes-Maritimes, est célèbre pour la chapelle du Rosaire décorée par Matisse. Tissu TPE artisans d'art, PME tourisme/hôtellerie, commerçants, professions libérales et services. Axion-IA couvre l'ensemble des activités professionnelles présentes du Pays vençois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vence (06). Nous accompagnons tous types d'activités : TPE artisans d'art, PME tourisme et hôtellerie, galeries, commerçants, professions libérales, indépendants et services aux entreprises de l'arrière-pays niçois.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const VENCE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vence : diagnostic adapté aux TPE artisans d'art, PME tourisme/hôtellerie, galeries, professions libérales et commerçants du Pays vençois. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Vence : diagnostic adapté aux TPE artisans d'art, PME tourisme/hôtellerie, galeries, professions libérales et commerçants du Pays vençois. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Vence : diagnostic adapté aux TPE artisans d'art, PME tourisme/hôtellerie, galeries, professions libérales et commerçants du Pays vençois. Audit Flash 490 € HT avec ROI quantifié accessible.",
+      en: "Audit IA à Vence : diagnostic adapté aux TPE artisans d'art, PME tourisme/hôtellerie, galeries, professions libérales et commerçants du Pays vençois. Audit Flash 490 € HT avec ROI quantifié accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vence : formats adaptés aux galeries d'art, hébergements, cabinets ou commerces de charme. Vos équipes repartent autonomes sur outils IA configurés métier.",

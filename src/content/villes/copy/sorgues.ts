@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SORGUES_COPY: VilleCopy = {
   pitchFr:
-    "Sorgues (84), commune de l'agglomération du Grand Avignon au confluent de l'Ouvèze et du Rhône, conjugue tissu industriel historique (papeterie, logistique, chimie), zones d'activités fluviales et fonctions résidentielles. TPE artisans, PME industrielles et logistiques, services aux entreprises, professions libérales et commerces de proximité dans un bassin d'emploi de 19 000 habitants intégré au pôle avignonnais. Axion-IA y intervient pour tous types d'activités.",
+    "Sorgues (84), commune de l'agglomération du Grand Avignon au confluent de l'Ouvèze et du Rhône, conjugue tissu industriel historique (papeterie, logistique, chimie), zones d'activités fluviales et fonctions résidentielles. TPE artisans, PME industrielles et logistiques, services aux entreprises, professions libérales et commerces de proximité dans un bassin d'emploi de 19 000 habitants intégré au pôle avignonnais. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Sorgues (84), commune de l'agglomération du Grand Avignon au confluent de l'Ouvèze et du Rhône, conjugue tissu industriel historique (papeterie, logistique, chimie), zones d'activités fluviales et fonctions résidentielles. TPE artisans, PME industrielles et logistiques, services aux entreprises, professions libérales et commerces de proximité dans un bassin d'emploi de 19 000 habitants intégré au pôle avignonnais. Axion-IA y intervient pour tous types d'activités.",
+    "Sorgues (84), commune de l'agglomération du Grand Avignon au confluent de l'Ouvèze et du Rhône, conjugue tissu industriel historique (papeterie, logistique, chimie), zones d'activités fluviales et fonctions résidentielles. TPE artisans, PME industrielles et logistiques, services aux entreprises, professions libérales et commerces de proximité dans un bassin d'emploi de 19 000 habitants intégré au pôle avignonnais. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sorgues (84). Nous accompagnons TPE artisans, PME industrielles et logistiques, services aux entreprises, professions libérales et commerces de l'agglomération du Grand Avignon. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const SORGUES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sorgues : diagnostic adapté aux TPE artisans, PME industrielles, logistique, services aux entreprises et commerces du Grand Avignon. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Sorgues : diagnostic adapté aux TPE artisans, PME industrielles, logistique, services aux entreprises et commerces du Grand Avignon. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Sorgues : diagnostic adapté aux TPE artisans, PME industrielles, logistique, services aux entreprises et commerces du Grand Avignon. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Sorgues : diagnostic adapté aux TPE artisans, PME industrielles, logistique, services aux entreprises et commerces du Grand Avignon. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sorgues : ateliers pour équipes TPE/PME industrielles, logisticiens, artisans et professions libérales. Outils IA configurés métier réel, dans vos locaux ou à Avignon.",
@@ -64,7 +64,7 @@ export const SORGUES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Sorgues ?",
-      a: "Sorgues est à 15 min d'Avignon et 15 min d'Orange via A7. Nos consultants se déplacent dans vos locaux. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Sorgues est à 15 min d'Avignon et 15 min d'Orange via A7. Nos consultants se déplacent dans vos locaux. Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

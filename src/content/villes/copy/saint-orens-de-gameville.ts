@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_ORENS_DE_GAMEVILLE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Orens-de-Gameville (31), commune résidentielle de l'est toulousain avec près de 15 000 habitants. Tissu TPE artisans, PME de services, professions libérales, commerces de proximité. Axion-IA y intervient pour tous types d'activités de la couronne est de Toulouse.",
+    "Saint-Orens-de-Gameville (31), commune résidentielle de l'est toulousain avec près de 15 000 habitants. Tissu TPE artisans, PME de services, professions libérales, commerces de proximité. Axion-IA opère pour toutes les structures économiques de la commune de la couronne est de Toulouse.",
   pitchEn:
-    "Saint-Orens-de-Gameville (31), commune résidentielle de l'est toulousain avec près de 15 000 habitants. Tissu TPE artisans, PME de services, professions libérales, commerces de proximité. Axion-IA y intervient pour tous types d'activités de la couronne est de Toulouse.",
+    "Saint-Orens-de-Gameville (31), commune résidentielle de l'est toulousain avec près de 15 000 habitants. Tissu TPE artisans, PME de services, professions libérales, commerces de proximité. Axion-IA opère pour toutes les structures économiques de la commune de la couronne est de Toulouse.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Orens-de-Gameville (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'est toulousain. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const SAINT_ORENS_DE_GAMEVILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une intervention IA à Saint-Orens ?",
-      a: "Nos consultants se déplacent à Saint-Orens depuis Toulouse (15 min D2). Intervention 1 journée minimum, atelier pratique dans vos locaux. Vos équipes repartent autonomes.",
+      a: "Nos consultants se déplacent à Saint-Orens depuis Toulouse (15 min D2). Intervention 1 journée minimum, atelier pratique dans vos locaux. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     {
       q: "Proposez-vous du coaching IA individuel à Saint-Orens ?",

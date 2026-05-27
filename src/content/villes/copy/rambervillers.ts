@@ -30,12 +30,12 @@ export const RAMBERVILLERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Rambervillers : diagnostic adapté aux TPE/PME industrie céramique/faïence, bois, sous-traitants, artisans BTP, commerces et services. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Rambervillers : diagnostic adapté aux TPE/PME industrie céramique/faïence, bois, sous-traitants, artisans BTP, commerces et services. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Rambervillers : diagnostic adapté aux TPE/PME industrie céramique/faïence, bois, sous-traitants, artisans BTP, commerces et services. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Rambervillers : diagnostic adapté aux TPE/PME industrie céramique/faïence, bois, sous-traitants, artisans BTP, commerces et services. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Rambervillers : formats adaptés à l''atelier céramique/faïence, l''atelier bois, le chantier, le bureau, le commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Rambervillers : formats adaptés à l''atelier céramique/faïence, l''atelier bois, le chantier, le bureau, le commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Rambervillers : formats adaptés à l''atelier céramique/faïence, l''atelier bois, le chantier, le bureau, le commerce. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Rambervillers : formats adaptés à l''atelier céramique/faïence, l''atelier bois, le chantier, le bureau, le commerce. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Rambervillers : optimisation production céramique/faïence, traçabilité bois, automatisation devis BTP, agents conversationnels B2B/B2C, gestion fournisseurs et donneurs d''ordres.",

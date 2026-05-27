@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FEURS_COPY: VilleCopy = {
   pitchFr:
-    "Feurs (42), commune historique de la plaine du Forez (ville d'origine antique gallo-romaine Forum Segusiavorum), est intégrée à Loire Forez Agglo. Connue pour son hippodrome. Tissu PME tertiaires et agricoles, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités foréziennes.",
+    "Feurs (42), commune historique de la plaine du Forez (ville d'origine antique gallo-romaine Forum Segusiavorum), est intégrée à Loire Forez Agglo. Connue pour son hippodrome. Tissu PME tertiaires et agricoles, TPE artisans BTP, commerces. Axion-IA opère pour toutes les structures économiques de la commune foréziennes.",
   pitchEn:
-    "Feurs (42), commune historique de la plaine du Forez (ville d'origine antique gallo-romaine Forum Segusiavorum), est intégrée à Loire Forez Agglo. Connue pour son hippodrome. Tissu PME tertiaires et agricoles, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités foréziennes.",
+    "Feurs (42), commune historique de la plaine du Forez (ville d'origine antique gallo-romaine Forum Segusiavorum), est intégrée à Loire Forez Agglo. Connue pour son hippodrome. Tissu PME tertiaires et agricoles, TPE artisans BTP, commerces. Axion-IA opère pour toutes les structures économiques de la commune foréziennes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Feurs (42). Nous accompagnons tous types d'activités : PME tertiaires et agricoles plaine Forez, acteurs hippisme (hippodrome), TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de Loire Forez Agglo.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const FEURS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Feurs : diagnostic adapté aux PME tertiaires/agricoles plaine Forez, acteurs hippisme, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Feurs : diagnostic adapté aux PME tertiaires/agricoles plaine Forez, acteurs hippisme, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Feurs : diagnostic adapté aux PME tertiaires/agricoles plaine Forez, acteurs hippisme, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Feurs : diagnostic adapté aux PME tertiaires/agricoles plaine Forez, acteurs hippisme, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Feurs : formats adaptés au bureau tertiaire, exploitation agricole, hippodrome, atelier. Vos équipes repartent autonomes sur outils IA métier.",
@@ -64,7 +64,7 @@ export const FEURS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",
-      a: "Nos consultants viennent de Lyon (1h) ou Saint-Étienne (35 min). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (1h) ou Saint-Étienne (35 min). Pour les multi-jours, hébergement local possible. Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

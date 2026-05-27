@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LALLAING_COPY: VilleCopy = {
   pitchFr:
-    "Lallaing (59), commune de 6 287 habitants dans le Nord (Hauts-de-France), intégrée à la Communauté d'Agglomération du Douaisis au coeur du bassin minier inscrit au patrimoine mondial UNESCO. Tissu TPE artisans BTP, PME logistique et sous-traitance industrielle, commerces de proximité, services aux entreprises du bassin douaisien. Axion-IA y intervient pour tous types d'activités.",
+    "Lallaing (59), commune de 6 287 habitants dans le Nord (Hauts-de-France), intégrée à la Communauté d'Agglomération du Douaisis au coeur du bassin minier inscrit au patrimoine mondial UNESCO. Tissu TPE artisans BTP, PME logistique et sous-traitance industrielle, commerces de proximité, services aux entreprises du bassin douaisien. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Lallaing (59), commune de 6 287 habitants dans le Nord (Hauts-de-France), intégrée à la Communauté d'Agglomération du Douaisis au coeur du bassin minier inscrit au patrimoine mondial UNESCO. Tissu TPE artisans BTP, PME logistique et sous-traitance industrielle, commerces de proximité, services aux entreprises du bassin douaisien. Axion-IA y intervient pour tous types d'activités.",
+    "Lallaing (59), commune de 6 287 habitants dans le Nord (Hauts-de-France), intégrée à la Communauté d'Agglomération du Douaisis au coeur du bassin minier inscrit au patrimoine mondial UNESCO. Tissu TPE artisans BTP, PME logistique et sous-traitance industrielle, commerces de proximité, services aux entreprises du bassin douaisien. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lallaing (59). Nous accompagnons TPE artisans BTP du bassin minier, PME logistique et sous-traitance industrielle, commerçants et services aux entreprises de l'agglomération de Douai. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
   directAnswerEn:

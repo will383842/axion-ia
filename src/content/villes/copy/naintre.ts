@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const NAINTRE_COPY: VilleCopy = {
   pitchFr:
-    "Naintré (86), commune de l'agglomération de Châtellerault en Vienne, est positionnée dans la vallée de la Vienne sur l'axe Poitiers-Tours. Tissu PME industrielles (mécanique, automobile), TPE artisans BTP, commerces, exploitations agricoles vallée de la Vienne et services. Axion-IA y intervient pour tous types d'activités du Châtelleraudais.",
+    "Naintré (86), commune de l'agglomération de Châtellerault en Vienne, est positionnée dans la vallée de la Vienne sur l'axe Poitiers-Tours. Tissu PME industrielles (mécanique, automobile), TPE artisans BTP, commerces, exploitations agricoles vallée de la Vienne et services. Axion-IA opère pour toutes les structures économiques de la commune du Châtelleraudais.",
   pitchEn:
-    "Naintré (86), commune de l'agglomération de Châtellerault en Vienne, est positionnée dans la vallée de la Vienne sur l'axe Poitiers-Tours. Tissu PME industrielles (mécanique, automobile), TPE artisans BTP, commerces, exploitations agricoles vallée de la Vienne et services. Axion-IA y intervient pour tous types d'activités du Châtelleraudais.",
+    "Naintré (86), commune de l'agglomération de Châtellerault en Vienne, est positionnée dans la vallée de la Vienne sur l'axe Poitiers-Tours. Tissu PME industrielles (mécanique, automobile), TPE artisans BTP, commerces, exploitations agricoles vallée de la Vienne et services. Axion-IA opère pour toutes les structures économiques de la commune du Châtelleraudais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Naintré (86). Nous accompagnons tous types d'activités : PME industrielles mécanique/automobile, TPE artisans BTP, commerçants, exploitants agricoles vallée de la Vienne, professions libérales et services aux entreprises du Châtelleraudais.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const NAINTRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Naintré : diagnostic adapté aux PME industrielles mécanique/automobile, TPE artisans BTP, agriculteurs et commerçants du Châtelleraudais. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Naintré : diagnostic adapté aux PME industrielles mécanique/automobile, TPE artisans BTP, agriculteurs et commerçants du Châtelleraudais. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Naintré : diagnostic adapté aux PME industrielles mécanique/automobile, TPE artisans BTP, agriculteurs et commerçants du Châtelleraudais. Audit Flash 490 € HT avec ROI quantifié accessible.",
+      en: "Audit IA à Naintré : diagnostic adapté aux PME industrielles mécanique/automobile, TPE artisans BTP, agriculteurs et commerçants du Châtelleraudais. Audit Flash 490 € HT avec ROI quantifié accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Naintré : formats adaptés aux ateliers mécaniques, lignes de production, exploitations agricoles ou commerces. Vos équipes terrain et back-office repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const NAINTRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris en TGV direct gare Châtellerault (1h50) puis 5 min Naintré. Pour les multi-jours, hébergement Châtellerault ou Futuroscope. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Paris en TGV direct gare Châtellerault (1h50) puis 5 min Naintré. Pour les multi-jours, hébergement Châtellerault ou Futuroscope. Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

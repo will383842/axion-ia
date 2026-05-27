@@ -34,8 +34,8 @@ export const ALTKIRCH_COPY: VilleCopy = {
       en: "Audit IA à Altkirch : diagnostic adapté aux TPE/PME industrielles, artisans, agriculteurs du Sundgau, commerçants et services. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Altkirch : formats adaptés à l'atelier industriel, à l'exploitation agricole, au commerce ou au bureau administratif. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Altkirch : formats adaptés à l'atelier industriel, à l'exploitation agricole, au commerce ou au bureau administratif. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Altkirch : formats adaptés à l'atelier industriel, à l'exploitation agricole, au commerce ou au bureau administratif. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Altkirch : formats adaptés à l'atelier industriel, à l'exploitation agricole, au commerce ou au bureau administratif. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Altkirch : automatisation devis et facturation, suivi production industrielle, gestion stocks agricoles, agents conversationnels frontaliers FR/DE, OCR documents administratifs.",

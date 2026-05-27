@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SOUSTONS_COPY: VilleCopy = {
   pitchFr:
-    "Soustons (40), « l'isle verte » des Landes, bénéficie d'un cadre naturel exceptionnel avec 5 lacs et étangs et une plage océane de 6 km sur la côte d'Argent. Forêt landaise, tourisme nature, agriculture, TPE hébergement, commerces, artisans. Axion-IA y intervient pour tous types d'activités.",
+    "Soustons (40), « l'isle verte » des Landes, bénéficie d'un cadre naturel exceptionnel avec 5 lacs et étangs et une plage océane de 6 km sur la côte d'Argent. Forêt landaise, tourisme nature, agriculture, TPE hébergement, commerces, artisans. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Soustons (40), « l'isle verte » des Landes, bénéficie d'un cadre naturel exceptionnel avec 5 lacs et étangs et une plage océane de 6 km sur la côte d'Argent. Forêt landaise, tourisme nature, agriculture, TPE hébergement, commerces, artisans. Axion-IA y intervient pour tous types d'activités.",
+    "Soustons (40), « l'isle verte » des Landes, bénéficie d'un cadre naturel exceptionnel avec 5 lacs et étangs et une plage océane de 6 km sur la côte d'Argent. Forêt landaise, tourisme nature, agriculture, TPE hébergement, commerces, artisans. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Soustons (40). Nous accompagnons TPE et PME du tourisme nature et lacustre, campings, hébergeurs, agriculteurs, commerçants, artisans BTP et professions libérales de la côte d'Argent landaise.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const SOUSTONS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Soustons : diagnostic adapté aux TPE du tourisme nature et lacustre, campings, hébergeurs, agriculteurs, commerçants et artisans de la côte d'Argent landaise. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Soustons : diagnostic adapté aux TPE du tourisme nature et lacustre, campings, hébergeurs, agriculteurs, commerçants et artisans de la côte d'Argent landaise. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Soustons : diagnostic adapté aux TPE du tourisme nature et lacustre, campings, hébergeurs, agriculteurs, commerçants et artisans de la côte d'Argent landaise. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Soustons : diagnostic adapté aux TPE du tourisme nature et lacustre, campings, hébergeurs, agriculteurs, commerçants et artisans de la côte d'Argent landaise. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Soustons : formations adaptées aux campings, hébergements nature, exploitations agricoles, commerces et artisans. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -65,7 +65,7 @@ export const SOUSTONS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Soustons ?",
-      a: "Nos consultants se déplacent depuis Dax (30 min) ou Bayonne (35 min). Mission sur site dans votre établissement. Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants se déplacent depuis Dax (30 min) ou Bayonne (35 min). Mission sur site dans votre établissement. Pour les multi-jours, hébergement local possible. Coûts de déplacement à part, tarification transparente.",
     },
   ],
 };

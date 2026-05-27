@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MAYENNE_COPY: VilleCopy = {
   pitchFr:
-    "Mayenne (53), sous-préfecture du nord de la Mayenne aux bords de la rivière éponyme, dotée d'un château carolingien classé, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-ville, professions libérales et prestataires de services. Axion-IA y intervient pour tous types d'activités.",
+    "Mayenne (53), sous-préfecture du nord de la Mayenne aux bords de la rivière éponyme, dotée d'un château carolingien classé, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-ville, professions libérales et prestataires de services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Mayenne (53), sous-préfecture du nord de la Mayenne aux bords de la rivière éponyme, dotée d'un château carolingien classé, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-ville, professions libérales et prestataires de services. Axion-IA y intervient pour tous types d'activités.",
+    "Mayenne (53), sous-préfecture du nord de la Mayenne aux bords de la rivière éponyme, dotée d'un château carolingien classé, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-ville, professions libérales et prestataires de services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mayenne (53). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles, commerçants, professions libérales, éleveurs, services aux entreprises et acteurs du tourisme patrimonial du nord-Mayenne.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const MAYENNE_COPY: VilleCopy = {
       en: "Audit IA à Mayenne : diagnostic adapté aux TPE artisans, PME agroalimentaires, industriels et commerçants du nord-Mayenne. ROI chiffré, Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Mayenne : formations adaptées aux PME agroalimentaires, industriels plasturgie/mécanique, artisans, éleveurs et commerçants. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Mayenne : formations adaptées aux PME agroalimentaires, industriels plasturgie/mécanique, artisans, éleveurs et commerçants. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Mayenne : formations adaptées aux PME agroalimentaires, industriels plasturgie/mécanique, artisans, éleveurs et commerçants. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Mayenne : formations adaptées aux PME agroalimentaires, industriels plasturgie/mécanique, artisans, éleveurs et commerçants. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Mayenne : contrôle qualité agroalimentaire, maintenance prédictive industrie, traçabilité élevage laitier, automatisation processus plasturgie et logistique.",

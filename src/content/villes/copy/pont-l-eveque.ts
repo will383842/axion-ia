@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PONT_L_EVEQUE_COPY: VilleCopy = {
   pitchFr:
-    "Pont-l'Évêque (14), commune du Calvados au cœur du Pays d'Auge, donne son nom au célèbre fromage Pont-l'Évêque AOP, l'un des plus anciens fromages normands. Entre Deauville et Lisieux, la ville conjugue patrimoine gastronomique, tourisme et bassin d'activités. Tissu TPE artisans, PME agroalimentaires, commerces, hôtellerie. Axion-IA y intervient pour tous types d'activités.",
+    "Pont-l'Évêque (14), commune du Calvados au cœur du Pays d'Auge, donne son nom au célèbre fromage Pont-l'Évêque AOP, l'un des plus anciens fromages normands. Entre Deauville et Lisieux, la ville conjugue patrimoine gastronomique, tourisme et bassin d'activités. Tissu TPE artisans, PME agroalimentaires, commerces, hôtellerie. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Pont-l'Évêque (14), commune du Calvados au cœur du Pays d'Auge, donne son nom au célèbre fromage Pont-l'Évêque AOP, l'un des plus anciens fromages normands. Entre Deauville et Lisieux, la ville conjugue patrimoine gastronomique, tourisme et bassin d'activités. Tissu TPE artisans, PME agroalimentaires, commerces, hôtellerie. Axion-IA y intervient pour tous types d'activités.",
+    "Pont-l'Évêque (14), commune du Calvados au cœur du Pays d'Auge, donne son nom au célèbre fromage Pont-l'Évêque AOP, l'un des plus anciens fromages normands. Entre Deauville et Lisieux, la ville conjugue patrimoine gastronomique, tourisme et bassin d'activités. Tissu TPE artisans, PME agroalimentaires, commerces, hôtellerie. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pont-l'Évêque (14). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME fromagères AOP (Pont-l'Évêque), hôteliers-restaurateurs Pays d'Auge, cidreries, professions libérales et services aux entreprises entre Deauville et Lisieux.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const PONT_L_EVEQUE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pont-l'Évêque : diagnostic adapté aux PME fromagères AOP, hôteliers-restaurateurs Pays d'Auge, cidreries, TPE artisans et commerçants. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Pont-l'Évêque : diagnostic adapté aux PME fromagères AOP, hôteliers-restaurateurs Pays d'Auge, cidreries, TPE artisans et commerçants. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Pont-l'Évêque : diagnostic adapté aux PME fromagères AOP, hôteliers-restaurateurs Pays d'Auge, cidreries, TPE artisans et commerçants. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Pont-l'Évêque : diagnostic adapté aux PME fromagères AOP, hôteliers-restaurateurs Pays d'Auge, cidreries, TPE artisans et commerçants. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Pont-l'Évêque : formats adaptés à la fromagerie, hôtel, restaurant, cidrerie ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Pont-l'Évêque : formats adaptés à la fromagerie, hôtel, restaurant, cidrerie ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Pont-l'Évêque : formats adaptés à la fromagerie, hôtel, restaurant, cidrerie ou commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Pont-l'Évêque : formats adaptés à la fromagerie, hôtel, restaurant, cidrerie ou commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Pont-l'Évêque : traçabilité AOP fromage, agents conversationnels multilingues tourisme, gestion saisonnalité hôtelière, automatisation réservations. Adapté TPE/PME Pays d'Auge.",

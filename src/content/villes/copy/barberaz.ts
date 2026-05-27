@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BARBERAZ_COPY: VilleCopy = {
   pitchFr:
-    "Barberaz (73), commune compacte de l'agglomération de Chambéry en Savoie, au piémont du massif de la Chartreuse dans la vallée de la Leysse. PME tertiaires, professions libérales, TPE artisanat BTP, commerces de proximité, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Barberaz (73), commune compacte de l'agglomération de Chambéry en Savoie, au piémont du massif de la Chartreuse dans la vallée de la Leysse. PME tertiaires, professions libérales, TPE artisanat BTP, commerces de proximité, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Barberaz (73), commune compacte de l'agglomération de Chambéry en Savoie, au piémont du massif de la Chartreuse dans la vallée de la Leysse. PME tertiaires, professions libérales, TPE artisanat BTP, commerces de proximité, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Barberaz (73), commune compacte de l'agglomération de Chambéry en Savoie, au piémont du massif de la Chartreuse dans la vallée de la Leysse. PME tertiaires, professions libérales, TPE artisanat BTP, commerces de proximité, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Barberaz (73). Nous accompagnons TPE et PME : entreprises tertiaires de l'agglomération chambérienne, professions libérales, artisans BTP, commerçants et sociétés de services.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const BARBERAZ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Barberaz : diagnostic adapté aux PME tertiaires de l'agglomération chambérienne, professions libérales, TPE artisans BTP et commerçants. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Barberaz : diagnostic adapté aux PME tertiaires de l'agglomération chambérienne, professions libérales, TPE artisans BTP et commerçants. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Barberaz : diagnostic adapté aux PME tertiaires de l'agglomération chambérienne, professions libérales, TPE artisans BTP et commerçants. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Barberaz : diagnostic adapté aux PME tertiaires de l'agglomération chambérienne, professions libérales, TPE artisans BTP et commerçants. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Barberaz : formats adaptés aux bureaux tertiaires, cabinets libéraux, ateliers artisans BTP ou commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Barberaz : formats adaptés aux bureaux tertiaires, cabinets libéraux, ateliers artisans BTP ou commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Barberaz : formats adaptés aux bureaux tertiaires, cabinets libéraux, ateliers artisans BTP ou commerces. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Barberaz : formats adaptés aux bureaux tertiaires, cabinets libéraux, ateliers artisans BTP ou commerces. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Barberaz : automatisation back-office PME tertiaires, agents IA gestion cabinet libéral, classification documentaire, optimisation gestion de chantier BTP, outils prédictifs services aux entreprises.",
@@ -64,7 +64,7 @@ export const BARBERAZ_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Barberaz ?",
-      a: "Nos consultants seniors interviennent depuis Chambéry (5 min voiture). Saint-Alban-Leysse à 3 min. Pour les missions multi-jours, déplacement quotidien sans surcoût hébergement. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants seniors interviennent depuis Chambéry (5 min voiture). Saint-Alban-Leysse à 3 min. Pour les missions multi-jours, déplacement quotidien sans surcoût hébergement. Coûts de déplacement à part, tarification transparente.",
     },
   ],
 };

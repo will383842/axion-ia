@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const EPINAY_SUR_ORGE_COPY: VilleCopy = {
   pitchFr:
-    "Épinay-sur-Orge (91), commune résidentielle de l'Essonne dans la vallée de l'Orge, est desservie par le RER C (gare d'Épinay-sur-Orge). Proximité Massy, Longjumeau, Sainte-Geneviève-des-Bois. Tissu TPE services, professions libérales, PME conseil, commerces de proximité, artisans. Axion-IA y intervient pour tous types d'activités.",
+    "Épinay-sur-Orge (91), commune résidentielle de l'Essonne dans la vallée de l'Orge, est desservie par le RER C (gare d'Épinay-sur-Orge). Proximité Massy, Longjumeau, Sainte-Geneviève-des-Bois. Tissu TPE services, professions libérales, PME conseil, commerces de proximité, artisans. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Épinay-sur-Orge (91), commune résidentielle de l'Essonne dans la vallée de l'Orge, est desservie par le RER C (gare d'Épinay-sur-Orge). Proximité Massy, Longjumeau, Sainte-Geneviève-des-Bois. Tissu TPE services, professions libérales, PME conseil, commerces de proximité, artisans. Axion-IA y intervient pour tous types d'activités.",
+    "Épinay-sur-Orge (91), commune résidentielle de l'Essonne dans la vallée de l'Orge, est desservie par le RER C (gare d'Épinay-sur-Orge). Proximité Massy, Longjumeau, Sainte-Geneviève-des-Bois. Tissu TPE services, professions libérales, PME conseil, commerces de proximité, artisans. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Épinay-sur-Orge (91). Nous accompagnons TPE et PME : professions libérales, cabinets conseil, commerces vallée de l'Orge, artisans BTP, services à la personne et entreprises du bassin Massy-Longjumeau. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const EPINAY_SUR_ORGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Épinay-sur-Orge : diagnostic adapté aux professions libérales, cabinets conseil, commerces, artisans et TPE services de la vallée de l'Orge. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Épinay-sur-Orge : diagnostic adapté aux professions libérales, cabinets conseil, commerces, artisans et TPE services de la vallée de l'Orge. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Épinay-sur-Orge : diagnostic adapté aux professions libérales, cabinets conseil, commerces, artisans et TPE services de la vallée de l'Orge. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Épinay-sur-Orge : diagnostic adapté aux professions libérales, cabinets conseil, commerces, artisans et TPE services de la vallée de l'Orge. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Épinay-sur-Orge : formats adaptés cabinet, bureau, commerce ou domicile professionnel. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -64,7 +64,7 @@ export const EPINAY_SUR_ORGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Épinay-sur-Orge depuis Paris ?",
-      a: "Nos consultants interviennent via RER C (35 min Paris centre, gare Épinay-sur-Orge directe). Massy TGV à 10 min. Aéroport Orly à 20 min. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants interviennent via RER C (35 min Paris centre, gare Épinay-sur-Orge directe). Massy TGV à 10 min. Aéroport Orly à 20 min. Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

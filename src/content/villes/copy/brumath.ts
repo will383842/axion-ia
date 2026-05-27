@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BRUMATH_COPY: VilleCopy = {
   pitchFr:
-    "Brumath (67), ville du Bas-Rhin située au nord de Strasbourg, héritière d'un passé gallo-romain (vestiges de l'ancienne Brocomagus) et siège d'une brasserie alsacienne emblématique. Tissu TPE/PME industrie, agroalimentaire, brasserie, BTP, commerces, services et artisanat. Axion-IA y intervient pour tous types d'activités.",
+    "Brumath (67), ville du Bas-Rhin située au nord de Strasbourg, héritière d'un passé gallo-romain (vestiges de l'ancienne Brocomagus) et siège d'une brasserie alsacienne emblématique. Tissu TPE/PME industrie, agroalimentaire, brasserie, BTP, commerces, services et artisanat. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Brumath (67), ville du Bas-Rhin située au nord de Strasbourg, héritière d'un passé gallo-romain (vestiges de l'ancienne Brocomagus) et siège d'une brasserie alsacienne emblématique. Tissu TPE/PME industrie, agroalimentaire, brasserie, BTP, commerces, services et artisanat. Axion-IA y intervient pour tous types d'activités.",
+    "Brumath (67), ville du Bas-Rhin située au nord de Strasbourg, héritière d'un passé gallo-romain (vestiges de l'ancienne Brocomagus) et siège d'une brasserie alsacienne emblématique. Tissu TPE/PME industrie, agroalimentaire, brasserie, BTP, commerces, services et artisanat. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Brumath (67). Nous accompagnons tous types d'activités : TPE/PME industrie et agroalimentaire, artisans BTP, commerces de proximité, professions de services et entrepreneurs au nord de l'agglomération strasbourgeoise.",
   directAnswerEn:
@@ -34,8 +34,8 @@ export const BRUMATH_COPY: VilleCopy = {
       en: "Audit IA à Brumath : diagnostic adapté aux TPE/PME industrie, agroalimentaire, brasserie, artisans BTP, commerces et services. ROI chiffré, audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Brumath : formats adaptés à l'atelier de production, chantier, bureau, commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Brumath : formats adaptés à l'atelier de production, chantier, bureau, commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Brumath : formats adaptés à l'atelier de production, chantier, bureau, commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Brumath : formats adaptés à l'atelier de production, chantier, bureau, commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Brumath : contrôle qualité agroalimentaire, traçabilité production, automatisation devis BTP, agents conversationnels B2B, gestion fournisseurs.",

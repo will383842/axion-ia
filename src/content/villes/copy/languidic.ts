@@ -29,12 +29,12 @@ export const LANGUIDIC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Languidic : diagnostic adapté aux exploitations agricoles, PME agroalimentaires, TPE artisans BTP, commerces et professions libérales de l'arrière-pays lorientais. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Languidic : diagnostic adapté aux exploitations agricoles, PME agroalimentaires, TPE artisans BTP, commerces et professions libérales de l'arrière-pays lorientais. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Languidic : diagnostic adapté aux exploitations agricoles, PME agroalimentaires, TPE artisans BTP, commerces et professions libérales de l'arrière-pays lorientais. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Languidic : diagnostic adapté aux exploitations agricoles, PME agroalimentaires, TPE artisans BTP, commerces et professions libérales de l'arrière-pays lorientais. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Languidic : formats adaptés aux exploitations agricoles, PME agroalimentaires, artisans BTP et cabinets du bassin lorientais. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Languidic : formats adaptés aux exploitations agricoles, PME agroalimentaires, artisans BTP et cabinets du bassin lorientais. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Languidic : formats adaptés aux exploitations agricoles, PME agroalimentaires, artisans BTP et cabinets du bassin lorientais. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Languidic : formats adaptés aux exploitations agricoles, PME agroalimentaires, artisans BTP et cabinets du bassin lorientais. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Languidic : outils IA traçabilité agroalimentaire, automatisation gestion troupeau et cultures, agents conversationnels coopératives, CRM augmenté commerce, gestion devis BTP, outils IA administratifs exploitations.",

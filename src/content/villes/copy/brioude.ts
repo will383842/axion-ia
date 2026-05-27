@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BRIOUDE_COPY: VilleCopy = {
   pitchFr:
-    "Brioude (43), sous-préfecture de la Haute-Loire, est la quatrième ville du département. Célèbre pour la basilique Saint-Julien (plus grande église romane d'Auvergne) dans la vallée de l'Allier. Tissu tourisme patrimoine, agriculture (saumon Allier, maraîchage), TPE artisans, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Brioude (43), sous-préfecture de la Haute-Loire, est la quatrième ville du département. Célèbre pour la basilique Saint-Julien (plus grande église romane d'Auvergne) dans la vallée de l'Allier. Tissu tourisme patrimoine, agriculture (saumon Allier, maraîchage), TPE artisans, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Brioude (43), sous-préfecture de la Haute-Loire, est la quatrième ville du département. Célèbre pour la basilique Saint-Julien (plus grande église romane d'Auvergne) dans la vallée de l'Allier. Tissu tourisme patrimoine, agriculture (saumon Allier, maraîchage), TPE artisans, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Brioude (43), sous-préfecture de la Haute-Loire, est la quatrième ville du département. Célèbre pour la basilique Saint-Julien (plus grande église romane d'Auvergne) dans la vallée de l'Allier. Tissu tourisme patrimoine, agriculture (saumon Allier, maraîchage), TPE artisans, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Brioude (43). Nous accompagnons TPE et PME : acteurs tourisme patrimoine (basilique Saint-Julien), agriculteurs vallée Allier, administration sous-préfecture, artisans BTP, commerçants brivadois.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const BRIOUDE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Brioude : diagnostic adapté aux acteurs tourisme patrimoine roman, agriculteurs vallée Allier, administration, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Brioude : diagnostic adapté aux acteurs tourisme patrimoine roman, agriculteurs vallée Allier, administration, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Brioude : diagnostic adapté aux acteurs tourisme patrimoine roman, agriculteurs vallée Allier, administration, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Brioude : diagnostic adapté aux acteurs tourisme patrimoine roman, agriculteurs vallée Allier, administration, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Brioude : formats adaptés au site patrimonial, exploitation agricole, administration, commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Brioude : formats adaptés au site patrimonial, exploitation agricole, administration, commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Brioude : formats adaptés au site patrimonial, exploitation agricole, administration, commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Brioude : formats adaptés au site patrimonial, exploitation agricole, administration, commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Brioude : agents conversationnels visiteurs basilique multilingue, traçabilité produits vallée Allier, automatisation gestion exploitation agricole.",
@@ -64,7 +64,7 @@ export const BRIOUDE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Clermont-Ferrand ?",
-      a: "Clermont-Ferrand (1h) ou Le Puy-en-Velay (45 min). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Clermont-Ferrand (1h) ou Le Puy-en-Velay (45 min). Coûts de déplacement à part, tarification transparente.",
     },
   ],
 };

@@ -33,8 +33,8 @@ export const L_ISLE_D_ESPAGNAC_COPY: VilleCopy = {
       en: "Audit IA à L'Isle-d'Espagnac : diagnostic adapté aux PME commerciales, enseignes distribution, TPE artisans et services de l'agglomération GrandAngoulême. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à L'Isle-d'Espagnac : formats adaptés au magasin, à l'entrepôt, au bureau ou au cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à L'Isle-d'Espagnac : formats adaptés au magasin, à l'entrepôt, au bureau ou au cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à L'Isle-d'Espagnac : formats adaptés au magasin, à l'entrepôt, au bureau ou au cabinet. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à L'Isle-d'Espagnac : formats adaptés au magasin, à l'entrepôt, au bureau ou au cabinet. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à L'Isle-d'Espagnac : automatisation gestion stocks distribution, agents conversationnels accueil client, prédiction fréquentation zones commerciales, optimisation logistique livraison.",

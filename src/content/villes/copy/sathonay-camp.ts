@@ -29,8 +29,8 @@ export const SATHONAY_CAMP_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sathonay-Camp : diagnostic adapté aux PME tertiaires nord lyonnais, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Sathonay-Camp : diagnostic adapté aux PME tertiaires nord lyonnais, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Sathonay-Camp : diagnostic adapté aux PME tertiaires nord lyonnais, professions libérales, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Sathonay-Camp : diagnostic adapté aux PME tertiaires nord lyonnais, professions libérales, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sathonay-Camp : formats adaptés au bureau, cabinet, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const SATHONAY_CAMP_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (15 min). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (15 min). Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

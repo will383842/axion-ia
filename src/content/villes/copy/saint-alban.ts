@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_ALBAN_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Alban (31), commune du nord de Toulouse avec plus de 6 500 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités de la couronne nord de Toulouse.",
+    "Saint-Alban (31), commune du nord de Toulouse avec plus de 6 500 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de la couronne nord de Toulouse.",
   pitchEn:
-    "Saint-Alban (31), commune du nord de Toulouse avec plus de 6 500 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités de la couronne nord de Toulouse.",
+    "Saint-Alban (31), commune du nord de Toulouse avec plus de 6 500 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de la couronne nord de Toulouse.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Alban (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const SAINT_ALBAN_COPY: VilleCopy = {
       en: "Audit IA à Saint-Alban : diagnostic adapté aux TPE artisans, PME de services et professions libérales du nord Toulouse. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Alban : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Saint-Alban : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Saint-Alban : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Saint-Alban : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Alban : automatisation gestion clients, classification documents, agents conversationnels, reporting pour TPE-PME du nord Toulouse.",

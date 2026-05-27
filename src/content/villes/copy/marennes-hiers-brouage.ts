@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MARENNES_HIERS_BROUAGE_COPY: VilleCopy = {
   pitchFr:
-    "Marennes-Hiers-Brouage (17), commune de Charente-Maritime, capitale de l'huître Marennes-Oléron et site historique de la citadelle de Brouage. Tissu de TPE artisans, PME ostréicoles et aquacoles, tourisme patrimonial, commerces et services. Axion-IA y intervient pour tous types d'activités du bassin de Marennes.",
+    "Marennes-Hiers-Brouage (17), commune de Charente-Maritime, capitale de l'huître Marennes-Oléron et site historique de la citadelle de Brouage. Tissu de TPE artisans, PME ostréicoles et aquacoles, tourisme patrimonial, commerces et services. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin de Marennes.",
   pitchEn:
-    "Marennes-Hiers-Brouage (17), commune de Charente-Maritime, capitale de l'huître Marennes-Oléron et site historique de la citadelle de Brouage. Tissu de TPE artisans, PME ostréicoles et aquacoles, tourisme patrimonial, commerces et services. Axion-IA y intervient pour tous types d'activités du bassin de Marennes.",
+    "Marennes-Hiers-Brouage (17), commune de Charente-Maritime, capitale de l'huître Marennes-Oléron et site historique de la citadelle de Brouage. Tissu de TPE artisans, PME ostréicoles et aquacoles, tourisme patrimonial, commerces et services. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin de Marennes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marennes-Hiers-Brouage (17). Nous accompagnons tous types d'activités : TPE artisans, PME ostréicoles, professionnels de l'aquaculture, acteurs du tourisme patrimonial (citadelle Brouage), commerçants et indépendants du bassin de Marennes.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const MARENNES_HIERS_BROUAGE_COPY: VilleCopy = {
       en: "Audit IA à Marennes-Hiers-Brouage : diagnostic adapté aux ostréiculteurs, PME aquacoles, professionnels du tourisme patrimonial et TPE/PME du bassin de Marennes. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Marennes-Hiers-Brouage : formats adaptés au parc ostréicole, au site touristique, au commerce ou au bureau. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Marennes-Hiers-Brouage : formats adaptés au parc ostréicole, au site touristique, au commerce ou au bureau. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Marennes-Hiers-Brouage : formats adaptés au parc ostréicole, au site touristique, au commerce ou au bureau. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Marennes-Hiers-Brouage : formats adaptés au parc ostréicole, au site touristique, au commerce ou au bureau. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Marennes-Hiers-Brouage : traçabilité lots huîtres IGP, classification qualité, automatisation gestion bassins ostréicoles, agents conversationnels accueil touristique citadelle Brouage, e-commerce vente directe.",

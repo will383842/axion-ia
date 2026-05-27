@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BUC_COPY: VilleCopy = {
   pitchFr:
-    "Buc (78), commune résidentielle de la vallée de la Bièvre, proche de Versailles dans les Yvelines. Tissu de TPE artisans, PME de services, commerces de village, professions libérales et prestataires tertiaires bénéficiant de la proximité du plateau de Saclay et de Versailles. Axion-IA y intervient pour tous types d'activités de la vallée de la Bièvre.",
+    "Buc (78), commune résidentielle de la vallée de la Bièvre, proche de Versailles dans les Yvelines. Tissu de TPE artisans, PME de services, commerces de village, professions libérales et prestataires tertiaires bénéficiant de la proximité du plateau de Saclay et de Versailles. Axion-IA accompagne entreprises et indépendants de tous secteurs de la vallée de la Bièvre.",
   pitchEn:
-    "Buc (78), commune résidentielle de la vallée de la Bièvre, proche de Versailles dans les Yvelines. Tissu de TPE artisans, PME de services, commerces de village, professions libérales et prestataires tertiaires bénéficiant de la proximité du plateau de Saclay et de Versailles. Axion-IA y intervient pour tous types d'activités de la vallée de la Bièvre.",
+    "Buc (78), commune résidentielle de la vallée de la Bièvre, proche de Versailles dans les Yvelines. Tissu de TPE artisans, PME de services, commerces de village, professions libérales et prestataires tertiaires bénéficiant de la proximité du plateau de Saclay et de Versailles. Axion-IA accompagne entreprises et indépendants de tous secteurs de la vallée de la Bièvre.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Buc (78). Nous accompagnons TPE et PME : artisans, commerces de village, PME de services et professions libérales de cette commune résidentielle de la vallée de la Bièvre, entre Versailles et le plateau de Saclay. Audit Flash dès 490 € HT.",
   directAnswerEn:

@@ -29,12 +29,12 @@ export const QUINCY_VOISINS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Quincy-Voisins : diagnostic adapté aux TPE artisanat BTP, commerces de proximité, PME services, professions libérales, exploitants agricoles. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Quincy-Voisins : diagnostic adapté aux TPE artisanat BTP, commerces de proximité, PME services, professions libérales, exploitants agricoles. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Quincy-Voisins : diagnostic adapté aux TPE artisanat BTP, commerces de proximité, PME services, professions libérales, exploitants agricoles. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Quincy-Voisins : diagnostic adapté aux TPE artisanat BTP, commerces de proximité, PME services, professions libérales, exploitants agricoles. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Quincy-Voisins : formats adaptés chantier BTP, commerce, cabinet libéral, siège PME, exploitation agricole. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Quincy-Voisins : formats adaptés chantier BTP, commerce, cabinet libéral, siège PME, exploitation agricole. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Quincy-Voisins : formats adaptés chantier BTP, commerce, cabinet libéral, siège PME, exploitation agricole. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Quincy-Voisins : formats adaptés chantier BTP, commerce, cabinet libéral, siège PME, exploitation agricole. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Quincy-Voisins : automatisation devis et planning chantiers BTP, CRM augmenté PME, gestion stocks commerce, facturation professions libérales.",
@@ -64,7 +64,7 @@ export const QUINCY_VOISINS_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi à Meaux et alentours ?",
-      a: "Oui, nous couvrons Quincy-Voisins, Meaux, Crégy-lès-Meaux, Trilport et tout le bassin meldois. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Oui, nous couvrons Quincy-Voisins, Meaux, Crégy-lès-Meaux, Trilport et tout le bassin meldois. Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

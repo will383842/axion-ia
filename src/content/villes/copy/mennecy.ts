@@ -29,8 +29,8 @@ export const MENNECY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mennecy : diagnostic adapté aux commerçants et artisans, PME services, professions libérales, restaurateurs sud Essonne. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Mennecy : diagnostic adapté aux commerçants et artisans, PME services, professions libérales, restaurateurs sud Essonne. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Mennecy : diagnostic adapté aux commerçants et artisans, PME services, professions libérales, restaurateurs sud Essonne. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Mennecy : diagnostic adapté aux commerçants et artisans, PME services, professions libérales, restaurateurs sud Essonne. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mennecy : formats adaptés boutique, cabinet, restaurant, bureau PME. Vos équipes repartent autonomes.",
@@ -64,7 +64,7 @@ export const MENNECY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Évry ou Paris ?",
-      a: "Évry-Courcouronnes (15 min). Corbeil-Essonnes (10 min). Paris centre (45 min). Aéroport Orly (25 min). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Évry-Courcouronnes (15 min). Corbeil-Essonnes (10 min). Paris centre (45 min). Aéroport Orly (25 min). Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

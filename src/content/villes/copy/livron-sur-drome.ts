@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LIVRON_SUR_DROME_COPY: VilleCopy = {
   pitchFr:
-    "Livron-sur-Drôme (26), commune positionnée à la confluence de la Drôme et du Rhône au sud de Valence, conjugue tissu agricole (vallée du Rhône) et péri-urbain. Tissu PME industrielles, TPE artisans BTP, agriculture, commerces. Axion-IA y intervient pour tous types d'activités du sud-Valence.",
+    "Livron-sur-Drôme (26), commune positionnée à la confluence de la Drôme et du Rhône au sud de Valence, conjugue tissu agricole (vallée du Rhône) et péri-urbain. Tissu PME industrielles, TPE artisans BTP, agriculture, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs du sud-Valence.",
   pitchEn:
-    "Livron-sur-Drôme (26), commune positionnée à la confluence de la Drôme et du Rhône au sud de Valence, conjugue tissu agricole (vallée du Rhône) et péri-urbain. Tissu PME industrielles, TPE artisans BTP, agriculture, commerces. Axion-IA y intervient pour tous types d'activités du sud-Valence.",
+    "Livron-sur-Drôme (26), commune positionnée à la confluence de la Drôme et du Rhône au sud de Valence, conjugue tissu agricole (vallée du Rhône) et péri-urbain. Tissu PME industrielles, TPE artisans BTP, agriculture, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs du sud-Valence.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Livron-sur-Drôme (26). Nous accompagnons tous types d'activités : PME industrielles sud-Drôme, agriculteurs et viticulteurs vallée du Rhône, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises sud-Valence.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LIVRON_SUR_DROME_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Livron-sur-Drôme : diagnostic adapté aux PME industrielles sud-Drôme, agriculteurs vallée Rhône, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Livron-sur-Drôme : diagnostic adapté aux PME industrielles sud-Drôme, agriculteurs vallée Rhône, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Livron-sur-Drôme : diagnostic adapté aux PME industrielles sud-Drôme, agriculteurs vallée Rhône, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Livron-sur-Drôme : diagnostic adapté aux PME industrielles sud-Drôme, agriculteurs vallée Rhône, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Livron-sur-Drôme : formats adaptés à l'atelier industriel, exploitation agricole, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -64,7 +64,7 @@ export const LIVRON_SUR_DROME_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Valence ?",
-      a: "Nos consultants viennent de Lyon (1h15 A7) ou Valence (15 min). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (1h15 A7) ou Valence (15 min). Pour les multi-jours, hébergement local possible. Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

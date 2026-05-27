@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GUILHERAND_GRANGES_COPY: VilleCopy = {
   pitchFr:
-    "Guilherand-Granges (07), commune de l'Ardèche positionnée face à Valence (rive droite du Rhône), fait partie de l'agglomération valentinoise. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités de l'agglomération Valence.",
+    "Guilherand-Granges (07), commune de l'Ardèche positionnée face à Valence (rive droite du Rhône), fait partie de l'agglomération valentinoise. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations de l'agglomération Valence.",
   pitchEn:
-    "Guilherand-Granges (07), commune de l'Ardèche positionnée face à Valence (rive droite du Rhône), fait partie de l'agglomération valentinoise. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités de l'agglomération Valence.",
+    "Guilherand-Granges (07), commune de l'Ardèche positionnée face à Valence (rive droite du Rhône), fait partie de l'agglomération valentinoise. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations de l'agglomération Valence.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guilherand-Granges (07). Nous accompagnons tous types d'activités : PME tertiaires et industrielles agglomération Valence, TPE artisans BTP, commerçants, professions libérales et services aux entreprises.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const GUILHERAND_GRANGES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Guilherand-Granges : diagnostic adapté aux PME tertiaires/industrielles agglomération Valence, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Guilherand-Granges : diagnostic adapté aux PME tertiaires/industrielles agglomération Valence, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Guilherand-Granges : diagnostic adapté aux PME tertiaires/industrielles agglomération Valence, professions libérales, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Guilherand-Granges : diagnostic adapté aux PME tertiaires/industrielles agglomération Valence, professions libérales, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Guilherand-Granges : formats adaptés au bureau, atelier, cabinet, commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Guilherand-Granges : formats adaptés au bureau, atelier, cabinet, commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Guilherand-Granges : formats adaptés au bureau, atelier, cabinet, commerce. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Guilherand-Granges : formats adaptés au bureau, atelier, cabinet, commerce. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Guilherand-Granges : agents conversationnels B2B, prédiction maintenance, automatisation workflow, classification documents. Agglomération Valence.",
@@ -64,7 +64,7 @@ export const GUILHERAND_GRANGES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Lyon (1h A7). TGV Paris Valence 2h15 + 10 min. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Lyon (1h A7). TGV Paris Valence 2h15 + 10 min. Coûts de déplacement à part, tarification transparente.",
     },
   ],
 };

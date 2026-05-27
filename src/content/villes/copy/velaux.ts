@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VELAUX_COPY: VilleCopy = {
   pitchFr:
-    "Velaux (13), commune résidentielle au nord de l'étang de Berre entre Aix-en-Provence et Marignane, accueille cadres et familles travaillant dans le bassin Aix-Marseille-Marignane. Tissu de TPE artisans, professions libérales, commerçants, PME tertiaires et services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Velaux (13), commune résidentielle au nord de l'étang de Berre entre Aix-en-Provence et Marignane, accueille cadres et familles travaillant dans le bassin Aix-Marseille-Marignane. Tissu de TPE artisans, professions libérales, commerçants, PME tertiaires et services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Velaux (13), commune résidentielle au nord de l'étang de Berre entre Aix-en-Provence et Marignane, accueille cadres et familles travaillant dans le bassin Aix-Marseille-Marignane. Tissu de TPE artisans, professions libérales, commerçants, PME tertiaires et services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Velaux (13), commune résidentielle au nord de l'étang de Berre entre Aix-en-Provence et Marignane, accueille cadres et familles travaillant dans le bassin Aix-Marseille-Marignane. Tissu de TPE artisans, professions libérales, commerçants, PME tertiaires et services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Velaux (13). Nous accompagnons TPE artisans, professions libérales, commerçants, PME tertiaires et services aux entreprises du bassin de Berre. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const VELAUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Velaux : diagnostic adapté aux TPE artisans, professions libérales, commerçants et PME tertiaires du bassin de Berre. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Velaux : diagnostic adapté aux TPE artisans, professions libérales, commerçants et PME tertiaires du bassin de Berre. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Velaux : diagnostic adapté aux TPE artisans, professions libérales, commerçants et PME tertiaires du bassin de Berre. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Velaux : diagnostic adapté aux TPE artisans, professions libérales, commerçants et PME tertiaires du bassin de Berre. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Velaux : ateliers pour cabinets libéraux, commerçants, TPE artisans et équipes PME tertiaires. Outils IA configurés métier réel.",
@@ -64,7 +64,7 @@ export const VELAUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Velaux ?",
-      a: "Velaux est à 20 min d'Aix et 15 min de Marignane via A7-A8. Nos consultants se déplacent dans vos locaux. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Velaux est à 20 min d'Aix et 15 min de Marignane via A7-A8. Nos consultants se déplacent dans vos locaux. Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

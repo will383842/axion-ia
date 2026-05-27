@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BRUGES_COPY: VilleCopy = {
   pitchFr:
-    "Bruges, ville de Gironde (33) en banlieue nord immédiate de Bordeaux, accueille un tissu économique diversifié : zone d'activités tertiaires Bordeaux Lac, industries périphériques, artisanat BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités du bassin nord-bordelais : TPE, indépendants, PME industrielles et tertiaires.",
+    "Bruges, ville de Gironde (33) en banlieue nord immédiate de Bordeaux, accueille un tissu économique diversifié : zone d'activités tertiaires Bordeaux Lac, industries périphériques, artisanat BTP, commerces, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin nord-bordelais : TPE, indépendants, PME industrielles et tertiaires.",
   pitchEn:
-    "Bruges, ville de Gironde (33) en banlieue nord immédiate de Bordeaux, accueille un tissu économique diversifié : zone d'activités tertiaires Bordeaux Lac, industries périphériques, artisanat BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités du bassin nord-bordelais : TPE, indépendants, PME industrielles et tertiaires.",
+    "Bruges, ville de Gironde (33) en banlieue nord immédiate de Bordeaux, accueille un tissu économique diversifié : zone d'activités tertiaires Bordeaux Lac, industries périphériques, artisanat BTP, commerces, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin nord-bordelais : TPE, indépendants, PME industrielles et tertiaires.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bruges (33). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME tertiaires brugeaises (zone Bordeaux Lac), industriels et sous-traitants périphériques bordelais, professions libérales (santé, juridique) et indépendants du bassin nord Métropole Bordeaux.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const BRUGES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bruges : diagnostic adapté à tous secteurs — TPE artisans BTP, commerçants, PME tertiaires zone Bordeaux Lac, industries périphériques, professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Bruges : diagnostic adapté à tous secteurs — TPE artisans BTP, commerçants, PME tertiaires zone Bordeaux Lac, industries périphériques, professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Bruges : diagnostic adapté à tous secteurs — TPE artisans BTP, commerçants, PME tertiaires zone Bordeaux Lac, industries périphériques, professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Bruges : diagnostic adapté à tous secteurs — TPE artisans BTP, commerçants, PME tertiaires zone Bordeaux Lac, industries périphériques, professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bruges : formats adaptés à votre métier (atelier, commerce, cabinet, bureau). Vos équipes terrain et back-office repartent autonomes sur outils IA configurés métier.",

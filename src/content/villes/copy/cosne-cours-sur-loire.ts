@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const COSNE_COURS_SUR_LOIRE_COPY: VilleCopy = {
   pitchFr:
-    "Cosne-Cours-sur-Loire (58), sous-préfecture de la Nièvre en bords de Loire, hérite d'une tradition métallurgique (forges historiques) et concentre un tissu de TPE/PME industrielles, commerces de centre-ville, artisans du bâtiment, professions libérales et services agricoles. Axion-IA y intervient pour tous types d'activités.",
+    "Cosne-Cours-sur-Loire (58), sous-préfecture de la Nièvre en bords de Loire, hérite d'une tradition métallurgique (forges historiques) et concentre un tissu de TPE/PME industrielles, commerces de centre-ville, artisans du bâtiment, professions libérales et services agricoles. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Cosne-Cours-sur-Loire (58), sous-préfecture de la Nièvre en bords de Loire, hérite d'une tradition métallurgique (forges historiques) et concentre un tissu de TPE/PME industrielles, commerces de centre-ville, artisans du bâtiment, professions libérales et services agricoles. Axion-IA y intervient pour tous types d'activités.",
+    "Cosne-Cours-sur-Loire (58), sous-préfecture de la Nièvre en bords de Loire, hérite d'une tradition métallurgique (forges historiques) et concentre un tissu de TPE/PME industrielles, commerces de centre-ville, artisans du bâtiment, professions libérales et services agricoles. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cosne-Cours-sur-Loire (58). Nous accompagnons TPE et PME : industriels métallurgie et mécanique, commerçants de centre-ville, artisans BTP, professions libérales, entreprises agricoles et viticoles du Val de Loire nivernais. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const COSNE_COURS_SUR_LOIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cosne-Cours-sur-Loire : diagnostic adapté aux TPE industrielles, commerçants, artisans BTP, professions libérales et exploitants agricoles du Val de Loire nivernais. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Cosne-Cours-sur-Loire : diagnostic adapté aux TPE industrielles, commerçants, artisans BTP, professions libérales et exploitants agricoles du Val de Loire nivernais. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Cosne-Cours-sur-Loire : diagnostic adapté aux TPE industrielles, commerçants, artisans BTP, professions libérales et exploitants agricoles du Val de Loire nivernais. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Cosne-Cours-sur-Loire : diagnostic adapté aux TPE industrielles, commerçants, artisans BTP, professions libérales et exploitants agricoles du Val de Loire nivernais. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Cosne-Cours-sur-Loire : formats adaptés à l'atelier industriel, au commerce, au cabinet ou à l'exploitation agricole. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Cosne-Cours-sur-Loire : formats adaptés à l'atelier industriel, au commerce, au cabinet ou à l'exploitation agricole. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Cosne-Cours-sur-Loire : formats adaptés à l'atelier industriel, au commerce, au cabinet ou à l'exploitation agricole. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Cosne-Cours-sur-Loire : formats adaptés à l'atelier industriel, au commerce, au cabinet ou à l'exploitation agricole. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Cosne-Cours-sur-Loire : maintenance prédictive métallurgie, CRM augmenté commerce, automatisation devis BTP, gestion parcellaire et traçabilité viticole, outils IA professions libérales.",

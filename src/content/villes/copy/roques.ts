@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ROQUES_COPY: VilleCopy = {
   pitchFr:
-    "Roques (31), commune du sud de Toulouse sur les bords de Garonne, plus de 5 400 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités de la couronne sud de Toulouse.",
+    "Roques (31), commune du sud de Toulouse sur les bords de Garonne, plus de 5 400 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de la couronne sud de Toulouse.",
   pitchEn:
-    "Roques (31), commune du sud de Toulouse sur les bords de Garonne, plus de 5 400 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités de la couronne sud de Toulouse.",
+    "Roques (31), commune du sud de Toulouse sur les bords de Garonne, plus de 5 400 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de la couronne sud de Toulouse.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Roques (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud Toulouse. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const ROQUES_COPY: VilleCopy = {
       en: "Audit IA à Roques : diagnostic adapté aux TPE artisans, PME de services et professions libérales du sud Toulouse. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Roques : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Roques : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Roques : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Roques : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Roques : automatisation gestion clients, devis artisans, classification documents, agents conversationnels pour TPE-PME sud Toulouse.",

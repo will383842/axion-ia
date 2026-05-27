@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const RIVES_COPY: VilleCopy = {
   pitchFr:
-    "Rives (38), commune du Pays voironnais en Isère sur la vallée de la Fure, possède un héritage industriel papetier historique. Tissu PME industrielles, TPE artisans BTP, commerces, agriculture périphérique et services. Axion-IA y intervient pour tous types d'activités du Voironnais.",
+    "Rives (38), commune du Pays voironnais en Isère sur la vallée de la Fure, possède un héritage industriel papetier historique. Tissu PME industrielles, TPE artisans BTP, commerces, agriculture périphérique et services. Axion-IA accompagne entreprises et indépendants de tous secteurs du Voironnais.",
   pitchEn:
-    "Rives (38), commune du Pays voironnais en Isère sur la vallée de la Fure, possède un héritage industriel papetier historique. Tissu PME industrielles, TPE artisans BTP, commerces, agriculture périphérique et services. Axion-IA y intervient pour tous types d'activités du Voironnais.",
+    "Rives (38), commune du Pays voironnais en Isère sur la vallée de la Fure, possède un héritage industriel papetier historique. Tissu PME industrielles, TPE artisans BTP, commerces, agriculture périphérique et services. Axion-IA accompagne entreprises et indépendants de tous secteurs du Voironnais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rives (38). Nous accompagnons tous types d'activités : PME industrielles du Voironnais (héritage papetier vallée Fure), TPE artisans BTP, commerçants, agriculteurs, indépendants, professions libérales et services aux entreprises du Pays voironnais.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const RIVES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Rives : diagnostic adapté aux PME industrielles Voironnais (héritage papetier), TPE artisans, agriculteurs et commerçants. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Rives : diagnostic adapté aux PME industrielles Voironnais (héritage papetier), TPE artisans, agriculteurs et commerçants. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Rives : diagnostic adapté aux PME industrielles Voironnais (héritage papetier), TPE artisans, agriculteurs et commerçants. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
+      en: "Audit IA à Rives : diagnostic adapté aux PME industrielles Voironnais (héritage papetier), TPE artisans, agriculteurs et commerçants. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Rives : formats adaptés à l'atelier industriel, exploitation agricole, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Rives : formats adaptés à l'atelier industriel, exploitation agricole, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Rives : formats adaptés à l'atelier industriel, exploitation agricole, commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Rives : formats adaptés à l'atelier industriel, exploitation agricole, commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Rives : prédiction maintenance industrielle, classification photos qualité, automatisation devis BTP, agents conversationnels client. Tissu Voironnais.",

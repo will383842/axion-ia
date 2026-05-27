@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VAUGNERAY_COPY: VilleCopy = {
   pitchFr:
-    "Vaugneray (69), commune en banlieue ouest de Lyon dans le Rhône, est positionnée aux portes des monts du Lyonnais. Tissu mixte agriculture et péri-urbain : PME tertiaires, TPE artisans BTP, commerces, agriculture monts du Lyonnais, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Vaugneray (69), commune en banlieue ouest de Lyon dans le Rhône, est positionnée aux portes des monts du Lyonnais. Tissu mixte agriculture et péri-urbain : PME tertiaires, TPE artisans BTP, commerces, agriculture monts du Lyonnais, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Vaugneray (69), commune en banlieue ouest de Lyon dans le Rhône, est positionnée aux portes des monts du Lyonnais. Tissu mixte agriculture et péri-urbain : PME tertiaires, TPE artisans BTP, commerces, agriculture monts du Lyonnais, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Vaugneray (69), commune en banlieue ouest de Lyon dans le Rhône, est positionnée aux portes des monts du Lyonnais. Tissu mixte agriculture et péri-urbain : PME tertiaires, TPE artisans BTP, commerces, agriculture monts du Lyonnais, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vaugneray (69). Nous accompagnons tous types d'activités : PME tertiaires ouest lyonnais, agriculteurs monts du Lyonnais, TPE artisans BTP, commerçants, professions libérales et services aux entreprises.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const VAUGNERAY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vaugneray : diagnostic adapté aux PME tertiaires ouest lyonnais, agriculteurs monts Lyonnais, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Vaugneray : diagnostic adapté aux PME tertiaires ouest lyonnais, agriculteurs monts Lyonnais, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Vaugneray : diagnostic adapté aux PME tertiaires ouest lyonnais, agriculteurs monts Lyonnais, professions libérales, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Vaugneray : diagnostic adapté aux PME tertiaires ouest lyonnais, agriculteurs monts Lyonnais, professions libérales, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vaugneray : formats adaptés au bureau, exploitation agricole, cabinet, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const VAUGNERAY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (25 min). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (25 min). Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_GAUDENS_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Gaudens (31), sous-préfecture du Comminges au pied des Pyrénées, plus de 12 000 habitants. Tissu TPE artisans, PME industrielles et agroalimentaires, commerces de centre-ville, professions libérales, tourisme montagne. Axion-IA y intervient pour tous types d'activités du sud de la Haute-Garonne.",
+    "Saint-Gaudens (31), sous-préfecture du Comminges au pied des Pyrénées, plus de 12 000 habitants. Tissu TPE artisans, PME industrielles et agroalimentaires, commerces de centre-ville, professions libérales, tourisme montagne. Axion-IA y déploie ses missions auprès de toutes les organisations du sud de la Haute-Garonne.",
   pitchEn:
-    "Saint-Gaudens (31), sous-préfecture du Comminges au pied des Pyrénées, plus de 12 000 habitants. Tissu TPE artisans, PME industrielles et agroalimentaires, commerces de centre-ville, professions libérales, tourisme montagne. Axion-IA y intervient pour tous types d'activités du sud de la Haute-Garonne.",
+    "Saint-Gaudens (31), sous-préfecture du Comminges au pied des Pyrénées, plus de 12 000 habitants. Tissu TPE artisans, PME industrielles et agroalimentaires, commerces de centre-ville, professions libérales, tourisme montagne. Axion-IA y déploie ses missions auprès de toutes les organisations du sud de la Haute-Garonne.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Gaudens (31). Nous accompagnons TPE artisans, PME industrielles et agroalimentaires, commerçants, professions libérales et acteurs du tourisme pyrénéen. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const SAINT_GAUDENS_COPY: VilleCopy = {
       en: "Audit IA à Saint-Gaudens : diagnostic adapté aux TPE artisans, PME industrielles, commerçants et acteurs du tourisme du Comminges. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Gaudens : formats adaptés à l'usine, au commerce de centre-ville, à l'hébergement touristique. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Saint-Gaudens : formats adaptés à l'usine, au commerce de centre-ville, à l'hébergement touristique. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Saint-Gaudens : formats adaptés à l'usine, au commerce de centre-ville, à l'hébergement touristique. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Saint-Gaudens : formats adaptés à l'usine, au commerce de centre-ville, à l'hébergement touristique. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Gaudens : automatisation contrôle qualité industriel, gestion réservations tourisme, classification documentaire, optimisation logistique Comminges.",

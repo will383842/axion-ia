@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const RIORGES_COPY: VilleCopy = {
   pitchFr:
-    "Riorges (42), commune en banlieue immédiate de Roanne dans la Loire, est intégrée à Roannais Agglomération. Tissu PME industrielles (héritage textile roannais) et tertiaires, TPE artisans BTP, commerces, agriculture périphérique. Axion-IA y intervient pour tous types d'activités du Roannais.",
+    "Riorges (42), commune en banlieue immédiate de Roanne dans la Loire, est intégrée à Roannais Agglomération. Tissu PME industrielles (héritage textile roannais) et tertiaires, TPE artisans BTP, commerces, agriculture périphérique. Axion-IA y déploie ses missions auprès de toutes les organisations du Roannais.",
   pitchEn:
-    "Riorges (42), commune en banlieue immédiate de Roanne dans la Loire, est intégrée à Roannais Agglomération. Tissu PME industrielles (héritage textile roannais) et tertiaires, TPE artisans BTP, commerces, agriculture périphérique. Axion-IA y intervient pour tous types d'activités du Roannais.",
+    "Riorges (42), commune en banlieue immédiate de Roanne dans la Loire, est intégrée à Roannais Agglomération. Tissu PME industrielles (héritage textile roannais) et tertiaires, TPE artisans BTP, commerces, agriculture périphérique. Axion-IA y déploie ses missions auprès de toutes les organisations du Roannais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Riorges (42). Nous accompagnons tous types d'activités : PME industrielles Roannais (héritage textile fort), tertiaires, TPE artisans BTP, commerçants, agriculteurs périphériques, indépendants, professions libérales et services aux entreprises de Roannais Agglomération.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const RIORGES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Riorges : diagnostic adapté aux PME industrielles Roannais (textile/diversifiées), tertiaires, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Riorges : diagnostic adapté aux PME industrielles Roannais (textile/diversifiées), tertiaires, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Riorges : diagnostic adapté aux PME industrielles Roannais (textile/diversifiées), tertiaires, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Riorges : diagnostic adapté aux PME industrielles Roannais (textile/diversifiées), tertiaires, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Riorges : formats adaptés à l'atelier industriel (filière textile), bureau tertiaire, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Riorges : formats adaptés à l'atelier industriel (filière textile), bureau tertiaire, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Riorges : formats adaptés à l'atelier industriel (filière textile), bureau tertiaire, commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Riorges : formats adaptés à l'atelier industriel (filière textile), bureau tertiaire, commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Riorges : classification photos textile (contrôle qualité), prédiction maintenance industrielle, agents conversationnels B2B, automatisation workflow. Roannais Agglomération.",
@@ -64,7 +64,7 @@ export const RIORGES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",
-      a: "Nos consultants viennent de Lyon (1h30) ou Saint-Étienne (1h). Pour les multi-jours, hébergement local possible (hôtels Roanne). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (1h30) ou Saint-Étienne (1h). Pour les multi-jours, hébergement local possible (hôtels Roanne). Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MONTVAL_SUR_LOIR_COPY: VilleCopy = {
   pitchFr:
-    "Montval-sur-Loir (72), commune nouvelle de la Sarthe née en 2016, s'étend dans la vallée du Loir entre La Flèche et Château-du-Loir. Près de 5 600 habitants, un tissu de TPE artisanales, PME viticoles (Jasnières AOC), commerces et services. Axion-IA y intervient pour tous types d'activités.",
+    "Montval-sur-Loir (72), commune nouvelle de la Sarthe née en 2016, s'étend dans la vallée du Loir entre La Flèche et Château-du-Loir. Près de 5 600 habitants, un tissu de TPE artisanales, PME viticoles (Jasnières AOC), commerces et services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Montval-sur-Loir (72), commune nouvelle de la Sarthe née en 2016, s'étend dans la vallée du Loir entre La Flèche et Château-du-Loir. Près de 5 600 habitants, un tissu de TPE artisanales, PME viticoles (Jasnières AOC), commerces et services. Axion-IA y intervient pour tous types d'activités.",
+    "Montval-sur-Loir (72), commune nouvelle de la Sarthe née en 2016, s'étend dans la vallée du Loir entre La Flèche et Château-du-Loir. Près de 5 600 habitants, un tissu de TPE artisanales, PME viticoles (Jasnières AOC), commerces et services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montval-sur-Loir (72). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME viticoles Jasnières AOC, exploitations agricoles vallée du Loir, professions libérales et services entre La Flèche et Tours.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const MONTVAL_SUR_LOIR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montval-sur-Loir : diagnostic adapté aux TPE artisans, PME viticoles Jasnières AOC, exploitations agricoles et commerces de la vallée du Loir. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Montval-sur-Loir : diagnostic adapté aux TPE artisans, PME viticoles Jasnières AOC, exploitations agricoles et commerces de la vallée du Loir. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Montval-sur-Loir : diagnostic adapté aux TPE artisans, PME viticoles Jasnières AOC, exploitations agricoles et commerces de la vallée du Loir. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Montval-sur-Loir : diagnostic adapté aux TPE artisans, PME viticoles Jasnières AOC, exploitations agricoles et commerces de la vallée du Loir. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montval-sur-Loir : formats adaptés aux domaines viticoles, exploitations agricoles, TPE artisanales et commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",

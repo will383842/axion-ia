@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const THEIX_NOYALO_COPY: VilleCopy = {
   pitchFr:
-    "Theix-Noyalo (56), commune nouvelle de l'agglomération de Vannes aux portes du Golfe du Morbihan, allie dynamisme résidentiel et tissu économique diversifié. TPE de services, PME artisanales, commerces de proximité, professions libérales et exploitants agricoles composent son économie. Axion-IA y intervient pour tous types d'activités de l'agglomération vannetaise.",
+    "Theix-Noyalo (56), commune nouvelle de l'agglomération de Vannes aux portes du Golfe du Morbihan, allie dynamisme résidentiel et tissu économique diversifié. TPE de services, PME artisanales, commerces de proximité, professions libérales et exploitants agricoles composent son économie. Axion-IA y déploie ses missions auprès de toutes les organisations de l'agglomération vannetaise.",
   pitchEn:
-    "Theix-Noyalo (56), commune nouvelle de l'agglomération de Vannes aux portes du Golfe du Morbihan, allie dynamisme résidentiel et tissu économique diversifié. TPE de services, PME artisanales, commerces de proximité, professions libérales et exploitants agricoles composent son économie. Axion-IA y intervient pour tous types d'activités de l'agglomération vannetaise.",
+    "Theix-Noyalo (56), commune nouvelle de l'agglomération de Vannes aux portes du Golfe du Morbihan, allie dynamisme résidentiel et tissu économique diversifié. TPE de services, PME artisanales, commerces de proximité, professions libérales et exploitants agricoles composent son économie. Axion-IA y déploie ses missions auprès de toutes les organisations de l'agglomération vannetaise.",
   seoHook: "services, artisanat & agriculture",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Theix-Noyalo (56). Nous accompagnons tous types d'activités : TPE de services, PME artisanales, commerçants, professions libérales, exploitants agricoles et indépendants de l'agglomération vannetaise. Audit Flash dès 490 € HT, démarrage sous 5 jours.",

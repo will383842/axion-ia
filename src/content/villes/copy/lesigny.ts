@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LESIGNY_COPY: VilleCopy = {
   pitchFr:
-    "Lésigny (77), commune résidentielle de l'est francilien en Seine-et-Marne, mêle cadre verdoyant (golf, espaces boisés) et tissu économique de TPE artisanales, PME de services, commerces de proximité et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Lésigny (77), commune résidentielle de l'est francilien en Seine-et-Marne, mêle cadre verdoyant (golf, espaces boisés) et tissu économique de TPE artisanales, PME de services, commerces de proximité et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Lésigny (77), commune résidentielle de l'est francilien en Seine-et-Marne, mêle cadre verdoyant (golf, espaces boisés) et tissu économique de TPE artisanales, PME de services, commerces de proximité et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Lésigny (77), commune résidentielle de l'est francilien en Seine-et-Marne, mêle cadre verdoyant (golf, espaces boisés) et tissu économique de TPE artisanales, PME de services, commerces de proximité et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lésigny (77). Nous accompagnons TPE et PME : artisans du bâtiment, commerçants de proximité, PME tertiaires, professions libérales et prestataires de services de l'est Seine-et-Marne.",
   directAnswerEn:

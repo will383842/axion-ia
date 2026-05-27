@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BAIN_DE_BRETAGNE_COPY: VilleCopy = {
   pitchFr:
-    "Bain-de-Bretagne (35), bourg-centre du sud de l'Ille-et-Vilaine peuplé de 7 674 habitants, joue le rôle de pôle commercial et de services pour le pays de Bain. TPE, PME, artisans, commerçants, professions libérales et exploitations agricoles structurent son économie locale. Axion-IA y intervient pour tous types d'activités du sud-ille-et-vilainois.",
+    "Bain-de-Bretagne (35), bourg-centre du sud de l'Ille-et-Vilaine peuplé de 7 674 habitants, joue le rôle de pôle commercial et de services pour le pays de Bain. TPE, PME, artisans, commerçants, professions libérales et exploitations agricoles structurent son économie locale. Axion-IA y déploie ses missions auprès de toutes les organisations du sud-ille-et-vilainois.",
   pitchEn:
-    "Bain-de-Bretagne (35), bourg-centre du sud de l'Ille-et-Vilaine peuplé de 7 674 habitants, joue le rôle de pôle commercial et de services pour le pays de Bain. TPE, PME, artisans, commerçants, professions libérales et exploitations agricoles structurent son économie locale. Axion-IA y intervient pour tous types d'activités du sud-ille-et-vilainois.",
+    "Bain-de-Bretagne (35), bourg-centre du sud de l'Ille-et-Vilaine peuplé de 7 674 habitants, joue le rôle de pôle commercial et de services pour le pays de Bain. TPE, PME, artisans, commerçants, professions libérales et exploitations agricoles structurent son économie locale. Axion-IA y déploie ses missions auprès de toutes les organisations du sud-ille-et-vilainois.",
   seoHook: "commerce & services sud Ille-et-Vilaine",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bain-de-Bretagne (35). Nous accompagnons tous types d'activités : TPE et PME locales, artisans, commerçants, professions libérales et exploitations agricoles du sud de l'Ille-et-Vilaine. Audit Flash dès 490 € HT, démarrage sous 5 jours.",

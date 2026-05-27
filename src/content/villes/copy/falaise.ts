@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FALAISE_COPY: VilleCopy = {
   pitchFr:
-    "Falaise (14), sous-préfecture du Calvados, est la ville natale de Guillaume le Conquérant. Son château médiéval domine la ville. Pôle économique entre bocage et plaine de Caen, tissu TPE artisans BTP, PME industrielles et agroalimentaires, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Falaise (14), sous-préfecture du Calvados, est la ville natale de Guillaume le Conquérant. Son château médiéval domine la ville. Pôle économique entre bocage et plaine de Caen, tissu TPE artisans BTP, PME industrielles et agroalimentaires, commerces, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Falaise (14), sous-préfecture du Calvados, est la ville natale de Guillaume le Conquérant. Son château médiéval domine la ville. Pôle économique entre bocage et plaine de Caen, tissu TPE artisans BTP, PME industrielles et agroalimentaires, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Falaise (14), sous-préfecture du Calvados, est la ville natale de Guillaume le Conquérant. Son château médiéval domine la ville. Pôle économique entre bocage et plaine de Caen, tissu TPE artisans BTP, PME industrielles et agroalimentaires, commerces, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Falaise (14). Nous accompagnons tous types d'activités : TPE artisans BTP et commerçants, PME industrielles et agroalimentaires, acteurs du tourisme patrimoine (château Guillaume le Conquérant), professions libérales et services aux entreprises du pays de Falaise.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const FALAISE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Falaise : diagnostic adapté aux PME industrielles (plasturgie, métallurgie), agroalimentaires, TPE artisans BTP, acteurs tourisme patrimoine et commerçants. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Falaise : diagnostic adapté aux PME industrielles (plasturgie, métallurgie), agroalimentaires, TPE artisans BTP, acteurs tourisme patrimoine et commerçants. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Falaise : diagnostic adapté aux PME industrielles (plasturgie, métallurgie), agroalimentaires, TPE artisans BTP, acteurs tourisme patrimoine et commerçants. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Falaise : diagnostic adapté aux PME industrielles (plasturgie, métallurgie), agroalimentaires, TPE artisans BTP, acteurs tourisme patrimoine et commerçants. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Falaise : formats adaptés à l'usine, atelier industriel, commerce, site touristique ou cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",

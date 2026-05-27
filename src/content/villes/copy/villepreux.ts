@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VILLEPREUX_COPY: VilleCopy = {
   pitchFr:
-    "Villepreux (78), commune de la plaine de Versailles à 20 km au sud-ouest de Paris, compte plus de 11 200 habitants. TPE artisanat et BTP, PME services aux entreprises, commerces de proximité, professions libérales, restauration. Axion-IA y intervient pour tous types d'activités.",
+    "Villepreux (78), commune de la plaine de Versailles à 20 km au sud-ouest de Paris, compte plus de 11 200 habitants. TPE artisanat et BTP, PME services aux entreprises, commerces de proximité, professions libérales, restauration. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Villepreux (78), commune de la plaine de Versailles à 20 km au sud-ouest de Paris, compte plus de 11 200 habitants. TPE artisanat et BTP, PME services aux entreprises, commerces de proximité, professions libérales, restauration. Axion-IA y intervient pour tous types d'activités.",
+    "Villepreux (78), commune de la plaine de Versailles à 20 km au sud-ouest de Paris, compte plus de 11 200 habitants. TPE artisanat et BTP, PME services aux entreprises, commerces de proximité, professions libérales, restauration. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villepreux (78). Nous accompagnons TPE et PME : artisans BTP, PME services aux entreprises, commerçants de proximité, professions libérales, restaurateurs. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const VILLEPREUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villepreux : diagnostic adapté aux TPE artisans BTP, PME services, commerçants, professions libérales, restaurateurs. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Villepreux : diagnostic adapté aux TPE artisans BTP, PME services, commerçants, professions libérales, restaurateurs. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Villepreux : diagnostic adapté aux TPE artisans BTP, PME services, commerçants, professions libérales, restaurateurs. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Villepreux : diagnostic adapté aux TPE artisans BTP, PME services, commerçants, professions libérales, restaurateurs. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Villepreux : formats adaptés chantier, bureau, commerce, cabinet, restaurant. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Villepreux : formats adaptés chantier, bureau, commerce, cabinet, restaurant. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Villepreux : formats adaptés chantier, bureau, commerce, cabinet, restaurant. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Villepreux : formats adaptés chantier, bureau, commerce, cabinet, restaurant. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Villepreux : automatisation devis et facturation BTP, CRM augmenté PME services, gestion stocks commerces, prise de rendez-vous professions libérales.",

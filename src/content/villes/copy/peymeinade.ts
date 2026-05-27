@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PEYMEINADE_COPY: VilleCopy = {
   pitchFr:
-    "Peymeinade (06), dans l'arrière-pays grassois entre Grasse et Draguignan, est une commune résidentielle au cadre provençal préservé. Tissu TPE/PME artisanat BTP, commerces de proximité, services à la personne, professions libérales et agriculture (oléiculture, horticulture). Axion-IA y intervient pour tous types d'activités.",
+    "Peymeinade (06), dans l'arrière-pays grassois entre Grasse et Draguignan, est une commune résidentielle au cadre provençal préservé. Tissu TPE/PME artisanat BTP, commerces de proximité, services à la personne, professions libérales et agriculture (oléiculture, horticulture). Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Peymeinade (06), dans l'arrière-pays grassois entre Grasse et Draguignan, est une commune résidentielle au cadre provençal préservé. Tissu TPE/PME artisanat BTP, commerces de proximité, services à la personne, professions libérales et agriculture (oléiculture, horticulture). Axion-IA y intervient pour tous types d'activités.",
+    "Peymeinade (06), dans l'arrière-pays grassois entre Grasse et Draguignan, est une commune résidentielle au cadre provençal préservé. Tissu TPE/PME artisanat BTP, commerces de proximité, services à la personne, professions libérales et agriculture (oléiculture, horticulture). Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Peymeinade (06). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, agriculteurs (oléiculture), PME services et entreprises de l'arrière-pays grassois.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const PEYMEINADE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Peymeinade : diagnostic adapté aux TPE artisans BTP, commerçants, agriculteurs et professions libérales de l'arrière-pays grassois. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
-      en: "Audit IA à Peymeinade : diagnostic adapté aux TPE artisans BTP, commerçants, agriculteurs et professions libérales de l'arrière-pays grassois. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
+      fr: "Audit IA à Peymeinade : diagnostic adapté aux TPE artisans BTP, commerçants, agriculteurs et professions libérales de l'arrière-pays grassois. Audit Flash à 490 € HT, retour sur investissement chiffré accessible aux petites structures.",
+      en: "Audit IA à Peymeinade : diagnostic adapté aux TPE artisans BTP, commerçants, agriculteurs et professions libérales de l'arrière-pays grassois. Audit Flash à 490 € HT, retour sur investissement chiffré accessible aux petites structures.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Peymeinade : formats adaptés à l'atelier artisan, commerce, exploitation agricole ou cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Peymeinade : formats adaptés à l'atelier artisan, commerce, exploitation agricole ou cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Peymeinade : formats adaptés à l'atelier artisan, commerce, exploitation agricole ou cabinet libéral. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Peymeinade : formats adaptés à l'atelier artisan, commerce, exploitation agricole ou cabinet libéral. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Peymeinade : automatisation devis BTP, gestion commandes agricoles, agents conversationnels client, CRM augmenté, classification documents. Adapté aux TPE/PME de l'arrière-pays grassois.",

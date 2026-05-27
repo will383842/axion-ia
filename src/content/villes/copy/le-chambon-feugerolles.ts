@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_CHAMBON_FEUGEROLLES_COPY: VilleCopy = {
   pitchFr:
-    "Le Chambon-Feugerolles (42), commune de la vallée de l'Ondaine dans la Loire, est intégrée à Saint-Étienne Métropole. Héritage industriel important (métallurgie, petite mécanique fine). Tissu PME industrielles diversifiées, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités vallée Ondaine.",
+    "Le Chambon-Feugerolles (42), commune de la vallée de l'Ondaine dans la Loire, est intégrée à Saint-Étienne Métropole. Héritage industriel important (métallurgie, petite mécanique fine). Tissu PME industrielles diversifiées, TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs vallée Ondaine.",
   pitchEn:
-    "Le Chambon-Feugerolles (42), commune de la vallée de l'Ondaine dans la Loire, est intégrée à Saint-Étienne Métropole. Héritage industriel important (métallurgie, petite mécanique fine). Tissu PME industrielles diversifiées, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités vallée Ondaine.",
+    "Le Chambon-Feugerolles (42), commune de la vallée de l'Ondaine dans la Loire, est intégrée à Saint-Étienne Métropole. Héritage industriel important (métallurgie, petite mécanique fine). Tissu PME industrielles diversifiées, TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs vallée Ondaine.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Chambon-Feugerolles (42). Nous accompagnons tous types d'activités : PME industrielles vallée Ondaine (héritage métallurgique/petite mécanique), TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de Saint-Étienne Métropole.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LE_CHAMBON_FEUGEROLLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Chambon-Feugerolles : diagnostic adapté aux PME industrielles vallée Ondaine (métallurgie/petite mécanique), TPE artisans, commerçants. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA au Chambon-Feugerolles : diagnostic adapté aux PME industrielles vallée Ondaine (métallurgie/petite mécanique), TPE artisans, commerçants. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA au Chambon-Feugerolles : diagnostic adapté aux PME industrielles vallée Ondaine (métallurgie/petite mécanique), TPE artisans, commerçants. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA au Chambon-Feugerolles : diagnostic adapté aux PME industrielles vallée Ondaine (métallurgie/petite mécanique), TPE artisans, commerçants. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site au Chambon-Feugerolles : formats adaptés à l'atelier industriel (mécanique de précision), commerce, bureau. Vos équipes repartent autonomes sur outils IA métier.",

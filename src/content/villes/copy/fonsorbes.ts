@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FONSORBES_COPY: VilleCopy = {
   pitchFr:
-    "Fonsorbes (31), commune dynamique de l'ouest toulousain avec près de 13 000 habitants. Tissu TPE artisans BTP, PME de services, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités de la couronne ouest de Toulouse.",
+    "Fonsorbes (31), commune dynamique de l'ouest toulousain avec près de 13 000 habitants. Tissu TPE artisans BTP, PME de services, commerces de proximité, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de la couronne ouest de Toulouse.",
   pitchEn:
-    "Fonsorbes (31), commune dynamique de l'ouest toulousain avec près de 13 000 habitants. Tissu TPE artisans BTP, PME de services, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités de la couronne ouest de Toulouse.",
+    "Fonsorbes (31), commune dynamique de l'ouest toulousain avec près de 13 000 habitants. Tissu TPE artisans BTP, PME de services, commerces de proximité, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de la couronne ouest de Toulouse.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fonsorbes (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'ouest toulousain. Audit Flash dès 490 € HT.",
   directAnswerEn:

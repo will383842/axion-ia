@@ -1,70 +1,72 @@
-// AUTO-GENERATED 2026-05-27 — T4 batch #26 Claude Code (Will).
-// Peypin (13, Bouches-du-Rhône) — ancien bassin minier reconverti à l'est de Marseille.
+// AUTO-GENERATED 2026-05-27 — T4 batch #25 Claude Code (Will).
+// Peypin (13, Bouches-du-Rhône) — ancien pays minier de Provence (charbon 19e-20e),
+// en reconversion énergétique, vallée de l'Huveaune, est marseillais (axe Aubagne).
+// Identité ULTRA-DIFFÉRENCIÉE vs Simiane-Collongue (résidentiel libéral nord aixois).
 
 import type { VilleCopy } from "./types";
 
 export const PEYPIN_COPY: VilleCopy = {
   pitchFr:
-    "Peypin (13), commune de l'est marseillais en bordure du bassin minier de Provence reconverti, conjugue cadre résidentiel et tissu de TPE artisans, PME services et commerces de proximité. Ancien pôle charbonnier devenu zone résidentielle et tertiaire au pied du massif de l'Étoile. Axion-IA y intervient pour tous types d'activités.",
+    "Peypin (13), ancienne commune charbonnière du bassin minier de Provence (Gardanne-Provence) reconvertie depuis la fermeture des puits, dans la vallée de l'Huveaune à l'est de Marseille. Tissu d'artisans BTP rénovation énergétique, sous-traitants industriels, micro-PME de maintenance et travailleurs du bâtiment au cœur d'un territoire en mutation post-charbon. Axion-IA y déploie ses missions IA auprès de tous types de structures.",
   pitchEn:
-    "Peypin (13), commune de l'est marseillais en bordure du bassin minier de Provence reconverti, conjugue cadre résidentiel et tissu de TPE artisans, PME services et commerces de proximité. Ancien pôle charbonnier devenu zone résidentielle et tertiaire au pied du massif de l'Étoile. Axion-IA y intervient pour tous types d'activités.",
+    "Peypin (13), ancienne commune charbonnière du bassin minier de Provence (Gardanne-Provence) reconvertie depuis la fermeture des puits, dans la vallée de l'Huveaune à l'est de Marseille. Tissu d'artisans BTP rénovation énergétique, sous-traitants industriels, micro-PME de maintenance et travailleurs du bâtiment au cœur d'un territoire en mutation post-charbon. Axion-IA y déploie ses missions IA auprès de tous types de structures.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Peypin (13). Nous accompagnons TPE artisans, PME services et commerces de l'est marseillais et du bassin minier reconverti. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Peypin (13). Nous accompagnons en priorité les TPE (artisans BTP rénovation énergétique, plombiers-chauffagistes, électriciens, maçons) puis les PME de sous-traitance industrielle et micro-industries de maintenance de la vallée de l'Huveaune. Les ETI restent en complément. Audit Flash dès 490 € HT, ROI mesuré chantier par chantier.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Peypin (13). Nous accompagnons TPE artisans, PME services et commerces de l'est marseillais et du bassin minier reconverti. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Peypin (13). Nous accompagnons en priorité les TPE (artisans BTP rénovation énergétique, plombiers-chauffagistes, électriciens, maçons) puis les PME de sous-traitance industrielle et micro-industries de maintenance de la vallée de l'Huveaune. Les ETI restent en complément. Audit Flash dès 490 € HT, ROI mesuré chantier par chantier.",
   ecosystemFr:
-    "Peypin est positionnée à l'est de Marseille, à proximité d'Auriol et de la vallée de l'Huveaune, en bordure de l'ancien bassin minier de Provence (Gardanne, Trets, Fuveau). Tissu économique de TPE artisans (BTP, paysagistes, services à la personne), PME tertiaires, commerces de proximité, professions libérales. Reconversion post-minière vers les services et l'habitat résidentiel.",
+    "Peypin appartient au pays minier de Provence, ancien bassin houiller exploité du 19e siècle jusqu'à la fermeture progressive des puits (charbon Gardanne-Provence). Située dans la vallée de l'Huveaune sur l'axe Aubagne–La Bouilladisse, la commune connaît une reconversion vers la rénovation énergétique du bâti ancien, la sous-traitance industrielle (maintenance, métallerie, soudure) et les micro-PME du BTP. Le tissu local comprend des artisans plombiers-chauffagistes, électriciens, maçons, ainsi que des entreprises de travaux publics et de désamiantage. Les communes voisines (Auriol, La Bouilladisse, La Destrousse, Saint-Savournin, Cadolive) partagent ce profil de bassin ouvrier reconverti. Bassin d'emploi Aubagne–Pays d'Aubagne et de l'Étoile.",
   ecosystemEn:
-    "Peypin est positionnée à l'est de Marseille, à proximité d'Auriol et de la vallée de l'Huveaune, en bordure de l'ancien bassin minier de Provence (Gardanne, Trets, Fuveau). Tissu économique de TPE artisans (BTP, paysagistes, services à la personne), PME tertiaires, commerces de proximité, professions libérales. Reconversion post-minière vers les services et l'habitat résidentiel.",
+    "Peypin appartient au pays minier de Provence, ancien bassin houiller exploité du 19e siècle jusqu'à la fermeture progressive des puits (charbon Gardanne-Provence). Située dans la vallée de l'Huveaune sur l'axe Aubagne–La Bouilladisse, la commune connaît une reconversion vers la rénovation énergétique du bâti ancien, la sous-traitance industrielle (maintenance, métallerie, soudure) et les micro-PME du BTP. Le tissu local comprend des artisans plombiers-chauffagistes, électriciens, maçons, ainsi que des entreprises de travaux publics et de désamiantage. Les communes voisines (Auriol, La Bouilladisse, La Destrousse, Saint-Savournin, Cadolive) partagent ce profil de bassin ouvrier reconverti. Bassin d'emploi Aubagne–Pays d'Aubagne et de l'Étoile.",
   distancesFr:
-    "Aubagne à 15 min. Auriol à 10 min. Marseille centre à 30 min via A52. Aix-en-Provence à 30 min. Gardanne à 20 min. Gare Aubagne à 15 min. Aéroport Marseille-Provence à 40 min.",
+    "Aubagne à 12 min via A52. La Bouilladisse à 5 min. La Destrousse à 7 min. Auriol à 10 min. Saint-Savournin à 8 min. Cadolive à 9 min. Marseille centre à 30 min via A52 puis A50. Gare TER d'Aubagne à 15 min. Aéroport Marseille-Provence (Marignane) à 40 min. Aix-en-Provence à 35 min via A52 puis A8.",
   distancesEn:
-    "Aubagne à 15 min. Auriol à 10 min. Marseille centre à 30 min via A52. Aix-en-Provence à 30 min. Gardanne à 20 min. Gare Aubagne à 15 min. Aéroport Marseille-Provence à 40 min.",
+    "Aubagne à 12 min via A52. La Bouilladisse à 5 min. La Destrousse à 7 min. Auriol à 10 min. Saint-Savournin à 8 min. Cadolive à 9 min. Marseille centre à 30 min via A52 puis A50. Gare TER d'Aubagne à 15 min. Aéroport Marseille-Provence (Marignane) à 40 min. Aix-en-Provence à 35 min via A52 puis A8.",
   topSectorsNaf: [
-    "TPE artisanat & BTP",
-    "PME services & conseil",
-    "Commerces de proximité",
-    "Professions libérales",
-    "Services à la personne",
+    "BTP rénovation énergétique & isolation",
+    "Plomberie-chauffagiste & électricité bâtiment",
+    "Sous-traitance industrielle (métallerie, soudure, maintenance)",
+    "Travaux publics & désamiantage post-minier",
+    "Artisanat bâtiment & micro-PME maintenance",
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Peypin : diagnostic adapté aux TPE artisans, PME services, professions libérales et commerces de l'est marseillais. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Peypin : diagnostic adapté aux TPE artisans, PME services, professions libérales et commerces de l'est marseillais. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Peypin : diagnostic adapté aux artisans BTP rénovation énergétique, plombiers-chauffagistes, électriciens, maçons et sous-traitants industriels de la vallée de l'Huveaune. Audit Flash 490 € HT, ROI mesuré sur les premiers chantiers (devis, planning, suivi matériel).",
+      en: "Audit IA à Peypin : diagnostic adapté aux artisans BTP rénovation énergétique, plombiers-chauffagistes, électriciens, maçons et sous-traitants industriels de la vallée de l'Huveaune. Audit Flash 490 € HT, ROI mesuré sur les premiers chantiers (devis, planning, suivi matériel).",
     },
     interventions: {
-      fr: "Interventions IA sur site à Peypin : ateliers pour équipes TPE/PME, professions libérales et artisans. Outils IA configurés métier réel, dans vos locaux ou à Aubagne.",
-      en: "Interventions IA sur site à Peypin : ateliers pour équipes TPE/PME, professions libérales et artisans. Outils IA configurés métier réel, dans vos locaux ou à Aubagne.",
+      fr: "Interventions IA sur site à Peypin : ateliers terrain pour équipes BTP, formation chefs de chantier sur outils IA chiffrage, accompagnement bureaux d'études énergétique. Sessions possibles à Aubagne ou La Bouilladisse pour mutualiser plusieurs artisans du bassin ouvrier.",
+      en: "Interventions IA sur site à Peypin : ateliers terrain pour équipes BTP, formation chefs de chantier sur outils IA chiffrage, accompagnement bureaux d'études énergétique. Sessions possibles à Aubagne ou La Bouilladisse pour mutualiser plusieurs artisans du bassin ouvrier.",
     },
     implementation: {
-      fr: "Implémentation IA à Peypin : automatisation devis BTP, gestion administrative TPE, agents conversationnels SAV, optimisation planning chantiers, content marketing local commerces. RGPD strict.",
-      en: "Implémentation IA à Peypin : automatisation devis BTP, gestion administrative TPE, agents conversationnels SAV, optimisation planning chantiers, content marketing local commerces. RGPD strict.",
+      fr: "Implémentation IA à Peypin : génération automatique de devis BTP, chiffrage rénovation énergétique (calcul DPE, aides MaPrimeRénov'), planification chantiers multi-corps de métier, suivi matériel et stocks, classification photos chantier, agents conversationnels pour demandes de devis particuliers post-fermeture mine. RGPD strict.",
+      en: "Implémentation IA à Peypin : génération automatique de devis BTP, chiffrage rénovation énergétique (calcul DPE, aides MaPrimeRénov'), planification chantiers multi-corps de métier, suivi matériel et stocks, classification photos chantier, agents conversationnels pour demandes de devis particuliers post-fermeture mine. RGPD strict.",
     },
     unAUn: {
-      fr: "Coaching 1-to-1 à Peypin : sessions pour dirigeants TPE, artisans et professions libérales souhaitant maîtriser l'IA opérationnelle sans transformation lourde.",
-      en: "Coaching 1-to-1 à Peypin : sessions pour dirigeants TPE, artisans et professions libérales souhaitant maîtriser l'IA opérationnelle sans transformation lourde.",
+      fr: "Coaching 1-to-1 à Peypin : sessions terrain pour dirigeants TPE BTP, artisans plombiers-chauffagistes, électriciens et chefs de petites entreprises de sous-traitance industrielle souhaitant intégrer l'IA dans le chiffrage, le planning et la relation client sans alourdir l'équipe.",
+      en: "Coaching 1-to-1 à Peypin : sessions terrain pour dirigeants TPE BTP, artisans plombiers-chauffagistes, électriciens et chefs de petites entreprises de sous-traitance industrielle souhaitant intégrer l'IA dans le chiffrage, le planning et la relation client sans alourdir l'équipe.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Axion-IA intervient-il à Peypin et à l'est de Marseille ?",
-      a: "Oui, Axion-IA intervient à Peypin et dans tout l'est marseillais (Aubagne, Auriol, La Bouilladisse, Cadolive, Saint-Savournin). Proximité immédiate du bassin minier reconverti via A52.",
+      q: "Axion-IA intervient-il à Peypin et dans le bassin minier reconverti ?",
+      a: "Oui, Axion-IA intervient à Peypin et dans toutes les communes du pays minier reconverti : Auriol, La Bouilladisse, La Destrousse, Saint-Savournin, Cadolive. Accès direct via A52, consultants depuis Aubagne (12 min) ou Marseille (30 min).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Peypin ?",
-      a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, PME services et commerces peypinois. Tarifs publics, sans engagement.",
+      q: "Accompagnez-vous les artisans BTP rénovation énergétique ?",
+      a: "Oui, c'est notre cible prioritaire à Peypin : génération de devis automatisés, chiffrage rénovation énergétique (calcul DPE, simulation MaPrimeRénov'), planification chantiers, suivi matériel, classification photos avant/après. Adapté aux TPE plombiers-chauffagistes, électriciens, maçons et entreprises d'isolation.",
     },
     {
-      q: "Accompagnez-vous les artisans BTP et services à la personne ?",
-      a: "Oui, nous accompagnons les artisans BTP et services à la personne sur des cas IA : automatisation devis, planning chantiers, gestion administrative simplifiée, content marketing local, agents conversationnels prise de rendez-vous.",
+      q: "Travaillez-vous avec les sous-traitants industriels de la vallée de l'Huveaune ?",
+      a: "Oui, les PME de sous-traitance industrielle (métallerie, soudure, maintenance) situées entre Peypin, Auriol et Aubagne sont accompagnées sur l'automatisation des devis techniques, la gestion documentaire qualité (ISO), le suivi de production et les agents conversationnels SAV B2B.",
     },
     {
-      q: "Travaillez-vous avec les PME tertiaires et commerces de proximité ?",
-      a: "Oui, nous intervenons en PME tertiaires et commerces sur fiches Google Business, content marketing local, SAV conversationnel, fidélisation client, automatisation administrative.",
+      q: "Pouvez-vous intervenir pour des chantiers de désamiantage post-minier ?",
+      a: "Oui, les entreprises de désamiantage et travaux publics liées à la reconversion post-charbon du bassin Gardanne-Provence bénéficient de nos missions IA : classification photos chantier, génération automatique de PPSPS, suivi conformité réglementaire, planification multi-équipes.",
     },
     {
-      q: "Comment se déplace Axion-IA à Peypin ?",
-      a: "Peypin est à 30 min de Marseille centre via A52 et 15 min d'Aubagne. Nos consultants se déplacent dans vos locaux. Frais de déplacement facturés à part, tarifs publics.",
+      q: "Comment se déplace Axion-IA à Peypin depuis Aubagne ou Marseille ?",
+      a: "Peypin est à 12 min d'Aubagne via A52 et 30 min de Marseille via A50. Nos consultants viennent sur chantier ou en atelier dans vos locaux. Possibilité de regrouper plusieurs artisans du bassin (Auriol, La Bouilladisse) sur une même session. Frais de déplacement facturés à part, tarifs publics.",
     },
   ],
 };

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LOUVRES_COPY: VilleCopy = {
   pitchFr:
-    "Louvres (95), commune du Val-d'Oise aux portes de l'aéroport Roissy-CDG, concentre un tissu de TPE artisans, PME logistiques et tertiaires aéroportuaires, commerçants et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Louvres (95), commune du Val-d'Oise aux portes de l'aéroport Roissy-CDG, concentre un tissu de TPE artisans, PME logistiques et tertiaires aéroportuaires, commerçants et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Louvres (95), commune du Val-d'Oise aux portes de l'aéroport Roissy-CDG, concentre un tissu de TPE artisans, PME logistiques et tertiaires aéroportuaires, commerçants et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Louvres (95), commune du Val-d'Oise aux portes de l'aéroport Roissy-CDG, concentre un tissu de TPE artisans, PME logistiques et tertiaires aéroportuaires, commerçants et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Louvres (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME logistiques et tertiaires de la zone aéroportuaire Roissy-CDG, professions libérales, indépendants et entreprises du Pays de France.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LOUVRES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Louvres : diagnostic adapté aux TPE artisans, PME logistiques zone Roissy-CDG, tertiaires aéroportuaires, professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Louvres : diagnostic adapté aux TPE artisans, PME logistiques zone Roissy-CDG, tertiaires aéroportuaires, professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Louvres : diagnostic adapté aux TPE artisans, PME logistiques zone Roissy-CDG, tertiaires aéroportuaires, professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Louvres : diagnostic adapté aux TPE artisans, PME logistiques zone Roissy-CDG, tertiaires aéroportuaires, professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Louvres : formats adaptés à l'entrepôt logistique, bureau, cabinet ou commerce. Vos équipes (logisticiens, commerciaux, artisans) repartent autonomes sur outils IA.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BIOT_COPY: VilleCopy = {
   pitchFr:
-    "Biot (06), village provençal célèbre pour sa verrerie d'art soufflé et le Musée national Fernand Léger, abrite également une partie de la technopôle Sophia Antipolis. Tissu TPE/PME artisanat d'art, tech, R&D, tourisme culturel et commerces de village. Axion-IA y intervient pour tous types d'activités.",
+    "Biot (06), village provençal célèbre pour sa verrerie d'art soufflé et le Musée national Fernand Léger, abrite également une partie de la technopôle Sophia Antipolis. Tissu TPE/PME artisanat d'art, tech, R&D, tourisme culturel et commerces de village. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Biot (06), village provençal célèbre pour sa verrerie d'art soufflé et le Musée national Fernand Léger, abrite également une partie de la technopôle Sophia Antipolis. Tissu TPE/PME artisanat d'art, tech, R&D, tourisme culturel et commerces de village. Axion-IA y intervient pour tous types d'activités.",
+    "Biot (06), village provençal célèbre pour sa verrerie d'art soufflé et le Musée national Fernand Léger, abrite également une partie de la technopôle Sophia Antipolis. Tissu TPE/PME artisanat d'art, tech, R&D, tourisme culturel et commerces de village. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Biot (06). Nous accompagnons tous types d'activités : TPE artisans d'art (verrerie, céramique), startups tech Sophia Antipolis, PME R&D, acteurs tourisme culturel et commerces du village provençal.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const BIOT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Biot : diagnostic adapté aux TPE artisans d'art (verrerie, céramique), startups tech Sophia Antipolis et PME R&D du bassin Antibes-Valbonne. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
-      en: "Audit IA à Biot : diagnostic adapté aux TPE artisans d'art (verrerie, céramique), startups tech Sophia Antipolis et PME R&D du bassin Antibes-Valbonne. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
+      fr: "Audit IA à Biot : diagnostic adapté aux TPE artisans d'art (verrerie, céramique), startups tech Sophia Antipolis et PME R&D du bassin Antibes-Valbonne. Audit Flash à 490 € HT, retour sur investissement chiffré accessible aux petites structures.",
+      en: "Audit IA à Biot : diagnostic adapté aux TPE artisans d'art (verrerie, céramique), startups tech Sophia Antipolis et PME R&D du bassin Antibes-Valbonne. Audit Flash à 490 € HT, retour sur investissement chiffré accessible aux petites structures.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Biot : formats adaptés à l'atelier verrerie, bureau startup Sophia ou galerie d'art. Vos équipes repartent autonomes sur outils IA configurés métier créatif ou tech.",
-      en: "Interventions IA sur site à Biot : formats adaptés à l'atelier verrerie, bureau startup Sophia ou galerie d'art. Vos équipes repartent autonomes sur outils IA configurés métier créatif ou tech.",
+      fr: "Interventions IA sur site à Biot : formats adaptés à l'atelier verrerie, bureau startup Sophia ou galerie d'art. Vos collaborateurs maîtrisent leurs outils IA après notre intervention créatif ou tech.",
+      en: "Interventions IA sur site à Biot : formats adaptés à l'atelier verrerie, bureau startup Sophia ou galerie d'art. Vos collaborateurs maîtrisent leurs outils IA après notre intervention créatif ou tech.",
     },
     implementation: {
       fr: "Implémentation IA à Biot : e-commerce artisanat d'art augmenté, pipelines ML startups, agents conversationnels multilingues (tourisme), CRM galeriste, automatisation gestion boutique. Adapté aux TPE/PME art et tech.",

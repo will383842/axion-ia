@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ROOST_WARENDIN_COPY: VilleCopy = {
   pitchFr:
-    "Roost-Warendin (59), commune de 5 956 habitants dans le Nord (Hauts-de-France), intégrée à la Communauté d'Agglomération du Douaisis. Commune en reconversion post-minière avec le parc Arkeos (archéologie) et zones d'activités tertiaires. Tissu TPE artisans, PME services et sous-traitance, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Roost-Warendin (59), commune de 5 956 habitants dans le Nord (Hauts-de-France), intégrée à la Communauté d'Agglomération du Douaisis. Commune en reconversion post-minière avec le parc Arkeos (archéologie) et zones d'activités tertiaires. Tissu TPE artisans, PME services et sous-traitance, commerces de proximité, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Roost-Warendin (59), commune de 5 956 habitants dans le Nord (Hauts-de-France), intégrée à la Communauté d'Agglomération du Douaisis. Commune en reconversion post-minière avec le parc Arkeos (archéologie) et zones d'activités tertiaires. Tissu TPE artisans, PME services et sous-traitance, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Roost-Warendin (59), commune de 5 956 habitants dans le Nord (Hauts-de-France), intégrée à la Communauté d'Agglomération du Douaisis. Commune en reconversion post-minière avec le parc Arkeos (archéologie) et zones d'activités tertiaires. Tissu TPE artisans, PME services et sous-traitance, commerces de proximité, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Roost-Warendin (59). Nous accompagnons TPE artisans, PME services et sous-traitance, commerçants et professions libérales de l'agglomération de Douai. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
   directAnswerEn:

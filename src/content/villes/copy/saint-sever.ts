@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_SEVER_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Sever (40), « Cap de Gascogne » et cité historique des Landes, possède une abbaye inscrite au patrimoine mondial UNESCO (chemins de Saint-Jacques). Chef-lieu du canton Chalosse-Tursan, agriculture (bœuf de Chalosse, foie gras), agroalimentaire, TPE artisans, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Sever (40), « Cap de Gascogne » et cité historique des Landes, possède une abbaye inscrite au patrimoine mondial UNESCO (chemins de Saint-Jacques). Chef-lieu du canton Chalosse-Tursan, agriculture (bœuf de Chalosse, foie gras), agroalimentaire, TPE artisans, commerces, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Saint-Sever (40), « Cap de Gascogne » et cité historique des Landes, possède une abbaye inscrite au patrimoine mondial UNESCO (chemins de Saint-Jacques). Chef-lieu du canton Chalosse-Tursan, agriculture (bœuf de Chalosse, foie gras), agroalimentaire, TPE artisans, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Sever (40), « Cap de Gascogne » et cité historique des Landes, possède une abbaye inscrite au patrimoine mondial UNESCO (chemins de Saint-Jacques). Chef-lieu du canton Chalosse-Tursan, agriculture (bœuf de Chalosse, foie gras), agroalimentaire, TPE artisans, commerces, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Sever (40). Nous accompagnons TPE et PME de l'agroalimentaire (bœuf de Chalosse, foie gras), agriculteurs-éleveurs, acteurs du tourisme patrimoine (abbaye UNESCO), commerçants, artisans BTP et professions libérales de la Chalosse.",
   directAnswerEn:
@@ -34,8 +34,8 @@ export const SAINT_SEVER_COPY: VilleCopy = {
       en: "Audit IA à Saint-Sever : diagnostic adapté aux TPE et PME agroalimentaires (bœuf de Chalosse, foie gras), agriculteurs-éleveurs, acteurs du tourisme patrimonial et commerçants de la Chalosse. ROI chiffré, audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Sever : formations adaptées aux ateliers agroalimentaires, exploitations d'élevage, sites touristiques patrimoine et commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Saint-Sever : formations adaptées aux ateliers agroalimentaires, exploitations d'élevage, sites touristiques patrimoine et commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Saint-Sever : formations adaptées aux ateliers agroalimentaires, exploitations d'élevage, sites touristiques patrimoine et commerces. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Saint-Sever : formations adaptées aux ateliers agroalimentaires, exploitations d'élevage, sites touristiques patrimoine et commerces. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Sever : traçabilité IGP bœuf de Chalosse, prédiction élevage, automatisation documents qualité agroalimentaire, chatbot visiteurs patrimoine UNESCO, gestion stocks conserverie.",
@@ -65,7 +65,7 @@ export const SAINT_SEVER_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Sever ?",
-      a: "Nos consultants se déplacent depuis Mont-de-Marsan (20 min par D933). Accès facile A65 via Aire-sur-l'Adour. Mission sur site dans votre établissement. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants se déplacent depuis Mont-de-Marsan (20 min par D933). Accès facile A65 via Aire-sur-l'Adour. Mission sur site dans votre établissement. Frais de mission en sus, grille tarifaire publique.",
     },
   ],
 };

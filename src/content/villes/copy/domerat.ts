@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const DOMERAT_COPY: VilleCopy = {
   pitchFr:
-    "Domérat (03), commune en banlieue immédiate de Montluçon dans l'Allier, est positionnée en Bourbonnais. Tissu PME industrielles (héritage métallurgique Montluçon), tertiaires, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités de l'agglomération montluçonnaise.",
+    "Domérat (03), commune en banlieue immédiate de Montluçon dans l'Allier, est positionnée en Bourbonnais. Tissu PME industrielles (héritage métallurgique Montluçon), tertiaires, TPE artisans BTP, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération montluçonnaise.",
   pitchEn:
-    "Domérat (03), commune en banlieue immédiate de Montluçon dans l'Allier, est positionnée en Bourbonnais. Tissu PME industrielles (héritage métallurgique Montluçon), tertiaires, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités de l'agglomération montluçonnaise.",
+    "Domérat (03), commune en banlieue immédiate de Montluçon dans l'Allier, est positionnée en Bourbonnais. Tissu PME industrielles (héritage métallurgique Montluçon), tertiaires, TPE artisans BTP, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération montluçonnaise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Domérat (03). Nous accompagnons tous types d'activités : PME industrielles agglomération Montluçon (héritage métallurgique), tertiaires, TPE artisans BTP, commerçants et services aux entreprises du Bourbonnais.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const DOMERAT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Domérat : diagnostic adapté aux PME industrielles Montluçon, tertiaires, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Domérat : diagnostic adapté aux PME industrielles Montluçon, tertiaires, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Domérat : diagnostic adapté aux PME industrielles Montluçon, tertiaires, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Domérat : diagnostic adapté aux PME industrielles Montluçon, tertiaires, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Domérat : formats adaptés à l'atelier industriel, bureau, commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Domérat : formats adaptés à l'atelier industriel, bureau, commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Domérat : formats adaptés à l'atelier industriel, bureau, commerce. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Domérat : formats adaptés à l'atelier industriel, bureau, commerce. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Domérat : prédiction maintenance industrielle, agents conversationnels B2B, automatisation workflow, classification documents. Montluçon.",
@@ -64,7 +64,7 @@ export const DOMERAT_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Clermont ou Lyon ?",
-      a: "Clermont (1h15) ou Lyon (2h30). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Clermont (1h15) ou Lyon (2h30). Coûts de déplacement à part, tarification transparente.",
     },
   ],
 };

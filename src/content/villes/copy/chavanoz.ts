@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHAVANOZ_COPY: VilleCopy = {
   pitchFr:
-    "Chavanoz (38), commune du Nord-Isère dans l'aire lyonnaise est, fait partie du tissu péri-urbain de la zone Pont-de-Chéruy / Charvieu-Chavagneux. Tissu PME industrielles, TPE artisans BTP, commerces, agriculture périphérique. Axion-IA y intervient pour tous types d'activités du Nord-Isère limitrophe Rhône.",
+    "Chavanoz (38), commune du Nord-Isère dans l'aire lyonnaise est, fait partie du tissu péri-urbain de la zone Pont-de-Chéruy / Charvieu-Chavagneux. Tissu PME industrielles, TPE artisans BTP, commerces, agriculture périphérique. Axion-IA couvre l'ensemble des activités professionnelles présentes du Nord-Isère limitrophe Rhône.",
   pitchEn:
-    "Chavanoz (38), commune du Nord-Isère dans l'aire lyonnaise est, fait partie du tissu péri-urbain de la zone Pont-de-Chéruy / Charvieu-Chavagneux. Tissu PME industrielles, TPE artisans BTP, commerces, agriculture périphérique. Axion-IA y intervient pour tous types d'activités du Nord-Isère limitrophe Rhône.",
+    "Chavanoz (38), commune du Nord-Isère dans l'aire lyonnaise est, fait partie du tissu péri-urbain de la zone Pont-de-Chéruy / Charvieu-Chavagneux. Tissu PME industrielles, TPE artisans BTP, commerces, agriculture périphérique. Axion-IA couvre l'ensemble des activités professionnelles présentes du Nord-Isère limitrophe Rhône.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chavanoz (38). Nous accompagnons tous types d'activités : PME industrielles Nord-Isère, TPE artisans BTP, commerçants, agriculteurs périphériques, indépendants, professions libérales et services aux entreprises de la Communauté de communes Lyon Saint-Exupéry en Dauphiné.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const CHAVANOZ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chavanoz : diagnostic adapté aux PME industrielles Nord-Isère, TPE artisans et commerçants de l'aire lyonnaise est. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Chavanoz : diagnostic adapté aux PME industrielles Nord-Isère, TPE artisans et commerçants de l'aire lyonnaise est. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Chavanoz : diagnostic adapté aux PME industrielles Nord-Isère, TPE artisans et commerçants de l'aire lyonnaise est. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Chavanoz : diagnostic adapté aux PME industrielles Nord-Isère, TPE artisans et commerçants de l'aire lyonnaise est. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chavanoz : formats adaptés à l'atelier industriel, commerce, exploitation agricole. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -64,7 +64,7 @@ export const CHAVANOZ_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (40 min A43). Pour les multi-jours, hébergement local possible (hôtels Lyon-Saint-Exupéry). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (40 min A43). Pour les multi-jours, hébergement local possible (hôtels Lyon-Saint-Exupéry). Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

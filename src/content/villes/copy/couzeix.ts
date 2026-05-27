@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const COUZEIX_COPY: VilleCopy = {
   pitchFr:
-    "Couzeix (87), commune résidentielle et dynamique du nord-ouest de l'agglomération de Limoges, est intégrée à Limoges Métropole. Tissu TPE artisans BTP, PME tertiaires, commerces, professions libérales, agriculture et services aux entreprises. Axion-IA y intervient pour tous types d'activités de l'agglo limougeaude nord-ouest.",
+    "Couzeix (87), commune résidentielle et dynamique du nord-ouest de l'agglomération de Limoges, est intégrée à Limoges Métropole. Tissu TPE artisans BTP, PME tertiaires, commerces, professions libérales, agriculture et services aux entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglo limougeaude nord-ouest.",
   pitchEn:
-    "Couzeix (87), commune résidentielle et dynamique du nord-ouest de l'agglomération de Limoges, est intégrée à Limoges Métropole. Tissu TPE artisans BTP, PME tertiaires, commerces, professions libérales, agriculture et services aux entreprises. Axion-IA y intervient pour tous types d'activités de l'agglo limougeaude nord-ouest.",
+    "Couzeix (87), commune résidentielle et dynamique du nord-ouest de l'agglomération de Limoges, est intégrée à Limoges Métropole. Tissu TPE artisans BTP, PME tertiaires, commerces, professions libérales, agriculture et services aux entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglo limougeaude nord-ouest.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Couzeix (87). Nous accompagnons tous types d'activités : TPE artisans BTP, PME tertiaires, commerçants, professions libérales, agriculteurs, indépendants et services aux entreprises de l'agglomération de Limoges nord-ouest.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const COUZEIX_COPY: VilleCopy = {
       en: "Audit IA à Couzeix : diagnostic adapté aux TPE artisans BTP, PME tertiaires, commerçants et professions libérales de l'agglo limougeaude nord-ouest. ROI chiffré, audit Flash 490 € HT accessible.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Couzeix : formats adaptés à l'atelier BTP, bureau tertiaire, cabinet libéral ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Couzeix : formats adaptés à l'atelier BTP, bureau tertiaire, cabinet libéral ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Couzeix : formats adaptés à l'atelier BTP, bureau tertiaire, cabinet libéral ou commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Couzeix : formats adaptés à l'atelier BTP, bureau tertiaire, cabinet libéral ou commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Couzeix : automatisation devis BTP, CRM augmenté PME, gestion planning, agents conversationnels, prédiction maintenance. Tous secteurs agglo Limoges nord-ouest.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GREZIEU_LA_VARENNE_COPY: VilleCopy = {
   pitchFr:
-    "Grézieu-la-Varenne (69), commune en banlieue ouest de Lyon dans le Rhône, est positionnée aux portes des monts du Lyonnais. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités de l'ouest lyonnais.",
+    "Grézieu-la-Varenne (69), commune en banlieue ouest de Lyon dans le Rhône, est positionnée aux portes des monts du Lyonnais. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'ouest lyonnais.",
   pitchEn:
-    "Grézieu-la-Varenne (69), commune en banlieue ouest de Lyon dans le Rhône, est positionnée aux portes des monts du Lyonnais. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités de l'ouest lyonnais.",
+    "Grézieu-la-Varenne (69), commune en banlieue ouest de Lyon dans le Rhône, est positionnée aux portes des monts du Lyonnais. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'ouest lyonnais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Grézieu-la-Varenne (69). Nous accompagnons tous types d'activités : PME tertiaires ouest lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const GREZIEU_LA_VARENNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Grézieu-la-Varenne : diagnostic adapté aux PME tertiaires ouest lyonnais, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Grézieu-la-Varenne : diagnostic adapté aux PME tertiaires ouest lyonnais, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Grézieu-la-Varenne : diagnostic adapté aux PME tertiaires ouest lyonnais, professions libérales, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Grézieu-la-Varenne : diagnostic adapté aux PME tertiaires ouest lyonnais, professions libérales, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Grézieu-la-Varenne : formats adaptés au bureau, cabinet, commerce. Vos équipes repartent autonomes sur outils IA.",

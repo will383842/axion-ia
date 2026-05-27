@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_PIERRE_EN_AUGE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Pierre-en-Auge (14), commune nouvelle du Calvados au cœur du Pays d'Auge, est un territoire de fromages AOP (Camembert, Pont-l'Évêque, Livarot) et de cidre normand. Bassin d'emploi agroalimentaire et agricole, tissu TPE artisans, PME laitières, exploitations, commerces de proximité. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Pierre-en-Auge (14), commune nouvelle du Calvados au cœur du Pays d'Auge, est un territoire de fromages AOP (Camembert, Pont-l'Évêque, Livarot) et de cidre normand. Bassin d'emploi agroalimentaire et agricole, tissu TPE artisans, PME laitières, exploitations, commerces de proximité. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Saint-Pierre-en-Auge (14), commune nouvelle du Calvados au cœur du Pays d'Auge, est un territoire de fromages AOP (Camembert, Pont-l'Évêque, Livarot) et de cidre normand. Bassin d'emploi agroalimentaire et agricole, tissu TPE artisans, PME laitières, exploitations, commerces de proximité. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Pierre-en-Auge (14), commune nouvelle du Calvados au cœur du Pays d'Auge, est un territoire de fromages AOP (Camembert, Pont-l'Évêque, Livarot) et de cidre normand. Bassin d'emploi agroalimentaire et agricole, tissu TPE artisans, PME laitières, exploitations, commerces de proximité. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Pierre-en-Auge (14). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME laitières et fromagères AOP, exploitations agricoles Pays d'Auge, professions libérales, indépendants et services aux entreprises augeronnes.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const SAINT_PIERRE_EN_AUGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Pierre-en-Auge : diagnostic adapté aux PME laitières et fromagères AOP, exploitations agricoles, TPE artisans, commerçants et acteurs du tourisme rural. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Pierre-en-Auge : diagnostic adapté aux PME laitières et fromagères AOP, exploitations agricoles, TPE artisans, commerçants et acteurs du tourisme rural. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Pierre-en-Auge : diagnostic adapté aux PME laitières et fromagères AOP, exploitations agricoles, TPE artisans, commerçants et acteurs du tourisme rural. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Saint-Pierre-en-Auge : diagnostic adapté aux PME laitières et fromagères AOP, exploitations agricoles, TPE artisans, commerçants et acteurs du tourisme rural. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Pierre-en-Auge : formats adaptés à la fromagerie, laiterie, exploitation agricole ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Saint-Pierre-en-Auge : formats adaptés à la fromagerie, laiterie, exploitation agricole ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Saint-Pierre-en-Auge : formats adaptés à la fromagerie, laiterie, exploitation agricole ou commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Saint-Pierre-en-Auge : formats adaptés à la fromagerie, laiterie, exploitation agricole ou commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Pierre-en-Auge : traçabilité AOP fromages, prédiction qualité affinage, automatisation gestion troupeaux, agents conversationnels vente directe. Adapté TPE/PME Pays d'Auge.",

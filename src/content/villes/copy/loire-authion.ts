@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LOIRE_AUTHION_COPY: VilleCopy = {
   pitchFr:
-    "Loire-Authion (49), commune nouvelle de plus de 16 700 habitants à l'est d'Angers, regroupe Brain-sur-l'Authion, Andard, La Bohalle, La Daguenière et Corné. Premier pôle horticole de France (bassin d'Angers), tissu PME pépinières et horticulture, TPE artisanales, exploitations maraîchères, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Loire-Authion (49), commune nouvelle de plus de 16 700 habitants à l'est d'Angers, regroupe Brain-sur-l'Authion, Andard, La Bohalle, La Daguenière et Corné. Premier pôle horticole de France (bassin d'Angers), tissu PME pépinières et horticulture, TPE artisanales, exploitations maraîchères, commerces. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Loire-Authion (49), commune nouvelle de plus de 16 700 habitants à l'est d'Angers, regroupe Brain-sur-l'Authion, Andard, La Bohalle, La Daguenière et Corné. Premier pôle horticole de France (bassin d'Angers), tissu PME pépinières et horticulture, TPE artisanales, exploitations maraîchères, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Loire-Authion (49), commune nouvelle de plus de 16 700 habitants à l'est d'Angers, regroupe Brain-sur-l'Authion, Andard, La Bohalle, La Daguenière et Corné. Premier pôle horticole de France (bassin d'Angers), tissu PME pépinières et horticulture, TPE artisanales, exploitations maraîchères, commerces. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Loire-Authion (49). Nous accompagnons tous types d'activités : PME horticoles et pépinières du bassin d'Angers, TPE artisans, exploitations maraîchères, commerçants, professions libérales et services aux entreprises de l'est angevin. Audit Flash accessible dès 490 € HT.",
   directAnswerEn:

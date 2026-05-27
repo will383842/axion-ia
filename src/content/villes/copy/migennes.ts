@@ -33,8 +33,8 @@ export const MIGENNES_COPY: VilleCopy = {
       en: "Audit IA à Migennes : diagnostic adapté aux opérateurs logistique, PME industrielles, commerçants, artisans BTP et prestataires de services du nœud ferroviaire de l'Yonne. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Migennes : formats adaptés à l'entrepôt logistique, à l'atelier industriel, au commerce ou à la TPE artisanale. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Migennes : formats adaptés à l'entrepôt logistique, à l'atelier industriel, au commerce ou à la TPE artisanale. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Migennes : formats adaptés à l'entrepôt logistique, à l'atelier industriel, au commerce ou à la TPE artisanale. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Migennes : formats adaptés à l'entrepôt logistique, à l'atelier industriel, au commerce ou à la TPE artisanale. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Migennes : optimisation flux logistique ferroviaire, maintenance prédictive industrielle, gestion stocks commerce, automatisation devis BTP, agents conversationnels services.",

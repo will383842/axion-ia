@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_MANDRIER_SUR_MER_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Mandrier-sur-Mer (83), presqu'île fermant la rade de Toulon au sud, est marquée par la présence de la Marine nationale (école des fusiliers marins) et son port de pêche et plaisance. Tissu de TPE pêcheurs, restaurateurs, commerçants, artisans et PME tourisme, nautisme et services à la défense. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Mandrier-sur-Mer (83), presqu'île fermant la rade de Toulon au sud, est marquée par la présence de la Marine nationale (école des fusiliers marins) et son port de pêche et plaisance. Tissu de TPE pêcheurs, restaurateurs, commerçants, artisans et PME tourisme, nautisme et services à la défense. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Saint-Mandrier-sur-Mer (83), presqu'île fermant la rade de Toulon au sud, est marquée par la présence de la Marine nationale (école des fusiliers marins) et son port de pêche et plaisance. Tissu de TPE pêcheurs, restaurateurs, commerçants, artisans et PME tourisme, nautisme et services à la défense. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Mandrier-sur-Mer (83), presqu'île fermant la rade de Toulon au sud, est marquée par la présence de la Marine nationale (école des fusiliers marins) et son port de pêche et plaisance. Tissu de TPE pêcheurs, restaurateurs, commerçants, artisans et PME tourisme, nautisme et services à la défense. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Mandrier-sur-Mer (83). Nous accompagnons TPE pêcheurs, restaurateurs, commerçants, artisans et PME du tourisme, du nautisme et des services à la défense de la presqu'île et de la rade de Toulon. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const SAINT_MANDRIER_SUR_MER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Mandrier-sur-Mer : diagnostic adapté aux restaurateurs, hôteliers, artisans, commerçants et PME nautisme et services à la défense de la presqu'île. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Mandrier-sur-Mer : diagnostic adapté aux restaurateurs, hôteliers, artisans, commerçants et PME nautisme et services à la défense de la presqu'île. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Mandrier-sur-Mer : diagnostic adapté aux restaurateurs, hôteliers, artisans, commerçants et PME nautisme et services à la défense de la presqu'île. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Saint-Mandrier-sur-Mer : diagnostic adapté aux restaurateurs, hôteliers, artisans, commerçants et PME nautisme et services à la défense de la presqu'île. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Mandrier-sur-Mer : ateliers pour restaurateurs, hôteliers, commerçants et artisans. Outils IA configurés métier réel touristique et services.",

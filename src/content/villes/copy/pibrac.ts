@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PIBRAC_COPY: VilleCopy = {
   pitchFr:
-    "Pibrac (31), commune résidentielle prisée de l'ouest toulousain, près de 9 000 habitants. Tissu TPE de services, PME tertiaires, professions libérales, commerces de centre-bourg. Axion-IA y intervient pour tous types d'activités de la couronne ouest de Toulouse.",
+    "Pibrac (31), commune résidentielle prisée de l'ouest toulousain, près de 9 000 habitants. Tissu TPE de services, PME tertiaires, professions libérales, commerces de centre-bourg. Axion-IA y déploie ses missions auprès de toutes les organisations de la couronne ouest de Toulouse.",
   pitchEn:
-    "Pibrac (31), commune résidentielle prisée de l'ouest toulousain, près de 9 000 habitants. Tissu TPE de services, PME tertiaires, professions libérales, commerces de centre-bourg. Axion-IA y intervient pour tous types d'activités de la couronne ouest de Toulouse.",
+    "Pibrac (31), commune résidentielle prisée de l'ouest toulousain, près de 9 000 habitants. Tissu TPE de services, PME tertiaires, professions libérales, commerces de centre-bourg. Axion-IA y déploie ses missions auprès de toutes les organisations de la couronne ouest de Toulouse.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pibrac (31). Nous accompagnons TPE de services, PME tertiaires, professions libérales et commerçants de l'ouest Toulouse. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const PIBRAC_COPY: VilleCopy = {
       en: "Audit IA à Pibrac : diagnostic adapté aux TPE de services, PME tertiaires et professions libérales de l'ouest Toulouse. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Pibrac : formats adaptés au cabinet libéral, au commerce, à la PME tertiaire. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Pibrac : formats adaptés au cabinet libéral, au commerce, à la PME tertiaire. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Pibrac : formats adaptés au cabinet libéral, au commerce, à la PME tertiaire. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Pibrac : formats adaptés au cabinet libéral, au commerce, à la PME tertiaire. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Pibrac : automatisation gestion documentaire, agents conversationnels, classification courriers, reporting pour PME tertiaires de l'ouest Toulouse.",

@@ -30,12 +30,12 @@ export const RAON_L_ETAPE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Raon-l''Étape : diagnostic adapté aux TPE/PME industrie papier/bois, scieries, sous-traitants, artisans BTP, commerces et services. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Raon-l''Étape : diagnostic adapté aux TPE/PME industrie papier/bois, scieries, sous-traitants, artisans BTP, commerces et services. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Raon-l''Étape : diagnostic adapté aux TPE/PME industrie papier/bois, scieries, sous-traitants, artisans BTP, commerces et services. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Raon-l''Étape : diagnostic adapté aux TPE/PME industrie papier/bois, scieries, sous-traitants, artisans BTP, commerces et services. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Raon-l''Étape : formats adaptés à la scierie, l''atelier industriel, le chantier, le bureau, le commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Raon-l''Étape : formats adaptés à la scierie, l''atelier industriel, le chantier, le bureau, le commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Raon-l''Étape : formats adaptés à la scierie, l''atelier industriel, le chantier, le bureau, le commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Raon-l''Étape : formats adaptés à la scierie, l''atelier industriel, le chantier, le bureau, le commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Raon-l''Étape : optimisation production papier/bois, traçabilité filière forêt, automatisation devis BTP, agents conversationnels B2B, gestion fournisseurs et donneurs d''ordres.",

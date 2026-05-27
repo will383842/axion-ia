@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BRUAY_SUR_L_ESCAUT_COPY: VilleCopy = {
   pitchFr:
-    "Bruay-sur-l'Escaut (59), commune de 11 644 habitants de l'agglomération de Valenciennes dans le Nord, ancien fief du bassin minier du Hainaut sur les rives de l'Escaut. Tissu TPE artisans, PME industrielles et logistique, commerces de proximité, sous-traitance automobile et BTP. Axion-IA y intervient pour tous types d'activités du Valenciennois.",
+    "Bruay-sur-l'Escaut (59), commune de 11 644 habitants de l'agglomération de Valenciennes dans le Nord, ancien fief du bassin minier du Hainaut sur les rives de l'Escaut. Tissu TPE artisans, PME industrielles et logistique, commerces de proximité, sous-traitance automobile et BTP. Axion-IA y déploie ses missions auprès de toutes les organisations du Valenciennois.",
   pitchEn:
-    "Bruay-sur-l'Escaut (59), commune de 11 644 habitants de l'agglomération de Valenciennes dans le Nord, ancien fief du bassin minier du Hainaut sur les rives de l'Escaut. Tissu TPE artisans, PME industrielles et logistique, commerces de proximité, sous-traitance automobile et BTP. Axion-IA y intervient pour tous types d'activités du Valenciennois.",
+    "Bruay-sur-l'Escaut (59), commune de 11 644 habitants de l'agglomération de Valenciennes dans le Nord, ancien fief du bassin minier du Hainaut sur les rives de l'Escaut. Tissu TPE artisans, PME industrielles et logistique, commerces de proximité, sous-traitance automobile et BTP. Axion-IA y déploie ses missions auprès de toutes les organisations du Valenciennois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bruay-sur-l'Escaut (59). Nous accompagnons TPE artisans, PME industrielles, sous-traitants automobile, logisticiens, commerçants et indépendants du Valenciennois, héritier du bassin minier du Hainaut. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
   directAnswerEn:

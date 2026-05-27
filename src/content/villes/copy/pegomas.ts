@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PEGOMAS_COPY: VilleCopy = {
   pitchFr:
-    "Pégomas (06), dans la vallée de la Siagne entre Cannes et Grasse, est réputée pour sa culture du mimosa (fête du Mimosa) et son cadre provençal verdoyant. Tissu TPE/PME horticulture, artisanat BTP, commerces de proximité, services et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Pégomas (06), dans la vallée de la Siagne entre Cannes et Grasse, est réputée pour sa culture du mimosa (fête du Mimosa) et son cadre provençal verdoyant. Tissu TPE/PME horticulture, artisanat BTP, commerces de proximité, services et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Pégomas (06), dans la vallée de la Siagne entre Cannes et Grasse, est réputée pour sa culture du mimosa (fête du Mimosa) et son cadre provençal verdoyant. Tissu TPE/PME horticulture, artisanat BTP, commerces de proximité, services et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Pégomas (06), dans la vallée de la Siagne entre Cannes et Grasse, est réputée pour sa culture du mimosa (fête du Mimosa) et son cadre provençal verdoyant. Tissu TPE/PME horticulture, artisanat BTP, commerces de proximité, services et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pégomas (06). Nous accompagnons tous types d'activités : TPE horticulteurs et pépiniéristes, artisans BTP, commerçants, professions libérales, PME services et entreprises de la vallée de la Siagne entre Cannes et Grasse.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const PEGOMAS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pégomas : diagnostic adapté aux TPE horticulteurs, artisans BTP, commerçants et professions libérales de la vallée de la Siagne. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
-      en: "Audit IA à Pégomas : diagnostic adapté aux TPE horticulteurs, artisans BTP, commerçants et professions libérales de la vallée de la Siagne. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
+      fr: "Audit IA à Pégomas : diagnostic adapté aux TPE horticulteurs, artisans BTP, commerçants et professions libérales de la vallée de la Siagne. Audit Flash 490 € HT avec ROI quantifié accessible aux petites structures.",
+      en: "Audit IA à Pégomas : diagnostic adapté aux TPE horticulteurs, artisans BTP, commerçants et professions libérales de la vallée de la Siagne. Audit Flash 490 € HT avec ROI quantifié accessible aux petites structures.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Pégomas : formats adaptés à la pépinière, atelier artisan, commerce ou cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Pégomas : formats adaptés à la pépinière, atelier artisan, commerce ou cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Pégomas : formats adaptés à la pépinière, atelier artisan, commerce ou cabinet libéral. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Pégomas : formats adaptés à la pépinière, atelier artisan, commerce ou cabinet libéral. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Pégomas : gestion cultures prédictive (mimosa, plantes à parfum), automatisation commandes, agents conversationnels client, CRM augmenté. Adapté aux TPE/PME horticulture et artisanat.",

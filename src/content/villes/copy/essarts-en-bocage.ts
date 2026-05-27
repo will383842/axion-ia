@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ESSARTS_EN_BOCAGE_COPY: VilleCopy = {
   pitchFr:
-    "Essarts-en-Bocage (85), commune nouvelle du bocage vendéen, rassemble plus de 6 800 habitants. Née de la fusion de plusieurs communes, entre La Roche-sur-Yon et Les Herbiers. Tissu de TPE artisanales, PME industrielles, agriculture, commerces et services. Axion-IA y intervient pour tous types d'activités.",
+    "Essarts-en-Bocage (85), commune nouvelle du bocage vendéen, rassemble plus de 6 800 habitants. Née de la fusion de plusieurs communes, entre La Roche-sur-Yon et Les Herbiers. Tissu de TPE artisanales, PME industrielles, agriculture, commerces et services. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Essarts-en-Bocage (85), commune nouvelle du bocage vendéen, rassemble plus de 6 800 habitants. Née de la fusion de plusieurs communes, entre La Roche-sur-Yon et Les Herbiers. Tissu de TPE artisanales, PME industrielles, agriculture, commerces et services. Axion-IA y intervient pour tous types d'activités.",
+    "Essarts-en-Bocage (85), commune nouvelle du bocage vendéen, rassemble plus de 6 800 habitants. Née de la fusion de plusieurs communes, entre La Roche-sur-Yon et Les Herbiers. Tissu de TPE artisanales, PME industrielles, agriculture, commerces et services. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Essarts-en-Bocage (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles du bocage, exploitations agricoles, professions libérales et services de proximité.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const ESSARTS_EN_BOCAGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Essarts-en-Bocage : diagnostic adapté aux TPE artisans, PME industrielles, exploitations agricoles et commerces du bocage vendéen. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Essarts-en-Bocage : diagnostic adapté aux TPE artisans, PME industrielles, exploitations agricoles et commerces du bocage vendéen. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Essarts-en-Bocage : diagnostic adapté aux TPE artisans, PME industrielles, exploitations agricoles et commerces du bocage vendéen. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Essarts-en-Bocage : diagnostic adapté aux TPE artisans, PME industrielles, exploitations agricoles et commerces du bocage vendéen. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Essarts-en-Bocage : formats adaptés aux exploitations agricoles, PME industrielles, artisans BTP et commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Essarts-en-Bocage : formats adaptés aux exploitations agricoles, PME industrielles, artisans BTP et commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Essarts-en-Bocage : formats adaptés aux exploitations agricoles, PME industrielles, artisans BTP et commerces. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Essarts-en-Bocage : formats adaptés aux exploitations agricoles, PME industrielles, artisans BTP et commerces. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Essarts-en-Bocage : optimisation exploitation agricole, automatisation PME industrielles, gestion chantiers artisans, outils prédictifs. Adapté TPE/PME bocage vendéen.",

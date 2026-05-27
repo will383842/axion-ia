@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_JEAN_DE_MAURIENNE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Jean-de-Maurienne (73), sous-préfecture de Savoie, est le centre de la vallée de la Maurienne — plus grande vallée alpine intra-européenne. Industrie aluminium historique, accès cols alpins majeurs (Galibier, Croix-de-Fer). Tissu industrie métallurgie, tourisme montagne, administration, TPE artisanat, commerces de vallée. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Jean-de-Maurienne (73), sous-préfecture de Savoie, est le centre de la vallée de la Maurienne — plus grande vallée alpine intra-européenne. Industrie aluminium historique, accès cols alpins majeurs (Galibier, Croix-de-Fer). Tissu industrie métallurgie, tourisme montagne, administration, TPE artisanat, commerces de vallée. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Saint-Jean-de-Maurienne (73), sous-préfecture de Savoie, est le centre de la vallée de la Maurienne — plus grande vallée alpine intra-européenne. Industrie aluminium historique, accès cols alpins majeurs (Galibier, Croix-de-Fer). Tissu industrie métallurgie, tourisme montagne, administration, TPE artisanat, commerces de vallée. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Jean-de-Maurienne (73), sous-préfecture de Savoie, est le centre de la vallée de la Maurienne — plus grande vallée alpine intra-européenne. Industrie aluminium historique, accès cols alpins majeurs (Galibier, Croix-de-Fer). Tissu industrie métallurgie, tourisme montagne, administration, TPE artisanat, commerces de vallée. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean-de-Maurienne (73). Nous accompagnons TPE et PME de la vallée de la Maurienne : industriels aluminium et métallurgie, acteurs du tourisme montagne et cols alpins, administration sous-préfectorale, artisans, commerçants et services de vallée.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const SAINT_JEAN_DE_MAURIENNE_COPY: VilleCopy = {
       en: "Audit IA à Saint-Jean-de-Maurienne : diagnostic adapté aux industriels aluminium/métallurgie, acteurs tourisme montagne, services administratifs, TPE artisans et commerçants de la vallée de la Maurienne. ROI chiffré, audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Jean-de-Maurienne : ateliers en usine, site touristique, administration ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier, formats adaptés vallée alpine.",
-      en: "Interventions IA sur site à Saint-Jean-de-Maurienne : ateliers en usine, site touristique, administration ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier, formats adaptés vallée alpine.",
+      fr: "Interventions IA sur site à Saint-Jean-de-Maurienne : ateliers en usine, site touristique, administration ou commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure, formats adaptés vallée alpine.",
+      en: "Interventions IA sur site à Saint-Jean-de-Maurienne : ateliers en usine, site touristique, administration ou commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure, formats adaptés vallée alpine.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Jean-de-Maurienne : prédiction maintenance équipements industriels, contrôle qualité aluminium par vision, agents conversationnels tourisme multilingue, automatisation administrative sous-préfecture. Adapté industrie + montagne.",
@@ -64,7 +64,7 @@ export const SAINT_JEAN_DE_MAURIENNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission en vallée de la Maurienne ?",
-      a: "Nos consultants se déplacent à Saint-Jean-de-Maurienne (1h depuis Chambéry par A43). Pour les missions multi-jours, hébergement local en Maurienne. Visio possible pour les sessions coaching. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants se déplacent à Saint-Jean-de-Maurienne (1h depuis Chambéry par A43). Pour les missions multi-jours, hébergement local en Maurienne. Visio possible pour les sessions coaching. Frais de mission en sus, grille tarifaire publique.",
     },
   ],
 };

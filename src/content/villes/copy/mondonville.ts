@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MONDONVILLE_COPY: VilleCopy = {
   pitchFr:
-    "Mondonville (31), commune du nord-ouest de Toulouse avec plus de 6 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités de la couronne nord-ouest de Toulouse.",
+    "Mondonville (31), commune du nord-ouest de Toulouse avec plus de 6 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de la couronne nord-ouest de Toulouse.",
   pitchEn:
-    "Mondonville (31), commune du nord-ouest de Toulouse avec plus de 6 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités de la couronne nord-ouest de Toulouse.",
+    "Mondonville (31), commune du nord-ouest de Toulouse avec plus de 6 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de la couronne nord-ouest de Toulouse.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mondonville (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord-ouest Toulouse. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const MONDONVILLE_COPY: VilleCopy = {
       en: "Audit IA à Mondonville : diagnostic adapté aux TPE artisans, PME de services et professions libérales du nord-ouest Toulouse. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Mondonville : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Mondonville : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Mondonville : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Mondonville : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Mondonville : automatisation gestion clients, classification documents, agents conversationnels, optimisation planning pour TPE-PME nord-ouest Toulouse.",

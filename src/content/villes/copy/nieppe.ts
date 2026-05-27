@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const NIEPPE_COPY: VilleCopy = {
   pitchFr:
-    "Nieppe (59), commune de 7 764 habitants dans le Nord, située en Flandre française sur les bords de la Lys aux portes d'Armentières, s'appuie sur un tissu agricole, agroalimentaire et de PME industrielles structuré par la proximité immédiate de la métropole lilloise et de la Belgique. Tissu TPE/PME agriculture, agroalimentaire, industrie, artisanat, commerces, restauration, services. Axion-IA y intervient pour tous types d'activités.",
+    "Nieppe (59), commune de 7 764 habitants dans le Nord, située en Flandre française sur les bords de la Lys aux portes d'Armentières, s'appuie sur un tissu agricole, agroalimentaire et de PME industrielles structuré par la proximité immédiate de la métropole lilloise et de la Belgique. Tissu TPE/PME agriculture, agroalimentaire, industrie, artisanat, commerces, restauration, services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Nieppe (59), commune de 7 764 habitants dans le Nord, située en Flandre française sur les bords de la Lys aux portes d'Armentières, s'appuie sur un tissu agricole, agroalimentaire et de PME industrielles structuré par la proximité immédiate de la métropole lilloise et de la Belgique. Tissu TPE/PME agriculture, agroalimentaire, industrie, artisanat, commerces, restauration, services. Axion-IA y intervient pour tous types d'activités.",
+    "Nieppe (59), commune de 7 764 habitants dans le Nord, située en Flandre française sur les bords de la Lys aux portes d'Armentières, s'appuie sur un tissu agricole, agroalimentaire et de PME industrielles structuré par la proximité immédiate de la métropole lilloise et de la Belgique. Tissu TPE/PME agriculture, agroalimentaire, industrie, artisanat, commerces, restauration, services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nieppe (59). Nous accompagnons tous types d'activités : TPE/PME agriculture, agroalimentaire et industrie nieppoises, artisans, commerçants, restaurateurs, professions de services et acteurs économiques de la Flandre française.",
   directAnswerEn:
@@ -30,12 +30,12 @@ export const NIEPPE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Nieppe : diagnostic adapté aux TPE/PME agriculture, agroalimentaire, industrielles, artisans, commerces et services. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Nieppe : diagnostic adapté aux TPE/PME agriculture, agroalimentaire, industrielles, artisans, commerces et services. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Nieppe : diagnostic adapté aux TPE/PME agriculture, agroalimentaire, industrielles, artisans, commerces et services. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Nieppe : diagnostic adapté aux TPE/PME agriculture, agroalimentaire, industrielles, artisans, commerces et services. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Nieppe : formats adaptés à l'exploitation agricole, à l'atelier agroalimentaire, à l'usine PME, à l'artisan, au commerce, au restaurant. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Nieppe : formats adaptés à l'exploitation agricole, à l'atelier agroalimentaire, à l'usine PME, à l'artisan, au commerce, au restaurant. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Nieppe : formats adaptés à l'exploitation agricole, à l'atelier agroalimentaire, à l'usine PME, à l'artisan, au commerce, au restaurant. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Nieppe : formats adaptés à l'exploitation agricole, à l'atelier agroalimentaire, à l'usine PME, à l'artisan, au commerce, au restaurant. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Nieppe : automatisation traçabilité agroalimentaire, gestion production industrielle, planification agricole, agents conversationnels, gestion commerciale, optimisation logistique transfrontalière.",

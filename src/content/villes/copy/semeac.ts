@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SEMEAC_COPY: VilleCopy = {
   pitchFr:
-    "Séméac (65), commune résidentielle et commerciale de l'agglomération de Tarbes dans les Hautes-Pyrénées. Zones d'activités et commerces, proximité Pyrénées. Tissu TPE artisans, PME commerciales et de services, commerces, restauration, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Séméac (65), commune résidentielle et commerciale de l'agglomération de Tarbes dans les Hautes-Pyrénées. Zones d'activités et commerces, proximité Pyrénées. Tissu TPE artisans, PME commerciales et de services, commerces, restauration, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Séméac (65), commune résidentielle et commerciale de l'agglomération de Tarbes dans les Hautes-Pyrénées. Zones d'activités et commerces, proximité Pyrénées. Tissu TPE artisans, PME commerciales et de services, commerces, restauration, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Séméac (65), commune résidentielle et commerciale de l'agglomération de Tarbes dans les Hautes-Pyrénées. Zones d'activités et commerces, proximité Pyrénées. Tissu TPE artisans, PME commerciales et de services, commerces, restauration, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Séméac (65). Nous accompagnons tous types d'activités : PME commerciales et de services, TPE artisans, commerçants, restaurateurs, indépendants, professions libérales de l'agglomération tarbaise.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const SEMEAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Séméac : diagnostic adapté aux PME commerciales, TPE artisans BTP, restaurateurs, commerçants et professions libérales de l'agglomération tarbaise. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Séméac : diagnostic adapté aux PME commerciales, TPE artisans BTP, restaurateurs, commerçants et professions libérales de l'agglomération tarbaise. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Séméac : diagnostic adapté aux PME commerciales, TPE artisans BTP, restaurateurs, commerçants et professions libérales de l'agglomération tarbaise. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Séméac : diagnostic adapté aux PME commerciales, TPE artisans BTP, restaurateurs, commerçants et professions libérales de l'agglomération tarbaise. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Séméac : formats adaptés au commerce, restaurant, entreprise de services ou cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",

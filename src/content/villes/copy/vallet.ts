@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VALLET_COPY: VilleCopy = {
   pitchFr:
-    "Vallet (44), autoproclamée « capitale du Muscadet » en Loire-Atlantique, est le coeur du vignoble AOC Muscadet Sèvre-et-Maine. Tissu de TPE viticoles, PME négoce/agroalimentaire, artisans tonneliers, commerces de bourg et tourisme oenotouristique. Axion-IA y intervient pour tous types d'activités.",
+    "Vallet (44), autoproclamée « capitale du Muscadet » en Loire-Atlantique, est le coeur du vignoble AOC Muscadet Sèvre-et-Maine. Tissu de TPE viticoles, PME négoce/agroalimentaire, artisans tonneliers, commerces de bourg et tourisme oenotouristique. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Vallet (44), autoproclamée « capitale du Muscadet » en Loire-Atlantique, est le coeur du vignoble AOC Muscadet Sèvre-et-Maine. Tissu de TPE viticoles, PME négoce/agroalimentaire, artisans tonneliers, commerces de bourg et tourisme oenotouristique. Axion-IA y intervient pour tous types d'activités.",
+    "Vallet (44), autoproclamée « capitale du Muscadet » en Loire-Atlantique, est le coeur du vignoble AOC Muscadet Sèvre-et-Maine. Tissu de TPE viticoles, PME négoce/agroalimentaire, artisans tonneliers, commerces de bourg et tourisme oenotouristique. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vallet (44). Nous accompagnons tous types d'activités : TPE viticoles et tonneliers, PME négoce vins et agroalimentaire, commerçants de bourg, artisans BTP, professions libérales, acteurs de l'oenotourisme Muscadet et services aux entreprises du vignoble nantais.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const VALLET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vallet : diagnostic adapté aux TPE viticoles, PME négoce Muscadet, artisans tonneliers et commerçants de la capitale du Muscadet. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Vallet : diagnostic adapté aux TPE viticoles, PME négoce Muscadet, artisans tonneliers et commerçants de la capitale du Muscadet. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Vallet : diagnostic adapté aux TPE viticoles, PME négoce Muscadet, artisans tonneliers et commerçants de la capitale du Muscadet. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Vallet : diagnostic adapté aux TPE viticoles, PME négoce Muscadet, artisans tonneliers et commerçants de la capitale du Muscadet. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Vallet : formats adaptés au chai viticole, négoce, tonnellerie ou commerce de bourg. Vos équipes repartent autonomes sur outils IA configurés métier viticole.",
-      en: "Interventions IA sur site à Vallet : formats adaptés au chai viticole, négoce, tonnellerie ou commerce de bourg. Vos équipes repartent autonomes sur outils IA configurés métier viticole.",
+      fr: "Interventions IA sur site à Vallet : formats adaptés au chai viticole, négoce, tonnellerie ou commerce de bourg. Vos équipes acquièrent l'autonomie sur les outils IA déployés viticole.",
+      en: "Interventions IA sur site à Vallet : formats adaptés au chai viticole, négoce, tonnellerie ou commerce de bourg. Vos équipes acquièrent l'autonomie sur les outils IA déployés viticole.",
     },
     implementation: {
       fr: "Implémentation IA à Vallet : traçabilité parcelles/cuvées Muscadet, prédiction vendanges, classification cépages par vision, agents conversationnels oenotourisme, automatisation négoce/facturation.",

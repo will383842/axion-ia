@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHALLES_LES_EAUX_COPY: VilleCopy = {
   pitchFr:
-    "Challes-les-Eaux (73), station thermale de l'agglomération de Chambéry en Savoie, réputée pour ses eaux sulfurées. Thermalisme et bien-être, hôtellerie de cure, professions de santé, TPE commerces, services. Axion-IA y intervient pour tous types d'activités.",
+    "Challes-les-Eaux (73), station thermale de l'agglomération de Chambéry en Savoie, réputée pour ses eaux sulfurées. Thermalisme et bien-être, hôtellerie de cure, professions de santé, TPE commerces, services. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Challes-les-Eaux (73), station thermale de l'agglomération de Chambéry en Savoie, réputée pour ses eaux sulfurées. Thermalisme et bien-être, hôtellerie de cure, professions de santé, TPE commerces, services. Axion-IA y intervient pour tous types d'activités.",
+    "Challes-les-Eaux (73), station thermale de l'agglomération de Chambéry en Savoie, réputée pour ses eaux sulfurées. Thermalisme et bien-être, hôtellerie de cure, professions de santé, TPE commerces, services. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Challes-les-Eaux (73). Nous accompagnons TPE et PME : établissements thermaux et de bien-être, hôteliers de cure, professionnels de santé, commerçants et prestataires de services.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const CHALLES_LES_EAUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Challes-les-Eaux : diagnostic adapté aux établissements thermaux, hôteliers de cure, professions de santé, TPE commerçants et prestataires de services. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Challes-les-Eaux : diagnostic adapté aux établissements thermaux, hôteliers de cure, professions de santé, TPE commerçants et prestataires de services. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Challes-les-Eaux : diagnostic adapté aux établissements thermaux, hôteliers de cure, professions de santé, TPE commerçants et prestataires de services. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Challes-les-Eaux : diagnostic adapté aux établissements thermaux, hôteliers de cure, professions de santé, TPE commerçants et prestataires de services. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Challes-les-Eaux : formats adaptés aux centres thermaux, hôtels de cure, cabinets de santé ou commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Challes-les-Eaux : formats adaptés aux centres thermaux, hôtels de cure, cabinets de santé ou commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Challes-les-Eaux : formats adaptés aux centres thermaux, hôtels de cure, cabinets de santé ou commerces. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Challes-les-Eaux : formats adaptés aux centres thermaux, hôtels de cure, cabinets de santé ou commerces. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Challes-les-Eaux : automatisation réservations cures, agents IA accueil curistes, gestion planning soins, outils prédictifs fréquentation saisonnière, digitalisation parcours patient thermal.",

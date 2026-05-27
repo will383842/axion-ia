@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GAILLON_COPY: VilleCopy = {
   pitchFr:
-    "Gaillon (27), commune de l'Eure en bords de Seine, connue pour son château Renaissance (premier de France). Tissu TPE artisans, PME industrie et logistique vallée de Seine, commerces, agriculture, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Gaillon (27), commune de l'Eure en bords de Seine, connue pour son château Renaissance (premier de France). Tissu TPE artisans, PME industrie et logistique vallée de Seine, commerces, agriculture, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Gaillon (27), commune de l'Eure en bords de Seine, connue pour son château Renaissance (premier de France). Tissu TPE artisans, PME industrie et logistique vallée de Seine, commerces, agriculture, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Gaillon (27), commune de l'Eure en bords de Seine, connue pour son château Renaissance (premier de France). Tissu TPE artisans, PME industrie et logistique vallée de Seine, commerces, agriculture, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gaillon (27). Nous accompagnons tous types d'activités : TPE artisans, PME industrie et logistique vallée de Seine, commerces, exploitants agricoles, indépendants et services aux entreprises de Seine Normandie Agglomération.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const GAILLON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gaillon : diagnostic adapté aux TPE artisans, PME industrie et logistique vallée de Seine, commerces, exploitants agricoles. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Gaillon : diagnostic adapté aux TPE artisans, PME industrie et logistique vallée de Seine, commerces, exploitants agricoles. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Gaillon : diagnostic adapté aux TPE artisans, PME industrie et logistique vallée de Seine, commerces, exploitants agricoles. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Gaillon : diagnostic adapté aux TPE artisans, PME industrie et logistique vallée de Seine, commerces, exploitants agricoles. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gaillon : formats adaptés à l'usine, l'entrepôt logistique, l'exploitation agricole, le commerce. Vos équipes repartent autonomes sur outils IA.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MARCK_COPY: VilleCopy = {
   pitchFr:
-    "Marck (62), commune littorale de l'agglomération calaisienne dans le Pas-de-Calais, conjugue activités portuaires, logistique transmanche, TPE artisanales et PME de services. Axion-IA y intervient pour tous types d'activités du Calaisis.",
+    "Marck (62), commune littorale de l'agglomération calaisienne dans le Pas-de-Calais, conjugue activités portuaires, logistique transmanche, TPE artisanales et PME de services. Axion-IA accompagne entreprises et indépendants de tous secteurs du Calaisis.",
   pitchEn:
-    "Marck (62), commune littorale de l'agglomération calaisienne dans le Pas-de-Calais, conjugue activités portuaires, logistique transmanche, TPE artisanales et PME de services. Axion-IA y intervient pour tous types d'activités du Calaisis.",
+    "Marck (62), commune littorale de l'agglomération calaisienne dans le Pas-de-Calais, conjugue activités portuaires, logistique transmanche, TPE artisanales et PME de services. Axion-IA accompagne entreprises et indépendants de tous secteurs du Calaisis.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marck (62). Nous accompagnons TPE artisanales, PME logistiques et portuaires, commerçants et professions libérales du Calaisis. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ENTRAIGUES_SUR_LA_SORGUE_COPY: VilleCopy = {
   pitchFr:
-    "Entraigues-sur-la-Sorgue (84), commune périurbaine du nord-est avignonnais en vallée des Sorgues, conjugue zones d'activités logistiques, tissu artisanal et fonction résidentielle de l'agglomération du Grand Avignon. TPE artisans, PME logistiques et négoces, commerces de proximité, professions libérales et agriculture maraîchère. Axion-IA y intervient pour tous types d'activités.",
+    "Entraigues-sur-la-Sorgue (84), commune périurbaine du nord-est avignonnais en vallée des Sorgues, conjugue zones d'activités logistiques, tissu artisanal et fonction résidentielle de l'agglomération du Grand Avignon. TPE artisans, PME logistiques et négoces, commerces de proximité, professions libérales et agriculture maraîchère. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Entraigues-sur-la-Sorgue (84), commune périurbaine du nord-est avignonnais en vallée des Sorgues, conjugue zones d'activités logistiques, tissu artisanal et fonction résidentielle de l'agglomération du Grand Avignon. TPE artisans, PME logistiques et négoces, commerces de proximité, professions libérales et agriculture maraîchère. Axion-IA y intervient pour tous types d'activités.",
+    "Entraigues-sur-la-Sorgue (84), commune périurbaine du nord-est avignonnais en vallée des Sorgues, conjugue zones d'activités logistiques, tissu artisanal et fonction résidentielle de l'agglomération du Grand Avignon. TPE artisans, PME logistiques et négoces, commerces de proximité, professions libérales et agriculture maraîchère. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Entraigues-sur-la-Sorgue (84). Nous accompagnons TPE artisans, PME logistiques et négoces, maraîchers, commerces et professions libérales du nord-est avignonnais. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const ENTRAIGUES_SUR_LA_SORGUE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Entraigues-sur-la-Sorgue : diagnostic adapté aux TPE artisans, PME logistiques, négoces, maraîchers et commerces du nord-est avignonnais. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Entraigues-sur-la-Sorgue : diagnostic adapté aux TPE artisans, PME logistiques, négoces, maraîchers et commerces du nord-est avignonnais. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Entraigues-sur-la-Sorgue : diagnostic adapté aux TPE artisans, PME logistiques, négoces, maraîchers et commerces du nord-est avignonnais. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Entraigues-sur-la-Sorgue : diagnostic adapté aux TPE artisans, PME logistiques, négoces, maraîchers et commerces du nord-est avignonnais. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Entraigues-sur-la-Sorgue : ateliers pour équipes TPE/PME logistique, négoces, maraîchers, artisans BTP et commerces. Outils IA configurés métier réel, dans vos locaux ou à Avignon.",
@@ -64,7 +64,7 @@ export const ENTRAIGUES_SUR_LA_SORGUE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Entraigues-sur-la-Sorgue ?",
-      a: "Entraigues-sur-la-Sorgue est à 15 min d'Avignon centre et 20 min de la gare TGV via A7. Nos consultants se déplacent dans vos locaux. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Entraigues-sur-la-Sorgue est à 15 min d'Avignon centre et 20 min de la gare TGV via A7. Nos consultants se déplacent dans vos locaux. Frais de mission en sus, grille tarifaire publique.",
     },
   ],
 };

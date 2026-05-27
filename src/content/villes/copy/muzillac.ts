@@ -29,8 +29,8 @@ export const MUZILLAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Muzillac : diagnostic adapté aux TPE artisans, PME tertiaires, ostréiculteurs et acteurs du tourisme littoral morbihannais. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Muzillac : diagnostic adapté aux TPE artisans, PME tertiaires, ostréiculteurs et acteurs du tourisme littoral morbihannais. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Muzillac : diagnostic adapté aux TPE artisans, PME tertiaires, ostréiculteurs et acteurs du tourisme littoral morbihannais. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Muzillac : diagnostic adapté aux TPE artisans, PME tertiaires, ostréiculteurs et acteurs du tourisme littoral morbihannais. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Muzillac : formats adaptés aux professionnels du tourisme, ostréiculteurs, commerçants, artisans. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const MUZILLAC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Muzillac depuis Vannes ?",
-      a: "Nos consultants viennent de Vannes (25 min) ou Nantes (1h15). Intervention sur site dans vos locaux ou en visio. Multi-jours possibles avec hébergement local. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants viennent de Vannes (25 min) ou Nantes (1h15). Intervention sur site dans vos locaux ou en visio. Multi-jours possibles avec hébergement local. Frais de mission en sus, grille tarifaire publique.",
     },
   ],
 };

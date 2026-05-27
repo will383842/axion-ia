@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const HOMBOURG_HAUT_COPY: VilleCopy = {
   pitchFr:
-    "Hombourg-Haut (57), commune mosellane du Bassin houiller lorrain, connue pour sa basilique Saint-Étienne et son patrimoine médiéval, à proximité de Freyming-Merlebach et de la frontière sarroise. Tissu TPE/PME commerce, services, BTP, artisanat et activités transfrontalières. Axion-IA y intervient pour tous types d'activités.",
+    "Hombourg-Haut (57), commune mosellane du Bassin houiller lorrain, connue pour sa basilique Saint-Étienne et son patrimoine médiéval, à proximité de Freyming-Merlebach et de la frontière sarroise. Tissu TPE/PME commerce, services, BTP, artisanat et activités transfrontalières. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Hombourg-Haut (57), commune mosellane du Bassin houiller lorrain, connue pour sa basilique Saint-Étienne et son patrimoine médiéval, à proximité de Freyming-Merlebach et de la frontière sarroise. Tissu TPE/PME commerce, services, BTP, artisanat et activités transfrontalières. Axion-IA y intervient pour tous types d'activités.",
+    "Hombourg-Haut (57), commune mosellane du Bassin houiller lorrain, connue pour sa basilique Saint-Étienne et son patrimoine médiéval, à proximité de Freyming-Merlebach et de la frontière sarroise. Tissu TPE/PME commerce, services, BTP, artisanat et activités transfrontalières. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hombourg-Haut (57). Nous accompagnons tous types d'activités : TPE/PME commerce et services, artisans BTP, professions libérales et entrepreneurs frontaliers du Bassin houiller mosellan.",
   directAnswerEn:
@@ -34,8 +34,8 @@ export const HOMBOURG_HAUT_COPY: VilleCopy = {
       en: "Audit IA à Hombourg-Haut : diagnostic adapté aux TPE/PME commerce, services, artisans BTP et entrepreneurs frontaliers du Bassin houiller. ROI chiffré, audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Hombourg-Haut : formats adaptés au bureau, commerce, chantier. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Hombourg-Haut : formats adaptés au bureau, commerce, chantier. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Hombourg-Haut : formats adaptés au bureau, commerce, chantier. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Hombourg-Haut : formats adaptés au bureau, commerce, chantier. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Hombourg-Haut : automatisation gestion transfrontalière, agents conversationnels multilingues, optimisation logistique, valorisation patrimoine touristique.",

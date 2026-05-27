@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHAPONOST_COPY: VilleCopy = {
   pitchFr:
-    "Chaponost (69), commune en banlieue sud-ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Connue pour les vestiges de l'aqueduc romain du Gier (monument historique, alimentait Lugdunum). Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Chaponost (69), commune en banlieue sud-ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Connue pour les vestiges de l'aqueduc romain du Gier (monument historique, alimentait Lugdunum). Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Chaponost (69), commune en banlieue sud-ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Connue pour les vestiges de l'aqueduc romain du Gier (monument historique, alimentait Lugdunum). Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Chaponost (69), commune en banlieue sud-ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Connue pour les vestiges de l'aqueduc romain du Gier (monument historique, alimentait Lugdunum). Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chaponost (69). Nous accompagnons tous types d'activités : PME tertiaires Métropole de Lyon SO, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la banlieue sud-ouest lyonnaise.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const CHAPONOST_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chaponost : diagnostic adapté aux PME tertiaires SO lyonnais, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Chaponost : diagnostic adapté aux PME tertiaires SO lyonnais, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Chaponost : diagnostic adapté aux PME tertiaires SO lyonnais, professions libérales, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Chaponost : diagnostic adapté aux PME tertiaires SO lyonnais, professions libérales, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Chaponost : formats adaptés au bureau, cabinet, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Chaponost : formats adaptés au bureau, cabinet, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Chaponost : formats adaptés au bureau, cabinet, commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Chaponost : formats adaptés au bureau, cabinet, commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Chaponost : agents conversationnels patient/client, automatisation workflow tertiaire, classification dossiers, CRM augmentés. Métropole Lyon SO.",

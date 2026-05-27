@@ -29,8 +29,8 @@ export const VALSERHONE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Valserhône : diagnostic adapté aux PME industrielles/tertiaires pays de Gex sud, frontaliers Genève, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Valserhône : diagnostic adapté aux PME industrielles/tertiaires pays de Gex sud, frontaliers Genève, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Valserhône : diagnostic adapté aux PME industrielles/tertiaires pays de Gex sud, frontaliers Genève, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Valserhône : diagnostic adapté aux PME industrielles/tertiaires pays de Gex sud, frontaliers Genève, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Valserhône : formats adaptés à l'atelier industriel, bureau frontalier, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const VALSERHONE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Genève ?",
-      a: "Nos consultants viennent de Lyon (1h30) ou Genève (40 min). TGV Paris direct gare Bellegarde. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (1h30) ou Genève (40 min). TGV Paris direct gare Bellegarde. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_NICOLAS_DE_PORT_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Nicolas-de-Port (54), commune historique du sud-est de l'agglomération nancéienne en Meurthe-et-Moselle, est célèbre pour sa basilique gothique flamboyant Saint-Nicolas (lieu de pèlerinage majeur de Lorraine). Tissu TPE/PME services, commerce, artisans BTP, restauration, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Nicolas-de-Port (54), commune historique du sud-est de l'agglomération nancéienne en Meurthe-et-Moselle, est célèbre pour sa basilique gothique flamboyant Saint-Nicolas (lieu de pèlerinage majeur de Lorraine). Tissu TPE/PME services, commerce, artisans BTP, restauration, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Saint-Nicolas-de-Port (54), commune historique du sud-est de l'agglomération nancéienne en Meurthe-et-Moselle, est célèbre pour sa basilique gothique flamboyant Saint-Nicolas (lieu de pèlerinage majeur de Lorraine). Tissu TPE/PME services, commerce, artisans BTP, restauration, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Nicolas-de-Port (54), commune historique du sud-est de l'agglomération nancéienne en Meurthe-et-Moselle, est célèbre pour sa basilique gothique flamboyant Saint-Nicolas (lieu de pèlerinage majeur de Lorraine). Tissu TPE/PME services, commerce, artisans BTP, restauration, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Nicolas-de-Port (54). Nous accompagnons tous types d'activités : TPE/PME de services, commerçants, artisans BTP, restaurateurs et professions libérales du sud-est de l'agglomération nancéienne.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const SAINT_NICOLAS_DE_PORT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Nicolas-de-Port : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et restaurateurs du sud-est nancéien. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Nicolas-de-Port : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et restaurateurs du sud-est nancéien. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Nicolas-de-Port : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et restaurateurs du sud-est nancéien. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Saint-Nicolas-de-Port : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et restaurateurs du sud-est nancéien. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Nicolas-de-Port : formats adaptés au bureau tertiaire, au commerce, au restaurant ou au cabinet libéral. Vos équipes repartent autonomes sur les outils IA métier.",

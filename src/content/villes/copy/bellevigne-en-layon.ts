@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BELLEVIGNE_EN_LAYON_COPY: VilleCopy = {
   pitchFr:
-    "Bellevigne-en-Layon (49), commune nouvelle du Maine-et-Loire au cœur du vignoble du Layon (AOC Coteaux-du-Layon, Quarts-de-Chaume), rassemble un tissu de TPE viticoles, PME agroalimentaires, artisans, commerces ruraux et prestataires œnotouristiques. Axion-IA y intervient pour tous types d'activités.",
+    "Bellevigne-en-Layon (49), commune nouvelle du Maine-et-Loire au cœur du vignoble du Layon (AOC Coteaux-du-Layon, Quarts-de-Chaume), rassemble un tissu de TPE viticoles, PME agroalimentaires, artisans, commerces ruraux et prestataires œnotouristiques. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Bellevigne-en-Layon (49), commune nouvelle du Maine-et-Loire au cœur du vignoble du Layon (AOC Coteaux-du-Layon, Quarts-de-Chaume), rassemble un tissu de TPE viticoles, PME agroalimentaires, artisans, commerces ruraux et prestataires œnotouristiques. Axion-IA y intervient pour tous types d'activités.",
+    "Bellevigne-en-Layon (49), commune nouvelle du Maine-et-Loire au cœur du vignoble du Layon (AOC Coteaux-du-Layon, Quarts-de-Chaume), rassemble un tissu de TPE viticoles, PME agroalimentaires, artisans, commerces ruraux et prestataires œnotouristiques. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bellevigne-en-Layon (49). Nous accompagnons tous types d'activités : TPE viticoles (Coteaux-du-Layon, Quarts-de-Chaume), PME agroalimentaires, artisans, commerçants de proximité, professions libérales, hébergeurs œnotouristiques et services aux entreprises du sud-ouest angevin.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const BELLEVIGNE_EN_LAYON_COPY: VilleCopy = {
       en: "Audit IA à Bellevigne-en-Layon : diagnostic adapté aux TPE viticoles, PME agroalimentaires et acteurs œnotouristiques du Layon. ROI chiffré, Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Bellevigne-en-Layon : formations adaptées aux exploitations viticoles, caves, hébergements œnotouristiques et commerces du Layon. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Bellevigne-en-Layon : formations adaptées aux exploitations viticoles, caves, hébergements œnotouristiques et commerces du Layon. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Bellevigne-en-Layon : formations adaptées aux exploitations viticoles, caves, hébergements œnotouristiques et commerces du Layon. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Bellevigne-en-Layon : formations adaptées aux exploitations viticoles, caves, hébergements œnotouristiques et commerces du Layon. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Bellevigne-en-Layon : traçabilité parcellaire viticole, prédiction vendanges, agents conversationnels œnotourisme, automatisation gestion cave et stocks.",

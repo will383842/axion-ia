@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BROU_SUR_CHANTEREINE_COPY: VilleCopy = {
   pitchFr:
-    "Brou-sur-Chantereine (77), commune résidentielle de Seine-et-Marne limitrophe de Chelles, bien desservie par le RER E et la Francilienne. TPE artisanat, commerces de proximité, PME services, professions libérales, logistique. Axion-IA y intervient pour tous types d'activités.",
+    "Brou-sur-Chantereine (77), commune résidentielle de Seine-et-Marne limitrophe de Chelles, bien desservie par le RER E et la Francilienne. TPE artisanat, commerces de proximité, PME services, professions libérales, logistique. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Brou-sur-Chantereine (77), commune résidentielle de Seine-et-Marne limitrophe de Chelles, bien desservie par le RER E et la Francilienne. TPE artisanat, commerces de proximité, PME services, professions libérales, logistique. Axion-IA y intervient pour tous types d'activités.",
+    "Brou-sur-Chantereine (77), commune résidentielle de Seine-et-Marne limitrophe de Chelles, bien desservie par le RER E et la Francilienne. TPE artisanat, commerces de proximité, PME services, professions libérales, logistique. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Brou-sur-Chantereine (77). Nous accompagnons TPE et PME : artisans, commerçants de proximité, prestataires de services, professions libérales, entreprises logistique de l'agglomération chelloise. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const BROU_SUR_CHANTEREINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Brou-sur-Chantereine : diagnostic adapté aux TPE artisanat, commerces de proximité, PME services, professions libérales, entreprises logistique. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Brou-sur-Chantereine : diagnostic adapté aux TPE artisanat, commerces de proximité, PME services, professions libérales, entreprises logistique. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Brou-sur-Chantereine : diagnostic adapté aux TPE artisanat, commerces de proximité, PME services, professions libérales, entreprises logistique. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Brou-sur-Chantereine : diagnostic adapté aux TPE artisanat, commerces de proximité, PME services, professions libérales, entreprises logistique. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Brou-sur-Chantereine : formats adaptés atelier artisan, commerce, bureau PME, cabinet libéral, entrepôt logistique. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Brou-sur-Chantereine : formats adaptés atelier artisan, commerce, bureau PME, cabinet libéral, entrepôt logistique. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Brou-sur-Chantereine : formats adaptés atelier artisan, commerce, bureau PME, cabinet libéral, entrepôt logistique. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Brou-sur-Chantereine : formats adaptés atelier artisan, commerce, bureau PME, cabinet libéral, entrepôt logistique. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Brou-sur-Chantereine : automatisation devis artisans, gestion stocks commerce, CRM augmenté PME, planning professions libérales, optimisation flux logistiques.",
@@ -64,7 +64,7 @@ export const BROU_SUR_CHANTEREINE_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi à Chelles et Vaires-sur-Marne ?",
-      a: "Oui, nous couvrons Brou-sur-Chantereine, Chelles, Vaires-sur-Marne, Courtry et toute l'agglomération chelloise. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Oui, nous couvrons Brou-sur-Chantereine, Chelles, Vaires-sur-Marne, Courtry et toute l'agglomération chelloise. Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

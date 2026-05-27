@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VEXIN_SUR_EPTE_COPY: VilleCopy = {
   pitchFr:
-    "Vexin-sur-Epte (27), commune nouvelle de l'Eure au cœur du Vexin normand, le long de la vallée de l'Epte. Tissu TPE artisans, PME agriculture grandes cultures Vexin, commerces, services aux entreprises, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Vexin-sur-Epte (27), commune nouvelle de l'Eure au cœur du Vexin normand, le long de la vallée de l'Epte. Tissu TPE artisans, PME agriculture grandes cultures Vexin, commerces, services aux entreprises, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Vexin-sur-Epte (27), commune nouvelle de l'Eure au cœur du Vexin normand, le long de la vallée de l'Epte. Tissu TPE artisans, PME agriculture grandes cultures Vexin, commerces, services aux entreprises, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Vexin-sur-Epte (27), commune nouvelle de l'Eure au cœur du Vexin normand, le long de la vallée de l'Epte. Tissu TPE artisans, PME agriculture grandes cultures Vexin, commerces, services aux entreprises, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vexin-sur-Epte (27). Nous accompagnons tous types d'activités : TPE artisans, PME agriculture grandes cultures Vexin normand, commerces ruraux, professions libérales, indépendants et services aux entreprises du canton de Gisors.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const VEXIN_SUR_EPTE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vexin-sur-Epte : diagnostic adapté aux TPE artisans, PME agriculture grandes cultures Vexin, éleveurs, commerces ruraux, professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Vexin-sur-Epte : diagnostic adapté aux TPE artisans, PME agriculture grandes cultures Vexin, éleveurs, commerces ruraux, professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Vexin-sur-Epte : diagnostic adapté aux TPE artisans, PME agriculture grandes cultures Vexin, éleveurs, commerces ruraux, professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Vexin-sur-Epte : diagnostic adapté aux TPE artisans, PME agriculture grandes cultures Vexin, éleveurs, commerces ruraux, professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vexin-sur-Epte : formats adaptés à l'exploitation agricole, l'élevage, l'atelier, le commerce rural. Vos équipes repartent autonomes sur outils IA.",

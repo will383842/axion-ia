@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const TOUL_COPY: VilleCopy = {
   pitchFr:
-    "Toul (54), commune de Meurthe-et-Moselle, est une cité épiscopale historique avec sa cathédrale gothique Saint-Étienne et le vignoble des Côtes de Toul AOC. Tissu TPE viticulteurs, PME agroalimentaires, artisans BTP, commerces et services. Axion-IA y intervient pour tous types d'activités du Toulois.",
+    "Toul (54), commune de Meurthe-et-Moselle, est une cité épiscopale historique avec sa cathédrale gothique Saint-Étienne et le vignoble des Côtes de Toul AOC. Tissu TPE viticulteurs, PME agroalimentaires, artisans BTP, commerces et services. Axion-IA couvre l'ensemble des activités professionnelles présentes du Toulois.",
   pitchEn:
-    "Toul (54), commune de Meurthe-et-Moselle, est une cité épiscopale historique avec sa cathédrale gothique Saint-Étienne et le vignoble des Côtes de Toul AOC. Tissu TPE viticulteurs, PME agroalimentaires, artisans BTP, commerces et services. Axion-IA y intervient pour tous types d'activités du Toulois.",
+    "Toul (54), commune de Meurthe-et-Moselle, est une cité épiscopale historique avec sa cathédrale gothique Saint-Étienne et le vignoble des Côtes de Toul AOC. Tissu TPE viticulteurs, PME agroalimentaires, artisans BTP, commerces et services. Axion-IA couvre l'ensemble des activités professionnelles présentes du Toulois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Toul (54). Nous accompagnons tous types d'activités : TPE viticulteurs Côtes de Toul, PME agroalimentaires, artisans BTP, commerçants centre historique, professions libérales et acteurs du tourisme patrimonial.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const TOUL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Toul : diagnostic adapté aux TPE viticulteurs Côtes de Toul, PME agroalimentaires, artisans BTP et commerçants centre historique. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Toul : diagnostic adapté aux TPE viticulteurs Côtes de Toul, PME agroalimentaires, artisans BTP et commerçants centre historique. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Toul : diagnostic adapté aux TPE viticulteurs Côtes de Toul, PME agroalimentaires, artisans BTP et commerçants centre historique. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Toul : diagnostic adapté aux TPE viticulteurs Côtes de Toul, PME agroalimentaires, artisans BTP et commerçants centre historique. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Toul : formats adaptés au domaine viticole, exploitation agroalimentaire, atelier artisan, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const TOUL_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Toul depuis Nancy ?",
-      a: "Nos consultants viennent de Nancy (25 min A31 ou TER direct). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Nancy (25 min A31 ou TER direct). Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

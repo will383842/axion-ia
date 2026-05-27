@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FAVERGES_SEYTHENEX_COPY: VilleCopy = {
   pitchFr:
-    "Faverges-Seythenex (74), commune nouvelle née de la fusion de Faverges et Seythenex en 2016, se situe entre Annecy et Albertville au pied des massifs alpins. Tissu industriel historique (mécanique, horlogerie), tourisme de montagne, agriculture alpine et artisanat local. Axion-IA y intervient pour tous types d'activités de ce carrefour montagnard.",
+    "Faverges-Seythenex (74), commune nouvelle née de la fusion de Faverges et Seythenex en 2016, se situe entre Annecy et Albertville au pied des massifs alpins. Tissu industriel historique (mécanique, horlogerie), tourisme de montagne, agriculture alpine et artisanat local. Axion-IA accompagne entreprises et indépendants de tous secteurs de ce carrefour montagnard.",
   pitchEn:
-    "Faverges-Seythenex (74), commune nouvelle née de la fusion de Faverges et Seythenex en 2016, se situe entre Annecy et Albertville au pied des massifs alpins. Tissu industriel historique (mécanique, horlogerie), tourisme de montagne, agriculture alpine et artisanat local. Axion-IA y intervient pour tous types d'activités de ce carrefour montagnard.",
+    "Faverges-Seythenex (74), commune nouvelle née de la fusion de Faverges et Seythenex en 2016, se situe entre Annecy et Albertville au pied des massifs alpins. Tissu industriel historique (mécanique, horlogerie), tourisme de montagne, agriculture alpine et artisanat local. Axion-IA accompagne entreprises et indépendants de tous secteurs de ce carrefour montagnard.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Faverges-Seythenex (74). Nous accompagnons TPE et PME : industries mécaniques et horlogères, prestataires tourisme montagne, exploitations agricoles alpines, artisans locaux et commerces du bourg.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const FAVERGES_SEYTHENEX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Faverges-Seythenex : diagnostic adapté aux PME industrielles (mécanique, horlogerie), prestataires tourisme montagne, agriculteurs alpins et artisans locaux. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Faverges-Seythenex : diagnostic adapté aux PME industrielles (mécanique, horlogerie), prestataires tourisme montagne, agriculteurs alpins et artisans locaux. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Faverges-Seythenex : diagnostic adapté aux PME industrielles (mécanique, horlogerie), prestataires tourisme montagne, agriculteurs alpins et artisans locaux. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Faverges-Seythenex : diagnostic adapté aux PME industrielles (mécanique, horlogerie), prestataires tourisme montagne, agriculteurs alpins et artisans locaux. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Faverges-Seythenex : formats adaptés à l'atelier mécanique, l'exploitation agricole, le prestataire touristique ou le commerce de bourg. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Faverges-Seythenex : formats adaptés à l'atelier mécanique, l'exploitation agricole, le prestataire touristique ou le commerce de bourg. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Faverges-Seythenex : formats adaptés à l'atelier mécanique, l'exploitation agricole, le prestataire touristique ou le commerce de bourg. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Faverges-Seythenex : formats adaptés à l'atelier mécanique, l'exploitation agricole, le prestataire touristique ou le commerce de bourg. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Faverges-Seythenex : contrôle qualité visuel usine, maintenance prédictive horlogerie, agents conversationnels réservation montagne, gestion troupeaux et traçabilité alpine.",

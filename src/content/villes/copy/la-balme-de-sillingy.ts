@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_BALME_DE_SILLINGY_COPY: VilleCopy = {
   pitchFr:
-    "La Balme-de-Sillingy (74), commune résidentielle au nord d'Annecy dans la communauté de communes Fier et Usses, accueille un tissu de TPE/PME tertiaires, artisans BTP, exploitants agricoles, commerces et professions libérales. Axion-IA y intervient pour tous types d'activités du bassin annécien nord.",
+    "La Balme-de-Sillingy (74), commune résidentielle au nord d'Annecy dans la communauté de communes Fier et Usses, accueille un tissu de TPE/PME tertiaires, artisans BTP, exploitants agricoles, commerces et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin annécien nord.",
   pitchEn:
-    "La Balme-de-Sillingy (74), commune résidentielle au nord d'Annecy dans la communauté de communes Fier et Usses, accueille un tissu de TPE/PME tertiaires, artisans BTP, exploitants agricoles, commerces et professions libérales. Axion-IA y intervient pour tous types d'activités du bassin annécien nord.",
+    "La Balme-de-Sillingy (74), commune résidentielle au nord d'Annecy dans la communauté de communes Fier et Usses, accueille un tissu de TPE/PME tertiaires, artisans BTP, exploitants agricoles, commerces et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin annécien nord.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Balme-de-Sillingy (74). Nous accompagnons TPE et PME : entreprises tertiaires du bassin annécien nord, artisans BTP, exploitants agricoles, commerçants et professions libérales de la communauté de communes Fier et Usses.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const LA_BALME_DE_SILLINGY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Balme-de-Sillingy : diagnostic adapté aux PME tertiaires du bassin annécien nord, artisans BTP, exploitants agricoles et professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à La Balme-de-Sillingy : diagnostic adapté aux PME tertiaires du bassin annécien nord, artisans BTP, exploitants agricoles et professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à La Balme-de-Sillingy : diagnostic adapté aux PME tertiaires du bassin annécien nord, artisans BTP, exploitants agricoles et professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à La Balme-de-Sillingy : diagnostic adapté aux PME tertiaires du bassin annécien nord, artisans BTP, exploitants agricoles et professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à La Balme-de-Sillingy : formats adaptés au bureau PME, atelier artisan, exploitation agricole ou cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à La Balme-de-Sillingy : formats adaptés au bureau PME, atelier artisan, exploitation agricole ou cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à La Balme-de-Sillingy : formats adaptés au bureau PME, atelier artisan, exploitation agricole ou cabinet. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à La Balme-de-Sillingy : formats adaptés au bureau PME, atelier artisan, exploitation agricole ou cabinet. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à La Balme-de-Sillingy : automatisation workflow tertiaire, agents conversationnels client, gestion devis BTP, outils IA exploitation agricole (suivi troupeau, prévision récolte), CRM augmenté.",

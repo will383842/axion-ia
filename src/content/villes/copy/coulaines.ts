@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const COULAINES_COPY: VilleCopy = {
   pitchFr:
-    "Coulaines (72), commune de l'agglomération mancelle au nord du Mans en Sarthe, regroupe zones résidentielles et tissu économique de proximité où évoluent TPE artisans, PME de services, commerces, professions libérales et prestataires du bassin manceau nord. Axion-IA y intervient pour tous types d'activités.",
+    "Coulaines (72), commune de l'agglomération mancelle au nord du Mans en Sarthe, regroupe zones résidentielles et tissu économique de proximité où évoluent TPE artisans, PME de services, commerces, professions libérales et prestataires du bassin manceau nord. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Coulaines (72), commune de l'agglomération mancelle au nord du Mans en Sarthe, regroupe zones résidentielles et tissu économique de proximité où évoluent TPE artisans, PME de services, commerces, professions libérales et prestataires du bassin manceau nord. Axion-IA y intervient pour tous types d'activités.",
+    "Coulaines (72), commune de l'agglomération mancelle au nord du Mans en Sarthe, regroupe zones résidentielles et tissu économique de proximité où évoluent TPE artisans, PME de services, commerces, professions libérales et prestataires du bassin manceau nord. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coulaines (72). Nous accompagnons tous types d'activités : TPE artisans, PME de services, commerçants, professions libérales (santé, juridique), prestataires et entreprises du nord de l'agglomération mancelle.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const COULAINES_COPY: VilleCopy = {
       en: "Audit IA à Coulaines : diagnostic adapté aux TPE artisans, PME de services, commerçants et professions libérales du nord de l'agglomération mancelle. ROI chiffré, Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Coulaines : formations adaptées aux TPE artisans, PME tertiaires, commerces et professions libérales du bassin manceau nord. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Coulaines : formations adaptées aux TPE artisans, PME tertiaires, commerces et professions libérales du bassin manceau nord. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Coulaines : formations adaptées aux TPE artisans, PME tertiaires, commerces et professions libérales du bassin manceau nord. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Coulaines : formations adaptées aux TPE artisans, PME tertiaires, commerces et professions libérales du bassin manceau nord. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Coulaines : agents conversationnels commerces, automatisation administrative cabinets libéraux, outils IA artisanat, optimisation devis et planification services à la personne.",

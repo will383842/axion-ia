@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SEYSSINS_COPY: VilleCopy = {
   pitchFr:
-    "Seyssins (38), commune de l'aire urbaine de Grenoble adhérente à Grenoble-Alpes Métropole, jouxte Seyssinet-Pariset à l'ouest immédiat de Grenoble. Tissu mixte résidentiel et tissu local de TPE/PME : artisans BTP, commerces, professions libérales et services. Axion-IA y intervient pour tous types d'activités seyssinoises.",
+    "Seyssins (38), commune de l'aire urbaine de Grenoble adhérente à Grenoble-Alpes Métropole, jouxte Seyssinet-Pariset à l'ouest immédiat de Grenoble. Tissu mixte résidentiel et tissu local de TPE/PME : artisans BTP, commerces, professions libérales et services. Axion-IA y déploie ses missions auprès de toutes les organisations seyssinoises.",
   pitchEn:
-    "Seyssins (38), commune de l'aire urbaine de Grenoble adhérente à Grenoble-Alpes Métropole, jouxte Seyssinet-Pariset à l'ouest immédiat de Grenoble. Tissu mixte résidentiel et tissu local de TPE/PME : artisans BTP, commerces, professions libérales et services. Axion-IA y intervient pour tous types d'activités seyssinoises.",
+    "Seyssins (38), commune de l'aire urbaine de Grenoble adhérente à Grenoble-Alpes Métropole, jouxte Seyssinet-Pariset à l'ouest immédiat de Grenoble. Tissu mixte résidentiel et tissu local de TPE/PME : artisans BTP, commerces, professions libérales et services. Axion-IA y déploie ses missions auprès de toutes les organisations seyssinoises.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Seyssins (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants centre-ville, professions libérales (médecins, avocats, expert-comptables), PME tertiaires seyssinoises, indépendants et entreprises de Grenoble-Alpes Métropole en zone ouest.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const SEYSSINS_COPY: VilleCopy = {
       en: "Audit IA à Seyssins : diagnostic adapté aux TPE artisans, professions libérales, commerçants et PME tertiaires du bassin grenoblois ouest. ROI chiffré, audit Flash 490 € HT accessible aux indépendants.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Seyssins : formats adaptés au cabinet professionnel, commerce, atelier artisan ou bureau PME. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Seyssins : formats adaptés au cabinet professionnel, commerce, atelier artisan ou bureau PME. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Seyssins : formats adaptés au cabinet professionnel, commerce, atelier artisan ou bureau PME. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Seyssins : formats adaptés au cabinet professionnel, commerce, atelier artisan ou bureau PME. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Seyssins : agents conversationnels client/patient, automatisation devis BTP/honoraires libéraux, classification dossiers, CRM augmentés. Adapté professions libérales et artisans.",

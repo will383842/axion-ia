@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MONTLOUIS_SUR_LOIRE_COPY: VilleCopy = {
   pitchFr:
-    "Montlouis-sur-Loire (37), commune d'Indre-et-Loire sur les bords de Loire, est renommée pour son AOC viticole Montlouis-sur-Loire (vins blancs effervescents et tranquilles). Tissu TPE viticulteurs, PME tourisme œnotouristique Loire, artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Montlouis-sur-Loire (37), commune d'Indre-et-Loire sur les bords de Loire, est renommée pour son AOC viticole Montlouis-sur-Loire (vins blancs effervescents et tranquilles). Tissu TPE viticulteurs, PME tourisme œnotouristique Loire, artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Montlouis-sur-Loire (37), commune d'Indre-et-Loire sur les bords de Loire, est renommée pour son AOC viticole Montlouis-sur-Loire (vins blancs effervescents et tranquilles). Tissu TPE viticulteurs, PME tourisme œnotouristique Loire, artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Montlouis-sur-Loire (37), commune d'Indre-et-Loire sur les bords de Loire, est renommée pour son AOC viticole Montlouis-sur-Loire (vins blancs effervescents et tranquilles). Tissu TPE viticulteurs, PME tourisme œnotouristique Loire, artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montlouis-sur-Loire (37). Nous accompagnons tous types d'activités : TPE viticulteurs AOC Montlouis, PME tourisme œnotouristique Loire, artisans BTP, commerçants et services aux entreprises de l'agglomération tourangelle.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const MONTLOUIS_SUR_LOIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montlouis-sur-Loire : diagnostic adapté aux viticulteurs AOC Montlouis, acteurs œnotourisme, PME tourisme Loire, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Montlouis-sur-Loire : diagnostic adapté aux viticulteurs AOC Montlouis, acteurs œnotourisme, PME tourisme Loire, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Montlouis-sur-Loire : diagnostic adapté aux viticulteurs AOC Montlouis, acteurs œnotourisme, PME tourisme Loire, TPE artisans. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Montlouis-sur-Loire : diagnostic adapté aux viticulteurs AOC Montlouis, acteurs œnotourisme, PME tourisme Loire, TPE artisans. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montlouis-sur-Loire : formats adaptés au domaine viticole, cave, office tourisme, bureau. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const MONTLOUIS_SUR_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Montlouis-sur-Loire ?",
-      a: "Nos consultants interviennent sur site à Montlouis-sur-Loire (Tours à 15 min). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants interviennent sur site à Montlouis-sur-Loire (Tours à 15 min). Frais de mission en sus, grille tarifaire publique.",
     },
   ],
 };

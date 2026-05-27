@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GUIPRY_MESSAC_COPY: VilleCopy = {
   pitchFr:
-    "Guipry-Messac (35), commune nouvelle rurale en Ille-et-Vilaine au sud de Rennes, est située sur les bords de la Vilaine. Tissu TPE artisans, PME agricoles et agroalimentaires, commerces de proximité et services. Axion-IA y intervient pour tous types d'activités du sud rennais et du Pays de Redon.",
+    "Guipry-Messac (35), commune nouvelle rurale en Ille-et-Vilaine au sud de Rennes, est située sur les bords de la Vilaine. Tissu TPE artisans, PME agricoles et agroalimentaires, commerces de proximité et services. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud rennais et du Pays de Redon.",
   pitchEn:
-    "Guipry-Messac (35), commune nouvelle rurale en Ille-et-Vilaine au sud de Rennes, est située sur les bords de la Vilaine. Tissu TPE artisans, PME agricoles et agroalimentaires, commerces de proximité et services. Axion-IA y intervient pour tous types d'activités du sud rennais et du Pays de Redon.",
+    "Guipry-Messac (35), commune nouvelle rurale en Ille-et-Vilaine au sud de Rennes, est située sur les bords de la Vilaine. Tissu TPE artisans, PME agricoles et agroalimentaires, commerces de proximité et services. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud rennais et du Pays de Redon.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guipry-Messac (35). Nous accompagnons TPE artisans, PME agricoles et agroalimentaires, commerçants et indépendants du sud rennais et du Pays de Redon. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
   directAnswerEn:

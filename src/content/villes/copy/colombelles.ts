@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const COLOMBELLES_COPY: VilleCopy = {
   pitchFr:
-    "Colombelles (14), commune de l'agglomération de Caen est dans le Calvados, est en pleine reconversion industrielle. L'ancien site sidérurgique accueille aujourd'hui des espaces culturels et créatifs (le Wip, le Big Band Café). Tissu TPE artisans BTP, PME services et industrie, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Colombelles (14), commune de l'agglomération de Caen est dans le Calvados, est en pleine reconversion industrielle. L'ancien site sidérurgique accueille aujourd'hui des espaces culturels et créatifs (le Wip, le Big Band Café). Tissu TPE artisans BTP, PME services et industrie, commerces, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Colombelles (14), commune de l'agglomération de Caen est dans le Calvados, est en pleine reconversion industrielle. L'ancien site sidérurgique accueille aujourd'hui des espaces culturels et créatifs (le Wip, le Big Band Café). Tissu TPE artisans BTP, PME services et industrie, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Colombelles (14), commune de l'agglomération de Caen est dans le Calvados, est en pleine reconversion industrielle. L'ancien site sidérurgique accueille aujourd'hui des espaces culturels et créatifs (le Wip, le Big Band Café). Tissu TPE artisans BTP, PME services et industrie, commerces, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Colombelles (14). Nous accompagnons tous types d'activités : TPE artisans BTP, PME services et industrielles de l'agglomération caennaise est, acteurs de la reconversion créative, commerçants, professions libérales et indépendants.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const COLOMBELLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Colombelles : diagnostic adapté aux PME services et industrielles agglo Caen est, TPE artisans BTP, acteurs créatifs reconversion et commerçants. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Colombelles : diagnostic adapté aux PME services et industrielles agglo Caen est, TPE artisans BTP, acteurs créatifs reconversion et commerçants. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Colombelles : diagnostic adapté aux PME services et industrielles agglo Caen est, TPE artisans BTP, acteurs créatifs reconversion et commerçants. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Colombelles : diagnostic adapté aux PME services et industrielles agglo Caen est, TPE artisans BTP, acteurs créatifs reconversion et commerçants. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Colombelles : formats adaptés au bureau tertiaire, atelier industriel, espace créatif ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Colombelles : formats adaptés au bureau tertiaire, atelier industriel, espace créatif ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Colombelles : formats adaptés au bureau tertiaire, atelier industriel, espace créatif ou commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Colombelles : formats adaptés au bureau tertiaire, atelier industriel, espace créatif ou commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Colombelles : automatisation processus tertiaires, agents conversationnels, classification documents, prédiction maintenance. Adapté reconversion TPE/PME agglo Caen.",

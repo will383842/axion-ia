@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LES_ANGLES_COPY: VilleCopy = {
   pitchFr:
-    "Les Angles (30), commune résidentielle du Gard face à Avignon, intégrée au Grand Avignon. Tissu TPE/PME services aux entreprises, professions libérales, commerces zone commerciale, artisanat et restauration. Axion-IA y intervient pour tous types d'activités du Grand Avignon rive droite.",
+    "Les Angles (30), commune résidentielle du Gard face à Avignon, intégrée au Grand Avignon. Tissu TPE/PME services aux entreprises, professions libérales, commerces zone commerciale, artisanat et restauration. Axion-IA y déploie ses missions auprès de toutes les organisations du Grand Avignon rive droite.",
   pitchEn:
-    "Les Angles (30), commune résidentielle du Gard face à Avignon, intégrée au Grand Avignon. Tissu TPE/PME services aux entreprises, professions libérales, commerces zone commerciale, artisanat et restauration. Axion-IA y intervient pour tous types d'activités du Grand Avignon rive droite.",
+    "Les Angles (30), commune résidentielle du Gard face à Avignon, intégrée au Grand Avignon. Tissu TPE/PME services aux entreprises, professions libérales, commerces zone commerciale, artisanat et restauration. Axion-IA y déploie ses missions auprès de toutes les organisations du Grand Avignon rive droite.",
   directAnswerFr:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient aux Angles (30). Nous accompagnons les TPE, PME et ETI locales : professions libérales, entreprises de services, commerçants zone commerciale, artisans et restaurateurs du Grand Avignon. Audit Flash à partir de 490 € HT.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MALLEMORT_COPY: VilleCopy = {
   pitchFr:
-    "Mallemort (13), commune de la vallée de la Durance au nord des Alpilles, se situe entre Salon-de-Provence et Cavaillon. Tissu de TPE artisans, exploitants agricoles (vergers, maraîchage Durance), commerçants et PME services. Axion-IA y intervient pour tous types d'activités.",
+    "Mallemort (13), commune de la vallée de la Durance au nord des Alpilles, se situe entre Salon-de-Provence et Cavaillon. Tissu de TPE artisans, exploitants agricoles (vergers, maraîchage Durance), commerçants et PME services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Mallemort (13), commune de la vallée de la Durance au nord des Alpilles, se situe entre Salon-de-Provence et Cavaillon. Tissu de TPE artisans, exploitants agricoles (vergers, maraîchage Durance), commerçants et PME services. Axion-IA y intervient pour tous types d'activités.",
+    "Mallemort (13), commune de la vallée de la Durance au nord des Alpilles, se situe entre Salon-de-Provence et Cavaillon. Tissu de TPE artisans, exploitants agricoles (vergers, maraîchage Durance), commerçants et PME services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mallemort (13). Nous accompagnons TPE artisans, exploitants agricoles, commerçants, PME de services et entreprises de la vallée de la Durance nord-Alpilles. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const MALLEMORT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mallemort : diagnostic adapté aux TPE agricoles, artisans BTP, commerçants et PME de la vallée de la Durance. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Mallemort : diagnostic adapté aux TPE agricoles, artisans BTP, commerçants et PME de la vallée de la Durance. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Mallemort : diagnostic adapté aux TPE agricoles, artisans BTP, commerçants et PME de la vallée de la Durance. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Mallemort : diagnostic adapté aux TPE agricoles, artisans BTP, commerçants et PME de la vallée de la Durance. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mallemort : ateliers pratiques pour exploitants agricoles, artisans et commerçants. Outils IA configurés métier réel.",

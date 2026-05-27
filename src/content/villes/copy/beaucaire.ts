@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BEAUCAIRE_COPY: VilleCopy = {
   pitchFr:
-    "Beaucaire (30), ville historique du Gard rhodanien face à Tarascon, héritière de la célèbre foire de la Madeleine. Tissu TPE/PME logistique vallée du Rhône, viticulture Costières de Nîmes, commerces, artisanat BTP et services aux entreprises. Axion-IA y intervient pour tous types d'activités du Gard rhodanien.",
+    "Beaucaire (30), ville historique du Gard rhodanien face à Tarascon, héritière de la célèbre foire de la Madeleine. Tissu TPE/PME logistique vallée du Rhône, viticulture Costières de Nîmes, commerces, artisanat BTP et services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune du Gard rhodanien.",
   pitchEn:
-    "Beaucaire (30), ville historique du Gard rhodanien face à Tarascon, héritière de la célèbre foire de la Madeleine. Tissu TPE/PME logistique vallée du Rhône, viticulture Costières de Nîmes, commerces, artisanat BTP et services aux entreprises. Axion-IA y intervient pour tous types d'activités du Gard rhodanien.",
+    "Beaucaire (30), ville historique du Gard rhodanien face à Tarascon, héritière de la célèbre foire de la Madeleine. Tissu TPE/PME logistique vallée du Rhône, viticulture Costières de Nîmes, commerces, artisanat BTP et services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune du Gard rhodanien.",
   directAnswerFr:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Beaucaire (30). Nous accompagnons les TPE, PME et ETI locales : entreprises logistique Rhône, viticulteurs Costières de Nîmes, commerçants, artisans BTP, professions libérales et acteurs touristiques du Gard rhodanien. Audit Flash à partir de 490 € HT.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LYS_HAUT_LAYON_COPY: VilleCopy = {
   pitchFr:
-    "Lys-Haut-Layon (49), commune nouvelle au cœur du vignoble des coteaux du Layon, rassemble près de 7 750 habitants en territoire viticole AOC renommé. Axion-IA y intervient pour tous types d'activités : viticulture, tourisme, artisanat, commerces et services.",
+    "Lys-Haut-Layon (49), commune nouvelle au cœur du vignoble des coteaux du Layon, rassemble près de 7 750 habitants en territoire viticole AOC renommé. Axion-IA accompagne entreprises et indépendants de tous secteurs : viticulture, tourisme, artisanat, commerces et services.",
   pitchEn:
-    "Lys-Haut-Layon (49), commune nouvelle au cœur du vignoble des coteaux du Layon, rassemble près de 7 750 habitants en territoire viticole AOC renommé. Axion-IA y intervient pour tous types d'activités : viticulture, tourisme, artisanat, commerces et services.",
+    "Lys-Haut-Layon (49), commune nouvelle au cœur du vignoble des coteaux du Layon, rassemble près de 7 750 habitants en territoire viticole AOC renommé. Axion-IA accompagne entreprises et indépendants de tous secteurs : viticulture, tourisme, artisanat, commerces et services.",
   directAnswerFr:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Lys-Haut-Layon (49). Nous accompagnons les TPE viticoles, PME touristiques et artisans des coteaux du Layon dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
   directAnswerEn:

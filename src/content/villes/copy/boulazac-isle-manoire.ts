@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BOULAZAC_ISLE_MANOIRE_COPY: VilleCopy = {
   pitchFr:
-    "Boulazac Isle Manoire (24), commune nouvelle de l'agglomération de Périgueux en Dordogne. Pôle commercial, zones d'activités, artisanat et services. Tissu TPE/PME commerce, logistique, BTP, agroalimentaire périgourdin et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Boulazac Isle Manoire (24), commune nouvelle de l'agglomération de Périgueux en Dordogne. Pôle commercial, zones d'activités, artisanat et services. Tissu TPE/PME commerce, logistique, BTP, agroalimentaire périgourdin et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Boulazac Isle Manoire (24), commune nouvelle de l'agglomération de Périgueux en Dordogne. Pôle commercial, zones d'activités, artisanat et services. Tissu TPE/PME commerce, logistique, BTP, agroalimentaire périgourdin et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Boulazac Isle Manoire (24), commune nouvelle de l'agglomération de Périgueux en Dordogne. Pôle commercial, zones d'activités, artisanat et services. Tissu TPE/PME commerce, logistique, BTP, agroalimentaire périgourdin et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Boulazac Isle Manoire (24). Nous accompagnons TPE/PME du commerce, de la logistique, du BTP, de l'agroalimentaire périgourdin et des services de l'agglo Périgueux. Audit Flash dès 490 € HT.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VILLERS_SAINT_PAUL_COPY: VilleCopy = {
   pitchFr:
-    "Villers-Saint-Paul (60), commune de 6 480 habitants dans l'Oise, est située dans l'agglomération creilloise en bordure de l'Oise. Pôle d'activités économiques avec plusieurs zones industrielles et commerciales, la ville concentre un tissu de TPE/PME : logistique, industrie, commerce, artisanat BTP et services. Axion-IA y intervient pour tous types d'activités.",
+    "Villers-Saint-Paul (60), commune de 6 480 habitants dans l'Oise, est située dans l'agglomération creilloise en bordure de l'Oise. Pôle d'activités économiques avec plusieurs zones industrielles et commerciales, la ville concentre un tissu de TPE/PME : logistique, industrie, commerce, artisanat BTP et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Villers-Saint-Paul (60), commune de 6 480 habitants dans l'Oise, est située dans l'agglomération creilloise en bordure de l'Oise. Pôle d'activités économiques avec plusieurs zones industrielles et commerciales, la ville concentre un tissu de TPE/PME : logistique, industrie, commerce, artisanat BTP et services. Axion-IA y intervient pour tous types d'activités.",
+    "Villers-Saint-Paul (60), commune de 6 480 habitants dans l'Oise, est située dans l'agglomération creilloise en bordure de l'Oise. Pôle d'activités économiques avec plusieurs zones industrielles et commerciales, la ville concentre un tissu de TPE/PME : logistique, industrie, commerce, artisanat BTP et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villers-Saint-Paul (60). Nous accompagnons TPE et PME de l'agglomération creilloise : logisticiens, industriels, commerçants, artisans BTP et prestataires de services. Audit Flash dès 490 € HT.",
   directAnswerEn:

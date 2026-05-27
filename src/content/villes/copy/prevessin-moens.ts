@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PREVESSIN_MOENS_COPY: VilleCopy = {
   pitchFr:
-    "Prévessin-Moëns (01), commune du pays de Gex dans l'Ain, est positionnée à la frontière suisse avec proximité immédiate du CERN (site principal Meyrin/Prévessin). Tissu économie frontalière dynamique, PME tertiaires et technologiques, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Prévessin-Moëns (01), commune du pays de Gex dans l'Ain, est positionnée à la frontière suisse avec proximité immédiate du CERN (site principal Meyrin/Prévessin). Tissu économie frontalière dynamique, PME tertiaires et technologiques, TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Prévessin-Moëns (01), commune du pays de Gex dans l'Ain, est positionnée à la frontière suisse avec proximité immédiate du CERN (site principal Meyrin/Prévessin). Tissu économie frontalière dynamique, PME tertiaires et technologiques, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Prévessin-Moëns (01), commune du pays de Gex dans l'Ain, est positionnée à la frontière suisse avec proximité immédiate du CERN (site principal Meyrin/Prévessin). Tissu économie frontalière dynamique, PME tertiaires et technologiques, TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Prévessin-Moëns (01). Nous accompagnons tous types d'activités : PME technologiques (proximité CERN site Prévessin), économie frontalière Genève, TPE artisans BTP, commerçants et services aux entreprises pays de Gex.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const PREVESSIN_MOENS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Prévessin-Moëns : diagnostic adapté aux PME technologiques CERN, frontaliers Genève, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Prévessin-Moëns : diagnostic adapté aux PME technologiques CERN, frontaliers Genève, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Prévessin-Moëns : diagnostic adapté aux PME technologiques CERN, frontaliers Genève, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Prévessin-Moëns : diagnostic adapté aux PME technologiques CERN, frontaliers Genève, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Prévessin-Moëns : formats adaptés au bureau tech, commerce transfrontalier, atelier. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const PREVESSIN_MOENS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Genève ?",
-      a: "Nos consultants viennent de Lyon (1h30) ou Genève (15 min). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (1h30) ou Genève (15 min). Frais de mission en sus, grille tarifaire publique.",
     },
   ],
 };

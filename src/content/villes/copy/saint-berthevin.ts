@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_BERTHEVIN_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Berthevin (53), commune de l'agglomération lavalloise à l'est de Laval en Mayenne, accueille des zones d'activités qui concentrent TPE artisans, PME industrielles et de services, commerces, professions libérales et prestataires B2B du bassin lavallois. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Berthevin (53), commune de l'agglomération lavalloise à l'est de Laval en Mayenne, accueille des zones d'activités qui concentrent TPE artisans, PME industrielles et de services, commerces, professions libérales et prestataires B2B du bassin lavallois. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Saint-Berthevin (53), commune de l'agglomération lavalloise à l'est de Laval en Mayenne, accueille des zones d'activités qui concentrent TPE artisans, PME industrielles et de services, commerces, professions libérales et prestataires B2B du bassin lavallois. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Berthevin (53), commune de l'agglomération lavalloise à l'est de Laval en Mayenne, accueille des zones d'activités qui concentrent TPE artisans, PME industrielles et de services, commerces, professions libérales et prestataires B2B du bassin lavallois. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Berthevin (53). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et de services, commerçants, professions libérales, prestataires B2B et entreprises des zones d'activités de l'agglomération lavalloise est.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const SAINT_BERTHEVIN_COPY: VilleCopy = {
       en: "Audit IA à Saint-Berthevin : diagnostic adapté aux TPE artisans, PME industrielles, prestataires B2B et commerçants de l'agglomération lavalloise. ROI chiffré, Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Berthevin : formations adaptées aux PME industrielles, prestataires B2B, artisans BTP et commerces du bassin lavallois. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Saint-Berthevin : formations adaptées aux PME industrielles, prestataires B2B, artisans BTP et commerces du bassin lavallois. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Saint-Berthevin : formations adaptées aux PME industrielles, prestataires B2B, artisans BTP et commerces du bassin lavallois. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Saint-Berthevin : formations adaptées aux PME industrielles, prestataires B2B, artisans BTP et commerces du bassin lavallois. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Berthevin : automatisation processus industriels, maintenance prédictive, optimisation logistique, agents conversationnels B2B et outils IA métiers artisans.",

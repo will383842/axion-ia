@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const HARNES_COPY: VilleCopy = {
   pitchFr:
-    "Harnes (62), commune du Pas-de-Calais dans l'agglomération Lens-Liévin (région Hauts-de-France), est ancrée dans le bassin minier reconverti inscrit UNESCO. Tissu TPE artisanat BTP et services, PME logistique et industrie reconvertie, commerces de proximité, prestataires du tertiaire péri-urbain. Axion-IA y intervient pour tous types d'activités.",
+    "Harnes (62), commune du Pas-de-Calais dans l'agglomération Lens-Liévin (région Hauts-de-France), est ancrée dans le bassin minier reconverti inscrit UNESCO. Tissu TPE artisanat BTP et services, PME logistique et industrie reconvertie, commerces de proximité, prestataires du tertiaire péri-urbain. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Harnes (62), commune du Pas-de-Calais dans l'agglomération Lens-Liévin (région Hauts-de-France), est ancrée dans le bassin minier reconverti inscrit UNESCO. Tissu TPE artisanat BTP et services, PME logistique et industrie reconvertie, commerces de proximité, prestataires du tertiaire péri-urbain. Axion-IA y intervient pour tous types d'activités.",
+    "Harnes (62), commune du Pas-de-Calais dans l'agglomération Lens-Liévin (région Hauts-de-France), est ancrée dans le bassin minier reconverti inscrit UNESCO. Tissu TPE artisanat BTP et services, PME logistique et industrie reconvertie, commerces de proximité, prestataires du tertiaire péri-urbain. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Harnes (62). Nous accompagnons tous types d'activités : TPE artisans BTP et services du bassin minier reconverti, PME logistique et industrie, commerçants de proximité, prestataires tertiaires de l'agglomération Lens-Liévin.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const HARNES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Harnes : diagnostic adapté aux TPE artisans BTP, PME logistique et industrie reconvertie, commerçants, prestataires tertiaires de l'agglo Lens-Liévin. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Harnes : diagnostic adapté aux TPE artisans BTP, PME logistique et industrie reconvertie, commerçants, prestataires tertiaires de l'agglo Lens-Liévin. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Harnes : diagnostic adapté aux TPE artisans BTP, PME logistique et industrie reconvertie, commerçants, prestataires tertiaires de l'agglo Lens-Liévin. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Harnes : diagnostic adapté aux TPE artisans BTP, PME logistique et industrie reconvertie, commerçants, prestataires tertiaires de l'agglo Lens-Liévin. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Harnes : formats adaptés à l'atelier BTP, à l'entrepôt logistique, au commerce, au bureau tertiaire. Vos équipes repartent autonomes sur les outils IA.",

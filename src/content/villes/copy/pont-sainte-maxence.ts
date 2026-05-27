@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PONT_SAINTE_MAXENCE_COPY: VilleCopy = {
   pitchFr:
-    "Pont-Sainte-Maxence (60), commune des bords de l'Oise en lisière de la forêt d'Halatte, au carrefour entre Senlis, Creil et Compiègne. Tissu TPE/PME commerce, artisanat, BTP, logistique fluviale et routière, services et industries légères. Axion-IA y intervient pour tous types d'activités.",
+    "Pont-Sainte-Maxence (60), commune des bords de l'Oise en lisière de la forêt d'Halatte, au carrefour entre Senlis, Creil et Compiègne. Tissu TPE/PME commerce, artisanat, BTP, logistique fluviale et routière, services et industries légères. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Pont-Sainte-Maxence (60), commune des bords de l'Oise en lisière de la forêt d'Halatte, au carrefour entre Senlis, Creil et Compiègne. Tissu TPE/PME commerce, artisanat, BTP, logistique fluviale et routière, services et industries légères. Axion-IA y intervient pour tous types d'activités.",
+    "Pont-Sainte-Maxence (60), commune des bords de l'Oise en lisière de la forêt d'Halatte, au carrefour entre Senlis, Creil et Compiègne. Tissu TPE/PME commerce, artisanat, BTP, logistique fluviale et routière, services et industries légères. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pont-Sainte-Maxence (60). Nous accompagnons tous types d'activités : TPE/PME du commerce, artisans BTP, entreprises de logistique fluviale et routière, industries légères et professions de services du bassin Oise–Halatte. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -34,8 +34,8 @@ export const PONT_SAINTE_MAXENCE_COPY: VilleCopy = {
       en: "Audit IA à Pont-Sainte-Maxence : diagnostic adapté aux TPE/PME du commerce, logisticiens fluviaux et routiers, artisans BTP et industries légères du bassin Oise. ROI chiffré, Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Pont-Sainte-Maxence : formats adaptés à l'entrepôt logistique, l'atelier industriel, le commerce et le bureau. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Pont-Sainte-Maxence : formats adaptés à l'entrepôt logistique, l'atelier industriel, le commerce et le bureau. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Pont-Sainte-Maxence : formats adaptés à l'entrepôt logistique, l'atelier industriel, le commerce et le bureau. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Pont-Sainte-Maxence : formats adaptés à l'entrepôt logistique, l'atelier industriel, le commerce et le bureau. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Pont-Sainte-Maxence : automatisation logistique fluviale, planification transport, gestion stock commerce, devis BTP, agents conversationnels B2B.",

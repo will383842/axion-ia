@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GRETZ_ARMAINVILLIERS_COPY: VilleCopy = {
   pitchFr:
-    "Gretz-Armainvilliers (77), commune résidentielle de l'est de la Seine-et-Marne, entre forêt d'Armainvilliers et bassin de Brie. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales et prestataires. Axion-IA y intervient pour tous types d'activités.",
+    "Gretz-Armainvilliers (77), commune résidentielle de l'est de la Seine-et-Marne, entre forêt d'Armainvilliers et bassin de Brie. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales et prestataires. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Gretz-Armainvilliers (77), commune résidentielle de l'est de la Seine-et-Marne, entre forêt d'Armainvilliers et bassin de Brie. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales et prestataires. Axion-IA y intervient pour tous types d'activités.",
+    "Gretz-Armainvilliers (77), commune résidentielle de l'est de la Seine-et-Marne, entre forêt d'Armainvilliers et bassin de Brie. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales et prestataires. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gretz-Armainvilliers (77). Nous accompagnons TPE et PME : artisans du bâtiment, commerces de proximité, professions libérales, prestataires de services et entreprises de l'est seine-et-marnais. Audit Flash dès 490 € HT.",
   directAnswerEn:

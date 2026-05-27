@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FLORENSAC_COPY: VilleCopy = {
   pitchFr:
-    "Florensac (34), commune viticole de l'Hérault entre Pézenas et Agde, au cœur du vignoble languedocien près du bassin de Thau. Cave coopérative réputée. Tissu TPE viticoles, PME négoce vin, artisans, commerces, tourisme littoral et œnotourisme. Axion-IA y intervient pour tous types d'activités.",
+    "Florensac (34), commune viticole de l'Hérault entre Pézenas et Agde, au cœur du vignoble languedocien près du bassin de Thau. Cave coopérative réputée. Tissu TPE viticoles, PME négoce vin, artisans, commerces, tourisme littoral et œnotourisme. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Florensac (34), commune viticole de l'Hérault entre Pézenas et Agde, au cœur du vignoble languedocien près du bassin de Thau. Cave coopérative réputée. Tissu TPE viticoles, PME négoce vin, artisans, commerces, tourisme littoral et œnotourisme. Axion-IA y intervient pour tous types d'activités.",
+    "Florensac (34), commune viticole de l'Hérault entre Pézenas et Agde, au cœur du vignoble languedocien près du bassin de Thau. Cave coopérative réputée. Tissu TPE viticoles, PME négoce vin, artisans, commerces, tourisme littoral et œnotourisme. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Florensac (34). Nous accompagnons tous types d'activités : domaines viticoles, caves coopératives, PME négoce vin, TPE artisans, commerçants, indépendants, professions libérales et acteurs du tourisme littoral héraultais.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const FLORENSAC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Florensac : diagnostic adapté aux domaines viticoles, caves coopératives, PME négoce vin, TPE artisans et commerçants de la plaine héraultaise. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Florensac : diagnostic adapté aux domaines viticoles, caves coopératives, PME négoce vin, TPE artisans et commerçants de la plaine héraultaise. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Florensac : diagnostic adapté aux domaines viticoles, caves coopératives, PME négoce vin, TPE artisans et commerçants de la plaine héraultaise. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Florensac : diagnostic adapté aux domaines viticoles, caves coopératives, PME négoce vin, TPE artisans et commerçants de la plaine héraultaise. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Florensac : formats adaptés aux domaines viticoles, caves coopératives, négoce ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Florensac : formats adaptés aux domaines viticoles, caves coopératives, négoce ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Florensac : formats adaptés aux domaines viticoles, caves coopératives, négoce ou commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Florensac : formats adaptés aux domaines viticoles, caves coopératives, négoce ou commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Florensac : traçabilité cave automatisée, prédiction rendements parcellaires, chatbot œnotourisme multilingue, gestion réservations touristiques. Adapté viticulture + tourisme littoral.",

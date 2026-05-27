@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const THAON_LES_VOSGES_COPY: VilleCopy = {
   pitchFr:
-    "Thaon-les-Vosges (88), commune de l'agglomération d'Épinal, est marquée par son passé industriel textile (grande blanchisserie historique fermée). Tissu de TPE/PME industrie reconvertie, sous-traitance, commerce de proximité, artisanat BTP, agroalimentaire et services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Thaon-les-Vosges (88), commune de l'agglomération d'Épinal, est marquée par son passé industriel textile (grande blanchisserie historique fermée). Tissu de TPE/PME industrie reconvertie, sous-traitance, commerce de proximité, artisanat BTP, agroalimentaire et services aux entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Thaon-les-Vosges (88), commune de l'agglomération d'Épinal, est marquée par son passé industriel textile (grande blanchisserie historique fermée). Tissu de TPE/PME industrie reconvertie, sous-traitance, commerce de proximité, artisanat BTP, agroalimentaire et services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Thaon-les-Vosges (88), commune de l'agglomération d'Épinal, est marquée par son passé industriel textile (grande blanchisserie historique fermée). Tissu de TPE/PME industrie reconvertie, sous-traitance, commerce de proximité, artisanat BTP, agroalimentaire et services aux entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thaon-les-Vosges (88). Nous accompagnons TPE et PME : industriels et sous-traitants, artisans BTP, commerçants, agroalimentaires et prestataires de services de l'agglomération d'Épinal. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const THAON_LES_VOSGES_COPY: VilleCopy = {
       en: "Audit IA à Thaon-les-Vosges : diagnostic adapté aux industriels et sous-traitants, artisans BTP, commerçants, agroalimentaires et prestataires de services de l'agglomération d'Épinal. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Thaon-les-Vosges : formats adaptés à l'atelier industriel, au chantier BTP, au commerce ou à la TPE de services. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Thaon-les-Vosges : formats adaptés à l'atelier industriel, au chantier BTP, au commerce ou à la TPE de services. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Thaon-les-Vosges : formats adaptés à l'atelier industriel, au chantier BTP, au commerce ou à la TPE de services. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Thaon-les-Vosges : formats adaptés à l'atelier industriel, au chantier BTP, au commerce ou à la TPE de services. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Thaon-les-Vosges : automatisation production industrielle, gestion stocks et chaînes d'approvisionnement, devis et planning chantiers BTP, CRM commerce, agents conversationnels et automatisations administratives pour PME vosgiennes.",

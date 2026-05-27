@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CREUTZWALD_COPY: VilleCopy = {
   pitchFr:
-    "Creutzwald (57), ville frontalière de 12 254 habitants en Moselle, située dans le Warndt à la lisière de la frontière franco-allemande, est ancrée dans l'héritage du bassin houiller lorrain. Tissu TPE/PME industrie reconvertie, logistique transfrontalière, commerces, services, artisanat. Axion-IA y intervient pour tous types d'activités.",
+    "Creutzwald (57), ville frontalière de 12 254 habitants en Moselle, située dans le Warndt à la lisière de la frontière franco-allemande, est ancrée dans l'héritage du bassin houiller lorrain. Tissu TPE/PME industrie reconvertie, logistique transfrontalière, commerces, services, artisanat. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Creutzwald (57), ville frontalière de 12 254 habitants en Moselle, située dans le Warndt à la lisière de la frontière franco-allemande, est ancrée dans l'héritage du bassin houiller lorrain. Tissu TPE/PME industrie reconvertie, logistique transfrontalière, commerces, services, artisanat. Axion-IA y intervient pour tous types d'activités.",
+    "Creutzwald (57), ville frontalière de 12 254 habitants en Moselle, située dans le Warndt à la lisière de la frontière franco-allemande, est ancrée dans l'héritage du bassin houiller lorrain. Tissu TPE/PME industrie reconvertie, logistique transfrontalière, commerces, services, artisanat. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Creutzwald (57). Nous accompagnons tous types d'activités : TPE/PME industrie reconvertie et logistique transfrontalière, artisans, commerces du centre, professions de services et acteurs du bassin de la Moselle-est.",
   directAnswerEn:
@@ -34,8 +34,8 @@ export const CREUTZWALD_COPY: VilleCopy = {
       en: "Audit IA à Creutzwald : diagnostic adapté aux TPE/PME industrie reconvertie, logistique transfrontalière, commerces, artisans, services. ROI chiffré, audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Creutzwald : formats adaptés à l'atelier industriel, l'entrepôt logistique, le commerce, le bureau. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Creutzwald : formats adaptés à l'atelier industriel, l'entrepôt logistique, le commerce, le bureau. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Creutzwald : formats adaptés à l'atelier industriel, l'entrepôt logistique, le commerce, le bureau. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Creutzwald : formats adaptés à l'atelier industriel, l'entrepôt logistique, le commerce, le bureau. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Creutzwald : automatisation gestion logistique transfrontalière, traçabilité industrielle, agents conversationnels bilingues FR/DE, workflow douanier, gestion commerciale.",

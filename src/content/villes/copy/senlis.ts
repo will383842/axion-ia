@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SENLIS_COPY: VilleCopy = {
   pitchFr:
-    "Senlis (60), sous-préfecture de l'Oise aux portes de l'Île-de-France, est une cité royale médiévale adossée à la forêt d'Halatte. Tissu diversifié : TPE artisans métiers d'art et patrimoine, PME tourisme-hôtellerie-restauration, professions libérales, commerces centre-ville historique, services aux entreprises, PME aéronautique-défense (proximité Senlis–Crépy-en-Valois–Compiègne). Axion-IA y intervient pour tous types d'activités.",
+    "Senlis (60), sous-préfecture de l'Oise aux portes de l'Île-de-France, est une cité royale médiévale adossée à la forêt d'Halatte. Tissu diversifié : TPE artisans métiers d'art et patrimoine, PME tourisme-hôtellerie-restauration, professions libérales, commerces centre-ville historique, services aux entreprises, PME aéronautique-défense (proximité Senlis–Crépy-en-Valois–Compiègne). Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Senlis (60), sous-préfecture de l'Oise aux portes de l'Île-de-France, est une cité royale médiévale adossée à la forêt d'Halatte. Tissu diversifié : TPE artisans métiers d'art et patrimoine, PME tourisme-hôtellerie-restauration, professions libérales, commerces centre-ville historique, services aux entreprises, PME aéronautique-défense (proximité Senlis–Crépy-en-Valois–Compiègne). Axion-IA y intervient pour tous types d'activités.",
+    "Senlis (60), sous-préfecture de l'Oise aux portes de l'Île-de-France, est une cité royale médiévale adossée à la forêt d'Halatte. Tissu diversifié : TPE artisans métiers d'art et patrimoine, PME tourisme-hôtellerie-restauration, professions libérales, commerces centre-ville historique, services aux entreprises, PME aéronautique-défense (proximité Senlis–Crépy-en-Valois–Compiègne). Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Senlis (60). Nous accompagnons tous types d'activités : TPE artisans métiers d'art, PME tourisme-hôtellerie, professions libérales, commerçants centre-ville historique, PME aéronautique-défense et services aux entreprises du sud de l'Oise. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const SENLIS_COPY: VilleCopy = {
   seoHook: "tourisme patrimonial & aéronautique",
   servicesContext: {
     audit: {
-      fr: "Audit IA à Senlis : diagnostic adapté aux TPE artisans métiers d'art, PME tourisme-hôtellerie, PME aéronautique-défense, commerces centre-ville historique et professions libérales du sud de l'Oise. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Senlis : diagnostic adapté aux TPE artisans métiers d'art, PME tourisme-hôtellerie, PME aéronautique-défense, commerces centre-ville historique et professions libérales du sud de l'Oise. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Senlis : diagnostic adapté aux TPE artisans métiers d'art, PME tourisme-hôtellerie, PME aéronautique-défense, commerces centre-ville historique et professions libérales du sud de l'Oise. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Senlis : diagnostic adapté aux TPE artisans métiers d'art, PME tourisme-hôtellerie, PME aéronautique-défense, commerces centre-ville historique et professions libérales du sud de l'Oise. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Senlis : formats adaptés à l'hôtel, au restaurant, à l'atelier d'art, au commerce historique, au cabinet libéral, au site industriel aéronautique. Vos équipes repartent autonomes sur outils IA.",

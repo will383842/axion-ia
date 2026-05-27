@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LOON_PLAGE_COPY: VilleCopy = {
   pitchFr:
-    "Loon-Plage (59), commune de 5 952 habitants dans le Nord (Hauts-de-France), sur la côte de la Mer du Nord, adossée au grand port maritime de Dunkerque (3e port de France). Tissu TPE artisans, PME logistique portuaire et transport maritime, sous-traitance industrielle (sidérurgie, pétrochimie), commerces de proximité. Axion-IA y intervient pour tous types d'activités.",
+    "Loon-Plage (59), commune de 5 952 habitants dans le Nord (Hauts-de-France), sur la côte de la Mer du Nord, adossée au grand port maritime de Dunkerque (3e port de France). Tissu TPE artisans, PME logistique portuaire et transport maritime, sous-traitance industrielle (sidérurgie, pétrochimie), commerces de proximité. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Loon-Plage (59), commune de 5 952 habitants dans le Nord (Hauts-de-France), sur la côte de la Mer du Nord, adossée au grand port maritime de Dunkerque (3e port de France). Tissu TPE artisans, PME logistique portuaire et transport maritime, sous-traitance industrielle (sidérurgie, pétrochimie), commerces de proximité. Axion-IA y intervient pour tous types d'activités.",
+    "Loon-Plage (59), commune de 5 952 habitants dans le Nord (Hauts-de-France), sur la côte de la Mer du Nord, adossée au grand port maritime de Dunkerque (3e port de France). Tissu TPE artisans, PME logistique portuaire et transport maritime, sous-traitance industrielle (sidérurgie, pétrochimie), commerces de proximité. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Loon-Plage (59). Nous accompagnons TPE artisans, PME logistique portuaire et transport maritime, sous-traitants industriels (sidérurgie, pétrochimie) et commerçants du Dunkerquois. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
   directAnswerEn:

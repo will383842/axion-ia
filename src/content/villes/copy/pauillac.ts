@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PAUILLAC_COPY: VilleCopy = {
   pitchFr:
-    "Pauillac (33), capitale des premiers crus classés du Médoc (Latour, Lafite Rothschild, Mouton Rothschild), est le coeur viticole le plus prestigieux de Bordeaux. Axion-IA y intervient pour tous types d'activités : domaines viticoles grands crus, oenotourisme, commerces, artisans BTP et professions libérales du Médoc.",
+    "Pauillac (33), capitale des premiers crus classés du Médoc (Latour, Lafite Rothschild, Mouton Rothschild), est le coeur viticole le plus prestigieux de Bordeaux. Axion-IA y déploie ses missions auprès de toutes les organisations : domaines viticoles grands crus, oenotourisme, commerces, artisans BTP et professions libérales du Médoc.",
   pitchEn:
-    "Pauillac (33), capitale des premiers crus classés du Médoc (Latour, Lafite Rothschild, Mouton Rothschild), est le coeur viticole le plus prestigieux de Bordeaux. Axion-IA y intervient pour tous types d'activités : domaines viticoles grands crus, oenotourisme, commerces, artisans BTP et professions libérales du Médoc.",
+    "Pauillac (33), capitale des premiers crus classés du Médoc (Latour, Lafite Rothschild, Mouton Rothschild), est le coeur viticole le plus prestigieux de Bordeaux. Axion-IA y déploie ses missions auprès de toutes les organisations : domaines viticoles grands crus, oenotourisme, commerces, artisans BTP et professions libérales du Médoc.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pauillac (33). Nous accompagnons TPE et PME du Médoc viticole : domaines grands crus et crus bourgeois, oenotourisme, commerçants de bourg, artisans BTP et professions libérales. Audit Flash dès 490 € HT.",
   directAnswerEn:

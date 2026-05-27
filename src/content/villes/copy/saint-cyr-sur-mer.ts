@@ -3,9 +3,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_CYR_SUR_MER_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Cyr-sur-Mer (83, Var), station balnéaire de la baie des Lecques au cœur du vignoble AOC Bandol, accueille TPE viticoles, PME hôtellerie-restauration, commerces, professions libérales et activités nautiques. Axion-IA y intervient pour tous types d'activités de l'Ouest varois.",
+    "Saint-Cyr-sur-Mer (83, Var), station balnéaire de la baie des Lecques au cœur du vignoble AOC Bandol, accueille TPE viticoles, PME hôtellerie-restauration, commerces, professions libérales et activités nautiques. Axion-IA y déploie ses missions auprès de toutes les organisations de l'Ouest varois.",
   pitchEn:
-    "Saint-Cyr-sur-Mer (83, Var), station balnéaire de la baie des Lecques au cœur du vignoble AOC Bandol, accueille TPE viticoles, PME hôtellerie-restauration, commerces, professions libérales et activités nautiques. Axion-IA y intervient pour tous types d'activités de l'Ouest varois.",
+    "Saint-Cyr-sur-Mer (83, Var), station balnéaire de la baie des Lecques au cœur du vignoble AOC Bandol, accueille TPE viticoles, PME hôtellerie-restauration, commerces, professions libérales et activités nautiques. Axion-IA y déploie ses missions auprès de toutes les organisations de l'Ouest varois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Cyr-sur-Mer (83). Nous accompagnons TPE viticoles AOC Bandol, PME hôtellerie-restauration, commerces et professions libérales de l'Ouest varois. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:

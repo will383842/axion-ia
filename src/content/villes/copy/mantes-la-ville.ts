@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MANTES_LA_VILLE_COPY: VilleCopy = {
   pitchFr:
-    "Mantes-la-Ville, ville des Yvelines (78) en banlieue ouest francilienne, s'inscrit dans le bassin industriel mantois (proximité Renault Flins-Aubergenville, Safran Buchelay) et accueille un tissu mixte TPE/PME tous secteurs : industrie/sous-traitance, artisanat BTP, commerces, services. Axion-IA y intervient pour tous types d'activités du Mantois.",
+    "Mantes-la-Ville, ville des Yvelines (78) en banlieue ouest francilienne, s'inscrit dans le bassin industriel mantois (proximité Renault Flins-Aubergenville, Safran Buchelay) et accueille un tissu mixte TPE/PME tous secteurs : industrie/sous-traitance, artisanat BTP, commerces, services. Axion-IA opère pour toutes les structures économiques de la commune du Mantois.",
   pitchEn:
-    "Mantes-la-Ville, ville des Yvelines (78) en banlieue ouest francilienne, s'inscrit dans le bassin industriel mantois (proximité Renault Flins-Aubergenville, Safran Buchelay) et accueille un tissu mixte TPE/PME tous secteurs : industrie/sous-traitance, artisanat BTP, commerces, services. Axion-IA y intervient pour tous types d'activités du Mantois.",
+    "Mantes-la-Ville, ville des Yvelines (78) en banlieue ouest francilienne, s'inscrit dans le bassin industriel mantois (proximité Renault Flins-Aubergenville, Safran Buchelay) et accueille un tissu mixte TPE/PME tous secteurs : industrie/sous-traitance, artisanat BTP, commerces, services. Axion-IA opère pour toutes les structures économiques de la commune du Mantois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mantes-la-Ville (78). Nous accompagnons tous types d'activités : industriels et sous-traitants automobiles/aéronautiques (bassin Renault Flins-Safran Buchelay), TPE artisans BTP, commerçants, PME tertiaires mantevillois, professions libérales et services publics du bassin Mantois.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const MANTES_LA_VILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mantes-la-Ville : diagnostic adapté à tous secteurs — industriels automobiles, sous-traitants, TPE artisans, commerçants, PME tertiaires mantois. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Mantes-la-Ville : diagnostic adapté à tous secteurs — industriels automobiles, sous-traitants, TPE artisans, commerçants, PME tertiaires mantois. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Mantes-la-Ville : diagnostic adapté à tous secteurs — industriels automobiles, sous-traitants, TPE artisans, commerçants, PME tertiaires mantois. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Mantes-la-Ville : diagnostic adapté à tous secteurs — industriels automobiles, sous-traitants, TPE artisans, commerçants, PME tertiaires mantois. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mantes-la-Ville : formats adaptés à l'atelier industriel, au commerce ou au bureau. Vos équipes terrain et back-office repartent autonomes sur des outils IA opérationnels.",

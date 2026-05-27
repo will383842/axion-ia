@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ORCHIES_COPY: VilleCopy = {
   pitchFr:
-    "Orchies (59), bourg du Pévèle Carembault entre Lille et Douai, est la capitale historique française de la chicorée. Tissu économique ancré : agroalimentaire chicorée (filière patrimoniale), commerce de bourg, artisanat, PME agricoles et de transformation, services de proximité. Axion-IA y intervient pour tous types d'activités du bassin de la Pévèle.",
+    "Orchies (59), bourg du Pévèle Carembault entre Lille et Douai, est la capitale historique française de la chicorée. Tissu économique ancré : agroalimentaire chicorée (filière patrimoniale), commerce de bourg, artisanat, PME agricoles et de transformation, services de proximité. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin de la Pévèle.",
   pitchEn:
-    "Orchies (59), bourg du Pévèle Carembault entre Lille et Douai, est la capitale historique française de la chicorée. Tissu économique ancré : agroalimentaire chicorée (filière patrimoniale), commerce de bourg, artisanat, PME agricoles et de transformation, services de proximité. Axion-IA y intervient pour tous types d'activités du bassin de la Pévèle.",
+    "Orchies (59), bourg du Pévèle Carembault entre Lille et Douai, est la capitale historique française de la chicorée. Tissu économique ancré : agroalimentaire chicorée (filière patrimoniale), commerce de bourg, artisanat, PME agricoles et de transformation, services de proximité. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin de la Pévèle.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Orchies (59). Nous accompagnons TPE et PME : producteurs et transformateurs agroalimentaires (filière chicorée), commerçants du bourg, artisans, PME agricoles de la Pévèle, et professions libérales.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const ORCHIES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Orchies : diagnostic adapté aux producteurs et transformateurs chicorée, PME agricoles Pévèle, commerçants du bourg et artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Orchies : diagnostic adapté aux producteurs et transformateurs chicorée, PME agricoles Pévèle, commerçants du bourg et artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Orchies : diagnostic adapté aux producteurs et transformateurs chicorée, PME agricoles Pévèle, commerçants du bourg et artisans. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Orchies : diagnostic adapté aux producteurs et transformateurs chicorée, PME agricoles Pévèle, commerçants du bourg et artisans. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Orchies : formats adaptés à l'unité de transformation chicorée, à la PME agricole, au commerce ou à l'artisan. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Orchies : formats adaptés à l'unité de transformation chicorée, à la PME agricole, au commerce ou à l'artisan. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Orchies : formats adaptés à l'unité de transformation chicorée, à la PME agricole, au commerce ou à l'artisan. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Orchies : formats adaptés à l'unité de transformation chicorée, à la PME agricole, au commerce ou à l'artisan. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Orchies : traçabilité filière chicorée automatisée, contrôle qualité visuel transformation, prévision récoltes Pévèle, agents conversationnels vente directe, CRM augmenté commerces de bourg.",

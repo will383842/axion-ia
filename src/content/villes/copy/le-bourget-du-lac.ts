@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_BOURGET_DU_LAC_COPY: VilleCopy = {
   pitchFr:
-    "Le Bourget-du-Lac (73), commune savoyarde sur les rives du lac du Bourget, accueille le campus de l'Université Savoie-Mont-Blanc et le technopôle Technolac, pôle de startups et R&D. Tissu recherche universitaire, TPE/PME innovantes, tourisme lacustre, commerces et services. Axion-IA y intervient pour tous types d'activités du bassin Chambérien.",
+    "Le Bourget-du-Lac (73), commune savoyarde sur les rives du lac du Bourget, accueille le campus de l'Université Savoie-Mont-Blanc et le technopôle Technolac, pôle de startups et R&D. Tissu recherche universitaire, TPE/PME innovantes, tourisme lacustre, commerces et services. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin Chambérien.",
   pitchEn:
-    "Le Bourget-du-Lac (73), commune savoyarde sur les rives du lac du Bourget, accueille le campus de l'Université Savoie-Mont-Blanc et le technopôle Technolac, pôle de startups et R&D. Tissu recherche universitaire, TPE/PME innovantes, tourisme lacustre, commerces et services. Axion-IA y intervient pour tous types d'activités du bassin Chambérien.",
+    "Le Bourget-du-Lac (73), commune savoyarde sur les rives du lac du Bourget, accueille le campus de l'Université Savoie-Mont-Blanc et le technopôle Technolac, pôle de startups et R&D. Tissu recherche universitaire, TPE/PME innovantes, tourisme lacustre, commerces et services. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin Chambérien.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Bourget-du-Lac (73). Nous accompagnons TPE et PME : startups Technolac, laboratoires R&D universitaires, acteurs du tourisme lacustre, commerçants, artisans et professions libérales du bassin Chambérien. Audit Flash dès 490 € HT.",
   directAnswerEn:

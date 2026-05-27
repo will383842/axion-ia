@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const IRIGNY_COPY: VilleCopy = {
   pitchFr:
-    "Irigny (69), commune en banlieue sud de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position vallée du Rhône résidentielle. Tissu PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités du sud lyonnais.",
+    "Irigny (69), commune en banlieue sud de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position vallée du Rhône résidentielle. Tissu PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud lyonnais.",
   pitchEn:
-    "Irigny (69), commune en banlieue sud de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position vallée du Rhône résidentielle. Tissu PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités du sud lyonnais.",
+    "Irigny (69), commune en banlieue sud de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position vallée du Rhône résidentielle. Tissu PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud lyonnais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Irigny (69). Nous accompagnons tous types d'activités : PME tertiaires sud lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const IRIGNY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Irigny : diagnostic adapté aux PME tertiaires sud lyonnais, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Irigny : diagnostic adapté aux PME tertiaires sud lyonnais, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Irigny : diagnostic adapté aux PME tertiaires sud lyonnais, professions libérales, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Irigny : diagnostic adapté aux PME tertiaires sud lyonnais, professions libérales, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Irigny : formats adaptés au bureau, cabinet, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Irigny : formats adaptés au bureau, cabinet, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Irigny : formats adaptés au bureau, cabinet, commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Irigny : formats adaptés au bureau, cabinet, commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Irigny : agents conversationnels patient/client, automatisation workflow, classification dossiers, CRM augmentés. Métropole Lyon sud.",
@@ -64,7 +64,7 @@ export const IRIGNY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (20 min). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (20 min). Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

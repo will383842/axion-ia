@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const TRELAZE_COPY: VilleCopy = {
   pitchFr:
-    "Trélazé (49), ville des ardoisières historiques à l'est d'Angers, rassemble un tissu dense de TPE, PME et commerces sur un bassin de plus de 16 000 habitants. Axion-IA y intervient pour tous types d'activités : artisanat, commerce, industrie, services et professions libérales.",
+    "Trélazé (49), ville des ardoisières historiques à l'est d'Angers, rassemble un tissu dense de TPE, PME et commerces sur un bassin de plus de 16 000 habitants. Axion-IA couvre l'ensemble des activités professionnelles présentes : artisanat, commerce, industrie, services et professions libérales.",
   pitchEn:
-    "Trélazé (49), ville des ardoisières historiques à l'est d'Angers, rassemble un tissu dense de TPE, PME et commerces sur un bassin de plus de 16 000 habitants. Axion-IA y intervient pour tous types d'activités : artisanat, commerce, industrie, services et professions libérales.",
+    "Trélazé (49), ville des ardoisières historiques à l'est d'Angers, rassemble un tissu dense de TPE, PME et commerces sur un bassin de plus de 16 000 habitants. Axion-IA couvre l'ensemble des activités professionnelles présentes : artisanat, commerce, industrie, services et professions libérales.",
   directAnswerFr:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Trélazé (49). Nous accompagnons les TPE, PME et indépendants trélazéens dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict, tarifs publics.",
   directAnswerEn:

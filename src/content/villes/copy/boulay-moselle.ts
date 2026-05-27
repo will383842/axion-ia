@@ -30,12 +30,12 @@ export const BOULAY_MOSELLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Boulay-Moselle : diagnostic adapté aux TPE/PME services, artisans BTP, commerces, professions libérales, exploitations agricoles et acteurs du tourisme vert. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Boulay-Moselle : diagnostic adapté aux TPE/PME services, artisans BTP, commerces, professions libérales, exploitations agricoles et acteurs du tourisme vert. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Boulay-Moselle : diagnostic adapté aux TPE/PME services, artisans BTP, commerces, professions libérales, exploitations agricoles et acteurs du tourisme vert. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Boulay-Moselle : diagnostic adapté aux TPE/PME services, artisans BTP, commerces, professions libérales, exploitations agricoles et acteurs du tourisme vert. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Boulay-Moselle : formats adaptés au bureau, atelier artisanal, chantier BTP, commerce, exploitation agricole ou hébergement touristique. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Boulay-Moselle : formats adaptés au bureau, atelier artisanal, chantier BTP, commerce, exploitation agricole ou hébergement touristique. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Boulay-Moselle : formats adaptés au bureau, atelier artisanal, chantier BTP, commerce, exploitation agricole ou hébergement touristique. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Boulay-Moselle : formats adaptés au bureau, atelier artisanal, chantier BTP, commerce, exploitation agricole ou hébergement touristique. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Boulay-Moselle : automatisation devis BTP, gestion clientèle services, traçabilité agricole, agents conversationnels tourisme, outils administratifs professions libérales.",

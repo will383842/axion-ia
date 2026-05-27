@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PLESCOP_COPY: VilleCopy = {
   pitchFr:
-    "Plescop (56), commune résidentielle au nord immédiat de Vannes, accueille un tissu de TPE tertiaires, PME de services, professions libérales et commerces de proximité adossés à l'agglomération vannetaise. Axion-IA y intervient pour tous types d'activités.",
+    "Plescop (56), commune résidentielle au nord immédiat de Vannes, accueille un tissu de TPE tertiaires, PME de services, professions libérales et commerces de proximité adossés à l'agglomération vannetaise. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Plescop (56), commune résidentielle au nord immédiat de Vannes, accueille un tissu de TPE tertiaires, PME de services, professions libérales et commerces de proximité adossés à l'agglomération vannetaise. Axion-IA y intervient pour tous types d'activités.",
+    "Plescop (56), commune résidentielle au nord immédiat de Vannes, accueille un tissu de TPE tertiaires, PME de services, professions libérales et commerces de proximité adossés à l'agglomération vannetaise. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plescop (56). Nous accompagnons tous types d'activités : TPE tertiaires, PME de services et de conseil, professions libérales, commerces de proximité, artisans et indépendants de la première couronne vannetaise.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const PLESCOP_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Plescop : diagnostic adapté aux TPE tertiaires, PME de services, professions libérales et commerces de la couronne vannetaise. ROI chiffré, audit Flash 490 € HT accessible à toute structure.",
-      en: "Audit IA à Plescop : diagnostic adapté aux TPE tertiaires, PME de services, professions libérales et commerces de la couronne vannetaise. ROI chiffré, audit Flash 490 € HT accessible à toute structure.",
+      fr: "Audit IA à Plescop : diagnostic adapté aux TPE tertiaires, PME de services, professions libérales et commerces de la couronne vannetaise. Audit Flash à 490 € HT, retour sur investissement chiffré accessible à toute structure.",
+      en: "Audit IA à Plescop : diagnostic adapté aux TPE tertiaires, PME de services, professions libérales et commerces de la couronne vannetaise. Audit Flash à 490 € HT, retour sur investissement chiffré accessible à toute structure.",
     },
     interventions: {
       fr: "Interventions IA sur site à Plescop : formats adaptés au cabinet libéral, au bureau PME ou au commerce de proximité. Vos équipes repartent autonomes sur les outils IA métier adaptés à votre activité.",

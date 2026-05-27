@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CASTANET_TOLOSAN_COPY: VilleCopy = {
   pitchFr:
-    "Castanet-Tolosan (31), commune dynamique du sud-est toulousain traversée par le canal du Midi, plus de 15 000 habitants. Tissu TPE artisans, PME de services, professions libérales, commerces centre-ville. Axion-IA y intervient pour tous types d'activités du Sicoval.",
+    "Castanet-Tolosan (31), commune dynamique du sud-est toulousain traversée par le canal du Midi, plus de 15 000 habitants. Tissu TPE artisans, PME de services, professions libérales, commerces centre-ville. Axion-IA accompagne entreprises et indépendants de tous secteurs du Sicoval.",
   pitchEn:
-    "Castanet-Tolosan (31), commune dynamique du sud-est toulousain traversée par le canal du Midi, plus de 15 000 habitants. Tissu TPE artisans, PME de services, professions libérales, commerces centre-ville. Axion-IA y intervient pour tous types d'activités du Sicoval.",
+    "Castanet-Tolosan (31), commune dynamique du sud-est toulousain traversée par le canal du Midi, plus de 15 000 habitants. Tissu TPE artisans, PME de services, professions libérales, commerces centre-ville. Axion-IA accompagne entreprises et indépendants de tous secteurs du Sicoval.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Castanet-Tolosan (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du Sicoval sud-est toulousain. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const CASTANET_TOLOSAN_COPY: VilleCopy = {
       en: "Audit IA à Castanet-Tolosan : diagnostic adapté aux TPE artisans, PME de services, professions libérales et commerçants du Sicoval. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Castanet-Tolosan : formats adaptés au cabinet libéral, au commerce de centre-ville, à la PME de services. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Castanet-Tolosan : formats adaptés au cabinet libéral, au commerce de centre-ville, à la PME de services. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Castanet-Tolosan : formats adaptés au cabinet libéral, au commerce de centre-ville, à la PME de services. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Castanet-Tolosan : formats adaptés au cabinet libéral, au commerce de centre-ville, à la PME de services. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Castanet-Tolosan : automatisation gestion clients, agents conversationnels, classification documentaire, optimisation planning pour PME du Sicoval.",
@@ -60,7 +60,7 @@ export const CASTANET_TOLOSAN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Castanet-Tolosan ?",
-      a: "Nos consultants se déplacent à Castanet-Tolosan depuis Toulouse (15 min D813). Intervention 1 journée minimum, format atelier pratique dans vos locaux. Vos équipes repartent autonomes.",
+      a: "Nos consultants se déplacent à Castanet-Tolosan depuis Toulouse (15 min D813). Intervention 1 journée minimum, format atelier pratique dans vos locaux. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     {
       q: "Proposez-vous du coaching individuel pour dirigeants à Castanet-Tolosan ?",

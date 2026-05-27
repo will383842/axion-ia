@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SEYSSINET_PARISET_COPY: VilleCopy = {
   pitchFr:
-    "Seyssinet-Pariset (38), banlieue ouest immédiate de Grenoble séparée par le Drac, mêle plaine urbanisée (Seyssinet) et flanc du massif du Vercors (Pariset, vers Saint-Nizier-du-Moucherotte). Tissu PME tertiaires, TPE artisans, professions libérales et commerces. Axion-IA y intervient pour tous types d'activités du bassin grenoblois.",
+    "Seyssinet-Pariset (38), banlieue ouest immédiate de Grenoble séparée par le Drac, mêle plaine urbanisée (Seyssinet) et flanc du massif du Vercors (Pariset, vers Saint-Nizier-du-Moucherotte). Tissu PME tertiaires, TPE artisans, professions libérales et commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin grenoblois.",
   pitchEn:
-    "Seyssinet-Pariset (38), banlieue ouest immédiate de Grenoble séparée par le Drac, mêle plaine urbanisée (Seyssinet) et flanc du massif du Vercors (Pariset, vers Saint-Nizier-du-Moucherotte). Tissu PME tertiaires, TPE artisans, professions libérales et commerces. Axion-IA y intervient pour tous types d'activités du bassin grenoblois.",
+    "Seyssinet-Pariset (38), banlieue ouest immédiate de Grenoble séparée par le Drac, mêle plaine urbanisée (Seyssinet) et flanc du massif du Vercors (Pariset, vers Saint-Nizier-du-Moucherotte). Tissu PME tertiaires, TPE artisans, professions libérales et commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin grenoblois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Seyssinet-Pariset (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales (médecins, avocats, expert-comptables), PME tertiaires seyssinardes, indépendants et entreprises de Grenoble-Alpes Métropole (« La Métro »).",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const SEYSSINET_PARISET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Seyssinet-Pariset : diagnostic adapté aux TPE artisans, professions libérales et PME tertiaires du bassin grenoblois ouest. ROI chiffré, audit Flash 490 € HT accessible aux indépendants.",
-      en: "Audit IA à Seyssinet-Pariset : diagnostic adapté aux TPE artisans, professions libérales et PME tertiaires du bassin grenoblois ouest. ROI chiffré, audit Flash 490 € HT accessible aux indépendants.",
+      fr: "Audit IA à Seyssinet-Pariset : diagnostic adapté aux TPE artisans, professions libérales et PME tertiaires du bassin grenoblois ouest. ROI mesurable, audit Flash dès 490 € HT accessible aux indépendants.",
+      en: "Audit IA à Seyssinet-Pariset : diagnostic adapté aux TPE artisans, professions libérales et PME tertiaires du bassin grenoblois ouest. ROI mesurable, audit Flash dès 490 € HT accessible aux indépendants.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Seyssinet-Pariset : formats adaptés au cabinet professionnel, commerce, atelier artisan ou bureau PME. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Seyssinet-Pariset : formats adaptés au cabinet professionnel, commerce, atelier artisan ou bureau PME. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Seyssinet-Pariset : formats adaptés au cabinet professionnel, commerce, atelier artisan ou bureau PME. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Seyssinet-Pariset : formats adaptés au cabinet professionnel, commerce, atelier artisan ou bureau PME. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Seyssinet-Pariset : agents conversationnels client/patient, automatisation devis BTP/honoraires libéraux, classification dossiers, CRM augmentés. Tous secteurs « La Métro ».",

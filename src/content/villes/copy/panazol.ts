@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PANAZOL_COPY: VilleCopy = {
   pitchFr:
-    "Panazol (87), commune résidentielle et commerciale de l'est de l'agglomération de Limoges, est intégrée à Limoges Métropole. Tissu TPE artisans, PME tertiaires, commerces grande distribution et proximité, professions libérales et services. Axion-IA y intervient pour tous types d'activités de l'agglo limougeaude est.",
+    "Panazol (87), commune résidentielle et commerciale de l'est de l'agglomération de Limoges, est intégrée à Limoges Métropole. Tissu TPE artisans, PME tertiaires, commerces grande distribution et proximité, professions libérales et services. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglo limougeaude est.",
   pitchEn:
-    "Panazol (87), commune résidentielle et commerciale de l'est de l'agglomération de Limoges, est intégrée à Limoges Métropole. Tissu TPE artisans, PME tertiaires, commerces grande distribution et proximité, professions libérales et services. Axion-IA y intervient pour tous types d'activités de l'agglo limougeaude est.",
+    "Panazol (87), commune résidentielle et commerciale de l'est de l'agglomération de Limoges, est intégrée à Limoges Métropole. Tissu TPE artisans, PME tertiaires, commerces grande distribution et proximité, professions libérales et services. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglo limougeaude est.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Panazol (87). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, commerçants, professions libérales, indépendants et services aux entreprises de l'agglomération de Limoges est.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const PANAZOL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Panazol : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales de l'agglo limougeaude est. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Panazol : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales de l'agglo limougeaude est. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Panazol : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales de l'agglo limougeaude est. Audit Flash 490 € HT avec ROI quantifié accessible.",
+      en: "Audit IA à Panazol : diagnostic adapté aux TPE artisans, PME tertiaires, commerçants et professions libérales de l'agglo limougeaude est. Audit Flash 490 € HT avec ROI quantifié accessible.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Panazol : formats adaptés au commerce, cabinet libéral, bureau tertiaire ou atelier artisan. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Panazol : formats adaptés au commerce, cabinet libéral, bureau tertiaire ou atelier artisan. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Panazol : formats adaptés au commerce, cabinet libéral, bureau tertiaire ou atelier artisan. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Panazol : formats adaptés au commerce, cabinet libéral, bureau tertiaire ou atelier artisan. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Panazol : gestion stocks grande distribution, CRM augmenté PME, automatisation secrétariat médical, agents conversationnels, prédiction flux clients. Tous secteurs agglo Limoges est.",

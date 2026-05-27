@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_LION_D_ANGERS_COPY: VilleCopy = {
   pitchFr:
-    "Le Lion-d'Angers (49), bourg dynamique du Maine-et-Loire aux bords de l'Oudon, connu pour le Mondial du Lion (concours complet d'équitation), concentre un tissu de TPE artisans, PME agricoles et équines, commerces de bourg, prestataires de services et acteurs du tourisme équestre. Axion-IA y intervient pour tous types d'activités.",
+    "Le Lion-d'Angers (49), bourg dynamique du Maine-et-Loire aux bords de l'Oudon, connu pour le Mondial du Lion (concours complet d'équitation), concentre un tissu de TPE artisans, PME agricoles et équines, commerces de bourg, prestataires de services et acteurs du tourisme équestre. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Le Lion-d'Angers (49), bourg dynamique du Maine-et-Loire aux bords de l'Oudon, connu pour le Mondial du Lion (concours complet d'équitation), concentre un tissu de TPE artisans, PME agricoles et équines, commerces de bourg, prestataires de services et acteurs du tourisme équestre. Axion-IA y intervient pour tous types d'activités.",
+    "Le Lion-d'Angers (49), bourg dynamique du Maine-et-Loire aux bords de l'Oudon, connu pour le Mondial du Lion (concours complet d'équitation), concentre un tissu de TPE artisans, PME agricoles et équines, commerces de bourg, prestataires de services et acteurs du tourisme équestre. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Lion-d'Angers (49). Nous accompagnons tous types d'activités : TPE artisans, PME agricoles et de la filière équine, commerçants de bourg, professions libérales, hébergeurs, prestataires équestres et services aux entreprises du bassin nord-ouest angevin.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const LE_LION_D_ANGERS_COPY: VilleCopy = {
       en: "Audit IA au Lion-d'Angers : diagnostic adapté aux TPE artisans, PME agricoles, acteurs de la filière équine et commerçants du nord-ouest angevin. ROI chiffré, Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site au Lion-d'Angers : formations adaptées aux exploitations agricoles, centres équestres, artisans et commerces du bassin nord-ouest angevin. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site au Lion-d'Angers : formations adaptées aux exploitations agricoles, centres équestres, artisans et commerces du bassin nord-ouest angevin. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site au Lion-d'Angers : formations adaptées aux exploitations agricoles, centres équestres, artisans et commerces du bassin nord-ouest angevin. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site au Lion-d'Angers : formations adaptées aux exploitations agricoles, centres équestres, artisans et commerces du bassin nord-ouest angevin. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA au Lion-d'Angers : gestion élevage équin, traçabilité troupeau, agents conversationnels tourisme équestre, automatisation devis artisans et planning événementiel.",

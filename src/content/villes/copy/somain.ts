@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SOMAIN_COPY: VilleCopy = {
   pitchFr:
-    "Somain (59), commune du bassin minier du Nord-Pas-de-Calais inscrit au patrimoine mondial UNESCO, nœud ferroviaire historique entre Douai et Valenciennes. Tissu TPE/PME logistique, transport, industrie agroalimentaire, BTP, commerces et services de proximité. Axion-IA y intervient pour tous types d'activités.",
+    "Somain (59), commune du bassin minier du Nord-Pas-de-Calais inscrit au patrimoine mondial UNESCO, nœud ferroviaire historique entre Douai et Valenciennes. Tissu TPE/PME logistique, transport, industrie agroalimentaire, BTP, commerces et services de proximité. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Somain (59), commune du bassin minier du Nord-Pas-de-Calais inscrit au patrimoine mondial UNESCO, nœud ferroviaire historique entre Douai et Valenciennes. Tissu TPE/PME logistique, transport, industrie agroalimentaire, BTP, commerces et services de proximité. Axion-IA y intervient pour tous types d'activités.",
+    "Somain (59), commune du bassin minier du Nord-Pas-de-Calais inscrit au patrimoine mondial UNESCO, nœud ferroviaire historique entre Douai et Valenciennes. Tissu TPE/PME logistique, transport, industrie agroalimentaire, BTP, commerces et services de proximité. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Somain (59). Nous accompagnons TPE et PME du bassin minier : logistique et transport ferroviaire, industrie agroalimentaire, BTP reconversion, commerces de proximité, artisans et professions libérales du Douaisis-Valenciennois.",
   directAnswerEn:
@@ -30,12 +30,12 @@ export const SOMAIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Somain : diagnostic adapté aux TPE/PME logistique, transport, industrie agroalimentaire, BTP et commerces du bassin minier Douaisis-Valenciennois. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Somain : diagnostic adapté aux TPE/PME logistique, transport, industrie agroalimentaire, BTP et commerces du bassin minier Douaisis-Valenciennois. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Somain : diagnostic adapté aux TPE/PME logistique, transport, industrie agroalimentaire, BTP et commerces du bassin minier Douaisis-Valenciennois. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Somain : diagnostic adapté aux TPE/PME logistique, transport, industrie agroalimentaire, BTP et commerces du bassin minier Douaisis-Valenciennois. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Somain : formats adaptés à l'entrepôt logistique, l'atelier agroalimentaire, le chantier BTP ou le commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Somain : formats adaptés à l'entrepôt logistique, l'atelier agroalimentaire, le chantier BTP ou le commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Somain : formats adaptés à l'entrepôt logistique, l'atelier agroalimentaire, le chantier BTP ou le commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Somain : formats adaptés à l'entrepôt logistique, l'atelier agroalimentaire, le chantier BTP ou le commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Somain : optimisation flux logistiques et transport, traçabilité agroalimentaire, automatisation devis BTP, agents conversationnels B2B, CRM augmenté PME du bassin minier.",

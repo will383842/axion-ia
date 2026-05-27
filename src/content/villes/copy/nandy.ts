@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const NANDY_COPY: VilleCopy = {
   pitchFr:
-    "Nandy (77), commune résidentielle de l'agglomération Grand Paris Sud en Seine-et-Marne, accueille un tissu de TPE artisans, commerces de proximité, PME tertiaires du pôle de Sénart, professions libérales et prestataires de services. Axion-IA y intervient pour tous types d'activités du sud francilien.",
+    "Nandy (77), commune résidentielle de l'agglomération Grand Paris Sud en Seine-et-Marne, accueille un tissu de TPE artisans, commerces de proximité, PME tertiaires du pôle de Sénart, professions libérales et prestataires de services. Axion-IA y déploie ses missions auprès de toutes les organisations du sud francilien.",
   pitchEn:
-    "Nandy (77), commune résidentielle de l'agglomération Grand Paris Sud en Seine-et-Marne, accueille un tissu de TPE artisans, commerces de proximité, PME tertiaires du pôle de Sénart, professions libérales et prestataires de services. Axion-IA y intervient pour tous types d'activités du sud francilien.",
+    "Nandy (77), commune résidentielle de l'agglomération Grand Paris Sud en Seine-et-Marne, accueille un tissu de TPE artisans, commerces de proximité, PME tertiaires du pôle de Sénart, professions libérales et prestataires de services. Axion-IA y déploie ses missions auprès de toutes les organisations du sud francilien.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nandy (77). Nous accompagnons TPE et PME : artisans, commerçants, PME tertiaires de l'agglomération Grand Paris Sud — Sénart, professions libérales et prestataires de services du sud Seine-et-Marne.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const NANDY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Nandy : diagnostic adapté aux TPE artisans, commerces, PME tertiaires et professions libérales de l'agglomération Grand Paris Sud. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Nandy : diagnostic adapté aux TPE artisans, commerces, PME tertiaires et professions libérales de l'agglomération Grand Paris Sud. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Nandy : diagnostic adapté aux TPE artisans, commerces, PME tertiaires et professions libérales de l'agglomération Grand Paris Sud. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Nandy : diagnostic adapté aux TPE artisans, commerces, PME tertiaires et professions libérales de l'agglomération Grand Paris Sud. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Nandy : formats adaptés au commerce, cabinet libéral, TPE ou PME tertiaire du pôle de Sénart. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Nandy : formats adaptés au commerce, cabinet libéral, TPE ou PME tertiaire du pôle de Sénart. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Nandy : formats adaptés au commerce, cabinet libéral, TPE ou PME tertiaire du pôle de Sénart. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Nandy : formats adaptés au commerce, cabinet libéral, TPE ou PME tertiaire du pôle de Sénart. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Nandy : automatisation gestion commerciale, agents conversationnels clients, CRM augmenté PME, classification documents cabinets, optimisation logistique Sénart.",

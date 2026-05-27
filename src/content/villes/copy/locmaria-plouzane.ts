@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LOCMARIA_PLOUZANE_COPY: VilleCopy = {
   pitchFr:
-    "Locmaria-Plouzané (29), commune littorale de l'agglomération brestoise, accueille le technopôle Brest-Iroise et l'ENSTA Bretagne, pôle majeur de recherche marine et défense. TPE et PME tech, sous-traitants défense, commerces, artisans et professions libérales composent son économie. Axion-IA y intervient pour tous types d'activités de l'ouest brestois.",
+    "Locmaria-Plouzané (29), commune littorale de l'agglomération brestoise, accueille le technopôle Brest-Iroise et l'ENSTA Bretagne, pôle majeur de recherche marine et défense. TPE et PME tech, sous-traitants défense, commerces, artisans et professions libérales composent son économie. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'ouest brestois.",
   pitchEn:
-    "Locmaria-Plouzané (29), commune littorale de l'agglomération brestoise, accueille le technopôle Brest-Iroise et l'ENSTA Bretagne, pôle majeur de recherche marine et défense. TPE et PME tech, sous-traitants défense, commerces, artisans et professions libérales composent son économie. Axion-IA y intervient pour tous types d'activités de l'ouest brestois.",
+    "Locmaria-Plouzané (29), commune littorale de l'agglomération brestoise, accueille le technopôle Brest-Iroise et l'ENSTA Bretagne, pôle majeur de recherche marine et défense. TPE et PME tech, sous-traitants défense, commerces, artisans et professions libérales composent son économie. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'ouest brestois.",
   seoHook: "défense, recherche marine & tech",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Locmaria-Plouzané (29). Nous accompagnons tous types d'activités : TPE et PME tech du technopôle Brest-Iroise, sous-traitants défense, artisans, commerçants et professions libérales de l'agglomération brestoise. Audit Flash dès 490 € HT, démarrage sous 5 jours.",

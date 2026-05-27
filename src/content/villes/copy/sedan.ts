@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SEDAN_COPY: VilleCopy = {
   pitchFr:
-    "Sedan (08), sous-préfecture des Ardennes en bord de Meuse, abrite le plus grand château fort d'Europe (35 000 m²) et un patrimoine industriel textile (drap de Sedan) reconverti vers la métallurgie et les services. TPE artisans, PME industrielles, commerçants de centre-ville, acteurs touristiques et professions libérales forment le tissu économique local. Axion-IA y intervient pour tous types d'activités du Sedanais.",
+    "Sedan (08), sous-préfecture des Ardennes en bord de Meuse, abrite le plus grand château fort d'Europe (35 000 m²) et un patrimoine industriel textile (drap de Sedan) reconverti vers la métallurgie et les services. TPE artisans, PME industrielles, commerçants de centre-ville, acteurs touristiques et professions libérales forment le tissu économique local. Axion-IA y déploie ses missions auprès de toutes les organisations du Sedanais.",
   pitchEn:
-    "Sedan (08), sous-préfecture des Ardennes en bord de Meuse, abrite le plus grand château fort d'Europe (35 000 m²) et un patrimoine industriel textile (drap de Sedan) reconverti vers la métallurgie et les services. TPE artisans, PME industrielles, commerçants de centre-ville, acteurs touristiques et professions libérales forment le tissu économique local. Axion-IA y intervient pour tous types d'activités du Sedanais.",
+    "Sedan (08), sous-préfecture des Ardennes en bord de Meuse, abrite le plus grand château fort d'Europe (35 000 m²) et un patrimoine industriel textile (drap de Sedan) reconverti vers la métallurgie et les services. TPE artisans, PME industrielles, commerçants de centre-ville, acteurs touristiques et professions libérales forment le tissu économique local. Axion-IA y déploie ses missions auprès de toutes les organisations du Sedanais.",
   seoHook: "industrie, tourisme & métallurgie ardennaise",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sedan (08). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et métallurgiques, commerçants, acteurs touristiques du château fort et professions libérales du Sedanais. Audit Flash dès 490 € HT, démarrage sous 5 jours.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MOURENX_COPY: VilleCopy = {
   pitchFr:
-    "Mourenx (64), ville nouvelle créée pour le gisement de gaz de Lacq, 5 695 habitants. Reconversion industrielle vers la chimie verte et les matériaux, TPE artisans, PME industrielles et commerces. Axion-IA y intervient pour tous types d'activités du bassin de Lacq.",
+    "Mourenx (64), ville nouvelle créée pour le gisement de gaz de Lacq, 5 695 habitants. Reconversion industrielle vers la chimie verte et les matériaux, TPE artisans, PME industrielles et commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin de Lacq.",
   pitchEn:
-    "Mourenx (64), ville nouvelle créée pour le gisement de gaz de Lacq, 5 695 habitants. Reconversion industrielle vers la chimie verte et les matériaux, TPE artisans, PME industrielles et commerces. Axion-IA y intervient pour tous types d'activités du bassin de Lacq.",
+    "Mourenx (64), ville nouvelle créée pour le gisement de gaz de Lacq, 5 695 habitants. Reconversion industrielle vers la chimie verte et les matériaux, TPE artisans, PME industrielles et commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin de Lacq.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mourenx (64). Nous accompagnons TPE, PME et industriels du bassin de Lacq : chimie, matériaux, industrie, services. Audit Flash à partir de 490 € HT.",
   directAnswerEn:

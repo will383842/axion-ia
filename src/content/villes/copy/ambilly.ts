@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const AMBILLY_COPY: VilleCopy = {
   pitchFr:
-    "Ambilly (74), commune frontalière de l'agglomération Grand Genève en Haute-Savoie, jouxte directement Annemasse et la frontière suisse. Économie transfrontalière dynamique, commerces, TPE services, PME tertiaires, professions libérales, logistique douanière. Axion-IA y intervient pour tous types d'activités.",
+    "Ambilly (74), commune frontalière de l'agglomération Grand Genève en Haute-Savoie, jouxte directement Annemasse et la frontière suisse. Économie transfrontalière dynamique, commerces, TPE services, PME tertiaires, professions libérales, logistique douanière. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Ambilly (74), commune frontalière de l'agglomération Grand Genève en Haute-Savoie, jouxte directement Annemasse et la frontière suisse. Économie transfrontalière dynamique, commerces, TPE services, PME tertiaires, professions libérales, logistique douanière. Axion-IA y intervient pour tous types d'activités.",
+    "Ambilly (74), commune frontalière de l'agglomération Grand Genève en Haute-Savoie, jouxte directement Annemasse et la frontière suisse. Économie transfrontalière dynamique, commerces, TPE services, PME tertiaires, professions libérales, logistique douanière. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ambilly (74). Nous accompagnons TPE et PME : commerces frontaliers, PME tertiaires du Grand Genève, artisans BTP, professions libérales, prestataires logistique douanière et services aux entreprises de l'agglomération annemassienne.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const AMBILLY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ambilly : diagnostic adapté aux commerces frontaliers, PME tertiaires du Grand Genève, TPE artisans, professions libérales et prestataires logistique douanière. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Ambilly : diagnostic adapté aux commerces frontaliers, PME tertiaires du Grand Genève, TPE artisans, professions libérales et prestataires logistique douanière. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Ambilly : diagnostic adapté aux commerces frontaliers, PME tertiaires du Grand Genève, TPE artisans, professions libérales et prestataires logistique douanière. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Ambilly : diagnostic adapté aux commerces frontaliers, PME tertiaires du Grand Genève, TPE artisans, professions libérales et prestataires logistique douanière. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Ambilly : formats adaptés commerce, bureau PME tertiaire, cabinet libéral ou prestataire logistique. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Ambilly : formats adaptés commerce, bureau PME tertiaire, cabinet libéral ou prestataire logistique. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Ambilly : formats adaptés commerce, bureau PME tertiaire, cabinet libéral ou prestataire logistique. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Ambilly : formats adaptés commerce, bureau PME tertiaire, cabinet libéral ou prestataire logistique. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Ambilly : automatisation gestion frontalière (douane, TVA, facturation CHF/EUR), chatbot multilingue FR/EN/DE clientèle suisse, classification documents, CRM intelligent. Adapté commerce transfrontalier + tertiaire.",
@@ -64,7 +64,7 @@ export const AMBILLY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Genève ?",
-      a: "Nos consultants rejoignent Ambilly depuis Genève en 15 min (Léman Express ou voiture via douane Thônex). Gare Annemasse à 5 min. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants rejoignent Ambilly depuis Genève en 15 min (Léman Express ou voiture via douane Thônex). Gare Annemasse à 5 min. Frais de mission en sus, grille tarifaire publique.",
     },
   ],
 };

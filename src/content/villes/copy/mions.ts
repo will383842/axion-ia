@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MIONS_COPY: VilleCopy = {
   pitchFr:
-    "Mions (69), commune en banlieue sud-est de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position péri-urbaine entre Lyon et aéroport Saint-Exupéry. Tissu PME tertiaires et logistiques, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités du sud-est lyonnais.",
+    "Mions (69), commune en banlieue sud-est de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position péri-urbaine entre Lyon et aéroport Saint-Exupéry. Tissu PME tertiaires et logistiques, TPE artisans BTP, commerces. Axion-IA opère pour toutes les structures économiques de la commune du sud-est lyonnais.",
   pitchEn:
-    "Mions (69), commune en banlieue sud-est de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position péri-urbaine entre Lyon et aéroport Saint-Exupéry. Tissu PME tertiaires et logistiques, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités du sud-est lyonnais.",
+    "Mions (69), commune en banlieue sud-est de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position péri-urbaine entre Lyon et aéroport Saint-Exupéry. Tissu PME tertiaires et logistiques, TPE artisans BTP, commerces. Axion-IA opère pour toutes les structures économiques de la commune du sud-est lyonnais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mions (69). Nous accompagnons tous types d'activités : PME tertiaires et logistiques sud-est lyonnais, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const MIONS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mions : diagnostic adapté aux PME tertiaires/logistiques sud-est lyonnais, TPE artisans, professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Mions : diagnostic adapté aux PME tertiaires/logistiques sud-est lyonnais, TPE artisans, professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Mions : diagnostic adapté aux PME tertiaires/logistiques sud-est lyonnais, TPE artisans, professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Mions : diagnostic adapté aux PME tertiaires/logistiques sud-est lyonnais, TPE artisans, professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mions : formats adaptés au bureau tertiaire, entrepôt logistique, cabinet, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const MIONS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (20 min). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (20 min). Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

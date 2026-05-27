@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CORMELLES_LE_ROYAL_COPY: VilleCopy = {
   pitchFr:
-    "Cormelles-le-Royal (14), commune de l'agglomération de Caen sud dans le Calvados, est un pôle d'activités économiques majeur avec ses zones commerciales et tertiaires. Tissu TPE artisans BTP, PME services aux entreprises, commerces, professions libérales, indépendants, prestataires. Axion-IA y intervient pour tous types d'activités.",
+    "Cormelles-le-Royal (14), commune de l'agglomération de Caen sud dans le Calvados, est un pôle d'activités économiques majeur avec ses zones commerciales et tertiaires. Tissu TPE artisans BTP, PME services aux entreprises, commerces, professions libérales, indépendants, prestataires. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Cormelles-le-Royal (14), commune de l'agglomération de Caen sud dans le Calvados, est un pôle d'activités économiques majeur avec ses zones commerciales et tertiaires. Tissu TPE artisans BTP, PME services aux entreprises, commerces, professions libérales, indépendants, prestataires. Axion-IA y intervient pour tous types d'activités.",
+    "Cormelles-le-Royal (14), commune de l'agglomération de Caen sud dans le Calvados, est un pôle d'activités économiques majeur avec ses zones commerciales et tertiaires. Tissu TPE artisans BTP, PME services aux entreprises, commerces, professions libérales, indépendants, prestataires. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cormelles-le-Royal (14). Nous accompagnons tous types d'activités : TPE artisans BTP, PME services et tertiaires de l'agglomération caennaise sud, commerçants zones commerciales, professions libérales, indépendants et prestataires informatiques.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const CORMELLES_LE_ROYAL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cormelles-le-Royal : diagnostic adapté aux PME tertiaires et services agglo Caen sud, TPE artisans BTP, commerçants zones commerciales et professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Cormelles-le-Royal : diagnostic adapté aux PME tertiaires et services agglo Caen sud, TPE artisans BTP, commerçants zones commerciales et professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Cormelles-le-Royal : diagnostic adapté aux PME tertiaires et services agglo Caen sud, TPE artisans BTP, commerçants zones commerciales et professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Cormelles-le-Royal : diagnostic adapté aux PME tertiaires et services agglo Caen sud, TPE artisans BTP, commerçants zones commerciales et professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cormelles-le-Royal : formats adaptés au bureau tertiaire, commerce, cabinet ou atelier BTP. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -64,7 +64,7 @@ export const CORMELLES_LE_ROYAL_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Cormelles-le-Royal ?",
-      a: "Nos consultants viennent de Caen (10 min). Déplacement direct sur site (bureau, commerce, cabinet). Périphérique Caen sud immédiat. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Caen (10 min). Déplacement direct sur site (bureau, commerce, cabinet). Périphérique Caen sud immédiat. Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

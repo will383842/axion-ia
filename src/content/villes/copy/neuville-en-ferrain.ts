@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const NEUVILLE_EN_FERRAIN_COPY: VilleCopy = {
   pitchFr:
-    "Neuville-en-Ferrain (59), commune de la Métropole Européenne de Lille limitrophe de Tourcoing et de la frontière belge (Mouscron-Rekkem à 2 min). Tissu économique : TPE et PME du commerce de gros, logistique transfrontalière, services aux entreprises, artisanat, sous-traitance industrielle textile-confection. Axion-IA y intervient pour tous types d'activités de l'agglo tourquennoise et transfrontalière.",
+    "Neuville-en-Ferrain (59), commune de la Métropole Européenne de Lille limitrophe de Tourcoing et de la frontière belge (Mouscron-Rekkem à 2 min). Tissu économique : TPE et PME du commerce de gros, logistique transfrontalière, services aux entreprises, artisanat, sous-traitance industrielle textile-confection. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglo tourquennoise et transfrontalière.",
   pitchEn:
-    "Neuville-en-Ferrain (59), commune de la Métropole Européenne de Lille limitrophe de Tourcoing et de la frontière belge (Mouscron-Rekkem à 2 min). Tissu économique : TPE et PME du commerce de gros, logistique transfrontalière, services aux entreprises, artisanat, sous-traitance industrielle textile-confection. Axion-IA y intervient pour tous types d'activités de l'agglo tourquennoise et transfrontalière.",
+    "Neuville-en-Ferrain (59), commune de la Métropole Européenne de Lille limitrophe de Tourcoing et de la frontière belge (Mouscron-Rekkem à 2 min). Tissu économique : TPE et PME du commerce de gros, logistique transfrontalière, services aux entreprises, artisanat, sous-traitance industrielle textile-confection. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglo tourquennoise et transfrontalière.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Neuville-en-Ferrain (59). Nous accompagnons TPE et PME : commerce de gros transfrontalier, logistique franco-belge, sous-traitance textile-confection, services aux entreprises, artisans et commerçants de proximité de l'agglo tourquennoise.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const NEUVILLE_EN_FERRAIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Neuville-en-Ferrain : diagnostic adapté aux TPE et PME du commerce de gros transfrontalier, logistique franco-belge, sous-traitance textile, services B2B et artisanat de l'agglo tourquennoise. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Neuville-en-Ferrain : diagnostic adapté aux TPE et PME du commerce de gros transfrontalier, logistique franco-belge, sous-traitance textile, services B2B et artisanat de l'agglo tourquennoise. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Neuville-en-Ferrain : diagnostic adapté aux TPE et PME du commerce de gros transfrontalier, logistique franco-belge, sous-traitance textile, services B2B et artisanat de l'agglo tourquennoise. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Neuville-en-Ferrain : diagnostic adapté aux TPE et PME du commerce de gros transfrontalier, logistique franco-belge, sous-traitance textile, services B2B et artisanat de l'agglo tourquennoise. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Neuville-en-Ferrain : formats adaptés au grossiste, au logisticien transfrontalier, au sous-traitant textile ou au prestataire B2B. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Neuville-en-Ferrain : formats adaptés au grossiste, au logisticien transfrontalier, au sous-traitant textile ou au prestataire B2B. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Neuville-en-Ferrain : formats adaptés au grossiste, au logisticien transfrontalier, au sous-traitant textile ou au prestataire B2B. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Neuville-en-Ferrain : formats adaptés au grossiste, au logisticien transfrontalier, au sous-traitant textile ou au prestataire B2B. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Neuville-en-Ferrain : automatisation gestion stocks et commandes cross-border, agents conversationnels multilingues FR-NL-EN, optimisation logistique entrepôts franco-belges, CRM augmenté commerce de gros, contrôle qualité visuel textile.",

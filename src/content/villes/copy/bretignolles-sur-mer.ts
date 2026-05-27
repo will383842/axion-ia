@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BRETIGNOLLES_SUR_MER_COPY: VilleCopy = {
   pitchFr:
-    "Bretignolles-sur-Mer (85), station balnéaire de la côte de Lumière en Pays de la Loire, plus de 5 300 habitants à l'année et population multipliée en saison. Capitale vendéenne du surf avec plages, ports, tourisme et activités nautiques. Tissu TPE artisans, PME tourisme/hôtellerie, commerces saisonniers et professions libérales. Axion-IA y intervient pour tous types d'activités du littoral vendéen.",
+    "Bretignolles-sur-Mer (85), station balnéaire de la côte de Lumière en Pays de la Loire, plus de 5 300 habitants à l'année et population multipliée en saison. Capitale vendéenne du surf avec plages, ports, tourisme et activités nautiques. Tissu TPE artisans, PME tourisme/hôtellerie, commerces saisonniers et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations du littoral vendéen.",
   pitchEn:
-    "Bretignolles-sur-Mer (85), station balnéaire de la côte de Lumière en Pays de la Loire, plus de 5 300 habitants à l'année et population multipliée en saison. Capitale vendéenne du surf avec plages, ports, tourisme et activités nautiques. Tissu TPE artisans, PME tourisme/hôtellerie, commerces saisonniers et professions libérales. Axion-IA y intervient pour tous types d'activités du littoral vendéen.",
+    "Bretignolles-sur-Mer (85), station balnéaire de la côte de Lumière en Pays de la Loire, plus de 5 300 habitants à l'année et population multipliée en saison. Capitale vendéenne du surf avec plages, ports, tourisme et activités nautiques. Tissu TPE artisans, PME tourisme/hôtellerie, commerces saisonniers et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations du littoral vendéen.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bretignolles-sur-Mer (85). Nous accompagnons TPE artisans, PME tourisme et hôtellerie, commerçants saisonniers et professions libérales de la côte de Lumière vendéenne. Audit Flash dès 490 € HT.",
   directAnswerEn:

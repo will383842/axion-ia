@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_PIERRE_DU_MONT_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Pierre-du-Mont (40), commune de l'agglomération de Mont-de-Marsan (préfecture des Landes), est un pôle commercial et résidentiel majeur du département. Zones d'activités, commerces grande distribution, TPE services, PME tertiaires, artisans BTP, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Pierre-du-Mont (40), commune de l'agglomération de Mont-de-Marsan (préfecture des Landes), est un pôle commercial et résidentiel majeur du département. Zones d'activités, commerces grande distribution, TPE services, PME tertiaires, artisans BTP, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Saint-Pierre-du-Mont (40), commune de l'agglomération de Mont-de-Marsan (préfecture des Landes), est un pôle commercial et résidentiel majeur du département. Zones d'activités, commerces grande distribution, TPE services, PME tertiaires, artisans BTP, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Pierre-du-Mont (40), commune de l'agglomération de Mont-de-Marsan (préfecture des Landes), est un pôle commercial et résidentiel majeur du département. Zones d'activités, commerces grande distribution, TPE services, PME tertiaires, artisans BTP, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Pierre-du-Mont (40). Nous accompagnons TPE et PME des zones d'activités commerciales, commerces grande distribution, professions libérales, artisans BTP, prestataires de services et entreprises tertiaires de l'agglomération montoise.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const SAINT_PIERRE_DU_MONT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Pierre-du-Mont : diagnostic adapté aux commerces grande distribution, TPE services, PME tertiaires, artisans BTP et professions libérales de l'agglomération montoise. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Pierre-du-Mont : diagnostic adapté aux commerces grande distribution, TPE services, PME tertiaires, artisans BTP et professions libérales de l'agglomération montoise. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Pierre-du-Mont : diagnostic adapté aux commerces grande distribution, TPE services, PME tertiaires, artisans BTP et professions libérales de l'agglomération montoise. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Saint-Pierre-du-Mont : diagnostic adapté aux commerces grande distribution, TPE services, PME tertiaires, artisans BTP et professions libérales de l'agglomération montoise. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Pierre-du-Mont : formations adaptées aux commerces, cabinets, TPE services et PME tertiaires. Vos équipes repartent autonomes sur les outils IA configurés métier.",

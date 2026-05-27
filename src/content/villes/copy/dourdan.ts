@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const DOURDAN_COPY: VilleCopy = {
   pitchFr:
-    "Dourdan (91), sous-préfecture de l'Essonne et cité médiévale du Hurepoix avec son château royal du XIIIe siècle, est terminus du RER C au sud de l'Île-de-France. Tissu TPE artisanat, commerces centre historique, PME services, professions libérales, tourisme patrimonial, agriculture Beauce. Axion-IA y intervient pour tous types d'activités.",
+    "Dourdan (91), sous-préfecture de l'Essonne et cité médiévale du Hurepoix avec son château royal du XIIIe siècle, est terminus du RER C au sud de l'Île-de-France. Tissu TPE artisanat, commerces centre historique, PME services, professions libérales, tourisme patrimonial, agriculture Beauce. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Dourdan (91), sous-préfecture de l'Essonne et cité médiévale du Hurepoix avec son château royal du XIIIe siècle, est terminus du RER C au sud de l'Île-de-France. Tissu TPE artisanat, commerces centre historique, PME services, professions libérales, tourisme patrimonial, agriculture Beauce. Axion-IA y intervient pour tous types d'activités.",
+    "Dourdan (91), sous-préfecture de l'Essonne et cité médiévale du Hurepoix avec son château royal du XIIIe siècle, est terminus du RER C au sud de l'Île-de-France. Tissu TPE artisanat, commerces centre historique, PME services, professions libérales, tourisme patrimonial, agriculture Beauce. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Dourdan (91). Nous accompagnons TPE et PME : commerçants centre historique, artisans, professions libérales, PME services, acteurs tourisme patrimonial, exploitants agricoles Beauce-Hurepoix. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const DOURDAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Dourdan : diagnostic adapté aux commerçants centre historique, artisans, professions libérales, PME services et acteurs tourisme patrimonial du Hurepoix. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Dourdan : diagnostic adapté aux commerçants centre historique, artisans, professions libérales, PME services et acteurs tourisme patrimonial du Hurepoix. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Dourdan : diagnostic adapté aux commerçants centre historique, artisans, professions libérales, PME services et acteurs tourisme patrimonial du Hurepoix. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Dourdan : diagnostic adapté aux commerçants centre historique, artisans, professions libérales, PME services et acteurs tourisme patrimonial du Hurepoix. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Dourdan : formats adaptés boutique centre-ville, cabinet, structure touristique, exploitation agricole, bureau PME. Vos équipes repartent autonomes.",
@@ -64,7 +64,7 @@ export const DOURDAN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",
-      a: "RER C Dourdan terminus direct depuis Paris (50 min). Arpajon à 20 min. Orly à 35 min. Nos consultants se déplacent sur site. Frais de déplacement facturés à part, tarifs publics.",
+      a: "RER C Dourdan terminus direct depuis Paris (50 min). Arpajon à 20 min. Orly à 35 min. Nos consultants se déplacent sur site. Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

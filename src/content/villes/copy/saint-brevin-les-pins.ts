@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_BREVIN_LES_PINS_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Brevin-les-Pins (44), commune littorale à l'embouchure de la Loire face à Saint-Nazaire, plus de 14 500 habitants. Tourisme balnéaire, commerces, camping, artisanat et professions libérales. Tissu TPE commerçants, PME touristiques et de services. Axion-IA y intervient pour tous types d'activités du bassin brévinois.",
+    "Saint-Brevin-les-Pins (44), commune littorale à l'embouchure de la Loire face à Saint-Nazaire, plus de 14 500 habitants. Tourisme balnéaire, commerces, camping, artisanat et professions libérales. Tissu TPE commerçants, PME touristiques et de services. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin brévinois.",
   pitchEn:
-    "Saint-Brevin-les-Pins (44), commune littorale à l'embouchure de la Loire face à Saint-Nazaire, plus de 14 500 habitants. Tourisme balnéaire, commerces, camping, artisanat et professions libérales. Tissu TPE commerçants, PME touristiques et de services. Axion-IA y intervient pour tous types d'activités du bassin brévinois.",
+    "Saint-Brevin-les-Pins (44), commune littorale à l'embouchure de la Loire face à Saint-Nazaire, plus de 14 500 habitants. Tourisme balnéaire, commerces, camping, artisanat et professions libérales. Tissu TPE commerçants, PME touristiques et de services. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin brévinois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Brevin-les-Pins (44), station littorale face à Saint-Nazaire. Nous accompagnons TPE commerçants, PME touristiques, campings, artisans et professions libérales de l'embouchure de la Loire. Audit Flash dès 490 € HT.",
   directAnswerEn:

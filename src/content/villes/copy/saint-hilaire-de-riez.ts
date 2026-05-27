@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_HILAIRE_DE_RIEZ_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Hilaire-de-Riez (85), station balnéaire du littoral vendéen, compte plus de 13 000 habitants. Entre corniche vendéenne et marais breton, la commune vit du tourisme, des campings, de l'hôtellerie-restauration et des commerces saisonniers. Tissu de TPE et PME touristiques. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Hilaire-de-Riez (85), station balnéaire du littoral vendéen, compte plus de 13 000 habitants. Entre corniche vendéenne et marais breton, la commune vit du tourisme, des campings, de l'hôtellerie-restauration et des commerces saisonniers. Tissu de TPE et PME touristiques. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Saint-Hilaire-de-Riez (85), station balnéaire du littoral vendéen, compte plus de 13 000 habitants. Entre corniche vendéenne et marais breton, la commune vit du tourisme, des campings, de l'hôtellerie-restauration et des commerces saisonniers. Tissu de TPE et PME touristiques. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Hilaire-de-Riez (85), station balnéaire du littoral vendéen, compte plus de 13 000 habitants. Entre corniche vendéenne et marais breton, la commune vit du tourisme, des campings, de l'hôtellerie-restauration et des commerces saisonniers. Tissu de TPE et PME touristiques. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Hilaire-de-Riez (85). Nous accompagnons tous types d'activités : TPE et PME touristiques, campings, hôteliers-restaurateurs, commerces saisonniers littoral vendéen, professions libérales et services de proximité.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const SAINT_HILAIRE_DE_RIEZ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Hilaire-de-Riez : diagnostic adapté aux TPE campings, PME hôtellerie-restauration, commerces saisonniers et activités nautiques littoral vendéen. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Hilaire-de-Riez : diagnostic adapté aux TPE campings, PME hôtellerie-restauration, commerces saisonniers et activités nautiques littoral vendéen. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Hilaire-de-Riez : diagnostic adapté aux TPE campings, PME hôtellerie-restauration, commerces saisonniers et activités nautiques littoral vendéen. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Saint-Hilaire-de-Riez : diagnostic adapté aux TPE campings, PME hôtellerie-restauration, commerces saisonniers et activités nautiques littoral vendéen. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Hilaire-de-Riez : formats adaptés aux campings, hôtels-restaurants, commerces saisonniers et activités touristiques. Vos équipes repartent autonomes sur outils IA configurés métier.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BEUVRAGES_COPY: VilleCopy = {
   pitchFr:
-    "Beuvrages (59), commune du Nord en agglomération de Valenciennes, compte environ 6 800 habitants au cœur du bassin valenciennois. Tissu mixte : TPE artisans BTP, PME industrielles (sous-traitance auto, métallurgie), commerces de proximité, professions libérales, services péri-urbains. Axion-IA y intervient pour tous types d'activités.",
+    "Beuvrages (59), commune du Nord en agglomération de Valenciennes, compte environ 6 800 habitants au cœur du bassin valenciennois. Tissu mixte : TPE artisans BTP, PME industrielles (sous-traitance auto, métallurgie), commerces de proximité, professions libérales, services péri-urbains. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Beuvrages (59), commune du Nord en agglomération de Valenciennes, compte environ 6 800 habitants au cœur du bassin valenciennois. Tissu mixte : TPE artisans BTP, PME industrielles (sous-traitance auto, métallurgie), commerces de proximité, professions libérales, services péri-urbains. Axion-IA y intervient pour tous types d'activités.",
+    "Beuvrages (59), commune du Nord en agglomération de Valenciennes, compte environ 6 800 habitants au cœur du bassin valenciennois. Tissu mixte : TPE artisans BTP, PME industrielles (sous-traitance auto, métallurgie), commerces de proximité, professions libérales, services péri-urbains. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beuvrages (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles, commerçants de proximité, professions libérales, indépendants et services aux entreprises de l'agglomération valenciennoise.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const BEUVRAGES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Beuvrages : diagnostic adapté aux TPE artisans BTP, PME industrielles, commerces et professions libérales de l'agglo valenciennoise. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Beuvrages : diagnostic adapté aux TPE artisans BTP, PME industrielles, commerces et professions libérales de l'agglo valenciennoise. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Beuvrages : diagnostic adapté aux TPE artisans BTP, PME industrielles, commerces et professions libérales de l'agglo valenciennoise. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Beuvrages : diagnostic adapté aux TPE artisans BTP, PME industrielles, commerces et professions libérales de l'agglo valenciennoise. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Beuvrages : formats adaptés à l'atelier, au chantier, au commerce, au cabinet. Vos équipes repartent autonomes sur outils IA.",

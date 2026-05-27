@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LUCCIANA_COPY: VilleCopy = {
   pitchFr:
-    "Lucciana (2B), commune de la plaine orientale et de l'agglomération bastiaise, abrite le site archéologique de Mariana (cité gallo-romaine fondée par Marius) et l'aéroport Bastia-Poretta. Tissu agricole plaine orientale (viticulture, agrumes), commerces et services agglo Bastia, TPE artisanat, tourisme patrimonial et balnéaire. Axion-IA y intervient pour tous types d'activités.",
+    "Lucciana (2B), commune de la plaine orientale et de l'agglomération bastiaise, abrite le site archéologique de Mariana (cité gallo-romaine fondée par Marius) et l'aéroport Bastia-Poretta. Tissu agricole plaine orientale (viticulture, agrumes), commerces et services agglo Bastia, TPE artisanat, tourisme patrimonial et balnéaire. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Lucciana (2B), commune de la plaine orientale et de l'agglomération bastiaise, abrite le site archéologique de Mariana (cité gallo-romaine fondée par Marius) et l'aéroport Bastia-Poretta. Tissu agricole plaine orientale (viticulture, agrumes), commerces et services agglo Bastia, TPE artisanat, tourisme patrimonial et balnéaire. Axion-IA y intervient pour tous types d'activités.",
+    "Lucciana (2B), commune de la plaine orientale et de l'agglomération bastiaise, abrite le site archéologique de Mariana (cité gallo-romaine fondée par Marius) et l'aéroport Bastia-Poretta. Tissu agricole plaine orientale (viticulture, agrumes), commerces et services agglo Bastia, TPE artisanat, tourisme patrimonial et balnéaire. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lucciana (2B). Nous accompagnons TPE et PME : exploitants agricoles plaine orientale (viticulture, agrumes), commerces et services agglo Bastia, acteurs aéroportuaires Bastia-Poretta, artisans, acteurs tourisme patrimonial (site de Mariana) et balnéaire. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const LUCCIANA_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lucciana : diagnostic adapté aux exploitants agricoles plaine orientale, commerces et services agglo Bastia, acteurs aéroportuaires, TPE artisans, acteurs tourisme patrimonial et balnéaire. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Lucciana : diagnostic adapté aux exploitants agricoles plaine orientale, commerces et services agglo Bastia, acteurs aéroportuaires, TPE artisans, acteurs tourisme patrimonial et balnéaire. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Lucciana : diagnostic adapté aux exploitants agricoles plaine orientale, commerces et services agglo Bastia, acteurs aéroportuaires, TPE artisans, acteurs tourisme patrimonial et balnéaire. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Lucciana : diagnostic adapté aux exploitants agricoles plaine orientale, commerces et services agglo Bastia, acteurs aéroportuaires, TPE artisans, acteurs tourisme patrimonial et balnéaire. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Lucciana : formats adaptés exploitation viticole/agrumes, commerce agglo Bastia, plateforme aéroportuaire, atelier artisan, structure touristique. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Lucciana : formats adaptés exploitation viticole/agrumes, commerce agglo Bastia, plateforme aéroportuaire, atelier artisan, structure touristique. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Lucciana : formats adaptés exploitation viticole/agrumes, commerce agglo Bastia, plateforme aéroportuaire, atelier artisan, structure touristique. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Lucciana : formats adaptés exploitation viticole/agrumes, commerce agglo Bastia, plateforme aéroportuaire, atelier artisan, structure touristique. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Lucciana : prédiction rendements viticulture/agrumes plaine orientale, CRM commerces agglo Bastia, optimisation flux aéroportuaires, billetterie site archéologique Mariana, CRM hébergeurs Costa Serena.",
@@ -64,7 +64,7 @@ export const LUCCIANA_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis le continent ?",
-      a: "Aéroport Bastia-Poretta sur la commune même, port de Bastia à 20 min. Vols et ferries quotidiens depuis le continent. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Aéroport Bastia-Poretta sur la commune même, port de Bastia à 20 min. Vols et ferries quotidiens depuis le continent. Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

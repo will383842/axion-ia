@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VIARMES_COPY: VilleCopy = {
   pitchFr:
-    "Viarmes (95), commune résidentielle du Pays de France dans le Val-d'Oise, en lisière de la forêt de Carnelle, allie cadre verdoyant et vie économique locale. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, services à la personne. Axion-IA y intervient pour tous types d'activités.",
+    "Viarmes (95), commune résidentielle du Pays de France dans le Val-d'Oise, en lisière de la forêt de Carnelle, allie cadre verdoyant et vie économique locale. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, services à la personne. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Viarmes (95), commune résidentielle du Pays de France dans le Val-d'Oise, en lisière de la forêt de Carnelle, allie cadre verdoyant et vie économique locale. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, services à la personne. Axion-IA y intervient pour tous types d'activités.",
+    "Viarmes (95), commune résidentielle du Pays de France dans le Val-d'Oise, en lisière de la forêt de Carnelle, allie cadre verdoyant et vie économique locale. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, services à la personne. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Viarmes (95). Nous accompagnons TPE et PME : commerçants et artisans du centre-bourg, PME services du Pays de France, professions libérales, restaurateurs, prestataires services à la personne nord Val-d'Oise. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const VIARMES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Viarmes : diagnostic adapté aux commerçants et artisans, PME services Pays de France, professions libérales, restaurateurs nord Val-d'Oise. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Viarmes : diagnostic adapté aux commerçants et artisans, PME services Pays de France, professions libérales, restaurateurs nord Val-d'Oise. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Viarmes : diagnostic adapté aux commerçants et artisans, PME services Pays de France, professions libérales, restaurateurs nord Val-d'Oise. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Viarmes : diagnostic adapté aux commerçants et artisans, PME services Pays de France, professions libérales, restaurateurs nord Val-d'Oise. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Viarmes : formats adaptés boutique, cabinet, restaurant, bureau PME Pays de France. Vos équipes repartent autonomes.",
@@ -64,7 +64,7 @@ export const VIARMES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou Roissy ?",
-      a: "Luzarches (5 min). Beaumont-sur-Oise (10 min). Aéroport CDG (20 min). Paris Gare du Nord (40 min via ligne H). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Luzarches (5 min). Beaumont-sur-Oise (10 min). Aéroport CDG (20 min). Paris Gare du Nord (40 min via ligne H). Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LOURDES_COPY: VilleCopy = {
   pitchFr:
-    "Lourdes (65), ville de pèlerinage mondial dans les Hautes-Pyrénées, deuxième destination touristique de France après Paris. Sanctuaires mariaux, hôtellerie de masse, tourisme religieux et montagne. Tissu PME hôtelières, TPE commerces souvenirs, restauration, artisans, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Lourdes (65), ville de pèlerinage mondial dans les Hautes-Pyrénées, deuxième destination touristique de France après Paris. Sanctuaires mariaux, hôtellerie de masse, tourisme religieux et montagne. Tissu PME hôtelières, TPE commerces souvenirs, restauration, artisans, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Lourdes (65), ville de pèlerinage mondial dans les Hautes-Pyrénées, deuxième destination touristique de France après Paris. Sanctuaires mariaux, hôtellerie de masse, tourisme religieux et montagne. Tissu PME hôtelières, TPE commerces souvenirs, restauration, artisans, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Lourdes (65), ville de pèlerinage mondial dans les Hautes-Pyrénées, deuxième destination touristique de France après Paris. Sanctuaires mariaux, hôtellerie de masse, tourisme religieux et montagne. Tissu PME hôtelières, TPE commerces souvenirs, restauration, artisans, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lourdes (65). Nous accompagnons tous types d'activités : PME hôtelières et d'accueil pèlerins, TPE commerces, restaurants, artisans, indépendants, professions libérales et acteurs du tourisme religieux et montagne pyrénéen.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const LOURDES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lourdes : diagnostic adapté aux PME hôtelières, TPE commerces souvenirs, restaurants, artisans et acteurs du tourisme religieux et montagne des Hautes-Pyrénées. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Lourdes : diagnostic adapté aux PME hôtelières, TPE commerces souvenirs, restaurants, artisans et acteurs du tourisme religieux et montagne des Hautes-Pyrénées. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Lourdes : diagnostic adapté aux PME hôtelières, TPE commerces souvenirs, restaurants, artisans et acteurs du tourisme religieux et montagne des Hautes-Pyrénées. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Lourdes : diagnostic adapté aux PME hôtelières, TPE commerces souvenirs, restaurants, artisans et acteurs du tourisme religieux et montagne des Hautes-Pyrénées. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Lourdes : formats adaptés à l'hôtellerie de pèlerinage, commerce, restauration ou structure d'accueil. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Lourdes : formats adaptés à l'hôtellerie de pèlerinage, commerce, restauration ou structure d'accueil. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Lourdes : formats adaptés à l'hôtellerie de pèlerinage, commerce, restauration ou structure d'accueil. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Lourdes : formats adaptés à l'hôtellerie de pèlerinage, commerce, restauration ou structure d'accueil. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Lourdes : chatbots multilingues pèlerins (20+ langues), yield management hôtelier saisonnier, automatisation réservations groupes, prédiction affluence sanctuaires. Adapté tourisme religieux + hôtellerie.",

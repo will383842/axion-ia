@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CONDE_SUR_L_ESCAUT_COPY: VilleCopy = {
   pitchFr:
-    "Condé-sur-l'Escaut (59), ville fortifiée par Vauban dans l'agglomération de Valenciennes, à la frontière belge, dispose d'un tissu économique de proximité. TPE artisanat et services, commerces de centre-ville, professions libérales, petites PME tertiaires, restauration. Axion-IA y intervient pour tous types d'activités.",
+    "Condé-sur-l'Escaut (59), ville fortifiée par Vauban dans l'agglomération de Valenciennes, à la frontière belge, dispose d'un tissu économique de proximité. TPE artisanat et services, commerces de centre-ville, professions libérales, petites PME tertiaires, restauration. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Condé-sur-l'Escaut (59), ville fortifiée par Vauban dans l'agglomération de Valenciennes, à la frontière belge, dispose d'un tissu économique de proximité. TPE artisanat et services, commerces de centre-ville, professions libérales, petites PME tertiaires, restauration. Axion-IA y intervient pour tous types d'activités.",
+    "Condé-sur-l'Escaut (59), ville fortifiée par Vauban dans l'agglomération de Valenciennes, à la frontière belge, dispose d'un tissu économique de proximité. TPE artisanat et services, commerces de centre-ville, professions libérales, petites PME tertiaires, restauration. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Condé-sur-l'Escaut (59). Nous accompagnons TPE et PME : artisans et prestataires de services, commerçants de centre-ville, professions libérales, PME tertiaires, restaurateurs. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const CONDE_SUR_L_ESCAUT_COPY: VilleCopy = {
       en: "Audit IA à Condé-sur-l'Escaut : diagnostic adapté aux TPE artisans, commerçants de centre-ville, professions libérales, PME tertiaires, restaurateurs. ROI chiffré, audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Condé-sur-l'Escaut : formats adaptés commerce, cabinet, bureau, restaurant. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Condé-sur-l'Escaut : formats adaptés commerce, cabinet, bureau, restaurant. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Condé-sur-l'Escaut : formats adaptés commerce, cabinet, bureau, restaurant. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Condé-sur-l'Escaut : formats adaptés commerce, cabinet, bureau, restaurant. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Condé-sur-l'Escaut : automatisation gestion clients PME, CRM augmenté commerces, prise de rendez-vous IA professions libérales, commandes et réservations restauration.",
@@ -64,7 +64,7 @@ export const CONDE_SUR_L_ESCAUT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",
-      a: "Paris-Nord (1h45 via TGV Valenciennes puis 15 min route). Frontière belge à 5 min. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Paris-Nord (1h45 via TGV Valenciennes puis 15 min route). Frontière belge à 5 min. Frais de mission en sus, grille tarifaire publique.",
     },
   ],
 };

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LEGE_CAP_FERRET_COPY: VilleCopy = {
   pitchFr:
-    "Lège-Cap-Ferret (33), commune de la presqu'île du Cap-Ferret entre océan Atlantique et Bassin d'Arcachon, incarne un tourisme prestige avec ostréiculture, hôtellerie haut de gamme, artisanat et commerces saisonniers. Axion-IA y intervient pour tous types d'activités de la presqu'île et du nord du Bassin.",
+    "Lège-Cap-Ferret (33), commune de la presqu'île du Cap-Ferret entre océan Atlantique et Bassin d'Arcachon, incarne un tourisme prestige avec ostréiculture, hôtellerie haut de gamme, artisanat et commerces saisonniers. Axion-IA y déploie ses missions auprès de toutes les organisations de la presqu'île et du nord du Bassin.",
   pitchEn:
-    "Lège-Cap-Ferret (33), commune de la presqu'île du Cap-Ferret entre océan Atlantique et Bassin d'Arcachon, incarne un tourisme prestige avec ostréiculture, hôtellerie haut de gamme, artisanat et commerces saisonniers. Axion-IA y intervient pour tous types d'activités de la presqu'île et du nord du Bassin.",
+    "Lège-Cap-Ferret (33), commune de la presqu'île du Cap-Ferret entre océan Atlantique et Bassin d'Arcachon, incarne un tourisme prestige avec ostréiculture, hôtellerie haut de gamme, artisanat et commerces saisonniers. Axion-IA y déploie ses missions auprès de toutes les organisations de la presqu'île et du nord du Bassin.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lège-Cap-Ferret (33). Nous accompagnons TPE et PME de la presqu'île : ostréiculteurs, hébergeurs prestige, restaurateurs, commerçants saisonniers, artisans BTP et professions libérales. Audit Flash dès 490 € HT.",
   directAnswerEn:

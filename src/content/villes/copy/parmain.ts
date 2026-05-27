@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PARMAIN_COPY: VilleCopy = {
   pitchFr:
-    "Parmain (95), commune résidentielle verdoyante des bords de l'Oise dans le Val-d'Oise, offre un cadre de vie privilégié à proximité de L'Isle-Adam et de la forêt. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, services à la personne. Axion-IA y intervient pour tous types d'activités.",
+    "Parmain (95), commune résidentielle verdoyante des bords de l'Oise dans le Val-d'Oise, offre un cadre de vie privilégié à proximité de L'Isle-Adam et de la forêt. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, services à la personne. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Parmain (95), commune résidentielle verdoyante des bords de l'Oise dans le Val-d'Oise, offre un cadre de vie privilégié à proximité de L'Isle-Adam et de la forêt. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, services à la personne. Axion-IA y intervient pour tous types d'activités.",
+    "Parmain (95), commune résidentielle verdoyante des bords de l'Oise dans le Val-d'Oise, offre un cadre de vie privilégié à proximité de L'Isle-Adam et de la forêt. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, services à la personne. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Parmain (95). Nous accompagnons TPE et PME : commerçants et artisans locaux, PME services bords de l'Oise, professions libérales, restaurateurs, prestataires services à la personne vallée de l'Oise. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const PARMAIN_COPY: VilleCopy = {
       en: "Audit IA à Parmain : diagnostic adapté aux commerçants et artisans, PME services bords de l'Oise, professions libérales, restaurateurs vallée de l'Oise. ROI chiffré, audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Parmain : formats adaptés boutique, cabinet, restaurant, bureau PME bords de l'Oise. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Parmain : formats adaptés boutique, cabinet, restaurant, bureau PME bords de l'Oise. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Parmain : formats adaptés boutique, cabinet, restaurant, bureau PME bords de l'Oise. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Parmain : formats adaptés boutique, cabinet, restaurant, bureau PME bords de l'Oise. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Parmain : CRM augmenté commerçants, automatisation gestion cabinet, outils réservation restauration, facturation intelligente PME services vallée de l'Oise.",

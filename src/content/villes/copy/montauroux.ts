@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MONTAUROUX_COPY: VilleCopy = {
   pitchFr:
-    "Montauroux (83), commune de l'arrière-pays varois dans le Pays de Fayence, est connue pour son village perché, son golf et son tourisme nature en lisière de l'Estérel et du lac de Saint-Cassien. Tissu de TPE artisans, restaurateurs, professionnels du golf et PME du tourisme rural et résidentiel. Axion-IA y intervient pour tous types d'activités.",
+    "Montauroux (83), commune de l'arrière-pays varois dans le Pays de Fayence, est connue pour son village perché, son golf et son tourisme nature en lisière de l'Estérel et du lac de Saint-Cassien. Tissu de TPE artisans, restaurateurs, professionnels du golf et PME du tourisme rural et résidentiel. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Montauroux (83), commune de l'arrière-pays varois dans le Pays de Fayence, est connue pour son village perché, son golf et son tourisme nature en lisière de l'Estérel et du lac de Saint-Cassien. Tissu de TPE artisans, restaurateurs, professionnels du golf et PME du tourisme rural et résidentiel. Axion-IA y intervient pour tous types d'activités.",
+    "Montauroux (83), commune de l'arrière-pays varois dans le Pays de Fayence, est connue pour son village perché, son golf et son tourisme nature en lisière de l'Estérel et du lac de Saint-Cassien. Tissu de TPE artisans, restaurateurs, professionnels du golf et PME du tourisme rural et résidentiel. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montauroux (83). Nous accompagnons TPE artisans, restaurateurs, professionnels du golf et PME du tourisme rural et résidentiel du Pays de Fayence et de l'arrière-pays varois. Audit Flash dès 490 € HT.",
   directAnswerEn:

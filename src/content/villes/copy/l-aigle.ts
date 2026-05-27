@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const L_AIGLE_COPY: VilleCopy = {
   pitchFr:
-    "L'Aigle (61), commune du Pays d'Ouche dans l'Orne, est connue pour la chute de météorite de 1803 (première attestation scientifique) et son industrie historique de l'aiguille et de l'épingle. Tissu TPE artisans, PME métallurgiques reconverties, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités du Pays d'Ouche.",
+    "L'Aigle (61), commune du Pays d'Ouche dans l'Orne, est connue pour la chute de météorite de 1803 (première attestation scientifique) et son industrie historique de l'aiguille et de l'épingle. Tissu TPE artisans, PME métallurgiques reconverties, commerces, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du Pays d'Ouche.",
   pitchEn:
-    "L'Aigle (61), commune du Pays d'Ouche dans l'Orne, est connue pour la chute de météorite de 1803 (première attestation scientifique) et son industrie historique de l'aiguille et de l'épingle. Tissu TPE artisans, PME métallurgiques reconverties, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités du Pays d'Ouche.",
+    "L'Aigle (61), commune du Pays d'Ouche dans l'Orne, est connue pour la chute de météorite de 1803 (première attestation scientifique) et son industrie historique de l'aiguille et de l'épingle. Tissu TPE artisans, PME métallurgiques reconverties, commerces, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du Pays d'Ouche.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à L'Aigle (61). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME métallurgiques reconverties, professions libérales, services aux entreprises du Pays d'Ouche. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const L_AIGLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à L'Aigle : diagnostic adapté aux TPE artisans, PME métallurgiques reconverties, commerces de centre-ville et professions libérales Pays d'Ouche. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à L'Aigle : diagnostic adapté aux TPE artisans, PME métallurgiques reconverties, commerces de centre-ville et professions libérales Pays d'Ouche. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à L'Aigle : diagnostic adapté aux TPE artisans, PME métallurgiques reconverties, commerces de centre-ville et professions libérales Pays d'Ouche. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à L'Aigle : diagnostic adapté aux TPE artisans, PME métallurgiques reconverties, commerces de centre-ville et professions libérales Pays d'Ouche. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à L'Aigle : formats adaptés à l'atelier mécanique, bureau PME, commerce. Vos équipes repartent autonomes sur outils IA.",

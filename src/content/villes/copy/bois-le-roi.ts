@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BOIS_LE_ROI_COPY: VilleCopy = {
   pitchFr:
-    "Bois-le-Roi (77), commune résidentielle en bords de Seine aux portes de la forêt de Fontainebleau en Seine-et-Marne, accueille un tissu de TPE artisans, commerces de village, professions libérales, PME de services et acteurs du tourisme vert. Axion-IA y intervient pour tous types d'activités du sud francilien.",
+    "Bois-le-Roi (77), commune résidentielle en bords de Seine aux portes de la forêt de Fontainebleau en Seine-et-Marne, accueille un tissu de TPE artisans, commerces de village, professions libérales, PME de services et acteurs du tourisme vert. Axion-IA y déploie ses missions auprès de toutes les organisations du sud francilien.",
   pitchEn:
-    "Bois-le-Roi (77), commune résidentielle en bords de Seine aux portes de la forêt de Fontainebleau en Seine-et-Marne, accueille un tissu de TPE artisans, commerces de village, professions libérales, PME de services et acteurs du tourisme vert. Axion-IA y intervient pour tous types d'activités du sud francilien.",
+    "Bois-le-Roi (77), commune résidentielle en bords de Seine aux portes de la forêt de Fontainebleau en Seine-et-Marne, accueille un tissu de TPE artisans, commerces de village, professions libérales, PME de services et acteurs du tourisme vert. Axion-IA y déploie ses missions auprès de toutes les organisations du sud francilien.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bois-le-Roi (77). Nous accompagnons TPE et PME : artisans, commerçants de village, professions libérales, PME de services et hébergeurs touristiques de cette commune résidentielle entre Seine et forêt de Fontainebleau.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const BOIS_LE_ROI_COPY: VilleCopy = {
       en: "Audit IA à Bois-le-Roi : diagnostic adapté aux TPE artisans, commerces, professions libérales et hébergeurs touristiques entre Seine et forêt de Fontainebleau. ROI chiffré, audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Bois-le-Roi : formats adaptés au commerce de village, cabinet libéral, TPE artisan ou hébergement touristique. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Bois-le-Roi : formats adaptés au commerce de village, cabinet libéral, TPE artisan ou hébergement touristique. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Bois-le-Roi : formats adaptés au commerce de village, cabinet libéral, TPE artisan ou hébergement touristique. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Bois-le-Roi : formats adaptés au commerce de village, cabinet libéral, TPE artisan ou hébergement touristique. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Bois-le-Roi : agents conversationnels réservation, automatisation gestion gîtes et chambres d'hôtes, CRM augmenté PME, facturation automatisée artisans, présence en ligne optimisée.",

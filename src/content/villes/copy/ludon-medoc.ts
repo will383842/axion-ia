@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LUDON_MEDOC_COPY: VilleCopy = {
   pitchFr:
-    "Ludon-Médoc (33), commune viticole à l'entrée du Médoc, combine vignoble AOC Haut-Médoc, artisanat BTP, commerces et professions libérales dans un cadre résidentiel prisé. Axion-IA y intervient pour tous types d'activités de l'entrée du Médoc.",
+    "Ludon-Médoc (33), commune viticole à l'entrée du Médoc, combine vignoble AOC Haut-Médoc, artisanat BTP, commerces et professions libérales dans un cadre résidentiel prisé. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'entrée du Médoc.",
   pitchEn:
-    "Ludon-Médoc (33), commune viticole à l'entrée du Médoc, combine vignoble AOC Haut-Médoc, artisanat BTP, commerces et professions libérales dans un cadre résidentiel prisé. Axion-IA y intervient pour tous types d'activités de l'entrée du Médoc.",
+    "Ludon-Médoc (33), commune viticole à l'entrée du Médoc, combine vignoble AOC Haut-Médoc, artisanat BTP, commerces et professions libérales dans un cadre résidentiel prisé. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'entrée du Médoc.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ludon-Médoc (33). Nous accompagnons TPE et PME de l'entrée du Médoc : vignerons, artisans BTP, commerçants et professions libérales. Audit Flash dès 490 € HT.",
   directAnswerEn:

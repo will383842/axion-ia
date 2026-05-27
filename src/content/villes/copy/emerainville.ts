@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const EMERAINVILLE_COPY: VilleCopy = {
   pitchFr:
-    "Émerainville (77), commune de Seine-et-Marne intégrée à Marne-la-Vallée, concentre plusieurs zones d'activités économiques et un tissu d'entreprises diversifié. TPE et PME logistique, services aux entreprises, commerce, artisanat BTP et activités tertiaires. Axion-IA y intervient pour tous types d'activités.",
+    "Émerainville (77), commune de Seine-et-Marne intégrée à Marne-la-Vallée, concentre plusieurs zones d'activités économiques et un tissu d'entreprises diversifié. TPE et PME logistique, services aux entreprises, commerce, artisanat BTP et activités tertiaires. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Émerainville (77), commune de Seine-et-Marne intégrée à Marne-la-Vallée, concentre plusieurs zones d'activités économiques et un tissu d'entreprises diversifié. TPE et PME logistique, services aux entreprises, commerce, artisanat BTP et activités tertiaires. Axion-IA y intervient pour tous types d'activités.",
+    "Émerainville (77), commune de Seine-et-Marne intégrée à Marne-la-Vallée, concentre plusieurs zones d'activités économiques et un tissu d'entreprises diversifié. TPE et PME logistique, services aux entreprises, commerce, artisanat BTP et activités tertiaires. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Émerainville (77). Nous accompagnons TPE et PME : entreprises logistique et transport, prestataires de services aux entreprises, commerçants, artisans BTP et sociétés tertiaires des zones d'activités. Audit Flash dès 490 € HT.",
   directAnswerEn:

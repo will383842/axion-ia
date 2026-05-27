@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CANEJAN_COPY: VilleCopy = {
   pitchFr:
-    "Canéjan (33), commune résidentielle au sud immédiat de Bordeaux Métropole, combine tissu PME tertiaire, artisanat BTP, commerces de proximité et professions libérales. Axion-IA y intervient pour tous types d'activités du sud bordelais.",
+    "Canéjan (33), commune résidentielle au sud immédiat de Bordeaux Métropole, combine tissu PME tertiaire, artisanat BTP, commerces de proximité et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud bordelais.",
   pitchEn:
-    "Canéjan (33), commune résidentielle au sud immédiat de Bordeaux Métropole, combine tissu PME tertiaire, artisanat BTP, commerces de proximité et professions libérales. Axion-IA y intervient pour tous types d'activités du sud bordelais.",
+    "Canéjan (33), commune résidentielle au sud immédiat de Bordeaux Métropole, combine tissu PME tertiaire, artisanat BTP, commerces de proximité et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud bordelais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Canéjan (33). Nous accompagnons TPE et PME du sud bordelais : PME tertiaires, artisans BTP, commerçants et professions libérales. Audit Flash dès 490 € HT.",
   directAnswerEn:

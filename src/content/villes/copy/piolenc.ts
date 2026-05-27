@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PIOLENC_COPY: VilleCopy = {
   pitchFr:
-    "Piolenc (84), commune de la vallée du Rhône au nord d'Orange, compte près de 5 718 habitants. Capitale de l'ail (Foire à l'ail), agriculture maraîchère et fruitière, vignoble Côtes-du-Rhône, tissu de TPE artisanales, exploitations agricoles, PME agroalimentaires et commerces de proximité. Axion-IA y intervient pour tous types d'activités.",
+    "Piolenc (84), commune de la vallée du Rhône au nord d'Orange, compte près de 5 718 habitants. Capitale de l'ail (Foire à l'ail), agriculture maraîchère et fruitière, vignoble Côtes-du-Rhône, tissu de TPE artisanales, exploitations agricoles, PME agroalimentaires et commerces de proximité. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Piolenc (84), commune de la vallée du Rhône au nord d'Orange, compte près de 5 718 habitants. Capitale de l'ail (Foire à l'ail), agriculture maraîchère et fruitière, vignoble Côtes-du-Rhône, tissu de TPE artisanales, exploitations agricoles, PME agroalimentaires et commerces de proximité. Axion-IA y intervient pour tous types d'activités.",
+    "Piolenc (84), commune de la vallée du Rhône au nord d'Orange, compte près de 5 718 habitants. Capitale de l'ail (Foire à l'ail), agriculture maraîchère et fruitière, vignoble Côtes-du-Rhône, tissu de TPE artisanales, exploitations agricoles, PME agroalimentaires et commerces de proximité. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Piolenc (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles (ail, maraîchage, fruits), domaines viticoles Côtes-du-Rhône, PME agroalimentaires, commerces et services de la vallée du Rhône. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const PIOLENC_COPY: VilleCopy = {
       en: "Audit IA à Piolenc : diagnostic adapté aux TPE artisans, exploitations agricoles (ail, maraîchage, fruits), domaines viticoles Côtes-du-Rhône et PME agroalimentaires. ROI chiffré, Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Piolenc : formats adaptés aux exploitations agricoles ail et maraîchage, domaines viticoles, PME agroalimentaires, coopératives et artisans. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Piolenc : formats adaptés aux exploitations agricoles ail et maraîchage, domaines viticoles, PME agroalimentaires, coopératives et artisans. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Piolenc : formats adaptés aux exploitations agricoles ail et maraîchage, domaines viticoles, PME agroalimentaires, coopératives et artisans. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Piolenc : formats adaptés aux exploitations agricoles ail et maraîchage, domaines viticoles, PME agroalimentaires, coopératives et artisans. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Piolenc : traçabilité parcellaire ail et maraîchage, gestion vendanges, automatisation devis exploitants, outils prédictifs coopératives, gestion commerciale B2B circuits courts. Adapté TPE/PME vallée du Rhône.",

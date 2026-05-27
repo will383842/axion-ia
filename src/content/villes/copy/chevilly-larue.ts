@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHEVILLY_LARUE_COPY: VilleCopy = {
   pitchFr:
-    "Chevilly-Larue (94), commune du sud du Val-de-Marne limitrophe du MIN de Rungis et de l'aéroport d'Orly. Tissu TPE artisans et prestataires, PME logistique et agroalimentaire, commerçants, professions libérales et entreprises de services. Axion-IA y intervient pour tous types d'activités du sud francilien.",
+    "Chevilly-Larue (94), commune du sud du Val-de-Marne limitrophe du MIN de Rungis et de l'aéroport d'Orly. Tissu TPE artisans et prestataires, PME logistique et agroalimentaire, commerçants, professions libérales et entreprises de services. Axion-IA y déploie ses missions auprès de toutes les organisations du sud francilien.",
   pitchEn:
-    "Chevilly-Larue (94), commune du sud du Val-de-Marne limitrophe du MIN de Rungis et de l'aéroport d'Orly. Tissu TPE artisans et prestataires, PME logistique et agroalimentaire, commerçants, professions libérales et entreprises de services. Axion-IA y intervient pour tous types d'activités du sud francilien.",
+    "Chevilly-Larue (94), commune du sud du Val-de-Marne limitrophe du MIN de Rungis et de l'aéroport d'Orly. Tissu TPE artisans et prestataires, PME logistique et agroalimentaire, commerçants, professions libérales et entreprises de services. Axion-IA y déploie ses missions auprès de toutes les organisations du sud francilien.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chevilly-Larue (94). Nous accompagnons tous types d'activités : TPE artisans et prestataires, PME logistique et agroalimentaire proches du MIN de Rungis, commerçants, professions libérales et entreprises de services du sud du Val-de-Marne. Audit Flash dès 490 € HT.",
   directAnswerEn:

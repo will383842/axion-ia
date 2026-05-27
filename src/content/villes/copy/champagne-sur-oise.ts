@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHAMPAGNE_SUR_OISE_COPY: VilleCopy = {
   pitchFr:
-    "Champagne-sur-Oise (95), commune résidentielle du nord du Val-d'Oise en bord d'Oise, allie cadre naturel préservé et proximité de L'Isle-Adam. Tissu TPE commerces de proximité et artisanat, PME services, professions libérales, restauration, prestataires BTP. Axion-IA y intervient pour tous types d'activités.",
+    "Champagne-sur-Oise (95), commune résidentielle du nord du Val-d'Oise en bord d'Oise, allie cadre naturel préservé et proximité de L'Isle-Adam. Tissu TPE commerces de proximité et artisanat, PME services, professions libérales, restauration, prestataires BTP. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Champagne-sur-Oise (95), commune résidentielle du nord du Val-d'Oise en bord d'Oise, allie cadre naturel préservé et proximité de L'Isle-Adam. Tissu TPE commerces de proximité et artisanat, PME services, professions libérales, restauration, prestataires BTP. Axion-IA y intervient pour tous types d'activités.",
+    "Champagne-sur-Oise (95), commune résidentielle du nord du Val-d'Oise en bord d'Oise, allie cadre naturel préservé et proximité de L'Isle-Adam. Tissu TPE commerces de proximité et artisanat, PME services, professions libérales, restauration, prestataires BTP. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Champagne-sur-Oise (95). Nous accompagnons TPE et PME : commerçants et artisans bords d'Oise, PME services aux entreprises, professions libérales, restaurateurs, prestataires BTP nord Val-d'Oise. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const CHAMPAGNE_SUR_OISE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Champagne-sur-Oise : diagnostic adapté aux commerçants et artisans, PME services, professions libérales, restaurateurs, prestataires BTP nord Val-d'Oise. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Champagne-sur-Oise : diagnostic adapté aux commerçants et artisans, PME services, professions libérales, restaurateurs, prestataires BTP nord Val-d'Oise. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Champagne-sur-Oise : diagnostic adapté aux commerçants et artisans, PME services, professions libérales, restaurateurs, prestataires BTP nord Val-d'Oise. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Champagne-sur-Oise : diagnostic adapté aux commerçants et artisans, PME services, professions libérales, restaurateurs, prestataires BTP nord Val-d'Oise. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Champagne-sur-Oise : formats adaptés boutique, cabinet, restaurant, bureau PME, chantier BTP. Vos équipes repartent autonomes.",

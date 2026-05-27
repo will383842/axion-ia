@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VILLEMANDEUR_COPY: VilleCopy = {
   pitchFr:
-    "Villemandeur (45), commune résidentielle de l'agglomération de Montargis (AME — Agglomération Montargoise et Rives du Loing), bénéficie de l'axe logistique A77 Paris-Nevers et du carrefour Gâtinais-Puisaye. Tissu TPE artisans BTP, commerçants, PME logistiques et industrielles, professions libérales, prestataires de services aux entreprises montargoises. Axion-IA y intervient pour tous types d'activités.",
+    "Villemandeur (45), commune résidentielle de l'agglomération de Montargis (AME — Agglomération Montargoise et Rives du Loing), bénéficie de l'axe logistique A77 Paris-Nevers et du carrefour Gâtinais-Puisaye. Tissu TPE artisans BTP, commerçants, PME logistiques et industrielles, professions libérales, prestataires de services aux entreprises montargoises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Villemandeur (45), commune résidentielle de l'agglomération de Montargis (AME — Agglomération Montargoise et Rives du Loing), bénéficie de l'axe logistique A77 Paris-Nevers et du carrefour Gâtinais-Puisaye. Tissu TPE artisans BTP, commerçants, PME logistiques et industrielles, professions libérales, prestataires de services aux entreprises montargoises. Axion-IA y intervient pour tous types d'activités.",
+    "Villemandeur (45), commune résidentielle de l'agglomération de Montargis (AME — Agglomération Montargoise et Rives du Loing), bénéficie de l'axe logistique A77 Paris-Nevers et du carrefour Gâtinais-Puisaye. Tissu TPE artisans BTP, commerçants, PME logistiques et industrielles, professions libérales, prestataires de services aux entreprises montargoises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villemandeur (45). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME logistiques et industrielles de l'agglo Montargis, professions libérales, prestataires de services, entreprises agroalimentaires du bassin est-Loiret. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const VILLEMANDEUR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villemandeur : diagnostic adapté aux TPE artisans, PME logistiques et industrielles, professions libérales de l'agglo Montargis. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
-      en: "Audit IA à Villemandeur : diagnostic adapté aux TPE artisans, PME logistiques et industrielles, professions libérales de l'agglo Montargis. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
+      fr: "Audit IA à Villemandeur : diagnostic adapté aux TPE artisans, PME logistiques et industrielles, professions libérales de l'agglo Montargis. ROI mesurable, audit Flash dès 490 € HT accessible aux petites structures.",
+      en: "Audit IA à Villemandeur : diagnostic adapté aux TPE artisans, PME logistiques et industrielles, professions libérales de l'agglo Montargis. ROI mesurable, audit Flash dès 490 € HT accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Villemandeur : formats adaptés à l'entrepôt logistique, à l'atelier industriel, au commerce ou au bureau PME. Vos équipes terrain et back-office repartent autonomes sur outils IA configurés métier.",

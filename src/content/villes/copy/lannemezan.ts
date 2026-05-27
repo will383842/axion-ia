@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LANNEMEZAN_COPY: VilleCopy = {
   pitchFr:
-    "Lannemezan (65), sous-préfecture des Hautes-Pyrénées sur le plateau de Lannemezan, carrefour routier du piémont pyrénéen. Tissu TPE artisans, PME agroalimentaires, commerces de proximité, services publics, professions libérales, agriculture et élevage. Axion-IA y intervient pour tous types d'activités.",
+    "Lannemezan (65), sous-préfecture des Hautes-Pyrénées sur le plateau de Lannemezan, carrefour routier du piémont pyrénéen. Tissu TPE artisans, PME agroalimentaires, commerces de proximité, services publics, professions libérales, agriculture et élevage. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Lannemezan (65), sous-préfecture des Hautes-Pyrénées sur le plateau de Lannemezan, carrefour routier du piémont pyrénéen. Tissu TPE artisans, PME agroalimentaires, commerces de proximité, services publics, professions libérales, agriculture et élevage. Axion-IA y intervient pour tous types d'activités.",
+    "Lannemezan (65), sous-préfecture des Hautes-Pyrénées sur le plateau de Lannemezan, carrefour routier du piémont pyrénéen. Tissu TPE artisans, PME agroalimentaires, commerces de proximité, services publics, professions libérales, agriculture et élevage. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lannemezan (65). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires, commerçants du centre-ville, professions libérales, acteurs de l'agriculture et de l'élevage du plateau pyrénéen.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const LANNEMEZAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lannemezan : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants, professions libérales et acteurs agricoles du plateau pyrénéen. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Lannemezan : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants, professions libérales et acteurs agricoles du plateau pyrénéen. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Lannemezan : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants, professions libérales et acteurs agricoles du plateau pyrénéen. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Lannemezan : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants, professions libérales et acteurs agricoles du plateau pyrénéen. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Lannemezan : formats adaptés aux PME agroalimentaires, exploitations agricoles, commerces ou cabinets. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Lannemezan : formats adaptés aux PME agroalimentaires, exploitations agricoles, commerces ou cabinets. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Lannemezan : formats adaptés aux PME agroalimentaires, exploitations agricoles, commerces ou cabinets. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Lannemezan : formats adaptés aux PME agroalimentaires, exploitations agricoles, commerces ou cabinets. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Lannemezan : traçabilité filière viande automatisée, prédiction rendements agricoles, classification documents administratifs, chatbot services publics. Adapté agroalimentaire + agriculture + services.",
@@ -64,7 +64,7 @@ export const LANNEMEZAN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Lannemezan ?",
-      a: "Lannemezan est à 30 min de Tarbes (N117), 1h30 de Toulouse. Gare SNCF Lannemezan (ligne Toulouse-Bayonne). Nos consultants interviennent sur site. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Lannemezan est à 30 min de Tarbes (N117), 1h30 de Toulouse. Gare SNCF Lannemezan (ligne Toulouse-Bayonne). Nos consultants interviennent sur site. Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

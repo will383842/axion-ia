@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BETHENY_COPY: VilleCopy = {
   pitchFr:
-    "Bétheny (51), commune au nord de Reims dans la Marne, est marquée par son ancien aérodrome historique (pionniers de l'aviation) et la proximité du vignoble champenois. Tissu de TPE artisanales, PME viticoles et négoce Champagne, commerces, services et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Bétheny (51), commune au nord de Reims dans la Marne, est marquée par son ancien aérodrome historique (pionniers de l'aviation) et la proximité du vignoble champenois. Tissu de TPE artisanales, PME viticoles et négoce Champagne, commerces, services et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Bétheny (51), commune au nord de Reims dans la Marne, est marquée par son ancien aérodrome historique (pionniers de l'aviation) et la proximité du vignoble champenois. Tissu de TPE artisanales, PME viticoles et négoce Champagne, commerces, services et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Bétheny (51), commune au nord de Reims dans la Marne, est marquée par son ancien aérodrome historique (pionniers de l'aviation) et la proximité du vignoble champenois. Tissu de TPE artisanales, PME viticoles et négoce Champagne, commerces, services et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   seoHook: "Champagne, vignoble & services nord Reims",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bétheny (51). Nous accompagnons TPE et PME du nord rémois : maisons de Champagne, viticulteurs, TPE artisanales, commerçants, professions libérales et prestataires de services. Audit Flash dès 490 € HT.",

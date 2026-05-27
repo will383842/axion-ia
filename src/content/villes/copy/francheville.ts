@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FRANCHEVILLE_COPY: VilleCopy = {
   pitchFr:
-    "Francheville (69), commune en banlieue ouest immédiate de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités de l'ouest lyonnais.",
+    "Francheville (69), commune en banlieue ouest immédiate de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'ouest lyonnais.",
   pitchEn:
-    "Francheville (69), commune en banlieue ouest immédiate de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités de l'ouest lyonnais.",
+    "Francheville (69), commune en banlieue ouest immédiate de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'ouest lyonnais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Francheville (69). Nous accompagnons tous types d'activités : PME tertiaires Métropole de Lyon ouest, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la banlieue ouest lyonnaise.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const FRANCHEVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Francheville : diagnostic adapté aux PME tertiaires Métropole de Lyon ouest, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Francheville : diagnostic adapté aux PME tertiaires Métropole de Lyon ouest, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Francheville : diagnostic adapté aux PME tertiaires Métropole de Lyon ouest, professions libérales, TPE artisans. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Francheville : diagnostic adapté aux PME tertiaires Métropole de Lyon ouest, professions libérales, TPE artisans. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Francheville : formats adaptés au cabinet, bureau tertiaire, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Francheville : formats adaptés au cabinet, bureau tertiaire, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Francheville : formats adaptés au cabinet, bureau tertiaire, commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Francheville : formats adaptés au cabinet, bureau tertiaire, commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Francheville : agents conversationnels B2B/patient, automatisation workflow tertiaire, classification dossiers, CRM augmentés. Métropole de Lyon ouest.",

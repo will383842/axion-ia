@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_ALBAN_LEYSSE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Alban-Leysse (73), commune résidentielle de l'agglomération de Chambéry au sein de Grand Chambéry en Savoie. PME tertiaires, professions libérales, TPE artisanat, commerces de proximité, services. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Alban-Leysse (73), commune résidentielle de l'agglomération de Chambéry au sein de Grand Chambéry en Savoie. PME tertiaires, professions libérales, TPE artisanat, commerces de proximité, services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Saint-Alban-Leysse (73), commune résidentielle de l'agglomération de Chambéry au sein de Grand Chambéry en Savoie. PME tertiaires, professions libérales, TPE artisanat, commerces de proximité, services. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Alban-Leysse (73), commune résidentielle de l'agglomération de Chambéry au sein de Grand Chambéry en Savoie. PME tertiaires, professions libérales, TPE artisanat, commerces de proximité, services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Alban-Leysse (73). Nous accompagnons TPE et PME : entreprises tertiaires de Grand Chambéry, professions libérales, artisans, commerçants de proximité et sociétés de services.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const SAINT_ALBAN_LEYSSE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Alban-Leysse : diagnostic adapté aux PME tertiaires de Grand Chambéry, professions libérales, TPE artisans et commerçants. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Alban-Leysse : diagnostic adapté aux PME tertiaires de Grand Chambéry, professions libérales, TPE artisans et commerçants. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Alban-Leysse : diagnostic adapté aux PME tertiaires de Grand Chambéry, professions libérales, TPE artisans et commerçants. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Saint-Alban-Leysse : diagnostic adapté aux PME tertiaires de Grand Chambéry, professions libérales, TPE artisans et commerçants. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Alban-Leysse : formats adaptés aux cabinets libéraux, bureaux tertiaires, ateliers artisans ou commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Saint-Alban-Leysse : formats adaptés aux cabinets libéraux, bureaux tertiaires, ateliers artisans ou commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Saint-Alban-Leysse : formats adaptés aux cabinets libéraux, bureaux tertiaires, ateliers artisans ou commerces. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Saint-Alban-Leysse : formats adaptés aux cabinets libéraux, bureaux tertiaires, ateliers artisans ou commerces. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Alban-Leysse : automatisation back-office PME tertiaires, agents IA gestion cabinet libéral, classification documentaire, outils prédictifs services aux entreprises Grand Chambéry.",
@@ -64,7 +64,7 @@ export const SAINT_ALBAN_LEYSSE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Saint-Alban-Leysse ?",
-      a: "Nos consultants seniors interviennent depuis Chambéry (5 min voiture). Pour les missions multi-jours, déplacement quotidien sans surcoût hébergement. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants seniors interviennent depuis Chambéry (5 min voiture). Pour les missions multi-jours, déplacement quotidien sans surcoût hébergement. Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

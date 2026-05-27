@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MEULAN_EN_YVELINES_COPY: VilleCopy = {
   pitchFr:
-    "Meulan-en-Yvelines (78), commune historique à la confluence de l'Aubette et de la Seine, aux portes du Vexin français dans les Yvelines. Tissu de TPE artisans, PME de services, commerces de centre-ville, professions libérales et entreprises liées au fleuve et à l'agriculture périurbaine. Axion-IA y intervient pour tous types d'activités du nord-ouest des Yvelines.",
+    "Meulan-en-Yvelines (78), commune historique à la confluence de l'Aubette et de la Seine, aux portes du Vexin français dans les Yvelines. Tissu de TPE artisans, PME de services, commerces de centre-ville, professions libérales et entreprises liées au fleuve et à l'agriculture périurbaine. Axion-IA couvre l'ensemble des activités professionnelles présentes du nord-ouest des Yvelines.",
   pitchEn:
-    "Meulan-en-Yvelines (78), commune historique à la confluence de l'Aubette et de la Seine, aux portes du Vexin français dans les Yvelines. Tissu de TPE artisans, PME de services, commerces de centre-ville, professions libérales et entreprises liées au fleuve et à l'agriculture périurbaine. Axion-IA y intervient pour tous types d'activités du nord-ouest des Yvelines.",
+    "Meulan-en-Yvelines (78), commune historique à la confluence de l'Aubette et de la Seine, aux portes du Vexin français dans les Yvelines. Tissu de TPE artisans, PME de services, commerces de centre-ville, professions libérales et entreprises liées au fleuve et à l'agriculture périurbaine. Axion-IA couvre l'ensemble des activités professionnelles présentes du nord-ouest des Yvelines.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Meulan-en-Yvelines (78). Nous accompagnons TPE et PME : artisans, commerces de centre-ville, PME de services, professions libérales et entreprises agricoles de cette commune historique à la confluence Aubette/Seine, aux portes du Vexin. Audit Flash dès 490 € HT.",
   directAnswerEn:

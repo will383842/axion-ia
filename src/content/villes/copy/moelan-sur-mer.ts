@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MOELAN_SUR_MER_COPY: VilleCopy = {
   pitchFr:
-    "Moëlan-sur-Mer (29), commune littorale du sud Finistère entre les rias du Belon et de l'Aven, est mondialement connue pour ses huîtres plates Belon. TPE ostréicoles, PME touristiques, artisans, commerces de bourg, professions libérales et exploitants agricoles composent son tissu économique. Axion-IA y intervient pour tous types d'activités des rias du Belon et de l'Aven.",
+    "Moëlan-sur-Mer (29), commune littorale du sud Finistère entre les rias du Belon et de l'Aven, est mondialement connue pour ses huîtres plates Belon. TPE ostréicoles, PME touristiques, artisans, commerces de bourg, professions libérales et exploitants agricoles composent son tissu économique. Axion-IA accompagne entreprises et indépendants de tous secteurs des rias du Belon et de l'Aven.",
   pitchEn:
-    "Moëlan-sur-Mer (29), commune littorale du sud Finistère entre les rias du Belon et de l'Aven, est mondialement connue pour ses huîtres plates Belon. TPE ostréicoles, PME touristiques, artisans, commerces de bourg, professions libérales et exploitants agricoles composent son tissu économique. Axion-IA y intervient pour tous types d'activités des rias du Belon et de l'Aven.",
+    "Moëlan-sur-Mer (29), commune littorale du sud Finistère entre les rias du Belon et de l'Aven, est mondialement connue pour ses huîtres plates Belon. TPE ostréicoles, PME touristiques, artisans, commerces de bourg, professions libérales et exploitants agricoles composent son tissu économique. Axion-IA accompagne entreprises et indépendants de tous secteurs des rias du Belon et de l'Aven.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Moëlan-sur-Mer (29). Nous accompagnons tous types d'activités : TPE ostréicoles des rias du Belon et de l'Aven, PME touristiques, artisans, commerçants de bourg, professions libérales, exploitants agricoles et indépendants du secteur.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const MOELAN_SUR_MER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Moëlan-sur-Mer : diagnostic adapté aux TPE ostréicoles, PME touristiques des rias du Belon et de l'Aven, artisans et commerçants de bourg. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Moëlan-sur-Mer : diagnostic adapté aux TPE ostréicoles, PME touristiques des rias du Belon et de l'Aven, artisans et commerçants de bourg. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Moëlan-sur-Mer : diagnostic adapté aux TPE ostréicoles, PME touristiques des rias du Belon et de l'Aven, artisans et commerçants de bourg. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
+      en: "Audit IA à Moëlan-sur-Mer : diagnostic adapté aux TPE ostréicoles, PME touristiques des rias du Belon et de l'Aven, artisans et commerçants de bourg. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Moëlan-sur-Mer : formats adaptés aux exploitations ostréicoles, hébergeurs touristiques, TPE artisans ou commerces de bourg. Vos équipes repartent autonomes sur les outils IA métier.",

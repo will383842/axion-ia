@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VESOUL_COPY: VilleCopy = {
   pitchFr:
-    "Vesoul (70), préfecture de la Haute-Saône au pied de la colline de la Motte, concentre un tissu de TPE/PME de l'industrie automobile, de la mécanique, du commerce de centre-ville, de l'artisanat BTP, des professions libérales et des services publics. Axion-IA y intervient pour tous types d'activités.",
+    "Vesoul (70), préfecture de la Haute-Saône au pied de la colline de la Motte, concentre un tissu de TPE/PME de l'industrie automobile, de la mécanique, du commerce de centre-ville, de l'artisanat BTP, des professions libérales et des services publics. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Vesoul (70), préfecture de la Haute-Saône au pied de la colline de la Motte, concentre un tissu de TPE/PME de l'industrie automobile, de la mécanique, du commerce de centre-ville, de l'artisanat BTP, des professions libérales et des services publics. Axion-IA y intervient pour tous types d'activités.",
+    "Vesoul (70), préfecture de la Haute-Saône au pied de la colline de la Motte, concentre un tissu de TPE/PME de l'industrie automobile, de la mécanique, du commerce de centre-ville, de l'artisanat BTP, des professions libérales et des services publics. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vesoul (70). Nous accompagnons TPE et PME : sous-traitants automobile et mécanique, commerçants de centre-ville, artisans BTP, professions libérales et prestataires de services de la préfecture haut-saônoise. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const VESOUL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vesoul : diagnostic adapté aux TPE sous-traitants automobile, mécaniciens, commerçants, artisans BTP et professions libérales de la préfecture haut-saônoise. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Vesoul : diagnostic adapté aux TPE sous-traitants automobile, mécaniciens, commerçants, artisans BTP et professions libérales de la préfecture haut-saônoise. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Vesoul : diagnostic adapté aux TPE sous-traitants automobile, mécaniciens, commerçants, artisans BTP et professions libérales de la préfecture haut-saônoise. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Vesoul : diagnostic adapté aux TPE sous-traitants automobile, mécaniciens, commerçants, artisans BTP et professions libérales de la préfecture haut-saônoise. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Vesoul : formats adaptés à l'atelier mécanique, au commerce de centre-ville, au bureau PME ou au cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",

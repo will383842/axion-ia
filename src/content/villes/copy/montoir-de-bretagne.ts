@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MONTOIR_DE_BRETAGNE_COPY: VilleCopy = {
   pitchFr:
-    "Montoir-de-Bretagne (44), commune industrielle et portuaire de l'agglomération nazairienne en Loire-Atlantique. Terminal méthanier, zones logistiques, industrie aéronautique et navale. Tissu TPE sous-traitants, PME industrielles, logistique portuaire, services aux entreprises. Axion-IA y intervient pour tous types d'activités du bassin nazairien.",
+    "Montoir-de-Bretagne (44), commune industrielle et portuaire de l'agglomération nazairienne en Loire-Atlantique. Terminal méthanier, zones logistiques, industrie aéronautique et navale. Tissu TPE sous-traitants, PME industrielles, logistique portuaire, services aux entreprises. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin nazairien.",
   pitchEn:
-    "Montoir-de-Bretagne (44), commune industrielle et portuaire de l'agglomération nazairienne en Loire-Atlantique. Terminal méthanier, zones logistiques, industrie aéronautique et navale. Tissu TPE sous-traitants, PME industrielles, logistique portuaire, services aux entreprises. Axion-IA y intervient pour tous types d'activités du bassin nazairien.",
+    "Montoir-de-Bretagne (44), commune industrielle et portuaire de l'agglomération nazairienne en Loire-Atlantique. Terminal méthanier, zones logistiques, industrie aéronautique et navale. Tissu TPE sous-traitants, PME industrielles, logistique portuaire, services aux entreprises. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin nazairien.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montoir-de-Bretagne (44). Nous accompagnons tous types d'activités : TPE sous-traitants industriels, PME aéronautique et navale, logistique portuaire, services aux entreprises du bassin nazairien et prestataires des zones d'activités.",
   directAnswerEn:

@@ -29,8 +29,8 @@ export const AUBIGNY_LES_CLOUZEAUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Aubigny-Les Clouzeaux : diagnostic adapté aux TPE artisans, PME industrielles agglo La Roche-sur-Yon, exploitations agricoles et commerces. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Aubigny-Les Clouzeaux : diagnostic adapté aux TPE artisans, PME industrielles agglo La Roche-sur-Yon, exploitations agricoles et commerces. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Aubigny-Les Clouzeaux : diagnostic adapté aux TPE artisans, PME industrielles agglo La Roche-sur-Yon, exploitations agricoles et commerces. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Aubigny-Les Clouzeaux : diagnostic adapté aux TPE artisans, PME industrielles agglo La Roche-sur-Yon, exploitations agricoles et commerces. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Aubigny-Les Clouzeaux : formats adaptés aux PME industrielles, artisans BTP, exploitations agricoles et commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",

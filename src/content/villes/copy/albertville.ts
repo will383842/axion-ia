@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ALBERTVILLE_COPY: VilleCopy = {
   pitchFr:
-    "Albertville (73), sous-préfecture de Savoie et ville olympique (JO d'hiver 1992), est le carrefour des quatre vallées à la confluence Isère-Arly. Tissu tourisme montagne/sports d'hiver, héritage olympique, industrie sous-traitance, administration sous-préfecture, TPE commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Albertville (73), sous-préfecture de Savoie et ville olympique (JO d'hiver 1992), est le carrefour des quatre vallées à la confluence Isère-Arly. Tissu tourisme montagne/sports d'hiver, héritage olympique, industrie sous-traitance, administration sous-préfecture, TPE commerces. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Albertville (73), sous-préfecture de Savoie et ville olympique (JO d'hiver 1992), est le carrefour des quatre vallées à la confluence Isère-Arly. Tissu tourisme montagne/sports d'hiver, héritage olympique, industrie sous-traitance, administration sous-préfecture, TPE commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Albertville (73), sous-préfecture de Savoie et ville olympique (JO d'hiver 1992), est le carrefour des quatre vallées à la confluence Isère-Arly. Tissu tourisme montagne/sports d'hiver, héritage olympique, industrie sous-traitance, administration sous-préfecture, TPE commerces. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Albertville (73). Nous accompagnons TPE et PME : acteurs tourisme montagne et sports d'hiver, sous-traitants industriels, administration sous-préfecture, commerçants et artisans, opérateurs héritage olympique. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const ALBERTVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Albertville : diagnostic adapté aux stations de montagne, sous-traitants industriels, administration sous-préfecture, hôteliers, TPE commerces. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Albertville : diagnostic adapté aux stations de montagne, sous-traitants industriels, administration sous-préfecture, hôteliers, TPE commerces. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Albertville : diagnostic adapté aux stations de montagne, sous-traitants industriels, administration sous-préfecture, hôteliers, TPE commerces. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Albertville : diagnostic adapté aux stations de montagne, sous-traitants industriels, administration sous-préfecture, hôteliers, TPE commerces. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Albertville : formats adaptés station, usine sous-traitance, bureau administratif, hôtel, commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Albertville : formats adaptés station, usine sous-traitance, bureau administratif, hôtel, commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Albertville : formats adaptés station, usine sous-traitance, bureau administratif, hôtel, commerce. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Albertville : formats adaptés station, usine sous-traitance, bureau administratif, hôtel, commerce. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Albertville : revenue management stations ski, maintenance prédictive remontées mécaniques, CRM tourisme montagne, automatisation logistique industrielle.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LUCON_COPY: VilleCopy = {
   pitchFr:
-    "Luçon (85), sous-préfecture de la Vendée, est connue pour sa cathédrale où Richelieu fut évêque et sa proximité avec le marais poitevin. Plus de 9 400 habitants, pôle administratif et commercial, tissu de TPE artisanales, PME, commerces, agriculture et services. Axion-IA y intervient pour tous types d'activités.",
+    "Luçon (85), sous-préfecture de la Vendée, est connue pour sa cathédrale où Richelieu fut évêque et sa proximité avec le marais poitevin. Plus de 9 400 habitants, pôle administratif et commercial, tissu de TPE artisanales, PME, commerces, agriculture et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Luçon (85), sous-préfecture de la Vendée, est connue pour sa cathédrale où Richelieu fut évêque et sa proximité avec le marais poitevin. Plus de 9 400 habitants, pôle administratif et commercial, tissu de TPE artisanales, PME, commerces, agriculture et services. Axion-IA y intervient pour tous types d'activités.",
+    "Luçon (85), sous-préfecture de la Vendée, est connue pour sa cathédrale où Richelieu fut évêque et sa proximité avec le marais poitevin. Plus de 9 400 habitants, pôle administratif et commercial, tissu de TPE artisanales, PME, commerces, agriculture et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Luçon (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agricoles et agroalimentaires, professions libérales, acteurs du tourisme marais poitevin et services de la sous-préfecture.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const LUCON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Luçon : diagnostic adapté aux TPE artisans, exploitations agricoles plaine de Luçon, PME agroalimentaires, commerces et professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Luçon : diagnostic adapté aux TPE artisans, exploitations agricoles plaine de Luçon, PME agroalimentaires, commerces et professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Luçon : diagnostic adapté aux TPE artisans, exploitations agricoles plaine de Luçon, PME agroalimentaires, commerces et professions libérales. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Luçon : diagnostic adapté aux TPE artisans, exploitations agricoles plaine de Luçon, PME agroalimentaires, commerces et professions libérales. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Luçon : formats adaptés aux exploitations agricoles, PME agroalimentaires, commerces et professions libérales. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Luçon : formats adaptés aux exploitations agricoles, PME agroalimentaires, commerces et professions libérales. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Luçon : formats adaptés aux exploitations agricoles, PME agroalimentaires, commerces et professions libérales. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Luçon : formats adaptés aux exploitations agricoles, PME agroalimentaires, commerces et professions libérales. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Luçon : agriculture de précision plaine vendéenne, automatisation PME agroalimentaires, gestion clients commerces, outils prédictifs. Adapté TPE/PME sud-Vendée.",

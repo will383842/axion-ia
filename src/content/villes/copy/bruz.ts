@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BRUZ_COPY: VilleCopy = {
   pitchFr:
-    "Bruz (35), commune dynamique du sud de Rennes Métropole, accueille le campus de l'ÉNS Rennes et de CentraleSupélec ainsi que plusieurs zones d'activités tertiaires et technologiques. TPE et PME tech, start-up deeptech, artisans, commerces et professions libérales composent son économie. Axion-IA y intervient pour tous types d'activités du sud rennais.",
+    "Bruz (35), commune dynamique du sud de Rennes Métropole, accueille le campus de l'ÉNS Rennes et de CentraleSupélec ainsi que plusieurs zones d'activités tertiaires et technologiques. TPE et PME tech, start-up deeptech, artisans, commerces et professions libérales composent son économie. Axion-IA accompagne entreprises et indépendants de tous secteurs du sud rennais.",
   pitchEn:
-    "Bruz (35), commune dynamique du sud de Rennes Métropole, accueille le campus de l'ÉNS Rennes et de CentraleSupélec ainsi que plusieurs zones d'activités tertiaires et technologiques. TPE et PME tech, start-up deeptech, artisans, commerces et professions libérales composent son économie. Axion-IA y intervient pour tous types d'activités du sud rennais.",
+    "Bruz (35), commune dynamique du sud de Rennes Métropole, accueille le campus de l'ÉNS Rennes et de CentraleSupélec ainsi que plusieurs zones d'activités tertiaires et technologiques. TPE et PME tech, start-up deeptech, artisans, commerces et professions libérales composent son économie. Axion-IA accompagne entreprises et indépendants de tous secteurs du sud rennais.",
   seoHook: "tech, deeptech & campus ENS-Supélec",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bruz (35). Nous accompagnons tous types d'activités : TPE et PME tech, start-up deeptech du campus ÉNS Rennes-CentraleSupélec, artisans, commerçants et professions libérales du sud de Rennes Métropole. Audit Flash dès 490 € HT, démarrage sous 5 jours.",

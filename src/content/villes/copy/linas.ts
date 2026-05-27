@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LINAS_COPY: VilleCopy = {
   pitchFr:
-    "Linas (91), commune dynamique du Hurepoix en Essonne, connue pour l'autodrome de Linas-Montlhéry. Zone d'activités, TPE artisanat, commerces de proximité, PME services, logistique locale. Axion-IA y intervient pour tous types d'activités.",
+    "Linas (91), commune dynamique du Hurepoix en Essonne, connue pour l'autodrome de Linas-Montlhéry. Zone d'activités, TPE artisanat, commerces de proximité, PME services, logistique locale. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Linas (91), commune dynamique du Hurepoix en Essonne, connue pour l'autodrome de Linas-Montlhéry. Zone d'activités, TPE artisanat, commerces de proximité, PME services, logistique locale. Axion-IA y intervient pour tous types d'activités.",
+    "Linas (91), commune dynamique du Hurepoix en Essonne, connue pour l'autodrome de Linas-Montlhéry. Zone d'activités, TPE artisanat, commerces de proximité, PME services, logistique locale. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Linas (91). Nous accompagnons TPE et PME : entreprises zone d'activités, artisans, commerçants de proximité, prestataires de services, acteurs logistique du Hurepoix. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const LINAS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Linas : diagnostic adapté aux entreprises zone d'activités, TPE artisanat, commerces de proximité, PME services, prestataires logistique. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Linas : diagnostic adapté aux entreprises zone d'activités, TPE artisanat, commerces de proximité, PME services, prestataires logistique. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Linas : diagnostic adapté aux entreprises zone d'activités, TPE artisanat, commerces de proximité, PME services, prestataires logistique. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Linas : diagnostic adapté aux entreprises zone d'activités, TPE artisanat, commerces de proximité, PME services, prestataires logistique. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Linas : formats adaptés entrepôt zone d'activités, atelier artisan, commerce, siège PME, bureau tertiaire Hurepoix. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Linas : formats adaptés entrepôt zone d'activités, atelier artisan, commerce, siège PME, bureau tertiaire Hurepoix. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Linas : formats adaptés entrepôt zone d'activités, atelier artisan, commerce, siège PME, bureau tertiaire Hurepoix. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Linas : formats adaptés entrepôt zone d'activités, atelier artisan, commerce, siège PME, bureau tertiaire Hurepoix. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Linas : automatisation gestion stocks et flux logistiques, CRM augmenté PME, facturation artisans, optimisation planning zone d'activités.",
@@ -64,7 +64,7 @@ export const LINAS_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi à La Ville-du-Bois et Ballainvilliers ?",
-      a: "Oui, nous couvrons Linas, Montlhéry, La Ville-du-Bois, Ballainvilliers, Longjumeau et tout le Hurepoix essonnien. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Oui, nous couvrons Linas, Montlhéry, La Ville-du-Bois, Ballainvilliers, Longjumeau et tout le Hurepoix essonnien. Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

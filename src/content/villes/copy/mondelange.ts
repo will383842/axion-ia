@@ -30,8 +30,8 @@ export const MONDELANGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mondelange : diagnostic adapté aux TPE/PME industrie, logistique, sous-traitants métallurgie, artisans BTP et commerces. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Mondelange : diagnostic adapté aux TPE/PME industrie, logistique, sous-traitants métallurgie, artisans BTP et commerces. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Mondelange : diagnostic adapté aux TPE/PME industrie, logistique, sous-traitants métallurgie, artisans BTP et commerces. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Mondelange : diagnostic adapté aux TPE/PME industrie, logistique, sous-traitants métallurgie, artisans BTP et commerces. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Mondelange : formats adaptés à l''atelier industriel, entrepôt logistique, chantier BTP, bureau ou commerce. Vos équipes repartent autonomes.",

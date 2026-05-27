@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GUEMENE_PENFAO_COPY: VilleCopy = {
   pitchFr:
-    "Guémené-Penfao (44), bourg du nord Loire-Atlantique aux confins du Morbihan et de l'Ille-et-Vilaine, est un pôle de services rural entre Redon et Blain. Tissu de TPE artisanales, exploitations agricoles et d'élevage, commerces, PME agroalimentaires et forestières. Axion-IA y intervient pour tous types d'activités du pays de Redon.",
+    "Guémené-Penfao (44), bourg du nord Loire-Atlantique aux confins du Morbihan et de l'Ille-et-Vilaine, est un pôle de services rural entre Redon et Blain. Tissu de TPE artisanales, exploitations agricoles et d'élevage, commerces, PME agroalimentaires et forestières. Axion-IA accompagne entreprises et indépendants de tous secteurs du pays de Redon.",
   pitchEn:
-    "Guémené-Penfao (44), bourg du nord Loire-Atlantique aux confins du Morbihan et de l'Ille-et-Vilaine, est un pôle de services rural entre Redon et Blain. Tissu de TPE artisanales, exploitations agricoles et d'élevage, commerces, PME agroalimentaires et forestières. Axion-IA y intervient pour tous types d'activités du pays de Redon.",
+    "Guémené-Penfao (44), bourg du nord Loire-Atlantique aux confins du Morbihan et de l'Ille-et-Vilaine, est un pôle de services rural entre Redon et Blain. Tissu de TPE artisanales, exploitations agricoles et d'élevage, commerces, PME agroalimentaires et forestières. Axion-IA accompagne entreprises et indépendants de tous secteurs du pays de Redon.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guémené-Penfao (44). Nous accompagnons tous types d'activités : exploitations agricoles et d'élevage, TPE artisans BTP et bois, commerçants du bourg, PME agroalimentaires, professionnels de santé et services aux entreprises du nord Loire-Atlantique. Audit Flash accessible dès 490 € HT.",
   directAnswerEn:

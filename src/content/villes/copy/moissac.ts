@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MOISSAC_COPY: VilleCopy = {
   pitchFr:
-    "Moissac (82), cité d'art et d'histoire du Tarn-et-Garonne, plus de 13 000 habitants. Abbaye classée UNESCO, chasselas AOP, étape majeure du chemin de Saint-Jacques-de-Compostelle. Tissu TPE artisans, PME agroalimentaires, commerces, tourisme et professions libérales. Axion-IA y intervient pour tous types d'activités du Moissagais.",
+    "Moissac (82), cité d'art et d'histoire du Tarn-et-Garonne, plus de 13 000 habitants. Abbaye classée UNESCO, chasselas AOP, étape majeure du chemin de Saint-Jacques-de-Compostelle. Tissu TPE artisans, PME agroalimentaires, commerces, tourisme et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations du Moissagais.",
   pitchEn:
-    "Moissac (82), cité d'art et d'histoire du Tarn-et-Garonne, plus de 13 000 habitants. Abbaye classée UNESCO, chasselas AOP, étape majeure du chemin de Saint-Jacques-de-Compostelle. Tissu TPE artisans, PME agroalimentaires, commerces, tourisme et professions libérales. Axion-IA y intervient pour tous types d'activités du Moissagais.",
+    "Moissac (82), cité d'art et d'histoire du Tarn-et-Garonne, plus de 13 000 habitants. Abbaye classée UNESCO, chasselas AOP, étape majeure du chemin de Saint-Jacques-de-Compostelle. Tissu TPE artisans, PME agroalimentaires, commerces, tourisme et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations du Moissagais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Moissac (82). Nous accompagnons TPE artisans, PME agroalimentaires, commerçants, prestataires tourisme et professions libérales du Moissagais. Audit Flash dès 490 € HT.",
   directAnswerEn:

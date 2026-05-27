@@ -29,8 +29,8 @@ export const L_ISLE_D_ABEAU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à L'Isle-d'Abeau : diagnostic adapté aux TPE artisans, PME logistiques CAPI, industriels Nord-Isère et services publics. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
-      en: "Audit IA à L'Isle-d'Abeau : diagnostic adapté aux TPE artisans, PME logistiques CAPI, industriels Nord-Isère et services publics. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
+      fr: "Audit IA à L'Isle-d'Abeau : diagnostic adapté aux TPE artisans, PME logistiques CAPI, industriels Nord-Isère et services publics. ROI mesurable, audit Flash dès 490 € HT accessible aux petites structures.",
+      en: "Audit IA à L'Isle-d'Abeau : diagnostic adapté aux TPE artisans, PME logistiques CAPI, industriels Nord-Isère et services publics. ROI mesurable, audit Flash dès 490 € HT accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à L'Isle-d'Abeau : formats adaptés à l'entrepôt logistique, atelier industriel ou bureau. Vos équipes (logisticiens, commerciaux, artisans) repartent autonomes sur outils IA.",

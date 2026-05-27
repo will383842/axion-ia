@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_MITRE_LES_REMPARTS_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Mitre-les-Remparts (13), village fortifié médiéval sur les rives de l'étang de Berre, conserve un patrimoine historique remarquable. Tissu de TPE artisans, commerçants, PME services et agriculture. Proximité immédiate de la zone industrialo-portuaire de Fos-sur-Mer. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Mitre-les-Remparts (13), village fortifié médiéval sur les rives de l'étang de Berre, conserve un patrimoine historique remarquable. Tissu de TPE artisans, commerçants, PME services et agriculture. Proximité immédiate de la zone industrialo-portuaire de Fos-sur-Mer. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Saint-Mitre-les-Remparts (13), village fortifié médiéval sur les rives de l'étang de Berre, conserve un patrimoine historique remarquable. Tissu de TPE artisans, commerçants, PME services et agriculture. Proximité immédiate de la zone industrialo-portuaire de Fos-sur-Mer. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Mitre-les-Remparts (13), village fortifié médiéval sur les rives de l'étang de Berre, conserve un patrimoine historique remarquable. Tissu de TPE artisans, commerçants, PME services et agriculture. Proximité immédiate de la zone industrialo-portuaire de Fos-sur-Mer. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Mitre-les-Remparts (13). Nous accompagnons TPE artisans, commerçants, PME de services, exploitants agricoles et entreprises du bassin Fos-étang de Berre. Audit Flash dès 490 € HT.",
   directAnswerEn:

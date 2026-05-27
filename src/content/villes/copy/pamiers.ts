@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PAMIERS_COPY: VilleCopy = {
   pitchFr:
-    "Pamiers (09), sous-préfecture de l'Ariège et plus grande ville du département, est un pôle économique de la plaine ariégeoise en bord de rivière Ariège. Tissu TPE artisans, PME agroalimentaire et métallurgie, commerces centre-ville, agriculture plaine. Axion-IA y intervient pour tous types d'activités du bassin pamiséen.",
+    "Pamiers (09), sous-préfecture de l'Ariège et plus grande ville du département, est un pôle économique de la plaine ariégeoise en bord de rivière Ariège. Tissu TPE artisans, PME agroalimentaire et métallurgie, commerces centre-ville, agriculture plaine. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin pamiséen.",
   pitchEn:
-    "Pamiers (09), sous-préfecture de l'Ariège et plus grande ville du département, est un pôle économique de la plaine ariégeoise en bord de rivière Ariège. Tissu TPE artisans, PME agroalimentaire et métallurgie, commerces centre-ville, agriculture plaine. Axion-IA y intervient pour tous types d'activités du bassin pamiséen.",
+    "Pamiers (09), sous-préfecture de l'Ariège et plus grande ville du département, est un pôle économique de la plaine ariégeoise en bord de rivière Ariège. Tissu TPE artisans, PME agroalimentaire et métallurgie, commerces centre-ville, agriculture plaine. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin pamiséen.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pamiers (09), sous-préfecture de l'Ariège. Nous accompagnons TPE artisans, PME agroalimentaire et métallurgie, commerçants, agriculteurs et professions libérales du premier bassin économique ariégeois. Audit Flash dès 490 € HT.",
   directAnswerEn:

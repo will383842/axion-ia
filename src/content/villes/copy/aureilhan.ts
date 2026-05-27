@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const AUREILHAN_COPY: VilleCopy = {
   pitchFr:
-    "Aureilhan (65), commune de l'agglomération de Tarbes dans les Hautes-Pyrénées. Zone commerciale et industrielle dynamique, accès Pyrénées. Tissu PME industrielles, TPE artisans, commerces zone commerciale, restauration, professions libérales et services. Axion-IA y intervient pour tous types d'activités.",
+    "Aureilhan (65), commune de l'agglomération de Tarbes dans les Hautes-Pyrénées. Zone commerciale et industrielle dynamique, accès Pyrénées. Tissu PME industrielles, TPE artisans, commerces zone commerciale, restauration, professions libérales et services. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Aureilhan (65), commune de l'agglomération de Tarbes dans les Hautes-Pyrénées. Zone commerciale et industrielle dynamique, accès Pyrénées. Tissu PME industrielles, TPE artisans, commerces zone commerciale, restauration, professions libérales et services. Axion-IA y intervient pour tous types d'activités.",
+    "Aureilhan (65), commune de l'agglomération de Tarbes dans les Hautes-Pyrénées. Zone commerciale et industrielle dynamique, accès Pyrénées. Tissu PME industrielles, TPE artisans, commerces zone commerciale, restauration, professions libérales et services. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aureilhan (65). Nous accompagnons tous types d'activités : PME industrielles et logistiques, TPE artisans, enseignes de la zone commerciale, restaurateurs, indépendants, professions libérales et services de l'agglomération tarbaise.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const AUREILHAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Aureilhan : diagnostic adapté aux PME industrielles, enseignes commerciales, TPE artisans, restaurateurs et professions libérales de l'agglomération tarbaise. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Aureilhan : diagnostic adapté aux PME industrielles, enseignes commerciales, TPE artisans, restaurateurs et professions libérales de l'agglomération tarbaise. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Aureilhan : diagnostic adapté aux PME industrielles, enseignes commerciales, TPE artisans, restaurateurs et professions libérales de l'agglomération tarbaise. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Aureilhan : diagnostic adapté aux PME industrielles, enseignes commerciales, TPE artisans, restaurateurs et professions libérales de l'agglomération tarbaise. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Aureilhan : formats adaptés à l'atelier industriel, enseigne commerciale, restaurant ou cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Aureilhan : formats adaptés à l'atelier industriel, enseigne commerciale, restaurant ou cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Aureilhan : formats adaptés à l'atelier industriel, enseigne commerciale, restaurant ou cabinet. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Aureilhan : formats adaptés à l'atelier industriel, enseigne commerciale, restaurant ou cabinet. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Aureilhan : prédiction maintenance industrielle, optimisation stocks zone commerciale, automatisation planification logistique, classification documents comptables. Adapté industrie + commerce + services.",

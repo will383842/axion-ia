@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MONTBONNOT_SAINT_MARTIN_COPY: VilleCopy = {
   pitchFr:
-    "Montbonnot-Saint-Martin (38), commune de la vallée du Grésivaudan adhérente au Pays du Grésivaudan, abrite une partie du parc technologique Inovallée (cluster deep-tech, microélectronique, logiciel). Tissu PME tech, scale-ups innovation, TPE artisans, commerces et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Montbonnot-Saint-Martin (38), commune de la vallée du Grésivaudan adhérente au Pays du Grésivaudan, abrite une partie du parc technologique Inovallée (cluster deep-tech, microélectronique, logiciel). Tissu PME tech, scale-ups innovation, TPE artisans, commerces et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Montbonnot-Saint-Martin (38), commune de la vallée du Grésivaudan adhérente au Pays du Grésivaudan, abrite une partie du parc technologique Inovallée (cluster deep-tech, microélectronique, logiciel). Tissu PME tech, scale-ups innovation, TPE artisans, commerces et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Montbonnot-Saint-Martin (38), commune de la vallée du Grésivaudan adhérente au Pays du Grésivaudan, abrite une partie du parc technologique Inovallée (cluster deep-tech, microélectronique, logiciel). Tissu PME tech, scale-ups innovation, TPE artisans, commerces et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montbonnot-Saint-Martin (38). Nous accompagnons tous types d'activités : scale-ups deep-tech Inovallée, PME tech et logiciel, structures R&D innovation, TPE artisans BTP, commerçants, professions libérales et services du Pays du Grésivaudan.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const MONTBONNOT_SAINT_MARTIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montbonnot-Saint-Martin : diagnostic adapté aux scale-ups deep-tech Inovallée, PME tech/logiciel, TPE artisans et professions libérales du Pays du Grésivaudan. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Montbonnot-Saint-Martin : diagnostic adapté aux scale-ups deep-tech Inovallée, PME tech/logiciel, TPE artisans et professions libérales du Pays du Grésivaudan. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Montbonnot-Saint-Martin : diagnostic adapté aux scale-ups deep-tech Inovallée, PME tech/logiciel, TPE artisans et professions libérales du Pays du Grésivaudan. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Montbonnot-Saint-Martin : diagnostic adapté aux scale-ups deep-tech Inovallée, PME tech/logiciel, TPE artisans et professions libérales du Pays du Grésivaudan. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montbonnot-Saint-Martin : formats adaptés aux équipes tech/R&D Inovallée, PME tertiaires, cabinets. Vos équipes (ingénieurs, commerciaux) repartent autonomes sur outils IA.",

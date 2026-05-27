@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_GEORGES_DE_DIDONNE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Georges-de-Didonne (17), station balnéaire de la Côte de Beauté en Charente-Maritime, voisine de Royan sur l'estuaire de la Gironde. Tissu de TPE artisans, PME tourisme et hôtellerie, commerces saisonniers, services et professions libérales. Axion-IA y intervient pour tous types d'activités de la station didonnaise.",
+    "Saint-Georges-de-Didonne (17), station balnéaire de la Côte de Beauté en Charente-Maritime, voisine de Royan sur l'estuaire de la Gironde. Tissu de TPE artisans, PME tourisme et hôtellerie, commerces saisonniers, services et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations de la station didonnaise.",
   pitchEn:
-    "Saint-Georges-de-Didonne (17), station balnéaire de la Côte de Beauté en Charente-Maritime, voisine de Royan sur l'estuaire de la Gironde. Tissu de TPE artisans, PME tourisme et hôtellerie, commerces saisonniers, services et professions libérales. Axion-IA y intervient pour tous types d'activités de la station didonnaise.",
+    "Saint-Georges-de-Didonne (17), station balnéaire de la Côte de Beauté en Charente-Maritime, voisine de Royan sur l'estuaire de la Gironde. Tissu de TPE artisans, PME tourisme et hôtellerie, commerces saisonniers, services et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations de la station didonnaise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Georges-de-Didonne (17). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et hôtellerie-restauration, commerçants saisonniers, professions libérales et indépendants de cette station balnéaire de la Côte de Beauté.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const SAINT_GEORGES_DE_DIDONNE_COPY: VilleCopy = {
       en: "Audit IA à Saint-Georges-de-Didonne : diagnostic adapté aux hôteliers-restaurateurs, commerçants saisonniers, campings et TPE/PME de la Côte de Beauté. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Georges-de-Didonne : formats adaptés à l'hôtel, au camping, au restaurant, au commerce ou au bureau. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Saint-Georges-de-Didonne : formats adaptés à l'hôtel, au camping, au restaurant, au commerce ou au bureau. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Saint-Georges-de-Didonne : formats adaptés à l'hôtel, au camping, au restaurant, au commerce ou au bureau. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Saint-Georges-de-Didonne : formats adaptés à l'hôtel, au camping, au restaurant, au commerce ou au bureau. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Georges-de-Didonne : automatisation yield management hôtelier, agents conversationnels accueil touristique multilingue, prédiction fréquentation saisonnière, gestion stocks restauration.",

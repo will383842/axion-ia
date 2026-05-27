@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FERNEY_VOLTAIRE_COPY: VilleCopy = {
   pitchFr:
-    "Ferney-Voltaire (01), commune du pays de Gex dans l'Ain, est positionnée à la frontière suisse immédiate (Genève). Ville historique liée à Voltaire (château et domaine de Ferney). Tissu économie frontalière très dynamique, PME tertiaires, TPE artisans BTP, commerces internationaux. Axion-IA y intervient pour tous types d'activités.",
+    "Ferney-Voltaire (01), commune du pays de Gex dans l'Ain, est positionnée à la frontière suisse immédiate (Genève). Ville historique liée à Voltaire (château et domaine de Ferney). Tissu économie frontalière très dynamique, PME tertiaires, TPE artisans BTP, commerces internationaux. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Ferney-Voltaire (01), commune du pays de Gex dans l'Ain, est positionnée à la frontière suisse immédiate (Genève). Ville historique liée à Voltaire (château et domaine de Ferney). Tissu économie frontalière très dynamique, PME tertiaires, TPE artisans BTP, commerces internationaux. Axion-IA y intervient pour tous types d'activités.",
+    "Ferney-Voltaire (01), commune du pays de Gex dans l'Ain, est positionnée à la frontière suisse immédiate (Genève). Ville historique liée à Voltaire (château et domaine de Ferney). Tissu économie frontalière très dynamique, PME tertiaires, TPE artisans BTP, commerces internationaux. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ferney-Voltaire (01). Nous accompagnons tous types d'activités : PME tertiaires et internationales pays de Gex, économie frontalière Genève, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const FERNEY_VOLTAIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ferney-Voltaire : diagnostic adapté aux PME internationales/tertiaires pays de Gex, frontaliers Genève, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Ferney-Voltaire : diagnostic adapté aux PME internationales/tertiaires pays de Gex, frontaliers Genève, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Ferney-Voltaire : diagnostic adapté aux PME internationales/tertiaires pays de Gex, frontaliers Genève, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Ferney-Voltaire : diagnostic adapté aux PME internationales/tertiaires pays de Gex, frontaliers Genève, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ferney-Voltaire : formats adaptés au bureau international, commerce transfrontalier, atelier. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const FERNEY_VOLTAIRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Genève ?",
-      a: "Nos consultants viennent de Lyon (1h30) ou Genève (10 min). Aéroport Genève-Cointrin à 10 min. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (1h30) ou Genève (10 min). Aéroport Genève-Cointrin à 10 min. Coûts de déplacement à part, tarification transparente.",
     },
   ],
 };

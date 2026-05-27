@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LOGNES_COPY: VilleCopy = {
   pitchFr:
-    "Lognes (77), commune de la ville nouvelle de Marne-la-Vallée en Seine-et-Marne, passée de 248 habitants en 1975 à plus de 15 000 aujourd'hui. Zones d'activités économiques, TPE artisans et prestataires, PME services et technologie, commerçants, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Lognes (77), commune de la ville nouvelle de Marne-la-Vallée en Seine-et-Marne, passée de 248 habitants en 1975 à plus de 15 000 aujourd'hui. Zones d'activités économiques, TPE artisans et prestataires, PME services et technologie, commerçants, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Lognes (77), commune de la ville nouvelle de Marne-la-Vallée en Seine-et-Marne, passée de 248 habitants en 1975 à plus de 15 000 aujourd'hui. Zones d'activités économiques, TPE artisans et prestataires, PME services et technologie, commerçants, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Lognes (77), commune de la ville nouvelle de Marne-la-Vallée en Seine-et-Marne, passée de 248 habitants en 1975 à plus de 15 000 aujourd'hui. Zones d'activités économiques, TPE artisans et prestataires, PME services et technologie, commerçants, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lognes (77). Nous accompagnons tous types d'activités : TPE artisans et prestataires, PME services et technologie des zones d'activités Marne-la-Vallée, commerçants, professions libérales et entreprises du secteur tertiaire de l'est francilien. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -64,7 +64,7 @@ export const LOGNES_COPY: VilleCopy = {
     },
     {
       q: "Comment accédez-vous à Lognes depuis Paris ?",
-      a: "Nos consultants rejoignent Lognes en 30 min depuis Paris Châtelet (RER A, station Lognes). Proximité A4 et gare TGV Marne-la-Vallée Chessy. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants rejoignent Lognes en 30 min depuis Paris Châtelet (RER A, station Lognes). Proximité A4 et gare TGV Marne-la-Vallée Chessy. Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const QUEVEN_COPY: VilleCopy = {
   pitchFr:
-    "Quéven (56), commune résidentielle de l'agglomération de Lorient, bénéficie de la dynamique économique du deuxième pôle urbain du Morbihan. TPE de services, PME technologiques, artisans, commerces de proximité et professions libérales composent son tissu économique. Axion-IA y intervient pour tous types d'activités de l'agglomération lorientaise.",
+    "Quéven (56), commune résidentielle de l'agglomération de Lorient, bénéficie de la dynamique économique du deuxième pôle urbain du Morbihan. TPE de services, PME technologiques, artisans, commerces de proximité et professions libérales composent son tissu économique. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération lorientaise.",
   pitchEn:
-    "Quéven (56), commune résidentielle de l'agglomération de Lorient, bénéficie de la dynamique économique du deuxième pôle urbain du Morbihan. TPE de services, PME technologiques, artisans, commerces de proximité et professions libérales composent son tissu économique. Axion-IA y intervient pour tous types d'activités de l'agglomération lorientaise.",
+    "Quéven (56), commune résidentielle de l'agglomération de Lorient, bénéficie de la dynamique économique du deuxième pôle urbain du Morbihan. TPE de services, PME technologiques, artisans, commerces de proximité et professions libérales composent son tissu économique. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération lorientaise.",
   seoHook: "technologie, services & artisanat",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Quéven (56). Nous accompagnons tous types d'activités : TPE de services, PME technologiques, artisans, commerçants, professions libérales et indépendants de l'agglomération lorientaise. Audit Flash dès 490 € HT, démarrage sous 5 jours.",

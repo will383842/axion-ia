@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHARBONNIERES_LES_BAINS_COPY: VilleCopy = {
   pitchFr:
-    "Charbonnières-les-Bains (69), commune en banlieue ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Station thermale historique, abrite un casino notable (Le Lyon Vert). Tissu PME tertiaires, tourisme thermal, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Charbonnières-les-Bains (69), commune en banlieue ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Station thermale historique, abrite un casino notable (Le Lyon Vert). Tissu PME tertiaires, tourisme thermal, TPE artisans BTP, commerces. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Charbonnières-les-Bains (69), commune en banlieue ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Station thermale historique, abrite un casino notable (Le Lyon Vert). Tissu PME tertiaires, tourisme thermal, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Charbonnières-les-Bains (69), commune en banlieue ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Station thermale historique, abrite un casino notable (Le Lyon Vert). Tissu PME tertiaires, tourisme thermal, TPE artisans BTP, commerces. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Charbonnières-les-Bains (69). Nous accompagnons tous types d'activités : acteurs tourisme thermal et casino Le Lyon Vert, PME tertiaires ouest lyonnais, TPE artisans BTP, commerçants et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:

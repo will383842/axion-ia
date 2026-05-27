@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const TREGUNC_COPY: VilleCopy = {
   pitchFr:
-    "Trégunc (29), commune littorale du sud Finistère proche de Concarneau, combine tourisme balnéaire (pointe de la Jument, plages), agriculture et ostréiculture. Tissu TPE artisans, hébergeurs, commerçants saisonniers, exploitants agricoles et services. Axion-IA y intervient pour tous types d'activités.",
+    "Trégunc (29), commune littorale du sud Finistère proche de Concarneau, combine tourisme balnéaire (pointe de la Jument, plages), agriculture et ostréiculture. Tissu TPE artisans, hébergeurs, commerçants saisonniers, exploitants agricoles et services. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Trégunc (29), commune littorale du sud Finistère proche de Concarneau, combine tourisme balnéaire (pointe de la Jument, plages), agriculture et ostréiculture. Tissu TPE artisans, hébergeurs, commerçants saisonniers, exploitants agricoles et services. Axion-IA y intervient pour tous types d'activités.",
+    "Trégunc (29), commune littorale du sud Finistère proche de Concarneau, combine tourisme balnéaire (pointe de la Jument, plages), agriculture et ostréiculture. Tissu TPE artisans, hébergeurs, commerçants saisonniers, exploitants agricoles et services. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trégunc (29). Nous accompagnons tous types d'activités : TPE artisans, hébergeurs touristiques, commerçants saisonniers, ostréiculteurs, exploitants agricoles, professions libérales et services du littoral sud Finistère. Audit Flash à 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const TREGUNC_COPY: VilleCopy = {
       en: "Audit IA à Trégunc : diagnostic adapté aux TPE artisans, hébergeurs touristiques, ostréiculteurs, commerçants saisonniers et exploitants agricoles du littoral sud Finistère. ROI chiffré, audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Trégunc : formats adaptés à l'hébergement touristique, l'exploitation ostréicole, le commerce saisonnier ou l'exploitation agricole. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Trégunc : formats adaptés à l'hébergement touristique, l'exploitation ostréicole, le commerce saisonnier ou l'exploitation agricole. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Trégunc : formats adaptés à l'hébergement touristique, l'exploitation ostréicole, le commerce saisonnier ou l'exploitation agricole. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Trégunc : formats adaptés à l'hébergement touristique, l'exploitation ostréicole, le commerce saisonnier ou l'exploitation agricole. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Trégunc : agents conversationnels réservation multilingues, traçabilité ostréicole, classification photos cultures, tarification dynamique saisonnière. Adapté tourisme + agriculture littoral sud Finistère.",
@@ -64,7 +64,7 @@ export const TREGUNC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Trégunc ?",
-      a: "Nos consultants viennent de Quimper (30 min) ou Concarneau (10 min). Gare la plus proche Rosporden à 20 min (TER). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants viennent de Quimper (30 min) ou Concarneau (10 min). Gare la plus proche Rosporden à 20 min (TER). Pour les multi-jours, hébergement local possible. Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

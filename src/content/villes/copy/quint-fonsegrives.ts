@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const QUINT_FONSEGRIVES_COPY: VilleCopy = {
   pitchFr:
-    "Quint-Fonsegrives (31), commune résidentielle prisée de l'est de Toulouse, plus de 6 100 habitants. Tissu TPE de services, PME tertiaires, professions libérales, commerces de proximité. Axion-IA y intervient pour tous types d'activités de la couronne est de Toulouse.",
+    "Quint-Fonsegrives (31), commune résidentielle prisée de l'est de Toulouse, plus de 6 100 habitants. Tissu TPE de services, PME tertiaires, professions libérales, commerces de proximité. Axion-IA y déploie ses missions auprès de toutes les organisations de la couronne est de Toulouse.",
   pitchEn:
-    "Quint-Fonsegrives (31), commune résidentielle prisée de l'est de Toulouse, plus de 6 100 habitants. Tissu TPE de services, PME tertiaires, professions libérales, commerces de proximité. Axion-IA y intervient pour tous types d'activités de la couronne est de Toulouse.",
+    "Quint-Fonsegrives (31), commune résidentielle prisée de l'est de Toulouse, plus de 6 100 habitants. Tissu TPE de services, PME tertiaires, professions libérales, commerces de proximité. Axion-IA y déploie ses missions auprès de toutes les organisations de la couronne est de Toulouse.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Quint-Fonsegrives (31). Nous accompagnons TPE de services, PME tertiaires, professions libérales et commerçants de l'est Toulouse. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const QUINT_FONSEGRIVES_COPY: VilleCopy = {
       en: "Audit IA à Quint-Fonsegrives : diagnostic adapté aux TPE de services, PME tertiaires et professions libérales de l'est Toulouse. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Quint-Fonsegrives : formats adaptés au cabinet libéral, au commerce, à la PME tertiaire. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Quint-Fonsegrives : formats adaptés au cabinet libéral, au commerce, à la PME tertiaire. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Quint-Fonsegrives : formats adaptés au cabinet libéral, au commerce, à la PME tertiaire. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Quint-Fonsegrives : formats adaptés au cabinet libéral, au commerce, à la PME tertiaire. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Quint-Fonsegrives : automatisation gestion documentaire, agents conversationnels, classification courriers, reporting pour PME de l'est Toulouse.",

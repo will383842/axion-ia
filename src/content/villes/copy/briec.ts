@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BRIEC_COPY: VilleCopy = {
   pitchFr:
-    "Briec (29), bourg-centre rural du centre Cornouaille en Finistère, est un pôle agricole et artisanal entre Quimper et Châteaulin. Tissu TPE agricoles (élevage, polyculture), PME agroalimentaires, artisans BTP, commerces de proximité et services. Axion-IA y intervient pour tous types d'activités du Centre Cornouaille.",
+    "Briec (29), bourg-centre rural du centre Cornouaille en Finistère, est un pôle agricole et artisanal entre Quimper et Châteaulin. Tissu TPE agricoles (élevage, polyculture), PME agroalimentaires, artisans BTP, commerces de proximité et services. Axion-IA accompagne entreprises et indépendants de tous secteurs du Centre Cornouaille.",
   pitchEn:
-    "Briec (29), bourg-centre rural du centre Cornouaille en Finistère, est un pôle agricole et artisanal entre Quimper et Châteaulin. Tissu TPE agricoles (élevage, polyculture), PME agroalimentaires, artisans BTP, commerces de proximité et services. Axion-IA y intervient pour tous types d'activités du Centre Cornouaille.",
+    "Briec (29), bourg-centre rural du centre Cornouaille en Finistère, est un pôle agricole et artisanal entre Quimper et Châteaulin. Tissu TPE agricoles (élevage, polyculture), PME agroalimentaires, artisans BTP, commerces de proximité et services. Axion-IA accompagne entreprises et indépendants de tous secteurs du Centre Cornouaille.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Briec (29). Nous accompagnons tous types d'activités : TPE agricoles et éleveurs cornouaillais, PME agroalimentaires, artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises du Centre Cornouaille.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const BRIEC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Briec : diagnostic adapté aux TPE agricoles et éleveurs, PME agroalimentaires, artisans et commerçants du Centre Cornouaille. ROI chiffré, audit Flash 490 € HT accessible aux petites exploitations.",
-      en: "Audit IA à Briec : diagnostic adapté aux TPE agricoles et éleveurs, PME agroalimentaires, artisans et commerçants du Centre Cornouaille. ROI chiffré, audit Flash 490 € HT accessible aux petites exploitations.",
+      fr: "Audit IA à Briec : diagnostic adapté aux TPE agricoles et éleveurs, PME agroalimentaires, artisans et commerçants du Centre Cornouaille. Audit Flash 490 € HT avec ROI quantifié accessible aux petites exploitations.",
+      en: "Audit IA à Briec : diagnostic adapté aux TPE agricoles et éleveurs, PME agroalimentaires, artisans et commerçants du Centre Cornouaille. Audit Flash 490 € HT avec ROI quantifié accessible aux petites exploitations.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Briec : formats adaptés à l'exploitation agricole, l'atelier agroalimentaire, le chantier BTP ou le commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Briec : formats adaptés à l'exploitation agricole, l'atelier agroalimentaire, le chantier BTP ou le commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Briec : formats adaptés à l'exploitation agricole, l'atelier agroalimentaire, le chantier BTP ou le commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Briec : formats adaptés à l'exploitation agricole, l'atelier agroalimentaire, le chantier BTP ou le commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Briec : prédiction sanitaire élevage, contrôle qualité agroalimentaire par vision, automatisation traçabilité, agents conversationnels, gestion troupeaux. Centre Cornouaille.",

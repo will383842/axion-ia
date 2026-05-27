@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_GEORGES_D_ORQUES_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Georges-d'Orques (34), commune viticole réputée de l'ouest de Montpellier, AOC Languedoc-Saint-Georges-d'Orques (l'un des plus anciens crus du Languedoc). Garrigue, résidentielle. Tissu TPE commerçants, PME viticoles, artisans, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Georges-d'Orques (34), commune viticole réputée de l'ouest de Montpellier, AOC Languedoc-Saint-Georges-d'Orques (l'un des plus anciens crus du Languedoc). Garrigue, résidentielle. Tissu TPE commerçants, PME viticoles, artisans, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Saint-Georges-d'Orques (34), commune viticole réputée de l'ouest de Montpellier, AOC Languedoc-Saint-Georges-d'Orques (l'un des plus anciens crus du Languedoc). Garrigue, résidentielle. Tissu TPE commerçants, PME viticoles, artisans, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Georges-d'Orques (34), commune viticole réputée de l'ouest de Montpellier, AOC Languedoc-Saint-Georges-d'Orques (l'un des plus anciens crus du Languedoc). Garrigue, résidentielle. Tissu TPE commerçants, PME viticoles, artisans, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Georges-d'Orques (34). Nous accompagnons TPE commerçants, PME viticoles AOC Saint-Georges-d'Orques, artisans, professions libérales et entreprises de l'ouest montpelliérain.",
   directAnswerEn:

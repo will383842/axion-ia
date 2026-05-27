@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_MAX_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Max (54), commune résidentielle de Meurthe-et-Moselle à l'est de Nancy, est intégrée à la Métropole du Grand Nancy avec un tissu commercial et tertiaire de proximité. TPE et PME tertiaires, commerces de proximité, services aux entreprises, artisanat BTP, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Max (54), commune résidentielle de Meurthe-et-Moselle à l'est de Nancy, est intégrée à la Métropole du Grand Nancy avec un tissu commercial et tertiaire de proximité. TPE et PME tertiaires, commerces de proximité, services aux entreprises, artisanat BTP, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Saint-Max (54), commune résidentielle de Meurthe-et-Moselle à l'est de Nancy, est intégrée à la Métropole du Grand Nancy avec un tissu commercial et tertiaire de proximité. TPE et PME tertiaires, commerces de proximité, services aux entreprises, artisanat BTP, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Max (54), commune résidentielle de Meurthe-et-Moselle à l'est de Nancy, est intégrée à la Métropole du Grand Nancy avec un tissu commercial et tertiaire de proximité. TPE et PME tertiaires, commerces de proximité, services aux entreprises, artisanat BTP, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Max (54). Nous accompagnons TPE et PME : sociétés tertiaires de l'est nancéien, commerçants de proximité, artisans BTP, services aux entreprises, professions libérales de la Métropole Grand Nancy. Audit Flash dès 490 € HT.",
   directAnswerEn:

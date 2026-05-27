@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_QUENTIN_FALLAVIER_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Quentin-Fallavier (38), commune de l'unité urbaine Villefontaine en Isère, héberge des zones d'activités industrielles majeures aménagées dans le cadre de la ville nouvelle de L'Isle-d'Abeau (CAPI). Tissu PME industrielles, logistique d'envergure (proximité Saint-Exupéry), TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Quentin-Fallavier (38), commune de l'unité urbaine Villefontaine en Isère, héberge des zones d'activités industrielles majeures aménagées dans le cadre de la ville nouvelle de L'Isle-d'Abeau (CAPI). Tissu PME industrielles, logistique d'envergure (proximité Saint-Exupéry), TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Saint-Quentin-Fallavier (38), commune de l'unité urbaine Villefontaine en Isère, héberge des zones d'activités industrielles majeures aménagées dans le cadre de la ville nouvelle de L'Isle-d'Abeau (CAPI). Tissu PME industrielles, logistique d'envergure (proximité Saint-Exupéry), TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Quentin-Fallavier (38), commune de l'unité urbaine Villefontaine en Isère, héberge des zones d'activités industrielles majeures aménagées dans le cadre de la ville nouvelle de L'Isle-d'Abeau (CAPI). Tissu PME industrielles, logistique d'envergure (proximité Saint-Exupéry), TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Quentin-Fallavier (38). Nous accompagnons tous types d'activités : PME industrielles et logistiques des zones d'activités CAPI, opérateurs e-commerce et logistique Lyon-Saint-Exupéry, TPE artisans BTP, commerçants et services aux entreprises de la ville nouvelle.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const SAINT_QUENTIN_FALLAVIER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Quentin-Fallavier : diagnostic adapté aux opérateurs logistiques massifs CAPI/Saint-Exupéry, PME industrielles, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Quentin-Fallavier : diagnostic adapté aux opérateurs logistiques massifs CAPI/Saint-Exupéry, PME industrielles, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Quentin-Fallavier : diagnostic adapté aux opérateurs logistiques massifs CAPI/Saint-Exupéry, PME industrielles, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Saint-Quentin-Fallavier : diagnostic adapté aux opérateurs logistiques massifs CAPI/Saint-Exupéry, PME industrielles, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Quentin-Fallavier : formats adaptés à l'entrepôt logistique d'envergure, atelier industriel, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const SAINT_QUENTIN_FALLAVIER_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (35 min A43). Pour les multi-jours, hébergement local possible (hôtels Lyon-Saint-Exupéry à 10 min). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (35 min A43). Pour les multi-jours, hébergement local possible (hôtels Lyon-Saint-Exupéry à 10 min). Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BONDOUFLE_COPY: VilleCopy = {
   pitchFr:
-    "Bondoufle (91), commune de l'Essonne à 27 km au sud-est de Paris, bénéficie de la dynamique économique d'Évry-Courcouronnes et de ses zones d'activités (Courcouronnes, Lisses). Tissu TPE/PME logistique, commerce, artisanat BTP, services aux entreprises, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Bondoufle (91), commune de l'Essonne à 27 km au sud-est de Paris, bénéficie de la dynamique économique d'Évry-Courcouronnes et de ses zones d'activités (Courcouronnes, Lisses). Tissu TPE/PME logistique, commerce, artisanat BTP, services aux entreprises, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Bondoufle (91), commune de l'Essonne à 27 km au sud-est de Paris, bénéficie de la dynamique économique d'Évry-Courcouronnes et de ses zones d'activités (Courcouronnes, Lisses). Tissu TPE/PME logistique, commerce, artisanat BTP, services aux entreprises, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Bondoufle (91), commune de l'Essonne à 27 km au sud-est de Paris, bénéficie de la dynamique économique d'Évry-Courcouronnes et de ses zones d'activités (Courcouronnes, Lisses). Tissu TPE/PME logistique, commerce, artisanat BTP, services aux entreprises, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bondoufle (91). Nous accompagnons TPE et PME : entreprises logistique et transport des zones d'activités, commerces, artisans BTP, services aux entreprises, indépendants et professions libérales du bassin Évry-Courcouronnes. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const BONDOUFLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bondoufle : diagnostic adapté aux PME logistique, commerces, artisans BTP et services du bassin Évry-Courcouronnes. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Bondoufle : diagnostic adapté aux PME logistique, commerces, artisans BTP et services du bassin Évry-Courcouronnes. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Bondoufle : diagnostic adapté aux PME logistique, commerces, artisans BTP et services du bassin Évry-Courcouronnes. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Bondoufle : diagnostic adapté aux PME logistique, commerces, artisans BTP et services du bassin Évry-Courcouronnes. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Bondoufle : formats adaptés entrepôt logistique, bureau, commerce ou atelier. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Bondoufle : formats adaptés entrepôt logistique, bureau, commerce ou atelier. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Bondoufle : formats adaptés entrepôt logistique, bureau, commerce ou atelier. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Bondoufle : formats adaptés entrepôt logistique, bureau, commerce ou atelier. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Bondoufle : optimisation supply chain, automatisation préparation commandes, prédiction flux logistiques, CRM commercial. Adapté logistique, commerce, TPE services.",
@@ -64,7 +64,7 @@ export const BONDOUFLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Bondoufle depuis Paris ?",
-      a: "Nos consultants interviennent à Bondoufle (40 min depuis Paris via A6, Évry-Courcouronnes RER D à 10 min). Aéroport Orly à 20 min. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants interviennent à Bondoufle (40 min depuis Paris via A6, Évry-Courcouronnes RER D à 10 min). Aéroport Orly à 20 min. Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

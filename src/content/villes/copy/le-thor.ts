@@ -29,8 +29,8 @@ export const LE_THOR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Thor : diagnostic adapté aux TPE artisans, maraîchers, PME agroalimentaires, négoces et commerces de la vallée de la Sorgue. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA au Thor : diagnostic adapté aux TPE artisans, maraîchers, PME agroalimentaires, négoces et commerces de la vallée de la Sorgue. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA au Thor : diagnostic adapté aux TPE artisans, maraîchers, PME agroalimentaires, négoces et commerces de la vallée de la Sorgue. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA au Thor : diagnostic adapté aux TPE artisans, maraîchers, PME agroalimentaires, négoces et commerces de la vallée de la Sorgue. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site au Thor : ateliers pour équipes TPE/PME agricoles, transformateurs, négoces, artisans BTP et commerces. Outils IA configurés métier réel, dans vos locaux ou à Avignon.",
@@ -64,7 +64,7 @@ export const LE_THOR_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA au Thor ?",
-      a: "Le Thor est à 20 min d'Avignon et 10 min de L'Isle-sur-la-Sorgue via N100. Nos consultants se déplacent dans vos locaux. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Le Thor est à 20 min d'Avignon et 10 min de L'Isle-sur-la-Sorgue via N100. Nos consultants se déplacent dans vos locaux. Frais de mission en sus, grille tarifaire publique.",
     },
   ],
 };

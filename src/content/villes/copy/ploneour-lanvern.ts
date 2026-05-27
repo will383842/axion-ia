@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PLONEOUR_LANVERN_COPY: VilleCopy = {
   pitchFr:
-    "Plonéour-Lanvern (29), commune rurale du Pays Bigouden en Finistère, est un pôle agricole et maraîcher majeur du sud-ouest Cornouaille. Tissu TPE agricoles, maraîchers légumiers, PME agroalimentaires, artisans BTP, commerces de proximité et services. Axion-IA y intervient pour tous types d'activités du Pays Bigouden.",
+    "Plonéour-Lanvern (29), commune rurale du Pays Bigouden en Finistère, est un pôle agricole et maraîcher majeur du sud-ouest Cornouaille. Tissu TPE agricoles, maraîchers légumiers, PME agroalimentaires, artisans BTP, commerces de proximité et services. Axion-IA accompagne entreprises et indépendants de tous secteurs du Pays Bigouden.",
   pitchEn:
-    "Plonéour-Lanvern (29), commune rurale du Pays Bigouden en Finistère, est un pôle agricole et maraîcher majeur du sud-ouest Cornouaille. Tissu TPE agricoles, maraîchers légumiers, PME agroalimentaires, artisans BTP, commerces de proximité et services. Axion-IA y intervient pour tous types d'activités du Pays Bigouden.",
+    "Plonéour-Lanvern (29), commune rurale du Pays Bigouden en Finistère, est un pôle agricole et maraîcher majeur du sud-ouest Cornouaille. Tissu TPE agricoles, maraîchers légumiers, PME agroalimentaires, artisans BTP, commerces de proximité et services. Axion-IA accompagne entreprises et indépendants de tous secteurs du Pays Bigouden.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plonéour-Lanvern (29). Nous accompagnons tous types d'activités : TPE agricoles et maraîchers bigoudens, PME agroalimentaires, artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises du Pays Bigouden / sud Cornouaille.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const PLONEOUR_LANVERN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Plonéour-Lanvern : diagnostic adapté aux TPE agricoles et maraîchères bigoudènes, PME agroalimentaires, artisans et commerçants. ROI chiffré, audit Flash 490 € HT accessible aux petites exploitations.",
-      en: "Audit IA à Plonéour-Lanvern : diagnostic adapté aux TPE agricoles et maraîchères bigoudènes, PME agroalimentaires, artisans et commerçants. ROI chiffré, audit Flash 490 € HT accessible aux petites exploitations.",
+      fr: "Audit IA à Plonéour-Lanvern : diagnostic adapté aux TPE agricoles et maraîchères bigoudènes, PME agroalimentaires, artisans et commerçants. ROI mesurable, audit Flash dès 490 € HT accessible aux petites exploitations.",
+      en: "Audit IA à Plonéour-Lanvern : diagnostic adapté aux TPE agricoles et maraîchères bigoudènes, PME agroalimentaires, artisans et commerçants. ROI mesurable, audit Flash dès 490 € HT accessible aux petites exploitations.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Plonéour-Lanvern : formats adaptés à l'exploitation agricole, l'atelier agroalimentaire ou le commerce rural. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Plonéour-Lanvern : formats adaptés à l'exploitation agricole, l'atelier agroalimentaire ou le commerce rural. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Plonéour-Lanvern : formats adaptés à l'exploitation agricole, l'atelier agroalimentaire ou le commerce rural. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Plonéour-Lanvern : formats adaptés à l'exploitation agricole, l'atelier agroalimentaire ou le commerce rural. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Plonéour-Lanvern : prédiction récoltes maraîchères, classification photos parcelles, automatisation traçabilité agroalimentaire, agents conversationnels, optimisation stocks. Pays Bigouden.",

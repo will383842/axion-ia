@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LANNILIS_COPY: VilleCopy = {
   pitchFr:
-    "Lannilis (29), commune du Pays des Abers en Finistère nord, vit de l'agriculture, de la conchyliculture, du tourisme littoral et d'un tissu artisanal et commerçant solide. TPE et PME agricoles, ostréiculteurs, artisans du bâtiment, commerces de bourg, hébergeurs touristiques, professions libérales et services à la personne. Axion-IA y intervient pour tous types d'activités.",
+    "Lannilis (29), commune du Pays des Abers en Finistère nord, vit de l'agriculture, de la conchyliculture, du tourisme littoral et d'un tissu artisanal et commerçant solide. TPE et PME agricoles, ostréiculteurs, artisans du bâtiment, commerces de bourg, hébergeurs touristiques, professions libérales et services à la personne. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Lannilis (29), commune du Pays des Abers en Finistère nord, vit de l'agriculture, de la conchyliculture, du tourisme littoral et d'un tissu artisanal et commerçant solide. TPE et PME agricoles, ostréiculteurs, artisans du bâtiment, commerces de bourg, hébergeurs touristiques, professions libérales et services à la personne. Axion-IA y intervient pour tous types d'activités.",
+    "Lannilis (29), commune du Pays des Abers en Finistère nord, vit de l'agriculture, de la conchyliculture, du tourisme littoral et d'un tissu artisanal et commerçant solide. TPE et PME agricoles, ostréiculteurs, artisans du bâtiment, commerces de bourg, hébergeurs touristiques, professions libérales et services à la personne. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lannilis (29). Nous accompagnons TPE et PME : exploitations agricoles, ostréiculteurs des Abers, artisans du bâtiment, commerces de bourg, hébergeurs et restaurateurs du littoral, professions libérales. Audit Flash dès 490 € HT.",
   directAnswerEn:

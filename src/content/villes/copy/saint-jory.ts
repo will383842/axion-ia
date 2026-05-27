@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_JORY_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Jory (31), commune des bords de Garonne au nord de Toulouse, plus de 8 600 habitants. Tissu TPE artisans, PME de services et logistique, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités de la couronne nord de Toulouse.",
+    "Saint-Jory (31), commune des bords de Garonne au nord de Toulouse, plus de 8 600 habitants. Tissu TPE artisans, PME de services et logistique, commerces de proximité, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs de la couronne nord de Toulouse.",
   pitchEn:
-    "Saint-Jory (31), commune des bords de Garonne au nord de Toulouse, plus de 8 600 habitants. Tissu TPE artisans, PME de services et logistique, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités de la couronne nord de Toulouse.",
+    "Saint-Jory (31), commune des bords de Garonne au nord de Toulouse, plus de 8 600 habitants. Tissu TPE artisans, PME de services et logistique, commerces de proximité, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs de la couronne nord de Toulouse.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jory (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const SAINT_JORY_COPY: VilleCopy = {
       en: "Audit IA à Saint-Jory : diagnostic adapté aux TPE artisans, PME de services et logistique du nord Toulouse. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Jory : formats adaptés à l'artisan, au commerce, à la PME logistique. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Saint-Jory : formats adaptés à l'artisan, au commerce, à la PME logistique. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Saint-Jory : formats adaptés à l'artisan, au commerce, à la PME logistique. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Saint-Jory : formats adaptés à l'artisan, au commerce, à la PME logistique. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Jory : automatisation gestion planning, suivi colis, classification documents, agents conversationnels pour TPE-PME du nord Toulouse.",

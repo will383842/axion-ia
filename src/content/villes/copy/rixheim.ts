@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const RIXHEIM_COPY: VilleCopy = {
   pitchFr:
-    "Rixheim (68), commune à l'est de Mulhouse en Haut-Rhin, célèbre pour son histoire du papier peint et son musée, fait partie de Mulhouse Alsace Agglomération (m2A). Tissu TPE artisans, PME industrielles et de services, commerces de proximité, professions libérales et indépendants. Axion-IA y intervient pour tous types d'activités de l'agglomération est mulhousienne.",
+    "Rixheim (68), commune à l'est de Mulhouse en Haut-Rhin, célèbre pour son histoire du papier peint et son musée, fait partie de Mulhouse Alsace Agglomération (m2A). Tissu TPE artisans, PME industrielles et de services, commerces de proximité, professions libérales et indépendants. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération est mulhousienne.",
   pitchEn:
-    "Rixheim (68), commune à l'est de Mulhouse en Haut-Rhin, célèbre pour son histoire du papier peint et son musée, fait partie de Mulhouse Alsace Agglomération (m2A). Tissu TPE artisans, PME industrielles et de services, commerces de proximité, professions libérales et indépendants. Axion-IA y intervient pour tous types d'activités de l'agglomération est mulhousienne.",
+    "Rixheim (68), commune à l'est de Mulhouse en Haut-Rhin, célèbre pour son histoire du papier peint et son musée, fait partie de Mulhouse Alsace Agglomération (m2A). Tissu TPE artisans, PME industrielles et de services, commerces de proximité, professions libérales et indépendants. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération est mulhousienne.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rixheim (68). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants, professions libérales et indépendants de l'est de Mulhouse, terre historique du papier peint. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
   directAnswerEn:

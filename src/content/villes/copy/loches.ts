@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LOCHES_COPY: VilleCopy = {
   pitchFr:
-    "Loches (37), sous-préfecture d'Indre-et-Loire, est une cité royale remarquable avec son donjon roman du XIe siècle (l'un des mieux conservés d'Europe) et le Logis Royal où séjournèrent Charles VII et Jeanne d'Arc. Porte de la Touraine sud. Tissu TPE artisans, commerçants, PME de services, acteurs du tourisme patrimonial, professions libérales et exploitants agricoles. Axion-IA y intervient pour tous types d'activités.",
+    "Loches (37), sous-préfecture d'Indre-et-Loire, est une cité royale remarquable avec son donjon roman du XIe siècle (l'un des mieux conservés d'Europe) et le Logis Royal où séjournèrent Charles VII et Jeanne d'Arc. Porte de la Touraine sud. Tissu TPE artisans, commerçants, PME de services, acteurs du tourisme patrimonial, professions libérales et exploitants agricoles. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Loches (37), sous-préfecture d'Indre-et-Loire, est une cité royale remarquable avec son donjon roman du XIe siècle (l'un des mieux conservés d'Europe) et le Logis Royal où séjournèrent Charles VII et Jeanne d'Arc. Porte de la Touraine sud. Tissu TPE artisans, commerçants, PME de services, acteurs du tourisme patrimonial, professions libérales et exploitants agricoles. Axion-IA y intervient pour tous types d'activités.",
+    "Loches (37), sous-préfecture d'Indre-et-Loire, est une cité royale remarquable avec son donjon roman du XIe siècle (l'un des mieux conservés d'Europe) et le Logis Royal où séjournèrent Charles VII et Jeanne d'Arc. Porte de la Touraine sud. Tissu TPE artisans, commerçants, PME de services, acteurs du tourisme patrimonial, professions libérales et exploitants agricoles. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Loches (37). Nous accompagnons tous types d'activités : acteurs du tourisme patrimonial (cité royale, donjon, Logis Royal), TPE artisans, commerçants, PME de services, professions libérales, hôteliers-restaurateurs, exploitants agricoles et entreprises de la Touraine sud.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LOCHES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Loches : diagnostic adapté aux acteurs du tourisme patrimonial (cité royale, donjon), TPE artisans, commerçants, hôteliers-restaurateurs et PME de services de la Touraine sud. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Loches : diagnostic adapté aux acteurs du tourisme patrimonial (cité royale, donjon), TPE artisans, commerçants, hôteliers-restaurateurs et PME de services de la Touraine sud. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Loches : diagnostic adapté aux acteurs du tourisme patrimonial (cité royale, donjon), TPE artisans, commerçants, hôteliers-restaurateurs et PME de services de la Touraine sud. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Loches : diagnostic adapté aux acteurs du tourisme patrimonial (cité royale, donjon), TPE artisans, commerçants, hôteliers-restaurateurs et PME de services de la Touraine sud. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Loches : formats adaptés au site touristique patrimonial, à l'hôtel-restaurant, au commerce ou à l'atelier artisan. Vos équipes repartent autonomes sur outils IA configurés métier.",

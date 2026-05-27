@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LUCE_COPY: VilleCopy = {
   pitchFr:
-    "Lucé (28), commune d'Eure-et-Loir dans l'agglomération de Chartres, est un pôle économique péri-urbain dynamique avec plusieurs zones d'activités et commerciales structurantes. Tissu TPE/PME tertiaires, commerces zones commerciales, PME logistique, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Lucé (28), commune d'Eure-et-Loir dans l'agglomération de Chartres, est un pôle économique péri-urbain dynamique avec plusieurs zones d'activités et commerciales structurantes. Tissu TPE/PME tertiaires, commerces zones commerciales, PME logistique, services aux entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Lucé (28), commune d'Eure-et-Loir dans l'agglomération de Chartres, est un pôle économique péri-urbain dynamique avec plusieurs zones d'activités et commerciales structurantes. Tissu TPE/PME tertiaires, commerces zones commerciales, PME logistique, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Lucé (28), commune d'Eure-et-Loir dans l'agglomération de Chartres, est un pôle économique péri-urbain dynamique avec plusieurs zones d'activités et commerciales structurantes. Tissu TPE/PME tertiaires, commerces zones commerciales, PME logistique, services aux entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lucé (28). Nous accompagnons tous types d'activités : TPE/PME tertiaires agglomération Chartres, commerces zones commerciales, PME logistique, services aux entreprises du bassin chartrain.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LUCE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lucé : diagnostic adapté aux TPE/PME tertiaires agglo Chartres, enseignes commerciales, PME logistique. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Lucé : diagnostic adapté aux TPE/PME tertiaires agglo Chartres, enseignes commerciales, PME logistique. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Lucé : diagnostic adapté aux TPE/PME tertiaires agglo Chartres, enseignes commerciales, PME logistique. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Lucé : diagnostic adapté aux TPE/PME tertiaires agglo Chartres, enseignes commerciales, PME logistique. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Lucé : formats adaptés au bureau tertiaire, enseigne commerciale, entrepôt logistique. Vos équipes repartent autonomes.",
@@ -64,7 +64,7 @@ export const LUCE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ?",
-      a: "Paris Montparnasse à Chartres en 1h15 (TER direct), Lucé à 5 min de Chartres. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Paris Montparnasse à Chartres en 1h15 (TER direct), Lucé à 5 min de Chartres. Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

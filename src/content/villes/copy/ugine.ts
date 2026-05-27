@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const UGINE_COPY: VilleCopy = {
   pitchFr:
-    "Ugine (73), commune de la vallée d'Arly en Savoie entre Albertville et Annecy, est historiquement marquée par l'industrie métallurgique des aciers spéciaux. Tissu métallurgie aciers spéciaux, industrie mécanique, TPE artisanat, commerces vallée d'Arly, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Ugine (73), commune de la vallée d'Arly en Savoie entre Albertville et Annecy, est historiquement marquée par l'industrie métallurgique des aciers spéciaux. Tissu métallurgie aciers spéciaux, industrie mécanique, TPE artisanat, commerces vallée d'Arly, services aux entreprises. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Ugine (73), commune de la vallée d'Arly en Savoie entre Albertville et Annecy, est historiquement marquée par l'industrie métallurgique des aciers spéciaux. Tissu métallurgie aciers spéciaux, industrie mécanique, TPE artisanat, commerces vallée d'Arly, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Ugine (73), commune de la vallée d'Arly en Savoie entre Albertville et Annecy, est historiquement marquée par l'industrie métallurgique des aciers spéciaux. Tissu métallurgie aciers spéciaux, industrie mécanique, TPE artisanat, commerces vallée d'Arly, services aux entreprises. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ugine (73). Nous accompagnons TPE et PME de la vallée d'Arly : industriels métallurgie et aciers spéciaux, entreprises mécanique de précision, artisans, commerçants, services aux entreprises et indépendants du bassin Albertville-Annecy.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const UGINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ugine : diagnostic adapté aux industriels métallurgie et aciers spéciaux, entreprises mécaniques, TPE artisans et commerçants de la vallée d'Arly. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Ugine : diagnostic adapté aux industriels métallurgie et aciers spéciaux, entreprises mécaniques, TPE artisans et commerçants de la vallée d'Arly. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Ugine : diagnostic adapté aux industriels métallurgie et aciers spéciaux, entreprises mécaniques, TPE artisans et commerçants de la vallée d'Arly. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Ugine : diagnostic adapté aux industriels métallurgie et aciers spéciaux, entreprises mécaniques, TPE artisans et commerçants de la vallée d'Arly. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Ugine : ateliers en usine métallurgique, atelier mécanique ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier industrie et artisanat.",
-      en: "Interventions IA sur site à Ugine : ateliers en usine métallurgique, atelier mécanique ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier industrie et artisanat.",
+      fr: "Interventions IA sur site à Ugine : ateliers en usine métallurgique, atelier mécanique ou commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure industrie et artisanat.",
+      en: "Interventions IA sur site à Ugine : ateliers en usine métallurgique, atelier mécanique ou commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure industrie et artisanat.",
     },
     implementation: {
       fr: "Implémentation IA à Ugine : prédiction maintenance équipements métallurgiques, contrôle qualité aciers par vision, optimisation production mécanique, classification documents techniques, automatisation logistique industrielle.",

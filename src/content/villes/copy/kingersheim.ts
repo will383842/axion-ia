@@ -30,12 +30,12 @@ export const KINGERSHEIM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Kingersheim : diagnostic adapté aux TPE/PME commerce, distribution, industrie, artisans, services. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Kingersheim : diagnostic adapté aux TPE/PME commerce, distribution, industrie, artisans, services. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Kingersheim : diagnostic adapté aux TPE/PME commerce, distribution, industrie, artisans, services. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Kingersheim : diagnostic adapté aux TPE/PME commerce, distribution, industrie, artisans, services. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Kingersheim : formats adaptés au point de vente, l'entrepôt, l'atelier industriel, le bureau. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Kingersheim : formats adaptés au point de vente, l'entrepôt, l'atelier industriel, le bureau. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Kingersheim : formats adaptés au point de vente, l'entrepôt, l'atelier industriel, le bureau. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Kingersheim : formats adaptés au point de vente, l'entrepôt, l'atelier industriel, le bureau. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Kingersheim : automatisation gestion commerciale, traçabilité stocks, agents conversationnels, workflow logistique, optimisation distribution.",

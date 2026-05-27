@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const AMBARES_ET_LAGRAVE_COPY: VilleCopy = {
   pitchFr:
-    "Ambarès-et-Lagrave (33), commune au nord de Bordeaux Métropole, combine tissu industriel historique (chimie, logistique portuaire) et développement résidentiel. Axion-IA y intervient pour tous types d'activités : TPE artisans, PME industrielles, commerces, professions libérales et entreprises de services du nord-bordelais.",
+    "Ambarès-et-Lagrave (33), commune au nord de Bordeaux Métropole, combine tissu industriel historique (chimie, logistique portuaire) et développement résidentiel. Axion-IA couvre l'ensemble des activités professionnelles présentes : TPE artisans, PME industrielles, commerces, professions libérales et entreprises de services du nord-bordelais.",
   pitchEn:
-    "Ambarès-et-Lagrave (33), commune au nord de Bordeaux Métropole, combine tissu industriel historique (chimie, logistique portuaire) et développement résidentiel. Axion-IA y intervient pour tous types d'activités : TPE artisans, PME industrielles, commerces, professions libérales et entreprises de services du nord-bordelais.",
+    "Ambarès-et-Lagrave (33), commune au nord de Bordeaux Métropole, combine tissu industriel historique (chimie, logistique portuaire) et développement résidentiel. Axion-IA couvre l'ensemble des activités professionnelles présentes : TPE artisans, PME industrielles, commerces, professions libérales et entreprises de services du nord-bordelais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ambarès-et-Lagrave (33). Nous accompagnons TPE et PME du nord Bordeaux : industries chimiques et logistiques, artisans BTP, commerçants, PME de services et professions libérales. Audit Flash dès 490 € HT.",
   directAnswerEn:

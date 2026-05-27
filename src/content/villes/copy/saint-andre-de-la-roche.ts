@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_ANDRE_DE_LA_ROCHE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-André-de-la-Roche (06), petite commune résidentielle de l'agglomération niçoise est, est nichée au pied du mont Chauve entre Nice et La Trinité. Tissu TPE/PME artisanat BTP, commerces de proximité, services à la personne, professions libérales et entreprises du bassin niçois est. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-André-de-la-Roche (06), petite commune résidentielle de l'agglomération niçoise est, est nichée au pied du mont Chauve entre Nice et La Trinité. Tissu TPE/PME artisanat BTP, commerces de proximité, services à la personne, professions libérales et entreprises du bassin niçois est. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Saint-André-de-la-Roche (06), petite commune résidentielle de l'agglomération niçoise est, est nichée au pied du mont Chauve entre Nice et La Trinité. Tissu TPE/PME artisanat BTP, commerces de proximité, services à la personne, professions libérales et entreprises du bassin niçois est. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-André-de-la-Roche (06), petite commune résidentielle de l'agglomération niçoise est, est nichée au pied du mont Chauve entre Nice et La Trinité. Tissu TPE/PME artisanat BTP, commerces de proximité, services à la personne, professions libérales et entreprises du bassin niçois est. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-André-de-la-Roche (06). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, PME services et entreprises du bassin Nice est vers la vallée du Paillon.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const SAINT_ANDRE_DE_LA_ROCHE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-André-de-la-Roche : diagnostic adapté aux TPE artisans BTP, commerçants et professions libérales du bassin niçois est. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
-      en: "Audit IA à Saint-André-de-la-Roche : diagnostic adapté aux TPE artisans BTP, commerçants et professions libérales du bassin niçois est. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
+      fr: "Audit IA à Saint-André-de-la-Roche : diagnostic adapté aux TPE artisans BTP, commerçants et professions libérales du bassin niçois est. Audit Flash 490 € HT, ROI documenté en chiffres accessible aux petites structures.",
+      en: "Audit IA à Saint-André-de-la-Roche : diagnostic adapté aux TPE artisans BTP, commerçants et professions libérales du bassin niçois est. Audit Flash 490 € HT, ROI documenté en chiffres accessible aux petites structures.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-André-de-la-Roche : formats adaptés à l'atelier artisan, commerce ou cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",

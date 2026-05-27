@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const DRUSENHEIM_COPY: VilleCopy = {
   pitchFr:
-    "Drusenheim (67), commune de 5 388 habitants sur les bords du Rhin frontalier avec l'Allemagne, est un pôle industriel et logistique du nord-est Alsace. Plateforme industrielle pétrochimique et chimique. Tissu industrie chimique/pétrochimique, PME sous-traitants industriels, TPE artisans, logistique fluviale, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Drusenheim (67), commune de 5 388 habitants sur les bords du Rhin frontalier avec l'Allemagne, est un pôle industriel et logistique du nord-est Alsace. Plateforme industrielle pétrochimique et chimique. Tissu industrie chimique/pétrochimique, PME sous-traitants industriels, TPE artisans, logistique fluviale, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Drusenheim (67), commune de 5 388 habitants sur les bords du Rhin frontalier avec l'Allemagne, est un pôle industriel et logistique du nord-est Alsace. Plateforme industrielle pétrochimique et chimique. Tissu industrie chimique/pétrochimique, PME sous-traitants industriels, TPE artisans, logistique fluviale, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Drusenheim (67), commune de 5 388 habitants sur les bords du Rhin frontalier avec l'Allemagne, est un pôle industriel et logistique du nord-est Alsace. Plateforme industrielle pétrochimique et chimique. Tissu industrie chimique/pétrochimique, PME sous-traitants industriels, TPE artisans, logistique fluviale, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Drusenheim (67). Nous accompagnons tous types d'activités : TPE/PME industries pétrochimique et chimique, sous-traitants industriels, logistique fluviale (port rhénan), artisans, commerçants et services aux entreprises transfrontaliers (Allemagne).",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const DRUSENHEIM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Drusenheim : diagnostic adapté aux TPE/PME industries chimique/pétrochimique, sous-traitants industriels, logistique fluviale, artisans et commerçants transfrontaliers. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Drusenheim : diagnostic adapté aux TPE/PME industries chimique/pétrochimique, sous-traitants industriels, logistique fluviale, artisans et commerçants transfrontaliers. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Drusenheim : diagnostic adapté aux TPE/PME industries chimique/pétrochimique, sous-traitants industriels, logistique fluviale, artisans et commerçants transfrontaliers. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Drusenheim : diagnostic adapté aux TPE/PME industries chimique/pétrochimique, sous-traitants industriels, logistique fluviale, artisans et commerçants transfrontaliers. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Drusenheim : formats adaptés à la plateforme industrielle, PME sous-traitante, logistique fluviale, commerce transfrontalier. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Drusenheim : formats adaptés à la plateforme industrielle, PME sous-traitante, logistique fluviale, commerce transfrontalier. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Drusenheim : formats adaptés à la plateforme industrielle, PME sous-traitante, logistique fluviale, commerce transfrontalier. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Drusenheim : formats adaptés à la plateforme industrielle, PME sous-traitante, logistique fluviale, commerce transfrontalier. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Drusenheim : maintenance prédictive industrie chimique, classification incidents HSE, optimisation supply chain rhénane, agents conversationnels multilingue (DE/FR/EN), automatisation conformité réglementaire.",

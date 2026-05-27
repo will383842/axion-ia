@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const EPINAY_SOUS_SENART_COPY: VilleCopy = {
   pitchFr:
-    "Épinay-sous-Sénart (91), commune résidentielle de l'Essonne à 20 km au sud-est de Paris, s'inscrit dans le tissu périurbain du Val-d'Yerres-Val-de-Seine et du bassin Sénart. Tissu TPE artisanat BTP, commerces de proximité, PME services, professions libérales, services à la personne. Axion-IA y intervient pour tous types d'activités.",
+    "Épinay-sous-Sénart (91), commune résidentielle de l'Essonne à 20 km au sud-est de Paris, s'inscrit dans le tissu périurbain du Val-d'Yerres-Val-de-Seine et du bassin Sénart. Tissu TPE artisanat BTP, commerces de proximité, PME services, professions libérales, services à la personne. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Épinay-sous-Sénart (91), commune résidentielle de l'Essonne à 20 km au sud-est de Paris, s'inscrit dans le tissu périurbain du Val-d'Yerres-Val-de-Seine et du bassin Sénart. Tissu TPE artisanat BTP, commerces de proximité, PME services, professions libérales, services à la personne. Axion-IA y intervient pour tous types d'activités.",
+    "Épinay-sous-Sénart (91), commune résidentielle de l'Essonne à 20 km au sud-est de Paris, s'inscrit dans le tissu périurbain du Val-d'Yerres-Val-de-Seine et du bassin Sénart. Tissu TPE artisanat BTP, commerces de proximité, PME services, professions libérales, services à la personne. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Épinay-sous-Sénart (91). Nous accompagnons TPE et PME : artisans BTP, commerçants, professions libérales, PME services aux entreprises, prestataires de services à la personne du bassin Sénart. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const EPINAY_SOUS_SENART_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Épinay-sous-Sénart : diagnostic adapté aux TPE artisans BTP, commerçants, PME services et professions libérales du bassin Sénart. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Épinay-sous-Sénart : diagnostic adapté aux TPE artisans BTP, commerçants, PME services et professions libérales du bassin Sénart. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Épinay-sous-Sénart : diagnostic adapté aux TPE artisans BTP, commerçants, PME services et professions libérales du bassin Sénart. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Épinay-sous-Sénart : diagnostic adapté aux TPE artisans BTP, commerçants, PME services et professions libérales du bassin Sénart. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Épinay-sous-Sénart : formats adaptés atelier BTP, boutique, cabinet, bureau PME. Vos équipes repartent autonomes sur outils IA métier.",

@@ -29,8 +29,8 @@ export const LE_CATEAU_CAMBRESIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Cateau-Cambrésis : diagnostic adapté aux TPE artisans BTP, PME industrielles et agroalimentaires, commerces, professions libérales du Cambrésis. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA au Cateau-Cambrésis : diagnostic adapté aux TPE artisans BTP, PME industrielles et agroalimentaires, commerces, professions libérales du Cambrésis. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA au Cateau-Cambrésis : diagnostic adapté aux TPE artisans BTP, PME industrielles et agroalimentaires, commerces, professions libérales du Cambrésis. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA au Cateau-Cambrésis : diagnostic adapté aux TPE artisans BTP, PME industrielles et agroalimentaires, commerces, professions libérales du Cambrésis. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site au Cateau-Cambrésis : formats adaptés à l'atelier, au chantier, au commerce, au cabinet, à l'office de tourisme. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const LE_CATEAU_CAMBRESIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lille ?",
-      a: "Nos consultants viennent de Lille (1 h 10). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lille (1 h 10). Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

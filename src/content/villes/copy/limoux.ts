@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LIMOUX_COPY: VilleCopy = {
   pitchFr:
-    "Limoux (11), sous-préfecture de l'Aude, est la patrie de la Blanquette de Limoux (plus vieux vin effervescent du monde, 1531). Tissu TPE artisans, PME viticoles et caves coopératives, commerces centre-ville, agriculture haute vallée de l'Aude, tourisme oenotouristique. Axion-IA y intervient pour tous types d'activités du Limouxin.",
+    "Limoux (11), sous-préfecture de l'Aude, est la patrie de la Blanquette de Limoux (plus vieux vin effervescent du monde, 1531). Tissu TPE artisans, PME viticoles et caves coopératives, commerces centre-ville, agriculture haute vallée de l'Aude, tourisme oenotouristique. Axion-IA accompagne entreprises et indépendants de tous secteurs du Limouxin.",
   pitchEn:
-    "Limoux (11), sous-préfecture de l'Aude, est la patrie de la Blanquette de Limoux (plus vieux vin effervescent du monde, 1531). Tissu TPE artisans, PME viticoles et caves coopératives, commerces centre-ville, agriculture haute vallée de l'Aude, tourisme oenotouristique. Axion-IA y intervient pour tous types d'activités du Limouxin.",
+    "Limoux (11), sous-préfecture de l'Aude, est la patrie de la Blanquette de Limoux (plus vieux vin effervescent du monde, 1531). Tissu TPE artisans, PME viticoles et caves coopératives, commerces centre-ville, agriculture haute vallée de l'Aude, tourisme oenotouristique. Axion-IA accompagne entreprises et indépendants de tous secteurs du Limouxin.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Limoux (11), sous-préfecture de l'Aude. Nous accompagnons TPE artisans, PME viticoles et caves (Blanquette, Crémant de Limoux), commerçants, agriculteurs et acteurs de l'oenotourisme du Limouxin. Audit Flash dès 490 € HT.",
   directAnswerEn:

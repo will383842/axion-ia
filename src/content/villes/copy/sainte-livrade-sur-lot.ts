@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINTE_LIVRADE_SUR_LOT_COPY: VilleCopy = {
   pitchFr:
-    "Sainte-Livrade-sur-Lot (47), commune de 6 541 habitants dans le Lot-et-Garonne, est un bourg dynamique de la vallée du Lot, entre Villeneuve-sur-Lot et Agen. Son économie repose sur un tissu de TPE agricoles et maraîchères, PME agroalimentaires, commerces de proximité, artisans BTP et services. Axion-IA y intervient pour tous types d'activités.",
+    "Sainte-Livrade-sur-Lot (47), commune de 6 541 habitants dans le Lot-et-Garonne, est un bourg dynamique de la vallée du Lot, entre Villeneuve-sur-Lot et Agen. Son économie repose sur un tissu de TPE agricoles et maraîchères, PME agroalimentaires, commerces de proximité, artisans BTP et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Sainte-Livrade-sur-Lot (47), commune de 6 541 habitants dans le Lot-et-Garonne, est un bourg dynamique de la vallée du Lot, entre Villeneuve-sur-Lot et Agen. Son économie repose sur un tissu de TPE agricoles et maraîchères, PME agroalimentaires, commerces de proximité, artisans BTP et services. Axion-IA y intervient pour tous types d'activités.",
+    "Sainte-Livrade-sur-Lot (47), commune de 6 541 habitants dans le Lot-et-Garonne, est un bourg dynamique de la vallée du Lot, entre Villeneuve-sur-Lot et Agen. Son économie repose sur un tissu de TPE agricoles et maraîchères, PME agroalimentaires, commerces de proximité, artisans BTP et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sainte-Livrade-sur-Lot (47). Nous accompagnons TPE et PME de la vallée du Lot : exploitations agricoles et maraîchères, entreprises agroalimentaires, commerçants, artisans et professions libérales du bassin livradais. Audit Flash dès 490 € HT.",
   directAnswerEn:

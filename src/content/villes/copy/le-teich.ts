@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_TEICH_COPY: VilleCopy = {
   pitchFr:
-    "Le Teich (33), commune du sud du Bassin d'Arcachon réputée pour son parc ornithologique et son écotourisme, combine activités touristiques, ostréiculture, artisanat BTP et tissu résidentiel en croissance. Axion-IA y intervient pour tous types d'activités du bassin sud-arcachonnais.",
+    "Le Teich (33), commune du sud du Bassin d'Arcachon réputée pour son parc ornithologique et son écotourisme, combine activités touristiques, ostréiculture, artisanat BTP et tissu résidentiel en croissance. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin sud-arcachonnais.",
   pitchEn:
-    "Le Teich (33), commune du sud du Bassin d'Arcachon réputée pour son parc ornithologique et son écotourisme, combine activités touristiques, ostréiculture, artisanat BTP et tissu résidentiel en croissance. Axion-IA y intervient pour tous types d'activités du bassin sud-arcachonnais.",
+    "Le Teich (33), commune du sud du Bassin d'Arcachon réputée pour son parc ornithologique et son écotourisme, combine activités touristiques, ostréiculture, artisanat BTP et tissu résidentiel en croissance. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin sud-arcachonnais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Teich (33). Nous accompagnons TPE et PME du sud Bassin d'Arcachon : hébergeurs écotouristiques, ostréiculteurs, artisans BTP, commerçants et professions libérales. Audit Flash dès 490 € HT.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const WATTIGNIES_COPY: VilleCopy = {
   pitchFr:
-    "Wattignies (59), commune résidentielle de l'agglomération lilloise en banlieue sud, offre un cadre de vie prisé entre Lille et Seclin. Tissu économique : TPE et PME de services aux entreprises, commerces de proximité, artisans du bâtiment, professions libérales, prestataires santé et PME B2B desservant la métropole lilloise. Axion-IA y intervient pour tous types d'activités de la métropole lilloise sud.",
+    "Wattignies (59), commune résidentielle de l'agglomération lilloise en banlieue sud, offre un cadre de vie prisé entre Lille et Seclin. Tissu économique : TPE et PME de services aux entreprises, commerces de proximité, artisans du bâtiment, professions libérales, prestataires santé et PME B2B desservant la métropole lilloise. Axion-IA couvre l'ensemble des activités professionnelles présentes de la métropole lilloise sud.",
   pitchEn:
-    "Wattignies (59), commune résidentielle de l'agglomération lilloise en banlieue sud, offre un cadre de vie prisé entre Lille et Seclin. Tissu économique : TPE et PME de services aux entreprises, commerces de proximité, artisans du bâtiment, professions libérales, prestataires santé et PME B2B desservant la métropole lilloise. Axion-IA y intervient pour tous types d'activités de la métropole lilloise sud.",
+    "Wattignies (59), commune résidentielle de l'agglomération lilloise en banlieue sud, offre un cadre de vie prisé entre Lille et Seclin. Tissu économique : TPE et PME de services aux entreprises, commerces de proximité, artisans du bâtiment, professions libérales, prestataires santé et PME B2B desservant la métropole lilloise. Axion-IA couvre l'ensemble des activités professionnelles présentes de la métropole lilloise sud.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wattignies (59). Nous accompagnons TPE et PME : prestataires de services aux entreprises, commerces de proximité, artisans du bâtiment, professions libérales et PME B2B de la banlieue sud de Lille.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const WATTIGNIES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Wattignies : diagnostic adapté aux TPE/PME de services, commerces, artisans du bâtiment et professions libérales de la banlieue sud lilloise. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Wattignies : diagnostic adapté aux TPE/PME de services, commerces, artisans du bâtiment et professions libérales de la banlieue sud lilloise. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Wattignies : diagnostic adapté aux TPE/PME de services, commerces, artisans du bâtiment et professions libérales de la banlieue sud lilloise. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Wattignies : diagnostic adapté aux TPE/PME de services, commerces, artisans du bâtiment et professions libérales de la banlieue sud lilloise. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Wattignies : formats adaptés à la PME de services, au commerce, à l'artisan du bâtiment ou au professionnel libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Wattignies : formats adaptés à la PME de services, au commerce, à l'artisan du bâtiment ou au professionnel libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Wattignies : formats adaptés à la PME de services, au commerce, à l'artisan du bâtiment ou au professionnel libéral. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Wattignies : formats adaptés à la PME de services, au commerce, à l'artisan du bâtiment ou au professionnel libéral. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Wattignies : copilotes comptabilité et gestion TPE, automatisation devis-facturation artisans bâtiment, agents IA secrétariat médical et juridique, CRM augmenté prestataires B2B, chatbots accueil et prise de rendez-vous commerces.",

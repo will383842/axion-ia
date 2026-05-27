@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_REMY_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Rémy (71), commune résidentielle de l'agglomération de Chalon-sur-Saône en Saône-et-Loire, bénéficie de la dynamique économique chalonnaise. Tissu TPE/PME tertiaires, artisans BTP, commerces de proximité, professions libérales et services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Rémy (71), commune résidentielle de l'agglomération de Chalon-sur-Saône en Saône-et-Loire, bénéficie de la dynamique économique chalonnaise. Tissu TPE/PME tertiaires, artisans BTP, commerces de proximité, professions libérales et services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Saint-Rémy (71), commune résidentielle de l'agglomération de Chalon-sur-Saône en Saône-et-Loire, bénéficie de la dynamique économique chalonnaise. Tissu TPE/PME tertiaires, artisans BTP, commerces de proximité, professions libérales et services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Rémy (71), commune résidentielle de l'agglomération de Chalon-sur-Saône en Saône-et-Loire, bénéficie de la dynamique économique chalonnaise. Tissu TPE/PME tertiaires, artisans BTP, commerces de proximité, professions libérales et services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Rémy (71). Nous accompagnons tous types d'activités : TPE/PME tertiaires agglomération Chalon-sur-Saône, artisans BTP, commerçants, professions libérales et services aux entreprises.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const SAINT_REMY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Rémy : diagnostic adapté aux TPE/PME tertiaires Grand Chalon, artisans BTP, commerçants, professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Rémy : diagnostic adapté aux TPE/PME tertiaires Grand Chalon, artisans BTP, commerçants, professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Rémy : diagnostic adapté aux TPE/PME tertiaires Grand Chalon, artisans BTP, commerçants, professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Saint-Rémy : diagnostic adapté aux TPE/PME tertiaires Grand Chalon, artisans BTP, commerçants, professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Rémy : formats adaptés au bureau, cabinet libéral, commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Saint-Rémy : formats adaptés au bureau, cabinet libéral, commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Saint-Rémy : formats adaptés au bureau, cabinet libéral, commerce. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Saint-Rémy : formats adaptés au bureau, cabinet libéral, commerce. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Rémy : agents conversationnels B2B, automatisation workflow tertiaire, classification documents, CRM augmentés pour PME Grand Chalon.",

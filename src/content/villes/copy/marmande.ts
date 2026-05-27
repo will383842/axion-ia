@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MARMANDE_COPY: VilleCopy = {
   pitchFr:
-    "Marmande (47), sous-préfecture du Lot-et-Garonne, est la capitale de la tomate et un pôle agroalimentaire majeur de la vallée de la Garonne. Ville de 17 328 habitants, son économie repose sur un tissu de TPE maraîchères et agricoles, PME agroalimentaires, commerces de centre-ville, artisans BTP et services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Marmande (47), sous-préfecture du Lot-et-Garonne, est la capitale de la tomate et un pôle agroalimentaire majeur de la vallée de la Garonne. Ville de 17 328 habitants, son économie repose sur un tissu de TPE maraîchères et agricoles, PME agroalimentaires, commerces de centre-ville, artisans BTP et services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Marmande (47), sous-préfecture du Lot-et-Garonne, est la capitale de la tomate et un pôle agroalimentaire majeur de la vallée de la Garonne. Ville de 17 328 habitants, son économie repose sur un tissu de TPE maraîchères et agricoles, PME agroalimentaires, commerces de centre-ville, artisans BTP et services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Marmande (47), sous-préfecture du Lot-et-Garonne, est la capitale de la tomate et un pôle agroalimentaire majeur de la vallée de la Garonne. Ville de 17 328 habitants, son économie repose sur un tissu de TPE maraîchères et agricoles, PME agroalimentaires, commerces de centre-ville, artisans BTP et services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marmande (47). Nous accompagnons TPE et PME de la vallée de la Garonne : exploitations agricoles et maraîchères, entreprises agroalimentaires, commerçants, artisans, professions libérales et services aux entreprises du Marmandais. Audit Flash dès 490 € HT.",
   directAnswerEn:

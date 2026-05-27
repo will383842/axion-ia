@@ -29,12 +29,12 @@ export const BRIANCON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Briançon : diagnostic adapté aux TPE artisans, PME tourisme/ski Serre Chevalier, hébergeurs montagne et commerçants du Briançonnais. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Briançon : diagnostic adapté aux TPE artisans, PME tourisme/ski Serre Chevalier, hébergeurs montagne et commerçants du Briançonnais. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Briançon : diagnostic adapté aux TPE artisans, PME tourisme/ski Serre Chevalier, hébergeurs montagne et commerçants du Briançonnais. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
+      en: "Audit IA à Briançon : diagnostic adapté aux TPE artisans, PME tourisme/ski Serre Chevalier, hébergeurs montagne et commerçants du Briançonnais. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Briançon : formats adaptés aux hébergements montagne, gestionnaires de station, commerces ou artisans BTP altitude. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Briançon : formats adaptés aux hébergements montagne, gestionnaires de station, commerces ou artisans BTP altitude. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Briançon : formats adaptés aux hébergements montagne, gestionnaires de station, commerces ou artisans BTP altitude. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Briançon : formats adaptés aux hébergements montagne, gestionnaires de station, commerces ou artisans BTP altitude. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Briançon : agents conversationnels réservation station, prédiction fréquentation domaine skiable, automatisation gestion hébergements saisonniers, classification photos patrimoine Vauban.",

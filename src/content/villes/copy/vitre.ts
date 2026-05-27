@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VITRE_COPY: VilleCopy = {
   pitchFr:
-    "Vitré (35), sous-préfecture d'Ille-et-Vilaine aux portes de la Bretagne, est un pôle agroalimentaire majeur des marches bretonnes. Château médiéval classé, gare TGV Paris-Rennes, tissu TPE/PME industriel et tertiaire. Axion-IA y intervient pour tous types d'activités.",
+    "Vitré (35), sous-préfecture d'Ille-et-Vilaine aux portes de la Bretagne, est un pôle agroalimentaire majeur des marches bretonnes. Château médiéval classé, gare TGV Paris-Rennes, tissu TPE/PME industriel et tertiaire. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Vitré (35), sous-préfecture d'Ille-et-Vilaine aux portes de la Bretagne, est un pôle agroalimentaire majeur des marches bretonnes. Château médiéval classé, gare TGV Paris-Rennes, tissu TPE/PME industriel et tertiaire. Axion-IA y intervient pour tous types d'activités.",
+    "Vitré (35), sous-préfecture d'Ille-et-Vilaine aux portes de la Bretagne, est un pôle agroalimentaire majeur des marches bretonnes. Château médiéval classé, gare TGV Paris-Rennes, tissu TPE/PME industriel et tertiaire. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vitré (35). Nous accompagnons tous types d'activités : TPE et PME agroalimentaires, industries des marches bretonnes, artisans, commerçants, professions libérales, indépendants et services aux entreprises de Vitré Communauté.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const VITRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vitré : diagnostic adapté aux TPE et PME agroalimentaires, industriels et commerçants des marches bretonnes. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Vitré : diagnostic adapté aux TPE et PME agroalimentaires, industriels et commerçants des marches bretonnes. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Vitré : diagnostic adapté aux TPE et PME agroalimentaires, industriels et commerçants des marches bretonnes. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
+      en: "Audit IA à Vitré : diagnostic adapté aux TPE et PME agroalimentaires, industriels et commerçants des marches bretonnes. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Vitré : formats adaptés à l'usine agroalimentaire, atelier industriel, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Vitré : formats adaptés à l'usine agroalimentaire, atelier industriel, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Vitré : formats adaptés à l'usine agroalimentaire, atelier industriel, commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Vitré : formats adaptés à l'usine agroalimentaire, atelier industriel, commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Vitré : traçabilité agroalimentaire, contrôle qualité par vision, optimisation chaîne logistique, automatisation devis, agents conversationnels. Marches bretonnes.",

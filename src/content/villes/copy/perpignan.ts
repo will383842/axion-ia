@@ -55,6 +55,8 @@ export const PERPIGNAN_COPY: VilleCopy = {
   directAnswerEn:
     "Axion-IA is a senior AI architects consultancy that intervenes in Perpignan (66) on site — Saint-Charles, Tecnosud, Polygone Nord, city centre and communes across Perpignan Méditerranée Métropole. We support Perpignan micro-businesses, SMEs, mid-caps and large enterprises (agri-food, logistics, trading, renewables, viticulture, services) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
+  seoHook: "viticole, frontalier & tourisme",
+
   topSectorsNaf: [
     "Commerce, Logistique & Transport (Saint-Charles International)",
     "Agroalimentaire & Négoce fruits-légumes",

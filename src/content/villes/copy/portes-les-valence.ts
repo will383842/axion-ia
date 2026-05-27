@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PORTES_LES_VALENCE_COPY: VilleCopy = {
   pitchFr:
-    "Portes-lès-Valence (26), commune en banlieue sud immédiate de Valence dans la Drôme, est intégrée à Valence Romans Agglo. Position ferroviaire stratégique (gare de triage SNCF) et axe rhodanien A7. Tissu PME industrielles, logistique, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Portes-lès-Valence (26), commune en banlieue sud immédiate de Valence dans la Drôme, est intégrée à Valence Romans Agglo. Position ferroviaire stratégique (gare de triage SNCF) et axe rhodanien A7. Tissu PME industrielles, logistique, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Portes-lès-Valence (26), commune en banlieue sud immédiate de Valence dans la Drôme, est intégrée à Valence Romans Agglo. Position ferroviaire stratégique (gare de triage SNCF) et axe rhodanien A7. Tissu PME industrielles, logistique, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Portes-lès-Valence (26), commune en banlieue sud immédiate de Valence dans la Drôme, est intégrée à Valence Romans Agglo. Position ferroviaire stratégique (gare de triage SNCF) et axe rhodanien A7. Tissu PME industrielles, logistique, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Portes-lès-Valence (26). Nous accompagnons tous types d'activités : PME industrielles et logistiques (axe ferroviaire et A7), TPE artisans BTP, commerçants, agriculteurs vallée du Rhône, indépendants, professions libérales et services aux entreprises de Valence Romans Agglo.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const PORTES_LES_VALENCE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Portes-lès-Valence : diagnostic adapté aux PME industrielles/logistiques Valence Romans Agglo, TPE artisans, agriculteurs. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Portes-lès-Valence : diagnostic adapté aux PME industrielles/logistiques Valence Romans Agglo, TPE artisans, agriculteurs. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Portes-lès-Valence : diagnostic adapté aux PME industrielles/logistiques Valence Romans Agglo, TPE artisans, agriculteurs. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Portes-lès-Valence : diagnostic adapté aux PME industrielles/logistiques Valence Romans Agglo, TPE artisans, agriculteurs. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Portes-lès-Valence : formats adaptés à l'atelier industriel, entrepôt logistique, exploitation agricole. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const PORTES_LES_VALENCE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Paris ?",
-      a: "Nos consultants viennent de Lyon (1h A7) ou Paris (TGV Valence 2h15). Pour les multi-jours, hébergement local possible (hôtels Valence). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (1h A7) ou Paris (TGV Valence 2h15). Pour les multi-jours, hébergement local possible (hôtels Valence). Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

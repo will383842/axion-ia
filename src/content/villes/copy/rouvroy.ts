@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ROUVROY_COPY: VilleCopy = {
   pitchFr:
-    "Rouvroy (62), commune du bassin minier du Pas-de-Calais entre Hénin-Beaumont et Drocourt, accueille TPE artisanales, commerces, PME de services et professions libérales. Axion-IA y intervient pour tous types d'activités du bassin minier.",
+    "Rouvroy (62), commune du bassin minier du Pas-de-Calais entre Hénin-Beaumont et Drocourt, accueille TPE artisanales, commerces, PME de services et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin minier.",
   pitchEn:
-    "Rouvroy (62), commune du bassin minier du Pas-de-Calais entre Hénin-Beaumont et Drocourt, accueille TPE artisanales, commerces, PME de services et professions libérales. Axion-IA y intervient pour tous types d'activités du bassin minier.",
+    "Rouvroy (62), commune du bassin minier du Pas-de-Calais entre Hénin-Beaumont et Drocourt, accueille TPE artisanales, commerces, PME de services et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin minier.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rouvroy (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier héninois. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:

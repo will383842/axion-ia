@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MALEMORT_COPY: VilleCopy = {
   pitchFr:
-    "Malemort (19), commune de l'agglomération de Brive-la-Gaillarde en Corrèze, pôle commercial et logistique sur l'A20/A89. Tissu TPE/PME grande distribution, commerces, services, logistique et artisanat. Axion-IA y intervient pour tous types d'activités.",
+    "Malemort (19), commune de l'agglomération de Brive-la-Gaillarde en Corrèze, pôle commercial et logistique sur l'A20/A89. Tissu TPE/PME grande distribution, commerces, services, logistique et artisanat. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Malemort (19), commune de l'agglomération de Brive-la-Gaillarde en Corrèze, pôle commercial et logistique sur l'A20/A89. Tissu TPE/PME grande distribution, commerces, services, logistique et artisanat. Axion-IA y intervient pour tous types d'activités.",
+    "Malemort (19), commune de l'agglomération de Brive-la-Gaillarde en Corrèze, pôle commercial et logistique sur l'A20/A89. Tissu TPE/PME grande distribution, commerces, services, logistique et artisanat. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Malemort (19). Nous accompagnons TPE/PME du commerce, de la grande distribution, de la logistique, des services et de l'artisanat de l'agglo briviste. Audit Flash dès 490 € HT.",
   directAnswerEn:

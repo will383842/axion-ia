@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PORDIC_COPY: VilleCopy = {
   pitchFr:
-    "Pordic (22), commune littorale de l'agglomération de Saint-Brieuc en Côtes-d'Armor, allie cadre balnéaire et tissu économique dynamique. TPE artisans BTP et services, PME tertiaires, commerces de bourg, professions libérales, tourisme littoral. Axion-IA y intervient pour tous types d'activités.",
+    "Pordic (22), commune littorale de l'agglomération de Saint-Brieuc en Côtes-d'Armor, allie cadre balnéaire et tissu économique dynamique. TPE artisans BTP et services, PME tertiaires, commerces de bourg, professions libérales, tourisme littoral. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Pordic (22), commune littorale de l'agglomération de Saint-Brieuc en Côtes-d'Armor, allie cadre balnéaire et tissu économique dynamique. TPE artisans BTP et services, PME tertiaires, commerces de bourg, professions libérales, tourisme littoral. Axion-IA y intervient pour tous types d'activités.",
+    "Pordic (22), commune littorale de l'agglomération de Saint-Brieuc en Côtes-d'Armor, allie cadre balnéaire et tissu économique dynamique. TPE artisans BTP et services, PME tertiaires, commerces de bourg, professions libérales, tourisme littoral. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pordic (22). Nous accompagnons TPE et PME : artisans BTP, PME tertiaires, commerçants, professions libérales, acteurs du tourisme littoral de l'agglomération briochine. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const PORDIC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pordic : diagnostic adapté aux TPE artisans BTP, PME tertiaires, commerçants, professions libérales et acteurs du tourisme littoral. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Pordic : diagnostic adapté aux TPE artisans BTP, PME tertiaires, commerçants, professions libérales et acteurs du tourisme littoral. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Pordic : diagnostic adapté aux TPE artisans BTP, PME tertiaires, commerçants, professions libérales et acteurs du tourisme littoral. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Pordic : diagnostic adapté aux TPE artisans BTP, PME tertiaires, commerçants, professions libérales et acteurs du tourisme littoral. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pordic : formats adaptés chantier BTP, bureau, commerce, hébergement touristique. Vos équipes repartent autonomes sur outils IA configurés métier.",

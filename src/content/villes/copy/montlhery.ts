@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MONTLHERY_COPY: VilleCopy = {
   pitchFr:
-    "Montlhéry (91), cité historique du Hurepoix en Essonne, est célèbre pour sa tour médiévale (donjon du XIe siècle) et son autodrome légendaire (circuit de Linas-Montlhéry, 1924). Carrefour RN20 sud-francilien. Tissu TPE commerces, artisans, PME services, professions libérales, restauration. Axion-IA y intervient pour tous types d'activités.",
+    "Montlhéry (91), cité historique du Hurepoix en Essonne, est célèbre pour sa tour médiévale (donjon du XIe siècle) et son autodrome légendaire (circuit de Linas-Montlhéry, 1924). Carrefour RN20 sud-francilien. Tissu TPE commerces, artisans, PME services, professions libérales, restauration. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Montlhéry (91), cité historique du Hurepoix en Essonne, est célèbre pour sa tour médiévale (donjon du XIe siècle) et son autodrome légendaire (circuit de Linas-Montlhéry, 1924). Carrefour RN20 sud-francilien. Tissu TPE commerces, artisans, PME services, professions libérales, restauration. Axion-IA y intervient pour tous types d'activités.",
+    "Montlhéry (91), cité historique du Hurepoix en Essonne, est célèbre pour sa tour médiévale (donjon du XIe siècle) et son autodrome légendaire (circuit de Linas-Montlhéry, 1924). Carrefour RN20 sud-francilien. Tissu TPE commerces, artisans, PME services, professions libérales, restauration. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montlhéry (91). Nous accompagnons TPE et PME : commerçants du centre historique, artisans BTP, PME services du Hurepoix, professions libérales, restaurateurs, acteurs événementiel autodrome. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const MONTLHERY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montlhéry : diagnostic adapté aux commerçants centre historique, artisans, restaurateurs, PME services et professions libérales du Hurepoix. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Montlhéry : diagnostic adapté aux commerçants centre historique, artisans, restaurateurs, PME services et professions libérales du Hurepoix. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Montlhéry : diagnostic adapté aux commerçants centre historique, artisans, restaurateurs, PME services et professions libérales du Hurepoix. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Montlhéry : diagnostic adapté aux commerçants centre historique, artisans, restaurateurs, PME services et professions libérales du Hurepoix. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Montlhéry : formats adaptés commerce, atelier artisan, restaurant, bureau ou salle événementielle. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -64,7 +64,7 @@ export const MONTLHERY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Montlhéry depuis Paris ?",
-      a: "Nos consultants interviennent à Montlhéry (35 min depuis Paris via A6/RN20, Massy TGV à 15 min). Aéroport Orly à 20 min. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants interviennent à Montlhéry (35 min depuis Paris via A6/RN20, Massy TGV à 15 min). Aéroport Orly à 20 min. Frais de mission en sus, grille tarifaire publique.",
     },
   ],
 };

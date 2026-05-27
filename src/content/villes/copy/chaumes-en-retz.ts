@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHAUMES_EN_RETZ_COPY: VilleCopy = {
   pitchFr:
-    "Chaumes-en-Retz (44), commune nouvelle du Pays de Retz en Loire-Atlantique, aux portes de la Côte de Jade. Tissu TPE artisans et commerçants, PME tourisme littoral, exploitations agricoles, services de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités du Pays de Retz.",
+    "Chaumes-en-Retz (44), commune nouvelle du Pays de Retz en Loire-Atlantique, aux portes de la Côte de Jade. Tissu TPE artisans et commerçants, PME tourisme littoral, exploitations agricoles, services de proximité, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du Pays de Retz.",
   pitchEn:
-    "Chaumes-en-Retz (44), commune nouvelle du Pays de Retz en Loire-Atlantique, aux portes de la Côte de Jade. Tissu TPE artisans et commerçants, PME tourisme littoral, exploitations agricoles, services de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités du Pays de Retz.",
+    "Chaumes-en-Retz (44), commune nouvelle du Pays de Retz en Loire-Atlantique, aux portes de la Côte de Jade. Tissu TPE artisans et commerçants, PME tourisme littoral, exploitations agricoles, services de proximité, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du Pays de Retz.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chaumes-en-Retz (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tourisme littoral Côte de Jade, exploitations agricoles, services de proximité, professions libérales et entreprises du Pays de Retz.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const CHAUMES_EN_RETZ_COPY: VilleCopy = {
       en: "Audit IA à Chaumes-en-Retz : diagnostic adapté aux TPE artisans, PME tourisme littoral, exploitations agricoles et commerçants du Pays de Retz. ROI chiffré, Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Chaumes-en-Retz : formats adaptés à l'exploitation agricole, au commerce, au bureau ou à l'hébergement touristique. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Chaumes-en-Retz : formats adaptés à l'exploitation agricole, au commerce, au bureau ou à l'hébergement touristique. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Chaumes-en-Retz : formats adaptés à l'exploitation agricole, au commerce, au bureau ou à l'hébergement touristique. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Chaumes-en-Retz : formats adaptés à l'exploitation agricole, au commerce, au bureau ou à l'hébergement touristique. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Chaumes-en-Retz : automatisation gestion exploitation, agents conversationnels tourisme Côte de Jade, optimisation stocks, extraction données commerciales.",

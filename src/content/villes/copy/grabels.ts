@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GRABELS_COPY: VilleCopy = {
   pitchFr:
-    "Grabels (34), commune résidentielle du nord-ouest de Montpellier, entre garrigue et vignoble. Forte croissance démographique, zones d'activités, campus universitaire à proximité. Tissu TPE professions libérales, PME services, artisans, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Grabels (34), commune résidentielle du nord-ouest de Montpellier, entre garrigue et vignoble. Forte croissance démographique, zones d'activités, campus universitaire à proximité. Tissu TPE professions libérales, PME services, artisans, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Grabels (34), commune résidentielle du nord-ouest de Montpellier, entre garrigue et vignoble. Forte croissance démographique, zones d'activités, campus universitaire à proximité. Tissu TPE professions libérales, PME services, artisans, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Grabels (34), commune résidentielle du nord-ouest de Montpellier, entre garrigue et vignoble. Forte croissance démographique, zones d'activités, campus universitaire à proximité. Tissu TPE professions libérales, PME services, artisans, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Grabels (34). Nous accompagnons TPE professions libérales, PME de services, artisans, commerces et entreprises du nord-ouest montpelliérain.",
   directAnswerEn:

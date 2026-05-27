@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const COMINES_COPY: VilleCopy = {
   pitchFr:
-    "Comines (59), commune frontalière de la Belgique sur les bords de la Lys, dans le Nord en Métropole Européenne de Lille. Tissu TPE artisans, PME industrielles et logistiques, commerces transfrontaliers, professions libérales et indépendants. Axion-IA y intervient pour tous types d'activités du nord lillois.",
+    "Comines (59), commune frontalière de la Belgique sur les bords de la Lys, dans le Nord en Métropole Européenne de Lille. Tissu TPE artisans, PME industrielles et logistiques, commerces transfrontaliers, professions libérales et indépendants. Axion-IA y déploie ses missions auprès de toutes les organisations du nord lillois.",
   pitchEn:
-    "Comines (59), commune frontalière de la Belgique sur les bords de la Lys, dans le Nord en Métropole Européenne de Lille. Tissu TPE artisans, PME industrielles et logistiques, commerces transfrontaliers, professions libérales et indépendants. Axion-IA y intervient pour tous types d'activités du nord lillois.",
+    "Comines (59), commune frontalière de la Belgique sur les bords de la Lys, dans le Nord en Métropole Européenne de Lille. Tissu TPE artisans, PME industrielles et logistiques, commerces transfrontaliers, professions libérales et indépendants. Axion-IA y déploie ses missions auprès de toutes les organisations du nord lillois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Comines (59). Nous accompagnons TPE artisans, PME industrielles et logistiques, commerçants transfrontaliers, professions libérales et indépendants du nord lillois, frontière belge sur la Lys. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PARAY_VIEILLE_POSTE_COPY: VilleCopy = {
   pitchFr:
-    "Paray-Vieille-Poste (91), commune stratégique aux portes de l'aéroport Paris-Orly en Essonne. Zone d'activités aéroportuaire, logistique, fret, hôtellerie, services aux entreprises, TPE commerces de proximité. Axion-IA y intervient pour tous types d'activités.",
+    "Paray-Vieille-Poste (91), commune stratégique aux portes de l'aéroport Paris-Orly en Essonne. Zone d'activités aéroportuaire, logistique, fret, hôtellerie, services aux entreprises, TPE commerces de proximité. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Paray-Vieille-Poste (91), commune stratégique aux portes de l'aéroport Paris-Orly en Essonne. Zone d'activités aéroportuaire, logistique, fret, hôtellerie, services aux entreprises, TPE commerces de proximité. Axion-IA y intervient pour tous types d'activités.",
+    "Paray-Vieille-Poste (91), commune stratégique aux portes de l'aéroport Paris-Orly en Essonne. Zone d'activités aéroportuaire, logistique, fret, hôtellerie, services aux entreprises, TPE commerces de proximité. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Paray-Vieille-Poste (91). Nous accompagnons TPE et PME : entreprises logistique aéroportuaire, prestataires fret et handling, hôtellerie Orly, services aux entreprises, commerces de proximité. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const PARAY_VIEILLE_POSTE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Paray-Vieille-Poste : diagnostic adapté aux PME logistique aéroportuaire, prestataires fret, hôtels Orly, services aux entreprises, commerces de proximité. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Paray-Vieille-Poste : diagnostic adapté aux PME logistique aéroportuaire, prestataires fret, hôtels Orly, services aux entreprises, commerces de proximité. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Paray-Vieille-Poste : diagnostic adapté aux PME logistique aéroportuaire, prestataires fret, hôtels Orly, services aux entreprises, commerces de proximité. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Paray-Vieille-Poste : diagnostic adapté aux PME logistique aéroportuaire, prestataires fret, hôtels Orly, services aux entreprises, commerces de proximité. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Paray-Vieille-Poste : formats adaptés entrepôt logistique, siège PME fret, hôtel aéroportuaire, commerce, bureau tertiaire. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Paray-Vieille-Poste : formats adaptés entrepôt logistique, siège PME fret, hôtel aéroportuaire, commerce, bureau tertiaire. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Paray-Vieille-Poste : formats adaptés entrepôt logistique, siège PME fret, hôtel aéroportuaire, commerce, bureau tertiaire. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Paray-Vieille-Poste : formats adaptés entrepôt logistique, siège PME fret, hôtel aéroportuaire, commerce, bureau tertiaire. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Paray-Vieille-Poste : automatisation gestion stocks et flux logistiques, CRM augmenté hôtellerie, optimisation planning fret, facturation automatisée TPE.",

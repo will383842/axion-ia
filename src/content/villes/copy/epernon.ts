@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const EPERNON_COPY: VilleCopy = {
   pitchFr:
-    "Épernon (28), commune résidentielle d'Eure-et-Loir en vallée de la Drouette entre Chartres et Rambouillet, est un bourg attractif à proximité de l'Île-de-France. Tissu TPE/PME services, artisanat BTP, commerces de proximité, professions libérales et indépendants. Axion-IA y intervient pour tous types d'activités.",
+    "Épernon (28), commune résidentielle d'Eure-et-Loir en vallée de la Drouette entre Chartres et Rambouillet, est un bourg attractif à proximité de l'Île-de-France. Tissu TPE/PME services, artisanat BTP, commerces de proximité, professions libérales et indépendants. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Épernon (28), commune résidentielle d'Eure-et-Loir en vallée de la Drouette entre Chartres et Rambouillet, est un bourg attractif à proximité de l'Île-de-France. Tissu TPE/PME services, artisanat BTP, commerces de proximité, professions libérales et indépendants. Axion-IA y intervient pour tous types d'activités.",
+    "Épernon (28), commune résidentielle d'Eure-et-Loir en vallée de la Drouette entre Chartres et Rambouillet, est un bourg attractif à proximité de l'Île-de-France. Tissu TPE/PME services, artisanat BTP, commerces de proximité, professions libérales et indépendants. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Épernon (28). Nous accompagnons tous types d'activités : TPE/PME services, artisans BTP, commerçants de proximité, professions libérales, indépendants et consultants de la vallée de la Drouette, porte de l'Île-de-France.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const EPERNON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Épernon : diagnostic adapté aux TPE/PME services, artisans BTP, commerçants de proximité et professions libérales de la vallée de la Drouette. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Épernon : diagnostic adapté aux TPE/PME services, artisans BTP, commerçants de proximité et professions libérales de la vallée de la Drouette. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Épernon : diagnostic adapté aux TPE/PME services, artisans BTP, commerçants de proximité et professions libérales de la vallée de la Drouette. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Épernon : diagnostic adapté aux TPE/PME services, artisans BTP, commerçants de proximité et professions libérales de la vallée de la Drouette. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Épernon : formats adaptés au cabinet libéral, commerce, atelier artisan ou bureau. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -64,7 +64,7 @@ export const EPERNON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Épernon depuis Paris ?",
-      a: "Nos consultants arrivent en gare d'Épernon (TER Paris-Montparnasse 1h via Rambouillet) ou par la N10 (1h10). Chartres à 25 min. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants arrivent en gare d'Épernon (TER Paris-Montparnasse 1h via Rambouillet) ou par la N10 (1h10). Chartres à 25 min. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CADAUJAC_COPY: VilleCopy = {
   pitchFr:
-    "Cadaujac (33), commune viticole des Graves au sud immédiat de Bordeaux, allie vignoble AOC Pessac-Léognan, artisanat BTP, commerces et professions libérales dans un cadre résidentiel en croissance. Axion-IA y intervient pour tous types d'activités du sud bordelais.",
+    "Cadaujac (33), commune viticole des Graves au sud immédiat de Bordeaux, allie vignoble AOC Pessac-Léognan, artisanat BTP, commerces et professions libérales dans un cadre résidentiel en croissance. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud bordelais.",
   pitchEn:
-    "Cadaujac (33), commune viticole des Graves au sud immédiat de Bordeaux, allie vignoble AOC Pessac-Léognan, artisanat BTP, commerces et professions libérales dans un cadre résidentiel en croissance. Axion-IA y intervient pour tous types d'activités du sud bordelais.",
+    "Cadaujac (33), commune viticole des Graves au sud immédiat de Bordeaux, allie vignoble AOC Pessac-Léognan, artisanat BTP, commerces et professions libérales dans un cadre résidentiel en croissance. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud bordelais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cadaujac (33). Nous accompagnons TPE et PME du sud bordelais : vignerons des Graves et Pessac-Léognan, artisans BTP, commerçants et professions libérales. Audit Flash dès 490 € HT.",
   directAnswerEn:

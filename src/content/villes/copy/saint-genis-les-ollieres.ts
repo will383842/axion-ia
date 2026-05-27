@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_GENIS_LES_OLLIERES_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Genis-les-Ollières (69), commune en banlieue ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités de l'ouest lyonnais.",
+    "Saint-Genis-les-Ollières (69), commune en banlieue ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations de l'ouest lyonnais.",
   pitchEn:
-    "Saint-Genis-les-Ollières (69), commune en banlieue ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités de l'ouest lyonnais.",
+    "Saint-Genis-les-Ollières (69), commune en banlieue ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations de l'ouest lyonnais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Genis-les-Ollières (69). Nous accompagnons tous types d'activités : PME tertiaires ouest lyonnais, TPE artisans BTP, commerçants, professions libérales et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const SAINT_GENIS_LES_OLLIERES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Genis-les-Ollières : diagnostic adapté aux PME tertiaires ouest lyonnais, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Genis-les-Ollières : diagnostic adapté aux PME tertiaires ouest lyonnais, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Genis-les-Ollières : diagnostic adapté aux PME tertiaires ouest lyonnais, professions libérales, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Saint-Genis-les-Ollières : diagnostic adapté aux PME tertiaires ouest lyonnais, professions libérales, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Genis-les-Ollières : formats adaptés au bureau, cabinet, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const SAINT_GENIS_LES_OLLIERES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (20 min). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (20 min). Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

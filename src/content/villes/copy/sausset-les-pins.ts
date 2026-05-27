@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAUSSET_LES_PINS_COPY: VilleCopy = {
   pitchFr:
-    "Sausset-les-Pins (13), station balnéaire de la Côte Bleue entre Marseille et Martigues, possède un port de pêche pittoresque et un accès aux calanques du parc marin. Tissu de TPE commerçants, restaurateurs, artisans, PME tourisme et pêche artisanale. Axion-IA y intervient pour tous types d'activités.",
+    "Sausset-les-Pins (13), station balnéaire de la Côte Bleue entre Marseille et Martigues, possède un port de pêche pittoresque et un accès aux calanques du parc marin. Tissu de TPE commerçants, restaurateurs, artisans, PME tourisme et pêche artisanale. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Sausset-les-Pins (13), station balnéaire de la Côte Bleue entre Marseille et Martigues, possède un port de pêche pittoresque et un accès aux calanques du parc marin. Tissu de TPE commerçants, restaurateurs, artisans, PME tourisme et pêche artisanale. Axion-IA y intervient pour tous types d'activités.",
+    "Sausset-les-Pins (13), station balnéaire de la Côte Bleue entre Marseille et Martigues, possède un port de pêche pittoresque et un accès aux calanques du parc marin. Tissu de TPE commerçants, restaurateurs, artisans, PME tourisme et pêche artisanale. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sausset-les-Pins (13). Nous accompagnons TPE restaurateurs, commerçants, artisans, PME du tourisme balnéaire, pêcheurs et entreprises de la Côte Bleue. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const SAUSSET_LES_PINS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sausset-les-Pins : diagnostic pour TPE restaurateurs, commerçants, hébergeurs touristiques et PME de la Côte Bleue. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Sausset-les-Pins : diagnostic pour TPE restaurateurs, commerçants, hébergeurs touristiques et PME de la Côte Bleue. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Sausset-les-Pins : diagnostic pour TPE restaurateurs, commerçants, hébergeurs touristiques et PME de la Côte Bleue. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Sausset-les-Pins : diagnostic pour TPE restaurateurs, commerçants, hébergeurs touristiques et PME de la Côte Bleue. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Sausset-les-Pins : ateliers pratiques pour restaurateurs, hôteliers et commerçants. Gestion réservations, marketing saisonnier, outils IA configurés métier.",
@@ -64,7 +64,7 @@ export const SAUSSET_LES_PINS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Sausset-les-Pins ?",
-      a: "Nos consultants se déplacent dans vos locaux. Sausset-les-Pins est accessible en TER (35 min depuis Marseille) ou par A55 (35 min). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants se déplacent dans vos locaux. Sausset-les-Pins est accessible en TER (35 min depuis Marseille) ou par A55 (35 min). Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

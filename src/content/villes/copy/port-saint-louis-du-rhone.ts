@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PORT_SAINT_LOUIS_DU_RHONE_COPY: VilleCopy = {
   pitchFr:
-    "Port-Saint-Louis-du-Rhône (13), à l'embouchure du Grand Rhône aux portes de la Camargue, est une ville portuaire et industrielle. Tissu de TPE artisans, PME logistique et transport maritime, industries pétrochimiques, saliculture. Axion-IA y intervient pour tous types d'activités.",
+    "Port-Saint-Louis-du-Rhône (13), à l'embouchure du Grand Rhône aux portes de la Camargue, est une ville portuaire et industrielle. Tissu de TPE artisans, PME logistique et transport maritime, industries pétrochimiques, saliculture. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Port-Saint-Louis-du-Rhône (13), à l'embouchure du Grand Rhône aux portes de la Camargue, est une ville portuaire et industrielle. Tissu de TPE artisans, PME logistique et transport maritime, industries pétrochimiques, saliculture. Axion-IA y intervient pour tous types d'activités.",
+    "Port-Saint-Louis-du-Rhône (13), à l'embouchure du Grand Rhône aux portes de la Camargue, est une ville portuaire et industrielle. Tissu de TPE artisans, PME logistique et transport maritime, industries pétrochimiques, saliculture. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Port-Saint-Louis-du-Rhône (13). Nous accompagnons TPE artisans, PME de logistique portuaire et transport maritime, entreprises pétrochimiques, acteurs du tourisme camarguais et commerces de proximité. Audit Flash dès 490 € HT.",
   directAnswerEn:

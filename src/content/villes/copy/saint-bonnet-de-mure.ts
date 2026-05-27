@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_BONNET_DE_MURE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Bonnet-de-Mure (69), commune en banlieue est de Lyon dans le Rhône, est positionnée entre Lyon et aéroport Saint-Exupéry. Tissu PME logistiques et tertiaires (zones d'activités), TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités de l'est lyonnais.",
+    "Saint-Bonnet-de-Mure (69), commune en banlieue est de Lyon dans le Rhône, est positionnée entre Lyon et aéroport Saint-Exupéry. Tissu PME logistiques et tertiaires (zones d'activités), TPE artisans BTP, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'est lyonnais.",
   pitchEn:
-    "Saint-Bonnet-de-Mure (69), commune en banlieue est de Lyon dans le Rhône, est positionnée entre Lyon et aéroport Saint-Exupéry. Tissu PME logistiques et tertiaires (zones d'activités), TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités de l'est lyonnais.",
+    "Saint-Bonnet-de-Mure (69), commune en banlieue est de Lyon dans le Rhône, est positionnée entre Lyon et aéroport Saint-Exupéry. Tissu PME logistiques et tertiaires (zones d'activités), TPE artisans BTP, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'est lyonnais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Bonnet-de-Mure (69). Nous accompagnons tous types d'activités : PME logistiques et tertiaires est lyonnais, TPE artisans BTP, commerçants, indépendants et services aux entreprises de l'aire Lyon-Saint-Exupéry.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const SAINT_BONNET_DE_MURE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Bonnet-de-Mure : diagnostic adapté aux PME logistiques/tertiaires aire Saint-Exupéry, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Bonnet-de-Mure : diagnostic adapté aux PME logistiques/tertiaires aire Saint-Exupéry, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Bonnet-de-Mure : diagnostic adapté aux PME logistiques/tertiaires aire Saint-Exupéry, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Saint-Bonnet-de-Mure : diagnostic adapté aux PME logistiques/tertiaires aire Saint-Exupéry, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Bonnet-de-Mure : formats adaptés à l'entrepôt logistique, bureau, commerce. Vos équipes repartent autonomes sur outils IA.",

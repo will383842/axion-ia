@@ -29,12 +29,12 @@ export const SAINT_JACQUES_DE_LA_LANDE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Jacques-de-la-Lande : diagnostic adapté aux TPE et PME logistiques aéroportuaires, services et commerces du sud Rennes. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Saint-Jacques-de-la-Lande : diagnostic adapté aux TPE et PME logistiques aéroportuaires, services et commerces du sud Rennes. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Saint-Jacques-de-la-Lande : diagnostic adapté aux TPE et PME logistiques aéroportuaires, services et commerces du sud Rennes. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
+      en: "Audit IA à Saint-Jacques-de-la-Lande : diagnostic adapté aux TPE et PME logistiques aéroportuaires, services et commerces du sud Rennes. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Jacques-de-la-Lande : formats adaptés aux équipes logistiques, services, commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Saint-Jacques-de-la-Lande : formats adaptés aux équipes logistiques, services, commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Saint-Jacques-de-la-Lande : formats adaptés aux équipes logistiques, services, commerces. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Saint-Jacques-de-la-Lande : formats adaptés aux équipes logistiques, services, commerces. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Jacques-de-la-Lande : optimisation logistique aéroportuaire, automatisation facturation, agents conversationnels service client, prédiction flux voyageurs. Sud Rennes Métropole.",
@@ -64,7 +64,7 @@ export const SAINT_JACQUES_DE_LA_LANDE_COPY: VilleCopy = {
     },
     {
       q: "Comment accéder à vos consultants depuis Saint-Jacques ?",
-      a: "Saint-Jacques-de-la-Lande est directement connectée au centre de Rennes par le métro ligne B (10 min). Nos consultants interviennent sur site dans vos locaux. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Saint-Jacques-de-la-Lande est directement connectée au centre de Rennes par le métro ligne B (10 min). Nos consultants interviennent sur site dans vos locaux. Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

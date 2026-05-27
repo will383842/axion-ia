@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LEZOUX_COPY: VilleCopy = {
   pitchFr:
-    "Lezoux (63), bourg de la plaine de la Limagne en Puy-de-Dôme, est célèbre pour ses poteries gallo-romaines (plus grand centre de production de céramique sigillée de l'Empire romain en Gaule). Musée départemental de la Céramique. Artisanat d'art, agriculture Limagne, TPE artisans, commerces ruraux, tourisme patrimoine. Axion-IA y intervient pour tous types d'activités.",
+    "Lezoux (63), bourg de la plaine de la Limagne en Puy-de-Dôme, est célèbre pour ses poteries gallo-romaines (plus grand centre de production de céramique sigillée de l'Empire romain en Gaule). Musée départemental de la Céramique. Artisanat d'art, agriculture Limagne, TPE artisans, commerces ruraux, tourisme patrimoine. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Lezoux (63), bourg de la plaine de la Limagne en Puy-de-Dôme, est célèbre pour ses poteries gallo-romaines (plus grand centre de production de céramique sigillée de l'Empire romain en Gaule). Musée départemental de la Céramique. Artisanat d'art, agriculture Limagne, TPE artisans, commerces ruraux, tourisme patrimoine. Axion-IA y intervient pour tous types d'activités.",
+    "Lezoux (63), bourg de la plaine de la Limagne en Puy-de-Dôme, est célèbre pour ses poteries gallo-romaines (plus grand centre de production de céramique sigillée de l'Empire romain en Gaule). Musée départemental de la Céramique. Artisanat d'art, agriculture Limagne, TPE artisans, commerces ruraux, tourisme patrimoine. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lezoux (63). Nous accompagnons TPE et PME : artisans d'art céramique, exploitants agricoles Limagne, commerçants ruraux, acteurs tourisme patrimoine (Musée de la Céramique) et professions libérales du bassin Thiers-Lezoux.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const LEZOUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Lezoux : diagnostic adapté aux artisans d'art céramistes, exploitants agricoles Limagne, TPE artisans, commerçants ruraux et acteurs tourisme patrimoine du bassin Thiers-Lezoux. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Lezoux : diagnostic adapté aux artisans d'art céramistes, exploitants agricoles Limagne, TPE artisans, commerçants ruraux et acteurs tourisme patrimoine du bassin Thiers-Lezoux. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Lezoux : diagnostic adapté aux artisans d'art céramistes, exploitants agricoles Limagne, TPE artisans, commerçants ruraux et acteurs tourisme patrimoine du bassin Thiers-Lezoux. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Lezoux : diagnostic adapté aux artisans d'art céramistes, exploitants agricoles Limagne, TPE artisans, commerçants ruraux et acteurs tourisme patrimoine du bassin Thiers-Lezoux. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Lezoux : formats adaptés aux ateliers céramique, exploitations agricoles, commerces ou structures touristiques patrimoine. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Lezoux : formats adaptés aux ateliers céramique, exploitations agricoles, commerces ou structures touristiques patrimoine. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Lezoux : formats adaptés aux ateliers céramique, exploitations agricoles, commerces ou structures touristiques patrimoine. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Lezoux : formats adaptés aux ateliers céramique, exploitations agricoles, commerces ou structures touristiques patrimoine. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Lezoux : agents IA vente en ligne artisanat céramique, optimisation rendements agricoles par données, automatisation gestion stocks commerce, agents conversationnels multilingues Musée Céramique.",
@@ -64,7 +64,7 @@ export const LEZOUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Clermont-Ferrand ?",
-      a: "Nos consultants interviennent depuis Clermont-Ferrand (30 min voiture via A89/Thiers). Pour les missions multi-jours en Limagne, hébergement local possible. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants interviennent depuis Clermont-Ferrand (30 min voiture via A89/Thiers). Pour les missions multi-jours en Limagne, hébergement local possible. Coûts de déplacement à part, tarification transparente.",
     },
   ],
 };

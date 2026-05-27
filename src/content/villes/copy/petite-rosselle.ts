@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PETITE_ROSSELLE_COPY: VilleCopy = {
   pitchFr:
-    "Petite-Rosselle (57), commune de l'agglomération de Forbach dans le Bassin houiller lorrain en Moselle, célèbre pour le parc Explor Wendel et le musée de la mine. Tissu TPE artisans, PME industrielles et de services, commerces, professions libérales et indépendants. Axion-IA y intervient pour tous types d'activités de la Moselle-Est.",
+    "Petite-Rosselle (57), commune de l'agglomération de Forbach dans le Bassin houiller lorrain en Moselle, célèbre pour le parc Explor Wendel et le musée de la mine. Tissu TPE artisans, PME industrielles et de services, commerces, professions libérales et indépendants. Axion-IA couvre l'ensemble des activités professionnelles présentes de la Moselle-Est.",
   pitchEn:
-    "Petite-Rosselle (57), commune de l'agglomération de Forbach dans le Bassin houiller lorrain en Moselle, célèbre pour le parc Explor Wendel et le musée de la mine. Tissu TPE artisans, PME industrielles et de services, commerces, professions libérales et indépendants. Axion-IA y intervient pour tous types d'activités de la Moselle-Est.",
+    "Petite-Rosselle (57), commune de l'agglomération de Forbach dans le Bassin houiller lorrain en Moselle, célèbre pour le parc Explor Wendel et le musée de la mine. Tissu TPE artisans, PME industrielles et de services, commerces, professions libérales et indépendants. Axion-IA couvre l'ensemble des activités professionnelles présentes de la Moselle-Est.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Petite-Rosselle (57). Nous accompagnons TPE artisans, PME industrielles, commerçants, professions libérales et indépendants du Bassin houiller et de l'agglomération de Forbach. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FOURMIES_COPY: VilleCopy = {
   pitchFr:
-    "Fourmies (59), ville de l'Avesnois au sud du département du Nord, héritière d'une longue tradition textile (laine peignée) et industrielle. Tissu TPE/PME industrie reconvertie, plasturgie, agroalimentaire, commerces et services de proximité, artisanat. Axion-IA y intervient pour tous types d'activités.",
+    "Fourmies (59), ville de l'Avesnois au sud du département du Nord, héritière d'une longue tradition textile (laine peignée) et industrielle. Tissu TPE/PME industrie reconvertie, plasturgie, agroalimentaire, commerces et services de proximité, artisanat. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Fourmies (59), ville de l'Avesnois au sud du département du Nord, héritière d'une longue tradition textile (laine peignée) et industrielle. Tissu TPE/PME industrie reconvertie, plasturgie, agroalimentaire, commerces et services de proximité, artisanat. Axion-IA y intervient pour tous types d'activités.",
+    "Fourmies (59), ville de l'Avesnois au sud du département du Nord, héritière d'une longue tradition textile (laine peignée) et industrielle. Tissu TPE/PME industrie reconvertie, plasturgie, agroalimentaire, commerces et services de proximité, artisanat. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fourmies (59). Nous accompagnons TPE et PME de l'Avesnois : industrie reconvertie textile-plasturgie, agroalimentaire, BTP, commerces de proximité, artisans et professions libérales du sud du Nord.",
   directAnswerEn:
@@ -30,12 +30,12 @@ export const FOURMIES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fourmies : diagnostic adapté aux TPE/PME industrie reconvertie, plasturgie, agroalimentaire, BTP et commerces de l'Avesnois. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Fourmies : diagnostic adapté aux TPE/PME industrie reconvertie, plasturgie, agroalimentaire, BTP et commerces de l'Avesnois. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Fourmies : diagnostic adapté aux TPE/PME industrie reconvertie, plasturgie, agroalimentaire, BTP et commerces de l'Avesnois. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Fourmies : diagnostic adapté aux TPE/PME industrie reconvertie, plasturgie, agroalimentaire, BTP et commerces de l'Avesnois. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Fourmies : formats adaptés à l'atelier plasturgie, l'usine agroalimentaire, le chantier BTP ou le commerce de l'Avesnois. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Fourmies : formats adaptés à l'atelier plasturgie, l'usine agroalimentaire, le chantier BTP ou le commerce de l'Avesnois. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Fourmies : formats adaptés à l'atelier plasturgie, l'usine agroalimentaire, le chantier BTP ou le commerce de l'Avesnois. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Fourmies : formats adaptés à l'atelier plasturgie, l'usine agroalimentaire, le chantier BTP ou le commerce de l'Avesnois. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Fourmies : contrôle qualité plasturgie, traçabilité agroalimentaire, automatisation devis BTP, agents conversationnels B2B, CRM augmenté PME de l'Avesnois.",

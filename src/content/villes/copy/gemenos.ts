@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GEMENOS_COPY: VilleCopy = {
   pitchFr:
-    "Gémenos (13), commune entre Aubagne et la Sainte-Baume, allie patrimoine naturel (parc de Saint-Pons) et dynamisme économique (zone d'activités technologique). Tissu de PME tech, TPE artisans, commerçants et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Gémenos (13), commune entre Aubagne et la Sainte-Baume, allie patrimoine naturel (parc de Saint-Pons) et dynamisme économique (zone d'activités technologique). Tissu de PME tech, TPE artisans, commerçants et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Gémenos (13), commune entre Aubagne et la Sainte-Baume, allie patrimoine naturel (parc de Saint-Pons) et dynamisme économique (zone d'activités technologique). Tissu de PME tech, TPE artisans, commerçants et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Gémenos (13), commune entre Aubagne et la Sainte-Baume, allie patrimoine naturel (parc de Saint-Pons) et dynamisme économique (zone d'activités technologique). Tissu de PME tech, TPE artisans, commerçants et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gémenos (13). Nous accompagnons PME technologiques, TPE artisans, professions libérales, commerçants et entreprises de la zone d'activités gémenoise. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -64,7 +64,7 @@ export const GEMENOS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Gémenos ?",
-      a: "Gémenos est à 30 min de Marseille par A52/A50 et 10 min d'Aubagne. Nos consultants se déplacent dans vos locaux. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Gémenos est à 30 min de Marseille par A52/A50 et 10 min d'Aubagne. Nos consultants se déplacent dans vos locaux. Frais de mission en sus, grille tarifaire publique.",
     },
   ],
 };

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ARPAJON_COPY: VilleCopy = {
   pitchFr:
-    "Arpajon (91), sous-préfecture historique de l'Essonne au coeur du Hurepoix, est connue pour sa foire aux haricots centenaire et son marché vivant. Tissu TPE commerces centre-ville, artisanat, PME services, professions libérales, administration sous-préfecture. Axion-IA y intervient pour tous types d'activités.",
+    "Arpajon (91), sous-préfecture historique de l'Essonne au coeur du Hurepoix, est connue pour sa foire aux haricots centenaire et son marché vivant. Tissu TPE commerces centre-ville, artisanat, PME services, professions libérales, administration sous-préfecture. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Arpajon (91), sous-préfecture historique de l'Essonne au coeur du Hurepoix, est connue pour sa foire aux haricots centenaire et son marché vivant. Tissu TPE commerces centre-ville, artisanat, PME services, professions libérales, administration sous-préfecture. Axion-IA y intervient pour tous types d'activités.",
+    "Arpajon (91), sous-préfecture historique de l'Essonne au coeur du Hurepoix, est connue pour sa foire aux haricots centenaire et son marché vivant. Tissu TPE commerces centre-ville, artisanat, PME services, professions libérales, administration sous-préfecture. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arpajon (91). Nous accompagnons TPE et PME : commerçants centre-ville et marché, artisans, PME services, professions libérales, restaurateurs, prestataires du Hurepoix essonnien. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -64,7 +64,7 @@ export const ARPAJON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ou Évry ?",
-      a: "RER C Arpajon direct depuis Paris (35 min). Évry-Courcouronnes à 20 min. Orly à 20 min. Massy-Palaiseau TGV à 15 min. Frais de déplacement facturés à part, tarifs publics.",
+      a: "RER C Arpajon direct depuis Paris (35 min). Évry-Courcouronnes à 20 min. Orly à 20 min. Massy-Palaiseau TGV à 15 min. Coûts de déplacement à part, tarification transparente.",
     },
   ],
 };

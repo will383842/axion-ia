@@ -29,12 +29,12 @@ export const SAINT_JUNIEN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Junien : diagnostic adapté aux PME industrielles cuir/textile, TPE artisans, commerçants et professions libérales du Haut-Limousin. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Saint-Junien : diagnostic adapté aux PME industrielles cuir/textile, TPE artisans, commerçants et professions libérales du Haut-Limousin. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Saint-Junien : diagnostic adapté aux PME industrielles cuir/textile, TPE artisans, commerçants et professions libérales du Haut-Limousin. ROI mesurable, audit Flash dès 490 € HT accessible.",
+      en: "Audit IA à Saint-Junien : diagnostic adapté aux PME industrielles cuir/textile, TPE artisans, commerçants et professions libérales du Haut-Limousin. ROI mesurable, audit Flash dès 490 € HT accessible.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Junien : formats adaptés à l'atelier cuir, usine textile, commerce ou cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Saint-Junien : formats adaptés à l'atelier cuir, usine textile, commerce ou cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Saint-Junien : formats adaptés à l'atelier cuir, usine textile, commerce ou cabinet libéral. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Saint-Junien : formats adaptés à l'atelier cuir, usine textile, commerce ou cabinet libéral. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Junien : contrôle qualité vision cuir, prédiction maintenance machines industrielles, automatisation devis artisans, CRM augmenté, agents conversationnels. Tous secteurs Haut-Limousin.",

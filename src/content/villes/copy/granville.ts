@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GRANVILLE_COPY: VilleCopy = {
   pitchFr:
-    "Granville (50), port de pêche et de plaisance de la Manche en Normandie, est une station balnéaire réputée pour sa Haute Ville fortifiée et les îles Chausey. Tissu TPE pêche et ostréiculture, PME tourisme et hôtellerie-restauration, commerces du port, artisanat local. Axion-IA y intervient pour tous types d'activités.",
+    "Granville (50), port de pêche et de plaisance de la Manche en Normandie, est une station balnéaire réputée pour sa Haute Ville fortifiée et les îles Chausey. Tissu TPE pêche et ostréiculture, PME tourisme et hôtellerie-restauration, commerces du port, artisanat local. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Granville (50), port de pêche et de plaisance de la Manche en Normandie, est une station balnéaire réputée pour sa Haute Ville fortifiée et les îles Chausey. Tissu TPE pêche et ostréiculture, PME tourisme et hôtellerie-restauration, commerces du port, artisanat local. Axion-IA y intervient pour tous types d'activités.",
+    "Granville (50), port de pêche et de plaisance de la Manche en Normandie, est une station balnéaire réputée pour sa Haute Ville fortifiée et les îles Chausey. Tissu TPE pêche et ostréiculture, PME tourisme et hôtellerie-restauration, commerces du port, artisanat local. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Granville (50). Nous accompagnons tous types d'activités : TPE pêche et ostréiculture, PME tourisme balnéaire et hôtellerie-restauration, commerçants du port et de la Haute Ville, artisans, prestataires nautiques et professionnels des îles Chausey.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const GRANVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Granville : diagnostic adapté aux TPE pêche et ostréiculture, PME tourisme et hôtellerie, commerçants du port, artisans et prestataires nautiques. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Granville : diagnostic adapté aux TPE pêche et ostréiculture, PME tourisme et hôtellerie, commerçants du port, artisans et prestataires nautiques. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Granville : diagnostic adapté aux TPE pêche et ostréiculture, PME tourisme et hôtellerie, commerçants du port, artisans et prestataires nautiques. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Granville : diagnostic adapté aux TPE pêche et ostréiculture, PME tourisme et hôtellerie, commerçants du port, artisans et prestataires nautiques. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Granville : formats adaptés à la criée, l'hôtel, le restaurant, le commerce portuaire, l'atelier artisanal. Vos équipes repartent autonomes sur les outils IA.",
@@ -64,7 +64,7 @@ export const GRANVILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Granville ?",
-      a: "Nos consultants viennent de Rennes (1 h 10) ou Caen (1 h 20). Gare de Granville (TER Paris-Montparnasse 3 h). Multi-jours : hébergement local. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Rennes (1 h 10) ou Caen (1 h 20). Gare de Granville (TER Paris-Montparnasse 3 h). Multi-jours : hébergement local. Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PERTUIS_COPY: VilleCopy = {
   pitchFr:
-    "Pertuis (84), sous-préfecture du Sud Luberon limitrophe des Bouches-du-Rhône, conjugue tissu agricole maraîcher et arboricole, zones d'activités tournées vers le bassin aixois et tertiaire local. TPE artisans, PME maraîchères et arboricoles, services aux entreprises, professions libérales et commerces de proximité dans un bassin de vie de près de 20 000 habitants à 25 min d'Aix. Axion-IA y intervient pour tous types d'activités.",
+    "Pertuis (84), sous-préfecture du Sud Luberon limitrophe des Bouches-du-Rhône, conjugue tissu agricole maraîcher et arboricole, zones d'activités tournées vers le bassin aixois et tertiaire local. TPE artisans, PME maraîchères et arboricoles, services aux entreprises, professions libérales et commerces de proximité dans un bassin de vie de près de 20 000 habitants à 25 min d'Aix. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Pertuis (84), sous-préfecture du Sud Luberon limitrophe des Bouches-du-Rhône, conjugue tissu agricole maraîcher et arboricole, zones d'activités tournées vers le bassin aixois et tertiaire local. TPE artisans, PME maraîchères et arboricoles, services aux entreprises, professions libérales et commerces de proximité dans un bassin de vie de près de 20 000 habitants à 25 min d'Aix. Axion-IA y intervient pour tous types d'activités.",
+    "Pertuis (84), sous-préfecture du Sud Luberon limitrophe des Bouches-du-Rhône, conjugue tissu agricole maraîcher et arboricole, zones d'activités tournées vers le bassin aixois et tertiaire local. TPE artisans, PME maraîchères et arboricoles, services aux entreprises, professions libérales et commerces de proximité dans un bassin de vie de près de 20 000 habitants à 25 min d'Aix. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pertuis (84). Nous accompagnons TPE artisans, PME maraîchères, arboriculteurs, services aux entreprises, professions libérales et commerces du Sud Luberon. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const PERTUIS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pertuis : diagnostic adapté aux TPE artisans, PME maraîchères et arboricoles, services aux entreprises et commerces du Sud Luberon. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Pertuis : diagnostic adapté aux TPE artisans, PME maraîchères et arboricoles, services aux entreprises et commerces du Sud Luberon. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Pertuis : diagnostic adapté aux TPE artisans, PME maraîchères et arboricoles, services aux entreprises et commerces du Sud Luberon. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Pertuis : diagnostic adapté aux TPE artisans, PME maraîchères et arboricoles, services aux entreprises et commerces du Sud Luberon. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pertuis : ateliers pour équipes TPE/PME, maraîchers, arboriculteurs, artisans et professions libérales. Outils IA configurés métier réel, dans vos locaux ou à Aix.",
@@ -64,7 +64,7 @@ export const PERTUIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Pertuis ?",
-      a: "Pertuis est à 25 min d'Aix-en-Provence et 30 min de Manosque via A51. Nos consultants se déplacent dans vos locaux ou exploitations. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Pertuis est à 25 min d'Aix-en-Provence et 30 min de Manosque via A51. Nos consultants se déplacent dans vos locaux ou exploitations. Frais de mission en sus, grille tarifaire publique.",
     },
   ],
 };

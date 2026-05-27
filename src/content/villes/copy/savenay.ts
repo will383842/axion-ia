@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAVENAY_COPY: VilleCopy = {
   pitchFr:
-    "Savenay (44), commune de Loire-Atlantique dotée d'une gare TGV (ligne Nantes-Le Croisic) sur le nord de l'estuaire de la Loire, est un bourg-centre entre Nantes et Saint-Nazaire. Tissu de TPE artisans, PME tertiaires, exploitations agricoles (bocage), commerces de proximité et lycées. Axion-IA y intervient pour tous types d'activités.",
+    "Savenay (44), commune de Loire-Atlantique dotée d'une gare TGV (ligne Nantes-Le Croisic) sur le nord de l'estuaire de la Loire, est un bourg-centre entre Nantes et Saint-Nazaire. Tissu de TPE artisans, PME tertiaires, exploitations agricoles (bocage), commerces de proximité et lycées. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Savenay (44), commune de Loire-Atlantique dotée d'une gare TGV (ligne Nantes-Le Croisic) sur le nord de l'estuaire de la Loire, est un bourg-centre entre Nantes et Saint-Nazaire. Tissu de TPE artisans, PME tertiaires, exploitations agricoles (bocage), commerces de proximité et lycées. Axion-IA y intervient pour tous types d'activités.",
+    "Savenay (44), commune de Loire-Atlantique dotée d'une gare TGV (ligne Nantes-Le Croisic) sur le nord de l'estuaire de la Loire, est un bourg-centre entre Nantes et Saint-Nazaire. Tissu de TPE artisans, PME tertiaires, exploitations agricoles (bocage), commerces de proximité et lycées. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Savenay (44). Nous accompagnons tous types d'activités : TPE artisans BTP, PME tertiaires, exploitants agricoles du bocage, commerçants, professions libérales, établissements scolaires (lycées) et services aux entreprises du nord estuaire Loire.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const SAVENAY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Savenay : diagnostic adapté aux TPE artisans, PME tertiaires, exploitants agricoles et commerçants du nord estuaire Loire. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Savenay : diagnostic adapté aux TPE artisans, PME tertiaires, exploitants agricoles et commerçants du nord estuaire Loire. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Savenay : diagnostic adapté aux TPE artisans, PME tertiaires, exploitants agricoles et commerçants du nord estuaire Loire. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Savenay : diagnostic adapté aux TPE artisans, PME tertiaires, exploitants agricoles et commerçants du nord estuaire Loire. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Savenay : formats adaptés au bureau tertiaire, exploitation agricole, commerce ou établissement scolaire. Vos équipes repartent autonomes sur outils IA configurés métier.",

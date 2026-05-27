@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ELBEUF_COPY: VilleCopy = {
   pitchFr:
-    "Elbeuf (76), commune de la boucle de Seine en Seine-Maritime, est historiquement connue pour son industrie du drap, aujourd'hui reconvertie. Membre de la Métropole Rouen Normandie, tissu TPE artisans, PME industrielles reconverties, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités de la boucle de Seine.",
+    "Elbeuf (76), commune de la boucle de Seine en Seine-Maritime, est historiquement connue pour son industrie du drap, aujourd'hui reconvertie. Membre de la Métropole Rouen Normandie, tissu TPE artisans, PME industrielles reconverties, commerces, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de la boucle de Seine.",
   pitchEn:
-    "Elbeuf (76), commune de la boucle de Seine en Seine-Maritime, est historiquement connue pour son industrie du drap, aujourd'hui reconvertie. Membre de la Métropole Rouen Normandie, tissu TPE artisans, PME industrielles reconverties, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités de la boucle de Seine.",
+    "Elbeuf (76), commune de la boucle de Seine en Seine-Maritime, est historiquement connue pour son industrie du drap, aujourd'hui reconvertie. Membre de la Métropole Rouen Normandie, tissu TPE artisans, PME industrielles reconverties, commerces, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de la boucle de Seine.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Elbeuf (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles reconverties, professions libérales, services aux entreprises de la boucle de Seine (Métropole Rouen Normandie). Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const ELBEUF_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Elbeuf : diagnostic adapté aux TPE artisans, PME industrielles reconverties boucle de Seine, professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Elbeuf : diagnostic adapté aux TPE artisans, PME industrielles reconverties boucle de Seine, professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Elbeuf : diagnostic adapté aux TPE artisans, PME industrielles reconverties boucle de Seine, professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Elbeuf : diagnostic adapté aux TPE artisans, PME industrielles reconverties boucle de Seine, professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Elbeuf : formats adaptés à l'atelier, bureau PME, commerce. Vos équipes de la boucle de Seine repartent autonomes sur outils IA.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_AMAND_MONTROND_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Amand-Montrond (18), sous-préfecture du Cher, est historiquement liée à la bijouterie et au travail de l'or. Bords du Cher, tissu de TPE artisans, PME industrielles et tertiaires, commerces centre-ville, services publics. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Amand-Montrond (18), sous-préfecture du Cher, est historiquement liée à la bijouterie et au travail de l'or. Bords du Cher, tissu de TPE artisans, PME industrielles et tertiaires, commerces centre-ville, services publics. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Saint-Amand-Montrond (18), sous-préfecture du Cher, est historiquement liée à la bijouterie et au travail de l'or. Bords du Cher, tissu de TPE artisans, PME industrielles et tertiaires, commerces centre-ville, services publics. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Amand-Montrond (18), sous-préfecture du Cher, est historiquement liée à la bijouterie et au travail de l'or. Bords du Cher, tissu de TPE artisans, PME industrielles et tertiaires, commerces centre-ville, services publics. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Amand-Montrond (18). Nous accompagnons TPE artisans (bijouterie, métiers d'art), PME industrielles et tertiaires, commerçants, professions libérales et toutes les activités de cette sous-préfecture du Cher. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const SAINT_AMAND_MONTROND_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Amand-Montrond : diagnostic adapté aux TPE artisans bijoutiers, PME industrielles, commerçants et professions libérales du sud Cher. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Amand-Montrond : diagnostic adapté aux TPE artisans bijoutiers, PME industrielles, commerçants et professions libérales du sud Cher. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Amand-Montrond : diagnostic adapté aux TPE artisans bijoutiers, PME industrielles, commerçants et professions libérales du sud Cher. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Saint-Amand-Montrond : diagnostic adapté aux TPE artisans bijoutiers, PME industrielles, commerçants et professions libérales du sud Cher. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Amand-Montrond : formats adaptés aux bijoutiers, artisans d'art, PME industrielles, commerçants. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const SAINT_AMAND_MONTROND_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Amand-Montrond ?",
-      a: "Nos consultants viennent de Bourges (45 min) ou de Paris via A71 (2h45). Intervention sur site dans vos locaux ou en visio. Multi-jours possibles. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants viennent de Bourges (45 min) ou de Paris via A71 (2h45). Intervention sur site dans vos locaux ou en visio. Multi-jours possibles. Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

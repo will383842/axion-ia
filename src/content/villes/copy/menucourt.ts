@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MENUCOURT_COPY: VilleCopy = {
   pitchFr:
-    "Menucourt (95), commune résidentielle de l'agglomération de Cergy-Pontoise à 40 km au nord-ouest de Paris, allie cadre boisé et proximité économique du pôle tertiaire cergypontain. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, services à la personne. Axion-IA y intervient pour tous types d'activités.",
+    "Menucourt (95), commune résidentielle de l'agglomération de Cergy-Pontoise à 40 km au nord-ouest de Paris, allie cadre boisé et proximité économique du pôle tertiaire cergypontain. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, services à la personne. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Menucourt (95), commune résidentielle de l'agglomération de Cergy-Pontoise à 40 km au nord-ouest de Paris, allie cadre boisé et proximité économique du pôle tertiaire cergypontain. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, services à la personne. Axion-IA y intervient pour tous types d'activités.",
+    "Menucourt (95), commune résidentielle de l'agglomération de Cergy-Pontoise à 40 km au nord-ouest de Paris, allie cadre boisé et proximité économique du pôle tertiaire cergypontain. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, services à la personne. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Menucourt (95). Nous accompagnons TPE et PME : commerçants et artisans locaux, PME services de l'agglo Cergy-Pontoise, professions libérales, restaurateurs, prestataires services à la personne Val-d'Oise ouest. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const MENUCOURT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Menucourt : diagnostic adapté aux commerçants et artisans, PME services agglo Cergy-Pontoise, professions libérales, restaurateurs Val-d'Oise ouest. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Menucourt : diagnostic adapté aux commerçants et artisans, PME services agglo Cergy-Pontoise, professions libérales, restaurateurs Val-d'Oise ouest. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Menucourt : diagnostic adapté aux commerçants et artisans, PME services agglo Cergy-Pontoise, professions libérales, restaurateurs Val-d'Oise ouest. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Menucourt : diagnostic adapté aux commerçants et artisans, PME services agglo Cergy-Pontoise, professions libérales, restaurateurs Val-d'Oise ouest. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Menucourt : formats adaptés boutique, cabinet, restaurant, bureau PME agglo Cergy-Pontoise. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Menucourt : formats adaptés boutique, cabinet, restaurant, bureau PME agglo Cergy-Pontoise. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Menucourt : formats adaptés boutique, cabinet, restaurant, bureau PME agglo Cergy-Pontoise. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Menucourt : formats adaptés boutique, cabinet, restaurant, bureau PME agglo Cergy-Pontoise. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Menucourt : CRM augmenté commerçants, automatisation gestion cabinet, outils réservation restauration, facturation intelligente PME services Cergy-Pontoise.",
@@ -64,7 +64,7 @@ export const MENUCOURT_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Cergy ou Paris ?",
-      a: "Cergy-Pontoise centre (5 min). Conflans-Sainte-Honorine (10 min). Paris La Défense (35 min). Aéroport CDG (50 min). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Cergy-Pontoise centre (5 min). Conflans-Sainte-Honorine (10 min). Paris La Défense (35 min). Aéroport CDG (50 min). Frais de mission en sus, grille tarifaire publique.",
     },
   ],
 };

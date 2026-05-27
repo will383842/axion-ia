@@ -14,6 +14,7 @@ export const LORIENT_COPY: VilleCopy = {
     "À Lorient, Axion-IA propose des services d'IA adaptés aux secteurs de la construction navale et des transports maritimes. Nous intervenons directement sur site pour automatiser les tâches administratives et optimiser les processus. Notre approche pragmatique permet aux entreprises locales de bénéficier d'un retour sur investissement rapide, en s'appuyant sur notre expertise nationale.",
   directAnswerEn:
     "À Lorient, Axion-IA propose des services d'IA adaptés aux secteurs de la construction navale et des transports maritimes. Nous intervenons directement sur site pour automatiser les tâches administratives et optimiser les processus. Notre approche pragmatique permet aux entreprises locales de bénéficier d'un retour sur investissement rapide, en s'appuyant sur notre expertise nationale.",
+  seoHook: "naval, agro mer & tourisme",
   ecosystemFr:
     "Lorient est un pôle stratégique avec des entités comme Naval Group et DCNS, soutenu par des infrastructures telles que la Zone Industrielle de Keroman.",
   ecosystemEn:

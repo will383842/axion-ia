@@ -33,8 +33,8 @@ export const AUREC_SUR_LOIRE_COPY: VilleCopy = {
       en: "Audit IA à Aurec-sur-Loire : diagnostic adapté aux PME industrielles, agriculteurs montagne, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Aurec-sur-Loire : formats adaptés à l'atelier, exploitation, commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Aurec-sur-Loire : formats adaptés à l'atelier, exploitation, commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Aurec-sur-Loire : formats adaptés à l'atelier, exploitation, commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Aurec-sur-Loire : formats adaptés à l'atelier, exploitation, commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Aurec-sur-Loire : prédiction maintenance industrielle, classification photos cultures, agents conversationnels B2B, automatisation workflow.",

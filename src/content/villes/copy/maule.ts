@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MAULE_COPY: VilleCopy = {
   pitchFr:
-    "Maule (78), bourg rural de la vallée de la Mauldre, dans l'ouest des Yvelines. Tissu de TPE artisans, PME agricoles et de services, commerces de centre-bourg, professions libérales et activités liées à la viticulture et au patrimoine local. Axion-IA y intervient pour tous types d'activités de la vallée de la Mauldre.",
+    "Maule (78), bourg rural de la vallée de la Mauldre, dans l'ouest des Yvelines. Tissu de TPE artisans, PME agricoles et de services, commerces de centre-bourg, professions libérales et activités liées à la viticulture et au patrimoine local. Axion-IA couvre l'ensemble des activités professionnelles présentes de la vallée de la Mauldre.",
   pitchEn:
-    "Maule (78), bourg rural de la vallée de la Mauldre, dans l'ouest des Yvelines. Tissu de TPE artisans, PME agricoles et de services, commerces de centre-bourg, professions libérales et activités liées à la viticulture et au patrimoine local. Axion-IA y intervient pour tous types d'activités de la vallée de la Mauldre.",
+    "Maule (78), bourg rural de la vallée de la Mauldre, dans l'ouest des Yvelines. Tissu de TPE artisans, PME agricoles et de services, commerces de centre-bourg, professions libérales et activités liées à la viticulture et au patrimoine local. Axion-IA couvre l'ensemble des activités professionnelles présentes de la vallée de la Mauldre.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Maule (78). Nous accompagnons TPE et PME : artisans, commerces de centre-bourg, PME agricoles et de services, professions libérales de ce bourg rural de la vallée de la Mauldre dans l'ouest des Yvelines. Audit Flash dès 490 € HT.",
   directAnswerEn:

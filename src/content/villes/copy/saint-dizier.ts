@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_DIZIER_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Dizier, sous-préfecture de la Haute-Marne (52) en Grand-Est, est un pôle industriel historique (métallurgie, fonderie, mécanique) et tissu agroalimentaire rural. Forte présence d'usines (équipementiers automobile, fonderie d'art) et tissu TPE artisanat. Axion-IA y intervient pour tous types d'activités : industriels, artisans, agriculteurs, PME tertiaires.",
+    "Saint-Dizier, sous-préfecture de la Haute-Marne (52) en Grand-Est, est un pôle industriel historique (métallurgie, fonderie, mécanique) et tissu agroalimentaire rural. Forte présence d'usines (équipementiers automobile, fonderie d'art) et tissu TPE artisanat. Axion-IA accompagne entreprises et indépendants de tous secteurs : industriels, artisans, agriculteurs, PME tertiaires.",
   pitchEn:
-    "Saint-Dizier, sous-préfecture de la Haute-Marne (52) en Grand-Est, est un pôle industriel historique (métallurgie, fonderie, mécanique) et tissu agroalimentaire rural. Forte présence d'usines (équipementiers automobile, fonderie d'art) et tissu TPE artisanat. Axion-IA y intervient pour tous types d'activités : industriels, artisans, agriculteurs, PME tertiaires.",
+    "Saint-Dizier, sous-préfecture de la Haute-Marne (52) en Grand-Est, est un pôle industriel historique (métallurgie, fonderie, mécanique) et tissu agroalimentaire rural. Forte présence d'usines (équipementiers automobile, fonderie d'art) et tissu TPE artisanat. Axion-IA accompagne entreprises et indépendants de tous secteurs : industriels, artisans, agriculteurs, PME tertiaires.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Dizier (52) en Haute-Marne. Nous accompagnons tous types d'activités : industriels métallurgistes et fondeurs (équipementiers, fonderie d'art), PME mécaniques, agriculteurs/éleveurs ruraux, TPE artisans BTP, commerçants centre-ville, professions libérales et services publics bragards.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const SAINT_DIZIER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Dizier : diagnostic adapté à tous secteurs — industriels métallurgistes, fondeurs, mécaniciens, agriculteurs, artisans, commerçants, PME tertiaires. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Dizier : diagnostic adapté à tous secteurs — industriels métallurgistes, fondeurs, mécaniciens, agriculteurs, artisans, commerçants, PME tertiaires. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Dizier : diagnostic adapté à tous secteurs — industriels métallurgistes, fondeurs, mécaniciens, agriculteurs, artisans, commerçants, PME tertiaires. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Saint-Dizier : diagnostic adapté à tous secteurs — industriels métallurgistes, fondeurs, mécaniciens, agriculteurs, artisans, commerçants, PME tertiaires. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Dizier : formats adaptés à votre activité (atelier industriel, exploitation agricole, commerce). Vos équipes (ouvriers, agriculteurs, commerciaux) repartent autonomes sur outils IA.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VAL_DE_MODER_COPY: VilleCopy = {
   pitchFr:
-    "Val-de-Moder (67), commune nouvelle née de la fusion autour de Pfaffenhoffen dans la vallée de la Moder en Alsace du Nord, Bas-Rhin. Tissu TPE artisans, PME industrielles et de services, commerces de bourg, professions libérales et indépendants. Axion-IA y intervient pour tous types d'activités de la vallée de la Moder.",
+    "Val-de-Moder (67), commune nouvelle née de la fusion autour de Pfaffenhoffen dans la vallée de la Moder en Alsace du Nord, Bas-Rhin. Tissu TPE artisans, PME industrielles et de services, commerces de bourg, professions libérales et indépendants. Axion-IA accompagne entreprises et indépendants de tous secteurs de la vallée de la Moder.",
   pitchEn:
-    "Val-de-Moder (67), commune nouvelle née de la fusion autour de Pfaffenhoffen dans la vallée de la Moder en Alsace du Nord, Bas-Rhin. Tissu TPE artisans, PME industrielles et de services, commerces de bourg, professions libérales et indépendants. Axion-IA y intervient pour tous types d'activités de la vallée de la Moder.",
+    "Val-de-Moder (67), commune nouvelle née de la fusion autour de Pfaffenhoffen dans la vallée de la Moder en Alsace du Nord, Bas-Rhin. Tissu TPE artisans, PME industrielles et de services, commerces de bourg, professions libérales et indépendants. Axion-IA accompagne entreprises et indépendants de tous secteurs de la vallée de la Moder.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Val-de-Moder (67). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants, professions libérales et indépendants de la vallée de la Moder en Alsace du Nord, autour de Pfaffenhoffen. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
   directAnswerEn:

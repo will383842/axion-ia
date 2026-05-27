@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_VILLE_AUX_DAMES_COPY: VilleCopy = {
   pitchFr:
-    "La Ville-aux-Dames (37), commune résidentielle de l'est de Tours Métropole en bords de Loire, accueille la zone d'activités des Granges et un tissu diversifié de TPE tertiaires, PME de services, commerces et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "La Ville-aux-Dames (37), commune résidentielle de l'est de Tours Métropole en bords de Loire, accueille la zone d'activités des Granges et un tissu diversifié de TPE tertiaires, PME de services, commerces et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "La Ville-aux-Dames (37), commune résidentielle de l'est de Tours Métropole en bords de Loire, accueille la zone d'activités des Granges et un tissu diversifié de TPE tertiaires, PME de services, commerces et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "La Ville-aux-Dames (37), commune résidentielle de l'est de Tours Métropole en bords de Loire, accueille la zone d'activités des Granges et un tissu diversifié de TPE tertiaires, PME de services, commerces et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Ville-aux-Dames (37). Nous accompagnons tous types d'activités : TPE tertiaires et de services, PME de la zone d'activités des Granges, commerçants, artisans BTP, professions libérales, indépendants et entreprises de Tours Métropole est.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LA_VILLE_AUX_DAMES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Ville-aux-Dames : diagnostic adapté aux TPE tertiaires, PME de services ZA des Granges, commerçants et professions libérales de Tours Métropole est. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à La Ville-aux-Dames : diagnostic adapté aux TPE tertiaires, PME de services ZA des Granges, commerçants et professions libérales de Tours Métropole est. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à La Ville-aux-Dames : diagnostic adapté aux TPE tertiaires, PME de services ZA des Granges, commerçants et professions libérales de Tours Métropole est. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à La Ville-aux-Dames : diagnostic adapté aux TPE tertiaires, PME de services ZA des Granges, commerçants et professions libérales de Tours Métropole est. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Ville-aux-Dames : formats adaptés au bureau tertiaire, cabinet libéral, commerce ou atelier artisan. Vos équipes repartent autonomes sur outils IA configurés métier.",

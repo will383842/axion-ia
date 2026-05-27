@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ACHICOURT_COPY: VilleCopy = {
   pitchFr:
-    "Achicourt (62), commune de l'agglomération d'Arras dans le Pas-de-Calais, accueille TPE artisanales, PME de services, professions libérales et zones commerciales péri-urbaines. Axion-IA y intervient pour tous types d'activités de l'Arrageois.",
+    "Achicourt (62), commune de l'agglomération d'Arras dans le Pas-de-Calais, accueille TPE artisanales, PME de services, professions libérales et zones commerciales péri-urbaines. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'Arrageois.",
   pitchEn:
-    "Achicourt (62), commune de l'agglomération d'Arras dans le Pas-de-Calais, accueille TPE artisanales, PME de services, professions libérales et zones commerciales péri-urbaines. Axion-IA y intervient pour tous types d'activités de l'Arrageois.",
+    "Achicourt (62), commune de l'agglomération d'Arras dans le Pas-de-Calais, accueille TPE artisanales, PME de services, professions libérales et zones commerciales péri-urbaines. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'Arrageois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Achicourt (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales de l'agglomération arrageoise. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:

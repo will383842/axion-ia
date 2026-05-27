@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PRADES_COPY: VilleCopy = {
   pitchFr:
-    "Prades (66), sous-préfecture des Pyrénées-Orientales au pied du Canigou et ville du festival Pablo Casals, est le bourg-centre du Conflent. Tissu TPE artisans, PME services, commerces, agriculture de montagne, tourisme nature et culturel. Axion-IA y intervient pour tous types d'activités du Conflent.",
+    "Prades (66), sous-préfecture des Pyrénées-Orientales au pied du Canigou et ville du festival Pablo Casals, est le bourg-centre du Conflent. Tissu TPE artisans, PME services, commerces, agriculture de montagne, tourisme nature et culturel. Axion-IA y déploie ses missions auprès de toutes les organisations du Conflent.",
   pitchEn:
-    "Prades (66), sous-préfecture des Pyrénées-Orientales au pied du Canigou et ville du festival Pablo Casals, est le bourg-centre du Conflent. Tissu TPE artisans, PME services, commerces, agriculture de montagne, tourisme nature et culturel. Axion-IA y intervient pour tous types d'activités du Conflent.",
+    "Prades (66), sous-préfecture des Pyrénées-Orientales au pied du Canigou et ville du festival Pablo Casals, est le bourg-centre du Conflent. Tissu TPE artisans, PME services, commerces, agriculture de montagne, tourisme nature et culturel. Axion-IA y déploie ses missions auprès de toutes les organisations du Conflent.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Prades (66). Nous accompagnons tous types d'activités : TPE artisans, PME services et santé, commerçants, agriculteurs de montagne, acteurs du tourisme Canigou, indépendants et professions libérales du Conflent.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const PRADES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Prades : diagnostic adapté aux TPE artisans, PME services et santé, commerçants et acteurs du tourisme Canigou du Conflent. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Prades : diagnostic adapté aux TPE artisans, PME services et santé, commerçants et acteurs du tourisme Canigou du Conflent. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Prades : diagnostic adapté aux TPE artisans, PME services et santé, commerçants et acteurs du tourisme Canigou du Conflent. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Prades : diagnostic adapté aux TPE artisans, PME services et santé, commerçants et acteurs du tourisme Canigou du Conflent. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Prades : formats adaptés au cabinet, commerce, exploitation montagne, hébergement tourisme. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -64,7 +64,7 @@ export const PRADES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Prades ?",
-      a: "Nos consultants viennent de Perpignan (45 min). Pour les multi-jours, hébergement local possible. Visio privilégiée pour le suivi. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Perpignan (45 min). Pour les multi-jours, hébergement local possible. Visio privilégiée pour le suivi. Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

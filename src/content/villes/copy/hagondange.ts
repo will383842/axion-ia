@@ -30,12 +30,12 @@ export const HAGONDANGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Hagondange : diagnostic adapté aux TPE/PME services, commerces, artisans BTP, logisticiens et professions libérales de la vallée de l'Orne. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Hagondange : diagnostic adapté aux TPE/PME services, commerces, artisans BTP, logisticiens et professions libérales de la vallée de l'Orne. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Hagondange : diagnostic adapté aux TPE/PME services, commerces, artisans BTP, logisticiens et professions libérales de la vallée de l'Orne. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Hagondange : diagnostic adapté aux TPE/PME services, commerces, artisans BTP, logisticiens et professions libérales de la vallée de l'Orne. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Hagondange : formats adaptés au bureau, entrepôt logistique, atelier BTP, commerce ou cabinet libéral. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Hagondange : formats adaptés au bureau, entrepôt logistique, atelier BTP, commerce ou cabinet libéral. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Hagondange : formats adaptés au bureau, entrepôt logistique, atelier BTP, commerce ou cabinet libéral. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Hagondange : formats adaptés au bureau, entrepôt logistique, atelier BTP, commerce ou cabinet libéral. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Hagondange : automatisation logistique, gestion stocks commerce, devis BTP, outils administratifs professions libérales, agents conversationnels services.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_DIE_DES_VOSGES_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Dié-des-Vosges (88), sous-préfecture des Vosges, 19 251 habitants, est un pôle industriel et culturel du massif vosgien. Berceau du baptême de l'Amérique (1507), siège du Festival International de Géographie (FIG), la ville concentre un tissu de TPE/PME textile, bois, papeterie, mécanique, commerce et services. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Dié-des-Vosges (88), sous-préfecture des Vosges, 19 251 habitants, est un pôle industriel et culturel du massif vosgien. Berceau du baptême de l'Amérique (1507), siège du Festival International de Géographie (FIG), la ville concentre un tissu de TPE/PME textile, bois, papeterie, mécanique, commerce et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Saint-Dié-des-Vosges (88), sous-préfecture des Vosges, 19 251 habitants, est un pôle industriel et culturel du massif vosgien. Berceau du baptême de l'Amérique (1507), siège du Festival International de Géographie (FIG), la ville concentre un tissu de TPE/PME textile, bois, papeterie, mécanique, commerce et services. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Dié-des-Vosges (88), sous-préfecture des Vosges, 19 251 habitants, est un pôle industriel et culturel du massif vosgien. Berceau du baptême de l'Amérique (1507), siège du Festival International de Géographie (FIG), la ville concentre un tissu de TPE/PME textile, bois, papeterie, mécanique, commerce et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Dié-des-Vosges (88). Nous accompagnons TPE et PME du massif vosgien : industriels textile, bois, papeterie, mécaniciens, commerçants et prestataires de services. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -34,8 +34,8 @@ export const SAINT_DIE_DES_VOSGES_COPY: VilleCopy = {
       en: "Audit IA à Saint-Dié-des-Vosges : diagnostic adapté aux TPE/PME textile, bois, papeterie, mécanique, commerce et services du massif vosgien. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Dié-des-Vosges : formats adaptés à l'usine textile, la scierie, l'atelier mécanique, le commerce ou le bureau. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Saint-Dié-des-Vosges : formats adaptés à l'usine textile, la scierie, l'atelier mécanique, le commerce ou le bureau. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Saint-Dié-des-Vosges : formats adaptés à l'usine textile, la scierie, l'atelier mécanique, le commerce ou le bureau. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Saint-Dié-des-Vosges : formats adaptés à l'usine textile, la scierie, l'atelier mécanique, le commerce ou le bureau. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Dié-des-Vosges : contrôle qualité textile, optimisation scierie et flux bois, automatisation devis mécanique, gestion stocks papeterie, OCR documents et facturation.",

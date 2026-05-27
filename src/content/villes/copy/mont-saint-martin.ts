@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MONT_SAINT_MARTIN_COPY: VilleCopy = {
   pitchFr:
-    "Mont-Saint-Martin (54), commune du Pays Haut en Meurthe-et-Moselle, est située à la frontière du Luxembourg et de la Belgique. Tissu TPE/PME commerce transfrontalier, services aux entreprises, logistique, artisans BTP, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Mont-Saint-Martin (54), commune du Pays Haut en Meurthe-et-Moselle, est située à la frontière du Luxembourg et de la Belgique. Tissu TPE/PME commerce transfrontalier, services aux entreprises, logistique, artisans BTP, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Mont-Saint-Martin (54), commune du Pays Haut en Meurthe-et-Moselle, est située à la frontière du Luxembourg et de la Belgique. Tissu TPE/PME commerce transfrontalier, services aux entreprises, logistique, artisans BTP, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Mont-Saint-Martin (54), commune du Pays Haut en Meurthe-et-Moselle, est située à la frontière du Luxembourg et de la Belgique. Tissu TPE/PME commerce transfrontalier, services aux entreprises, logistique, artisans BTP, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mont-Saint-Martin (54). Nous accompagnons tous types d'activités : TPE/PME du commerce transfrontalier, prestataires logistiques, artisans BTP, professions libérales et services aux entreprises du Pays Haut frontalier.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const THUIR_COPY: VilleCopy = {
   pitchFr:
-    "Thuir (66), bourg historique des Aspres célèbre pour les caves Byrrh (plus grande cuve en chêne du monde), fait partie de la Communauté de communes des Aspres. Tissu TPE artisans, PME viticulture et agroalimentaire, commerces, agriculture Aspres. Axion-IA y intervient pour tous types d'activités du piémont catalan.",
+    "Thuir (66), bourg historique des Aspres célèbre pour les caves Byrrh (plus grande cuve en chêne du monde), fait partie de la Communauté de communes des Aspres. Tissu TPE artisans, PME viticulture et agroalimentaire, commerces, agriculture Aspres. Axion-IA y déploie ses missions auprès de toutes les organisations du piémont catalan.",
   pitchEn:
-    "Thuir (66), bourg historique des Aspres célèbre pour les caves Byrrh (plus grande cuve en chêne du monde), fait partie de la Communauté de communes des Aspres. Tissu TPE artisans, PME viticulture et agroalimentaire, commerces, agriculture Aspres. Axion-IA y intervient pour tous types d'activités du piémont catalan.",
+    "Thuir (66), bourg historique des Aspres célèbre pour les caves Byrrh (plus grande cuve en chêne du monde), fait partie de la Communauté de communes des Aspres. Tissu TPE artisans, PME viticulture et agroalimentaire, commerces, agriculture Aspres. Axion-IA y déploie ses missions auprès de toutes les organisations du piémont catalan.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thuir (66). Nous accompagnons tous types d'activités : TPE artisans, PME viticulture et agroalimentaire, commerçants, agriculteurs des Aspres, indépendants et professions libérales du piémont catalan.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const THUIR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Thuir : diagnostic adapté aux TPE artisans, PME viticulture et agroalimentaire, agriculteurs des Aspres et commerçants du piémont. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Thuir : diagnostic adapté aux TPE artisans, PME viticulture et agroalimentaire, agriculteurs des Aspres et commerçants du piémont. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Thuir : diagnostic adapté aux TPE artisans, PME viticulture et agroalimentaire, agriculteurs des Aspres et commerçants du piémont. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Thuir : diagnostic adapté aux TPE artisans, PME viticulture et agroalimentaire, agriculteurs des Aspres et commerçants du piémont. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Thuir : formats adaptés à la cave viticole, exploitation fruitière, commerce, atelier. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Thuir : formats adaptés à la cave viticole, exploitation fruitière, commerce, atelier. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Thuir : formats adaptés à la cave viticole, exploitation fruitière, commerce, atelier. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Thuir : formats adaptés à la cave viticole, exploitation fruitière, commerce, atelier. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Thuir : classification qualité fruits par vision, gestion cave viticole, automatisation traçabilité agroalimentaire, agents conversationnels. Aspres.",
@@ -64,7 +64,7 @@ export const THUIR_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Thuir ?",
-      a: "Nos consultants interviennent depuis Perpignan (15 min). Missions sur site dans votre cave, exploitation ou commerce. Visio possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants interviennent depuis Perpignan (15 min). Missions sur site dans votre cave, exploitation ou commerce. Visio possible. Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

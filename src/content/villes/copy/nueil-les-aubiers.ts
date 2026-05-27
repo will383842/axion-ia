@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const NUEIL_LES_AUBIERS_COPY: VilleCopy = {
   pitchFr:
-    "Nueil-les-Aubiers (79), commune du bocage bressuirais dans les Deux-Sèvres, possède un tissu industriel et artisanal dynamique dans un territoire rural. TPE artisans, PME industrielles (métallurgie, agroalimentaire), exploitations agricoles, commerçants. Axion-IA y intervient pour tous types d'activités du bocage bressuirais.",
+    "Nueil-les-Aubiers (79), commune du bocage bressuirais dans les Deux-Sèvres, possède un tissu industriel et artisanal dynamique dans un territoire rural. TPE artisans, PME industrielles (métallurgie, agroalimentaire), exploitations agricoles, commerçants. Axion-IA opère pour toutes les structures économiques de la commune du bocage bressuirais.",
   pitchEn:
-    "Nueil-les-Aubiers (79), commune du bocage bressuirais dans les Deux-Sèvres, possède un tissu industriel et artisanal dynamique dans un territoire rural. TPE artisans, PME industrielles (métallurgie, agroalimentaire), exploitations agricoles, commerçants. Axion-IA y intervient pour tous types d'activités du bocage bressuirais.",
+    "Nueil-les-Aubiers (79), commune du bocage bressuirais dans les Deux-Sèvres, possède un tissu industriel et artisanal dynamique dans un territoire rural. TPE artisans, PME industrielles (métallurgie, agroalimentaire), exploitations agricoles, commerçants. Axion-IA opère pour toutes les structures économiques de la commune du bocage bressuirais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nueil-les-Aubiers (79). Nous accompagnons tous types d'activités : TPE artisans et commerçants du bourg, PME industrielles (métallurgie, agroalimentaire), exploitations agricoles du bocage bressuirais, professions libérales et services aux entreprises.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const NUEIL_LES_AUBIERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Nueil-les-Aubiers : diagnostic adapté aux TPE artisans, PME industrielles (métallurgie, agroalimentaire), exploitations agricoles du bocage bressuirais. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Nueil-les-Aubiers : diagnostic adapté aux TPE artisans, PME industrielles (métallurgie, agroalimentaire), exploitations agricoles du bocage bressuirais. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Nueil-les-Aubiers : diagnostic adapté aux TPE artisans, PME industrielles (métallurgie, agroalimentaire), exploitations agricoles du bocage bressuirais. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Nueil-les-Aubiers : diagnostic adapté aux TPE artisans, PME industrielles (métallurgie, agroalimentaire), exploitations agricoles du bocage bressuirais. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Nueil-les-Aubiers : formats adaptés à l'atelier industriel, l'exploitation agricole, le commerce ou le bureau. Vos équipes repartent autonomes sur outils IA métier.",

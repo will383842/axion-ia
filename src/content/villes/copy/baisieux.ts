@@ -30,12 +30,12 @@ export const BAISIEUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Baisieux : diagnostic adapté aux TPE artisans, PME services et logistique transfrontalière, commerçants de l'est lillois. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Baisieux : diagnostic adapté aux TPE artisans, PME services et logistique transfrontalière, commerçants de l'est lillois. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Baisieux : diagnostic adapté aux TPE artisans, PME services et logistique transfrontalière, commerçants de l'est lillois. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Baisieux : diagnostic adapté aux TPE artisans, PME services et logistique transfrontalière, commerçants de l'est lillois. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Baisieux : formats adaptés aux bureaux PME, ateliers artisans, commerces et cabinets. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Baisieux : formats adaptés aux bureaux PME, ateliers artisans, commerces et cabinets. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Baisieux : formats adaptés aux bureaux PME, ateliers artisans, commerces et cabinets. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Baisieux : formats adaptés aux bureaux PME, ateliers artisans, commerces et cabinets. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Baisieux : automatisation flux logistique transfrontalier, agents IA service client bilingue FR/NL, classification documents douaniers, prédiction commandes. Adapté TPE/PME est lillois.",

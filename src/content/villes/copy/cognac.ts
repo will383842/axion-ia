@@ -33,8 +33,8 @@ export const COGNAC_COPY: VilleCopy = {
       en: "Audit IA à Cognac : diagnostic adapté aux viticulteurs, distillateurs, tonneliers, maisons de négoce et professionnels de l'œnotourisme du bassin cognaçais. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Cognac : formats adaptés au chai, à la distillerie, à la tonnellerie, au bureau de négoce ou à l'office de tourisme. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Cognac : formats adaptés au chai, à la distillerie, à la tonnellerie, au bureau de négoce ou à l'office de tourisme. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Cognac : formats adaptés au chai, à la distillerie, à la tonnellerie, au bureau de négoce ou à l'office de tourisme. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Cognac : formats adaptés au chai, à la distillerie, à la tonnellerie, au bureau de négoce ou à l'office de tourisme. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Cognac : traçabilité parcelles viticoles et lots distillation, prédiction qualité eaux-de-vie, automatisation gestion stocks export, agents conversationnels accueil œnotouristique multilingue.",

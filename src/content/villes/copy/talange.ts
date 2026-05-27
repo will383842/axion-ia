@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const TALANGE_COPY: VilleCopy = {
   pitchFr:
-    "Talange (57), commune du pays de l'Orne dans l'agglomération de Thionville, ancrée dans la vallée sidérurgique reconvertie en pôle commercial et tertiaire. Tissu TPE/PME commerce, services, BTP, professions libérales, artisanat et logistique. Axion-IA y intervient pour tous types d'activités.",
+    "Talange (57), commune du pays de l'Orne dans l'agglomération de Thionville, ancrée dans la vallée sidérurgique reconvertie en pôle commercial et tertiaire. Tissu TPE/PME commerce, services, BTP, professions libérales, artisanat et logistique. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Talange (57), commune du pays de l'Orne dans l'agglomération de Thionville, ancrée dans la vallée sidérurgique reconvertie en pôle commercial et tertiaire. Tissu TPE/PME commerce, services, BTP, professions libérales, artisanat et logistique. Axion-IA y intervient pour tous types d'activités.",
+    "Talange (57), commune du pays de l'Orne dans l'agglomération de Thionville, ancrée dans la vallée sidérurgique reconvertie en pôle commercial et tertiaire. Tissu TPE/PME commerce, services, BTP, professions libérales, artisanat et logistique. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Talange (57). Nous accompagnons tous types d'activités : TPE/PME commerce et services, artisans BTP, professions libérales, logisticiens et acteurs tertiaires de l'agglomération de Thionville.",
   directAnswerEn:
@@ -30,12 +30,12 @@ export const TALANGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Talange : diagnostic adapté aux TPE/PME commerce, services, artisans BTP, professions libérales et logisticiens de l'agglomération de Thionville. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Talange : diagnostic adapté aux TPE/PME commerce, services, artisans BTP, professions libérales et logisticiens de l'agglomération de Thionville. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Talange : diagnostic adapté aux TPE/PME commerce, services, artisans BTP, professions libérales et logisticiens de l'agglomération de Thionville. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Talange : diagnostic adapté aux TPE/PME commerce, services, artisans BTP, professions libérales et logisticiens de l'agglomération de Thionville. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Talange : formats adaptés au commerce, bureau tertiaire, atelier BTP, entrepôt logistique ou cabinet libéral. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Talange : formats adaptés au commerce, bureau tertiaire, atelier BTP, entrepôt logistique ou cabinet libéral. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Talange : formats adaptés au commerce, bureau tertiaire, atelier BTP, entrepôt logistique ou cabinet libéral. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Talange : formats adaptés au commerce, bureau tertiaire, atelier BTP, entrepôt logistique ou cabinet libéral. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Talange : automatisation gestion stocks commerce, CRM services, devis BTP, outils administratifs professions libérales, optimisation logistique.",

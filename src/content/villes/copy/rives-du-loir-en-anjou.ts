@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const RIVES_DU_LOIR_EN_ANJOU_COPY: VilleCopy = {
   pitchFr:
-    "Rives-du-Loir-en-Anjou (49), commune nouvelle du Maine-et-Loire entre Angers et La Flèche le long du Loir, rassemble un tissu de TPE artisans, PME agricoles et viticoles, commerces ruraux, exploitations maraîchères et prestataires de services du bassin du Loir. Axion-IA y intervient pour tous types d'activités.",
+    "Rives-du-Loir-en-Anjou (49), commune nouvelle du Maine-et-Loire entre Angers et La Flèche le long du Loir, rassemble un tissu de TPE artisans, PME agricoles et viticoles, commerces ruraux, exploitations maraîchères et prestataires de services du bassin du Loir. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Rives-du-Loir-en-Anjou (49), commune nouvelle du Maine-et-Loire entre Angers et La Flèche le long du Loir, rassemble un tissu de TPE artisans, PME agricoles et viticoles, commerces ruraux, exploitations maraîchères et prestataires de services du bassin du Loir. Axion-IA y intervient pour tous types d'activités.",
+    "Rives-du-Loir-en-Anjou (49), commune nouvelle du Maine-et-Loire entre Angers et La Flèche le long du Loir, rassemble un tissu de TPE artisans, PME agricoles et viticoles, commerces ruraux, exploitations maraîchères et prestataires de services du bassin du Loir. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rives-du-Loir-en-Anjou (49). Nous accompagnons tous types d'activités : TPE artisans, PME agricoles et viticoles, maraîchers, commerçants de bourg, professions libérales et prestataires de services du bassin du Loir entre Angers et La Flèche.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const RIVES_DU_LOIR_EN_ANJOU_COPY: VilleCopy = {
       en: "Audit IA à Rives-du-Loir-en-Anjou : diagnostic adapté aux TPE artisans, PME agricoles, viticulteurs et commerçants du bassin du Loir. ROI chiffré, Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Rives-du-Loir-en-Anjou : formations adaptées aux exploitations agricoles, viticoles, artisans et commerces du bassin du Loir. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Rives-du-Loir-en-Anjou : formations adaptées aux exploitations agricoles, viticoles, artisans et commerces du bassin du Loir. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Rives-du-Loir-en-Anjou : formations adaptées aux exploitations agricoles, viticoles, artisans et commerces du bassin du Loir. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Rives-du-Loir-en-Anjou : formations adaptées aux exploitations agricoles, viticoles, artisans et commerces du bassin du Loir. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Rives-du-Loir-en-Anjou : traçabilité parcellaire, optimisation irrigation maraîchère, gestion cave viticole, automatisation devis artisans et agents conversationnels.",

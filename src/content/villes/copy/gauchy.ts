@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GAUCHY_COPY: VilleCopy = {
   pitchFr:
-    "Gauchy (02), commune de l'agglomération de Saint-Quentin en Aisne, pôle industriel et logistique du Vermandois avec des zones d'activités structurantes. Tissu TPE/PME industrie, logistique, sous-traitance, artisans BTP, commerces, services aux entreprises et professions de services. Axion-IA y intervient pour tous types d'activités.",
+    "Gauchy (02), commune de l'agglomération de Saint-Quentin en Aisne, pôle industriel et logistique du Vermandois avec des zones d'activités structurantes. Tissu TPE/PME industrie, logistique, sous-traitance, artisans BTP, commerces, services aux entreprises et professions de services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Gauchy (02), commune de l'agglomération de Saint-Quentin en Aisne, pôle industriel et logistique du Vermandois avec des zones d'activités structurantes. Tissu TPE/PME industrie, logistique, sous-traitance, artisans BTP, commerces, services aux entreprises et professions de services. Axion-IA y intervient pour tous types d'activités.",
+    "Gauchy (02), commune de l'agglomération de Saint-Quentin en Aisne, pôle industriel et logistique du Vermandois avec des zones d'activités structurantes. Tissu TPE/PME industrie, logistique, sous-traitance, artisans BTP, commerces, services aux entreprises et professions de services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gauchy (02). Nous accompagnons tous types d'activités : TPE/PME industrie, logistique et sous-traitance, artisans BTP, commerces, services aux entreprises et professions de services de l'agglomération de Saint-Quentin.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const GAUCHY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gauchy : diagnostic adapté aux TPE/PME industrie, logistique, sous-traitants, artisans BTP, commerces et services aux entreprises de l'agglomération de Saint-Quentin. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Gauchy : diagnostic adapté aux TPE/PME industrie, logistique, sous-traitants, artisans BTP, commerces et services aux entreprises de l'agglomération de Saint-Quentin. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Gauchy : diagnostic adapté aux TPE/PME industrie, logistique, sous-traitants, artisans BTP, commerces et services aux entreprises de l'agglomération de Saint-Quentin. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Gauchy : diagnostic adapté aux TPE/PME industrie, logistique, sous-traitants, artisans BTP, commerces et services aux entreprises de l'agglomération de Saint-Quentin. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gauchy : formats adaptés à l'atelier industriel, entrepôt logistique, chantier, boutique ou bureau. Vos équipes repartent autonomes.",

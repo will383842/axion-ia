@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const AMBERIEU_EN_BUGEY_COPY: VilleCopy = {
   pitchFr:
-    "Ambérieu-en-Bugey (01), commune du Bugey dans l'Ain, est un nœud ferroviaire majeur (gare de triage SNCF historique, carrefour Lyon-Genève-Bourg-en-Bresse). Tissu PME industrielles et logistiques ferroviaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités du Bugey.",
+    "Ambérieu-en-Bugey (01), commune du Bugey dans l'Ain, est un nœud ferroviaire majeur (gare de triage SNCF historique, carrefour Lyon-Genève-Bourg-en-Bresse). Tissu PME industrielles et logistiques ferroviaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations du Bugey.",
   pitchEn:
-    "Ambérieu-en-Bugey (01), commune du Bugey dans l'Ain, est un nœud ferroviaire majeur (gare de triage SNCF historique, carrefour Lyon-Genève-Bourg-en-Bresse). Tissu PME industrielles et logistiques ferroviaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités du Bugey.",
+    "Ambérieu-en-Bugey (01), commune du Bugey dans l'Ain, est un nœud ferroviaire majeur (gare de triage SNCF historique, carrefour Lyon-Genève-Bourg-en-Bresse). Tissu PME industrielles et logistiques ferroviaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations du Bugey.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ambérieu-en-Bugey (01). Nous accompagnons tous types d'activités : PME industrielles et logistiques ferroviaires (nœud SNCF), TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises du Bugey.",
   directAnswerEn:
@@ -64,7 +64,7 @@ export const AMBERIEU_EN_BUGEY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "TER Lyon 40 min ou voiture 50 min. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "TER Lyon 40 min ou voiture 50 min. Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

@@ -30,12 +30,12 @@ export const ALGRANGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Algrange : diagnostic adapté aux TPE/PME industrielles reconverties, sous-traitants métallurgie, artisans BTP, commerces et services. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Algrange : diagnostic adapté aux TPE/PME industrielles reconverties, sous-traitants métallurgie, artisans BTP, commerces et services. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Algrange : diagnostic adapté aux TPE/PME industrielles reconverties, sous-traitants métallurgie, artisans BTP, commerces et services. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Algrange : diagnostic adapté aux TPE/PME industrielles reconverties, sous-traitants métallurgie, artisans BTP, commerces et services. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Algrange : formats adaptés à l''atelier industriel, chantier BTP, bureau, commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Algrange : formats adaptés à l''atelier industriel, chantier BTP, bureau, commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Algrange : formats adaptés à l''atelier industriel, chantier BTP, bureau, commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Algrange : formats adaptés à l''atelier industriel, chantier BTP, bureau, commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Algrange : contrôle qualité production, traçabilité sous-traitance, automatisation devis BTP, agents conversationnels B2B, outils frontaliers multilingues.",

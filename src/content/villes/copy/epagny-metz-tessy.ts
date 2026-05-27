@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const EPAGNY_METZ_TESSY_COPY: VilleCopy = {
   pitchFr:
-    "Epagny Metz-Tessy (74), commune nouvelle au nord d'Annecy en Haute-Savoie, accueille la zone commerciale Grand Épagny, pôle majeur du commerce et des services du bassin annécien. Tissu varié de PME tertiaires, enseignes commerciales, TPE artisans, logistique et services. Axion-IA y intervient pour tous types d'activités du nord Annecy.",
+    "Epagny Metz-Tessy (74), commune nouvelle au nord d'Annecy en Haute-Savoie, accueille la zone commerciale Grand Épagny, pôle majeur du commerce et des services du bassin annécien. Tissu varié de PME tertiaires, enseignes commerciales, TPE artisans, logistique et services. Axion-IA couvre l'ensemble des activités professionnelles présentes du nord Annecy.",
   pitchEn:
-    "Epagny Metz-Tessy (74), commune nouvelle au nord d'Annecy en Haute-Savoie, accueille la zone commerciale Grand Épagny, pôle majeur du commerce et des services du bassin annécien. Tissu varié de PME tertiaires, enseignes commerciales, TPE artisans, logistique et services. Axion-IA y intervient pour tous types d'activités du nord Annecy.",
+    "Epagny Metz-Tessy (74), commune nouvelle au nord d'Annecy en Haute-Savoie, accueille la zone commerciale Grand Épagny, pôle majeur du commerce et des services du bassin annécien. Tissu varié de PME tertiaires, enseignes commerciales, TPE artisans, logistique et services. Axion-IA couvre l'ensemble des activités professionnelles présentes du nord Annecy.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Epagny Metz-Tessy (74). Nous accompagnons TPE et PME : commerces et enseignes de la zone Grand Épagny, entreprises tertiaires, prestataires logistiques, artisans et professions de services du bassin annécien.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const EPAGNY_METZ_TESSY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Epagny Metz-Tessy : diagnostic adapté aux enseignes commerciales Grand Épagny, PME tertiaires, logisticiens, TPE artisans et prestataires de services. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Epagny Metz-Tessy : diagnostic adapté aux enseignes commerciales Grand Épagny, PME tertiaires, logisticiens, TPE artisans et prestataires de services. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Epagny Metz-Tessy : diagnostic adapté aux enseignes commerciales Grand Épagny, PME tertiaires, logisticiens, TPE artisans et prestataires de services. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Epagny Metz-Tessy : diagnostic adapté aux enseignes commerciales Grand Épagny, PME tertiaires, logisticiens, TPE artisans et prestataires de services. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Epagny Metz-Tessy : formats adaptés au point de vente, bureau tertiaire ou entrepôt logistique. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Epagny Metz-Tessy : formats adaptés au point de vente, bureau tertiaire ou entrepôt logistique. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Epagny Metz-Tessy : formats adaptés au point de vente, bureau tertiaire ou entrepôt logistique. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Epagny Metz-Tessy : formats adaptés au point de vente, bureau tertiaire ou entrepôt logistique. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Epagny Metz-Tessy : agents conversationnels client retail, optimisation stocks et logistique, automatisation gestion commerciale, chatbots service après-vente. Tissu commercial Grand Épagny.",

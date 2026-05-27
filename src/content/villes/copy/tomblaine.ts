@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const TOMBLAINE_COPY: VilleCopy = {
   pitchFr:
-    "Tomblaine (54), commune de l'est de l'agglomération nancéienne en Meurthe-et-Moselle, accueille le stade Marcel-Picot (AS Nancy Lorraine) et des zones d'activités tertiaires. Tissu TPE/PME services, commerce, artisans BTP, professions libérales, restauration. Axion-IA y intervient pour tous types d'activités.",
+    "Tomblaine (54), commune de l'est de l'agglomération nancéienne en Meurthe-et-Moselle, accueille le stade Marcel-Picot (AS Nancy Lorraine) et des zones d'activités tertiaires. Tissu TPE/PME services, commerce, artisans BTP, professions libérales, restauration. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Tomblaine (54), commune de l'est de l'agglomération nancéienne en Meurthe-et-Moselle, accueille le stade Marcel-Picot (AS Nancy Lorraine) et des zones d'activités tertiaires. Tissu TPE/PME services, commerce, artisans BTP, professions libérales, restauration. Axion-IA y intervient pour tous types d'activités.",
+    "Tomblaine (54), commune de l'est de l'agglomération nancéienne en Meurthe-et-Moselle, accueille le stade Marcel-Picot (AS Nancy Lorraine) et des zones d'activités tertiaires. Tissu TPE/PME services, commerce, artisans BTP, professions libérales, restauration. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tomblaine (54). Nous accompagnons tous types d'activités : TPE/PME de services, commerçants, artisans BTP, professions libérales et restaurateurs de l'est de l'agglomération nancéienne.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const TOMBLAINE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Tomblaine : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et professions libérales de l'est nancéien. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Tomblaine : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et professions libérales de l'est nancéien. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Tomblaine : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et professions libérales de l'est nancéien. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Tomblaine : diagnostic adapté aux TPE/PME de services, commerçants, artisans BTP et professions libérales de l'est nancéien. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Tomblaine : formats adaptés au bureau tertiaire, au commerce ou au cabinet libéral. Vos équipes repartent autonomes sur les outils IA métier.",

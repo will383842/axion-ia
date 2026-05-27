@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_PEAGE_DE_ROUSSILLON_COPY: VilleCopy = {
   pitchFr:
-    "Le Péage-de-Roussillon (38), commune du sud-Isère dans la vallée du Rhône, est le point ferroviaire local (gare TER Lyon-Valence) du Pays Roussillonnais. Tissu industriel et logistique rhodanien, TPE artisans BTP, agriculture, commerces. Axion-IA y intervient pour tous types d'activités du Pays Roussillonnais.",
+    "Le Péage-de-Roussillon (38), commune du sud-Isère dans la vallée du Rhône, est le point ferroviaire local (gare TER Lyon-Valence) du Pays Roussillonnais. Tissu industriel et logistique rhodanien, TPE artisans BTP, agriculture, commerces. Axion-IA opère pour toutes les structures économiques de la commune du Pays Roussillonnais.",
   pitchEn:
-    "Le Péage-de-Roussillon (38), commune du sud-Isère dans la vallée du Rhône, est le point ferroviaire local (gare TER Lyon-Valence) du Pays Roussillonnais. Tissu industriel et logistique rhodanien, TPE artisans BTP, agriculture, commerces. Axion-IA y intervient pour tous types d'activités du Pays Roussillonnais.",
+    "Le Péage-de-Roussillon (38), commune du sud-Isère dans la vallée du Rhône, est le point ferroviaire local (gare TER Lyon-Valence) du Pays Roussillonnais. Tissu industriel et logistique rhodanien, TPE artisans BTP, agriculture, commerces. Axion-IA opère pour toutes les structures économiques de la commune du Pays Roussillonnais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Péage-de-Roussillon (38). Nous accompagnons tous types d'activités : PME industrielles et logistiques rhodaniennes, TPE artisans BTP, commerçants, agriculteurs vallée du Rhône, indépendants, professions libérales et services aux entreprises du Pays Roussillonnais.",
   directAnswerEn:
@@ -64,7 +64,7 @@ export const LE_PEAGE_DE_ROUSSILLON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Valence ?",
-      a: "Nos consultants viennent de Lyon (45 min A7) ou Valence (50 min A7). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (45 min A7) ou Valence (50 min A7). Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

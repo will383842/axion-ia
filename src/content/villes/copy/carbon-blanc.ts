@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CARBON_BLANC_COPY: VilleCopy = {
   pitchFr:
-    "Carbon-Blanc (33), commune résidentielle de la rive droite de Bordeaux Métropole, combine tissu TPE artisanal, commerces de proximité, professions libérales et PME de services. Axion-IA y intervient pour tous types d'activités de la rive droite bordelaise.",
+    "Carbon-Blanc (33), commune résidentielle de la rive droite de Bordeaux Métropole, combine tissu TPE artisanal, commerces de proximité, professions libérales et PME de services. Axion-IA y déploie ses missions auprès de toutes les organisations de la rive droite bordelaise.",
   pitchEn:
-    "Carbon-Blanc (33), commune résidentielle de la rive droite de Bordeaux Métropole, combine tissu TPE artisanal, commerces de proximité, professions libérales et PME de services. Axion-IA y intervient pour tous types d'activités de la rive droite bordelaise.",
+    "Carbon-Blanc (33), commune résidentielle de la rive droite de Bordeaux Métropole, combine tissu TPE artisanal, commerces de proximité, professions libérales et PME de services. Axion-IA y déploie ses missions auprès de toutes les organisations de la rive droite bordelaise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carbon-Blanc (33). Nous accompagnons TPE et PME de la rive droite bordelaise : artisans BTP, commerçants, professions libérales, PME de services et indépendants. Audit Flash dès 490 € HT.",
   directAnswerEn:

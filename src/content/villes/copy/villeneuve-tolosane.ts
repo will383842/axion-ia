@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VILLENEUVE_TOLOSANE_COPY: VilleCopy = {
   pitchFr:
-    "Villeneuve-Tolosane (31), commune du sud-ouest toulousain avec plus de 11 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités de la couronne sud-ouest de Toulouse.",
+    "Villeneuve-Tolosane (31), commune du sud-ouest toulousain avec plus de 11 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de la couronne sud-ouest de Toulouse.",
   pitchEn:
-    "Villeneuve-Tolosane (31), commune du sud-ouest toulousain avec plus de 11 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités de la couronne sud-ouest de Toulouse.",
+    "Villeneuve-Tolosane (31), commune du sud-ouest toulousain avec plus de 11 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de la couronne sud-ouest de Toulouse.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villeneuve-Tolosane (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud-ouest Toulouse. Audit Flash dès 490 € HT.",
   directAnswerEn:

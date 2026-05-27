@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LOUVIERS_COPY: VilleCopy = {
   pitchFr:
-    "Louviers (27), sous-préfecture de l'Eure en Normandie, ville historique du textile et du drap. Tissu TPE artisans, PME industrie et agroalimentaire vallée de l'Eure, commerces centre-ville, services aux entreprises, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Louviers (27), sous-préfecture de l'Eure en Normandie, ville historique du textile et du drap. Tissu TPE artisans, PME industrie et agroalimentaire vallée de l'Eure, commerces centre-ville, services aux entreprises, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Louviers (27), sous-préfecture de l'Eure en Normandie, ville historique du textile et du drap. Tissu TPE artisans, PME industrie et agroalimentaire vallée de l'Eure, commerces centre-ville, services aux entreprises, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Louviers (27), sous-préfecture de l'Eure en Normandie, ville historique du textile et du drap. Tissu TPE artisans, PME industrie et agroalimentaire vallée de l'Eure, commerces centre-ville, services aux entreprises, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Louviers (27). Nous accompagnons tous types d'activités : TPE artisans, PME industrie et agroalimentaire vallée de l'Eure, commerces centre-ville, professions libérales, indépendants et services aux entreprises de l'agglomération Seine-Eure.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LOUVIERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Louviers : diagnostic adapté aux TPE artisans, PME industrie et agroalimentaire vallée de l'Eure, commerces, professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Louviers : diagnostic adapté aux TPE artisans, PME industrie et agroalimentaire vallée de l'Eure, commerces, professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Louviers : diagnostic adapté aux TPE artisans, PME industrie et agroalimentaire vallée de l'Eure, commerces, professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Louviers : diagnostic adapté aux TPE artisans, PME industrie et agroalimentaire vallée de l'Eure, commerces, professions libérales. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Louviers : formats adaptés à l'usine, l'atelier agroalimentaire, le cabinet, le commerce centre-ville. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const LOUVIERS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Rouen ou Paris ?",
-      a: "Nos consultants viennent de Rouen (30 min A13) ou Paris (1h30 A13). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Rouen (30 min A13) ou Paris (1h30 A13). Pour les multi-jours, hébergement local possible. Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

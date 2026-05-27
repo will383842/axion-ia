@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const AYTRE_COPY: VilleCopy = {
   pitchFr:
-    "Aytré (17), commune au sud de l'agglomération de La Rochelle en Charente-Maritime, pôle industriel ferroviaire (site Alstom). Tissu de TPE artisans, PME industrielles et sous-traitants ferroviaires, commerces de proximité, services et professions libérales. Axion-IA y intervient pour tous types d'activités de l'agglomération rochelaise.",
+    "Aytré (17), commune au sud de l'agglomération de La Rochelle en Charente-Maritime, pôle industriel ferroviaire (site Alstom). Tissu de TPE artisans, PME industrielles et sous-traitants ferroviaires, commerces de proximité, services et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations de l'agglomération rochelaise.",
   pitchEn:
-    "Aytré (17), commune au sud de l'agglomération de La Rochelle en Charente-Maritime, pôle industriel ferroviaire (site Alstom). Tissu de TPE artisans, PME industrielles et sous-traitants ferroviaires, commerces de proximité, services et professions libérales. Axion-IA y intervient pour tous types d'activités de l'agglomération rochelaise.",
+    "Aytré (17), commune au sud de l'agglomération de La Rochelle en Charente-Maritime, pôle industriel ferroviaire (site Alstom). Tissu de TPE artisans, PME industrielles et sous-traitants ferroviaires, commerces de proximité, services et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations de l'agglomération rochelaise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aytré (17). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et sous-traitants ferroviaires, commerçants, professions libérales et indépendants de cette commune industrielle de l'agglomération de La Rochelle.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const AYTRE_COPY: VilleCopy = {
       en: "Audit IA à Aytré : diagnostic adapté aux PME industrielles ferroviaires, sous-traitants, TPE artisans et commerces de l'agglomération de La Rochelle sud. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Aytré : formats adaptés à l'atelier industriel, au bureau d'études, au commerce ou au cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Aytré : formats adaptés à l'atelier industriel, au bureau d'études, au commerce ou au cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Aytré : formats adaptés à l'atelier industriel, au bureau d'études, au commerce ou au cabinet. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Aytré : formats adaptés à l'atelier industriel, au bureau d'études, au commerce ou au cabinet. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Aytré : maintenance prédictive équipements ferroviaires, contrôle qualité pièces industrielles, traçabilité production, automatisation documentation technique et reporting.",

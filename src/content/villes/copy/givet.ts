@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GIVET_COPY: VilleCopy = {
   pitchFr:
-    "Givet (08), commune frontalière à la pointe des Ardennes en bord de Meuse, est dominée par le fort de Charlemont (XVIe siècle) et bénéficie d'une position stratégique aux portes de la Belgique. TPE artisans, PME industrielles, commerçants frontaliers, acteurs touristiques fluviaux et professions libérales forment le tissu économique local. Axion-IA y intervient pour tous types d'activités de la pointe ardennaise.",
+    "Givet (08), commune frontalière à la pointe des Ardennes en bord de Meuse, est dominée par le fort de Charlemont (XVIe siècle) et bénéficie d'une position stratégique aux portes de la Belgique. TPE artisans, PME industrielles, commerçants frontaliers, acteurs touristiques fluviaux et professions libérales forment le tissu économique local. Axion-IA opère pour toutes les structures économiques de la commune de la pointe ardennaise.",
   pitchEn:
-    "Givet (08), commune frontalière à la pointe des Ardennes en bord de Meuse, est dominée par le fort de Charlemont (XVIe siècle) et bénéficie d'une position stratégique aux portes de la Belgique. TPE artisans, PME industrielles, commerçants frontaliers, acteurs touristiques fluviaux et professions libérales forment le tissu économique local. Axion-IA y intervient pour tous types d'activités de la pointe ardennaise.",
+    "Givet (08), commune frontalière à la pointe des Ardennes en bord de Meuse, est dominée par le fort de Charlemont (XVIe siècle) et bénéficie d'une position stratégique aux portes de la Belgique. TPE artisans, PME industrielles, commerçants frontaliers, acteurs touristiques fluviaux et professions libérales forment le tissu économique local. Axion-IA opère pour toutes les structures économiques de la commune de la pointe ardennaise.",
   seoHook: "industrie & commerce transfrontalier belge",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Givet (08). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles, commerçants transfrontaliers, acteurs touristiques fluviaux et professions libérales de la pointe ardennaise. Audit Flash dès 490 € HT, démarrage sous 5 jours.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHANGE_53_COPY: VilleCopy = {
   pitchFr:
-    "Changé (53), commune de l'agglomération lavalloise en Mayenne, accueille des zones d'activités et un tissu dynamique de TPE artisans, PME industrielles et technologiques, commerces, professions libérales et prestataires de services du bassin lavallois. Axion-IA y intervient pour tous types d'activités.",
+    "Changé (53), commune de l'agglomération lavalloise en Mayenne, accueille des zones d'activités et un tissu dynamique de TPE artisans, PME industrielles et technologiques, commerces, professions libérales et prestataires de services du bassin lavallois. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Changé (53), commune de l'agglomération lavalloise en Mayenne, accueille des zones d'activités et un tissu dynamique de TPE artisans, PME industrielles et technologiques, commerces, professions libérales et prestataires de services du bassin lavallois. Axion-IA y intervient pour tous types d'activités.",
+    "Changé (53), commune de l'agglomération lavalloise en Mayenne, accueille des zones d'activités et un tissu dynamique de TPE artisans, PME industrielles et technologiques, commerces, professions libérales et prestataires de services du bassin lavallois. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Changé (53, Mayenne). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et technologiques, commerçants, professions libérales, prestataires B2B et entreprises des zones d'activités de l'agglomération lavalloise.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const CHANGE_53_COPY: VilleCopy = {
       en: "Audit IA à Changé (53) : diagnostic adapté aux TPE artisans, PME industrielles, entreprises technologiques et commerçants de l'agglomération lavalloise. ROI chiffré, Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Changé (53) : formations adaptées aux PME industrielles, entreprises tech, artisans et commerces du bassin lavallois. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Changé (53) : formations adaptées aux PME industrielles, entreprises tech, artisans et commerces du bassin lavallois. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Changé (53) : formations adaptées aux PME industrielles, entreprises tech, artisans et commerces du bassin lavallois. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Changé (53) : formations adaptées aux PME industrielles, entreprises tech, artisans et commerces du bassin lavallois. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Changé (53) : automatisation processus industriels, outils IA numérique, agents conversationnels B2B, maintenance prédictive et optimisation logistique.",

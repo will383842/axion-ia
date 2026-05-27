@@ -60,6 +60,8 @@ export const STRASBOURG_COPY: VilleCopy = {
   directAnswerEn:
     "Axion-IA is a senior AI architects consultancy that intervenes in Strasbourg (67) on site, from the European Peninsula to the Illkirch Innovation Park and the Wacken-Europe Business District. We support Strasbourg micro-businesses, SMEs, mid-caps and large organisations — European institutions, Alsace BioValley biotech, industrial groups (Hager, Schmidt, Kronenbourg), media (ARTE) and Crédit Mutuel — on their operational AI use cases. Costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
+  seoHook: "institutions EU, biotech & frontalier",
+
   topSectorsNaf: [
     "Biotech & Sciences de la vie",
     "Institutions européennes & secteur public",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BOUGIVAL_COPY: VilleCopy = {
   pitchFr:
-    "Bougival (78), commune pittoresque des bords de Seine dans les Yvelines, célèbre pour son patrimoine impressionniste (Renoir, Monet, Berthe Morisot) et la Machine de Marly. Tissu de TPE artisans, PME tertiaires, commerces de proximité, professions libérales et acteurs du tourisme culturel. Axion-IA y intervient pour tous types d'activités de la boucle de la Seine.",
+    "Bougival (78), commune pittoresque des bords de Seine dans les Yvelines, célèbre pour son patrimoine impressionniste (Renoir, Monet, Berthe Morisot) et la Machine de Marly. Tissu de TPE artisans, PME tertiaires, commerces de proximité, professions libérales et acteurs du tourisme culturel. Axion-IA opère pour toutes les structures économiques de la commune de la boucle de la Seine.",
   pitchEn:
-    "Bougival (78), commune pittoresque des bords de Seine dans les Yvelines, célèbre pour son patrimoine impressionniste (Renoir, Monet, Berthe Morisot) et la Machine de Marly. Tissu de TPE artisans, PME tertiaires, commerces de proximité, professions libérales et acteurs du tourisme culturel. Axion-IA y intervient pour tous types d'activités de la boucle de la Seine.",
+    "Bougival (78), commune pittoresque des bords de Seine dans les Yvelines, célèbre pour son patrimoine impressionniste (Renoir, Monet, Berthe Morisot) et la Machine de Marly. Tissu de TPE artisans, PME tertiaires, commerces de proximité, professions libérales et acteurs du tourisme culturel. Axion-IA opère pour toutes les structures économiques de la commune de la boucle de la Seine.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bougival (78). Nous accompagnons TPE et PME : commerces, professions libérales, PME tertiaires, artisans et acteurs du tourisme culturel de cette commune des bords de Seine, entre Rueil-Malmaison et Louveciennes. Audit Flash dès 490 € HT.",
   directAnswerEn:

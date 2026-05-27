@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MARLY_LA_VILLE_COPY: VilleCopy = {
   pitchFr:
-    "Marly-la-Ville (95), commune du Val-d'Oise proche de Roissy-CDG et de l'unité urbaine de Fosses, bénéficie de la dynamique logistique et tertiaire aéroportuaire. Tissu TPE commerces et artisanat, PME logistique et transport, professions libérales, restauration, services à la personne. Axion-IA y intervient pour tous types d'activités.",
+    "Marly-la-Ville (95), commune du Val-d'Oise proche de Roissy-CDG et de l'unité urbaine de Fosses, bénéficie de la dynamique logistique et tertiaire aéroportuaire. Tissu TPE commerces et artisanat, PME logistique et transport, professions libérales, restauration, services à la personne. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Marly-la-Ville (95), commune du Val-d'Oise proche de Roissy-CDG et de l'unité urbaine de Fosses, bénéficie de la dynamique logistique et tertiaire aéroportuaire. Tissu TPE commerces et artisanat, PME logistique et transport, professions libérales, restauration, services à la personne. Axion-IA y intervient pour tous types d'activités.",
+    "Marly-la-Ville (95), commune du Val-d'Oise proche de Roissy-CDG et de l'unité urbaine de Fosses, bénéficie de la dynamique logistique et tertiaire aéroportuaire. Tissu TPE commerces et artisanat, PME logistique et transport, professions libérales, restauration, services à la personne. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marly-la-Ville (95). Nous accompagnons TPE et PME : commerçants et artisans locaux, PME logistique et transport zone Roissy, professions libérales, restaurateurs, prestataires services à la personne nord Val-d'Oise. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const MARLY_LA_VILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Marly-la-Ville : diagnostic adapté aux commerçants et artisans, PME logistique zone Roissy, professions libérales, restaurateurs nord Val-d'Oise. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Marly-la-Ville : diagnostic adapté aux commerçants et artisans, PME logistique zone Roissy, professions libérales, restaurateurs nord Val-d'Oise. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Marly-la-Ville : diagnostic adapté aux commerçants et artisans, PME logistique zone Roissy, professions libérales, restaurateurs nord Val-d'Oise. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Marly-la-Ville : diagnostic adapté aux commerçants et artisans, PME logistique zone Roissy, professions libérales, restaurateurs nord Val-d'Oise. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Marly-la-Ville : formats adaptés boutique, cabinet, entrepôt logistique, bureau PME. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Marly-la-Ville : formats adaptés boutique, cabinet, entrepôt logistique, bureau PME. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Marly-la-Ville : formats adaptés boutique, cabinet, entrepôt logistique, bureau PME. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Marly-la-Ville : formats adaptés boutique, cabinet, entrepôt logistique, bureau PME. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Marly-la-Ville : CRM augmenté commerçants, automatisation flux logistique, outils gestion cabinet, facturation intelligente PME transport zone Roissy.",

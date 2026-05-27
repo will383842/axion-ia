@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ESTAIRES_COPY: VilleCopy = {
   pitchFr:
-    "Estaires (59), commune du département du Nord (région Hauts-de-France) en Flandre intérieure, sur les bords de la Lys. Tissu TPE artisanat et négoce agricole, PME agroalimentaire et textile, commerces de centre-bourg, services de proximité et activités liées au bassin économique Flandre-Lys. Axion-IA y intervient pour tous types d'activités.",
+    "Estaires (59), commune du département du Nord (région Hauts-de-France) en Flandre intérieure, sur les bords de la Lys. Tissu TPE artisanat et négoce agricole, PME agroalimentaire et textile, commerces de centre-bourg, services de proximité et activités liées au bassin économique Flandre-Lys. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Estaires (59), commune du département du Nord (région Hauts-de-France) en Flandre intérieure, sur les bords de la Lys. Tissu TPE artisanat et négoce agricole, PME agroalimentaire et textile, commerces de centre-bourg, services de proximité et activités liées au bassin économique Flandre-Lys. Axion-IA y intervient pour tous types d'activités.",
+    "Estaires (59), commune du département du Nord (région Hauts-de-France) en Flandre intérieure, sur les bords de la Lys. Tissu TPE artisanat et négoce agricole, PME agroalimentaire et textile, commerces de centre-bourg, services de proximité et activités liées au bassin économique Flandre-Lys. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Estaires (59). Nous accompagnons tous types d'activités : TPE artisans et négoce agricole, PME agroalimentaire et textile, commerçants, services de proximité et entreprises du bassin économique Flandre-Lys.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const ESTAIRES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Estaires : diagnostic adapté aux TPE artisans, PME agroalimentaire et textile, négoce agricole, commerçants et services de Flandre-Lys. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Estaires : diagnostic adapté aux TPE artisans, PME agroalimentaire et textile, négoce agricole, commerçants et services de Flandre-Lys. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Estaires : diagnostic adapté aux TPE artisans, PME agroalimentaire et textile, négoce agricole, commerçants et services de Flandre-Lys. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Estaires : diagnostic adapté aux TPE artisans, PME agroalimentaire et textile, négoce agricole, commerçants et services de Flandre-Lys. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Estaires : formats adaptés à l'usine agroalimentaire, l'atelier textile, l'exploitation agricole, le commerce. Vos équipes repartent autonomes sur les outils IA du quotidien.",
@@ -65,7 +65,7 @@ export const ESTAIRES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Estaires ?",
-      a: "Nos consultants viennent via gare d'Estaires (TER Lille-Hazebrouck-Calais sur place) ou A25. Hazebrouck à 15 min, Armentières à 15 min, Lille à 35 min. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants viennent via gare d'Estaires (TER Lille-Hazebrouck-Calais sur place) ou A25. Hazebrouck à 15 min, Armentières à 15 min, Lille à 35 min. Frais de mission en sus, grille tarifaire publique.",
     },
   ],
 };

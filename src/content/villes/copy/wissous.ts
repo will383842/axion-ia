@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const WISSOUS_COPY: VilleCopy = {
   pitchFr:
-    "Wissous (91), commune de l'Essonne aux portes de l'aéroport Paris-Orly, conjugue tradition maraîchère et zone d'activités économiques. Serres historiques, logistique aéroportuaire, TPE artisans, PME transport et services. Axion-IA y intervient pour tous types d'activités.",
+    "Wissous (91), commune de l'Essonne aux portes de l'aéroport Paris-Orly, conjugue tradition maraîchère et zone d'activités économiques. Serres historiques, logistique aéroportuaire, TPE artisans, PME transport et services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Wissous (91), commune de l'Essonne aux portes de l'aéroport Paris-Orly, conjugue tradition maraîchère et zone d'activités économiques. Serres historiques, logistique aéroportuaire, TPE artisans, PME transport et services. Axion-IA y intervient pour tous types d'activités.",
+    "Wissous (91), commune de l'Essonne aux portes de l'aéroport Paris-Orly, conjugue tradition maraîchère et zone d'activités économiques. Serres historiques, logistique aéroportuaire, TPE artisans, PME transport et services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wissous (91). Nous accompagnons TPE et PME : entreprises logistiques proches d'Orly, exploitants de serres maraîchères, artisans BTP, commerces de proximité, PME transport et services aux entreprises de la zone d'activités. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const WISSOUS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Wissous : diagnostic adapté aux entreprises logistiques zone Orly, exploitants maraîchers, TPE artisans, PME transport et services. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Wissous : diagnostic adapté aux entreprises logistiques zone Orly, exploitants maraîchers, TPE artisans, PME transport et services. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Wissous : diagnostic adapté aux entreprises logistiques zone Orly, exploitants maraîchers, TPE artisans, PME transport et services. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Wissous : diagnostic adapté aux entreprises logistiques zone Orly, exploitants maraîchers, TPE artisans, PME transport et services. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Wissous : formats adaptés entrepôt logistique, exploitation maraîchère, bureau zone d'activités, PME transport. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Wissous : formats adaptés entrepôt logistique, exploitation maraîchère, bureau zone d'activités, PME transport. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Wissous : formats adaptés entrepôt logistique, exploitation maraîchère, bureau zone d'activités, PME transport. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Wissous : formats adaptés entrepôt logistique, exploitation maraîchère, bureau zone d'activités, PME transport. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Wissous : automatisation flux logistiques Orly, prédiction récoltes maraîchères, CRM transport, gestion stocks zone d'activités, outils pilotage TPE-PME.",
@@ -64,7 +64,7 @@ export const WISSOUS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ou Massy ?",
-      a: "Paris centre (25 min par A6 ou RER C). Massy TGV (10 min). Orly (5 min). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Paris centre (25 min par A6 ou RER C). Massy TGV (10 min). Orly (5 min). Frais de mission en sus, grille tarifaire publique.",
     },
   ],
 };

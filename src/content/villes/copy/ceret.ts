@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CERET_COPY: VilleCopy = {
   pitchFr:
-    "Céret (66), capitale de la cerise et haut lieu de l'art moderne (musée Picasso, Chagall, Soutine), est la sous-préfecture du Vallespir au pied des Pyrénées catalanes. Tissu TPE artisans, PME arboriculture et agroalimentaire, commerces, tourisme culturel, artisanat d'art. Axion-IA y intervient pour tous types d'activités du Vallespir.",
+    "Céret (66), capitale de la cerise et haut lieu de l'art moderne (musée Picasso, Chagall, Soutine), est la sous-préfecture du Vallespir au pied des Pyrénées catalanes. Tissu TPE artisans, PME arboriculture et agroalimentaire, commerces, tourisme culturel, artisanat d'art. Axion-IA couvre l'ensemble des activités professionnelles présentes du Vallespir.",
   pitchEn:
-    "Céret (66), capitale de la cerise et haut lieu de l'art moderne (musée Picasso, Chagall, Soutine), est la sous-préfecture du Vallespir au pied des Pyrénées catalanes. Tissu TPE artisans, PME arboriculture et agroalimentaire, commerces, tourisme culturel, artisanat d'art. Axion-IA y intervient pour tous types d'activités du Vallespir.",
+    "Céret (66), capitale de la cerise et haut lieu de l'art moderne (musée Picasso, Chagall, Soutine), est la sous-préfecture du Vallespir au pied des Pyrénées catalanes. Tissu TPE artisans, PME arboriculture et agroalimentaire, commerces, tourisme culturel, artisanat d'art. Axion-IA couvre l'ensemble des activités professionnelles présentes du Vallespir.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Céret (66). Nous accompagnons tous types d'activités : TPE artisans et artisanat d'art, PME arboriculture et agroalimentaire, commerçants, acteurs du tourisme culturel, indépendants et professions libérales du Vallespir.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const CERET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Céret : diagnostic adapté aux TPE artisans d'art, PME arboriculture, commerçants et acteurs du tourisme culturel du Vallespir. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Céret : diagnostic adapté aux TPE artisans d'art, PME arboriculture, commerçants et acteurs du tourisme culturel du Vallespir. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Céret : diagnostic adapté aux TPE artisans d'art, PME arboriculture, commerçants et acteurs du tourisme culturel du Vallespir. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Céret : diagnostic adapté aux TPE artisans d'art, PME arboriculture, commerçants et acteurs du tourisme culturel du Vallespir. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Céret : formats adaptés à l'atelier d'art, exploitation fruitière, commerce, galerie, bureau. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Céret : formats adaptés à l'atelier d'art, exploitation fruitière, commerce, galerie, bureau. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Céret : formats adaptés à l'atelier d'art, exploitation fruitière, commerce, galerie, bureau. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Céret : formats adaptés à l'atelier d'art, exploitation fruitière, commerce, galerie, bureau. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Céret : tri qualité cerises/fruits par vision, chatbots tourisme culturel multilingues, gestion galeries d'art, automatisation traçabilité. Vallespir.",
@@ -64,7 +64,7 @@ export const CERET_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Céret ?",
-      a: "Nos consultants interviennent depuis Perpignan (30 min). Missions sur site dans votre atelier, exploitation ou commerce. Visio possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants interviennent depuis Perpignan (30 min). Missions sur site dans votre atelier, exploitation ou commerce. Visio possible. Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

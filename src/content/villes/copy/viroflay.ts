@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VIROFLAY_COPY: VilleCopy = {
   pitchFr:
-    "Viroflay (78), commune résidentielle sur l'axe Paris-Versailles, bénéficie de deux gares SNCF et d'un tissu de TPE/PME tertiaires dynamique. Professions libérales, conseil, services aux entreprises, commerces, artisanat. Axion-IA y intervient pour tous types d'activités de l'ouest parisien.",
+    "Viroflay (78), commune résidentielle sur l'axe Paris-Versailles, bénéficie de deux gares SNCF et d'un tissu de TPE/PME tertiaires dynamique. Professions libérales, conseil, services aux entreprises, commerces, artisanat. Axion-IA opère pour toutes les structures économiques de la commune de l'ouest parisien.",
   pitchEn:
-    "Viroflay (78), commune résidentielle sur l'axe Paris-Versailles, bénéficie de deux gares SNCF et d'un tissu de TPE/PME tertiaires dynamique. Professions libérales, conseil, services aux entreprises, commerces, artisanat. Axion-IA y intervient pour tous types d'activités de l'ouest parisien.",
+    "Viroflay (78), commune résidentielle sur l'axe Paris-Versailles, bénéficie de deux gares SNCF et d'un tissu de TPE/PME tertiaires dynamique. Professions libérales, conseil, services aux entreprises, commerces, artisanat. Axion-IA opère pour toutes les structures économiques de la commune de l'ouest parisien.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Viroflay (78). Nous accompagnons tous types d'activités : TPE et PME tertiaires de l'axe Paris-Versailles, professions libérales, cabinets de conseil, commerçants de centre-ville, artisans, indépendants et prestataires de services.",
   directAnswerEn:

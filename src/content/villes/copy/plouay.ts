@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PLOUAY_COPY: VilleCopy = {
   pitchFr:
-    "Plouay (56), commune du centre Morbihan, est reconnue internationalement pour le cyclisme (vélodrome Raymond Poulidor, championnats du monde sur route). Tissu TPE artisans BTP, PME agroalimentaires, commerces, exploitations agricoles, tourisme sportif et vert (forêt de Pontcallec). Axion-IA y intervient pour tous types d'activités.",
+    "Plouay (56), commune du centre Morbihan, est reconnue internationalement pour le cyclisme (vélodrome Raymond Poulidor, championnats du monde sur route). Tissu TPE artisans BTP, PME agroalimentaires, commerces, exploitations agricoles, tourisme sportif et vert (forêt de Pontcallec). Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Plouay (56), commune du centre Morbihan, est reconnue internationalement pour le cyclisme (vélodrome Raymond Poulidor, championnats du monde sur route). Tissu TPE artisans BTP, PME agroalimentaires, commerces, exploitations agricoles, tourisme sportif et vert (forêt de Pontcallec). Axion-IA y intervient pour tous types d'activités.",
+    "Plouay (56), commune du centre Morbihan, est reconnue internationalement pour le cyclisme (vélodrome Raymond Poulidor, championnats du monde sur route). Tissu TPE artisans BTP, PME agroalimentaires, commerces, exploitations agricoles, tourisme sportif et vert (forêt de Pontcallec). Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plouay (56). Nous accompagnons tous types d'activités : acteurs du cyclisme et tourisme sportif (vélodrome Raymond Poulidor), TPE artisans BTP, PME agroalimentaires, exploitants agricoles, commerçants, indépendants et services aux entreprises du centre Morbihan.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const PLOUAY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Plouay : diagnostic adapté aux acteurs du cyclisme sportif, PME agroalimentaires, exploitants agricoles, TPE artisans BTP et commerçants du centre Morbihan. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Plouay : diagnostic adapté aux acteurs du cyclisme sportif, PME agroalimentaires, exploitants agricoles, TPE artisans BTP et commerçants du centre Morbihan. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Plouay : diagnostic adapté aux acteurs du cyclisme sportif, PME agroalimentaires, exploitants agricoles, TPE artisans BTP et commerçants du centre Morbihan. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Plouay : diagnostic adapté aux acteurs du cyclisme sportif, PME agroalimentaires, exploitants agricoles, TPE artisans BTP et commerçants du centre Morbihan. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Plouay : formats adaptés à l'exploitation agricole, atelier agroalimentaire, structure sportive ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",

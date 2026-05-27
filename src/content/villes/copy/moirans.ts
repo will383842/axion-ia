@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MOIRANS_COPY: VilleCopy = {
   pitchFr:
-    "Moirans (38), commune du Pays voironnais en Isère, est positionnée stratégiquement au débouché septentrional de la basse vallée de l'Isère (Sud Grésivaudan). Tissu PME industrielles, logistique, TPE artisans BTP, commerces, agriculture et services. Axion-IA y intervient pour tous types d'activités du nord-Isère / Voironnais.",
+    "Moirans (38), commune du Pays voironnais en Isère, est positionnée stratégiquement au débouché septentrional de la basse vallée de l'Isère (Sud Grésivaudan). Tissu PME industrielles, logistique, TPE artisans BTP, commerces, agriculture et services. Axion-IA couvre l'ensemble des activités professionnelles présentes du nord-Isère / Voironnais.",
   pitchEn:
-    "Moirans (38), commune du Pays voironnais en Isère, est positionnée stratégiquement au débouché septentrional de la basse vallée de l'Isère (Sud Grésivaudan). Tissu PME industrielles, logistique, TPE artisans BTP, commerces, agriculture et services. Axion-IA y intervient pour tous types d'activités du nord-Isère / Voironnais.",
+    "Moirans (38), commune du Pays voironnais en Isère, est positionnée stratégiquement au débouché septentrional de la basse vallée de l'Isère (Sud Grésivaudan). Tissu PME industrielles, logistique, TPE artisans BTP, commerces, agriculture et services. Axion-IA couvre l'ensemble des activités professionnelles présentes du nord-Isère / Voironnais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Moirans (38). Nous accompagnons tous types d'activités : PME industrielles et logistiques du Voironnais, TPE artisans BTP, commerçants, indépendants, professions libérales, agriculteurs et services aux entreprises du Sud Grésivaudan / Pays voironnais.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const MOIRANS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Moirans : diagnostic adapté aux PME industrielles/logistiques du Voironnais, TPE artisans, agriculteurs et commerçants du Sud Grésivaudan. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Moirans : diagnostic adapté aux PME industrielles/logistiques du Voironnais, TPE artisans, agriculteurs et commerçants du Sud Grésivaudan. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Moirans : diagnostic adapté aux PME industrielles/logistiques du Voironnais, TPE artisans, agriculteurs et commerçants du Sud Grésivaudan. Audit Flash 490 € HT, ROI documenté en chiffres accessible.",
+      en: "Audit IA à Moirans : diagnostic adapté aux PME industrielles/logistiques du Voironnais, TPE artisans, agriculteurs et commerçants du Sud Grésivaudan. Audit Flash 490 € HT, ROI documenté en chiffres accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Moirans : formats adaptés à l'atelier industriel, entrepôt logistique, exploitation agricole ou commerce. Vos équipes terrain et back-office repartent autonomes sur outils IA.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FOSSES_COPY: VilleCopy = {
   pitchFr:
-    "Fosses (95), commune résidentielle du nord du Val-d'Oise, fait partie de la communauté d'agglomération Roissy Pays de France. Tissu de TPE artisanales, PME de services, commerces de proximité, professions libérales et prestataires liés au bassin d'emploi Roissy. Axion-IA y intervient pour tous types d'activités.",
+    "Fosses (95), commune résidentielle du nord du Val-d'Oise, fait partie de la communauté d'agglomération Roissy Pays de France. Tissu de TPE artisanales, PME de services, commerces de proximité, professions libérales et prestataires liés au bassin d'emploi Roissy. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Fosses (95), commune résidentielle du nord du Val-d'Oise, fait partie de la communauté d'agglomération Roissy Pays de France. Tissu de TPE artisanales, PME de services, commerces de proximité, professions libérales et prestataires liés au bassin d'emploi Roissy. Axion-IA y intervient pour tous types d'activités.",
+    "Fosses (95), commune résidentielle du nord du Val-d'Oise, fait partie de la communauté d'agglomération Roissy Pays de France. Tissu de TPE artisanales, PME de services, commerces de proximité, professions libérales et prestataires liés au bassin d'emploi Roissy. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fosses (95). Nous accompagnons TPE et PME : artisans BTP, commerçants de proximité, PME de services, professions libérales et prestataires du bassin Roissy Pays de France. Audit Flash dès 490 € HT.",
   directAnswerEn:

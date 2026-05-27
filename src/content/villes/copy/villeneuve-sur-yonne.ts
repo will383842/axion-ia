@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VILLENEUVE_SUR_YONNE_COPY: VilleCopy = {
   pitchFr:
-    "Villeneuve-sur-Yonne (89), commune de l'Yonne sur les bords de l'Yonne, est une ancienne cité royale médiévale (fondée par Louis VII) au patrimoine remarquable (portes fortifiées, donjon, église). Tissu TPE artisans, commerces, tourisme patrimonial, PME services, agriculture périurbaine. Axion-IA y intervient pour tous types d'activités.",
+    "Villeneuve-sur-Yonne (89), commune de l'Yonne sur les bords de l'Yonne, est une ancienne cité royale médiévale (fondée par Louis VII) au patrimoine remarquable (portes fortifiées, donjon, église). Tissu TPE artisans, commerces, tourisme patrimonial, PME services, agriculture périurbaine. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Villeneuve-sur-Yonne (89), commune de l'Yonne sur les bords de l'Yonne, est une ancienne cité royale médiévale (fondée par Louis VII) au patrimoine remarquable (portes fortifiées, donjon, église). Tissu TPE artisans, commerces, tourisme patrimonial, PME services, agriculture périurbaine. Axion-IA y intervient pour tous types d'activités.",
+    "Villeneuve-sur-Yonne (89), commune de l'Yonne sur les bords de l'Yonne, est une ancienne cité royale médiévale (fondée par Louis VII) au patrimoine remarquable (portes fortifiées, donjon, église). Tissu TPE artisans, commerces, tourisme patrimonial, PME services, agriculture périurbaine. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villeneuve-sur-Yonne (89). Nous accompagnons TPE et PME : TPE artisans, commerçants villeneuviens, acteurs tourisme patrimonial cité royale, PME services et agriculteurs périurbains. Audit Flash 490 € HT.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const VILLENEUVE_SUR_YONNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villeneuve-sur-Yonne : diagnostic adapté aux TPE artisans, commerces, hébergeurs patrimoine, PME services, agriculteurs. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Villeneuve-sur-Yonne : diagnostic adapté aux TPE artisans, commerces, hébergeurs patrimoine, PME services, agriculteurs. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Villeneuve-sur-Yonne : diagnostic adapté aux TPE artisans, commerces, hébergeurs patrimoine, PME services, agriculteurs. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Villeneuve-sur-Yonne : diagnostic adapté aux TPE artisans, commerces, hébergeurs patrimoine, PME services, agriculteurs. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Villeneuve-sur-Yonne : formats adaptés à l'atelier artisan, commerce, gîte patrimonial, PME, exploitation agricole. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Villeneuve-sur-Yonne : formats adaptés à l'atelier artisan, commerce, gîte patrimonial, PME, exploitation agricole. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Villeneuve-sur-Yonne : formats adaptés à l'atelier artisan, commerce, gîte patrimonial, PME, exploitation agricole. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Villeneuve-sur-Yonne : formats adaptés à l'atelier artisan, commerce, gîte patrimonial, PME, exploitation agricole. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Villeneuve-sur-Yonne : automatisation devis artisanat, CRM commerce, gestion réservations tourisme, optimisation rendements céréaliers, marketing digital cité royale.",

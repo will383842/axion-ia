@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PLOUHINEC_COPY: VilleCopy = {
   pitchFr:
-    "Plouhinec (56), commune littorale du Morbihan entre ria d'Étel et océan Atlantique, est marquée par la célèbre barre d'Étel (passe maritime) et un patrimoine mégalithique. Tissu TPE artisans (pêche, ostréiculture), PME maritimes, commerces, tourisme balnéaire et vert, campings. Axion-IA y intervient pour tous types d'activités.",
+    "Plouhinec (56), commune littorale du Morbihan entre ria d'Étel et océan Atlantique, est marquée par la célèbre barre d'Étel (passe maritime) et un patrimoine mégalithique. Tissu TPE artisans (pêche, ostréiculture), PME maritimes, commerces, tourisme balnéaire et vert, campings. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Plouhinec (56), commune littorale du Morbihan entre ria d'Étel et océan Atlantique, est marquée par la célèbre barre d'Étel (passe maritime) et un patrimoine mégalithique. Tissu TPE artisans (pêche, ostréiculture), PME maritimes, commerces, tourisme balnéaire et vert, campings. Axion-IA y intervient pour tous types d'activités.",
+    "Plouhinec (56), commune littorale du Morbihan entre ria d'Étel et océan Atlantique, est marquée par la célèbre barre d'Étel (passe maritime) et un patrimoine mégalithique. Tissu TPE artisans (pêche, ostréiculture), PME maritimes, commerces, tourisme balnéaire et vert, campings. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plouhinec (56). Nous accompagnons tous types d'activités : TPE artisans pêche et ostréiculture de la ria d'Étel, PME maritimes, hébergeurs touristiques (campings, gîtes littoraux), commerçants, indépendants et services aux entreprises du littoral morbihannais.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const PLOUHINEC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Plouhinec : diagnostic adapté aux pêcheurs artisans, ostréiculteurs, hébergeurs touristiques (campings, gîtes), TPE artisans et commerçants du littoral ria d'Étel. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Plouhinec : diagnostic adapté aux pêcheurs artisans, ostréiculteurs, hébergeurs touristiques (campings, gîtes), TPE artisans et commerçants du littoral ria d'Étel. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Plouhinec : diagnostic adapté aux pêcheurs artisans, ostréiculteurs, hébergeurs touristiques (campings, gîtes), TPE artisans et commerçants du littoral ria d'Étel. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Plouhinec : diagnostic adapté aux pêcheurs artisans, ostréiculteurs, hébergeurs touristiques (campings, gîtes), TPE artisans et commerçants du littoral ria d'Étel. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Plouhinec : formats adaptés à l'exploitation ostréicole, camping, gîte littoral ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",

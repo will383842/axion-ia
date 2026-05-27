@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VIF_COPY: VilleCopy = {
   pitchFr:
-    "Vif (38), commune du sud-Grenoble dans la vallée de la Gresse, conjugue caractère résidentiel péri-urbain et tissu local de TPE/PME. Activité économique mixte : artisanat BTP, commerces, professions libérales, agriculture résiduelle, services. Axion-IA y intervient pour tous types d'activités du sud-grenoblois rural.",
+    "Vif (38), commune du sud-Grenoble dans la vallée de la Gresse, conjugue caractère résidentiel péri-urbain et tissu local de TPE/PME. Activité économique mixte : artisanat BTP, commerces, professions libérales, agriculture résiduelle, services. Axion-IA y déploie ses missions auprès de toutes les organisations du sud-grenoblois rural.",
   pitchEn:
-    "Vif (38), commune du sud-Grenoble dans la vallée de la Gresse, conjugue caractère résidentiel péri-urbain et tissu local de TPE/PME. Activité économique mixte : artisanat BTP, commerces, professions libérales, agriculture résiduelle, services. Axion-IA y intervient pour tous types d'activités du sud-grenoblois rural.",
+    "Vif (38), commune du sud-Grenoble dans la vallée de la Gresse, conjugue caractère résidentiel péri-urbain et tissu local de TPE/PME. Activité économique mixte : artisanat BTP, commerces, professions libérales, agriculture résiduelle, services. Axion-IA y déploie ses missions auprès de toutes les organisations du sud-grenoblois rural.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vif (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, agriculteurs et éleveurs de la vallée de la Gresse, professions libérales, indépendants, PME tertiaires et structures rurales du sud-grenoblois.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const VIF_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Vif : diagnostic adapté aux TPE artisans, agriculteurs vallée Gresse, commerçants et professions libérales du sud-grenoblois rural. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Vif : diagnostic adapté aux TPE artisans, agriculteurs vallée Gresse, commerçants et professions libérales du sud-grenoblois rural. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Vif : diagnostic adapté aux TPE artisans, agriculteurs vallée Gresse, commerçants et professions libérales du sud-grenoblois rural. ROI mesurable, audit Flash dès 490 € HT accessible.",
+      en: "Audit IA à Vif : diagnostic adapté aux TPE artisans, agriculteurs vallée Gresse, commerçants et professions libérales du sud-grenoblois rural. ROI mesurable, audit Flash dès 490 € HT accessible.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Vif : formats adaptés au commerce, atelier artisan, exploitation agricole ou cabinet professionnel. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Vif : formats adaptés au commerce, atelier artisan, exploitation agricole ou cabinet professionnel. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Vif : formats adaptés au commerce, atelier artisan, exploitation agricole ou cabinet professionnel. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Vif : formats adaptés au commerce, atelier artisan, exploitation agricole ou cabinet professionnel. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Vif : agents conversationnels client, automatisation devis BTP, classification photos cultures/animaux, gestion RDV, CRM augmentés. Adapté tissu rural péri-urbain.",

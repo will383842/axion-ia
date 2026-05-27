@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GRAULHET_COPY: VilleCopy = {
   pitchFr:
-    "Graulhet (81), cité historique du cuir et de la mégisserie sur les bords du Dadou, plus de 13 000 habitants. Tissu TPE artisans cuir, PME industrielles en reconversion, commerces, services et professions libérales. Axion-IA y intervient pour tous types d'activités du bassin graulhétois.",
+    "Graulhet (81), cité historique du cuir et de la mégisserie sur les bords du Dadou, plus de 13 000 habitants. Tissu TPE artisans cuir, PME industrielles en reconversion, commerces, services et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune du bassin graulhétois.",
   pitchEn:
-    "Graulhet (81), cité historique du cuir et de la mégisserie sur les bords du Dadou, plus de 13 000 habitants. Tissu TPE artisans cuir, PME industrielles en reconversion, commerces, services et professions libérales. Axion-IA y intervient pour tous types d'activités du bassin graulhétois.",
+    "Graulhet (81), cité historique du cuir et de la mégisserie sur les bords du Dadou, plus de 13 000 habitants. Tissu TPE artisans cuir, PME industrielles en reconversion, commerces, services et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune du bassin graulhétois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Graulhet (81). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants et professions libérales du bassin graulhétois. Audit Flash dès 490 € HT.",
   directAnswerEn:

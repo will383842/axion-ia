@@ -58,6 +58,8 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
   directAnswerEn:
     "Axion-IA is a senior AI architects consultancy that intervenes in Saint-Étienne (42) on site, across the Saint-Étienne basin and Saint-Étienne Métropole communes. We support Loire micro-businesses, industrial SMEs, mid-caps and large enterprises — costed diagnosis, demos on your real data, concrete action plan. Priority sectors: manufacturing, medical textiles, design, distribution and B2B services. No lock-in, your teams stay in control.",
 
+  seoHook: "design, mécanique & santé",
+
   topSectorsNaf: [
     "Industrie manufacturière & mécanique de précision",
     "Textile médical & santé",

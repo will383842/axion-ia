@@ -29,8 +29,8 @@ export const HONFLEUR_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Honfleur : diagnostic adapté aux acteurs du tourisme patrimonial (Vieux Bassin, musée Boudin), hôteliers-restaurateurs haut de gamme, galeries d'art, TPE artisans et commerçants. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Honfleur : diagnostic adapté aux acteurs du tourisme patrimonial (Vieux Bassin, musée Boudin), hôteliers-restaurateurs haut de gamme, galeries d'art, TPE artisans et commerçants. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Honfleur : diagnostic adapté aux acteurs du tourisme patrimonial (Vieux Bassin, musée Boudin), hôteliers-restaurateurs haut de gamme, galeries d'art, TPE artisans et commerçants. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Honfleur : diagnostic adapté aux acteurs du tourisme patrimonial (Vieux Bassin, musée Boudin), hôteliers-restaurateurs haut de gamme, galeries d'art, TPE artisans et commerçants. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Honfleur : formats adaptés à l'hôtel de charme, restaurant gastronomique, galerie d'art ou commerce touristique. Vos équipes repartent autonomes sur outils IA.",

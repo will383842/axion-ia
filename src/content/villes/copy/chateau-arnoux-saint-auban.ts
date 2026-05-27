@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHATEAU_ARNOUX_SAINT_AUBAN_COPY: VilleCopy = {
   pitchFr:
-    "Château-Arnoux-Saint-Auban (04), commune de la Moyenne Durance en Alpes-de-Haute-Provence, possède un héritage industriel chimique (plateforme Arkema ex-Atochem). Tissu TPE artisans, PME industrielles chimie/plasturgie, commerçants, services et agriculture périphérique. Axion-IA y intervient pour tous types d'activités de la vallée de la Durance.",
+    "Château-Arnoux-Saint-Auban (04), commune de la Moyenne Durance en Alpes-de-Haute-Provence, possède un héritage industriel chimique (plateforme Arkema ex-Atochem). Tissu TPE artisans, PME industrielles chimie/plasturgie, commerçants, services et agriculture périphérique. Axion-IA couvre l'ensemble des activités professionnelles présentes de la vallée de la Durance.",
   pitchEn:
-    "Château-Arnoux-Saint-Auban (04), commune de la Moyenne Durance en Alpes-de-Haute-Provence, possède un héritage industriel chimique (plateforme Arkema ex-Atochem). Tissu TPE artisans, PME industrielles chimie/plasturgie, commerçants, services et agriculture périphérique. Axion-IA y intervient pour tous types d'activités de la vallée de la Durance.",
+    "Château-Arnoux-Saint-Auban (04), commune de la Moyenne Durance en Alpes-de-Haute-Provence, possède un héritage industriel chimique (plateforme Arkema ex-Atochem). Tissu TPE artisans, PME industrielles chimie/plasturgie, commerçants, services et agriculture périphérique. Axion-IA couvre l'ensemble des activités professionnelles présentes de la vallée de la Durance.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Château-Arnoux-Saint-Auban (04). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles (chimie, plasturgie, maintenance plateforme), commerçants, agriculteurs, indépendants et services aux entreprises de la Moyenne Durance.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const CHATEAU_ARNOUX_SAINT_AUBAN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Château-Arnoux-Saint-Auban : diagnostic adapté aux TPE artisans, PME industrielles chimie/plasturgie, sous-traitants maintenance et commerçants de la Moyenne Durance. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Château-Arnoux-Saint-Auban : diagnostic adapté aux TPE artisans, PME industrielles chimie/plasturgie, sous-traitants maintenance et commerçants de la Moyenne Durance. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Château-Arnoux-Saint-Auban : diagnostic adapté aux TPE artisans, PME industrielles chimie/plasturgie, sous-traitants maintenance et commerçants de la Moyenne Durance. Audit Flash 490 € HT avec ROI quantifié accessible.",
+      en: "Audit IA à Château-Arnoux-Saint-Auban : diagnostic adapté aux TPE artisans, PME industrielles chimie/plasturgie, sous-traitants maintenance et commerçants de la Moyenne Durance. Audit Flash 490 € HT avec ROI quantifié accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Château-Arnoux-Saint-Auban : formats adaptés aux ateliers chimie/plasturgie, entreprises maintenance, commerces ou exploitations agricoles. Vos équipes repartent autonomes.",

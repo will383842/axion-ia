@@ -14,6 +14,7 @@ export const BIARRITZ_COPY: VilleCopy = {
     "Axion-IA propose des interventions IA à Biarritz, une ville où le commerce de détail et les activités sportives sont en plein essor. Nous nous déplaçons sur site pour automatiser vos processus métier. Notre Audit Flash est proposé à partir de 490 € HT et l'Intervention Essentielle dès 590 € HT. Consultez nos tarifs publics pour plus de détails.",
   directAnswerEn:
     "Axion-IA propose des interventions IA à Biarritz, une ville où le commerce de détail et les activités sportives sont en plein essor. Nous nous déplaçons sur site pour automatiser vos processus métier. Notre Audit Flash est proposé à partir de 490 € HT et l'Intervention Essentielle dès 590 € HT. Consultez nos tarifs publics pour plus de détails.",
+  seoHook: "tourisme premium & surf",
   ecosystemFr:
     "Biarritz, avec ses 3 000 établissements actifs, est un centre d'activités économiques variées, principalement dans le commerce de détail et l'hébergement. La ville bénéficie de sa proximité avec l'aéroport de Biarritz Pays Basque et la gare TGV.",
   ecosystemEn:

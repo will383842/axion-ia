@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_HAILLAN_COPY: VilleCopy = {
   pitchFr:
-    "Le Haillan (33), commune de l'ouest de Bordeaux Métropole, abrite des zones d'activités tertiaires dynamiques, des sièges d'entreprises et un tissu résidentiel de qualité. Axion-IA y intervient pour tous types d'activités : PME tertiaires, TPE artisans, commerces, professions libérales et entreprises de services.",
+    "Le Haillan (33), commune de l'ouest de Bordeaux Métropole, abrite des zones d'activités tertiaires dynamiques, des sièges d'entreprises et un tissu résidentiel de qualité. Axion-IA opère pour toutes les structures économiques de la commune : PME tertiaires, TPE artisans, commerces, professions libérales et entreprises de services.",
   pitchEn:
-    "Le Haillan (33), commune de l'ouest de Bordeaux Métropole, abrite des zones d'activités tertiaires dynamiques, des sièges d'entreprises et un tissu résidentiel de qualité. Axion-IA y intervient pour tous types d'activités : PME tertiaires, TPE artisans, commerces, professions libérales et entreprises de services.",
+    "Le Haillan (33), commune de l'ouest de Bordeaux Métropole, abrite des zones d'activités tertiaires dynamiques, des sièges d'entreprises et un tissu résidentiel de qualité. Axion-IA opère pour toutes les structures économiques de la commune : PME tertiaires, TPE artisans, commerces, professions libérales et entreprises de services.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Haillan (33). Nous accompagnons TPE et PME de l'ouest bordelais : PME tertiaires (conseil, IT, communication), artisans BTP, commerçants et professions libérales. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const LE_HAILLAN_COPY: VilleCopy = {
       en: "Audit IA au Haillan : diagnostic pour PME tertiaires, cabinets conseil, TPE artisans et commerces de l'ouest bordelais. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site au Haillan : ateliers adaptés aux bureaux tertiaires, cabinets et commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site au Haillan : ateliers adaptés aux bureaux tertiaires, cabinets et commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site au Haillan : ateliers adaptés aux bureaux tertiaires, cabinets et commerces. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site au Haillan : ateliers adaptés aux bureaux tertiaires, cabinets et commerces. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA au Haillan : automatisation workflows tertiaires, agents conversationnels, CRM augmentés, classification documents, reporting automatisé.",

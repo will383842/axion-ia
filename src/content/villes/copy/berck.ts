@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BERCK_COPY: VilleCopy = {
   pitchFr:
-    "Berck (62), station balnéaire du Pas-de-Calais sur la Côte d'Opale (région Hauts-de-France), est réputée pour son hôpital maritime historique et sa plage immense. Tissu TPE tourisme et hôtellerie-restauration, PME santé et rééducation, commerces de centre-ville, professions paramédicales. Axion-IA y intervient pour tous types d'activités.",
+    "Berck (62), station balnéaire du Pas-de-Calais sur la Côte d'Opale (région Hauts-de-France), est réputée pour son hôpital maritime historique et sa plage immense. Tissu TPE tourisme et hôtellerie-restauration, PME santé et rééducation, commerces de centre-ville, professions paramédicales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Berck (62), station balnéaire du Pas-de-Calais sur la Côte d'Opale (région Hauts-de-France), est réputée pour son hôpital maritime historique et sa plage immense. Tissu TPE tourisme et hôtellerie-restauration, PME santé et rééducation, commerces de centre-ville, professions paramédicales. Axion-IA y intervient pour tous types d'activités.",
+    "Berck (62), station balnéaire du Pas-de-Calais sur la Côte d'Opale (région Hauts-de-France), est réputée pour son hôpital maritime historique et sa plage immense. Tissu TPE tourisme et hôtellerie-restauration, PME santé et rééducation, commerces de centre-ville, professions paramédicales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Berck (62). Nous accompagnons tous types d'activités : TPE hôtellerie-restauration et tourisme balnéaire, PME santé et rééducation, commerçants du centre-ville, professions paramédicales, prestataires saisonniers de la Côte d'Opale.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const BERCK_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Berck : diagnostic adapté aux TPE tourisme et hôtellerie, PME santé et rééducation, commerçants du centre-ville, professions paramédicales de la Côte d'Opale. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Berck : diagnostic adapté aux TPE tourisme et hôtellerie, PME santé et rééducation, commerçants du centre-ville, professions paramédicales de la Côte d'Opale. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Berck : diagnostic adapté aux TPE tourisme et hôtellerie, PME santé et rééducation, commerçants du centre-ville, professions paramédicales de la Côte d'Opale. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Berck : diagnostic adapté aux TPE tourisme et hôtellerie, PME santé et rééducation, commerçants du centre-ville, professions paramédicales de la Côte d'Opale. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Berck : formats adaptés à l'hôtel, au cabinet paramédical, au commerce, à l'établissement de rééducation. Vos équipes repartent autonomes sur les outils IA.",

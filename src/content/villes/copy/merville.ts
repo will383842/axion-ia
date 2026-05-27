@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MERVILLE_COPY: VilleCopy = {
   pitchFr:
-    "Merville (59), commune française du département du Nord (région Hauts-de-France) en Flandre française sur les bords de la Lys, est un pôle agricole de la plaine de la Lys (maraîchage, élevage, cultures) avec aérodrome Merville-Calonne. Tissu TPE exploitations agricoles, PME agroalimentaire et services, commerces, artisans BTP, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Merville (59), commune française du département du Nord (région Hauts-de-France) en Flandre française sur les bords de la Lys, est un pôle agricole de la plaine de la Lys (maraîchage, élevage, cultures) avec aérodrome Merville-Calonne. Tissu TPE exploitations agricoles, PME agroalimentaire et services, commerces, artisans BTP, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Merville (59), commune française du département du Nord (région Hauts-de-France) en Flandre française sur les bords de la Lys, est un pôle agricole de la plaine de la Lys (maraîchage, élevage, cultures) avec aérodrome Merville-Calonne. Tissu TPE exploitations agricoles, PME agroalimentaire et services, commerces, artisans BTP, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Merville (59), commune française du département du Nord (région Hauts-de-France) en Flandre française sur les bords de la Lys, est un pôle agricole de la plaine de la Lys (maraîchage, élevage, cultures) avec aérodrome Merville-Calonne. Tissu TPE exploitations agricoles, PME agroalimentaire et services, commerces, artisans BTP, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Merville (59). Nous accompagnons tous types d'activités : TPE exploitations agricoles maraîchage/élevage plaine de la Lys, PME agroalimentaire et services, commerçants, artisans BTP et services aux entreprises de la Flandre française entre Béthune et Hazebrouck.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const MERVILLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Merville : diagnostic adapté aux TPE exploitations agricoles plaine de la Lys, PME agroalimentaire et services, commerçants, artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Merville : diagnostic adapté aux TPE exploitations agricoles plaine de la Lys, PME agroalimentaire et services, commerçants, artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Merville : diagnostic adapté aux TPE exploitations agricoles plaine de la Lys, PME agroalimentaire et services, commerçants, artisans. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Merville : diagnostic adapté aux TPE exploitations agricoles plaine de la Lys, PME agroalimentaire et services, commerçants, artisans. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Merville : formats adaptés à l'exploitation agricole, l'unité agroalimentaire, le commerce, l'atelier artisan. Vos équipes repartent autonomes sur les outils IA usage quotidien.",
@@ -64,7 +64,7 @@ export const MERVILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lille ou Béthune ?",
-      a: "Nos consultants viennent de Lille (35 min A25), Béthune (15 min) ou Hazebrouck (15 min). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lille (35 min A25), Béthune (15 min) ou Hazebrouck (15 min). Pour les multi-jours, hébergement local possible. Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

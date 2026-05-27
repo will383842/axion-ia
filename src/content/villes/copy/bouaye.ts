@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BOUAYE_COPY: VilleCopy = {
   pitchFr:
-    "Bouaye (44), commune du sud-ouest de Nantes Métropole en Loire-Atlantique, en bordure du lac de Grand-Lieu, mêle tissu résidentiel, TPE artisanales, commerces de proximité et PME tertiaires. Axion-IA y intervient pour tous types d'activités du bassin nantais sud-ouest.",
+    "Bouaye (44), commune du sud-ouest de Nantes Métropole en Loire-Atlantique, en bordure du lac de Grand-Lieu, mêle tissu résidentiel, TPE artisanales, commerces de proximité et PME tertiaires. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin nantais sud-ouest.",
   pitchEn:
-    "Bouaye (44), commune du sud-ouest de Nantes Métropole en Loire-Atlantique, en bordure du lac de Grand-Lieu, mêle tissu résidentiel, TPE artisanales, commerces de proximité et PME tertiaires. Axion-IA y intervient pour tous types d'activités du bassin nantais sud-ouest.",
+    "Bouaye (44), commune du sud-ouest de Nantes Métropole en Loire-Atlantique, en bordure du lac de Grand-Lieu, mêle tissu résidentiel, TPE artisanales, commerces de proximité et PME tertiaires. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin nantais sud-ouest.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bouaye (44). Nous accompagnons les TPE, indépendants, PME tertiaires, commerçants et professions libérales de cette commune résidentielle du sud-ouest nantais sur leurs cas IA opérationnels. Audit Flash dès 490 € HT.",
   directAnswerEn:

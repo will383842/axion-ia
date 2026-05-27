@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VILLETTE_D_ANTHON_COPY: VilleCopy = {
   pitchFr:
-    "Villette-d'Anthon (38), commune du Nord-Isère dans l'aire lyonnaise est, est positionnée à la confluence de l'Ain et du Rhône. Proximité immédiate aéroport Lyon-Saint-Exupéry. Tissu PME industrielles, logistique, agriculture vallée, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Villette-d'Anthon (38), commune du Nord-Isère dans l'aire lyonnaise est, est positionnée à la confluence de l'Ain et du Rhône. Proximité immédiate aéroport Lyon-Saint-Exupéry. Tissu PME industrielles, logistique, agriculture vallée, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Villette-d'Anthon (38), commune du Nord-Isère dans l'aire lyonnaise est, est positionnée à la confluence de l'Ain et du Rhône. Proximité immédiate aéroport Lyon-Saint-Exupéry. Tissu PME industrielles, logistique, agriculture vallée, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Villette-d'Anthon (38), commune du Nord-Isère dans l'aire lyonnaise est, est positionnée à la confluence de l'Ain et du Rhône. Proximité immédiate aéroport Lyon-Saint-Exupéry. Tissu PME industrielles, logistique, agriculture vallée, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villette-d'Anthon (38). Nous accompagnons tous types d'activités : PME industrielles et logistiques aire Saint-Exupéry, TPE artisans BTP, commerçants, agriculteurs vallée du Rhône, indépendants, professions libérales et services aux entreprises du Nord-Isère.",
   directAnswerEn:
@@ -64,7 +64,7 @@ export const VILLETTE_D_ANTHON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (30 min A43) ou aéroport Saint-Exupéry (10 min). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (30 min A43) ou aéroport Saint-Exupéry (10 min). Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

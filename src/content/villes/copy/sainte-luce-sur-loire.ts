@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINTE_LUCE_SUR_LOIRE_COPY: VilleCopy = {
   pitchFr:
-    "Sainte-Luce-sur-Loire (44), commune résidentielle de l'agglomération nantaise est en bords de Loire, plus de 16 000 habitants. Tissu TPE artisans, PME de services, professions libérales, commerces de proximité et petite industrie. Zone d'activités dynamique connectée à Nantes Métropole. Axion-IA y intervient pour tous types d'activités du bassin lucéen.",
+    "Sainte-Luce-sur-Loire (44), commune résidentielle de l'agglomération nantaise est en bords de Loire, plus de 16 000 habitants. Tissu TPE artisans, PME de services, professions libérales, commerces de proximité et petite industrie. Zone d'activités dynamique connectée à Nantes Métropole. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin lucéen.",
   pitchEn:
-    "Sainte-Luce-sur-Loire (44), commune résidentielle de l'agglomération nantaise est en bords de Loire, plus de 16 000 habitants. Tissu TPE artisans, PME de services, professions libérales, commerces de proximité et petite industrie. Zone d'activités dynamique connectée à Nantes Métropole. Axion-IA y intervient pour tous types d'activités du bassin lucéen.",
+    "Sainte-Luce-sur-Loire (44), commune résidentielle de l'agglomération nantaise est en bords de Loire, plus de 16 000 habitants. Tissu TPE artisans, PME de services, professions libérales, commerces de proximité et petite industrie. Zone d'activités dynamique connectée à Nantes Métropole. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin lucéen.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sainte-Luce-sur-Loire (44), commune de Nantes Métropole est. Nous accompagnons TPE artisans, PME de services, commerçants et professions libérales des bords de Loire. Audit Flash dès 490 € HT.",
   directAnswerEn:

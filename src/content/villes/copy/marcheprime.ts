@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MARCHEPRIME_COPY: VilleCopy = {
   pitchFr:
-    "Marcheprime (33), commune en forte croissance entre Bordeaux et le Bassin d'Arcachon, combine tissu TPE artisanal, commerces de proximité, professions libérales et services aux habitants. Axion-IA y intervient pour tous types d'activités du corridor Bordeaux-Arcachon.",
+    "Marcheprime (33), commune en forte croissance entre Bordeaux et le Bassin d'Arcachon, combine tissu TPE artisanal, commerces de proximité, professions libérales et services aux habitants. Axion-IA accompagne entreprises et indépendants de tous secteurs du corridor Bordeaux-Arcachon.",
   pitchEn:
-    "Marcheprime (33), commune en forte croissance entre Bordeaux et le Bassin d'Arcachon, combine tissu TPE artisanal, commerces de proximité, professions libérales et services aux habitants. Axion-IA y intervient pour tous types d'activités du corridor Bordeaux-Arcachon.",
+    "Marcheprime (33), commune en forte croissance entre Bordeaux et le Bassin d'Arcachon, combine tissu TPE artisanal, commerces de proximité, professions libérales et services aux habitants. Axion-IA accompagne entreprises et indépendants de tous secteurs du corridor Bordeaux-Arcachon.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marcheprime (33). Nous accompagnons TPE et PME du corridor Bordeaux-Arcachon : artisans BTP, commerçants, professions libérales et entreprises de services. Audit Flash dès 490 € HT.",
   directAnswerEn:

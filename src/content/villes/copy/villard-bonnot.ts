@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VILLARD_BONNOT_COPY: VilleCopy = {
   pitchFr:
-    "Villard-Bonnot (38), commune de la vallée du Grésivaudan en Isère, conserve un héritage industriel et papetier historique. Tissu PME industrielles, TPE artisans BTP, commerces, professions libérales et services. Axion-IA y intervient pour tous types d'activités du Grésivaudan.",
+    "Villard-Bonnot (38), commune de la vallée du Grésivaudan en Isère, conserve un héritage industriel et papetier historique. Tissu PME industrielles, TPE artisans BTP, commerces, professions libérales et services. Axion-IA couvre l'ensemble des activités professionnelles présentes du Grésivaudan.",
   pitchEn:
-    "Villard-Bonnot (38), commune de la vallée du Grésivaudan en Isère, conserve un héritage industriel et papetier historique. Tissu PME industrielles, TPE artisans BTP, commerces, professions libérales et services. Axion-IA y intervient pour tous types d'activités du Grésivaudan.",
+    "Villard-Bonnot (38), commune de la vallée du Grésivaudan en Isère, conserve un héritage industriel et papetier historique. Tissu PME industrielles, TPE artisans BTP, commerces, professions libérales et services. Axion-IA couvre l'ensemble des activités professionnelles présentes du Grésivaudan.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villard-Bonnot (38). Nous accompagnons tous types d'activités : PME industrielles du Grésivaudan, TPE artisans BTP, commerçants, indépendants, professions libérales, agriculteurs périphériques et services aux entreprises de la vallée Grésivaudan.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const VILLARD_BONNOT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Villard-Bonnot : diagnostic adapté aux PME industrielles du Grésivaudan, TPE artisans, professions libérales et commerçants. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Villard-Bonnot : diagnostic adapté aux PME industrielles du Grésivaudan, TPE artisans, professions libérales et commerçants. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Villard-Bonnot : diagnostic adapté aux PME industrielles du Grésivaudan, TPE artisans, professions libérales et commerçants. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
+      en: "Audit IA à Villard-Bonnot : diagnostic adapté aux PME industrielles du Grésivaudan, TPE artisans, professions libérales et commerçants. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Villard-Bonnot : formats adaptés à l'atelier industriel, commerce ou cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Villard-Bonnot : formats adaptés à l'atelier industriel, commerce ou cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Villard-Bonnot : formats adaptés à l'atelier industriel, commerce ou cabinet. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Villard-Bonnot : formats adaptés à l'atelier industriel, commerce ou cabinet. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Villard-Bonnot : prédiction maintenance industrielle, classification photos qualité, automatisation devis BTP, agents conversationnels client. Tissu Grésivaudan.",
@@ -64,7 +64,7 @@ export const VILLARD_BONNOT_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Grenoble ou Chambéry ?",
-      a: "Nos consultants viennent de Grenoble (25 min A41) ou Chambéry (50 min). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Grenoble (25 min A41) ou Chambéry (50 min). Pour les multi-jours, hébergement local possible. Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

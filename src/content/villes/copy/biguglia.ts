@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BIGUGLIA_COPY: VilleCopy = {
   pitchFr:
-    "Biguglia (2B), banlieue sud de Bastia et 5e commune la plus peuplée de Corse, bénéficie du dynamisme de l'agglomération bastiaise. Étang de Biguglia (réserve naturelle), tissu commercial et services agglo Bastia, TPE artisanat, agriculture plaine orientale, tourisme nature et balnéaire. Axion-IA y intervient pour tous types d'activités.",
+    "Biguglia (2B), banlieue sud de Bastia et 5e commune la plus peuplée de Corse, bénéficie du dynamisme de l'agglomération bastiaise. Étang de Biguglia (réserve naturelle), tissu commercial et services agglo Bastia, TPE artisanat, agriculture plaine orientale, tourisme nature et balnéaire. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Biguglia (2B), banlieue sud de Bastia et 5e commune la plus peuplée de Corse, bénéficie du dynamisme de l'agglomération bastiaise. Étang de Biguglia (réserve naturelle), tissu commercial et services agglo Bastia, TPE artisanat, agriculture plaine orientale, tourisme nature et balnéaire. Axion-IA y intervient pour tous types d'activités.",
+    "Biguglia (2B), banlieue sud de Bastia et 5e commune la plus peuplée de Corse, bénéficie du dynamisme de l'agglomération bastiaise. Étang de Biguglia (réserve naturelle), tissu commercial et services agglo Bastia, TPE artisanat, agriculture plaine orientale, tourisme nature et balnéaire. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Biguglia (2B). Nous accompagnons TPE et PME : commerces et services agglomération bastiaise, artisans, exploitants agricoles plaine orientale, acteurs tourisme nature (réserve étang de Biguglia) et balnéaire, hébergeurs Costa Serena. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const BIGUGLIA_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Biguglia : diagnostic adapté aux commerces et services agglo Bastia, TPE artisans, exploitants agricoles plaine orientale, acteurs tourisme nature et balnéaire. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Biguglia : diagnostic adapté aux commerces et services agglo Bastia, TPE artisans, exploitants agricoles plaine orientale, acteurs tourisme nature et balnéaire. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Biguglia : diagnostic adapté aux commerces et services agglo Bastia, TPE artisans, exploitants agricoles plaine orientale, acteurs tourisme nature et balnéaire. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Biguglia : diagnostic adapté aux commerces et services agglo Bastia, TPE artisans, exploitants agricoles plaine orientale, acteurs tourisme nature et balnéaire. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Biguglia : formats adaptés commerce agglo Bastia, atelier artisan, exploitation agricole plaine orientale, structure touristique. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Biguglia : formats adaptés commerce agglo Bastia, atelier artisan, exploitation agricole plaine orientale, structure touristique. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Biguglia : formats adaptés commerce agglo Bastia, atelier artisan, exploitation agricole plaine orientale, structure touristique. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Biguglia : formats adaptés commerce agglo Bastia, atelier artisan, exploitation agricole plaine orientale, structure touristique. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Biguglia : CRM commerces et services agglo Bastia, automatisation gestion exploitation agricole, billetterie et parcours visiteur réserve étang, CRM hébergeurs Costa Serena multilingue.",
@@ -64,7 +64,7 @@ export const BIGUGLIA_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis le continent ?",
-      a: "Aéroport Bastia-Poretta (15 min), port de Bastia (15 min). Vols et ferries quotidiens depuis le continent. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Aéroport Bastia-Poretta (15 min), port de Bastia (15 min). Vols et ferries quotidiens depuis le continent. Coûts de déplacement à part, tarification transparente.",
     },
   ],
 };

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PORNICHET_COPY: VilleCopy = {
   pitchFr:
-    "Pornichet (44), station balnéaire de la baie de La Baule, près de 13 000 habitants. Tourisme balnéaire, thalassothérapie, port de plaisance, commerces, artisanat et professions libérales. Tissu TPE commerçants, PME hôtelières et de services. Axion-IA y intervient pour tous types d'activités du bassin pornichétin.",
+    "Pornichet (44), station balnéaire de la baie de La Baule, près de 13 000 habitants. Tourisme balnéaire, thalassothérapie, port de plaisance, commerces, artisanat et professions libérales. Tissu TPE commerçants, PME hôtelières et de services. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin pornichétin.",
   pitchEn:
-    "Pornichet (44), station balnéaire de la baie de La Baule, près de 13 000 habitants. Tourisme balnéaire, thalassothérapie, port de plaisance, commerces, artisanat et professions libérales. Tissu TPE commerçants, PME hôtelières et de services. Axion-IA y intervient pour tous types d'activités du bassin pornichétin.",
+    "Pornichet (44), station balnéaire de la baie de La Baule, près de 13 000 habitants. Tourisme balnéaire, thalassothérapie, port de plaisance, commerces, artisanat et professions libérales. Tissu TPE commerçants, PME hôtelières et de services. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin pornichétin.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pornichet (44), station balnéaire de la baie de La Baule. Nous accompagnons TPE commerçants, PME hôtelières, restaurants, artisans et professions libérales de la côte d'Amour. Audit Flash dès 490 € HT.",
   directAnswerEn:

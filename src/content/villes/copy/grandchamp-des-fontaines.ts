@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GRANDCHAMP_DES_FONTAINES_COPY: VilleCopy = {
   pitchFr:
-    "Grandchamp-des-Fontaines (44), commune résidentielle du nord de l'agglomération nantaise en Loire-Atlantique. Tissu TPE artisans et commerçants, PME tertiaires, entreprises zones d'activités, professions libérales, services de proximité. Axion-IA y intervient pour tous types d'activités du nord Nantes.",
+    "Grandchamp-des-Fontaines (44), commune résidentielle du nord de l'agglomération nantaise en Loire-Atlantique. Tissu TPE artisans et commerçants, PME tertiaires, entreprises zones d'activités, professions libérales, services de proximité. Axion-IA accompagne entreprises et indépendants de tous secteurs du nord Nantes.",
   pitchEn:
-    "Grandchamp-des-Fontaines (44), commune résidentielle du nord de l'agglomération nantaise en Loire-Atlantique. Tissu TPE artisans et commerçants, PME tertiaires, entreprises zones d'activités, professions libérales, services de proximité. Axion-IA y intervient pour tous types d'activités du nord Nantes.",
+    "Grandchamp-des-Fontaines (44), commune résidentielle du nord de l'agglomération nantaise en Loire-Atlantique. Tissu TPE artisans et commerçants, PME tertiaires, entreprises zones d'activités, professions libérales, services de proximité. Axion-IA accompagne entreprises et indépendants de tous secteurs du nord Nantes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Grandchamp-des-Fontaines (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires, entreprises des zones d'activités, professions libérales et services de proximité du nord nantais.",
   directAnswerEn:

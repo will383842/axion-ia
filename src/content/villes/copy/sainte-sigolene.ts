@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINTE_SIGOLENE_COPY: VilleCopy = {
   pitchFr:
-    "Sainte-Sigolène (43), commune du nord de la Haute-Loire, est réputée comme l'une des capitales françaises de la plasturgie (industrie du plastique, savoir-faire local concentré). Tissu PME industrielles plasturgie, agriculture montagne, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Sainte-Sigolène (43), commune du nord de la Haute-Loire, est réputée comme l'une des capitales françaises de la plasturgie (industrie du plastique, savoir-faire local concentré). Tissu PME industrielles plasturgie, agriculture montagne, TPE artisans BTP, commerces. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Sainte-Sigolène (43), commune du nord de la Haute-Loire, est réputée comme l'une des capitales françaises de la plasturgie (industrie du plastique, savoir-faire local concentré). Tissu PME industrielles plasturgie, agriculture montagne, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Sainte-Sigolène (43), commune du nord de la Haute-Loire, est réputée comme l'une des capitales françaises de la plasturgie (industrie du plastique, savoir-faire local concentré). Tissu PME industrielles plasturgie, agriculture montagne, TPE artisans BTP, commerces. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sainte-Sigolène (43). Nous accompagnons tous types d'activités : PME industrielles plasturgie (capitale du plastique), agriculteurs montagne, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const SAINTE_SIGOLENE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Sainte-Sigolène : diagnostic adapté aux PME plasturgie, agriculteurs montagne, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Sainte-Sigolène : diagnostic adapté aux PME plasturgie, agriculteurs montagne, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Sainte-Sigolène : diagnostic adapté aux PME plasturgie, agriculteurs montagne, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Sainte-Sigolène : diagnostic adapté aux PME plasturgie, agriculteurs montagne, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Sainte-Sigolène : formats adaptés à l'atelier plasturgie, exploitation, commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Sainte-Sigolène : formats adaptés à l'atelier plasturgie, exploitation, commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Sainte-Sigolène : formats adaptés à l'atelier plasturgie, exploitation, commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Sainte-Sigolène : formats adaptés à l'atelier plasturgie, exploitation, commerce. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Sainte-Sigolène : contrôle qualité par vision (pièces plastique), prédiction maintenance, optimisation production plasturgie, agents conversationnels B2B.",
@@ -64,7 +64,7 @@ export const SAINTE_SIGOLENE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Saint-Étienne ?",
-      a: "Saint-Étienne (40 min). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Saint-Étienne (40 min). Frais de mission en sus, grille tarifaire publique.",
     },
   ],
 };

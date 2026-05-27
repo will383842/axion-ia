@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const AUBIGNY_SUR_NERE_COPY: VilleCopy = {
   pitchFr:
-    "Aubigny-sur-Nère (18), commune du Cher aux portes de la Sologne, est surnommée la Cité des Stuart pour son patrimoine Renaissance franco-écossais remarquable. Tissu TPE artisanat, commerces tourisme patrimonial, PME agroalimentaires Sologne, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Aubigny-sur-Nère (18), commune du Cher aux portes de la Sologne, est surnommée la Cité des Stuart pour son patrimoine Renaissance franco-écossais remarquable. Tissu TPE artisanat, commerces tourisme patrimonial, PME agroalimentaires Sologne, services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Aubigny-sur-Nère (18), commune du Cher aux portes de la Sologne, est surnommée la Cité des Stuart pour son patrimoine Renaissance franco-écossais remarquable. Tissu TPE artisanat, commerces tourisme patrimonial, PME agroalimentaires Sologne, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Aubigny-sur-Nère (18), commune du Cher aux portes de la Sologne, est surnommée la Cité des Stuart pour son patrimoine Renaissance franco-écossais remarquable. Tissu TPE artisanat, commerces tourisme patrimonial, PME agroalimentaires Sologne, services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aubigny-sur-Nère (18). Nous accompagnons tous types d'activités : TPE artisans, commerçants tourisme Cité Stuart, PME agroalimentaires Sologne, exploitants forestiers, services aux entreprises du bassin albinien.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const AUBIGNY_SUR_NERE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Aubigny-sur-Nère : diagnostic adapté aux TPE artisans, commerçants tourisme Cité Stuart, PME agroalimentaires Sologne. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Aubigny-sur-Nère : diagnostic adapté aux TPE artisans, commerçants tourisme Cité Stuart, PME agroalimentaires Sologne. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Aubigny-sur-Nère : diagnostic adapté aux TPE artisans, commerçants tourisme Cité Stuart, PME agroalimentaires Sologne. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Aubigny-sur-Nère : diagnostic adapté aux TPE artisans, commerçants tourisme Cité Stuart, PME agroalimentaires Sologne. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Aubigny-sur-Nère : formats adaptés au commerce, exploitation agroalimentaire, bureau tertiaire. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Aubigny-sur-Nère : formats adaptés au commerce, exploitation agroalimentaire, bureau tertiaire. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Aubigny-sur-Nère : formats adaptés au commerce, exploitation agroalimentaire, bureau tertiaire. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Aubigny-sur-Nère : formats adaptés au commerce, exploitation agroalimentaire, bureau tertiaire. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Aubigny-sur-Nère : agents conversationnels visiteurs patrimoine Renaissance multilingue, traçabilité produits Sologne, automatisation gestion stocks, CRM augmenté PME.",
@@ -64,7 +64,7 @@ export const AUBIGNY_SUR_NERE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Bourges ou Orléans ?",
-      a: "Bourges (45 min) ou Orléans (1h15). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Bourges (45 min) ou Orléans (1h15). Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

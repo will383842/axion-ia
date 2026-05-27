@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_MENE_COPY: VilleCopy = {
   pitchFr:
-    "Le Mené (22), commune nouvelle du centre Bretagne dans les Côtes-d'Armor, est un pôle agroalimentaire et agricole majeur du pays de Loudéac. TPE artisans, PME agroalimentaires, exploitants agricoles, commerces de bourg, coopératives et professions libérales composent son tissu économique. Axion-IA y intervient pour tous types d'activités du centre Bretagne.",
+    "Le Mené (22), commune nouvelle du centre Bretagne dans les Côtes-d'Armor, est un pôle agroalimentaire et agricole majeur du pays de Loudéac. TPE artisans, PME agroalimentaires, exploitants agricoles, commerces de bourg, coopératives et professions libérales composent son tissu économique. Axion-IA opère pour toutes les structures économiques de la commune du centre Bretagne.",
   pitchEn:
-    "Le Mené (22), commune nouvelle du centre Bretagne dans les Côtes-d'Armor, est un pôle agroalimentaire et agricole majeur du pays de Loudéac. TPE artisans, PME agroalimentaires, exploitants agricoles, commerces de bourg, coopératives et professions libérales composent son tissu économique. Axion-IA y intervient pour tous types d'activités du centre Bretagne.",
+    "Le Mené (22), commune nouvelle du centre Bretagne dans les Côtes-d'Armor, est un pôle agroalimentaire et agricole majeur du pays de Loudéac. TPE artisans, PME agroalimentaires, exploitants agricoles, commerces de bourg, coopératives et professions libérales composent son tissu économique. Axion-IA opère pour toutes les structures économiques de la commune du centre Bretagne.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Mené (22). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et coopératives agricoles du centre Bretagne, commerçants de bourg, transporteurs, professions libérales et indépendants du pays de Loudéac.",
   directAnswerEn:

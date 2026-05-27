@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const HERBIGNAC_COPY: VilleCopy = {
   pitchFr:
-    "Herbignac (44), bourg du nord de la Brière en Loire-Atlantique, entre Guérande et Pontchâteau. Tissu TPE artisans et commerçants, PME services, exploitations agricoles, tourisme vert Brière, professions libérales. Axion-IA y intervient pour tous types d'activités du nord Brière.",
+    "Herbignac (44), bourg du nord de la Brière en Loire-Atlantique, entre Guérande et Pontchâteau. Tissu TPE artisans et commerçants, PME services, exploitations agricoles, tourisme vert Brière, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du nord Brière.",
   pitchEn:
-    "Herbignac (44), bourg du nord de la Brière en Loire-Atlantique, entre Guérande et Pontchâteau. Tissu TPE artisans et commerçants, PME services, exploitations agricoles, tourisme vert Brière, professions libérales. Axion-IA y intervient pour tous types d'activités du nord Brière.",
+    "Herbignac (44), bourg du nord de la Brière en Loire-Atlantique, entre Guérande et Pontchâteau. Tissu TPE artisans et commerçants, PME services, exploitations agricoles, tourisme vert Brière, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du nord Brière.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Herbignac (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME services, exploitations agricoles, acteurs du tourisme vert en Brière, professions libérales et entreprises du nord Brière.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const HERBIGNAC_COPY: VilleCopy = {
       en: "Audit IA à Herbignac : diagnostic adapté aux TPE artisans, exploitations agricoles, commerçants et acteurs tourisme Brière. ROI chiffré, Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Herbignac : formats adaptés à l'exploitation agricole, au commerce, à l'hébergement touristique ou au bureau. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Herbignac : formats adaptés à l'exploitation agricole, au commerce, à l'hébergement touristique ou au bureau. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Herbignac : formats adaptés à l'exploitation agricole, au commerce, à l'hébergement touristique ou au bureau. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Herbignac : formats adaptés à l'exploitation agricole, au commerce, à l'hébergement touristique ou au bureau. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Herbignac : automatisation gestion exploitation, agents conversationnels tourisme Brière, optimisation stocks, extraction données commerciales.",

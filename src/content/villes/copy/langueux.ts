@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LANGUEUX_COPY: VilleCopy = {
   pitchFr:
-    "Langueux (22), commune de l'agglomération de Saint-Brieuc en Côtes-d'Armor, concentre d'importantes zones d'activités commerciales et artisanales (ZA des Châtelets, ZA du Plateau). TPE artisans, PME commerciales, services aux entreprises, logistique, restauration. Axion-IA y intervient pour tous types d'activités.",
+    "Langueux (22), commune de l'agglomération de Saint-Brieuc en Côtes-d'Armor, concentre d'importantes zones d'activités commerciales et artisanales (ZA des Châtelets, ZA du Plateau). TPE artisans, PME commerciales, services aux entreprises, logistique, restauration. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Langueux (22), commune de l'agglomération de Saint-Brieuc en Côtes-d'Armor, concentre d'importantes zones d'activités commerciales et artisanales (ZA des Châtelets, ZA du Plateau). TPE artisans, PME commerciales, services aux entreprises, logistique, restauration. Axion-IA y intervient pour tous types d'activités.",
+    "Langueux (22), commune de l'agglomération de Saint-Brieuc en Côtes-d'Armor, concentre d'importantes zones d'activités commerciales et artisanales (ZA des Châtelets, ZA du Plateau). TPE artisans, PME commerciales, services aux entreprises, logistique, restauration. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Langueux (22). Nous accompagnons TPE et PME : commerces et enseignes des zones d'activités, artisans, PME de services, logisticiens, restaurateurs de l'agglomération briochine. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LANGUEUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Langueux : diagnostic adapté aux commerces des zones d'activités, TPE artisans, PME de services, logisticiens et restaurateurs de l'agglo briochine. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Langueux : diagnostic adapté aux commerces des zones d'activités, TPE artisans, PME de services, logisticiens et restaurateurs de l'agglo briochine. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Langueux : diagnostic adapté aux commerces des zones d'activités, TPE artisans, PME de services, logisticiens et restaurateurs de l'agglo briochine. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Langueux : diagnostic adapté aux commerces des zones d'activités, TPE artisans, PME de services, logisticiens et restaurateurs de l'agglo briochine. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Langueux : formats adaptés commerce, entrepôt, bureau, restaurant. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -64,7 +64,7 @@ export const LANGUEUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ou Rennes ?",
-      a: "Paris-Saint-Brieuc en 2h45 (TGV direct). Rennes à 1h (N12). Gare Saint-Brieuc à 10 min de Langueux. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Paris-Saint-Brieuc en 2h45 (TGV direct). Rennes à 1h (N12). Gare Saint-Brieuc à 10 min de Langueux. Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

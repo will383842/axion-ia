@@ -29,8 +29,8 @@ export const RONCHIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ronchin : diagnostic adapté aux TPE/PME logistique-transport, commerces, artisans du bâtiment et professions libérales de la banlieue sud lilloise. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Ronchin : diagnostic adapté aux TPE/PME logistique-transport, commerces, artisans du bâtiment et professions libérales de la banlieue sud lilloise. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Ronchin : diagnostic adapté aux TPE/PME logistique-transport, commerces, artisans du bâtiment et professions libérales de la banlieue sud lilloise. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Ronchin : diagnostic adapté aux TPE/PME logistique-transport, commerces, artisans du bâtiment et professions libérales de la banlieue sud lilloise. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ronchin : formats adaptés à la PME logistique, au commerce de proximité, à l'artisan ou au professionnel libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",

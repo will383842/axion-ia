@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CARVIN_COPY: VilleCopy = {
   pitchFr:
-    "Carvin (62), commune du bassin minier du Pas-de-Calais, bénéficie d'une position stratégique sur l'autoroute A1 (Paris-Lille) avec des zones logistiques et d'activités majeures. Tissu TPE artisanales, PME logistique et transport, commerce, services et reconversion industrielle. Axion-IA y intervient pour tous types d'activités du bassin minier / axe A1.",
+    "Carvin (62), commune du bassin minier du Pas-de-Calais, bénéficie d'une position stratégique sur l'autoroute A1 (Paris-Lille) avec des zones logistiques et d'activités majeures. Tissu TPE artisanales, PME logistique et transport, commerce, services et reconversion industrielle. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin minier / axe A1.",
   pitchEn:
-    "Carvin (62), commune du bassin minier du Pas-de-Calais, bénéficie d'une position stratégique sur l'autoroute A1 (Paris-Lille) avec des zones logistiques et d'activités majeures. Tissu TPE artisanales, PME logistique et transport, commerce, services et reconversion industrielle. Axion-IA y intervient pour tous types d'activités du bassin minier / axe A1.",
+    "Carvin (62), commune du bassin minier du Pas-de-Calais, bénéficie d'une position stratégique sur l'autoroute A1 (Paris-Lille) avec des zones logistiques et d'activités majeures. Tissu TPE artisanales, PME logistique et transport, commerce, services et reconversion industrielle. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin minier / axe A1.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carvin (62). Nous accompagnons tous types d'activités : TPE artisans, PME logistique et transport (axe A1), commerçants, indépendants, professions libérales, entreprises de services et acteurs de la reconversion industrielle du bassin minier.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const CARVIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Carvin : diagnostic adapté aux PME logistique/transport (axe A1), TPE artisans BTP, commerçants et services du bassin minier. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Carvin : diagnostic adapté aux PME logistique/transport (axe A1), TPE artisans BTP, commerçants et services du bassin minier. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Carvin : diagnostic adapté aux PME logistique/transport (axe A1), TPE artisans BTP, commerçants et services du bassin minier. Audit Flash 490 € HT, ROI documenté en chiffres accessible.",
+      en: "Audit IA à Carvin : diagnostic adapté aux PME logistique/transport (axe A1), TPE artisans BTP, commerçants et services du bassin minier. Audit Flash 490 € HT, ROI documenté en chiffres accessible.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Carvin : formats adaptés à l'entrepôt logistique, atelier artisanal, commerce ou bureau. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Carvin : formats adaptés à l'entrepôt logistique, atelier artisanal, commerce ou bureau. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Carvin : formats adaptés à l'entrepôt logistique, atelier artisanal, commerce ou bureau. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Carvin : formats adaptés à l'entrepôt logistique, atelier artisanal, commerce ou bureau. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Carvin : optimisation supply chain et tournées (axe A1), prédiction demande entrepôt, automatisation devis BTP, agents conversationnels, classification documents. Bassin minier.",
@@ -64,7 +64,7 @@ export const CARVIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lille ou Paris ?",
-      a: "Nos consultants viennent de Lille (25 min A1) ou Paris (1h15 TGV Lille + 25 min TER). Carvin est accessible directement par l'A1. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lille (25 min A1) ou Paris (1h15 TGV Lille + 25 min TER). Carvin est accessible directement par l'A1. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

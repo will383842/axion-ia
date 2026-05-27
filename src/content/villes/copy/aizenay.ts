@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const AIZENAY_COPY: VilleCopy = {
   pitchFr:
-    "Aizenay (85), commune du bocage vendéen, compte plus de 10 300 habitants. Carrefour routier entre La Roche-sur-Yon et Challans, avec des zones d'activités dynamiques, un tissu de TPE artisanales, PME industrielles, commerces et services. Axion-IA y intervient pour tous types d'activités.",
+    "Aizenay (85), commune du bocage vendéen, compte plus de 10 300 habitants. Carrefour routier entre La Roche-sur-Yon et Challans, avec des zones d'activités dynamiques, un tissu de TPE artisanales, PME industrielles, commerces et services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Aizenay (85), commune du bocage vendéen, compte plus de 10 300 habitants. Carrefour routier entre La Roche-sur-Yon et Challans, avec des zones d'activités dynamiques, un tissu de TPE artisanales, PME industrielles, commerces et services. Axion-IA y intervient pour tous types d'activités.",
+    "Aizenay (85), commune du bocage vendéen, compte plus de 10 300 habitants. Carrefour routier entre La Roche-sur-Yon et Challans, avec des zones d'activités dynamiques, un tissu de TPE artisanales, PME industrielles, commerces et services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aizenay (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles bocage vendéen, professions libérales, exploitations agricoles et services de proximité.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const AIZENAY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Aizenay : diagnostic adapté aux TPE artisans BTP, PME industrielles, exploitations agricoles et commerces du bocage vendéen. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Aizenay : diagnostic adapté aux TPE artisans BTP, PME industrielles, exploitations agricoles et commerces du bocage vendéen. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Aizenay : diagnostic adapté aux TPE artisans BTP, PME industrielles, exploitations agricoles et commerces du bocage vendéen. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Aizenay : diagnostic adapté aux TPE artisans BTP, PME industrielles, exploitations agricoles et commerces du bocage vendéen. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Aizenay : formats adaptés aux artisans BTP, PME industrielles, exploitations agricoles et commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Aizenay : formats adaptés aux artisans BTP, PME industrielles, exploitations agricoles et commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Aizenay : formats adaptés aux artisans BTP, PME industrielles, exploitations agricoles et commerces. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Aizenay : formats adaptés aux artisans BTP, PME industrielles, exploitations agricoles et commerces. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Aizenay : gestion chantiers BTP, automatisation devis artisans, optimisation exploitation agricole, outils prédictifs PME industrielles. Adapté TPE/PME bocage vendéen.",

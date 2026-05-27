@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MERIEL_COPY: VilleCopy = {
   pitchFr:
-    "Mériel (95), commune résidentielle en bord d'Oise au cœur du Val-d'Oise, offre un cadre verdoyant entre forêt de L'Isle-Adam et vallée de l'Oise. Tissu TPE commerces de proximité et artisanat, PME services, professions libérales, restauration, services à la personne. Axion-IA y intervient pour tous types d'activités.",
+    "Mériel (95), commune résidentielle en bord d'Oise au cœur du Val-d'Oise, offre un cadre verdoyant entre forêt de L'Isle-Adam et vallée de l'Oise. Tissu TPE commerces de proximité et artisanat, PME services, professions libérales, restauration, services à la personne. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Mériel (95), commune résidentielle en bord d'Oise au cœur du Val-d'Oise, offre un cadre verdoyant entre forêt de L'Isle-Adam et vallée de l'Oise. Tissu TPE commerces de proximité et artisanat, PME services, professions libérales, restauration, services à la personne. Axion-IA y intervient pour tous types d'activités.",
+    "Mériel (95), commune résidentielle en bord d'Oise au cœur du Val-d'Oise, offre un cadre verdoyant entre forêt de L'Isle-Adam et vallée de l'Oise. Tissu TPE commerces de proximité et artisanat, PME services, professions libérales, restauration, services à la personne. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mériel (95). Nous accompagnons TPE et PME : commerçants et artisans bords d'Oise, PME services aux entreprises, professions libérales, restaurateurs, prestataires services à la personne Val-d'Oise. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const MERIEL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mériel : diagnostic adapté aux commerçants et artisans, PME services, professions libérales, restaurateurs bords d'Oise Val-d'Oise. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Mériel : diagnostic adapté aux commerçants et artisans, PME services, professions libérales, restaurateurs bords d'Oise Val-d'Oise. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Mériel : diagnostic adapté aux commerçants et artisans, PME services, professions libérales, restaurateurs bords d'Oise Val-d'Oise. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Mériel : diagnostic adapté aux commerçants et artisans, PME services, professions libérales, restaurateurs bords d'Oise Val-d'Oise. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Mériel : formats adaptés boutique, cabinet, restaurant, bureau PME. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Mériel : formats adaptés boutique, cabinet, restaurant, bureau PME. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Mériel : formats adaptés boutique, cabinet, restaurant, bureau PME. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Mériel : formats adaptés boutique, cabinet, restaurant, bureau PME. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Mériel : CRM augmenté commerçants, automatisation gestion cabinet, outils réservation restauration, facturation intelligente PME services.",
@@ -64,7 +64,7 @@ export const MERIEL_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis L'Isle-Adam ou Paris ?",
-      a: "L'Isle-Adam (5 min). Auvers-sur-Oise (10 min). Cergy-Pontoise (20 min). Paris Gare du Nord (40 min). CDG (30 min). Frais de déplacement facturés à part, tarifs publics.",
+      a: "L'Isle-Adam (5 min). Auvers-sur-Oise (10 min). Cergy-Pontoise (20 min). Paris Gare du Nord (40 min). CDG (30 min). Frais de mission en sus, grille tarifaire publique.",
     },
   ],
 };

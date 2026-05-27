@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const TONNEINS_COPY: VilleCopy = {
   pitchFr:
-    "Tonneins (47), commune de 9 459 habitants dans le Lot-et-Garonne, est une ville historique des bords de Garonne, héritière d'une longue tradition manufacturière liée au tabac. Son économie actuelle repose sur un tissu de TPE artisans et commerçants, PME industrie et agroalimentaire, services de proximité et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Tonneins (47), commune de 9 459 habitants dans le Lot-et-Garonne, est une ville historique des bords de Garonne, héritière d'une longue tradition manufacturière liée au tabac. Son économie actuelle repose sur un tissu de TPE artisans et commerçants, PME industrie et agroalimentaire, services de proximité et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Tonneins (47), commune de 9 459 habitants dans le Lot-et-Garonne, est une ville historique des bords de Garonne, héritière d'une longue tradition manufacturière liée au tabac. Son économie actuelle repose sur un tissu de TPE artisans et commerçants, PME industrie et agroalimentaire, services de proximité et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Tonneins (47), commune de 9 459 habitants dans le Lot-et-Garonne, est une ville historique des bords de Garonne, héritière d'une longue tradition manufacturière liée au tabac. Son économie actuelle repose sur un tissu de TPE artisans et commerçants, PME industrie et agroalimentaire, services de proximité et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tonneins (47). Nous accompagnons TPE et PME des bords de Garonne : artisans, commerçants, entreprises agroalimentaires, industriels, professions libérales et services de proximité du bassin tonneinquais. Audit Flash dès 490 € HT.",
   directAnswerEn:

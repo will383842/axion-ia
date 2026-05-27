@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_MOTTE_SERVOLEX_COPY: VilleCopy = {
   pitchFr:
-    "La Motte-Servolex (73), 2e commune de l'agglomération de Chambéry en Savoie, est un pôle résidentiel dynamique doté de zones d'activités commerciales et tertiaires. Tissu PME tertiaires, professions libérales, TPE artisanat BTP, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "La Motte-Servolex (73), 2e commune de l'agglomération de Chambéry en Savoie, est un pôle résidentiel dynamique doté de zones d'activités commerciales et tertiaires. Tissu PME tertiaires, professions libérales, TPE artisanat BTP, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "La Motte-Servolex (73), 2e commune de l'agglomération de Chambéry en Savoie, est un pôle résidentiel dynamique doté de zones d'activités commerciales et tertiaires. Tissu PME tertiaires, professions libérales, TPE artisanat BTP, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "La Motte-Servolex (73), 2e commune de l'agglomération de Chambéry en Savoie, est un pôle résidentiel dynamique doté de zones d'activités commerciales et tertiaires. Tissu PME tertiaires, professions libérales, TPE artisanat BTP, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Motte-Servolex (73). Nous accompagnons TPE et PME de l'agglomération chambérienne : sociétés tertiaires des zones d'activités, professions libérales, artisans BTP, commerces, services aux entreprises et indépendants du bassin savoyard.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const LA_MOTTE_SERVOLEX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Motte-Servolex : diagnostic adapté aux PME tertiaires des zones d'activités, professions libérales, TPE artisans et commerçants de l'agglomération chambérienne. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à La Motte-Servolex : diagnostic adapté aux PME tertiaires des zones d'activités, professions libérales, TPE artisans et commerçants de l'agglomération chambérienne. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à La Motte-Servolex : diagnostic adapté aux PME tertiaires des zones d'activités, professions libérales, TPE artisans et commerçants de l'agglomération chambérienne. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à La Motte-Servolex : diagnostic adapté aux PME tertiaires des zones d'activités, professions libérales, TPE artisans et commerçants de l'agglomération chambérienne. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à La Motte-Servolex : ateliers dans vos locaux tertiaires, cabinet ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier, formats demi-journée ou journée complète.",
-      en: "Interventions IA sur site à La Motte-Servolex : ateliers dans vos locaux tertiaires, cabinet ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier, formats demi-journée ou journée complète.",
+      fr: "Interventions IA sur site à La Motte-Servolex : ateliers dans vos locaux tertiaires, cabinet ou commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure, formats demi-journée ou journée complète.",
+      en: "Interventions IA sur site à La Motte-Servolex : ateliers dans vos locaux tertiaires, cabinet ou commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure, formats demi-journée ou journée complète.",
     },
     implementation: {
       fr: "Implémentation IA à La Motte-Servolex : automatisation gestion clients, agents conversationnels cabinet libéral, classification documents comptables, prédiction flux commercial. Adapté tertiaire + artisanat savoyard.",

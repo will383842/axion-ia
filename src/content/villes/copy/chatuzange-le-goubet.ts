@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHATUZANGE_LE_GOUBET_COPY: VilleCopy = {
   pitchFr:
-    "Chatuzange-le-Goubet (26), commune de la Drôme des Collines à proximité de Romans-sur-Isère, fait partie de Valence Romans Agglo. Tissu mixte agriculture, PME industrielles diversifiées, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités du bassin Romans-Valence.",
+    "Chatuzange-le-Goubet (26), commune de la Drôme des Collines à proximité de Romans-sur-Isère, fait partie de Valence Romans Agglo. Tissu mixte agriculture, PME industrielles diversifiées, TPE artisans BTP, commerces. Axion-IA opère pour toutes les structures économiques de la commune du bassin Romans-Valence.",
   pitchEn:
-    "Chatuzange-le-Goubet (26), commune de la Drôme des Collines à proximité de Romans-sur-Isère, fait partie de Valence Romans Agglo. Tissu mixte agriculture, PME industrielles diversifiées, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités du bassin Romans-Valence.",
+    "Chatuzange-le-Goubet (26), commune de la Drôme des Collines à proximité de Romans-sur-Isère, fait partie de Valence Romans Agglo. Tissu mixte agriculture, PME industrielles diversifiées, TPE artisans BTP, commerces. Axion-IA opère pour toutes les structures économiques de la commune du bassin Romans-Valence.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chatuzange-le-Goubet (26). Nous accompagnons tous types d'activités : PME industrielles diversifiées bassin Romans, agriculteurs Drôme des Collines, TPE artisans BTP, commerçants, indépendants et services aux entreprises de Valence Romans Agglo.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const CHATUZANGE_LE_GOUBET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chatuzange-le-Goubet : diagnostic adapté aux PME industrielles bassin Romans, agriculteurs Drôme des Collines, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Chatuzange-le-Goubet : diagnostic adapté aux PME industrielles bassin Romans, agriculteurs Drôme des Collines, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Chatuzange-le-Goubet : diagnostic adapté aux PME industrielles bassin Romans, agriculteurs Drôme des Collines, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Chatuzange-le-Goubet : diagnostic adapté aux PME industrielles bassin Romans, agriculteurs Drôme des Collines, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Chatuzange-le-Goubet : formats adaptés à l'exploitation agricole, atelier industriel, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -64,7 +64,7 @@ export const CHATUZANGE_LE_GOUBET_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Paris ?",
-      a: "Nos consultants viennent de Lyon (1h15) ou Paris (TGV Valence 2h15 + 25 min voiture). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (1h15) ou Paris (TGV Valence 2h15 + 25 min voiture). Pour les multi-jours, hébergement local possible. Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHATELAILLON_PLAGE_COPY: VilleCopy = {
   pitchFr:
-    "Châtelaillon-Plage (17), station balnéaire familiale en Charente-Maritime, entre La Rochelle et Rochefort sur le littoral atlantique. Tissu de TPE artisans, PME tourisme et hôtellerie-restauration, commerces saisonniers, services et professions libérales. Axion-IA y intervient pour tous types d'activités de la station châtelaillonnaise.",
+    "Châtelaillon-Plage (17), station balnéaire familiale en Charente-Maritime, entre La Rochelle et Rochefort sur le littoral atlantique. Tissu de TPE artisans, PME tourisme et hôtellerie-restauration, commerces saisonniers, services et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs de la station châtelaillonnaise.",
   pitchEn:
-    "Châtelaillon-Plage (17), station balnéaire familiale en Charente-Maritime, entre La Rochelle et Rochefort sur le littoral atlantique. Tissu de TPE artisans, PME tourisme et hôtellerie-restauration, commerces saisonniers, services et professions libérales. Axion-IA y intervient pour tous types d'activités de la station châtelaillonnaise.",
+    "Châtelaillon-Plage (17), station balnéaire familiale en Charente-Maritime, entre La Rochelle et Rochefort sur le littoral atlantique. Tissu de TPE artisans, PME tourisme et hôtellerie-restauration, commerces saisonniers, services et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs de la station châtelaillonnaise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châtelaillon-Plage (17). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et hôtellerie-restauration, commerçants saisonniers, professions libérales et indépendants de cette station balnéaire familiale du littoral charentais.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CAVALAIRE_SUR_MER_COPY: VilleCopy = {
   pitchFr:
-    "Cavalaire-sur-Mer (83), station balnéaire familiale du golfe de Saint-Tropez, est connue pour sa baie protégée, son port de plaisance et ses plages de sable. Tissu de TPE restaurateurs, professionnels du nautisme, commerçants, et PME du tourisme balnéaire et de l'hôtellerie de plein air. Axion-IA y intervient pour tous types d'activités.",
+    "Cavalaire-sur-Mer (83), station balnéaire familiale du golfe de Saint-Tropez, est connue pour sa baie protégée, son port de plaisance et ses plages de sable. Tissu de TPE restaurateurs, professionnels du nautisme, commerçants, et PME du tourisme balnéaire et de l'hôtellerie de plein air. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Cavalaire-sur-Mer (83), station balnéaire familiale du golfe de Saint-Tropez, est connue pour sa baie protégée, son port de plaisance et ses plages de sable. Tissu de TPE restaurateurs, professionnels du nautisme, commerçants, et PME du tourisme balnéaire et de l'hôtellerie de plein air. Axion-IA y intervient pour tous types d'activités.",
+    "Cavalaire-sur-Mer (83), station balnéaire familiale du golfe de Saint-Tropez, est connue pour sa baie protégée, son port de plaisance et ses plages de sable. Tissu de TPE restaurateurs, professionnels du nautisme, commerçants, et PME du tourisme balnéaire et de l'hôtellerie de plein air. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cavalaire-sur-Mer (83). Nous accompagnons TPE restaurateurs, professionnels du nautisme, commerçants et PME du tourisme balnéaire et de l'hôtellerie de plein air du golfe de Saint-Tropez. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const CAVALAIRE_SUR_MER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cavalaire-sur-Mer : diagnostic adapté aux TPE restaurateurs, PME hôtellerie de plein air, professionnels du nautisme et commerces saisonniers. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Cavalaire-sur-Mer : diagnostic adapté aux TPE restaurateurs, PME hôtellerie de plein air, professionnels du nautisme et commerces saisonniers. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Cavalaire-sur-Mer : diagnostic adapté aux TPE restaurateurs, PME hôtellerie de plein air, professionnels du nautisme et commerces saisonniers. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Cavalaire-sur-Mer : diagnostic adapté aux TPE restaurateurs, PME hôtellerie de plein air, professionnels du nautisme et commerces saisonniers. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Cavalaire-sur-Mer : ateliers pour restaurateurs, hôteliers de plein air, professionnels du nautisme et commerçants. Outils IA configurés métier réel.",

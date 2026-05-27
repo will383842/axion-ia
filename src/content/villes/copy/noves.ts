@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const NOVES_COPY: VilleCopy = {
   pitchFr:
-    "Noves (13), commune de la Petite Crau dans les Bouches-du-Rhône au sud d'Avignon, conjugue agriculture maraîchère, vergers, viticulture AOC et tissu de TPE artisans, PME services et commerces. Accès direct A7 vers Lyon et Marseille. Axion-IA y intervient pour tous types d'activités de la Petite Crau.",
+    "Noves (13), commune de la Petite Crau dans les Bouches-du-Rhône au sud d'Avignon, conjugue agriculture maraîchère, vergers, viticulture AOC et tissu de TPE artisans, PME services et commerces. Accès direct A7 vers Lyon et Marseille. Axion-IA accompagne entreprises et indépendants de tous secteurs de la Petite Crau.",
   pitchEn:
-    "Noves (13), commune de la Petite Crau dans les Bouches-du-Rhône au sud d'Avignon, conjugue agriculture maraîchère, vergers, viticulture AOC et tissu de TPE artisans, PME services et commerces. Accès direct A7 vers Lyon et Marseille. Axion-IA y intervient pour tous types d'activités de la Petite Crau.",
+    "Noves (13), commune de la Petite Crau dans les Bouches-du-Rhône au sud d'Avignon, conjugue agriculture maraîchère, vergers, viticulture AOC et tissu de TPE artisans, PME services et commerces. Accès direct A7 vers Lyon et Marseille. Axion-IA accompagne entreprises et indépendants de tous secteurs de la Petite Crau.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Noves (13). Nous accompagnons TPE artisans, exploitations agricoles, viticulteurs, PME de services et commerçants de la Petite Crau. Audit Flash dès 490 € HT, sans engagement.",
   directAnswerEn:

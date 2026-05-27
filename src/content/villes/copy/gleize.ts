@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GLEIZE_COPY: VilleCopy = {
   pitchFr:
-    "Gleizé (69), commune en banlieue ouest immédiate de Villefranche-sur-Saône dans le Rhône, est positionnée à l'entrée du vignoble du Beaujolais. Tissu péri-urbain : PME tertiaires, viticulture périphérique, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités du Beaujolais-Villefranche.",
+    "Gleizé (69), commune en banlieue ouest immédiate de Villefranche-sur-Saône dans le Rhône, est positionnée à l'entrée du vignoble du Beaujolais. Tissu péri-urbain : PME tertiaires, viticulture périphérique, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations du Beaujolais-Villefranche.",
   pitchEn:
-    "Gleizé (69), commune en banlieue ouest immédiate de Villefranche-sur-Saône dans le Rhône, est positionnée à l'entrée du vignoble du Beaujolais. Tissu péri-urbain : PME tertiaires, viticulture périphérique, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités du Beaujolais-Villefranche.",
+    "Gleizé (69), commune en banlieue ouest immédiate de Villefranche-sur-Saône dans le Rhône, est positionnée à l'entrée du vignoble du Beaujolais. Tissu péri-urbain : PME tertiaires, viticulture périphérique, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations du Beaujolais-Villefranche.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gleizé (69). Nous accompagnons tous types d'activités : PME tertiaires Villefranche, viticulteurs Beaujolais, TPE artisans BTP, commerçants, indépendants et services aux entreprises de la communauté d'agglomération Villefranche Beaujolais Saône.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const GLEIZE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gleizé : diagnostic adapté aux PME tertiaires Villefranche, viticulteurs Beaujolais, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Gleizé : diagnostic adapté aux PME tertiaires Villefranche, viticulteurs Beaujolais, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Gleizé : diagnostic adapté aux PME tertiaires Villefranche, viticulteurs Beaujolais, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Gleizé : diagnostic adapté aux PME tertiaires Villefranche, viticulteurs Beaujolais, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gleizé : formats adaptés au bureau, domaine viticole, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const GLEIZE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (35 min A6). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (35 min A6). Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

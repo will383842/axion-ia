@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LOUDEAC_COPY: VilleCopy = {
   pitchFr:
-    "Loudéac (22), ville-centre du Centre Bretagne, pôle agroalimentaire majeur spécialisé dans les filières porcine et avicole, avec son hippodrome réputé. Tissu de TPE et PME agroalimentaires, artisans, commerces de centre-bourg, professions libérales et entreprises agricoles. Axion-IA y intervient pour tous types d'activités du pays de Loudéac.",
+    "Loudéac (22), ville-centre du Centre Bretagne, pôle agroalimentaire majeur spécialisé dans les filières porcine et avicole, avec son hippodrome réputé. Tissu de TPE et PME agroalimentaires, artisans, commerces de centre-bourg, professions libérales et entreprises agricoles. Axion-IA y déploie ses missions auprès de toutes les organisations du pays de Loudéac.",
   pitchEn:
-    "Loudéac (22), ville-centre du Centre Bretagne, pôle agroalimentaire majeur spécialisé dans les filières porcine et avicole, avec son hippodrome réputé. Tissu de TPE et PME agroalimentaires, artisans, commerces de centre-bourg, professions libérales et entreprises agricoles. Axion-IA y intervient pour tous types d'activités du pays de Loudéac.",
+    "Loudéac (22), ville-centre du Centre Bretagne, pôle agroalimentaire majeur spécialisé dans les filières porcine et avicole, avec son hippodrome réputé. Tissu de TPE et PME agroalimentaires, artisans, commerces de centre-bourg, professions libérales et entreprises agricoles. Axion-IA y déploie ses missions auprès de toutes les organisations du pays de Loudéac.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Loudéac (22). Nous accompagnons TPE et PME : entreprises agroalimentaires, exploitants agricoles, artisans, commerces de centre-bourg et professions libérales de cette ville-centre du Centre Bretagne. Audit Flash dès 490 € HT.",
   directAnswerEn:

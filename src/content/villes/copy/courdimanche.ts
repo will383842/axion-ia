@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const COURDIMANCHE_COPY: VilleCopy = {
   pitchFr:
-    "Courdimanche (95), commune de l'agglomération de Cergy-Pontoise à 30 km au nord-ouest de Paris. Tissu TPE artisans et prestataires, PME tertiaire et logistique, commerces, professions libérales et structures de l'économie sociale. Axion-IA y intervient pour tous types d'activités du pôle cergypontain.",
+    "Courdimanche (95), commune de l'agglomération de Cergy-Pontoise à 30 km au nord-ouest de Paris. Tissu TPE artisans et prestataires, PME tertiaire et logistique, commerces, professions libérales et structures de l'économie sociale. Axion-IA y déploie ses missions auprès de toutes les organisations du pôle cergypontain.",
   pitchEn:
-    "Courdimanche (95), commune de l'agglomération de Cergy-Pontoise à 30 km au nord-ouest de Paris. Tissu TPE artisans et prestataires, PME tertiaire et logistique, commerces, professions libérales et structures de l'économie sociale. Axion-IA y intervient pour tous types d'activités du pôle cergypontain.",
+    "Courdimanche (95), commune de l'agglomération de Cergy-Pontoise à 30 km au nord-ouest de Paris. Tissu TPE artisans et prestataires, PME tertiaire et logistique, commerces, professions libérales et structures de l'économie sociale. Axion-IA y déploie ses missions auprès de toutes les organisations du pôle cergypontain.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Courdimanche (95). Nous accompagnons tous types d'activités : TPE artisans et prestataires, PME tertiaire et logistique, commerces de proximité, professions libérales et structures de l'agglomération de Cergy-Pontoise. Audit Flash dès 490 € HT.",
   directAnswerEn:

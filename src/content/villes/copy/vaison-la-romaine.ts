@@ -33,8 +33,8 @@ export const VAISON_LA_ROMAINE_COPY: VilleCopy = {
       en: "Audit IA à Vaison-la-Romaine : diagnostic adapté aux TPE artisans, domaines viticoles Cairanne, PME agroalimentaires et hébergements du Haut-Vaucluse. ROI chiffré, Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Vaison-la-Romaine : formats adaptés aux domaines viticoles, hébergements touristiques, restaurants, PME agroalimentaires et artisans. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Vaison-la-Romaine : formats adaptés aux domaines viticoles, hébergements touristiques, restaurants, PME agroalimentaires et artisans. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Vaison-la-Romaine : formats adaptés aux domaines viticoles, hébergements touristiques, restaurants, PME agroalimentaires et artisans. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Vaison-la-Romaine : formats adaptés aux domaines viticoles, hébergements touristiques, restaurants, PME agroalimentaires et artisans. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Vaison-la-Romaine : traçabilité parcellaire Cairanne, gestion réservations hébergements, agents conversationnels multilingues tourisme, fiches Google Business, automatisation devis artisans. Adapté TPE/PME Haut-Vaucluse.",

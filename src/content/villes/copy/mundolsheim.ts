@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MUNDOLSHEIM_COPY: VilleCopy = {
   pitchFr:
-    "Mundolsheim (67), commune de 5 322 habitants au nord de l'Eurométropole de Strasbourg, est un pôle commercial et tertiaire majeur du Bas-Rhin. Centre commercial régional (zone Cora). Tissu commerce et grande distribution, PME tertiaires, TPE services et artisans, restauration, logistique, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Mundolsheim (67), commune de 5 322 habitants au nord de l'Eurométropole de Strasbourg, est un pôle commercial et tertiaire majeur du Bas-Rhin. Centre commercial régional (zone Cora). Tissu commerce et grande distribution, PME tertiaires, TPE services et artisans, restauration, logistique, services aux entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Mundolsheim (67), commune de 5 322 habitants au nord de l'Eurométropole de Strasbourg, est un pôle commercial et tertiaire majeur du Bas-Rhin. Centre commercial régional (zone Cora). Tissu commerce et grande distribution, PME tertiaires, TPE services et artisans, restauration, logistique, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Mundolsheim (67), commune de 5 322 habitants au nord de l'Eurométropole de Strasbourg, est un pôle commercial et tertiaire majeur du Bas-Rhin. Centre commercial régional (zone Cora). Tissu commerce et grande distribution, PME tertiaires, TPE services et artisans, restauration, logistique, services aux entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mundolsheim (67). Nous accompagnons tous types d'activités : TPE/PME commerce et grande distribution, services tertiaires, artisans, restauration, logistique et services aux entreprises de l'Eurométropole nord de Strasbourg.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const MUNDOLSHEIM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mundolsheim : diagnostic adapté aux TPE/PME commerce, grande distribution, services tertiaires, artisans, restauration et logistique de l'agglomération strasbourgeoise. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Mundolsheim : diagnostic adapté aux TPE/PME commerce, grande distribution, services tertiaires, artisans, restauration et logistique de l'agglomération strasbourgeoise. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Mundolsheim : diagnostic adapté aux TPE/PME commerce, grande distribution, services tertiaires, artisans, restauration et logistique de l'agglomération strasbourgeoise. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Mundolsheim : diagnostic adapté aux TPE/PME commerce, grande distribution, services tertiaires, artisans, restauration et logistique de l'agglomération strasbourgeoise. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Mundolsheim : formats adaptés au commerce, grande distribution, PME tertiaire, restaurant, plateforme logistique. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Mundolsheim : formats adaptés au commerce, grande distribution, PME tertiaire, restaurant, plateforme logistique. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Mundolsheim : formats adaptés au commerce, grande distribution, PME tertiaire, restaurant, plateforme logistique. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Mundolsheim : formats adaptés au commerce, grande distribution, PME tertiaire, restaurant, plateforme logistique. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Mundolsheim : prédiction demande commerce, optimisation stocks grande distribution, agents conversationnels clients multilingue (FR/DE/EN), automatisation back-office tertiaire, classification factures et documents.",

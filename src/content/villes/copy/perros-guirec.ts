@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PERROS_GUIREC_COPY: VilleCopy = {
   pitchFr:
-    "Perros-Guirec (22), station balnéaire emblématique de la Côte de Granit Rose en Côtes-d'Armor, vit du tourisme, de l'hôtellerie-restauration et d'un tissu TPE/PME commerçants, artisans et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Perros-Guirec (22), station balnéaire emblématique de la Côte de Granit Rose en Côtes-d'Armor, vit du tourisme, de l'hôtellerie-restauration et d'un tissu TPE/PME commerçants, artisans et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Perros-Guirec (22), station balnéaire emblématique de la Côte de Granit Rose en Côtes-d'Armor, vit du tourisme, de l'hôtellerie-restauration et d'un tissu TPE/PME commerçants, artisans et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Perros-Guirec (22), station balnéaire emblématique de la Côte de Granit Rose en Côtes-d'Armor, vit du tourisme, de l'hôtellerie-restauration et d'un tissu TPE/PME commerçants, artisans et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Perros-Guirec (22). Nous accompagnons TPE et PME : hôteliers, restaurateurs, commerçants, artisans, professions libérales et acteurs du tourisme de la Côte de Granit Rose. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const PERROS_GUIREC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Perros-Guirec : diagnostic adapté aux hôteliers, restaurateurs, commerçants, artisans, professions libérales et acteurs du tourisme Côte de Granit Rose. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Perros-Guirec : diagnostic adapté aux hôteliers, restaurateurs, commerçants, artisans, professions libérales et acteurs du tourisme Côte de Granit Rose. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Perros-Guirec : diagnostic adapté aux hôteliers, restaurateurs, commerçants, artisans, professions libérales et acteurs du tourisme Côte de Granit Rose. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Perros-Guirec : diagnostic adapté aux hôteliers, restaurateurs, commerçants, artisans, professions libérales et acteurs du tourisme Côte de Granit Rose. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Perros-Guirec : formats adaptés hôtel, restaurant, commerce, cabinet libéral, centre thalasso. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Perros-Guirec : formats adaptés hôtel, restaurant, commerce, cabinet libéral, centre thalasso. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Perros-Guirec : formats adaptés hôtel, restaurant, commerce, cabinet libéral, centre thalasso. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Perros-Guirec : formats adaptés hôtel, restaurant, commerce, cabinet libéral, centre thalasso. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Perros-Guirec : gestion réservations tourisme, revenue management hôtelier, agents conversationnels multilingues, CRM fidélisation, optimisation planning saisonnier, automatisation restauration.",
@@ -64,7 +64,7 @@ export const PERROS_GUIREC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Perros-Guirec ?",
-      a: "TGV Paris-Lannion (3h20 via Plouaret) puis 15 min. Aéroport Lannion à 10 min (vols saisonniers). Hébergement local disponible. Frais de déplacement facturés à part, tarifs publics.",
+      a: "TGV Paris-Lannion (3h20 via Plouaret) puis 15 min. Aéroport Lannion à 10 min (vols saisonniers). Hébergement local disponible. Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

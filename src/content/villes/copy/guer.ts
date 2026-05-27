@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GUER_COPY: VilleCopy = {
   pitchFr:
-    "Guer (56), commune du Morbihan intérieur marquée par le camp de Coëtquidan et les écoles militaires de Saint-Cyr, associe activités liées à la défense, TPE artisanales, PME de services et commerces de bourg. Axion-IA y intervient pour tous types d'activités.",
+    "Guer (56), commune du Morbihan intérieur marquée par le camp de Coëtquidan et les écoles militaires de Saint-Cyr, associe activités liées à la défense, TPE artisanales, PME de services et commerces de bourg. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Guer (56), commune du Morbihan intérieur marquée par le camp de Coëtquidan et les écoles militaires de Saint-Cyr, associe activités liées à la défense, TPE artisanales, PME de services et commerces de bourg. Axion-IA y intervient pour tous types d'activités.",
+    "Guer (56), commune du Morbihan intérieur marquée par le camp de Coëtquidan et les écoles militaires de Saint-Cyr, associe activités liées à la défense, TPE artisanales, PME de services et commerces de bourg. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guer (56). Nous accompagnons tous types d'activités : TPE artisanales, PME de services et de sous-traitance, commerces de bourg, professions libérales, prestataires du secteur défense et acteurs économiques du Morbihan intérieur.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const GUER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Guer : diagnostic adapté aux TPE artisanales, PME de services, prestataires du secteur défense et commerces du Morbihan intérieur. ROI chiffré, audit Flash 490 € HT accessible à toute structure.",
-      en: "Audit IA à Guer : diagnostic adapté aux TPE artisanales, PME de services, prestataires du secteur défense et commerces du Morbihan intérieur. ROI chiffré, audit Flash 490 € HT accessible à toute structure.",
+      fr: "Audit IA à Guer : diagnostic adapté aux TPE artisanales, PME de services, prestataires du secteur défense et commerces du Morbihan intérieur. ROI mesurable, audit Flash dès 490 € HT accessible à toute structure.",
+      en: "Audit IA à Guer : diagnostic adapté aux TPE artisanales, PME de services, prestataires du secteur défense et commerces du Morbihan intérieur. ROI mesurable, audit Flash dès 490 € HT accessible à toute structure.",
     },
     interventions: {
       fr: "Interventions IA sur site à Guer : formats adaptés au prestataire de services, au commerce de bourg ou au bureau PME. Vos équipes repartent autonomes sur les outils IA métier adaptés à votre activité.",

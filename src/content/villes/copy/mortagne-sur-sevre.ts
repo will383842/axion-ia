@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MORTAGNE_SUR_SEVRE_COPY: VilleCopy = {
   pitchFr:
-    "Mortagne-sur-Sèvre (85), commune du bocage vendéen, compte plus de 6 000 habitants. Surplombant les gorges de la Sèvre nantaise, la ville conjugue industrie (mécanique, agroalimentaire), artisanat, tourisme vert et commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Mortagne-sur-Sèvre (85), commune du bocage vendéen, compte plus de 6 000 habitants. Surplombant les gorges de la Sèvre nantaise, la ville conjugue industrie (mécanique, agroalimentaire), artisanat, tourisme vert et commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Mortagne-sur-Sèvre (85), commune du bocage vendéen, compte plus de 6 000 habitants. Surplombant les gorges de la Sèvre nantaise, la ville conjugue industrie (mécanique, agroalimentaire), artisanat, tourisme vert et commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Mortagne-sur-Sèvre (85), commune du bocage vendéen, compte plus de 6 000 habitants. Surplombant les gorges de la Sèvre nantaise, la ville conjugue industrie (mécanique, agroalimentaire), artisanat, tourisme vert et commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mortagne-sur-Sèvre (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles du bocage, exploitations agricoles, acteurs tourisme vert et professions libérales.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const MORTAGNE_SUR_SEVRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mortagne-sur-Sèvre : diagnostic adapté aux TPE artisans, PME industrielles et agroalimentaires du bocage, exploitations agricoles et commerces. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Mortagne-sur-Sèvre : diagnostic adapté aux TPE artisans, PME industrielles et agroalimentaires du bocage, exploitations agricoles et commerces. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Mortagne-sur-Sèvre : diagnostic adapté aux TPE artisans, PME industrielles et agroalimentaires du bocage, exploitations agricoles et commerces. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Mortagne-sur-Sèvre : diagnostic adapté aux TPE artisans, PME industrielles et agroalimentaires du bocage, exploitations agricoles et commerces. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Mortagne-sur-Sèvre : formats adaptés aux PME industrielles, ateliers agroalimentaires, artisans et commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Mortagne-sur-Sèvre : formats adaptés aux PME industrielles, ateliers agroalimentaires, artisans et commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Mortagne-sur-Sèvre : formats adaptés aux PME industrielles, ateliers agroalimentaires, artisans et commerces. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Mortagne-sur-Sèvre : formats adaptés aux PME industrielles, ateliers agroalimentaires, artisans et commerces. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Mortagne-sur-Sèvre : maintenance prédictive industrie, automatisation agroalimentaire, gestion exploitation agricole, outils artisans. Adapté TPE/PME bocage vendéen.",

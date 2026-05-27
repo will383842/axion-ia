@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_ROQUETTE_SUR_SIAGNE_COPY: VilleCopy = {
   pitchFr:
-    "La Roquette-sur-Siagne (06), dans la vallée de la Siagne entre Cannes et Grasse, est une commune résidentielle et artisanale de l'arrière-pays cannois. Tissu TPE/PME artisanat BTP, commerces de proximité, services aux entreprises, professions libérales et petite industrie. Axion-IA y intervient pour tous types d'activités.",
+    "La Roquette-sur-Siagne (06), dans la vallée de la Siagne entre Cannes et Grasse, est une commune résidentielle et artisanale de l'arrière-pays cannois. Tissu TPE/PME artisanat BTP, commerces de proximité, services aux entreprises, professions libérales et petite industrie. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "La Roquette-sur-Siagne (06), dans la vallée de la Siagne entre Cannes et Grasse, est une commune résidentielle et artisanale de l'arrière-pays cannois. Tissu TPE/PME artisanat BTP, commerces de proximité, services aux entreprises, professions libérales et petite industrie. Axion-IA y intervient pour tous types d'activités.",
+    "La Roquette-sur-Siagne (06), dans la vallée de la Siagne entre Cannes et Grasse, est une commune résidentielle et artisanale de l'arrière-pays cannois. Tissu TPE/PME artisanat BTP, commerces de proximité, services aux entreprises, professions libérales et petite industrie. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Roquette-sur-Siagne (06). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, PME services et petites industries de l'arrière-pays cannois.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const LA_ROQUETTE_SUR_SIAGNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Roquette-sur-Siagne : diagnostic adapté aux TPE artisans BTP, PME zone artisanale et professions libérales de l'arrière-pays cannois. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
-      en: "Audit IA à La Roquette-sur-Siagne : diagnostic adapté aux TPE artisans BTP, PME zone artisanale et professions libérales de l'arrière-pays cannois. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
+      fr: "Audit IA à La Roquette-sur-Siagne : diagnostic adapté aux TPE artisans BTP, PME zone artisanale et professions libérales de l'arrière-pays cannois. Audit Flash à 490 € HT, retour sur investissement chiffré accessible aux petites structures.",
+      en: "Audit IA à La Roquette-sur-Siagne : diagnostic adapté aux TPE artisans BTP, PME zone artisanale et professions libérales de l'arrière-pays cannois. Audit Flash à 490 € HT, retour sur investissement chiffré accessible aux petites structures.",
     },
     interventions: {
-      fr: "Interventions IA sur site à La Roquette-sur-Siagne : formats adaptés à l'atelier artisan, PME zone artisanale ou cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à La Roquette-sur-Siagne : formats adaptés à l'atelier artisan, PME zone artisanale ou cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à La Roquette-sur-Siagne : formats adaptés à l'atelier artisan, PME zone artisanale ou cabinet libéral. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à La Roquette-sur-Siagne : formats adaptés à l'atelier artisan, PME zone artisanale ou cabinet libéral. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à La Roquette-sur-Siagne : automatisation devis BTP, gestion production artisanale, agents conversationnels client, CRM augmenté, classification documents. Adapté aux TPE/PME arrière-pays cannois.",

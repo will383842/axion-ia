@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BAILLARGUES_COPY: VilleCopy = {
   pitchFr:
-    "Baillargues (34), commune résidentielle de l'est de Montpellier, à proximité immédiate de la gare TGV Montpellier Sud de France. Zones d'activités, commerces, services. Tissu TPE commerçants, PME services et tertiaire, artisans, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Baillargues (34), commune résidentielle de l'est de Montpellier, à proximité immédiate de la gare TGV Montpellier Sud de France. Zones d'activités, commerces, services. Tissu TPE commerçants, PME services et tertiaire, artisans, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Baillargues (34), commune résidentielle de l'est de Montpellier, à proximité immédiate de la gare TGV Montpellier Sud de France. Zones d'activités, commerces, services. Tissu TPE commerçants, PME services et tertiaire, artisans, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Baillargues (34), commune résidentielle de l'est de Montpellier, à proximité immédiate de la gare TGV Montpellier Sud de France. Zones d'activités, commerces, services. Tissu TPE commerçants, PME services et tertiaire, artisans, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Baillargues (34). Nous accompagnons TPE commerçants, PME de services et tertiaire, artisans, professions libérales et entreprises de l'est montpelliérain proche gare TGV.",
   directAnswerEn:

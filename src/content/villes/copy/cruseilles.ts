@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CRUSEILLES_COPY: VilleCopy = {
   pitchFr:
-    "Cruseilles (74), bourg dynamique du Genevois haut-savoyard situé entre Annecy et Genève, concentre un tissu de TPE/PME artisanales, commerces de proximité, professions libérales et entreprises de services transfrontaliers. Axion-IA y intervient pour tous types d'activités du bassin genevois franco-suisse.",
+    "Cruseilles (74), bourg dynamique du Genevois haut-savoyard situé entre Annecy et Genève, concentre un tissu de TPE/PME artisanales, commerces de proximité, professions libérales et entreprises de services transfrontaliers. Axion-IA opère pour toutes les structures économiques de la commune du bassin genevois franco-suisse.",
   pitchEn:
-    "Cruseilles (74), bourg dynamique du Genevois haut-savoyard situé entre Annecy et Genève, concentre un tissu de TPE/PME artisanales, commerces de proximité, professions libérales et entreprises de services transfrontaliers. Axion-IA y intervient pour tous types d'activités du bassin genevois franco-suisse.",
+    "Cruseilles (74), bourg dynamique du Genevois haut-savoyard situé entre Annecy et Genève, concentre un tissu de TPE/PME artisanales, commerces de proximité, professions libérales et entreprises de services transfrontaliers. Axion-IA opère pour toutes les structures économiques de la commune du bassin genevois franco-suisse.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cruseilles (74). Nous accompagnons TPE et PME : artisans BTP, commerces du bourg, professions libérales, PME de services transfrontaliers du Genevois et entreprises touristiques du secteur Salève-Vuache.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const CRUSEILLES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cruseilles : diagnostic adapté aux TPE artisans, commerces du bourg, professions libérales et PME de services transfrontaliers du Genevois. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Cruseilles : diagnostic adapté aux TPE artisans, commerces du bourg, professions libérales et PME de services transfrontaliers du Genevois. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Cruseilles : diagnostic adapté aux TPE artisans, commerces du bourg, professions libérales et PME de services transfrontaliers du Genevois. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Cruseilles : diagnostic adapté aux TPE artisans, commerces du bourg, professions libérales et PME de services transfrontaliers du Genevois. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Cruseilles : formats adaptés au commerce, cabinet, atelier artisan ou bureau PME. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Cruseilles : formats adaptés au commerce, cabinet, atelier artisan ou bureau PME. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Cruseilles : formats adaptés au commerce, cabinet, atelier artisan ou bureau PME. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Cruseilles : formats adaptés au commerce, cabinet, atelier artisan ou bureau PME. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Cruseilles : agents conversationnels client bilingue FR/EN, automatisation devis BTP, CRM augmenté commerce, gestion réservation hébergement touristique, outils IA professions libérales.",

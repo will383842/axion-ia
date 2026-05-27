@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MORCENX_LA_NOUVELLE_COPY: VilleCopy = {
   pitchFr:
-    "Morcenx-la-Nouvelle (40), commune nouvelle des Landes née en 2019 de la fusion de Morcenx, Arjuzanx, Garrosse et Sindères. Lac d'Arjuzanx et sa réserve naturelle (grues cendrées), forêt landaise, nœud ferroviaire historique, TPE artisans, commerces, agriculture, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Morcenx-la-Nouvelle (40), commune nouvelle des Landes née en 2019 de la fusion de Morcenx, Arjuzanx, Garrosse et Sindères. Lac d'Arjuzanx et sa réserve naturelle (grues cendrées), forêt landaise, nœud ferroviaire historique, TPE artisans, commerces, agriculture, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Morcenx-la-Nouvelle (40), commune nouvelle des Landes née en 2019 de la fusion de Morcenx, Arjuzanx, Garrosse et Sindères. Lac d'Arjuzanx et sa réserve naturelle (grues cendrées), forêt landaise, nœud ferroviaire historique, TPE artisans, commerces, agriculture, professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Morcenx-la-Nouvelle (40), commune nouvelle des Landes née en 2019 de la fusion de Morcenx, Arjuzanx, Garrosse et Sindères. Lac d'Arjuzanx et sa réserve naturelle (grues cendrées), forêt landaise, nœud ferroviaire historique, TPE artisans, commerces, agriculture, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Morcenx-la-Nouvelle (40). Nous accompagnons TPE et PME de la filière bois et forestière, acteurs du tourisme nature (lac Arjuzanx, réserve grues cendrées), agriculteurs, commerçants, artisans BTP et professions libérales du cœur des Landes.",
   directAnswerEn:
@@ -30,12 +30,12 @@ export const MORCENX_LA_NOUVELLE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Morcenx-la-Nouvelle : diagnostic adapté aux TPE et PME forestières, acteurs tourisme nature (lac Arjuzanx), agriculteurs, commerçants et artisans BTP du cœur des Landes. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Morcenx-la-Nouvelle : diagnostic adapté aux TPE et PME forestières, acteurs tourisme nature (lac Arjuzanx), agriculteurs, commerçants et artisans BTP du cœur des Landes. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Morcenx-la-Nouvelle : diagnostic adapté aux TPE et PME forestières, acteurs tourisme nature (lac Arjuzanx), agriculteurs, commerçants et artisans BTP du cœur des Landes. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Morcenx-la-Nouvelle : diagnostic adapté aux TPE et PME forestières, acteurs tourisme nature (lac Arjuzanx), agriculteurs, commerçants et artisans BTP du cœur des Landes. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Morcenx-la-Nouvelle : formations adaptées aux exploitations forestières, structures tourisme nature, exploitations agricoles et commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Morcenx-la-Nouvelle : formations adaptées aux exploitations forestières, structures tourisme nature, exploitations agricoles et commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Morcenx-la-Nouvelle : formations adaptées aux exploitations forestières, structures tourisme nature, exploitations agricoles et commerces. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Morcenx-la-Nouvelle : formations adaptées aux exploitations forestières, structures tourisme nature, exploitations agricoles et commerces. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Morcenx-la-Nouvelle : optimisation gestion forestière (parcellaire, coupes), chatbot visiteurs réserve naturelle, automatisation traçabilité bois, prédiction rendements agricoles, classification documents communaux.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const HOUPLINES_COPY: VilleCopy = {
   pitchFr:
-    "Houplines (59), commune de l'agglomération d'Armentières sur les bords de la Lys et à la frontière belge, est intégrée à la Métropole Européenne de Lille. Tissu économique : PME textile et industrie héritières du bassin armentiérois, services de proximité, commerce, artisanat, prestataires B2B transfrontaliers franco-belges. Axion-IA y intervient pour tous types d'activités du bassin armentiérois.",
+    "Houplines (59), commune de l'agglomération d'Armentières sur les bords de la Lys et à la frontière belge, est intégrée à la Métropole Européenne de Lille. Tissu économique : PME textile et industrie héritières du bassin armentiérois, services de proximité, commerce, artisanat, prestataires B2B transfrontaliers franco-belges. Axion-IA opère pour toutes les structures économiques de la commune du bassin armentiérois.",
   pitchEn:
-    "Houplines (59), commune de l'agglomération d'Armentières sur les bords de la Lys et à la frontière belge, est intégrée à la Métropole Européenne de Lille. Tissu économique : PME textile et industrie héritières du bassin armentiérois, services de proximité, commerce, artisanat, prestataires B2B transfrontaliers franco-belges. Axion-IA y intervient pour tous types d'activités du bassin armentiérois.",
+    "Houplines (59), commune de l'agglomération d'Armentières sur les bords de la Lys et à la frontière belge, est intégrée à la Métropole Européenne de Lille. Tissu économique : PME textile et industrie héritières du bassin armentiérois, services de proximité, commerce, artisanat, prestataires B2B transfrontaliers franco-belges. Axion-IA opère pour toutes les structures économiques de la commune du bassin armentiérois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Houplines (59). Nous accompagnons TPE et PME : PME textile et industrie du bassin armentiérois, prestataires B2B transfrontaliers franco-belges (Lys), commerçants, artisans et professions libérales.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const HOUPLINES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Houplines : diagnostic adapté aux PME textile-industrie armentiéroises, prestataires B2B transfrontaliers franco-belges, commerçants, artisans et professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Houplines : diagnostic adapté aux PME textile-industrie armentiéroises, prestataires B2B transfrontaliers franco-belges, commerçants, artisans et professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Houplines : diagnostic adapté aux PME textile-industrie armentiéroises, prestataires B2B transfrontaliers franco-belges, commerçants, artisans et professions libérales. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Houplines : diagnostic adapté aux PME textile-industrie armentiéroises, prestataires B2B transfrontaliers franco-belges, commerçants, artisans et professions libérales. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Houplines : formats adaptés à la PME textile-industrie, au prestataire B2B transfrontalier, au commerce ou à l'artisan. Vos équipes repartent autonomes sur outils IA configurés métier.",

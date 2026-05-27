@@ -33,8 +33,8 @@ export const LA_WANTZENAU_COPY: VilleCopy = {
       en: "Audit IA à La Wantzenau : diagnostic adapté aux restaurateurs gastronomiques, hôteliers, commerçants haut de gamme, professions libérales et TPE/PME du nord de l''Eurométropole de Strasbourg. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à La Wantzenau : formats adaptés au restaurant gastronomique, à l''hôtel, au cabinet libéral ou à la TPE artisanale. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à La Wantzenau : formats adaptés au restaurant gastronomique, à l''hôtel, au cabinet libéral ou à la TPE artisanale. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à La Wantzenau : formats adaptés au restaurant gastronomique, à l''hôtel, au cabinet libéral ou à la TPE artisanale. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à La Wantzenau : formats adaptés au restaurant gastronomique, à l''hôtel, au cabinet libéral ou à la TPE artisanale. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à La Wantzenau : gestion réservations gastronomiques, yield management restauration, CRM clientèle aisée, automatisation administrative cabinets libéraux et outils IA métier pour PME alsaciennes.",

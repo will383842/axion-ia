@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PLUNERET_COPY: VilleCopy = {
   pitchFr:
-    "Pluneret (56), commune du Pays d'Auray aux portes du golfe du Morbihan, mêle tissu résidentiel, TPE artisanales, PME de services et activités liées au nautisme et au tourisme côtier. Axion-IA y intervient pour tous types d'activités.",
+    "Pluneret (56), commune du Pays d'Auray aux portes du golfe du Morbihan, mêle tissu résidentiel, TPE artisanales, PME de services et activités liées au nautisme et au tourisme côtier. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Pluneret (56), commune du Pays d'Auray aux portes du golfe du Morbihan, mêle tissu résidentiel, TPE artisanales, PME de services et activités liées au nautisme et au tourisme côtier. Axion-IA y intervient pour tous types d'activités.",
+    "Pluneret (56), commune du Pays d'Auray aux portes du golfe du Morbihan, mêle tissu résidentiel, TPE artisanales, PME de services et activités liées au nautisme et au tourisme côtier. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pluneret (56). Nous accompagnons tous types d'activités : TPE artisanales, PME de services, professions libérales, commerces de proximité, acteurs du nautisme et du tourisme du Pays d'Auray et du golfe du Morbihan.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const PLUNERET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Pluneret : diagnostic adapté aux TPE artisanales, PME de services, acteurs du nautisme et commerces du Pays d'Auray. ROI chiffré, audit Flash 490 € HT accessible à toute structure.",
-      en: "Audit IA à Pluneret : diagnostic adapté aux TPE artisanales, PME de services, acteurs du nautisme et commerces du Pays d'Auray. ROI chiffré, audit Flash 490 € HT accessible à toute structure.",
+      fr: "Audit IA à Pluneret : diagnostic adapté aux TPE artisanales, PME de services, acteurs du nautisme et commerces du Pays d'Auray. Audit Flash 490 € HT avec ROI quantifié accessible à toute structure.",
+      en: "Audit IA à Pluneret : diagnostic adapté aux TPE artisanales, PME de services, acteurs du nautisme et commerces du Pays d'Auray. Audit Flash 490 € HT avec ROI quantifié accessible à toute structure.",
     },
     interventions: {
       fr: "Interventions IA sur site à Pluneret : formats adaptés à l'entreprise nautique, au commerce de proximité ou au bureau PME. Vos équipes repartent autonomes sur les outils IA métier adaptés à votre activité.",

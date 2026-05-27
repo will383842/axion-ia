@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const DECHY_COPY: VilleCopy = {
   pitchFr:
-    "Dechy (59), commune de l'agglomération de Douai dans le bassin minier du Nord, compte 5 338 habitants. Tissu TPE artisans BTP, PME logistiques (zone industrielle Dorignies), commerces de proximité, services aux entreprises et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Dechy (59), commune de l'agglomération de Douai dans le bassin minier du Nord, compte 5 338 habitants. Tissu TPE artisans BTP, PME logistiques (zone industrielle Dorignies), commerces de proximité, services aux entreprises et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Dechy (59), commune de l'agglomération de Douai dans le bassin minier du Nord, compte 5 338 habitants. Tissu TPE artisans BTP, PME logistiques (zone industrielle Dorignies), commerces de proximité, services aux entreprises et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Dechy (59), commune de l'agglomération de Douai dans le bassin minier du Nord, compte 5 338 habitants. Tissu TPE artisans BTP, PME logistiques (zone industrielle Dorignies), commerces de proximité, services aux entreprises et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Dechy (59). Nous accompagnons tous types d'activités : TPE artisans BTP et rénovation, PME logistiques et industrielles de la zone Dorignies, commerçants, professions libérales et acteurs de la reconversion tertiaire du Douaisis.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const DECHY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Dechy : diagnostic adapté aux TPE artisans, PME logistiques zone Dorignies, commerçants et professions libérales du Douaisis. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Dechy : diagnostic adapté aux TPE artisans, PME logistiques zone Dorignies, commerçants et professions libérales du Douaisis. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Dechy : diagnostic adapté aux TPE artisans, PME logistiques zone Dorignies, commerçants et professions libérales du Douaisis. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Dechy : diagnostic adapté aux TPE artisans, PME logistiques zone Dorignies, commerçants et professions libérales du Douaisis. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Dechy : formats adaptés à l'atelier BTP, l'entrepôt logistique ou le cabinet. Vos équipes repartent avec des outils IA configurés pour leur métier.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const TERNAY_COPY: VilleCopy = {
   pitchFr:
-    "Ternay (69), commune en banlieue sud de Lyon dans le Rhône, est positionnée dans la vallée du Rhône sur l'axe Lyon-Vienne. Tissu péri-urbain : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités du sud lyonnais.",
+    "Ternay (69), commune en banlieue sud de Lyon dans le Rhône, est positionnée dans la vallée du Rhône sur l'axe Lyon-Vienne. Tissu péri-urbain : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud lyonnais.",
   pitchEn:
-    "Ternay (69), commune en banlieue sud de Lyon dans le Rhône, est positionnée dans la vallée du Rhône sur l'axe Lyon-Vienne. Tissu péri-urbain : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y intervient pour tous types d'activités du sud lyonnais.",
+    "Ternay (69), commune en banlieue sud de Lyon dans le Rhône, est positionnée dans la vallée du Rhône sur l'axe Lyon-Vienne. Tissu péri-urbain : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud lyonnais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ternay (69). Nous accompagnons tous types d'activités : PME tertiaires sud lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const TERNAY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Ternay : diagnostic adapté aux PME tertiaires sud lyonnais, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Ternay : diagnostic adapté aux PME tertiaires sud lyonnais, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Ternay : diagnostic adapté aux PME tertiaires sud lyonnais, professions libérales, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Ternay : diagnostic adapté aux PME tertiaires sud lyonnais, professions libérales, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Ternay : formats adaptés au bureau, cabinet, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const TERNAY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (25 min). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (25 min). Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

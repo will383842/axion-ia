@@ -12,6 +12,7 @@ export const CHAMONIX_MONT_BLANC_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chamonix-Mont-Blanc (74). Nous accompagnons TPE et PME : hôteliers et restaurateurs premium, compagnies de guides, exploitants remontées mécaniques, commerces prestige et prestataires touristiques de la vallée de Chamonix.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chamonix-Mont-Blanc (74). Nous accompagnons TPE et PME : hôteliers et restaurateurs premium, compagnies de guides, exploitants remontées mécaniques, commerces prestige et prestataires touristiques de la vallée de Chamonix.",
+  seoHook: "tourisme premium & sports montagne",
   ecosystemFr:
     "Chamonix-Mont-Blanc est une station de renommée mondiale au pied du plus haut sommet d'Europe occidentale. Tourisme international premium toute l'année (ski, alpinisme, trail), hôtellerie-restauration haut de gamme, compagnies de guides de haute montagne, remontées mécaniques (Aiguille du Midi, Montenvers), commerces prestige et activités outdoor. Le tunnel du Mont-Blanc relie directement Courmayeur (Italie).",
   ecosystemEn:
@@ -29,12 +30,12 @@ export const CHAMONIX_MONT_BLANC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Chamonix-Mont-Blanc : diagnostic adapté aux hôteliers premium, restaurateurs, compagnies de guides, exploitants remontées mécaniques et commerçants prestige. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Chamonix-Mont-Blanc : diagnostic adapté aux hôteliers premium, restaurateurs, compagnies de guides, exploitants remontées mécaniques et commerçants prestige. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Chamonix-Mont-Blanc : diagnostic adapté aux hôteliers premium, restaurateurs, compagnies de guides, exploitants remontées mécaniques et commerçants prestige. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Chamonix-Mont-Blanc : diagnostic adapté aux hôteliers premium, restaurateurs, compagnies de guides, exploitants remontées mécaniques et commerçants prestige. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Chamonix-Mont-Blanc : formats adaptés à l'hôtel, au restaurant, à la compagnie de guides ou au commerce. Vos équipes repartent autonomes sur outils IA configurés métier tourisme.",
-      en: "Interventions IA sur site à Chamonix-Mont-Blanc : formats adaptés à l'hôtel, au restaurant, à la compagnie de guides ou au commerce. Vos équipes repartent autonomes sur outils IA configurés métier tourisme.",
+      fr: "Interventions IA sur site à Chamonix-Mont-Blanc : formats adaptés à l'hôtel, au restaurant, à la compagnie de guides ou au commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés tourisme.",
+      en: "Interventions IA sur site à Chamonix-Mont-Blanc : formats adaptés à l'hôtel, au restaurant, à la compagnie de guides ou au commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés tourisme.",
     },
     implementation: {
       fr: "Implémentation IA à Chamonix-Mont-Blanc : chatbots multilingues réservation hôtel, yield management IA, prédiction affluence remontées mécaniques, agents conversationnels client tourisme premium international.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const HAUTMONT_COPY: VilleCopy = {
   pitchFr:
-    "Hautmont (59), commune industrielle de l'agglomération de Maubeuge dans le val de Sambre, est historiquement liée à la métallurgie et à la sidérurgie. Tissu économique : TPE et PME de la métallurgie et transformation des métaux, sous-traitance industrielle automobile (proximité Maubeuge-Toyota), artisans, commerces de proximité et professions libérales du Sambre-Avesnois. Axion-IA y intervient pour tous types d'activités du bassin sambre-avesnois.",
+    "Hautmont (59), commune industrielle de l'agglomération de Maubeuge dans le val de Sambre, est historiquement liée à la métallurgie et à la sidérurgie. Tissu économique : TPE et PME de la métallurgie et transformation des métaux, sous-traitance industrielle automobile (proximité Maubeuge-Toyota), artisans, commerces de proximité et professions libérales du Sambre-Avesnois. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin sambre-avesnois.",
   pitchEn:
-    "Hautmont (59), commune industrielle de l'agglomération de Maubeuge dans le val de Sambre, est historiquement liée à la métallurgie et à la sidérurgie. Tissu économique : TPE et PME de la métallurgie et transformation des métaux, sous-traitance industrielle automobile (proximité Maubeuge-Toyota), artisans, commerces de proximité et professions libérales du Sambre-Avesnois. Axion-IA y intervient pour tous types d'activités du bassin sambre-avesnois.",
+    "Hautmont (59), commune industrielle de l'agglomération de Maubeuge dans le val de Sambre, est historiquement liée à la métallurgie et à la sidérurgie. Tissu économique : TPE et PME de la métallurgie et transformation des métaux, sous-traitance industrielle automobile (proximité Maubeuge-Toyota), artisans, commerces de proximité et professions libérales du Sambre-Avesnois. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin sambre-avesnois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hautmont (59). Nous accompagnons TPE et PME : PME métallurgie et transformation des métaux, sous-traitants industriels automobile, artisans, commerces de proximité et professions libérales du Sambre-Avesnois.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const HAUTMONT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Hautmont : diagnostic adapté aux TPE/PME de la métallurgie, sous-traitants industriels automobile, artisans, commerces et professions libérales du Sambre-Avesnois. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Hautmont : diagnostic adapté aux TPE/PME de la métallurgie, sous-traitants industriels automobile, artisans, commerces et professions libérales du Sambre-Avesnois. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Hautmont : diagnostic adapté aux TPE/PME de la métallurgie, sous-traitants industriels automobile, artisans, commerces et professions libérales du Sambre-Avesnois. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Hautmont : diagnostic adapté aux TPE/PME de la métallurgie, sous-traitants industriels automobile, artisans, commerces et professions libérales du Sambre-Avesnois. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Hautmont : formats adaptés à la PME métallurgie, au sous-traitant automobile, à l'artisan ou au commerçant. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Hautmont : formats adaptés à la PME métallurgie, au sous-traitant automobile, à l'artisan ou au commerçant. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Hautmont : formats adaptés à la PME métallurgie, au sous-traitant automobile, à l'artisan ou au commerçant. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Hautmont : formats adaptés à la PME métallurgie, au sous-traitant automobile, à l'artisan ou au commerçant. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Hautmont : maintenance prédictive lignes métallurgie, contrôle qualité visuel pièces automobiles, copilotes devis-facturation sous-traitants industriels, gestion stock et approvisionnement automatisés, agents IA planification production mécanique-chaudronnerie.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BELLERIVE_SUR_ALLIER_COPY: VilleCopy = {
   pitchFr:
-    "Bellerive-sur-Allier (03), commune en banlieue immédiate de Vichy (rive droite de l'Allier) dans l'Allier, est intégrée à l'agglomération vichyssoise. Tissu thermalisme/hôtellerie associée, PME tertiaires, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Bellerive-sur-Allier (03), commune en banlieue immédiate de Vichy (rive droite de l'Allier) dans l'Allier, est intégrée à l'agglomération vichyssoise. Tissu thermalisme/hôtellerie associée, PME tertiaires, TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Bellerive-sur-Allier (03), commune en banlieue immédiate de Vichy (rive droite de l'Allier) dans l'Allier, est intégrée à l'agglomération vichyssoise. Tissu thermalisme/hôtellerie associée, PME tertiaires, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Bellerive-sur-Allier (03), commune en banlieue immédiate de Vichy (rive droite de l'Allier) dans l'Allier, est intégrée à l'agglomération vichyssoise. Tissu thermalisme/hôtellerie associée, PME tertiaires, TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bellerive-sur-Allier (03). Nous accompagnons tous types d'activités : acteurs thermalisme/hôtellerie agglomération Vichy, PME tertiaires, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const BELLERIVE_SUR_ALLIER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bellerive-sur-Allier : diagnostic adapté aux acteurs thermalisme/hôtellerie Vichy, PME tertiaires, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Bellerive-sur-Allier : diagnostic adapté aux acteurs thermalisme/hôtellerie Vichy, PME tertiaires, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Bellerive-sur-Allier : diagnostic adapté aux acteurs thermalisme/hôtellerie Vichy, PME tertiaires, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Bellerive-sur-Allier : diagnostic adapté aux acteurs thermalisme/hôtellerie Vichy, PME tertiaires, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bellerive-sur-Allier : formats adaptés à l'hôtel thermal, bureau, commerce. Vos équipes repartent autonomes.",

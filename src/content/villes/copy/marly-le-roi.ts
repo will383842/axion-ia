@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MARLY_LE_ROI_COPY: VilleCopy = {
   pitchFr:
-    "Marly-le-Roi (78), commune résidentielle de l'ouest parisien dans les Yvelines, est marquée par l'héritage royal de la Machine de Marly et du domaine de Marly. Tissu de TPE/PME tertiaires, professions libérales, commerces de proximité, services aux particuliers. Axion-IA y intervient pour tous types d'activités.",
+    "Marly-le-Roi (78), commune résidentielle de l'ouest parisien dans les Yvelines, est marquée par l'héritage royal de la Machine de Marly et du domaine de Marly. Tissu de TPE/PME tertiaires, professions libérales, commerces de proximité, services aux particuliers. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Marly-le-Roi (78), commune résidentielle de l'ouest parisien dans les Yvelines, est marquée par l'héritage royal de la Machine de Marly et du domaine de Marly. Tissu de TPE/PME tertiaires, professions libérales, commerces de proximité, services aux particuliers. Axion-IA y intervient pour tous types d'activités.",
+    "Marly-le-Roi (78), commune résidentielle de l'ouest parisien dans les Yvelines, est marquée par l'héritage royal de la Machine de Marly et du domaine de Marly. Tissu de TPE/PME tertiaires, professions libérales, commerces de proximité, services aux particuliers. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marly-le-Roi (78). Nous accompagnons tous types d'activités : TPE et PME tertiaires, professions libérales, commerces de centre-ville, agences immobilières, cabinets de conseil, indépendants et services aux particuliers de cette commune résidentielle de l'ouest parisien.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const MARLY_LE_ROI_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Marly-le-Roi : diagnostic adapté aux TPE/PME tertiaires, professions libérales, commerçants et agences immobilières de l'ouest parisien. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Marly-le-Roi : diagnostic adapté aux TPE/PME tertiaires, professions libérales, commerçants et agences immobilières de l'ouest parisien. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Marly-le-Roi : diagnostic adapté aux TPE/PME tertiaires, professions libérales, commerçants et agences immobilières de l'ouest parisien. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Marly-le-Roi : diagnostic adapté aux TPE/PME tertiaires, professions libérales, commerçants et agences immobilières de l'ouest parisien. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Marly-le-Roi : formats adaptés au cabinet libéral, commerce, agence immobilière ou PME tertiaire. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Marly-le-Roi : formats adaptés au cabinet libéral, commerce, agence immobilière ou PME tertiaire. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Marly-le-Roi : formats adaptés au cabinet libéral, commerce, agence immobilière ou PME tertiaire. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Marly-le-Roi : formats adaptés au cabinet libéral, commerce, agence immobilière ou PME tertiaire. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Marly-le-Roi : agents conversationnels clients, automatisation gestion RDV (santé, juridique), CRM augmentés, estimation immobilière assistée IA. Adapté tissu résidentiel ouest parisien.",

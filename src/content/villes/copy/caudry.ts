@@ -33,8 +33,8 @@ export const CAUDRY_COPY: VilleCopy = {
       en: "Audit IA à Caudry : diagnostic adapté aux TPE/PME du Cambrésis, dentelliers haute couture, façonniers textile, industriels agroalimentaires, commerçants et artisans du Nord. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Caudry : formats adaptés à l''atelier de dentelle, à l''usine agroalimentaire, au commerce ou à la TPE de services. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Caudry : formats adaptés à l''atelier de dentelle, à l''usine agroalimentaire, au commerce ou à la TPE de services. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Caudry : formats adaptés à l''atelier de dentelle, à l''usine agroalimentaire, au commerce ou à la TPE de services. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Caudry : formats adaptés à l''atelier de dentelle, à l''usine agroalimentaire, au commerce ou à la TPE de services. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Caudry : automatisation devis et catalogue textile, traçabilité production dentelle, gestion stocks agroalimentaire, CRM B2B luxe, agents conversationnels commerce et outils IA métier pour TPE/PME du Cambrésis.",

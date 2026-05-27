@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LES_HERBIERS_COPY: VilleCopy = {
   pitchFr:
-    "Les Herbiers (85), commune de Vendée dans le bocage vendéen, rassemble plus de 16 500 habitants. Pôle industriel majeur (mécanique, agroalimentaire, plasturgie) à proximité du Puy du Fou, tissu dense de TPE artisanales, PME industrielles et commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Les Herbiers (85), commune de Vendée dans le bocage vendéen, rassemble plus de 16 500 habitants. Pôle industriel majeur (mécanique, agroalimentaire, plasturgie) à proximité du Puy du Fou, tissu dense de TPE artisanales, PME industrielles et commerces. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Les Herbiers (85), commune de Vendée dans le bocage vendéen, rassemble plus de 16 500 habitants. Pôle industriel majeur (mécanique, agroalimentaire, plasturgie) à proximité du Puy du Fou, tissu dense de TPE artisanales, PME industrielles et commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Les Herbiers (85), commune de Vendée dans le bocage vendéen, rassemble plus de 16 500 habitants. Pôle industriel majeur (mécanique, agroalimentaire, plasturgie) à proximité du Puy du Fou, tissu dense de TPE artisanales, PME industrielles et commerces. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient aux Herbiers (85). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles du bocage vendéen (mécanique, agroalimentaire, plasturgie), acteurs du tourisme Puy du Fou, commerçants et professions libérales.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LES_HERBIERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA aux Herbiers : diagnostic adapté aux TPE artisans, PME industrielles bocage vendéen (mécanique, agroalimentaire, plasturgie), acteurs tourisme et commerces. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA aux Herbiers : diagnostic adapté aux TPE artisans, PME industrielles bocage vendéen (mécanique, agroalimentaire, plasturgie), acteurs tourisme et commerces. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA aux Herbiers : diagnostic adapté aux TPE artisans, PME industrielles bocage vendéen (mécanique, agroalimentaire, plasturgie), acteurs tourisme et commerces. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA aux Herbiers : diagnostic adapté aux TPE artisans, PME industrielles bocage vendéen (mécanique, agroalimentaire, plasturgie), acteurs tourisme et commerces. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site aux Herbiers : formats adaptés aux usines mécaniques, ateliers agroalimentaires, TPE artisanales et acteurs tourisme Puy du Fou. Vos équipes repartent autonomes sur outils IA configurés métier.",

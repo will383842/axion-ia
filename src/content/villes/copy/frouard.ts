@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FROUARD_COPY: VilleCopy = {
   pitchFr:
-    "Frouard (54), commune de la périphérie nord de Nancy en Meurthe-et-Moselle, est un pôle logistique majeur de Lorraine grâce à son port fluvial sur la Moselle et ses zones d'activités. Tissu de TPE/PME logistique, transport, industrie, commerce et services. Axion-IA y intervient pour tous types d'activités.",
+    "Frouard (54), commune de la périphérie nord de Nancy en Meurthe-et-Moselle, est un pôle logistique majeur de Lorraine grâce à son port fluvial sur la Moselle et ses zones d'activités. Tissu de TPE/PME logistique, transport, industrie, commerce et services. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Frouard (54), commune de la périphérie nord de Nancy en Meurthe-et-Moselle, est un pôle logistique majeur de Lorraine grâce à son port fluvial sur la Moselle et ses zones d'activités. Tissu de TPE/PME logistique, transport, industrie, commerce et services. Axion-IA y intervient pour tous types d'activités.",
+    "Frouard (54), commune de la périphérie nord de Nancy en Meurthe-et-Moselle, est un pôle logistique majeur de Lorraine grâce à son port fluvial sur la Moselle et ses zones d'activités. Tissu de TPE/PME logistique, transport, industrie, commerce et services. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Frouard (54). Nous accompagnons TPE et PME : logisticiens, transporteurs, industriels, commerçants et prestataires de services de la périphérie nord de Nancy et du port fluvial. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const FROUARD_COPY: VilleCopy = {
       en: "Audit IA à Frouard : diagnostic adapté aux logisticiens, transporteurs, industriels, commerçants de gros et prestataires de services de la périphérie nord de Nancy. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Frouard : formats adaptés à la plate-forme logistique, à la PME transport, à l'industrie ou à la TPE artisanale. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Frouard : formats adaptés à la plate-forme logistique, à la PME transport, à l'industrie ou à la TPE artisanale. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Frouard : formats adaptés à la plate-forme logistique, à la PME transport, à l'industrie ou à la TPE artisanale. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Frouard : formats adaptés à la plate-forme logistique, à la PME transport, à l'industrie ou à la TPE artisanale. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Frouard : optimisation flux logistiques multimodaux, prévision tournées transport, automatisation OCR documents douaniers, agents conversationnels relation client B2B import-export.",

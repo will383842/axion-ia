@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const TALANT_COPY: VilleCopy = {
   pitchFr:
-    "Talant (21), commune résidentielle au nord-ouest de Dijon surplombant le lac Kir, accueille un tissu de TPE/PME tertiaires, commerces de proximité et professions libérales. Cadre de vie prisé entre plateau et vallée de l'Ouche. Axion-IA y intervient pour tous types d'activités de l'ouest dijonnais.",
+    "Talant (21), commune résidentielle au nord-ouest de Dijon surplombant le lac Kir, accueille un tissu de TPE/PME tertiaires, commerces de proximité et professions libérales. Cadre de vie prisé entre plateau et vallée de l'Ouche. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'ouest dijonnais.",
   pitchEn:
-    "Talant (21), commune résidentielle au nord-ouest de Dijon surplombant le lac Kir, accueille un tissu de TPE/PME tertiaires, commerces de proximité et professions libérales. Cadre de vie prisé entre plateau et vallée de l'Ouche. Axion-IA y intervient pour tous types d'activités de l'ouest dijonnais.",
+    "Talant (21), commune résidentielle au nord-ouest de Dijon surplombant le lac Kir, accueille un tissu de TPE/PME tertiaires, commerces de proximité et professions libérales. Cadre de vie prisé entre plateau et vallée de l'Ouche. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'ouest dijonnais.",
   seoHook: "tertiaire, santé & commerces",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Talant (21). Nous accompagnons TPE, PME et professions libérales de l'ouest dijonnais : cabinets médicaux, commerces, prestataires tertiaires, services à la personne. Audit Flash dès 490 € HT, démarrage sous 5 jours.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const JONAGE_COPY: VilleCopy = {
   pitchFr:
-    "Jonage (69), commune en banlieue est de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Connue pour le canal de Jonage (aménagement hydroélectrique historique alimentant le Grand Parc Miribel Jonage). Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Jonage (69), commune en banlieue est de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Connue pour le canal de Jonage (aménagement hydroélectrique historique alimentant le Grand Parc Miribel Jonage). Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Jonage (69), commune en banlieue est de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Connue pour le canal de Jonage (aménagement hydroélectrique historique alimentant le Grand Parc Miribel Jonage). Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Jonage (69), commune en banlieue est de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Connue pour le canal de Jonage (aménagement hydroélectrique historique alimentant le Grand Parc Miribel Jonage). Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jonage (69). Nous accompagnons tous types d'activités : PME tertiaires et industrielles est lyonnais, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const JONAGE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Jonage : diagnostic adapté aux PME tertiaires/industrielles est lyonnais, TPE artisans, professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Jonage : diagnostic adapté aux PME tertiaires/industrielles est lyonnais, TPE artisans, professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Jonage : diagnostic adapté aux PME tertiaires/industrielles est lyonnais, TPE artisans, professions libérales. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Jonage : diagnostic adapté aux PME tertiaires/industrielles est lyonnais, TPE artisans, professions libérales. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Jonage : formats adaptés au bureau, atelier, commerce. Vos équipes repartent autonomes sur outils IA.",
@@ -64,7 +64,7 @@ export const JONAGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (20 min). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (20 min). Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

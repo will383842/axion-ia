@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ANDREZIEUX_BOUTHEON_COPY: VilleCopy = {
   pitchFr:
-    "Andrézieux-Bouthéon (42), commune intégrée à Saint-Étienne Métropole, abrite l'aéroport Saint-Étienne-Bouthéon (vols low cost saisonniers, aviation d'affaires). Tissu PME tertiaires et logistiques, zones d'activités importantes, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Andrézieux-Bouthéon (42), commune intégrée à Saint-Étienne Métropole, abrite l'aéroport Saint-Étienne-Bouthéon (vols low cost saisonniers, aviation d'affaires). Tissu PME tertiaires et logistiques, zones d'activités importantes, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Andrézieux-Bouthéon (42), commune intégrée à Saint-Étienne Métropole, abrite l'aéroport Saint-Étienne-Bouthéon (vols low cost saisonniers, aviation d'affaires). Tissu PME tertiaires et logistiques, zones d'activités importantes, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités.",
+    "Andrézieux-Bouthéon (42), commune intégrée à Saint-Étienne Métropole, abrite l'aéroport Saint-Étienne-Bouthéon (vols low cost saisonniers, aviation d'affaires). Tissu PME tertiaires et logistiques, zones d'activités importantes, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Andrézieux-Bouthéon (42). Nous accompagnons tous types d'activités : acteurs aéroportuaires Saint-Étienne-Bouthéon, PME tertiaires et logistiques zones d'activités, TPE artisans BTP, commerçants, indépendants et services aux entreprises de Saint-Étienne Métropole.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const ANDREZIEUX_BOUTHEON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Andrézieux-Bouthéon : diagnostic adapté aux acteurs aéroportuaires Saint-Étienne-Bouthéon, PME logistiques/tertiaires zones d'activités, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Andrézieux-Bouthéon : diagnostic adapté aux acteurs aéroportuaires Saint-Étienne-Bouthéon, PME logistiques/tertiaires zones d'activités, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Andrézieux-Bouthéon : diagnostic adapté aux acteurs aéroportuaires Saint-Étienne-Bouthéon, PME logistiques/tertiaires zones d'activités, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Andrézieux-Bouthéon : diagnostic adapté aux acteurs aéroportuaires Saint-Étienne-Bouthéon, PME logistiques/tertiaires zones d'activités, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Andrézieux-Bouthéon : formats adaptés au site aéroportuaire, entrepôt logistique, bureau tertiaire. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Andrézieux-Bouthéon : formats adaptés au site aéroportuaire, entrepôt logistique, bureau tertiaire. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Andrézieux-Bouthéon : formats adaptés au site aéroportuaire, entrepôt logistique, bureau tertiaire. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Andrézieux-Bouthéon : formats adaptés au site aéroportuaire, entrepôt logistique, bureau tertiaire. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Andrézieux-Bouthéon : agents conversationnels passagers multilingue (aéroport), optimisation supply chain, automatisation workflow tertiaire, classification documents.",
@@ -64,7 +64,7 @@ export const ANDREZIEUX_BOUTHEON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",
-      a: "Nos consultants viennent de Lyon (50 min) ou Saint-Étienne (15 min). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (50 min) ou Saint-Étienne (15 min). Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

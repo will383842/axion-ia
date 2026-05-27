@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_ZACHARIE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Zacharie (83), commune au pied du massif de la Sainte-Baume dans la vallée de l'Huveaune, est un bassin résidentiel à l'est marseillais. Tissu de TPE artisans, BTP, commerçants, restaurateurs et PME services, agriculture et industrie de la périphérie est de Marseille. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Zacharie (83), commune au pied du massif de la Sainte-Baume dans la vallée de l'Huveaune, est un bassin résidentiel à l'est marseillais. Tissu de TPE artisans, BTP, commerçants, restaurateurs et PME services, agriculture et industrie de la périphérie est de Marseille. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Saint-Zacharie (83), commune au pied du massif de la Sainte-Baume dans la vallée de l'Huveaune, est un bassin résidentiel à l'est marseillais. Tissu de TPE artisans, BTP, commerçants, restaurateurs et PME services, agriculture et industrie de la périphérie est de Marseille. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Zacharie (83), commune au pied du massif de la Sainte-Baume dans la vallée de l'Huveaune, est un bassin résidentiel à l'est marseillais. Tissu de TPE artisans, BTP, commerçants, restaurateurs et PME services, agriculture et industrie de la périphérie est de Marseille. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Zacharie (83). Nous accompagnons TPE artisans, BTP, commerçants, restaurateurs et PME des services, de l'agriculture et de l'industrie de la vallée de l'Huveaune et de la périphérie est marseillaise. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const SAINT_ZACHARIE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Zacharie : diagnostic adapté aux artisans, BTP, commerçants, agriculteurs et PME services de la vallée de l'Huveaune. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Zacharie : diagnostic adapté aux artisans, BTP, commerçants, agriculteurs et PME services de la vallée de l'Huveaune. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Zacharie : diagnostic adapté aux artisans, BTP, commerçants, agriculteurs et PME services de la vallée de l'Huveaune. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Saint-Zacharie : diagnostic adapté aux artisans, BTP, commerçants, agriculteurs et PME services de la vallée de l'Huveaune. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Zacharie : ateliers pour artisans, BTP, commerçants, restaurateurs et agriculteurs. Outils IA configurés métier réel local.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GEISPOLSHEIM_COPY: VilleCopy = {
   pitchFr:
-    "Geispolsheim (67), commune de l'eurométropole de Strasbourg située au sud immédiat de la capitale alsacienne, connue pour ses vergers de cerises et son industrie sucrière historique. Tissu TPE/PME industrie agroalimentaire, arboriculture, services, BTP, commerces et artisanat. Axion-IA y intervient pour tous types d'activités.",
+    "Geispolsheim (67), commune de l'eurométropole de Strasbourg située au sud immédiat de la capitale alsacienne, connue pour ses vergers de cerises et son industrie sucrière historique. Tissu TPE/PME industrie agroalimentaire, arboriculture, services, BTP, commerces et artisanat. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Geispolsheim (67), commune de l'eurométropole de Strasbourg située au sud immédiat de la capitale alsacienne, connue pour ses vergers de cerises et son industrie sucrière historique. Tissu TPE/PME industrie agroalimentaire, arboriculture, services, BTP, commerces et artisanat. Axion-IA y intervient pour tous types d'activités.",
+    "Geispolsheim (67), commune de l'eurométropole de Strasbourg située au sud immédiat de la capitale alsacienne, connue pour ses vergers de cerises et son industrie sucrière historique. Tissu TPE/PME industrie agroalimentaire, arboriculture, services, BTP, commerces et artisanat. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Geispolsheim (67). Nous accompagnons tous types d'activités : TPE/PME industrie agroalimentaire et sucrière, arboriculteurs, artisans BTP, commerces de proximité et entrepreneurs du sud de l'eurométropole strasbourgeoise.",
   directAnswerEn:
@@ -30,12 +30,12 @@ export const GEISPOLSHEIM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Geispolsheim : diagnostic adapté aux TPE/PME industrie agroalimentaire, arboriculteurs, artisans BTP, services et commerces. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Geispolsheim : diagnostic adapté aux TPE/PME industrie agroalimentaire, arboriculteurs, artisans BTP, services et commerces. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Geispolsheim : diagnostic adapté aux TPE/PME industrie agroalimentaire, arboriculteurs, artisans BTP, services et commerces. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Geispolsheim : diagnostic adapté aux TPE/PME industrie agroalimentaire, arboriculteurs, artisans BTP, services et commerces. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Geispolsheim : formats adaptés à l'atelier agroalimentaire, exploitation arboricole, chantier, bureau ou commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Geispolsheim : formats adaptés à l'atelier agroalimentaire, exploitation arboricole, chantier, bureau ou commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Geispolsheim : formats adaptés à l'atelier agroalimentaire, exploitation arboricole, chantier, bureau ou commerce. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Geispolsheim : formats adaptés à l'atelier agroalimentaire, exploitation arboricole, chantier, bureau ou commerce. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Geispolsheim : contrôle qualité agroalimentaire, traçabilité production, optimisation récoltes et stocks arboricoles, automatisation devis BTP, agents conversationnels B2B.",

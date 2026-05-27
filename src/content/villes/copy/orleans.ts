@@ -51,6 +51,8 @@ export const ORLEANS_COPY: VilleCopy = {
   directAnswerEn:
     "Axion-IA is a senior AI architects consultancy that intervenes in Orléans (45) on site — city centre, La Source, Saint-Jean-de-Braye, Ormes, Saran, Olivet and agglomération communes. We support Orléans micro-businesses, SMEs, mid-caps and large enterprises (cosmetics, pharma, agri-machinery, geosciences, digital) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
+  seoHook: "logistique, cosmétique & agro",
+
   topSectorsNaf: [
     "Cosmétique, Parfumerie & R&D",
     "Pharmaceutique & Sous-traitance CDMO",

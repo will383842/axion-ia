@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LEFOREST_COPY: VilleCopy = {
   pitchFr:
-    "Leforest (62), commune du bassin minier du Pas-de-Calais entre Hénin-Beaumont et Douai, accueille TPE artisanales, commerces, PME de services et professions libérales. Axion-IA y intervient pour tous types d'activités du bassin minier.",
+    "Leforest (62), commune du bassin minier du Pas-de-Calais entre Hénin-Beaumont et Douai, accueille TPE artisanales, commerces, PME de services et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin minier.",
   pitchEn:
-    "Leforest (62), commune du bassin minier du Pas-de-Calais entre Hénin-Beaumont et Douai, accueille TPE artisanales, commerces, PME de services et professions libérales. Axion-IA y intervient pour tous types d'activités du bassin minier.",
+    "Leforest (62), commune du bassin minier du Pas-de-Calais entre Hénin-Beaumont et Douai, accueille TPE artisanales, commerces, PME de services et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin minier.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Leforest (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VERGEZE_COPY: VilleCopy = {
   pitchFr:
-    "Vergèze (30), commune gardoise de la Vaunage, mondialement connue pour la source Perrier (Nestlé Waters). Tissu TPE/PME agroalimentaire, viticulture, sous-traitance industrielle, commerces et artisanat BTP. Axion-IA y intervient pour tous types d'activités de la Vaunage.",
+    "Vergèze (30), commune gardoise de la Vaunage, mondialement connue pour la source Perrier (Nestlé Waters). Tissu TPE/PME agroalimentaire, viticulture, sous-traitance industrielle, commerces et artisanat BTP. Axion-IA opère pour toutes les structures économiques de la commune de la Vaunage.",
   pitchEn:
-    "Vergèze (30), commune gardoise de la Vaunage, mondialement connue pour la source Perrier (Nestlé Waters). Tissu TPE/PME agroalimentaire, viticulture, sous-traitance industrielle, commerces et artisanat BTP. Axion-IA y intervient pour tous types d'activités de la Vaunage.",
+    "Vergèze (30), commune gardoise de la Vaunage, mondialement connue pour la source Perrier (Nestlé Waters). Tissu TPE/PME agroalimentaire, viticulture, sous-traitance industrielle, commerces et artisanat BTP. Axion-IA opère pour toutes les structures économiques de la commune de la Vaunage.",
   directAnswerFr:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Vergèze (30). Nous accompagnons les TPE, PME et ETI locales : sous-traitants industriels, viticulteurs, commerçants, artisans BTP et professions libérales de la Vaunage gardoise. Audit Flash à partir de 490 € HT.",
   directAnswerEn:

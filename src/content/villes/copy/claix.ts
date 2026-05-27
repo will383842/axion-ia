@@ -29,12 +29,12 @@ export const CLAIX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Claix : diagnostic adapté aux TPE artisans haut de gamme, professions libérales et PME tertiaires du bassin grenoblois sud-ouest. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Claix : diagnostic adapté aux TPE artisans haut de gamme, professions libérales et PME tertiaires du bassin grenoblois sud-ouest. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Claix : diagnostic adapté aux TPE artisans haut de gamme, professions libérales et PME tertiaires du bassin grenoblois sud-ouest. ROI mesurable, audit Flash dès 490 € HT accessible.",
+      en: "Audit IA à Claix : diagnostic adapté aux TPE artisans haut de gamme, professions libérales et PME tertiaires du bassin grenoblois sud-ouest. ROI mesurable, audit Flash dès 490 € HT accessible.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Claix : formats adaptés au cabinet professionnel, commerce, atelier artisan haut de gamme ou bureau PME. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Claix : formats adaptés au cabinet professionnel, commerce, atelier artisan haut de gamme ou bureau PME. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Claix : formats adaptés au cabinet professionnel, commerce, atelier artisan haut de gamme ou bureau PME. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Claix : formats adaptés au cabinet professionnel, commerce, atelier artisan haut de gamme ou bureau PME. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Claix : agents conversationnels client/patient, automatisation devis BTP/honoraires libéraux, classification dossiers, CRM augmentés. Adapté tissu résidentiel haut de gamme et Vercors périphérique.",

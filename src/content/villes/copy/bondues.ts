@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BONDUES_COPY: VilleCopy = {
   pitchFr:
-    "Bondues (59), commune française du département du Nord (région Hauts-de-France) dans la Métropole Européenne de Lille (MEL), est une ville résidentielle bourgeoise du Nord lillois (golf de Bondues, château du Vert-Bois, manoir de la Vigne). Tissu PME services aux entreprises, sièges sociaux, professions libérales, TPE commerces et artisans, services. Axion-IA y intervient pour tous types d'activités.",
+    "Bondues (59), commune française du département du Nord (région Hauts-de-France) dans la Métropole Européenne de Lille (MEL), est une ville résidentielle bourgeoise du Nord lillois (golf de Bondues, château du Vert-Bois, manoir de la Vigne). Tissu PME services aux entreprises, sièges sociaux, professions libérales, TPE commerces et artisans, services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Bondues (59), commune française du département du Nord (région Hauts-de-France) dans la Métropole Européenne de Lille (MEL), est une ville résidentielle bourgeoise du Nord lillois (golf de Bondues, château du Vert-Bois, manoir de la Vigne). Tissu PME services aux entreprises, sièges sociaux, professions libérales, TPE commerces et artisans, services. Axion-IA y intervient pour tous types d'activités.",
+    "Bondues (59), commune française du département du Nord (région Hauts-de-France) dans la Métropole Européenne de Lille (MEL), est une ville résidentielle bourgeoise du Nord lillois (golf de Bondues, château du Vert-Bois, manoir de la Vigne). Tissu PME services aux entreprises, sièges sociaux, professions libérales, TPE commerces et artisans, services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bondues (59). Nous accompagnons tous types d'activités : TPE commerçants et artisans, PME services aux entreprises et sièges sociaux du Nord lillois, professions libérales, dirigeants résidant dans le secteur résidentiel bourgeois de la métropole lilloise (MEL) entre Marcq-en-Barœul et Tourcoing.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const BONDUES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bondues : diagnostic adapté aux TPE commerçants et artisans, PME services aux entreprises et sièges sociaux Nord lillois, professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Bondues : diagnostic adapté aux TPE commerçants et artisans, PME services aux entreprises et sièges sociaux Nord lillois, professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Bondues : diagnostic adapté aux TPE commerçants et artisans, PME services aux entreprises et sièges sociaux Nord lillois, professions libérales. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Bondues : diagnostic adapté aux TPE commerçants et artisans, PME services aux entreprises et sièges sociaux Nord lillois, professions libérales. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Bondues : formats adaptés au siège social, cabinet libéral, commerce, atelier artisan. Vos équipes repartent autonomes sur les outils IA usage quotidien.",
@@ -64,7 +64,7 @@ export const BONDUES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lille ou Bruxelles ?",
-      a: "Nos consultants viennent de Lille-Centre (15 min A22), Tourcoing (10 min) ou Bruxelles (1h10 A22/E19). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lille-Centre (15 min A22), Tourcoing (10 min) ou Bruxelles (1h10 A22/E19). Pour les multi-jours, hébergement local possible. Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

@@ -14,6 +14,7 @@ export const BAYONNE_COPY: VilleCopy = {
     "Axion-IA se déplace à Bayonne pour accompagner les entreprises dans leur transformation IA. Avec des acteurs comme Euralis et la Technocité, le tissu économique local est propice à l'innovation. Nos services incluent audits, interventions et implémentations, adaptés aux besoins spécifiques des secteurs comme le commerce de détail et la restauration.",
   directAnswerEn:
     "Axion-IA se déplace à Bayonne pour accompagner les entreprises dans leur transformation IA. Avec des acteurs comme Euralis et la Technocité, le tissu économique local est propice à l'innovation. Nos services incluent audits, interventions et implémentations, adaptés aux besoins spécifiques des secteurs comme le commerce de détail et la restauration.",
+  seoHook: "frontalier, gastronomie & tourisme",
   ecosystemFr:
     "Bayonne abrite des entreprises comme Lindt & Sprüngli et des infrastructures telles que la Technocité, favorisant un environnement propice à l'innovation.",
   ecosystemEn:

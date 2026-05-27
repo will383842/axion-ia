@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PARIGNE_L_EVEQUE_COPY: VilleCopy = {
   pitchFr:
-    "Parigné-l'Évêque (72), commune sarthoise au sud du Mans, compte plus de 5 300 habitants. Environnement semi-rural attractif en périphérie de Le Mans Métropole, tissu de TPE artisanales, PME industrielles, commerces et exploitations agricoles. Axion-IA y intervient pour tous types d'activités.",
+    "Parigné-l'Évêque (72), commune sarthoise au sud du Mans, compte plus de 5 300 habitants. Environnement semi-rural attractif en périphérie de Le Mans Métropole, tissu de TPE artisanales, PME industrielles, commerces et exploitations agricoles. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Parigné-l'Évêque (72), commune sarthoise au sud du Mans, compte plus de 5 300 habitants. Environnement semi-rural attractif en périphérie de Le Mans Métropole, tissu de TPE artisanales, PME industrielles, commerces et exploitations agricoles. Axion-IA y intervient pour tous types d'activités.",
+    "Parigné-l'Évêque (72), commune sarthoise au sud du Mans, compte plus de 5 300 habitants. Environnement semi-rural attractif en périphérie de Le Mans Métropole, tissu de TPE artisanales, PME industrielles, commerces et exploitations agricoles. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Parigné-l'Évêque (72). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles sud Le Mans, exploitations agricoles, professions libérales et services de proximité.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const PARIGNE_L_EVEQUE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Parigné-l'Évêque : diagnostic adapté aux TPE artisans, PME industrielles sud Le Mans, exploitations agricoles et commerces de proximité. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Parigné-l'Évêque : diagnostic adapté aux TPE artisans, PME industrielles sud Le Mans, exploitations agricoles et commerces de proximité. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Parigné-l'Évêque : diagnostic adapté aux TPE artisans, PME industrielles sud Le Mans, exploitations agricoles et commerces de proximité. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Parigné-l'Évêque : diagnostic adapté aux TPE artisans, PME industrielles sud Le Mans, exploitations agricoles et commerces de proximité. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Parigné-l'Évêque : formats adaptés aux TPE artisanales, exploitations agricoles, PME industrielles et commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Parigné-l'Évêque : formats adaptés aux TPE artisanales, exploitations agricoles, PME industrielles et commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Parigné-l'Évêque : formats adaptés aux TPE artisanales, exploitations agricoles, PME industrielles et commerces. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Parigné-l'Évêque : formats adaptés aux TPE artisanales, exploitations agricoles, PME industrielles et commerces. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Parigné-l'Évêque : gestion parcellaire agricole, automatisation TPE artisanales, outils prédictifs PME industrielles. Adapté au tissu économique sud Le Mans.",

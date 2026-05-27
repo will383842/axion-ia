@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SEYSSES_COPY: VilleCopy = {
   pitchFr:
-    "Seysses (31), commune du sud-ouest toulousain avec plus de 10 000 habitants. Tissu TPE artisans BTP, PME de services, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités de la couronne sud-ouest de Toulouse.",
+    "Seysses (31), commune du sud-ouest toulousain avec plus de 10 000 habitants. Tissu TPE artisans BTP, PME de services, commerces de proximité, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de la couronne sud-ouest de Toulouse.",
   pitchEn:
-    "Seysses (31), commune du sud-ouest toulousain avec plus de 10 000 habitants. Tissu TPE artisans BTP, PME de services, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités de la couronne sud-ouest de Toulouse.",
+    "Seysses (31), commune du sud-ouest toulousain avec plus de 10 000 habitants. Tissu TPE artisans BTP, PME de services, commerces de proximité, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de la couronne sud-ouest de Toulouse.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Seysses (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud-ouest Toulouse. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const SEYSSES_COPY: VilleCopy = {
       en: "Audit IA à Seysses : diagnostic adapté aux TPE artisans BTP, PME de services et professions libérales du sud-ouest Toulouse. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Seysses : formats adaptés à l'artisan BTP, au commerce de bourg, au cabinet libéral. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Seysses : formats adaptés à l'artisan BTP, au commerce de bourg, au cabinet libéral. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Seysses : formats adaptés à l'artisan BTP, au commerce de bourg, au cabinet libéral. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Seysses : formats adaptés à l'artisan BTP, au commerce de bourg, au cabinet libéral. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Seysses : automatisation devis chantier, gestion planning artisans, classification factures, agents conversationnels clients pour TPE-PME sud-ouest Toulouse.",

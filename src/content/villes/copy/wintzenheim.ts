@@ -33,8 +33,8 @@ export const WINTZENHEIM_COPY: VilleCopy = {
       en: "Audit IA à Wintzenheim : diagnostic adapté aux domaines viticoles, acteurs de l'œnotourisme, hôtels-restaurants, artisans et commerçants de l'agglomération colmarienne. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Wintzenheim : formats adaptés au domaine viticole, à l'hôtel-restaurant, à la TPE œnotouristique ou à l'artisan local. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Wintzenheim : formats adaptés au domaine viticole, à l'hôtel-restaurant, à la TPE œnotouristique ou à l'artisan local. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Wintzenheim : formats adaptés au domaine viticole, à l'hôtel-restaurant, à la TPE œnotouristique ou à l'artisan local. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Wintzenheim : formats adaptés au domaine viticole, à l'hôtel-restaurant, à la TPE œnotouristique ou à l'artisan local. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Wintzenheim : automatisation prise de commandes export viticole, gestion réservations œnotourisme multilingue, agents conversationnels hôtels-restaurants, OCR factures et automatisation administrative TPE/PME.",

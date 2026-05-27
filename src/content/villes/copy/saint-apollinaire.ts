@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_APOLLINAIRE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Apollinaire (21), commune de Côte-d'Or au nord-est immédiat de Dijon, est marquée par ses zones d'activités économiques (Cap Nord) et son positionnement logistique. Tissu PME logistique, commerce, TPE artisans, services aux entreprises, résidentiel périurbain dijonnais. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Apollinaire (21), commune de Côte-d'Or au nord-est immédiat de Dijon, est marquée par ses zones d'activités économiques (Cap Nord) et son positionnement logistique. Tissu PME logistique, commerce, TPE artisans, services aux entreprises, résidentiel périurbain dijonnais. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Saint-Apollinaire (21), commune de Côte-d'Or au nord-est immédiat de Dijon, est marquée par ses zones d'activités économiques (Cap Nord) et son positionnement logistique. Tissu PME logistique, commerce, TPE artisans, services aux entreprises, résidentiel périurbain dijonnais. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Apollinaire (21), commune de Côte-d'Or au nord-est immédiat de Dijon, est marquée par ses zones d'activités économiques (Cap Nord) et son positionnement logistique. Tissu PME logistique, commerce, TPE artisans, services aux entreprises, résidentiel périurbain dijonnais. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Apollinaire (21). Nous accompagnons TPE et PME : PME logistique et distribution Cap Nord, commerces, TPE artisans, services aux entreprises et résidentiel périurbain dijonnais. Audit Flash 490 € HT.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const SAINT_APOLLINAIRE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Apollinaire : diagnostic adapté aux PME logistique Cap Nord, commerces de gros, TPE artisans, services. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Saint-Apollinaire : diagnostic adapté aux PME logistique Cap Nord, commerces de gros, TPE artisans, services. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Saint-Apollinaire : diagnostic adapté aux PME logistique Cap Nord, commerces de gros, TPE artisans, services. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Saint-Apollinaire : diagnostic adapté aux PME logistique Cap Nord, commerces de gros, TPE artisans, services. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Apollinaire : formats adaptés à l'entrepôt logistique, plateforme distribution, atelier, commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Saint-Apollinaire : formats adaptés à l'entrepôt logistique, plateforme distribution, atelier, commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Saint-Apollinaire : formats adaptés à l'entrepôt logistique, plateforme distribution, atelier, commerce. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Saint-Apollinaire : formats adaptés à l'entrepôt logistique, plateforme distribution, atelier, commerce. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Apollinaire : optimisation supply chain, prévision demande, automatisation préparation commandes, routage tournées, gestion stocks.",
@@ -64,7 +64,7 @@ export const SAINT_APOLLINAIRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Dijon ?",
-      a: "Dijon centre (10 min). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Dijon centre (10 min). Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

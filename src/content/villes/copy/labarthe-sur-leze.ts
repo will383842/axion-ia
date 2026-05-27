@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LABARTHE_SUR_LEZE_COPY: VilleCopy = {
   pitchFr:
-    "Labarthe-sur-Lèze (31), commune des bords de la Lèze au sud de Toulouse, plus de 6 500 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités du sud de la Haute-Garonne.",
+    "Labarthe-sur-Lèze (31), commune des bords de la Lèze au sud de Toulouse, plus de 6 500 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du sud de la Haute-Garonne.",
   pitchEn:
-    "Labarthe-sur-Lèze (31), commune des bords de la Lèze au sud de Toulouse, plus de 6 500 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités du sud de la Haute-Garonne.",
+    "Labarthe-sur-Lèze (31), commune des bords de la Lèze au sud de Toulouse, plus de 6 500 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du sud de la Haute-Garonne.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Labarthe-sur-Lèze (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud Toulouse. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const LABARTHE_SUR_LEZE_COPY: VilleCopy = {
       en: "Audit IA à Labarthe-sur-Lèze : diagnostic adapté aux TPE artisans, PME de services et professions libérales du sud Toulouse. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Labarthe-sur-Lèze : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Labarthe-sur-Lèze : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Labarthe-sur-Lèze : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Labarthe-sur-Lèze : formats adaptés à l'artisan, au commerce, au cabinet libéral. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Labarthe-sur-Lèze : automatisation devis artisans, gestion clients, classification documents, agents conversationnels pour TPE-PME du sud Toulouse.",

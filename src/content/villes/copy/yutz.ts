@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const YUTZ_COPY: VilleCopy = {
   pitchFr:
-    "Yutz (57), commune de l'agglomération de Thionville en Moselle, conjugue zones d'activités économiques dynamiques et proximité immédiate du marché transfrontalier luxembourgeois. Tissu de TPE/PME industrie, commerce, logistique, services aux entreprises et travailleurs frontaliers. Axion-IA y intervient pour tous types d'activités.",
+    "Yutz (57), commune de l'agglomération de Thionville en Moselle, conjugue zones d'activités économiques dynamiques et proximité immédiate du marché transfrontalier luxembourgeois. Tissu de TPE/PME industrie, commerce, logistique, services aux entreprises et travailleurs frontaliers. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Yutz (57), commune de l'agglomération de Thionville en Moselle, conjugue zones d'activités économiques dynamiques et proximité immédiate du marché transfrontalier luxembourgeois. Tissu de TPE/PME industrie, commerce, logistique, services aux entreprises et travailleurs frontaliers. Axion-IA y intervient pour tous types d'activités.",
+    "Yutz (57), commune de l'agglomération de Thionville en Moselle, conjugue zones d'activités économiques dynamiques et proximité immédiate du marché transfrontalier luxembourgeois. Tissu de TPE/PME industrie, commerce, logistique, services aux entreprises et travailleurs frontaliers. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Yutz (57). Nous accompagnons TPE et PME : industriels, logisticiens, commerçants, artisans BTP, professions libérales et prestataires de services de l'agglomération de Thionville et du bassin frontalier luxembourgeois. Audit Flash dès 490 € HT.",
   directAnswerEn:

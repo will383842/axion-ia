@@ -30,12 +30,12 @@ export const LA_FERTE_SAINT_AUBIN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Ferté-Saint-Aubin : diagnostic adapté aux TPE artisans, PME forestières et agro-alimentaires, hébergeurs tourisme Sologne. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
-      en: "Audit IA à La Ferté-Saint-Aubin : diagnostic adapté aux TPE artisans, PME forestières et agro-alimentaires, hébergeurs tourisme Sologne. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
+      fr: "Audit IA à La Ferté-Saint-Aubin : diagnostic adapté aux TPE artisans, PME forestières et agro-alimentaires, hébergeurs tourisme Sologne. ROI mesurable, audit Flash dès 490 € HT accessible aux petites structures.",
+      en: "Audit IA à La Ferté-Saint-Aubin : diagnostic adapté aux TPE artisans, PME forestières et agro-alimentaires, hébergeurs tourisme Sologne. ROI mesurable, audit Flash dès 490 € HT accessible aux petites structures.",
     },
     interventions: {
-      fr: "Interventions IA sur site à La Ferté-Saint-Aubin : formats adaptés au commerce, à la PME forestière, à l'hébergement touristique ou au cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à La Ferté-Saint-Aubin : formats adaptés au commerce, à la PME forestière, à l'hébergement touristique ou au cabinet libéral. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à La Ferté-Saint-Aubin : formats adaptés au commerce, à la PME forestière, à l'hébergement touristique ou au cabinet libéral. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à La Ferté-Saint-Aubin : formats adaptés au commerce, à la PME forestière, à l'hébergement touristique ou au cabinet libéral. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à La Ferté-Saint-Aubin : agents conversationnels tourisme, automatisation réservations hébergement, gestion stocks forestiers, CRM augmentés. Adapté aux TPE/PME et acteurs tourisme nature Sologne.",

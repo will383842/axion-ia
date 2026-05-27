@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_POIRE_SUR_VIE_COPY: VilleCopy = {
   pitchFr:
-    "Le Poiré-sur-Vie (85), commune du bocage vendéen, compte plus de 8 600 habitants. Bourg dynamique proche de La Roche-sur-Yon, zones d'activités artisanales et industrielles, tissu de TPE artisanales, PME, commerces et exploitations agricoles. Axion-IA y intervient pour tous types d'activités.",
+    "Le Poiré-sur-Vie (85), commune du bocage vendéen, compte plus de 8 600 habitants. Bourg dynamique proche de La Roche-sur-Yon, zones d'activités artisanales et industrielles, tissu de TPE artisanales, PME, commerces et exploitations agricoles. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Le Poiré-sur-Vie (85), commune du bocage vendéen, compte plus de 8 600 habitants. Bourg dynamique proche de La Roche-sur-Yon, zones d'activités artisanales et industrielles, tissu de TPE artisanales, PME, commerces et exploitations agricoles. Axion-IA y intervient pour tous types d'activités.",
+    "Le Poiré-sur-Vie (85), commune du bocage vendéen, compte plus de 8 600 habitants. Bourg dynamique proche de La Roche-sur-Yon, zones d'activités artisanales et industrielles, tissu de TPE artisanales, PME, commerces et exploitations agricoles. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Poiré-sur-Vie (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles bocage vendéen, exploitations agricoles, professions libérales et services de proximité.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const LE_POIRE_SUR_VIE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Poiré-sur-Vie : diagnostic adapté aux TPE artisans BTP, PME industrielles, exploitations agricoles et commerces du bocage vendéen. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA au Poiré-sur-Vie : diagnostic adapté aux TPE artisans BTP, PME industrielles, exploitations agricoles et commerces du bocage vendéen. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA au Poiré-sur-Vie : diagnostic adapté aux TPE artisans BTP, PME industrielles, exploitations agricoles et commerces du bocage vendéen. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA au Poiré-sur-Vie : diagnostic adapté aux TPE artisans BTP, PME industrielles, exploitations agricoles et commerces du bocage vendéen. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site au Poiré-sur-Vie : formats adaptés aux artisans, PME industrielles, exploitations agricoles et commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site au Poiré-sur-Vie : formats adaptés aux artisans, PME industrielles, exploitations agricoles et commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site au Poiré-sur-Vie : formats adaptés aux artisans, PME industrielles, exploitations agricoles et commerces. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site au Poiré-sur-Vie : formats adaptés aux artisans, PME industrielles, exploitations agricoles et commerces. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA au Poiré-sur-Vie : gestion chantiers artisans, optimisation exploitation agricole, automatisation PME industrielles, outils prédictifs commerces. Adapté TPE/PME bocage vendéen.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ANDERNOS_LES_BAINS_COPY: VilleCopy = {
   pitchFr:
-    "Andernos-les-Bains (33), station balnéaire du nord du Bassin d'Arcachon, allie tourisme, ostréiculture, commerces saisonniers et tissu résidentiel actif. Axion-IA y intervient pour tous types d'activités : TPE ostréicoles, commerces touristiques, PME de services, artisans BTP et professions libérales du Bassin.",
+    "Andernos-les-Bains (33), station balnéaire du nord du Bassin d'Arcachon, allie tourisme, ostréiculture, commerces saisonniers et tissu résidentiel actif. Axion-IA couvre l'ensemble des activités professionnelles présentes : TPE ostréicoles, commerces touristiques, PME de services, artisans BTP et professions libérales du Bassin.",
   pitchEn:
-    "Andernos-les-Bains (33), station balnéaire du nord du Bassin d'Arcachon, allie tourisme, ostréiculture, commerces saisonniers et tissu résidentiel actif. Axion-IA y intervient pour tous types d'activités : TPE ostréicoles, commerces touristiques, PME de services, artisans BTP et professions libérales du Bassin.",
+    "Andernos-les-Bains (33), station balnéaire du nord du Bassin d'Arcachon, allie tourisme, ostréiculture, commerces saisonniers et tissu résidentiel actif. Axion-IA couvre l'ensemble des activités professionnelles présentes : TPE ostréicoles, commerces touristiques, PME de services, artisans BTP et professions libérales du Bassin.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Andernos-les-Bains (33). Nous accompagnons TPE et PME du Bassin d'Arcachon : ostréiculteurs, hébergeurs touristiques, restaurateurs, commerçants saisonniers, artisans BTP et professions libérales. Audit Flash dès 490 € HT.",
   directAnswerEn:

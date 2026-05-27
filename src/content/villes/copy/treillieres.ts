@@ -29,12 +29,12 @@ export const TREILLIERES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Treillières : diagnostic adapté aux TPE services, PME tertiaires, professions libérales et artisans de la couronne nord nantaise. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Treillières : diagnostic adapté aux TPE services, PME tertiaires, professions libérales et artisans de la couronne nord nantaise. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Treillières : diagnostic adapté aux TPE services, PME tertiaires, professions libérales et artisans de la couronne nord nantaise. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Treillières : diagnostic adapté aux TPE services, PME tertiaires, professions libérales et artisans de la couronne nord nantaise. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Treillières : formats adaptés au bureau tertiaire, cabinet libéral, atelier artisan ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Treillières : formats adaptés au bureau tertiaire, cabinet libéral, atelier artisan ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Treillières : formats adaptés au bureau tertiaire, cabinet libéral, atelier artisan ou commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Treillières : formats adaptés au bureau tertiaire, cabinet libéral, atelier artisan ou commerce. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Treillières : automatisation processus tertiaires, agents conversationnels RDV cabinets libéraux, classification documents PME, chatbots service client commerces.",
@@ -64,7 +64,7 @@ export const TREILLIERES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Nantes ?",
-      a: "Nos consultants viennent de Nantes centre en 15 min via la RN137. Treillières est en couronne nord Nantes Métropole, très accessible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Nantes centre en 15 min via la RN137. Treillières est en couronne nord Nantes Métropole, très accessible. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const AUBY_COPY: VilleCopy = {
   pitchFr:
-    "Auby (59), commune française du département du Nord (région Hauts-de-France) au nord de l'agglomération de Douai, conserve un héritage industriel métallurgique majeur (production de zinc, sidérurgie) et un tissu PME industriel actif. Tissu TPE artisanat BTP, PME industrie métallurgique et sous-traitance, commerces de proximité, services aux entreprises de la Douaisis. Axion-IA y intervient pour tous types d'activités.",
+    "Auby (59), commune française du département du Nord (région Hauts-de-France) au nord de l'agglomération de Douai, conserve un héritage industriel métallurgique majeur (production de zinc, sidérurgie) et un tissu PME industriel actif. Tissu TPE artisanat BTP, PME industrie métallurgique et sous-traitance, commerces de proximité, services aux entreprises de la Douaisis. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Auby (59), commune française du département du Nord (région Hauts-de-France) au nord de l'agglomération de Douai, conserve un héritage industriel métallurgique majeur (production de zinc, sidérurgie) et un tissu PME industriel actif. Tissu TPE artisanat BTP, PME industrie métallurgique et sous-traitance, commerces de proximité, services aux entreprises de la Douaisis. Axion-IA y intervient pour tous types d'activités.",
+    "Auby (59), commune française du département du Nord (région Hauts-de-France) au nord de l'agglomération de Douai, conserve un héritage industriel métallurgique majeur (production de zinc, sidérurgie) et un tissu PME industriel actif. Tissu TPE artisanat BTP, PME industrie métallurgique et sous-traitance, commerces de proximité, services aux entreprises de la Douaisis. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auby (59). Nous accompagnons tous types d'activités : TPE artisans BTP de l'agglomération de Douai, PME industrie métallurgique (zinc, sidérurgie) et sous-traitance, commerçants, services aux entreprises de la Douaisis et du Nord.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const AUBY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Auby : diagnostic adapté aux TPE artisans BTP de l'agglomération de Douai, PME industrie métallurgique (zinc) et sous-traitance, commerçants, services aux entreprises. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Auby : diagnostic adapté aux TPE artisans BTP de l'agglomération de Douai, PME industrie métallurgique (zinc) et sous-traitance, commerçants, services aux entreprises. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Auby : diagnostic adapté aux TPE artisans BTP de l'agglomération de Douai, PME industrie métallurgique (zinc) et sous-traitance, commerçants, services aux entreprises. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Auby : diagnostic adapté aux TPE artisans BTP de l'agglomération de Douai, PME industrie métallurgique (zinc) et sous-traitance, commerçants, services aux entreprises. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Auby : formats adaptés à l'atelier artisan, l'usine métallurgique, le commerce. Vos équipes repartent autonomes sur les outils IA usage quotidien.",
@@ -64,7 +64,7 @@ export const AUBY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lille ou Douai ?",
-      a: "Nos consultants viennent de Lille (30 min A21), Douai (10 min) ou Valenciennes (30 min). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lille (30 min A21), Douai (10 min) ou Valenciennes (30 min). Pour les multi-jours, hébergement local possible. Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

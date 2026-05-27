@@ -3,9 +3,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_MUY_COPY: VilleCopy = {
   pitchFr:
-    "Le Muy (83, Var), commune du centre Var sur l'axe A8, capitale du mimosa et étape historique de la Libération de Provence, accueille TPE artisanales, PME viticoles, commerces, logistique, professions libérales et tourisme. Axion-IA y intervient pour tous types d'activités du centre Var.",
+    "Le Muy (83, Var), commune du centre Var sur l'axe A8, capitale du mimosa et étape historique de la Libération de Provence, accueille TPE artisanales, PME viticoles, commerces, logistique, professions libérales et tourisme. Axion-IA y déploie ses missions auprès de toutes les organisations du centre Var.",
   pitchEn:
-    "Le Muy (83, Var), commune du centre Var sur l'axe A8, capitale du mimosa et étape historique de la Libération de Provence, accueille TPE artisanales, PME viticoles, commerces, logistique, professions libérales et tourisme. Axion-IA y intervient pour tous types d'activités du centre Var.",
+    "Le Muy (83, Var), commune du centre Var sur l'axe A8, capitale du mimosa et étape historique de la Libération de Provence, accueille TPE artisanales, PME viticoles, commerces, logistique, professions libérales et tourisme. Axion-IA y déploie ses missions auprès de toutes les organisations du centre Var.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Muy (83). Nous accompagnons TPE artisanales, PME viticoles, commerces, logistique et professions libérales du centre Var. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:

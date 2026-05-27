@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MOUANS_SARTOUX_COPY: VilleCopy = {
   pitchFr:
-    "Mouans-Sartoux (06), pionnière nationale du 100 % bio en restauration scolaire et organisatrice du Festival international du livre, allie engagement environnemental et dynamisme culturel entre Grasse et Cannes. Tissu TPE/PME agriculture bio, commerce équitable, artisanat, services et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Mouans-Sartoux (06), pionnière nationale du 100 % bio en restauration scolaire et organisatrice du Festival international du livre, allie engagement environnemental et dynamisme culturel entre Grasse et Cannes. Tissu TPE/PME agriculture bio, commerce équitable, artisanat, services et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Mouans-Sartoux (06), pionnière nationale du 100 % bio en restauration scolaire et organisatrice du Festival international du livre, allie engagement environnemental et dynamisme culturel entre Grasse et Cannes. Tissu TPE/PME agriculture bio, commerce équitable, artisanat, services et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Mouans-Sartoux (06), pionnière nationale du 100 % bio en restauration scolaire et organisatrice du Festival international du livre, allie engagement environnemental et dynamisme culturel entre Grasse et Cannes. Tissu TPE/PME agriculture bio, commerce équitable, artisanat, services et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mouans-Sartoux (06). Nous accompagnons tous types d'activités : TPE agriculture bio et commerce équitable, artisans, commerçants, professions libérales, PME services et entreprises culturelles du bassin Grasse-Cannes.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const MOUANS_SARTOUX_COPY: VilleCopy = {
       en: "Audit IA à Mouans-Sartoux : diagnostic adapté aux TPE agriculture bio, artisans, commerçants équitables et PME services du bassin Grasse-Cannes. ROI chiffré, audit Flash 490 € HT accessible aux petites structures.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Mouans-Sartoux : formats adaptés à l'exploitation agricole, atelier artisan, commerce ou bureau PME. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Mouans-Sartoux : formats adaptés à l'exploitation agricole, atelier artisan, commerce ou bureau PME. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Mouans-Sartoux : formats adaptés à l'exploitation agricole, atelier artisan, commerce ou bureau PME. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Mouans-Sartoux : formats adaptés à l'exploitation agricole, atelier artisan, commerce ou bureau PME. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Mouans-Sartoux : gestion circuits courts (traçabilité bio), agents conversationnels client, automatisation commandes, CRM augmenté, classification documents. Adapté aux TPE/PME agriculture durable et commerce équitable.",

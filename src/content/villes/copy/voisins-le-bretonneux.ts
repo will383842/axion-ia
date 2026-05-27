@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VOISINS_LE_BRETONNEUX_COPY: VilleCopy = {
   pitchFr:
-    "Voisins-le-Bretonneux (78), commune du technopôle Saint-Quentin-en-Yvelines au sud-ouest de Paris, compte plus de 10 600 habitants. PME tech et ingénierie, TPE conseil et services B2B, commerces de centre-ville, professions libérales, restauration. Axion-IA y intervient pour tous types d'activités.",
+    "Voisins-le-Bretonneux (78), commune du technopôle Saint-Quentin-en-Yvelines au sud-ouest de Paris, compte plus de 10 600 habitants. PME tech et ingénierie, TPE conseil et services B2B, commerces de centre-ville, professions libérales, restauration. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Voisins-le-Bretonneux (78), commune du technopôle Saint-Quentin-en-Yvelines au sud-ouest de Paris, compte plus de 10 600 habitants. PME tech et ingénierie, TPE conseil et services B2B, commerces de centre-ville, professions libérales, restauration. Axion-IA y intervient pour tous types d'activités.",
+    "Voisins-le-Bretonneux (78), commune du technopôle Saint-Quentin-en-Yvelines au sud-ouest de Paris, compte plus de 10 600 habitants. PME tech et ingénierie, TPE conseil et services B2B, commerces de centre-ville, professions libérales, restauration. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Voisins-le-Bretonneux (78). Nous accompagnons TPE et PME : PME tech et ingénierie du technopôle SQY, TPE conseil et services B2B, commerçants de centre-ville, professions libérales, restaurateurs. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const VOISINS_LE_BRETONNEUX_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Voisins-le-Bretonneux : diagnostic adapté aux PME tech et ingénierie SQY, TPE conseil B2B, commerçants, professions libérales, restaurateurs. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Voisins-le-Bretonneux : diagnostic adapté aux PME tech et ingénierie SQY, TPE conseil B2B, commerçants, professions libérales, restaurateurs. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Voisins-le-Bretonneux : diagnostic adapté aux PME tech et ingénierie SQY, TPE conseil B2B, commerçants, professions libérales, restaurateurs. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Voisins-le-Bretonneux : diagnostic adapté aux PME tech et ingénierie SQY, TPE conseil B2B, commerçants, professions libérales, restaurateurs. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Voisins-le-Bretonneux : formats adaptés open-space tech, bureau, commerce, cabinet. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Voisins-le-Bretonneux : formats adaptés open-space tech, bureau, commerce, cabinet. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Voisins-le-Bretonneux : formats adaptés open-space tech, bureau, commerce, cabinet. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Voisins-le-Bretonneux : formats adaptés open-space tech, bureau, commerce, cabinet. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Voisins-le-Bretonneux : automatisation pipelines dev PME tech, CRM augmenté conseil B2B, gestion projets ingénierie, outils métier professions libérales.",

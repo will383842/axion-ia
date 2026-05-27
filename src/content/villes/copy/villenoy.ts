@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VILLENOY_COPY: VilleCopy = {
   pitchFr:
-    "Villenoy (77), commune limitrophe de Meaux au cœur de la Brie, associe tissu résidentiel et activité économique de proximité. TPE/PME artisanat, commerces, professions libérales, services et petite industrie locale. Axion-IA y intervient pour tous types d'activités du bassin meldois.",
+    "Villenoy (77), commune limitrophe de Meaux au cœur de la Brie, associe tissu résidentiel et activité économique de proximité. TPE/PME artisanat, commerces, professions libérales, services et petite industrie locale. Axion-IA opère pour toutes les structures économiques de la commune du bassin meldois.",
   pitchEn:
-    "Villenoy (77), commune limitrophe de Meaux au cœur de la Brie, associe tissu résidentiel et activité économique de proximité. TPE/PME artisanat, commerces, professions libérales, services et petite industrie locale. Axion-IA y intervient pour tous types d'activités du bassin meldois.",
+    "Villenoy (77), commune limitrophe de Meaux au cœur de la Brie, associe tissu résidentiel et activité économique de proximité. TPE/PME artisanat, commerces, professions libérales, services et petite industrie locale. Axion-IA opère pour toutes les structures économiques de la commune du bassin meldois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villenoy (77). Nous accompagnons tous types d'activités : TPE artisans et commerçants du bassin meldois, PME tertiaires, professions libérales, indépendants, prestataires de services et petites structures industrielles locales.",
   directAnswerEn:

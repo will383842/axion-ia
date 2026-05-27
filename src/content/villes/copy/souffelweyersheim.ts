@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SOUFFELWEYERSHEIM_COPY: VilleCopy = {
   pitchFr:
-    "Souffelweyersheim (67), commune de l'eurométropole de Strasbourg située au nord immédiat de la capitale alsacienne, structurée autour de zones d'activités tertiaires, logistiques et artisanales. Tissu TPE/PME services, logistique, commerce de gros, BTP, artisanat, commerces de proximité. Axion-IA y intervient pour tous types d'activités.",
+    "Souffelweyersheim (67), commune de l'eurométropole de Strasbourg située au nord immédiat de la capitale alsacienne, structurée autour de zones d'activités tertiaires, logistiques et artisanales. Tissu TPE/PME services, logistique, commerce de gros, BTP, artisanat, commerces de proximité. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Souffelweyersheim (67), commune de l'eurométropole de Strasbourg située au nord immédiat de la capitale alsacienne, structurée autour de zones d'activités tertiaires, logistiques et artisanales. Tissu TPE/PME services, logistique, commerce de gros, BTP, artisanat, commerces de proximité. Axion-IA y intervient pour tous types d'activités.",
+    "Souffelweyersheim (67), commune de l'eurométropole de Strasbourg située au nord immédiat de la capitale alsacienne, structurée autour de zones d'activités tertiaires, logistiques et artisanales. Tissu TPE/PME services, logistique, commerce de gros, BTP, artisanat, commerces de proximité. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Souffelweyersheim (67). Nous accompagnons tous types d'activités : TPE/PME services et logistique, commerce de gros, artisans BTP, commerces de proximité et entrepreneurs des zones d'activités de l'eurométropole nord.",
   directAnswerEn:
@@ -30,12 +30,12 @@ export const SOUFFELWEYERSHEIM_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Souffelweyersheim : diagnostic adapté aux TPE/PME logistique, commerce de gros, services, artisans BTP et commerces. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Souffelweyersheim : diagnostic adapté aux TPE/PME logistique, commerce de gros, services, artisans BTP et commerces. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Souffelweyersheim : diagnostic adapté aux TPE/PME logistique, commerce de gros, services, artisans BTP et commerces. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Souffelweyersheim : diagnostic adapté aux TPE/PME logistique, commerce de gros, services, artisans BTP et commerces. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Souffelweyersheim : formats adaptés à l'entrepôt logistique, bureau, chantier ou commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Souffelweyersheim : formats adaptés à l'entrepôt logistique, bureau, chantier ou commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Souffelweyersheim : formats adaptés à l'entrepôt logistique, bureau, chantier ou commerce. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Souffelweyersheim : formats adaptés à l'entrepôt logistique, bureau, chantier ou commerce. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Souffelweyersheim : optimisation flux logistiques, gestion stocks et fournisseurs, automatisation devis BTP, agents conversationnels B2B, CRM commerce de gros.",

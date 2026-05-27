@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FLEURY_SUR_ORNE_COPY: VilleCopy = {
   pitchFr:
-    "Fleury-sur-Orne (14), commune de l'agglomération de Caen sud dans le Calvados, est connue pour ses anciennes carrières souterraines de pierre de Caen et ses zones d'activités dynamiques. Tissu TPE artisans BTP, PME services et industrie, commerces, professions libérales, indépendants. Axion-IA y intervient pour tous types d'activités.",
+    "Fleury-sur-Orne (14), commune de l'agglomération de Caen sud dans le Calvados, est connue pour ses anciennes carrières souterraines de pierre de Caen et ses zones d'activités dynamiques. Tissu TPE artisans BTP, PME services et industrie, commerces, professions libérales, indépendants. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Fleury-sur-Orne (14), commune de l'agglomération de Caen sud dans le Calvados, est connue pour ses anciennes carrières souterraines de pierre de Caen et ses zones d'activités dynamiques. Tissu TPE artisans BTP, PME services et industrie, commerces, professions libérales, indépendants. Axion-IA y intervient pour tous types d'activités.",
+    "Fleury-sur-Orne (14), commune de l'agglomération de Caen sud dans le Calvados, est connue pour ses anciennes carrières souterraines de pierre de Caen et ses zones d'activités dynamiques. Tissu TPE artisans BTP, PME services et industrie, commerces, professions libérales, indépendants. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fleury-sur-Orne (14). Nous accompagnons tous types d'activités : TPE artisans BTP, PME services et industrielles de l'agglomération caennaise sud, commerçants zones d'activités, professions libérales, indépendants et prestataires du secteur tertiaire.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const FLEURY_SUR_ORNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fleury-sur-Orne : diagnostic adapté aux PME services et industrielles agglo Caen sud, TPE artisans BTP, commerçants zones d'activités et professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Fleury-sur-Orne : diagnostic adapté aux PME services et industrielles agglo Caen sud, TPE artisans BTP, commerçants zones d'activités et professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Fleury-sur-Orne : diagnostic adapté aux PME services et industrielles agglo Caen sud, TPE artisans BTP, commerçants zones d'activités et professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Fleury-sur-Orne : diagnostic adapté aux PME services et industrielles agglo Caen sud, TPE artisans BTP, commerçants zones d'activités et professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Fleury-sur-Orne : formats adaptés au bureau tertiaire, atelier BTP, commerce ou cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Fleury-sur-Orne : formats adaptés au bureau tertiaire, atelier BTP, commerce ou cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Fleury-sur-Orne : formats adaptés au bureau tertiaire, atelier BTP, commerce ou cabinet. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Fleury-sur-Orne : formats adaptés au bureau tertiaire, atelier BTP, commerce ou cabinet. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Fleury-sur-Orne : automatisation processus tertiaires, agents conversationnels service client, classification documents, gestion leads. Adapté TPE/PME agglo Caen sud.",
@@ -64,7 +64,7 @@ export const FLEURY_SUR_ORNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Fleury-sur-Orne ?",
-      a: "Nos consultants viennent de Caen (10 min). Déplacement direct sur site (bureau, atelier, commerce, cabinet). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Caen (10 min). Déplacement direct sur site (bureau, atelier, commerce, cabinet). Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

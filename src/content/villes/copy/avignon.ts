@@ -14,6 +14,7 @@ export const AVIGNON_COPY: VilleCopy = {
     "À Avignon, Axion-IA propose des interventions sur site pour les entreprises, en tenant compte de l'écosystème local comprenant des entités comme Panzani et l'Université d'Avignon. Nos services incluent des audits, des implémentations et des formations, avec des tarifs publics clairs, pour répondre aux besoins spécifiques des entreprises locales.",
   directAnswerEn:
     "À Avignon, Axion-IA propose des interventions sur site pour les entreprises, en tenant compte de l'écosystème local comprenant des entités comme Panzani et l'Université d'Avignon. Nos services incluent des audits, des implémentations et des formations, avec des tarifs publics clairs, pour répondre aux besoins spécifiques des entreprises locales.",
+  seoHook: "tourisme culturel & agro provençal",
   ecosystemFr:
     "Avignon abrite des entreprises comme Panzani et Ricard, et bénéficie de la proximité du technopôle Agroparc. L'Université d'Avignon contribue également à l'écosystème éducatif et professionnel de la région.",
   ecosystemEn:

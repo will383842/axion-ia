@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_QUEUE_EN_BRIE_COPY: VilleCopy = {
   pitchFr:
-    "La Queue-en-Brie (94), commune semi-rurale de l'est du Val-de-Marne aux portes de la Brie, offre un cadre verdoyant entre plateau agricole et zones pavillonnaires. TPE artisans, commerces de proximité, professions libérales, PME services, exploitations agricoles. Axion-IA y intervient pour tous types d'activités.",
+    "La Queue-en-Brie (94), commune semi-rurale de l'est du Val-de-Marne aux portes de la Brie, offre un cadre verdoyant entre plateau agricole et zones pavillonnaires. TPE artisans, commerces de proximité, professions libérales, PME services, exploitations agricoles. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "La Queue-en-Brie (94), commune semi-rurale de l'est du Val-de-Marne aux portes de la Brie, offre un cadre verdoyant entre plateau agricole et zones pavillonnaires. TPE artisans, commerces de proximité, professions libérales, PME services, exploitations agricoles. Axion-IA y intervient pour tous types d'activités.",
+    "La Queue-en-Brie (94), commune semi-rurale de l'est du Val-de-Marne aux portes de la Brie, offre un cadre verdoyant entre plateau agricole et zones pavillonnaires. TPE artisans, commerces de proximité, professions libérales, PME services, exploitations agricoles. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Queue-en-Brie (94). Nous accompagnons TPE et PME : artisans, commerçants de proximité, professions libérales, prestataires de services, exploitants agricoles de l'est Val-de-Marne. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const LA_QUEUE_EN_BRIE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Queue-en-Brie : diagnostic adapté aux TPE artisans, commerces de centre-bourg, professions libérales, PME de services, exploitants agricoles. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à La Queue-en-Brie : diagnostic adapté aux TPE artisans, commerces de centre-bourg, professions libérales, PME de services, exploitants agricoles. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à La Queue-en-Brie : diagnostic adapté aux TPE artisans, commerces de centre-bourg, professions libérales, PME de services, exploitants agricoles. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à La Queue-en-Brie : diagnostic adapté aux TPE artisans, commerces de centre-bourg, professions libérales, PME de services, exploitants agricoles. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à La Queue-en-Brie : formats adaptés atelier artisan, commerce, cabinet, exploitation. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à La Queue-en-Brie : formats adaptés atelier artisan, commerce, cabinet, exploitation. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à La Queue-en-Brie : formats adaptés atelier artisan, commerce, cabinet, exploitation. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à La Queue-en-Brie : formats adaptés atelier artisan, commerce, cabinet, exploitation. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à La Queue-en-Brie : automatisation devis artisans, CRM augmentés commerces, gestion planning professions libérales, facturation TPE, outils prédiction agricole.",

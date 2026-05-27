@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const DOUE_EN_ANJOU_COPY: VilleCopy = {
   pitchFr:
-    "Doué-en-Anjou (49), commune nouvelle célèbre pour ses roses, son Bioparc zoo troglodytique et son patrimoine souterrain, fédère plus de 11 000 habitants. Axion-IA y intervient pour tous types d'activités : horticulture, tourisme, artisanat, commerces et services.",
+    "Doué-en-Anjou (49), commune nouvelle célèbre pour ses roses, son Bioparc zoo troglodytique et son patrimoine souterrain, fédère plus de 11 000 habitants. Axion-IA couvre l'ensemble des activités professionnelles présentes : horticulture, tourisme, artisanat, commerces et services.",
   pitchEn:
-    "Doué-en-Anjou (49), commune nouvelle célèbre pour ses roses, son Bioparc zoo troglodytique et son patrimoine souterrain, fédère plus de 11 000 habitants. Axion-IA y intervient pour tous types d'activités : horticulture, tourisme, artisanat, commerces et services.",
+    "Doué-en-Anjou (49), commune nouvelle célèbre pour ses roses, son Bioparc zoo troglodytique et son patrimoine souterrain, fédère plus de 11 000 habitants. Axion-IA couvre l'ensemble des activités professionnelles présentes : horticulture, tourisme, artisanat, commerces et services.",
   directAnswerFr:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Doué-en-Anjou (49). Nous accompagnons les TPE, PME et acteurs touristiques douésiens dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict.",
   directAnswerEn:

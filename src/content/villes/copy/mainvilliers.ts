@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MAINVILLIERS_COPY: VilleCopy = {
   pitchFr:
-    "Mainvilliers (28), commune de l'agglomération de Chartres en Eure-et-Loir, accueille plusieurs zones d'activités économiques structurantes (ZAC de la Saussaye, parc d'activités). Tissu TPE/PME logistique, services aux entreprises, commerce de zone, artisanat BTP et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Mainvilliers (28), commune de l'agglomération de Chartres en Eure-et-Loir, accueille plusieurs zones d'activités économiques structurantes (ZAC de la Saussaye, parc d'activités). Tissu TPE/PME logistique, services aux entreprises, commerce de zone, artisanat BTP et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Mainvilliers (28), commune de l'agglomération de Chartres en Eure-et-Loir, accueille plusieurs zones d'activités économiques structurantes (ZAC de la Saussaye, parc d'activités). Tissu TPE/PME logistique, services aux entreprises, commerce de zone, artisanat BTP et professions libérales. Axion-IA y intervient pour tous types d'activités.",
+    "Mainvilliers (28), commune de l'agglomération de Chartres en Eure-et-Loir, accueille plusieurs zones d'activités économiques structurantes (ZAC de la Saussaye, parc d'activités). Tissu TPE/PME logistique, services aux entreprises, commerce de zone, artisanat BTP et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mainvilliers (28). Nous accompagnons tous types d'activités : TPE/PME des zones d'activités chartraines, commerces de zone, artisans BTP, logisticiens, professions libérales et services aux entreprises de l'agglomération de Chartres.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const MAINVILLIERS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Mainvilliers : diagnostic adapté aux TPE/PME des zones d'activités chartraines, commerces de zone, artisans BTP, logisticiens et professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Mainvilliers : diagnostic adapté aux TPE/PME des zones d'activités chartraines, commerces de zone, artisans BTP, logisticiens et professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Mainvilliers : diagnostic adapté aux TPE/PME des zones d'activités chartraines, commerces de zone, artisans BTP, logisticiens et professions libérales. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Mainvilliers : diagnostic adapté aux TPE/PME des zones d'activités chartraines, commerces de zone, artisans BTP, logisticiens et professions libérales. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Mainvilliers : formats adaptés à l'entrepôt logistique, commerce de zone, atelier artisan ou cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Mainvilliers : formats adaptés à l'entrepôt logistique, commerce de zone, atelier artisan ou cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Mainvilliers : formats adaptés à l'entrepôt logistique, commerce de zone, atelier artisan ou cabinet. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Mainvilliers : formats adaptés à l'entrepôt logistique, commerce de zone, atelier artisan ou cabinet. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Mainvilliers : optimisation flux logistiques zone d'activités, automatisation gestion stocks retail, agents conversationnels B2B, prédiction maintenance équipements commerciaux.",
@@ -64,7 +64,7 @@ export const MAINVILLIERS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Mainvilliers ?",
-      a: "Nos consultants se déplacent depuis Paris (1h20 via A11) ou arrivent en gare de Chartres (TER 1h10 Paris-Montparnasse). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants se déplacent depuis Paris (1h20 via A11) ou arrivent en gare de Chartres (TER 1h10 Paris-Montparnasse). Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

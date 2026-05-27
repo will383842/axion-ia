@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const DIVES_SUR_MER_COPY: VilleCopy = {
   pitchFr:
-    "Dives-sur-Mer (14), commune historique de la Côte Fleurie en Calvados, port d'embarquement de Guillaume le Conquérant en 1066. Tissu TPE artisans, PME tourisme balnéaire et hôtellerie, commerces, ostréiculture, nautisme, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Dives-sur-Mer (14), commune historique de la Côte Fleurie en Calvados, port d'embarquement de Guillaume le Conquérant en 1066. Tissu TPE artisans, PME tourisme balnéaire et hôtellerie, commerces, ostréiculture, nautisme, services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Dives-sur-Mer (14), commune historique de la Côte Fleurie en Calvados, port d'embarquement de Guillaume le Conquérant en 1066. Tissu TPE artisans, PME tourisme balnéaire et hôtellerie, commerces, ostréiculture, nautisme, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Dives-sur-Mer (14), commune historique de la Côte Fleurie en Calvados, port d'embarquement de Guillaume le Conquérant en 1066. Tissu TPE artisans, PME tourisme balnéaire et hôtellerie, commerces, ostréiculture, nautisme, services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Dives-sur-Mer (14). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et hôtellerie Côte Fleurie, commerces Village d'Art Guillaume le Conquérant, ostréiculteurs, professionnels du nautisme, indépendants et services aux entreprises du Pays d'Auge.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const DIVES_SUR_MER_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Dives-sur-Mer : diagnostic adapté aux TPE artisans, PME tourisme et hôtellerie Côte Fleurie, ostréiculteurs, commerces Village d'Art. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Dives-sur-Mer : diagnostic adapté aux TPE artisans, PME tourisme et hôtellerie Côte Fleurie, ostréiculteurs, commerces Village d'Art. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Dives-sur-Mer : diagnostic adapté aux TPE artisans, PME tourisme et hôtellerie Côte Fleurie, ostréiculteurs, commerces Village d'Art. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Dives-sur-Mer : diagnostic adapté aux TPE artisans, PME tourisme et hôtellerie Côte Fleurie, ostréiculteurs, commerces Village d'Art. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Dives-sur-Mer : formats adaptés à l'hôtel, la boutique, l'atelier d'art, l'exploitation ostréicole. Vos équipes repartent autonomes sur outils IA.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const DINARD_COPY: VilleCopy = {
   pitchFr:
-    "Dinard (35), station balnéaire de prestige sur la Côte d'Émeraude en Ille-et-Vilaine, est réputée pour son festival du film britannique et ses villas Belle Époque. Tissu de TPE/PME tourisme, hôtellerie-restauration, commerces, professions libérales et services. Axion-IA y intervient pour tous types d'activités du littoral nord breton.",
+    "Dinard (35), station balnéaire de prestige sur la Côte d'Émeraude en Ille-et-Vilaine, est réputée pour son festival du film britannique et ses villas Belle Époque. Tissu de TPE/PME tourisme, hôtellerie-restauration, commerces, professions libérales et services. Axion-IA accompagne entreprises et indépendants de tous secteurs du littoral nord breton.",
   pitchEn:
-    "Dinard (35), station balnéaire de prestige sur la Côte d'Émeraude en Ille-et-Vilaine, est réputée pour son festival du film britannique et ses villas Belle Époque. Tissu de TPE/PME tourisme, hôtellerie-restauration, commerces, professions libérales et services. Axion-IA y intervient pour tous types d'activités du littoral nord breton.",
+    "Dinard (35), station balnéaire de prestige sur la Côte d'Émeraude en Ille-et-Vilaine, est réputée pour son festival du film britannique et ses villas Belle Époque. Tissu de TPE/PME tourisme, hôtellerie-restauration, commerces, professions libérales et services. Axion-IA accompagne entreprises et indépendants de tous secteurs du littoral nord breton.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Dinard (35). Nous accompagnons TPE et PME : hôteliers et restaurateurs de la Côte d'Émeraude, commerces touristiques, agences immobilières, professions libérales, services aux entreprises et acteurs culturels du littoral nord breton.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const DINARD_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Dinard : diagnostic adapté aux TPE/PME hôtellerie-restauration Côte d'Émeraude, commerces touristiques, agences immobilières et professions libérales. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Dinard : diagnostic adapté aux TPE/PME hôtellerie-restauration Côte d'Émeraude, commerces touristiques, agences immobilières et professions libérales. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Dinard : diagnostic adapté aux TPE/PME hôtellerie-restauration Côte d'Émeraude, commerces touristiques, agences immobilières et professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Dinard : diagnostic adapté aux TPE/PME hôtellerie-restauration Côte d'Émeraude, commerces touristiques, agences immobilières et professions libérales. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Dinard : formats adaptés à l'hôtel, restaurant, commerce touristique, agence immobilière ou cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Dinard : formats adaptés à l'hôtel, restaurant, commerce touristique, agence immobilière ou cabinet. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Dinard : formats adaptés à l'hôtel, restaurant, commerce touristique, agence immobilière ou cabinet. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Dinard : formats adaptés à l'hôtel, restaurant, commerce touristique, agence immobilière ou cabinet. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Dinard : agents conversationnels réservation hôtelière, revenue management saisonnier, CRM client tourisme, gestion avis en ligne, automatisation back-office immobilier villégiature.",

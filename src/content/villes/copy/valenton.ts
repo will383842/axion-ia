@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VALENTON_COPY: VilleCopy = {
   pitchFr:
-    "Valenton (94), commune du sud du Val-de-Marne, abrite la plus grande gare de triage d'Île-de-France et des zones logistiques et industrielles majeures. TPE artisans, PME transport ferroviaire et routier, logistique, BTP, commerces, services. Axion-IA y intervient pour tous types d'activités.",
+    "Valenton (94), commune du sud du Val-de-Marne, abrite la plus grande gare de triage d'Île-de-France et des zones logistiques et industrielles majeures. TPE artisans, PME transport ferroviaire et routier, logistique, BTP, commerces, services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Valenton (94), commune du sud du Val-de-Marne, abrite la plus grande gare de triage d'Île-de-France et des zones logistiques et industrielles majeures. TPE artisans, PME transport ferroviaire et routier, logistique, BTP, commerces, services. Axion-IA y intervient pour tous types d'activités.",
+    "Valenton (94), commune du sud du Val-de-Marne, abrite la plus grande gare de triage d'Île-de-France et des zones logistiques et industrielles majeures. TPE artisans, PME transport ferroviaire et routier, logistique, BTP, commerces, services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Valenton (94). Nous accompagnons TPE et PME : entreprises logistiques et transport autour de la gare de triage, PME industrielles, artisans BTP, commerçants, prestataires de services du sud Val-de-Marne. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const VALENTON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Valenton : diagnostic adapté aux PME transport et logistique ferroviaire, entreprises BTP zone industrielle, TPE artisans, commerces de proximité. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Valenton : diagnostic adapté aux PME transport et logistique ferroviaire, entreprises BTP zone industrielle, TPE artisans, commerces de proximité. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Valenton : diagnostic adapté aux PME transport et logistique ferroviaire, entreprises BTP zone industrielle, TPE artisans, commerces de proximité. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Valenton : diagnostic adapté aux PME transport et logistique ferroviaire, entreprises BTP zone industrielle, TPE artisans, commerces de proximité. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Valenton : formats adaptés plateforme logistique, entrepôt, chantier BTP, commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",

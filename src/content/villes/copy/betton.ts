@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BETTON_COPY: VilleCopy = {
   pitchFr:
-    "Betton (35), commune résidentielle au nord de Rennes Métropole, bordée par le canal d'Ille-et-Rance. Tissu TPE/PME de services, artisanat, commerces de proximité et activités tertiaires périurbaines. Axion-IA y intervient pour tous types d'activités.",
+    "Betton (35), commune résidentielle au nord de Rennes Métropole, bordée par le canal d'Ille-et-Rance. Tissu TPE/PME de services, artisanat, commerces de proximité et activités tertiaires périurbaines. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Betton (35), commune résidentielle au nord de Rennes Métropole, bordée par le canal d'Ille-et-Rance. Tissu TPE/PME de services, artisanat, commerces de proximité et activités tertiaires périurbaines. Axion-IA y intervient pour tous types d'activités.",
+    "Betton (35), commune résidentielle au nord de Rennes Métropole, bordée par le canal d'Ille-et-Rance. Tissu TPE/PME de services, artisanat, commerces de proximité et activités tertiaires périurbaines. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Betton (35). Nous accompagnons tous types d'activités : TPE et PME de services, artisans, commerçants, professions libérales, indépendants et activités tertiaires du nord de la métropole rennaise.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const BETTON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Betton : diagnostic adapté aux TPE et PME de services, professions libérales, artisans et commerçants du nord Rennes. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Betton : diagnostic adapté aux TPE et PME de services, professions libérales, artisans et commerçants du nord Rennes. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Betton : diagnostic adapté aux TPE et PME de services, professions libérales, artisans et commerçants du nord Rennes. ROI mesurable, audit Flash dès 490 € HT accessible.",
+      en: "Audit IA à Betton : diagnostic adapté aux TPE et PME de services, professions libérales, artisans et commerçants du nord Rennes. ROI mesurable, audit Flash dès 490 € HT accessible.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Betton : formats adaptés aux cabinets, TPE de services, commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Betton : formats adaptés aux cabinets, TPE de services, commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Betton : formats adaptés aux cabinets, TPE de services, commerces. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Betton : formats adaptés aux cabinets, TPE de services, commerces. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Betton : automatisation tâches administratives, agents conversationnels, RAG documentaire, outils productivité, gestion planning. Nord Rennes Métropole.",
@@ -64,7 +64,7 @@ export const BETTON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Betton ?",
-      a: "Nos consultants viennent de Rennes centre (10 min route D175). Intervention sur site dans vos locaux ou en visio selon vos préférences. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Rennes centre (10 min route D175). Intervention sur site dans vos locaux ou en visio selon vos préférences. Frais de mission facturés en sus, selon tarifs publics.",
     },
   ],
 };

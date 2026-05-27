@@ -30,8 +30,8 @@ export const MAIZIERES_LES_METZ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Maizières-lès-Metz : diagnostic adapté aux TPE/PME commerce, distribution, logistique, sous-traitance industrielle, services. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Maizières-lès-Metz : diagnostic adapté aux TPE/PME commerce, distribution, logistique, sous-traitance industrielle, services. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Maizières-lès-Metz : diagnostic adapté aux TPE/PME commerce, distribution, logistique, sous-traitance industrielle, services. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Maizières-lès-Metz : diagnostic adapté aux TPE/PME commerce, distribution, logistique, sous-traitance industrielle, services. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Maizières-lès-Metz : formats adaptés au commerce, l'entrepôt logistique, l'atelier industriel, le bureau. Vos équipes repartent autonomes.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BRUNSTATT_DIDENHEIM_COPY: VilleCopy = {
   pitchFr:
-    "Brunstatt-Didenheim (68), commune nouvelle issue de la fusion de Brunstatt et Didenheim en 2016, est située au sud de Mulhouse dans le Haut-Rhin. Profil résidentiel et tertiaire avec un tissu de TPE/PME en services, professions libérales, commerce et artisanat. Axion-IA y intervient pour tous types d'activités.",
+    "Brunstatt-Didenheim (68), commune nouvelle issue de la fusion de Brunstatt et Didenheim en 2016, est située au sud de Mulhouse dans le Haut-Rhin. Profil résidentiel et tertiaire avec un tissu de TPE/PME en services, professions libérales, commerce et artisanat. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Brunstatt-Didenheim (68), commune nouvelle issue de la fusion de Brunstatt et Didenheim en 2016, est située au sud de Mulhouse dans le Haut-Rhin. Profil résidentiel et tertiaire avec un tissu de TPE/PME en services, professions libérales, commerce et artisanat. Axion-IA y intervient pour tous types d'activités.",
+    "Brunstatt-Didenheim (68), commune nouvelle issue de la fusion de Brunstatt et Didenheim en 2016, est située au sud de Mulhouse dans le Haut-Rhin. Profil résidentiel et tertiaire avec un tissu de TPE/PME en services, professions libérales, commerce et artisanat. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Brunstatt-Didenheim (68). Nous accompagnons TPE et PME : prestataires de services, professions libérales, artisans, commerçants et sous-traitants industriels du sud mulhousien. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const BRUNSTATT_DIDENHEIM_COPY: VilleCopy = {
       en: "Audit IA à Brunstatt-Didenheim : diagnostic adapté aux prestataires de services, professions libérales, artisans BTP, commerçants et sous-traitants industriels du sud mulhousien. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Brunstatt-Didenheim : formats adaptés au cabinet libéral, à la TPE de services, à l'artisan BTP ou au commerçant. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Brunstatt-Didenheim : formats adaptés au cabinet libéral, à la TPE de services, à l'artisan BTP ou au commerçant. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Brunstatt-Didenheim : formats adaptés au cabinet libéral, à la TPE de services, à l'artisan BTP ou au commerçant. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Brunstatt-Didenheim : formats adaptés au cabinet libéral, à la TPE de services, à l'artisan BTP ou au commerçant. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Brunstatt-Didenheim : automatisation prise de rendez-vous et relation patient/client, OCR factures et devis, agents conversationnels SAV, reporting cabinet et automatisation administrative TPE/PME.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ANICHE_COPY: VilleCopy = {
   pitchFr:
-    "Aniche (59), commune française du département du Nord (région Hauts-de-France) dans le bassin minier Nord-Pas-de-Calais reconverti (UNESCO), conserve un héritage industriel verrier (cristallerie, verrerie). Tissu TPE artisanat BTP, PME industrie et services, commerces de proximité, services aux entreprises de l'arrondissement de Douai. Axion-IA y intervient pour tous types d'activités.",
+    "Aniche (59), commune française du département du Nord (région Hauts-de-France) dans le bassin minier Nord-Pas-de-Calais reconverti (UNESCO), conserve un héritage industriel verrier (cristallerie, verrerie). Tissu TPE artisanat BTP, PME industrie et services, commerces de proximité, services aux entreprises de l'arrondissement de Douai. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Aniche (59), commune française du département du Nord (région Hauts-de-France) dans le bassin minier Nord-Pas-de-Calais reconverti (UNESCO), conserve un héritage industriel verrier (cristallerie, verrerie). Tissu TPE artisanat BTP, PME industrie et services, commerces de proximité, services aux entreprises de l'arrondissement de Douai. Axion-IA y intervient pour tous types d'activités.",
+    "Aniche (59), commune française du département du Nord (région Hauts-de-France) dans le bassin minier Nord-Pas-de-Calais reconverti (UNESCO), conserve un héritage industriel verrier (cristallerie, verrerie). Tissu TPE artisanat BTP, PME industrie et services, commerces de proximité, services aux entreprises de l'arrondissement de Douai. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aniche (59). Nous accompagnons tous types d'activités : TPE artisans BTP du bassin minier reconverti, PME industrie verrière et services, commerçants, sous-traitants industriels et services aux entreprises de l'arrondissement de Douai dans le Nord.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const ANICHE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Aniche : diagnostic adapté aux TPE artisans BTP du bassin minier, PME industrie verrière et services, commerçants, sous-traitants industriels. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Aniche : diagnostic adapté aux TPE artisans BTP du bassin minier, PME industrie verrière et services, commerçants, sous-traitants industriels. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Aniche : diagnostic adapté aux TPE artisans BTP du bassin minier, PME industrie verrière et services, commerçants, sous-traitants industriels. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Aniche : diagnostic adapté aux TPE artisans BTP du bassin minier, PME industrie verrière et services, commerçants, sous-traitants industriels. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Aniche : formats adaptés à l'atelier artisan, l'usine, le commerce. Vos équipes repartent autonomes sur les outils IA usage quotidien.",
@@ -64,7 +64,7 @@ export const ANICHE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lille ou Douai ?",
-      a: "Nos consultants viennent de Lille (40 min A23/A1), Douai (15 min) ou Valenciennes (20 min). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lille (40 min A23/A1), Douai (15 min) ou Valenciennes (20 min). Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

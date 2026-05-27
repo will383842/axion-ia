@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MOUGUERRE_COPY: VilleCopy = {
   pitchFr:
-    "Mouguerre (64), commune de l'agglomération de Bayonne, 5 428 habitants. Zone d'activités économiques, TPE artisans, PME logistique et services, commerces de proximité. Axion-IA y intervient pour tous types d'activités de l'agglomération Pays Basque.",
+    "Mouguerre (64), commune de l'agglomération de Bayonne, 5 428 habitants. Zone d'activités économiques, TPE artisans, PME logistique et services, commerces de proximité. Axion-IA opère pour toutes les structures économiques de la commune de l'agglomération Pays Basque.",
   pitchEn:
-    "Mouguerre (64), commune de l'agglomération de Bayonne, 5 428 habitants. Zone d'activités économiques, TPE artisans, PME logistique et services, commerces de proximité. Axion-IA y intervient pour tous types d'activités de l'agglomération Pays Basque.",
+    "Mouguerre (64), commune de l'agglomération de Bayonne, 5 428 habitants. Zone d'activités économiques, TPE artisans, PME logistique et services, commerces de proximité. Axion-IA opère pour toutes les structures économiques de la commune de l'agglomération Pays Basque.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mouguerre (64). Nous accompagnons TPE, PME et artisans de l'agglomération bayonnaise : logistique, services, artisanat, commerces. Audit Flash à partir de 490 € HT.",
   directAnswerEn:

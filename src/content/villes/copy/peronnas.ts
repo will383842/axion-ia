@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PERONNAS_COPY: VilleCopy = {
   pitchFr:
-    "Péronnas (01), commune en banlieue immédiate de Bourg-en-Bresse dans l'Ain, est positionnée en Bresse. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces, agriculture Bresse. Axion-IA y intervient pour tous types d'activités bressoises.",
+    "Péronnas (01), commune en banlieue immédiate de Bourg-en-Bresse dans l'Ain, est positionnée en Bresse. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces, agriculture Bresse. Axion-IA couvre l'ensemble des activités professionnelles présentes bressoises.",
   pitchEn:
-    "Péronnas (01), commune en banlieue immédiate de Bourg-en-Bresse dans l'Ain, est positionnée en Bresse. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces, agriculture Bresse. Axion-IA y intervient pour tous types d'activités bressoises.",
+    "Péronnas (01), commune en banlieue immédiate de Bourg-en-Bresse dans l'Ain, est positionnée en Bresse. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces, agriculture Bresse. Axion-IA couvre l'ensemble des activités professionnelles présentes bressoises.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Péronnas (01). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Bresse, agriculteurs/éleveurs, TPE artisans BTP, commerçants et services aux entreprises de l'agglomération burgienne.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const PERONNAS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Péronnas : diagnostic adapté aux PME tertiaires/industrielles Bresse, agriculteurs, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Péronnas : diagnostic adapté aux PME tertiaires/industrielles Bresse, agriculteurs, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Péronnas : diagnostic adapté aux PME tertiaires/industrielles Bresse, agriculteurs, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Péronnas : diagnostic adapté aux PME tertiaires/industrielles Bresse, agriculteurs, TPE artisans. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Péronnas : formats adaptés au bureau, atelier, exploitation, commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Péronnas : formats adaptés au bureau, atelier, exploitation, commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Péronnas : formats adaptés au bureau, atelier, exploitation, commerce. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Péronnas : formats adaptés au bureau, atelier, exploitation, commerce. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Péronnas : agents conversationnels B2B, prédiction maintenance, classification photos élevage/cultures, automatisation workflow. Bresse.",
@@ -64,7 +64,7 @@ export const PERONNAS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (1h). TGV Paris gare Bourg 2h. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (1h). TGV Paris gare Bourg 2h. Frais de mission en sus, grille tarifaire publique.",
     },
   ],
 };

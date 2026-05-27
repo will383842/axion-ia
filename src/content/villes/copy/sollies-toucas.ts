@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SOLLIES_TOUCAS_COPY: VilleCopy = {
   pitchFr:
-    "Solliès-Toucas (83), commune de la vallée du Gapeau au nord de Toulon, est reconnue pour la figue de Solliès AOP et son agriculture provençale. Tissu de TPE arboriculteurs, maraîchers, artisans, commerçants et PME services et BTP du bassin toulonnais. Axion-IA y intervient pour tous types d'activités.",
+    "Solliès-Toucas (83), commune de la vallée du Gapeau au nord de Toulon, est reconnue pour la figue de Solliès AOP et son agriculture provençale. Tissu de TPE arboriculteurs, maraîchers, artisans, commerçants et PME services et BTP du bassin toulonnais. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Solliès-Toucas (83), commune de la vallée du Gapeau au nord de Toulon, est reconnue pour la figue de Solliès AOP et son agriculture provençale. Tissu de TPE arboriculteurs, maraîchers, artisans, commerçants et PME services et BTP du bassin toulonnais. Axion-IA y intervient pour tous types d'activités.",
+    "Solliès-Toucas (83), commune de la vallée du Gapeau au nord de Toulon, est reconnue pour la figue de Solliès AOP et son agriculture provençale. Tissu de TPE arboriculteurs, maraîchers, artisans, commerçants et PME services et BTP du bassin toulonnais. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Solliès-Toucas (83). Nous accompagnons TPE arboriculteurs, maraîchers, artisans et PME des services, du commerce et du BTP de la vallée du Gapeau. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const SOLLIES_TOUCAS_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Solliès-Toucas : diagnostic adapté aux exploitations agricoles AOP, maraîchers, artisans et PME services de la vallée du Gapeau. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Solliès-Toucas : diagnostic adapté aux exploitations agricoles AOP, maraîchers, artisans et PME services de la vallée du Gapeau. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Solliès-Toucas : diagnostic adapté aux exploitations agricoles AOP, maraîchers, artisans et PME services de la vallée du Gapeau. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Solliès-Toucas : diagnostic adapté aux exploitations agricoles AOP, maraîchers, artisans et PME services de la vallée du Gapeau. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
       fr: "Interventions IA sur site à Solliès-Toucas : ateliers pour arboriculteurs, maraîchers, artisans BTP et commerçants. Outils IA configurés métier réel agricole et services.",

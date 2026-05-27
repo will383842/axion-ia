@@ -30,8 +30,8 @@ export const LABENNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Labenne : diagnostic adapté aux TPE du tourisme balnéaire, commerçants de la zone commerciale, hébergeurs saisonniers, artisans BTP et agriculteurs du sud des Landes. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Labenne : diagnostic adapté aux TPE du tourisme balnéaire, commerçants de la zone commerciale, hébergeurs saisonniers, artisans BTP et agriculteurs du sud des Landes. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Labenne : diagnostic adapté aux TPE du tourisme balnéaire, commerçants de la zone commerciale, hébergeurs saisonniers, artisans BTP et agriculteurs du sud des Landes. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Labenne : diagnostic adapté aux TPE du tourisme balnéaire, commerçants de la zone commerciale, hébergeurs saisonniers, artisans BTP et agriculteurs du sud des Landes. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
       fr: "Interventions IA sur site à Labenne : formations adaptées aux commerces, campings, hébergeurs, restaurateurs et artisans. Vos équipes repartent autonomes sur les outils IA configurés métier.",
@@ -65,7 +65,7 @@ export const LABENNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Labenne depuis Bayonne ?",
-      a: "Labenne est à 15 min de Bayonne par A63 (sortie directe). Nos consultants interviennent facilement sur site. Aéroport Biarritz à 20 min. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Labenne est à 15 min de Bayonne par A63 (sortie directe). Nos consultants interviennent facilement sur site. Aéroport Biarritz à 20 min. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ROMAGNAT_COPY: VilleCopy = {
   pitchFr:
-    "Romagnat (63), commune résidentielle au sud de Clermont-Ferrand en Puy-de-Dôme, abrite le château d'Opme (monument historique, jardins à la française). Professions libérales, PME tertiaires services, TPE artisanat BTP, commerces de proximité. Axion-IA y intervient pour tous types d'activités.",
+    "Romagnat (63), commune résidentielle au sud de Clermont-Ferrand en Puy-de-Dôme, abrite le château d'Opme (monument historique, jardins à la française). Professions libérales, PME tertiaires services, TPE artisanat BTP, commerces de proximité. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Romagnat (63), commune résidentielle au sud de Clermont-Ferrand en Puy-de-Dôme, abrite le château d'Opme (monument historique, jardins à la française). Professions libérales, PME tertiaires services, TPE artisanat BTP, commerces de proximité. Axion-IA y intervient pour tous types d'activités.",
+    "Romagnat (63), commune résidentielle au sud de Clermont-Ferrand en Puy-de-Dôme, abrite le château d'Opme (monument historique, jardins à la française). Professions libérales, PME tertiaires services, TPE artisanat BTP, commerces de proximité. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Romagnat (63). Nous accompagnons TPE et PME : professions libérales, sociétés de services tertiaires, artisans BTP, commerçants et acteurs du patrimoine (château d'Opme) du sud de l'agglomération clermontoise.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const ROMAGNAT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Romagnat : diagnostic adapté aux professions libérales, PME tertiaires de services, TPE artisans BTP et commerçants du sud clermontois. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Romagnat : diagnostic adapté aux professions libérales, PME tertiaires de services, TPE artisans BTP et commerçants du sud clermontois. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Romagnat : diagnostic adapté aux professions libérales, PME tertiaires de services, TPE artisans BTP et commerçants du sud clermontois. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Romagnat : diagnostic adapté aux professions libérales, PME tertiaires de services, TPE artisans BTP et commerçants du sud clermontois. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Romagnat : formats adaptés aux cabinets libéraux, bureaux PME, ateliers artisans ou commerces. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -64,7 +64,7 @@ export const ROMAGNAT_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Clermont-Ferrand ?",
-      a: "Nos consultants interviennent depuis Clermont-Ferrand (10 min voiture). Proximité directe Beaumont et Ceyrat. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants interviennent depuis Clermont-Ferrand (10 min voiture). Proximité directe Beaumont et Ceyrat. Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

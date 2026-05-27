@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LONS_COPY: VilleCopy = {
   pitchFr:
-    "Lons (64), commune de l'agglomération de Pau nord, 13 606 habitants. Pôle commercial majeur du Béarn (zones d'activités, grandes surfaces, retail), TPE artisans, PME logistique et services. Axion-IA y intervient pour tous types d'activités du nord de l'agglomération paloise.",
+    "Lons (64), commune de l'agglomération de Pau nord, 13 606 habitants. Pôle commercial majeur du Béarn (zones d'activités, grandes surfaces, retail), TPE artisans, PME logistique et services. Axion-IA y déploie ses missions auprès de toutes les organisations du nord de l'agglomération paloise.",
   pitchEn:
-    "Lons (64), commune de l'agglomération de Pau nord, 13 606 habitants. Pôle commercial majeur du Béarn (zones d'activités, grandes surfaces, retail), TPE artisans, PME logistique et services. Axion-IA y intervient pour tous types d'activités du nord de l'agglomération paloise.",
+    "Lons (64), commune de l'agglomération de Pau nord, 13 606 habitants. Pôle commercial majeur du Béarn (zones d'activités, grandes surfaces, retail), TPE artisans, PME logistique et services. Axion-IA y déploie ses missions auprès de toutes les organisations du nord de l'agglomération paloise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lons (64). Nous accompagnons TPE, PME et commerces de la zone nord de l'agglomération paloise : retail, logistique, services aux entreprises, artisanat. Audit Flash à partir de 490 € HT.",
   directAnswerEn:

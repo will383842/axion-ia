@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const NEGREPELISSE_COPY: VilleCopy = {
   pitchFr:
-    "Nègrepelisse (82), bourg quercinois au bord de l'Aveyron, près de 6 000 habitants. Tissu TPE artisans, PME agroalimentaires et viticoles, commerces de proximité, professions libérales. Petite industrie et services aux particuliers. Axion-IA y intervient pour tous types d'activités du bassin négrepelissien.",
+    "Nègrepelisse (82), bourg quercinois au bord de l'Aveyron, près de 6 000 habitants. Tissu TPE artisans, PME agroalimentaires et viticoles, commerces de proximité, professions libérales. Petite industrie et services aux particuliers. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin négrepelissien.",
   pitchEn:
-    "Nègrepelisse (82), bourg quercinois au bord de l'Aveyron, près de 6 000 habitants. Tissu TPE artisans, PME agroalimentaires et viticoles, commerces de proximité, professions libérales. Petite industrie et services aux particuliers. Axion-IA y intervient pour tous types d'activités du bassin négrepelissien.",
+    "Nègrepelisse (82), bourg quercinois au bord de l'Aveyron, près de 6 000 habitants. Tissu TPE artisans, PME agroalimentaires et viticoles, commerces de proximité, professions libérales. Petite industrie et services aux particuliers. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin négrepelissien.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nègrepelisse (82). Nous accompagnons TPE artisans, PME agroalimentaires, viticulteurs, commerçants et professions libérales du bourg quercinois sur l'Aveyron. Audit Flash dès 490 € HT.",
   directAnswerEn:

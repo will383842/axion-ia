@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GERARDMER_COPY: VilleCopy = {
   pitchFr:
-    "Gérardmer (88), surnommée la « Perle des Vosges », est une station touristique majeure articulée autour de son lac glaciaire, de sa station de ski et de son célèbre Festival international du film fantastique. Tissu de TPE/PME hôtellerie-restauration, tourisme outdoor, commerce, artisanat textile (linge des Vosges) et services. Axion-IA y intervient pour tous types d'activités.",
+    "Gérardmer (88), surnommée la « Perle des Vosges », est une station touristique majeure articulée autour de son lac glaciaire, de sa station de ski et de son célèbre Festival international du film fantastique. Tissu de TPE/PME hôtellerie-restauration, tourisme outdoor, commerce, artisanat textile (linge des Vosges) et services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Gérardmer (88), surnommée la « Perle des Vosges », est une station touristique majeure articulée autour de son lac glaciaire, de sa station de ski et de son célèbre Festival international du film fantastique. Tissu de TPE/PME hôtellerie-restauration, tourisme outdoor, commerce, artisanat textile (linge des Vosges) et services. Axion-IA y intervient pour tous types d'activités.",
+    "Gérardmer (88), surnommée la « Perle des Vosges », est une station touristique majeure articulée autour de son lac glaciaire, de sa station de ski et de son célèbre Festival international du film fantastique. Tissu de TPE/PME hôtellerie-restauration, tourisme outdoor, commerce, artisanat textile (linge des Vosges) et services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gérardmer (88). Nous accompagnons TPE et PME : hôteliers-restaurateurs, professionnels du tourisme outdoor, commerçants, artisans textiles (linge des Vosges) et prestataires de services du massif vosgien. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const GERARDMER_COPY: VilleCopy = {
       en: "Audit IA à Gérardmer : diagnostic adapté aux hôteliers-restaurateurs, professionnels du tourisme outdoor, commerçants, artisans textiles et prestataires de services du massif vosgien. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Gérardmer : formats adaptés à l'hôtel, au restaurant, au commerce touristique, à l'atelier textile ou à la TPE de services. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Gérardmer : formats adaptés à l'hôtel, au restaurant, au commerce touristique, à l'atelier textile ou à la TPE de services. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Gérardmer : formats adaptés à l'hôtel, au restaurant, au commerce touristique, à l'atelier textile ou à la TPE de services. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Gérardmer : formats adaptés à l'hôtel, au restaurant, au commerce touristique, à l'atelier textile ou à la TPE de services. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Gérardmer : automatisation réservations hôtelières et locations saisonnières, CRM clients touristiques multilingues, gestion yield et prévision affluence, e-commerce textile vosgien, agents conversationnels et automatisations administratives pour PME touristiques.",

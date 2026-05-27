@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ROSPORDEN_COPY: VilleCopy = {
   pitchFr:
-    "Rosporden (29), commune du sud Finistère, est connue pour son étang en centre-ville, sa biscuiterie traditionnelle et sa position de nœud ferroviaire (gare TER Quimper-Lorient). Tissu TPE artisans, PME agroalimentaires, commerces, tourisme vert et services. Axion-IA y intervient pour tous types d'activités.",
+    "Rosporden (29), commune du sud Finistère, est connue pour son étang en centre-ville, sa biscuiterie traditionnelle et sa position de nœud ferroviaire (gare TER Quimper-Lorient). Tissu TPE artisans, PME agroalimentaires, commerces, tourisme vert et services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Rosporden (29), commune du sud Finistère, est connue pour son étang en centre-ville, sa biscuiterie traditionnelle et sa position de nœud ferroviaire (gare TER Quimper-Lorient). Tissu TPE artisans, PME agroalimentaires, commerces, tourisme vert et services. Axion-IA y intervient pour tous types d'activités.",
+    "Rosporden (29), commune du sud Finistère, est connue pour son étang en centre-ville, sa biscuiterie traditionnelle et sa position de nœud ferroviaire (gare TER Quimper-Lorient). Tissu TPE artisans, PME agroalimentaires, commerces, tourisme vert et services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rosporden (29). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et biscuiteries, commerçants, acteurs du tourisme vert, professions libérales et services aux entreprises du sud Finistère. Audit Flash à 490 € HT.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const ROSPORDEN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Rosporden : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et acteurs du tourisme vert du sud Finistère. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Rosporden : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et acteurs du tourisme vert du sud Finistère. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Rosporden : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et acteurs du tourisme vert du sud Finistère. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Rosporden : diagnostic adapté aux TPE artisans, PME agroalimentaires, commerçants et acteurs du tourisme vert du sud Finistère. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Rosporden : formats adaptés à la biscuiterie, l'atelier artisan, le commerce ou l'hébergement touristique. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Rosporden : formats adaptés à la biscuiterie, l'atelier artisan, le commerce ou l'hébergement touristique. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Rosporden : formats adaptés à la biscuiterie, l'atelier artisan, le commerce ou l'hébergement touristique. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Rosporden : formats adaptés à la biscuiterie, l'atelier artisan, le commerce ou l'hébergement touristique. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Rosporden : automatisation traçabilité agroalimentaire, contrôle qualité biscuiterie, agents conversationnels tourisme, prédiction saisonnalité. Adapté PME sud Finistère.",
@@ -64,7 +64,7 @@ export const ROSPORDEN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Rosporden ?",
-      a: "Nos consultants viennent de Quimper (20 min) ou Lorient (50 min). Gare TER Rosporden accessible (ligne Quimper-Lorient). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Nos consultants viennent de Quimper (20 min) ou Lorient (50 min). Gare TER Rosporden accessible (ligne Quimper-Lorient). Pour les multi-jours, hébergement local possible. Coûts de déplacement à part, tarification transparente.",
     },
   ],
 };

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const HERIC_COPY: VilleCopy = {
   pitchFr:
-    "Héric (44), commune résidentielle du nord de l'agglomération nantaise en Loire-Atlantique, sur l'axe Nantes-Rennes. Tissu TPE artisans et commerçants, PME services et bâtiment, exploitations agricoles, professions libérales, services de proximité. Axion-IA y intervient pour tous types d'activités du nord nantais.",
+    "Héric (44), commune résidentielle du nord de l'agglomération nantaise en Loire-Atlantique, sur l'axe Nantes-Rennes. Tissu TPE artisans et commerçants, PME services et bâtiment, exploitations agricoles, professions libérales, services de proximité. Axion-IA couvre l'ensemble des activités professionnelles présentes du nord nantais.",
   pitchEn:
-    "Héric (44), commune résidentielle du nord de l'agglomération nantaise en Loire-Atlantique, sur l'axe Nantes-Rennes. Tissu TPE artisans et commerçants, PME services et bâtiment, exploitations agricoles, professions libérales, services de proximité. Axion-IA y intervient pour tous types d'activités du nord nantais.",
+    "Héric (44), commune résidentielle du nord de l'agglomération nantaise en Loire-Atlantique, sur l'axe Nantes-Rennes. Tissu TPE artisans et commerçants, PME services et bâtiment, exploitations agricoles, professions libérales, services de proximité. Axion-IA couvre l'ensemble des activités professionnelles présentes du nord nantais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Héric (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME services et bâtiment, exploitations agricoles, professions libérales et services de proximité du nord nantais.",
   directAnswerEn:

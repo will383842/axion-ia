@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LUYNES_COPY: VilleCopy = {
   pitchFr:
-    "Luynes (37), commune de l'ouest de Tours Métropole en bords de Loire, est connue pour son château médiéval surplombant la vallée et son vignoble AOC Touraine. Tissu TPE artisans, viticulteurs, commerces, professions libérales et PME de services. Axion-IA y intervient pour tous types d'activités.",
+    "Luynes (37), commune de l'ouest de Tours Métropole en bords de Loire, est connue pour son château médiéval surplombant la vallée et son vignoble AOC Touraine. Tissu TPE artisans, viticulteurs, commerces, professions libérales et PME de services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Luynes (37), commune de l'ouest de Tours Métropole en bords de Loire, est connue pour son château médiéval surplombant la vallée et son vignoble AOC Touraine. Tissu TPE artisans, viticulteurs, commerces, professions libérales et PME de services. Axion-IA y intervient pour tous types d'activités.",
+    "Luynes (37), commune de l'ouest de Tours Métropole en bords de Loire, est connue pour son château médiéval surplombant la vallée et son vignoble AOC Touraine. Tissu TPE artisans, viticulteurs, commerces, professions libérales et PME de services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Luynes (37). Nous accompagnons tous types d'activités : viticulteurs AOC Touraine, TPE artisans BTP, commerçants, professions libérales, hébergeurs touristiques bords de Loire, indépendants et PME de services de Tours Métropole ouest.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LUYNES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Luynes : diagnostic adapté aux viticulteurs AOC Touraine, hébergeurs bords de Loire, TPE artisans, commerçants et professions libérales de Tours Métropole ouest. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Luynes : diagnostic adapté aux viticulteurs AOC Touraine, hébergeurs bords de Loire, TPE artisans, commerçants et professions libérales de Tours Métropole ouest. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Luynes : diagnostic adapté aux viticulteurs AOC Touraine, hébergeurs bords de Loire, TPE artisans, commerçants et professions libérales de Tours Métropole ouest. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Luynes : diagnostic adapté aux viticulteurs AOC Touraine, hébergeurs bords de Loire, TPE artisans, commerçants et professions libérales de Tours Métropole ouest. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Luynes : formats adaptés au domaine viticole, hébergement touristique, cabinet libéral ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
@@ -64,7 +64,7 @@ export const LUYNES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Tours ?",
-      a: "Nos consultants interviennent depuis Tours centre (15 min D952 bords de Loire). Cadre exceptionnel en surplomb de Loire. Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants interviennent depuis Tours centre (15 min D952 bords de Loire). Cadre exceptionnel en surplomb de Loire. Pour les multi-jours, hébergement local possible. Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const TOURNUS_COPY: VilleCopy = {
   pitchFr:
-    "Tournus (71), cité romane en bord de Saône, est un pôle gastronomique et touristique de la Saône-et-Loire. Tissu de TPE/PME restauration, hôtellerie, viticulture, commerce de proximité et artisanat. Axion-IA y intervient pour tous types d'activités.",
+    "Tournus (71), cité romane en bord de Saône, est un pôle gastronomique et touristique de la Saône-et-Loire. Tissu de TPE/PME restauration, hôtellerie, viticulture, commerce de proximité et artisanat. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Tournus (71), cité romane en bord de Saône, est un pôle gastronomique et touristique de la Saône-et-Loire. Tissu de TPE/PME restauration, hôtellerie, viticulture, commerce de proximité et artisanat. Axion-IA y intervient pour tous types d'activités.",
+    "Tournus (71), cité romane en bord de Saône, est un pôle gastronomique et touristique de la Saône-et-Loire. Tissu de TPE/PME restauration, hôtellerie, viticulture, commerce de proximité et artisanat. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tournus (71). Nous accompagnons TPE et PME : restaurateurs, hôteliers, viticulteurs, commerçants de centre-ville et artisans du bord de Saône en Saône-et-Loire. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const TOURNUS_COPY: VilleCopy = {
       en: "Audit IA à Tournus : diagnostic adapté aux restaurateurs, hôteliers, viticulteurs, commerçants et artisans du bord de Saône en Saône-et-Loire. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Tournus : formats adaptés au restaurant, à l'hôtel, au domaine viticole ou au commerce de centre-ville. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Tournus : formats adaptés au restaurant, à l'hôtel, au domaine viticole ou au commerce de centre-ville. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Tournus : formats adaptés au restaurant, à l'hôtel, au domaine viticole ou au commerce de centre-ville. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Tournus : formats adaptés au restaurant, à l'hôtel, au domaine viticole ou au commerce de centre-ville. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Tournus : prévision réservations restauration et hôtellerie, gestion stocks viticoles, agents conversationnels accueil touristique, optimisation planning saisonnier.",

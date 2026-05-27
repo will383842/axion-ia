@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const NOGENT_SUR_SEINE_COPY: VilleCopy = {
   pitchFr:
-    "Nogent-sur-Seine (10), sous-préfecture de l'Aube en bord de Seine, accueille la centrale nucléaire EDF et le musée Camille Claudel. Tissu de TPE artisanales, PME industrielles et de maintenance, commerces de centre-ville et services. Axion-IA y intervient pour tous types d'activités.",
+    "Nogent-sur-Seine (10), sous-préfecture de l'Aube en bord de Seine, accueille la centrale nucléaire EDF et le musée Camille Claudel. Tissu de TPE artisanales, PME industrielles et de maintenance, commerces de centre-ville et services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Nogent-sur-Seine (10), sous-préfecture de l'Aube en bord de Seine, accueille la centrale nucléaire EDF et le musée Camille Claudel. Tissu de TPE artisanales, PME industrielles et de maintenance, commerces de centre-ville et services. Axion-IA y intervient pour tous types d'activités.",
+    "Nogent-sur-Seine (10), sous-préfecture de l'Aube en bord de Seine, accueille la centrale nucléaire EDF et le musée Camille Claudel. Tissu de TPE artisanales, PME industrielles et de maintenance, commerces de centre-ville et services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   seoHook: "nucléaire, industrie & patrimoine sculptural",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nogent-sur-Seine (10). Nous accompagnons TPE et PME de la sous-préfecture auboise : sous-traitants nucléaires, PME industrielles, artisans BTP, commerçants, exploitants agricoles et prestataires de services. Audit Flash dès 490 € HT.",
@@ -34,8 +34,8 @@ export const NOGENT_SUR_SEINE_COPY: VilleCopy = {
       en: "Audit IA à Nogent-sur-Seine : diagnostic adapté aux PME sous-traitantes nucléaires, TPE artisanales, exploitants agricoles et commerçants de la sous-préfecture auboise. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Nogent-sur-Seine : formats adaptés à l'industrie nucléaire, à la TPE artisanale, à l'exploitation agricole ou au commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Nogent-sur-Seine : formats adaptés à l'industrie nucléaire, à la TPE artisanale, à l'exploitation agricole ou au commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Nogent-sur-Seine : formats adaptés à l'industrie nucléaire, à la TPE artisanale, à l'exploitation agricole ou au commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Nogent-sur-Seine : formats adaptés à l'industrie nucléaire, à la TPE artisanale, à l'exploitation agricole ou au commerce. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Nogent-sur-Seine : maintenance prédictive sous-traitance nucléaire, automatisation suivi parcelles céréalières, agents conversationnels tourisme Camille Claudel, classification documents TPE/PME.",

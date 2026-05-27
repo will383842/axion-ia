@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const REVIN_COPY: VilleCopy = {
   pitchFr:
-    "Revin (08), commune ardennaise enserrée dans un méandre spectaculaire de la Meuse, est marquée par son héritage industriel métallurgique et son patrimoine naturel (forêt ardennaise, falaises). TPE artisans, PME industrielles, commerçants de proximité, acteurs touristiques nature et professions libérales forment le tissu économique local. Axion-IA y intervient pour tous types d'activités de la vallée de la Meuse.",
+    "Revin (08), commune ardennaise enserrée dans un méandre spectaculaire de la Meuse, est marquée par son héritage industriel métallurgique et son patrimoine naturel (forêt ardennaise, falaises). TPE artisans, PME industrielles, commerçants de proximité, acteurs touristiques nature et professions libérales forment le tissu économique local. Axion-IA y déploie ses missions auprès de toutes les organisations de la vallée de la Meuse.",
   pitchEn:
-    "Revin (08), commune ardennaise enserrée dans un méandre spectaculaire de la Meuse, est marquée par son héritage industriel métallurgique et son patrimoine naturel (forêt ardennaise, falaises). TPE artisans, PME industrielles, commerçants de proximité, acteurs touristiques nature et professions libérales forment le tissu économique local. Axion-IA y intervient pour tous types d'activités de la vallée de la Meuse.",
+    "Revin (08), commune ardennaise enserrée dans un méandre spectaculaire de la Meuse, est marquée par son héritage industriel métallurgique et son patrimoine naturel (forêt ardennaise, falaises). TPE artisans, PME industrielles, commerçants de proximité, acteurs touristiques nature et professions libérales forment le tissu économique local. Axion-IA y déploie ses missions auprès de toutes les organisations de la vallée de la Meuse.",
   seoHook: "métallurgie & tourisme nature ardennais",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Revin (08). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles métallurgiques, commerçants, acteurs touristiques nature et professions libérales de la vallée de la Meuse. Audit Flash dès 490 € HT, démarrage sous 5 jours.",

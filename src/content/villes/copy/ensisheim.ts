@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ENSISHEIM_COPY: VilleCopy = {
   pitchFr:
-    "Ensisheim (68), commune du centre du Haut-Rhin en Alsace, marquée par le palais de la Régence et l'ancien bassin potassique. Tissu TPE artisanat et commerce, PME industrie légère et services, professions libérales, exploitations agricoles et indépendants du Sud-Alsace. Axion-IA y intervient pour tous types d'activités.",
+    "Ensisheim (68), commune du centre du Haut-Rhin en Alsace, marquée par le palais de la Régence et l'ancien bassin potassique. Tissu TPE artisanat et commerce, PME industrie légère et services, professions libérales, exploitations agricoles et indépendants du Sud-Alsace. Axion-IA opère pour toutes les structures économiques de la commune.",
   pitchEn:
-    "Ensisheim (68), commune du centre du Haut-Rhin en Alsace, marquée par le palais de la Régence et l'ancien bassin potassique. Tissu TPE artisanat et commerce, PME industrie légère et services, professions libérales, exploitations agricoles et indépendants du Sud-Alsace. Axion-IA y intervient pour tous types d'activités.",
+    "Ensisheim (68), commune du centre du Haut-Rhin en Alsace, marquée par le palais de la Régence et l'ancien bassin potassique. Tissu TPE artisanat et commerce, PME industrie légère et services, professions libérales, exploitations agricoles et indépendants du Sud-Alsace. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ensisheim (68). Nous accompagnons tous types d'activités : TPE artisanat et commerce, PME industrie légère et services, professions libérales, exploitations agricoles et indépendants du centre Haut-Rhin. Audit Flash dès 490 € HT.",
   directAnswerEn:

@@ -29,12 +29,12 @@ export const BOURG_SAINT_ANDEOL_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Bourg-Saint-Andéol : diagnostic adapté aux agriculteurs, PME tertiaires, acteurs tourisme, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Bourg-Saint-Andéol : diagnostic adapté aux agriculteurs, PME tertiaires, acteurs tourisme, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Bourg-Saint-Andéol : diagnostic adapté aux agriculteurs, PME tertiaires, acteurs tourisme, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
+      en: "Audit IA à Bourg-Saint-Andéol : diagnostic adapté aux agriculteurs, PME tertiaires, acteurs tourisme, TPE artisans. Audit Flash 490 € HT avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Bourg-Saint-Andéol : formats adaptés à l'exploitation, bureau, site patrimonial, commerce. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Bourg-Saint-Andéol : formats adaptés à l'exploitation, bureau, site patrimonial, commerce. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Bourg-Saint-Andéol : formats adaptés à l'exploitation, bureau, site patrimonial, commerce. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Bourg-Saint-Andéol : formats adaptés à l'exploitation, bureau, site patrimonial, commerce. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Bourg-Saint-Andéol : classification photos cultures, agents conversationnels visiteurs patrimoine multilingue, automatisation workflow, CRM augmentés.",
@@ -64,7 +64,7 @@ export const BOURG_SAINT_ANDEOL_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Valence ?",
-      a: "Lyon (1h45) ou Valence (50 min). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Lyon (1h45) ou Valence (50 min). Coûts de déplacement à part, tarification transparente.",
     },
   ],
 };

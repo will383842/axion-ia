@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const RAISMES_COPY: VilleCopy = {
   pitchFr:
-    "Raismes (59), commune de l'agglomération de Valenciennes au cœur du parc naturel régional Scarpe-Escaut, dans le Nord. Tissu TPE artisans, PME industrielles et logistiques, commerces de proximité, professions libérales et indépendants. Axion-IA y intervient pour tous types d'activités du Valenciennois.",
+    "Raismes (59), commune de l'agglomération de Valenciennes au cœur du parc naturel régional Scarpe-Escaut, dans le Nord. Tissu TPE artisans, PME industrielles et logistiques, commerces de proximité, professions libérales et indépendants. Axion-IA accompagne entreprises et indépendants de tous secteurs du Valenciennois.",
   pitchEn:
-    "Raismes (59), commune de l'agglomération de Valenciennes au cœur du parc naturel régional Scarpe-Escaut, dans le Nord. Tissu TPE artisans, PME industrielles et logistiques, commerces de proximité, professions libérales et indépendants. Axion-IA y intervient pour tous types d'activités du Valenciennois.",
+    "Raismes (59), commune de l'agglomération de Valenciennes au cœur du parc naturel régional Scarpe-Escaut, dans le Nord. Tissu TPE artisans, PME industrielles et logistiques, commerces de proximité, professions libérales et indépendants. Axion-IA accompagne entreprises et indépendants de tous secteurs du Valenciennois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Raismes (59). Nous accompagnons TPE artisans, PME industrielles et logistiques, commerçants, professions libérales et indépendants du Valenciennois, parc naturel Scarpe-Escaut. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
   directAnswerEn:

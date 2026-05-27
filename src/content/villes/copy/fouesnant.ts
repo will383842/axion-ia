@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FOUESNANT_COPY: VilleCopy = {
   pitchFr:
-    "Fouesnant (29), station balnéaire du littoral sud Finistère, est renommée pour son cidre AOP Cornouaille et ses plages (Cap Coz, Beg Meil, archipel des Glénan). Tissu TPE touristiques, PME cidricoles et agroalimentaires, artisans BTP, commerces saisonniers et services. Axion-IA y intervient pour tous types d'activités du Pays fouesnantais et de la Cornouaille.",
+    "Fouesnant (29), station balnéaire du littoral sud Finistère, est renommée pour son cidre AOP Cornouaille et ses plages (Cap Coz, Beg Meil, archipel des Glénan). Tissu TPE touristiques, PME cidricoles et agroalimentaires, artisans BTP, commerces saisonniers et services. Axion-IA y déploie ses missions auprès de toutes les organisations du Pays fouesnantais et de la Cornouaille.",
   pitchEn:
-    "Fouesnant (29), station balnéaire du littoral sud Finistère, est renommée pour son cidre AOP Cornouaille et ses plages (Cap Coz, Beg Meil, archipel des Glénan). Tissu TPE touristiques, PME cidricoles et agroalimentaires, artisans BTP, commerces saisonniers et services. Axion-IA y intervient pour tous types d'activités du Pays fouesnantais et de la Cornouaille.",
+    "Fouesnant (29), station balnéaire du littoral sud Finistère, est renommée pour son cidre AOP Cornouaille et ses plages (Cap Coz, Beg Meil, archipel des Glénan). Tissu TPE touristiques, PME cidricoles et agroalimentaires, artisans BTP, commerces saisonniers et services. Axion-IA y déploie ses missions auprès de toutes les organisations du Pays fouesnantais et de la Cornouaille.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fouesnant (29). Nous accompagnons tous types d'activités : TPE touristiques (hôtels, campings, restaurants), PME cidricoles AOP Cornouaille, artisans BTP, commerçants saisonniers, indépendants, professions libérales et services aux entreprises du Pays fouesnantais.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const FOUESNANT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fouesnant : diagnostic adapté aux TPE touristiques, PME cidricoles AOP, ostréiculteurs, artisans BTP et commerçants saisonniers du Pays fouesnantais. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Fouesnant : diagnostic adapté aux TPE touristiques, PME cidricoles AOP, ostréiculteurs, artisans BTP et commerçants saisonniers du Pays fouesnantais. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Fouesnant : diagnostic adapté aux TPE touristiques, PME cidricoles AOP, ostréiculteurs, artisans BTP et commerçants saisonniers du Pays fouesnantais. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
+      en: "Audit IA à Fouesnant : diagnostic adapté aux TPE touristiques, PME cidricoles AOP, ostréiculteurs, artisans BTP et commerçants saisonniers du Pays fouesnantais. Audit Flash à 490 € HT, retour sur investissement chiffré accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Fouesnant : formats adaptés à l'hôtel, au camping, à la cidrerie ou au commerce saisonnier. Vos équipes repartent autonomes sur outils IA configurés métier.",

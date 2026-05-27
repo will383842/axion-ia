@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CARNOUX_EN_PROVENCE_COPY: VilleCopy = {
   pitchFr:
-    "Carnoux-en-Provence (13), petite commune résidentielle à l'est de Marseille entre Cassis et Aubagne, offre un cadre de vie privilégié aux familles et cadres du bassin marseillais. Tissu de TPE indépendants, professions libérales, commerçants et artisans. Axion-IA y intervient pour tous types d'activités.",
+    "Carnoux-en-Provence (13), petite commune résidentielle à l'est de Marseille entre Cassis et Aubagne, offre un cadre de vie privilégié aux familles et cadres du bassin marseillais. Tissu de TPE indépendants, professions libérales, commerçants et artisans. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Carnoux-en-Provence (13), petite commune résidentielle à l'est de Marseille entre Cassis et Aubagne, offre un cadre de vie privilégié aux familles et cadres du bassin marseillais. Tissu de TPE indépendants, professions libérales, commerçants et artisans. Axion-IA y intervient pour tous types d'activités.",
+    "Carnoux-en-Provence (13), petite commune résidentielle à l'est de Marseille entre Cassis et Aubagne, offre un cadre de vie privilégié aux familles et cadres du bassin marseillais. Tissu de TPE indépendants, professions libérales, commerçants et artisans. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carnoux-en-Provence (13). Nous accompagnons TPE indépendants, professions libérales, commerçants, artisans et PME tertiaires de l'est marseillais. Audit Flash dès 490 € HT.",
   directAnswerEn:

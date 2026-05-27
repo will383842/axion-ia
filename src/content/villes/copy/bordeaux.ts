@@ -57,6 +57,8 @@ export const BORDEAUX_COPY: VilleCopy = {
   directAnswerEn:
     "Axion-IA is a senior AI architects consultancy that intervenes in Bordeaux (33063) and across the Bordeaux Métropole (Mérignac, Pessac, Talence, Le Bouscat, Bègles, Lormont). We support micro-businesses, SMEs, mid-caps and large enterprises on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. Priority sectors: aerospace-defence (Aerospace Valley), premium viticulture, digital (French Tech Bordeaux), health-research (Carreire campus), consulting and B2B services. No tech lock-in, public pricing displayed.",
 
+  seoHook: "aéronautique, viticole & deeptech",
+
   topSectorsNaf: [
     "Aéronautique & Défense",
     "Viticulture & Négoce de vin",

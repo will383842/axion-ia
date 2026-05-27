@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const TREGUEUX_COPY: VilleCopy = {
   pitchFr:
-    "Trégueux (22), commune de l'agglomération de Saint-Brieuc, pôle commercial majeur des Côtes-d'Armor avec ses zones d'activités et grandes enseignes. Tissu de TPE et PME du commerce, de la distribution, des services aux entreprises, artisans et professions libérales. Axion-IA y intervient pour tous types d'activités de l'agglo briochine.",
+    "Trégueux (22), commune de l'agglomération de Saint-Brieuc, pôle commercial majeur des Côtes-d'Armor avec ses zones d'activités et grandes enseignes. Tissu de TPE et PME du commerce, de la distribution, des services aux entreprises, artisans et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglo briochine.",
   pitchEn:
-    "Trégueux (22), commune de l'agglomération de Saint-Brieuc, pôle commercial majeur des Côtes-d'Armor avec ses zones d'activités et grandes enseignes. Tissu de TPE et PME du commerce, de la distribution, des services aux entreprises, artisans et professions libérales. Axion-IA y intervient pour tous types d'activités de l'agglo briochine.",
+    "Trégueux (22), commune de l'agglomération de Saint-Brieuc, pôle commercial majeur des Côtes-d'Armor avec ses zones d'activités et grandes enseignes. Tissu de TPE et PME du commerce, de la distribution, des services aux entreprises, artisans et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglo briochine.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trégueux (22). Nous accompagnons TPE et PME : commerces, entreprises de distribution, artisans, PME de services et professions libérales de ce pôle commercial de l'agglomération de Saint-Brieuc. Audit Flash dès 490 € HT.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CESSY_COPY: VilleCopy = {
   pitchFr:
-    "Cessy (01), commune du pays de Gex dans l'Ain, est positionnée à proximité de la frontière suisse et de Genève. Tissu économie frontalière, PME tertiaires, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités gessiennes.",
+    "Cessy (01), commune du pays de Gex dans l'Ain, est positionnée à proximité de la frontière suisse et de Genève. Tissu économie frontalière, PME tertiaires, TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs gessiennes.",
   pitchEn:
-    "Cessy (01), commune du pays de Gex dans l'Ain, est positionnée à proximité de la frontière suisse et de Genève. Tissu économie frontalière, PME tertiaires, TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités gessiennes.",
+    "Cessy (01), commune du pays de Gex dans l'Ain, est positionnée à proximité de la frontière suisse et de Genève. Tissu économie frontalière, PME tertiaires, TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs gessiennes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cessy (01). Nous accompagnons tous types d'activités : PME tertiaires pays de Gex, économie frontalière Genève, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const CESSY_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Cessy : diagnostic adapté aux PME tertiaires pays de Gex, frontaliers Genève, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Cessy : diagnostic adapté aux PME tertiaires pays de Gex, frontaliers Genève, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Cessy : diagnostic adapté aux PME tertiaires pays de Gex, frontaliers Genève, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Cessy : diagnostic adapté aux PME tertiaires pays de Gex, frontaliers Genève, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Cessy : formats adaptés au bureau, commerce, atelier. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Cessy : formats adaptés au bureau, commerce, atelier. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Cessy : formats adaptés au bureau, commerce, atelier. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Cessy : formats adaptés au bureau, commerce, atelier. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Cessy : agents conversationnels multilingue FR/EN/DE, automatisation workflow transfrontalier, classification documents. Pays de Gex.",

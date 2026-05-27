@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PETITE_FORET_COPY: VilleCopy = {
   pitchFr:
-    "Petite-Forêt (59), commune du Nord dans l'agglomération de Valenciennes, est une ville résidentielle de la vallée de l'Escaut. Tissu mixte : TPE artisans bâtiment, PME logistique et transport, commerces de proximité, professions libérales, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Petite-Forêt (59), commune du Nord dans l'agglomération de Valenciennes, est une ville résidentielle de la vallée de l'Escaut. Tissu mixte : TPE artisans bâtiment, PME logistique et transport, commerces de proximité, professions libérales, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Petite-Forêt (59), commune du Nord dans l'agglomération de Valenciennes, est une ville résidentielle de la vallée de l'Escaut. Tissu mixte : TPE artisans bâtiment, PME logistique et transport, commerces de proximité, professions libérales, services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Petite-Forêt (59), commune du Nord dans l'agglomération de Valenciennes, est une ville résidentielle de la vallée de l'Escaut. Tissu mixte : TPE artisans bâtiment, PME logistique et transport, commerces de proximité, professions libérales, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Petite-Forêt (59). Nous accompagnons tous types d'activités : TPE artisans bâtiment, PME logistique et transport, commerces de proximité, professions libérales et services aux entreprises de l'agglomération valenciennoise. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const PETITE_FORET_COPY: VilleCopy = {
   seoHook: "logistique, BTP & services",
   servicesContext: {
     audit: {
-      fr: "Audit IA à Petite-Forêt : diagnostic adapté aux TPE artisans bâtiment, PME logistique-transport, commerces et professions libérales de l'agglomération valenciennoise. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Petite-Forêt : diagnostic adapté aux TPE artisans bâtiment, PME logistique-transport, commerces et professions libérales de l'agglomération valenciennoise. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Petite-Forêt : diagnostic adapté aux TPE artisans bâtiment, PME logistique-transport, commerces et professions libérales de l'agglomération valenciennoise. Audit Flash 490 € HT, ROI documenté en chiffres.",
+      en: "Audit IA à Petite-Forêt : diagnostic adapté aux TPE artisans bâtiment, PME logistique-transport, commerces et professions libérales de l'agglomération valenciennoise. Audit Flash 490 € HT, ROI documenté en chiffres.",
     },
     interventions: {
       fr: "Interventions IA sur site à Petite-Forêt : formats adaptés au dépôt logistique, au chantier BTP, au commerce, au cabinet libéral. Vos équipes repartent autonomes sur outils IA.",
@@ -65,7 +65,7 @@ export const PETITE_FORET_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lille ?",
-      a: "Nos consultants viennent de Lille (50 min via A23). Frais de déplacement facturés à part du forfait, tarifs publics. Coaching 1-to-1 possible en visio.",
+      a: "Nos consultants viennent de Lille (50 min via A23). Déplacements facturés séparément, grille tarifaire publique. Coaching 1-to-1 possible en visio.",
     },
   ],
 };

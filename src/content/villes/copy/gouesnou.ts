@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GOUESNOU_COPY: VilleCopy = {
   pitchFr:
-    "Gouesnou (29), commune de l'agglomération brestoise au nord de Brest, concentre d'importantes zones commerciales et d'activités économiques. TPE artisans, PME commerciales et logistiques, enseignes de distribution, professions libérales, prestataires de services et indépendants composent son tissu économique. Axion-IA y intervient pour tous types d'activités de l'agglomération brestoise.",
+    "Gouesnou (29), commune de l'agglomération brestoise au nord de Brest, concentre d'importantes zones commerciales et d'activités économiques. TPE artisans, PME commerciales et logistiques, enseignes de distribution, professions libérales, prestataires de services et indépendants composent son tissu économique. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération brestoise.",
   pitchEn:
-    "Gouesnou (29), commune de l'agglomération brestoise au nord de Brest, concentre d'importantes zones commerciales et d'activités économiques. TPE artisans, PME commerciales et logistiques, enseignes de distribution, professions libérales, prestataires de services et indépendants composent son tissu économique. Axion-IA y intervient pour tous types d'activités de l'agglomération brestoise.",
+    "Gouesnou (29), commune de l'agglomération brestoise au nord de Brest, concentre d'importantes zones commerciales et d'activités économiques. TPE artisans, PME commerciales et logistiques, enseignes de distribution, professions libérales, prestataires de services et indépendants composent son tissu économique. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération brestoise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gouesnou (29). Nous accompagnons tous types d'activités : TPE artisans, PME commerciales et logistiques des zones d'activités, prestataires de services, professions libérales, enseignes de distribution et indépendants de l'agglomération brestoise.",
   directAnswerEn:
@@ -30,8 +30,8 @@ export const GOUESNOU_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Gouesnou : diagnostic adapté aux TPE artisans, PME commerciales et logistiques des zones d'activités, prestataires de services et professions libérales de l'agglomération brestoise. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Gouesnou : diagnostic adapté aux TPE artisans, PME commerciales et logistiques des zones d'activités, prestataires de services et professions libérales de l'agglomération brestoise. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Gouesnou : diagnostic adapté aux TPE artisans, PME commerciales et logistiques des zones d'activités, prestataires de services et professions libérales de l'agglomération brestoise. Audit Flash 490 € HT avec ROI quantifié accessible.",
+      en: "Audit IA à Gouesnou : diagnostic adapté aux TPE artisans, PME commerciales et logistiques des zones d'activités, prestataires de services et professions libérales de l'agglomération brestoise. Audit Flash 490 € HT avec ROI quantifié accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Gouesnou : formats adaptés aux PME commerciales, logisticiens, prestataires de services ou TPE artisans des zones d'activités. Vos équipes repartent autonomes sur les outils IA métier.",

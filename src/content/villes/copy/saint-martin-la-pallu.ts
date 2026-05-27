@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_MARTIN_LA_PALLU_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Martin-la-Pallu (86), commune nouvelle du nord de la Vienne intégrée à Grand Poitiers, regroupe plusieurs bourgs dynamiques autour de Neuville-de-Poitou. Tissu TPE artisans BTP, PME négoce, agriculture céréalière, commerces de proximité et services. Axion-IA y intervient pour tous types d'activités du nord Poitou.",
+    "Saint-Martin-la-Pallu (86), commune nouvelle du nord de la Vienne intégrée à Grand Poitiers, regroupe plusieurs bourgs dynamiques autour de Neuville-de-Poitou. Tissu TPE artisans BTP, PME négoce, agriculture céréalière, commerces de proximité et services. Axion-IA couvre l'ensemble des activités professionnelles présentes du nord Poitou.",
   pitchEn:
-    "Saint-Martin-la-Pallu (86), commune nouvelle du nord de la Vienne intégrée à Grand Poitiers, regroupe plusieurs bourgs dynamiques autour de Neuville-de-Poitou. Tissu TPE artisans BTP, PME négoce, agriculture céréalière, commerces de proximité et services. Axion-IA y intervient pour tous types d'activités du nord Poitou.",
+    "Saint-Martin-la-Pallu (86), commune nouvelle du nord de la Vienne intégrée à Grand Poitiers, regroupe plusieurs bourgs dynamiques autour de Neuville-de-Poitou. Tissu TPE artisans BTP, PME négoce, agriculture céréalière, commerces de proximité et services. Axion-IA couvre l'ensemble des activités professionnelles présentes du nord Poitou.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Martin-la-Pallu (86). Nous accompagnons tous types d'activités : TPE artisans BTP, PME négoce et agriculture, commerçants, indépendants, professions libérales et services aux entreprises de la communauté urbaine de Grand Poitiers nord.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const SAINT_MARTIN_LA_PALLU_COPY: VilleCopy = {
       en: "Audit IA à Saint-Martin-la-Pallu : diagnostic adapté aux TPE artisans BTP, PME négoce, exploitants agricoles et commerçants du nord Poitou. ROI chiffré, audit Flash 490 € HT accessible.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Martin-la-Pallu : formats adaptés à l'exploitation agricole, atelier artisan, négoce ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Saint-Martin-la-Pallu : formats adaptés à l'exploitation agricole, atelier artisan, négoce ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Saint-Martin-la-Pallu : formats adaptés à l'exploitation agricole, atelier artisan, négoce ou commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
+      en: "Interventions IA sur site à Saint-Martin-la-Pallu : formats adaptés à l'exploitation agricole, atelier artisan, négoce ou commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Martin-la-Pallu : automatisation devis BTP, classification photos parcelles, prédiction stocks négoce, agents conversationnels, CRM augmenté. Tous secteurs Grand Poitiers nord.",

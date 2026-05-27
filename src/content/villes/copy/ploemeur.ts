@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PLOEMEUR_COPY: VilleCopy = {
   pitchFr:
-    "Ploemeur (56), 4e commune du Morbihan peuplée de 18 872 habitants, conjugue façade littorale atlantique, plages familiales, nautisme et économie résidentielle au sein de Lorient Agglomération. TPE et PME locales, artisans, commerçants, professionnels du nautisme, hôteliers et professions libérales y prospèrent. Axion-IA y intervient pour tous types d'activités du pays de Lorient.",
+    "Ploemeur (56), 4e commune du Morbihan peuplée de 18 872 habitants, conjugue façade littorale atlantique, plages familiales, nautisme et économie résidentielle au sein de Lorient Agglomération. TPE et PME locales, artisans, commerçants, professionnels du nautisme, hôteliers et professions libérales y prospèrent. Axion-IA accompagne entreprises et indépendants de tous secteurs du pays de Lorient.",
   pitchEn:
-    "Ploemeur (56), 4e commune du Morbihan peuplée de 18 872 habitants, conjugue façade littorale atlantique, plages familiales, nautisme et économie résidentielle au sein de Lorient Agglomération. TPE et PME locales, artisans, commerçants, professionnels du nautisme, hôteliers et professions libérales y prospèrent. Axion-IA y intervient pour tous types d'activités du pays de Lorient.",
+    "Ploemeur (56), 4e commune du Morbihan peuplée de 18 872 habitants, conjugue façade littorale atlantique, plages familiales, nautisme et économie résidentielle au sein de Lorient Agglomération. TPE et PME locales, artisans, commerçants, professionnels du nautisme, hôteliers et professions libérales y prospèrent. Axion-IA accompagne entreprises et indépendants de tous secteurs du pays de Lorient.",
   seoHook: "littoral, nautisme & tourisme pays de Lorient",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ploemeur (56). Nous accompagnons tous types d'activités : TPE et PME locales, artisans, commerçants, professionnels du nautisme, hôteliers et professions libérales du pays de Lorient. Audit Flash dès 490 € HT, démarrage sous 5 jours.",

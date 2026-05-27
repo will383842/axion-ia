@@ -29,8 +29,8 @@ export const FONTAINES_SUR_SAONE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Fontaines-sur-Saône : diagnostic adapté aux PME tertiaires nord lyonnais, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Fontaines-sur-Saône : diagnostic adapté aux PME tertiaires nord lyonnais, professions libérales, TPE artisans. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Fontaines-sur-Saône : diagnostic adapté aux PME tertiaires nord lyonnais, professions libérales, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Fontaines-sur-Saône : diagnostic adapté aux PME tertiaires nord lyonnais, professions libérales, TPE artisans. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à Fontaines-sur-Saône : formats adaptés au bureau, cabinet, commerce. Vos équipes repartent autonomes sur outils IA.",

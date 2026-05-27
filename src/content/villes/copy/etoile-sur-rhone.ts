@@ -29,12 +29,12 @@ export const ETOILE_SUR_RHONE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Étoile-sur-Rhône : diagnostic adapté aux PME tertiaires/industrielles sud-Valence, TPE artisans, agriculteurs vallée Rhône. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Étoile-sur-Rhône : diagnostic adapté aux PME tertiaires/industrielles sud-Valence, TPE artisans, agriculteurs vallée Rhône. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Étoile-sur-Rhône : diagnostic adapté aux PME tertiaires/industrielles sud-Valence, TPE artisans, agriculteurs vallée Rhône. ROI mesurable, audit Flash dès 490 € HT.",
+      en: "Audit IA à Étoile-sur-Rhône : diagnostic adapté aux PME tertiaires/industrielles sud-Valence, TPE artisans, agriculteurs vallée Rhône. ROI mesurable, audit Flash dès 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Étoile-sur-Rhône : formats adaptés au bureau tertiaire, atelier industriel, exploitation agricole. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Étoile-sur-Rhône : formats adaptés au bureau tertiaire, atelier industriel, exploitation agricole. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Étoile-sur-Rhône : formats adaptés au bureau tertiaire, atelier industriel, exploitation agricole. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
+      en: "Interventions IA sur site à Étoile-sur-Rhône : formats adaptés au bureau tertiaire, atelier industriel, exploitation agricole. Vos collaborateurs gèrent leurs solutions IA configurées sur-mesure.",
     },
     implementation: {
       fr: "Implémentation IA à Étoile-sur-Rhône : agents conversationnels B2B, automatisation workflow tertiaire, prédiction maintenance industrielle, classification photos vergers. Sud-Valence.",
@@ -64,7 +64,7 @@ export const ETOILE_SUR_RHONE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Valence ?",
-      a: "Nos consultants viennent de Lyon (1h A7) ou Valence (15 min). Pour les multi-jours, hébergement local possible. Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (1h A7) ou Valence (15 min). Pour les multi-jours, hébergement local possible. Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const RETHEL_COPY: VilleCopy = {
   pitchFr:
-    "Rethel (08), sous-préfecture des Ardennes en bord d'Aisne, est célèbre pour son boudin blanc IGP et son patrimoine agroalimentaire. TPE artisans, PME agroalimentaires, commerçants de centre-ville, exploitations agricoles et professions libérales forment le tissu économique local. Axion-IA y intervient pour tous types d'activités du Rethélois.",
+    "Rethel (08), sous-préfecture des Ardennes en bord d'Aisne, est célèbre pour son boudin blanc IGP et son patrimoine agroalimentaire. TPE artisans, PME agroalimentaires, commerçants de centre-ville, exploitations agricoles et professions libérales forment le tissu économique local. Axion-IA y déploie ses missions auprès de toutes les organisations du Rethélois.",
   pitchEn:
-    "Rethel (08), sous-préfecture des Ardennes en bord d'Aisne, est célèbre pour son boudin blanc IGP et son patrimoine agroalimentaire. TPE artisans, PME agroalimentaires, commerçants de centre-ville, exploitations agricoles et professions libérales forment le tissu économique local. Axion-IA y intervient pour tous types d'activités du Rethélois.",
+    "Rethel (08), sous-préfecture des Ardennes en bord d'Aisne, est célèbre pour son boudin blanc IGP et son patrimoine agroalimentaire. TPE artisans, PME agroalimentaires, commerçants de centre-ville, exploitations agricoles et professions libérales forment le tissu économique local. Axion-IA y déploie ses missions auprès de toutes les organisations du Rethélois.",
   seoHook: "agroalimentaire & filière agricole ardennaise",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rethel (08). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires (boudin blanc, charcuterie), commerçants, exploitations agricoles et professions libérales du Rethélois. Audit Flash dès 490 € HT, démarrage sous 5 jours.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MONTAUBAN_DE_BRETAGNE_COPY: VilleCopy = {
   pitchFr:
-    "Montauban-de-Bretagne (35), bourg du centre de l'Ille-et-Vilaine entre Rennes et Saint-Brieuc, est un pôle de services rural dynamique. Tissu de TPE artisans BTP, PME de services et logistique, commerces de bourg, professions libérales, exploitants agricoles (polyculture-élevage laitier breton) et agroalimentaire. Axion-IA y intervient pour tous types d'activités.",
+    "Montauban-de-Bretagne (35), bourg du centre de l'Ille-et-Vilaine entre Rennes et Saint-Brieuc, est un pôle de services rural dynamique. Tissu de TPE artisans BTP, PME de services et logistique, commerces de bourg, professions libérales, exploitants agricoles (polyculture-élevage laitier breton) et agroalimentaire. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Montauban-de-Bretagne (35), bourg du centre de l'Ille-et-Vilaine entre Rennes et Saint-Brieuc, est un pôle de services rural dynamique. Tissu de TPE artisans BTP, PME de services et logistique, commerces de bourg, professions libérales, exploitants agricoles (polyculture-élevage laitier breton) et agroalimentaire. Axion-IA y intervient pour tous types d'activités.",
+    "Montauban-de-Bretagne (35), bourg du centre de l'Ille-et-Vilaine entre Rennes et Saint-Brieuc, est un pôle de services rural dynamique. Tissu de TPE artisans BTP, PME de services et logistique, commerces de bourg, professions libérales, exploitants agricoles (polyculture-élevage laitier breton) et agroalimentaire. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montauban-de-Bretagne (35). Nous accompagnons tous types d'activités : TPE artisans BTP, PME de services et logistique du corridor Rennes-Saint-Brieuc, commerçants, professions libérales, exploitants agricoles et acteurs agroalimentaires bretons.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const MONTAUBAN_DE_BRETAGNE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Montauban-de-Bretagne : diagnostic adapté aux TPE artisans, exploitants agricoles, PME logistique et commerçants du centre Ille-et-Vilaine. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Montauban-de-Bretagne : diagnostic adapté aux TPE artisans, exploitants agricoles, PME logistique et commerçants du centre Ille-et-Vilaine. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Montauban-de-Bretagne : diagnostic adapté aux TPE artisans, exploitants agricoles, PME logistique et commerçants du centre Ille-et-Vilaine. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Montauban-de-Bretagne : diagnostic adapté aux TPE artisans, exploitants agricoles, PME logistique et commerçants du centre Ille-et-Vilaine. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Montauban-de-Bretagne : formats adaptés aux exploitations agricoles, ateliers artisans BTP, commerces de bourg et PME logistique. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Montauban-de-Bretagne : formats adaptés aux exploitations agricoles, ateliers artisans BTP, commerces de bourg et PME logistique. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Montauban-de-Bretagne : formats adaptés aux exploitations agricoles, ateliers artisans BTP, commerces de bourg et PME logistique. Vos équipes maîtrisent les outils déployés.",
+      en: "Interventions IA sur site à Montauban-de-Bretagne : formats adaptés aux exploitations agricoles, ateliers artisans BTP, commerces de bourg et PME logistique. Vos équipes maîtrisent les outils déployés.",
     },
     implementation: {
       fr: "Implémentation IA à Montauban-de-Bretagne : traçabilité élevage laitier, automatisation logistique, agents conversationnels client, gestion devis BTP, optimisation chaîne agroalimentaire bretonne.",

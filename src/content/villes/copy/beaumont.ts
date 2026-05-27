@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BEAUMONT_COPY: VilleCopy = {
   pitchFr:
-    "Beaumont (63), commune résidentielle au sud de Clermont-Ferrand, fait partie de Clermont Auvergne Métropole. Tissu PME tertiaires et services, professions libérales, commerces de proximité, TPE artisanat, immobilier résidentiel. Axion-IA y intervient pour tous types d'activités.",
+    "Beaumont (63), commune résidentielle au sud de Clermont-Ferrand, fait partie de Clermont Auvergne Métropole. Tissu PME tertiaires et services, professions libérales, commerces de proximité, TPE artisanat, immobilier résidentiel. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Beaumont (63), commune résidentielle au sud de Clermont-Ferrand, fait partie de Clermont Auvergne Métropole. Tissu PME tertiaires et services, professions libérales, commerces de proximité, TPE artisanat, immobilier résidentiel. Axion-IA y intervient pour tous types d'activités.",
+    "Beaumont (63), commune résidentielle au sud de Clermont-Ferrand, fait partie de Clermont Auvergne Métropole. Tissu PME tertiaires et services, professions libérales, commerces de proximité, TPE artisanat, immobilier résidentiel. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beaumont (63). Nous accompagnons TPE et PME : cabinets professions libérales, sociétés de services tertiaires, commerçants de proximité, artisans, professionnels de l'immobilier résidentiel.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const BEAUMONT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Beaumont : diagnostic adapté aux cabinets professions libérales, PME tertiaires, commerçants, artisans, agences immobilières. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Beaumont : diagnostic adapté aux cabinets professions libérales, PME tertiaires, commerçants, artisans, agences immobilières. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Beaumont : diagnostic adapté aux cabinets professions libérales, PME tertiaires, commerçants, artisans, agences immobilières. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Beaumont : diagnostic adapté aux cabinets professions libérales, PME tertiaires, commerçants, artisans, agences immobilières. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Beaumont : formats adaptés cabinet, bureau, commerce, agence. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Beaumont : formats adaptés cabinet, bureau, commerce, agence. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Beaumont : formats adaptés cabinet, bureau, commerce, agence. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Beaumont : formats adaptés cabinet, bureau, commerce, agence. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Beaumont : automatisation secrétariat médical, gestion dossiers juridiques, CRM augmentés PME, outils prise de rendez-vous, estimations immobilières IA.",

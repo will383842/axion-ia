@@ -52,6 +52,8 @@ export const AMIENS_COPY: VilleCopy = {
   directAnswerEn:
     "Axion-IA is a senior AI architects consultancy that intervenes in Amiens (80) on site. We support micro-businesses, SMEs, mid-caps and large enterprises in the Amiens basin — manufacturing (P&G, Valeo), R&D (Nestlé Purina), bioeconomy (B4C), trade and services — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
+  seoHook: "agro, mécanique & santé",
+
   topSectorsNaf: [
     "Industrie manufacturière & équipement",
     "Commerce, transport & logistique",

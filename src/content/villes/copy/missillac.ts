@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MISSILLAC_COPY: VilleCopy = {
   pitchFr:
-    "Missillac (44), commune rurale de la Brière en Loire-Atlantique, connue pour le domaine de la Bretesche (golf, château). Tissu TPE artisans et commerçants, PME tourisme et hôtellerie, exploitations agricoles, services de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités du secteur Brière-Redon.",
+    "Missillac (44), commune rurale de la Brière en Loire-Atlantique, connue pour le domaine de la Bretesche (golf, château). Tissu TPE artisans et commerçants, PME tourisme et hôtellerie, exploitations agricoles, services de proximité, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations du secteur Brière-Redon.",
   pitchEn:
-    "Missillac (44), commune rurale de la Brière en Loire-Atlantique, connue pour le domaine de la Bretesche (golf, château). Tissu TPE artisans et commerçants, PME tourisme et hôtellerie, exploitations agricoles, services de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités du secteur Brière-Redon.",
+    "Missillac (44), commune rurale de la Brière en Loire-Atlantique, connue pour le domaine de la Bretesche (golf, château). Tissu TPE artisans et commerçants, PME tourisme et hôtellerie, exploitations agricoles, services de proximité, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations du secteur Brière-Redon.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Missillac (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tourisme et hôtellerie, exploitations agricoles, services de proximité et professions libérales du secteur Brière-Redon.",
   directAnswerEn:

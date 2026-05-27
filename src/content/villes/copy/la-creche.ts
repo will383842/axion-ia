@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_CRECHE_COPY: VilleCopy = {
   pitchFr:
-    "La Crèche (79), commune résidentielle à l'est de l'agglomération niortaise dans les Deux-Sèvres, bénéficie de la proximité directe du bassin d'emploi de Niort (mutuelles, assurances). Tissu TPE artisans BTP, commerçants, PME tertiaires, professions libérales, services à la personne. Axion-IA y intervient pour tous types d'activités du bassin niortais est.",
+    "La Crèche (79), commune résidentielle à l'est de l'agglomération niortaise dans les Deux-Sèvres, bénéficie de la proximité directe du bassin d'emploi de Niort (mutuelles, assurances). Tissu TPE artisans BTP, commerçants, PME tertiaires, professions libérales, services à la personne. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin niortais est.",
   pitchEn:
-    "La Crèche (79), commune résidentielle à l'est de l'agglomération niortaise dans les Deux-Sèvres, bénéficie de la proximité directe du bassin d'emploi de Niort (mutuelles, assurances). Tissu TPE artisans BTP, commerçants, PME tertiaires, professions libérales, services à la personne. Axion-IA y intervient pour tous types d'activités du bassin niortais est.",
+    "La Crèche (79), commune résidentielle à l'est de l'agglomération niortaise dans les Deux-Sèvres, bénéficie de la proximité directe du bassin d'emploi de Niort (mutuelles, assurances). Tissu TPE artisans BTP, commerçants, PME tertiaires, professions libérales, services à la personne. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin niortais est.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Crèche (79). Nous accompagnons tous types d'activités : TPE artisans BTP et commerçants, PME tertiaires liées au bassin niortais mutuelles/assurances, professions libérales, services à la personne et prestataires du Haut-Val-de-Sèvre.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LA_CRECHE_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à La Crèche : diagnostic adapté aux TPE artisans BTP, PME tertiaires du bassin niortais, professions libérales et commerçants. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à La Crèche : diagnostic adapté aux TPE artisans BTP, PME tertiaires du bassin niortais, professions libérales et commerçants. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à La Crèche : diagnostic adapté aux TPE artisans BTP, PME tertiaires du bassin niortais, professions libérales et commerçants. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à La Crèche : diagnostic adapté aux TPE artisans BTP, PME tertiaires du bassin niortais, professions libérales et commerçants. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site à La Crèche : formats adaptés au bureau, atelier BTP, commerce ou cabinet. Vos équipes repartent autonomes sur outils IA métier.",

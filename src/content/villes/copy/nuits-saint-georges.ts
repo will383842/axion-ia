@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const NUITS_SAINT_GEORGES_COPY: VilleCopy = {
   pitchFr:
-    "Nuits-Saint-Georges (21), capitale de la Côte de Nuits au cœur de la Bourgogne viticole, est réputée pour ses grands crus classés Climats du vignoble de Bourgogne (UNESCO). Tissu viticulture et négoce vins, oenotourisme, TPE artisans tonnellerie, PME services aux domaines, commerces centre-bourg. Axion-IA y intervient pour tous types d'activités.",
+    "Nuits-Saint-Georges (21), capitale de la Côte de Nuits au cœur de la Bourgogne viticole, est réputée pour ses grands crus classés Climats du vignoble de Bourgogne (UNESCO). Tissu viticulture et négoce vins, oenotourisme, TPE artisans tonnellerie, PME services aux domaines, commerces centre-bourg. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Nuits-Saint-Georges (21), capitale de la Côte de Nuits au cœur de la Bourgogne viticole, est réputée pour ses grands crus classés Climats du vignoble de Bourgogne (UNESCO). Tissu viticulture et négoce vins, oenotourisme, TPE artisans tonnellerie, PME services aux domaines, commerces centre-bourg. Axion-IA y intervient pour tous types d'activités.",
+    "Nuits-Saint-Georges (21), capitale de la Côte de Nuits au cœur de la Bourgogne viticole, est réputée pour ses grands crus classés Climats du vignoble de Bourgogne (UNESCO). Tissu viticulture et négoce vins, oenotourisme, TPE artisans tonnellerie, PME services aux domaines, commerces centre-bourg. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nuits-Saint-Georges (21). Nous accompagnons TPE et PME de la Côte de Nuits : viticulteurs et domaines viticoles, négociants en vins, acteurs de l'oenotourisme, artisans tonneliers, prestataires services aux domaines et commerçants du centre-bourg.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const NUITS_SAINT_GEORGES_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Nuits-Saint-Georges : diagnostic adapté aux viticulteurs, négociants en vins, acteurs oenotourisme, TPE artisans tonnellerie et commerces centre-bourg. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Nuits-Saint-Georges : diagnostic adapté aux viticulteurs, négociants en vins, acteurs oenotourisme, TPE artisans tonnellerie et commerces centre-bourg. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Nuits-Saint-Georges : diagnostic adapté aux viticulteurs, négociants en vins, acteurs oenotourisme, TPE artisans tonnellerie et commerces centre-bourg. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Nuits-Saint-Georges : diagnostic adapté aux viticulteurs, négociants en vins, acteurs oenotourisme, TPE artisans tonnellerie et commerces centre-bourg. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Nuits-Saint-Georges : ateliers dans vos locaux domaine viticole, caveau, bureau négoce ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier vin et oenotourisme.",
-      en: "Interventions IA sur site à Nuits-Saint-Georges : ateliers dans vos locaux domaine viticole, caveau, bureau négoce ou commerce. Vos équipes repartent autonomes sur outils IA configurés métier vin et oenotourisme.",
+      fr: "Interventions IA sur site à Nuits-Saint-Georges : ateliers dans vos locaux domaine viticole, caveau, bureau négoce ou commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés vin et oenotourisme.",
+      en: "Interventions IA sur site à Nuits-Saint-Georges : ateliers dans vos locaux domaine viticole, caveau, bureau négoce ou commerce. Vos équipes acquièrent l'autonomie sur les outils IA déployés vin et oenotourisme.",
     },
     implementation: {
       fr: "Implémentation IA à Nuits-Saint-Georges : gestion parcellaire viticole augmentée, agents conversationnels oenotourisme multilingues, automatisation traçabilité vendanges, CRM domaine viticole, tarification dynamique caveau.",

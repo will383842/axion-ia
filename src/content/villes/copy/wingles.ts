@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const WINGLES_COPY: VilleCopy = {
   pitchFr:
-    "Wingles (62), commune du bassin minier du Pas-de-Calais entre Lens et La Bassée, accueille TPE artisanales, commerces, PME de services et professions libérales. Axion-IA y intervient pour tous types d'activités du bassin minier.",
+    "Wingles (62), commune du bassin minier du Pas-de-Calais entre Lens et La Bassée, accueille TPE artisanales, commerces, PME de services et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin minier.",
   pitchEn:
-    "Wingles (62), commune du bassin minier du Pas-de-Calais entre Lens et La Bassée, accueille TPE artisanales, commerces, PME de services et professions libérales. Axion-IA y intervient pour tous types d'activités du bassin minier.",
+    "Wingles (62), commune du bassin minier du Pas-de-Calais entre Lens et La Bassée, accueille TPE artisanales, commerces, PME de services et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin minier.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wingles (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:

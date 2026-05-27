@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_PANTALEON_DE_LARCHE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Pantaléon-de-Larche (19), commune du sud de l'agglomération briviste en Corrèze, à proximité de l'A20. Tissu TPE/PME artisanat, commerce de proximité, services, agriculture et BTP. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Pantaléon-de-Larche (19), commune du sud de l'agglomération briviste en Corrèze, à proximité de l'A20. Tissu TPE/PME artisanat, commerce de proximité, services, agriculture et BTP. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Saint-Pantaléon-de-Larche (19), commune du sud de l'agglomération briviste en Corrèze, à proximité de l'A20. Tissu TPE/PME artisanat, commerce de proximité, services, agriculture et BTP. Axion-IA y intervient pour tous types d'activités.",
+    "Saint-Pantaléon-de-Larche (19), commune du sud de l'agglomération briviste en Corrèze, à proximité de l'A20. Tissu TPE/PME artisanat, commerce de proximité, services, agriculture et BTP. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Pantaléon-de-Larche (19). Nous accompagnons TPE/PME de l'artisanat, du commerce, des services et de l'agriculture du sud de l'agglo briviste. Audit Flash dès 490 € HT.",
   directAnswerEn:

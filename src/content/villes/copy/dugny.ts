@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const DUGNY_COPY: VilleCopy = {
   pitchFr:
-    "Dugny (93), commune résidentielle de Seine-Saint-Denis bordée par le parc Georges-Valbon et voisine de l'aéroport du Bourget (Salon de l'Aéronautique). Tissu de TPE artisanales, commerçants de proximité, PME de services et prestataires aéronautiques. Axion-IA y intervient pour tous types d'activités.",
+    "Dugny (93), commune résidentielle de Seine-Saint-Denis bordée par le parc Georges-Valbon et voisine de l'aéroport du Bourget (Salon de l'Aéronautique). Tissu de TPE artisanales, commerçants de proximité, PME de services et prestataires aéronautiques. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Dugny (93), commune résidentielle de Seine-Saint-Denis bordée par le parc Georges-Valbon et voisine de l'aéroport du Bourget (Salon de l'Aéronautique). Tissu de TPE artisanales, commerçants de proximité, PME de services et prestataires aéronautiques. Axion-IA y intervient pour tous types d'activités.",
+    "Dugny (93), commune résidentielle de Seine-Saint-Denis bordée par le parc Georges-Valbon et voisine de l'aéroport du Bourget (Salon de l'Aéronautique). Tissu de TPE artisanales, commerçants de proximité, PME de services et prestataires aéronautiques. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Dugny (93). Nous accompagnons tous types d'activités : TPE artisanales et commerçantes, PME de services aux entreprises, prestataires liés à l'aéroport du Bourget, professions libérales, restaurateurs et acteurs associatifs du nord Seine-Saint-Denis.",
   directAnswerEn:

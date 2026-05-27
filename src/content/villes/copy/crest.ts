@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CREST_COPY: VilleCopy = {
   pitchFr:
-    "Crest (26), commune de la vallée de la Drôme, est dominée par la Tour de Crest — réputée comme le plus haut donjon médiéval de France (52 m). Tissu PME tourisme patrimonial, agriculture biologique (vallée Drôme pionnière du bio), TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités drômoises.",
+    "Crest (26), commune de la vallée de la Drôme, est dominée par la Tour de Crest — réputée comme le plus haut donjon médiéval de France (52 m). Tissu PME tourisme patrimonial, agriculture biologique (vallée Drôme pionnière du bio), TPE artisans BTP, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes drômoises.",
   pitchEn:
-    "Crest (26), commune de la vallée de la Drôme, est dominée par la Tour de Crest — réputée comme le plus haut donjon médiéval de France (52 m). Tissu PME tourisme patrimonial, agriculture biologique (vallée Drôme pionnière du bio), TPE artisans BTP, commerces. Axion-IA y intervient pour tous types d'activités drômoises.",
+    "Crest (26), commune de la vallée de la Drôme, est dominée par la Tour de Crest — réputée comme le plus haut donjon médiéval de France (52 m). Tissu PME tourisme patrimonial, agriculture biologique (vallée Drôme pionnière du bio), TPE artisans BTP, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes drômoises.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Crest (26). Nous accompagnons tous types d'activités : acteurs du tourisme patrimonial Tour de Crest, agriculteurs biologiques vallée Drôme, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de la vallée drômoise.",
   directAnswerEn:
@@ -64,7 +64,7 @@ export const CREST_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Valence ?",
-      a: "Nos consultants viennent de Lyon (1h30 A7) ou Valence (30 min). Pour les multi-jours, hébergement local possible (hôtels Crest, gîtes vallée). Frais de déplacement facturés à part du forfait, tarifs publics.",
+      a: "Nos consultants viennent de Lyon (1h30 A7) ou Valence (30 min). Pour les multi-jours, hébergement local possible (hôtels Crest, gîtes vallée). Déplacements facturés séparément, grille tarifaire publique.",
     },
   ],
 };

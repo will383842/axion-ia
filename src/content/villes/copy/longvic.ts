@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LONGVIC_COPY: VilleCopy = {
   pitchFr:
-    "Longvic (21), commune de Dijon Métropole au sud de Dijon connue pour son ancienne base aérienne et ses zones d'activités, est un pôle industriel et logistique dynamique. TPE artisanat et services, PME industrielles et logistiques, commerces de centre-bourg, professions libérales, prestataires aéronautiques et défense. Axion-IA y intervient pour tous types d'activités.",
+    "Longvic (21), commune de Dijon Métropole au sud de Dijon connue pour son ancienne base aérienne et ses zones d'activités, est un pôle industriel et logistique dynamique. TPE artisanat et services, PME industrielles et logistiques, commerces de centre-bourg, professions libérales, prestataires aéronautiques et défense. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Longvic (21), commune de Dijon Métropole au sud de Dijon connue pour son ancienne base aérienne et ses zones d'activités, est un pôle industriel et logistique dynamique. TPE artisanat et services, PME industrielles et logistiques, commerces de centre-bourg, professions libérales, prestataires aéronautiques et défense. Axion-IA y intervient pour tous types d'activités.",
+    "Longvic (21), commune de Dijon Métropole au sud de Dijon connue pour son ancienne base aérienne et ses zones d'activités, est un pôle industriel et logistique dynamique. TPE artisanat et services, PME industrielles et logistiques, commerces de centre-bourg, professions libérales, prestataires aéronautiques et défense. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Longvic (21). Nous accompagnons TPE et PME : artisans et prestataires de services, PME industrielles et logistiques des zones d'activités Dijon Métropole, commerçants de centre-bourg, professions libérales, prestataires aéronautiques et défense. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const LONGVIC_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Longvic : diagnostic adapté aux PME industrielles et logistiques zones d'activités Dijon Métropole, TPE artisans et commerçants centre-bourg, professions libérales, prestataires aéronautiques. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Longvic : diagnostic adapté aux PME industrielles et logistiques zones d'activités Dijon Métropole, TPE artisans et commerçants centre-bourg, professions libérales, prestataires aéronautiques. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Longvic : diagnostic adapté aux PME industrielles et logistiques zones d'activités Dijon Métropole, TPE artisans et commerçants centre-bourg, professions libérales, prestataires aéronautiques. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Longvic : diagnostic adapté aux PME industrielles et logistiques zones d'activités Dijon Métropole, TPE artisans et commerçants centre-bourg, professions libérales, prestataires aéronautiques. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Longvic : formats adaptés atelier industriel, entrepôt logistique, commerce, cabinet, bureau. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Longvic : formats adaptés atelier industriel, entrepôt logistique, commerce, cabinet, bureau. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Longvic : formats adaptés atelier industriel, entrepôt logistique, commerce, cabinet, bureau. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Longvic : formats adaptés atelier industriel, entrepôt logistique, commerce, cabinet, bureau. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Longvic : automatisation production et qualité PME industrielles, optimisation flux logistiques et entrepôts, CRM augmenté commerces, prise de rendez-vous IA professions libérales, reporting industriel et défense.",

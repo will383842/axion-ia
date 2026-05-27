@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const REMIREMONT_COPY: VilleCopy = {
   pitchFr:
-    "Remiremont (88), sous-préfecture des Vosges, est une ancienne ville abbatiale au cœur du massif vosgien sud, traversée par la Moselle. Tissu de TPE/PME administration, commerce de centre-ville sous arcades, hôtellerie-restauration, tourisme patrimonial et thermal, artisanat textile et services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Remiremont (88), sous-préfecture des Vosges, est une ancienne ville abbatiale au cœur du massif vosgien sud, traversée par la Moselle. Tissu de TPE/PME administration, commerce de centre-ville sous arcades, hôtellerie-restauration, tourisme patrimonial et thermal, artisanat textile et services aux entreprises. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   pitchEn:
-    "Remiremont (88), sous-préfecture des Vosges, est une ancienne ville abbatiale au cœur du massif vosgien sud, traversée par la Moselle. Tissu de TPE/PME administration, commerce de centre-ville sous arcades, hôtellerie-restauration, tourisme patrimonial et thermal, artisanat textile et services aux entreprises. Axion-IA y intervient pour tous types d'activités.",
+    "Remiremont (88), sous-préfecture des Vosges, est une ancienne ville abbatiale au cœur du massif vosgien sud, traversée par la Moselle. Tissu de TPE/PME administration, commerce de centre-ville sous arcades, hôtellerie-restauration, tourisme patrimonial et thermal, artisanat textile et services aux entreprises. Axion-IA y déploie ses missions auprès de toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Remiremont (88). Nous accompagnons TPE et PME : commerçants de centre-ville, hôteliers-restaurateurs, professionnels du tourisme patrimonial, artisans textiles, professions libérales et prestataires de services du sud-vosgien. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const REMIREMONT_COPY: VilleCopy = {
       en: "Audit IA à Remiremont : diagnostic adapté aux commerçants de centre-ville, hôteliers-restaurateurs, professionnels du tourisme patrimonial, artisans textiles, professions libérales et prestataires de services du sud-vosgien. Audit Flash 490 € HT, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Remiremont : formats adaptés au commerce des arcades, à l'hôtel-restaurant, au cabinet libéral, à l'atelier textile ou à la TPE de services. Vos équipes repartent autonomes sur outils IA configurés métier.",
-      en: "Interventions IA sur site à Remiremont : formats adaptés au commerce des arcades, à l'hôtel-restaurant, au cabinet libéral, à l'atelier textile ou à la TPE de services. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      fr: "Interventions IA sur site à Remiremont : formats adaptés au commerce des arcades, à l'hôtel-restaurant, au cabinet libéral, à l'atelier textile ou à la TPE de services. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
+      en: "Interventions IA sur site à Remiremont : formats adaptés au commerce des arcades, à l'hôtel-restaurant, au cabinet libéral, à l'atelier textile ou à la TPE de services. Vos collaborateurs maîtrisent leurs outils IA après notre intervention.",
     },
     implementation: {
       fr: "Implémentation IA à Remiremont : automatisation CRM commerce de centre-ville, réservations hôtelières, gestion cabinets libéraux, e-commerce textile, agents conversationnels et automatisations administratives pour PME sud-vosgiennes.",

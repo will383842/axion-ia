@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ENSUES_LA_REDONNE_COPY: VilleCopy = {
   pitchFr:
-    "Ensuès-la-Redonne (13), commune de la Côte Bleue entre Marseille et Martigues, conjugue port de pêche traditionnel, calanques préservées et tissu de TPE tourisme, PME services et commerces de proximité. Port de la Redonne, criques, viticulture côtière et résidences secondaires. Axion-IA y intervient pour tous types d'activités.",
+    "Ensuès-la-Redonne (13), commune de la Côte Bleue entre Marseille et Martigues, conjugue port de pêche traditionnel, calanques préservées et tissu de TPE tourisme, PME services et commerces de proximité. Port de la Redonne, criques, viticulture côtière et résidences secondaires. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Ensuès-la-Redonne (13), commune de la Côte Bleue entre Marseille et Martigues, conjugue port de pêche traditionnel, calanques préservées et tissu de TPE tourisme, PME services et commerces de proximité. Port de la Redonne, criques, viticulture côtière et résidences secondaires. Axion-IA y intervient pour tous types d'activités.",
+    "Ensuès-la-Redonne (13), commune de la Côte Bleue entre Marseille et Martigues, conjugue port de pêche traditionnel, calanques préservées et tissu de TPE tourisme, PME services et commerces de proximité. Port de la Redonne, criques, viticulture côtière et résidences secondaires. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ensuès-la-Redonne (13). Nous accompagnons TPE tourisme et restauration, PME services, commerces de proximité et acteurs nautiques de la Côte Bleue. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -64,7 +64,7 @@ export const ENSUES_LA_REDONNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Ensuès-la-Redonne ?",
-      a: "Ensuès-la-Redonne est à 30 min de Marseille via A55 et accessible par le TER Côte Bleue. Nos consultants se déplacent dans vos locaux. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Ensuès-la-Redonne est à 30 min de Marseille via A55 et accessible par le TER Côte Bleue. Nos consultants se déplacent dans vos locaux. Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

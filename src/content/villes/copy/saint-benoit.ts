@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_BENOIT_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Benoît (86), commune de l'agglomération de Poitiers sud en Vienne, est traversée par le Clain et le Miosson. Tissu TPE artisans, commerces de proximité, PME tertiaires/services, professions libérales (santé, juridique), associations et activités liées au patrimoine abbatial bénédictin. Axion-IA y intervient pour tous types d'activités du sud de l'agglomération poitevine.",
+    "Saint-Benoît (86), commune de l'agglomération de Poitiers sud en Vienne, est traversée par le Clain et le Miosson. Tissu TPE artisans, commerces de proximité, PME tertiaires/services, professions libérales (santé, juridique), associations et activités liées au patrimoine abbatial bénédictin. Axion-IA opère pour toutes les structures économiques de la commune du sud de l'agglomération poitevine.",
   pitchEn:
-    "Saint-Benoît (86), commune de l'agglomération de Poitiers sud en Vienne, est traversée par le Clain et le Miosson. Tissu TPE artisans, commerces de proximité, PME tertiaires/services, professions libérales (santé, juridique), associations et activités liées au patrimoine abbatial bénédictin. Axion-IA y intervient pour tous types d'activités du sud de l'agglomération poitevine.",
+    "Saint-Benoît (86), commune de l'agglomération de Poitiers sud en Vienne, est traversée par le Clain et le Miosson. Tissu TPE artisans, commerces de proximité, PME tertiaires/services, professions libérales (santé, juridique), associations et activités liées au patrimoine abbatial bénédictin. Axion-IA opère pour toutes les structures économiques de la commune du sud de l'agglomération poitevine.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Benoît (86). Nous accompagnons tous types d'activités : TPE artisans, commerçants de proximité, PME tertiaires, professions libérales (médecins, avocats), services aux entreprises, associations et acteurs patrimoine/culture du Grand Poitiers sud.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const SAINT_BENOIT_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Saint-Benoît : diagnostic adapté aux TPE artisans, professions libérales, PME tertiaires, commerçants et associations du Grand Poitiers sud. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Saint-Benoît : diagnostic adapté aux TPE artisans, professions libérales, PME tertiaires, commerçants et associations du Grand Poitiers sud. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Saint-Benoît : diagnostic adapté aux TPE artisans, professions libérales, PME tertiaires, commerçants et associations du Grand Poitiers sud. Audit Flash 490 € HT, ROI documenté en chiffres accessible.",
+      en: "Audit IA à Saint-Benoît : diagnostic adapté aux TPE artisans, professions libérales, PME tertiaires, commerçants et associations du Grand Poitiers sud. Audit Flash 490 € HT, ROI documenté en chiffres accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Saint-Benoît : formats adaptés aux cabinets libéraux, PME tertiaires, commerces ou associations culturelles. Vos équipes repartent autonomes sur outils IA métier.",

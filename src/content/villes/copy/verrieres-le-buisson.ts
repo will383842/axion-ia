@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VERRIERES_LE_BUISSON_COPY: VilleCopy = {
   pitchFr:
-    "Verrières-le-Buisson (91), commune résidentielle verdoyante du nord de l'Essonne en limite des Hauts-de-Seine, bénéficie de la proximité d'Antony et du pôle Massy-Saclay. Tissu professions libérales, TPE conseil et services, PME tertiaires, commerces de proximité, artisanat. Axion-IA y intervient pour tous types d'activités.",
+    "Verrières-le-Buisson (91), commune résidentielle verdoyante du nord de l'Essonne en limite des Hauts-de-Seine, bénéficie de la proximité d'Antony et du pôle Massy-Saclay. Tissu professions libérales, TPE conseil et services, PME tertiaires, commerces de proximité, artisanat. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   pitchEn:
-    "Verrières-le-Buisson (91), commune résidentielle verdoyante du nord de l'Essonne en limite des Hauts-de-Seine, bénéficie de la proximité d'Antony et du pôle Massy-Saclay. Tissu professions libérales, TPE conseil et services, PME tertiaires, commerces de proximité, artisanat. Axion-IA y intervient pour tous types d'activités.",
+    "Verrières-le-Buisson (91), commune résidentielle verdoyante du nord de l'Essonne en limite des Hauts-de-Seine, bénéficie de la proximité d'Antony et du pôle Massy-Saclay. Tissu professions libérales, TPE conseil et services, PME tertiaires, commerces de proximité, artisanat. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Verrières-le-Buisson (91). Nous accompagnons TPE et PME : professions libérales, cabinets conseil, PME tertiaires, commerçants de proximité, artisans nord Essonne. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,12 +29,12 @@ export const VERRIERES_LE_BUISSON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Verrières-le-Buisson : diagnostic adapté aux professions libérales, cabinets conseil, PME tertiaires, commerçants, artisans nord Essonne. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Verrières-le-Buisson : diagnostic adapté aux professions libérales, cabinets conseil, PME tertiaires, commerçants, artisans nord Essonne. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Verrières-le-Buisson : diagnostic adapté aux professions libérales, cabinets conseil, PME tertiaires, commerçants, artisans nord Essonne. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Verrières-le-Buisson : diagnostic adapté aux professions libérales, cabinets conseil, PME tertiaires, commerçants, artisans nord Essonne. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Verrières-le-Buisson : formats adaptés cabinet, bureau PME, boutique, atelier artisan. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Verrières-le-Buisson : formats adaptés cabinet, bureau PME, boutique, atelier artisan. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Verrières-le-Buisson : formats adaptés cabinet, bureau PME, boutique, atelier artisan. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Verrières-le-Buisson : formats adaptés cabinet, bureau PME, boutique, atelier artisan. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Verrières-le-Buisson : automatisation gestion cabinet, CRM professions libérales, facturation intelligente PME, outils pilotage activité, digitalisation artisans.",
@@ -64,7 +64,7 @@ export const VERRIERES_LE_BUISSON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Antony ou Paris ?",
-      a: "Antony (5 min). Massy TGV (10 min). Paris centre (25 min). Aéroport Orly (15 min). Frais de déplacement facturés à part, tarifs publics.",
+      a: "Antony (5 min). Massy TGV (10 min). Paris centre (25 min). Aéroport Orly (15 min). Déplacements facturés séparément, tarifs publics.",
     },
   ],
 };

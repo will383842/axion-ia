@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ISSOUDUN_COPY: VilleCopy = {
   pitchFr:
-    "Issoudun (36), sous-préfecture de l'Indre au coeur du Berry, est une ville historique marquée par sa tour Blanche et l'oeuvre de Balzac. TPE artisans, PME industrielles et agroalimentaires, commerçants, professions libérales, indépendants et acteurs des services publics composent son tissu économique. Axion-IA y intervient pour tous types d'activités du bassin issoldunois.",
+    "Issoudun (36), sous-préfecture de l'Indre au coeur du Berry, est une ville historique marquée par sa tour Blanche et l'oeuvre de Balzac. TPE artisans, PME industrielles et agroalimentaires, commerçants, professions libérales, indépendants et acteurs des services publics composent son tissu économique. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin issoldunois.",
   pitchEn:
-    "Issoudun (36), sous-préfecture de l'Indre au coeur du Berry, est une ville historique marquée par sa tour Blanche et l'oeuvre de Balzac. TPE artisans, PME industrielles et agroalimentaires, commerçants, professions libérales, indépendants et acteurs des services publics composent son tissu économique. Axion-IA y intervient pour tous types d'activités du bassin issoldunois.",
+    "Issoudun (36), sous-préfecture de l'Indre au coeur du Berry, est une ville historique marquée par sa tour Blanche et l'oeuvre de Balzac. TPE artisans, PME industrielles et agroalimentaires, commerçants, professions libérales, indépendants et acteurs des services publics composent son tissu économique. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin issoldunois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Issoudun (36), sous-préfecture de l'Indre. Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et agroalimentaires, commerçants, professions libérales, indépendants et services publics du Berry.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const ISSOUDUN_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Issoudun : diagnostic adapté aux TPE artisans, PME industrielles et agroalimentaires du Berry, commerçants, professions libérales et services publics. ROI chiffré, audit Flash 490 € HT accessible.",
-      en: "Audit IA à Issoudun : diagnostic adapté aux TPE artisans, PME industrielles et agroalimentaires du Berry, commerçants, professions libérales et services publics. ROI chiffré, audit Flash 490 € HT accessible.",
+      fr: "Audit IA à Issoudun : diagnostic adapté aux TPE artisans, PME industrielles et agroalimentaires du Berry, commerçants, professions libérales et services publics. ROI mesurable, audit Flash dès 490 € HT accessible.",
+      en: "Audit IA à Issoudun : diagnostic adapté aux TPE artisans, PME industrielles et agroalimentaires du Berry, commerçants, professions libérales et services publics. ROI mesurable, audit Flash dès 490 € HT accessible.",
     },
     interventions: {
       fr: "Interventions IA sur site à Issoudun : formats adaptés aux ateliers industriels, PME agroalimentaires, TPE artisans BTP et commerces de centre-ville. Vos équipes repartent autonomes sur les outils IA métier.",

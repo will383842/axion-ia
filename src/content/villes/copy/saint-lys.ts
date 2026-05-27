@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_LYS_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Lys (31), commune de l'ouest toulousain avec près de 10 000 habitants. Tissu TPE artisans BTP, PME de services, commerces de centre-bourg, professions libérales, activités agricoles. Axion-IA y intervient pour tous types d'activités de la couronne ouest de Toulouse.",
+    "Saint-Lys (31), commune de l'ouest toulousain avec près de 10 000 habitants. Tissu TPE artisans BTP, PME de services, commerces de centre-bourg, professions libérales, activités agricoles. Axion-IA couvre l'ensemble des activités professionnelles présentes de la couronne ouest de Toulouse.",
   pitchEn:
-    "Saint-Lys (31), commune de l'ouest toulousain avec près de 10 000 habitants. Tissu TPE artisans BTP, PME de services, commerces de centre-bourg, professions libérales, activités agricoles. Axion-IA y intervient pour tous types d'activités de la couronne ouest de Toulouse.",
+    "Saint-Lys (31), commune de l'ouest toulousain avec près de 10 000 habitants. Tissu TPE artisans BTP, PME de services, commerces de centre-bourg, professions libérales, activités agricoles. Axion-IA couvre l'ensemble des activités professionnelles présentes de la couronne ouest de Toulouse.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Lys (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'ouest Toulouse. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const SAINT_LYS_COPY: VilleCopy = {
       en: "Audit IA à Saint-Lys : diagnostic adapté aux TPE artisans BTP, PME de services et professions libérales de l'ouest Toulouse. Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Lys : formats adaptés à l'artisan BTP, au commerce, au cabinet libéral. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Saint-Lys : formats adaptés à l'artisan BTP, au commerce, au cabinet libéral. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Saint-Lys : formats adaptés à l'artisan BTP, au commerce, au cabinet libéral. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Saint-Lys : formats adaptés à l'artisan BTP, au commerce, au cabinet libéral. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Lys : automatisation devis chantier, gestion clients commerce, classification documents, agents conversationnels pour TPE-PME ouest Toulouse.",

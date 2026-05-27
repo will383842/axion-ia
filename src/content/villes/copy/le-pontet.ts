@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_PONTET_COPY: VilleCopy = {
   pitchFr:
-    "Le Pontet (84), commune limitrophe nord d'Avignon dans l'agglomération du Grand Avignon, conjugue zones commerciales majeures (Auchan Avignon-Nord, retail park), tissu logistique et fonctions résidentielles péri-urbaines. TPE artisans, PME commerce de gros et logistique, services aux entreprises, professions libérales et commerces de proximité dans un bassin de 18 000 habitants au cœur du pôle économique avignonnais. Axion-IA y intervient pour tous types d'activités.",
+    "Le Pontet (84), commune limitrophe nord d'Avignon dans l'agglomération du Grand Avignon, conjugue zones commerciales majeures (Auchan Avignon-Nord, retail park), tissu logistique et fonctions résidentielles péri-urbaines. TPE artisans, PME commerce de gros et logistique, services aux entreprises, professions libérales et commerces de proximité dans un bassin de 18 000 habitants au cœur du pôle économique avignonnais. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Le Pontet (84), commune limitrophe nord d'Avignon dans l'agglomération du Grand Avignon, conjugue zones commerciales majeures (Auchan Avignon-Nord, retail park), tissu logistique et fonctions résidentielles péri-urbaines. TPE artisans, PME commerce de gros et logistique, services aux entreprises, professions libérales et commerces de proximité dans un bassin de 18 000 habitants au cœur du pôle économique avignonnais. Axion-IA y intervient pour tous types d'activités.",
+    "Le Pontet (84), commune limitrophe nord d'Avignon dans l'agglomération du Grand Avignon, conjugue zones commerciales majeures (Auchan Avignon-Nord, retail park), tissu logistique et fonctions résidentielles péri-urbaines. TPE artisans, PME commerce de gros et logistique, services aux entreprises, professions libérales et commerces de proximité dans un bassin de 18 000 habitants au cœur du pôle économique avignonnais. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Pontet (84). Nous accompagnons TPE artisans, PME commerce de gros, logistique, services aux entreprises, professions libérales et commerces de l'agglomération d'Avignon. Audit Flash dès 490 € HT.",
   directAnswerEn:
@@ -29,8 +29,8 @@ export const LE_PONTET_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA au Pontet : diagnostic adapté aux TPE artisans, PME commerce de gros, retail, logistique, services aux entreprises et commerces de l'agglomération d'Avignon. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA au Pontet : diagnostic adapté aux TPE artisans, PME commerce de gros, retail, logistique, services aux entreprises et commerces de l'agglomération d'Avignon. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA au Pontet : diagnostic adapté aux TPE artisans, PME commerce de gros, retail, logistique, services aux entreprises et commerces de l'agglomération d'Avignon. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA au Pontet : diagnostic adapté aux TPE artisans, PME commerce de gros, retail, logistique, services aux entreprises et commerces de l'agglomération d'Avignon. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
       fr: "Interventions IA sur site au Pontet : ateliers pour équipes TPE/PME, retail, logisticiens, artisans et professions libérales. Outils IA configurés métier réel, dans vos locaux ou à Avignon.",
@@ -64,7 +64,7 @@ export const LE_PONTET_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA au Pontet ?",
-      a: "Le Pontet est à 5 min d'Avignon via A7 et N7. Nos consultants se déplacent dans vos locaux. Frais de déplacement facturés à part, tarifs publics.",
+      a: "Le Pontet est à 5 min d'Avignon via A7 et N7. Nos consultants se déplacent dans vos locaux. Frais de mission en sus, grille tarifaire publique.",
     },
   ],
 };

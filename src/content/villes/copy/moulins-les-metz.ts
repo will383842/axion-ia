@@ -30,12 +30,12 @@ export const MOULINS_LES_METZ_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit IA à Moulins-lès-Metz : diagnostic adapté aux TPE/PME services, professions libérales, artisans BTP, commerces et restaurateurs de l''agglomération messine. ROI chiffré, audit Flash 490 € HT.",
-      en: "Audit IA à Moulins-lès-Metz : diagnostic adapté aux TPE/PME services, professions libérales, artisans BTP, commerces et restaurateurs de l''agglomération messine. ROI chiffré, audit Flash 490 € HT.",
+      fr: "Audit IA à Moulins-lès-Metz : diagnostic adapté aux TPE/PME services, professions libérales, artisans BTP, commerces et restaurateurs de l''agglomération messine. Audit Flash à 490 € HT, retour sur investissement chiffré.",
+      en: "Audit IA à Moulins-lès-Metz : diagnostic adapté aux TPE/PME services, professions libérales, artisans BTP, commerces et restaurateurs de l''agglomération messine. Audit Flash à 490 € HT, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Moulins-lès-Metz : formats adaptés au bureau tertiaire, cabinet, atelier, chantier BTP, commerce ou restaurant. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Moulins-lès-Metz : formats adaptés au bureau tertiaire, cabinet, atelier, chantier BTP, commerce ou restaurant. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Moulins-lès-Metz : formats adaptés au bureau tertiaire, cabinet, atelier, chantier BTP, commerce ou restaurant. Vos collaborateurs sont autonomes ensuite.",
+      en: "Interventions IA sur site à Moulins-lès-Metz : formats adaptés au bureau tertiaire, cabinet, atelier, chantier BTP, commerce ou restaurant. Vos collaborateurs sont autonomes ensuite.",
     },
     implementation: {
       fr: "Implémentation IA à Moulins-lès-Metz : agents conversationnels B2B/B2C, automatisation devis BTP, gestion clientèle services, outils professions libérales, optimisation restauration.",

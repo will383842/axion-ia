@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHATEAU_GONTIER_SUR_MAYENNE_COPY: VilleCopy = {
   pitchFr:
-    "Château-Gontier-sur-Mayenne (53), sous-préfecture de la Mayenne aux bords de la rivière Mayenne, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-ville, professions libérales, prestataires de services et acteurs du tourisme fluvial. Axion-IA y intervient pour tous types d'activités.",
+    "Château-Gontier-sur-Mayenne (53), sous-préfecture de la Mayenne aux bords de la rivière Mayenne, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-ville, professions libérales, prestataires de services et acteurs du tourisme fluvial. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   pitchEn:
-    "Château-Gontier-sur-Mayenne (53), sous-préfecture de la Mayenne aux bords de la rivière Mayenne, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-ville, professions libérales, prestataires de services et acteurs du tourisme fluvial. Axion-IA y intervient pour tous types d'activités.",
+    "Château-Gontier-sur-Mayenne (53), sous-préfecture de la Mayenne aux bords de la rivière Mayenne, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-ville, professions libérales, prestataires de services et acteurs du tourisme fluvial. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Château-Gontier-sur-Mayenne (53). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles, commerçants de centre-ville, professions libérales, éleveurs, prestataires de services et acteurs du tourisme fluvial du sud-Mayenne.",
   directAnswerEn:
@@ -33,8 +33,8 @@ export const CHATEAU_GONTIER_SUR_MAYENNE_COPY: VilleCopy = {
       en: "Audit IA à Château-Gontier-sur-Mayenne : diagnostic adapté aux TPE artisans, PME agroalimentaires, industriels et commerçants du sud-Mayenne. ROI chiffré, Audit Flash 490 € HT.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Château-Gontier-sur-Mayenne : formations adaptées aux PME agroalimentaires, industriels, artisans, commerçants et éleveurs du sud-Mayenne. Vos équipes repartent autonomes.",
-      en: "Interventions IA sur site à Château-Gontier-sur-Mayenne : formations adaptées aux PME agroalimentaires, industriels, artisans, commerçants et éleveurs du sud-Mayenne. Vos équipes repartent autonomes.",
+      fr: "Interventions IA sur site à Château-Gontier-sur-Mayenne : formations adaptées aux PME agroalimentaires, industriels, artisans, commerçants et éleveurs du sud-Mayenne. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      en: "Interventions IA sur site à Château-Gontier-sur-Mayenne : formations adaptées aux PME agroalimentaires, industriels, artisans, commerçants et éleveurs du sud-Mayenne. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     implementation: {
       fr: "Implémentation IA à Château-Gontier-sur-Mayenne : traçabilité élevage bovin, contrôle qualité agroalimentaire, automatisation processus industriels, agents conversationnels tourisme fluvial.",
