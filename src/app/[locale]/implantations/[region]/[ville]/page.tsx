@@ -60,7 +60,6 @@ import {
   buildProductMetadata,
   buildItemListJsonLd,
   buildPlaceJsonLd,
-  buildFaqSpeakableJsonLd,
   buildBreadcrumbJsonLd,
   buildServiceJsonLd,
   SITE_URL,
@@ -326,8 +325,12 @@ export default async function VilleHubPage({ params }: Props) {
   });
 
   // Audit Will 2026-05-27 — sameAs ville pour E-E-A-T (Knowledge Graph).
-  const cityWikiUrl = `https://fr.wikipedia.org/wiki/${encodeURIComponent(ville.nameFr.replace(/ /g, "_"))}`;
-  const cityWikidataUrl = `https://www.wikidata.org/wiki/Special:Search?search=${encodeURIComponent(ville.nameFr)}`;
+  // Wikipedia FR : URL canonique communauté (existe pour 99.9% des villes >5k hab).
+  // Wikidata : URL Special:GoToLinkedPage qui redirige vers le Q-ID Wikidata
+  // de la ville à partir de son article Wikipedia FR (mieux que Special:Search).
+  const wikiTitle = ville.nameFr.replace(/ /g, "_");
+  const cityWikiUrl = `https://fr.wikipedia.org/wiki/${encodeURIComponent(wikiTitle)}`;
+  const cityWikidataUrl = `https://www.wikidata.org/wiki/Special:GoToLinkedPage?site=frwiki&page=${encodeURIComponent(wikiTitle)}`;
 
   const placeJsonLd = buildPlaceJsonLd({
     locale: loc,
@@ -366,13 +369,12 @@ export default async function VilleHubPage({ params }: Props) {
     })),
   });
 
-  // FAQ Speakable étend Speakable au hero (directAnswer voice-search).
-  const faqSpeakableJsonLd = villeSpecificFaqs.length
-    ? buildFaqSpeakableJsonLd({
-        items: villeSpecificFaqs.map((f) => ({ question: f.q, answer: f.a })),
-        additionalSelectors: ["[data-speakable-hero]"],
-      })
-    : null;
+  // Note Audit Will 2026-05-27 : ancien code `faqSpeakableJsonLd` retiré car
+  // jamais émis dans le @graph (code mort). Le Speakable FAQPage est désormais
+  // géré inline par `VilleFaqGeolocalisee` (FAQPage JSON-LD avec Speakable sur
+  // `[data-faq-q]` + `[data-faq-a]`), et le Speakable hero/directAnswer est
+  // porté par le `WebPage` JSON-LD (selectors `[data-speakable-hero]` +
+  // `#axion-direct-answer`).
 
   // AggregateOffer JSON-LD — Prix entry-point des 5 verticales (Will 2026-05-26
   // perfection 2026). Signal AI engine SERP rich snippet (Perplexity, Google AI

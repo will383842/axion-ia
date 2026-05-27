@@ -124,11 +124,12 @@ export function buildVilleServiceJsonLdGraph(
 
   const path = `${servicePathFr}/${ville.slug}` as `/${string}`;
   const url = `${SITE_URL}/${locale}${path}`;
-  const cityWikiUrl = `https://fr.wikipedia.org/wiki/${encodeURIComponent(ville.nameFr.replace(/ /g, "_"))}`;
+  const wikiTitle = ville.nameFr.replace(/ /g, "_");
+  const cityWikiUrl = `https://fr.wikipedia.org/wiki/${encodeURIComponent(wikiTitle)}`;
   // Wikidata sameAs ville — Audit Will 2026-05-27 (P2 fix E-E-A-T).
-  // Lien de recherche Wikidata par nom : redirige vers le Q-ID de la ville
-  // (Knowledge Graph mondiale). Boost cross-domain authority pour LLMs/AI Overviews.
-  const cityWikidataUrl = `https://www.wikidata.org/wiki/Special:Search?search=${encodeURIComponent(ville.nameFr)}`;
+  // Special:GoToLinkedPage redirige proprement vers le Q-ID Wikidata via le
+  // titre Wikipedia FR (meilleur que Special:Search qui retourne une SERP).
+  const cityWikidataUrl = `https://www.wikidata.org/wiki/Special:GoToLinkedPage?site=frwiki&page=${encodeURIComponent(wikiTitle)}`;
 
   const schemas: Record<string, unknown>[] = [];
 
