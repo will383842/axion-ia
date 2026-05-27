@@ -136,8 +136,11 @@ export function buildCspHeader({ nonce, strict }: BuildCspOptions): string {
     "connect-src 'self' https://challenges.cloudflare.com https://plausible.axion-ia.com https://api.telegram.org https://*.ingest.sentry.io https://*.ingest.de.sentry.io https://*.ingest.us.sentry.io https://api.stripe.com https://www.clarity.ms https://*.clarity.ms https://calendly.com https://*.calendly.com",
     // `plausible.axion-ia.com` autorisé pour l'embed dashboard dans
     // /fr/{prefix}/analytics (Plausible "Shared link" iframe).
-    // `calendly.com` autorisé pour l'embed booking inline sur /appel.
-    "frame-src 'self' https://challenges.cloudflare.com https://checkout.stripe.com https://plausible.axion-ia.com https://calendly.com",
+    // `calendly.com` + `*.calendly.com` autorisés pour l'embed booking inline
+    // sur /appel — le widget Calendly charge des iframes enfants sur des
+    // sous-domaines (event.calendly.com, calendar.calendly.com) qui doivent
+    // être whitelistés sinon l'iframe reste blanche (fix 2026-05-27).
+    "frame-src 'self' https://challenges.cloudflare.com https://checkout.stripe.com https://plausible.axion-ia.com https://calendly.com https://*.calendly.com",
     "frame-ancestors 'none'",
     "form-action 'self'",
     "base-uri 'self'",
