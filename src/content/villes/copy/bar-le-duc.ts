@@ -12,6 +12,7 @@ export const BAR_LE_DUC_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bar-le-Duc (55). Nous accompagnons TPE et PME : artisans agroalimentaires, commerçants, hôteliers-restaurateurs, professions libérales et prestataires de services de la Meuse. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bar-le-Duc (55). Nous accompagnons TPE et PME : artisans agroalimentaires, commerçants, hôteliers-restaurateurs, professions libérales et prestataires de services de la Meuse. Audit Flash dès 490 € HT.",
+  seoHook: "TPE & PME Meuse",
   ecosystemFr:
     "Bar-le-Duc est préfecture de la Meuse, située au bord de l'Ornain. La ville haute Renaissance est classée et la cité est célèbre pour son savoir-faire artisanal : confitures de groseilles épépinées à la plume (Maison Dutriez). L'économie locale repose sur l'administration préfectorale, l'agroalimentaire artisanal, le commerce de centre-ville, l'artisanat BTP, le tourisme patrimonial et les services aux entreprises.",
   ecosystemEn:

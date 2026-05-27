@@ -12,6 +12,7 @@ export const MONTCEAU_LES_MINES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montceau-les-Mines (71). Nous accompagnons TPE et PME du bassin minier reconverti : industries, sous-traitants, artisans, commerçants, professionnels de santé, organismes de formation et services aux entreprises du bassin montcellien.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montceau-les-Mines (71). Nous accompagnons TPE et PME du bassin minier reconverti : industries, sous-traitants, artisans, commerçants, professionnels de santé, organismes de formation et services aux entreprises du bassin montcellien.",
+  seoHook: "bassin minier reconverti",
   ecosystemFr:
     "Montceau-les-Mines est le pôle économique du bassin minier reconverti Blanzy-Montceau (~45 000 hab agglomération) en Saône-et-Loire. Reconversion industrielle réussie : TPE/PME métallurgie, mécanique, plasturgie, logistique canal du Centre, artisanat BTP, commerces, centre hospitalier, IUT et organismes de formation. Proximité Le Creusot (15 min) et Chalon-sur-Saône (40 min).",
   ecosystemEn:

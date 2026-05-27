@@ -12,6 +12,7 @@ export const PIERRELATTE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pierrelatte (26). Nous accompagnons tous types d'activités : PME industrielles bassin Tricastin (sous-traitants techniques), agriculteurs et viticulteurs (AOC Grignan-les-Adhémar), TPE artisans BTP, commerçants, indépendants et services aux entreprises sud-Drôme.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pierrelatte (26). Nous accompagnons tous types d'activités : PME industrielles bassin Tricastin (sous-traitants techniques), agriculteurs et viticulteurs (AOC Grignan-les-Adhémar), TPE artisans BTP, commerçants, indépendants et services aux entreprises sud-Drôme.",
+  seoHook: "bassin industriel notable",
   ecosystemFr:
     "Pierrelatte est positionnée dans la plaine du Tricastin (sud-Drôme), abritant historiquement la plateforme nucléaire civile du Tricastin (sites industriels haute-sécurité). Tissu PME industrielles et sous-traitants techniques liés au nucléaire, agriculture importante (vergers, viticulture AOC Grignan-les-Adhémar), TPE artisanat BTP, commerces. Axe A7 Lyon-Marseille.",
   ecosystemEn:

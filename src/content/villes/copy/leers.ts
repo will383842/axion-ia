@@ -12,6 +12,7 @@ export const LEERS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Leers (59). Nous accompagnons TPE et PME : PME textile-distribution héritières du bassin roubaisien, commerçants transfrontaliers franco-belges, artisans, prestataires de services de proximité et sous-traitants industriels.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Leers (59). Nous accompagnons TPE et PME : PME textile-distribution héritières du bassin roubaisien, commerçants transfrontaliers franco-belges, artisans, prestataires de services de proximité et sous-traitants industriels.",
+  seoHook: "bassin roubaisien et",
   ecosystemFr:
     "Leers est une commune périurbaine de la Métropole Européenne de Lille, située dans l'agglomération de Roubaix et directement accolée à la frontière belge (Estaimpuis à 3 min). L'économie locale combine TPE et PME du textile-distribution (héritage du bassin roubaisien-tourquennois), commerce transfrontalier franco-belge, artisanat local, services de proximité et sous-traitance industrielle. Zone résidentielle dynamique avec tissu commercial et artisanal diversifié.",
   ecosystemEn:

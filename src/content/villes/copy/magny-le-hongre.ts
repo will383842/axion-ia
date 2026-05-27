@@ -12,6 +12,7 @@ export const MAGNY_LE_HONGRE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Magny-le-Hongre (77). Nous accompagnons TPE et PME : hôtels et résidences touristiques, restauration, commerces du Val d'Europe, prestataires événementiels et entreprises de services à proximité de Disneyland Paris. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Magny-le-Hongre (77). Nous accompagnons TPE et PME : hôtels et résidences touristiques, restauration, commerces du Val d'Europe, prestataires événementiels et entreprises de services à proximité de Disneyland Paris. Audit Flash dès 490 € HT.",
+  seoHook: "TPE & PME Seine-et-Marne",
   ecosystemFr:
     "Magny-le-Hongre est une commune du Val d'Europe en Seine-et-Marne, à proximité immédiate de Disneyland Paris. Son tissu économique est porté par le tourisme, l'hôtellerie, la restauration, le commerce et les prestataires événementiels. Proximité avec Serris, Chessy, Bailly-Romainvilliers et Bussy-Saint-Georges.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const NANGIS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nangis (77). Nous accompagnons TPE et PME : exploitations agricoles, artisans, entreprises agroalimentaires, commerces de centre-bourg, transporteurs et prestataires de services de la Brie seine-et-marnaise. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nangis (77). Nous accompagnons TPE et PME : exploitations agricoles, artisans, entreprises agroalimentaires, commerces de centre-bourg, transporteurs et prestataires de services de la Brie seine-et-marnaise. Audit Flash dès 490 € HT.",
+  seoHook: "TPE & PME Seine-et-Marne",
   ecosystemFr:
     "Nangis est un bourg de la Brie en Seine-et-Marne, pôle agricole et artisanal doté de zones d'activités économiques. Son tissu associe exploitations agricoles, artisans, PME agroalimentaires, commerces de centre-bourg et transporteurs. Proximité avec Provins, Melun, Fontainebleau et Montereau-Fault-Yonne.",
   ecosystemEn:

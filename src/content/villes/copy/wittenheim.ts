@@ -12,6 +12,7 @@ export const WITTENHEIM_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wittenheim (68). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants, professions libérales et indépendants du bassin potassique reconverti, agglomération nord de Mulhouse. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wittenheim (68). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants, professions libérales et indépendants du bassin potassique reconverti, agglomération nord de Mulhouse. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
+  seoHook: "bassin potassique reconverti",
   ecosystemFr:
     "Wittenheim est une commune dynamique de Mulhouse Alsace Agglomération (m2A), au cœur du bassin potassique reconverti au nord de Mulhouse. Tissu TPE artisans BTP, PME industrielles (sous-traitance mécanique, logistique, chimie fine), PME de services aux entreprises, commerces de proximité, professions libérales (santé, juridique) et indépendants. Reconversion réussie post-mines avec zones d'activités modernes.",
   ecosystemEn:

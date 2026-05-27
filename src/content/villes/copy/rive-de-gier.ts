@@ -12,6 +12,7 @@ export const RIVE_DE_GIER_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rive-de-Gier (42). Nous accompagnons tous types d'activités : PME industrielles diversifiées vallée Gier (héritage verrier/mécanique), TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de Saint-Étienne Métropole.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rive-de-Gier (42). Nous accompagnons tous types d'activités : PME industrielles diversifiées vallée Gier (héritage verrier/mécanique), TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de Saint-Étienne Métropole.",
+  seoHook: "vallée du",
   ecosystemFr:
     "Rive-de-Gier est intégrée à Saint-Étienne Métropole, dans la vallée du Gier (axe Lyon-Saint-Étienne). Héritage industriel notable : verrerie historique majeure au XIXème siècle (l'une des capitales du verre français à l'époque), mécanique. Tissu PME industrielles diversifiées contemporaines, TPE artisanat BTP, commerces.",
   ecosystemEn:

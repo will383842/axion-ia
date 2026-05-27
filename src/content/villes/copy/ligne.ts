@@ -12,6 +12,7 @@ export const LIGNE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ligné (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME services, exploitations agricoles, professions libérales et services de proximité du nord-est nantais.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ligné (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME services, exploitations agricoles, professions libérales et services de proximité du nord-est nantais.",
+  seoHook: "proche nantes",
   ecosystemFr:
     "Ligné est une commune résidentielle en croissance au nord-est de Nantes, entre Nort-sur-Erdre et Ancenis. Agriculture, artisanat, commerces de proximité. Tissu TPE artisans, commerçants, PME services, exploitations agricoles et professions libérales. Dynamisme résidentiel.",
   ecosystemEn:

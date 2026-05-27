@@ -12,6 +12,7 @@ export const GANNAT_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gannat (03). Nous accompagnons tous types d'activités : agriculteurs/éleveurs Limagne bourbonnaise, PME tertiaires et industrielles, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gannat (03). Nous accompagnons tous types d'activités : agriculteurs/éleveurs Limagne bourbonnaise, PME tertiaires et industrielles, TPE artisans BTP, commerçants et services aux entreprises.",
+  seoHook: "TPE & PME Allier",
   ecosystemFr:
     "Gannat est en Limagne bourbonnaise, axe A71 Clermont-Paris. Tissu agricole (grandes cultures, élevage), PME tertiaires/industrielles, TPE artisanat BTP, commerces.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const SORBIERS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sorbiers (42). Nous accompagnons tous types d'activités : PME tertiaires Saint-Étienne Métropole, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la banlieue nord-est stéphanoise.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sorbiers (42). Nous accompagnons tous types d'activités : PME tertiaires Saint-Étienne Métropole, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la banlieue nord-est stéphanoise.",
+  seoHook: "massif du",
   ecosystemFr:
     "Sorbiers est intégrée à Saint-Étienne Métropole, en banlieue nord-est immédiate de Saint-Étienne (positionnée sur les contreforts du massif du Pilat). Tissu péri-urbain résidentiel : PME tertiaires, TPE artisanat BTP, commerces de proximité, professions libérales installées (médecins, avocats, expert-comptables).",
   ecosystemEn:

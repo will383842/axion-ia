@@ -12,6 +12,7 @@ export const PAMIERS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pamiers (09), sous-préfecture de l'Ariège. Nous accompagnons TPE artisans, PME agroalimentaire et métallurgie, commerçants, agriculteurs et professions libérales du premier bassin économique ariégeois. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pamiers (09), sous-préfecture de l'Ariège. Nous accompagnons TPE artisans, PME agroalimentaire et métallurgie, commerçants, agriculteurs et professions libérales du premier bassin économique ariégeois. Audit Flash dès 490 € HT.",
+  seoHook: "bassin pamiséen",
   ecosystemFr:
     "Pamiers est la plus grande ville et la sous-préfecture de l'Ariège, en plaine au bord de la rivière Ariège. Pôle économique départemental avec métallurgie (fonderie, acier spéciaux historiques), agroalimentaire, agriculture plaine (grandes cultures, élevage), commerce centre-ville dynamique, services aux entreprises. Zone industrielle et artisanale active.",
   ecosystemEn:

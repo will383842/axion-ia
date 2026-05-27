@@ -12,6 +12,7 @@ export const SAINT_JULIEN_EN_GENEVOIS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Saint-Julien-en-Genevois (74). Nous accompagnons TPE et PME : services transfrontaliers Grand Geneve, professions liberales, commerce frontalier, artisanat et entreprises tertiaires du bassin genevois francais. Audit Flash des 490 euros HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Saint-Julien-en-Genevois (74). Nous accompagnons TPE et PME : services transfrontaliers Grand Geneve, professions liberales, commerce frontalier, artisanat et entreprises tertiaires du bassin genevois francais. Audit Flash des 490 euros HT.",
+  seoHook: "agglomération geneve",
   ecosystemFr:
     "Saint-Julien-en-Genevois est la principale ville francaise du Grand Geneve, a la frontiere suisse. Son economie est fortement liee au bassin genevois : nombreux frontaliers, services tertiaires, professions liberales (avocats, fiduciaires, conseil), commerces de proximite et artisanat. Dynamisme porte par le Leman Express et l'autoroute A40.",
   ecosystemEn:

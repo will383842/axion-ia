@@ -12,6 +12,7 @@ export const MONTBONNOT_SAINT_MARTIN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montbonnot-Saint-Martin (38). Nous accompagnons tous types d'activités : scale-ups deep-tech Inovallée, PME tech et logiciel, structures R&D innovation, TPE artisans BTP, commerçants, professions libérales et services du Pays du Grésivaudan.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montbonnot-Saint-Martin (38). Nous accompagnons tous types d'activités : scale-ups deep-tech Inovallée, PME tech et logiciel, structures R&D innovation, TPE artisans BTP, commerçants, professions libérales et services du Pays du Grésivaudan.",
+  seoHook: "pays du grésivaudan",
   ecosystemFr:
     "Montbonnot-Saint-Martin fait partie de la communauté de communes du Pays du Grésivaudan et abrite une partie du parc technologique Inovallée — l'un des principaux clusters deep-tech français (microélectronique héritière du CEA-Leti, édition logicielle, instrumentation scientifique). Aux côtés des entreprises tech : tissu PME tertiaires, TPE artisanat BTP, commerces, professions libérales.",
   ecosystemEn:

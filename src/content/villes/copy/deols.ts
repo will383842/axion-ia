@@ -12,6 +12,7 @@ export const DEOLS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Déols (36), dans l'agglomération de Châteauroux. Nous accompagnons tous types d'activités : TPE artisans, PME logistiques et industrielles, commerçants, professions libérales, indépendants et entreprises de la zone aéroportuaire.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Déols (36), dans l'agglomération de Châteauroux. Nous accompagnons tous types d'activités : TPE artisans, PME logistiques et industrielles, commerçants, professions libérales, indépendants et entreprises de la zone aéroportuaire.",
+  seoHook: "bassin castelroussin",
   ecosystemFr:
     "Déols est une commune de l'agglomération de Châteauroux, connue pour son aéroport (Châteauroux-Centre, plateforme cargo et maintenance aéronautique) et l'ancienne base aérienne américaine reconvertie en zone d'activités. L'économie locale repose sur la logistique aéroportuaire, la maintenance aéronautique, l'industrie, l'artisanat BTP, le commerce de proximité et les services aux entreprises du bassin castelroussin.",
   ecosystemEn:

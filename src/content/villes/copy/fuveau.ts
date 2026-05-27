@@ -12,6 +12,7 @@ export const FUVEAU_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fuveau (13). Nous accompagnons TPE artisans, professions libérales, PME tertiaires, viticulteurs AOC et commerces du bassin minier reconverti de l'est aixois. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fuveau (13). Nous accompagnons TPE artisans, professions libérales, PME tertiaires, viticulteurs AOC et commerces du bassin minier reconverti de l'est aixois. Audit Flash dès 490 € HT.",
+  seoHook: "bassin minier reconverti",
   ecosystemFr:
     "Fuveau est à l'est d'Aix-en-Provence, au pied de la Sainte-Victoire. Ancien bassin minier (charbon, fermeture années 2000) reconverti vers le résidentiel haut de gamme, le tertiaire et des zones d'activités (ZA Saint-Estève, parc d'activités). Viticulture AOC Côtes-de-Provence Sainte-Victoire, PME tertiaires, artisanat BTP, professions libérales travaillant à Aix ou Marseille.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const BASSENS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bassens (33). Nous accompagnons TPE et PME de la rive droite bordelaise : entreprises portuaires et logistiques, PME industrielles, artisans BTP, commerçants et professions libérales. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bassens (33). Nous accompagnons TPE et PME de la rive droite bordelaise : entreprises portuaires et logistiques, PME industrielles, artisans BTP, commerçants et professions libérales. Audit Flash dès 490 € HT.",
+  seoHook: "agglomération port maritime",
   ecosystemFr:
     "Bassens accueille les terminaux du Grand Port Maritime de Bordeaux (vrac, céréales, hydrocarbures). Tissu industriel portuaire dense, PME logistiques et de transformation, artisanat BTP et commerces résidentiels. Accès rocade A630 et rive droite Bordeaux.",
   ecosystemEn:

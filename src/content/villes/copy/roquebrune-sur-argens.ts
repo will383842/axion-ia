@@ -12,6 +12,7 @@ export const ROQUEBRUNE_SUR_ARGENS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Roquebrune-sur-Argens (83). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME hôtellerie-restauration et campings, domaines viticoles, professionnels du tourisme et services Var est.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Roquebrune-sur-Argens (83). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME hôtellerie-restauration et campings, domaines viticoles, professionnels du tourisme et services Var est.",
+  seoHook: "vallée argens",
   ecosystemFr:
     "Roquebrune-sur-Argens est un pôle économique du Var est, marqué par son rocher emblématique, la vallée de l'Argens et ses plages de Saint-Aygulf. Tissu de TPE artisanales, PME hôtellerie-camping, domaines viticoles et commerces. Fréjus à 10 min, Saint-Raphaël à 15 min, A8 directe.",
   ecosystemEn:

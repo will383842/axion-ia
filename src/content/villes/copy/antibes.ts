@@ -14,6 +14,7 @@ export const ANTIBES_COPY: VilleCopy = {
     "À Antibes, Axion-IA propose des interventions IA sur site, s'appuyant sur l'écosystème local incluant Sophia Antipolis et l'Université Côte d'Azur. Nous offrons des audits dès 490 € HT pour identifier vos priorités IA et des implémentations à partir de 990 € HT pour un déploiement rapide et efficace.",
   directAnswerEn:
     "À Antibes, Axion-IA propose des interventions IA sur site, s'appuyant sur l'écosystème local incluant Sophia Antipolis et l'Université Côte d'Azur. Nous offrons des audits dès 490 € HT pour identifier vos priorités IA et des implémentations à partir de 990 € HT pour un déploiement rapide et efficace.",
+  seoHook: "côte d'azur",
   ecosystemFr:
     "Antibes bénéficie de la proximité de Sophia Antipolis, un pôle technologique majeur, et de la présence de grands groupes comme Thales, favorisant l'innovation et la recherche-développement scientifique.",
   ecosystemEn:

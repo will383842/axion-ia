@@ -12,6 +12,7 @@ export const COGNAC_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cognac (16). Nous accompagnons tous types d'activités : TPE artisans tonneliers et distillateurs, PME viticoles, maisons de négoce, professionnels de l'œnotourisme, commerçants et indépendants du bassin cognaçais.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cognac (16). Nous accompagnons tous types d'activités : TPE artisans tonneliers et distillateurs, PME viticoles, maisons de négoce, professionnels de l'œnotourisme, commerçants et indépendants du bassin cognaçais.",
+  seoHook: "bassin cognaçais",
   ecosystemFr:
     "Cognac est la capitale mondiale des eaux-de-vie AOC, sous-préfecture de la Charente. Filière cognac complète : viticulteurs, distillateurs, tonneliers, maisons de négoce, logistique export. Œnotourisme en forte croissance, patrimoine bords de Charente, TPE artisans, PME services, commerces de centre-ville.",
   ecosystemEn:

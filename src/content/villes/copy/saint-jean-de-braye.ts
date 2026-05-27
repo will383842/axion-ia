@@ -14,6 +14,7 @@ export const SAINT_JEAN_DE_BRAYE_COPY: VilleCopy = {
     "À Saint-Jean-de-Braye, Axion-IA propose des services adaptés aux besoins des entreprises locales, notamment dans les secteurs de l'industrie chimique et agroalimentaire. Avec des entités comme L'Oréal et le Parc d'activités de la Saussaye, notre équipe nationale se déplace pour offrir des solutions IA sur site, en garantissant des audits précis et des implémentations efficaces.",
   directAnswerEn:
     "À Saint-Jean-de-Braye, Axion-IA propose des services adaptés aux besoins des entreprises locales, notamment dans les secteurs de l'industrie chimique et agroalimentaire. Avec des entités comme L'Oréal et le Parc d'activités de la Saussaye, notre équipe nationale se déplace pour offrir des solutions IA sur site, en garantissant des audits précis et des implémentations efficaces.",
+  seoHook: "proche orléans",
   ecosystemFr:
     "Saint-Jean-de-Braye accueille des entreprises comme L'Oréal et dispose du Parc d'activités de la Saussaye, renforçant son tissu industriel dans les secteurs chimiques et agroalimentaires.",
   ecosystemEn:

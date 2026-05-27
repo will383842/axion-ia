@@ -12,6 +12,7 @@ export const MONTDIDIER_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montdidier (80). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires, exploitations agricoles grandes cultures du Santerre, commerçants, professions libérales, indépendants et services aux entreprises de cette sous-préfecture picarde.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montdidier (80). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires, exploitations agricoles grandes cultures du Santerre, commerçants, professions libérales, indépendants et services aux entreprises de cette sous-préfecture picarde.",
+  seoHook: "TPE & PME Somme",
   ecosystemFr:
     "Montdidier est sous-préfecture de la Somme, bourg picard historique sur le plateau du Santerre. Tissu agricole dominant (céréales, betteraves, pommes de terre), TPE artisans BTP, PME agroalimentaires (transformation locale), commerces de centre-bourg, services de proximité. Position entre Amiens et Compiègne.",
   ecosystemEn:

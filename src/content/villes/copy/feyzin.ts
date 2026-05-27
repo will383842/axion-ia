@@ -12,6 +12,7 @@ export const FEYZIN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Feyzin (69). Nous accompagnons tous types d'activités : PME industrielles et sous-traitants techniques Vallée de la Chimie (site Seveso raffinerie), TPE artisans BTP, commerçants, indépendants et services aux entreprises de la Métropole de Lyon sud.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Feyzin (69). Nous accompagnons tous types d'activités : PME industrielles et sous-traitants techniques Vallée de la Chimie (site Seveso raffinerie), TPE artisans BTP, commerçants, indépendants et services aux entreprises de la Métropole de Lyon sud.",
+  seoHook: "vallée chimie",
   ecosystemFr:
     "Feyzin est intégrée à la Métropole de Lyon, en banlieue sud immédiate. Position emblématique dans la « Vallée de la Chimie » : raffinerie pétrolière historique (site Seveso seuil haut, industrie pétrochimique). Tissu PME industrielles et sous-traitants techniques, TPE artisanat BTP, commerces de proximité.",
   ecosystemEn:

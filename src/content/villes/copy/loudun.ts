@@ -12,6 +12,7 @@ export const LOUDUN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Loudun (86). Nous accompagnons tous types d'activités : PME agroalimentaires, viticulteurs AOC Haut-Poitou, TPE artisans BTP, commerçants, administrations sous-préfecture, professions libérales et services aux entreprises du Loudunais.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Loudun (86). Nous accompagnons tous types d'activités : PME agroalimentaires, viticulteurs AOC Haut-Poitou, TPE artisans BTP, commerçants, administrations sous-préfecture, professions libérales et services aux entreprises du Loudunais.",
+  seoHook: "aoc haut-",
   ecosystemFr:
     "Loudun est la sous-préfecture du nord de la Vienne, cité historique marquée par l'affaire des possessions (1634, Urbain Grandier). Position au carrefour Touraine-Poitou-Anjou. Tissu économique diversifié : PME agroalimentaires, viticulture AOC Haut-Poitou, administration sous-préfecture, TPE artisans BTP, commerces de centre-ville, professions libérales et services.",
   ecosystemEn:

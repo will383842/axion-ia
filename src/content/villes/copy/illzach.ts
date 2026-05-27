@@ -12,6 +12,7 @@ export const ILLZACH_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Illzach (68). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants, professions libérales et indépendants des zones industrielles de l'agglomération nord de Mulhouse. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Illzach (68). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants, professions libérales et indépendants des zones industrielles de l'agglomération nord de Mulhouse. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
+  seoHook: "proche mulhouse",
   ecosystemFr:
     "Illzach est une commune industrielle majeure de Mulhouse Alsace Agglomération (m2A), située au nord de Mulhouse avec d'importantes zones d'activités (zone Île Napoléon notamment). Tissu TPE artisans BTP, PME industrielles (sous-traitance automobile, mécanique, logistique), PME de services aux entreprises, commerces de proximité, professions libérales (santé, juridique) et indépendants. Position stratégique sur l'axe rhénan.",
   ecosystemEn:

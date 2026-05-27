@@ -12,6 +12,7 @@ export const AVRANCHES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Avranches (50). Nous accompagnons tous types d'activités : TPE commerçants et artisans du centre-ville, PME agroalimentaires du bocage avranchin, prestataires tourisme Mont-Saint-Michel, professions libérales, services publics et associations.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Avranches (50). Nous accompagnons tous types d'activités : TPE commerçants et artisans du centre-ville, PME agroalimentaires du bocage avranchin, prestataires tourisme Mont-Saint-Michel, professions libérales, services publics et associations.",
+  seoHook: "TPE & PME Manche",
   ecosystemFr:
     "Avranches est la sous-préfecture sud de la Manche, porte d'entrée du Mont-Saint-Michel et centre du bocage avranchin. L'économie repose sur les services publics (sous-préfecture, hôpital, tribunal), l'agroalimentaire (élevage bovin, cidre, produits laitiers), le tourisme (flux Mont-Saint-Michel, manuscrits médiévaux Scriptorial), le commerce de centre-ville et l'artisanat. Accès A84 vers Rennes (55 min) et Caen (1 h 20).",
   ecosystemEn:

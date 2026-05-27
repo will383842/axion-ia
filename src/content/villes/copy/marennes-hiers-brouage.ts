@@ -12,6 +12,7 @@ export const MARENNES_HIERS_BROUAGE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marennes-Hiers-Brouage (17). Nous accompagnons tous types d'activités : TPE artisans, PME ostréicoles, professionnels de l'aquaculture, acteurs du tourisme patrimonial (citadelle Brouage), commerçants et indépendants du bassin de Marennes.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marennes-Hiers-Brouage (17). Nous accompagnons tous types d'activités : TPE artisans, PME ostréicoles, professionnels de l'aquaculture, acteurs du tourisme patrimonial (citadelle Brouage), commerçants et indépendants du bassin de Marennes.",
+  seoHook: "bassin de marennes",
   ecosystemFr:
     "Marennes-Hiers-Brouage est la capitale de l'huître Marennes-Oléron (IGP), premier bassin ostréicole d'Europe. Citadelle de Brouage (patrimoine Vauban/Champlain). PME ostréicoles et aquacoles, tourisme patrimonial et gastronomique, TPE artisans, commerces de centre-ville. Position stratégique entre Rochefort et l'île d'Oléron.",
   ecosystemEn:

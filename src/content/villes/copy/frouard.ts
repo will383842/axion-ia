@@ -12,6 +12,7 @@ export const FROUARD_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Frouard (54). Nous accompagnons TPE et PME : logisticiens, transporteurs, industriels, commerçants et prestataires de services de la périphérie nord de Nancy et du port fluvial. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Frouard (54). Nous accompagnons TPE et PME : logisticiens, transporteurs, industriels, commerçants et prestataires de services de la périphérie nord de Nancy et du port fluvial. Audit Flash dès 490 € HT.",
+  seoHook: "agglomération nancy",
   ecosystemFr:
     "Frouard est situé en première couronne nord de Nancy, au confluent de la Moselle et de la Meurthe. La ville accueille le port fluvial de Nancy-Frouard, l'un des premiers ports intérieurs de France, et de vastes zones logistiques (Plate-forme Nancy-Frouard, Saint-Jacques). L'économie locale repose sur la logistique multimodale (fluvial-rail-route), le transport, l'industrie, l'artisanat BTP et les services. Intégration à la Métropole du Grand Nancy.",
   ecosystemEn:

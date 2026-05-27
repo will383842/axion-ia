@@ -12,6 +12,7 @@ export const NEMOURS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Nemours (77). Nous accompagnons TPE et PME : industriels du sud Seine-et-Marne, commercants de centre-ville, artisans, acteurs du tourisme patrimonial (chateau-musee, musee de prehistoire) et prestataires de services. Audit Flash des 490 euros HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Nemours (77). Nous accompagnons TPE et PME : industriels du sud Seine-et-Marne, commercants de centre-ville, artisans, acteurs du tourisme patrimonial (chateau-musee, musee de prehistoire) et prestataires de services. Audit Flash des 490 euros HT.",
+  seoHook: "vallée du",
   ecosystemFr:
     "Nemours est une ville historique du sud de la Seine-et-Marne, traversee par le Loing. Le chateau-musee medieval et le musee departemental de prehistoire d'Ile-de-France attirent un tourisme culturel. L'economie locale repose sur un tissu de TPE/PME industrie, commerce de centre-ville, artisanat et services, avec un acces A6 vers Paris et Fontainebleau.",
   ecosystemEn:

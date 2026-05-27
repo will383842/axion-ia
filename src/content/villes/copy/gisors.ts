@@ -12,6 +12,7 @@ export const GISORS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gisors (27). Nous accompagnons tous types d'activités : TPE artisans, PME agriculture et agroalimentaire Vexin normand, commerces centre-ville, professions libérales, indépendants et services aux entreprises de l'arrondissement des Andelys.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gisors (27). Nous accompagnons tous types d'activités : TPE artisans, PME agriculture et agroalimentaire Vexin normand, commerces centre-ville, professions libérales, indépendants et services aux entreprises de l'arrondissement des Andelys.",
+  seoHook: "frontalier entre",
   ecosystemFr:
     "Gisors est la sous-préfecture de l'Eure et la capitale historique du Vexin normand, dominée par son imposant château fort. Économie portée par l'agriculture (grandes cultures céréalières du Vexin), l'agroalimentaire, le commerce de centre-ville, les professions libérales et un tissu TPE/PME de services. Position frontière entre Normandie et Île-de-France.",
   ecosystemEn:

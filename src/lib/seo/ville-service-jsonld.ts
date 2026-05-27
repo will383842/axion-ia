@@ -125,6 +125,10 @@ export function buildVilleServiceJsonLdGraph(
   const path = `${servicePathFr}/${ville.slug}` as `/${string}`;
   const url = `${SITE_URL}/${locale}${path}`;
   const cityWikiUrl = `https://fr.wikipedia.org/wiki/${encodeURIComponent(ville.nameFr.replace(/ /g, "_"))}`;
+  // Wikidata sameAs ville — Audit Will 2026-05-27 (P2 fix E-E-A-T).
+  // Lien de recherche Wikidata par nom : redirige vers le Q-ID de la ville
+  // (Knowledge Graph mondiale). Boost cross-domain authority pour LLMs/AI Overviews.
+  const cityWikidataUrl = `https://www.wikidata.org/wiki/Special:Search?search=${encodeURIComponent(ville.nameFr)}`;
 
   const schemas: Record<string, unknown>[] = [];
 
@@ -185,7 +189,7 @@ export function buildVilleServiceJsonLdGraph(
       addressRegion: region.nameFr,
       addressCountry: "FR",
     },
-    sameAs: ["https://www.linkedin.com/company/axion-ia", cityWikiUrl],
+    sameAs: ["https://www.linkedin.com/company/axion-ia", cityWikiUrl, cityWikidataUrl],
     parentOrganization: {
       "@type": "Organization",
       "@id": `${SITE_URL}/#organization`,

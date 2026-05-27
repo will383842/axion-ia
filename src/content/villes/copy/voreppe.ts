@@ -12,6 +12,7 @@ export const VOREPPE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Voreppe (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, indépendants, professions libérales, PME tertiaires voreppines, industriels périphériques et services aux entreprises du bassin nord-Isère vers Grenoble.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Voreppe (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, indépendants, professions libérales, PME tertiaires voreppines, industriels périphériques et services aux entreprises du bassin nord-Isère vers Grenoble.",
+  seoHook: "massif la",
   ecosystemFr:
     "Voreppe occupe une position stratégique à la cluse de Voreppe (entrée géologique nord des Alpes), à 20 km de Grenoble sur l'axe A48 Lyon-Grenoble. Tissu PME tertiaires et industries périphériques, TPE artisanat BTP dense, commerces de proximité. Patrimoine historique remarquable (bataille de Voreppe 22 juin 1940, repoussant l'invasion allemande de la cuvette grenobloise).",
   ecosystemEn:

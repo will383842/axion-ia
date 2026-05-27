@@ -12,6 +12,7 @@ export const BELLEVIGNE_EN_LAYON_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bellevigne-en-Layon (49). Nous accompagnons tous types d'activités : TPE viticoles (Coteaux-du-Layon, Quarts-de-Chaume), PME agroalimentaires, artisans, commerçants de proximité, professions libérales, hébergeurs œnotouristiques et services aux entreprises du sud-ouest angevin.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bellevigne-en-Layon (49). Nous accompagnons tous types d'activités : TPE viticoles (Coteaux-du-Layon, Quarts-de-Chaume), PME agroalimentaires, artisans, commerçants de proximité, professions libérales, hébergeurs œnotouristiques et services aux entreprises du sud-ouest angevin.",
+  seoHook: "agglomération cru",
   ecosystemFr:
     "Bellevigne-en-Layon est une commune nouvelle née de la fusion de Thouarcé, Faye-d'Anjou, Rablay-sur-Layon et Champ-sur-Layon, au cœur du vignoble du Layon (AOC Coteaux-du-Layon, Quarts-de-Chaume Grand Cru). Économie rurale : viticulture, œnotourisme, agroalimentaire, artisanat, commerces de bourg.",
   ecosystemEn:

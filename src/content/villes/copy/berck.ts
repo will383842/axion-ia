@@ -12,6 +12,7 @@ export const BERCK_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Berck (62). Nous accompagnons tous types d'activités : TPE hôtellerie-restauration et tourisme balnéaire, PME santé et rééducation, commerçants du centre-ville, professions paramédicales, prestataires saisonniers de la Côte d'Opale.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Berck (62). Nous accompagnons tous types d'activités : TPE hôtellerie-restauration et tourisme balnéaire, PME santé et rééducation, commerçants du centre-ville, professions paramédicales, prestataires saisonniers de la Côte d'Opale.",
+  seoHook: "côte d'opale",
   ecosystemFr:
     "Berck est une station balnéaire majeure de la Côte d'Opale, historiquement liée à la médecine et la rééducation (hôpital maritime fondé au XIXe siècle). Le tissu économique mêle tourisme saisonnier (hôtellerie, restauration, activités de plage), établissements de santé et rééducation, commerces de proximité et professions paramédicales. Accès A16 vers Boulogne-sur-Mer (30 min) et Calais (50 min).",
   ecosystemEn:

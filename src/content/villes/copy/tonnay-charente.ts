@@ -12,6 +12,7 @@ export const TONNAY_CHARENTE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tonnay-Charente (17). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et logistiques, agriculteurs, commerçants et indépendants de cette commune stratégique entre Rochefort et La Rochelle.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tonnay-Charente (17). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et logistiques, agriculteurs, commerçants et indépendants de cette commune stratégique entre Rochefort et La Rochelle.",
+  seoHook: "bassin rochefort-tonnay",
   ecosystemFr:
     "Tonnay-Charente est une commune en bords de Charente, entre Rochefort et Saintes, connue pour son pont suspendu classé. Zones d'activités industrielles et logistiques, agriculture (céréales, vignes), TPE artisans BTP, commerces de proximité, port fluvial historique.",
   ecosystemEn:

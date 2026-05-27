@@ -12,6 +12,7 @@ export const BEAUREPAIRE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beaurepaire (38). Nous accompagnons tous types d'activités : agriculteurs céréaliers Bas-Dauphiné, PME agroalimentaires, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises du sud-Isère plaine.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beaurepaire (38). Nous accompagnons tous types d'activités : agriculteurs céréaliers Bas-Dauphiné, PME agroalimentaires, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises du sud-Isère plaine.",
+  seoHook: "TPE & PME Isère",
   ecosystemFr:
     "Beaurepaire est positionnée dans la plaine agricole du sud-Isère / Bas-Dauphiné, entre Vienne (35 min) et Romans-sur-Isère (40 min). Tissu agricole céréalier dominant (blé, maïs, tournesol), PME agroalimentaires de transformation locale, TPE artisanat BTP, commerces et services. Position de transit entre Lyon et Valence.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const VERDUN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Verdun (55). Nous accompagnons TPE et PME : acteurs du tourisme de mémoire, hôteliers, restaurateurs, commerçants, artisans et prestataires de services de la Meuse. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Verdun (55). Nous accompagnons TPE et PME : acteurs du tourisme de mémoire, hôteliers, restaurateurs, commerçants, artisans et prestataires de services de la Meuse. Audit Flash dès 490 € HT.",
+  seoHook: "vallée meuse",
   ecosystemFr:
     "Verdun est sous-préfecture de la Meuse, située sur les bords de la Meuse. La ville est un pôle mondial du tourisme de mémoire (champ de bataille, Mémorial de Verdun, Ossuaire de Douaumont, Citadelle souterraine). L'économie locale repose sur le tourisme mémoriel, l'hôtellerie-restauration, le commerce de centre-ville, l'artisanat BTP et les services aux entreprises et particuliers.",
   ecosystemEn:

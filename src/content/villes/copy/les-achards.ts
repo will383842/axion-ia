@@ -12,6 +12,7 @@ export const LES_ACHARDS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient aux Achards (85). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles (mécanique, agroalimentaire), commerces, professions libérales et prestataires du bocage vendéen entre La Roche-sur-Yon et le littoral.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient aux Achards (85). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles (mécanique, agroalimentaire), commerces, professions libérales et prestataires du bocage vendéen entre La Roche-sur-Yon et le littoral.",
+  seoHook: "bassin économique rural-périurbain",
   ecosystemFr:
     "Les Achards est une commune nouvelle créée en 2017 (fusion de La Mothe-Achard et La Chapelle-Achard) dans le bocage vendéen, à mi-chemin entre La Roche-sur-Yon et le littoral des Sables-d'Olonne. Bassin économique structuré autour de l'industrie mécanique, de l'agroalimentaire, de l'artisanat BTP, du commerce de proximité et du tissu PME familial vendéen.",
   ecosystemEn:

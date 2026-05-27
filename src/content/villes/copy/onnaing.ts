@@ -12,6 +12,7 @@ export const ONNAING_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Onnaing (59). Nous accompagnons TPE et PME : sous-traitants automobile et équipementiers du pôle Toyota, logisticiens industriels, prestataires de services aux entreprises, commerçants et artisans de l'agglo valenciennoise.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Onnaing (59). Nous accompagnons TPE et PME : sous-traitants automobile et équipementiers du pôle Toyota, logisticiens industriels, prestataires de services aux entreprises, commerçants et artisans de l'agglo valenciennoise.",
+  seoHook: "frontalier belge",
   ecosystemFr:
     "Onnaing est une commune de l'agglomération de Valenciennes, connue pour abriter l'usine Toyota (Yaris) et un écosystème de sous-traitance automobile du Hainaut. L'économie locale gravite autour de la sous-traitance auto et des équipementiers, de la logistique industrielle (plateformes d'approvisionnement just-in-time), des services aux entreprises du pôle industriel, du commerce local et de l'artisanat. Territoire industriel dynamique avec fort tissu de TPE et PME fournisseurs de la filière automobile.",
   ecosystemEn:

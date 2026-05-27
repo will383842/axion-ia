@@ -12,6 +12,7 @@ export const FLINES_LEZ_RACHES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Flines-lez-Râches (59). Nous accompagnons TPE et PME : exploitations agricoles et PME agroalimentaires de la Pévèle, artisans, commerçants, prestataires de services B2B du bassin douaisien et professions libérales.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Flines-lez-Râches (59). Nous accompagnons TPE et PME : exploitations agricoles et PME agroalimentaires de la Pévèle, artisans, commerçants, prestataires de services B2B du bassin douaisien et professions libérales.",
+  seoHook: "bassin douaisien et",
   ecosystemFr:
     "Flines-lez-Râches est une commune rurale de la Pévèle, entre Douai (15 min) et Orchies (10 min). L'économie locale est portée par les exploitations agricoles et PME agroalimentaires de la plaine pévéloise (cultures céréalières, betteraves, maraîchage), l'artisanat du bâtiment, le commerce de bourg et les services aux entreprises irriguant le Douaisis. L'axe autoroutier A23 (Lille-Valenciennes) favorise la logistique et les échanges régionaux.",
   ecosystemEn:

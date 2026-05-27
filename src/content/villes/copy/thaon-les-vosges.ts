@@ -12,6 +12,7 @@ export const THAON_LES_VOSGES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thaon-les-Vosges (88). Nous accompagnons TPE et PME : industriels et sous-traitants, artisans BTP, commerçants, agroalimentaires et prestataires de services de l'agglomération d'Épinal. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thaon-les-Vosges (88). Nous accompagnons TPE et PME : industriels et sous-traitants, artisans BTP, commerçants, agroalimentaires et prestataires de services de l'agglomération d'Épinal. Audit Flash dès 490 € HT.",
+  seoHook: "TPE & PME Vosges",
   ecosystemFr:
     "Thaon-les-Vosges est une commune de l'agglomération d'Épinal située au bord de la Moselle. La cité ouvrière s'est construite autour de la Blanchisserie-Teinturerie de Thaon (BTT), grande industrie textile historique aujourd'hui fermée, dont les friches sont en reconversion. L'économie locale s'organise désormais autour de l'industrie reconvertie, la sous-traitance, l'agroalimentaire, le commerce de proximité, l'artisanat BTP et les services aux entreprises.",
   ecosystemEn:

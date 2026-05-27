@@ -12,6 +12,7 @@ export const MOIRANS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Moirans (38). Nous accompagnons tous types d'activités : PME industrielles et logistiques du Voironnais, TPE artisans BTP, commerçants, indépendants, professions libérales, agriculteurs et services aux entreprises du Sud Grésivaudan / Pays voironnais.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Moirans (38). Nous accompagnons tous types d'activités : PME industrielles et logistiques du Voironnais, TPE artisans BTP, commerçants, indépendants, professions libérales, agriculteurs et services aux entreprises du Sud Grésivaudan / Pays voironnais.",
+  seoHook: "pays voironnais en",
   ecosystemFr:
     "Moirans appartient à la communauté d'agglomération du Pays voironnais et au canton de Tullins, au débouché septentrional de la basse vallée de l'Isère (Sud Grésivaudan). Position stratégique sur l'axe Lyon-Grenoble (A48) : tissu industriel et logistique périphérique, TPE artisanat BTP, commerces, professions libérales, agriculture vallée de l'Isère.",
   ecosystemEn:

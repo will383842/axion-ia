@@ -12,6 +12,7 @@ export const REMIREMONT_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Remiremont (88). Nous accompagnons TPE et PME : commerçants de centre-ville, hôteliers-restaurateurs, professionnels du tourisme patrimonial, artisans textiles, professions libérales et prestataires de services du sud-vosgien. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Remiremont (88). Nous accompagnons TPE et PME : commerçants de centre-ville, hôteliers-restaurateurs, professionnels du tourisme patrimonial, artisans textiles, professions libérales et prestataires de services du sud-vosgien. Audit Flash dès 490 € HT.",
+  seoHook: "massif vosgien",
   ecosystemFr:
     "Remiremont est une sous-préfecture des Vosges située au confluent de la Moselle et de la Moselotte, au pied du massif vosgien sud. La ville historique abbatiale conserve son abbaye, sa basilique Saint-Pierre et ses célèbres arcades commerçantes du centre-ville. L'économie locale repose sur l'administration sous-préfectorale, le commerce de centre-ville (arcades), l'hôtellerie-restauration, le tourisme patrimonial et thermal (Plombières-les-Bains à proximité), l'artisanat textile, les professions libérales et les services aux entreprises.",
   ecosystemEn:

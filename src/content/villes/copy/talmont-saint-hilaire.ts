@@ -12,6 +12,7 @@ export const TALMONT_SAINT_HILAIRE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Talmont-Saint-Hilaire (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, ostréiculteurs port du Payré, hôteliers-restaurateurs, acteurs tourisme littoral, professions libérales et services.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Talmont-Saint-Hilaire (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, ostréiculteurs port du Payré, hôteliers-restaurateurs, acteurs tourisme littoral, professions libérales et services.",
+  seoHook: "littoral",
   ecosystemFr:
     "Talmont-Saint-Hilaire est une commune littorale vendéenne avec le château de Talmont (XIe siècle, Richard Cœur de Lion) et le port ostréicole du Payré. Tourisme patrimonial et balnéaire, ostréiculture, camping, artisanat. Les Sables-d'Olonne à 10 min, La Roche-sur-Yon à 30 min.",
   ecosystemEn:

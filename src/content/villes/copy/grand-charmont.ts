@@ -12,6 +12,7 @@ export const GRAND_CHARMONT_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Grand-Charmont (25). Nous accompagnons TPE et PME : sous-traitants automobile du Pays de Montbeliard, commercants de proximite, prestataires de services a la personne, artisans BTP et restaurateurs. Audit Flash des 490 euros HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Grand-Charmont (25). Nous accompagnons TPE et PME : sous-traitants automobile du Pays de Montbeliard, commercants de proximite, prestataires de services a la personne, artisans BTP et restaurateurs. Audit Flash des 490 euros HT.",
+  seoHook: "pays de montbeliard",
   ecosystemFr:
     "Grand-Charmont fait partie de l'agglomeration de Montbeliard dans le nord du Doubs. La ville est historiquement liee au bassin industriel automobile (Stellantis-Sochaux a 5 km). Le tissu economique local repose sur la sous-traitance industrielle, le commerce de proximite et les services aux particuliers.",
   ecosystemEn:

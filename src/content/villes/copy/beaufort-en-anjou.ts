@@ -12,6 +12,7 @@ export const BEAUFORT_EN_ANJOU_COPY: VilleCopy = {
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Beaufort-en-Anjou (49). Nous accompagnons les TPE, PME et exploitants agricoles du Beaufortais dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict, tarifs publics.",
   directAnswerEn:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Beaufort-en-Anjou (49). Nous accompagnons les TPE, PME et exploitants agricoles du Beaufortais dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict, tarifs publics.",
+  seoHook: "TPE & PME Maine-et-Loire",
   ecosystemFr:
     "Beaufort-en-Anjou est un bourg-centre dynamique entre Baugeois et Val d'Authion. L'économie repose sur l'agriculture (grandes cultures, horticulture, semences végétales), l'artisanat, les commerces de centre-bourg et les PME agroalimentaires. Territoire historique de la liqueur et des vergers angevins.",
   ecosystemEn:

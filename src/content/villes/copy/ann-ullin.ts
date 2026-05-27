@@ -12,6 +12,7 @@ export const ANN_ULLIN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Annœullin (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles reconverties, commerçants de proximité, professions libérales, indépendants et services aux entreprises du sud lillois.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Annœullin (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles reconverties, commerçants de proximité, professions libérales, indépendants et services aux entreprises du sud lillois.",
+  seoHook: "agglomération lille",
   ecosystemFr:
     "Annœullin est intégrée à l'agglomération lilloise sud, dans l'ancien bassin minier reconverti. Tissu péri-urbain : TPE artisanat BTP, PME industrielles reconverties (sous-traitance auto, plasturgie, métallurgie légère), commerces de proximité, professions libérales, logistique.",
   ecosystemEn:

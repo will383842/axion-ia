@@ -12,6 +12,7 @@ export const THYEZ_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thyez (74). Nous accompagnons tous types d'activités : TPE artisans du décolletage et de la micromécanique, PME industrielles de la vallée de l'Arve, commerçants, indépendants, professions libérales et prestataires de services du canton de Bonneville.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thyez (74). Nous accompagnons tous types d'activités : TPE artisans du décolletage et de la micromécanique, PME industrielles de la vallée de l'Arve, commerçants, indépendants, professions libérales et prestataires de services du canton de Bonneville.",
+  seoHook: "bassin historique du",
   ecosystemFr:
     "Thyez est implantée dans la vallée de l'Arve, au sud de Bonneville, dans un bassin historique du décolletage et de la micromécanique. La commune accueille des TPE artisans industriels, des PME sous-traitantes, des commerces de proximité et des professions libérales. Proximité Genève (35 min) et Annecy (45 min).",
   ecosystemEn:

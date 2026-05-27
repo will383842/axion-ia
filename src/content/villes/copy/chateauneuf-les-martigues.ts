@@ -12,6 +12,7 @@ export const CHATEAUNEUF_LES_MARTIGUES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châteauneuf-les-Martigues (13). Nous accompagnons TPE artisans, PME industrielles, sous-traitants aéronautiques, pétrochimie et commerces du pourtour de l'étang de Berre. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châteauneuf-les-Martigues (13). Nous accompagnons TPE artisans, PME industrielles, sous-traitants aéronautiques, pétrochimie et commerces du pourtour de l'étang de Berre. Audit Flash dès 490 € HT.",
+  seoHook: "TPE & PME Bouches-du-Rhône",
   ecosystemFr:
     "Châteauneuf-les-Martigues est positionnée entre Martigues et Marignane, au cœur de la zone industrielle de l'étang de Berre. Pôle pétrochimie (raffineries, complexe industriel), aéronautique avec Airbus Helicopters (Eurocopter) à Marignane voisine, logistique portuaire, sous-traitants industriels. Tissu de TPE artisans et commerces de proximité.",
   ecosystemEn:

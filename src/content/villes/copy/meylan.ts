@@ -12,6 +12,7 @@ export const MEYLAN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Meylan (38). Nous accompagnons tous types d'activités : scale-ups deep-tech Inovallée, PME tech et logiciel, structures R&D microélectronique/médical, TPE artisans, commerçants, professions libérales (cabinets médicaux, juridiques) et services aux entreprises du bassin grenoblois.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Meylan (38). Nous accompagnons tous types d'activités : scale-ups deep-tech Inovallée, PME tech et logiciel, structures R&D microélectronique/médical, TPE artisans, commerçants, professions libérales (cabinets médicaux, juridiques) et services aux entreprises du bassin grenoblois.",
+  seoHook: "proche grenoble",
   ecosystemFr:
     "Meylan est l'un des poumons innovation de Grenoble-Alpes Métropole (« La Métro »). Parc technologique Inovallée concentre 300+ entreprises tech : microélectronique (héritière du CEA-Leti Grenoble), édition logicielle, dispositifs médicaux, instrumentation scientifique. Tissu dense PME tech, TPE artisans haut de gamme, professions libérales et commerces résidentiels.",
   ecosystemEn:

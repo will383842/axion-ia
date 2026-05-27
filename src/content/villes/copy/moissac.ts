@@ -12,6 +12,7 @@ export const MOISSAC_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Moissac (82). Nous accompagnons TPE artisans, PME agroalimentaires, commerçants, prestataires tourisme et professions libérales du Moissagais. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Moissac (82). Nous accompagnons TPE artisans, PME agroalimentaires, commerçants, prestataires tourisme et professions libérales du Moissagais. Audit Flash dès 490 € HT.",
+  seoHook: "TPE & PME Tarn-et-Garonne",
   ecosystemFr:
     "Moissac (13 419 hab) est une cité d'art UNESCO du Tarn-et-Garonne, célèbre pour son abbaye romane et le chasselas AOP. Économie structurée autour de l'arboriculture fruitière (chasselas, prune, pomme), du tourisme patrimonial et de Compostelle, des commerces et services. Sur le canal latéral à la Garonne et le Tarn. Proximité Castelsarrasin (10 min), Montauban (30 min).",
   ecosystemEn:

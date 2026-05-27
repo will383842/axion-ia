@@ -12,6 +12,7 @@ export const ANDERNOS_LES_BAINS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Andernos-les-Bains (33). Nous accompagnons TPE et PME du Bassin d'Arcachon : ostréiculteurs, hébergeurs touristiques, restaurateurs, commerçants saisonniers, artisans BTP et professions libérales. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Andernos-les-Bains (33). Nous accompagnons TPE et PME du Bassin d'Arcachon : ostréiculteurs, hébergeurs touristiques, restaurateurs, commerçants saisonniers, artisans BTP et professions libérales. Audit Flash dès 490 € HT.",
+  seoHook: "station balnéaire",
   ecosystemFr:
     "Andernos-les-Bains est une station balnéaire du nord du Bassin d'Arcachon. Économie mixte : ostréiculture (port ostréicole actif), tourisme balnéaire, commerces saisonniers, artisanat BTP et professions libérales. Marché immobilier dynamique, population en croissance.",
   ecosystemEn:

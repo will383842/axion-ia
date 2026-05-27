@@ -12,6 +12,7 @@ export const DONGES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Donges (44). Nous accompagnons les TPE artisans, PME industrielles et sous-traitantes, commerçants et prestataires de l'estuaire de la Loire sur leurs cas IA opérationnels. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Donges (44). Nous accompagnons les TPE artisans, PME industrielles et sous-traitantes, commerçants et prestataires de l'estuaire de la Loire sur leurs cas IA opérationnels. Audit Flash dès 490 € HT.",
+  seoHook: "bassin estuarien",
   ecosystemFr:
     "Donges est une commune de l'estuaire de la Loire, marquée par la présence de la raffinerie TotalEnergies (un des principaux sites pétrochimiques français). Tissu TPE artisans, PME sous-traitantes industrielles, commerces de proximité et services. Bassin d'emploi Saint-Nazaire/Montoir.",
   ecosystemEn:

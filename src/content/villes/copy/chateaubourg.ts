@@ -12,6 +12,7 @@ export const CHATEAUBOURG_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châteaubourg (35). Nous accompagnons TPE artisans, PME industrielles agroalimentaires, entreprises logistiques et services de l'est rennais. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châteaubourg (35). Nous accompagnons TPE artisans, PME industrielles agroalimentaires, entreprises logistiques et services de l'est rennais. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
+  seoHook: "vallée vilaine",
   ecosystemFr:
     "Châteaubourg est un pôle économique majeur de l'est rennais avec plusieurs zones d'activités (ZA de la Gaultière, ZA du Bois de Teillay). Forte présence de l'industrie agroalimentaire bretonne, logistique (axe RN157 Rennes-Laval), PME manufacturières, TPE artisans BTP et services aux entreprises. Bords de Vilaine attractifs.",
   ecosystemEn:

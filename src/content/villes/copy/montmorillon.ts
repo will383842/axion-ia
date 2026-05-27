@@ -12,6 +12,7 @@ export const MONTMORILLON_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montmorillon (86). Nous accompagnons tous types d'activités : TPE artisans métiers du livre et BTP, PME agroalimentaires, acteurs tourisme culturel (Cité de l'Écrit), commerçants, professions libérales et services aux entreprises du sud-est Vienne.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montmorillon (86). Nous accompagnons tous types d'activités : TPE artisans métiers du livre et BTP, PME agroalimentaires, acteurs tourisme culturel (Cité de l'Écrit), commerçants, professions libérales et services aux entreprises du sud-est Vienne.",
+  seoHook: "vallée gartempe",
   ecosystemFr:
     "Montmorillon est connue comme la Cité de l'Écrit et des métiers du livre (librairies, relieurs, calligraphes, enlumineurs), labellisée Ville d'Art et d'Histoire. Positionnée sur les bords de la Gartempe, la ville concentre un tissu culturel et artisanal unique, complété par des PME agroalimentaires, TPE artisans BTP, commerces, professions libérales et services de proximité.",
   ecosystemEn:

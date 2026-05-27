@@ -12,6 +12,7 @@ export const VETRAZ_MONTHOUX_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Vetraz-Monthoux (74). Nous accompagnons TPE et PME : services transfrontaliers, entreprises tertiaires, commercants, professions liberales et artisans BTP de l'agglomeration annemassienne du Grand Geneve. Audit Flash des 490 euros HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Vetraz-Monthoux (74). Nous accompagnons TPE et PME : services transfrontaliers, entreprises tertiaires, commercants, professions liberales et artisans BTP de l'agglomeration annemassienne du Grand Geneve. Audit Flash des 490 euros HT.",
+  seoHook: "agglomération geneve",
   ecosystemFr:
     "Vetraz-Monthoux est une commune residentielle dynamique de l'agglomeration d'Annemasse, a 10 minutes de Geneve. Integree au Grand Geneve, elle beneficie du flux economique transfrontalier : TPE/PME tertiaires, commerces, professions liberales et artisanat BTP. Proximite Annemasse et Geneve favorise les services aux entreprises et le commerce de proximite.",
   ecosystemEn:

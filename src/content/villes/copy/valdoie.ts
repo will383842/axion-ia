@@ -12,6 +12,7 @@ export const VALDOIE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Valdoie (90). Nous accompagnons TPE et PME : TPE artisans, commerces de proximité, services valdoyens, PME sous-traitantes industries Belfort (énergie, ferroviaire, automobile). Audit Flash 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Valdoie (90). Nous accompagnons TPE et PME : TPE artisans, commerces de proximité, services valdoyens, PME sous-traitantes industries Belfort (énergie, ferroviaire, automobile). Audit Flash 490 € HT.",
+  seoHook: "TPE & PME Territ. Belfort",
   ecosystemFr:
     "Valdoie est positionnée dans l'agglomération belfortaine, en première couronne nord. Commune principalement résidentielle. Économie : TPE artisanat, commerces de proximité, services, PME sous-traitantes des industries Belfort-Montbéliard (énergie GE/Alstom, ferroviaire, automobile PSA).",
   ecosystemEn:

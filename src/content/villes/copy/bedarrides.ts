@@ -12,6 +12,7 @@ export const BEDARRIDES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bédarrides (84). Nous accompagnons tous types d'activités : TPE artisans, domaines viticoles AOC Châteauneuf-du-Pape et Côtes-du-Rhône, PME agroalimentaires, commerces et services de la vallée de l'Ouvèze. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bédarrides (84). Nous accompagnons tous types d'activités : TPE artisans, domaines viticoles AOC Châteauneuf-du-Pape et Côtes-du-Rhône, PME agroalimentaires, commerces et services de la vallée de l'Ouvèze. Audit Flash dès 490 € HT.",
+  seoHook: "vallée ouvèze",
   ecosystemFr:
     "Bédarrides est un pôle viticole et agricole de la vallée de l'Ouvèze, à proximité immédiate de Châteauneuf-du-Pape. Vignoble AOC Châteauneuf-du-Pape (cru prestigieux), Côtes-du-Rhône, oenotourisme international. Tissu de TPE artisans, domaines viticoles, PME agroalimentaires et commerces. Orange à 15 min, Avignon à 20 min, A7 directe.",
   ecosystemEn:

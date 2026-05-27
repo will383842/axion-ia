@@ -12,6 +12,7 @@ export const LE_HAILLAN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Haillan (33). Nous accompagnons TPE et PME de l'ouest bordelais : PME tertiaires (conseil, IT, communication), artisans BTP, commerçants et professions libérales. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Haillan (33). Nous accompagnons TPE et PME de l'ouest bordelais : PME tertiaires (conseil, IT, communication), artisans BTP, commerçants et professions libérales. Audit Flash dès 490 € HT.",
+  seoHook: "proche bordeaux",
   ecosystemFr:
     "Le Haillan fait partie de l'arc ouest de Bordeaux Métropole. Zones d'activités tertiaires (sièges entreprises, cabinets conseil, agences communication), proximité Mérignac (aéroport, centre commercial), tissu TPE résidentiel et commerces de proximité.",
   ecosystemEn:

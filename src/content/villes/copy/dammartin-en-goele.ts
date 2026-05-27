@@ -12,6 +12,7 @@ export const DAMMARTIN_EN_GOELE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Dammartin-en-Goele (77). Nous accompagnons TPE et PME : operateurs logistique et transport lies a Roissy-CDG, commercants, artisans BTP, prestataires de services aux entreprises et agriculteurs du pays de Goele. Audit Flash des 490 euros HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Dammartin-en-Goele (77). Nous accompagnons TPE et PME : operateurs logistique et transport lies a Roissy-CDG, commercants, artisans BTP, prestataires de services aux entreprises et agriculteurs du pays de Goele. Audit Flash des 490 euros HT.",
+  seoHook: "pays de goele",
   ecosystemFr:
     "Dammartin-en-Goele est un bourg historique du pays de Goele, au nord de la Seine-et-Marne, a proximite directe de l'aeroport Roissy-CDG. L'economie locale beneficie de l'ecosysteme aeroportuaire (logistique, transport, hotellerie) et conserve un tissu de TPE commerce, artisanat BTP, services et agriculture cerealiere.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const MORTAGNE_SUR_SEVRE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mortagne-sur-Sèvre (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles du bocage, exploitations agricoles, acteurs tourisme vert et professions libérales.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mortagne-sur-Sèvre (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles du bocage, exploitations agricoles, acteurs tourisme vert et professions libérales.",
+  seoHook: "TPE & PME Vendée",
   ecosystemFr:
     "Mortagne-sur-Sèvre est une commune du bocage vendéen, bâtie au-dessus des gorges de la Sèvre nantaise. Pôle industriel (mécanique, agroalimentaire), artisanat, agriculture bocagère et tourisme vert. Cholet à 20 min, Les Herbiers à 15 min, Nantes à 1h.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const CARNOUX_EN_PROVENCE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carnoux-en-Provence (13). Nous accompagnons TPE indépendants, professions libérales, commerçants, artisans et PME tertiaires de l'est marseillais. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carnoux-en-Provence (13). Nous accompagnons TPE indépendants, professions libérales, commerçants, artisans et PME tertiaires de l'est marseillais. Audit Flash dès 490 € HT.",
+  seoHook: "bassin marseillais",
   ecosystemFr:
     "Carnoux-en-Provence est une commune résidentielle créée dans les années 1950 (rapatriés d'Afrique du Nord), nichée entre les collines de Cassis et Aubagne. Population aisée, professions libérales et cadres. Centre commercial de proximité, TPE artisans et indépendants. Proximité immédiate d'Aubagne et de la technopôle de Gémenos.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const CHEVILLY_LARUE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chevilly-Larue (94). Nous accompagnons tous types d'activités : TPE artisans et prestataires, PME logistique et agroalimentaire proches du MIN de Rungis, commerçants, professions libérales et entreprises de services du sud du Val-de-Marne. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chevilly-Larue (94). Nous accompagnons tous types d'activités : TPE artisans et prestataires, PME logistique et agroalimentaire proches du MIN de Rungis, commerçants, professions libérales et entreprises de services du sud du Val-de-Marne. Audit Flash dès 490 € HT.",
+  seoHook: "TPE & PME Val-de-Marne",
   ecosystemFr:
     "Chevilly-Larue bénéficie de la proximité immédiate du MIN de Rungis, premier marché de produits frais au monde, et de l'aéroport d'Orly. Son tissu économique associe TPE artisans, PME logistique et agroalimentaire, commerces et professions libérales. Communes voisines : Rungis, Thiais, L'Haÿ-les-Roses, Villejuif.",
   ecosystemEn:

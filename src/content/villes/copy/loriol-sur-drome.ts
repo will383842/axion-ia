@@ -12,6 +12,7 @@ export const LORIOL_SUR_DROME_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Loriol-sur-Drôme (26). Nous accompagnons tous types d'activités : PME industrielles et logistiques axe A7, agriculteurs et arboriculteurs vallée du Rhône, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Loriol-sur-Drôme (26). Nous accompagnons tous types d'activités : PME industrielles et logistiques axe A7, agriculteurs et arboriculteurs vallée du Rhône, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises.",
+  seoHook: "vallée du",
   ecosystemFr:
     "Loriol-sur-Drôme forme avec Livron-sur-Drôme une zone limitrophe sud de Valence sur l'axe A7. Tissu PME industrielles et logistiques (transit vallée Rhône), agriculture importante (vergers, vallée du Rhône), TPE artisanat BTP, commerces et services aux entreprises. Position de transit Lyon-Marseille.",
   ecosystemEn:

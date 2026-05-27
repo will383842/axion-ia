@@ -12,6 +12,7 @@ export const FEGERSHEIM_COPY: VilleCopy = {
     "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Fegersheim (67). Nous accompagnons TPE et PME : sous-traitants industriels, prestataires logistiques, services aux entreprises, artisans BTP, commerçants et restaurateurs de l''Eurométropole de Strasbourg. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Fegersheim (67). Nous accompagnons TPE et PME : sous-traitants industriels, prestataires logistiques, services aux entreprises, artisans BTP, commerçants et restaurateurs de l''Eurométropole de Strasbourg. Audit Flash dès 490 € HT.",
+  seoHook: "TPE & PME Bas-Rhin",
   ecosystemFr:
     "Fegersheim est une commune de l''Eurométropole de Strasbourg, située au sud de l''agglomération sur l''axe A35. La commune accueille une zone industrielle importante (industrie pharmaceutique notamment, sous-traitance, logistique) ainsi qu''un tissu commercial et résidentiel périurbain. L''économie locale repose sur l''industrie pharmaceutique et chimique, la sous-traitance industrielle, la logistique, les services aux entreprises, l''artisanat BTP, le commerce et la restauration.",
   ecosystemEn:

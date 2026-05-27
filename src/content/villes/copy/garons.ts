@@ -12,6 +12,7 @@ export const GARONS_COPY: VilleCopy = {
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Garons (30). Nous accompagnons les TPE, PME et ETI locales : entreprises logistique aéroportuaire, services aux entreprises, commerçants, artisans BTP et viticulteurs Costières de l'agglo nîmoise sud. Audit Flash à partir de 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Garons (30). Nous accompagnons les TPE, PME et ETI locales : entreprises logistique aéroportuaire, services aux entreprises, commerçants, artisans BTP et viticulteurs Costières de l'agglo nîmoise sud. Audit Flash à partir de 490 € HT.",
+  seoHook: "agglomération nîmes",
   ecosystemFr:
     "Garons (~5 400 hab) accueille l'aéroport Nîmes-Alès-Camargue-Cévennes (ancienne base aéronavale). Logistique aéroportuaire, services aux entreprises, viticulture Costières de Nîmes, artisanat BTP et commerces. Zone d'activité dynamique portée par l'aéroport et la proximité de Nîmes (10 min).",
   ecosystemEn:

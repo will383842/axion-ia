@@ -12,6 +12,7 @@ export const CHATEL_GUYON_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châtel-Guyon (63). Nous accompagnons TPE et PME : établissements thermaux, hôtels et hébergements, professionnels de santé, commerçants et artisans, acteurs tourisme bien-être. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châtel-Guyon (63). Nous accompagnons TPE et PME : établissements thermaux, hôtels et hébergements, professionnels de santé, commerçants et artisans, acteurs tourisme bien-être. Audit Flash dès 490 € HT.",
+  seoHook: "station thermale",
   ecosystemFr:
     "Châtel-Guyon est une station thermale historique du Puy-de-Dôme, à 5 min de Riom et 20 min de Clermont-Ferrand. Tissu thermalisme/bien-être, hôtellerie, professions santé, TPE commerces, tourisme thermal.",
   ecosystemEn:

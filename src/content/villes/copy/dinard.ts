@@ -12,6 +12,7 @@ export const DINARD_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Dinard (35). Nous accompagnons TPE et PME : hôteliers et restaurateurs de la Côte d'Émeraude, commerces touristiques, agences immobilières, professions libérales, services aux entreprises et acteurs culturels du littoral nord breton.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Dinard (35). Nous accompagnons TPE et PME : hôteliers et restaurateurs de la Côte d'Émeraude, commerces touristiques, agences immobilières, professions libérales, services aux entreprises et acteurs culturels du littoral nord breton.",
+  seoHook: "station balnéaire",
   ecosystemFr:
     "Dinard est une station balnéaire de prestige sur la Côte d'Émeraude, face à Saint-Malo. Économie portée par le tourisme haut de gamme (hôtellerie, thalassothérapie, festival du film britannique), l'immobilier de villégiature (villas Belle Époque), commerces, professions libérales et services. Aéroport Dinard-Pleurtuit-Saint-Malo à 5 min. Barrage de la Rance vers Saint-Malo.",
   ecosystemEn:

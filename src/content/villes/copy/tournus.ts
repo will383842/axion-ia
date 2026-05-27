@@ -12,6 +12,7 @@ export const TOURNUS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tournus (71). Nous accompagnons TPE et PME : restaurateurs, hôteliers, viticulteurs, commerçants de centre-ville et artisans du bord de Saône en Saône-et-Loire. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tournus (71). Nous accompagnons TPE et PME : restaurateurs, hôteliers, viticulteurs, commerçants de centre-ville et artisans du bord de Saône en Saône-et-Loire. Audit Flash dès 490 € HT.",
+  seoHook: "TPE & PME Saône-et-Loire",
   ecosystemFr:
     "Tournus est une cité romane en bord de Saône, célèbre pour son abbaye Saint-Philibert, joyau de l'art roman. La ville est un pôle gastronomique reconnu (restaurants étoilés, producteurs locaux). L'économie repose sur la restauration, l'hôtellerie, la viticulture bourguignonne, le commerce de centre-ville et les services. Proximité de Chalon-sur-Saône (30 min) et Mâcon (25 min).",
   ecosystemEn:

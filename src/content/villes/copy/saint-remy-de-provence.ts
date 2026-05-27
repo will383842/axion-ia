@@ -12,6 +12,7 @@ export const SAINT_REMY_DE_PROVENCE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Rémy-de-Provence (13). Nous accompagnons TPE artisans d'art, hôteliers, restaurateurs, professions libérales, oléiculteurs, viticulteurs et PME tertiaires des Alpilles. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Rémy-de-Provence (13). Nous accompagnons TPE artisans d'art, hôteliers, restaurateurs, professions libérales, oléiculteurs, viticulteurs et PME tertiaires des Alpilles. Audit Flash dès 490 € HT.",
+  seoHook: "vallée des",
   ecosystemFr:
     "Saint-Rémy-de-Provence est la cité de référence des Alpilles, célèbre pour Van Gogh (asile Saint-Paul-de-Mausole), Nostradamus et le site antique de Glanum. Tourisme international haut de gamme, hôtellerie de charme, restaurants gastronomiques, galeries d'art, oléiculture AOP Vallée des Baux et viticulture. Tissu dense de TPE artisanat d'art et professions libérales.",
   ecosystemEn:

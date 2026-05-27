@@ -12,6 +12,7 @@ export const TOURNON_SUR_RHONE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tournon-sur-Rhône (07). Nous accompagnons tous types d'activités : viticulteurs AOC Saint-Joseph, acteurs oenotourisme vallée Rhône, administration sous-préfecture, PME tertiaires, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tournon-sur-Rhône (07). Nous accompagnons tous types d'activités : viticulteurs AOC Saint-Joseph, acteurs oenotourisme vallée Rhône, administration sous-préfecture, PME tertiaires, TPE artisans BTP, commerçants et services aux entreprises.",
+  seoHook: "vallée du",
   ecosystemFr:
     "Tournon-sur-Rhône est la sous-préfecture de l'Ardèche, face à Tain-l'Hermitage (rive droite du Rhône). Viticulture AOC Saint-Joseph (grands crus septentrionaux Rhône). Tissu oenotourisme, administration, PME tertiaires, TPE artisanat BTP, commerces.",
   ecosystemEn:

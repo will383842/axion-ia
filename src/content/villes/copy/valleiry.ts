@@ -12,6 +12,7 @@ export const VALLEIRY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Valleiry (74). Nous accompagnons TPE et PME : entreprises de services transfrontaliers Grand Genève, artisans BTP, commerces, professions libérales et PME tertiaires du Genevois français.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Valleiry (74). Nous accompagnons TPE et PME : entreprises de services transfrontaliers Grand Genève, artisans BTP, commerces, professions libérales et PME tertiaires du Genevois français.",
+  seoHook: "agglomération genève",
   ecosystemFr:
     "Valleiry est une commune frontalière du Grand Genève, à quelques minutes de la douane suisse. Forte croissance résidentielle portée par les travailleurs frontaliers. Tissu économique : PME de services tertiaires (conseil, comptabilité, IT), TPE artisanat BTP, commerces de proximité, professions libérales et activités liées au transit transfrontalier. Zone commerciale locale dynamique.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const PONT_EVEQUE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pont-Évêque (38). Nous accompagnons tous types d'activités : PME industrielles bassin rhodanien Vienne, TPE artisans BTP, commerçants, viticulteurs proximité (Côte-Rôtie, Condrieu), professions libérales et services aux entreprises de Vienne Condrieu Agglomération.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pont-Évêque (38). Nous accompagnons tous types d'activités : PME industrielles bassin rhodanien Vienne, TPE artisans BTP, commerçants, viticulteurs proximité (Côte-Rôtie, Condrieu), professions libérales et services aux entreprises de Vienne Condrieu Agglomération.",
+  seoHook: "agglomération vienne condrieu",
   ecosystemFr:
     "Pont-Évêque est adhérente à la communauté d'agglomération Vienne Condrieu Agglomération, autrefois située dans la province royale du Dauphiné. Position immédiate de Vienne (5 min), centre économique sud-Isère majeur. Tissu PME industrielles bassin rhodanien, TPE artisanat BTP, agriculture vallée du Rhône (proximité vignobles AOC Côte-Rôtie / Condrieu rive droite), commerces.",
   ecosystemEn:

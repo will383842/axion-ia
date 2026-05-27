@@ -12,6 +12,7 @@ export const AMBERT_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ambert (63). Nous accompagnons TPE et PME : fromageries AOP Fourme, exploitants agricoles Livradois, artisans et commerçants, administration sous-préfecture, acteurs tourisme vert Livradois-Forez. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ambert (63). Nous accompagnons TPE et PME : fromageries AOP Fourme, exploitants agricoles Livradois, artisans et commerçants, administration sous-préfecture, acteurs tourisme vert Livradois-Forez. Audit Flash dès 490 € HT.",
+  seoHook: "TPE & PME Puy-de-Dôme",
   ecosystemFr:
     "Ambert est la sous-préfecture du Puy-de-Dôme et la capitale de la Fourme d'Ambert AOP. Tissu agroalimentaire fromager, agriculture de montagne Livradois, TPE artisanat, administration, tourisme vert Parc Livradois-Forez.",
   ecosystemEn:

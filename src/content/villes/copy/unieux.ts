@@ -12,6 +12,7 @@ export const UNIEUX_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Unieux (42). Nous accompagnons tous types d'activités : PME industrielles vallée Ondaine (héritage métallurgique fort), TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de Saint-Étienne Métropole.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Unieux (42). Nous accompagnons tous types d'activités : PME industrielles vallée Ondaine (héritage métallurgique fort), TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de Saint-Étienne Métropole.",
+  seoHook: "bassin sidérurgique",
   ecosystemFr:
     "Unieux est intégrée à Saint-Étienne Métropole, dans la vallée de l'Ondaine (limitrophe Firminy). Héritage industriel métallurgique fort : la vallée Ondaine a constitué l'un des grands bassins sidérurgiques français historiques. Tissu contemporain PME industrielles diversifiées, TPE artisanat BTP, commerces de proximité.",
   ecosystemEn:

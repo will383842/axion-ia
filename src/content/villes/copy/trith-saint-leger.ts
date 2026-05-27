@@ -12,6 +12,7 @@ export const TRITH_SAINT_LEGER_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trith-Saint-Léger (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles métallurgie-mécanique, sous-traitants automobile, commerçants de proximité, professions libérales et services aux entreprises de l'agglomération valenciennoise.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trith-Saint-Léger (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles métallurgie-mécanique, sous-traitants automobile, commerçants de proximité, professions libérales et services aux entreprises de l'agglomération valenciennoise.",
+  seoHook: "vallée escaut",
   ecosystemFr:
     "Trith-Saint-Léger est intégrée à l'agglomération de Valenciennes Métropole, dans la vallée industrielle de l'Escaut. Tissu péri-urbain industriel : TPE artisanat BTP, PME industrielles historiques (métallurgie, mécanique, sous-traitance automobile pour Toyota Onnaing), commerces de proximité, professions libérales, services B2B de l'agglomération.",
   ecosystemEn:

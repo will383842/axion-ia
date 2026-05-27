@@ -12,6 +12,7 @@ export const DOULLENS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Doullens (80). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles, exploitations agricoles du Doullennais, commerçants, professions de santé, indépendants et services aux entreprises de cette sous-préfecture picarde.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Doullens (80). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles, exploitations agricoles du Doullennais, commerçants, professions de santé, indépendants et services aux entreprises de cette sous-préfecture picarde.",
+  seoHook: "TPE & PME Somme",
   ecosystemFr:
     "Doullens est sous-préfecture historique de la Somme, bourg picard au nord du département marqué par sa citadelle classée et le souvenir de 1918 (commandement unifié Foch). Tissu agricole (grandes cultures, élevage), TPE artisans BTP, PME industrielles, commerces de centre-ville, services de santé et médico-social.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const SAINT_GERVAIS_LES_BAINS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Gervais-les-Bains (74). Nous accompagnons tous types d'activités : TPE hôtellerie-restauration, PME tourisme et thermalisme, commerces saisonniers, indépendants, professions libérales et prestataires montagne du Val Montjoie.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Gervais-les-Bains (74). Nous accompagnons tous types d'activités : TPE hôtellerie-restauration, PME tourisme et thermalisme, commerces saisonniers, indépendants, professions libérales et prestataires montagne du Val Montjoie.",
+  seoHook: "station thermale",
   ecosystemFr:
     "Saint-Gervais-les-Bains est une station thermale et de ski réputée au pied du Mont-Blanc, dans le Val Montjoie. Économie portée par le tourisme quatre saisons, le thermalisme (Thermes du Fayet), le tramway du Mont-Blanc et les remontées mécaniques. TPE hôtellerie-restauration, PME tourisme, commerces, professions libérales et prestataires montagne.",
   ecosystemEn:

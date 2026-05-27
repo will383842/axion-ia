@@ -12,6 +12,7 @@ export const PECQUENCOURT_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pecquencourt (59). Nous accompagnons TPE artisans BTP du bassin minier, PME industrie et sous-traitance, commerçants et services aux entreprises de l'agglomération de Douai. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pecquencourt (59). Nous accompagnons TPE artisans BTP du bassin minier, PME industrie et sous-traitance, commerçants et services aux entreprises de l'agglomération de Douai. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
+  seoHook: "bassin minier nord-pas-de-calais",
   ecosystemFr:
     "Pecquencourt est située dans le bassin minier Nord-Pas-de-Calais (UNESCO), limitrophe de Douai et Sin-le-Noble, intégrée à la Communauté d'Agglomération du Douaisis. Tissu TPE artisans BTP et rénovation du patrimoine minier, PME industrie et sous-traitance, commerces de proximité, services aux entreprises. Reconversion économique post-minière avec développement de zones d'activités et éco-quartiers.",
   ecosystemEn:

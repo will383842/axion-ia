@@ -12,6 +12,7 @@ export const SAINT_JEAN_DE_MONTS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean-de-Monts (85). Nous accompagnons tous types d'activités : TPE et PME touristiques, campings, hôteliers-restaurateurs, commerces saisonniers, thalasso et bien-être, services de proximité.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean-de-Monts (85). Nous accompagnons tous types d'activités : TPE et PME touristiques, campings, hôteliers-restaurateurs, commerces saisonniers, thalasso et bien-être, services de proximité.",
+  seoHook: "station balnéaire",
   ecosystemFr:
     "Saint-Jean-de-Monts est l'une des premières stations balnéaires de Vendée avec 8 km de plages et une forêt domaniale de 830 ha. Économie dominée par le tourisme : plus de 100 000 estivants en été, forte densité campings et résidences. Noirmoutier à 20 min, Challans à 15 min, Nantes à 1h.",
   ecosystemEn:

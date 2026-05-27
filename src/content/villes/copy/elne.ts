@@ -12,6 +12,7 @@ export const ELNE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Elne (66). Nous accompagnons tous types d'activités : TPE artisans, PME agriculture et viticulture, commerçants, acteurs du tourisme patrimonial, indépendants et professions libérales de la plaine du Roussillon.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Elne (66). Nous accompagnons tous types d'activités : TPE artisans, PME agriculture et viticulture, commerçants, acteurs du tourisme patrimonial, indépendants et professions libérales de la plaine du Roussillon.",
+  seoHook: "côte vermeille",
   ecosystemFr:
     "Elne (ancienne Illibéris) est une cité historique de la plaine du Roussillon, entre Perpignan et la côte. Cathédrale Sainte-Eulalie-et-Sainte-Julie et cloître roman classés. Agriculture (maraîchage, arboriculture), viticulture, TPE artisanat, tourisme patrimonial, commerces de centre-ville.",
   ecosystemEn:

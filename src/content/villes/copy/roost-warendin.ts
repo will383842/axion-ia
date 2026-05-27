@@ -12,6 +12,7 @@ export const ROOST_WARENDIN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Roost-Warendin (59). Nous accompagnons TPE artisans, PME services et sous-traitance, commerçants et professions libérales de l'agglomération de Douai. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Roost-Warendin (59). Nous accompagnons TPE artisans, PME services et sous-traitance, commerçants et professions libérales de l'agglomération de Douai. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
+  seoHook: "bassin minier unesco",
   ecosystemFr:
     "Roost-Warendin est située en périphérie est de Douai, intégrée à la Communauté d'Agglomération du Douaisis. Commune en reconversion post-minière dynamique avec le parc Arkeos (archéologie et tourisme), zones d'activités tertiaires et éco-quartiers. Tissu TPE artisans BTP, PME services aux entreprises et sous-traitance, commerces de proximité, professions libérales. Bassin minier UNESCO à proximité immédiate.",
   ecosystemEn:

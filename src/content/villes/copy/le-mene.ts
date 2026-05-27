@@ -12,6 +12,7 @@ export const LE_MENE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Mené (22). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et coopératives agricoles du centre Bretagne, commerçants de bourg, transporteurs, professions libérales et indépendants du pays de Loudéac.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Mené (22). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et coopératives agricoles du centre Bretagne, commerçants de bourg, transporteurs, professions libérales et indépendants du pays de Loudéac.",
+  seoHook: "pays de loudéac",
   ecosystemFr:
     "Le Mené est une commune nouvelle née en 2016 de la fusion de sept communes du centre Bretagne, dans le pays de Loudéac. L'économie locale repose sur l'agroalimentaire (porc, volaille, lait), l'agriculture intensive, les coopératives, l'artisanat BTP, le transport routier et le commerce de bourg. La commune est pionnière en énergies renouvelables (méthanisation, éolien).",
   ecosystemEn:

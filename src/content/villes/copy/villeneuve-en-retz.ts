@@ -12,6 +12,7 @@ export const VILLENEUVE_EN_RETZ_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villeneuve-en-Retz (44). Nous accompagnons tous types d'activités : exploitations ostréicoles et agricoles, TPE artisans et commerçants, PME touristiques du littoral, professionnels de santé, services aux entreprises du Pays de Retz et du bassin Pornic–Machecoul. Audit Flash accessible dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villeneuve-en-Retz (44). Nous accompagnons tous types d'activités : exploitations ostréicoles et agricoles, TPE artisans et commerçants, PME touristiques du littoral, professionnels de santé, services aux entreprises du Pays de Retz et du bassin Pornic–Machecoul. Audit Flash accessible dès 490 € HT.",
+  seoHook: "pays de retz",
   ecosystemFr:
     "Villeneuve-en-Retz est une commune nouvelle de plus de 5 100 habitants dans le Pays de Retz, née de la fusion de Bourgneuf-en-Retz, Fresnay-en-Retz et Chéméré. L'économie locale repose sur l'ostréiculture (baie de Bourgneuf), l'agriculture (maraîchage, élevage), le tourisme littoral saisonnier, l'artisanat BTP et les commerces de proximité.",
   ecosystemEn:

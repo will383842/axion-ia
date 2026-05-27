@@ -12,6 +12,7 @@ export const CORNEBARRIEU_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cornebarrieu (31). Nous accompagnons TPE et PME aéronautiques, sous-traitants industriels, professions libérales et commerçants du pôle aéroportuaire Toulouse. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cornebarrieu (31). Nous accompagnons TPE et PME aéronautiques, sous-traitants industriels, professions libérales et commerçants du pôle aéroportuaire Toulouse. Audit Flash dès 490 € HT.",
+  seoHook: "TPE & PME Hte-Garonne",
   ecosystemFr:
     "Cornebarrieu est une commune stratégique du pôle aéroportuaire toulousain. PME aéronautiques et sous-traitants, TPE de services aux entreprises, zone Aéroconstellation, professions libérales, commerces. Proximité immédiate de l'aéroport Toulouse-Blagnac et de Blagnac.",
   ecosystemEn:

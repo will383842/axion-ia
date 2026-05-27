@@ -12,6 +12,7 @@ export const SAINTE_MAXIME_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sainte-Maxime (83). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME hôtellerie-restauration, professionnels du tourisme balnéaire et de la plaisance, commerces et services golfe de Saint-Tropez.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sainte-Maxime (83). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME hôtellerie-restauration, professionnels du tourisme balnéaire et de la plaisance, commerces et services golfe de Saint-Tropez.",
+  seoHook: "station balnéaire",
   ecosystemFr:
     "Sainte-Maxime est une station balnéaire prisée du Var, face à Saint-Tropez, mêlant tourisme haut de gamme, plaisance et économie résidentielle. Tissu de TPE artisanales, PME hôtellerie-restauration, commerces et services. Saint-Tropez à 15 min en bateau, Fréjus à 25 min, A8 via Le Muy.",
   ecosystemEn:

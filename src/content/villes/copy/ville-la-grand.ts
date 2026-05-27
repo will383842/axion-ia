@@ -12,6 +12,7 @@ export const VILLE_LA_GRAND_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ville-la-Grand (74). Nous accompagnons TPE et PME : prestataires services transfrontaliers Grand Genève, PME tertiaires, commerçants, artisans BTP, entreprises des zones d'activités de l'agglomération Annemasse.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ville-la-Grand (74). Nous accompagnons TPE et PME : prestataires services transfrontaliers Grand Genève, PME tertiaires, commerçants, artisans BTP, entreprises des zones d'activités de l'agglomération Annemasse.",
+  seoHook: "agglomération annemasse",
   ecosystemFr:
     "Ville-la-Grand est une commune frontalière de l'agglomération Annemasse, au coeur du Grand Genève franco-suisse. Tissu services transfrontaliers (conseil, comptabilité, logistique), PME tertiaires, commerces, TPE artisanat BTP, zones d'activités à forte dynamique économique.",
   ecosystemEn:

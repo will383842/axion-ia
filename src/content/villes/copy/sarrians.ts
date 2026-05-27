@@ -12,6 +12,7 @@ export const SARRIANS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sarrians (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles, domaines viticoles AOC Beaumes-de-Venise et Ventoux, PME agroalimentaires, commerces et services du Comtat. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sarrians (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles, domaines viticoles AOC Beaumes-de-Venise et Ventoux, PME agroalimentaires, commerces et services du Comtat. Audit Flash dès 490 € HT.",
+  seoHook: "aoc beaumes-de-",
   ecosystemFr:
     "Sarrians est un pôle agricole et viticole de la plaine du Comtat Venaissin, à proximité immédiate de Beaumes-de-Venise. Vignoble AOC Beaumes-de-Venise (muscat) et Ventoux, vergers, maraîchage. Tissu de TPE artisans, domaines viticoles, PME agroalimentaires et commerces. Carpentras à 10 min, Orange à 20 min, Avignon à 30 min.",
   ecosystemEn:

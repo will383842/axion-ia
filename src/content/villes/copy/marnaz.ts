@@ -12,6 +12,7 @@ export const MARNAZ_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marnaz (74). Nous accompagnons tous types d'activités : TPE artisans usineurs du décolletage, PME industrielles de précision, sous-traitants aéronautique et automobile, commerçants, indépendants et professions libérales de la vallée de l'Arve.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marnaz (74). Nous accompagnons tous types d'activités : TPE artisans usineurs du décolletage, PME industrielles de précision, sous-traitants aéronautique et automobile, commerçants, indépendants et professions libérales de la vallée de l'Arve.",
+  seoHook: "vallée arve",
   ecosystemFr:
     "Marnaz est au cœur du pôle mondial du décolletage dans la vallée de l'Arve, entre Cluses et Scionzier. Concentration exceptionnelle de TPE et PME spécialisées en usinage de précision, micromécanique et sous-traitance pour l'aéronautique, l'automobile et le médical. Commerces, professions libérales et services complètent le tissu local.",
   ecosystemEn:

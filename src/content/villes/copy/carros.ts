@@ -12,6 +12,7 @@ export const CARROS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carros (06). Nous accompagnons tous types d'activités : TPE/PME industrielles de la ZI Carros-Le Broc, artisans BTP, logisticiens, agroalimentaire, commerces du village et entreprises de services du moyen-pays niçois.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carros (06). Nous accompagnons tous types d'activités : TPE/PME industrielles de la ZI Carros-Le Broc, artisans BTP, logisticiens, agroalimentaire, commerces du village et entreprises de services du moyen-pays niçois.",
+  seoHook: "pays niçois",
   ecosystemFr:
     "Carros se distingue par sa zone industrielle de Carros-Le Broc, première des Alpes-Maritimes (450+ entreprises, 6 000+ emplois). Secteurs : industrie manufacturière, logistique, BTP, agroalimentaire, services aux entreprises. Le village perché médiéval surplombe la plaine du Var. Accès rapide à Nice (20 min) et Sophia Antipolis (40 min) via M6202 et voie rapide.",
   ecosystemEn:

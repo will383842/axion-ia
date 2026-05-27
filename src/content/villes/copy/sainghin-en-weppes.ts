@@ -12,6 +12,7 @@ export const SAINGHIN_EN_WEPPES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sainghin-en-Weppes (59). Nous accompagnons TPE et PME : exploitations agricoles et PME agroalimentaires des Weppes, artisans, commerçants, prestataires de services B2B de l'ouest lillois et professions libérales.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sainghin-en-Weppes (59). Nous accompagnons TPE et PME : exploitations agricoles et PME agroalimentaires des Weppes, artisans, commerçants, prestataires de services B2B de l'ouest lillois et professions libérales.",
+  seoHook: "bassin lillois ouest",
   ecosystemFr:
     "Sainghin-en-Weppes est une commune périurbaine des Weppes, plaine agricole à l'ouest de Lille (20 min), entre La Bassée et Haubourdin. L'économie locale combine exploitations agricoles (grandes cultures céréalières, betteraves), artisanat du bâtiment, commerces de bourg, services aux entreprises irriguant l'ouest de la métropole lilloise et professions libérales. La proximité de l'A25 (Lille-Dunkerque) et des zones d'activités de La Bassée et Seclin structure les échanges économiques.",
   ecosystemEn:

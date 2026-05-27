@@ -12,6 +12,7 @@ export const AVALLON_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Avallon (89). Nous accompagnons TPE et PME : hôteliers et restaurateurs du Morvan, artisans et commerçants du centre-bourg médiéval, PME agroalimentaires et viticoles, professions libérales, prestataires touristiques. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Avallon (89). Nous accompagnons TPE et PME : hôteliers et restaurateurs du Morvan, artisans et commerçants du centre-bourg médiéval, PME agroalimentaires et viticoles, professions libérales, prestataires touristiques. Audit Flash dès 490 € HT.",
+  seoHook: "TPE & PME Yonne",
   ecosystemFr:
     "Avallon est sous-préfecture de l'Yonne, cité médiévale perchée sur un éperon rocheux à la porte nord du parc naturel régional du Morvan. Tissu TPE hôtellerie-restauration, artisanat et commerce de centre-bourg, PME agroalimentaires et viticoles (Chablisien tout proche), professions libérales, prestataires tourisme vert.",
   ecosystemEn:

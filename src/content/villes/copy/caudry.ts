@@ -12,6 +12,7 @@ export const CAUDRY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Caudry (59). Nous accompagnons TPE et PME : dentelliers et façonniers textile, industriels agroalimentaires, commerçants, artisans et prestataires de services du Cambrésis et de l''arrondissement de Cambrai. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Caudry (59). Nous accompagnons TPE et PME : dentelliers et façonniers textile, industriels agroalimentaires, commerçants, artisans et prestataires de services du Cambrésis et de l''arrondissement de Cambrai. Audit Flash dès 490 € HT.",
+  seoHook: "bassin rural",
   ecosystemFr:
     "Caudry est une commune du Cambrésis située à l''est du département du Nord, célèbre comme capitale française de la dentelle haute couture (label Dentelle de Caudry®, fournisseur des maisons Dior, Chanel, Givenchy, Valentino). La ville conserve une dizaine de fabricants de dentelle leaders mondiaux, héritiers du XIXe siècle. L''économie locale repose également sur l''agroalimentaire (industrie laitière, biscuiterie), le commerce de proximité, l''artisanat BTP et les services aux entreprises du bassin cambrésien.",
   ecosystemEn:

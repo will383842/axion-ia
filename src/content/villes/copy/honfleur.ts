@@ -12,6 +12,7 @@ export const HONFLEUR_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Honfleur (14). Nous accompagnons tous types d'activités : TPE artisans d'art et galeries, PME hôtellerie-restauration haut de gamme, acteurs du tourisme patrimonial (Vieux Bassin, musée Boudin), commerçants, professions libérales et services aux entreprises de l'estuaire.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Honfleur (14). Nous accompagnons tous types d'activités : TPE artisans d'art et galeries, PME hôtellerie-restauration haut de gamme, acteurs du tourisme patrimonial (Vieux Bassin, musée Boudin), commerçants, professions libérales et services aux entreprises de l'estuaire.",
+  seoHook: "bassin et les",
   ecosystemFr:
     "Honfleur est un port pittoresque à l'embouchure de la Seine, face au Havre (pont de Normandie). Berceau de l'impressionnisme, le Vieux Bassin et l'église Sainte-Catherine (charpente bois) sont classés. Économie touristique forte (hôtellerie haut de gamme, gastronomie, galeries d'art), TPE artisans d'art, commerces, activités portuaires et maritimes.",
   ecosystemEn:

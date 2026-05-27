@@ -12,6 +12,7 @@ export const POLLESTRES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pollestres (66). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, commerçants, agriculteurs, indépendants et professions libérales de l'agglo Perpignan sud.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pollestres (66). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, commerçants, agriculteurs, indépendants et professions libérales de l'agglo Perpignan sud.",
+  seoHook: "proche perpignan",
   ecosystemFr:
     "Pollestres est une commune résidentielle au sud de Perpignan, intégrée à Perpignan Méditerranée Métropole. Tissu mixte : PME tertiaires, TPE artisanat BTP, agriculture (viticulture, arboriculture), commerces de proximité, professions libérales.",
   ecosystemEn:

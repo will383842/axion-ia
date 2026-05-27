@@ -12,6 +12,7 @@ export const GOLBEY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Golbey (88). Nous accompagnons TPE et PME : industriels papier-carton, sous-traitants industriels, transporteurs-logisticiens, artisans BTP et prestataires de services de l'agglomération d'Épinal. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Golbey (88). Nous accompagnons TPE et PME : industriels papier-carton, sous-traitants industriels, transporteurs-logisticiens, artisans BTP et prestataires de services de l'agglomération d'Épinal. Audit Flash dès 490 € HT.",
+  seoHook: "bassin industriel",
   ecosystemFr:
     "Golbey est une commune de l'agglomération d'Épinal située au nord de la préfecture, au bord de la Moselle. La papeterie (site Norske Skog, l'un des plus grands d'Europe pour le papier journal) et les zones d'activités étendues structurent le bassin industriel. L'économie locale repose sur l'industrie papier-carton, la sous-traitance industrielle, la logistique-transport, le commerce, l'artisanat BTP et les services aux entreprises.",
   ecosystemEn:

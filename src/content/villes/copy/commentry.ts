@@ -12,6 +12,7 @@ export const COMMENTRY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Commentry (03). Nous accompagnons tous types d'activités : PME industrielles diversifiées (héritage minier/métallurgique), TPE artisans BTP, commerçants et services aux entreprises du bassin Montluçon.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Commentry (03). Nous accompagnons tous types d'activités : PME industrielles diversifiées (héritage minier/métallurgique), TPE artisans BTP, commerçants et services aux entreprises du bassin Montluçon.",
+  seoHook: "bassin de montluçon",
   ecosystemFr:
     "Commentry est dans le bassin de Montluçon, héritage minier/industriel fort (ancien bassin houiller, métallurgie). Tissu PME industrielles diversifiées, TPE artisanat BTP, commerces.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const JEUMONT_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jeumont (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles métallurgie-mécanique, commerçants de proximité, professions libérales, indépendants et services aux entreprises de la vallée Sambre.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jeumont (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles métallurgie-mécanique, commerçants de proximité, professions libérales, indépendants et services aux entreprises de la vallée Sambre.",
+  seoHook: "vallée sambre",
   ecosystemFr:
     "Jeumont est située dans la vallée de la Sambre, à la frontière belge. Tissu péri-urbain industriel : TPE artisanat BTP, PME industrielles historiques (métallurgie, mécanique, électromécanique), commerces de proximité, professions libérales, échanges transfrontaliers belges (Erquelinnes, Mons).",
   ecosystemEn:

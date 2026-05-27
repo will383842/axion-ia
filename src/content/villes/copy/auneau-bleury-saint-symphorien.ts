@@ -12,6 +12,7 @@ export const AUNEAU_BLEURY_SAINT_SYMPHORIEN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auneau-Bleury-Saint-Symphorien (28). Nous accompagnons tous types d'activités : exploitants céréaliers de Beauce, TPE/PME agroalimentaire, artisans, commerçants de bourg, professions libérales et services aux entreprises rurales.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auneau-Bleury-Saint-Symphorien (28). Nous accompagnons tous types d'activités : exploitants céréaliers de Beauce, TPE/PME agroalimentaire, artisans, commerçants de bourg, professions libérales et services aux entreprises rurales.",
+  seoHook: "TPE & PME Eure-et-Loir",
   ecosystemFr:
     "Auneau-Bleury-Saint-Symphorien est une commune nouvelle née en 2016 de la fusion d'Auneau, Bleury et Saint-Symphorien, au cœur de la Beauce céréalière. L'économie locale repose sur l'agriculture grandes cultures (blé, colza, orge), l'agroalimentaire, l'artisanat BTP, les commerces de bourg et les services de proximité.",
   ecosystemEn:

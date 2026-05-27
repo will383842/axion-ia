@@ -12,6 +12,7 @@ export const SAINT_LOUBES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Loubès (33). Nous accompagnons TPE et PME du nord-est Bordeaux : entreprises logistiques, vignerons de l'Entre-deux-Mers, artisans BTP, commerçants et professions libérales. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Loubès (33). Nous accompagnons TPE et PME du nord-est Bordeaux : entreprises logistiques, vignerons de l'Entre-deux-Mers, artisans BTP, commerçants et professions libérales. Audit Flash dès 490 € HT.",
+  seoHook: "bassin nord-est bordelais",
   ecosystemFr:
     "Saint-Loubès se situe au carrefour entre Bordeaux Métropole nord-est et l'Entre-deux-Mers viticole. Zones d'activités logistiques (plateforme multimodale), vignoble bordelais, tissu TPE artisanat BTP et commerces en croissance résidentielle. Accès A10 et A89.",
   ecosystemEn:

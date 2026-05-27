@@ -12,6 +12,7 @@ export const SAINT_ESTEVE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Estève (66). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, commerçants, professions libérales, indépendants et services aux entreprises de l'agglomération perpignanaise nord.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Estève (66). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, commerçants, professions libérales, indépendants et services aux entreprises de l'agglomération perpignanaise nord.",
+  seoHook: "proche perpignan",
   ecosystemFr:
     "Saint-Estève est une commune résidentielle dynamique au nord de Perpignan, intégrée à Perpignan Méditerranée Métropole. Zones d'activités périurbaines, PME tertiaires, TPE artisanat BTP, commerces et services. Position stratégique sur l'axe Perpignan-Rivesaltes.",
   ecosystemEn:

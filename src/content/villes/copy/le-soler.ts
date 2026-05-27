@@ -12,6 +12,7 @@ export const LE_SOLER_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Soler (66). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, commerçants, agriculteurs, indépendants et professions libérales de l'agglo Perpignan sud.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Soler (66). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, commerçants, agriculteurs, indépendants et professions libérales de l'agglo Perpignan sud.",
+  seoHook: "vallée têt",
   ecosystemFr:
     "Le Soler est une commune résidentielle dynamique au sud de Perpignan, en bordure de la Têt. Intégrée à Perpignan Méditerranée Métropole. Zones d'activités, PME tertiaires, TPE artisanat BTP, agriculture (arboriculture, maraîchage), commerces de proximité.",
   ecosystemEn:

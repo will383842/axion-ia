@@ -12,6 +12,7 @@ export const VERNEUIL_D_AVRE_ET_D_ITON_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Verneuil d'Avre et d'Iton (27). Nous accompagnons tous types d'activités : TPE artisans, PME agriculture et élevage Perche-Ouche, commerces centre médiéval, professions libérales, indépendants et services aux entreprises du sud de l'Eure.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Verneuil d'Avre et d'Iton (27). Nous accompagnons tous types d'activités : TPE artisans, PME agriculture et élevage Perche-Ouche, commerces centre médiéval, professions libérales, indépendants et services aux entreprises du sud de l'Eure.",
+  seoHook: "TPE & PME Eure",
   ecosystemFr:
     "Verneuil d'Avre et d'Iton est une commune nouvelle de l'Eure issue de la fusion de Verneuil-sur-Avre et communes voisines, aux confins du Perche et du Pays d'Ouche. Riche patrimoine médiéval (tour de la Madeleine, église Notre-Dame, maisons à colombages). Économie portée par l'agriculture, l'élevage, l'artisanat, les commerces et les services.",
   ecosystemEn:

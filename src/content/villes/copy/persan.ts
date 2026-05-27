@@ -12,6 +12,7 @@ export const PERSAN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Persan (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME industrielles et tertiaires des zones d'activités persanaises, professions libérales, indépendants et entreprises du nord Val-d'Oise.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Persan (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME industrielles et tertiaires des zones d'activités persanaises, professions libérales, indépendants et entreprises du nord Val-d'Oise.",
+  seoHook: "vallée oise",
   ecosystemFr:
     "Persan est située en bords de l'Oise, au nord du Val-d'Oise, formant une agglomération avec Beaumont-sur-Oise et Chambly. Zones industrielles actives, tissu TPE artisans BTP, PME tertiaires et de services, commerces de centre-ville et professions libérales. Bassin d'emploi industriel historique en reconversion tertiaire.",
   ecosystemEn:

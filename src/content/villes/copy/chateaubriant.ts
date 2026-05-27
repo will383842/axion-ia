@@ -12,6 +12,7 @@ export const CHATEAUBRIANT_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châteaubriant (44), sous-préfecture de Loire-Atlantique. Nous accompagnons TPE artisans, PME agroalimentaires et industrielles, commerçants et professions libérales des marches de Bretagne. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châteaubriant (44), sous-préfecture de Loire-Atlantique. Nous accompagnons TPE artisans, PME agroalimentaires et industrielles, commerçants et professions libérales des marches de Bretagne. Audit Flash dès 490 € HT.",
+  seoHook: "bassin castelbriantais",
   ecosystemFr:
     "Châteaubriant (12 260 hab) est la sous-préfecture du nord de la Loire-Atlantique, aux marches de Bretagne. Château Renaissance classé, industrie agroalimentaire (viande bovine, laiteries), métallurgie, commerces de centre-ville, artisanat et professions libérales. Proximité Nantes (1h), Rennes (50 min), Laval (55 min). Bassin d'emploi rural structurant du nord-44.",
   ecosystemEn:

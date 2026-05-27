@@ -12,6 +12,7 @@ export const VILLEFRANCHE_SUR_MER_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villefranche-sur-Mer (06). Nous accompagnons TPE artisans, PME tourisme et hôtellerie haut de gamme, restaurateurs, commerçants et professions libérales de la Riviera azuréenne. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villefranche-sur-Mer (06). Nous accompagnons TPE artisans, PME tourisme et hôtellerie haut de gamme, restaurateurs, commerçants et professions libérales de la Riviera azuréenne. Audit Flash dès 490 € HT.",
+  seoHook: "côte d'azur",
   ecosystemFr:
     "Villefranche-sur-Mer (5 008 hab) est une commune littorale de la Riviera, limitrophe de Nice. Économie centrée sur tourisme haut de gamme (hôtellerie de luxe, yachting, croisières internationales), patrimoine culturel (chapelle Cocteau), restauration gastronomique, commerces, art et services. Proximité immédiate Nice (15 min), Monaco (20 min), Cannes (45 min). Forte saisonnalité internationale.",
   ecosystemEn:

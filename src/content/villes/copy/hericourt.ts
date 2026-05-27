@@ -12,6 +12,7 @@ export const HERICOURT_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Héricourt (70). Nous accompagnons TPE et PME industrielles de l'aire urbaine Montbéliard : sous-traitants automobile, ateliers mécanique de précision, plasturgie, logistique, artisans, commerçants et professions libérales du nord Franche-Comté.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Héricourt (70). Nous accompagnons TPE et PME industrielles de l'aire urbaine Montbéliard : sous-traitants automobile, ateliers mécanique de précision, plasturgie, logistique, artisans, commerçants et professions libérales du nord Franche-Comté.",
+  seoHook: "TPE & PME Hte-Saône",
   ecosystemFr:
     "Héricourt est intégrée à l'aire urbaine de Montbéliard (~120 000 hab), pôle industriel majeur de Franche-Comté. Tissu de TPE/PME sous-traitance automobile (proximité Stellantis Sochaux), mécanique de précision, plasturgie, logistique transfrontalière (Suisse à 30 km). Zones d'activités dynamiques, commerces et services aux entreprises.",
   ecosystemEn:

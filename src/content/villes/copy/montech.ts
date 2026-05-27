@@ -12,6 +12,7 @@ export const MONTECH_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montech (82). Nous accompagnons TPE artisans, PME de services et logistique, commerçants, exploitants agricoles et professions libérales du sud Tarn-et-Garonne. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montech (82). Nous accompagnons TPE artisans, PME de services et logistique, commerçants, exploitants agricoles et professions libérales du sud Tarn-et-Garonne. Audit Flash dès 490 € HT.",
+  seoHook: "bassin montéchois",
   ecosystemFr:
     "Montech (6 663 hab) est une commune en croissance du sud Tarn-et-Garonne, sur le canal latéral à la Garonne. Célèbre pour sa pente d'eau unique en Europe. Économie résidentielle et agricole : arboriculture, grandes cultures, PME tertiaires et logistique. Proximité Montauban (15 min), Toulouse (40 min via A62). Communes limitrophes : Escatalens, Lacourt-Saint-Pierre.",
   ecosystemEn:

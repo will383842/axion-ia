@@ -12,6 +12,7 @@ export const PIERREFEU_DU_VAR_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pierrefeu-du-Var (83). Nous accompagnons TPE viticulteurs Côtes-de-Provence, oléiculteurs, artisans et PME des services, du commerce et du BTP du centre-Var. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pierrefeu-du-Var (83). Nous accompagnons TPE viticulteurs Côtes-de-Provence, oléiculteurs, artisans et PME des services, du commerce et du BTP du centre-Var. Audit Flash dès 490 € HT.",
+  seoHook: "bassin hyérois",
   ecosystemFr:
     "Pierrefeu-du-Var est ancrée dans le centre-Var, en pleine zone AOC Côtes-de-Provence. Économie agricole forte : viticulture, oléiculture, maraîchage. Bassin résidentiel à proximité d'Hyères et du Luc, avec un tissu de TPE artisans, commerces de proximité et PME services et BTP de l'arrière-pays varois.",
   ecosystemEn:

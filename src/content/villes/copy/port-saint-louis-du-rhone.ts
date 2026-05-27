@@ -12,6 +12,7 @@ export const PORT_SAINT_LOUIS_DU_RHONE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Port-Saint-Louis-du-Rhône (13). Nous accompagnons TPE artisans, PME de logistique portuaire et transport maritime, entreprises pétrochimiques, acteurs du tourisme camarguais et commerces de proximité. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Port-Saint-Louis-du-Rhône (13). Nous accompagnons TPE artisans, PME de logistique portuaire et transport maritime, entreprises pétrochimiques, acteurs du tourisme camarguais et commerces de proximité. Audit Flash dès 490 € HT.",
+  seoHook: "agglomération rhône",
   ecosystemFr:
     "Port-Saint-Louis-du-Rhône se situe à l'embouchure du Grand Rhône, entre Camargue et golfe de Fos. Port fluvio-maritime actif (fret, conteneurs, vracs), zone industrialo-portuaire de Fos à proximité immédiate. Économie portée par la logistique, l'industrie, la pêche, le tourisme nature (Camargue) et un tissu de TPE/PME services.",
   ecosystemEn:

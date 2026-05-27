@@ -12,6 +12,7 @@ export const CHAZELLES_SUR_LYON_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chazelles-sur-Lyon (42). Nous accompagnons tous types d'activités : PME industrielles diversifiées (filière chapellerie/textile historique), TPE artisans BTP, commerçants, agriculteurs monts du Lyonnais, indépendants et services aux entreprises.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chazelles-sur-Lyon (42). Nous accompagnons tous types d'activités : PME industrielles diversifiées (filière chapellerie/textile historique), TPE artisans BTP, commerçants, agriculteurs monts du Lyonnais, indépendants et services aux entreprises.",
+  seoHook: "TPE & PME Loire",
   ecosystemFr:
     "Chazelles-sur-Lyon est positionnée dans les monts du Lyonnais (Loire). Réputation historique : capitale française du chapeau en feutre (filière chapellerie traditionnelle, savoir-faire artisanal local conservé — Musée du Chapeau notable). Tissu PME industrielles diversifiées contemporaines, agriculture monts Lyonnais, TPE artisanat BTP, commerces.",
   ecosystemEn:

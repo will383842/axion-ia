@@ -12,6 +12,7 @@ export const PORNIC_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pornic (44), station balnéaire de la Côte de Jade. Nous accompagnons TPE commerçants, PME hôtelières et touristiques, artisans et professions libérales du littoral sud-Loire. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pornic (44), station balnéaire de la Côte de Jade. Nous accompagnons TPE commerçants, PME hôtelières et touristiques, artisans et professions libérales du littoral sud-Loire. Audit Flash dès 490 € HT.",
+  seoHook: "bassin pornicais",
   ecosystemFr:
     "Pornic (18 745 hab) est une station balnéaire réputée de la Côte de Jade, en Loire-Atlantique. Port de plaisance et de pêche, thalassothérapie, commerces touristiques, artisanat, ostréiculture et agriculture périurbaine. Proximité Nantes (50 min), Saint-Nazaire (35 min). Destination touristique majeure du littoral atlantique sud-Loire.",
   ecosystemEn:

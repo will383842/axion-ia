@@ -12,6 +12,7 @@ export const PARIGNE_L_EVEQUE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Parigné-l'Évêque (72). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles sud Le Mans, exploitations agricoles, professions libérales et services de proximité.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Parigné-l'Évêque (72). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles sud Le Mans, exploitations agricoles, professions libérales et services de proximité.",
+  seoHook: "massif bercé",
   ecosystemFr:
     "Parigné-l'Évêque est une commune périurbaine au sud de Le Mans Métropole (Sarthe). Cadre semi-rural avec zones d'activités, artisanat, agriculture et commerces. Accès rapide au pôle économique manceau (15 min). Forêt de Bercé à proximité, tourisme vert.",
   ecosystemEn:

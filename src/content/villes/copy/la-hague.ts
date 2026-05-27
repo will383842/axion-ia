@@ -12,6 +12,7 @@ export const LA_HAGUE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Hague (50). Nous accompagnons tous types d'activités : TPE artisanales et agricoles du Cotentin, PME sous-traitance industrielle et nucléaire, commerçants ruraux, prestataires tourisme nature, professions libérales et services du nord Cotentin.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Hague (50). Nous accompagnons tous types d'activités : TPE artisanales et agricoles du Cotentin, PME sous-traitance industrielle et nucléaire, commerçants ruraux, prestataires tourisme nature, professions libérales et services du nord Cotentin.",
+  seoHook: "littoral",
   ecosystemFr:
     "La Hague est une commune nouvelle regroupant 25 anciennes communes à la pointe nord-ouest du Cotentin. Son tissu économique est marqué par la présence du site de retraitement nucléaire (employeur majeur et écosystème de sous-traitants industriels), l'agriculture (élevage bovin, maraîchage), l'artisanat, le tourisme de nature (sentiers côtiers, nez de Jobourg) et les commerces de proximité. Cherbourg-en-Cotentin à 20 min.",
   ecosystemEn:

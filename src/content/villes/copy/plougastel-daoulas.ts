@@ -12,6 +12,7 @@ export const PLOUGASTEL_DAOULAS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plougastel-Daoulas (29). Nous accompagnons tous types d'activités : TPE maraîchères et horticoles (fraises AOC), PME ostréicoles et maritimes, artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de la presqu'île et de Brest Métropole.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plougastel-Daoulas (29). Nous accompagnons tous types d'activités : TPE maraîchères et horticoles (fraises AOC), PME ostréicoles et maritimes, artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de la presqu'île et de Brest Métropole.",
+  seoHook: "TPE & PME Finistère",
   ecosystemFr:
     "Plougastel-Daoulas (13 434 hab) est une presqu'île rattachée à Brest Métropole, reliée par le pont Albert-Louppe et le pont de l'Iroise. Économie caractérisée par la culture fraisière AOC (premier producteur historique de France), l'ostréiculture en rade de Brest, le maraîchage, l'horticulture et un tissu TPE artisans BTP / commerces soutenu par la proximité de Brest (15 min).",
   ecosystemEn:

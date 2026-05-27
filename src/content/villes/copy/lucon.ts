@@ -12,6 +12,7 @@ export const LUCON_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Luçon (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agricoles et agroalimentaires, professions libérales, acteurs du tourisme marais poitevin et services de la sous-préfecture.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Luçon (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agricoles et agroalimentaires, professions libérales, acteurs du tourisme marais poitevin et services de la sous-préfecture.",
+  seoHook: "TPE & PME Vendée",
   ecosystemFr:
     "Luçon est une sous-préfecture vendéenne aux portes du marais poitevin. Cathédrale Notre-Dame où Richelieu fut évêque (1608). Pôle agricole (plaine de Luçon, céréales, élevage), administratif et commercial. La Rochelle à 45 min, La Roche-sur-Yon à 30 min, Fontenay-le-Comte à 20 min.",
   ecosystemEn:

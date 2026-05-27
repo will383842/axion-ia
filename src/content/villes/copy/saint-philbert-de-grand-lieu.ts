@@ -12,6 +12,7 @@ export const SAINT_PHILBERT_DE_GRAND_LIEU_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Philbert-de-Grand-Lieu (44). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires, maraîchers et éleveurs du sud nantais, commerçants, professions libérales, acteurs du tourisme nature lac de Grand-Lieu et services aux entreprises du pays de Retz.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Philbert-de-Grand-Lieu (44). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires, maraîchers et éleveurs du sud nantais, commerçants, professions libérales, acteurs du tourisme nature lac de Grand-Lieu et services aux entreprises du pays de Retz.",
+  seoHook: "pays maraîcher nantais",
   ecosystemFr:
     "Saint-Philbert-de-Grand-Lieu est un bourg-centre du sud Loire-Atlantique en bordure du lac de Grand-Lieu (plus grand lac naturel de plaine en hiver en France, réserve naturelle nationale ornithologique). Abbatiale carolingienne (IXe siècle, monument historique). Économie : maraîchage (pays maraîcher nantais), élevage, agroalimentaire, artisanat BTP, commerces, tourisme nature/ornithologie.",
   ecosystemEn:

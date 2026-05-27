@@ -12,6 +12,7 @@ export const LE_PORTEL_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Portel (62). Nous accompagnons TPE du tourisme côtier, commerçants, artisans, PME de services et professions libérales du littoral boulonnais. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Portel (62). Nous accompagnons TPE du tourisme côtier, commerçants, artisans, PME de services et professions libérales du littoral boulonnais. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+  seoHook: "côte d'opale",
   ecosystemFr:
     "Le Portel est une station balnéaire populaire de la Côte d'Opale, limitrophe de Boulogne-sur-Mer. Économie tournée vers le tourisme saisonnier, la pêche artisanale, les commerces de bord de mer, l'hôtellerie-restauration et les services aux résidents. Plage de sable et tradition maritime.",
   ecosystemEn:

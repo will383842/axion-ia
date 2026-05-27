@@ -12,6 +12,7 @@ export const ROUSSET_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rousset (13). Nous accompagnons TPE artisans, PME industrielles, sous-traitants microélectronique, PME services et commerces de proximité de la zone industrielle est-aixoise. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rousset (13). Nous accompagnons TPE artisans, PME industrielles, sous-traitants microélectronique, PME services et commerces de proximité de la zone industrielle est-aixoise. Audit Flash dès 490 € HT.",
+  seoHook: "aoc côtes-de-",
   ecosystemFr:
     "Rousset est positionnée à l'est d'Aix-en-Provence, au pied de la Sainte-Victoire, et accueille l'une des plus grandes zones industrielles microélectronique de France avec STMicroelectronics, ATMEL (Microchip), salles blanches et sous-traitants semi-conducteurs. Tissu économique de PME industrielles, sous-traitants high-tech, TPE artisans (BTP, services à la personne), PME tertiaires, viticulture AOP Côtes-de-Provence Sainte-Victoire et commerces de proximité.",
   ecosystemEn:

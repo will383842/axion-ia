@@ -12,6 +12,7 @@ export const AURAY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auray (56). Nous accompagnons TPE et PME : tourisme et hôtellerie du golfe du Morbihan, commerces du port Saint-Goustan, ostréiculture, nautisme, artisans, agences immobilières, services aux pèlerins de Sainte-Anne. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auray (56). Nous accompagnons TPE et PME : tourisme et hôtellerie du golfe du Morbihan, commerces du port Saint-Goustan, ostréiculture, nautisme, artisans, agences immobilières, services aux pèlerins de Sainte-Anne. Audit Flash dès 490 € HT.",
+  seoHook: "TPE & PME Morbihan",
   ecosystemFr:
     "Auray est une commune morbihannaise porte du golfe du Morbihan, célèbre pour son port Saint-Goustan et le sanctuaire de Sainte-Anne-d'Auray. Tissu TPE/PME : tourisme, hôtellerie-restauration, commerce, ostréiculture, nautisme, artisanat, immobilier, services aux pèlerins.",
   ecosystemEn:

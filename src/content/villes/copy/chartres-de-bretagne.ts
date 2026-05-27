@@ -12,6 +12,7 @@ export const CHARTRES_DE_BRETAGNE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chartres-de-Bretagne (35). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles et tertiaires des zones d'activités, sous-traitants automobile, professions libérales, indépendants et services aux entreprises du sud de Rennes Métropole.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chartres-de-Bretagne (35). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles et tertiaires des zones d'activités, sous-traitants automobile, professions libérales, indépendants et services aux entreprises du sud de Rennes Métropole.",
+  seoHook: "proche rennes",
   ecosystemFr:
     "Chartres-de-Bretagne est un pôle économique du sud de Rennes Métropole avec plusieurs zones d'activités dont la ZA de la Janais (historiquement liée à l'automobile). PME industrielles, sous-traitance, tertiaire, TPE artisans BTP, commerces et services. La commune accueille de nombreuses entreprises grâce à sa desserte (rocade sud, gare TER) et ses surfaces disponibles.",
   ecosystemEn:

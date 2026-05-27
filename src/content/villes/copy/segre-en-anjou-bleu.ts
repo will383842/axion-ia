@@ -12,6 +12,7 @@ export const SEGRE_EN_ANJOU_BLEU_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Segré-en-Anjou Bleu (49). Nous accompagnons tous types d'activités : PME industrielles et agroalimentaires, TPE artisans et commerçants, exploitations agricoles et d'élevage, professionnels de santé, services aux entreprises du Haut-Anjou. Audit Flash accessible dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Segré-en-Anjou Bleu (49). Nous accompagnons tous types d'activités : PME industrielles et agroalimentaires, TPE artisans et commerçants, exploitations agricoles et d'élevage, professionnels de santé, services aux entreprises du Haut-Anjou. Audit Flash accessible dès 490 € HT.",
+  seoHook: "TPE & PME Maine-et-Loire",
   ecosystemFr:
     "Segré-en-Anjou Bleu est la plus vaste commune du Maine-et-Loire, née de la fusion de 15 communes autour de Segré. L'économie locale hérite des ardoisières historiques (Anjou bleu) et s'appuie aujourd'hui sur un tissu industriel diversifié (agroalimentaire, métallurgie, plasturgie), l'agriculture (élevage bovin laitier, polyculture), l'artisanat et les commerces de centre-bourg. Pôle de santé rural structurant.",
   ecosystemEn:

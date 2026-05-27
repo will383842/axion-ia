@@ -12,6 +12,7 @@ export const COMMERCY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Commercy (55). Nous accompagnons TPE et PME : pâtissiers et artisans agroalimentaires, commerçants, restaurateurs, artisans et prestataires de services de la Meuse. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Commercy (55). Nous accompagnons TPE et PME : pâtissiers et artisans agroalimentaires, commerçants, restaurateurs, artisans et prestataires de services de la Meuse. Audit Flash dès 490 € HT.",
+  seoHook: "vallée meuse",
   ecosystemFr:
     "Commercy est située sur les bords de la Meuse, au cœur du sud meusien. La ville est mondialement connue pour ses madeleines (savoir-faire artisanal protégé) et son château Stanislas, ancienne résidence du duc de Lorraine. L'économie locale repose sur l'agroalimentaire artisanal (pâtisserie), le commerce de proximité, l'artisanat BTP, le tourisme patrimonial et les services. Proximité de Toul (40 min) et Nancy (50 min).",
   ecosystemEn:

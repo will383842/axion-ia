@@ -12,6 +12,7 @@ export const CLUSES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cluses (74). Nous accompagnons TPE et PME : industriels décolletage/micromécanique vallée de l'Arve, sous-traitants horlogerie et aéronautique, artisans, commerçants et prestataires de services. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cluses (74). Nous accompagnons TPE et PME : industriels décolletage/micromécanique vallée de l'Arve, sous-traitants horlogerie et aéronautique, artisans, commerçants et prestataires de services. Audit Flash dès 490 € HT.",
+  seoHook: "vallée arve",
   ecosystemFr:
     "Cluses est le coeur historique du décolletage mondial (vallée de l'Arve, ~800 entreprises spécialisées). Sous-traitance de précision pour l'horlogerie suisse, l'aéronautique, l'automobile et le médical. Le CETIM (Centre Technique des Industries Mécaniques) y opère un pôle R&D. 4e ville de Haute-Savoie, entre Annecy et Chamonix, à 50 min de Genève.",
   ecosystemEn:

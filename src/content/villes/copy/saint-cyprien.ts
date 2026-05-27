@@ -12,6 +12,7 @@ export const SAINT_CYPRIEN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Cyprien (66). Nous accompagnons tous types d'activités : TPE tourisme balnéaire, PME hôtellerie-restauration, commerces, activités nautiques et golfiques, indépendants et professions libérales du Sud Roussillon.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Cyprien (66). Nous accompagnons tous types d'activités : TPE tourisme balnéaire, PME hôtellerie-restauration, commerces, activités nautiques et golfiques, indépendants et professions libérales du Sud Roussillon.",
+  seoHook: "station balnéaire",
   ecosystemFr:
     "Saint-Cyprien est une station balnéaire du Sud Roussillon dotée d'un port de plaisance (2 200 anneaux), d'un golf 27 trous et de plages méditerranéennes. Économie touristique dominante : résidences de vacances, hôtellerie, restauration, nautisme. Village historique avec TPE artisans, commerces et services.",
   ecosystemEn:

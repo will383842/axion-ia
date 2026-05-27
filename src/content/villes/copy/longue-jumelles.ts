@@ -12,6 +12,7 @@ export const LONGUE_JUMELLES_COPY: VilleCopy = {
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Longué-Jumelles (49). Nous accompagnons les TPE, PME et exploitants agricoles du Baugeois dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict, tarifs publics.",
   directAnswerEn:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Longué-Jumelles (49). Nous accompagnons les TPE, PME et exploitants agricoles du Baugeois dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict, tarifs publics.",
+  seoHook: "TPE & PME Maine-et-Loire",
   ecosystemFr:
     "Longué-Jumelles est un bourg commercial et agricole du Baugeois, en position de carrefour entre Angers, Saumur et La Flèche. Agriculture céréalière, cultures spécialisées (champignonnières, semences), PME agroalimentaires, artisanat et commerces de centre-bourg. Champignonnières troglodytiques emblématiques.",
   ecosystemEn:

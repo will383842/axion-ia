@@ -12,6 +12,7 @@ export const MELLE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Melle (79). Nous accompagnons tous types d'activités : TPE artisans et commerçants du centre-bourg, PME agricoles et agroalimentaires du Mellois, professions libérales, acteurs du tourisme patrimonial (mines d'argent, art roman UNESCO) et services aux entreprises.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Melle (79). Nous accompagnons tous types d'activités : TPE artisans et commerçants du centre-bourg, PME agricoles et agroalimentaires du Mellois, professions libérales, acteurs du tourisme patrimonial (mines d'argent, art roman UNESCO) et services aux entreprises.",
+  seoHook: "TPE & PME Deux-Sèvres",
   ecosystemFr:
     "Melle est un pôle de services du Mellois en Poitou, classée pour ses mines d'argent mérovingiennes et ses trois églises romanes inscrites au patrimoine mondial UNESCO (Chemins de Saint-Jacques-de-Compostelle). Tissu TPE artisans, commerces de proximité, PME agricoles/agroalimentaires, professions libérales et tourisme patrimonial.",
   ecosystemEn:

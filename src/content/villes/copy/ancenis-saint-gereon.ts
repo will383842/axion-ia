@@ -12,6 +12,7 @@ export const ANCENIS_SAINT_GEREON_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ancenis-Saint-Géréon (44), commune nouvelle en bords de Loire. Nous accompagnons TPE artisans, PME viticoles et agroalimentaires, commerçants et professions libérales du pays d'Ancenis. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ancenis-Saint-Géréon (44), commune nouvelle en bords de Loire. Nous accompagnons TPE artisans, PME viticoles et agroalimentaires, commerçants et professions libérales du pays d'Ancenis. Audit Flash dès 490 € HT.",
+  seoHook: "bassin ancenien",
   ecosystemFr:
     "Ancenis-Saint-Géréon (11 600 hab) est une commune nouvelle en bords de Loire, sous-préfecture historique de Loire-Atlantique est. Vignoble (coteaux d'Ancenis), agroalimentaire, industrie, logistique (axe Nantes-Angers), commerces et professions libérales. Proximité Nantes (40 min), Angers (45 min). Carrefour fluvial et routier dynamique (A11/N23).",
   ecosystemEn:

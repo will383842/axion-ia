@@ -12,6 +12,7 @@ export const SAINT_MITRE_LES_REMPARTS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Mitre-les-Remparts (13). Nous accompagnons TPE artisans, commerçants, PME de services, exploitants agricoles et entreprises du bassin Fos-étang de Berre. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Mitre-les-Remparts (13). Nous accompagnons TPE artisans, commerçants, PME de services, exploitants agricoles et entreprises du bassin Fos-étang de Berre. Audit Flash dès 490 € HT.",
+  seoHook: "TPE & PME Bouches-du-Rhône",
   ecosystemFr:
     "Saint-Mitre-les-Remparts est un village fortifié médiéval entre l'étang de Berre et l'étang d'Engrenier. Proximité de la ZIP de Fos-sur-Mer (industries lourdes, pétrochimie). Économie locale : agriculture (maraîchage, oliveraies), artisanat, tourisme patrimonial et résidentiel de cadres travaillant sur Fos-Istres-Martigues.",
   ecosystemEn:

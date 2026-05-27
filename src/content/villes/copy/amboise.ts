@@ -12,6 +12,7 @@ export const AMBOISE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient Ã  Amboise (37). Nous accompagnons tous types d'activitÃ©s : acteurs tourisme patrimonial (ChÃ¢teau royal, Clos LucÃ©), hÃ´teliers-restaurateurs, viticulteurs AOC Touraine-Amboise, TPE artisans d'art, commerÃ§ants et services aux entreprises du Val de Loire.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient Ã  Amboise (37). Nous accompagnons tous types d'activitÃ©s : acteurs tourisme patrimonial (ChÃ¢teau royal, Clos LucÃ©), hÃ´teliers-restaurateurs, viticulteurs AOC Touraine-Amboise, TPE artisans d'art, commerÃ§ants et services aux entreprises du Val de Loire.",
+  seoHook: "aoc touraine-",
   ecosystemFr:
     "Amboise est une citÃ© royale du Val de Loire classÃ©e UNESCO. ChÃ¢teau royal d'Amboise, Clos LucÃ© (LÃ©onard de Vinci), Pagode de Chanteloup. PÃ´le touristique patrimonial majeur. Tissu hÃ´tellerie-restauration, viticulture AOC Touraine-Amboise, TPE artisans d'art, commerces, PME services.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const CHAMPIGNEULLES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Champigneulles (54). Nous accompagnons TPE et PME : industriels, logisticiens, commerçants, artisans et prestataires de services de la périphérie nord de Nancy en Lorraine. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Champigneulles (54). Nous accompagnons TPE et PME : industriels, logisticiens, commerçants, artisans et prestataires de services de la périphérie nord de Nancy en Lorraine. Audit Flash dès 490 € HT.",
+  seoHook: "agglomération nancy",
   ecosystemFr:
     "Champigneulles est situé en première couronne nord de Nancy, sur l'axe Nancy-Metz. La ville est connue pour sa brasserie historique (Brasseries de Champigneulles, l'une des plus grandes de France) et ses zones d'activités industrielles et logistiques. L'économie locale repose sur l'industrie agroalimentaire, la logistique, l'artisanat BTP, le commerce et les services. Intégration à la Métropole du Grand Nancy.",
   ecosystemEn:

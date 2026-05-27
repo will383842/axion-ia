@@ -12,6 +12,7 @@ export const COURTHEZON_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Courthézon (84). Nous accompagnons TPE artisans, vignerons AOC Châteauneuf-du-Pape et Côtes du Rhône, PME tourisme oenologique, commerces et professions libérales du Vaucluse rhodanien. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Courthézon (84). Nous accompagnons TPE artisans, vignerons AOC Châteauneuf-du-Pape et Côtes du Rhône, PME tourisme oenologique, commerces et professions libérales du Vaucluse rhodanien. Audit Flash dès 490 € HT.",
+  seoHook: "aoc châteauneuf-du-",
   ecosystemFr:
     "Courthézon est positionnée dans le Vaucluse rhodanien, aux portes de Châteauneuf-du-Pape, entre Orange et Avignon. Son économie repose principalement sur la viticulture prestigieuse (AOC Châteauneuf-du-Pape, Côtes du Rhône, Côtes du Rhône Villages), les TPE artisans (BTP, métiers d'art viticole), les PME oenotouristiques et hôtellerie-restauration, les commerces de centre-bourg et professions libérales.",
   ecosystemEn:

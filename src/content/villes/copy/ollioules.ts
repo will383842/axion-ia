@@ -12,6 +12,7 @@ export const OLLIOULES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ollioules (83). Nous accompagnons tous types d'activités : TPE horticulteurs et artisans, PME agroalimentaires vallée du Reppe, commerces, professions libérales et services de l'agglo Toulon ouest.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ollioules (83). Nous accompagnons tous types d'activités : TPE horticulteurs et artisans, PME agroalimentaires vallée du Reppe, commerces, professions libérales et services de l'agglo Toulon ouest.",
+  seoHook: "vallée du",
   ecosystemFr:
     "Ollioules est un pôle économique de l'ouest toulonnais, célèbre pour son horticulture (fleurs coupées, marché aux fleurs historique), dans la vallée du Reppe. Zones d'activités, PME agroalimentaires, TPE artisanales et commerces. Toulon à 15 min, Sanary à 10 min, A50 directe.",
   ecosystemEn:

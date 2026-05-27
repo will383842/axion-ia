@@ -12,6 +12,7 @@ export const SCIONZIER_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Scionzier (74). Nous accompagnons TPE et PME : industriels du décolletage et de la micromécanique, sous-traitants vallée de l'Arve, artisans, commerçants et prestataires de services du bassin de Cluses.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Scionzier (74). Nous accompagnons TPE et PME : industriels du décolletage et de la micromécanique, sous-traitants vallée de l'Arve, artisans, commerçants et prestataires de services du bassin de Cluses.",
+  seoHook: "vallée arve",
   ecosystemFr:
     "Scionzier est au coeur de la vallée de l'Arve, à 3 km de Cluses, dans la communauté de communes Cluses-Arve-Montagnes. Berceau mondial du décolletage et de la micromécanique de précision, la commune concentre un tissu dense de PME industrielles, sous-traitants spécialisés, TPE artisanales et commerces alimentés par le dynamisme industriel local.",
   ecosystemEn:

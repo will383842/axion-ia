@@ -12,6 +12,7 @@ export const SAINT_FONS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Fons (69). Nous accompagnons tous types d'activités : PME industrielles et sous-traitants techniques Vallée de la Chimie sud lyonnaise, TPE artisans BTP, commerçants, indépendants et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Fons (69). Nous accompagnons tous types d'activités : PME industrielles et sous-traitants techniques Vallée de la Chimie sud lyonnaise, TPE artisans BTP, commerçants, indépendants et services aux entreprises de la Métropole de Lyon.",
+  seoHook: "bassin industriel chimique",
   ecosystemFr:
     "Saint-Fons est intégrée à la Métropole de Lyon (~1,4 M hab), en banlieue sud immédiate de Lyon. Position emblématique : cœur historique de la « Vallée de la Chimie » lyonnaise (bassin industriel chimique majeur, sites haute-sécurité). Tissu PME industrielles et sous-traitants techniques, TPE artisanat BTP, commerces.",
   ecosystemEn:

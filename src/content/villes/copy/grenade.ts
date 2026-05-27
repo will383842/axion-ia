@@ -12,6 +12,7 @@ export const GRENADE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Grenade (31). Nous accompagnons TPE artisans, PME agroalimentaires, commerçants et professions libérales du nord de la Haute-Garonne. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Grenade (31). Nous accompagnons TPE artisans, PME agroalimentaires, commerçants et professions libérales du nord de la Haute-Garonne. Audit Flash dès 490 € HT.",
+  seoHook: "vallée garonne",
   ecosystemFr:
     "Grenade est une bastide du XIIIe siècle sur les bords de Garonne, pôle économique du nord de la Haute-Garonne. TPE artisans, PME agroalimentaires, commerces de la halle, professions libérales, exploitations agricoles. Marché traditionnel actif.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const VALOGNES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Valognes (50). Nous accompagnons tous types d'activités : TPE commerçants et artisans du centre historique, PME agroalimentaires cidricoles du Cotentin, éleveurs normands, prestataires tourisme patrimonial, professions libérales et services.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Valognes (50). Nous accompagnons tous types d'activités : TPE commerçants et artisans du centre historique, PME agroalimentaires cidricoles du Cotentin, éleveurs normands, prestataires tourisme patrimonial, professions libérales et services.",
+  seoHook: "TPE & PME Manche",
   ecosystemFr:
     "Valognes, le « Versailles normand », conserve un patrimoine d'hôtels particuliers XVIIe-XVIIIe et un centre historique animé. L'économie locale repose sur le commerce de centre-ville, l'artisanat, l'agroalimentaire cidricole (cidreries, calvados, poiré), l'élevage normand, les services de proximité et le tourisme patrimonial. Carrefour routier du Cotentin, entre Cherbourg (20 min) et Carentan (25 min).",
   ecosystemEn:

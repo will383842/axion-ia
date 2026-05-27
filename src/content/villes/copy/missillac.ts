@@ -12,6 +12,7 @@ export const MISSILLAC_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Missillac (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tourisme et hôtellerie, exploitations agricoles, services de proximité et professions libérales du secteur Brière-Redon.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Missillac (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tourisme et hôtellerie, exploitations agricoles, services de proximité et professions libérales du secteur Brière-Redon.",
+  seoHook: "TPE & PME Loire-Atlantique",
   ecosystemFr:
     "Missillac est une commune rurale entre Brière et Redon. Domaine de la Bretesche (golf 18 trous, château classé, hôtellerie haut de gamme). Agriculture, artisanat, commerces de proximité. Tissu TPE artisans, exploitations agricoles, PME tourisme et professions libérales.",
   ecosystemEn:

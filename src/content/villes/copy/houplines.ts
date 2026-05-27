@@ -12,6 +12,7 @@ export const HOUPLINES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Houplines (59). Nous accompagnons TPE et PME : PME textile et industrie du bassin armentiérois, prestataires B2B transfrontaliers franco-belges (Lys), commerçants, artisans et professions libérales.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Houplines (59). Nous accompagnons TPE et PME : PME textile et industrie du bassin armentiérois, prestataires B2B transfrontaliers franco-belges (Lys), commerçants, artisans et professions libérales.",
+  seoHook: "bassin armentiérois",
   ecosystemFr:
     "Houplines est une commune périurbaine de l'agglomération d'Armentières (intégrée à la MEL), située sur les bords de la Lys à la frontière belge. L'économie locale combine PME textile et industrie héritières du bassin armentiérois (longue tradition manufacturière du tissu lillois), services aux entreprises transfrontaliers franco-belges (proximité Comines-Belgique et Ploegsteert), commerces de proximité et artisanat. Tissu PME diffus typique des Flandres françaises.",
   ecosystemEn:

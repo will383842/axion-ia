@@ -12,6 +12,7 @@ export const LOCHES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Loches (37). Nous accompagnons tous types d'activités : acteurs du tourisme patrimonial (cité royale, donjon, Logis Royal), TPE artisans, commerçants, PME de services, professions libérales, hôteliers-restaurateurs, exploitants agricoles et entreprises de la Touraine sud.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Loches (37). Nous accompagnons tous types d'activités : acteurs du tourisme patrimonial (cité royale, donjon, Logis Royal), TPE artisans, commerçants, PME de services, professions libérales, hôteliers-restaurateurs, exploitants agricoles et entreprises de la Touraine sud.",
+  seoHook: "TPE & PME Indre-et-Loire",
   ecosystemFr:
     "Loches est une cité royale classée parmi les « Plus beaux détours de France », sous-préfecture d'Indre-et-Loire. Son donjon roman du XIe siècle est l'un des mieux conservés d'Europe. Le Logis Royal accueillit Charles VII, Agnès Sorel et Jeanne d'Arc. La ville est le pôle administratif et commercial de la Touraine sud. Tissu TPE artisans, commerçants, PME de services, acteurs tourisme patrimonial, hôteliers-restaurateurs, professions libérales et exploitants agricoles.",
   ecosystemEn:

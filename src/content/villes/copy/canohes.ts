@@ -12,6 +12,7 @@ export const CANOHES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Canohès (66). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, commerçants, agriculteurs, indépendants et professions libérales de l'agglo Perpignan sud.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Canohès (66). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, commerçants, agriculteurs, indépendants et professions libérales de l'agglo Perpignan sud.",
+  seoHook: "proche perpignan",
   ecosystemFr:
     "Canohès est une commune résidentielle au sud de Perpignan, intégrée à Perpignan Méditerranée Métropole. Tissu mixte : PME tertiaires, TPE artisanat BTP, agriculture (viticulture, maraîchage), commerces de proximité, professions libérales.",
   ecosystemEn:

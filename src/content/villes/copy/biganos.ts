@@ -12,6 +12,7 @@ export const BIGANOS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Biganos (33). Nous accompagnons TPE et PME du Bassin d'Arcachon : ostréiculteurs, PME industrielles (papeterie), artisans BTP, commerçants et professions libérales. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Biganos (33). Nous accompagnons TPE et PME du Bassin d'Arcachon : ostréiculteurs, PME industrielles (papeterie), artisans BTP, commerçants et professions libérales. Audit Flash dès 490 € HT.",
+  seoHook: "bassin sud-arcachonnais",
   ecosystemFr:
     "Biganos occupe une position stratégique au sud du Bassin d'Arcachon. Industrie papetière historique (Smurfit Kappa), port ostréicole du delta de la Leyre, gare TER Facture-Biganos (noeud ferroviaire), tissu TPE artisanat et commerces en croissance résidentielle.",
   ecosystemEn:

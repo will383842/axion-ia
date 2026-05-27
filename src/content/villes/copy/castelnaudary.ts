@@ -12,6 +12,7 @@ export const CASTELNAUDARY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Castelnaudary (11), capitale du Lauragais audois. Nous accompagnons TPE artisans, PME agroalimentaire (cassoulet, conserverie), commerçants, agriculteurs céréaliers et acteurs du tourisme fluvial canal du Midi. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Castelnaudary (11), capitale du Lauragais audois. Nous accompagnons TPE artisans, PME agroalimentaire (cassoulet, conserverie), commerçants, agriculteurs céréaliers et acteurs du tourisme fluvial canal du Midi. Audit Flash dès 490 € HT.",
+  seoHook: "agglomération bassin",
   ecosystemFr:
     "Castelnaudary est la capitale historique du cassoulet et du Lauragais, sur le canal du Midi (patrimoine UNESCO). L'agroalimentaire est le moteur économique (conserveries de cassoulet, salaisons, produits du terroir). Agriculture céréalière prospère (blé dur, colza, tournesol), artisanat, commerce centre-ville et tourisme fluvial (Grand Bassin, port canal du Midi). Base militaire du 4e régiment étranger.",
   ecosystemEn:

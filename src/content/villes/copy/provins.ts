@@ -12,6 +12,7 @@ export const PROVINS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Provins (77). Nous accompagnons TPE et PME : acteurs du tourisme UNESCO et spectacles medievaux, hoteliers-restaurateurs, commercants de la ville haute et basse, artisans et administration sous-prefectorale. Audit Flash des 490 euros HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Provins (77). Nous accompagnons TPE et PME : acteurs du tourisme UNESCO et spectacles medievaux, hoteliers-restaurateurs, commercants de la ville haute et basse, artisans et administration sous-prefectorale. Audit Flash des 490 euros HT.",
+  seoHook: "TPE & PME Seine-et-Marne",
   ecosystemFr:
     "Provins est une cite medievale inscrite au patrimoine mondial UNESCO depuis 2001, sous-prefecture de Seine-et-Marne. Les foires de Champagne, les spectacles medievaux (vol de l'aigle, chevalerie) et le patrimoine exceptionnel (remparts, tour Cesar, souterrains) generent un tourisme culturel majeur. Hotellerie-restauration, commerce, artisanat et administration completent le tissu economique.",
   ecosystemEn:

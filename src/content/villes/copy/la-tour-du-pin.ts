@@ -12,6 +12,7 @@ export const LA_TOUR_DU_PIN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Tour-du-Pin (38). Nous accompagnons tous types d'activités : services publics (sous-préfecture, tribunal d'instance), PME industrielles Nord-Isère, TPE artisans BTP, commerçants, professions libérales, agriculteurs/éleveurs périphériques et entreprises du Bas-Dauphiné.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Tour-du-Pin (38). Nous accompagnons tous types d'activités : services publics (sous-préfecture, tribunal d'instance), PME industrielles Nord-Isère, TPE artisans BTP, commerçants, professions libérales, agriculteurs/éleveurs périphériques et entreprises du Bas-Dauphiné.",
+  seoHook: "TPE & PME Isère",
   ecosystemFr:
     "La Tour-du-Pin est l'une des sous-préfectures de l'Isère en région historique Bas-Dauphiné (partie septentrionale du département). Position géographique stratégique au carrefour des axes Lyon-Chambéry et Lyon-Grenoble. Tissu administratif (préfecture, justice), PME industrielles et logistique, agriculture périphérique (élevage, céréales), commerces et services. Communauté de communes Les Vals du Dauphiné.",
   ecosystemEn:

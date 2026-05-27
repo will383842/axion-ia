@@ -12,6 +12,7 @@ export const OSTRICOURT_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ostricourt (59). Nous accompagnons TPE artisans BTP du bassin minier, PME sous-traitance industrielle et logistique, commerçants et indépendants entre Douai et Lens. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ostricourt (59). Nous accompagnons TPE artisans BTP du bassin minier, PME sous-traitance industrielle et logistique, commerçants et indépendants entre Douai et Lens. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
+  seoHook: "bassin minier nord-pas-de-calais",
   ecosystemFr:
     "Ostricourt est positionnée au coeur du bassin minier Nord-Pas-de-Calais (UNESCO), entre Douai (15 min) et Lens (15 min), sur l'axe autoroutier A1 Paris-Lille. Tissu TPE artisans BTP et rénovation du parc minier, PME sous-traitance industrielle, logistique et transport routier, commerces de proximité. Reconversion économique dynamique avec zones d'activités et pôle logistique.",
   ecosystemEn:

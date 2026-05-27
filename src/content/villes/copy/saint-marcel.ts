@@ -12,6 +12,7 @@ export const SAINT_MARCEL_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Marcel (71). Nous accompagnons tous types d'activités : TPE/PME des zones industrielles Grand Chalon, sous-traitants industrie, logisticiens, artisans BTP et services aux entreprises.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Marcel (71). Nous accompagnons tous types d'activités : TPE/PME des zones industrielles Grand Chalon, sous-traitants industrie, logisticiens, artisans BTP et services aux entreprises.",
+  seoHook: "agglomération chalon-sur-",
   ecosystemFr:
     "Saint-Marcel est une commune industrielle de l'agglomération Chalon-sur-Saône dotée de zones industrielles majeures. Tissu TPE/PME industrie, métallurgie, sous-traitance, logistique, services aux entreprises, artisanat BTP.",
   ecosystemEn:

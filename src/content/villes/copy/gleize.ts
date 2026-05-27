@@ -12,6 +12,7 @@ export const GLEIZE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gleizé (69). Nous accompagnons tous types d'activités : PME tertiaires Villefranche, viticulteurs Beaujolais, TPE artisans BTP, commerçants, indépendants et services aux entreprises de la communauté d'agglomération Villefranche Beaujolais Saône.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gleizé (69). Nous accompagnons tous types d'activités : PME tertiaires Villefranche, viticulteurs Beaujolais, TPE artisans BTP, commerçants, indépendants et services aux entreprises de la communauté d'agglomération Villefranche Beaujolais Saône.",
+  seoHook: "vignoble du",
   ecosystemFr:
     "Gleizé est en banlieue ouest de Villefranche-sur-Saône, à l'entrée du vignoble du Beaujolais. Tissu péri-urbain : PME tertiaires, viticulture périphérique (Beaujolais, Beaujolais-Villages), TPE artisanat BTP, commerces de proximité.",
   ecosystemEn:

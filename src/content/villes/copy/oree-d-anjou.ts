@@ -12,6 +12,7 @@ export const OREE_D_ANJOU_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Orée d'Anjou (49). Nous accompagnons tous types d'activités : PME industrielles et logistiques, TPE artisans BTP, domaines viticoles coteaux-d'ancenis et muscadet, commerçants, professions libérales et services aux entreprises du val de Loire entre Ancenis et Nantes. Audit Flash accessible dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Orée d'Anjou (49). Nous accompagnons tous types d'activités : PME industrielles et logistiques, TPE artisans BTP, domaines viticoles coteaux-d'ancenis et muscadet, commerçants, professions libérales et services aux entreprises du val de Loire entre Ancenis et Nantes. Audit Flash accessible dès 490 € HT.",
+  seoHook: "vallée loire",
   ecosystemFr:
     "Orée d'Anjou est une commune nouvelle aux confins du Maine-et-Loire et de la Loire-Atlantique, face à Ancenis. L'économie locale s'appuie sur la viticulture (coteaux-d'ancenis, muscadet), le tissu industriel et logistique hérité de la vallée de la Loire, l'artisanat BTP, les commerces et les services. Patrimoine remarquable avec le belvédère de Champtoceaux et la maison natale de Joachim du Bellay à Liré.",
   ecosystemEn:

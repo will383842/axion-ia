@@ -12,6 +12,7 @@ export const NEGREPELISSE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nègrepelisse (82). Nous accompagnons TPE artisans, PME agroalimentaires, viticulteurs, commerçants et professions libérales du bourg quercinois sur l'Aveyron. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nègrepelisse (82). Nous accompagnons TPE artisans, PME agroalimentaires, viticulteurs, commerçants et professions libérales du bourg quercinois sur l'Aveyron. Audit Flash dès 490 € HT.",
+  seoHook: "bassin négrepelissien",
   ecosystemFr:
     "Nègrepelisse (5 917 hab) est un bourg quercinois sur les bords de l'Aveyron, au cœur du Tarn-et-Garonne. Économie locale : agriculture (fruits, vignes, élevage), agroalimentaire, artisanat, commerces et professions libérales. Proximité Montauban (20 min), Caussade (10 min), Toulouse (1h10). Centre culturel La Cuisine y dynamise l'attractivité.",
   ecosystemEn:

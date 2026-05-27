@@ -14,6 +14,7 @@ export const CLAMART_COPY: VilleCopy = {
     "À Clamart, Axion-IA propose des interventions IA adaptées aux besoins des entreprises locales. Avec des acteurs comme EDF et Thales présents dans la région, nous aidons à intégrer des solutions IA pour automatiser les tâches administratives et améliorer l'efficacité opérationnelle. Nos services incluent des audits, des implémentations et des formations, avec des tarifs publics transparents pour chaque prestation.",
   directAnswerEn:
     "À Clamart, Axion-IA propose des interventions IA adaptées aux besoins des entreprises locales. Avec des acteurs comme EDF et Thales présents dans la région, nous aidons à intégrer des solutions IA pour automatiser les tâches administratives et améliorer l'efficacité opérationnelle. Nos services incluent des audits, des implémentations et des formations, avec des tarifs publics transparents pour chaque prestation.",
+  seoHook: "proche paris",
   ecosystemFr:
     "Clamart héberge des acteurs industriels tels qu'EDF et Thales, soutenant une économie axée sur la recherche et la programmation informatique.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const TETEGHEM_COUDEKERQUE_VILLAGE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Téteghem-Coudekerque-Village (59). Nous accompagnons TPE et PME : prestataires logistiques et portuaires (Dunkerque-Port), PME industrielles sous-traitantes, commerçants, artisans, et exploitations agricoles flandriennes.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Téteghem-Coudekerque-Village (59). Nous accompagnons TPE et PME : prestataires logistiques et portuaires (Dunkerque-Port), PME industrielles sous-traitantes, commerçants, artisans, et exploitations agricoles flandriennes.",
+  seoHook: "agglomération port maritime",
   ecosystemFr:
     "Téteghem-Coudekerque-Village est une commune nouvelle (fusion 2016) intégrée à la Communauté Urbaine de Dunkerque (CUD), à 10 minutes du centre dunkerquois et du port. L'économie locale est portée par les services logistiques et industriels gravitant autour du Grand Port Maritime de Dunkerque (sidérurgie, énergie, agroalimentaire). PME sous-traitantes, commerces de proximité, artisanat et agriculture flandrienne complètent un écosystème entre flandre maritime et bassin industrialo-portuaire.",
   ecosystemEn:

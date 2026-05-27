@@ -12,6 +12,7 @@ export const PONTCHATEAU_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pontchâteau (44). Nous accompagnons tous types d'activités : TPE artisans BTP, PME agroalimentaires, exploitants agricoles (élevage, maraîchage), commerçants de centre-bourg, professions libérales, acteurs du tourisme Brière et services aux entreprises du bassin Nantes-Saint-Nazaire.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pontchâteau (44). Nous accompagnons tous types d'activités : TPE artisans BTP, PME agroalimentaires, exploitants agricoles (élevage, maraîchage), commerçants de centre-bourg, professions libérales, acteurs du tourisme Brière et services aux entreprises du bassin Nantes-Saint-Nazaire.",
+  seoHook: "TPE & PME Loire-Atlantique",
   ecosystemFr:
     "Pontchâteau est un bourg-centre de Loire-Atlantique positionné sur l'axe Nantes-Saint-Nazaire (N165/N171), aux portes du parc naturel régional de Brière. Calvaire de la Madeleine (site de pèlerinage). Économie rurale diversifiée : élevage bovin/laitier, maraîchage, agroalimentaire, artisanat BTP, commerces de proximité, tourisme vert Brière.",
   ecosystemEn:

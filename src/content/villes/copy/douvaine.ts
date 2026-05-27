@@ -12,6 +12,7 @@ export const DOUVAINE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Douvaine (74). Nous accompagnons TPE et PME : entreprises de services transfrontaliers, viticulteurs du Chablais (vin de Savoie), exploitants agricoles, commerces locaux et PME tertiaires du Grand Genève.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Douvaine (74). Nous accompagnons TPE et PME : entreprises de services transfrontaliers, viticulteurs du Chablais (vin de Savoie), exploitants agricoles, commerces locaux et PME tertiaires du Grand Genève.",
+  seoHook: "agglomération genève",
   ecosystemFr:
     "Douvaine est idéalement positionnée entre Genève (20 min), Thonon-les-Bains (15 min) et Annemasse (20 min), au carrefour du Grand Genève et du Chablais viticole. La viticulture (AOC Vin de Savoie, cépages chasselas, gamay) structure le terroir local. Services transfrontaliers (conseil, comptabilité, immobilier), agriculture et TPE commerces complètent un tissu économique dynamique porté par la proximité genevoise.",
   ecosystemEn:

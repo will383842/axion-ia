@@ -12,6 +12,7 @@ export const CHATELAILLON_PLAGE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châtelaillon-Plage (17). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et hôtellerie-restauration, commerçants saisonniers, professions libérales et indépendants de cette station balnéaire familiale du littoral charentais.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châtelaillon-Plage (17). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et hôtellerie-restauration, commerçants saisonniers, professions libérales et indépendants de cette station balnéaire familiale du littoral charentais.",
+  seoHook: "station balnéaire",
   ecosystemFr:
     "Châtelaillon-Plage est une station balnéaire familiale du littoral charentais, entre La Rochelle et Rochefort. Économie touristique saisonnière (hôtellerie, restauration, campings, plages), commerces de centre-ville, TPE artisans BTP, professions libérales. Casino et thalasso contribuent à l'activité annuelle.",
   ecosystemEn:

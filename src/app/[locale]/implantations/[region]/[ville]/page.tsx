@@ -324,6 +324,10 @@ export default async function VilleHubPage({ params }: Props) {
     ],
   });
 
+  // Audit Will 2026-05-27 — sameAs ville pour E-E-A-T (Knowledge Graph).
+  const cityWikiUrl = `https://fr.wikipedia.org/wiki/${encodeURIComponent(ville.nameFr.replace(/ /g, "_"))}`;
+  const cityWikidataUrl = `https://www.wikidata.org/wiki/Special:Search?search=${encodeURIComponent(ville.nameFr)}`;
+
   const placeJsonLd = buildPlaceJsonLd({
     locale: loc,
     path,
@@ -334,6 +338,7 @@ export default async function VilleHubPage({ params }: Props) {
       url: `${SITE_URL}/${loc}/implantations/${region.slug}`,
     },
     population: ville.population,
+    sameAs: [cityWikiUrl, cityWikidataUrl],
   });
 
   const breadcrumbJsonLd = buildBreadcrumbJsonLd({
@@ -492,35 +497,34 @@ export default async function VilleHubPage({ params }: Props) {
                   aria-hidden="true"
                   className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
                 />
-                {isFr
-                  ? `Experts IA pour entreprises · ${ville.nameFr}`
-                  : `AI experts for businesses · ${ville.nameFr}`}
+                {isFr ? `Architectes IA · ${ville.nameFr}` : `AI architects · ${ville.nameFr}`}
               </p>
-              {/* H1 hero reformulé Will 2026-05-27 (audit perfection) — wording
-                  orienté valeur explicite ("structurez et déployez l'IA dans votre
-                  entreprise") vs ancien "architectes IA" qui pouvait être confondu
-                  avec architecte bâtiment. Mention des 5 services intégrée pour
-                  intent SEO + AEO immédiat. */}
               <h1
                 id="ville-hub-hero"
-                className="text-fg text-[clamp(2rem,3.8vw,3.25rem)] leading-[1.08] font-semibold tracking-tight"
+                className="text-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight"
                 data-speakable-hero
               >
-                {isFr ? "Structurez et déployez l'IA dans votre entreprise à " : "Structure and deploy AI in your business in "}
+                {isFr ? "Vos concurrents à " : "Vos concurrents à "}
                 <span
                   className="text-terracotta italic"
                   style={{ fontFamily: "var(--font-serif)" }}
                 >
                   {ville.nameFr}
                 </span>
+                {isFr ? " utilisent déjà l'IA. Et vous ?" : " utilisent déjà l'IA. Et vous ?"}
               </h1>
-              {/* Sous-ligne hero — détail des 5 services Axion-IA + identité
-                  partenaire IA senior, explicite la valeur livrée. */}
+              {/* Sous-ligne hero reformulée Will 2026-05-27 (audit perfection) —
+                  wording orienté valeur explicite ("structurez et déployez l'IA")
+                  vs ancien "cabinet d'architectes IA" qui pouvait être confondu
+                  avec architecte bâtiment. Mention des 5 services intégrée pour
+                  intent SEO + AEO immédiat. */}
               <p
                 className="text-fg-soft mt-6 text-lg leading-relaxed sm:text-xl"
                 data-speakable-hero
               >
-                {isFr ? "Axion-IA, votre partenaire IA senior à " : "Axion-IA, your senior AI partner in "}
+                {isFr
+                  ? "Structurez et déployez l'IA dans votre entreprise à "
+                  : "Structure and deploy AI in your business in "}
                 <span className="text-fg font-semibold">
                   {ville.nameFr} {isFr ? "et alentours" : "and surroundings"}
                 </span>

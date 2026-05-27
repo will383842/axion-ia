@@ -12,6 +12,7 @@ export const LES_HERBIERS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient aux Herbiers (85). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles du bocage vendéen (mécanique, agroalimentaire, plasturgie), acteurs du tourisme Puy du Fou, commerçants et professions libérales.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient aux Herbiers (85). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles du bocage vendéen (mécanique, agroalimentaire, plasturgie), acteurs du tourisme Puy du Fou, commerçants et professions libérales.",
+  seoHook: "TPE & PME Vendée",
   ecosystemFr:
     "Les Herbiers est un pôle économique majeur du bocage vendéen. Industries mécaniques, agroalimentaires et plasturgiques de rang national. Proximité du Puy du Fou (10 min), 2e parc à thème français. Taux de chômage parmi les plus bas de France. Cholet à 30 min, Nantes à 1h, La Roche-sur-Yon à 40 min.",
   ecosystemEn:

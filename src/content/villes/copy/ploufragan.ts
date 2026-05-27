@@ -12,6 +12,7 @@ export const PLOUFRAGAN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ploufragan (22). Nous accompagnons TPE et PME : entreprises agroalimentaires, laboratoires du Zoopôle, artisans, PME de services et professions libérales de l'agglomération de Saint-Brieuc. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ploufragan (22). Nous accompagnons TPE et PME : entreprises agroalimentaires, laboratoires du Zoopôle, artisans, PME de services et professions libérales de l'agglomération de Saint-Brieuc. Audit Flash dès 490 € HT.",
+  seoHook: "TPE & PME Côtes-d'Armor",
   ecosystemFr:
     "Ploufragan est une commune de l'agglomération de Saint-Brieuc, siège du Zoopôle, pôle d'excellence agroalimentaire, vétérinaire et environnemental. Zones d'activités économiques structurantes. Tissu économique : PME agroalimentaires, laboratoires, TPE artisans, services aux entreprises, professions libérales. Communes voisines : Saint-Brieuc, Trégueux, Langueux, Plérin, Saint-Julien.",
   ecosystemEn:

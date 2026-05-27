@@ -12,6 +12,7 @@ export const VILLERS_LE_LAC_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villers-le-Lac (25). Nous accompagnons tous types d'activités : TPE artisans, PME horlogères et de micro-mécanique du Val de Morteau, commerçants du secteur touristique du Saut du Doubs, indépendants, professions libérales et travailleurs frontaliers vers la Suisse.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villers-le-Lac (25). Nous accompagnons tous types d'activités : TPE artisans, PME horlogères et de micro-mécanique du Val de Morteau, commerçants du secteur touristique du Saut du Doubs, indépendants, professions libérales et travailleurs frontaliers vers la Suisse.",
+  seoHook: "bassin horloger du",
   ecosystemFr:
     "Villers-le-Lac s'inscrit dans le bassin horloger du Val de Morteau, héritier d'un savoir-faire séculaire partagé avec la Suisse voisine. L'économie locale repose sur la micro-mécanique de précision, l'horlogerie, le tourisme vert autour du Saut du Doubs, les TPE artisanales et le commerce transfrontalier. Proximité directe de la Chaux-de-Fonds (Suisse) et de Morteau.",
   ecosystemEn:

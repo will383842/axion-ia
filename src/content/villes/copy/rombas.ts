@@ -12,6 +12,7 @@ export const ROMBAS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rombas (57). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles vallée de l'Orne issues de la reconversion sidérurgique, logistique sillon mosellan, commerçants, services aux entreprises de la Communauté de communes Rives de Moselle et Pays Orne-Moselle.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rombas (57). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles vallée de l'Orne issues de la reconversion sidérurgique, logistique sillon mosellan, commerçants, services aux entreprises de la Communauté de communes Rives de Moselle et Pays Orne-Moselle.",
+  seoHook: "agglomération est",
   ecosystemFr:
     "Rombas est positionnée en vallée de l'Orne, à l'ouest du sillon mosellan, entre Metz (20 min sud-est) et Thionville (25 min nord). Ancienne ville sidérurgique majeure du bassin lorrain reconvertie depuis les années 1980-1990 en pôle PME industrielles diversifiées (mécanique, métallurgie de transformation, plasturgie, logistique). Tissu TPE artisans BTP, commerces de proximité, PME industrielles, services. Intégrée à la Communauté de communes du Pays Orne-Moselle.",
   ecosystemEn:

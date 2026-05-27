@@ -14,6 +14,7 @@ export const GRADIGNAN_COPY: VilleCopy = {
     "À Gradignan, Axion-IA propose des services adaptés aux besoins des entreprises, en tenant compte de l'écosystème local comprenant l'Université de Bordeaux et le secteur de la programmation informatique. Nos interventions sont personnalisées pour répondre aux besoins spécifiques des PME et ETI, sans lien direct avec des entités comme LVMH ou Cap Digital.",
   directAnswerEn:
     "À Gradignan, Axion-IA propose des services adaptés aux besoins des entreprises, en tenant compte de l'écosystème local comprenant l'Université de Bordeaux et le secteur de la programmation informatique. Nos interventions sont personnalisées pour répondre aux besoins spécifiques des PME et ETI, sans lien direct avec des entités comme LVMH ou Cap Digital.",
+  seoHook: "proche bordeaux",
   ecosystemFr:
     "Gradignan bénéficie d'un environnement académique riche avec l'Université de Bordeaux et un secteur actif en programmation informatique.",
   ecosystemEn:

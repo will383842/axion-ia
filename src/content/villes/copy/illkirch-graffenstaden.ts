@@ -14,6 +14,7 @@ export const ILLKIRCH_GRAFFENSTADEN_COPY: VilleCopy = {
     "À Illkirch-Graffenstaden, Axion-IA propose des interventions sur site pour les entreprises, notamment dans des secteurs comme la recherche-développement scientifique et l'industrie pharmaceutique. Le Parc d'Innovation d'Illkirch et l'Université de Strasbourg enrichissent l'écosystème local, facilitant l'intégration de solutions IA pour les entreprises de la région.",
   directAnswerEn:
     "À Illkirch-Graffenstaden, Axion-IA propose des interventions sur site pour les entreprises, notamment dans des secteurs comme la recherche-développement scientifique et l'industrie pharmaceutique. Le Parc d'Innovation d'Illkirch et l'Université de Strasbourg enrichissent l'écosystème local, facilitant l'intégration de solutions IA pour les entreprises de la région.",
+  seoHook: "agglomération est",
   ecosystemFr:
     "Illkirch-Graffenstaden accueille le Parc d'Innovation et des entreprises comme Soprema. La proximité de l'Université de Strasbourg et de l'Institut de Biologie Moléculaire et Cellulaire renforce l'écosystème scientifique et technologique.",
   ecosystemEn:

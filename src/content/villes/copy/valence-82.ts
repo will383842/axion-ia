@@ -12,6 +12,7 @@ export const VALENCE_82_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Valence-d'Agen (82), bourg de Lomagne en Tarn-et-Garonne. Nous accompagnons TPE artisans, PME agroalimentaires, commerçants et professions libérales entre Montauban et Agen. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Valence-d'Agen (82), bourg de Lomagne en Tarn-et-Garonne. Nous accompagnons TPE artisans, PME agroalimentaires, commerçants et professions libérales entre Montauban et Agen. Audit Flash dès 490 € HT.",
+  seoHook: "bassin valencien tarn-et-garonnais",
   ecosystemFr:
     "Valence (5 289 hab) est un bourg de Lomagne dans le Tarn-et-Garonne, sur l'axe Montauban-Agen (A62/canal de Garonne). Économie locale : agriculture (fruits, céréales, élevage), agroalimentaire, artisanat du bâtiment, commerces de centre-bourg et professions libérales. Proximité Castelsarrasin (15 min), Moissac (10 min), Agen (25 min), Montauban (35 min).",
   ecosystemEn:

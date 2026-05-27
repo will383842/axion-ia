@@ -12,6 +12,7 @@ export const ETAPLES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Étaples (62). Nous accompagnons TPE de la pêche et du tourisme, PME de services, artisans, commerçants et professions libérales de la Côte d'Opale. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Étaples (62). Nous accompagnons TPE de la pêche et du tourisme, PME de services, artisans, commerçants et professions libérales de la Côte d'Opale. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+  seoHook: "côte d'opale",
   ecosystemFr:
     "Étaples est un port de pêche artisanale actif sur l'estuaire de la Canche, face au Touquet-Paris-Plage. Économie mêlant filière halieutique, tourisme côtier saisonnier, TPE artisanales, commerces de proximité et professions libérales. La proximité du Touquet dynamise les activités de services.",
   ecosystemEn:

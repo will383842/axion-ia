@@ -12,6 +12,7 @@ export const LE_BARP_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Barp (33). Nous accompagnons TPE et PME du sud bordelais : sous-traitants défense/tech, entreprises forestières, artisans BTP, commerçants et professions libérales. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Barp (33). Nous accompagnons TPE et PME du sud bordelais : sous-traitants défense/tech, entreprises forestières, artisans BTP, commerçants et professions libérales. Audit Flash dès 490 € HT.",
+  seoHook: "massif landaise",
   ecosystemFr:
     "Le Barp accueille le site CEA/CESTA (Centre d'Études Scientifiques et Techniques d'Aquitaine, laser Mégajoule). En forêt landaise, la commune combine sous-traitance défense/tech, exploitation forestière, artisanat BTP et commerces. Accès A63 vers Bordeaux et Bayonne.",
   ecosystemEn:

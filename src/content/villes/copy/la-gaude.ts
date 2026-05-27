@@ -12,6 +12,7 @@ export const LA_GAUDE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Gaude (06). Nous accompagnons tous types d'activités : TPE artisans BTP, professions libérales, commerçants, indépendants tech et R&D, PME services du moyen-pays niçois entre Nice et Saint-Jeannet.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Gaude (06). Nous accompagnons tous types d'activités : TPE artisans BTP, professions libérales, commerçants, indépendants tech et R&D, PME services du moyen-pays niçois entre Nice et Saint-Jeannet.",
+  seoHook: "pays niçois connue",
   ecosystemFr:
     "La Gaude est un village résidentiel du moyen-pays niçois, sur les collines dominant la vallée du Var. L'ancien centre de recherche IBM (bâtiment emblématique de Marcel Breuer, 1962) a longtemps été un fleuron R&D européen. Tissu de professions libérales, artisans BTP, commerces de proximité et indépendants. Proximité Nice (15 min), Saint-Jeannet et Cagnes-sur-Mer.",
   ecosystemEn:

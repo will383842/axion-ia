@@ -12,6 +12,7 @@ export const MAUGES_SUR_LOIRE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mauges-sur-Loire (49). Nous accompagnons tous types d'activités : PME industrielles et manufacturières des Mauges, TPE artisans BTP, exploitations agricoles et viticoles (coteaux-d'ancenis), commerçants, professionnels de santé et services aux entreprises du val de Loire angevin. Audit Flash accessible dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mauges-sur-Loire (49). Nous accompagnons tous types d'activités : PME industrielles et manufacturières des Mauges, TPE artisans BTP, exploitations agricoles et viticoles (coteaux-d'ancenis), commerçants, professionnels de santé et services aux entreprises du val de Loire angevin. Audit Flash accessible dès 490 € HT.",
+  seoHook: "TPE & PME Maine-et-Loire",
   ecosystemFr:
     "Mauges-sur-Loire est la commune nouvelle la plus peuplée des Mauges, née de la fusion de 8 communes dont Saint-Florent-le-Vieil et Montjean-sur-Loire. L'économie repose sur un tissu industriel dense (héritage manufacturier des Mauges : textile, métallurgie, agroalimentaire), les exploitations agricoles et viticoles (coteaux-d'ancenis), l'artisanat BTP et les commerces de bourg. Pôle touristique Loire avec l'abbaye de Saint-Florent-le-Vieil.",
   ecosystemEn:

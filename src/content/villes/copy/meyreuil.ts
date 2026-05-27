@@ -12,6 +12,7 @@ export const MEYREUIL_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Meyreuil (13). Nous accompagnons TPE artisans, professions libérales, viticulteurs, PME tertiaires et entreprises de l'est aixois. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Meyreuil (13). Nous accompagnons TPE artisans, professions libérales, viticulteurs, PME tertiaires et entreprises de l'est aixois. Audit Flash dès 490 € HT.",
+  seoHook: "bassin aixois",
   ecosystemFr:
     "Meyreuil s'étend au pied de la montagne Sainte-Victoire, immortalisée par Cézanne. Commune résidentielle de l'est aixois avec une zone d'activités (services, artisanat). Viticulture AOC Côtes de Provence Sainte-Victoire, ancienne centrale thermique reconvertie. Cadres et professions libérales travaillant à Aix ou Marseille.",
   ecosystemEn:

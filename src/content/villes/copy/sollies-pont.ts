@@ -10,6 +10,7 @@ export const SOLLIES_PONT_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Solliès-Pont (83). Nous accompagnons TPE agricoles, PME agroalimentaires, coopératives et commerces de la vallée du Gapeau. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Solliès-Pont (83). Nous accompagnons TPE agricoles, PME agroalimentaires, coopératives et commerces de la vallée du Gapeau. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+  seoHook: "vallée du",
   ecosystemFr:
     'Solliès-Pont est la capitale française de la figue AOP "Figue de Solliès", au cœur de la vallée du Gapeau. Tissu de TPE agricoles, coopératives, PME agroalimentaires, commerces de proximité, artisans BTP et professions libérales. Tradition maraîchère et oléicole, agglomération de l\'aire toulonnaise.',
   ecosystemEn:

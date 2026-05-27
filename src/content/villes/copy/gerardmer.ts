@@ -12,6 +12,7 @@ export const GERARDMER_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gérardmer (88). Nous accompagnons TPE et PME : hôteliers-restaurateurs, professionnels du tourisme outdoor, commerçants, artisans textiles (linge des Vosges) et prestataires de services du massif vosgien. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gérardmer (88). Nous accompagnons TPE et PME : hôteliers-restaurateurs, professionnels du tourisme outdoor, commerçants, artisans textiles (linge des Vosges) et prestataires de services du massif vosgien. Audit Flash dès 490 € HT.",
+  seoHook: "massif des",
   ecosystemFr:
     "Gérardmer est une ville-station nichée au cœur du massif des Vosges, autour d'un lac glaciaire de 115 hectares. Elle accueille la station de ski La Mauselaine et le célèbre Festival international du film fantastique de Gérardmer chaque janvier. L'économie locale repose massivement sur l'hôtellerie-restauration, le tourisme outdoor (ski, randonnée, lac, baignade, VTT), le commerce touristique, l'artisanat textile historique (linge des Vosges, draperies) et les services aux touristes et résidents.",
   ecosystemEn:

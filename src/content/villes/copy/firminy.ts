@@ -12,6 +12,7 @@ export const FIRMINY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Firminy (42). Nous accompagnons tous types d'activités : PME industrielles héritage métallurgique vallée Ondaine, acteurs tourisme architectural Site Le Corbusier UNESCO, TPE artisans BTP, commerçants, indépendants et services aux entreprises de Saint-Étienne Métropole.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Firminy (42). Nous accompagnons tous types d'activités : PME industrielles héritage métallurgique vallée Ondaine, acteurs tourisme architectural Site Le Corbusier UNESCO, TPE artisans BTP, commerçants, indépendants et services aux entreprises de Saint-Étienne Métropole.",
+  seoHook: "vallée ondaine",
   ecosystemFr:
     "Firminy est intégrée à Saint-Étienne Métropole, dans la vallée de l'Ondaine (héritage industriel métallurgique fort). Réputation internationale grâce au Site Le Corbusier (Firminy-Vert : église Saint-Pierre, Maison de la Culture, Unité d'habitation, stade — ensemble inscrit au patrimoine mondial UNESCO). Tissu PME industrielles, tourisme architectural, TPE artisanat BTP, commerces.",
   ecosystemEn:

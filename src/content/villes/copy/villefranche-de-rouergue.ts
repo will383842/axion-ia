@@ -12,6 +12,7 @@ export const VILLEFRANCHE_DE_ROUERGUE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villefranche-de-Rouergue (12). Nous accompagnons TPE artisans, PME agroalimentaires aveyronnaises, commerçants du centre bastide, professions libérales, acteurs du tourisme patrimonial et services du bassin villefranchois. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villefranche-de-Rouergue (12). Nous accompagnons TPE artisans, PME agroalimentaires aveyronnaises, commerçants du centre bastide, professions libérales, acteurs du tourisme patrimonial et services du bassin villefranchois. Audit Flash dès 490 € HT.",
+  seoHook: "TPE & PME Aveyron",
   ecosystemFr:
     "Villefranche-de-Rouergue est une sous-préfecture de l'Aveyron, bastide royale du XIIIe siècle au patrimoine médiéval remarquable (place Notre-Dame, chartreuse Saint-Sauveur). Économie diversifiée : agroalimentaire aveyronnais (charcuterie, fromages, produits du terroir), artisanat d'art, commerce de centre-ville dynamique, professions libérales, tourisme patrimonial et marchés traditionnels réputés.",
   ecosystemEn:

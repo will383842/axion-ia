@@ -12,6 +12,7 @@ export const SAINT_HILAIRE_DE_RIEZ_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Hilaire-de-Riez (85). Nous accompagnons tous types d'activités : TPE et PME touristiques, campings, hôteliers-restaurateurs, commerces saisonniers littoral vendéen, professions libérales et services de proximité.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Hilaire-de-Riez (85). Nous accompagnons tous types d'activités : TPE et PME touristiques, campings, hôteliers-restaurateurs, commerces saisonniers littoral vendéen, professions libérales et services de proximité.",
+  seoHook: "station balnéaire",
   ecosystemFr:
     "Saint-Hilaire-de-Riez est une station balnéaire majeure du littoral vendéen, entre la corniche vendéenne et le marais breton. Forte densité de campings, résidences de tourisme, hôtels-restaurants. Population multipliée par 5 en été. Saint-Jean-de-Monts à 10 min, Saint-Gilles-Croix-de-Vie à 5 min.",
   ecosystemEn:

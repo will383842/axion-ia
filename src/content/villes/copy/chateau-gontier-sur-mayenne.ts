@@ -12,6 +12,7 @@ export const CHATEAU_GONTIER_SUR_MAYENNE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Château-Gontier-sur-Mayenne (53). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles, commerçants de centre-ville, professions libérales, éleveurs, prestataires de services et acteurs du tourisme fluvial du sud-Mayenne.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Château-Gontier-sur-Mayenne (53). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles, commerçants de centre-ville, professions libérales, éleveurs, prestataires de services et acteurs du tourisme fluvial du sud-Mayenne.",
+  seoHook: "vallée rivière",
   ecosystemFr:
     "Château-Gontier-sur-Mayenne est la sous-préfecture du sud de la Mayenne, située aux bords de la rivière Mayenne. Foire aux bestiaux réputée (bovins), patrimoine médiéval, tourisme fluvial. Économie diversifiée : agroalimentaire, industrie, artisanat, commerces, services, agriculture (élevage bovin laitier).",
   ecosystemEn:

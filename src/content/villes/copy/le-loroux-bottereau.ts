@@ -12,6 +12,7 @@ export const LE_LOROUX_BOTTEREAU_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Loroux-Bottereau (44). Nous accompagnons les TPE viticoles, artisans, commerçants, PME du vignoble nantais et exploitations agricoles sur leurs cas IA opérationnels. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Loroux-Bottereau (44). Nous accompagnons les TPE viticoles, artisans, commerçants, PME du vignoble nantais et exploitations agricoles sur leurs cas IA opérationnels. Audit Flash dès 490 € HT.",
+  seoHook: "vignoble muscadet",
   ecosystemFr:
     "Le Loroux-Bottereau est au coeur du vignoble Muscadet, entre Nantes et Ancenis. Tissu TPE viticoles et maraîchères, artisans, commerces de proximité, PME agroalimentaires et de services. Bassin d'emploi nantais est, dynamisme rural et périurbain.",
   ecosystemEn:

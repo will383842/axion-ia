@@ -12,6 +12,7 @@ export const LOON_PLAGE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Loon-Plage (59). Nous accompagnons TPE artisans, PME logistique portuaire et transport maritime, sous-traitants industriels (sidérurgie, pétrochimie) et commerçants du Dunkerquois. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Loon-Plage (59). Nous accompagnons TPE artisans, PME logistique portuaire et transport maritime, sous-traitants industriels (sidérurgie, pétrochimie) et commerçants du Dunkerquois. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
+  seoHook: "frontalier belge",
   ecosystemFr:
     "Loon-Plage est adossée au grand port maritime de Dunkerque (3e port de France), sur la côte de la Mer du Nord. Zone industrialo-portuaire majeure : sidérurgie (ArcelorMittal), pétrochimie, terminal méthanier, énergie. Tissu TPE artisans maintenance industrielle, PME logistique portuaire et transport maritime, sous-traitance industrielle, commerces de proximité. Dynamique d'investissement avec projets éolien offshore et batteries.",
   ecosystemEn:

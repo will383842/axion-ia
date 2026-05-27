@@ -12,6 +12,7 @@ export const VILLEFONTAINE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villefontaine (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants centre-ville, indépendants et professions libérales, PME logistiques (axe Lyon-Saint-Exupéry), industriels et sous-traitants Nord-Isère, agriculteurs et services aux entreprises de l'aire urbaine lyonnaise.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villefontaine (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants centre-ville, indépendants et professions libérales, PME logistiques (axe Lyon-Saint-Exupéry), industriels et sous-traitants Nord-Isère, agriculteurs et services aux entreprises de l'aire urbaine lyonnaise.",
+  seoHook: "agglomération porte",
   ecosystemFr:
     "Villefontaine s'inscrit dans le tissu économique de la ville nouvelle de L'Isle-d'Abeau, intégrée à la Communauté d'agglomération Porte de l'Isère (CAPI) et à l'aire urbaine de Lyon. Proximité immédiate plateforme aéroportuaire Lyon-Saint-Exupéry (15 min) génère une activité logistique, services aux entreprises et industrielle dense. Tissu TPE artisanat BTP et commerces de proximité.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const NEUVES_MAISONS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Neuves-Maisons (54). Nous accompagnons TPE et PME : industriels métallurgistes, artisans, commerçants et prestataires de services de la vallée de la Moselle au sud de Nancy en Lorraine. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Neuves-Maisons (54). Nous accompagnons TPE et PME : industriels métallurgistes, artisans, commerçants et prestataires de services de la vallée de la Moselle au sud de Nancy en Lorraine. Audit Flash dès 490 € HT.",
+  seoHook: "vallée moselle",
   ecosystemFr:
     "Neuves-Maisons est située dans la vallée de la Moselle, à 15 km au sud de Nancy. Ancienne ville sidérurgique, elle a reconverti son tissu vers la métallurgie spécialisée (aciérie électrique encore active), la mécanique, l'artisanat et les services. L'économie locale repose sur l'industrie métallurgique, l'artisanat BTP, le commerce de proximité et les services aux entreprises. Intégration à la Communauté de communes Moselle et Madon.",
   ecosystemEn:

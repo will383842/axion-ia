@@ -12,6 +12,7 @@ export const DECHY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Dechy (59). Nous accompagnons tous types d'activités : TPE artisans BTP et rénovation, PME logistiques et industrielles de la zone Dorignies, commerçants, professions libérales et acteurs de la reconversion tertiaire du Douaisis.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Dechy (59). Nous accompagnons tous types d'activités : TPE artisans BTP et rénovation, PME logistiques et industrielles de la zone Dorignies, commerçants, professions libérales et acteurs de la reconversion tertiaire du Douaisis.",
+  seoHook: "bassin minier du",
   ecosystemFr:
     "Dechy est intégrée à la communauté d'agglomération du Douaisis, en pleine reconversion post-minière. Zone industrielle Dorignies accueille PME logistiques et sous-traitants industriels. TPE artisanat BTP rénovation, commerces de proximité et professions libérales forment le tissu économique local.",
   ecosystemEn:

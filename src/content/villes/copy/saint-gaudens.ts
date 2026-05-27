@@ -12,6 +12,7 @@ export const SAINT_GAUDENS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Gaudens (31). Nous accompagnons TPE artisans, PME industrielles et agroalimentaires, commerçants, professions libérales et acteurs du tourisme pyrénéen. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Gaudens (31). Nous accompagnons TPE artisans, PME industrielles et agroalimentaires, commerçants, professions libérales et acteurs du tourisme pyrénéen. Audit Flash dès 490 € HT.",
+  seoHook: "TPE & PME Hte-Garonne",
   ecosystemFr:
     "Saint-Gaudens est la sous-préfecture du Comminges, pôle économique du piémont pyrénéen. PME industrielles (papeterie, chimie), agroalimentaire de montagne, artisans BTP, commerces de centre-ville, professions libérales, tourisme thermal et pyrénéen. Centre hospitalier et services publics structurants.",
   ecosystemEn:

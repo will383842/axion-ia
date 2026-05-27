@@ -12,6 +12,7 @@ export const CLISSON_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Clisson (44). Nous accompagnons tous types d'activités : TPE viticulteurs et artisans du Muscadet, PME tourisme et événementiel (dont l'écosystème Hellfest), commerces de centre-bourg, restauration, professions libérales et entreprises du vignoble nantais.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Clisson (44). Nous accompagnons tous types d'activités : TPE viticulteurs et artisans du Muscadet, PME tourisme et événementiel (dont l'écosystème Hellfest), commerces de centre-bourg, restauration, professions libérales et entreprises du vignoble nantais.",
+  seoHook: "vignoble nantais",
   ecosystemFr:
     "Clisson est une cité de caractère du vignoble Muscadet à 30 km au sud-est de Nantes. Le Hellfest (festival metal international) génère un écosystème événementiel et touristique majeur. Tissu TPE viticulteurs, artisans, commerces patrimoine, restauration, professions libérales. Château médiéval classé, architecture italianisante.",
   ecosystemEn:

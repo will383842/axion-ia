@@ -12,6 +12,7 @@ export const SAINT_PAUL_TROIS_CHATEAUX_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Paul-Trois-Châteaux (26). Nous accompagnons tous types d'activités : trufficulteurs et viticulteurs AOC Grignan-les-Adhémar, PME industrielles bassin Tricastin (sous-traitants techniques), TPE artisans BTP, commerçants, indépendants et services aux entreprises sud-Drôme.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Paul-Trois-Châteaux (26). Nous accompagnons tous types d'activités : trufficulteurs et viticulteurs AOC Grignan-les-Adhémar, PME industrielles bassin Tricastin (sous-traitants techniques), TPE artisans BTP, commerçants, indépendants et services aux entreprises sud-Drôme.",
+  seoHook: "bassin tricastin",
   ecosystemFr:
     "Saint-Paul-Trois-Châteaux est ancrée dans le Tricastin (sud-Drôme), territoire historique de la truffe noire (Tuber melanosporum, marchés aux truffes hivernaux réputés) et de la viticulture AOC Grignan-les-Adhémar. Tissu PME industrielles et sous-traitants techniques liés au bassin Tricastin, TPE artisanat BTP, commerces et oenotourisme.",
   ecosystemEn:

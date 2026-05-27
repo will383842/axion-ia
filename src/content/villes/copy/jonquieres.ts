@@ -12,6 +12,7 @@ export const JONQUIERES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jonquières (84). Nous accompagnons tous types d'activités : TPE artisans, domaines viticoles AOC Côtes-du-Rhône, PME agroalimentaires, commerces, professions libérales et services de la vallée du Rhône. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jonquières (84). Nous accompagnons tous types d'activités : TPE artisans, domaines viticoles AOC Côtes-du-Rhône, PME agroalimentaires, commerces, professions libérales et services de la vallée du Rhône. Audit Flash dès 490 € HT.",
+  seoHook: "vallée du",
   ecosystemFr:
     "Jonquières est un pôle viticole et agricole de la vallée du Rhône, à proximité immédiate d'Orange. Vignoble AOC Côtes-du-Rhône et Côtes-du-Rhône Villages, oenotourisme, agriculture maraîchère. Tissu de TPE artisans, domaines viticoles, PME agroalimentaires, commerces et professions libérales. Orange à 10 min, Avignon à 30 min, A7 directe.",
   ecosystemEn:

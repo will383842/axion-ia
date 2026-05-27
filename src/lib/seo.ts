@@ -896,10 +896,15 @@ interface PlaceJsonLdInput {
   containedInPlace?: { name: string; url?: string };
   /** Population for differentiation (anti-doorway pages). */
   population?: number;
+  /** sameAs URLs for entity reconciliation (Wikipedia, Wikidata). Audit Will 2026-05-27. */
+  sameAs?: ReadonlyArray<string>;
 }
 
 // Place JSON-LD — paired with LocalBusiness for city/region pages. Useful
 // for Google Maps + Wikipedia-style entity reconciliation by AI Overviews.
+//
+// Audit Will 2026-05-27 : ajout `sameAs` (Wikipedia + Wikidata) pour booster
+// E-E-A-T cross-domain. Knowledge Graph mondiale liée à l'entité géographique.
 export function buildPlaceJsonLd({
   locale,
   path,
@@ -907,6 +912,7 @@ export function buildPlaceJsonLd({
   geo,
   containedInPlace,
   population,
+  sameAs,
 }: PlaceJsonLdInput) {
   const url = `${SITE_URL}/${locale}${path}`;
   return {
@@ -937,6 +943,7 @@ export function buildPlaceJsonLd({
           },
         }
       : {}),
+    ...(sameAs && sameAs.length > 0 ? { sameAs } : {}),
   } as const;
 }
 

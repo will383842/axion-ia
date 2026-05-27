@@ -12,6 +12,7 @@ export const SAINT_JEAN_D_ANGELY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean-d'Angély (17). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires, exploitants agricoles, commerçants, professions libérales et indépendants de cette sous-préfecture historique du chemin de Compostelle.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean-d'Angély (17). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires, exploitants agricoles, commerçants, professions libérales et indépendants de cette sous-préfecture historique du chemin de Compostelle.",
+  seoHook: "bassin angérien",
   ecosystemFr:
     "Saint-Jean-d'Angély est sous-préfecture de Charente-Maritime, étape du chemin de Compostelle (abbaye royale classée UNESCO). Pôle agroalimentaire (céréales, élevage, distillation), PME transformation alimentaire, TPE artisans BTP, commerces de centre-ville, services publics et de santé. Patrimoine médiéval attractif.",
   ecosystemEn:

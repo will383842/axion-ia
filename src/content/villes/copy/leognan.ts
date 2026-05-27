@@ -12,6 +12,7 @@ export const LEOGNAN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Léognan (33). Nous accompagnons TPE et PME du vignoble Pessac-Léognan : domaines viticoles grands crus, PME agroalimentaires, artisans BTP, commerçants et professions libérales. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Léognan (33). Nous accompagnons TPE et PME du vignoble Pessac-Léognan : domaines viticoles grands crus, PME agroalimentaires, artisans BTP, commerçants et professions libérales. Audit Flash dès 490 € HT.",
+  seoHook: "aoc pessac-",
   ecosystemFr:
     "Léognan est au coeur de l'AOC Pessac-Léognan, l'une des appellations les plus prestigieuses de Bordeaux. Grands crus classés (Domaine de Chevalier, Château Carbonnieux, etc.), oenotourisme, PME agroalimentaires, tissu résidentiel et commercial en croissance. Accès A62 et sud Bordeaux.",
   ecosystemEn:

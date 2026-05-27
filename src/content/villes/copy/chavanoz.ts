@@ -12,6 +12,7 @@ export const CHAVANOZ_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chavanoz (38). Nous accompagnons tous types d'activités : PME industrielles Nord-Isère, TPE artisans BTP, commerçants, agriculteurs périphériques, indépendants, professions libérales et services aux entreprises de la Communauté de communes Lyon Saint-Exupéry en Dauphiné.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chavanoz (38). Nous accompagnons tous types d'activités : PME industrielles Nord-Isère, TPE artisans BTP, commerçants, agriculteurs périphériques, indépendants, professions libérales et services aux entreprises de la Communauté de communes Lyon Saint-Exupéry en Dauphiné.",
+  seoHook: "frontalier avec",
   ecosystemFr:
     "Chavanoz est positionnée en bordure Nord-Isère, dans l'aire d'attraction est de Lyon, à proximité immédiate de Pont-de-Chéruy et de la frontière avec le Rhône. Tissu péri-urbain mixte : PME industrielles, TPE artisanat BTP, commerces de proximité, agriculture résiduelle. Accès rapide aéroport Lyon-Saint-Exupéry (20 min).",
   ecosystemEn:

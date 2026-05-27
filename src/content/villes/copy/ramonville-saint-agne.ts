@@ -12,6 +12,7 @@ export const RAMONVILLE_SAINT_AGNE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ramonville-Saint-Agne (31). Nous accompagnons TPE innovantes, PME tech et spatial, startups, professions libérales et commerçants du sud de Toulouse. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ramonville-Saint-Agne (31). Nous accompagnons TPE innovantes, PME tech et spatial, startups, professions libérales et commerçants du sud de Toulouse. Audit Flash dès 490 € HT.",
+  seoHook: "proche toulouse",
   ecosystemFr:
     "Ramonville-Saint-Agne bénéficie de la proximité du campus Rangueil (Université Toulouse III), du CNES et du pôle spatial. TPE innovantes, PME tech, startups deeptech, professions libérales, commerces de proximité. Desserte métro ligne B (Ramonville).",
   ecosystemEn:

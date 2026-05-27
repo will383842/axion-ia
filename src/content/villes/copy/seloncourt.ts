@@ -12,6 +12,7 @@ export const SELONCOURT_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Seloncourt (25). Nous accompagnons TPE et PME : sous-traitants automobile et mecaniciens de precision, fabricants de composants, commercants, artisans BTP et prestataires de services du Pays de Montbeliard. Audit Flash des 490 euros HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Seloncourt (25). Nous accompagnons TPE et PME : sous-traitants automobile et mecaniciens de precision, fabricants de composants, commercants, artisans BTP et prestataires de services du Pays de Montbeliard. Audit Flash des 490 euros HT.",
+  seoHook: "pays de montbeliard",
   ecosystemFr:
     "Seloncourt est une commune industrielle du Pays de Montbeliard, berceau historique de Peugeot Cycles (fonde en 1882). La ville est integree au bassin automobile de Sochaux-Montbeliard (Stellantis). Le tissu local repose sur la sous-traitance mecanique, la fabrication de composants et le commerce de proximite.",
   ecosystemEn:

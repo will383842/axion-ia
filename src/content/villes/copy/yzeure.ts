@@ -12,6 +12,7 @@ export const YZEURE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Yzeure (03). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Bourbonnais, agriculteurs/éleveurs, TPE artisans BTP, commerçants et services aux entreprises de l'agglomération moulinoise.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Yzeure (03). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Bourbonnais, agriculteurs/éleveurs, TPE artisans BTP, commerçants et services aux entreprises de l'agglomération moulinoise.",
+  seoHook: "TPE & PME Allier",
   ecosystemFr:
     "Yzeure est en banlieue de Moulins, Bourbonnais. Tissu PME tertiaires/industrielles, agriculture bourbonnaise (élevage charolais, grandes cultures), TPE artisanat BTP, commerces.",
   ecosystemEn:

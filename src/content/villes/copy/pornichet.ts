@@ -12,6 +12,7 @@ export const PORNICHET_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pornichet (44), station balnéaire de la baie de La Baule. Nous accompagnons TPE commerçants, PME hôtelières, restaurants, artisans et professions libérales de la côte d'Amour. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pornichet (44), station balnéaire de la baie de La Baule. Nous accompagnons TPE commerçants, PME hôtelières, restaurants, artisans et professions libérales de la côte d'Amour. Audit Flash dès 490 € HT.",
+  seoHook: "bassin pornichétin",
   ecosystemFr:
     "Pornichet (12 800 hab) est une station balnéaire de la baie de La Baule, entre Saint-Nazaire et La Baule. Port de plaisance, thalassothérapie, hôtellerie-restauration, commerces, artisanat et professions libérales. Proximité Saint-Nazaire (10 min), La Baule (5 min), Nantes (1h). Hippodrome et casino renforcent l'attractivité touristique annuelle.",
   ecosystemEn:

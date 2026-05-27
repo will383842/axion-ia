@@ -12,6 +12,7 @@ export const LANDIVISIAU_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Landivisiau (29). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agroalimentaires bretonnes, sous-traitants aéronautiques, indépendants, professions libérales, prestataires liés à la base aéronavale et services aux entreprises du Pays de Léon.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Landivisiau (29). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agroalimentaires bretonnes, sous-traitants aéronautiques, indépendants, professions libérales, prestataires liés à la base aéronavale et services aux entreprises du Pays de Léon.",
+  seoHook: "pays de léon",
   ecosystemFr:
     "Landivisiau (9 426 hab) est un pôle économique du Pays de Léon, dans le nord Finistère. La base aéronavale (BAN Landivisiau, chasse embarquée Marine nationale) structure l'économie locale avec ses sous-traitants et prestataires. Tissu PME agroalimentaires bretonnes (élevage, transformation viande, légumes), TPE artisans BTP, commerces de centre-bourg et services. Morlaix à 20 min, Brest à 35 min.",
   ecosystemEn:

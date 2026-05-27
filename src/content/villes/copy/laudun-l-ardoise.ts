@@ -12,6 +12,7 @@ export const LAUDUN_L_ARDOISE_COPY: VilleCopy = {
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Laudun-l'Ardoise (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs Côtes du Rhône Villages Laudun, sous-traitants nucléaire Marcoule, commerçants, artisans BTP et professions libérales du nord Gard. Audit Flash à partir de 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Laudun-l'Ardoise (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs Côtes du Rhône Villages Laudun, sous-traitants nucléaire Marcoule, commerçants, artisans BTP et professions libérales du nord Gard. Audit Flash à partir de 490 € HT.",
+  seoHook: "vallée du",
   ecosystemFr:
     "Laudun-l'Ardoise (~6 800 hab) est une commune viticole du nord Gard (AOP Côtes du Rhône Villages Laudun). Proximité site nucléaire Marcoule (CEA/Orano), sous-traitance industrielle, artisanat BTP, commerces et services. Double économie viticole et nucléaire structurante.",
   ecosystemEn:

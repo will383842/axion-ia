@@ -12,6 +12,7 @@ export const HAUTMONT_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hautmont (59). Nous accompagnons TPE et PME : PME métallurgie et transformation des métaux, sous-traitants industriels automobile, artisans, commerces de proximité et professions libérales du Sambre-Avesnois.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hautmont (59). Nous accompagnons TPE et PME : PME métallurgie et transformation des métaux, sous-traitants industriels automobile, artisans, commerces de proximité et professions libérales du Sambre-Avesnois.",
+  seoHook: "bassin sambre-avesnois",
   ecosystemFr:
     "Hautmont est une commune industrielle de l'agglomération de Maubeuge dans la vallée de la Sambre (Sambre-Avesnois). L'économie locale est marquée par l'héritage métallurgique et sidérurgique (forges historiques, transformation des métaux), la sous-traitance industrielle automobile liée à l'usine Toyota de Maubeuge-Onnaing, les PME de mécanique et chaudronnerie, les artisans, commerces de proximité et professions libérales. Le parc naturel régional de l'Avesnois et la proximité de la frontière belge (Erquelinnes) complètent le tissu économique local.",
   ecosystemEn:
