@@ -98,6 +98,7 @@ import { CHAMPAGNE_AU_MONT_D_OR_COPY } from "./champagne-au-mont-d-or";
 import { CHAMPIGNY_SUR_MARNE_COPY } from "./champigny-sur-marne";
 import { CHAMPS_SUR_MARNE_COPY } from "./champs-sur-marne";
 import { CHAPONOST_COPY } from "./chaponost";
+import { CHARBONNIERES_LES_BAINS_COPY } from "./charbonnieres-les-bains";
 import { CHARENTON_LE_PONT_COPY } from "./charenton-le-pont";
 import { CHARLEVILLE_MEZIERES_COPY } from "./charleville-mezieres";
 import { CHARTRES_COPY } from "./chartres";
@@ -195,6 +196,7 @@ import { GAP_COPY } from "./gap";
 import { GARDANNE_COPY } from "./gardanne";
 import { GARGES_LES_GONESSE_COPY } from "./garges-les-gonesse";
 import { GENAS_COPY } from "./genas";
+import { GENAY_COPY } from "./genay";
 import { GENNEVILLIERS_COPY } from "./gennevilliers";
 import { GIERES_COPY } from "./gieres";
 import { GIF_SUR_YVETTE_COPY } from "./gif-sur-yvette";
@@ -224,6 +226,7 @@ import { ISSY_LES_MOULINEAUX_COPY } from "./issy-les-moulineaux";
 import { ISTRES_COPY } from "./istres";
 import { IVRY_SUR_SEINE_COPY } from "./ivry-sur-seine";
 import { JOINVILLE_LE_PONT_COPY } from "./joinville-le-pont";
+import { JONAGE_COPY } from "./jonage";
 import { JOUE_LES_TOURS_COPY } from "./joue-les-tours";
 import { L_ARBRESLE_COPY } from "./l-arbresle";
 import { L_HAY_LES_ROSES_COPY } from "./l-hay-les-roses";
@@ -410,6 +413,7 @@ import { SAINT_FONS_COPY } from "./saint-fons";
 import { SAINT_GALMIER_COPY } from "./saint-galmier";
 import { SAINT_GENEST_LERPT_COPY } from "./saint-genest-lerpt";
 import { SAINT_GENIS_LAVAL_COPY } from "./saint-genis-laval";
+import { SAINT_GENIS_LES_OLLIERES_COPY } from "./saint-genis-les-ollieres";
 import { SAINT_GERMAIN_EN_LAYE_COPY } from "./saint-germain-en-laye";
 import { SAINT_GRATIEN_COPY } from "./saint-gratien";
 import { SAINT_HERBLAIN_COPY } from "./saint-herblain";
@@ -417,6 +421,7 @@ import { SAINT_ISMIER_COPY } from "./saint-ismier";
 import { SAINT_JEAN_BONNEFONDS_COPY } from "./saint-jean-bonnefonds";
 import { SAINT_JEAN_DE_BRAYE_COPY } from "./saint-jean-de-braye";
 import { SAINT_JUST_SAINT_RAMBERT_COPY } from "./saint-just-saint-rambert";
+import { SAINT_LAURENT_DE_MURE_COPY } from "./saint-laurent-de-mure";
 import { SAINT_LAURENT_DU_VAR_COPY } from "./saint-laurent-du-var";
 import { SAINT_LOUIS_COPY } from "./saint-louis";
 import { SAINT_MALO_COPY } from "./saint-malo";
@@ -479,8 +484,10 @@ import { TARARE_COPY } from "./tarare";
 import { TARBES_COPY } from "./tarbes";
 import { TASSIN_LA_DEMI_LUNE_COPY } from "./tassin-la-demi-lune";
 import { TAVERNY_COPY } from "./taverny";
+import { TERNAY_COPY } from "./ternay";
 import { THIAIS_COPY } from "./thiais";
 import { THIONVILLE_COPY } from "./thionville";
+import { THIZY_LES_BOURGS_COPY } from "./thizy-les-bourgs";
 import { THONON_LES_BAINS_COPY } from "./thonon-les-bains";
 import { TIGNIEU_JAMEYZIEU_COPY } from "./tignieu-jameyzieu";
 import { TORCY_COPY } from "./torcy";
@@ -494,6 +501,7 @@ import { UNIEUX_COPY } from "./unieux";
 import { VALENCE_COPY } from "./valence";
 import { VALENCIENNES_COPY } from "./valenciennes";
 import { VALLAURIS_COPY } from "./vallauris";
+import { VALSERHONE_COPY } from "./valserhone";
 import { VAND_UVRE_LES_NANCY_COPY } from "./vand-uvre-les-nancy";
 import { VANNES_COPY } from "./vannes";
 import { VANVES_COPY } from "./vanves";
@@ -503,6 +511,7 @@ import { VAULX_EN_VELIN_COPY } from "./vaulx-en-velin";
 import { VEAUCHE_COPY } from "./veauche";
 import { VELIZY_VILLACOUBLAY_COPY } from "./velizy-villacoublay";
 import { VENISSIEUX_COPY } from "./venissieux";
+import { VERNAISON_COPY } from "./vernaison";
 import { VERNON_COPY } from "./vernon";
 import { VERSAILLES_COPY } from "./versailles";
 import { VERTOU_COPY } from "./vertou";
@@ -530,6 +539,7 @@ import { VILLETTE_D_ANTHON_COPY } from "./villette-d-anthon";
 import { VILLIERS_LE_BEL_COPY } from "./villiers-le-bel";
 import { VILLIERS_SUR_MARNE_COPY } from "./villiers-sur-marne";
 import { VINCENNES_COPY } from "./vincennes";
+import { VINDRY_SUR_TURDINE_COPY } from "./vindry-sur-turdine";
 import { VIRY_CHATILLON_COPY } from "./viry-chatillon";
 import { VITROLLES_COPY } from "./vitrolles";
 import { VITRY_SUR_SEINE_COPY } from "./vitry-sur-seine";
@@ -635,6 +645,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   "champigny-sur-marne": CHAMPIGNY_SUR_MARNE_COPY,
   "champs-sur-marne": CHAMPS_SUR_MARNE_COPY,
   chaponost: CHAPONOST_COPY,
+  "charbonnieres-les-bains": CHARBONNIERES_LES_BAINS_COPY,
   "charenton-le-pont": CHARENTON_LE_PONT_COPY,
   "charleville-mezieres": CHARLEVILLE_MEZIERES_COPY,
   chartres: CHARTRES_COPY,
@@ -732,6 +743,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   gardanne: GARDANNE_COPY,
   "garges-les-gonesse": GARGES_LES_GONESSE_COPY,
   genas: GENAS_COPY,
+  genay: GENAY_COPY,
   gennevilliers: GENNEVILLIERS_COPY,
   gieres: GIERES_COPY,
   "gif-sur-yvette": GIF_SUR_YVETTE_COPY,
@@ -761,6 +773,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   istres: ISTRES_COPY,
   "ivry-sur-seine": IVRY_SUR_SEINE_COPY,
   "joinville-le-pont": JOINVILLE_LE_PONT_COPY,
+  jonage: JONAGE_COPY,
   "joue-les-tours": JOUE_LES_TOURS_COPY,
   "l-arbresle": L_ARBRESLE_COPY,
   "l-hay-les-roses": L_HAY_LES_ROSES_COPY,
@@ -947,6 +960,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   "saint-galmier": SAINT_GALMIER_COPY,
   "saint-genest-lerpt": SAINT_GENEST_LERPT_COPY,
   "saint-genis-laval": SAINT_GENIS_LAVAL_COPY,
+  "saint-genis-les-ollieres": SAINT_GENIS_LES_OLLIERES_COPY,
   "saint-germain-en-laye": SAINT_GERMAIN_EN_LAYE_COPY,
   "saint-gratien": SAINT_GRATIEN_COPY,
   "saint-herblain": SAINT_HERBLAIN_COPY,
@@ -954,6 +968,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   "saint-jean-bonnefonds": SAINT_JEAN_BONNEFONDS_COPY,
   "saint-jean-de-braye": SAINT_JEAN_DE_BRAYE_COPY,
   "saint-just-saint-rambert": SAINT_JUST_SAINT_RAMBERT_COPY,
+  "saint-laurent-de-mure": SAINT_LAURENT_DE_MURE_COPY,
   "saint-laurent-du-var": SAINT_LAURENT_DU_VAR_COPY,
   "saint-louis": SAINT_LOUIS_COPY,
   "saint-malo": SAINT_MALO_COPY,
@@ -1016,8 +1031,10 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   tarbes: TARBES_COPY,
   "tassin-la-demi-lune": TASSIN_LA_DEMI_LUNE_COPY,
   taverny: TAVERNY_COPY,
+  ternay: TERNAY_COPY,
   thiais: THIAIS_COPY,
   thionville: THIONVILLE_COPY,
+  "thizy-les-bourgs": THIZY_LES_BOURGS_COPY,
   "thonon-les-bains": THONON_LES_BAINS_COPY,
   "tignieu-jameyzieu": TIGNIEU_JAMEYZIEU_COPY,
   torcy: TORCY_COPY,
@@ -1031,6 +1048,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   valence: VALENCE_COPY,
   valenciennes: VALENCIENNES_COPY,
   vallauris: VALLAURIS_COPY,
+  valserhone: VALSERHONE_COPY,
   "vand-uvre-les-nancy": VAND_UVRE_LES_NANCY_COPY,
   vannes: VANNES_COPY,
   vanves: VANVES_COPY,
@@ -1040,6 +1058,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   veauche: VEAUCHE_COPY,
   "velizy-villacoublay": VELIZY_VILLACOUBLAY_COPY,
   venissieux: VENISSIEUX_COPY,
+  vernaison: VERNAISON_COPY,
   vernon: VERNON_COPY,
   versailles: VERSAILLES_COPY,
   vertou: VERTOU_COPY,
@@ -1067,6 +1086,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   "villiers-le-bel": VILLIERS_LE_BEL_COPY,
   "villiers-sur-marne": VILLIERS_SUR_MARNE_COPY,
   vincennes: VINCENNES_COPY,
+  "vindry-sur-turdine": VINDRY_SUR_TURDINE_COPY,
   "viry-chatillon": VIRY_CHATILLON_COPY,
   vitrolles: VITROLLES_COPY,
   "vitry-sur-seine": VITRY_SUR_SEINE_COPY,

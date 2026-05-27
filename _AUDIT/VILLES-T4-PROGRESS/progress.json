@@ -1,10 +1,10 @@
 {
   "totalT4": 1702,
-  "done": 120,
-  "remaining": 1582,
-  "lastBatchAt": "2026-05-27T08:59:50.311Z",
+  "done": 130,
+  "remaining": 1572,
+  "lastBatchAt": "2026-05-27T09:07:57.182Z",
   "lastBatchSize": 10,
-  "lastBatchNumber": 12,
+  "lastBatchNumber": 13,
   "villes": {
     "gentilly": {
       "slug": "gentilly",
@@ -2192,9 +2192,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "01",
       "population": 16712,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:07:57.182Z",
+      "batch": 13
     },
     "rumilly": {
       "slug": "rumilly",
@@ -3992,9 +3992,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "69",
       "population": 6144,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:07:57.182Z",
+      "batch": 13
     },
     "sainte-sigolene": {
       "slug": "sainte-sigolene",
@@ -4102,9 +4102,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "69",
       "population": 5791,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:07:57.182Z",
+      "batch": 13
     },
     "thizy-les-bourgs": {
       "slug": "thizy-les-bourgs",
@@ -4112,9 +4112,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "69",
       "population": 5771,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:07:57.182Z",
+      "batch": 13
     },
     "saint-gervais-les-bains": {
       "slug": "saint-gervais-les-bains",
@@ -4172,9 +4172,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "69",
       "population": 5596,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:07:57.182Z",
+      "batch": 13
     },
     "saint-martin-d-uriage": {
       "slug": "saint-martin-d-uriage",
@@ -4192,9 +4192,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "69",
       "population": 5585,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:07:57.182Z",
+      "batch": 13
     },
     "chazelles-sur-lyon": {
       "slug": "chazelles-sur-lyon",
@@ -4232,9 +4232,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "69",
       "population": 5439,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:07:57.182Z",
+      "batch": 13
     },
     "le-cendre": {
       "slug": "le-cendre",
@@ -4262,9 +4262,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "69",
       "population": 5383,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:07:57.182Z",
+      "batch": 13
     },
     "cruseilles": {
       "slug": "cruseilles",
@@ -4312,9 +4312,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "69",
       "population": 5305,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:07:57.182Z",
+      "batch": 13
     },
     "villette-d-anthon": {
       "slug": "villette-d-anthon",
@@ -4362,9 +4362,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "69",
       "population": 5210,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:07:57.182Z",
+      "batch": 13
     },
     "beynost": {
       "slug": "beynost",
