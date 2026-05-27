@@ -1,10 +1,10 @@
 {
   "totalT4": 1702,
-  "done": 20,
-  "remaining": 1682,
-  "lastBatchAt": "2026-05-27T06:50:53.336Z",
+  "done": 30,
+  "remaining": 1672,
+  "lastBatchAt": "2026-05-27T06:58:59.819Z",
   "lastBatchSize": 10,
-  "lastBatchNumber": 2,
+  "lastBatchNumber": 3,
   "villes": {
     "gentilly": {
       "slug": "gentilly",
@@ -3192,9 +3192,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "38",
       "population": 7700,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T06:58:59.819Z",
+      "batch": 3
     },
     "les-avenieres-veyrins-thuellin": {
       "slug": "les-avenieres-veyrins-thuellin",
@@ -3202,9 +3202,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "38",
       "population": 7698,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T06:58:59.819Z",
+      "batch": 3
     },
     "villars": {
       "slug": "villars",
@@ -3232,9 +3232,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "38",
       "population": 7624,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T06:58:59.819Z",
+      "batch": 3
     },
     "saint-peray": {
       "slug": "saint-peray",
@@ -3272,9 +3272,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "38",
       "population": 7509,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T06:58:59.819Z",
+      "batch": 3
     },
     "saint-didier-au-mont-d-or": {
       "slug": "saint-didier-au-mont-d-or",
@@ -3312,9 +3312,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "38",
       "population": 7376,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T06:58:59.819Z",
+      "batch": 3
     },
     "pontcharra": {
       "slug": "pontcharra",
@@ -3322,9 +3322,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "38",
       "population": 7350,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T06:58:59.819Z",
+      "batch": 3
     },
     "vizille": {
       "slug": "vizille",
@@ -3332,9 +3332,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "38",
       "population": 7292,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T06:58:59.819Z",
+      "batch": 3
     },
     "bourg-saint-maurice": {
       "slug": "bourg-saint-maurice",
@@ -3362,9 +3362,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "38",
       "population": 7165,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T06:58:59.819Z",
+      "batch": 3
     },
     "ugine": {
       "slug": "ugine",
@@ -3472,9 +3472,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "38",
       "population": 6889,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T06:58:59.819Z",
+      "batch": 3
     },
     "les-abrets-en-dauphine": {
       "slug": "les-abrets-en-dauphine",
@@ -3482,9 +3482,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "38",
       "population": 6850,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T06:58:59.819Z",
+      "batch": 3
     },
     "le-coteau": {
       "slug": "le-coteau",

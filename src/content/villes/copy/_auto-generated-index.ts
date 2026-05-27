@@ -165,6 +165,7 @@ import { GAP_COPY } from "./gap";
 import { GARDANNE_COPY } from "./gardanne";
 import { GARGES_LES_GONESSE_COPY } from "./garges-les-gonesse";
 import { GENNEVILLIERS_COPY } from "./gennevilliers";
+import { GIERES_COPY } from "./gieres";
 import { GIF_SUR_YVETTE_COPY } from "./gif-sur-yvette";
 import { GIVORS_COPY } from "./givors";
 import { GONESSE_COPY } from "./gonesse";
@@ -225,6 +226,8 @@ import { LE_PLESSIS_ROBINSON_COPY } from "./le-plessis-robinson";
 import { LE_PLESSIS_TREVISE_COPY } from "./le-plessis-trevise";
 import { LE_PONT_DE_CLAIX_COPY } from "./le-pont-de-claix";
 import { LENS_COPY } from "./lens";
+import { LES_ABRETS_EN_DAUPHINE_COPY } from "./les-abrets-en-dauphine";
+import { LES_AVENIERES_VEYRINS_THUELLIN_COPY } from "./les-avenieres-veyrins-thuellin";
 import { LES_LILAS_COPY } from "./les-lilas";
 import { LES_MUREAUX_COPY } from "./les-mureaux";
 import { LES_PAVILLONS_SOUS_BOIS_COPY } from "./les-pavillons-sous-bois";
@@ -313,6 +316,7 @@ import { PLAISIR_COPY } from "./plaisir";
 import { POISSY_COPY } from "./poissy";
 import { POITIERS_COPY } from "./poitiers";
 import { PONTAULT_COMBAULT_COPY } from "./pontault-combault";
+import { PONTCHARRA_COPY } from "./pontcharra";
 import { PONTOISE_COPY } from "./pontoise";
 import { PUTEAUX_COPY } from "./puteaux";
 import { QUIMPER_COPY } from "./quimper";
@@ -341,13 +345,16 @@ import { SAINT_GENIS_LAVAL_COPY } from "./saint-genis-laval";
 import { SAINT_GERMAIN_EN_LAYE_COPY } from "./saint-germain-en-laye";
 import { SAINT_GRATIEN_COPY } from "./saint-gratien";
 import { SAINT_HERBLAIN_COPY } from "./saint-herblain";
+import { SAINT_ISMIER_COPY } from "./saint-ismier";
 import { SAINT_JEAN_DE_BRAYE_COPY } from "./saint-jean-de-braye";
 import { SAINT_LAURENT_DU_VAR_COPY } from "./saint-laurent-du-var";
 import { SAINT_LOUIS_COPY } from "./saint-louis";
 import { SAINT_MALO_COPY } from "./saint-malo";
 import { SAINT_MANDE_COPY } from "./saint-mande";
+import { SAINT_MARCELLIN_COPY } from "./saint-marcellin";
 import { SAINT_MARTIN_D_HERES_COPY } from "./saint-martin-d-heres";
 import { SAINT_MAUR_DES_FOSSES_COPY } from "./saint-maur-des-fosses";
+import { SAINT_MAURICE_L_EXIL_COPY } from "./saint-maurice-l-exil";
 import { SAINT_MEDARD_EN_JALLES_COPY } from "./saint-medard-en-jalles";
 import { SAINT_MICHEL_SUR_ORGE_COPY } from "./saint-michel-sur-orge";
 import { SAINT_NAZAIRE_COPY } from "./saint-nazaire";
@@ -398,6 +405,7 @@ import { TOURNEFEUILLE_COPY } from "./tournefeuille";
 import { TRAPPES_COPY } from "./trappes";
 import { TREMBLAY_EN_FRANCE_COPY } from "./tremblay-en-france";
 import { TROYES_COPY } from "./troyes";
+import { TULLINS_COPY } from "./tullins";
 import { VALENCE_COPY } from "./valence";
 import { VALENCIENNES_COPY } from "./valenciennes";
 import { VALLAURIS_COPY } from "./vallauris";
@@ -416,6 +424,7 @@ import { VIENNE_COPY } from "./vienne";
 import { VIERZON_COPY } from "./vierzon";
 import { VIF_COPY } from "./vif";
 import { VIGNEUX_SUR_SEINE_COPY } from "./vigneux-sur-seine";
+import { VILLARD_BONNOT_COPY } from "./villard-bonnot";
 import { VILLEFONTAINE_COPY } from "./villefontaine";
 import { VILLEFRANCHE_SUR_SAONE_COPY } from "./villefranche-sur-saone";
 import { VILLEJUIF_COPY } from "./villejuif";
@@ -434,6 +443,7 @@ import { VINCENNES_COPY } from "./vincennes";
 import { VIRY_CHATILLON_COPY } from "./viry-chatillon";
 import { VITROLLES_COPY } from "./vitrolles";
 import { VITRY_SUR_SEINE_COPY } from "./vitry-sur-seine";
+import { VIZILLE_COPY } from "./vizille";
 import { VOIRON_COPY } from "./voiron";
 import { VOREPPE_COPY } from "./voreppe";
 import { WASQUEHAL_COPY } from "./wasquehal";
@@ -602,6 +612,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   gardanne: GARDANNE_COPY,
   "garges-les-gonesse": GARGES_LES_GONESSE_COPY,
   gennevilliers: GENNEVILLIERS_COPY,
+  gieres: GIERES_COPY,
   "gif-sur-yvette": GIF_SUR_YVETTE_COPY,
   givors: GIVORS_COPY,
   gonesse: GONESSE_COPY,
@@ -662,6 +673,8 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   "le-plessis-trevise": LE_PLESSIS_TREVISE_COPY,
   "le-pont-de-claix": LE_PONT_DE_CLAIX_COPY,
   lens: LENS_COPY,
+  "les-abrets-en-dauphine": LES_ABRETS_EN_DAUPHINE_COPY,
+  "les-avenieres-veyrins-thuellin": LES_AVENIERES_VEYRINS_THUELLIN_COPY,
   "les-lilas": LES_LILAS_COPY,
   "les-mureaux": LES_MUREAUX_COPY,
   "les-pavillons-sous-bois": LES_PAVILLONS_SOUS_BOIS_COPY,
@@ -750,6 +763,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   poissy: POISSY_COPY,
   poitiers: POITIERS_COPY,
   "pontault-combault": PONTAULT_COMBAULT_COPY,
+  pontcharra: PONTCHARRA_COPY,
   pontoise: PONTOISE_COPY,
   puteaux: PUTEAUX_COPY,
   quimper: QUIMPER_COPY,
@@ -778,13 +792,16 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   "saint-germain-en-laye": SAINT_GERMAIN_EN_LAYE_COPY,
   "saint-gratien": SAINT_GRATIEN_COPY,
   "saint-herblain": SAINT_HERBLAIN_COPY,
+  "saint-ismier": SAINT_ISMIER_COPY,
   "saint-jean-de-braye": SAINT_JEAN_DE_BRAYE_COPY,
   "saint-laurent-du-var": SAINT_LAURENT_DU_VAR_COPY,
   "saint-louis": SAINT_LOUIS_COPY,
   "saint-malo": SAINT_MALO_COPY,
   "saint-mande": SAINT_MANDE_COPY,
+  "saint-marcellin": SAINT_MARCELLIN_COPY,
   "saint-martin-d-heres": SAINT_MARTIN_D_HERES_COPY,
   "saint-maur-des-fosses": SAINT_MAUR_DES_FOSSES_COPY,
+  "saint-maurice-l-exil": SAINT_MAURICE_L_EXIL_COPY,
   "saint-medard-en-jalles": SAINT_MEDARD_EN_JALLES_COPY,
   "saint-michel-sur-orge": SAINT_MICHEL_SUR_ORGE_COPY,
   "saint-nazaire": SAINT_NAZAIRE_COPY,
@@ -835,6 +852,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   trappes: TRAPPES_COPY,
   "tremblay-en-france": TREMBLAY_EN_FRANCE_COPY,
   troyes: TROYES_COPY,
+  tullins: TULLINS_COPY,
   valence: VALENCE_COPY,
   valenciennes: VALENCIENNES_COPY,
   vallauris: VALLAURIS_COPY,
@@ -853,6 +871,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   vierzon: VIERZON_COPY,
   vif: VIF_COPY,
   "vigneux-sur-seine": VIGNEUX_SUR_SEINE_COPY,
+  "villard-bonnot": VILLARD_BONNOT_COPY,
   villefontaine: VILLEFONTAINE_COPY,
   "villefranche-sur-saone": VILLEFRANCHE_SUR_SAONE_COPY,
   villejuif: VILLEJUIF_COPY,
@@ -871,6 +890,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   "viry-chatillon": VIRY_CHATILLON_COPY,
   vitrolles: VITROLLES_COPY,
   "vitry-sur-seine": VITRY_SUR_SEINE_COPY,
+  vizille: VIZILLE_COPY,
   voiron: VOIRON_COPY,
   voreppe: VOREPPE_COPY,
   wasquehal: WASQUEHAL_COPY,
