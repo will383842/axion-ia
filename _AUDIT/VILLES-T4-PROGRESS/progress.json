@@ -1,10 +1,10 @@
 {
   "totalT4": 1702,
-  "done": 1430,
-  "remaining": 272,
-  "lastBatchAt": "2026-05-27T14:50:06.016Z",
-  "lastBatchSize": 192,
-  "lastBatchNumber": 28,
+  "done": 1630,
+  "remaining": 72,
+  "lastBatchAt": "2026-05-27T16:58:08.263Z",
+  "lastBatchSize": 200,
+  "lastBatchNumber": 29,
   "villes": {
     "gentilly": {
       "slug": "gentilly",
@@ -4462,9 +4462,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "06",
       "population": 19917,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "mougins": {
       "slug": "mougins",
@@ -4472,9 +4472,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "06",
       "population": 19782,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "la-crau": {
       "slug": "la-crau",
@@ -4522,9 +4522,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "13",
       "population": 18455,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "le-pontet": {
       "slug": "le-pontet",
@@ -4542,9 +4542,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "04",
       "population": 17979,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "saint-maximin-la-sainte-baume": {
       "slug": "saint-maximin-la-sainte-baume",
@@ -4572,9 +4572,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "06",
       "population": 17548,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "chateaurenard": {
       "slug": "chateaurenard",
@@ -4582,9 +4582,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "13",
       "population": 16545,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "fos-sur-mer": {
       "slug": "fos-sur-mer",
@@ -4592,9 +4592,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "13",
       "population": 15862,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "port-de-bouc": {
       "slug": "port-de-bouc",
@@ -4602,9 +4602,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "13",
       "population": 15802,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "roquebrune-sur-argens": {
       "slug": "roquebrune-sur-argens",
@@ -4622,9 +4622,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "13",
       "population": 15396,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "bouc-bel-air": {
       "slug": "bouc-bel-air",
@@ -4632,9 +4632,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "13",
       "population": 15381,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "ollioules": {
       "slug": "ollioules",
@@ -4652,9 +4652,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "13",
       "population": 14145,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "sainte-maxime": {
       "slug": "sainte-maxime",
@@ -4682,9 +4682,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "13",
       "population": 13832,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "carros": {
       "slug": "carros",
@@ -4692,9 +4692,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "06",
       "population": 13803,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "monteux": {
       "slug": "monteux",
@@ -4722,9 +4722,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "13",
       "population": 13037,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "vidauban": {
       "slug": "vidauban",
@@ -4742,9 +4742,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "13",
       "population": 12576,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "sollies-pont": {
       "slug": "sollies-pont",
@@ -4772,9 +4772,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "06",
       "population": 12037,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "septemes-les-vallons": {
       "slug": "septemes-les-vallons",
@@ -4782,9 +4782,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "13",
       "population": 11995,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "vedene": {
       "slug": "vedene",
@@ -4802,9 +4802,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "06",
       "population": 11939,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "beausoleil": {
       "slug": "beausoleil",
@@ -4812,9 +4812,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "06",
       "population": 11936,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "saint-cyr-sur-mer": {
       "slug": "saint-cyr-sur-mer",
@@ -4832,9 +4832,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "13",
       "population": 11632,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "briancon": {
       "slug": "briancon",
@@ -4842,9 +4842,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "05",
       "population": 11411,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "le-luc": {
       "slug": "le-luc",
@@ -4862,9 +4862,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "13",
       "population": 11085,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "mouans-sartoux": {
       "slug": "mouans-sartoux",
@@ -4872,9 +4872,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "06",
       "population": 11015,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "trets": {
       "slug": "trets",
@@ -4882,9 +4882,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "13",
       "population": 10946,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "le-pradet": {
       "slug": "le-pradet",
@@ -4902,9 +4902,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "06",
       "population": 10602,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "la-londe-les-maures": {
       "slug": "la-londe-les-maures",
@@ -4922,9 +4922,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "06",
       "population": 10511,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "pernes-les-fontaines": {
       "slug": "pernes-les-fontaines",
@@ -4942,9 +4942,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "13",
       "population": 10343,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "fuveau": {
       "slug": "fuveau",
@@ -4952,9 +4952,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "13",
       "population": 10337,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "cabries": {
       "slug": "cabries",
@@ -4962,9 +4962,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "13",
       "population": 10240,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "le-beausset": {
       "slug": "le-beausset",
@@ -5002,9 +5002,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "13",
       "population": 10024,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "la-farlede": {
       "slug": "la-farlede",
@@ -5022,9 +5022,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "13",
       "population": 9915,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "lorgues": {
       "slug": "lorgues",
@@ -5042,9 +5042,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "13",
       "population": 9599,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "carqueiranne": {
       "slug": "carqueiranne",
@@ -5072,9 +5072,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "13",
       "population": 9039,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "morieres-les-avignon": {
       "slug": "morieres-les-avignon",
@@ -5092,9 +5092,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "13",
       "population": 8941,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "roquevaire": {
       "slug": "roquevaire",
@@ -5102,9 +5102,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "13",
       "population": 8915,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "entraigues-sur-la-sorgue": {
       "slug": "entraigues-sur-la-sorgue",
@@ -5132,9 +5132,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "13",
       "population": 8676,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "puget-sur-argens": {
       "slug": "puget-sur-argens",
@@ -5152,9 +5152,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "13",
       "population": 8573,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "bormes-les-mimosas": {
       "slug": "bormes-les-mimosas",
@@ -5172,9 +5172,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "06",
       "population": 8514,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "eguilles": {
       "slug": "eguilles",
@@ -5182,9 +5182,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "13",
       "population": 8479,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "venelles": {
       "slug": "venelles",
@@ -5192,9 +5192,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "13",
       "population": 8418,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "bandol": {
       "slug": "bandol",
@@ -5212,9 +5212,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "06",
       "population": 8240,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "la-colle-sur-loup": {
       "slug": "la-colle-sur-loup",
@@ -5222,9 +5222,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "06",
       "population": 8202,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "cavalaire-sur-mer": {
       "slug": "cavalaire-sur-mer",
@@ -5252,9 +5252,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "06",
       "population": 7897,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "sisteron": {
       "slug": "sisteron",
@@ -5262,9 +5262,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "04",
       "population": 7850,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "sausset-les-pins": {
       "slug": "sausset-les-pins",
@@ -5272,9 +5272,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "13",
       "population": 7574,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "roquefort-les-pins": {
       "slug": "roquefort-les-pins",
@@ -5282,9 +5282,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "06",
       "population": 7292,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "la-gaude": {
       "slug": "la-gaude",
@@ -5292,9 +5292,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "06",
       "population": 7265,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "montauroux": {
       "slug": "montauroux",
@@ -5312,9 +5312,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "13",
       "population": 7119,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "senas": {
       "slug": "senas",
@@ -5322,9 +5322,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "13",
       "population": 6925,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "trans-en-provence": {
       "slug": "trans-en-provence",
@@ -5342,9 +5342,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "13",
       "population": 6873,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "meyreuil": {
       "slug": "meyreuil",
@@ -5352,9 +5352,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "13",
       "population": 6747,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "saint-victoret": {
       "slug": "saint-victoret",
@@ -5362,9 +5362,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "13",
       "population": 6730,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "cassis": {
       "slug": "cassis",
@@ -5372,9 +5372,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "13",
       "population": 6661,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "le-lavandou": {
       "slug": "le-lavandou",
@@ -5392,9 +5392,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "13",
       "population": 6605,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "gemenos": {
       "slug": "gemenos",
@@ -5402,9 +5402,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "13",
       "population": 6579,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "la-bouilladisse": {
       "slug": "la-bouilladisse",
@@ -5412,9 +5412,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "13",
       "population": 6547,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "courthezon": {
       "slug": "courthezon",
@@ -5432,9 +5432,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "05",
       "population": 6412,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "mazan": {
       "slug": "mazan",
@@ -5462,9 +5462,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "13",
       "population": 6236,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "saint-mitre-les-remparts": {
       "slug": "saint-mitre-les-remparts",
@@ -5472,9 +5472,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "13",
       "population": 6175,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "mallemort": {
       "slug": "mallemort",
@@ -5482,9 +5482,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "13",
       "population": 6166,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "fayence": {
       "slug": "fayence",
@@ -5502,9 +5502,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "04",
       "population": 6155,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "saint-cannat": {
       "slug": "saint-cannat",
@@ -5512,9 +5512,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "13",
       "population": 6097,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "pierrefeu-du-var": {
       "slug": "pierrefeu-du-var",
@@ -5532,9 +5532,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "13",
       "population": 6080,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "vaison-la-romaine": {
       "slug": "vaison-la-romaine",
@@ -5582,9 +5582,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "13",
       "population": 5935,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "saint-andre-de-la-roche": {
       "slug": "saint-andre-de-la-roche",
@@ -5592,9 +5592,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "06",
       "population": 5896,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "saint-zacharie": {
       "slug": "saint-zacharie",
@@ -5612,9 +5612,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "13",
       "population": 5839,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "gareoult": {
       "slug": "gareoult",
@@ -5632,9 +5632,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "13",
       "population": 5798,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "sarrians": {
       "slug": "sarrians",
@@ -5722,9 +5722,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "06",
       "population": 5669,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "caumont-sur-durance": {
       "slug": "caumont-sur-durance",
@@ -5772,9 +5772,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "06",
       "population": 5484,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "la-roque-d-antheron": {
       "slug": "la-roque-d-antheron",
@@ -5812,9 +5812,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "06",
       "population": 5377,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "le-rove": {
       "slug": "le-rove",
@@ -5832,9 +5832,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "04",
       "population": 5222,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "nans-les-pins": {
       "slug": "nans-les-pins",
@@ -5892,9 +5892,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "04",
       "population": 5107,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "villefranche-sur-mer": {
       "slug": "villefranche-sur-mer",
@@ -5902,9 +5902,9 @@
       "region": "provence-alpes-cote-d-azur",
       "departement": "06",
       "population": 5008,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "bagnols-sur-ceze": {
       "slug": "bagnols-sur-ceze",
@@ -7292,9 +7292,9 @@
       "region": "occitanie",
       "departement": "82",
       "population": 5917,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "fontenilles": {
       "slug": "fontenilles",
@@ -7562,9 +7562,9 @@
       "region": "occitanie",
       "departement": "82",
       "population": 5289,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "cazouls-les-beziers": {
       "slug": "cazouls-les-beziers",
@@ -12252,9 +12252,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 18745,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "mauges-sur-loire": {
       "slug": "mauges-sur-loire",
@@ -12262,9 +12262,9 @@
       "region": "pays-de-la-loire",
       "departement": "49",
       "population": 18695,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "segre-en-anjou-bleu": {
       "slug": "segre-en-anjou-bleu",
@@ -12272,9 +12272,9 @@
       "region": "pays-de-la-loire",
       "departement": "49",
       "population": 17667,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "oree-d-anjou": {
       "slug": "oree-d-anjou",
@@ -12282,9 +12282,9 @@
       "region": "pays-de-la-loire",
       "departement": "49",
       "population": 17162,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "la-baule-escoublac": {
       "slug": "la-baule-escoublac",
@@ -12292,9 +12292,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 16912,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "guerande": {
       "slug": "guerande",
@@ -12302,9 +12302,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 16804,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "loire-authion": {
       "slug": "loire-authion",
@@ -12312,9 +12312,9 @@
       "region": "pays-de-la-loire",
       "departement": "49",
       "population": 16765,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "chateau-gontier-sur-mayenne": {
       "slug": "chateau-gontier-sur-mayenne",
@@ -12322,9 +12322,9 @@
       "region": "pays-de-la-loire",
       "departement": "53",
       "population": 16584,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "les-herbiers": {
       "slug": "les-herbiers",
@@ -12332,9 +12332,9 @@
       "region": "pays-de-la-loire",
       "departement": "85",
       "population": 16521,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "sainte-luce-sur-loire": {
       "slug": "sainte-luce-sur-loire",
@@ -12342,9 +12342,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 16400,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "trelaze": {
       "slug": "trelaze",
@@ -12352,9 +12352,9 @@
       "region": "pays-de-la-loire",
       "departement": "49",
       "population": 16333,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "montrevault-sur-evre": {
       "slug": "montrevault-sur-evre",
@@ -12362,9 +12362,9 @@
       "region": "pays-de-la-loire",
       "departement": "49",
       "population": 15726,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "avrille": {
       "slug": "avrille",
@@ -12372,9 +12372,9 @@
       "region": "pays-de-la-loire",
       "departement": "49",
       "population": 15251,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "la-fleche": {
       "slug": "la-fleche",
@@ -12382,9 +12382,9 @@
       "region": "pays-de-la-loire",
       "departement": "72",
       "population": 14947,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "saint-brevin-les-pins": {
       "slug": "saint-brevin-les-pins",
@@ -12392,9 +12392,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 14541,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "fontenay-le-comte": {
       "slug": "fontenay-le-comte",
@@ -12402,9 +12402,9 @@
       "region": "pays-de-la-loire",
       "departement": "85",
       "population": 14059,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "les-ponts-de-ce": {
       "slug": "les-ponts-de-ce",
@@ -12412,9 +12412,9 @@
       "region": "pays-de-la-loire",
       "departement": "49",
       "population": 13149,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "saint-hilaire-de-riez": {
       "slug": "saint-hilaire-de-riez",
@@ -12422,9 +12422,9 @@
       "region": "pays-de-la-loire",
       "departement": "85",
       "population": 13074,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "mayenne": {
       "slug": "mayenne",
@@ -12432,9 +12432,9 @@
       "region": "pays-de-la-loire",
       "departement": "53",
       "population": 12883,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "pornichet": {
       "slug": "pornichet",
@@ -12442,9 +12442,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 12800,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "sable-sur-sarthe": {
       "slug": "sable-sur-sarthe",
@@ -12452,9 +12452,9 @@
       "region": "pays-de-la-loire",
       "departement": "72",
       "population": 12326,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "chateaubriant": {
       "slug": "chateaubriant",
@@ -12462,9 +12462,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 12260,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "bauge-en-anjou": {
       "slug": "bauge-en-anjou",
@@ -12472,9 +12472,9 @@
       "region": "pays-de-la-loire",
       "departement": "49",
       "population": 11712,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "ancenis-saint-gereon": {
       "slug": "ancenis-saint-gereon",
@@ -12482,9 +12482,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 11600,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "pontchateau": {
       "slug": "pontchateau",
@@ -12492,9 +12492,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 11474,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "doue-en-anjou": {
       "slug": "doue-en-anjou",
@@ -12502,9 +12502,9 @@
       "region": "pays-de-la-loire",
       "departement": "49",
       "population": 11029,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "thouare-sur-loire": {
       "slug": "thouare-sur-loire",
@@ -12512,9 +12512,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 11004,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "brissac-loire-aubance": {
       "slug": "brissac-loire-aubance",
@@ -12522,9 +12522,9 @@
       "region": "pays-de-la-loire",
       "departement": "49",
       "population": 10878,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "allonnes": {
       "slug": "allonnes",
@@ -12532,9 +12532,9 @@
       "region": "pays-de-la-loire",
       "departement": "72",
       "population": 10739,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "treillieres": {
       "slug": "treillieres",
@@ -12542,9 +12542,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 10600,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "blain": {
       "slug": "blain",
@@ -12552,9 +12552,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 10376,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "aizenay": {
       "slug": "aizenay",
@@ -12562,9 +12562,9 @@
       "region": "pays-de-la-loire",
       "departement": "85",
       "population": 10365,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "saint-barthelemy-d-anjou": {
       "slug": "saint-barthelemy-d-anjou",
@@ -12572,9 +12572,9 @@
       "region": "pays-de-la-loire",
       "departement": "49",
       "population": 9720,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "basse-goulaine": {
       "slug": "basse-goulaine",
@@ -12582,9 +12582,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 9679,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "nort-sur-erdre": {
       "slug": "nort-sur-erdre",
@@ -12592,9 +12592,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 9570,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "savenay": {
       "slug": "savenay",
@@ -12602,9 +12602,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 9543,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "vallet": {
       "slug": "vallet",
@@ -12612,9 +12612,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 9495,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "lucon": {
       "slug": "lucon",
@@ -12622,9 +12622,9 @@
       "region": "pays-de-la-loire",
       "departement": "85",
       "population": 9417,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "saint-philbert-de-grand-lieu": {
       "slug": "saint-philbert-de-grand-lieu",
@@ -12632,9 +12632,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 9400,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "les-sorinieres": {
       "slug": "les-sorinieres",
@@ -12642,9 +12642,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 9275,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "saint-jean-de-monts": {
       "slug": "saint-jean-de-monts",
@@ -12652,9 +12652,9 @@
       "region": "pays-de-la-loire",
       "departement": "85",
       "population": 8868,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "ombree-d-anjou": {
       "slug": "ombree-d-anjou",
@@ -12662,9 +12662,9 @@
       "region": "pays-de-la-loire",
       "departement": "49",
       "population": 8813,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "les-hauts-d-anjou": {
       "slug": "les-hauts-d-anjou",
@@ -12672,9 +12672,9 @@
       "region": "pays-de-la-loire",
       "departement": "49",
       "population": 8751,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "la-ferte-bernard": {
       "slug": "la-ferte-bernard",
@@ -12682,9 +12682,9 @@
       "region": "pays-de-la-loire",
       "departement": "72",
       "population": 8740,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "le-poire-sur-vie": {
       "slug": "le-poire-sur-vie",
@@ -12692,9 +12692,9 @@
       "region": "pays-de-la-loire",
       "departement": "85",
       "population": 8649,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "chantonnay": {
       "slug": "chantonnay",
@@ -12702,9 +12702,9 @@
       "region": "pays-de-la-loire",
       "departement": "85",
       "population": 8557,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "sautron": {
       "slug": "sautron",
@@ -12712,9 +12712,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 8555,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "le-loroux-bottereau": {
       "slug": "le-loroux-bottereau",
@@ -12722,9 +12722,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 8552,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "talmont-saint-hilaire": {
       "slug": "talmont-saint-hilaire",
@@ -12732,9 +12732,9 @@
       "region": "pays-de-la-loire",
       "departement": "85",
       "population": 8492,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "gennes-val-de-loire": {
       "slug": "gennes-val-de-loire",
@@ -12742,9 +12742,9 @@
       "region": "pays-de-la-loire",
       "departement": "49",
       "population": 8429,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "trignac": {
       "slug": "trignac",
@@ -12752,9 +12752,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 8397,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "bouaye": {
       "slug": "bouaye",
@@ -12762,9 +12762,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 8343,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "saint-gilles-croix-de-vie": {
       "slug": "saint-gilles-croix-de-vie",
@@ -12772,9 +12772,9 @@
       "region": "pays-de-la-loire",
       "departement": "85",
       "population": 8333,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "evron": {
       "slug": "evron",
@@ -12782,9 +12782,9 @@
       "region": "pays-de-la-loire",
       "departement": "53",
       "population": 8252,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "donges": {
       "slug": "donges",
@@ -12792,9 +12792,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 8219,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "coulaines": {
       "slug": "coulaines",
@@ -12802,9 +12802,9 @@
       "region": "pays-de-la-loire",
       "departement": "72",
       "population": 8121,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "verrieres-en-anjou": {
       "slug": "verrieres-en-anjou",
@@ -12812,9 +12812,9 @@
       "region": "pays-de-la-loire",
       "departement": "49",
       "population": 8116,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "saint-julien-de-concelles": {
       "slug": "saint-julien-de-concelles",
@@ -12822,9 +12822,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 7883,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "montreuil-juigne": {
       "slug": "montreuil-juigne",
@@ -12832,9 +12832,9 @@
       "region": "pays-de-la-loire",
       "departement": "49",
       "population": 7808,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "saint-etienne-de-montluc": {
       "slug": "saint-etienne-de-montluc",
@@ -12842,9 +12842,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 7780,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "lys-haut-layon": {
       "slug": "lys-haut-layon",
@@ -12852,9 +12852,9 @@
       "region": "pays-de-la-loire",
       "departement": "49",
       "population": 7748,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "machecoul-saint-meme": {
       "slug": "machecoul-saint-meme",
@@ -12862,9 +12862,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 7689,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "loireauxence": {
       "slug": "loireauxence",
@@ -12872,9 +12872,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 7587,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "suce-sur-erdre": {
       "slug": "suce-sur-erdre",
@@ -12882,9 +12882,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 7539,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "saint-berthevin": {
       "slug": "saint-berthevin",
@@ -12892,9 +12892,9 @@
       "region": "pays-de-la-loire",
       "departement": "53",
       "population": 7479,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "clisson": {
       "slug": "clisson",
@@ -12902,9 +12902,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 7452,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "chaumes-en-retz": {
       "slug": "chaumes-en-retz",
@@ -12912,9 +12912,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 7440,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "montoir-de-bretagne": {
       "slug": "montoir-de-bretagne",
@@ -12922,9 +12922,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 7282,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "divatte-sur-loire": {
       "slug": "divatte-sur-loire",
@@ -12932,9 +12932,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 7252,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "herbignac": {
       "slug": "herbignac",
@@ -12942,9 +12942,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 7224,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "sainte-pazanne": {
       "slug": "sainte-pazanne",
@@ -12952,9 +12952,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 7201,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "aubigny-les-clouzeaux": {
       "slug": "aubigny-les-clouzeaux",
@@ -12962,9 +12962,9 @@
       "region": "pays-de-la-loire",
       "departement": "85",
       "population": 7191,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "pont-saint-martin": {
       "slug": "pont-saint-martin",
@@ -12972,9 +12972,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 7093,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "grandchamp-des-fontaines": {
       "slug": "grandchamp-des-fontaines",
@@ -12982,9 +12982,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 7062,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "saint-andre-des-eaux": {
       "slug": "saint-andre-des-eaux",
@@ -12992,9 +12992,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 7013,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "change": {
       "slug": "change",
@@ -13002,9 +13002,9 @@
       "region": "pays-de-la-loire",
       "departement": "72",
       "population": 6911,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "beaufort-en-anjou": {
       "slug": "beaufort-en-anjou",
@@ -13012,9 +13012,9 @@
       "region": "pays-de-la-loire",
       "departement": "49",
       "population": 6901,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "essarts-en-bocage": {
       "slug": "essarts-en-bocage",
@@ -13022,9 +13022,9 @@
       "region": "pays-de-la-loire",
       "departement": "85",
       "population": 6851,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "vallons-de-l-erdre": {
       "slug": "vallons-de-l-erdre",
@@ -13032,9 +13032,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 6692,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "vigneux-de-bretagne": {
       "slug": "vigneux-de-bretagne",
@@ -13042,9 +13042,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 6692,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "chalonnes-sur-loire": {
       "slug": "chalonnes-sur-loire",
@@ -13052,9 +13052,9 @@
       "region": "pays-de-la-loire",
       "departement": "49",
       "population": 6659,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "heric": {
       "slug": "heric",
@@ -13062,9 +13062,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 6585,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "bouchemaine": {
       "slug": "bouchemaine",
@@ -13072,9 +13072,9 @@
       "region": "pays-de-la-loire",
       "departement": "49",
       "population": 6580,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "longuenee-en-anjou": {
       "slug": "longuenee-en-anjou",
@@ -13082,9 +13082,9 @@
       "region": "pays-de-la-loire",
       "departement": "49",
       "population": 6571,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "longue-jumelles": {
       "slug": "longue-jumelles",
@@ -13092,9 +13092,9 @@
       "region": "pays-de-la-loire",
       "departement": "49",
       "population": 6564,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "la-chevroliere": {
       "slug": "la-chevroliere",
@@ -13102,9 +13102,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 6539,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "la-montagne": {
       "slug": "la-montagne",
@@ -13112,9 +13112,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 6505,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "change-53": {
       "slug": "change-53",
@@ -13122,9 +13122,9 @@
       "region": "pays-de-la-loire",
       "departement": "53",
       "population": 6502,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "murs-erigne": {
       "slug": "murs-erigne",
@@ -13132,9 +13132,9 @@
       "region": "pays-de-la-loire",
       "departement": "49",
       "population": 6408,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "sevremont": {
       "slug": "sevremont",
@@ -13142,9 +13142,9 @@
       "region": "pays-de-la-loire",
       "departement": "85",
       "population": 6385,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "bonchamp-les-laval": {
       "slug": "bonchamp-les-laval",
@@ -13152,9 +13152,9 @@
       "region": "pays-de-la-loire",
       "departement": "53",
       "population": 6302,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "bellevigny": {
       "slug": "bellevigny",
@@ -13162,9 +13162,9 @@
       "region": "pays-de-la-loire",
       "departement": "85",
       "population": 6240,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "haute-goulaine": {
       "slug": "haute-goulaine",
@@ -13172,9 +13172,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 6095,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "saint-jean-de-boiseau": {
       "slug": "saint-jean-de-boiseau",
@@ -13182,9 +13182,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 6067,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "mortagne-sur-sevre": {
       "slug": "mortagne-sur-sevre",
@@ -13192,9 +13192,9 @@
       "region": "pays-de-la-loire",
       "departement": "85",
       "population": 6057,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "bellevigne-en-layon": {
       "slug": "bellevigne-en-layon",
@@ -13202,9 +13202,9 @@
       "region": "pays-de-la-loire",
       "departement": "49",
       "population": 5922,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "erdre-en-anjou": {
       "slug": "erdre-en-anjou",
@@ -13212,9 +13212,9 @@
       "region": "pays-de-la-loire",
       "departement": "49",
       "population": 5771,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "maze-milon": {
       "slug": "maze-milon",
@@ -13222,9 +13222,9 @@
       "region": "pays-de-la-loire",
       "departement": "49",
       "population": 5761,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "beaucouze": {
       "slug": "beaucouze",
@@ -13232,9 +13232,9 @@
       "region": "pays-de-la-loire",
       "departement": "49",
       "population": 5732,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "saint-michel-chef-chef": {
       "slug": "saint-michel-chef-chef",
@@ -13242,9 +13242,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 5714,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "cugand-la-bernardiere": {
       "slug": "cugand-la-bernardiere",
@@ -13252,9 +13252,9 @@
       "region": "pays-de-la-loire",
       "departement": "85",
       "population": 5711,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "missillac": {
       "slug": "missillac",
@@ -13262,9 +13262,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 5709,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "ligne": {
       "slug": "ligne",
@@ -13272,9 +13272,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 5693,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "pouzauges": {
       "slug": "pouzauges",
@@ -13282,9 +13282,9 @@
       "region": "pays-de-la-loire",
       "departement": "85",
       "population": 5668,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "chanverrie": {
       "slug": "chanverrie",
@@ -13292,9 +13292,9 @@
       "region": "pays-de-la-loire",
       "departement": "85",
       "population": 5653,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "rives-du-loir-en-anjou": {
       "slug": "rives-du-loir-en-anjou",
@@ -13302,9 +13302,9 @@
       "region": "pays-de-la-loire",
       "departement": "49",
       "population": 5644,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "montval-sur-loir": {
       "slug": "montval-sur-loir",
@@ -13312,9 +13312,9 @@
       "region": "pays-de-la-loire",
       "departement": "72",
       "population": 5641,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "saint-mars-du-desert": {
       "slug": "saint-mars-du-desert",
@@ -13322,9 +13322,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 5523,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "les-achards": {
       "slug": "les-achards",
@@ -13332,9 +13332,9 @@
       "region": "pays-de-la-loire",
       "departement": "85",
       "population": 5518,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "la-garnache": {
       "slug": "la-garnache",
@@ -13342,9 +13342,9 @@
       "region": "pays-de-la-loire",
       "departement": "85",
       "population": 5515,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "ernee": {
       "slug": "ernee",
@@ -13352,9 +13352,9 @@
       "region": "pays-de-la-loire",
       "departement": "53",
       "population": 5499,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "la-ferriere": {
       "slug": "la-ferriere",
@@ -13362,9 +13362,9 @@
       "region": "pays-de-la-loire",
       "departement": "85",
       "population": 5454,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "noyant-villages": {
       "slug": "noyant-villages",
@@ -13372,9 +13372,9 @@
       "region": "pays-de-la-loire",
       "departement": "49",
       "population": 5448,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "arnage": {
       "slug": "arnage",
@@ -13382,9 +13382,9 @@
       "region": "pays-de-la-loire",
       "departement": "72",
       "population": 5445,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "le-lion-d-angers": {
       "slug": "le-lion-d-angers",
@@ -13392,9 +13392,9 @@
       "region": "pays-de-la-loire",
       "departement": "49",
       "population": 5390,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "parigne-l-eveque": {
       "slug": "parigne-l-eveque",
@@ -13402,9 +13402,9 @@
       "region": "pays-de-la-loire",
       "departement": "72",
       "population": 5358,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "bretignolles-sur-mer": {
       "slug": "bretignolles-sur-mer",
@@ -13412,9 +13412,9 @@
       "region": "pays-de-la-loire",
       "departement": "85",
       "population": 5344,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "plesse": {
       "slug": "plesse",
@@ -13422,9 +13422,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 5335,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "le-pellerin": {
       "slug": "le-pellerin",
@@ -13432,9 +13432,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 5319,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "saint-lyphard": {
       "slug": "saint-lyphard",
@@ -13442,9 +13442,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 5304,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "mouilleron-le-captif": {
       "slug": "mouilleron-le-captif",
@@ -13452,9 +13452,9 @@
       "region": "pays-de-la-loire",
       "departement": "85",
       "population": 5273,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "mulsanne": {
       "slug": "mulsanne",
@@ -13462,9 +13462,9 @@
       "region": "pays-de-la-loire",
       "departement": "72",
       "population": 5244,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "guemene-penfao": {
       "slug": "guemene-penfao",
@@ -13472,9 +13472,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 5243,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "gorges": {
       "slug": "gorges",
@@ -13482,9 +13482,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 5203,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "villeneuve-en-retz": {
       "slug": "villeneuve-en-retz",
@@ -13492,9 +13492,9 @@
       "region": "pays-de-la-loire",
       "departement": "44",
       "population": 5120,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T16:58:08.263Z",
+      "batch": 29
     },
     "bruz": {
       "slug": "bruz",
