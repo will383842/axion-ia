@@ -1,10 +1,10 @@
 {
   "totalT4": 1702,
-  "done": 110,
-  "remaining": 1592,
-  "lastBatchAt": "2026-05-27T08:53:08.297Z",
+  "done": 120,
+  "remaining": 1582,
+  "lastBatchAt": "2026-05-27T08:59:50.311Z",
   "lastBatchSize": 10,
-  "lastBatchNumber": 11,
+  "lastBatchNumber": 12,
   "villes": {
     "gentilly": {
       "slug": "gentilly",
@@ -3542,9 +3542,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "69",
       "population": 6775,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:59:50.311Z",
+      "batch": 12
     },
     "saint-alban-leysse": {
       "slug": "saint-alban-leysse",
@@ -3582,9 +3582,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "69",
       "population": 6623,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:59:50.311Z",
+      "batch": 12
     },
     "sury-le-comtal": {
       "slug": "sury-le-comtal",
@@ -3662,9 +3662,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "69",
       "population": 6537,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:59:50.311Z",
+      "batch": 12
     },
     "la-mulatiere": {
       "slug": "la-mulatiere",
@@ -3672,9 +3672,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "69",
       "population": 6534,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:59:50.311Z",
+      "batch": 12
     },
     "lezoux": {
       "slug": "lezoux",
@@ -3732,9 +3732,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "69",
       "population": 6472,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:59:50.311Z",
+      "batch": 12
     },
     "saint-priest-en-jarez": {
       "slug": "saint-priest-en-jarez",
@@ -3842,9 +3842,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "69",
       "population": 6327,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:59:50.311Z",
+      "batch": 12
     },
     "champagne-au-mont-d-or": {
       "slug": "champagne-au-mont-d-or",
@@ -3852,9 +3852,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "69",
       "population": 6311,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:59:50.311Z",
+      "batch": 12
     },
     "thyez": {
       "slug": "thyez",
@@ -3872,9 +3872,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "69",
       "population": 6304,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:59:50.311Z",
+      "batch": 12
     },
     "pont-de-cheruy": {
       "slug": "pont-de-cheruy",
@@ -3902,9 +3902,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "69",
       "population": 6282,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:59:50.311Z",
+      "batch": 12
     },
     "jassans-riottier": {
       "slug": "jassans-riottier",
@@ -3942,9 +3942,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "69",
       "population": 6186,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:59:50.311Z",
+      "batch": 12
     },
     "saint-genest-lerpt": {
       "slug": "saint-genest-lerpt",
