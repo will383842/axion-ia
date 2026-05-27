@@ -360,7 +360,7 @@ export default async function VilleHubPage({ params }: Props) {
   const verticalesItemList = buildItemListJsonLd({
     locale: loc,
     path,
-    name: isFr ? `Nos 5 modules à ${ville.nameFr}` : `Our 5 modules in ${ville.nameFr}`,
+    name: isFr ? `Nos 5 services à ${ville.nameFr}` : `Our 5 services in ${ville.nameFr}`,
     items: verticales.map((v, idx) => ({
       position: idx + 1,
       name: isFr ? v.labelFr : v.labelEn,
@@ -651,13 +651,13 @@ export default async function VilleHubPage({ params }: Props) {
           <div className="mx-auto mb-12 max-w-3xl text-center">
             <p className="text-terracotta mb-5 text-sm font-bold tracking-[0.2em] uppercase">
               <span className="bg-terracotta mr-3 inline-block h-2 w-2 rounded-full align-middle" />
-              {isFr ? "Nos 5 modules" : "Our 5 modules"}
+              {isFr ? "Nos 5 services" : "Our 5 services"}
             </p>
             <h2
               id="ville-verticales-heading"
               className="text-fg text-[clamp(2rem,4vw,3.5rem)] leading-[1.04] font-semibold tracking-tight"
             >
-              {isFr ? "Nos 5 modules à" : "Our 5 modules in"}{" "}
+              {isFr ? "Nos 5 services à" : "Our 5 services in"}{" "}
               <span
                 className="italic-editorial text-terracotta"
                 style={{ fontFamily: "var(--font-serif)" }}
