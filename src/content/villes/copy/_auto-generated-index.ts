@@ -39,6 +39,7 @@ import { BASTIA_COPY } from "./bastia";
 import { BAYONNE_COPY } from "./bayonne";
 import { BEAUNE_COPY } from "./beaune";
 import { BEAUPREAU_EN_MAUGES_COPY } from "./beaupreau-en-mauges";
+import { BEAUREPAIRE_COPY } from "./beaurepaire";
 import { BEAUVAIS_COPY } from "./beauvais";
 import { BEGLES_COPY } from "./begles";
 import { BELFORT_COPY } from "./belfort";
@@ -54,8 +55,10 @@ import { BOIS_COLOMBES_COPY } from "./bois-colombes";
 import { BONDY_COPY } from "./bondy";
 import { BOUGUENAIS_COPY } from "./bouguenais";
 import { BOULOGNE_SUR_MER_COPY } from "./boulogne-sur-mer";
+import { BOURG_DE_PEAGE_COPY } from "./bourg-de-peage";
 import { BOURG_EN_BRESSE_COPY } from "./bourg-en-bresse";
 import { BOURG_LA_REINE_COPY } from "./bourg-la-reine";
+import { BOURG_LES_VALENCE_COPY } from "./bourg-les-valence";
 import { BOURGES_COPY } from "./bourges";
 import { BOURGOIN_JALLIEU_COPY } from "./bourgoin-jallieu";
 import { BRETIGNY_SUR_ORGE_COPY } from "./bretigny-sur-orge";
@@ -98,6 +101,7 @@ import { CHATENAY_MALABRY_COPY } from "./chatenay-malabry";
 import { CHATILLON_COPY } from "./chatillon";
 import { CHATOU_COPY } from "./chatou";
 import { CHAUMONT_COPY } from "./chaumont";
+import { CHAVANOZ_COPY } from "./chavanoz";
 import { CHAVILLE_COPY } from "./chaville";
 import { CHELLES_COPY } from "./chelles";
 import { CHEMILLE_EN_ANJOU_COPY } from "./chemille-en-anjou";
@@ -118,6 +122,7 @@ import { CONCARNEAU_COPY } from "./concarneau";
 import { CONFLANS_SAINTE_HONORINE_COPY } from "./conflans-sainte-honorine";
 import { CORBEIL_ESSONNES_COPY } from "./corbeil-essonnes";
 import { CORMEILLES_EN_PARISIS_COPY } from "./cormeilles-en-parisis";
+import { COUBLEVIE_COPY } from "./coublevie";
 import { COUDEKERQUE_BRANCHE_COPY } from "./coudekerque-branche";
 import { COUERON_COPY } from "./coueron";
 import { COURBEVOIE_COPY } from "./courbevoie";
@@ -243,6 +248,7 @@ import { LIBOURNE_COPY } from "./libourne";
 import { LIEVIN_COPY } from "./lievin";
 import { LIMEIL_BREVANNES_COPY } from "./limeil-brevannes";
 import { LINGOLSHEIM_COPY } from "./lingolsheim";
+import { LIVRON_SUR_DROME_COPY } from "./livron-sur-drome";
 import { LIVRY_GARGAN_COPY } from "./livry-gargan";
 import { LONGJUMEAU_COPY } from "./longjumeau";
 import { LOOS_COPY } from "./loos";
@@ -316,6 +322,7 @@ import { PANTIN_COPY } from "./pantin";
 import { PAU_COPY } from "./pau";
 import { PERIGUEUX_COPY } from "./perigueux";
 import { PESSAC_COPY } from "./pessac";
+import { PIERRELATTE_COPY } from "./pierrelatte";
 import { PLAISANCE_DU_TOUCH_COPY } from "./plaisance-du-touch";
 import { PLAISIR_COPY } from "./plaisir";
 import { POISSY_COPY } from "./poissy";
@@ -325,6 +332,7 @@ import { PONT_EVEQUE_COPY } from "./pont-eveque";
 import { PONTAULT_COMBAULT_COPY } from "./pontault-combault";
 import { PONTCHARRA_COPY } from "./pontcharra";
 import { PONTOISE_COPY } from "./pontoise";
+import { PORTES_LES_VALENCE_COPY } from "./portes-les-valence";
 import { PUTEAUX_COPY } from "./puteaux";
 import { QUIMPER_COPY } from "./quimper";
 import { RAMBOUILLET_COPY } from "./rambouillet";
@@ -361,6 +369,7 @@ import { SAINT_MALO_COPY } from "./saint-malo";
 import { SAINT_MANDE_COPY } from "./saint-mande";
 import { SAINT_MARCELLIN_COPY } from "./saint-marcellin";
 import { SAINT_MARTIN_D_HERES_COPY } from "./saint-martin-d-heres";
+import { SAINT_MARTIN_D_URIAGE_COPY } from "./saint-martin-d-uriage";
 import { SAINT_MARTIN_LE_VINOUX_COPY } from "./saint-martin-le-vinoux";
 import { SAINT_MAUR_DES_FOSSES_COPY } from "./saint-maur-des-fosses";
 import { SAINT_MAURICE_L_EXIL_COPY } from "./saint-maurice-l-exil";
@@ -447,6 +456,7 @@ import { VILLENEUVE_SAINT_GEORGES_COPY } from "./villeneuve-saint-georges";
 import { VILLENEUVE_SUR_LOT_COPY } from "./villeneuve-sur-lot";
 import { VILLEPARISIS_COPY } from "./villeparisis";
 import { VILLEPINTE_COPY } from "./villepinte";
+import { VILLETTE_D_ANTHON_COPY } from "./villette-d-anthon";
 import { VILLIERS_LE_BEL_COPY } from "./villiers-le-bel";
 import { VILLIERS_SUR_MARNE_COPY } from "./villiers-sur-marne";
 import { VINCENNES_COPY } from "./vincennes";
@@ -496,6 +506,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   bayonne: BAYONNE_COPY,
   beaune: BEAUNE_COPY,
   "beaupreau-en-mauges": BEAUPREAU_EN_MAUGES_COPY,
+  beaurepaire: BEAUREPAIRE_COPY,
   beauvais: BEAUVAIS_COPY,
   begles: BEGLES_COPY,
   belfort: BELFORT_COPY,
@@ -511,8 +522,10 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   bondy: BONDY_COPY,
   bouguenais: BOUGUENAIS_COPY,
   "boulogne-sur-mer": BOULOGNE_SUR_MER_COPY,
+  "bourg-de-peage": BOURG_DE_PEAGE_COPY,
   "bourg-en-bresse": BOURG_EN_BRESSE_COPY,
   "bourg-la-reine": BOURG_LA_REINE_COPY,
+  "bourg-les-valence": BOURG_LES_VALENCE_COPY,
   bourges: BOURGES_COPY,
   "bourgoin-jallieu": BOURGOIN_JALLIEU_COPY,
   "bretigny-sur-orge": BRETIGNY_SUR_ORGE_COPY,
@@ -555,6 +568,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   chatillon: CHATILLON_COPY,
   chatou: CHATOU_COPY,
   chaumont: CHAUMONT_COPY,
+  chavanoz: CHAVANOZ_COPY,
   chaville: CHAVILLE_COPY,
   chelles: CHELLES_COPY,
   "chemille-en-anjou": CHEMILLE_EN_ANJOU_COPY,
@@ -575,6 +589,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   "conflans-sainte-honorine": CONFLANS_SAINTE_HONORINE_COPY,
   "corbeil-essonnes": CORBEIL_ESSONNES_COPY,
   "cormeilles-en-parisis": CORMEILLES_EN_PARISIS_COPY,
+  coublevie: COUBLEVIE_COPY,
   "coudekerque-branche": COUDEKERQUE_BRANCHE_COPY,
   coueron: COUERON_COPY,
   courbevoie: COURBEVOIE_COPY,
@@ -700,6 +715,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   lievin: LIEVIN_COPY,
   "limeil-brevannes": LIMEIL_BREVANNES_COPY,
   lingolsheim: LINGOLSHEIM_COPY,
+  "livron-sur-drome": LIVRON_SUR_DROME_COPY,
   "livry-gargan": LIVRY_GARGAN_COPY,
   longjumeau: LONGJUMEAU_COPY,
   loos: LOOS_COPY,
@@ -773,6 +789,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   pau: PAU_COPY,
   perigueux: PERIGUEUX_COPY,
   pessac: PESSAC_COPY,
+  pierrelatte: PIERRELATTE_COPY,
   "plaisance-du-touch": PLAISANCE_DU_TOUCH_COPY,
   plaisir: PLAISIR_COPY,
   poissy: POISSY_COPY,
@@ -782,6 +799,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   "pontault-combault": PONTAULT_COMBAULT_COPY,
   pontcharra: PONTCHARRA_COPY,
   pontoise: PONTOISE_COPY,
+  "portes-les-valence": PORTES_LES_VALENCE_COPY,
   puteaux: PUTEAUX_COPY,
   quimper: QUIMPER_COPY,
   rambouillet: RAMBOUILLET_COPY,
@@ -818,6 +836,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   "saint-mande": SAINT_MANDE_COPY,
   "saint-marcellin": SAINT_MARCELLIN_COPY,
   "saint-martin-d-heres": SAINT_MARTIN_D_HERES_COPY,
+  "saint-martin-d-uriage": SAINT_MARTIN_D_URIAGE_COPY,
   "saint-martin-le-vinoux": SAINT_MARTIN_LE_VINOUX_COPY,
   "saint-maur-des-fosses": SAINT_MAUR_DES_FOSSES_COPY,
   "saint-maurice-l-exil": SAINT_MAURICE_L_EXIL_COPY,
@@ -904,6 +923,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   "villeneuve-sur-lot": VILLENEUVE_SUR_LOT_COPY,
   villeparisis: VILLEPARISIS_COPY,
   villepinte: VILLEPINTE_COPY,
+  "villette-d-anthon": VILLETTE_D_ANTHON_COPY,
   "villiers-le-bel": VILLIERS_LE_BEL_COPY,
   "villiers-sur-marne": VILLIERS_SUR_MARNE_COPY,
   vincennes: VINCENNES_COPY,

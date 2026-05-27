@@ -1,10 +1,10 @@
 {
   "totalT4": 1702,
-  "done": 40,
-  "remaining": 1662,
-  "lastBatchAt": "2026-05-27T07:22:20.640Z",
+  "done": 50,
+  "remaining": 1652,
+  "lastBatchAt": "2026-05-27T07:53:14.582Z",
   "lastBatchSize": 10,
-  "lastBatchNumber": 4,
+  "lastBatchNumber": 5,
   "villes": {
     "gentilly": {
       "slug": "gentilly",
@@ -2022,9 +2022,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "26",
       "population": 19992,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T07:53:14.582Z",
+      "batch": 5
     },
     "albertville": {
       "slug": "albertville",
@@ -2312,9 +2312,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "26",
       "population": 13756,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T07:53:14.582Z",
+      "batch": 5
     },
     "gex": {
       "slug": "gex",
@@ -2612,9 +2612,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "26",
       "population": 10477,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T07:53:14.582Z",
+      "batch": 5
     },
     "divonne-les-bains": {
       "slug": "divonne-les-bains",
@@ -2712,9 +2712,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "26",
       "population": 9921,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T07:53:14.582Z",
+      "batch": 5
     },
     "roche-la-moliere": {
       "slug": "roche-la-moliere",
@@ -2772,9 +2772,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "26",
       "population": 9329,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T07:53:14.582Z",
+      "batch": 5
     },
     "poisy": {
       "slug": "poisy",
@@ -4182,9 +4182,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "38",
       "population": 5587,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T07:53:14.582Z",
+      "batch": 5
     },
     "genay": {
       "slug": "genay",
@@ -4212,9 +4212,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "38",
       "population": 5520,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T07:53:14.582Z",
+      "batch": 5
     },
     "etoile-sur-rhone": {
       "slug": "etoile-sur-rhone",
@@ -4322,9 +4322,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "38",
       "population": 5268,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T07:53:14.582Z",
+      "batch": 5
     },
     "valleiry": {
       "slug": "valleiry",
@@ -4412,9 +4412,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "38",
       "population": 5126,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T07:53:14.582Z",
+      "batch": 5
     },
     "saint-marcellin-en-forez": {
       "slug": "saint-marcellin-en-forez",
@@ -4452,9 +4452,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "38",
       "population": 5010,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T07:53:14.582Z",
+      "batch": 5
     },
     "vence": {
       "slug": "vence",

@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T07:44:27.676Z",
+  "villeSlug": "bourg-de-peage",
+  "villeName": "Bourg-de-Péage",
+  "wikipediaTitle": "Bourg-de-Péage",
+  "extract": "Bourg-de-Péage est une commune française située dans le département de la Drôme, en région Auvergne-Rhône-Alpes.\nSes habitants sont dénommés les Péageois.",
+  "description": "commune française du département de la Drôme",
+  "coordinates": {
+    "lat": 45.03861111,
+    "lon": 5.05083333
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Bourg-de-P%C3%A9age_-_place_des_Palletours.jpg/330px-Bourg-de-P%C3%A9age_-_place_des_Palletours.jpg",
+  "notFound": false
+}
