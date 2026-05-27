@@ -1,0 +1,70 @@
+﻿// AUTO-GENERATED 2026-05-27 — T4 batch #19 Claude Code (Will).
+// Vic-le-Comte (63, Puy-de-Dôme) — bourg sud Clermont, vallée Allier, Sainte-Chapelle (monument historique).
+
+import type { VilleCopy } from "./types";
+
+export const VIC_LE_COMTE_COPY: VilleCopy = {
+  pitchFr:
+    "Vic-le-Comte (63), bourg du sud clermontois dans la vallée de l'Allier (Sainte-Chapelle classée monument historique). Tissu agriculture vallée Allier, TPE artisanat, commerce rural, tourisme patrimoine, services. Axion-IA y intervient pour tous types d'activités.",
+  pitchEn:
+    "Vic-le-Comte (63), bourg du sud clermontois dans la vallée de l'Allier (Sainte-Chapelle classée monument historique). Tissu agriculture vallée Allier, TPE artisanat, commerce rural, tourisme patrimoine, services. Axion-IA y intervient pour tous types d'activités.",
+  directAnswerFr:
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vic-le-Comte (63). Nous accompagnons TPE et PME : exploitants agricoles vallée Allier, artisans et commerçants ruraux, acteurs tourisme patrimoine (Sainte-Chapelle), prestataires de services. Audit Flash dès 490 € HT.",
+  directAnswerEn:
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vic-le-Comte (63). Nous accompagnons TPE et PME : exploitants agricoles vallée Allier, artisans et commerçants ruraux, acteurs tourisme patrimoine (Sainte-Chapelle), prestataires de services. Audit Flash dès 490 € HT.",
+  ecosystemFr:
+    "Vic-le-Comte est un bourg du sud Clermont dans la vallée de l'Allier, connu pour sa Sainte-Chapelle classée. Tissu agriculture vallée Allier, TPE artisanat, commerce rural, tourisme patrimoine, services aux entreprises.",
+  ecosystemEn:
+    "Vic-le-Comte est un bourg du sud Clermont dans la vallée de l'Allier, connu pour sa Sainte-Chapelle classée. Tissu agriculture vallée Allier, TPE artisanat, commerce rural, tourisme patrimoine, services aux entreprises.",
+  distancesFr:
+    "Clermont-Ferrand à 25 min. Issoire à 15 min. Le Cendre à 10 min. Aéroport Clermont-Auvergne à 30 min.",
+  distancesEn:
+    "Clermont-Ferrand à 25 min. Issoire à 15 min. Le Cendre à 10 min. Aéroport Clermont-Auvergne à 30 min.",
+  topSectorsNaf: [
+    "Agriculture vallée Allier",
+    "TPE artisanat",
+    "Commerce rural",
+    "Tourisme patrimoine (Sainte-Chapelle)",
+    "Services",
+  ],
+  servicesContext: {
+    audit: {
+      fr: "Audit IA à Vic-le-Comte : diagnostic adapté aux exploitations agricoles vallée Allier, TPE artisans, commerçants ruraux, acteurs tourisme patrimoine. ROI chiffré, audit Flash 490 € HT.",
+      en: "Audit IA à Vic-le-Comte : diagnostic adapté aux exploitations agricoles vallée Allier, TPE artisans, commerçants ruraux, acteurs tourisme patrimoine. ROI chiffré, audit Flash 490 € HT.",
+    },
+    interventions: {
+      fr: "Interventions IA sur site à Vic-le-Comte : formats adaptés exploitation agricole, atelier artisan, commerce, site patrimonial. Vos équipes repartent autonomes.",
+      en: "Interventions IA sur site à Vic-le-Comte : formats adaptés exploitation agricole, atelier artisan, commerce, site patrimonial. Vos équipes repartent autonomes.",
+    },
+    implementation: {
+      fr: "Implémentation IA à Vic-le-Comte : traçabilité parcelles vallée Allier, gestion vente directe agricole, chatbot visiteurs Sainte-Chapelle, CRM commerces ruraux.",
+      en: "Implémentation IA à Vic-le-Comte : traçabilité parcelles vallée Allier, gestion vente directe agricole, chatbot visiteurs Sainte-Chapelle, CRM commerces ruraux.",
+    },
+    unAUn: {
+      fr: "Coaching 1-to-1 à Vic-le-Comte : sessions dans votre exploitation, atelier, commerce ou en visio. Dirigeants TPE/PME, agriculteurs, artisans, gérants tourisme sud Clermont.",
+      en: "Coaching 1-to-1 à Vic-le-Comte : sessions dans votre exploitation, atelier, commerce ou en visio. Dirigeants TPE/PME, agriculteurs, artisans, gérants tourisme sud Clermont.",
+    },
+  },
+  faqGeolocalisee: [
+    {
+      q: "Axion-IA intervient-il à Vic-le-Comte et sud Clermont ?",
+      a: "Oui, Axion-IA intervient à Vic-le-Comte et tout le sud clermontois (Issoire à 15 min, Le Cendre à 10 min, Clermont-Ferrand à 25 min). Aéroport Clermont à 30 min.",
+    },
+    {
+      q: "Travaillez-vous avec les exploitants agricoles vallée Allier ?",
+      a: "Oui, traçabilité parcelles automatisée, prédiction rendements cultures, gestion vente directe et circuits courts, automatisation administrative exploitation.",
+    },
+    {
+      q: "Accompagnez-vous les acteurs tourisme patrimoine ?",
+      a: "Oui, chatbot visiteurs Sainte-Chapelle multilingue, automatisation réservations, gestion avis et feedback, promotion digitale site historique.",
+    },
+    {
+      q: "Quels services pour les TPE artisans et commerces ?",
+      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1.",
+    },
+    {
+      q: "Comment se passe une mission depuis Clermont-Ferrand ?",
+      a: "Clermont-Ferrand (25 min). Aéroport Clermont à 30 min. Frais de déplacement facturés à part, tarifs publics.",
+    },
+  ],
+};

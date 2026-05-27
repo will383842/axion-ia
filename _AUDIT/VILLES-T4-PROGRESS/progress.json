@@ -1,10 +1,10 @@
 {
   "totalT4": 1702,
-  "done": 180,
-  "remaining": 1522,
-  "lastBatchAt": "2026-05-27T09:54:39.859Z",
-  "lastBatchSize": 10,
-  "lastBatchNumber": 18,
+  "done": 230,
+  "remaining": 1472,
+  "lastBatchAt": "2026-05-27T10:18:34.645Z",
+  "lastBatchSize": 40,
+  "lastBatchNumber": 20,
   "villes": {
     "gentilly": {
       "slug": "gentilly",
@@ -2032,9 +2032,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "73",
       "population": 19978,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T10:18:34.645Z",
+      "batch": 20
     },
     "cournon-d-auvergne": {
       "slug": "cournon-d-auvergne",
@@ -2132,9 +2132,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "74",
       "population": 17795,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T10:18:34.645Z",
+      "batch": 20
     },
     "l-isle-d-abeau": {
       "slug": "l-isle-d-abeau",
@@ -2162,9 +2162,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "74",
       "population": 17319,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T10:18:34.645Z",
+      "batch": 20
     },
     "annonay": {
       "slug": "annonay",
@@ -2202,9 +2202,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "74",
       "population": 16442,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T10:18:34.645Z",
+      "batch": 20
     },
     "saint-julien-en-genevois": {
       "slug": "saint-julien-en-genevois",
@@ -2212,9 +2212,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "74",
       "population": 16222,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T10:17:04.977Z",
+      "batch": 19
     },
     "montbrison": {
       "slug": "montbrison",
@@ -2342,9 +2342,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "74",
       "population": 13335,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T10:17:04.977Z",
+      "batch": 19
     },
     "cusset": {
       "slug": "cusset",
@@ -2392,9 +2392,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "63",
       "population": 12412,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T10:18:34.645Z",
+      "batch": 20
     },
     "le-chambon-feugerolles": {
       "slug": "le-chambon-feugerolles",
@@ -2432,9 +2432,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "73",
       "population": 12067,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27",
+      "batch": 19
     },
     "seyssinet-pariset": {
       "slug": "seyssinet-pariset",
@@ -2462,9 +2462,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "63",
       "population": 11637,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T10:18:34.645Z",
+      "batch": 20
     },
     "gaillard": {
       "slug": "gaillard",
@@ -2472,9 +2472,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "74",
       "population": 11423,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T10:17:04.977Z",
+      "batch": 19
     },
     "la-roche-sur-foron": {
       "slug": "la-roche-sur-foron",
@@ -2482,9 +2482,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "74",
       "population": 11348,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T10:17:04.977Z",
+      "batch": 19
     },
     "corbas": {
       "slug": "corbas",
@@ -2552,9 +2552,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "74",
       "population": 10949,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T10:17:04.977Z",
+      "batch": 19
     },
     "tarare": {
       "slug": "tarare",
@@ -2572,9 +2572,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "74",
       "population": 10856,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T10:18:34.645Z",
+      "batch": 20
     },
     "beaumont": {
       "slug": "beaumont",
@@ -2582,9 +2582,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "63",
       "population": 10728,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T10:18:34.645Z",
+      "batch": 20
     },
     "charvieu-chavagneux": {
       "slug": "charvieu-chavagneux",
@@ -2632,9 +2632,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "63",
       "population": 10459,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T10:18:34.645Z",
+      "batch": 20
     },
     "andrezieux-boutheon": {
       "slug": "andrezieux-boutheon",
@@ -2662,9 +2662,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "63",
       "population": 10335,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T10:18:34.645Z",
+      "batch": 20
     },
     "feyzin": {
       "slug": "feyzin",
@@ -2682,9 +2682,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "74",
       "population": 10075,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T10:18:34.645Z",
+      "batch": 20
     },
     "grigny-sur-rhone": {
       "slug": "grigny-sur-rhone",
@@ -2732,9 +2732,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "74",
       "population": 9514,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T10:18:34.645Z",
+      "batch": 20
     },
     "belley": {
       "slug": "belley",
@@ -2762,9 +2762,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "73",
       "population": 9332,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27",
+      "batch": 19
     },
     "livron-sur-drome": {
       "slug": "livron-sur-drome",
@@ -2782,9 +2782,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "74",
       "population": 9291,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T10:18:34.645Z",
+      "batch": 20
     },
     "evian-les-bains": {
       "slug": "evian-les-bains",
@@ -2792,9 +2792,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "74",
       "population": 9267,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T10:18:34.645Z",
+      "batch": 20
     },
     "dardilly": {
       "slug": "dardilly",
@@ -2812,9 +2812,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "74",
       "population": 9162,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T10:18:34.645Z",
+      "batch": 20
     },
     "prevessin-moens": {
       "slug": "prevessin-moens",
@@ -2862,9 +2862,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "63",
       "population": 8953,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T10:18:34.645Z",
+      "batch": 20
     },
     "bellerive-sur-allier": {
       "slug": "bellerive-sur-allier",
@@ -2882,9 +2882,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "74",
       "population": 8925,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T10:18:34.645Z",
+      "batch": 20
     },
     "monistrol-sur-loire": {
       "slug": "monistrol-sur-loire",
@@ -2912,9 +2912,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "63",
       "population": 8709,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T10:18:34.645Z",
+      "batch": 20
     },
     "chamonix-mont-blanc": {
       "slug": "chamonix-mont-blanc",
@@ -2922,9 +2922,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "74",
       "population": 8705,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T10:18:34.645Z",
+      "batch": 20
     },
     "crest": {
       "slug": "crest",
@@ -3012,9 +3012,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "74",
       "population": 8464,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T10:18:34.645Z",
+      "batch": 20
     },
     "feurs": {
       "slug": "feurs",
@@ -3112,9 +3112,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "63",
       "population": 7894,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T10:18:34.645Z",
+      "batch": 20
     },
     "saint-pierre-en-faucigny": {
       "slug": "saint-pierre-en-faucigny",
@@ -3122,9 +3122,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "74",
       "population": 7865,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T10:18:34.645Z",
+      "batch": 20
     },
     "publier": {
       "slug": "publier",
@@ -3132,9 +3132,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "74",
       "population": 7864,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T10:18:34.645Z",
+      "batch": 20
     },
     "claix": {
       "slug": "claix",
@@ -3182,9 +3182,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "74",
       "population": 7762,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T10:18:34.645Z",
+      "batch": 20
     },
     "saint-marcellin": {
       "slug": "saint-marcellin",
@@ -3252,9 +3252,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "74",
       "population": 7545,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T10:18:34.645Z",
+      "batch": 20
     },
     "saint-jean-de-maurienne": {
       "slug": "saint-jean-de-maurienne",
@@ -3262,9 +3262,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "73",
       "population": 7524,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27",
+      "batch": 19
     },
     "villard-bonnot": {
       "slug": "villard-bonnot",
@@ -3342,9 +3342,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "73",
       "population": 7270,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27",
+      "batch": 19
     },
     "mably": {
       "slug": "mably",
@@ -3372,9 +3372,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "73",
       "population": 7154,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27",
+      "batch": 19
     },
     "la-talaudiere": {
       "slug": "la-talaudiere",
@@ -3452,9 +3452,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "73",
       "population": 6954,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T10:18:34.645Z",
+      "batch": 20
     },
     "montluel": {
       "slug": "montluel",
@@ -3532,9 +3532,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "74",
       "population": 6796,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T10:18:34.645Z",
+      "batch": 20
     },
     "brindas": {
       "slug": "brindas",
@@ -3552,9 +3552,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "73",
       "population": 6734,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T10:18:34.645Z",
+      "batch": 20
     },
     "le-peage-de-roussillon": {
       "slug": "le-peage-de-roussillon",
@@ -3572,9 +3572,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "74",
       "population": 6654,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T10:18:34.645Z",
+      "batch": 20
     },
     "lentilly": {
       "slug": "lentilly",
@@ -3612,9 +3612,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "63",
       "population": 6592,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T10:18:34.645Z",
+      "batch": 20
     },
     "chasse-sur-rhone": {
       "slug": "chasse-sur-rhone",
@@ -3682,9 +3682,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "63",
       "population": 6528,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T10:18:34.645Z",
+      "batch": 20
     },
     "brioude": {
       "slug": "brioude",
@@ -3712,9 +3712,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "63",
       "population": 6517,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T10:18:34.645Z",
+      "batch": 20
     },
     "marignier": {
       "slug": "marignier",
@@ -3752,9 +3752,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "73",
       "population": 6461,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T10:18:34.645Z",
+      "batch": 20
     },
     "sciez": {
       "slug": "sciez",
@@ -3892,9 +3892,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "63",
       "population": 6299,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T10:18:34.645Z",
+      "batch": 20
     },
     "mornant": {
       "slug": "mornant",
@@ -4152,9 +4152,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "73",
       "population": 5630,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T10:18:34.645Z",
+      "batch": 20
     },
     "gannat": {
       "slug": "gannat",
@@ -4242,9 +4242,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "63",
       "population": 5415,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T10:18:34.645Z",
+      "batch": 20
     },
     "vic-le-comte": {
       "slug": "vic-le-comte",
@@ -4252,9 +4252,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "63",
       "population": 5396,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T10:18:34.645Z",
+      "batch": 20
     },
     "charbonnieres-les-bains": {
       "slug": "charbonnieres-les-bains",
@@ -4302,9 +4302,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "73",
       "population": 5306,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T10:18:34.645Z",
+      "batch": 20
     },
     "vindry-sur-turdine": {
       "slug": "vindry-sur-turdine",
@@ -4352,9 +4352,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "73",
       "population": 5216,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T10:18:34.645Z",
+      "batch": 20
     },
     "vernaison": {
       "slug": "vernaison",
@@ -4382,9 +4382,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "73",
       "population": 5175,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T10:18:34.645Z",
+      "batch": 20
     },
     "villerest": {
       "slug": "villerest",
