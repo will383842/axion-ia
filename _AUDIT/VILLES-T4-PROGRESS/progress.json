@@ -1,10 +1,10 @@
 {
   "totalT4": 1702,
-  "done": 70,
-  "remaining": 1632,
-  "lastBatchAt": "2026-05-27T08:15:04.661Z",
+  "done": 80,
+  "remaining": 1622,
+  "lastBatchAt": "2026-05-27T08:23:58.350Z",
   "lastBatchSize": 10,
-  "lastBatchNumber": 7,
+  "lastBatchNumber": 8,
   "villes": {
     "gentilly": {
       "slug": "gentilly",
@@ -3002,9 +3002,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "42",
       "population": 8514,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:23:58.350Z",
+      "batch": 8
     },
     "reignier-esery": {
       "slug": "reignier-esery",
@@ -3022,9 +3022,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "42",
       "population": 8367,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:23:58.350Z",
+      "batch": 8
     },
     "meximieux": {
       "slug": "meximieux",
@@ -3052,9 +3052,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "42",
       "population": 8116,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:23:58.350Z",
+      "batch": 8
     },
     "la-tour-du-pin": {
       "slug": "la-tour-du-pin",
@@ -3082,9 +3082,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "42",
       "population": 8039,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:23:58.350Z",
+      "batch": 8
     },
     "gleize": {
       "slug": "gleize",
@@ -3212,9 +3212,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "42",
       "population": 7664,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:23:58.350Z",
+      "batch": 8
     },
     "bourg-saint-andeol": {
       "slug": "bourg-saint-andeol",
@@ -3352,9 +3352,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "42",
       "population": 7233,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:23:58.350Z",
+      "batch": 8
     },
     "saint-ismier": {
       "slug": "saint-ismier",
@@ -3382,9 +3382,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "42",
       "population": 7133,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:23:58.350Z",
+      "batch": 8
     },
     "viriat": {
       "slug": "viriat",
@@ -3492,9 +3492,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "42",
       "population": 6845,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:23:58.350Z",
+      "batch": 8
     },
     "domene": {
       "slug": "domene",
@@ -3592,9 +3592,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "42",
       "population": 6621,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:23:58.350Z",
+      "batch": 8
     },
     "loriol-sur-drome": {
       "slug": "loriol-sur-drome",
@@ -3642,9 +3642,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "42",
       "population": 6563,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:23:58.350Z",
+      "batch": 8
     },
     "rives": {
       "slug": "rives",
