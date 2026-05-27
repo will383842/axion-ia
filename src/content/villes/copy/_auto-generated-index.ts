@@ -46,10 +46,12 @@ import { BEAUREPAIRE_COPY } from "./beaurepaire";
 import { BEAUVAIS_COPY } from "./beauvais";
 import { BEGLES_COPY } from "./begles";
 import { BELFORT_COPY } from "./belfort";
+import { BELLERIVE_SUR_ALLIER_COPY } from "./bellerive-sur-allier";
 import { BELLEVILLE_EN_BEAUJOLAIS_COPY } from "./belleville-en-beaujolais";
 import { BELLEY_COPY } from "./belley";
 import { BERGERAC_COPY } from "./bergerac";
 import { BETHUNE_COPY } from "./bethune";
+import { BEYNOST_COPY } from "./beynost";
 import { BEZIERS_COPY } from "./beziers";
 import { BEZONS_COPY } from "./bezons";
 import { BIARRITZ_COPY } from "./biarritz";
@@ -133,6 +135,7 @@ import { COLMAR_COPY } from "./colmar";
 import { COLOMBES_COPY } from "./colombes";
 import { COLOMIERS_COPY } from "./colomiers";
 import { COMBS_LA_VILLE_COPY } from "./combs-la-ville";
+import { COMMENTRY_COPY } from "./commentry";
 import { COMPIEGNE_COPY } from "./compiegne";
 import { CONCARNEAU_COPY } from "./concarneau";
 import { CONFLANS_SAINTE_HONORINE_COPY } from "./conflans-sainte-honorine";
@@ -150,6 +153,7 @@ import { CRETEIL_COPY } from "./creteil";
 import { CROIX_COPY } from "./croix";
 import { CROLLES_COPY } from "./crolles";
 import { CUGNAUX_COPY } from "./cugnaux";
+import { CUSSET_COPY } from "./cusset";
 import { DAMMARIE_LES_LYS_COPY } from "./dammarie-les-lys";
 import { DARDILLY_COPY } from "./dardilly";
 import { DAX_COPY } from "./dax";
@@ -160,6 +164,7 @@ import { DIEPPE_COPY } from "./dieppe";
 import { DIVONNE_LES_BAINS_COPY } from "./divonne-les-bains";
 import { DOLE_COPY } from "./dole";
 import { DOMENE_COPY } from "./domene";
+import { DOMERAT_COPY } from "./domerat";
 import { DONZERE_COPY } from "./donzere";
 import { DOUAI_COPY } from "./douai";
 import { DRAGUIGNAN_COPY } from "./draguignan";
@@ -198,6 +203,7 @@ import { FREJUS_COPY } from "./frejus";
 import { FRESNES_COPY } from "./fresnes";
 import { FRONTIGNAN_COPY } from "./frontignan";
 import { GAGNY_COPY } from "./gagny";
+import { GANNAT_COPY } from "./gannat";
 import { GAP_COPY } from "./gap";
 import { GARDANNE_COPY } from "./gardanne";
 import { GARGES_LES_GONESSE_COPY } from "./garges-les-gonesse";
@@ -354,6 +360,7 @@ import { MONTROND_LES_BAINS_COPY } from "./montrond-les-bains";
 import { MONTROUGE_COPY } from "./montrouge";
 import { MORNANT_COPY } from "./mornant";
 import { MORSANG_SUR_ORGE_COPY } from "./morsang-sur-orge";
+import { MOULINS_COPY } from "./moulins";
 import { MURET_COPY } from "./muret";
 import { NANTERRE_COPY } from "./nanterre";
 import { NARBONNE_COPY } from "./narbonne";
@@ -371,6 +378,7 @@ import { NYONS_COPY } from "./nyons";
 import { OLIVET_COPY } from "./olivet";
 import { ORANGE_COPY } from "./orange";
 import { ORLY_COPY } from "./orly";
+import { ORNEX_COPY } from "./ornex";
 import { ORVAULT_COPY } from "./orvault";
 import { OULLINS_PIERRE_BENITE_COPY } from "./oullins-pierre-benite";
 import { OYONNAX_COPY } from "./oyonnax";
@@ -541,6 +549,7 @@ import { VIF_COPY } from "./vif";
 import { VIGNEUX_SUR_SEINE_COPY } from "./vigneux-sur-seine";
 import { VILLARD_BONNOT_COPY } from "./villard-bonnot";
 import { VILLARS_COPY } from "./villars";
+import { VILLARS_LES_DOMBES_COPY } from "./villars-les-dombes";
 import { VILLEFONTAINE_COPY } from "./villefontaine";
 import { VILLEFRANCHE_SUR_SAONE_COPY } from "./villefranche-sur-saone";
 import { VILLEJUIF_COPY } from "./villejuif";
@@ -569,6 +578,7 @@ import { VOREPPE_COPY } from "./voreppe";
 import { WASQUEHAL_COPY } from "./wasquehal";
 import { WATTRELOS_COPY } from "./wattrelos";
 import { YERRES_COPY } from "./yerres";
+import { YZEURE_COPY } from "./yzeure";
 
 export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> = {
   abbeville: ABBEVILLE_COPY,
@@ -613,10 +623,12 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   beauvais: BEAUVAIS_COPY,
   begles: BEGLES_COPY,
   belfort: BELFORT_COPY,
+  "bellerive-sur-allier": BELLERIVE_SUR_ALLIER_COPY,
   "belleville-en-beaujolais": BELLEVILLE_EN_BEAUJOLAIS_COPY,
   belley: BELLEY_COPY,
   bergerac: BERGERAC_COPY,
   bethune: BETHUNE_COPY,
+  beynost: BEYNOST_COPY,
   beziers: BEZIERS_COPY,
   bezons: BEZONS_COPY,
   biarritz: BIARRITZ_COPY,
@@ -700,6 +712,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   colombes: COLOMBES_COPY,
   colomiers: COLOMIERS_COPY,
   "combs-la-ville": COMBS_LA_VILLE_COPY,
+  commentry: COMMENTRY_COPY,
   compiegne: COMPIEGNE_COPY,
   concarneau: CONCARNEAU_COPY,
   "conflans-sainte-honorine": CONFLANS_SAINTE_HONORINE_COPY,
@@ -717,6 +730,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   croix: CROIX_COPY,
   crolles: CROLLES_COPY,
   cugnaux: CUGNAUX_COPY,
+  cusset: CUSSET_COPY,
   "dammarie-les-lys": DAMMARIE_LES_LYS_COPY,
   dardilly: DARDILLY_COPY,
   dax: DAX_COPY,
@@ -727,6 +741,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   "divonne-les-bains": DIVONNE_LES_BAINS_COPY,
   dole: DOLE_COPY,
   domene: DOMENE_COPY,
+  domerat: DOMERAT_COPY,
   donzere: DONZERE_COPY,
   douai: DOUAI_COPY,
   draguignan: DRAGUIGNAN_COPY,
@@ -765,6 +780,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   fresnes: FRESNES_COPY,
   frontignan: FRONTIGNAN_COPY,
   gagny: GAGNY_COPY,
+  gannat: GANNAT_COPY,
   gap: GAP_COPY,
   gardanne: GARDANNE_COPY,
   "garges-les-gonesse": GARGES_LES_GONESSE_COPY,
@@ -921,6 +937,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   montrouge: MONTROUGE_COPY,
   mornant: MORNANT_COPY,
   "morsang-sur-orge": MORSANG_SUR_ORGE_COPY,
+  moulins: MOULINS_COPY,
   muret: MURET_COPY,
   nanterre: NANTERRE_COPY,
   narbonne: NARBONNE_COPY,
@@ -938,6 +955,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   olivet: OLIVET_COPY,
   orange: ORANGE_COPY,
   orly: ORLY_COPY,
+  ornex: ORNEX_COPY,
   orvault: ORVAULT_COPY,
   "oullins-pierre-benite": OULLINS_PIERRE_BENITE_COPY,
   oyonnax: OYONNAX_COPY,
@@ -1108,6 +1126,7 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   "vigneux-sur-seine": VIGNEUX_SUR_SEINE_COPY,
   "villard-bonnot": VILLARD_BONNOT_COPY,
   villars: VILLARS_COPY,
+  "villars-les-dombes": VILLARS_LES_DOMBES_COPY,
   villefontaine: VILLEFONTAINE_COPY,
   "villefranche-sur-saone": VILLEFRANCHE_SUR_SAONE_COPY,
   villejuif: VILLEJUIF_COPY,
@@ -1136,4 +1155,5 @@ export const AUTO_GENERATED_COPIES_BY_SLUG: Readonly<Record<string, VilleCopy>> 
   wasquehal: WASQUEHAL_COPY,
   wattrelos: WATTRELOS_COPY,
   yerres: YERRES_COPY,
+  yzeure: YZEURE_COPY,
 };

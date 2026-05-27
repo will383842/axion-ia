@@ -1,10 +1,10 @@
 {
   "totalT4": 1702,
-  "done": 150,
-  "remaining": 1552,
-  "lastBatchAt": "2026-05-27T09:21:52.183Z",
+  "done": 160,
+  "remaining": 1542,
+  "lastBatchAt": "2026-05-27T09:33:39.647Z",
   "lastBatchSize": 10,
-  "lastBatchNumber": 15,
+  "lastBatchNumber": 16,
   "villes": {
     "gentilly": {
       "slug": "gentilly",
@@ -2072,9 +2072,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "03",
       "population": 19206,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:33:39.647Z",
+      "batch": 16
     },
     "riom": {
       "slug": "riom",
@@ -2352,9 +2352,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "03",
       "population": 13316,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:33:39.647Z",
+      "batch": 16
     },
     "yzeure": {
       "slug": "yzeure",
@@ -2362,9 +2362,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "03",
       "population": 12897,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:33:39.647Z",
+      "batch": 16
     },
     "brignais": {
       "slug": "brignais",
@@ -2872,9 +2872,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "03",
       "population": 8943,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:33:39.647Z",
+      "batch": 16
     },
     "epagny-metz-tessy": {
       "slug": "epagny-metz-tessy",
@@ -2942,9 +2942,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "03",
       "population": 8622,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:33:39.647Z",
+      "batch": 16
     },
     "crolles": {
       "slug": "crolles",
@@ -4022,9 +4022,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "03",
       "population": 6017,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:33:39.647Z",
+      "batch": 16
     },
     "donzere": {
       "slug": "donzere",
@@ -4162,9 +4162,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "03",
       "population": 5610,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:33:39.647Z",
+      "batch": 16
     },
     "ternay": {
       "slug": "ternay",
@@ -4372,9 +4372,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "01",
       "population": 5198,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:33:39.647Z",
+      "batch": 16
     },
     "bassens-73": {
       "slug": "bassens-73",
@@ -4402,9 +4402,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "01",
       "population": 5163,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:33:39.647Z",
+      "batch": 16
     },
     "chavanoz": {
       "slug": "chavanoz",
@@ -4432,9 +4432,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "01",
       "population": 5082,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:33:39.647Z",
+      "batch": 16
     },
     "allinges": {
       "slug": "allinges",
