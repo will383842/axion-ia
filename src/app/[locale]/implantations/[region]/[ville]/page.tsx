@@ -81,10 +81,22 @@ interface Props {
 }
 
 export function generateStaticParams(): Array<{ region: string; ville: string }> {
-  return VILLES.map((v) => ({ region: v.region, ville: v.slug }));
+  // 2026-05-27 — Build T3 batch saturait le disk GH Actions runner (No space left
+  // on device). On limite generateStaticParams aux villes pop ≥ 100k (= T1+T2 ~40
+  // villes seulement). Toutes les autres villes (T3 + T4) sont rendues en ISR
+  // on-demand au 1er hit (`dynamicParams=true` + revalidate=86400 = recache 24h).
+  // Trade-off : 1er hit T3 = ~500ms latence, mais build SSG passe de 17 629 à
+  // ~13 500 routes (économie ~5 GB disk + 8 min build).
+  // Les villes T3 restent indexables (sitemap.xml + meta tags OK), elles sont
+  // juste pas pré-rendues au build — Google les crawle = ISR génère = cachée.
+  return VILLES.filter((v) => v.population >= 100_000).map((v) => ({
+    region: v.region,
+    ville: v.slug,
+  }));
 }
 
 // P1-13 (audit re-run 2026-05-15) — ISR sur pages villes pSEO (~2150 routes).
+// dynamicParams=true : génère à la volée toute ville pas dans generateStaticParams.
 export const revalidate = 86400;
 export const dynamicParams = true;
 
