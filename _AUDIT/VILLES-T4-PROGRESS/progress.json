@@ -1,10 +1,10 @@
 {
   "totalT4": 1702,
-  "done": 30,
-  "remaining": 1672,
-  "lastBatchAt": "2026-05-27T06:58:59.819Z",
+  "done": 40,
+  "remaining": 1662,
+  "lastBatchAt": "2026-05-27T07:22:20.640Z",
   "lastBatchSize": 10,
-  "lastBatchNumber": 3,
+  "lastBatchNumber": 4,
   "villes": {
     "gentilly": {
       "slug": "gentilly",
@@ -3502,9 +3502,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "38",
       "population": 6835,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T07:22:20.640Z",
+      "batch": 4
     },
     "chabeuil": {
       "slug": "chabeuil",
@@ -3562,9 +3562,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "38",
       "population": 6718,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T07:22:20.640Z",
+      "batch": 4
     },
     "thones": {
       "slug": "thones",
@@ -3622,9 +3622,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "38",
       "population": 6588,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T07:22:20.640Z",
+      "batch": 4
     },
     "thoiry": {
       "slug": "thoiry",
@@ -3652,9 +3652,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "38",
       "population": 6549,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T07:22:20.640Z",
+      "batch": 4
     },
     "l-arbresle": {
       "slug": "l-arbresle",
@@ -3782,9 +3782,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "38",
       "population": 6424,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T07:22:20.640Z",
+      "batch": 4
     },
     "saint-flour": {
       "slug": "saint-flour",
@@ -3882,9 +3882,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "38",
       "population": 6302,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T07:22:20.640Z",
+      "batch": 4
     },
     "chatel-guyon": {
       "slug": "chatel-guyon",
@@ -3922,9 +3922,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "38",
       "population": 6213,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T07:22:20.640Z",
+      "batch": 4
     },
     "saint-quentin-fallavier": {
       "slug": "saint-quentin-fallavier",
@@ -3932,9 +3932,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "38",
       "population": 6189,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T07:22:20.640Z",
+      "batch": 4
     },
     "saint-symphorien-d-ozon": {
       "slug": "saint-symphorien-d-ozon",
@@ -4012,9 +4012,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "38",
       "population": 6078,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T07:22:20.640Z",
+      "batch": 4
     },
     "commentry": {
       "slug": "commentry",
@@ -4132,9 +4132,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "38",
       "population": 5698,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T07:22:20.640Z",
+      "batch": 4
     },
     "montrond-les-bains": {
       "slug": "montrond-les-bains",
