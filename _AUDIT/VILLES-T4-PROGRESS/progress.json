@@ -1,10 +1,10 @@
 {
   "totalT4": 1702,
-  "done": 90,
-  "remaining": 1612,
-  "lastBatchAt": "2026-05-27T08:31:05.173Z",
+  "done": 100,
+  "remaining": 1602,
+  "lastBatchAt": "2026-05-27T08:43:43.565Z",
   "lastBatchSize": 10,
-  "lastBatchNumber": 9,
+  "lastBatchNumber": 10,
   "villes": {
     "gentilly": {
       "slug": "gentilly",
@@ -2292,9 +2292,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "69",
       "population": 14016,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:43:43.565Z",
+      "batch": 10
     },
     "mions": {
       "slug": "mions",
@@ -2302,9 +2302,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "69",
       "population": 13843,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:43:43.565Z",
+      "batch": 10
     },
     "pierrelatte": {
       "slug": "pierrelatte",
@@ -2332,9 +2332,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "69",
       "population": 13421,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:43:43.565Z",
+      "batch": 10
     },
     "bonneville": {
       "slug": "bonneville",
@@ -2372,9 +2372,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "69",
       "population": 12503,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:43:43.565Z",
+      "batch": 10
     },
     "aubenas": {
       "slug": "aubenas",
@@ -2422,9 +2422,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "69",
       "population": 12084,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:43:43.565Z",
+      "batch": 10
     },
     "la-motte-servolex": {
       "slug": "la-motte-servolex",
@@ -2492,9 +2492,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "69",
       "population": 11315,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:43:43.565Z",
+      "batch": 10
     },
     "tournon-sur-rhone": {
       "slug": "tournon-sur-rhone",
@@ -2522,9 +2522,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "69",
       "population": 11208,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:43:43.565Z",
+      "batch": 10
     },
     "riorges": {
       "slug": "riorges",
@@ -2562,9 +2562,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "69",
       "population": 10893,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:43:43.565Z",
+      "batch": 10
     },
     "passy": {
       "slug": "passy",
@@ -2672,9 +2672,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "69",
       "population": 10304,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:43:43.565Z",
+      "batch": 10
     },
     "filliere": {
       "slug": "filliere",
@@ -2692,9 +2692,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "69",
       "population": 10030,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T08:43:43.565Z",
+      "batch": 10
     },
     "voreppe": {
       "slug": "voreppe",
