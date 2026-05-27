@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const LOCMARIA_PLOUZANE_COPY: VilleCopy = {
   pitchFr:
-    "Locmaria-Plouzané (29), commune littorale de l'agglomération brestoise, accueille le technopôle Brest-Iroise et l'ENSTA Bretagne, pôle majeur de recherche marine et défense. TPE et PME tech, sous-traitants défense, commerces, artisans et professions libérales composent son économie. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'ouest brestois.",
+    "Locmaria-Plouzané (29), commune littorale de l'agglomération brestoise, accueille le technopôle Brest-Iroise et l'ENSTA Bretagne, pôle majeur de recherche marine et défense. TPE et PME tech, sous-traitants défense, commerces, artisans et professions libérales composent son économie. Axion-IA opère sur l'ensemble des activités professionnelles locales de l'ouest brestois.",
   pitchEn:
-    "Locmaria-Plouzané (29), commune littorale de l'agglomération brestoise, accueille le technopôle Brest-Iroise et l'ENSTA Bretagne, pôle majeur de recherche marine et défense. TPE et PME tech, sous-traitants défense, commerces, artisans et professions libérales composent son économie. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'ouest brestois.",
+    "Locmaria-Plouzané (29), commune littorale de l'agglomération brestoise, accueille le technopôle Brest-Iroise et l'ENSTA Bretagne, pôle majeur de recherche marine et défense. TPE et PME tech, sous-traitants défense, commerces, artisans et professions libérales composent son économie. Axion-IA opère sur l'ensemble des activités professionnelles locales de l'ouest brestois.",
   seoHook: "défense, recherche marine & tech",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Locmaria-Plouzané (29). Nous accompagnons tous types d'activités : TPE et PME tech du technopôle Brest-Iroise, sous-traitants défense, artisans, commerçants et professions libérales de l'agglomération brestoise. Audit Flash dès 490 € HT, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Locmaria-Plouzané (29). Nous accompagnons tous types d'activités : TPE et PME tech du technopôle Brest-Iroise, sous-traitants défense, artisans, commerçants et professions libérales de l'agglomération brestoise. Audit Flash sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Locmaria-Plouzané (29). Nous accompagnons tous types d'activités : TPE et PME tech du technopôle Brest-Iroise, sous-traitants défense, artisans, commerçants et professions libérales de l'agglomération brestoise. Audit Flash dès 490 € HT, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Locmaria-Plouzané (29). Nous accompagnons tous types d'activités : TPE et PME tech du technopôle Brest-Iroise, sous-traitants défense, artisans, commerçants et professions libérales de l'agglomération brestoise. Audit Flash sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Locmaria-Plouzané est une commune littorale à l'ouest de Brest, hébergeant le technopôle Brest-Iroise, l'ENSTA Bretagne et plusieurs laboratoires de recherche marine (Ifremer, SHOM). L'économie locale mêle PME tech, sous-traitance défense navale, services aux entreprises, artisanat et commerce résidentiel. La proximité de l'École navale et du pôle océanographique en fait un territoire d'innovation.",
   ecosystemEn:
@@ -56,7 +56,7 @@ export const LOCMARIA_PLOUZANE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME tech, start-up et sous-traitants défense navale du technopôle Brest-Iroise sur leurs cas IA : automatisation documentation, analyse données capteurs, agents IA support technique, classification rapports R&D. Confidentialité défense respectée.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Locmaria-Plouzané ?",
+      q: "Combien coûte un audit IA à Locmaria-Plouzané  ?",
       a: "L'Audit Flash Axion-IA démarre à 490 € HT. Adapté aux TPE et PME du secteur, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {

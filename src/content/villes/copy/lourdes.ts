@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LOURDES_COPY: VilleCopy = {
   pitchFr:
-    "Lourdes (65), ville de pèlerinage mondial dans les Hautes-Pyrénées, deuxième destination touristique de France après Paris. Sanctuaires mariaux, hôtellerie de masse, tourisme religieux et montagne. Tissu PME hôtelières, TPE commerces souvenirs, restauration, artisans, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Lourdes (65), ville de pèlerinage mondial dans les Hautes-Pyrénées, deuxième destination touristique de France après Paris. Sanctuaires mariaux, hôtellerie de masse, tourisme religieux et montagne. Tissu PME hôtelières, TPE commerces souvenirs, restauration, artisans, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Lourdes (65), ville de pèlerinage mondial dans les Hautes-Pyrénées, deuxième destination touristique de France après Paris. Sanctuaires mariaux, hôtellerie de masse, tourisme religieux et montagne. Tissu PME hôtelières, TPE commerces souvenirs, restauration, artisans, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Lourdes (65), ville de pèlerinage mondial dans les Hautes-Pyrénées, deuxième destination touristique de France après Paris. Sanctuaires mariaux, hôtellerie de masse, tourisme religieux et montagne. Tissu PME hôtelières, TPE commerces souvenirs, restauration, artisans, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lourdes (65). Nous accompagnons tous types d'activités : PME hôtelières et d'accueil pèlerins, TPE commerces, restaurants, artisans, indépendants, professions libérales et acteurs du tourisme religieux et montagne pyrénéen.",
   directAnswerEn:

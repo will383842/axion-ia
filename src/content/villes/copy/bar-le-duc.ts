@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const BAR_LE_DUC_COPY: VilleCopy = {
   pitchFr:
-    "Bar-le-Duc (55), préfecture de la Meuse, conjugue patrimoine Renaissance de sa ville haute médiévale et savoir-faire artisanal renommé (confitures de groseilles épépinées à la plume). Tissu de TPE/PME administration, services, commerce, agroalimentaire, artisanat et tourisme. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Bar-le-Duc (55), préfecture de la Meuse, conjugue patrimoine Renaissance de sa ville haute médiévale et savoir-faire artisanal renommé (confitures de groseilles épépinées à la plume). Tissu de TPE/PME administration, services, commerce, agroalimentaire, artisanat et tourisme. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Bar-le-Duc (55), préfecture de la Meuse, conjugue patrimoine Renaissance de sa ville haute médiévale et savoir-faire artisanal renommé (confitures de groseilles épépinées à la plume). Tissu de TPE/PME administration, services, commerce, agroalimentaire, artisanat et tourisme. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Bar-le-Duc (55), préfecture de la Meuse, conjugue patrimoine Renaissance de sa ville haute médiévale et savoir-faire artisanal renommé (confitures de groseilles épépinées à la plume). Tissu de TPE/PME administration, services, commerce, agroalimentaire, artisanat et tourisme. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bar-le-Duc (55). Nous accompagnons TPE et PME : artisans agroalimentaires, commerçants, hôteliers-restaurateurs, professions libérales et prestataires de services de la Meuse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bar-le-Duc (55). Nous accompagnons TPE et PME : artisans agroalimentaires, commerçants, hôteliers-restaurateurs, professions libérales et prestataires de services de la Meuse. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bar-le-Duc (55). Nous accompagnons TPE et PME : artisans agroalimentaires, commerçants, hôteliers-restaurateurs, professions libérales et prestataires de services de la Meuse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bar-le-Duc (55). Nous accompagnons TPE et PME : artisans agroalimentaires, commerçants, hôteliers-restaurateurs, professions libérales et prestataires de services de la Meuse. Audit Flash sur mesure.",
   seoHook: "TPE & PME Meuse",
   ecosystemFr:
     "Bar-le-Duc est préfecture de la Meuse, située au bord de l'Ornain. La ville haute Renaissance est classée et la cité est célèbre pour son savoir-faire artisanal : confitures de groseilles épépinées à la plume (Maison Dutriez). L'économie locale repose sur l'administration préfectorale, l'agroalimentaire artisanal, le commerce de centre-ville, l'artisanat BTP, le tourisme patrimonial et les services aux entreprises.",
@@ -52,7 +52,7 @@ export const BAR_LE_DUC_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Bar-le-Duc et sur toute la Meuse (Verdun, Commercy, Ligny-en-Barrois, Saint-Mihiel). Gare Meuse TGV à 25 min, Paris à 1h05 en TGV.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Bar-le-Duc ?",
+      q: "Quel est le tarif d'un audit IA à Bar-le-Duc  ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Bar-le-Duc et de la Meuse, il identifie les cas d'usage IA à fort ROI pour votre atelier, commerce ou activité de services.",
     },
     {

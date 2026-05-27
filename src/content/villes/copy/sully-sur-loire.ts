@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SULLY_SUR_LOIRE_COPY: VilleCopy = {
   pitchFr:
-    "Sully-sur-Loire (45), commune des bords de Loire en Loiret, est célèbre pour son château de Sully (patrimoine mondial UNESCO Val de Loire). Bourg rural de l'est-Loiret, entre Sologne et Beauce. Tissu TPE artisans, commerçants, PME agricoles, tourisme patrimonial Loire. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Sully-sur-Loire (45), commune des bords de Loire en Loiret, est célèbre pour son château de Sully (patrimoine mondial UNESCO Val de Loire). Bourg rural de l'est-Loiret, entre Sologne et Beauce. Tissu TPE artisans, commerçants, PME agricoles, tourisme patrimonial Loire. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Sully-sur-Loire (45), commune des bords de Loire en Loiret, est célèbre pour son château de Sully (patrimoine mondial UNESCO Val de Loire). Bourg rural de l'est-Loiret, entre Sologne et Beauce. Tissu TPE artisans, commerçants, PME agricoles, tourisme patrimonial Loire. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Sully-sur-Loire (45), commune des bords de Loire en Loiret, est célèbre pour son château de Sully (patrimoine mondial UNESCO Val de Loire). Bourg rural de l'est-Loiret, entre Sologne et Beauce. Tissu TPE artisans, commerçants, PME agricoles, tourisme patrimonial Loire. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sully-sur-Loire (45). Nous accompagnons tous types d'activités : acteurs du tourisme patrimonial (château de Sully UNESCO), TPE artisans et commerçants du bourg, PME agricoles est-Loiret, indépendants, professions libérales et services aux entreprises du Sullias.",
   directAnswerEn:

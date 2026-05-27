@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const MONDONVILLE_COPY: VilleCopy = {
   pitchFr:
-    "Mondonville (31), commune du nord-ouest de Toulouse avec plus de 6 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de la couronne nord-ouest de Toulouse.",
+    "Mondonville (31), commune du nord-ouest de Toulouse avec plus de 6 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA couvre les activités professionnelles du bassin de la couronne nord-ouest de Toulouse.",
   pitchEn:
-    "Mondonville (31), commune du nord-ouest de Toulouse avec plus de 6 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de la couronne nord-ouest de Toulouse.",
+    "Mondonville (31), commune du nord-ouest de Toulouse avec plus de 6 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA couvre les activités professionnelles du bassin de la couronne nord-ouest de Toulouse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mondonville (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord-ouest Toulouse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mondonville (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord-ouest Toulouse. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mondonville (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord-ouest Toulouse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mondonville (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord-ouest Toulouse. Audit Flash sur mesure.",
   seoHook: "artisanat & commerce détail",
   ecosystemFr:
     "Mondonville est une commune résidentielle du nord-ouest de Toulouse, entre Cornebarrieu et Aussonne. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Proximité de l'aéroport et du pôle aéronautique.",
@@ -56,7 +56,7 @@ export const MONDONVILLE_COPY: VilleCopy = {
       a: "Nous accompagnons tous types d'activités : TPE artisans, PME de services, professions libérales, commerces, agriculture. Aucun secteur exclu.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Mondonville ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Mondonville  ?",
       a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics.",
     },
     {

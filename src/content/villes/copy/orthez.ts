@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const ORTHEZ_COPY: VilleCopy = {
   pitchFr:
-    "Orthez (64), sous-préfecture des Pyrénées-Atlantiques en Béarn, 10 881 habitants sur le gave de Pau. Bourg historique béarnais, tissu de TPE artisans, PME agroalimentaires, commerces de centre-ville et services de santé. Axion-IA accompagne entreprises et indépendants de tous secteurs du Béarn des Gaves.",
+    "Orthez (64), sous-préfecture des Pyrénées-Atlantiques en Béarn, 10 881 habitants sur le gave de Pau. Bourg historique béarnais, tissu de TPE artisans, PME agroalimentaires, commerces de centre-ville et services de santé. Axion-IA collabore avec toutes les structures locales du Béarn des Gaves.",
   pitchEn:
-    "Orthez (64), sous-préfecture des Pyrénées-Atlantiques en Béarn, 10 881 habitants sur le gave de Pau. Bourg historique béarnais, tissu de TPE artisans, PME agroalimentaires, commerces de centre-ville et services de santé. Axion-IA accompagne entreprises et indépendants de tous secteurs du Béarn des Gaves.",
+    "Orthez (64), sous-préfecture des Pyrénées-Atlantiques en Béarn, 10 881 habitants sur le gave de Pau. Bourg historique béarnais, tissu de TPE artisans, PME agroalimentaires, commerces de centre-ville et services de santé. Axion-IA collabore avec toutes les structures locales du Béarn des Gaves.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Orthez (64). Nous accompagnons TPE, PME et commerçants du Béarn des Gaves : agroalimentaire, artisanat, santé, services. Audit Flash à partir de 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Orthez (64). Nous accompagnons TPE, PME et commerçants du Béarn des Gaves : agroalimentaire, artisanat, santé, services. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Orthez (64). Nous accompagnons TPE, PME et commerçants du Béarn des Gaves : agroalimentaire, artisanat, santé, services. Audit Flash à partir de 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Orthez (64). Nous accompagnons TPE, PME et commerçants du Béarn des Gaves : agroalimentaire, artisanat, santé, services. Audit Flash sur mesure.",
   seoHook: "agroalimentaire & commerce centre-ville",
   ecosystemFr:
     "Orthez est sous-préfecture du Béarn sur le gave de Pau, 10 881 habitants. Ancien fief de Gaston Fébus, ville historique avec un tissu de PME agroalimentaires (filière maïs, élevage, salaisons), TPE artisans, commerces de centre-ville, services de santé (centre hospitalier) et proximité du bassin industriel de Lacq.",

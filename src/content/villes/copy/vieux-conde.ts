@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VIEUX_CONDE_COPY: VilleCopy = {
   pitchFr:
-    "Vieux-Condé (59), commune du Nord en agglomération Valenciennes, est située sur les bords de l'Escaut près de la frontière belge. Tissu mixte : TPE artisans BTP, PME industrielles, commerces de proximité, professions libérales, services péri-urbains. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Vieux-Condé (59), commune du Nord en agglomération Valenciennes, est située sur les bords de l'Escaut près de la frontière belge. Tissu mixte : TPE artisans BTP, PME industrielles, commerces de proximité, professions libérales, services péri-urbains. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "Vieux-Condé (59), commune du Nord en agglomération Valenciennes, est située sur les bords de l'Escaut près de la frontière belge. Tissu mixte : TPE artisans BTP, PME industrielles, commerces de proximité, professions libérales, services péri-urbains. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Vieux-Condé (59), commune du Nord en agglomération Valenciennes, est située sur les bords de l'Escaut près de la frontière belge. Tissu mixte : TPE artisans BTP, PME industrielles, commerces de proximité, professions libérales, services péri-urbains. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vieux-Condé (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles, commerçants de proximité, professions libérales, indépendants et services aux entreprises du Valenciennois.",
   directAnswerEn:

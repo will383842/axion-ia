@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BONDUES_COPY: VilleCopy = {
   pitchFr:
-    "Bondues (59), commune française du département du Nord (région Hauts-de-France) dans la Métropole Européenne de Lille (MEL), est une ville résidentielle bourgeoise du Nord lillois (golf de Bondues, château du Vert-Bois, manoir de la Vigne). Tissu PME services aux entreprises, sièges sociaux, professions libérales, TPE commerces et artisans, services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Bondues (59), commune française du département du Nord (région Hauts-de-France) dans la Métropole Européenne de Lille (MEL), est une ville résidentielle bourgeoise du Nord lillois (golf de Bondues, château du Vert-Bois, manoir de la Vigne). Tissu PME services aux entreprises, sièges sociaux, professions libérales, TPE commerces et artisans, services. Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Bondues (59), commune française du département du Nord (région Hauts-de-France) dans la Métropole Européenne de Lille (MEL), est une ville résidentielle bourgeoise du Nord lillois (golf de Bondues, château du Vert-Bois, manoir de la Vigne). Tissu PME services aux entreprises, sièges sociaux, professions libérales, TPE commerces et artisans, services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Bondues (59), commune française du département du Nord (région Hauts-de-France) dans la Métropole Européenne de Lille (MEL), est une ville résidentielle bourgeoise du Nord lillois (golf de Bondues, château du Vert-Bois, manoir de la Vigne). Tissu PME services aux entreprises, sièges sociaux, professions libérales, TPE commerces et artisans, services. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bondues (59). Nous accompagnons tous types d'activités : TPE commerçants et artisans, PME services aux entreprises et sièges sociaux du Nord lillois, professions libérales, dirigeants résidant dans le secteur résidentiel bourgeois de la métropole lilloise (MEL) entre Marcq-en-Barœul et Tourcoing.",
   directAnswerEn:

@@ -61,7 +61,7 @@ export const LE_MENE_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour une TPE ou PME du centre Bretagne ?",
-      a: "L'audit Flash démarre à 490 € HT, accessible aux TPE. Pour les PME agroalimentaires et coopératives, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
+      a: "L'audit Flash débute selon la taille de votre activité, accessible aux TPE. Pour les PME agroalimentaires et coopératives, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
     },
     {
       q: "Comment se déroule une mission IA au Mené ?",

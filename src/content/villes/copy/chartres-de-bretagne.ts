@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHARTRES_DE_BRETAGNE_COPY: VilleCopy = {
   pitchFr:
-    "Chartres-de-Bretagne (35), commune du sud de Rennes Métropole, est un pôle économique dynamique grâce à ses zones d'activités (ZA de la Janais, pôle tertiaire). Tissu PME industrielles et tertiaires, TPE artisans BTP, sous-traitance automobile, commerces, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud de Rennes Métropole.",
+    "Chartres-de-Bretagne (35), commune du sud de Rennes Métropole, est un pôle économique dynamique grâce à ses zones d'activités (ZA de la Janais, pôle tertiaire). Tissu PME industrielles et tertiaires, TPE artisans BTP, sous-traitance automobile, commerces, professions libérales. Axion-IA couvre les activités professionnelles du bassin du sud de Rennes Métropole.",
   pitchEn:
-    "Chartres-de-Bretagne (35), commune du sud de Rennes Métropole, est un pôle économique dynamique grâce à ses zones d'activités (ZA de la Janais, pôle tertiaire). Tissu PME industrielles et tertiaires, TPE artisans BTP, sous-traitance automobile, commerces, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud de Rennes Métropole.",
+    "Chartres-de-Bretagne (35), commune du sud de Rennes Métropole, est un pôle économique dynamique grâce à ses zones d'activités (ZA de la Janais, pôle tertiaire). Tissu PME industrielles et tertiaires, TPE artisans BTP, sous-traitance automobile, commerces, professions libérales. Axion-IA couvre les activités professionnelles du bassin du sud de Rennes Métropole.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chartres-de-Bretagne (35). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles et tertiaires des zones d'activités, sous-traitants automobile, professions libérales, indépendants et services aux entreprises du sud de Rennes Métropole.",
   directAnswerEn:
@@ -61,7 +61,7 @@ export const CHARTRES_DE_BRETAGNE_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour une PME industrielle à Chartres-de-Bretagne ?",
-      a: "L'audit Flash démarre à 490 € HT, accessible aux TPE. Pour les PME industrielles et sous-traitants, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
+      a: "L'audit Flash propose un tarif d'entrée accessible, accessible aux TPE. Pour les PME industrielles et sous-traitants, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
     },
     {
       q: "Comment se déroule une mission IA à Chartres-de-Bretagne ?",

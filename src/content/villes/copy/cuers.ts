@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CUERS_COPY: VilleCopy = {
   pitchFr:
-    "Cuers (83), commune du centre-Var au cœur du vignoble Côtes de Provence, compte plus de 13 200 habitants. Viticulture historique, zones d'activités, agriculture, tissu de TPE artisanales, PME viticoles et agroalimentaires, commerces et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Cuers (83), commune du centre-Var au cœur du vignoble Côtes de Provence, compte plus de 13 200 habitants. Viticulture historique, zones d'activités, agriculture, tissu de TPE artisanales, PME viticoles et agroalimentaires, commerces et services. Axion-IA répond aux besoins des activités professionnelles présentes.",
   pitchEn:
-    "Cuers (83), commune du centre-Var au cœur du vignoble Côtes de Provence, compte plus de 13 200 habitants. Viticulture historique, zones d'activités, agriculture, tissu de TPE artisanales, PME viticoles et agroalimentaires, commerces et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Cuers (83), commune du centre-Var au cœur du vignoble Côtes de Provence, compte plus de 13 200 habitants. Viticulture historique, zones d'activités, agriculture, tissu de TPE artisanales, PME viticoles et agroalimentaires, commerces et services. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cuers (83). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME viticoles Côtes de Provence, agroalimentaires, professions libérales et services du centre-Var.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const CUERS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les caves coopératives, négociants et PME agroalimentaires du centre-Var : automatisation chaîne production, traçabilité, gestion qualité, optimisation supply chain et relation client B2B.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Cuers ?",
+      q: "Quel est le tarif d'un audit IA à Cuers  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {

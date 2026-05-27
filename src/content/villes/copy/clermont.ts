@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const CLERMONT_COPY: VilleCopy = {
   pitchFr:
-    "Clermont (60), commune de 10 564 habitants dans l'Oise, est une sous-préfecture historique dominée par son donjon médiéval. Carrefour administratif et commercial du Clermontois, la ville concentre un tissu de TPE/PME services publics, commerce, artisanat, santé et services aux entreprises. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Clermont (60), commune de 10 564 habitants dans l'Oise, est une sous-préfecture historique dominée par son donjon médiéval. Carrefour administratif et commercial du Clermontois, la ville concentre un tissu de TPE/PME services publics, commerce, artisanat, santé et services aux entreprises. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Clermont (60), commune de 10 564 habitants dans l'Oise, est une sous-préfecture historique dominée par son donjon médiéval. Carrefour administratif et commercial du Clermontois, la ville concentre un tissu de TPE/PME services publics, commerce, artisanat, santé et services aux entreprises. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Clermont (60), commune de 10 564 habitants dans l'Oise, est une sous-préfecture historique dominée par son donjon médiéval. Carrefour administratif et commercial du Clermontois, la ville concentre un tissu de TPE/PME services publics, commerce, artisanat, santé et services aux entreprises. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Clermont (60). Nous accompagnons TPE et PME du Clermontois : commerçants, artisans, professionnels de santé, prestataires de services et acteurs du secteur public local. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Clermont (60). Nous accompagnons TPE et PME du Clermontois : commerçants, artisans, professionnels de santé, prestataires de services et acteurs du secteur public local. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Clermont (60). Nous accompagnons TPE et PME du Clermontois : commerçants, artisans, professionnels de santé, prestataires de services et acteurs du secteur public local. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Clermont (60). Nous accompagnons TPE et PME du Clermontois : commerçants, artisans, professionnels de santé, prestataires de services et acteurs du secteur public local. Audit Flash sur mesure.",
   ecosystemFr:
     "Clermont est une sous-préfecture de l'Oise à mi-chemin entre Paris et Amiens, pôle administratif et commercial du Clermontois. Son économie repose sur les services publics (sous-préfecture, hôpital, tribunal), le commerce de centre-ville, l'artisanat, la santé et les services aux entreprises. Le bassin d'emploi s'articule avec Breuil-le-Sec, Agnetz et Liancourt, bénéficiant de la proximité de l'A1 et de la gare TER Clermont-de-l'Oise.",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const CLERMONT_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Clermont et dans tout le Clermontois (Breuil-le-Sec, Agnetz, Liancourt, Fitz-James). Consultants accessibles via gare SNCF Clermont-de-l'Oise (TER Paris-Nord en 50 min). Paris à 1h via A1.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Clermont ?",
+      q: "Tarifs audit IA à Clermont  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME clermontoises : commerçants, artisans, professionnels de santé, prestataires de services et acteurs du secteur public. ROI chiffré dès le diagnostic.",
     },
     {

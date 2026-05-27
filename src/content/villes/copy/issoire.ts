@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ISSOIRE_COPY: VilleCopy = {
   pitchFr:
-    "Issoire (63), sous-préfecture du Puy-de-Dôme, est réputée pour la basilique romane Saint-Austremoine (l'une des 5 églises romanes majeures d'Auvergne) et son tissu industriel aéronautique/métallurgique notable. Tissu PME industrielles, administration, agriculture Limagne, tourisme roman, TPE artisans BTP, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Issoire (63), sous-préfecture du Puy-de-Dôme, est réputée pour la basilique romane Saint-Austremoine (l'une des 5 églises romanes majeures d'Auvergne) et son tissu industriel aéronautique/métallurgique notable. Tissu PME industrielles, administration, agriculture Limagne, tourisme roman, TPE artisans BTP, commerces. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Issoire (63), sous-préfecture du Puy-de-Dôme, est réputée pour la basilique romane Saint-Austremoine (l'une des 5 églises romanes majeures d'Auvergne) et son tissu industriel aéronautique/métallurgique notable. Tissu PME industrielles, administration, agriculture Limagne, tourisme roman, TPE artisans BTP, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Issoire (63), sous-préfecture du Puy-de-Dôme, est réputée pour la basilique romane Saint-Austremoine (l'une des 5 églises romanes majeures d'Auvergne) et son tissu industriel aéronautique/métallurgique notable. Tissu PME industrielles, administration, agriculture Limagne, tourisme roman, TPE artisans BTP, commerces. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Issoire (63). Nous accompagnons tous types d'activités : PME industrielles aéronautique/métallurgie, administration sous-préfecture, acteurs tourisme roman, agriculteurs Limagne, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:

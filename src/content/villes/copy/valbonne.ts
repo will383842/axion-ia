@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VALBONNE_COPY: VilleCopy = {
   pitchFr:
-    "Valbonne (06), au cœur de la technopôle Sophia Antipolis (première technopôle d'Europe, 2 500+ entreprises, 38 000 emplois), conjugue innovation deeptech et village provençal médiéval classé. Tissu TPE/PME tech, R&D, startups IA, biotech, services numériques et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Valbonne (06), au cœur de la technopôle Sophia Antipolis (première technopôle d'Europe, 2 500+ entreprises, 38 000 emplois), conjugue innovation deeptech et village provençal médiéval classé. Tissu TPE/PME tech, R&D, startups IA, biotech, services numériques et professions libérales. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Valbonne (06), au cœur de la technopôle Sophia Antipolis (première technopôle d'Europe, 2 500+ entreprises, 38 000 emplois), conjugue innovation deeptech et village provençal médiéval classé. Tissu TPE/PME tech, R&D, startups IA, biotech, services numériques et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Valbonne (06), au cœur de la technopôle Sophia Antipolis (première technopôle d'Europe, 2 500+ entreprises, 38 000 emplois), conjugue innovation deeptech et village provençal médiéval classé. Tissu TPE/PME tech, R&D, startups IA, biotech, services numériques et professions libérales. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Valbonne (06). Nous accompagnons tous types d'activités : startups tech et IA de Sophia Antipolis, TPE/PME R&D, biotech, éditeurs logiciels, services numériques, professions libérales et commerces du village provençal.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHAUMES_EN_RETZ_COPY: VilleCopy = {
   pitchFr:
-    "Chaumes-en-Retz (44), commune nouvelle du Pays de Retz en Loire-Atlantique, aux portes de la Côte de Jade. Tissu TPE artisans et commerçants, PME tourisme littoral, exploitations agricoles, services de proximité, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du Pays de Retz.",
+    "Chaumes-en-Retz (44), commune nouvelle du Pays de Retz en Loire-Atlantique, aux portes de la Côte de Jade. Tissu TPE artisans et commerçants, PME tourisme littoral, exploitations agricoles, services de proximité, professions libérales. Axion-IA répond aux besoins de toutes les entreprises du Pays de Retz.",
   pitchEn:
-    "Chaumes-en-Retz (44), commune nouvelle du Pays de Retz en Loire-Atlantique, aux portes de la Côte de Jade. Tissu TPE artisans et commerçants, PME tourisme littoral, exploitations agricoles, services de proximité, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du Pays de Retz.",
+    "Chaumes-en-Retz (44), commune nouvelle du Pays de Retz en Loire-Atlantique, aux portes de la Côte de Jade. Tissu TPE artisans et commerçants, PME tourisme littoral, exploitations agricoles, services de proximité, professions libérales. Axion-IA répond aux besoins de toutes les entreprises du Pays de Retz.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chaumes-en-Retz (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tourisme littoral Côte de Jade, exploitations agricoles, services de proximité, professions libérales et entreprises du Pays de Retz.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const CHAUMES_EN_RETZ_COPY: VilleCopy = {
       a: "Pour les PME tourisme de la Côte de Jade, nous proposons audit IA, interventions sur site, implémentation (chatbot réservation, automatisation billetterie, analyse données visiteurs), coaching 1-to-1 et plateformes web IA sur mesure.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Chaumes-en-Retz ?",
+      q: "Combien coûte un audit IA à Chaumes-en-Retz  ?",
       a: "L'Audit Flash démarre à 490 € HT (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du Pays de Retz.",
     },
     {

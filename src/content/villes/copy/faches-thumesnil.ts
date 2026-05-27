@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const FACHES_THUMESNIL_COPY: VilleCopy = {
   pitchFr:
-    "Faches-Thumesnil (59), commune périurbaine de la Métropole Européenne de Lille en porte sud, conjugue zones d'activités dynamiques, tissu commercial dense le long de la RN17 et population résidentielle active. TPE, PME, artisans, commerces de proximité, professions libérales et services aux entreprises rayonnent entre Lille, Ronchin et Lesquin. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Faches-Thumesnil (59), commune périurbaine de la Métropole Européenne de Lille en porte sud, conjugue zones d'activités dynamiques, tissu commercial dense le long de la RN17 et population résidentielle active. TPE, PME, artisans, commerces de proximité, professions libérales et services aux entreprises rayonnent entre Lille, Ronchin et Lesquin. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Faches-Thumesnil (59), commune périurbaine de la Métropole Européenne de Lille en porte sud, conjugue zones d'activités dynamiques, tissu commercial dense le long de la RN17 et population résidentielle active. TPE, PME, artisans, commerces de proximité, professions libérales et services aux entreprises rayonnent entre Lille, Ronchin et Lesquin. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Faches-Thumesnil (59), commune périurbaine de la Métropole Européenne de Lille en porte sud, conjugue zones d'activités dynamiques, tissu commercial dense le long de la RN17 et population résidentielle active. TPE, PME, artisans, commerces de proximité, professions libérales et services aux entreprises rayonnent entre Lille, Ronchin et Lesquin. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Faches-Thumesnil (59). Nous accompagnons TPE et PME : commerçants de la RN17, artisans BTP, PME de services, professions libérales et sous-traitants industriels de l'agglomération lilloise sud. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Faches-Thumesnil (59). Nous accompagnons TPE et PME : commerçants de la RN17, artisans BTP, PME de services, professions libérales et sous-traitants industriels de l'agglomération lilloise sud. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Faches-Thumesnil (59). Nous accompagnons TPE et PME : commerçants de la RN17, artisans BTP, PME de services, professions libérales et sous-traitants industriels de l'agglomération lilloise sud. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Faches-Thumesnil (59). Nous accompagnons TPE et PME : commerçants de la RN17, artisans BTP, PME de services, professions libérales et sous-traitants industriels de l'agglomération lilloise sud. Audit Flash sur mesure.",
   seoHook: "commerce détail & artisanat second",
   ecosystemFr:
     "Faches-Thumesnil est une commune périurbaine intégrée à la Métropole Européenne de Lille, marquée par son axe commercial RN17 (concessions auto, retail, restauration), ses ZA, son tissu de TPE/PME de services et d'artisans, et une population active travaillant en partie à Lille. Connectée par le métro ligne 1 (Porte des Postes), proche de l'aéroport Lille-Lesquin et du CHR Lille.",
@@ -52,7 +52,7 @@ export const FACHES_THUMESNIL_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Faches-Thumesnil et sur toute la Métropole Européenne de Lille (Lille, Ronchin, Lesquin, Wattignies, Seclin). Métro ligne 1 et A1 facilitent l'accès depuis Lille centre en 10 minutes.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Faches-Thumesnil ?",
+      q: "Tarifs audit IA à Faches-Thumesnil  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Faches-Thumesnil et du Nord, il identifie les cas d'usage IA à fort ROI pour votre commerce, atelier artisan, PME de services ou cabinet libéral.",
     },
     {

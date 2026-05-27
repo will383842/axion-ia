@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VERNAISON_COPY: VilleCopy = {
   pitchFr:
-    "Vernaison (69), commune en banlieue sud de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position rive droite du Rhône. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud lyonnais.",
+    "Vernaison (69), commune en banlieue sud de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position rive droite du Rhône. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA accompagne tout le tissu professionnel local du sud lyonnais.",
   pitchEn:
-    "Vernaison (69), commune en banlieue sud de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position rive droite du Rhône. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud lyonnais.",
+    "Vernaison (69), commune en banlieue sud de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position rive droite du Rhône. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA accompagne tout le tissu professionnel local du sud lyonnais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vernaison (69). Nous accompagnons tous types d'activités : PME tertiaires sud lyonnais, TPE artisans BTP, commerçants, professions libérales et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:

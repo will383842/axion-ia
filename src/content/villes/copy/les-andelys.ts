@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LES_ANDELYS_COPY: VilleCopy = {
   pitchFr:
-    "Les Andelys (27), commune de l'Eure en Normandie dominée par le Château-Gaillard de Richard Cœur de Lion, sur les bords de Seine. Tissu TPE artisans, PME tourisme et patrimoine, agriculture, commerces, services aux entreprises, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Les Andelys (27), commune de l'Eure en Normandie dominée par le Château-Gaillard de Richard Cœur de Lion, sur les bords de Seine. Tissu TPE artisans, PME tourisme et patrimoine, agriculture, commerces, services aux entreprises, professions libérales. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Les Andelys (27), commune de l'Eure en Normandie dominée par le Château-Gaillard de Richard Cœur de Lion, sur les bords de Seine. Tissu TPE artisans, PME tourisme et patrimoine, agriculture, commerces, services aux entreprises, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Les Andelys (27), commune de l'Eure en Normandie dominée par le Château-Gaillard de Richard Cœur de Lion, sur les bords de Seine. Tissu TPE artisans, PME tourisme et patrimoine, agriculture, commerces, services aux entreprises, professions libérales. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient aux Andelys (27). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et patrimoine Château-Gaillard, agriculture bords de Seine, commerces, professions libérales, indépendants et services aux entreprises de Seine Normandie Agglomération.",
   directAnswerEn:

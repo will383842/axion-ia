@@ -11,9 +11,9 @@ export const MONTMORENCY_COPY: VilleCopy = {
   pitchEn:
     "À Montmorency, Axion-IA intervient pour optimiser les processus des entreprises locales. Proche de Paris, ce bassin économique dynamique inclut des acteurs comme LVMH et Cap Digital.",
   directAnswerFr:
-    "Axion-IA se déplace à Montmorency pour des interventions sur site. Avec des voisins économiques comme Enghien-les-Bains et Deuil-la-Barre, Montmorency bénéficie d'un environnement propice à l'innovation. Nos services incluent des audits à partir de 490 € HT et des implémentations dès 990 € HT, adaptés aux besoins des entreprises locales.",
+    "Axion-IA se déplace à Montmorency pour des interventions sur site. Avec des voisins économiques comme Enghien-les-Bains et Deuil-la-Barre, Montmorency bénéficie d'un environnement propice à l'innovation. Nos services incluent des audits et des implémentations, adaptés aux besoins des entreprises locales.",
   directAnswerEn:
-    "Axion-IA se déplace à Montmorency pour des interventions sur site. Avec des voisins économiques comme Enghien-les-Bains et Deuil-la-Barre, Montmorency bénéficie d'un environnement propice à l'innovation. Nos services incluent des audits à partir de 490 € HT et des implémentations dès 990 € HT, adaptés aux besoins des entreprises locales.",
+    "Axion-IA se déplace à Montmorency pour des interventions sur site. Avec des voisins économiques comme Enghien-les-Bains et Deuil-la-Barre, Montmorency bénéficie d'un environnement propice à l'innovation. Nos services incluent des audits et des implémentations, adaptés aux besoins des entreprises locales.",
   seoHook: "commerce détail & santé humaine",
   ecosystemFr:
     "Montmorency est entourée de pôles économiques comme Enghien-les-Bains et Sannois. L'influence de LVMH et Cap Digital à Paris soutient les initiatives IA dans cette région.",

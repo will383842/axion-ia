@@ -9,9 +9,9 @@ export const MANDUEL_COPY: VilleCopy = {
   pitchEn:
     "Manduel (30), commune gardoise des Costières accueillant la gare TGV Nîmes Pont du Gard. Tissu TPE/PME viticulture Costières de Nîmes, services aux entreprises, logistique, commerces et artisanat BTP. Axion-IA y intervient pour tous types d'activités de la zone gare TGV / Costières.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Manduel (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs Costières de Nîmes, entreprises de services, logisticiens, commerçants et artisans BTP de la zone gare TGV. Audit Flash à partir de 490 € HT.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Manduel (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs Costières de Nîmes, entreprises de services, logisticiens, commerçants et artisans BTP de la zone gare TGV. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Manduel (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs Costières de Nîmes, entreprises de services, logisticiens, commerçants et artisans BTP de la zone gare TGV. Audit Flash à partir de 490 € HT.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Manduel (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs Costières de Nîmes, entreprises de services, logisticiens, commerçants et artisans BTP de la zone gare TGV. Audit Flash sur mesure.",
   seoHook: "viticulture costières & logistique transport",
   ecosystemFr:
     "Manduel (~7 000 hab) est stratégiquement positionnée avec la gare TGV Nîmes Pont du Gard (Paris à 2h50). Viticulture Costières de Nîmes, zone d'activité en développement, services aux entreprises, logistique, artisanat BTP et commerces. Dynamique économique portée par l'accessibilité TGV.",
@@ -52,7 +52,7 @@ export const MANDUEL_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Manduel et dans toute la zone Costières / gare TGV (Redessan, Marguerittes, Bouillargues, Garons). Nos consultants arrivent facilement via la gare TGV ou Nîmes (15 min).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Manduel ?",
+      q: "Quel est le tarif d'un audit IA à Manduel  ?",
       a: "L'Audit Flash commence à 490 € HT. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {

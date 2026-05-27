@@ -11,9 +11,9 @@ export const SAINT_PRIEST_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Saint-Priest, au cœur d'un écosystème industriel dynamique comprenant Renault Trucks et Bosch, pour optimiser vos processus grâce à l'IA.",
   directAnswerFr:
-    "Axion-IA propose des interventions à Saint-Priest, une ville stratégique avec des entreprises comme Renault Trucks et Schneider Electric. Notre offre inclut des audits à partir de 490 € HT et des implémentations dès 990 € HT. Nous nous déplaçons sur site pour vous accompagner dans l'optimisation de vos processus métiers grâce à l'IA.",
+    "Axion-IA propose des interventions à Saint-Priest, une ville stratégique avec des entreprises comme Renault Trucks et Schneider Electric. Notre offre inclut des audits et des implémentations. Nous nous déplaçons sur site pour vous accompagner dans l'optimisation de vos processus métiers grâce à l'IA.",
   directAnswerEn:
-    "Axion-IA propose des interventions à Saint-Priest, une ville stratégique avec des entreprises comme Renault Trucks et Schneider Electric. Notre offre inclut des audits à partir de 490 € HT et des implémentations dès 990 € HT. Nous nous déplaçons sur site pour vous accompagner dans l'optimisation de vos processus métiers grâce à l'IA.",
+    "Axion-IA propose des interventions à Saint-Priest, une ville stratégique avec des entreprises comme Renault Trucks et Schneider Electric. Notre offre inclut des audits et des implémentations. Nous nous déplaçons sur site pour vous accompagner dans l'optimisation de vos processus métiers grâce à l'IA.",
   seoHook: "construction véhicules & commerce gros",
   ecosystemFr:
     "Saint-Priest bénéficie de la proximité du Parc Technologique et de l'implantation de grands groupes comme Bosch et Schneider Electric, renforçant ainsi son attractivité industrielle.",

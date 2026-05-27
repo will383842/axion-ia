@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ECKBOLSHEIM_COPY: VilleCopy = {
   pitchFr:
-    "Eckbolsheim (67), commune de 7 157 habitants en Bas-Rhin, située dans l'agglomération de Strasbourg à l'ouest, abrite l'hippodrome de Strasbourg et un tissu économique tourné vers les services, le commerce et l'artisanat. Tissu TPE/PME services, commerces, artisans, professions libérales, restauration. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Eckbolsheim (67), commune de 7 157 habitants en Bas-Rhin, située dans l'agglomération de Strasbourg à l'ouest, abrite l'hippodrome de Strasbourg et un tissu économique tourné vers les services, le commerce et l'artisanat. Tissu TPE/PME services, commerces, artisans, professions libérales, restauration. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Eckbolsheim (67), commune de 7 157 habitants en Bas-Rhin, située dans l'agglomération de Strasbourg à l'ouest, abrite l'hippodrome de Strasbourg et un tissu économique tourné vers les services, le commerce et l'artisanat. Tissu TPE/PME services, commerces, artisans, professions libérales, restauration. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Eckbolsheim (67), commune de 7 157 habitants en Bas-Rhin, située dans l'agglomération de Strasbourg à l'ouest, abrite l'hippodrome de Strasbourg et un tissu économique tourné vers les services, le commerce et l'artisanat. Tissu TPE/PME services, commerces, artisans, professions libérales, restauration. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Eckbolsheim (67). Nous accompagnons tous types d'activités : TPE/PME services et commerces de l'ouest strasbourgeois, artisans, professions libérales, restaurateurs et acteurs économiques de l'agglomération de Strasbourg.",
   directAnswerEn:

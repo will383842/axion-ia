@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_ROQUETTE_SUR_SIAGNE_COPY: VilleCopy = {
   pitchFr:
-    "La Roquette-sur-Siagne (06), dans la vallée de la Siagne entre Cannes et Grasse, est une commune résidentielle et artisanale de l'arrière-pays cannois. Tissu TPE/PME artisanat BTP, commerces de proximité, services aux entreprises, professions libérales et petite industrie. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "La Roquette-sur-Siagne (06), dans la vallée de la Siagne entre Cannes et Grasse, est une commune résidentielle et artisanale de l'arrière-pays cannois. Tissu TPE/PME artisanat BTP, commerces de proximité, services aux entreprises, professions libérales et petite industrie. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "La Roquette-sur-Siagne (06), dans la vallée de la Siagne entre Cannes et Grasse, est une commune résidentielle et artisanale de l'arrière-pays cannois. Tissu TPE/PME artisanat BTP, commerces de proximité, services aux entreprises, professions libérales et petite industrie. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "La Roquette-sur-Siagne (06), dans la vallée de la Siagne entre Cannes et Grasse, est une commune résidentielle et artisanale de l'arrière-pays cannois. Tissu TPE/PME artisanat BTP, commerces de proximité, services aux entreprises, professions libérales et petite industrie. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Roquette-sur-Siagne (06). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, PME services et petites industries de l'arrière-pays cannois.",
   directAnswerEn:

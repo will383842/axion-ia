@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const POISY_COPY: VilleCopy = {
   pitchFr:
-    "Poisy (74), commune de l'ouest de l'agglomération d'Annecy en Haute-Savoie, accueille le campus ISETA (lycée agricole et technologique). Tissu agriculture et formation agricole, PME tertiaires bassin annécien, TPE artisanat, commerces de proximité, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Poisy (74), commune de l'ouest de l'agglomération d'Annecy en Haute-Savoie, accueille le campus ISETA (lycée agricole et technologique). Tissu agriculture et formation agricole, PME tertiaires bassin annécien, TPE artisanat, commerces de proximité, professions libérales. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "Poisy (74), commune de l'ouest de l'agglomération d'Annecy en Haute-Savoie, accueille le campus ISETA (lycée agricole et technologique). Tissu agriculture et formation agricole, PME tertiaires bassin annécien, TPE artisanat, commerces de proximité, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Poisy (74), commune de l'ouest de l'agglomération d'Annecy en Haute-Savoie, accueille le campus ISETA (lycée agricole et technologique). Tissu agriculture et formation agricole, PME tertiaires bassin annécien, TPE artisanat, commerces de proximité, professions libérales. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Poisy (74). Nous accompagnons TPE et PME : acteurs agricoles et formation (ISETA), PME tertiaires ouest Annecy, artisans, commerçants, professions libérales du bassin annécien.",
   directAnswerEn:
@@ -50,7 +50,7 @@ export const POISY_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Poisy et tout l'ouest du bassin annécien (Annecy à 10 min, Rumilly à 15 min). Déplacements depuis Genève (45 min) ou Lyon (1h40).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Poisy ?",
+      q: "Combien coûte un audit IA à Poisy  ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Tarifs publics consultables sur notre site, adaptés aux TPE et PME du bassin annécien.",
     },
     {

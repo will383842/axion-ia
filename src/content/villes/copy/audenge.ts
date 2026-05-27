@@ -9,9 +9,9 @@ export const AUDENGE_COPY: VilleCopy = {
   pitchEn:
     "Audenge (33), commune du Bassin d'Arcachon entre Biganos et Lanton, connaît une croissance résidentielle forte avec un tissu de TPE artisanales, commerces de proximité, professions libérales et activités ostréicoles. Axion-IA opère pour toutes les structures économiques de la commune du Bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Audenge (33). Nous accompagnons TPE et PME du Bassin d'Arcachon : artisans BTP, commerçants, ostréiculteurs, professions libérales et entreprises de services. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Audenge (33). Nous accompagnons TPE et PME du Bassin d'Arcachon : artisans BTP, commerçants, ostréiculteurs, professions libérales et entreprises de services. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Audenge (33). Nous accompagnons TPE et PME du Bassin d'Arcachon : artisans BTP, commerçants, ostréiculteurs, professions libérales et entreprises de services. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Audenge (33). Nous accompagnons TPE et PME du Bassin d'Arcachon : artisans BTP, commerçants, ostréiculteurs, professions libérales et entreprises de services. Audit Flash sur mesure.",
   seoHook: "artisanat & ostréiculture",
   ecosystemFr:
     "Audenge est une commune en forte croissance du Bassin d'Arcachon. Économie mixte : ostréiculture, artisanat BTP (construction neuve), commerces de proximité, professions libérales et services à la personne. Gare TER Audenge sur la ligne Bordeaux-Arcachon.",
@@ -52,7 +52,7 @@ export const AUDENGE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Audenge et dans tout le Bassin d'Arcachon (Biganos, Lanton, Le Teich, Arcachon). Nos consultants se déplacent depuis Bordeaux (40 min) ou Paris (TGV 2h + 40 min).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Audenge ?",
+      q: "Tarifs audit IA à Audenge  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Adapté aux TPE artisans et ostréiculteurs du Bassin d'Arcachon.",
     },
     {

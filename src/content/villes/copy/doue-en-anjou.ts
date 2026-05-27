@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const DOUE_EN_ANJOU_COPY: VilleCopy = {
   pitchFr:
-    "Doué-en-Anjou (49), commune nouvelle célèbre pour ses roses, son Bioparc zoo troglodytique et son patrimoine souterrain, fédère plus de 11 000 habitants. Axion-IA couvre l'ensemble des activités professionnelles présentes : horticulture, tourisme, artisanat, commerces et services.",
+    "Doué-en-Anjou (49), commune nouvelle célèbre pour ses roses, son Bioparc zoo troglodytique et son patrimoine souterrain, fédère plus de 11 000 habitants. Axion-IA couvre les activités professionnelles du bassin : horticulture, tourisme, artisanat, commerces et services.",
   pitchEn:
-    "Doué-en-Anjou (49), commune nouvelle célèbre pour ses roses, son Bioparc zoo troglodytique et son patrimoine souterrain, fédère plus de 11 000 habitants. Axion-IA couvre l'ensemble des activités professionnelles présentes : horticulture, tourisme, artisanat, commerces et services.",
+    "Doué-en-Anjou (49), commune nouvelle célèbre pour ses roses, son Bioparc zoo troglodytique et son patrimoine souterrain, fédère plus de 11 000 habitants. Axion-IA couvre les activités professionnelles du bassin : horticulture, tourisme, artisanat, commerces et services.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Doué-en-Anjou (49). Nous accompagnons les TPE, PME et acteurs touristiques douésiens dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Doué-en-Anjou (49). Nous accompagnons les TPE, PME et acteurs touristiques douésiens dans l'adoption de l'IA : audit Flash, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Doué-en-Anjou (49). Nous accompagnons les TPE, PME et acteurs touristiques douésiens dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Doué-en-Anjou (49). Nous accompagnons les TPE, PME et acteurs touristiques douésiens dans l'adoption de l'IA : audit Flash, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict.",
   seoHook: "horticulture roses & tourisme patrimoine",
   ecosystemFr:
     "Doué-en-Anjou est connue mondialement pour sa roseraie (Journées de la Rose) et son Bioparc zoo troglodytique. L'économie locale mêle horticulture (roses, pépinières), tourisme patrimonial, artisanat, commerces de bourg et agriculture (viticulture, maraîchage). Troglodytes classés, patrimoine souterrain unique.",
@@ -52,7 +52,7 @@ export const DOUE_EN_ANJOU_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Doué-en-Anjou et sur tout le Douessin (Gennes-Val-de-Loire, Brissac Loire Aubance, Montreuil-Bellay). Nos consultants se déplacent sur site, démarrage sous 5 jours.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Doué-en-Anjou ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Doué-en-Anjou  ?",
       a: "L'Audit Flash IA à Doué-en-Anjou démarre à 490 € HT pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics, sans surprise.",
     },
     {

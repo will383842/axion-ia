@@ -11,9 +11,9 @@ export const THIAIS_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Thiais, une ville proche de l'aéroport d'Orly et du bassin économique comprenant IKEA et Carrefour, pour optimiser vos processus grâce à l'IA.",
   directAnswerFr:
-    "Axion-IA se déplace à Thiais pour accompagner les entreprises locales dans l'intégration de l'IA. Avec des acteurs économiques comme IKEA et Carrefour présents dans la Zone d'Activités de Thiais, nous proposons des audits dès 490 € HT et des interventions à partir de 590 € HT pour automatiser les tâches administratives et améliorer l'efficacité opérationnelle.",
+    "Axion-IA se déplace à Thiais pour accompagner les entreprises locales dans l'intégration de l'IA. Avec des acteurs économiques comme IKEA et Carrefour présents dans la Zone d'Activités de Thiais, nous proposons des audits et des interventions 590 automatiser les tâches administratives et améliorer l'efficacité opérationnelle.",
   directAnswerEn:
-    "Axion-IA se déplace à Thiais pour accompagner les entreprises locales dans l'intégration de l'IA. Avec des acteurs économiques comme IKEA et Carrefour présents dans la Zone d'Activités de Thiais, nous proposons des audits dès 490 € HT et des interventions à partir de 590 € HT pour automatiser les tâches administratives et améliorer l'efficacité opérationnelle.",
+    "Axion-IA se déplace à Thiais pour accompagner les entreprises locales dans l'intégration de l'IA. Avec des acteurs économiques comme IKEA et Carrefour présents dans la Zone d'Activités de Thiais, nous proposons des audits et des interventions 590 automatiser les tâches administratives et améliorer l'efficacité opérationnelle.",
   seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Le tissu économique de Thiais inclut des groupes tels qu'IKEA et Carrefour. La Zone d'Activités de Thiais est un pôle clé pour le commerce de détail et l'entreposage.",

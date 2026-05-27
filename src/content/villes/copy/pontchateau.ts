@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PONTCHATEAU_COPY: VilleCopy = {
   pitchFr:
-    "Pontchâteau (44), bourg historique de Loire-Atlantique situé entre Nantes et Saint-Nazaire aux portes du parc naturel régional de Brière, concentre un tissu de TPE artisans BTP, PME agroalimentaires, commerces ruraux et exploitations agricoles (élevage, maraîchage). Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Pontchâteau (44), bourg historique de Loire-Atlantique situé entre Nantes et Saint-Nazaire aux portes du parc naturel régional de Brière, concentre un tissu de TPE artisans BTP, PME agroalimentaires, commerces ruraux et exploitations agricoles (élevage, maraîchage). Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Pontchâteau (44), bourg historique de Loire-Atlantique situé entre Nantes et Saint-Nazaire aux portes du parc naturel régional de Brière, concentre un tissu de TPE artisans BTP, PME agroalimentaires, commerces ruraux et exploitations agricoles (élevage, maraîchage). Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Pontchâteau (44), bourg historique de Loire-Atlantique situé entre Nantes et Saint-Nazaire aux portes du parc naturel régional de Brière, concentre un tissu de TPE artisans BTP, PME agroalimentaires, commerces ruraux et exploitations agricoles (élevage, maraîchage). Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pontchâteau (44). Nous accompagnons tous types d'activités : TPE artisans BTP, PME agroalimentaires, exploitants agricoles (élevage, maraîchage), commerçants de centre-bourg, professions libérales, acteurs du tourisme Brière et services aux entreprises du bassin Nantes-Saint-Nazaire.",
   directAnswerEn:

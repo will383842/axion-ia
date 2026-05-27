@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const COURCELLES_LES_LENS_COPY: VilleCopy = {
   pitchFr:
-    "Courcelles-lès-Lens (62), commune du bassin minier du Pas-de-Calais entre Lens et Douai, accueille TPE artisanales, commerces, PME de services et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin minier.",
+    "Courcelles-lès-Lens (62), commune du bassin minier du Pas-de-Calais entre Lens et Douai, accueille TPE artisanales, commerces, PME de services et professions libérales. Axion-IA y mène ses missions auprès des organisations locales du bassin minier.",
   pitchEn:
-    "Courcelles-lès-Lens (62), commune du bassin minier du Pas-de-Calais entre Lens et Douai, accueille TPE artisanales, commerces, PME de services et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin minier.",
+    "Courcelles-lès-Lens (62), commune du bassin minier du Pas-de-Calais entre Lens et Douai, accueille TPE artisanales, commerces, PME de services et professions libérales. Axion-IA y mène ses missions auprès des organisations locales du bassin minier.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Courcelles-lès-Lens (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Courcelles-lès-Lens (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier. Audit Flash sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Courcelles-lès-Lens (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Courcelles-lès-Lens (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier. Audit Flash sur mesure, intervention sur site ou en visio.",
   seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Courcelles-lès-Lens est une commune résidentielle du bassin minier entre Lens et Douai. Tissu économique de TPE artisanales BTP, commerces de proximité, professions libérales et PME de services. Économie post-minière orientée vers les activités résidentielles et de proximité.",
@@ -52,7 +52,7 @@ export const COURCELLES_LES_LENS_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Courcelles-lès-Lens et dans le bassin minier (Hénin-Beaumont, Lens, Douai, Dourges). Déplacements sur site ou sessions en visio.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Courcelles-lès-Lens ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Courcelles-lès-Lens  ?",
       a: "L'Audit Flash Axion-IA démarre à 490 € HT pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du bassin minier. Tarifs publics.",
     },
     {

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VERNEUIL_SUR_SEINE_COPY: VilleCopy = {
   pitchFr:
-    "Verneuil-sur-Seine (78), commune résidentielle des Yvelines en bords de Seine, offre un cadre de vie prisé entre forêt et fleuve. Tissu de TPE/PME tertiaires, professions libérales, commerces de proximité, artisans et services aux particuliers. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Verneuil-sur-Seine (78), commune résidentielle des Yvelines en bords de Seine, offre un cadre de vie prisé entre forêt et fleuve. Tissu de TPE/PME tertiaires, professions libérales, commerces de proximité, artisans et services aux particuliers. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Verneuil-sur-Seine (78), commune résidentielle des Yvelines en bords de Seine, offre un cadre de vie prisé entre forêt et fleuve. Tissu de TPE/PME tertiaires, professions libérales, commerces de proximité, artisans et services aux particuliers. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Verneuil-sur-Seine (78), commune résidentielle des Yvelines en bords de Seine, offre un cadre de vie prisé entre forêt et fleuve. Tissu de TPE/PME tertiaires, professions libérales, commerces de proximité, artisans et services aux particuliers. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Verneuil-sur-Seine (78). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, professions libérales, commerçants de proximité, indépendants et entreprises de la boucle de Seine yvelinoise.",
   directAnswerEn:

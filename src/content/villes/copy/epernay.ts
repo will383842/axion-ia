@@ -11,9 +11,9 @@ export const EPERNAY_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Épernay, ville connue pour ses maisons de champagne comme Moët & Chandon et Perrier-Jouët, pour optimiser vos processus métiers grâce à l'IA.",
   directAnswerFr:
-    "À Épernay, Axion-IA propose des solutions IA adaptées aux entreprises locales, notamment dans la production de boissons et le commerce de détail. Nous intervenons sur site pour automatiser les tâches administratives et optimiser les processus métier. Nos prestations incluent des audits, interventions et implémentations, avec des tarifs publics consultables, à partir de 490 € HT pour un audit Flash 4h.",
+    "À Épernay, Axion-IA propose des solutions IA adaptées aux entreprises locales, notamment dans la production de boissons et le commerce de détail. Nous intervenons sur site pour automatiser les tâches administratives et optimiser les processus métier. Nos prestations incluent des audits, interventions et implémentations, avec des tarifs publics consultables pour un audit Flash 4h.",
   directAnswerEn:
-    "À Épernay, Axion-IA propose des solutions IA adaptées aux entreprises locales, notamment dans la production de boissons et le commerce de détail. Nous intervenons sur site pour automatiser les tâches administratives et optimiser les processus métier. Nos prestations incluent des audits, interventions et implémentations, avec des tarifs publics consultables, à partir de 490 € HT pour un audit Flash 4h.",
+    "À Épernay, Axion-IA propose des solutions IA adaptées aux entreprises locales, notamment dans la production de boissons et le commerce de détail. Nous intervenons sur site pour automatiser les tâches administratives et optimiser les processus métier. Nos prestations incluent des audits, interventions et implémentations, avec des tarifs publics consultables pour un audit Flash 4h.",
   seoHook: "production boissons & commerce détail",
   ecosystemFr:
     "Épernay abrite des leaders comme Moët & Chandon et Mercier, contribuant à un écosystème économique centré sur la production de boissons et le commerce.",

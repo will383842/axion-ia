@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GUER_COPY: VilleCopy = {
   pitchFr:
-    "Guer (56), commune du Morbihan intérieur marquée par le camp de Coëtquidan et les écoles militaires de Saint-Cyr, associe activités liées à la défense, TPE artisanales, PME de services et commerces de bourg. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Guer (56), commune du Morbihan intérieur marquée par le camp de Coëtquidan et les écoles militaires de Saint-Cyr, associe activités liées à la défense, TPE artisanales, PME de services et commerces de bourg. Axion-IA répond aux besoins des activités professionnelles présentes.",
   pitchEn:
-    "Guer (56), commune du Morbihan intérieur marquée par le camp de Coëtquidan et les écoles militaires de Saint-Cyr, associe activités liées à la défense, TPE artisanales, PME de services et commerces de bourg. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Guer (56), commune du Morbihan intérieur marquée par le camp de Coëtquidan et les écoles militaires de Saint-Cyr, associe activités liées à la défense, TPE artisanales, PME de services et commerces de bourg. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guer (56). Nous accompagnons tous types d'activités : TPE artisanales, PME de services et de sous-traitance, commerces de bourg, professions libérales, prestataires du secteur défense et acteurs économiques du Morbihan intérieur.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const GUER_COPY: VilleCopy = {
       a: "Oui, nous accompagnons TPE artisanales et commerces de Guer sur des cas IA concrets : automatisation devis et facturation, chatbots relation client, gestion stocks, agents IA prise de RDV. Audit Flash 490 € HT adapté aux petites structures.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Guer ?",
+      q: "Combien coûte un audit IA à Guer  ?",
       a: "L'audit Flash IA démarre à 490 € HT pour les TPE et PME de Guer et du Morbihan intérieur. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
     },
     {

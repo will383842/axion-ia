@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const TERNAY_COPY: VilleCopy = {
   pitchFr:
-    "Ternay (69), commune en banlieue sud de Lyon dans le Rhône, est positionnée dans la vallée du Rhône sur l'axe Lyon-Vienne. Tissu péri-urbain : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud lyonnais.",
+    "Ternay (69), commune en banlieue sud de Lyon dans le Rhône, est positionnée dans la vallée du Rhône sur l'axe Lyon-Vienne. Tissu péri-urbain : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes du sud lyonnais.",
   pitchEn:
-    "Ternay (69), commune en banlieue sud de Lyon dans le Rhône, est positionnée dans la vallée du Rhône sur l'axe Lyon-Vienne. Tissu péri-urbain : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud lyonnais.",
+    "Ternay (69), commune en banlieue sud de Lyon dans le Rhône, est positionnée dans la vallée du Rhône sur l'axe Lyon-Vienne. Tissu péri-urbain : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes du sud lyonnais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ternay (69). Nous accompagnons tous types d'activités : PME tertiaires sud lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises.",
   directAnswerEn:

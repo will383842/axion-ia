@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_PAUL_TROIS_CHATEAUX_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Paul-Trois-Châteaux (26), commune du sud-Drôme dans la plaine du Tricastin, est réputée pour la truffe noire du Tricastin et la viticulture (AOC Grignan-les-Adhémar). Tissu agricole et viticole majeur, PME industrielles bassin Tricastin, TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs tricastines.",
+    "Saint-Paul-Trois-Châteaux (26), commune du sud-Drôme dans la plaine du Tricastin, est réputée pour la truffe noire du Tricastin et la viticulture (AOC Grignan-les-Adhémar). Tissu agricole et viticole majeur, PME industrielles bassin Tricastin, TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants tricastines.",
   pitchEn:
-    "Saint-Paul-Trois-Châteaux (26), commune du sud-Drôme dans la plaine du Tricastin, est réputée pour la truffe noire du Tricastin et la viticulture (AOC Grignan-les-Adhémar). Tissu agricole et viticole majeur, PME industrielles bassin Tricastin, TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs tricastines.",
+    "Saint-Paul-Trois-Châteaux (26), commune du sud-Drôme dans la plaine du Tricastin, est réputée pour la truffe noire du Tricastin et la viticulture (AOC Grignan-les-Adhémar). Tissu agricole et viticole majeur, PME industrielles bassin Tricastin, TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants tricastines.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Paul-Trois-Châteaux (26). Nous accompagnons tous types d'activités : trufficulteurs et viticulteurs AOC Grignan-les-Adhémar, PME industrielles bassin Tricastin (sous-traitants techniques), TPE artisans BTP, commerçants, indépendants et services aux entreprises sud-Drôme.",
   directAnswerEn:

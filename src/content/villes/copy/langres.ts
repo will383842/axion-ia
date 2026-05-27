@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LANGRES_COPY: VilleCopy = {
   pitchFr:
-    "Langres (52), sous-préfecture de la Haute-Marne, est une cité fortifiée historique sur un éperon dominant le plateau de Langres. Berceau de Diderot, coutellerie centenaire, patrimoine fortifié, TPE artisans, PME agroalimentaires et tourisme culturel. Axion-IA couvre l'ensemble des activités professionnelles présentes du Sud-Haute-Marne.",
+    "Langres (52), sous-préfecture de la Haute-Marne, est une cité fortifiée historique sur un éperon dominant le plateau de Langres. Berceau de Diderot, coutellerie centenaire, patrimoine fortifié, TPE artisans, PME agroalimentaires et tourisme culturel. Axion-IA couvre les activités professionnelles du bassin du Sud-Haute-Marne.",
   pitchEn:
-    "Langres (52), sous-préfecture de la Haute-Marne, est une cité fortifiée historique sur un éperon dominant le plateau de Langres. Berceau de Diderot, coutellerie centenaire, patrimoine fortifié, TPE artisans, PME agroalimentaires et tourisme culturel. Axion-IA couvre l'ensemble des activités professionnelles présentes du Sud-Haute-Marne.",
+    "Langres (52), sous-préfecture de la Haute-Marne, est une cité fortifiée historique sur un éperon dominant le plateau de Langres. Berceau de Diderot, coutellerie centenaire, patrimoine fortifié, TPE artisans, PME agroalimentaires et tourisme culturel. Axion-IA couvre les activités professionnelles du bassin du Sud-Haute-Marne.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Langres (52). Nous accompagnons tous types d'activités : TPE artisans couteliers, PME agroalimentaires, acteurs du tourisme patrimonial, commerçants centre fortifié, professions libérales et services publics sous-préfecture.",
   directAnswerEn:

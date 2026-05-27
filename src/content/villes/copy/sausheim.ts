@@ -9,9 +9,9 @@ export const SAUSHEIM_COPY: VilleCopy = {
   pitchEn:
     "Sausheim (68), commune de l'agglomération mulhousienne dans le Haut-Rhin, 5 666 habitants, est un pôle industriel majeur de l'est de Mulhouse marqué par sa vaste zone industrielle et la présence historique de constructeurs automobiles et de leurs sous-traitants. Tissu de TPE/PME industrie automobile, logistique, sous-traitance, services et commerces. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sausheim (68). Nous accompagnons TPE et PME : industriels, sous-traitants automobiles, logisticiens, prestataires de services et commerçants de l'est mulhousien. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sausheim (68). Nous accompagnons TPE et PME : industriels, sous-traitants automobiles, logisticiens, prestataires de services et commerçants de l'est mulhousien. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sausheim (68). Nous accompagnons TPE et PME : industriels, sous-traitants automobiles, logisticiens, prestataires de services et commerçants de l'est mulhousien. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sausheim (68). Nous accompagnons TPE et PME : industriels, sous-traitants automobiles, logisticiens, prestataires de services et commerçants de l'est mulhousien. Audit Flash sur mesure.",
   ecosystemFr:
     "Sausheim est intégrée à Mulhouse Alsace Agglomération et constitue l'un des principaux pôles industriels de l'est mulhousien. Son économie repose sur la grande industrie automobile et ses sous-traitants, la logistique, la mécanique de précision, les services aux entreprises et un tissu commercial de proximité. Proche du canal du Rhône au Rhin et du couloir Rhin-Rhône, la commune bénéficie d'un emplacement stratégique transfrontalier (Allemagne, Suisse).",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const SAUSHEIM_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Sausheim et sur toute Mulhouse Alsace Agglomération (Mulhouse, Illzach, Rixheim, Kingersheim, Wittenheim). Accès direct via A35/A36. Proximité immédiate avec Bâle et l'EuroAirport facilitant les missions transfrontalières.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Sausheim ?",
+      q: "Quel est le tarif d'un audit IA à Sausheim  ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de la zone industrielle de Sausheim, il identifie les cas d'usage IA à fort ROI pour votre ligne de production, atelier sous-traitant ou entrepôt logistique.",
     },
     {

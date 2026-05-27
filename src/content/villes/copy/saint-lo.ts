@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_LO_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Lô (50), préfecture de la Manche en Normandie, surnommée « capitale des ruines » après 1944 et entièrement reconstruite, accueille le haras national et un tissu de TPE artisanales, PME agroalimentaires, services publics départementaux et commerces de centre-ville. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Saint-Lô (50), préfecture de la Manche en Normandie, surnommée « capitale des ruines » après 1944 et entièrement reconstruite, accueille le haras national et un tissu de TPE artisanales, PME agroalimentaires, services publics départementaux et commerces de centre-ville. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Saint-Lô (50), préfecture de la Manche en Normandie, surnommée « capitale des ruines » après 1944 et entièrement reconstruite, accueille le haras national et un tissu de TPE artisanales, PME agroalimentaires, services publics départementaux et commerces de centre-ville. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Saint-Lô (50), préfecture de la Manche en Normandie, surnommée « capitale des ruines » après 1944 et entièrement reconstruite, accueille le haras national et un tissu de TPE artisanales, PME agroalimentaires, services publics départementaux et commerces de centre-ville. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Lô (50). Nous accompagnons tous types d'activités : TPE artisanales et commerçants du centre-ville reconstruit, PME agroalimentaires normandes, acteurs de la filière équine (haras), services publics départementaux, professions libérales et prestataires du bocage manchois.",
   directAnswerEn:

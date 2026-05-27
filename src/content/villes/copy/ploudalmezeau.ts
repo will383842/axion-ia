@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PLOUDALMEZEAU_COPY: VilleCopy = {
   pitchFr:
-    "Ploudalmézeau (29), bourg-centre du pays d'Iroise dans le nord-ouest Finistère, est historiquement lié à la récolte du goémon et aux activités maritimes. TPE artisans, PME de la filière algues, commerces de proximité, professions libérales, exploitants agricoles et acteurs du tourisme littoral composent son tissu économique. Axion-IA y déploie ses missions auprès de toutes les organisations du pays d'Iroise.",
+    "Ploudalmézeau (29), bourg-centre du pays d'Iroise dans le nord-ouest Finistère, est historiquement lié à la récolte du goémon et aux activités maritimes. TPE artisans, PME de la filière algues, commerces de proximité, professions libérales, exploitants agricoles et acteurs du tourisme littoral composent son tissu économique. Axion-IA y travaille avec les organisations du territoire du pays d'Iroise.",
   pitchEn:
-    "Ploudalmézeau (29), bourg-centre du pays d'Iroise dans le nord-ouest Finistère, est historiquement lié à la récolte du goémon et aux activités maritimes. TPE artisans, PME de la filière algues, commerces de proximité, professions libérales, exploitants agricoles et acteurs du tourisme littoral composent son tissu économique. Axion-IA y déploie ses missions auprès de toutes les organisations du pays d'Iroise.",
+    "Ploudalmézeau (29), bourg-centre du pays d'Iroise dans le nord-ouest Finistère, est historiquement lié à la récolte du goémon et aux activités maritimes. TPE artisans, PME de la filière algues, commerces de proximité, professions libérales, exploitants agricoles et acteurs du tourisme littoral composent son tissu économique. Axion-IA y travaille avec les organisations du territoire du pays d'Iroise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ploudalmézeau (29). Nous accompagnons tous types d'activités : TPE artisans et goémoniers du pays d'Iroise, PME de la filière algues, commerçants de bourg, professions libérales, exploitants agricoles et indépendants du secteur.",
   directAnswerEn:
@@ -61,7 +61,7 @@ export const PLOUDALMEZEAU_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour une TPE ou PME du pays d'Iroise ?",
-      a: "L'audit Flash démarre à 490 € HT, accessible aux TPE. Pour les PME de la filière algues et exploitations agricoles, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
+      a: "L'audit Flash propose un tarif d'entrée accessible, accessible aux TPE. Pour les PME de la filière algues et exploitations agricoles, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
     },
     {
       q: "Comment se déroule une mission IA à Ploudalmézeau ?",

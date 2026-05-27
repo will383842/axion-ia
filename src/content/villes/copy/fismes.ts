@@ -9,9 +9,9 @@ export const FISMES_COPY: VilleCopy = {
   pitchEn:
     "Fismes (51), petite ville de la vallée de la Vesle entre Reims et Soissons, est un bourg-centre rural avec un tissu économique diversifié. TPE artisanat et services, commerces de proximité, PME agroalimentaires, exploitations viticoles champenoises, professions de santé. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fismes (51). Nous accompagnons TPE et PME : artisans et commerçants de centre-bourg, PME agroalimentaires, exploitants viticoles, professions de santé, prestataires de services ruraux. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fismes (51). Nous accompagnons TPE et PME : artisans et commerçants de centre-bourg, PME agroalimentaires, exploitants viticoles, professions de santé, prestataires de services ruraux. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fismes (51). Nous accompagnons TPE et PME : artisans et commerçants de centre-bourg, PME agroalimentaires, exploitants viticoles, professions de santé, prestataires de services ruraux. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fismes (51). Nous accompagnons TPE et PME : artisans et commerçants de centre-bourg, PME agroalimentaires, exploitants viticoles, professions de santé, prestataires de services ruraux. Audit Flash sur mesure.",
   seoHook: "artisanat & agroalimentaire",
   ecosystemFr:
     "Fismes est un bourg-centre de la vallée de la Vesle, entre Reims (30 km) et Soissons (30 km). Tissu TPE/PME : artisanat, commerces de proximité, agroalimentaire, viticulture champenoise, professions de santé. Carrefour rural desservant le Tardenois.",
@@ -52,7 +52,7 @@ export const FISMES_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Fismes et dans tout le secteur Vesle-Tardenois. Reims à 30 min, Soissons à 30 min, Paris à 1 h 20 via A4.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Fismes ?",
+      q: "Tarifs audit IA à Fismes  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables en ligne, adaptés aux TPE et PME du bassin fismois.",
     },
     {

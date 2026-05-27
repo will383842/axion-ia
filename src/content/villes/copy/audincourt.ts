@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const AUDINCOURT_COPY: VilleCopy = {
   pitchFr:
-    "Audincourt (25), commune du Pays de Montbéliard dans le Doubs, est historiquement liée à l'industrie automobile et à la sous-traitance mécanique. Tissu PME sous-traitance automobile, TPE usinage et mécanique de précision, industrie métallurgique, commerces centre-ville, services aux entreprises industrielles. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Audincourt (25), commune du Pays de Montbéliard dans le Doubs, est historiquement liée à l'industrie automobile et à la sous-traitance mécanique. Tissu PME sous-traitance automobile, TPE usinage et mécanique de précision, industrie métallurgique, commerces centre-ville, services aux entreprises industrielles. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Audincourt (25), commune du Pays de Montbéliard dans le Doubs, est historiquement liée à l'industrie automobile et à la sous-traitance mécanique. Tissu PME sous-traitance automobile, TPE usinage et mécanique de précision, industrie métallurgique, commerces centre-ville, services aux entreprises industrielles. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Audincourt (25), commune du Pays de Montbéliard dans le Doubs, est historiquement liée à l'industrie automobile et à la sous-traitance mécanique. Tissu PME sous-traitance automobile, TPE usinage et mécanique de précision, industrie métallurgique, commerces centre-ville, services aux entreprises industrielles. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Audincourt (25). Nous accompagnons TPE et PME du Pays de Montbéliard : sous-traitants automobile, usineurs et mécaniciens de précision, métallurgistes, commerçants et prestataires services aux entreprises industrielles de l'agglomération.",
   directAnswerEn:

@@ -11,9 +11,9 @@ export const MURET_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Muret pour optimiser les processus des entreprises locales, en s'appuyant sur l'écosystème économique dynamique de la région Occitanie. Nos services incluent des audits et implémentations IA adaptés aux besoins des TPE et PME.",
   directAnswerFr:
-    "À Muret, Axion-IA propose des services de conseil en IA pour les entreprises locales. Nous intervenons pour automatiser les tâches administratives et optimiser les processus métiers. Nos prestations incluent des audits dès 490 € HT et des interventions à partir de 590 € HT. Muret bénéficie de la proximité de Toulouse, un centre économique important avec des entreprises comme LVMH et BNP Paribas.",
+    "À Muret, Axion-IA propose des services de conseil en IA pour les entreprises locales. Nous intervenons pour automatiser les tâches administratives et optimiser les processus métiers. Nos prestations incluent des audits et des interventions. Muret bénéficie de la proximité de Toulouse, un centre économique important avec des entreprises comme LVMH et BNP Paribas.",
   directAnswerEn:
-    "À Muret, Axion-IA propose des services de conseil en IA pour les entreprises locales. Nous intervenons pour automatiser les tâches administratives et optimiser les processus métiers. Nos prestations incluent des audits dès 490 € HT et des interventions à partir de 590 € HT. Muret bénéficie de la proximité de Toulouse, un centre économique important avec des entreprises comme LVMH et BNP Paribas.",
+    "À Muret, Axion-IA propose des services de conseil en IA pour les entreprises locales. Nous intervenons pour automatiser les tâches administratives et optimiser les processus métiers. Nos prestations incluent des audits et des interventions. Muret bénéficie de la proximité de Toulouse, un centre économique important avec des entreprises comme LVMH et BNP Paribas.",
   seoHook: "commerce détail & construction",
   ecosystemFr:
     "L'économie de Muret est soutenue par sa proximité avec Toulouse, où des entreprises comme LVMH et Sanofi sont présentes. Ce contexte offre des opportunités pour les entreprises locales de se développer en intégrant des solutions IA.",

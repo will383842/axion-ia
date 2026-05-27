@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const BAUGE_EN_ANJOU_COPY: VilleCopy = {
   pitchFr:
-    "Baugé-en-Anjou (49), commune nouvelle du Baugeois regroupant 16 communes déléguées, rassemble près de 12 000 habitants en territoire rural actif. Axion-IA accompagne entreprises et indépendants de tous secteurs : agriculture, artisanat, commerces de bourg, PME industrielles et services.",
+    "Baugé-en-Anjou (49), commune nouvelle du Baugeois regroupant 16 communes déléguées, rassemble près de 12 000 habitants en territoire rural actif. Axion-IA opère pour entreprises et indépendants du secteur : agriculture, artisanat, commerces de bourg, PME industrielles et services.",
   pitchEn:
-    "Baugé-en-Anjou (49), commune nouvelle du Baugeois regroupant 16 communes déléguées, rassemble près de 12 000 habitants en territoire rural actif. Axion-IA accompagne entreprises et indépendants de tous secteurs : agriculture, artisanat, commerces de bourg, PME industrielles et services.",
+    "Baugé-en-Anjou (49), commune nouvelle du Baugeois regroupant 16 communes déléguées, rassemble près de 12 000 habitants en territoire rural actif. Axion-IA opère pour entreprises et indépendants du secteur : agriculture, artisanat, commerces de bourg, PME industrielles et services.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Baugé-en-Anjou (49). Nous accompagnons les TPE, PME et exploitants agricoles du Baugeois dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Baugé-en-Anjou (49). Nous accompagnons les TPE, PME et exploitants agricoles du Baugeois dans l'adoption de l'IA : audit Flash, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Baugé-en-Anjou (49). Nous accompagnons les TPE, PME et exploitants agricoles du Baugeois dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Baugé-en-Anjou (49). Nous accompagnons les TPE, PME et exploitants agricoles du Baugeois dans l'adoption de l'IA : audit Flash, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict.",
   seoHook: "agriculture grandes & artisanat métiers",
   ecosystemFr:
     "Baugé-en-Anjou est un pôle rural structurant du Baugeois, territoire agricole entre forêts de Chandelais et plaines céréalières. Tissu économique : exploitations agricoles (céréales, élevage), artisanat BTP, commerces de bourg, PME agroalimentaires et services de proximité. Patrimoine historique (château, apothicairerie).",
@@ -52,7 +52,7 @@ export const BAUGE_EN_ANJOU_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Baugé-en-Anjou et sur l'ensemble du Baugeois (Longué-Jumelles, Noyant-Villages, Beaufort-en-Anjou). Nos consultants se déplacent sur site, démarrage sous 5 jours.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Baugé-en-Anjou ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Baugé-en-Anjou  ?",
       a: "L'Audit Flash IA à Baugé-en-Anjou démarre à 490 € HT pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics, sans surprise.",
     },
     {

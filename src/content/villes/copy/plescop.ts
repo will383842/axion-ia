@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PLESCOP_COPY: VilleCopy = {
   pitchFr:
-    "Plescop (56), commune résidentielle au nord immédiat de Vannes, accueille un tissu de TPE tertiaires, PME de services, professions libérales et commerces de proximité adossés à l'agglomération vannetaise. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Plescop (56), commune résidentielle au nord immédiat de Vannes, accueille un tissu de TPE tertiaires, PME de services, professions libérales et commerces de proximité adossés à l'agglomération vannetaise. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Plescop (56), commune résidentielle au nord immédiat de Vannes, accueille un tissu de TPE tertiaires, PME de services, professions libérales et commerces de proximité adossés à l'agglomération vannetaise. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Plescop (56), commune résidentielle au nord immédiat de Vannes, accueille un tissu de TPE tertiaires, PME de services, professions libérales et commerces de proximité adossés à l'agglomération vannetaise. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plescop (56). Nous accompagnons tous types d'activités : TPE tertiaires, PME de services et de conseil, professions libérales, commerces de proximité, artisans et indépendants de la première couronne vannetaise.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const PLESCOP_COPY: VilleCopy = {
       a: "Oui, nous accompagnons TPE et commerces de Plescop sur des cas IA concrets : automatisation devis et facturation, chatbots relation client, gestion stocks, agents IA prise de RDV. Audit Flash 490 € HT adapté aux petites structures.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Plescop ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Plescop  ?",
       a: "L'audit Flash IA démarre à 490 € HT pour les TPE et PME de Plescop et de l'agglomération vannetaise. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
     },
     {

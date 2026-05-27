@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LEGE_CAP_FERRET_COPY: VilleCopy = {
   pitchFr:
-    "Lège-Cap-Ferret (33), commune de la presqu'île du Cap-Ferret entre océan Atlantique et Bassin d'Arcachon, incarne un tourisme prestige avec ostréiculture, hôtellerie haut de gamme, artisanat et commerces saisonniers. Axion-IA y déploie ses missions auprès de toutes les organisations de la presqu'île et du nord du Bassin.",
+    "Lège-Cap-Ferret (33), commune de la presqu'île du Cap-Ferret entre océan Atlantique et Bassin d'Arcachon, incarne un tourisme prestige avec ostréiculture, hôtellerie haut de gamme, artisanat et commerces saisonniers. Axion-IA y conduit ses missions auprès des entreprises locales de la presqu'île et du nord du Bassin.",
   pitchEn:
-    "Lège-Cap-Ferret (33), commune de la presqu'île du Cap-Ferret entre océan Atlantique et Bassin d'Arcachon, incarne un tourisme prestige avec ostréiculture, hôtellerie haut de gamme, artisanat et commerces saisonniers. Axion-IA y déploie ses missions auprès de toutes les organisations de la presqu'île et du nord du Bassin.",
+    "Lège-Cap-Ferret (33), commune de la presqu'île du Cap-Ferret entre océan Atlantique et Bassin d'Arcachon, incarne un tourisme prestige avec ostréiculture, hôtellerie haut de gamme, artisanat et commerces saisonniers. Axion-IA y conduit ses missions auprès des entreprises locales de la presqu'île et du nord du Bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lège-Cap-Ferret (33). Nous accompagnons TPE et PME de la presqu'île : ostréiculteurs, hébergeurs prestige, restaurateurs, commerçants saisonniers, artisans BTP et professions libérales. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lège-Cap-Ferret (33). Nous accompagnons TPE et PME de la presqu'île : ostréiculteurs, hébergeurs prestige, restaurateurs, commerçants saisonniers, artisans BTP et professions libérales. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lège-Cap-Ferret (33). Nous accompagnons TPE et PME de la presqu'île : ostréiculteurs, hébergeurs prestige, restaurateurs, commerçants saisonniers, artisans BTP et professions libérales. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lège-Cap-Ferret (33). Nous accompagnons TPE et PME de la presqu'île : ostréiculteurs, hébergeurs prestige, restaurateurs, commerçants saisonniers, artisans BTP et professions libérales. Audit Flash sur mesure.",
   seoHook: "ostréiculture prestige & hôtellerie locations",
   ecosystemFr:
     "Lège-Cap-Ferret s'étend sur la presqu'île entre océan et Bassin d'Arcachon. Économie prestige : ostréiculture (villages ostréicoles emblématiques), hôtellerie et locations haut de gamme, restauration gastronomique, artisanat BTP (rénovation, construction bois) et commerces saisonniers. Marché immobilier parmi les plus prisés de France.",
@@ -52,7 +52,7 @@ export const LEGE_CAP_FERRET_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient sur toute la presqu'île de Lège-Cap-Ferret et le nord du Bassin d'Arcachon (Arès, Andernos, Lanton). Nos consultants se déplacent depuis Bordeaux (1h) ou Paris (TGV 2h + 1h).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Lège-Cap-Ferret ?",
+      q: "Quel est le tarif d'un audit IA à Lège-Cap-Ferret  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Adapté aux TPE ostréicoles et hébergeurs prestige du Cap-Ferret.",
     },
     {

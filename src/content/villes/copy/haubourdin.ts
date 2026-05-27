@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const HAUBOURDIN_COPY: VilleCopy = {
   pitchFr:
-    "Haubourdin (59), commune de l'agglomération lilloise à l'ouest de Lille en bord de Deûle dans le Nord, fait partie de la Métropole Européenne de Lille. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales et indépendants. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'ouest lillois.",
+    "Haubourdin (59), commune de l'agglomération lilloise à l'ouest de Lille en bord de Deûle dans le Nord, fait partie de la Métropole Européenne de Lille. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales et indépendants. Axion-IA répond aux besoins de toutes les entreprises de l'ouest lillois.",
   pitchEn:
-    "Haubourdin (59), commune de l'agglomération lilloise à l'ouest de Lille en bord de Deûle dans le Nord, fait partie de la Métropole Européenne de Lille. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales et indépendants. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'ouest lillois.",
+    "Haubourdin (59), commune de l'agglomération lilloise à l'ouest de Lille en bord de Deûle dans le Nord, fait partie de la Métropole Européenne de Lille. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales et indépendants. Axion-IA répond aux besoins de toutes les entreprises de l'ouest lillois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Haubourdin (59). Nous accompagnons TPE artisans, PME de services, commerçants, professions libérales et indépendants de l'ouest lillois, bords de Deûle. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Haubourdin (59). Nous accompagnons TPE artisans, PME de services, commerçants, professions libérales et indépendants de l'ouest lillois, bords de Deûle. Audit Flash sur mesure, interventions sur site et coaching dirigeants.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Haubourdin (59). Nous accompagnons TPE artisans, PME de services, commerçants, professions libérales et indépendants de l'ouest lillois, bords de Deûle. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Haubourdin (59). Nous accompagnons TPE artisans, PME de services, commerçants, professions libérales et indépendants de l'ouest lillois, bords de Deûle. Audit Flash sur mesure, interventions sur site et coaching dirigeants.",
   seoHook: "logistique transport & artisanat",
   ecosystemFr:
     "Haubourdin est une commune résidentielle et industrielle de la Métropole Européenne de Lille, sur les bords de la Deûle à l'ouest de Lille. Tissu TPE artisans BTP, PME logistique et services aux entreprises, commerces de centre-ville, professions libérales (santé, juridique) et indépendants. Position stratégique sur le canal de la Deûle et l'axe Lille-Béthune.",
@@ -52,7 +52,7 @@ export const HAUBOURDIN_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Haubourdin et dans tout l'ouest de la Métropole Européenne de Lille (Loos, Lomme, Santes, Wavrin, Sequedin). Nos consultants sont basés sur Lille, déplacement en 12 min.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Haubourdin ?",
+      q: "Quel est le tarif d'un audit IA à Haubourdin  ?",
       a: "L'Audit Flash IA démarre à 490 € HT pour une session de 4h. Idéal pour les TPE et PME de Haubourdin souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré sous 10 jours.",
     },
     {

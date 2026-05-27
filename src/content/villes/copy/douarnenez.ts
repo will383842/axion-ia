@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const DOUARNENEZ_COPY: VilleCopy = {
   pitchFr:
-    "Douarnenez (29), ville portuaire du Finistère célèbre pour sa baie, son histoire sardinière et le Port-Musée. Tissu de TPE artisanales, PME de la pêche et de la transformation des produits de la mer, commerces de centre-ville, acteurs du tourisme littoral et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Douarnenez (29), ville portuaire du Finistère célèbre pour sa baie, son histoire sardinière et le Port-Musée. Tissu de TPE artisanales, PME de la pêche et de la transformation des produits de la mer, commerces de centre-ville, acteurs du tourisme littoral et professions libérales. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Douarnenez (29), ville portuaire du Finistère célèbre pour sa baie, son histoire sardinière et le Port-Musée. Tissu de TPE artisanales, PME de la pêche et de la transformation des produits de la mer, commerces de centre-ville, acteurs du tourisme littoral et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Douarnenez (29), ville portuaire du Finistère célèbre pour sa baie, son histoire sardinière et le Port-Musée. Tissu de TPE artisanales, PME de la pêche et de la transformation des produits de la mer, commerces de centre-ville, acteurs du tourisme littoral et professions libérales. Axion-IA y mène ses missions auprès des organisations locales.",
   seoHook: "pêche, produits de la mer & tourisme littoral",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Douarnenez (29). Nous accompagnons TPE et PME : conserveries, mareyeurs, commerces de centre-ville, acteurs du tourisme littoral et professions libérales de cette cité portuaire de la baie de Douarnenez. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Douarnenez (29). Nous accompagnons TPE et PME : conserveries, mareyeurs, commerces de centre-ville, acteurs du tourisme littoral et professions libérales de cette cité portuaire de la baie de Douarnenez. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Douarnenez (29). Nous accompagnons TPE et PME : conserveries, mareyeurs, commerces de centre-ville, acteurs du tourisme littoral et professions libérales de cette cité portuaire de la baie de Douarnenez. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Douarnenez (29). Nous accompagnons TPE et PME : conserveries, mareyeurs, commerces de centre-ville, acteurs du tourisme littoral et professions libérales de cette cité portuaire de la baie de Douarnenez. Audit Flash sur mesure.",
   ecosystemFr:
     "Douarnenez est une cité portuaire emblématique du Finistère sud, berceau de l'industrie sardinière française. Le Port-Musée et la baie attirent un tourisme culturel et nautique. La filière pêche/produits de la mer (conserveries, mareyage) reste structurante, complétée par l'artisanat, le commerce de proximité et les services. Communes voisines : Poullan-sur-Mer, Kerlaz, Pouldergat, Le Juch, Quimper (25 min).",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const DOUARNENEZ_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Douarnenez et dans toute la Cornouaille (Quimper, Poullan-sur-Mer, Kerlaz, Pouldergat, Le Juch). Nos consultants se déplacent sur site ou en visio.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Douarnenez ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Douarnenez  ?",
       a: "L'Audit Flash IA à Douarnenez démarre à 490 € HT pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {

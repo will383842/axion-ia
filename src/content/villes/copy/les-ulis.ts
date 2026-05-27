@@ -11,9 +11,9 @@ export const LES_ULIS_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Les Ulis, un pôle technologique avec Hewlett-Packard et Intel. Nous accompagnons les entreprises locales dans l'optimisation de leurs processus grâce à l'IA.",
   directAnswerFr:
-    "Axion-IA se déplace à Les Ulis pour proposer des solutions IA adaptées aux entreprises locales. Avec des acteurs comme Hewlett-Packard et Orange présents, notre cabinet aide à automatiser les tâches administratives et à optimiser les processus. Nos services incluent audits, interventions et implémentations, avec des tarifs publics accessibles dès 490 € HT pour un audit Flash.",
+    "Axion-IA se déplace à Les Ulis pour proposer des solutions IA adaptées aux entreprises locales. Avec des acteurs comme Hewlett-Packard et Orange présents, notre cabinet aide à automatiser les tâches administratives et à optimiser les processus. Nos services incluent audits, interventions et implémentations, avec des tarifs publics accessibles pour un audit Flash.",
   directAnswerEn:
-    "Axion-IA se déplace à Les Ulis pour proposer des solutions IA adaptées aux entreprises locales. Avec des acteurs comme Hewlett-Packard et Orange présents, notre cabinet aide à automatiser les tâches administratives et à optimiser les processus. Nos services incluent audits, interventions et implémentations, avec des tarifs publics accessibles dès 490 € HT pour un audit Flash.",
+    "Axion-IA se déplace à Les Ulis pour proposer des solutions IA adaptées aux entreprises locales. Avec des acteurs comme Hewlett-Packard et Orange présents, notre cabinet aide à automatiser les tâches administratives et à optimiser les processus. Nos services incluent audits, interventions et implémentations, avec des tarifs publics accessibles pour un audit Flash.",
   seoHook: "programmation informatique & commerce gros",
   ecosystemFr:
     "Les Ulis abrite des entreprises comme Hewlett-Packard et Intel, au cœur de la zone Courtaboeuf. Le secteur de la programmation informatique y est particulièrement développé.",

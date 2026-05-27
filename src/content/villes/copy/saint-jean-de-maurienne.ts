@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_JEAN_DE_MAURIENNE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Jean-de-Maurienne (73), sous-préfecture de Savoie, est le centre de la vallée de la Maurienne — plus grande vallée alpine intra-européenne. Industrie aluminium historique, accès cols alpins majeurs (Galibier, Croix-de-Fer). Tissu industrie métallurgie, tourisme montagne, administration, TPE artisanat, commerces de vallée. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Saint-Jean-de-Maurienne (73), sous-préfecture de Savoie, est le centre de la vallée de la Maurienne — plus grande vallée alpine intra-européenne. Industrie aluminium historique, accès cols alpins majeurs (Galibier, Croix-de-Fer). Tissu industrie métallurgie, tourisme montagne, administration, TPE artisanat, commerces de vallée. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Saint-Jean-de-Maurienne (73), sous-préfecture de Savoie, est le centre de la vallée de la Maurienne — plus grande vallée alpine intra-européenne. Industrie aluminium historique, accès cols alpins majeurs (Galibier, Croix-de-Fer). Tissu industrie métallurgie, tourisme montagne, administration, TPE artisanat, commerces de vallée. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Saint-Jean-de-Maurienne (73), sous-préfecture de Savoie, est le centre de la vallée de la Maurienne — plus grande vallée alpine intra-européenne. Industrie aluminium historique, accès cols alpins majeurs (Galibier, Croix-de-Fer). Tissu industrie métallurgie, tourisme montagne, administration, TPE artisanat, commerces de vallée. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean-de-Maurienne (73). Nous accompagnons TPE et PME de la vallée de la Maurienne : industriels aluminium et métallurgie, acteurs du tourisme montagne et cols alpins, administration sous-préfectorale, artisans, commerçants et services de vallée.",
   directAnswerEn:

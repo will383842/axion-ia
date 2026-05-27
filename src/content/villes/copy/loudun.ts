@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LOUDUN_COPY: VilleCopy = {
   pitchFr:
-    "Loudun (86), sous-préfecture du nord de la Vienne, est une cité historique connue pour l'affaire des possessions de 1634 et son patrimoine médiéval. Tissu PME agroalimentaires, viticulture (AOC Haut-Poitou), TPE artisans BTP, commerces, administration sous-préfecture et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du Loudunais.",
+    "Loudun (86), sous-préfecture du nord de la Vienne, est une cité historique connue pour l'affaire des possessions de 1634 et son patrimoine médiéval. Tissu PME agroalimentaires, viticulture (AOC Haut-Poitou), TPE artisans BTP, commerces, administration sous-préfecture et professions libérales. Axion-IA opère sur l'ensemble des activités professionnelles locales du Loudunais.",
   pitchEn:
-    "Loudun (86), sous-préfecture du nord de la Vienne, est une cité historique connue pour l'affaire des possessions de 1634 et son patrimoine médiéval. Tissu PME agroalimentaires, viticulture (AOC Haut-Poitou), TPE artisans BTP, commerces, administration sous-préfecture et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du Loudunais.",
+    "Loudun (86), sous-préfecture du nord de la Vienne, est une cité historique connue pour l'affaire des possessions de 1634 et son patrimoine médiéval. Tissu PME agroalimentaires, viticulture (AOC Haut-Poitou), TPE artisans BTP, commerces, administration sous-préfecture et professions libérales. Axion-IA opère sur l'ensemble des activités professionnelles locales du Loudunais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Loudun (86). Nous accompagnons tous types d'activités : PME agroalimentaires, viticulteurs AOC Haut-Poitou, TPE artisans BTP, commerçants, administrations sous-préfecture, professions libérales et services aux entreprises du Loudunais.",
   directAnswerEn:

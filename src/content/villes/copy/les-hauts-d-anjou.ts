@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LES_HAUTS_D_ANJOU_COPY: VilleCopy = {
   pitchFr:
-    "Les Hauts-d'Anjou (49), commune nouvelle au nord d'Angers, fédère un vaste territoire rural de près de 9 000 habitants entre Sarthe et Mayenne. Axion-IA accompagne entreprises et indépendants de tous secteurs : agriculture, artisanat, commerces de bourg, PME et services de proximité.",
+    "Les Hauts-d'Anjou (49), commune nouvelle au nord d'Angers, fédère un vaste territoire rural de près de 9 000 habitants entre Sarthe et Mayenne. Axion-IA répond aux besoins de toutes les entreprises : agriculture, artisanat, commerces de bourg, PME et services de proximité.",
   pitchEn:
-    "Les Hauts-d'Anjou (49), commune nouvelle au nord d'Angers, fédère un vaste territoire rural de près de 9 000 habitants entre Sarthe et Mayenne. Axion-IA accompagne entreprises et indépendants de tous secteurs : agriculture, artisanat, commerces de bourg, PME et services de proximité.",
+    "Les Hauts-d'Anjou (49), commune nouvelle au nord d'Angers, fédère un vaste territoire rural de près de 9 000 habitants entre Sarthe et Mayenne. Axion-IA répond aux besoins de toutes les entreprises : agriculture, artisanat, commerces de bourg, PME et services de proximité.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient aux Hauts-d'Anjou (49). Nous accompagnons les TPE, PME et exploitants agricoles du nord angevin dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient aux Hauts-d'Anjou (49). Nous accompagnons les TPE, PME et exploitants agricoles du nord angevin dans l'adoption de l'IA : audit Flash, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient aux Hauts-d'Anjou (49). Nous accompagnons les TPE, PME et exploitants agricoles du nord angevin dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient aux Hauts-d'Anjou (49). Nous accompagnons les TPE, PME et exploitants agricoles du nord angevin dans l'adoption de l'IA : audit Flash, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
   seoHook: "agriculture élevage & artisanat second",
   ecosystemFr:
     "Les Hauts-d'Anjou sont issus de la fusion de 8 communes déléguées (dont Cheffes, Champigné, Juvardeil). Territoire agricole (polyculture, élevage bovin, production végétale) avec un tissu d'artisanat BTP, de commerces de bourg et de PME agroalimentaires. Proximité vallées de la Sarthe et du Loir.",

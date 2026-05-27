@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const MONTLHERY_COPY: VilleCopy = {
   pitchFr:
-    "Montlhéry (91), cité historique du Hurepoix en Essonne, est célèbre pour sa tour médiévale (donjon du XIe siècle) et son autodrome légendaire (circuit de Linas-Montlhéry, 1924). Carrefour RN20 sud-francilien. Tissu TPE commerces, artisans, PME services, professions libérales, restauration. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Montlhéry (91), cité historique du Hurepoix en Essonne, est célèbre pour sa tour médiévale (donjon du XIe siècle) et son autodrome légendaire (circuit de Linas-Montlhéry, 1924). Carrefour RN20 sud-francilien. Tissu TPE commerces, artisans, PME services, professions libérales, restauration. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Montlhéry (91), cité historique du Hurepoix en Essonne, est célèbre pour sa tour médiévale (donjon du XIe siècle) et son autodrome légendaire (circuit de Linas-Montlhéry, 1924). Carrefour RN20 sud-francilien. Tissu TPE commerces, artisans, PME services, professions libérales, restauration. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Montlhéry (91), cité historique du Hurepoix en Essonne, est célèbre pour sa tour médiévale (donjon du XIe siècle) et son autodrome légendaire (circuit de Linas-Montlhéry, 1924). Carrefour RN20 sud-francilien. Tissu TPE commerces, artisans, PME services, professions libérales, restauration. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montlhéry (91). Nous accompagnons TPE et PME : commerçants du centre historique, artisans BTP, PME services du Hurepoix, professions libérales, restaurateurs, acteurs événementiel autodrome. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montlhéry (91). Nous accompagnons TPE et PME : commerçants du centre historique, artisans BTP, PME services du Hurepoix, professions libérales, restaurateurs, acteurs événementiel autodrome. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montlhéry (91). Nous accompagnons TPE et PME : commerçants du centre historique, artisans BTP, PME services du Hurepoix, professions libérales, restaurateurs, acteurs événementiel autodrome. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montlhéry (91). Nous accompagnons TPE et PME : commerçants du centre historique, artisans BTP, PME services du Hurepoix, professions libérales, restaurateurs, acteurs événementiel autodrome. Audit Flash sur mesure.",
   seoHook: "commerce proximité & artisanat",
   ecosystemFr:
     "Montlhéry est une cité historique du Hurepoix, dominée par sa tour médiévale (donjon XIe siècle, monument historique). L'autodrome de Linas-Montlhéry (1924), lieu mythique du sport automobile, accueille événements et essais. Carrefour RN20 sud-francilien. Tissu TPE commerces, artisanat, restauration, PME services, professions libérales.",

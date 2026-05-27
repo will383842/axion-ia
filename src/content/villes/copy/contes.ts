@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CONTES_COPY: VilleCopy = {
   pitchFr:
-    "Contes (06), village provençal de la vallée du Paillon dans le moyen-pays niçois, est un bourg résidentiel et commercial dynamique entre mer et montagne. Tissu TPE/PME artisanat BTP, commerces de proximité, professions libérales, services et agriculture (oléiculture). Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Contes (06), village provençal de la vallée du Paillon dans le moyen-pays niçois, est un bourg résidentiel et commercial dynamique entre mer et montagne. Tissu TPE/PME artisanat BTP, commerces de proximité, professions libérales, services et agriculture (oléiculture). Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Contes (06), village provençal de la vallée du Paillon dans le moyen-pays niçois, est un bourg résidentiel et commercial dynamique entre mer et montagne. Tissu TPE/PME artisanat BTP, commerces de proximité, professions libérales, services et agriculture (oléiculture). Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Contes (06), village provençal de la vallée du Paillon dans le moyen-pays niçois, est un bourg résidentiel et commercial dynamique entre mer et montagne. Tissu TPE/PME artisanat BTP, commerces de proximité, professions libérales, services et agriculture (oléiculture). Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Contes (06). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, oléiculteurs, PME services et entreprises de la vallée du Paillon.",
   directAnswerEn:

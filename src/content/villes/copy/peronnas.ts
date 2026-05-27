@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PERONNAS_COPY: VilleCopy = {
   pitchFr:
-    "Péronnas (01), commune en banlieue immédiate de Bourg-en-Bresse dans l'Ain, est positionnée en Bresse. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces, agriculture Bresse. Axion-IA couvre l'ensemble des activités professionnelles présentes bressoises.",
+    "Péronnas (01), commune en banlieue immédiate de Bourg-en-Bresse dans l'Ain, est positionnée en Bresse. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces, agriculture Bresse. Axion-IA accompagne tout le tissu professionnel local bressoises.",
   pitchEn:
-    "Péronnas (01), commune en banlieue immédiate de Bourg-en-Bresse dans l'Ain, est positionnée en Bresse. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces, agriculture Bresse. Axion-IA couvre l'ensemble des activités professionnelles présentes bressoises.",
+    "Péronnas (01), commune en banlieue immédiate de Bourg-en-Bresse dans l'Ain, est positionnée en Bresse. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces, agriculture Bresse. Axion-IA accompagne tout le tissu professionnel local bressoises.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Péronnas (01). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Bresse, agriculteurs/éleveurs, TPE artisans BTP, commerçants et services aux entreprises de l'agglomération burgienne.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BELLEVIGNY_COPY: VilleCopy = {
   pitchFr:
-    "Bellevigny (85), commune nouvelle du bocage vendéen, rassemble plus de 6 200 habitants. Issue de la fusion de Belleville-sur-Vie et Saligny, proche de La Roche-sur-Yon. Zones d'activités, tissu de TPE artisanales, PME industrielles, commerces et exploitations agricoles. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Bellevigny (85), commune nouvelle du bocage vendéen, rassemble plus de 6 200 habitants. Issue de la fusion de Belleville-sur-Vie et Saligny, proche de La Roche-sur-Yon. Zones d'activités, tissu de TPE artisanales, PME industrielles, commerces et exploitations agricoles. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Bellevigny (85), commune nouvelle du bocage vendéen, rassemble plus de 6 200 habitants. Issue de la fusion de Belleville-sur-Vie et Saligny, proche de La Roche-sur-Yon. Zones d'activités, tissu de TPE artisanales, PME industrielles, commerces et exploitations agricoles. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Bellevigny (85), commune nouvelle du bocage vendéen, rassemble plus de 6 200 habitants. Issue de la fusion de Belleville-sur-Vie et Saligny, proche de La Roche-sur-Yon. Zones d'activités, tissu de TPE artisanales, PME industrielles, commerces et exploitations agricoles. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bellevigny (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles agglo La Roche-sur-Yon, exploitations agricoles, professions libérales et services de proximité.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const BELLEVIGNY_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les artisans BTP de l'agglo yonnaise : automatisation devis, gestion chantiers IA, planification équipes, facturation, relation client digitalisée.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Bellevigny ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Bellevigny  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {

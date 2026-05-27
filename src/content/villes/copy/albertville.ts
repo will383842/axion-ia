@@ -9,9 +9,9 @@ export const ALBERTVILLE_COPY: VilleCopy = {
   pitchEn:
     "Albertville (73), sous-préfecture de Savoie et ville olympique (JO d'hiver 1992), est le carrefour des quatre vallées à la confluence Isère-Arly. Tissu tourisme montagne/sports d'hiver, héritage olympique, industrie sous-traitance, administration sous-préfecture, TPE commerces. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Albertville (73). Nous accompagnons TPE et PME : acteurs tourisme montagne et sports d'hiver, sous-traitants industriels, administration sous-préfecture, commerçants et artisans, opérateurs héritage olympique. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Albertville (73). Nous accompagnons TPE et PME : acteurs tourisme montagne et sports d'hiver, sous-traitants industriels, administration sous-préfecture, commerçants et artisans, opérateurs héritage olympique. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Albertville (73). Nous accompagnons TPE et PME : acteurs tourisme montagne et sports d'hiver, sous-traitants industriels, administration sous-préfecture, commerçants et artisans, opérateurs héritage olympique. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Albertville (73). Nous accompagnons TPE et PME : acteurs tourisme montagne et sports d'hiver, sous-traitants industriels, administration sous-préfecture, commerçants et artisans, opérateurs héritage olympique. Audit Flash sur mesure.",
   seoHook: "tourisme montagne & héritage olympique",
   ecosystemFr:
     "Albertville est la sous-préfecture de Savoie et la ville olympique 1992, carrefour des quatre vallées (confluence Isère-Arly). Tissu tourisme montagne, industrie sous-traitance, administration, TPE commerces, héritage olympique. Gare TGV directe.",

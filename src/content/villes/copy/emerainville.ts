@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const EMERAINVILLE_COPY: VilleCopy = {
   pitchFr:
-    "Émerainville (77), commune de Seine-et-Marne intégrée à Marne-la-Vallée, concentre plusieurs zones d'activités économiques et un tissu d'entreprises diversifié. TPE et PME logistique, services aux entreprises, commerce, artisanat BTP et activités tertiaires. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Émerainville (77), commune de Seine-et-Marne intégrée à Marne-la-Vallée, concentre plusieurs zones d'activités économiques et un tissu d'entreprises diversifié. TPE et PME logistique, services aux entreprises, commerce, artisanat BTP et activités tertiaires. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Émerainville (77), commune de Seine-et-Marne intégrée à Marne-la-Vallée, concentre plusieurs zones d'activités économiques et un tissu d'entreprises diversifié. TPE et PME logistique, services aux entreprises, commerce, artisanat BTP et activités tertiaires. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Émerainville (77), commune de Seine-et-Marne intégrée à Marne-la-Vallée, concentre plusieurs zones d'activités économiques et un tissu d'entreprises diversifié. TPE et PME logistique, services aux entreprises, commerce, artisanat BTP et activités tertiaires. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Émerainville (77). Nous accompagnons TPE et PME : entreprises logistique et transport, prestataires de services aux entreprises, commerçants, artisans BTP et sociétés tertiaires des zones d'activités. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Émerainville (77). Nous accompagnons TPE et PME : entreprises logistique et transport, prestataires de services aux entreprises, commerçants, artisans BTP et sociétés tertiaires des zones d'activités. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Émerainville (77). Nous accompagnons TPE et PME : entreprises logistique et transport, prestataires de services aux entreprises, commerçants, artisans BTP et sociétés tertiaires des zones d'activités. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Émerainville (77). Nous accompagnons TPE et PME : entreprises logistique et transport, prestataires de services aux entreprises, commerçants, artisans BTP et sociétés tertiaires des zones d'activités. Audit Flash sur mesure.",
   seoHook: "logistique transport & artisanat",
   ecosystemFr:
     "Émerainville fait partie de l'agglomération Marne-la-Vallée et dispose de zones d'activités économiques accueillant des entreprises logistique, transport, services tertiaires et commerce. Proximité A4 et RER A (gare Émerainville-Pontault-Combault). Le tissu économique local repose sur des TPE et PME diversifiées.",
@@ -52,7 +52,7 @@ export const EMERAINVILLE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Émerainville et dans toute l'agglomération Marne-la-Vallée (Pontault-Combault, Croissy-Beaubourg, Torcy, Lognes). RER A Émerainville-Pontault-Combault, Paris à 35 min.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Émerainville ?",
+      q: "Combien coûte un audit IA à Émerainville  ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures. Pour les TPE et PME des zones d'activités d'Émerainville, nous proposons des audits approfondis adaptés aux enjeux logistique et services.",
     },
     {

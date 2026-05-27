@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const DOMERAT_COPY: VilleCopy = {
   pitchFr:
-    "Domérat (03), commune en banlieue immédiate de Montluçon dans l'Allier, est positionnée en Bourbonnais. Tissu PME industrielles (héritage métallurgique Montluçon), tertiaires, TPE artisans BTP, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération montluçonnaise.",
+    "Domérat (03), commune en banlieue immédiate de Montluçon dans l'Allier, est positionnée en Bourbonnais. Tissu PME industrielles (héritage métallurgique Montluçon), tertiaires, TPE artisans BTP, commerces. Axion-IA opère sur l'ensemble des activités professionnelles locales de l'agglomération montluçonnaise.",
   pitchEn:
-    "Domérat (03), commune en banlieue immédiate de Montluçon dans l'Allier, est positionnée en Bourbonnais. Tissu PME industrielles (héritage métallurgique Montluçon), tertiaires, TPE artisans BTP, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération montluçonnaise.",
+    "Domérat (03), commune en banlieue immédiate de Montluçon dans l'Allier, est positionnée en Bourbonnais. Tissu PME industrielles (héritage métallurgique Montluçon), tertiaires, TPE artisans BTP, commerces. Axion-IA opère sur l'ensemble des activités professionnelles locales de l'agglomération montluçonnaise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Domérat (03). Nous accompagnons tous types d'activités : PME industrielles agglomération Montluçon (héritage métallurgique), tertiaires, TPE artisans BTP, commerçants et services aux entreprises du Bourbonnais.",
   directAnswerEn:

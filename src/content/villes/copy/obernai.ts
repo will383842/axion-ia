@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const OBERNAI_COPY: VilleCopy = {
   pitchFr:
-    "Obernai (67), ville-étape majeure de la Route des Vins d'Alsace au pied du Mont Sainte-Odile en Bas-Rhin, conjugue patrimoine médiéval préservé, vignoble Riesling et tissu économique diversifié. TPE/PME viticoles, brasserie, tourisme, commerce et artisanat alsacien rayonnent sur le Piémont des Vosges. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Obernai (67), ville-étape majeure de la Route des Vins d'Alsace au pied du Mont Sainte-Odile en Bas-Rhin, conjugue patrimoine médiéval préservé, vignoble Riesling et tissu économique diversifié. TPE/PME viticoles, brasserie, tourisme, commerce et artisanat alsacien rayonnent sur le Piémont des Vosges. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Obernai (67), ville-étape majeure de la Route des Vins d'Alsace au pied du Mont Sainte-Odile en Bas-Rhin, conjugue patrimoine médiéval préservé, vignoble Riesling et tissu économique diversifié. TPE/PME viticoles, brasserie, tourisme, commerce et artisanat alsacien rayonnent sur le Piémont des Vosges. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Obernai (67), ville-étape majeure de la Route des Vins d'Alsace au pied du Mont Sainte-Odile en Bas-Rhin, conjugue patrimoine médiéval préservé, vignoble Riesling et tissu économique diversifié. TPE/PME viticoles, brasserie, tourisme, commerce et artisanat alsacien rayonnent sur le Piémont des Vosges. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Obernai (67). Nous accompagnons TPE et PME : viticulteurs et domaines de la Route des Vins, brasseurs, hôteliers-restaurateurs, commerces du centre médiéval, artisans et professions libérales du Bas-Rhin. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Obernai (67). Nous accompagnons TPE et PME : viticulteurs et domaines de la Route des Vins, brasseurs, hôteliers-restaurateurs, commerces du centre médiéval, artisans et professions libérales du Bas-Rhin. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Obernai (67). Nous accompagnons TPE et PME : viticulteurs et domaines de la Route des Vins, brasseurs, hôteliers-restaurateurs, commerces du centre médiéval, artisans et professions libérales du Bas-Rhin. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Obernai (67). Nous accompagnons TPE et PME : viticulteurs et domaines de la Route des Vins, brasseurs, hôteliers-restaurateurs, commerces du centre médiéval, artisans et professions libérales du Bas-Rhin. Audit Flash sur mesure.",
   seoHook: "viticulture domaines & brasserie boissons",
   ecosystemFr:
     "Obernai est l'une des étapes phares de la Route des Vins d'Alsace, au pied du Mont Sainte-Odile. Tissu économique dominé par la viticulture (AOC Alsace, Riesling, Gewurztraminer), la brasserie Kronenbourg-Obernai (production majeure), l'hôtellerie-restauration et le tourisme patrimonial. TPE/PME viticoles, commerce du centre historique, artisans et professions libérales du Piémont des Vosges.",
@@ -52,7 +52,7 @@ export const OBERNAI_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Obernai et sur toute la Route des Vins d'Alsace (Barr, Mittelbergheim, Andlau, Sélestat). Strasbourg à 30 min via A35, gare SNCF Obernai connectée à la ligne Strasbourg-Sélestat.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Obernai ?",
+      q: "Combien coûte un audit IA à Obernai  ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME d'Obernai et du Bas-Rhin, il identifie les cas d'usage IA à fort ROI pour votre domaine viticole, brasserie, hôtel-restaurant ou commerce médiéval.",
     },
     {

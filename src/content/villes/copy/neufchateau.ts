@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const NEUFCHATEAU_COPY: VilleCopy = {
   pitchFr:
-    "Neufchâteau (88), sous-préfecture des Vosges, 6 732 habitants, est un pôle administratif et commercial de l'ouest vosgien. Reconnue pour son industrie du mobilier et de l'ameublement, la ville accueille un tissu de TPE/PME bois, ameublement, agroalimentaire, artisanat, commerce et services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Neufchâteau (88), sous-préfecture des Vosges, 6 732 habitants, est un pôle administratif et commercial de l'ouest vosgien. Reconnue pour son industrie du mobilier et de l'ameublement, la ville accueille un tissu de TPE/PME bois, ameublement, agroalimentaire, artisanat, commerce et services. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Neufchâteau (88), sous-préfecture des Vosges, 6 732 habitants, est un pôle administratif et commercial de l'ouest vosgien. Reconnue pour son industrie du mobilier et de l'ameublement, la ville accueille un tissu de TPE/PME bois, ameublement, agroalimentaire, artisanat, commerce et services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Neufchâteau (88), sous-préfecture des Vosges, 6 732 habitants, est un pôle administratif et commercial de l'ouest vosgien. Reconnue pour son industrie du mobilier et de l'ameublement, la ville accueille un tissu de TPE/PME bois, ameublement, agroalimentaire, artisanat, commerce et services. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Neufchâteau (88). Nous accompagnons TPE et PME de l'ouest vosgien : fabricants de mobilier, artisans du bois, agroalimentaire, commerçants et prestataires de services. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Neufchâteau (88). Nous accompagnons TPE et PME de l'ouest vosgien : fabricants de mobilier, artisans du bois, agroalimentaire, commerçants et prestataires de services. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Neufchâteau (88). Nous accompagnons TPE et PME de l'ouest vosgien : fabricants de mobilier, artisans du bois, agroalimentaire, commerçants et prestataires de services. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Neufchâteau (88). Nous accompagnons TPE et PME de l'ouest vosgien : fabricants de mobilier, artisans du bois, agroalimentaire, commerçants et prestataires de services. Audit Flash sur mesure.",
   ecosystemFr:
     "Neufchâteau est la sous-préfecture de l'ouest vosgien, au carrefour des axes Nancy-Dijon et Épinal-Chaumont. La ville est un pôle reconnu de l'industrie du mobilier et de l'ameublement vosgien (meubles, agencement, menuiserie). L'économie repose également sur l'agroalimentaire, l'artisanat, le commerce de proximité, les services publics et les professions libérales. Le tissu économique local est essentiellement composé de TPE/PME ancrées dans la tradition manufacturière vosgienne.",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const NEUFCHATEAU_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Neufchâteau et dans l'ouest vosgien (Mirecourt, Vittel, Contrexéville, Liffol-le-Grand). Consultants accessibles via gare SNCF Neufchâteau (TER Nancy-Dijon). Nancy à 1h, Épinal à 45 min.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Neufchâteau ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Neufchâteau  ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME néocastriennes : fabricants de mobilier, menuisiers, agroalimentaire, commerçants et prestataires de services. ROI chiffré dès le diagnostic.",
     },
     {

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MONCOUTANT_SUR_SEVRE_COPY: VilleCopy = {
   pitchFr:
-    "Moncoutant-sur-Sèvre (79), commune nouvelle du Bocage bressuirais en Deux-Sèvres, née de la fusion de Moncoutant et Le Breuil-Bernard (2019). Tissu PME industrielles (mécanique, agroalimentaire), TPE artisans BTP, commerces ruraux, exploitations agricoles bocagères et services. Axion-IA couvre l'ensemble des activités professionnelles présentes du Bocage bressuirais.",
+    "Moncoutant-sur-Sèvre (79), commune nouvelle du Bocage bressuirais en Deux-Sèvres, née de la fusion de Moncoutant et Le Breuil-Bernard (2019). Tissu PME industrielles (mécanique, agroalimentaire), TPE artisans BTP, commerces ruraux, exploitations agricoles bocagères et services. Axion-IA opère sur l'ensemble des activités professionnelles locales du Bocage bressuirais.",
   pitchEn:
-    "Moncoutant-sur-Sèvre (79), commune nouvelle du Bocage bressuirais en Deux-Sèvres, née de la fusion de Moncoutant et Le Breuil-Bernard (2019). Tissu PME industrielles (mécanique, agroalimentaire), TPE artisans BTP, commerces ruraux, exploitations agricoles bocagères et services. Axion-IA couvre l'ensemble des activités professionnelles présentes du Bocage bressuirais.",
+    "Moncoutant-sur-Sèvre (79), commune nouvelle du Bocage bressuirais en Deux-Sèvres, née de la fusion de Moncoutant et Le Breuil-Bernard (2019). Tissu PME industrielles (mécanique, agroalimentaire), TPE artisans BTP, commerces ruraux, exploitations agricoles bocagères et services. Axion-IA opère sur l'ensemble des activités professionnelles locales du Bocage bressuirais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Moncoutant-sur-Sèvre (79). Nous accompagnons tous types d'activités : PME industrielles mécanique/agroalimentaire, TPE artisans BTP, commerçants ruraux, exploitations agricoles bocagères, professions libérales et services aux entreprises du Bocage bressuirais.",
   directAnswerEn:

@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const MARCK_COPY: VilleCopy = {
   pitchFr:
-    "Marck (62), commune littorale de l'agglomération calaisienne dans le Pas-de-Calais, conjugue activités portuaires, logistique transmanche, TPE artisanales et PME de services. Axion-IA accompagne entreprises et indépendants de tous secteurs du Calaisis.",
+    "Marck (62), commune littorale de l'agglomération calaisienne dans le Pas-de-Calais, conjugue activités portuaires, logistique transmanche, TPE artisanales et PME de services. Axion-IA opère pour entreprises et indépendants du secteur du Calaisis.",
   pitchEn:
-    "Marck (62), commune littorale de l'agglomération calaisienne dans le Pas-de-Calais, conjugue activités portuaires, logistique transmanche, TPE artisanales et PME de services. Axion-IA accompagne entreprises et indépendants de tous secteurs du Calaisis.",
+    "Marck (62), commune littorale de l'agglomération calaisienne dans le Pas-de-Calais, conjugue activités portuaires, logistique transmanche, TPE artisanales et PME de services. Axion-IA opère pour entreprises et indépendants du secteur du Calaisis.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marck (62). Nous accompagnons TPE artisanales, PME logistiques et portuaires, commerçants et professions libérales du Calaisis. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marck (62). Nous accompagnons TPE artisanales, PME logistiques et portuaires, commerçants et professions libérales du Calaisis. Audit Flash sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marck (62). Nous accompagnons TPE artisanales, PME logistiques et portuaires, commerçants et professions libérales du Calaisis. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marck (62). Nous accompagnons TPE artisanales, PME logistiques et portuaires, commerçants et professions libérales du Calaisis. Audit Flash sur mesure, intervention sur site ou en visio.",
   seoHook: "logistique transports & commerce détail",
   ecosystemFr:
     "Marck est limitrophe de Calais, à proximité de la zone industrialo-portuaire et du terminal Eurotunnel. Économie marquée par la logistique transmanche, les transports, le commerce et l'artisanat. TPE et PME de services bénéficient du flux économique transfrontalier.",
@@ -52,7 +52,7 @@ export const MARCK_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Marck et dans tout le Calaisis (Calais, Coquelles, Sangatte, Coulogne). Nos consultants se déplacent sur site ou interviennent en visio.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Marck ?",
+      q: "Combien coûte un audit IA à Marck  ?",
       a: "L'Audit Flash Axion-IA démarre à 490 € HT pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du Calaisis. Tarifs publics.",
     },
     {

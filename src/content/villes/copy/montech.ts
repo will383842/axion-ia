@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const MONTECH_COPY: VilleCopy = {
   pitchFr:
-    "Montech (82), commune du Tarn-et-Garonne connue pour sa pente d'eau sur le canal latéral à la Garonne, près de 6 700 habitants. Tissu TPE artisans, PME services et logistique, commerces, agriculture et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin montéchois.",
+    "Montech (82), commune du Tarn-et-Garonne connue pour sa pente d'eau sur le canal latéral à la Garonne, près de 6 700 habitants. Tissu TPE artisans, PME services et logistique, commerces, agriculture et professions libérales. Axion-IA accompagne entreprises et indépendants du bassin montéchois.",
   pitchEn:
-    "Montech (82), commune du Tarn-et-Garonne connue pour sa pente d'eau sur le canal latéral à la Garonne, près de 6 700 habitants. Tissu TPE artisans, PME services et logistique, commerces, agriculture et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin montéchois.",
+    "Montech (82), commune du Tarn-et-Garonne connue pour sa pente d'eau sur le canal latéral à la Garonne, près de 6 700 habitants. Tissu TPE artisans, PME services et logistique, commerces, agriculture et professions libérales. Axion-IA accompagne entreprises et indépendants du bassin montéchois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montech (82). Nous accompagnons TPE artisans, PME de services et logistique, commerçants, exploitants agricoles et professions libérales du sud Tarn-et-Garonne. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montech (82). Nous accompagnons TPE artisans, PME de services et logistique, commerçants, exploitants agricoles et professions libérales du sud Tarn-et-Garonne. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montech (82). Nous accompagnons TPE artisans, PME de services et logistique, commerçants, exploitants agricoles et professions libérales du sud Tarn-et-Garonne. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montech (82). Nous accompagnons TPE artisans, PME de services et logistique, commerçants, exploitants agricoles et professions libérales du sud Tarn-et-Garonne. Audit Flash sur mesure.",
   seoHook: "bassin montéchois",
   ecosystemFr:
     "Montech (6 663 hab) est une commune en croissance du sud Tarn-et-Garonne, sur le canal latéral à la Garonne. Célèbre pour sa pente d'eau unique en Europe. Économie résidentielle et agricole : arboriculture, grandes cultures, PME tertiaires et logistique. Proximité Montauban (15 min), Toulouse (40 min via A62). Communes limitrophes : Escatalens, Lacourt-Saint-Pierre.",

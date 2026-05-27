@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_GEORGES_DE_DIDONNE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Georges-de-Didonne (17), station balnéaire de la Côte de Beauté en Charente-Maritime, voisine de Royan sur l'estuaire de la Gironde. Tissu de TPE artisans, PME tourisme et hôtellerie, commerces saisonniers, services et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations de la station didonnaise.",
+    "Saint-Georges-de-Didonne (17), station balnéaire de la Côte de Beauté en Charente-Maritime, voisine de Royan sur l'estuaire de la Gironde. Tissu de TPE artisans, PME tourisme et hôtellerie, commerces saisonniers, services et professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales de la station didonnaise.",
   pitchEn:
-    "Saint-Georges-de-Didonne (17), station balnéaire de la Côte de Beauté en Charente-Maritime, voisine de Royan sur l'estuaire de la Gironde. Tissu de TPE artisans, PME tourisme et hôtellerie, commerces saisonniers, services et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations de la station didonnaise.",
+    "Saint-Georges-de-Didonne (17), station balnéaire de la Côte de Beauté en Charente-Maritime, voisine de Royan sur l'estuaire de la Gironde. Tissu de TPE artisans, PME tourisme et hôtellerie, commerces saisonniers, services et professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales de la station didonnaise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Georges-de-Didonne (17). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et hôtellerie-restauration, commerçants saisonniers, professions libérales et indépendants de cette station balnéaire de la Côte de Beauté.",
   directAnswerEn:

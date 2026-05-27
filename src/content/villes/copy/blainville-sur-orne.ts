@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BLAINVILLE_SUR_ORNE_COPY: VilleCopy = {
   pitchFr:
-    "Blainville-sur-Orne (14), commune de l'agglomération de Caen dans le Calvados, est traversée par le canal de Caen à la mer et l'Orne. Zone d'activités dynamique, tissu TPE artisans BTP, PME industrielles et logistiques, commerces, professions libérales, services aux entreprises. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Blainville-sur-Orne (14), commune de l'agglomération de Caen dans le Calvados, est traversée par le canal de Caen à la mer et l'Orne. Zone d'activités dynamique, tissu TPE artisans BTP, PME industrielles et logistiques, commerces, professions libérales, services aux entreprises. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Blainville-sur-Orne (14), commune de l'agglomération de Caen dans le Calvados, est traversée par le canal de Caen à la mer et l'Orne. Zone d'activités dynamique, tissu TPE artisans BTP, PME industrielles et logistiques, commerces, professions libérales, services aux entreprises. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Blainville-sur-Orne (14), commune de l'agglomération de Caen dans le Calvados, est traversée par le canal de Caen à la mer et l'Orne. Zone d'activités dynamique, tissu TPE artisans BTP, PME industrielles et logistiques, commerces, professions libérales, services aux entreprises. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Blainville-sur-Orne (14). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles et logistiques canal de Caen, commerçants, professions libérales, indépendants et services aux entreprises de l'agglomération caennaise nord.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const BLAINVILLE_SUR_ORNE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Blainville-sur-Orne, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Blainville-sur-Orne ?",
+      q: "Combien coûte un audit IA à Blainville-sur-Orne  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {

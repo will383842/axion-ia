@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const AIXE_SUR_VIENNE_COPY: VilleCopy = {
   pitchFr:
-    "Aixe-sur-Vienne (87), commune des bords de la Vienne au sud-ouest de Limoges, est intégrée à Limoges Métropole. Tissu TPE artisans BTP, PME industrielles, agriculture, commerces centre-bourg, professions libérales et services. Axion-IA y déploie ses missions auprès de toutes les organisations de l'agglo limougeaude sud-ouest.",
+    "Aixe-sur-Vienne (87), commune des bords de la Vienne au sud-ouest de Limoges, est intégrée à Limoges Métropole. Tissu TPE artisans BTP, PME industrielles, agriculture, commerces centre-bourg, professions libérales et services. Axion-IA y travaille avec les organisations du territoire de l'agglo limougeaude sud-ouest.",
   pitchEn:
-    "Aixe-sur-Vienne (87), commune des bords de la Vienne au sud-ouest de Limoges, est intégrée à Limoges Métropole. Tissu TPE artisans BTP, PME industrielles, agriculture, commerces centre-bourg, professions libérales et services. Axion-IA y déploie ses missions auprès de toutes les organisations de l'agglo limougeaude sud-ouest.",
+    "Aixe-sur-Vienne (87), commune des bords de la Vienne au sud-ouest de Limoges, est intégrée à Limoges Métropole. Tissu TPE artisans BTP, PME industrielles, agriculture, commerces centre-bourg, professions libérales et services. Axion-IA y travaille avec les organisations du territoire de l'agglo limougeaude sud-ouest.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aixe-sur-Vienne (87). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles, agriculteurs, commerçants, professions libérales, indépendants et services aux entreprises de l'agglomération de Limoges sud-ouest.",
   directAnswerEn:

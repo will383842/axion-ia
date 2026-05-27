@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const EYBENS_COPY: VilleCopy = {
   pitchFr:
-    "Eybens (38), banlieue sud-est de Grenoble, est intégrée à Grenoble-Alpes Métropole. Son territoire est traversé par l'historique route Napoléon (retour de l'Empereur depuis l'Île d'Elbe en 1815). Tissu PME tertiaires, TPE artisans, professions libérales et commerces. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin grenoblois.",
+    "Eybens (38), banlieue sud-est de Grenoble, est intégrée à Grenoble-Alpes Métropole. Son territoire est traversé par l'historique route Napoléon (retour de l'Empereur depuis l'Île d'Elbe en 1815). Tissu PME tertiaires, TPE artisans, professions libérales et commerces. Axion-IA y conduit ses missions auprès des entreprises locales du bassin grenoblois.",
   pitchEn:
-    "Eybens (38), banlieue sud-est de Grenoble, est intégrée à Grenoble-Alpes Métropole. Son territoire est traversé par l'historique route Napoléon (retour de l'Empereur depuis l'Île d'Elbe en 1815). Tissu PME tertiaires, TPE artisans, professions libérales et commerces. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin grenoblois.",
+    "Eybens (38), banlieue sud-est de Grenoble, est intégrée à Grenoble-Alpes Métropole. Son territoire est traversé par l'historique route Napoléon (retour de l'Empereur depuis l'Île d'Elbe en 1815). Tissu PME tertiaires, TPE artisans, professions libérales et commerces. Axion-IA y conduit ses missions auprès des entreprises locales du bassin grenoblois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Eybens (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales (médecins, avocats, expert-comptables), PME tertiaires eybinois, indépendants et entreprises de Grenoble-Alpes Métropole en zone sud-est.",
   directAnswerEn:

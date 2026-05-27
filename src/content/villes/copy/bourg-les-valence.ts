@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BOURG_LES_VALENCE_COPY: VilleCopy = {
   pitchFr:
-    "Bourg-lès-Valence (26), commune en banlieue nord immédiate de Valence dans la Drôme, occupe une position stratégique dans la vallée du Rhône. Tissu PME industrielles et commerciales, TPE artisans BTP, agriculture vallée, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations de l'agglomération valentinoise.",
+    "Bourg-lès-Valence (26), commune en banlieue nord immédiate de Valence dans la Drôme, occupe une position stratégique dans la vallée du Rhône. Tissu PME industrielles et commerciales, TPE artisans BTP, agriculture vallée, professions libérales. Axion-IA y travaille avec les organisations du territoire de l'agglomération valentinoise.",
   pitchEn:
-    "Bourg-lès-Valence (26), commune en banlieue nord immédiate de Valence dans la Drôme, occupe une position stratégique dans la vallée du Rhône. Tissu PME industrielles et commerciales, TPE artisans BTP, agriculture vallée, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations de l'agglomération valentinoise.",
+    "Bourg-lès-Valence (26), commune en banlieue nord immédiate de Valence dans la Drôme, occupe une position stratégique dans la vallée du Rhône. Tissu PME industrielles et commerciales, TPE artisans BTP, agriculture vallée, professions libérales. Axion-IA y travaille avec les organisations du territoire de l'agglomération valentinoise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bourg-lès-Valence (26). Nous accompagnons tous types d'activités : PME industrielles et commerciales agglomération Valence Romans Agglo, TPE artisans BTP, commerçants, agriculteurs vallée du Rhône, indépendants, professions libérales et services aux entreprises drômoises.",
   directAnswerEn:

@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const MERU_COPY: VilleCopy = {
   pitchFr:
-    "Méru (60), chef-lieu du Pays de Thelle dans l'Oise, ville au riche héritage artisanal (nacre et tabletterie). Tissu TPE/PME artisanat, commerce de proximité, BTP, services, agriculture et logistique sur l'axe Paris–Beauvais. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Méru (60), chef-lieu du Pays de Thelle dans l'Oise, ville au riche héritage artisanal (nacre et tabletterie). Tissu TPE/PME artisanat, commerce de proximité, BTP, services, agriculture et logistique sur l'axe Paris–Beauvais. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Méru (60), chef-lieu du Pays de Thelle dans l'Oise, ville au riche héritage artisanal (nacre et tabletterie). Tissu TPE/PME artisanat, commerce de proximité, BTP, services, agriculture et logistique sur l'axe Paris–Beauvais. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Méru (60), chef-lieu du Pays de Thelle dans l'Oise, ville au riche héritage artisanal (nacre et tabletterie). Tissu TPE/PME artisanat, commerce de proximité, BTP, services, agriculture et logistique sur l'axe Paris–Beauvais. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Méru (60). Nous accompagnons tous types d'activités : TPE/PME artisanales et commerciales, entreprises BTP, exploitations agricoles, acteurs de la logistique et professions de services du Pays de Thelle. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Méru (60). Nous accompagnons tous types d'activités : TPE/PME artisanales et commerciales, entreprises BTP, exploitations agricoles, acteurs de la logistique et professions de services du Pays de Thelle. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Méru (60). Nous accompagnons tous types d'activités : TPE/PME artisanales et commerciales, entreprises BTP, exploitations agricoles, acteurs de la logistique et professions de services du Pays de Thelle. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Méru (60). Nous accompagnons tous types d'activités : TPE/PME artisanales et commerciales, entreprises BTP, exploitations agricoles, acteurs de la logistique et professions de services du Pays de Thelle. Audit Flash sur mesure.",
   ecosystemFr:
     "Méru est le chef-lieu du Pays de Thelle, entre Beauvais et la vallée de l'Oise. Héritage artisanal exceptionnel (capitale historique de la nacre et de la tabletterie, musée dédié). Tissu TPE/PME diversifié : artisanat, commerces de centre-ville, BTP, agriculture, logistique sur l'axe RN1 Paris–Beauvais, services aux entreprises.",
   ecosystemEn:

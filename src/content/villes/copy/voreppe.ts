@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VOREPPE_COPY: VilleCopy = {
   pitchFr:
-    "Voreppe (38), positionnée à l'entrée géologique des Alpes (cluse de Voreppe, début du Y grenoblois), est bordée par l'Isère et les falaises du massif de la Chartreuse face au Vercors. Site historique de la bataille de Voreppe (juin 1940, général Olry). Tissu PME tertiaires, TPE artisans BTP, commerces et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Voreppe (38), positionnée à l'entrée géologique des Alpes (cluse de Voreppe, début du Y grenoblois), est bordée par l'Isère et les falaises du massif de la Chartreuse face au Vercors. Site historique de la bataille de Voreppe (juin 1940, général Olry). Tissu PME tertiaires, TPE artisans BTP, commerces et services. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Voreppe (38), positionnée à l'entrée géologique des Alpes (cluse de Voreppe, début du Y grenoblois), est bordée par l'Isère et les falaises du massif de la Chartreuse face au Vercors. Site historique de la bataille de Voreppe (juin 1940, général Olry). Tissu PME tertiaires, TPE artisans BTP, commerces et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Voreppe (38), positionnée à l'entrée géologique des Alpes (cluse de Voreppe, début du Y grenoblois), est bordée par l'Isère et les falaises du massif de la Chartreuse face au Vercors. Site historique de la bataille de Voreppe (juin 1940, général Olry). Tissu PME tertiaires, TPE artisans BTP, commerces et services. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Voreppe (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, indépendants, professions libérales, PME tertiaires voreppines, industriels périphériques et services aux entreprises du bassin nord-Isère vers Grenoble.",
   directAnswerEn:

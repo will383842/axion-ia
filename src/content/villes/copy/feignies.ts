@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FEIGNIES_COPY: VilleCopy = {
   pitchFr:
-    "Feignies (59), commune du département du Nord (région Hauts-de-France) dans l'agglomération de Maubeuge-Val de Sambre, à proximité de la frontière belge et des fortifications Vauban. Tissu TPE artisanat BTP, PME industrie métallurgique et sous-traitance automobile, commerces, services et activités liées au bassin transfrontalier franco-belge. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Feignies (59), commune du département du Nord (région Hauts-de-France) dans l'agglomération de Maubeuge-Val de Sambre, à proximité de la frontière belge et des fortifications Vauban. Tissu TPE artisanat BTP, PME industrie métallurgique et sous-traitance automobile, commerces, services et activités liées au bassin transfrontalier franco-belge. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Feignies (59), commune du département du Nord (région Hauts-de-France) dans l'agglomération de Maubeuge-Val de Sambre, à proximité de la frontière belge et des fortifications Vauban. Tissu TPE artisanat BTP, PME industrie métallurgique et sous-traitance automobile, commerces, services et activités liées au bassin transfrontalier franco-belge. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Feignies (59), commune du département du Nord (région Hauts-de-France) dans l'agglomération de Maubeuge-Val de Sambre, à proximité de la frontière belge et des fortifications Vauban. Tissu TPE artisanat BTP, PME industrie métallurgique et sous-traitance automobile, commerces, services et activités liées au bassin transfrontalier franco-belge. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Feignies (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrie métallurgique et sous-traitance automobile, commerçants, services et entreprises du bassin transfrontalier Maubeuge-Val de Sambre.",
   directAnswerEn:

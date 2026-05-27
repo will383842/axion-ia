@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const CHENOVE_COPY: VilleCopy = {
   pitchFr:
-    "Chenôve (21), commune limitrophe sud de Dijon au pied de la Côte de Nuits, hérite d'une tradition viticole séculaire (ancienne cuverie des ducs de Bourgogne). Tissu économique mixte : TPE/PME commerce, artisanat, services, logistique. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération dijonnaise.",
+    "Chenôve (21), commune limitrophe sud de Dijon au pied de la Côte de Nuits, hérite d'une tradition viticole séculaire (ancienne cuverie des ducs de Bourgogne). Tissu économique mixte : TPE/PME commerce, artisanat, services, logistique. Axion-IA répond aux besoins de toutes les entreprises de l'agglomération dijonnaise.",
   pitchEn:
-    "Chenôve (21), commune limitrophe sud de Dijon au pied de la Côte de Nuits, hérite d'une tradition viticole séculaire (ancienne cuverie des ducs de Bourgogne). Tissu économique mixte : TPE/PME commerce, artisanat, services, logistique. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération dijonnaise.",
+    "Chenôve (21), commune limitrophe sud de Dijon au pied de la Côte de Nuits, hérite d'une tradition viticole séculaire (ancienne cuverie des ducs de Bourgogne). Tissu économique mixte : TPE/PME commerce, artisanat, services, logistique. Axion-IA répond aux besoins de toutes les entreprises de l'agglomération dijonnaise.",
   seoHook: "commerce, artisanat & viticulture",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chenôve (21). Nous accompagnons TPE, PME et indépendants du sud dijonnais : commerçants, artisans, professions libérales, acteurs de la logistique et de la viticulture Côte de Nuits. Audit Flash dès 490 € HT, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chenôve (21). Nous accompagnons TPE, PME et indépendants du sud dijonnais : commerçants, artisans, professions libérales, acteurs de la logistique et de la viticulture Côte de Nuits. Audit Flash sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chenôve (21). Nous accompagnons TPE, PME et indépendants du sud dijonnais : commerçants, artisans, professions libérales, acteurs de la logistique et de la viticulture Côte de Nuits. Audit Flash dès 490 € HT, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chenôve (21). Nous accompagnons TPE, PME et indépendants du sud dijonnais : commerçants, artisans, professions libérales, acteurs de la logistique et de la viticulture Côte de Nuits. Audit Flash sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Chenôve est la deuxième ville de Dijon Métropole, positionnée au sud immédiat de Dijon au pied de la Côte de Nuits. Tissu économique dominé par le commerce de proximité, l'artisanat, les services aux entreprises, la logistique périurbaine et un héritage viticole notable (ancienne cuverie des ducs de Bourgogne, proximité Marsannay-la-Côte).",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const CHENOVE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Chenôve et dans toute l'agglomération dijonnaise sud (Marsannay-la-Côte, Longvic, Ouges, Perrigny-lès-Dijon). Nos consultants se déplacent depuis Dijon en 10 minutes via le tram T2.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Chenôve ?",
+      q: "Tarifs audit IA à Chenôve  : quel budget prévoir ?",
       a: "L'Audit Flash Axion-IA démarre à 490 € HT. Adapté aux TPE et PME chenevelières, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {

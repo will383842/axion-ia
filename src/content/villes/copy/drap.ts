@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const DRAP_COPY: VilleCopy = {
   pitchFr:
-    "Drap (06), dans la vallée du Paillon entre Nice et Contes, est une commune résidentielle de la Métropole Nice Côte d'Azur au cadre verdoyant. Tissu TPE/PME artisanat BTP, commerces de proximité, services à la personne, professions libérales et petites entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Drap (06), dans la vallée du Paillon entre Nice et Contes, est une commune résidentielle de la Métropole Nice Côte d'Azur au cadre verdoyant. Tissu TPE/PME artisanat BTP, commerces de proximité, services à la personne, professions libérales et petites entreprises. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Drap (06), dans la vallée du Paillon entre Nice et Contes, est une commune résidentielle de la Métropole Nice Côte d'Azur au cadre verdoyant. Tissu TPE/PME artisanat BTP, commerces de proximité, services à la personne, professions libérales et petites entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Drap (06), dans la vallée du Paillon entre Nice et Contes, est une commune résidentielle de la Métropole Nice Côte d'Azur au cadre verdoyant. Tissu TPE/PME artisanat BTP, commerces de proximité, services à la personne, professions libérales et petites entreprises. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Drap (06). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, PME services et entreprises de la vallée du Paillon entre Nice et Contes.",
   directAnswerEn:

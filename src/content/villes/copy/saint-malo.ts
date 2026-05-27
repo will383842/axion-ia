@@ -11,14 +11,14 @@ export const SAINT_MALO_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Saint-Malo, où le commerce de détail et la Biscuiterie Saint-Michel prospèrent, pour optimiser les processus métier grâce à l'IA.",
   directAnswerFr:
-    "À Saint-Malo, Axion-IA propose des interventions IA pour les entreprises locales, incluant un audit à partir de 490 € HT et une intervention à partir de 590 € HT. Nous nous déplaçons directement sur site, que ce soit dans la Zone d'Activités de la Grassinais ou auprès de la Biscuiterie Saint-Michel, pour offrir des solutions adaptées aux besoins spécifiques de chaque entreprise.",
+    "À Saint-Malo, Axion-IA propose des interventions IA pour les entreprises locales, incluant un audit et une intervention. Nous nous déplaçons directement sur site, que ce soit dans la Zone d'Activités de la Grassinais ou auprès de la Biscuiterie Saint-Michel, pour offrir des solutions adaptées aux besoins spécifiques de chaque entreprise.",
   directAnswerEn:
-    "À Saint-Malo, Axion-IA propose des interventions IA pour les entreprises locales, incluant un audit à partir de 490 € HT et une intervention à partir de 590 € HT. Nous nous déplaçons directement sur site, que ce soit dans la Zone d'Activités de la Grassinais ou auprès de la Biscuiterie Saint-Michel, pour offrir des solutions adaptées aux besoins spécifiques de chaque entreprise.",
+    "À Saint-Malo, Axion-IA propose des interventions IA pour les entreprises locales, incluant un audit et une intervention. Nous nous déplaçons directement sur site, que ce soit dans la Zone d'Activités de la Grassinais ou auprès de la Biscuiterie Saint-Michel, pour offrir des solutions adaptées aux besoins spécifiques de chaque entreprise.",
   seoHook: "commerce détail & hébergement",
   ecosystemFr:
-    "Saint-Malo, avec ses 4 000 établissements actifs, se distingue par son secteur du commerce de détail et l'implantation de la Biscuiterie Saint-Michel. La Zone d'Activités de la Grassinais est un pôle économique clé.",
+    "Saint-Malo, avec ses 4 000 établissements actifs, se distingue par son secteur du commerce de détail et l'implantation de la Biscuiterie Saint-Michel. La Zone d'Activités de la Grassinais est un pôle économique clé.",
   ecosystemEn:
-    "Saint-Malo, avec ses 4 000 établissements actifs, se distingue par son secteur du commerce de détail et l'implantation de la Biscuiterie Saint-Michel. La Zone d'Activités de la Grassinais est un pôle économique clé.",
+    "Saint-Malo, avec ses 4 000 établissements actifs, se distingue par son secteur du commerce de détail et l'implantation de la Biscuiterie Saint-Michel. La Zone d'Activités de la Grassinais est un pôle économique clé.",
   distancesFr:
     "La gare TGV de Saint-Malo facilite l'accès direct à la ville, tandis que l'aéroport de Rennes Bretagne est à 75 km.",
   distancesEn:

@@ -11,9 +11,9 @@ export const MANDELIEU_LA_NAPOULE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Mandelieu-la-Napoule pour accompagner les entreprises dans leur transition vers l'IA. Le tissu économique local, comprenant des secteurs comme le commerce de détail et la construction, bénéficie de notre expertise nationale pour optimiser leurs processus.",
   directAnswerFr:
-    "À Mandelieu-la-Napoule, Axion-IA propose des services adaptés aux besoins des entreprises locales, notamment dans les secteurs du commerce de détail et de la construction. Avec des tarifs publics clairs, tels que l'Audit Flash à partir de 490 € HT, nous garantissons une intervention rapide et efficace sur site, sans implantations locales.",
+    "À Mandelieu-la-Napoule, Axion-IA propose des services adaptés aux besoins des entreprises locales, notamment dans les secteurs du commerce de détail et de la construction. Avec des tarifs publics clairs, tels que l'Audit Flash sur mesure, nous garantissons une intervention rapide et efficace sur site, sans implantations locales.",
   directAnswerEn:
-    "À Mandelieu-la-Napoule, Axion-IA propose des services adaptés aux besoins des entreprises locales, notamment dans les secteurs du commerce de détail et de la construction. Avec des tarifs publics clairs, tels que l'Audit Flash à partir de 490 € HT, nous garantissons une intervention rapide et efficace sur site, sans implantations locales.",
+    "À Mandelieu-la-Napoule, Axion-IA propose des services adaptés aux besoins des entreprises locales, notamment dans les secteurs du commerce de détail et de la construction. Avec des tarifs publics clairs, tels que l'Audit Flash sur mesure, nous garantissons une intervention rapide et efficace sur site, sans implantations locales.",
   seoHook: "commerce détail & construction",
   ecosystemFr:
     "Mandelieu-la-Napoule, proche de Cannes et Antibes, bénéficie d'une économie diversifiée avec des entreprises dans le commerce de détail et l'hébergement. Axion-IA intervient dans cet environnement pour apporter des solutions IA concrètes aux entreprises locales.",

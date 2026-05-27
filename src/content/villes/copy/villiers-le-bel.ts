@@ -11,9 +11,9 @@ export const VILLIERS_LE_BEL_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Villiers-le-Bel, au cœur d'un bassin économique dynamique comprenant des secteurs tels que le commerce de détail et les transports terrestres. Paris abrite également des pôles d'innovation comme Cap Digital et Station F, renforçant l'écosystème régional.",
   directAnswerFr:
-    "À Villiers-le-Bel, Axion-IA propose des services d'IA adaptés aux besoins des entreprises locales. Avec des entités comme LVMH et BNP Paribas à Paris, nous comprenons les exigences des environnements complexes. Nos interventions incluent audits, implémentations et formations, avec des tarifs publics clairs, tels que l'Audit Flash à partir de 490 € HT.",
+    "À Villiers-le-Bel, Axion-IA propose des services d'IA adaptés aux besoins des entreprises locales. Avec des entités comme LVMH et BNP Paribas à Paris, nous comprenons les exigences des environnements complexes. Nos interventions incluent audits, implémentations et formations, avec des tarifs publics clairs, tels que l'Audit Flash sur mesure.",
   directAnswerEn:
-    "À Villiers-le-Bel, Axion-IA propose des services d'IA adaptés aux besoins des entreprises locales. Avec des entités comme LVMH et BNP Paribas à Paris, nous comprenons les exigences des environnements complexes. Nos interventions incluent audits, implémentations et formations, avec des tarifs publics clairs, tels que l'Audit Flash à partir de 490 € HT.",
+    "À Villiers-le-Bel, Axion-IA propose des services d'IA adaptés aux besoins des entreprises locales. Avec des entités comme LVMH et BNP Paribas à Paris, nous comprenons les exigences des environnements complexes. Nos interventions incluent audits, implémentations et formations, avec des tarifs publics clairs, tels que l'Audit Flash sur mesure.",
   seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Villiers-le-Bel bénéficie de la proximité de grands acteurs économiques tels que LVMH et Hermès à Paris, offrant un environnement propice aux entreprises locales. Les secteurs du commerce de détail et des transports y sont particulièrement développés.",

@@ -60,7 +60,7 @@ export const VAL_DE_BRIEY_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les artisans BTP et commerçants sur des cas IA pratiques : automatisation devis, gestion planning chantier, agents IA prise de RDV, gestion stocks, facturation automatique. Audit Flash 490 € HT.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Val de Briey ?",
+      q: "Tarifs audit IA à Val de Briey  : quel budget prévoir ?",
       a: "L'audit Flash IA démarre à 490 € HT pour les TPE et PME de Val de Briey et du Pays Haut. Tarifs publics et transparents. ROI chiffré dès le diagnostic initial.",
     },
     {

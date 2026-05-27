@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const NEUVILLE_DE_POITOU_COPY: VilleCopy = {
   pitchFr:
-    "Neuville-de-Poitou (86), bourg-centre du nord de la Vienne au sein de Grand Poitiers, est un pôle de services et de commerces pour tout le nord Poitou. Tissu TPE artisans, PME tertiaires, agriculture, commerces et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations du Grand Poitiers nord.",
+    "Neuville-de-Poitou (86), bourg-centre du nord de la Vienne au sein de Grand Poitiers, est un pôle de services et de commerces pour tout le nord Poitou. Tissu TPE artisans, PME tertiaires, agriculture, commerces et professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales du Grand Poitiers nord.",
   pitchEn:
-    "Neuville-de-Poitou (86), bourg-centre du nord de la Vienne au sein de Grand Poitiers, est un pôle de services et de commerces pour tout le nord Poitou. Tissu TPE artisans, PME tertiaires, agriculture, commerces et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations du Grand Poitiers nord.",
+    "Neuville-de-Poitou (86), bourg-centre du nord de la Vienne au sein de Grand Poitiers, est un pôle de services et de commerces pour tout le nord Poitou. Tissu TPE artisans, PME tertiaires, agriculture, commerces et professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales du Grand Poitiers nord.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Neuville-de-Poitou (86). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, exploitants agricoles, commerçants, professions libérales et services aux entreprises du nord de Grand Poitiers, à proximité du Futuroscope.",
   directAnswerEn:

@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SARRIANS_COPY: VilleCopy = {
   pitchFr:
-    "Sarrians (84), commune de la plaine du Comtat Venaissin proche de Beaumes-de-Venise, compte près de 5 792 habitants. Vignoble AOC Beaumes-de-Venise et Ventoux, agriculture, maraîchage, tissu de TPE artisanales, domaines viticoles, PME agroalimentaires et commerces de proximité. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Sarrians (84), commune de la plaine du Comtat Venaissin proche de Beaumes-de-Venise, compte près de 5 792 habitants. Vignoble AOC Beaumes-de-Venise et Ventoux, agriculture, maraîchage, tissu de TPE artisanales, domaines viticoles, PME agroalimentaires et commerces de proximité. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Sarrians (84), commune de la plaine du Comtat Venaissin proche de Beaumes-de-Venise, compte près de 5 792 habitants. Vignoble AOC Beaumes-de-Venise et Ventoux, agriculture, maraîchage, tissu de TPE artisanales, domaines viticoles, PME agroalimentaires et commerces de proximité. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Sarrians (84), commune de la plaine du Comtat Venaissin proche de Beaumes-de-Venise, compte près de 5 792 habitants. Vignoble AOC Beaumes-de-Venise et Ventoux, agriculture, maraîchage, tissu de TPE artisanales, domaines viticoles, PME agroalimentaires et commerces de proximité. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sarrians (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles, domaines viticoles AOC Beaumes-de-Venise et Ventoux, PME agroalimentaires, commerces et services du Comtat. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sarrians (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles, domaines viticoles AOC Beaumes-de-Venise et Ventoux, PME agroalimentaires, commerces et services du Comtat. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sarrians (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles, domaines viticoles AOC Beaumes-de-Venise et Ventoux, PME agroalimentaires, commerces et services du Comtat. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sarrians (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles, domaines viticoles AOC Beaumes-de-Venise et Ventoux, PME agroalimentaires, commerces et services du Comtat. Audit Flash sur mesure.",
   seoHook: "aoc beaumes-de-",
   ecosystemFr:
     "Sarrians est un pôle agricole et viticole de la plaine du Comtat Venaissin, à proximité immédiate de Beaumes-de-Venise. Vignoble AOC Beaumes-de-Venise (muscat) et Ventoux, vergers, maraîchage. Tissu de TPE artisans, domaines viticoles, PME agroalimentaires et commerces. Carpentras à 10 min, Orange à 20 min, Avignon à 30 min.",
@@ -60,7 +60,7 @@ export const SARRIANS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les maraîchers et coopératives de Sarrians et de la plaine du Comtat : gestion parcellaire, automatisation traçabilité, prévision rendements, outils IA adaptés circuits courts et commercialisation B2B.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Sarrians ?",
+      q: "Combien coûte un audit IA à Sarrians  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {

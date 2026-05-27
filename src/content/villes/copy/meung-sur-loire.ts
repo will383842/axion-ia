@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MEUNG_SUR_LOIRE_COPY: VilleCopy = {
   pitchFr:
-    "Meung-sur-Loire (45), commune des bords de Loire en Loiret, est un bourg historique de la Beauce ligérienne dominé par le château de Meung (résidence épiscopale XIIe siècle). Tissu TPE artisans, commerçants, PME agricoles et viticoles, tourisme patrimonial Loire. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Meung-sur-Loire (45), commune des bords de Loire en Loiret, est un bourg historique de la Beauce ligérienne dominé par le château de Meung (résidence épiscopale XIIe siècle). Tissu TPE artisans, commerçants, PME agricoles et viticoles, tourisme patrimonial Loire. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Meung-sur-Loire (45), commune des bords de Loire en Loiret, est un bourg historique de la Beauce ligérienne dominé par le château de Meung (résidence épiscopale XIIe siècle). Tissu TPE artisans, commerçants, PME agricoles et viticoles, tourisme patrimonial Loire. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Meung-sur-Loire (45), commune des bords de Loire en Loiret, est un bourg historique de la Beauce ligérienne dominé par le château de Meung (résidence épiscopale XIIe siècle). Tissu TPE artisans, commerçants, PME agricoles et viticoles, tourisme patrimonial Loire. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Meung-sur-Loire (45). Nous accompagnons tous types d'activités : TPE artisans et commerçants du bourg, PME agricoles et viticoles de Beauce ligérienne, acteurs du tourisme patrimonial (château de Meung, bords de Loire), indépendants, professions libérales et services aux entreprises du bassin orléanais ouest.",
   directAnswerEn:

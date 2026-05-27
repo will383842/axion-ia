@@ -11,9 +11,9 @@ export const LA_VALETTE_DU_VAR_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à La Valette-du-Var, ville dynamique en Provence-Alpes-Côte d'Azur, où l'on trouve des entreprises comme DCNS et Naval Group, pour optimiser les processus IA des entreprises locales.",
   directAnswerFr:
-    "À La Valette-du-Var, Axion-IA propose des interventions sur site pour les entreprises locales. Avec des acteurs industriels tels que DCNS et Naval Group, la ville offre un environnement propice à l'intégration de l'IA. Nos services incluent des audits à partir de 490 € HT et des implémentations dès 990 € HT, adaptés aux besoins spécifiques des entreprises du secteur de la construction et de la programmation informatique.",
+    "À La Valette-du-Var, Axion-IA propose des interventions sur site pour les entreprises locales. Avec des acteurs industriels tels que DCNS et Naval Group, la ville offre un environnement propice à l'intégration de l'IA. Nos services incluent des audits et des implémentations, adaptés aux besoins spécifiques des entreprises du secteur de la construction et de la programmation informatique.",
   directAnswerEn:
-    "À La Valette-du-Var, Axion-IA propose des interventions sur site pour les entreprises locales. Avec des acteurs industriels tels que DCNS et Naval Group, la ville offre un environnement propice à l'intégration de l'IA. Nos services incluent des audits à partir de 490 € HT et des implémentations dès 990 € HT, adaptés aux besoins spécifiques des entreprises du secteur de la construction et de la programmation informatique.",
+    "À La Valette-du-Var, Axion-IA propose des interventions sur site pour les entreprises locales. Avec des acteurs industriels tels que DCNS et Naval Group, la ville offre un environnement propice à l'intégration de l'IA. Nos services incluent des audits et des implémentations, adaptés aux besoins spécifiques des entreprises du secteur de la construction et de la programmation informatique.",
   seoHook: "commerce détail & programmation informatique",
   ecosystemFr:
     "La Valette-du-Var accueille des entreprises comme DCNS et Naval Group. La ZAC Valgora est un pôle économique significatif, renforçant l'activité dans des secteurs tels que la construction et la programmation informatique.",

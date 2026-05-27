@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const RUMILLY_COPY: VilleCopy = {
   pitchFr:
-    "Rumilly (74), capitale de l'Albanais en Haute-Savoie, est un pôle agroalimentaire laitier et fromager majeur, entre Annecy et Aix-les-Bains. PME industrielles, TPE artisanat, commerces de bourg et agriculture Albanais composent un tissu économique diversifié. Axion-IA y déploie ses missions auprès de toutes les organisations de l'Albanais.",
+    "Rumilly (74), capitale de l'Albanais en Haute-Savoie, est un pôle agroalimentaire laitier et fromager majeur, entre Annecy et Aix-les-Bains. PME industrielles, TPE artisanat, commerces de bourg et agriculture Albanais composent un tissu économique diversifié. Axion-IA y travaille avec les organisations du territoire de l'Albanais.",
   pitchEn:
-    "Rumilly (74), capitale de l'Albanais en Haute-Savoie, est un pôle agroalimentaire laitier et fromager majeur, entre Annecy et Aix-les-Bains. PME industrielles, TPE artisanat, commerces de bourg et agriculture Albanais composent un tissu économique diversifié. Axion-IA y déploie ses missions auprès de toutes les organisations de l'Albanais.",
+    "Rumilly (74), capitale de l'Albanais en Haute-Savoie, est un pôle agroalimentaire laitier et fromager majeur, entre Annecy et Aix-les-Bains. PME industrielles, TPE artisanat, commerces de bourg et agriculture Albanais composent un tissu économique diversifié. Axion-IA y travaille avec les organisations du territoire de l'Albanais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rumilly (74). Nous accompagnons TPE et PME : industriels agroalimentaires laitiers et fromagers, PME manufacturières, artisans, commerçants du bourg, agriculteurs de l'Albanais et prestataires de services. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rumilly (74). Nous accompagnons TPE et PME : industriels agroalimentaires laitiers et fromagers, PME manufacturières, artisans, commerçants du bourg, agriculteurs de l'Albanais et prestataires de services. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rumilly (74). Nous accompagnons TPE et PME : industriels agroalimentaires laitiers et fromagers, PME manufacturières, artisans, commerçants du bourg, agriculteurs de l'Albanais et prestataires de services. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rumilly (74). Nous accompagnons TPE et PME : industriels agroalimentaires laitiers et fromagers, PME manufacturières, artisans, commerçants du bourg, agriculteurs de l'Albanais et prestataires de services. Audit Flash sur mesure.",
   seoHook: "TPE & PME Hte-Savoie",
   ecosystemFr:
     "Rumilly est la capitale économique de l'Albanais, territoire entre Annecy (20 min) et Aix-les-Bains (20 min). L'industrie agroalimentaire laitière et fromagère y est historiquement forte (coopératives, laiteries, transformation). PME industrielles diversifiées, tissu TPE artisanat et commerces de bourg, agriculture (élevage laitier, polyculture). Bassin d'emploi dynamique (~50 000 hab zone Albanais).",
@@ -56,7 +56,7 @@ export const RUMILLY_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME agroalimentaires de Rumilly et de l'Albanais sur leurs cas IA : contrôle qualité laitier par vision, traçabilité production fromagère, optimisation chaîne du froid, prédiction maintenance, gestion stocks.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Rumilly ?",
+      q: "Quel est le tarif d'un audit IA à Rumilly  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Adapté aux PME agroalimentaires comme aux TPE artisans et commerçants de l'Albanais.",
     },
     {

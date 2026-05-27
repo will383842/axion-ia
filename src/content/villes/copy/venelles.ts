@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const VENELLES_COPY: VilleCopy = {
   pitchFr:
-    "Venelles (13), commune résidentielle au nord d'Aix-en-Provence, accueille des familles et cadres travaillant dans le bassin aixois. Tissu de TPE artisans, commerçants, professions libérales et PME tertiaires. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Venelles (13), commune résidentielle au nord d'Aix-en-Provence, accueille des familles et cadres travaillant dans le bassin aixois. Tissu de TPE artisans, commerçants, professions libérales et PME tertiaires. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Venelles (13), commune résidentielle au nord d'Aix-en-Provence, accueille des familles et cadres travaillant dans le bassin aixois. Tissu de TPE artisans, commerçants, professions libérales et PME tertiaires. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Venelles (13), commune résidentielle au nord d'Aix-en-Provence, accueille des familles et cadres travaillant dans le bassin aixois. Tissu de TPE artisans, commerçants, professions libérales et PME tertiaires. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Venelles (13). Nous accompagnons TPE artisans, commerçants, professions libérales, PME tertiaires et entreprises du bassin nord-aixois. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Venelles (13). Nous accompagnons TPE artisans, commerçants, professions libérales, PME tertiaires et entreprises du bassin nord-aixois. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Venelles (13). Nous accompagnons TPE artisans, commerçants, professions libérales, PME tertiaires et entreprises du bassin nord-aixois. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Venelles (13). Nous accompagnons TPE artisans, commerçants, professions libérales, PME tertiaires et entreprises du bassin nord-aixois. Audit Flash sur mesure.",
   seoHook: "professions libérales & artisanat services",
   ecosystemFr:
     "Venelles est une commune résidentielle dynamique à 8 km au nord d'Aix-en-Provence. Cadres et professions libérales travaillant à Aix, Marseille ou sur le technopôle de l'Arbois. Zone d'activités locale (artisanat, services), commerces de proximité centre-village et tissu associatif dense.",
@@ -52,7 +52,7 @@ export const VENELLES_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Venelles et dans tout le nord-aixois (Éguilles, Saint-Cannat, Le Puy-Sainte-Réparade, Meyrargues). Proximité immédiate d'Aix-en-Provence et du technopôle de l'Arbois.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Venelles ?",
+      q: "Tarifs audit IA à Venelles  : quel budget prévoir ?",
       a: "L'audit Flash (4 heures, diagnostic complet + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, professions libérales et PME venelloises. Tarifs publics, sans engagement.",
     },
     {

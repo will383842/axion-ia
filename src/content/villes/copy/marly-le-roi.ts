@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MARLY_LE_ROI_COPY: VilleCopy = {
   pitchFr:
-    "Marly-le-Roi (78), commune résidentielle de l'ouest parisien dans les Yvelines, est marquée par l'héritage royal de la Machine de Marly et du domaine de Marly. Tissu de TPE/PME tertiaires, professions libérales, commerces de proximité, services aux particuliers. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Marly-le-Roi (78), commune résidentielle de l'ouest parisien dans les Yvelines, est marquée par l'héritage royal de la Machine de Marly et du domaine de Marly. Tissu de TPE/PME tertiaires, professions libérales, commerces de proximité, services aux particuliers. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Marly-le-Roi (78), commune résidentielle de l'ouest parisien dans les Yvelines, est marquée par l'héritage royal de la Machine de Marly et du domaine de Marly. Tissu de TPE/PME tertiaires, professions libérales, commerces de proximité, services aux particuliers. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Marly-le-Roi (78), commune résidentielle de l'ouest parisien dans les Yvelines, est marquée par l'héritage royal de la Machine de Marly et du domaine de Marly. Tissu de TPE/PME tertiaires, professions libérales, commerces de proximité, services aux particuliers. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marly-le-Roi (78). Nous accompagnons tous types d'activités : TPE et PME tertiaires, professions libérales, commerces de centre-ville, agences immobilières, cabinets de conseil, indépendants et services aux particuliers de cette commune résidentielle de l'ouest parisien.",
   directAnswerEn:

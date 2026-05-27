@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PONT_EVEQUE_COPY: VilleCopy = {
   pitchFr:
-    "Pont-Évêque (38), commune du sud-Isère adhérente à Vienne Condrieu Agglomération, est positionnée dans le bassin économique rhodanien autour de Vienne. Tissu PME industrielles, TPE artisans BTP, commerces, agriculture (vignobles AOC proches sur rive droite). Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Pont-Évêque (38), commune du sud-Isère adhérente à Vienne Condrieu Agglomération, est positionnée dans le bassin économique rhodanien autour de Vienne. Tissu PME industrielles, TPE artisans BTP, commerces, agriculture (vignobles AOC proches sur rive droite). Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Pont-Évêque (38), commune du sud-Isère adhérente à Vienne Condrieu Agglomération, est positionnée dans le bassin économique rhodanien autour de Vienne. Tissu PME industrielles, TPE artisans BTP, commerces, agriculture (vignobles AOC proches sur rive droite). Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Pont-Évêque (38), commune du sud-Isère adhérente à Vienne Condrieu Agglomération, est positionnée dans le bassin économique rhodanien autour de Vienne. Tissu PME industrielles, TPE artisans BTP, commerces, agriculture (vignobles AOC proches sur rive droite). Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pont-Évêque (38). Nous accompagnons tous types d'activités : PME industrielles bassin rhodanien Vienne, TPE artisans BTP, commerçants, viticulteurs proximité (Côte-Rôtie, Condrieu), professions libérales et services aux entreprises de Vienne Condrieu Agglomération.",
   directAnswerEn:

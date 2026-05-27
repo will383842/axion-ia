@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_CHAMAS_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Chamas (13), village provençal sur les rives de l'étang de Berre, est célèbre pour son pont Flavien, monument romain classé du Ier siècle. Tissu de TPE artisans, commerçants, pêcheurs, PME services et agriculture (oliveraies). Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Saint-Chamas (13), village provençal sur les rives de l'étang de Berre, est célèbre pour son pont Flavien, monument romain classé du Ier siècle. Tissu de TPE artisans, commerçants, pêcheurs, PME services et agriculture (oliveraies). Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Saint-Chamas (13), village provençal sur les rives de l'étang de Berre, est célèbre pour son pont Flavien, monument romain classé du Ier siècle. Tissu de TPE artisans, commerçants, pêcheurs, PME services et agriculture (oliveraies). Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Saint-Chamas (13), village provençal sur les rives de l'étang de Berre, est célèbre pour son pont Flavien, monument romain classé du Ier siècle. Tissu de TPE artisans, commerçants, pêcheurs, PME services et agriculture (oliveraies). Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Chamas (13). Nous accompagnons TPE artisans, commerçants, pêcheurs, PME de services, exploitants agricoles (oliveraies, maraîchage) et entreprises du bassin de l'étang de Berre. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Chamas (13). Nous accompagnons TPE artisans, commerçants, pêcheurs, PME de services, exploitants agricoles (oliveraies, maraîchage) et entreprises du bassin de l'étang de Berre. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Chamas (13). Nous accompagnons TPE artisans, commerçants, pêcheurs, PME de services, exploitants agricoles (oliveraies, maraîchage) et entreprises du bassin de l'étang de Berre. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Chamas (13). Nous accompagnons TPE artisans, commerçants, pêcheurs, PME de services, exploitants agricoles (oliveraies, maraîchage) et entreprises du bassin de l'étang de Berre. Audit Flash sur mesure.",
   seoHook: "agriculture oliveraies & pêche artisanale",
   ecosystemFr:
     "Saint-Chamas s'étend sur les rives nord-est de l'étang de Berre, dominée par le pont Flavien (arc romain Ier siècle av. J.-C.). Économie locale portée par l'agriculture (oliveraies AOC, maraîchage), la pêche artisanale en étang, le tourisme patrimonial et un tissu de TPE artisans BTP et commerces de proximité.",
@@ -52,7 +52,7 @@ export const SAINT_CHAMAS_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Saint-Chamas et tout le bassin de l'étang de Berre (Miramas, Istres, Berre-l'Étang, Saint-Mitre-les-Remparts). Accès rapide via A7 depuis Salon-de-Provence ou Aix-en-Provence.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Saint-Chamas ?",
+      q: "Quel est le tarif d'un audit IA à Saint-Chamas  ?",
       a: "L'audit Flash (4 heures, diagnostic complet + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, commerçants et exploitants agricoles saint-chamasséens. Tarifs publics, sans engagement.",
     },
     {

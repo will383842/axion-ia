@@ -11,9 +11,9 @@ export const POISSY_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Poissy pour optimiser vos processus avec l'IA. Dans une ville proche de Paris, abritant PSA Peugeot Citroën, nous sommes votre partenaire IA.",
   directAnswerFr:
-    "À Poissy, Axion-IA propose des services d'IA adaptés aux besoins spécifiques des entreprises locales. Avec PSA Peugeot Citroën et la Zone Industrielle de la Coudraie comme piliers économiques, nous offrons des audits à partir de 490 € HT et des interventions dès 590 € HT. Nos solutions sont conçues pour s'intégrer efficacement dans votre environnement professionnel.",
+    "À Poissy, Axion-IA propose des services d'IA adaptés aux besoins spécifiques des entreprises locales. Avec PSA Peugeot Citroën et la Zone Industrielle de la Coudraie comme piliers économiques, nous offrons des audits et des interventions. Nos solutions sont conçues pour s'intégrer efficacement dans votre environnement professionnel.",
   directAnswerEn:
-    "À Poissy, Axion-IA propose des services d'IA adaptés aux besoins spécifiques des entreprises locales. Avec PSA Peugeot Citroën et la Zone Industrielle de la Coudraie comme piliers économiques, nous offrons des audits à partir de 490 € HT et des interventions dès 590 € HT. Nos solutions sont conçues pour s'intégrer efficacement dans votre environnement professionnel.",
+    "À Poissy, Axion-IA propose des services d'IA adaptés aux besoins spécifiques des entreprises locales. Avec PSA Peugeot Citroën et la Zone Industrielle de la Coudraie comme piliers économiques, nous offrons des audits et des interventions. Nos solutions sont conçues pour s'intégrer efficacement dans votre environnement professionnel.",
   seoHook: "construction automobile & commerce gros",
   ecosystemFr:
     "Poissy, avec PSA Peugeot Citroën et sa Zone Industrielle de la Coudraie, est un centre économique clé. Axion-IA y apporte son expertise en IA pour optimiser les processus.",

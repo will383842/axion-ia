@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LIMOUX_COPY: VilleCopy = {
   pitchFr:
-    "Limoux (11), sous-préfecture de l'Aude, est la patrie de la Blanquette de Limoux (plus vieux vin effervescent du monde, 1531). Tissu TPE artisans, PME viticoles et caves coopératives, commerces centre-ville, agriculture haute vallée de l'Aude, tourisme oenotouristique. Axion-IA accompagne entreprises et indépendants de tous secteurs du Limouxin.",
+    "Limoux (11), sous-préfecture de l'Aude, est la patrie de la Blanquette de Limoux (plus vieux vin effervescent du monde, 1531). Tissu TPE artisans, PME viticoles et caves coopératives, commerces centre-ville, agriculture haute vallée de l'Aude, tourisme oenotouristique. Axion-IA collabore avec toutes les structures locales du Limouxin.",
   pitchEn:
-    "Limoux (11), sous-préfecture de l'Aude, est la patrie de la Blanquette de Limoux (plus vieux vin effervescent du monde, 1531). Tissu TPE artisans, PME viticoles et caves coopératives, commerces centre-ville, agriculture haute vallée de l'Aude, tourisme oenotouristique. Axion-IA accompagne entreprises et indépendants de tous secteurs du Limouxin.",
+    "Limoux (11), sous-préfecture de l'Aude, est la patrie de la Blanquette de Limoux (plus vieux vin effervescent du monde, 1531). Tissu TPE artisans, PME viticoles et caves coopératives, commerces centre-ville, agriculture haute vallée de l'Aude, tourisme oenotouristique. Axion-IA collabore avec toutes les structures locales du Limouxin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Limoux (11), sous-préfecture de l'Aude. Nous accompagnons TPE artisans, PME viticoles et caves (Blanquette, Crémant de Limoux), commerçants, agriculteurs et acteurs de l'oenotourisme du Limouxin. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Limoux (11), sous-préfecture de l'Aude. Nous accompagnons TPE artisans, PME viticoles et caves (Blanquette, Crémant de Limoux), commerçants, agriculteurs et acteurs de l'oenotourisme du Limouxin. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Limoux (11), sous-préfecture de l'Aude. Nous accompagnons TPE artisans, PME viticoles et caves (Blanquette, Crémant de Limoux), commerçants, agriculteurs et acteurs de l'oenotourisme du Limouxin. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Limoux (11), sous-préfecture de l'Aude. Nous accompagnons TPE artisans, PME viticoles et caves (Blanquette, Crémant de Limoux), commerçants, agriculteurs et acteurs de l'oenotourisme du Limouxin. Audit Flash sur mesure.",
   seoHook: "viticulture caves & oenotourisme tourisme",
   ecosystemFr:
     "Limoux est la sous-préfecture de l'Aude, ville médiévale de la haute vallée de l'Aude. L'économie est portée par la viticulture (Blanquette de Limoux, plus vieux brut du monde depuis 1531, Crémant de Limoux, AOC Limoux), les caves coopératives, l'oenotourisme, le carnaval historique (plus long du monde), l'artisanat et le commerce. Agriculture diversifiée (vigne, céréales, élevage).",
@@ -56,8 +56,8 @@ export const LIMOUX_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les caves coopératives et domaines viticoles du Limouxin (Blanquette, Crémant, AOC Limoux) sur des cas IA concrets : traçabilité vinification, gestion stocks cave, automatisation commercialisation export, prédiction vendanges.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Limoux ?",
-      a: "L'audit Flash démarre à 490 € HT pour une TPE. Pour les PME viticoles et caves coopératives, un audit approfondi entre 1 900 et 3 900 € HT selon la complexité. Tarifs publics, pas de devis opaque.",
+      q: "Quel est le prix d'un audit IA pour entreprises à Limoux  ?",
+      a: "L'audit Flash est tarifé selon vos enjeux pour une TPE. Pour les PME viticoles et caves coopératives, un audit approfondi entre 1 900 et 3 900 € HT selon la complexité. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Travaillez-vous avec les acteurs de l'oenotourisme ?",

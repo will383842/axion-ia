@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const ABLON_SUR_SEINE_COPY: VilleCopy = {
   pitchFr:
-    "Ablon-sur-Seine (94), petite commune résidentielle des bords de Seine entre Villeneuve-le-Roi et Athis-Mons, dispose d'un tissu économique de proximité. TPE artisanat et services, commerces de centre-bourg, professions libérales, petites PME tertiaires, restauration. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Ablon-sur-Seine (94), petite commune résidentielle des bords de Seine entre Villeneuve-le-Roi et Athis-Mons, dispose d'un tissu économique de proximité. TPE artisanat et services, commerces de centre-bourg, professions libérales, petites PME tertiaires, restauration. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Ablon-sur-Seine (94), petite commune résidentielle des bords de Seine entre Villeneuve-le-Roi et Athis-Mons, dispose d'un tissu économique de proximité. TPE artisanat et services, commerces de centre-bourg, professions libérales, petites PME tertiaires, restauration. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Ablon-sur-Seine (94), petite commune résidentielle des bords de Seine entre Villeneuve-le-Roi et Athis-Mons, dispose d'un tissu économique de proximité. TPE artisanat et services, commerces de centre-bourg, professions libérales, petites PME tertiaires, restauration. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ablon-sur-Seine (94). Nous accompagnons TPE et PME : artisans et prestataires de services, commerçants de centre-bourg, professions libérales, PME tertiaires, restaurateurs. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ablon-sur-Seine (94). Nous accompagnons TPE et PME : artisans et prestataires de services, commerçants de centre-bourg, professions libérales, PME tertiaires, restaurateurs. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ablon-sur-Seine (94). Nous accompagnons TPE et PME : artisans et prestataires de services, commerçants de centre-bourg, professions libérales, PME tertiaires, restaurateurs. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ablon-sur-Seine (94). Nous accompagnons TPE et PME : artisans et prestataires de services, commerçants de centre-bourg, professions libérales, PME tertiaires, restaurateurs. Audit Flash sur mesure.",
   seoHook: "artisanat & commerce centre-bourg",
   ecosystemFr:
     "Ablon-sur-Seine est une petite commune résidentielle des bords de Seine, entre Villeneuve-le-Roi et Athis-Mons, à proximité d'Orly. Tissu TPE artisanat et services, commerces de centre-bourg, professions libérales, petites PME tertiaires, restauration.",

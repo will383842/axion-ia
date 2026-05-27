@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CUSSET_COPY: VilleCopy = {
   pitchFr:
-    "Cusset (03), commune en banlieue immédiate de Vichy dans l'Allier, est une cité médiévale du Bourbonnais (halles médiévales, enceinte fortifiée). Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération vichyssoise.",
+    "Cusset (03), commune en banlieue immédiate de Vichy dans l'Allier, est une cité médiévale du Bourbonnais (halles médiévales, enceinte fortifiée). Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces, professions libérales. Axion-IA opère sur l'ensemble des activités professionnelles locales de l'agglomération vichyssoise.",
   pitchEn:
-    "Cusset (03), commune en banlieue immédiate de Vichy dans l'Allier, est une cité médiévale du Bourbonnais (halles médiévales, enceinte fortifiée). Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération vichyssoise.",
+    "Cusset (03), commune en banlieue immédiate de Vichy dans l'Allier, est une cité médiévale du Bourbonnais (halles médiévales, enceinte fortifiée). Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces, professions libérales. Axion-IA opère sur l'ensemble des activités professionnelles locales de l'agglomération vichyssoise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cusset (03). Nous accompagnons tous types d'activités : PME tertiaires et industrielles agglomération Vichy, TPE artisans BTP, commerçants, professions libérales et services aux entreprises du Bourbonnais.",
   directAnswerEn:

@@ -9,9 +9,9 @@ export const LATTES_COPY: VilleCopy = {
   pitchEn:
     "Lattes (34), commune de 17 351 habitants dans l'agglomération de Montpellier sud, entre ville et lagune. Son économie repose sur un tissu de TPE et PME du commerce (zone Boirargues), de la restauration, des services aux entreprises, de la santé, du sport et des activités liées à la zone lagunaire. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lattes (34). Nous accompagnons TPE et PME de l'agglo Montpellier sud : enseignes commerciales, restaurateurs, prestataires de services, professions libérales et entreprises de la zone Boirargues. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lattes (34). Nous accompagnons TPE et PME de l'agglo Montpellier sud : enseignes commerciales, restaurateurs, prestataires de services, professions libérales et entreprises de la zone Boirargues. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lattes (34). Nous accompagnons TPE et PME de l'agglo Montpellier sud : enseignes commerciales, restaurateurs, prestataires de services, professions libérales et entreprises de la zone Boirargues. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lattes (34). Nous accompagnons TPE et PME de l'agglo Montpellier sud : enseignes commerciales, restaurateurs, prestataires de services, professions libérales et entreprises de la zone Boirargues. Audit Flash sur mesure.",
   ecosystemFr:
     "Lattes est une commune de la première couronne sud de Montpellier, entre urbanisme dynamique et lagune du Méjean. Son économie repose sur la zone commerciale de Boirargues (grande distribution, enseignes nationales), la restauration, les services aux entreprises, les professions libérales, la santé et le sport. Site archéologique de Lattara (musée Henri Prades). Tramway T3 vers Montpellier.",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const LATTES_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Lattes et dans toute l'agglomération de Montpellier. Consultants accessibles via la gare TGV Montpellier-Saint-Roch (15 min) et l'aéroport Montpellier-Méditerranée (10 min). Tramway T3 direct.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Lattes ?",
+      q: "Tarifs audit IA à Lattes  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Lattes : enseignes commerciales Boirargues, restaurateurs, prestataires de services et professions libérales. ROI chiffré dès le diagnostic.",
     },
     {

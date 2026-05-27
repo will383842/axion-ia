@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LEMPDES_COPY: VilleCopy = {
   pitchFr:
-    "Lempdes (63), commune de l'est de l'agglomération clermontoise en Puy-de-Dôme, dispose d'une zone d'activités importante à proximité immédiate de l'aéroport Clermont-Ferrand Auvergne. Logistique aéroportuaire, zones d'activités industrielles, PME tertiaires, TPE artisanat, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Lempdes (63), commune de l'est de l'agglomération clermontoise en Puy-de-Dôme, dispose d'une zone d'activités importante à proximité immédiate de l'aéroport Clermont-Ferrand Auvergne. Logistique aéroportuaire, zones d'activités industrielles, PME tertiaires, TPE artisanat, commerces. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Lempdes (63), commune de l'est de l'agglomération clermontoise en Puy-de-Dôme, dispose d'une zone d'activités importante à proximité immédiate de l'aéroport Clermont-Ferrand Auvergne. Logistique aéroportuaire, zones d'activités industrielles, PME tertiaires, TPE artisanat, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Lempdes (63), commune de l'est de l'agglomération clermontoise en Puy-de-Dôme, dispose d'une zone d'activités importante à proximité immédiate de l'aéroport Clermont-Ferrand Auvergne. Logistique aéroportuaire, zones d'activités industrielles, PME tertiaires, TPE artisanat, commerces. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lempdes (63). Nous accompagnons TPE et PME : entreprises logistique aéroportuaire, PME industrielles et tertiaires des zones d'activités, artisans, commerçants et sociétés de services de l'est clermontois.",
   directAnswerEn:

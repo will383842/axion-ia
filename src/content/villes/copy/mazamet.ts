@@ -9,9 +9,9 @@ export const MAZAMET_COPY: VilleCopy = {
   pitchEn:
     "Mazamet (81), ancienne capitale mondiale du délainage au pied de la Montagne Noire, plus de 10 000 habitants. Tissu TPE artisans, PME industrielles en reconversion textile, commerces, services et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune du bassin mazamétain.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mazamet (81). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants et professions libérales du bassin mazamétain. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mazamet (81). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants et professions libérales du bassin mazamétain. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mazamet (81). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants et professions libérales du bassin mazamétain. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mazamet (81). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants et professions libérales du bassin mazamétain. Audit Flash sur mesure.",
   seoHook: "textile technique & commerce détail",
   ecosystemFr:
     "Mazamet (10 085 hab) est l'ancienne capitale mondiale du délainage, au pied de la Montagne Noire. Reconversion industrielle réussie vers le textile technique, les éco-matériaux et les services. Agglo Castres-Mazamet dynamique. Tissu TPE artisans, PME industrie-services, professions libérales, commerces. Passerelle de Mazamet et hauteurs de la Montagne Noire attirent le tourisme vert.",

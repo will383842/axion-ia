@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LANEUVEVILLE_DEVANT_NANCY_COPY: VilleCopy = {
   pitchFr:
-    "Laneuveville-devant-Nancy (54), commune du sud-est de l'agglomération nancéienne en Meurthe-et-Moselle, est traversée par le canal de la Marne au Rhin et accueille des zones d'activités mixtes. Tissu TPE/PME industrie & services, BTP, logistique, commerce, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Laneuveville-devant-Nancy (54), commune du sud-est de l'agglomération nancéienne en Meurthe-et-Moselle, est traversée par le canal de la Marne au Rhin et accueille des zones d'activités mixtes. Tissu TPE/PME industrie & services, BTP, logistique, commerce, professions libérales. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Laneuveville-devant-Nancy (54), commune du sud-est de l'agglomération nancéienne en Meurthe-et-Moselle, est traversée par le canal de la Marne au Rhin et accueille des zones d'activités mixtes. Tissu TPE/PME industrie & services, BTP, logistique, commerce, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Laneuveville-devant-Nancy (54), commune du sud-est de l'agglomération nancéienne en Meurthe-et-Moselle, est traversée par le canal de la Marne au Rhin et accueille des zones d'activités mixtes. Tissu TPE/PME industrie & services, BTP, logistique, commerce, professions libérales. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Laneuveville-devant-Nancy (54). Nous accompagnons tous types d'activités : TPE/PME industrie & services, artisans BTP, logistique, commerçants et professions libérales du sud-est de l'agglomération nancéienne.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const LANEUVEVILLE_DEVANT_NANCY_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les artisans BTP et acteurs logistiques sur des cas IA pratiques : automatisation devis, gestion planning chantier, optimisation tournées, agents IA prise de RDV. Audit Flash 490 € HT.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Laneuveville-devant-Nancy ?",
+      q: "Tarifs audit IA à Laneuveville-devant-Nancy  : quel budget prévoir ?",
       a: "L'audit Flash IA démarre à 490 € HT pour les TPE et PME de Laneuveville-devant-Nancy et de la Métropole du Grand Nancy. Tarifs publics et transparents. ROI chiffré dès le diagnostic initial.",
     },
     {

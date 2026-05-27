@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const ONET_LE_CHATEAU_COPY: VilleCopy = {
   pitchFr:
-    "Onet-le-Château (12), première commune périurbaine de l'agglomération ruthénoise avec plus de 12 000 habitants. Zones commerciales et tertiaires majeures (centre commercial Cap de Crès), TPE artisans, PME services aux entreprises, professions libérales, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Onet-le-Château (12), première commune périurbaine de l'agglomération ruthénoise avec plus de 12 000 habitants. Zones commerciales et tertiaires majeures (centre commercial Cap de Crès), TPE artisans, PME services aux entreprises, professions libérales, commerces. Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Onet-le-Château (12), première commune périurbaine de l'agglomération ruthénoise avec plus de 12 000 habitants. Zones commerciales et tertiaires majeures (centre commercial Cap de Crès), TPE artisans, PME services aux entreprises, professions libérales, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Onet-le-Château (12), première commune périurbaine de l'agglomération ruthénoise avec plus de 12 000 habitants. Zones commerciales et tertiaires majeures (centre commercial Cap de Crès), TPE artisans, PME services aux entreprises, professions libérales, commerces. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Onet-le-Château (12). Nous accompagnons TPE artisans, PME tertiaires et commerciales, professions libérales, commerçants et services de l'agglomération de Rodez. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Onet-le-Château (12). Nous accompagnons TPE artisans, PME tertiaires et commerciales, professions libérales, commerçants et services de l'agglomération de Rodez. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Onet-le-Château (12). Nous accompagnons TPE artisans, PME tertiaires et commerciales, professions libérales, commerçants et services de l'agglomération de Rodez. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Onet-le-Château (12). Nous accompagnons TPE artisans, PME tertiaires et commerciales, professions libérales, commerçants et services de l'agglomération de Rodez. Audit Flash sur mesure.",
   seoHook: "commerce détail & professions libérales",
   ecosystemFr:
     "Onet-le-Château est la première commune périurbaine de Rodez et l'un des pôles commerciaux majeurs de l'Aveyron. Zones d'activités tertiaires et commerciales (Cap de Crès, Bel-Air), PME services aux entreprises, TPE artisans BTP, professions libérales (santé, juridique), grande distribution. Bassin d'emploi dynamique en complément de Rodez centre.",
@@ -56,7 +56,7 @@ export const ONET_LE_CHATEAU_COPY: VilleCopy = {
       a: "Nous accompagnons tous types d'activités : PME commerciales (zones Cap de Crès, Bel-Air), TPE artisans BTP, professions libérales santé et juridique, services aux entreprises, grande distribution. Aucun secteur exclu.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Onet-le-Château ?",
+      q: "Quel est le tarif d'un audit IA à Onet-le-Château  ?",
       a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME commerciales ou tertiaires, audit approfondi entre 1 900 et 3 900 € HT selon la complexité. Tarifs publics, pas de devis opaque.",
     },
     {

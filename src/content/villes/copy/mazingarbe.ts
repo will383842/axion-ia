@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const MAZINGARBE_COPY: VilleCopy = {
   pitchFr:
-    "Mazingarbe (62), commune du bassin minier du Pas-de-Calais au passé chimique reconverti, accueille TPE artisanales, commerces, PME de services et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin minier.",
+    "Mazingarbe (62), commune du bassin minier du Pas-de-Calais au passé chimique reconverti, accueille TPE artisanales, commerces, PME de services et professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes du bassin minier.",
   pitchEn:
-    "Mazingarbe (62), commune du bassin minier du Pas-de-Calais au passé chimique reconverti, accueille TPE artisanales, commerces, PME de services et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin minier.",
+    "Mazingarbe (62), commune du bassin minier du Pas-de-Calais au passé chimique reconverti, accueille TPE artisanales, commerces, PME de services et professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes du bassin minier.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mazingarbe (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthuno-lensois. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mazingarbe (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthuno-lensois. Audit Flash sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mazingarbe (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthuno-lensois. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mazingarbe (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthuno-lensois. Audit Flash sur mesure, intervention sur site ou en visio.",
   seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Mazingarbe est une commune du bassin minier entre Lens et Béthune, avec un passé industriel chimique (ancienne usine de produits chimiques). Économie reconvertie vers le commerce, l'artisanat BTP, les services aux particuliers et les professions libérales.",
@@ -52,7 +52,7 @@ export const MAZINGARBE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Mazingarbe et dans le bassin béthuno-lensois (Lens, Béthune, Nœux-les-Mines, Wingles). Déplacements sur site ou sessions en visio.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Mazingarbe ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Mazingarbe  ?",
       a: "L'Audit Flash Axion-IA démarre à 490 € HT pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du bassin minier. Tarifs publics.",
     },
     {

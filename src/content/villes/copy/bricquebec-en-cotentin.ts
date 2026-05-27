@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BRICQUEBEC_EN_COTENTIN_COPY: VilleCopy = {
   pitchFr:
-    "Bricquebec-en-Cotentin (50), commune nouvelle du Cotentin dans la Manche (Normandie), est connue pour son château médiéval et son marché rural animé. Tissu TPE agricoles et artisanales, PME agroalimentaires du bocage, commerces de bourg, élevage bovin et productions locales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Bricquebec-en-Cotentin (50), commune nouvelle du Cotentin dans la Manche (Normandie), est connue pour son château médiéval et son marché rural animé. Tissu TPE agricoles et artisanales, PME agroalimentaires du bocage, commerces de bourg, élevage bovin et productions locales. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Bricquebec-en-Cotentin (50), commune nouvelle du Cotentin dans la Manche (Normandie), est connue pour son château médiéval et son marché rural animé. Tissu TPE agricoles et artisanales, PME agroalimentaires du bocage, commerces de bourg, élevage bovin et productions locales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Bricquebec-en-Cotentin (50), commune nouvelle du Cotentin dans la Manche (Normandie), est connue pour son château médiéval et son marché rural animé. Tissu TPE agricoles et artisanales, PME agroalimentaires du bocage, commerces de bourg, élevage bovin et productions locales. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bricquebec-en-Cotentin (50). Nous accompagnons tous types d'activités : TPE agriculteurs et artisans du bocage, PME agroalimentaires (lait, viande, cidre), commerçants de bourg, éleveurs bovins, prestataires tourisme rural et professions libérales du Cotentin.",
   directAnswerEn:

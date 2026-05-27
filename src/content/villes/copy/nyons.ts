@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const NYONS_COPY: VilleCopy = {
   pitchFr:
-    "Nyons (26), capitale de la Drôme provençale, est mondialement réputée pour l'olive noire AOP de Nyons (huile d'olive + olives de table, plus ancienne AOP oléicole de France). Tissu PME oléicoles, viticulture, tourisme provençal, TPE artisans BTP, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes drômoises provençales.",
+    "Nyons (26), capitale de la Drôme provençale, est mondialement réputée pour l'olive noire AOP de Nyons (huile d'olive + olives de table, plus ancienne AOP oléicole de France). Tissu PME oléicoles, viticulture, tourisme provençal, TPE artisans BTP, commerces. Axion-IA répond aux besoins des activités professionnelles présentes drômoises provençales.",
   pitchEn:
-    "Nyons (26), capitale de la Drôme provençale, est mondialement réputée pour l'olive noire AOP de Nyons (huile d'olive + olives de table, plus ancienne AOP oléicole de France). Tissu PME oléicoles, viticulture, tourisme provençal, TPE artisans BTP, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes drômoises provençales.",
+    "Nyons (26), capitale de la Drôme provençale, est mondialement réputée pour l'olive noire AOP de Nyons (huile d'olive + olives de table, plus ancienne AOP oléicole de France). Tissu PME oléicoles, viticulture, tourisme provençal, TPE artisans BTP, commerces. Axion-IA répond aux besoins des activités professionnelles présentes drômoises provençales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nyons (26). Nous accompagnons tous types d'activités : oléiculteurs AOP Nyons, viticulteurs, acteurs tourisme provençal, PME agroalimentaires, TPE artisans BTP, commerçants, indépendants et services aux entreprises Drôme provençale.",
   directAnswerEn:

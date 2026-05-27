@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MERVILLE_COPY: VilleCopy = {
   pitchFr:
-    "Merville (59), commune française du département du Nord (région Hauts-de-France) en Flandre française sur les bords de la Lys, est un pôle agricole de la plaine de la Lys (maraîchage, élevage, cultures) avec aérodrome Merville-Calonne. Tissu TPE exploitations agricoles, PME agroalimentaire et services, commerces, artisans BTP, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Merville (59), commune française du département du Nord (région Hauts-de-France) en Flandre française sur les bords de la Lys, est un pôle agricole de la plaine de la Lys (maraîchage, élevage, cultures) avec aérodrome Merville-Calonne. Tissu TPE exploitations agricoles, PME agroalimentaire et services, commerces, artisans BTP, services aux entreprises. Axion-IA répond aux besoins des activités professionnelles présentes.",
   pitchEn:
-    "Merville (59), commune française du département du Nord (région Hauts-de-France) en Flandre française sur les bords de la Lys, est un pôle agricole de la plaine de la Lys (maraîchage, élevage, cultures) avec aérodrome Merville-Calonne. Tissu TPE exploitations agricoles, PME agroalimentaire et services, commerces, artisans BTP, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Merville (59), commune française du département du Nord (région Hauts-de-France) en Flandre française sur les bords de la Lys, est un pôle agricole de la plaine de la Lys (maraîchage, élevage, cultures) avec aérodrome Merville-Calonne. Tissu TPE exploitations agricoles, PME agroalimentaire et services, commerces, artisans BTP, services aux entreprises. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Merville (59). Nous accompagnons tous types d'activités : TPE exploitations agricoles maraîchage/élevage plaine de la Lys, PME agroalimentaire et services, commerçants, artisans BTP et services aux entreprises de la Flandre française entre Béthune et Hazebrouck.",
   directAnswerEn:

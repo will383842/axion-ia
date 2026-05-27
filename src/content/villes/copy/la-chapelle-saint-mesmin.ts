@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LA_CHAPELLE_SAINT_MESMIN_COPY: VilleCopy = {
   pitchFr:
-    "La Chapelle-Saint-Mesmin (45), commune d'Orléans Métropole sur les bords de Loire (UNESCO Val de Loire), conjugue tissu industriel historique (verrerie Duralex depuis 1934), commerces, transports et services, patrimoine églises Val de Loire et tissu associatif dynamique. TPE artisanat, PME industrielles, commerces, acteurs tourisme fluvial Loire. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "La Chapelle-Saint-Mesmin (45), commune d'Orléans Métropole sur les bords de Loire (UNESCO Val de Loire), conjugue tissu industriel historique (verrerie Duralex depuis 1934), commerces, transports et services, patrimoine églises Val de Loire et tissu associatif dynamique. TPE artisanat, PME industrielles, commerces, acteurs tourisme fluvial Loire. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "La Chapelle-Saint-Mesmin (45), commune d'Orléans Métropole sur les bords de Loire (UNESCO Val de Loire), conjugue tissu industriel historique (verrerie Duralex depuis 1934), commerces, transports et services, patrimoine églises Val de Loire et tissu associatif dynamique. TPE artisanat, PME industrielles, commerces, acteurs tourisme fluvial Loire. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "La Chapelle-Saint-Mesmin (45), commune d'Orléans Métropole sur les bords de Loire (UNESCO Val de Loire), conjugue tissu industriel historique (verrerie Duralex depuis 1934), commerces, transports et services, patrimoine églises Val de Loire et tissu associatif dynamique. TPE artisanat, PME industrielles, commerces, acteurs tourisme fluvial Loire. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Chapelle-Saint-Mesmin (45). Nous accompagnons TPE et PME : industries verre et matériaux, commerces, transports et services Orléans Métropole, artisans, acteurs tourisme fluvial Val de Loire UNESCO. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Chapelle-Saint-Mesmin (45). Nous accompagnons TPE et PME : industries verre et matériaux, commerces, transports et services Orléans Métropole, artisans, acteurs tourisme fluvial Val de Loire UNESCO. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Chapelle-Saint-Mesmin (45). Nous accompagnons TPE et PME : industries verre et matériaux, commerces, transports et services Orléans Métropole, artisans, acteurs tourisme fluvial Val de Loire UNESCO. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Chapelle-Saint-Mesmin (45). Nous accompagnons TPE et PME : industries verre et matériaux, commerces, transports et services Orléans Métropole, artisans, acteurs tourisme fluvial Val de Loire UNESCO. Audit Flash sur mesure.",
   seoHook: "industrie verre & commerces services",
   ecosystemFr:
     "La Chapelle-Saint-Mesmin est l'une des 22 communes d'Orléans Métropole, située sur les bords de Loire dans le Val de Loire classé UNESCO. Tissu industriel verre et matériaux, commerces, transports et services, TPE artisanat, patrimoine églises Val de Loire et tissu associatif sportif dynamique.",

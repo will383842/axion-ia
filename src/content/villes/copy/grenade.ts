@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const GRENADE_COPY: VilleCopy = {
   pitchFr:
-    "Grenade (31), bastide médiévale des bords de Garonne au nord de Toulouse, plus de 9 000 habitants. Tissu TPE artisans, PME agroalimentaires et de services, commerces de centre-ville, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du nord de la Haute-Garonne.",
+    "Grenade (31), bastide médiévale des bords de Garonne au nord de Toulouse, plus de 9 000 habitants. Tissu TPE artisans, PME agroalimentaires et de services, commerces de centre-ville, professions libérales. Axion-IA opère pour entreprises et indépendants du secteur du nord de la Haute-Garonne.",
   pitchEn:
-    "Grenade (31), bastide médiévale des bords de Garonne au nord de Toulouse, plus de 9 000 habitants. Tissu TPE artisans, PME agroalimentaires et de services, commerces de centre-ville, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du nord de la Haute-Garonne.",
+    "Grenade (31), bastide médiévale des bords de Garonne au nord de Toulouse, plus de 9 000 habitants. Tissu TPE artisans, PME agroalimentaires et de services, commerces de centre-ville, professions libérales. Axion-IA opère pour entreprises et indépendants du secteur du nord de la Haute-Garonne.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Grenade (31). Nous accompagnons TPE artisans, PME agroalimentaires, commerçants et professions libérales du nord de la Haute-Garonne. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Grenade (31). Nous accompagnons TPE artisans, PME agroalimentaires, commerçants et professions libérales du nord de la Haute-Garonne. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Grenade (31). Nous accompagnons TPE artisans, PME agroalimentaires, commerçants et professions libérales du nord de la Haute-Garonne. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Grenade (31). Nous accompagnons TPE artisans, PME agroalimentaires, commerçants et professions libérales du nord de la Haute-Garonne. Audit Flash sur mesure.",
   seoHook: "vallée garonne",
   ecosystemFr:
     "Grenade est une bastide du XIIIe siècle sur les bords de Garonne, pôle économique du nord de la Haute-Garonne. TPE artisans, PME agroalimentaires, commerces de la halle, professions libérales, exploitations agricoles. Marché traditionnel actif.",
@@ -56,7 +56,7 @@ export const GRENADE_COPY: VilleCopy = {
       a: "Nous accompagnons tous types d'activités : PME agroalimentaires, TPE artisans, commerces, professions libérales, agriculture. Aucun secteur exclu.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Grenade ?",
+      q: "Combien coûte un audit IA à Grenade  ?",
       a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics.",
     },
     {

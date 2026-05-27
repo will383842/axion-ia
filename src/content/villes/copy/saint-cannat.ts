@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_CANNAT_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Cannat (13), commune résidentielle de la plaine d'Aix entre Aix-en-Provence et Salon-de-Provence, accueille cadres et familles du bassin aixois. Tissu de TPE artisans, professions libérales, commerçants, PME tertiaires et viticulteurs. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Saint-Cannat (13), commune résidentielle de la plaine d'Aix entre Aix-en-Provence et Salon-de-Provence, accueille cadres et familles du bassin aixois. Tissu de TPE artisans, professions libérales, commerçants, PME tertiaires et viticulteurs. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Saint-Cannat (13), commune résidentielle de la plaine d'Aix entre Aix-en-Provence et Salon-de-Provence, accueille cadres et familles du bassin aixois. Tissu de TPE artisans, professions libérales, commerçants, PME tertiaires et viticulteurs. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Saint-Cannat (13), commune résidentielle de la plaine d'Aix entre Aix-en-Provence et Salon-de-Provence, accueille cadres et familles du bassin aixois. Tissu de TPE artisans, professions libérales, commerçants, PME tertiaires et viticulteurs. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Cannat (13). Nous accompagnons TPE artisans, professions libérales, viticulteurs, commerçants et PME tertiaires de la plaine d'Aix. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Cannat (13). Nous accompagnons TPE artisans, professions libérales, viticulteurs, commerçants et PME tertiaires de la plaine d'Aix. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Cannat (13). Nous accompagnons TPE artisans, professions libérales, viticulteurs, commerçants et PME tertiaires de la plaine d'Aix. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Cannat (13). Nous accompagnons TPE artisans, professions libérales, viticulteurs, commerçants et PME tertiaires de la plaine d'Aix. Audit Flash sur mesure.",
   seoHook: "viticulture coteaux & professions libérales",
   ecosystemFr:
     "Saint-Cannat est une commune résidentielle de la plaine d'Aix, sur l'axe Aix-Salon via la D7n. Vignobles AOC Coteaux d'Aix-en-Provence, agriculture (oliviers, amandiers), artisanat et commerces de proximité. Cadres et professions libérales travaillant à Aix, Marseille ou sur le technopôle de l'Arbois.",
@@ -52,7 +52,7 @@ export const SAINT_CANNAT_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Saint-Cannat et dans toute la plaine d'Aix (Éguilles, Lambesc, Rognes, Venelles, Le Puy-Sainte-Réparade). Proximité immédiate gare TGV Aix et technopôle Arbois.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Saint-Cannat ?",
+      q: "Tarifs audit IA à Saint-Cannat  : quel budget prévoir ?",
       a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, viticulteurs et PME saint-cannadiennes. Tarifs publics, sans engagement.",
     },
     {

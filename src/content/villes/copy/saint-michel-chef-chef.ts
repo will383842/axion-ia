@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_MICHEL_CHEF_CHEF_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Michel-Chef-Chef (44), station balnéaire de la Côte de Jade en Loire-Atlantique, connue pour sa plage de Tharon et ses campings. Tissu TPE artisans et commerçants, PME tourisme balnéaire, hébergements, restauration, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de la Côte de Jade.",
+    "Saint-Michel-Chef-Chef (44), station balnéaire de la Côte de Jade en Loire-Atlantique, connue pour sa plage de Tharon et ses campings. Tissu TPE artisans et commerçants, PME tourisme balnéaire, hébergements, restauration, professions libérales. Axion-IA accompagne tout le tissu professionnel local de la Côte de Jade.",
   pitchEn:
-    "Saint-Michel-Chef-Chef (44), station balnéaire de la Côte de Jade en Loire-Atlantique, connue pour sa plage de Tharon et ses campings. Tissu TPE artisans et commerçants, PME tourisme balnéaire, hébergements, restauration, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de la Côte de Jade.",
+    "Saint-Michel-Chef-Chef (44), station balnéaire de la Côte de Jade en Loire-Atlantique, connue pour sa plage de Tharon et ses campings. Tissu TPE artisans et commerçants, PME tourisme balnéaire, hébergements, restauration, professions libérales. Axion-IA accompagne tout le tissu professionnel local de la Côte de Jade.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Michel-Chef-Chef (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tourisme balnéaire, campings et hébergements, restauration, professions libérales et entreprises de la Côte de Jade.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const SAINT_MICHEL_CHEF_CHEF_COPY: VilleCopy = {
       a: "Pour les restaurateurs et commerçants de Saint-Michel-Chef-Chef, nous proposons audit IA, interventions sur site, implémentation (automatisation commandes, gestion stocks, agents IA relation client), coaching 1-to-1 et plateformes web IA.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Saint-Michel-Chef-Chef ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Saint-Michel-Chef-Chef  ?",
       a: "L'Audit Flash démarre à 490 € HT (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME de la Côte de Jade.",
     },
     {

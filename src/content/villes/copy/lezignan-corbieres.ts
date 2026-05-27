@@ -9,9 +9,9 @@ export const LEZIGNAN_CORBIERES_COPY: VilleCopy = {
   pitchEn:
     "Lézignan-Corbières (11), commune au coeur des Corbières dans l'Aude, est un pôle viticole et commercial majeur du département. Tissu TPE artisans, PME viticoles et caves coopératives, commerces et zones d'activités, agriculture (vigne, olivier), logistique. Axion-IA opère pour toutes les structures économiques de la commune du bassin lézignanais et des Corbières.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lézignan-Corbières (11), pôle viticole des Corbières audoises. Nous accompagnons TPE artisans, PME viticoles et caves coopératives, commerçants, agriculteurs et acteurs logistique du bassin lézignanais. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lézignan-Corbières (11), pôle viticole des Corbières audoises. Nous accompagnons TPE artisans, PME viticoles et caves coopératives, commerçants, agriculteurs et acteurs logistique du bassin lézignanais. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lézignan-Corbières (11), pôle viticole des Corbières audoises. Nous accompagnons TPE artisans, PME viticoles et caves coopératives, commerçants, agriculteurs et acteurs logistique du bassin lézignanais. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lézignan-Corbières (11), pôle viticole des Corbières audoises. Nous accompagnons TPE artisans, PME viticoles et caves coopératives, commerçants, agriculteurs et acteurs logistique du bassin lézignanais. Audit Flash sur mesure.",
   seoHook: "viticulture caves & commerce zones",
   ecosystemFr:
     "Lézignan-Corbières est un pôle viticole et commercial au coeur des Corbières audoises. L'économie est dominée par la viticulture (AOC Corbières, plus grande appellation du Languedoc), les caves coopératives, le négoce vin. Zones d'activités commerciales et artisanales dynamiques, agriculture diversifiée (vigne, olivier, miel), logistique (carrefour routier A61/D6113). Tourisme viticole croissant.",
@@ -56,8 +56,8 @@ export const LEZIGNAN_CORBIERES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les caves coopératives et domaines viticoles AOC Corbières sur des cas IA concrets : traçabilité vinification, gestion stocks cave, automatisation commercialisation et export, prédiction vendanges, suivi phytosanitaire.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Lézignan-Corbières ?",
-      a: "L'audit Flash démarre à 490 € HT pour une TPE. Pour les PME viticoles et caves coopératives, un audit approfondi entre 1 900 et 3 900 € HT selon la complexité. Tarifs publics, pas de devis opaque.",
+      q: "Combien coûte un audit IA à Lézignan-Corbières  ?",
+      a: "L'audit Flash s'adapte à votre périmètre pour une TPE. Pour les PME viticoles et caves coopératives, un audit approfondi entre 1 900 et 3 900 € HT selon la complexité. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Les zones d'activités de Lézignan bénéficient-elles de l'IA ?",

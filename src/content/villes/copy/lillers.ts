@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LILLERS_COPY: VilleCopy = {
   pitchFr:
-    "Lillers (62), bourg de l'Artois dans le Pas-de-Calais, combine agriculture, TPE artisanales, commerces de proximité et PME de services rurales. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin artésien.",
+    "Lillers (62), bourg de l'Artois dans le Pas-de-Calais, combine agriculture, TPE artisanales, commerces de proximité et PME de services rurales. Axion-IA y mène ses missions auprès des organisations locales du bassin artésien.",
   pitchEn:
-    "Lillers (62), bourg de l'Artois dans le Pas-de-Calais, combine agriculture, TPE artisanales, commerces de proximité et PME de services rurales. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin artésien.",
+    "Lillers (62), bourg de l'Artois dans le Pas-de-Calais, combine agriculture, TPE artisanales, commerces de proximité et PME de services rurales. Axion-IA y mène ses missions auprès des organisations locales du bassin artésien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lillers (62). Nous accompagnons TPE artisanales, PME agricoles et agroalimentaires, commerçants et professions libérales de l'Artois. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lillers (62). Nous accompagnons TPE artisanales, PME agricoles et agroalimentaires, commerçants et professions libérales de l'Artois. Audit Flash sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lillers (62). Nous accompagnons TPE artisanales, PME agricoles et agroalimentaires, commerçants et professions libérales de l'Artois. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lillers (62). Nous accompagnons TPE artisanales, PME agricoles et agroalimentaires, commerçants et professions libérales de l'Artois. Audit Flash sur mesure, intervention sur site ou en visio.",
   seoHook: "agriculture agroalimentaire & commerce détail",
   ecosystemFr:
     "Lillers est un bourg de l'Artois entre Béthune et Saint-Pol-sur-Ternoise. Économie agricole (grandes cultures, maraîchage), TPE artisanales BTP, commerces de centre-bourg, professions libérales et PME agroalimentaires. Centre hospitalier local structurant pour l'emploi.",
@@ -52,7 +52,7 @@ export const LILLERS_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Lillers et dans tout l'Artois (Béthune, Isbergues, Auchel, Saint-Pol-sur-Ternoise). Déplacements sur site ou sessions en visio.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Lillers ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Lillers  ?",
       a: "L'Audit Flash Axion-IA démarre à 490 € HT pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME de l'Artois. Tarifs publics.",
     },
     {

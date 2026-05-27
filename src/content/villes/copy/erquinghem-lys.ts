@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ERQUINGHEM_LYS_COPY: VilleCopy = {
   pitchFr:
-    "Erquinghem-Lys (59), commune des bords de la Lys dans l'agglomération d'Armentières, compte 5 341 habitants. Tissu TPE artisans, PME textiles et agroalimentaires, commerces de proximité, professions libérales et exploitations agricoles périurbaines. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Erquinghem-Lys (59), commune des bords de la Lys dans l'agglomération d'Armentières, compte 5 341 habitants. Tissu TPE artisans, PME textiles et agroalimentaires, commerces de proximité, professions libérales et exploitations agricoles périurbaines. Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Erquinghem-Lys (59), commune des bords de la Lys dans l'agglomération d'Armentières, compte 5 341 habitants. Tissu TPE artisans, PME textiles et agroalimentaires, commerces de proximité, professions libérales et exploitations agricoles périurbaines. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Erquinghem-Lys (59), commune des bords de la Lys dans l'agglomération d'Armentières, compte 5 341 habitants. Tissu TPE artisans, PME textiles et agroalimentaires, commerces de proximité, professions libérales et exploitations agricoles périurbaines. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Erquinghem-Lys (59). Nous accompagnons tous types d'activités : TPE artisans, PME textiles et agroalimentaires héritées du val de Lys, commerçants, professions libérales, exploitants agricoles périurbains et services aux entreprises du bassin armentiérois.",
   directAnswerEn:

@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const PORT_LA_NOUVELLE_COPY: VilleCopy = {
   pitchFr:
-    "Port-la-Nouvelle (11), commune littorale de l'Aude sur la Méditerranée, dotée d'un port de commerce et de plaisance stratégique pour le sud de la France. Tissu TPE artisans maritimes, PME logistique et transport, commerces saisonniers, hôtellerie-restauration balnéaire, ostréiculture et pêche. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Port-la-Nouvelle (11), commune littorale de l'Aude sur la Méditerranée, dotée d'un port de commerce et de plaisance stratégique pour le sud de la France. Tissu TPE artisans maritimes, PME logistique et transport, commerces saisonniers, hôtellerie-restauration balnéaire, ostréiculture et pêche. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Port-la-Nouvelle (11), commune littorale de l'Aude sur la Méditerranée, dotée d'un port de commerce et de plaisance stratégique pour le sud de la France. Tissu TPE artisans maritimes, PME logistique et transport, commerces saisonniers, hôtellerie-restauration balnéaire, ostréiculture et pêche. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Port-la-Nouvelle (11), commune littorale de l'Aude sur la Méditerranée, dotée d'un port de commerce et de plaisance stratégique pour le sud de la France. Tissu TPE artisans maritimes, PME logistique et transport, commerces saisonniers, hôtellerie-restauration balnéaire, ostréiculture et pêche. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Port-la-Nouvelle (11). Nous accompagnons TPE artisans maritimes, PME logistique portuaire, commerces saisonniers, hôteliers-restaurateurs du littoral audois, ostréiculteurs et professionnels de la pêche. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Port-la-Nouvelle (11). Nous accompagnons TPE artisans maritimes, PME logistique portuaire, commerces saisonniers, hôteliers-restaurateurs du littoral audois, ostréiculteurs et professionnels de la pêche. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Port-la-Nouvelle (11). Nous accompagnons TPE artisans maritimes, PME logistique portuaire, commerces saisonniers, hôteliers-restaurateurs du littoral audois, ostréiculteurs et professionnels de la pêche. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Port-la-Nouvelle (11). Nous accompagnons TPE artisans maritimes, PME logistique portuaire, commerces saisonniers, hôteliers-restaurateurs du littoral audois, ostréiculteurs et professionnels de la pêche. Audit Flash sur mesure.",
   seoHook: "logistique transport & pêche ostréiculture",
   ecosystemFr:
     "Port-la-Nouvelle est un port de commerce méditerranéen majeur de l'Aude, en pleine modernisation (extension portuaire, éolien offshore). Tissu économique tourné vers la logistique maritime, le transport de marchandises, la pêche et l'ostréiculture (étang de Bages-Sigean). Tourisme balnéaire saisonnier (plages, campings, résidences). TPE artisans, commerces de proximité, hôtellerie-restauration.",
@@ -56,7 +56,7 @@ export const PORT_LA_NOUVELLE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME logistique et transport du port de Port-la-Nouvelle : optimisation flux marchandises, automatisation documentation portuaire, prédiction maintenance équipements, pilotage opérations.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Port-la-Nouvelle ?",
+      q: "Tarifs audit IA à Port-la-Nouvelle  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME logistique portuaire, audit approfondi entre 1 900 et 3 900 € HT selon la complexité. Tarifs publics, pas de devis opaque.",
     },
     {

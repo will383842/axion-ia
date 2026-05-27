@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VEIGNE_COPY: VilleCopy = {
   pitchFr:
-    "Veigné (37), commune de la vallée de l'Indre au sud de Tours, offre un cadre résidentiel prisé entre Montbazon et Tours Métropole. Tissu TPE artisans BTP, commerçants, PME de services, professions libérales et entreprises périurbaines. Proximité directe des châteaux de la Loire (Azay-le-Rideau, Chenonceau). Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Veigné (37), commune de la vallée de l'Indre au sud de Tours, offre un cadre résidentiel prisé entre Montbazon et Tours Métropole. Tissu TPE artisans BTP, commerçants, PME de services, professions libérales et entreprises périurbaines. Proximité directe des châteaux de la Loire (Azay-le-Rideau, Chenonceau). Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Veigné (37), commune de la vallée de l'Indre au sud de Tours, offre un cadre résidentiel prisé entre Montbazon et Tours Métropole. Tissu TPE artisans BTP, commerçants, PME de services, professions libérales et entreprises périurbaines. Proximité directe des châteaux de la Loire (Azay-le-Rideau, Chenonceau). Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Veigné (37), commune de la vallée de l'Indre au sud de Tours, offre un cadre résidentiel prisé entre Montbazon et Tours Métropole. Tissu TPE artisans BTP, commerçants, PME de services, professions libérales et entreprises périurbaines. Proximité directe des châteaux de la Loire (Azay-le-Rideau, Chenonceau). Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Veigné (37). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, PME de services, professions libérales, indépendants, prestataires touristiques vallée de l'Indre et entreprises sud-tourangelles.",
   directAnswerEn:
@@ -60,8 +60,8 @@ export const VEIGNE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les acteurs du tourisme vert et hébergement de la vallée de l'Indre (gîtes, chambres d'hôtes, restaurants, activités plein air) sur leurs cas IA : agents conversationnels réservation multilingues, automatisation planning, classification avis clients.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Veigné ?",
-      a: "L'audit Flash démarre à 490 € HT. Il couvre le diagnostic de vos processus, l'identification des cas d'usage IA prioritaires et un ROI chiffré. Intervention possible sous 5 jours ouvrés après validation.",
+      q: "Tarifs audit IA à Veigné  : quel budget prévoir ?",
+      a: "L'audit Flash propose un tarif d'entrée accessible. Il couvre le diagnostic de vos processus, l'identification des cas d'usage IA prioritaires et un ROI chiffré. Intervention possible sous 5 jours ouvrés après validation.",
     },
     {
       q: "Comment se passe une mission Axion-IA à Veigné ?",

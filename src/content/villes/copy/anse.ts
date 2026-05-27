@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ANSE_COPY: VilleCopy = {
   pitchFr:
-    "Anse (69), commune du val de Saône dans le Rhône, est positionnée à l'entrée sud du vignoble du Beaujolais. Tissu viticole périphérique, PME tertiaires, TPE artisans BTP, commerces, agriculture vallée Saône. Axion-IA y déploie ses missions auprès de toutes les organisations du Beaujolais méridional.",
+    "Anse (69), commune du val de Saône dans le Rhône, est positionnée à l'entrée sud du vignoble du Beaujolais. Tissu viticole périphérique, PME tertiaires, TPE artisans BTP, commerces, agriculture vallée Saône. Axion-IA y travaille avec les organisations du territoire du Beaujolais méridional.",
   pitchEn:
-    "Anse (69), commune du val de Saône dans le Rhône, est positionnée à l'entrée sud du vignoble du Beaujolais. Tissu viticole périphérique, PME tertiaires, TPE artisans BTP, commerces, agriculture vallée Saône. Axion-IA y déploie ses missions auprès de toutes les organisations du Beaujolais méridional.",
+    "Anse (69), commune du val de Saône dans le Rhône, est positionnée à l'entrée sud du vignoble du Beaujolais. Tissu viticole périphérique, PME tertiaires, TPE artisans BTP, commerces, agriculture vallée Saône. Axion-IA y travaille avec les organisations du territoire du Beaujolais méridional.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Anse (69). Nous accompagnons tous types d'activités : viticulteurs Beaujolais méridional, PME tertiaires, TPE artisans BTP, commerçants, agriculteurs val de Saône, indépendants et services aux entreprises.",
   directAnswerEn:

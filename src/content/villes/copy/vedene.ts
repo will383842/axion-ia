@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const VEDENE_COPY: VilleCopy = {
   pitchFr:
-    "Vedène (84), commune périurbaine de l'est avignonnais, conjugue zones d'activités économiques (Cristole, Le Plan), tissu artisanal et fonction résidentielle de l'agglomération du Grand Avignon. TPE artisans BTP et services, PME logistiques et négoces, commerces de proximité et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Vedène (84), commune périurbaine de l'est avignonnais, conjugue zones d'activités économiques (Cristole, Le Plan), tissu artisanal et fonction résidentielle de l'agglomération du Grand Avignon. TPE artisans BTP et services, PME logistiques et négoces, commerces de proximité et professions libérales. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Vedène (84), commune périurbaine de l'est avignonnais, conjugue zones d'activités économiques (Cristole, Le Plan), tissu artisanal et fonction résidentielle de l'agglomération du Grand Avignon. TPE artisans BTP et services, PME logistiques et négoces, commerces de proximité et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Vedène (84), commune périurbaine de l'est avignonnais, conjugue zones d'activités économiques (Cristole, Le Plan), tissu artisanal et fonction résidentielle de l'agglomération du Grand Avignon. TPE artisans BTP et services, PME logistiques et négoces, commerces de proximité et professions libérales. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vedène (84). Nous accompagnons TPE artisans, PME logistiques et négoces, commerces et professions libérales de l'est avignonnais. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vedène (84). Nous accompagnons TPE artisans, PME logistiques et négoces, commerces et professions libérales de l'est avignonnais. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vedène (84). Nous accompagnons TPE artisans, PME logistiques et négoces, commerces et professions libérales de l'est avignonnais. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vedène (84). Nous accompagnons TPE artisans, PME logistiques et négoces, commerces et professions libérales de l'est avignonnais. Audit Flash sur mesure.",
   seoHook: "artisanat & logistique négoce",
   ecosystemFr:
     "Vedène est positionnée à l'est immédiat d'Avignon, dans l'agglomération du Grand Avignon. Son économie repose sur les zones d'activités (Cristole, Le Plan) accueillant PME logistiques, négoces et industries, les TPE artisans (BTP, services), les professions libérales et commerces de proximité. Bassin d'emploi connecté à Avignon TGV et au sillon rhodanien.",
@@ -52,7 +52,7 @@ export const VEDENE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Vedène et dans tout l'est avignonnais (Sorgues, Le Pontet, Entraigues-sur-la-Sorgue, Saint-Saturnin-lès-Avignon). Proximité immédiate d'Avignon TGV via A7.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Vedène ?",
+      q: "Quel est le tarif d'un audit IA à Vedène  ?",
       a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, PME logistiques, négoces et commerces vedénais. Tarifs publics, sans engagement.",
     },
     {

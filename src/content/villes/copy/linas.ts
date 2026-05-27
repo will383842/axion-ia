@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LINAS_COPY: VilleCopy = {
   pitchFr:
-    "Linas (91), commune dynamique du Hurepoix en Essonne, connue pour l'autodrome de Linas-Montlhéry. Zone d'activités, TPE artisanat, commerces de proximité, PME services, logistique locale. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Linas (91), commune dynamique du Hurepoix en Essonne, connue pour l'autodrome de Linas-Montlhéry. Zone d'activités, TPE artisanat, commerces de proximité, PME services, logistique locale. Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Linas (91), commune dynamique du Hurepoix en Essonne, connue pour l'autodrome de Linas-Montlhéry. Zone d'activités, TPE artisanat, commerces de proximité, PME services, logistique locale. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Linas (91), commune dynamique du Hurepoix en Essonne, connue pour l'autodrome de Linas-Montlhéry. Zone d'activités, TPE artisanat, commerces de proximité, PME services, logistique locale. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Linas (91). Nous accompagnons TPE et PME : entreprises zone d'activités, artisans, commerçants de proximité, prestataires de services, acteurs logistique du Hurepoix. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Linas (91). Nous accompagnons TPE et PME : entreprises zone d'activités, artisans, commerçants de proximité, prestataires de services, acteurs logistique du Hurepoix. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Linas (91). Nous accompagnons TPE et PME : entreprises zone d'activités, artisans, commerçants de proximité, prestataires de services, acteurs logistique du Hurepoix. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Linas (91). Nous accompagnons TPE et PME : entreprises zone d'activités, artisans, commerçants de proximité, prestataires de services, acteurs logistique du Hurepoix. Audit Flash sur mesure.",
   seoHook: "zone d'activités & services",
   ecosystemFr:
     "Linas est une commune du Hurepoix en Essonne, célèbre pour l'autodrome de Linas-Montlhéry. Zone d'activités économiques, TPE artisanat, commerces de proximité, PME services, logistique locale, événementiel automobile.",
@@ -60,7 +60,7 @@ export const LINAS_COPY: VilleCopy = {
       a: "Audit Flash 490 € HT, devis et facturation automatisés par IA, gestion stocks, relances clients, coaching 1-to-1 dirigeant.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Linas ?",
+      q: "Tarifs audit IA à Linas  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics, sans engagement. Devis sous 48h après premier échange.",
     },
     {

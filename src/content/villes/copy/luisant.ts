@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LUISANT_COPY: VilleCopy = {
   pitchFr:
-    "Luisant (28), commune résidentielle de l'agglomération de Chartres en Eure-et-Loir, accueille un tissu de TPE/PME services, professions libérales, artisans et commerces de proximité au sud de la préfecture. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Luisant (28), commune résidentielle de l'agglomération de Chartres en Eure-et-Loir, accueille un tissu de TPE/PME services, professions libérales, artisans et commerces de proximité au sud de la préfecture. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Luisant (28), commune résidentielle de l'agglomération de Chartres en Eure-et-Loir, accueille un tissu de TPE/PME services, professions libérales, artisans et commerces de proximité au sud de la préfecture. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Luisant (28), commune résidentielle de l'agglomération de Chartres en Eure-et-Loir, accueille un tissu de TPE/PME services, professions libérales, artisans et commerces de proximité au sud de la préfecture. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Luisant (28). Nous accompagnons tous types d'activités : TPE/PME services, professions libérales, artisans BTP, commerçants de proximité, indépendants et consultants de l'agglomération chartraine sud.",
   directAnswerEn:

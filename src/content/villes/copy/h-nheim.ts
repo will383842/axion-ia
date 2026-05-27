@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const H_NHEIM_COPY: VilleCopy = {
   pitchFr:
-    "Hœnheim (67), commune de l'Eurométropole de Strasbourg au nord immédiat de l'agglomération en Bas-Rhin, conjugue accessibilité tram-train (terminus ligne B) et tissu économique mixte résidentiel-commercial. TPE/PME services, commerces, artisans BTP, professions libérales et activités tertiaires bénéficient de la proximité de Strasbourg. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Hœnheim (67), commune de l'Eurométropole de Strasbourg au nord immédiat de l'agglomération en Bas-Rhin, conjugue accessibilité tram-train (terminus ligne B) et tissu économique mixte résidentiel-commercial. TPE/PME services, commerces, artisans BTP, professions libérales et activités tertiaires bénéficient de la proximité de Strasbourg. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "Hœnheim (67), commune de l'Eurométropole de Strasbourg au nord immédiat de l'agglomération en Bas-Rhin, conjugue accessibilité tram-train (terminus ligne B) et tissu économique mixte résidentiel-commercial. TPE/PME services, commerces, artisans BTP, professions libérales et activités tertiaires bénéficient de la proximité de Strasbourg. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Hœnheim (67), commune de l'Eurométropole de Strasbourg au nord immédiat de l'agglomération en Bas-Rhin, conjugue accessibilité tram-train (terminus ligne B) et tissu économique mixte résidentiel-commercial. TPE/PME services, commerces, artisans BTP, professions libérales et activités tertiaires bénéficient de la proximité de Strasbourg. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hœnheim (67). Nous accompagnons TPE et PME : commerçants, artisans BTP, professions libérales (santé, conseil), services aux entreprises et prestataires de l'Eurométropole de Strasbourg. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hœnheim (67). Nous accompagnons TPE et PME : commerçants, artisans BTP, professions libérales (santé, conseil), services aux entreprises et prestataires de l'Eurométropole de Strasbourg. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hœnheim (67). Nous accompagnons TPE et PME : commerçants, artisans BTP, professions libérales (santé, conseil), services aux entreprises et prestataires de l'Eurométropole de Strasbourg. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hœnheim (67). Nous accompagnons TPE et PME : commerçants, artisans BTP, professions libérales (santé, conseil), services aux entreprises et prestataires de l'Eurométropole de Strasbourg. Audit Flash sur mesure.",
   seoHook: "commerce proximité & professions libérales",
   ecosystemFr:
     "Hœnheim fait partie de l'Eurométropole de Strasbourg, dans la première couronne nord de l'agglomération. Tissu mixte résidentiel-commercial : commerces de proximité, zone commerciale Hœnheim-Bischheim, artisans BTP, professions libérales (santé, conseil) et services aux entreprises. Terminus ligne B du tramway strasbourgeois — atout connectivité majeur pour les TPE/PME locales.",
@@ -52,7 +52,7 @@ export const H_NHEIM_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Hœnheim et sur toute l'Eurométropole de Strasbourg (Strasbourg, Bischheim, Schiltigheim, Souffelweyersheim). Strasbourg centre à 15 min en tram B (terminus Hœnheim-Gare).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Hœnheim ?",
+      q: "Tarifs audit IA à Hœnheim  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Hœnheim et du Bas-Rhin, il identifie les cas d'usage IA à fort ROI pour votre commerce, cabinet libéral, activité artisanale ou PME de services.",
     },
     {

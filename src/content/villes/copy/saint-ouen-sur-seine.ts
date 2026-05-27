@@ -11,9 +11,9 @@ export const SAINT_OUEN_SUR_SEINE_COPY: VilleCopy = {
   pitchEn:
     "À Saint-Ouen-sur-Seine, Axion-IA intervient pour optimiser vos processus grâce à l'IA. Avec des entités comme L'Oréal et Siemens dans le secteur, nous offrons des solutions adaptées aux besoins des entreprises locales.",
   directAnswerFr:
-    "Axion-IA propose des services d'IA à Saint-Ouen-sur-Seine, où se trouvent des entreprises comme L'Oréal et Alstom. Nous réalisons des audits à partir de 490 € HT et des interventions dès 590 € HT. Nos services incluent également des implémentations sur site pour améliorer vos processus métiers et répondre aux enjeux spécifiques des entreprises de la région.",
+    "Axion-IA propose des services d'IA à Saint-Ouen-sur-Seine, où se trouvent des entreprises comme L'Oréal et Alstom. Nous réalisons des audits et des interventions. Nos services incluent également des implémentations sur site pour améliorer vos processus métiers et répondre aux enjeux spécifiques des entreprises de la région.",
   directAnswerEn:
-    "Axion-IA propose des services d'IA à Saint-Ouen-sur-Seine, où se trouvent des entreprises comme L'Oréal et Alstom. Nous réalisons des audits à partir de 490 € HT et des interventions dès 590 € HT. Nos services incluent également des implémentations sur site pour améliorer vos processus métiers et répondre aux enjeux spécifiques des entreprises de la région.",
+    "Axion-IA propose des services d'IA à Saint-Ouen-sur-Seine, où se trouvent des entreprises comme L'Oréal et Alstom. Nous réalisons des audits et des interventions. Nos services incluent également des implémentations sur site pour améliorer vos processus métiers et répondre aux enjeux spécifiques des entreprises de la région.",
   seoHook: "programmation informatique & activités des",
   ecosystemFr:
     "Saint-Ouen-sur-Seine est un pôle économique avec des entreprises comme Siemens et Alstom. La ZAC des Docks contribue au dynamisme local en attirant de nouvelles activités dans le secteur de la programmation informatique.",

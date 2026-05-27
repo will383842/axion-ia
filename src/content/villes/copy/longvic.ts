@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LONGVIC_COPY: VilleCopy = {
   pitchFr:
-    "Longvic (21), commune de Dijon Métropole au sud de Dijon connue pour son ancienne base aérienne et ses zones d'activités, est un pôle industriel et logistique dynamique. TPE artisanat et services, PME industrielles et logistiques, commerces de centre-bourg, professions libérales, prestataires aéronautiques et défense. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Longvic (21), commune de Dijon Métropole au sud de Dijon connue pour son ancienne base aérienne et ses zones d'activités, est un pôle industriel et logistique dynamique. TPE artisanat et services, PME industrielles et logistiques, commerces de centre-bourg, professions libérales, prestataires aéronautiques et défense. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "Longvic (21), commune de Dijon Métropole au sud de Dijon connue pour son ancienne base aérienne et ses zones d'activités, est un pôle industriel et logistique dynamique. TPE artisanat et services, PME industrielles et logistiques, commerces de centre-bourg, professions libérales, prestataires aéronautiques et défense. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Longvic (21), commune de Dijon Métropole au sud de Dijon connue pour son ancienne base aérienne et ses zones d'activités, est un pôle industriel et logistique dynamique. TPE artisanat et services, PME industrielles et logistiques, commerces de centre-bourg, professions libérales, prestataires aéronautiques et défense. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Longvic (21). Nous accompagnons TPE et PME : artisans et prestataires de services, PME industrielles et logistiques des zones d'activités Dijon Métropole, commerçants de centre-bourg, professions libérales, prestataires aéronautiques et défense. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Longvic (21). Nous accompagnons TPE et PME : artisans et prestataires de services, PME industrielles et logistiques des zones d'activités Dijon Métropole, commerçants de centre-bourg, professions libérales, prestataires aéronautiques et défense. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Longvic (21). Nous accompagnons TPE et PME : artisans et prestataires de services, PME industrielles et logistiques des zones d'activités Dijon Métropole, commerçants de centre-bourg, professions libérales, prestataires aéronautiques et défense. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Longvic (21). Nous accompagnons TPE et PME : artisans et prestataires de services, PME industrielles et logistiques des zones d'activités Dijon Métropole, commerçants de centre-bourg, professions libérales, prestataires aéronautiques et défense. Audit Flash sur mesure.",
   seoHook: "industrielles logistiques & artisanat",
   ecosystemFr:
     "Longvic est une commune de Dijon Métropole au sud immédiat de Dijon, marquée par l'ancienne base aérienne 102 et plusieurs zones d'activités industrielles et logistiques. Tissu TPE artisanat et services, PME industrielles et logistiques (sud agglomération dijonnaise), commerce de centre-bourg, professions libérales, prestataires aéronautiques et défense.",

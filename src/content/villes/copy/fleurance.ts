@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const FLEURANCE_COPY: VilleCopy = {
   pitchFr:
-    "Fleurance (32), bastide gersoise de 6 247 habitants au cœur de la Lomagne, connue pour son festival d'astronomie et son patrimoine médiéval. Son économie repose sur un tissu de TPE artisans et commerçants, PME agroalimentaires et agricoles, professions libérales, tourisme culturel et entreprises de services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Fleurance (32), bastide gersoise de 6 247 habitants au cœur de la Lomagne, connue pour son festival d'astronomie et son patrimoine médiéval. Son économie repose sur un tissu de TPE artisans et commerçants, PME agroalimentaires et agricoles, professions libérales, tourisme culturel et entreprises de services. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Fleurance (32), bastide gersoise de 6 247 habitants au cœur de la Lomagne, connue pour son festival d'astronomie et son patrimoine médiéval. Son économie repose sur un tissu de TPE artisans et commerçants, PME agroalimentaires et agricoles, professions libérales, tourisme culturel et entreprises de services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Fleurance (32), bastide gersoise de 6 247 habitants au cœur de la Lomagne, connue pour son festival d'astronomie et son patrimoine médiéval. Son économie repose sur un tissu de TPE artisans et commerçants, PME agroalimentaires et agricoles, professions libérales, tourisme culturel et entreprises de services. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fleurance (32). Nous accompagnons TPE et PME de la bastide lomagnolle : artisans, commerçants, agriculteurs, entreprises agroalimentaires et professionnels du tourisme culturel. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fleurance (32). Nous accompagnons TPE et PME de la bastide lomagnolle : artisans, commerçants, agriculteurs, entreprises agroalimentaires et professionnels du tourisme culturel. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fleurance (32). Nous accompagnons TPE et PME de la bastide lomagnolle : artisans, commerçants, agriculteurs, entreprises agroalimentaires et professionnels du tourisme culturel. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fleurance (32). Nous accompagnons TPE et PME de la bastide lomagnolle : artisans, commerçants, agriculteurs, entreprises agroalimentaires et professionnels du tourisme culturel. Audit Flash sur mesure.",
   ecosystemFr:
     "Fleurance est une bastide du XIIIe siècle au cœur de la Lomagne gersoise, célèbre pour son festival d'astronomie estival. Son économie s'appuie sur l'agriculture (céréales, tournesol, élevage), l'agroalimentaire, le commerce de centre-bourg, l'artisanat, les professions libérales et le tourisme culturel et de nature. Laboratoire pharmaceutique et cosmétique (nutrition bio) également présent.",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const FLEURANCE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Fleurance et dans toute la Lomagne gersoise. Consultants accessibles via Agen (gare TGV, 35 min) et l'aéroport Toulouse-Blagnac à 1h10. Intervention sous 5 jours ouvrés.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Fleurance ?",
+      q: "Tarifs audit IA à Fleurance  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Fleurance : agriculteurs, artisans, commerçants, laboratoires et professionnels du tourisme culturel. ROI chiffré dès le diagnostic.",
     },
     {

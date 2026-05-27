@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SALLES_COPY: VilleCopy = {
   pitchFr:
-    "Salles (33), commune de la forêt landaise traversée par la Leyre, combine exploitation forestière, artisanat BTP, commerces de bourg et services aux habitants. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud Bordeaux et de la vallée de la Leyre.",
+    "Salles (33), commune de la forêt landaise traversée par la Leyre, combine exploitation forestière, artisanat BTP, commerces de bourg et services aux habitants. Axion-IA accompagne tout le tissu professionnel local du sud Bordeaux et de la vallée de la Leyre.",
   pitchEn:
-    "Salles (33), commune de la forêt landaise traversée par la Leyre, combine exploitation forestière, artisanat BTP, commerces de bourg et services aux habitants. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud Bordeaux et de la vallée de la Leyre.",
+    "Salles (33), commune de la forêt landaise traversée par la Leyre, combine exploitation forestière, artisanat BTP, commerces de bourg et services aux habitants. Axion-IA accompagne tout le tissu professionnel local du sud Bordeaux et de la vallée de la Leyre.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Salles (33). Nous accompagnons TPE et PME de la vallée de la Leyre : entreprises forestières, artisans BTP, commerçants, professions libérales et prestataires de services. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Salles (33). Nous accompagnons TPE et PME de la vallée de la Leyre : entreprises forestières, artisans BTP, commerçants, professions libérales et prestataires de services. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Salles (33). Nous accompagnons TPE et PME de la vallée de la Leyre : entreprises forestières, artisans BTP, commerçants, professions libérales et prestataires de services. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Salles (33). Nous accompagnons TPE et PME de la vallée de la Leyre : entreprises forestières, artisans BTP, commerçants, professions libérales et prestataires de services. Audit Flash sur mesure.",
   seoHook: "exploitation forestière & commerce bourg",
   ecosystemFr:
     "Salles est une commune étendue de la forêt landaise, traversée par la Leyre. Exploitation forestière (pin maritime, sylviculture), artisanat BTP, commerces de bourg, services à la personne et tourisme nature (canoë, randonnée). Accès A63 vers Bordeaux et Bayonne.",
@@ -52,7 +52,7 @@ export const SALLES_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Salles et dans la vallée de la Leyre (Belin-Béliet, Le Barp, Mios, Biganos). Nos consultants se déplacent depuis Bordeaux (45 min A63) ou Paris (TGV 2h + 45 min).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Salles ?",
+      q: "Tarifs audit IA à Salles  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Adapté aux TPE forestières et artisans de la vallée de la Leyre.",
     },
     {

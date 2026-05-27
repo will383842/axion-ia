@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_PRIEST_EN_JAREZ_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Priest-en-Jarez (42), commune en banlieue nord immédiate de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Tissu péri-urbain : PME tertiaires, santé (proximité hôpital régional), TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs du nord stéphanois.",
+    "Saint-Priest-en-Jarez (42), commune en banlieue nord immédiate de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Tissu péri-urbain : PME tertiaires, santé (proximité hôpital régional), TPE artisans BTP, commerces. Axion-IA opère pour entreprises et indépendants du secteur du nord stéphanois.",
   pitchEn:
-    "Saint-Priest-en-Jarez (42), commune en banlieue nord immédiate de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Tissu péri-urbain : PME tertiaires, santé (proximité hôpital régional), TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs du nord stéphanois.",
+    "Saint-Priest-en-Jarez (42), commune en banlieue nord immédiate de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Tissu péri-urbain : PME tertiaires, santé (proximité hôpital régional), TPE artisans BTP, commerces. Axion-IA opère pour entreprises et indépendants du secteur du nord stéphanois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Priest-en-Jarez (42). Nous accompagnons tous types d'activités : PME tertiaires Saint-Étienne Métropole, professionnels santé (à proximité hôpital régional), TPE artisans BTP, commerçants, indépendants et services aux entreprises de la banlieue nord stéphanoise.",
   directAnswerEn:

@@ -60,7 +60,7 @@ export const DOMBASLE_SUR_MEURTHE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les artisans BTP et commerçants de proximité sur des cas IA pratiques : automatisation devis, gestion stocks, agents IA prise de RDV, facturation automatique. Audit Flash 490 € HT.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Dombasle-sur-Meurthe ?",
+      q: "Tarifs audit IA à Dombasle-sur-Meurthe  : quel budget prévoir ?",
       a: "L'audit Flash IA démarre à 490 € HT pour les TPE et PME de Dombasle-sur-Meurthe et du bassin salifère. Tarifs publics et transparents. ROI chiffré dès le diagnostic initial.",
     },
     {

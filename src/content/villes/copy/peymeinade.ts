@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PEYMEINADE_COPY: VilleCopy = {
   pitchFr:
-    "Peymeinade (06), dans l'arrière-pays grassois entre Grasse et Draguignan, est une commune résidentielle au cadre provençal préservé. Tissu TPE/PME artisanat BTP, commerces de proximité, services à la personne, professions libérales et agriculture (oléiculture, horticulture). Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Peymeinade (06), dans l'arrière-pays grassois entre Grasse et Draguignan, est une commune résidentielle au cadre provençal préservé. Tissu TPE/PME artisanat BTP, commerces de proximité, services à la personne, professions libérales et agriculture (oléiculture, horticulture). Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Peymeinade (06), dans l'arrière-pays grassois entre Grasse et Draguignan, est une commune résidentielle au cadre provençal préservé. Tissu TPE/PME artisanat BTP, commerces de proximité, services à la personne, professions libérales et agriculture (oléiculture, horticulture). Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Peymeinade (06), dans l'arrière-pays grassois entre Grasse et Draguignan, est une commune résidentielle au cadre provençal préservé. Tissu TPE/PME artisanat BTP, commerces de proximité, services à la personne, professions libérales et agriculture (oléiculture, horticulture). Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Peymeinade (06). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, agriculteurs (oléiculture), PME services et entreprises de l'arrière-pays grassois.",
   directAnswerEn:

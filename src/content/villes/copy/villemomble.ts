@@ -11,9 +11,9 @@ export const VILLEMOMBLE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Villemomble, une ville proche de Paris, pour optimiser vos processus métiers grâce à l'IA. Paris abrite Cap Digital et Station F, des pôles d'innovation majeurs.",
   directAnswerFr:
-    "Axion-IA propose des solutions IA adaptées aux entreprises de Villemomble. Avec la proximité de Paris, ville qui abrite l'Inria et des entreprises comme LVMH, nous offrons des audits à partir de 490 € HT et des implémentations dès 990 € HT. Nos services incluent l'automatisation des tâches administratives et la formation des équipes pour un retour sur investissement rapide.",
+    "Axion-IA propose des solutions IA adaptées aux entreprises de Villemomble. Avec la proximité de Paris, ville qui abrite l'Inria et des entreprises comme LVMH, nous offrons des audits et des implémentations. Nos services incluent l'automatisation des tâches administratives et la formation des équipes pour un retour sur investissement rapide.",
   directAnswerEn:
-    "Axion-IA propose des solutions IA adaptées aux entreprises de Villemomble. Avec la proximité de Paris, ville qui abrite l'Inria et des entreprises comme LVMH, nous offrons des audits à partir de 490 € HT et des implémentations dès 990 € HT. Nos services incluent l'automatisation des tâches administratives et la formation des équipes pour un retour sur investissement rapide.",
+    "Axion-IA propose des solutions IA adaptées aux entreprises de Villemomble. Avec la proximité de Paris, ville qui abrite l'Inria et des entreprises comme LVMH, nous offrons des audits et des implémentations. Nos services incluent l'automatisation des tâches administratives et la formation des équipes pour un retour sur investissement rapide.",
   seoHook: "commerce détail & travaux construction",
   ecosystemFr:
     "Villemomble bénéficie de l'influence économique de Paris, où se trouvent des entreprises comme Hermès et BNP Paribas. L'écosystème local est enrichi par la proximité de ces acteurs économiques.",

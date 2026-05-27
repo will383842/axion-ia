@@ -52,7 +52,7 @@ export const MONTCEAU_LES_MINES_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Montceau-les-Mines et sur tout le bassin montcellien (Blanzy, Saint-Vallier, Sanvignes, Le Creusot). Nos consultants arrivent par TGV Le Creusot-Montchanin (1h20 Paris) à 15 min.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Montceau-les-Mines ?",
+      q: "Tarifs audit IA à Montceau-les-Mines  : quel budget prévoir ?",
       a: "L'Audit Flash commence à 490 € HT, adapté aux TPE et PME industrielles du bassin montcellien. Diagnostic complet des opportunités IA avec ROI chiffré, livrable sous 5 jours. Tarifs publics sur notre site.",
     },
     {

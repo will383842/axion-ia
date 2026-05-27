@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const THONES_COPY: VilleCopy = {
   pitchFr:
-    "Thônes (74), capitale des Aravis et berceau du Reblochon AOP, est un carrefour montagnard entre Annecy, La Clusaz et Le Grand-Bornand. Tissu économique ancré : agroalimentaire fromager, tourisme montagne, commerce de bourg, artisanat et hôtellerie. Axion-IA y déploie ses missions auprès de toutes les organisations du massif des Aravis.",
+    "Thônes (74), capitale des Aravis et berceau du Reblochon AOP, est un carrefour montagnard entre Annecy, La Clusaz et Le Grand-Bornand. Tissu économique ancré : agroalimentaire fromager, tourisme montagne, commerce de bourg, artisanat et hôtellerie. Axion-IA y travaille avec les organisations du territoire du massif des Aravis.",
   pitchEn:
-    "Thônes (74), capitale des Aravis et berceau du Reblochon AOP, est un carrefour montagnard entre Annecy, La Clusaz et Le Grand-Bornand. Tissu économique ancré : agroalimentaire fromager, tourisme montagne, commerce de bourg, artisanat et hôtellerie. Axion-IA y déploie ses missions auprès de toutes les organisations du massif des Aravis.",
+    "Thônes (74), capitale des Aravis et berceau du Reblochon AOP, est un carrefour montagnard entre Annecy, La Clusaz et Le Grand-Bornand. Tissu économique ancré : agroalimentaire fromager, tourisme montagne, commerce de bourg, artisanat et hôtellerie. Axion-IA y travaille avec les organisations du territoire du massif des Aravis.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thônes (74). Nous accompagnons TPE et PME : entreprises agroalimentaires fromagers (Reblochon AOP), prestataires tourisme montagne Aravis, commerçants du bourg, artisans locaux et hôteliers-restaurateurs.",
   directAnswerEn:
@@ -56,7 +56,7 @@ export const THONES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les fromageries et affineurs Reblochon AOP autour de Thônes sur leurs cas IA spécifiques : traçabilité AOP automatisée (lot, température, affinage), contrôle qualité visuel par caméra, prédiction demande saisonnière, agents conversationnels vente directe et e-commerce fromager.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Thônes ?",
+      q: "Quel est le tarif d'un audit IA à Thônes  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME des Aravis, il identifie les cas d'usage IA à fort ROI pour votre activité (fromagerie, tourisme, commerce, hôtellerie, artisanat). Tarifs publics, sans engagement.",
     },
     {

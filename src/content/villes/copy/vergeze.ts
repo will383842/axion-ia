@@ -9,9 +9,9 @@ export const VERGEZE_COPY: VilleCopy = {
   pitchEn:
     "Vergèze (30), commune gardoise de la Vaunage, mondialement connue pour la source Perrier (Nestlé Waters). Tissu TPE/PME agroalimentaire, viticulture, sous-traitance industrielle, commerces et artisanat BTP. Axion-IA opère pour toutes les structures économiques de la commune de la Vaunage.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Vergèze (30). Nous accompagnons les TPE, PME et ETI locales : sous-traitants industriels, viticulteurs, commerçants, artisans BTP et professions libérales de la Vaunage gardoise. Audit Flash à partir de 490 € HT.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Vergèze (30). Nous accompagnons les TPE, PME et ETI locales : sous-traitants industriels, viticulteurs, commerçants, artisans BTP et professions libérales de la Vaunage gardoise. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Vergèze (30). Nous accompagnons les TPE, PME et ETI locales : sous-traitants industriels, viticulteurs, commerçants, artisans BTP et professions libérales de la Vaunage gardoise. Audit Flash à partir de 490 € HT.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Vergèze (30). Nous accompagnons les TPE, PME et ETI locales : sous-traitants industriels, viticulteurs, commerçants, artisans BTP et professions libérales de la Vaunage gardoise. Audit Flash sur mesure.",
   seoHook: "agroalimentaire & sous-traitance industrielle",
   ecosystemFr:
     "Vergèze (~5 800 hab) est connue mondialement pour la source Perrier (Nestlé Waters), premier employeur local. Sous-traitance industrielle liée à l'embouteillage, viticulture Vaunage, commerces, artisanat BTP et services. Économie structurée autour du pôle agroalimentaire.",
@@ -56,7 +56,7 @@ export const VERGEZE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE/PME sous-traitantes industrielles : prédiction maintenance, contrôle qualité par vision IA, automatisation reporting, optimisation production et logistique.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Vergèze ?",
+      q: "Quel est le tarif d'un audit IA à Vergèze  ?",
       a: "L'Audit Flash commence à 490 € HT. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {

@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const TALANT_COPY: VilleCopy = {
   pitchFr:
-    "Talant (21), commune résidentielle au nord-ouest de Dijon surplombant le lac Kir, accueille un tissu de TPE/PME tertiaires, commerces de proximité et professions libérales. Cadre de vie prisé entre plateau et vallée de l'Ouche. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'ouest dijonnais.",
+    "Talant (21), commune résidentielle au nord-ouest de Dijon surplombant le lac Kir, accueille un tissu de TPE/PME tertiaires, commerces de proximité et professions libérales. Cadre de vie prisé entre plateau et vallée de l'Ouche. Axion-IA couvre les activités professionnelles du bassin de l'ouest dijonnais.",
   pitchEn:
-    "Talant (21), commune résidentielle au nord-ouest de Dijon surplombant le lac Kir, accueille un tissu de TPE/PME tertiaires, commerces de proximité et professions libérales. Cadre de vie prisé entre plateau et vallée de l'Ouche. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'ouest dijonnais.",
+    "Talant (21), commune résidentielle au nord-ouest de Dijon surplombant le lac Kir, accueille un tissu de TPE/PME tertiaires, commerces de proximité et professions libérales. Cadre de vie prisé entre plateau et vallée de l'Ouche. Axion-IA couvre les activités professionnelles du bassin de l'ouest dijonnais.",
   seoHook: "tertiaire, santé & commerces",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Talant (21). Nous accompagnons TPE, PME et professions libérales de l'ouest dijonnais : cabinets médicaux, commerces, prestataires tertiaires, services à la personne. Audit Flash dès 490 € HT, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Talant (21). Nous accompagnons TPE, PME et professions libérales de l'ouest dijonnais : cabinets médicaux, commerces, prestataires tertiaires, services à la personne. Audit Flash sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Talant (21). Nous accompagnons TPE, PME et professions libérales de l'ouest dijonnais : cabinets médicaux, commerces, prestataires tertiaires, services à la personne. Audit Flash dès 490 € HT, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Talant (21). Nous accompagnons TPE, PME et professions libérales de l'ouest dijonnais : cabinets médicaux, commerces, prestataires tertiaires, services à la personne. Audit Flash sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Talant est une commune résidentielle de Dijon Métropole perchée sur le plateau nord-ouest, surplombant le lac Kir et la vallée de l'Ouche. Économie locale tournée vers les services : professions libérales (santé, juridique), commerces de proximité, TPE tertiaires, services à la personne, quelques activités artisanales.",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const TALANT_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Talant et dans toute la couronne ouest de Dijon (Fontaine-lès-Dijon, Plombières-lès-Dijon, Daix, Ahuy). Nos consultants se déplacent depuis Dijon centre en 10 minutes.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Talant ?",
+      q: "Quel est le tarif d'un audit IA à Talant  ?",
       a: "L'Audit Flash Axion-IA démarre à 490 € HT. Adapté aux TPE et professions libérales talantaises, il inclut un diagnostic complet, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PEGOMAS_COPY: VilleCopy = {
   pitchFr:
-    "Pégomas (06), dans la vallée de la Siagne entre Cannes et Grasse, est réputée pour sa culture du mimosa (fête du Mimosa) et son cadre provençal verdoyant. Tissu TPE/PME horticulture, artisanat BTP, commerces de proximité, services et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Pégomas (06), dans la vallée de la Siagne entre Cannes et Grasse, est réputée pour sa culture du mimosa (fête du Mimosa) et son cadre provençal verdoyant. Tissu TPE/PME horticulture, artisanat BTP, commerces de proximité, services et professions libérales. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Pégomas (06), dans la vallée de la Siagne entre Cannes et Grasse, est réputée pour sa culture du mimosa (fête du Mimosa) et son cadre provençal verdoyant. Tissu TPE/PME horticulture, artisanat BTP, commerces de proximité, services et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Pégomas (06), dans la vallée de la Siagne entre Cannes et Grasse, est réputée pour sa culture du mimosa (fête du Mimosa) et son cadre provençal verdoyant. Tissu TPE/PME horticulture, artisanat BTP, commerces de proximité, services et professions libérales. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pégomas (06). Nous accompagnons tous types d'activités : TPE horticulteurs et pépiniéristes, artisans BTP, commerçants, professions libérales, PME services et entreprises de la vallée de la Siagne entre Cannes et Grasse.",
   directAnswerEn:

@@ -9,9 +9,9 @@ export const PELISSANNE_COPY: VilleCopy = {
   pitchEn:
     "Pélissanne (13), commune résidentielle de l'agglomération de Salon-de-Provence dans les Bouches-du-Rhône, allie qualité de vie provençale et dynamisme économique local. TPE artisans, PME services, commerces de centre-bourg et professions libérales. Axion-IA y intervient pour tous types d'activités du bassin salonais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pélissanne (13). Nous accompagnons TPE artisans, PME de services de l'agglomération de Salon-de-Provence, commerces de centre-bourg et professions libérales. Audit Flash dès 490 € HT, sans engagement.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pélissanne (13). Nous accompagnons TPE artisans, PME de services de l'agglomération de Salon-de-Provence, commerces de centre-bourg et professions libérales. Audit Flash sur mesure, sans engagement.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pélissanne (13). Nous accompagnons TPE artisans, PME de services de l'agglomération de Salon-de-Provence, commerces de centre-bourg et professions libérales. Audit Flash dès 490 € HT, sans engagement.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pélissanne (13). Nous accompagnons TPE artisans, PME de services de l'agglomération de Salon-de-Provence, commerces de centre-bourg et professions libérales. Audit Flash sur mesure, sans engagement.",
   seoHook: "résidentiel & services agglo Salon",
   ecosystemFr:
     "Pélissanne est une commune résidentielle de l'agglomération de Salon-de-Provence, entre Aix et Arles. Économie locale de proximité tournée vers les services, l'artisanat et le commerce. TPE artisans du bâtiment, commerçants, professions libérales, PME services et prestataires locaux.",

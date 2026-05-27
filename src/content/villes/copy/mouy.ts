@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MOUY_COPY: VilleCopy = {
   pitchFr:
-    "Mouy (60), bourg rural du Pays de Thelle en Oise, rassemble un tissu de TPE artisanales, PME industrielles légères, commerces de proximité et exploitations agricoles (grandes cultures picardes). Axion-IA couvre l'ensemble des activités professionnelles présentes du Pays de Thelle et du sud de l'Oise.",
+    "Mouy (60), bourg rural du Pays de Thelle en Oise, rassemble un tissu de TPE artisanales, PME industrielles légères, commerces de proximité et exploitations agricoles (grandes cultures picardes). Axion-IA couvre les activités professionnelles du bassin du Pays de Thelle et du sud de l'Oise.",
   pitchEn:
-    "Mouy (60), bourg rural du Pays de Thelle en Oise, rassemble un tissu de TPE artisanales, PME industrielles légères, commerces de proximité et exploitations agricoles (grandes cultures picardes). Axion-IA couvre l'ensemble des activités professionnelles présentes du Pays de Thelle et du sud de l'Oise.",
+    "Mouy (60), bourg rural du Pays de Thelle en Oise, rassemble un tissu de TPE artisanales, PME industrielles légères, commerces de proximité et exploitations agricoles (grandes cultures picardes). Axion-IA couvre les activités professionnelles du bassin du Pays de Thelle et du sud de l'Oise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mouy (60). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles légères, commerçants, agriculteurs grandes cultures, indépendants, professions libérales et services aux entreprises du Pays de Thelle / sud Oise.",
   directAnswerEn:

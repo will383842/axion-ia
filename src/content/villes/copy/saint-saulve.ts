@@ -56,7 +56,7 @@ export const SAINT_SAULVE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE et PME sous-traitantes automobile et ferroviaire de Saint-Saulve et du Valenciennois : contrôle qualité visuel, maintenance prédictive, automatisation workflow production, gestion fournisseurs et donneurs d'ordres, traçabilité pièces.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Saint-Saulve ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Saint-Saulve  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du Valenciennois, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics, sans engagement.",
     },
     {

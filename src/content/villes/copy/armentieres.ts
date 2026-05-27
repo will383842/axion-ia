@@ -11,9 +11,9 @@ export const ARMENTIERES_COPY: VilleCopy = {
   pitchEn:
     "À Armentières, Axion-IA intervient pour optimiser les processus des entreprises locales. L'écosystème économique, marqué par l'industrie agroalimentaire et le commerce de détail, offre un cadre propice à l'innovation technologique.",
   directAnswerFr:
-    "Axion-IA se déplace à Armentières pour accompagner les entreprises dans l'optimisation de leurs processus grâce à l'IA. Dans cette région des Hauts-de-France, marquée par l'industrie agroalimentaire et le commerce de détail, nous proposons des audits à partir de 490 € HT et des interventions dès 590 € HT. Consultez nos tarifs publics pour plus de détails.",
+    "Axion-IA se déplace à Armentières pour accompagner les entreprises dans l'optimisation de leurs processus grâce à l'IA. Dans cette région des Hauts-de-France, marquée par l'industrie agroalimentaire et le commerce de détail, nous proposons des audits et des interventions. Consultez nos tarifs publics pour plus de détails.",
   directAnswerEn:
-    "Axion-IA se déplace à Armentières pour accompagner les entreprises dans l'optimisation de leurs processus grâce à l'IA. Dans cette région des Hauts-de-France, marquée par l'industrie agroalimentaire et le commerce de détail, nous proposons des audits à partir de 490 € HT et des interventions dès 590 € HT. Consultez nos tarifs publics pour plus de détails.",
+    "Axion-IA se déplace à Armentières pour accompagner les entreprises dans l'optimisation de leurs processus grâce à l'IA. Dans cette région des Hauts-de-France, marquée par l'industrie agroalimentaire et le commerce de détail, nous proposons des audits et des interventions. Consultez nos tarifs publics pour plus de détails.",
   seoHook: "industrie agroalimentaire & commerce détail",
   ecosystemFr:
     "Armentières bénéficie de la proximité de la gare TGV Lille Europe et de l'aéroport de Lille-Lesquin, facilitant les échanges économiques. L'industrie agroalimentaire et le commerce de détail dominent le paysage économique local.",

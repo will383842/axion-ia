@@ -60,7 +60,7 @@ export const HONFLEUR_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les galeries d'art et artisans d'art de Honfleur sur leurs cas IA : agents conversationnels clients internationaux, automatisation gestion catalogue, classification photos oeuvres, communication digitale.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Honfleur ?",
+      q: "Quel est le tarif d'un audit IA à Honfleur  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {

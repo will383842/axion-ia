@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VILLEREST_COPY: VilleCopy = {
   pitchFr:
-    "Villerest (42), commune en banlieue sud-ouest de Roanne dans la Loire, est intégrée à Roannais Agglomération. Connue pour le barrage de Villerest (grand aménagement hydraulique sur la Loire), site touristique. Tissu PME tertiaires, TPE artisans BTP, tourisme, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Villerest (42), commune en banlieue sud-ouest de Roanne dans la Loire, est intégrée à Roannais Agglomération. Connue pour le barrage de Villerest (grand aménagement hydraulique sur la Loire), site touristique. Tissu PME tertiaires, TPE artisans BTP, tourisme, commerces. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Villerest (42), commune en banlieue sud-ouest de Roanne dans la Loire, est intégrée à Roannais Agglomération. Connue pour le barrage de Villerest (grand aménagement hydraulique sur la Loire), site touristique. Tissu PME tertiaires, TPE artisans BTP, tourisme, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Villerest (42), commune en banlieue sud-ouest de Roanne dans la Loire, est intégrée à Roannais Agglomération. Connue pour le barrage de Villerest (grand aménagement hydraulique sur la Loire), site touristique. Tissu PME tertiaires, TPE artisans BTP, tourisme, commerces. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villerest (42). Nous accompagnons tous types d'activités : PME tertiaires Roannais, acteurs tourisme (barrage de Villerest, plan d'eau), TPE artisans BTP, commerçants, indépendants et services aux entreprises de Roannais Agglomération.",
   directAnswerEn:

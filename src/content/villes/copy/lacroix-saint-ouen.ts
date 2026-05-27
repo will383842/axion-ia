@@ -9,9 +9,9 @@ export const LACROIX_SAINT_OUEN_COPY: VilleCopy = {
   pitchEn:
     "Lacroix-Saint-Ouen (60), commune de 5 415 habitants dans l'Oise, est située en lisière de la forêt de Compiègne, dans l'agglomération compiégnoise. Tissu économique de TPE/PME : artisanat BTP, services aux entreprises, commerces de proximité, filière bois et activités liées au tourisme vert forêt de Compiègne. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lacroix-Saint-Ouen (60). Nous accompagnons TPE et PME de l'agglomération compiégnoise : artisans BTP, prestataires de services, commerçants, acteurs filière bois et tourisme vert. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lacroix-Saint-Ouen (60). Nous accompagnons TPE et PME de l'agglomération compiégnoise : artisans BTP, prestataires de services, commerçants, acteurs filière bois et tourisme vert. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lacroix-Saint-Ouen (60). Nous accompagnons TPE et PME de l'agglomération compiégnoise : artisans BTP, prestataires de services, commerçants, acteurs filière bois et tourisme vert. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lacroix-Saint-Ouen (60). Nous accompagnons TPE et PME de l'agglomération compiégnoise : artisans BTP, prestataires de services, commerçants, acteurs filière bois et tourisme vert. Audit Flash sur mesure.",
   ecosystemFr:
     "Lacroix-Saint-Ouen est une commune résidentielle en lisière sud de la forêt de Compiègne, dans l'agglomération compiégnoise. Son économie associe artisanat BTP, services aux entreprises, commerces de proximité et activités liées à la forêt (filière bois, tourisme vert, randonnée). Le bassin d'emploi s'articule avec Compiègne, Margny-lès-Compiègne et Choisy-au-Bac, et bénéficie de la proximité de l'UTC et du pôle de compétitivité.",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const LACROIX_SAINT_OUEN_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Lacroix-Saint-Ouen et dans toute l'agglomération compiégnoise (Compiègne, Margny-lès-Compiègne, Choisy-au-Bac, Pierrefonds). Consultants accessibles via gare de Compiègne (TER Paris-Nord, 40 min).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Lacroix-Saint-Ouen ?",
+      q: "Quel est le tarif d'un audit IA à Lacroix-Saint-Ouen  ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME lacroisiennes : artisans BTP, prestataires de services, commerçants, acteurs filière bois et tourisme. ROI chiffré dès le diagnostic.",
     },
     {

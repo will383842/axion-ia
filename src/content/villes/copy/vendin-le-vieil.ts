@@ -9,9 +9,9 @@ export const VENDIN_LE_VIEIL_COPY: VilleCopy = {
   pitchEn:
     "Vendin-le-Vieil (62), commune du bassin minier entre Lens et Béthune dans le Pas-de-Calais, accueille TPE artisanales, commerces, PME de services et professions libérales. Axion-IA y intervient pour tous types d'activités du bassin minier.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vendin-le-Vieil (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthuno-lensois. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vendin-le-Vieil (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthuno-lensois. Audit Flash sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vendin-le-Vieil (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthuno-lensois. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vendin-le-Vieil (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthuno-lensois. Audit Flash sur mesure, intervention sur site ou en visio.",
   seoHook: "commerce détail & professions libérales",
   ecosystemFr:
     "Vendin-le-Vieil est une commune résidentielle du bassin minier entre Lens et Béthune. Tissu économique de TPE artisanales BTP, commerces de proximité, professions libérales et PME de services. Zone commerciale et activités péri-urbaines le long de l'axe Lens-Béthune.",
@@ -52,7 +52,7 @@ export const VENDIN_LE_VIEIL_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Vendin-le-Vieil et dans le bassin béthuno-lensois (Lens, Béthune, Wingles, Mazingarbe). Déplacements sur site ou sessions en visio.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Vendin-le-Vieil ?",
+      q: "Tarifs audit IA à Vendin-le-Vieil  : quel budget prévoir ?",
       a: "L'Audit Flash Axion-IA démarre à 490 € HT pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du bassin minier. Tarifs publics.",
     },
     {

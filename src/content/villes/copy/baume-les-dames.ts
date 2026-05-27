@@ -61,7 +61,7 @@ export const BAUME_LES_DAMES_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour une TPE ou PME de la vallée du Doubs ?",
-      a: "L'audit Flash démarre à 490 € HT, accessible aux TPE. Pour les PME industrielles, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
+      a: "L'audit Flash est tarifé selon vos enjeux, accessible aux TPE. Pour les PME industrielles, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
     },
     {
       q: "Comment se déroule une mission IA à Baume-les-Dames ?",

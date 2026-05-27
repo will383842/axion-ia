@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BARBERAZ_COPY: VilleCopy = {
   pitchFr:
-    "Barberaz (73), commune compacte de l'agglomération de Chambéry en Savoie, au piémont du massif de la Chartreuse dans la vallée de la Leysse. PME tertiaires, professions libérales, TPE artisanat BTP, commerces de proximité, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Barberaz (73), commune compacte de l'agglomération de Chambéry en Savoie, au piémont du massif de la Chartreuse dans la vallée de la Leysse. PME tertiaires, professions libérales, TPE artisanat BTP, commerces de proximité, services aux entreprises. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Barberaz (73), commune compacte de l'agglomération de Chambéry en Savoie, au piémont du massif de la Chartreuse dans la vallée de la Leysse. PME tertiaires, professions libérales, TPE artisanat BTP, commerces de proximité, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Barberaz (73), commune compacte de l'agglomération de Chambéry en Savoie, au piémont du massif de la Chartreuse dans la vallée de la Leysse. PME tertiaires, professions libérales, TPE artisanat BTP, commerces de proximité, services aux entreprises. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Barberaz (73). Nous accompagnons TPE et PME : entreprises tertiaires de l'agglomération chambérienne, professions libérales, artisans BTP, commerçants et sociétés de services.",
   directAnswerEn:

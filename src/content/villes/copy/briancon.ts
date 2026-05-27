@@ -60,7 +60,7 @@ export const BRIANCON_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les hébergeurs de Serre Chevalier et Montgenèvre : automatisation check-in/check-out, agents conversationnels client multilingue, classification avis clients, optimisation taux occupation hiver/été.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Briançon ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Briançon  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE artisans, hébergeurs et PME du Briançonnais. Tarifs publics transparents, sans frais cachés.",
     },
     {

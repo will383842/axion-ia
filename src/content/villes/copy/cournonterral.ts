@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const COURNONTERRAL_COPY: VilleCopy = {
   pitchFr:
-    "Cournonterral (34), commune viticole et résidentielle de l'ouest de Montpellier. Vignoble AOC Languedoc, garrigue, forte croissance démographique. Tissu TPE commerçants, PME viticoles, artisans BTP, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Cournonterral (34), commune viticole et résidentielle de l'ouest de Montpellier. Vignoble AOC Languedoc, garrigue, forte croissance démographique. Tissu TPE commerçants, PME viticoles, artisans BTP, professions libérales. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Cournonterral (34), commune viticole et résidentielle de l'ouest de Montpellier. Vignoble AOC Languedoc, garrigue, forte croissance démographique. Tissu TPE commerçants, PME viticoles, artisans BTP, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Cournonterral (34), commune viticole et résidentielle de l'ouest de Montpellier. Vignoble AOC Languedoc, garrigue, forte croissance démographique. Tissu TPE commerçants, PME viticoles, artisans BTP, professions libérales. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cournonterral (34). Nous accompagnons TPE commerçants, PME viticoles AOC Languedoc, artisans BTP, professions libérales et entreprises de l'ouest montpelliérain.",
   directAnswerEn:

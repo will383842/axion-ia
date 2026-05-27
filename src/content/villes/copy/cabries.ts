@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const CABRIES_COPY: VilleCopy = {
   pitchFr:
-    "Cabriès (13), commune au nord d'Aix-en-Provence, accueille la plus grande zone commerciale en plein air d'Europe : Plan de Campagne (350+ enseignes). TPE commerçants, franchisés, restaurateurs, PME services, artisans BTP et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Cabriès (13), commune au nord d'Aix-en-Provence, accueille la plus grande zone commerciale en plein air d'Europe : Plan de Campagne (350+ enseignes). TPE commerçants, franchisés, restaurateurs, PME services, artisans BTP et professions libérales. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Cabriès (13), commune au nord d'Aix-en-Provence, accueille la plus grande zone commerciale en plein air d'Europe : Plan de Campagne (350+ enseignes). TPE commerçants, franchisés, restaurateurs, PME services, artisans BTP et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Cabriès (13), commune au nord d'Aix-en-Provence, accueille la plus grande zone commerciale en plein air d'Europe : Plan de Campagne (350+ enseignes). TPE commerçants, franchisés, restaurateurs, PME services, artisans BTP et professions libérales. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cabriès (13). Nous accompagnons TPE commerçants, franchisés, restaurateurs, PME de services, artisans BTP et professions libérales de la zone Plan de Campagne et du nord aixois. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cabriès (13). Nous accompagnons TPE commerçants, franchisés, restaurateurs, PME de services, artisans BTP et professions libérales de la zone Plan de Campagne et du nord aixois. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cabriès (13). Nous accompagnons TPE commerçants, franchisés, restaurateurs, PME de services, artisans BTP et professions libérales de la zone Plan de Campagne et du nord aixois. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cabriès (13). Nous accompagnons TPE commerçants, franchisés, restaurateurs, PME de services, artisans BTP et professions libérales de la zone Plan de Campagne et du nord aixois. Audit Flash sur mesure.",
   seoHook: "commerce détail & restauration franchises",
   ecosystemFr:
     "Cabriès est à mi-chemin entre Marseille et Aix-en-Provence, à proximité de l'aéroport Marseille-Provence. La zone commerciale Plan de Campagne (à cheval Cabriès / Les Pennes-Mirabeau) rassemble plus de 350 enseignes : prêt-à-porter, équipement maison, restauration, automobile, loisirs. Tissu dense de TPE commerçants franchisés, restaurateurs, PME de services et artisans BTP.",
@@ -52,7 +52,7 @@ export const CABRIES_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Cabriès et dans tout le secteur Plan de Campagne (Les Pennes-Mirabeau, Vitrolles, Bouc-Bel-Air, Simiane-Collongue, Septèmes-les-Vallons). Proximité aéroport Marseille-Provence et A51.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Cabriès ?",
+      q: "Quel est le tarif d'un audit IA à Cabriès  ?",
       a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE commerçants, franchisés, restaurateurs et PME cabriésiens. Tarifs publics, sans engagement.",
     },
     {

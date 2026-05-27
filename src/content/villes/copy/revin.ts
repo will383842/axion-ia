@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const REVIN_COPY: VilleCopy = {
   pitchFr:
-    "Revin (08), commune ardennaise enserrée dans un méandre spectaculaire de la Meuse, est marquée par son héritage industriel métallurgique et son patrimoine naturel (forêt ardennaise, falaises). TPE artisans, PME industrielles, commerçants de proximité, acteurs touristiques nature et professions libérales forment le tissu économique local. Axion-IA y déploie ses missions auprès de toutes les organisations de la vallée de la Meuse.",
+    "Revin (08), commune ardennaise enserrée dans un méandre spectaculaire de la Meuse, est marquée par son héritage industriel métallurgique et son patrimoine naturel (forêt ardennaise, falaises). TPE artisans, PME industrielles, commerçants de proximité, acteurs touristiques nature et professions libérales forment le tissu économique local. Axion-IA y déploie son expertise pour toutes les organisations de la vallée de la Meuse.",
   pitchEn:
-    "Revin (08), commune ardennaise enserrée dans un méandre spectaculaire de la Meuse, est marquée par son héritage industriel métallurgique et son patrimoine naturel (forêt ardennaise, falaises). TPE artisans, PME industrielles, commerçants de proximité, acteurs touristiques nature et professions libérales forment le tissu économique local. Axion-IA y déploie ses missions auprès de toutes les organisations de la vallée de la Meuse.",
+    "Revin (08), commune ardennaise enserrée dans un méandre spectaculaire de la Meuse, est marquée par son héritage industriel métallurgique et son patrimoine naturel (forêt ardennaise, falaises). TPE artisans, PME industrielles, commerçants de proximité, acteurs touristiques nature et professions libérales forment le tissu économique local. Axion-IA y déploie son expertise pour toutes les organisations de la vallée de la Meuse.",
   seoHook: "métallurgie & tourisme nature ardennais",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Revin (08). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles métallurgiques, commerçants, acteurs touristiques nature et professions libérales de la vallée de la Meuse. Audit Flash dès 490 € HT, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Revin (08). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles métallurgiques, commerçants, acteurs touristiques nature et professions libérales de la vallée de la Meuse. Audit Flash sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Revin (08). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles métallurgiques, commerçants, acteurs touristiques nature et professions libérales de la vallée de la Meuse. Audit Flash dès 490 € HT, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Revin (08). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles métallurgiques, commerçants, acteurs touristiques nature et professions libérales de la vallée de la Meuse. Audit Flash sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Revin (environ 5 700 habitants) est une commune ardennaise située dans un méandre remarquable de la Meuse, au cœur du Parc naturel régional des Ardennes. Héritière d'un puissant passé industriel métallurgique (visseries, robinetterie, électroménager), la ville se reconvertit progressivement vers le tourisme nature (randonnée, pêche, kayak), l'artisanat et les services. L'économie locale s'appuie sur l'industrie résiduelle, le commerce de proximité, le tourisme vert et les services publics.",
   ecosystemEn:
@@ -56,7 +56,7 @@ export const REVIN_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME métallurgiques, visseries et industriels de Revin avec des solutions IA adaptées : maintenance prédictive lignes, contrôle qualité visuel, optimisation flux production, gestion documentaire. Audit Flash 490 € HT.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Revin ?",
+      q: "Quel est le tarif d'un audit IA à Revin  ?",
       a: "L'Audit Flash Axion-IA démarre à 490 € HT. Adapté aux TPE et PME revinoises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {

@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const MEZE_COPY: VilleCopy = {
   pitchFr:
-    "Mèze (34), commune de 12 669 habitants sur les rives de l'étang de Thau dans l'Hérault. Son économie repose sur un tissu de TPE et PME de la conchyliculture (huîtres, moules), de la pêche, de la restauration, du tourisme nautique, du commerce de centre-ville et de la viticulture. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Mèze (34), commune de 12 669 habitants sur les rives de l'étang de Thau dans l'Hérault. Son économie repose sur un tissu de TPE et PME de la conchyliculture (huîtres, moules), de la pêche, de la restauration, du tourisme nautique, du commerce de centre-ville et de la viticulture. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Mèze (34), commune de 12 669 habitants sur les rives de l'étang de Thau dans l'Hérault. Son économie repose sur un tissu de TPE et PME de la conchyliculture (huîtres, moules), de la pêche, de la restauration, du tourisme nautique, du commerce de centre-ville et de la viticulture. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Mèze (34), commune de 12 669 habitants sur les rives de l'étang de Thau dans l'Hérault. Son économie repose sur un tissu de TPE et PME de la conchyliculture (huîtres, moules), de la pêche, de la restauration, du tourisme nautique, du commerce de centre-ville et de la viticulture. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mèze (34). Nous accompagnons TPE et PME du bassin de Thau : conchyliculteurs, restaurateurs, commerçants, viticulteurs et professionnels du tourisme nautique. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mèze (34). Nous accompagnons TPE et PME du bassin de Thau : conchyliculteurs, restaurateurs, commerçants, viticulteurs et professionnels du tourisme nautique. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mèze (34). Nous accompagnons TPE et PME du bassin de Thau : conchyliculteurs, restaurateurs, commerçants, viticulteurs et professionnels du tourisme nautique. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mèze (34). Nous accompagnons TPE et PME du bassin de Thau : conchyliculteurs, restaurateurs, commerçants, viticulteurs et professionnels du tourisme nautique. Audit Flash sur mesure.",
   ecosystemFr:
     "Mèze est un port conchylicole majeur sur l'étang de Thau, entre Sète et Montpellier. Son économie s'appuie sur la conchyliculture (huîtres de Bouzigues, moules), la pêche, la restauration de produits de la mer, le tourisme nautique et balnéaire, la viticulture (muscat de Frontignan proche), le commerce de centre-ville et l'artisanat. Port de plaisance et criée.",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const MEZE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Mèze et dans tout le bassin de Thau (Bouzigues, Marseillan, Sète). Consultants accessibles via la gare TGV Montpellier-Saint-Roch (35 min) et l'aéroport Montpellier-Méditerranée (25 min).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Mèze ?",
+      q: "Tarifs audit IA à Mèze  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Mèze : conchyliculteurs, restaurateurs, commerçants et viticulteurs du bassin de Thau. ROI chiffré dès le diagnostic.",
     },
     {

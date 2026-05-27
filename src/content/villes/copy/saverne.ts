@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SAVERNE_COPY: VilleCopy = {
   pitchFr:
-    "Saverne (67), sous-préfecture du Bas-Rhin au pied du col de Saverne dans les Vosges du Nord, conjugue patrimoine historique (château des Rohan), porte d'entrée Alsace-Lorraine et tissu économique diversifié. TPE/PME industrielles, commerces de centre-ville, hôtellerie-restauration, artisans et services aux entreprises. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Saverne (67), sous-préfecture du Bas-Rhin au pied du col de Saverne dans les Vosges du Nord, conjugue patrimoine historique (château des Rohan), porte d'entrée Alsace-Lorraine et tissu économique diversifié. TPE/PME industrielles, commerces de centre-ville, hôtellerie-restauration, artisans et services aux entreprises. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Saverne (67), sous-préfecture du Bas-Rhin au pied du col de Saverne dans les Vosges du Nord, conjugue patrimoine historique (château des Rohan), porte d'entrée Alsace-Lorraine et tissu économique diversifié. TPE/PME industrielles, commerces de centre-ville, hôtellerie-restauration, artisans et services aux entreprises. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Saverne (67), sous-préfecture du Bas-Rhin au pied du col de Saverne dans les Vosges du Nord, conjugue patrimoine historique (château des Rohan), porte d'entrée Alsace-Lorraine et tissu économique diversifié. TPE/PME industrielles, commerces de centre-ville, hôtellerie-restauration, artisans et services aux entreprises. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saverne (67). Nous accompagnons TPE et PME : industriels, commerçants du centre-ville, hôteliers-restaurateurs, artisans BTP, professions libérales et services aux entreprises du Pays de Saverne. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saverne (67). Nous accompagnons TPE et PME : industriels, commerçants du centre-ville, hôteliers-restaurateurs, artisans BTP, professions libérales et services aux entreprises du Pays de Saverne. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saverne (67). Nous accompagnons TPE et PME : industriels, commerçants du centre-ville, hôteliers-restaurateurs, artisans BTP, professions libérales et services aux entreprises du Pays de Saverne. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saverne (67). Nous accompagnons TPE et PME : industriels, commerçants du centre-ville, hôteliers-restaurateurs, artisans BTP, professions libérales et services aux entreprises du Pays de Saverne. Audit Flash sur mesure.",
   seoHook: "industrie manufacturières & commerce centre",
   ecosystemFr:
     "Saverne, sous-préfecture du Bas-Rhin et porte d'entrée Alsace-Lorraine au pied du col de Saverne, conjugue patrimoine (château des Rohan, jardin botanique) et activités économiques diversifiées : PME industrielles, commerce du centre historique, hôtellerie-restauration et tourisme patrimonial. Tissu de TPE/PME artisanales, professions libérales, services aux entreprises et exploitations agricoles des Vosges du Nord.",
@@ -52,7 +52,7 @@ export const SAVERNE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Saverne et sur tout le Pays de Saverne (Phalsbourg, Marmoutier, Wasselonne, Hochfelden). Gare TGV Saverne sur la ligne Paris-Strasbourg, Paris en 2h, Strasbourg à 45 min via A4.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Saverne ?",
+      q: "Combien coûte un audit IA à Saverne  ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Saverne et du Bas-Rhin, il identifie les cas d'usage IA à fort ROI pour votre PME industrielle, commerce, hôtel-restaurant ou activité artisanale.",
     },
     {

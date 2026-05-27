@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const ILLZACH_COPY: VilleCopy = {
   pitchFr:
-    "Illzach (68), commune industrielle au nord de Mulhouse en Haut-Rhin, fait partie de Mulhouse Alsace Agglomération (m2A) avec d'importantes zones d'activités. Tissu TPE artisans, PME industrielles et de services, commerces de proximité, professions libérales et indépendants. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération nord mulhousienne.",
+    "Illzach (68), commune industrielle au nord de Mulhouse en Haut-Rhin, fait partie de Mulhouse Alsace Agglomération (m2A) avec d'importantes zones d'activités. Tissu TPE artisans, PME industrielles et de services, commerces de proximité, professions libérales et indépendants. Axion-IA opère sur l'ensemble des activités professionnelles locales de l'agglomération nord mulhousienne.",
   pitchEn:
-    "Illzach (68), commune industrielle au nord de Mulhouse en Haut-Rhin, fait partie de Mulhouse Alsace Agglomération (m2A) avec d'importantes zones d'activités. Tissu TPE artisans, PME industrielles et de services, commerces de proximité, professions libérales et indépendants. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération nord mulhousienne.",
+    "Illzach (68), commune industrielle au nord de Mulhouse en Haut-Rhin, fait partie de Mulhouse Alsace Agglomération (m2A) avec d'importantes zones d'activités. Tissu TPE artisans, PME industrielles et de services, commerces de proximité, professions libérales et indépendants. Axion-IA opère sur l'ensemble des activités professionnelles locales de l'agglomération nord mulhousienne.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Illzach (68). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants, professions libérales et indépendants des zones industrielles de l'agglomération nord de Mulhouse. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Illzach (68). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants, professions libérales et indépendants des zones industrielles de l'agglomération nord de Mulhouse. Audit Flash sur mesure, interventions sur site et coaching dirigeants.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Illzach (68). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants, professions libérales et indépendants des zones industrielles de l'agglomération nord de Mulhouse. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Illzach (68). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants, professions libérales et indépendants des zones industrielles de l'agglomération nord de Mulhouse. Audit Flash sur mesure, interventions sur site et coaching dirigeants.",
   seoHook: "proche mulhouse",
   ecosystemFr:
     "Illzach est une commune industrielle majeure de Mulhouse Alsace Agglomération (m2A), située au nord de Mulhouse avec d'importantes zones d'activités (zone Île Napoléon notamment). Tissu TPE artisans BTP, PME industrielles (sous-traitance automobile, mécanique, logistique), PME de services aux entreprises, commerces de proximité, professions libérales (santé, juridique) et indépendants. Position stratégique sur l'axe rhénan.",
@@ -52,7 +52,7 @@ export const ILLZACH_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Illzach et dans toute m2A nord (Sausheim, Wittenheim, Rixheim, Île Napoléon). Nos consultants se déplacent depuis Strasbourg en 1h via l'A35, ou Mulhouse centre en 8 min.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Illzach ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Illzach  ?",
       a: "L'Audit Flash IA démarre à 490 € HT pour une session de 4h. Idéal pour les TPE et PME d'Illzach souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré sous 10 jours.",
     },
     {

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BEAUSOLEIL_COPY: VilleCopy = {
   pitchFr:
-    "Beausoleil (06), perchée au-dessus de Monaco sur les pentes du Mont Agel, est une ville résidentielle étroitement liée à la Principauté. Tissu TPE/PME commerces de proximité, services à la personne, professions libérales, hôtellerie et restauration transfrontalière. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Beausoleil (06), perchée au-dessus de Monaco sur les pentes du Mont Agel, est une ville résidentielle étroitement liée à la Principauté. Tissu TPE/PME commerces de proximité, services à la personne, professions libérales, hôtellerie et restauration transfrontalière. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Beausoleil (06), perchée au-dessus de Monaco sur les pentes du Mont Agel, est une ville résidentielle étroitement liée à la Principauté. Tissu TPE/PME commerces de proximité, services à la personne, professions libérales, hôtellerie et restauration transfrontalière. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Beausoleil (06), perchée au-dessus de Monaco sur les pentes du Mont Agel, est une ville résidentielle étroitement liée à la Principauté. Tissu TPE/PME commerces de proximité, services à la personne, professions libérales, hôtellerie et restauration transfrontalière. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beausoleil (06). Nous accompagnons tous types d'activités : TPE commerces de proximité, professions libérales, services à la personne, PME hôtellerie-restauration et entreprises liées à l'économie transfrontalière Monaco-France.",
   directAnswerEn:

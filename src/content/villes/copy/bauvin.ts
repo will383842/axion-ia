@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BAUVIN_COPY: VilleCopy = {
   pitchFr:
-    "Bauvin (59), commune du sud de la métropole lilloise dans le bassin minier du Nord, compte 5 249 habitants. Tissu TPE artisans, PME logistiques et industrielles, commerces de proximité, exploitations agricoles et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Bauvin (59), commune du sud de la métropole lilloise dans le bassin minier du Nord, compte 5 249 habitants. Tissu TPE artisans, PME logistiques et industrielles, commerces de proximité, exploitations agricoles et professions libérales. Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Bauvin (59), commune du sud de la métropole lilloise dans le bassin minier du Nord, compte 5 249 habitants. Tissu TPE artisans, PME logistiques et industrielles, commerces de proximité, exploitations agricoles et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Bauvin (59), commune du sud de la métropole lilloise dans le bassin minier du Nord, compte 5 249 habitants. Tissu TPE artisans, PME logistiques et industrielles, commerces de proximité, exploitations agricoles et professions libérales. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bauvin (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME logistiques et industrielles, commerçants, exploitants agricoles, professions libérales et services aux entreprises du sud Lillois et bassin minier.",
   directAnswerEn:

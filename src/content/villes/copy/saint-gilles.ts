@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_GILLES_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Gilles (30), porte de la Petite Camargue gardoise, abrite une abbatiale classée UNESCO (chemin de Compostelle). Tissu TPE/PME agriculture Camargue (riz, taureaux, chevaux), viticulture Costières de Nîmes, commerces, artisanat et tourisme patrimonial. Axion-IA y déploie ses missions auprès de toutes les organisations de la Petite Camargue.",
+    "Saint-Gilles (30), porte de la Petite Camargue gardoise, abrite une abbatiale classée UNESCO (chemin de Compostelle). Tissu TPE/PME agriculture Camargue (riz, taureaux, chevaux), viticulture Costières de Nîmes, commerces, artisanat et tourisme patrimonial. Axion-IA y déploie son expertise pour toutes les organisations de la Petite Camargue.",
   pitchEn:
-    "Saint-Gilles (30), porte de la Petite Camargue gardoise, abrite une abbatiale classée UNESCO (chemin de Compostelle). Tissu TPE/PME agriculture Camargue (riz, taureaux, chevaux), viticulture Costières de Nîmes, commerces, artisanat et tourisme patrimonial. Axion-IA y déploie ses missions auprès de toutes les organisations de la Petite Camargue.",
+    "Saint-Gilles (30), porte de la Petite Camargue gardoise, abrite une abbatiale classée UNESCO (chemin de Compostelle). Tissu TPE/PME agriculture Camargue (riz, taureaux, chevaux), viticulture Costières de Nîmes, commerces, artisanat et tourisme patrimonial. Axion-IA y déploie son expertise pour toutes les organisations de la Petite Camargue.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Saint-Gilles (30). Nous accompagnons les TPE, PME et ETI locales : exploitants agricoles Camargue, viticulteurs Costières de Nîmes, commerçants, artisans, acteurs touristiques et professions libérales de la Petite Camargue gardoise. Audit Flash à partir de 490 € HT.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Saint-Gilles (30). Nous accompagnons les TPE, PME et ETI locales : exploitants agricoles Camargue, viticulteurs Costières de Nîmes, commerçants, artisans, acteurs touristiques et professions libérales de la Petite Camargue gardoise. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Saint-Gilles (30). Nous accompagnons les TPE, PME et ETI locales : exploitants agricoles Camargue, viticulteurs Costières de Nîmes, commerçants, artisans, acteurs touristiques et professions libérales de la Petite Camargue gardoise. Audit Flash à partir de 490 € HT.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Saint-Gilles (30). Nous accompagnons les TPE, PME et ETI locales : exploitants agricoles Camargue, viticulteurs Costières de Nîmes, commerçants, artisans, acteurs touristiques et professions libérales de la Petite Camargue gardoise. Audit Flash sur mesure.",
   seoHook: "agriculture camargue & viticulture costières",
   ecosystemFr:
     "Saint-Gilles (~14 700 hab) est la porte de la Petite Camargue gardoise, à 20 min de Nîmes. Agriculture camarguaise (riziculture, élevage taureau/cheval), viticulture Costières de Nîmes, tourisme patrimonial (abbatiale UNESCO), commerces et artisanat. Économie agri-touristique structurante.",
@@ -56,7 +56,7 @@ export const SAINT_GILLES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les exploitants agricoles Camargue : riziculteurs, éleveurs (taureaux, chevaux), maraîchers. Cas IA : prédiction rendements, classification parcelles, automatisation traçabilité, vente directe.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Saint-Gilles ?",
+      q: "Tarifs audit IA à Saint-Gilles  : quel budget prévoir ?",
       a: "L'Audit Flash commence à 490 € HT. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {

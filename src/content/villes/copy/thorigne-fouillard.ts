@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const THORIGNE_FOUILLARD_COPY: VilleCopy = {
   pitchFr:
-    "Thorigné-Fouillard (35), commune résidentielle du nord-est de Rennes Métropole, allie cadre de vie verdoyant et dynamisme économique périurbain. TPE artisans BTP, commerces de proximité, PME de services et tertiaire, professions libérales de santé et indépendants. Axion-IA y déploie ses missions auprès de toutes les organisations du nord-est de Rennes Métropole.",
+    "Thorigné-Fouillard (35), commune résidentielle du nord-est de Rennes Métropole, allie cadre de vie verdoyant et dynamisme économique périurbain. TPE artisans BTP, commerces de proximité, PME de services et tertiaire, professions libérales de santé et indépendants. Axion-IA y conduit ses missions auprès des entreprises locales du nord-est de Rennes Métropole.",
   pitchEn:
-    "Thorigné-Fouillard (35), commune résidentielle du nord-est de Rennes Métropole, allie cadre de vie verdoyant et dynamisme économique périurbain. TPE artisans BTP, commerces de proximité, PME de services et tertiaire, professions libérales de santé et indépendants. Axion-IA y déploie ses missions auprès de toutes les organisations du nord-est de Rennes Métropole.",
+    "Thorigné-Fouillard (35), commune résidentielle du nord-est de Rennes Métropole, allie cadre de vie verdoyant et dynamisme économique périurbain. TPE artisans BTP, commerces de proximité, PME de services et tertiaire, professions libérales de santé et indépendants. Axion-IA y conduit ses missions auprès des entreprises locales du nord-est de Rennes Métropole.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thorigné-Fouillard (35). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, PME de services et tertiaire nord-est Rennes, professions libérales de santé, indépendants et prestataires de Rennes Métropole.",
   directAnswerEn:
@@ -61,7 +61,7 @@ export const THORIGNE_FOUILLARD_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour une TPE ou PME à Thorigné-Fouillard ?",
-      a: "L'audit Flash démarre à 490 € HT, accessible aux TPE. Pour les PME de services, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
+      a: "L'audit Flash s'adapte à votre périmètre, accessible aux TPE. Pour les PME de services, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
     },
     {
       q: "Comment se déroule une mission IA à Thorigné-Fouillard ?",

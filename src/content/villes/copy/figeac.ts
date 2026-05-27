@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FIGEAC_COPY: VilleCopy = {
   pitchFr:
-    "Figeac (46), sous-préfecture du Lot, cité médiévale de Champollion sur le chemin de Saint-Jacques-de-Compostelle. Pôle aéronautique majeur (usinage de précision). Tissu PME aéronautiques, TPE artisans, commerces patrimoine, tourisme culturel et pèlerin. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Figeac (46), sous-préfecture du Lot, cité médiévale de Champollion sur le chemin de Saint-Jacques-de-Compostelle. Pôle aéronautique majeur (usinage de précision). Tissu PME aéronautiques, TPE artisans, commerces patrimoine, tourisme culturel et pèlerin. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Figeac (46), sous-préfecture du Lot, cité médiévale de Champollion sur le chemin de Saint-Jacques-de-Compostelle. Pôle aéronautique majeur (usinage de précision). Tissu PME aéronautiques, TPE artisans, commerces patrimoine, tourisme culturel et pèlerin. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Figeac (46), sous-préfecture du Lot, cité médiévale de Champollion sur le chemin de Saint-Jacques-de-Compostelle. Pôle aéronautique majeur (usinage de précision). Tissu PME aéronautiques, TPE artisans, commerces patrimoine, tourisme culturel et pèlerin. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Figeac (46). Nous accompagnons tous types d'activités : PME sous-traitance aéronautique, TPE artisans, commerçants du centre médiéval, indépendants, professions libérales, acteurs du tourisme patrimoine et pèlerinage.",
   directAnswerEn:

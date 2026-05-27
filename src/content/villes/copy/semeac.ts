@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SEMEAC_COPY: VilleCopy = {
   pitchFr:
-    "Séméac (65), commune résidentielle et commerciale de l'agglomération de Tarbes dans les Hautes-Pyrénées. Zones d'activités et commerces, proximité Pyrénées. Tissu TPE artisans, PME commerciales et de services, commerces, restauration, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Séméac (65), commune résidentielle et commerciale de l'agglomération de Tarbes dans les Hautes-Pyrénées. Zones d'activités et commerces, proximité Pyrénées. Tissu TPE artisans, PME commerciales et de services, commerces, restauration, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes.",
   pitchEn:
-    "Séméac (65), commune résidentielle et commerciale de l'agglomération de Tarbes dans les Hautes-Pyrénées. Zones d'activités et commerces, proximité Pyrénées. Tissu TPE artisans, PME commerciales et de services, commerces, restauration, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Séméac (65), commune résidentielle et commerciale de l'agglomération de Tarbes dans les Hautes-Pyrénées. Zones d'activités et commerces, proximité Pyrénées. Tissu TPE artisans, PME commerciales et de services, commerces, restauration, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Séméac (65). Nous accompagnons tous types d'activités : PME commerciales et de services, TPE artisans, commerçants, restaurateurs, indépendants, professions libérales de l'agglomération tarbaise.",
   directAnswerEn:

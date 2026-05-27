@@ -9,9 +9,9 @@ export const BRY_SUR_MARNE_COPY: VilleCopy = {
   pitchEn:
     "Bry-sur-Marne (94), commune des bords de Marne en Val-de-Marne, desservie par le RER A et connue pour ses studios audiovisuels et le site historique de l'INA. Tissu TPE prestataires audiovisuels, PME de services et numérique, commerçants, professions libérales et indépendants. Axion-IA y intervient pour tous types d'activités de l'est Val-de-Marnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bry-sur-Marne (94). Nous accompagnons tous types d'activités : TPE prestataires audiovisuels et créatifs, PME de services et numérique, commerçants, professions libérales, indépendants et entreprises de l'est du Val-de-Marne. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bry-sur-Marne (94). Nous accompagnons tous types d'activités : TPE prestataires audiovisuels et créatifs, PME de services et numérique, commerçants, professions libérales, indépendants et entreprises de l'est du Val-de-Marne. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bry-sur-Marne (94). Nous accompagnons tous types d'activités : TPE prestataires audiovisuels et créatifs, PME de services et numérique, commerçants, professions libérales, indépendants et entreprises de l'est du Val-de-Marne. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bry-sur-Marne (94). Nous accompagnons tous types d'activités : TPE prestataires audiovisuels et créatifs, PME de services et numérique, commerçants, professions libérales, indépendants et entreprises de l'est du Val-de-Marne. Audit Flash sur mesure.",
   seoHook: "audiovisuel production & services numériques",
   ecosystemFr:
     "Bry-sur-Marne est une commune des bords de Marne connue pour ses studios audiovisuels et le site historique de l'INA. Son tissu économique associe TPE prestataires audiovisuels et créatifs, PME de services et numérique, commerces de proximité et professions libérales. Proximité directe avec Villiers-sur-Marne, Noisy-le-Grand, Champigny-sur-Marne et Chennevières.",

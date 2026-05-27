@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GIGEAN_COPY: VilleCopy = {
   pitchFr:
-    "Gigean (34), commune de l'agglomération de Sète, entre garrigue et étang de Thau. Abbaye Saint-Félix-de-Montceau, accès A9. Tissu TPE commerçants, PME services, artisans BTP, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Gigean (34), commune de l'agglomération de Sète, entre garrigue et étang de Thau. Abbaye Saint-Félix-de-Montceau, accès A9. Tissu TPE commerçants, PME services, artisans BTP, professions libérales. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Gigean (34), commune de l'agglomération de Sète, entre garrigue et étang de Thau. Abbaye Saint-Félix-de-Montceau, accès A9. Tissu TPE commerçants, PME services, artisans BTP, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Gigean (34), commune de l'agglomération de Sète, entre garrigue et étang de Thau. Abbaye Saint-Félix-de-Montceau, accès A9. Tissu TPE commerçants, PME services, artisans BTP, professions libérales. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gigean (34). Nous accompagnons TPE commerçants, PME de services, artisans BTP, professions libérales et entreprises du bassin de Thau-Sète.",
   directAnswerEn:

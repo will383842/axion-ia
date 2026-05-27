@@ -11,9 +11,9 @@ export const VIGNEUX_SUR_SEINE_COPY: VilleCopy = {
   pitchEn:
     "À Vigneux-sur-Seine, Axion-IA accompagne les entreprises dans l'intégration de l'IA. Paris, avec ses pôles comme Cap Digital et Station F, influence l'écosystème local.",
   directAnswerFr:
-    "Axion-IA intervient à Vigneux-sur-Seine pour optimiser vos processus grâce à l'IA. Avec des références comme LVMH et BNP Paribas à Paris, nous comprenons les enjeux des entreprises locales. Nos services incluent audit, intervention sur site et implémentation. Nos tarifs débutent à 490 € HT pour un audit Flash 4h. Consultez notre site pour plus d'informations.",
+    "Axion-IA intervient à Vigneux-sur-Seine pour optimiser vos processus grâce à l'IA. Avec des références comme LVMH et BNP Paribas à Paris, nous comprenons les enjeux des entreprises locales. Nos services incluent audit, intervention sur site et implémentation. Nos tarifs débutent à pour un audit Flash 4h. Consultez notre site pour plus d'informations.",
   directAnswerEn:
-    "Axion-IA intervient à Vigneux-sur-Seine pour optimiser vos processus grâce à l'IA. Avec des références comme LVMH et BNP Paribas à Paris, nous comprenons les enjeux des entreprises locales. Nos services incluent audit, intervention sur site et implémentation. Nos tarifs débutent à 490 € HT pour un audit Flash 4h. Consultez notre site pour plus d'informations.",
+    "Axion-IA intervient à Vigneux-sur-Seine pour optimiser vos processus grâce à l'IA. Avec des références comme LVMH et BNP Paribas à Paris, nous comprenons les enjeux des entreprises locales. Nos services incluent audit, intervention sur site et implémentation. Nos tarifs débutent à pour un audit Flash 4h. Consultez notre site pour plus d'informations.",
   seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Le tissu économique de Vigneux-sur-Seine est influencé par la proximité de Paris, abritant Cap Digital et Inria. Les entreprises locales bénéficient de cet environnement innovant.",

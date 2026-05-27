@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINTE_SOULLE_COPY: VilleCopy = {
   pitchFr:
-    "Sainte-Soulle (17), commune périurbaine de l'agglomération de La Rochelle en Charente-Maritime, cadre de vie rural aux portes de la ville. Tissu de TPE artisans, PME tertiaires, commerces de proximité, exploitants agricoles et services. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération rochelaise.",
+    "Sainte-Soulle (17), commune périurbaine de l'agglomération de La Rochelle en Charente-Maritime, cadre de vie rural aux portes de la ville. Tissu de TPE artisans, PME tertiaires, commerces de proximité, exploitants agricoles et services. Axion-IA collabore avec toutes les structures locales de l'agglomération rochelaise.",
   pitchEn:
-    "Sainte-Soulle (17), commune périurbaine de l'agglomération de La Rochelle en Charente-Maritime, cadre de vie rural aux portes de la ville. Tissu de TPE artisans, PME tertiaires, commerces de proximité, exploitants agricoles et services. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération rochelaise.",
+    "Sainte-Soulle (17), commune périurbaine de l'agglomération de La Rochelle en Charente-Maritime, cadre de vie rural aux portes de la ville. Tissu de TPE artisans, PME tertiaires, commerces de proximité, exploitants agricoles et services. Axion-IA collabore avec toutes les structures locales de l'agglomération rochelaise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sainte-Soulle (17). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, exploitants agricoles, commerçants et indépendants de cette commune périurbaine de l'agglomération de La Rochelle.",
   directAnswerEn:

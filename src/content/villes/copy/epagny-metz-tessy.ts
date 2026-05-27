@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const EPAGNY_METZ_TESSY_COPY: VilleCopy = {
   pitchFr:
-    "Epagny Metz-Tessy (74), commune nouvelle au nord d'Annecy en Haute-Savoie, accueille la zone commerciale Grand Épagny, pôle majeur du commerce et des services du bassin annécien. Tissu varié de PME tertiaires, enseignes commerciales, TPE artisans, logistique et services. Axion-IA couvre l'ensemble des activités professionnelles présentes du nord Annecy.",
+    "Epagny Metz-Tessy (74), commune nouvelle au nord d'Annecy en Haute-Savoie, accueille la zone commerciale Grand Épagny, pôle majeur du commerce et des services du bassin annécien. Tissu varié de PME tertiaires, enseignes commerciales, TPE artisans, logistique et services. Axion-IA répond aux besoins des activités professionnelles présentes du nord Annecy.",
   pitchEn:
-    "Epagny Metz-Tessy (74), commune nouvelle au nord d'Annecy en Haute-Savoie, accueille la zone commerciale Grand Épagny, pôle majeur du commerce et des services du bassin annécien. Tissu varié de PME tertiaires, enseignes commerciales, TPE artisans, logistique et services. Axion-IA couvre l'ensemble des activités professionnelles présentes du nord Annecy.",
+    "Epagny Metz-Tessy (74), commune nouvelle au nord d'Annecy en Haute-Savoie, accueille la zone commerciale Grand Épagny, pôle majeur du commerce et des services du bassin annécien. Tissu varié de PME tertiaires, enseignes commerciales, TPE artisans, logistique et services. Axion-IA répond aux besoins des activités professionnelles présentes du nord Annecy.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Epagny Metz-Tessy (74). Nous accompagnons TPE et PME : commerces et enseignes de la zone Grand Épagny, entreprises tertiaires, prestataires logistiques, artisans et professions de services du bassin annécien.",
   directAnswerEn:

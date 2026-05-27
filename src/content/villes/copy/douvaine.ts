@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const DOUVAINE_COPY: VilleCopy = {
   pitchFr:
-    "Douvaine (74), commune du Chablais au coeur du Grand Genève, allie dynamique transfrontalière et terroir viticole (vin de Savoie, Chablais). Tissu économique mixte : services frontaliers, viticulture, agriculture, TPE commerces et PME tertiaires. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin lémanique frontalier.",
+    "Douvaine (74), commune du Chablais au coeur du Grand Genève, allie dynamique transfrontalière et terroir viticole (vin de Savoie, Chablais). Tissu économique mixte : services frontaliers, viticulture, agriculture, TPE commerces et PME tertiaires. Axion-IA répond aux besoins de toutes les entreprises du bassin lémanique frontalier.",
   pitchEn:
-    "Douvaine (74), commune du Chablais au coeur du Grand Genève, allie dynamique transfrontalière et terroir viticole (vin de Savoie, Chablais). Tissu économique mixte : services frontaliers, viticulture, agriculture, TPE commerces et PME tertiaires. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin lémanique frontalier.",
+    "Douvaine (74), commune du Chablais au coeur du Grand Genève, allie dynamique transfrontalière et terroir viticole (vin de Savoie, Chablais). Tissu économique mixte : services frontaliers, viticulture, agriculture, TPE commerces et PME tertiaires. Axion-IA répond aux besoins de toutes les entreprises du bassin lémanique frontalier.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Douvaine (74). Nous accompagnons TPE et PME : entreprises de services transfrontaliers, viticulteurs du Chablais (vin de Savoie), exploitants agricoles, commerces locaux et PME tertiaires du Grand Genève.",
   directAnswerEn:
@@ -56,7 +56,7 @@ export const DOUVAINE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les viticulteurs AOC Vin de Savoie autour de Douvaine sur leurs cas IA spécifiques : traçabilité parcellaire automatisée, prédiction vendanges (météo + maturité), agents conversationnels caveau de vente, gestion stocks et expéditions, marketing digital domaine viticole.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Douvaine ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Douvaine  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du Chablais frontalier, il identifie les cas d'usage IA à fort ROI pour votre activité (viticulture, services, agriculture, commerce). Tarifs publics, sans engagement.",
     },
     {

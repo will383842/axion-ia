@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BANNALEC_COPY: VilleCopy = {
   pitchFr:
-    "Bannalec (29), commune de l'est Cornouaille en Finistère, est un bourg rural dynamique entre Quimperlé et Rosporden. Tissu TPE agricoles (élevage, polyculture), PME agroalimentaires (volailles, transformation), artisans BTP, commerces de proximité et services. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'Est Cornouaille.",
+    "Bannalec (29), commune de l'est Cornouaille en Finistère, est un bourg rural dynamique entre Quimperlé et Rosporden. Tissu TPE agricoles (élevage, polyculture), PME agroalimentaires (volailles, transformation), artisans BTP, commerces de proximité et services. Axion-IA collabore avec toutes les structures locales de l'Est Cornouaille.",
   pitchEn:
-    "Bannalec (29), commune de l'est Cornouaille en Finistère, est un bourg rural dynamique entre Quimperlé et Rosporden. Tissu TPE agricoles (élevage, polyculture), PME agroalimentaires (volailles, transformation), artisans BTP, commerces de proximité et services. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'Est Cornouaille.",
+    "Bannalec (29), commune de l'est Cornouaille en Finistère, est un bourg rural dynamique entre Quimperlé et Rosporden. Tissu TPE agricoles (élevage, polyculture), PME agroalimentaires (volailles, transformation), artisans BTP, commerces de proximité et services. Axion-IA collabore avec toutes les structures locales de l'Est Cornouaille.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bannalec (29). Nous accompagnons tous types d'activités : TPE agricoles et éleveurs, PME agroalimentaires (volailles, transformation), artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de l'Est Cornouaille / Quimperlé.",
   directAnswerEn:

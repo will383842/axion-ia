@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MARENNES_HIERS_BROUAGE_COPY: VilleCopy = {
   pitchFr:
-    "Marennes-Hiers-Brouage (17), commune de Charente-Maritime, capitale de l'huître Marennes-Oléron et site historique de la citadelle de Brouage. Tissu de TPE artisans, PME ostréicoles et aquacoles, tourisme patrimonial, commerces et services. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin de Marennes.",
+    "Marennes-Hiers-Brouage (17), commune de Charente-Maritime, capitale de l'huître Marennes-Oléron et site historique de la citadelle de Brouage. Tissu de TPE artisans, PME ostréicoles et aquacoles, tourisme patrimonial, commerces et services. Axion-IA accompagne entreprises et indépendants du bassin de Marennes.",
   pitchEn:
-    "Marennes-Hiers-Brouage (17), commune de Charente-Maritime, capitale de l'huître Marennes-Oléron et site historique de la citadelle de Brouage. Tissu de TPE artisans, PME ostréicoles et aquacoles, tourisme patrimonial, commerces et services. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin de Marennes.",
+    "Marennes-Hiers-Brouage (17), commune de Charente-Maritime, capitale de l'huître Marennes-Oléron et site historique de la citadelle de Brouage. Tissu de TPE artisans, PME ostréicoles et aquacoles, tourisme patrimonial, commerces et services. Axion-IA accompagne entreprises et indépendants du bassin de Marennes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marennes-Hiers-Brouage (17). Nous accompagnons tous types d'activités : TPE artisans, PME ostréicoles, professionnels de l'aquaculture, acteurs du tourisme patrimonial (citadelle Brouage), commerçants et indépendants du bassin de Marennes.",
   directAnswerEn:

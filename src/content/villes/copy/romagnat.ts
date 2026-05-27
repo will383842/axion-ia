@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ROMAGNAT_COPY: VilleCopy = {
   pitchFr:
-    "Romagnat (63), commune résidentielle au sud de Clermont-Ferrand en Puy-de-Dôme, abrite le château d'Opme (monument historique, jardins à la française). Professions libérales, PME tertiaires services, TPE artisanat BTP, commerces de proximité. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Romagnat (63), commune résidentielle au sud de Clermont-Ferrand en Puy-de-Dôme, abrite le château d'Opme (monument historique, jardins à la française). Professions libérales, PME tertiaires services, TPE artisanat BTP, commerces de proximité. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Romagnat (63), commune résidentielle au sud de Clermont-Ferrand en Puy-de-Dôme, abrite le château d'Opme (monument historique, jardins à la française). Professions libérales, PME tertiaires services, TPE artisanat BTP, commerces de proximité. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Romagnat (63), commune résidentielle au sud de Clermont-Ferrand en Puy-de-Dôme, abrite le château d'Opme (monument historique, jardins à la française). Professions libérales, PME tertiaires services, TPE artisanat BTP, commerces de proximité. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Romagnat (63). Nous accompagnons TPE et PME : professions libérales, sociétés de services tertiaires, artisans BTP, commerçants et acteurs du patrimoine (château d'Opme) du sud de l'agglomération clermontoise.",
   directAnswerEn:

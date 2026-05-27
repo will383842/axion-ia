@@ -11,9 +11,9 @@ export const BRUAY_LA_BUISSIERE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Bruay-la-Buissière pour optimiser les processus des entreprises locales. Avec des références comme Cap Digital et Inria en tête, nous apportons notre expertise IA directement sur site.",
   directAnswerFr:
-    "À Bruay-la-Buissière, Axion-IA propose des prestations adaptées aux besoins des entreprises locales. Notre Audit Flash démarre à 490 € HT pour une évaluation rapide. Nous intervenons également avec des services d'implémentation dès 990 € HT, inspirés par les pratiques de Cap Digital et Inria. Nos solutions sont conçues pour s'intégrer efficacement dans le tissu économique local.",
+    "À Bruay-la-Buissière, Axion-IA propose des prestations adaptées aux besoins des entreprises locales. Notre Audit Flash démarre à pour une évaluation rapide. Nous intervenons également avec des services d'implémentation, inspirés par les pratiques de Cap Digital et Inria. Nos solutions sont conçues pour s'intégrer efficacement dans le tissu économique local.",
   directAnswerEn:
-    "À Bruay-la-Buissière, Axion-IA propose des prestations adaptées aux besoins des entreprises locales. Notre Audit Flash démarre à 490 € HT pour une évaluation rapide. Nous intervenons également avec des services d'implémentation dès 990 € HT, inspirés par les pratiques de Cap Digital et Inria. Nos solutions sont conçues pour s'intégrer efficacement dans le tissu économique local.",
+    "À Bruay-la-Buissière, Axion-IA propose des prestations adaptées aux besoins des entreprises locales. Notre Audit Flash démarre à pour une évaluation rapide. Nous intervenons également avec des services d'implémentation, inspirés par les pratiques de Cap Digital et Inria. Nos solutions sont conçues pour s'intégrer efficacement dans le tissu économique local.",
   seoHook: "commerce détail & construction",
   ecosystemFr:
     "Bruay-la-Buissière bénéficie d'un tissu économique diversifié, avec des secteurs comme le commerce de détail et la construction. Les entreprises locales peuvent s'inspirer des innovations de Cap Digital et Station F pour leur développement.",

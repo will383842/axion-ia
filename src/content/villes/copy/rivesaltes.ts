@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const RIVESALTES_COPY: VilleCopy = {
   pitchFr:
-    "Rivesaltes (66), cité viticole réputée pour son AOC Muscat et ville natale du Maréchal Joffre, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME viticulture et négoce, zones d'activités, commerces, logistique. Axion-IA accompagne entreprises et indépendants de tous secteurs de la vallée de l'Agly.",
+    "Rivesaltes (66), cité viticole réputée pour son AOC Muscat et ville natale du Maréchal Joffre, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME viticulture et négoce, zones d'activités, commerces, logistique. Axion-IA collabore avec toutes les structures locales de la vallée de l'Agly.",
   pitchEn:
-    "Rivesaltes (66), cité viticole réputée pour son AOC Muscat et ville natale du Maréchal Joffre, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME viticulture et négoce, zones d'activités, commerces, logistique. Axion-IA accompagne entreprises et indépendants de tous secteurs de la vallée de l'Agly.",
+    "Rivesaltes (66), cité viticole réputée pour son AOC Muscat et ville natale du Maréchal Joffre, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME viticulture et négoce, zones d'activités, commerces, logistique. Axion-IA collabore avec toutes les structures locales de la vallée de l'Agly.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rivesaltes (66). Nous accompagnons tous types d'activités : TPE artisans, PME viticulture et négoce, commerçants, professionnels des zones d'activités, indépendants et professions libérales de Perpignan Méditerranée Métropole.",
   directAnswerEn:

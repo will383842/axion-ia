@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VENCE_COPY: VilleCopy = {
   pitchFr:
-    "Vence (06), cité d'art de l'arrière-pays niçois en Alpes-Maritimes, est célèbre pour la chapelle du Rosaire décorée par Matisse. Tissu TPE artisans d'art, PME tourisme/hôtellerie, commerçants, professions libérales et services. Axion-IA couvre l'ensemble des activités professionnelles présentes du Pays vençois.",
+    "Vence (06), cité d'art de l'arrière-pays niçois en Alpes-Maritimes, est célèbre pour la chapelle du Rosaire décorée par Matisse. Tissu TPE artisans d'art, PME tourisme/hôtellerie, commerçants, professions libérales et services. Axion-IA accompagne tout le tissu professionnel local du Pays vençois.",
   pitchEn:
-    "Vence (06), cité d'art de l'arrière-pays niçois en Alpes-Maritimes, est célèbre pour la chapelle du Rosaire décorée par Matisse. Tissu TPE artisans d'art, PME tourisme/hôtellerie, commerçants, professions libérales et services. Axion-IA couvre l'ensemble des activités professionnelles présentes du Pays vençois.",
+    "Vence (06), cité d'art de l'arrière-pays niçois en Alpes-Maritimes, est célèbre pour la chapelle du Rosaire décorée par Matisse. Tissu TPE artisans d'art, PME tourisme/hôtellerie, commerçants, professions libérales et services. Axion-IA accompagne tout le tissu professionnel local du Pays vençois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vence (06). Nous accompagnons tous types d'activités : TPE artisans d'art, PME tourisme et hôtellerie, galeries, commerçants, professions libérales, indépendants et services aux entreprises de l'arrière-pays niçois.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const VENCE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les professions libérales vençoises (avocats, architectes, consultants, praticiens santé) : automatisation gestion dossiers, agents IA prise de RDV, classification documents, optimisation facturation.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Vence ?",
+      q: "Combien coûte un audit IA à Vence  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE artisans d'art, galeries et PME vençoises. Tarifs publics transparents, sans frais cachés.",
     },
     {

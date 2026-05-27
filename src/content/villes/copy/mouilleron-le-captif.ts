@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const MOUILLERON_LE_CAPTIF_COPY: VilleCopy = {
   pitchFr:
-    "Mouilleron-le-Captif (85), commune périurbaine au nord de l'agglomération de La Roche-sur-Yon en Pays de la Loire, plus de 5 200 habitants. Pôle résidentiel et économique dynamique avec zones d'activités, équipements sportifs (Vendéspace) et habitat attractif. Tissu TPE artisans, PME industrielles et services, commerces et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations de l'agglomération yonnaise.",
+    "Mouilleron-le-Captif (85), commune périurbaine au nord de l'agglomération de La Roche-sur-Yon en Pays de la Loire, plus de 5 200 habitants. Pôle résidentiel et économique dynamique avec zones d'activités, équipements sportifs (Vendéspace) et habitat attractif. Tissu TPE artisans, PME industrielles et services, commerces et professions libérales. Axion-IA y déploie son expertise pour toutes les organisations de l'agglomération yonnaise.",
   pitchEn:
-    "Mouilleron-le-Captif (85), commune périurbaine au nord de l'agglomération de La Roche-sur-Yon en Pays de la Loire, plus de 5 200 habitants. Pôle résidentiel et économique dynamique avec zones d'activités, équipements sportifs (Vendéspace) et habitat attractif. Tissu TPE artisans, PME industrielles et services, commerces et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations de l'agglomération yonnaise.",
+    "Mouilleron-le-Captif (85), commune périurbaine au nord de l'agglomération de La Roche-sur-Yon en Pays de la Loire, plus de 5 200 habitants. Pôle résidentiel et économique dynamique avec zones d'activités, équipements sportifs (Vendéspace) et habitat attractif. Tissu TPE artisans, PME industrielles et services, commerces et professions libérales. Axion-IA y déploie son expertise pour toutes les organisations de l'agglomération yonnaise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mouilleron-le-Captif (85). Nous accompagnons TPE artisans, PME industrielles et services, commerçants et professions libérales de l'agglomération de La Roche-sur-Yon nord. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mouilleron-le-Captif (85). Nous accompagnons TPE artisans, PME industrielles et services, commerçants et professions libérales de l'agglomération de La Roche-sur-Yon nord. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mouilleron-le-Captif (85). Nous accompagnons TPE artisans, PME industrielles et services, commerçants et professions libérales de l'agglomération de La Roche-sur-Yon nord. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mouilleron-le-Captif (85). Nous accompagnons TPE artisans, PME industrielles et services, commerçants et professions libérales de l'agglomération de La Roche-sur-Yon nord. Audit Flash sur mesure.",
   seoHook: "industrie & commerce détail",
   ecosystemFr:
     "Mouilleron-le-Captif (5 273 hab) est une commune périurbaine de l'agglomération yonnaise (La Roche-sur-Yon Agglomération), au nord de la préfecture vendéenne. Économie diversifiée : industrie, services aux entreprises, BTP, commerces, événementiel (Vendéspace) et professions libérales. Proximité immédiate La Roche-sur-Yon (5 min), Nantes (55 min), Les Sables-d'Olonne (45 min).",
@@ -52,7 +52,7 @@ export const MOUILLERON_LE_CAPTIF_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Mouilleron-le-Captif et dans toute l'agglomération de La Roche-sur-Yon (La Ferrière, Dompierre-sur-Yon, Le Poiré-sur-Vie). Nos consultants se déplacent depuis Nantes (55 min) ou directement sur site.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Mouilleron-le-Captif ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Mouilleron-le-Captif  ?",
       a: "L'Audit Flash IA démarre à 490 € HT pour les TPE de Mouilleron-le-Captif. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur industriel, BTP ou services.",
     },
     {

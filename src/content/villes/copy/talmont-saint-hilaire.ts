@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const TALMONT_SAINT_HILAIRE_COPY: VilleCopy = {
   pitchFr:
-    "Talmont-Saint-Hilaire (85), commune vendéenne entre bocage et littoral, compte près de 8 500 habitants. Château de Talmont (Richard Cœur de Lion), port du Payré, plages. Tourisme, ostréiculture, artisanat, commerces et services de proximité. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Talmont-Saint-Hilaire (85), commune vendéenne entre bocage et littoral, compte près de 8 500 habitants. Château de Talmont (Richard Cœur de Lion), port du Payré, plages. Tourisme, ostréiculture, artisanat, commerces et services de proximité. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Talmont-Saint-Hilaire (85), commune vendéenne entre bocage et littoral, compte près de 8 500 habitants. Château de Talmont (Richard Cœur de Lion), port du Payré, plages. Tourisme, ostréiculture, artisanat, commerces et services de proximité. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Talmont-Saint-Hilaire (85), commune vendéenne entre bocage et littoral, compte près de 8 500 habitants. Château de Talmont (Richard Cœur de Lion), port du Payré, plages. Tourisme, ostréiculture, artisanat, commerces et services de proximité. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Talmont-Saint-Hilaire (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, ostréiculteurs port du Payré, hôteliers-restaurateurs, acteurs tourisme littoral, professions libérales et services.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const TALMONT_SAINT_HILAIRE_COPY: VilleCopy = {
       a: "Audit Flash 490 € HT, interventions sur site, coaching 1-to-1, implémentation IA. Cas tourisme : agents réservation multilingues, pricing dynamique camping, prédiction affluence, marketing patrimoine.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Talmont-Saint-Hilaire ?",
+      q: "Tarifs audit IA à Talmont-Saint-Hilaire  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {

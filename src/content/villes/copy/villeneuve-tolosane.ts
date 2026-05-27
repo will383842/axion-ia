@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const VILLENEUVE_TOLOSANE_COPY: VilleCopy = {
   pitchFr:
-    "Villeneuve-Tolosane (31), commune du sud-ouest toulousain avec plus de 11 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de la couronne sud-ouest de Toulouse.",
+    "Villeneuve-Tolosane (31), commune du sud-ouest toulousain avec plus de 11 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes de la couronne sud-ouest de Toulouse.",
   pitchEn:
-    "Villeneuve-Tolosane (31), commune du sud-ouest toulousain avec plus de 11 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de la couronne sud-ouest de Toulouse.",
+    "Villeneuve-Tolosane (31), commune du sud-ouest toulousain avec plus de 11 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes de la couronne sud-ouest de Toulouse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villeneuve-Tolosane (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud-ouest Toulouse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villeneuve-Tolosane (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud-ouest Toulouse. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villeneuve-Tolosane (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud-ouest Toulouse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villeneuve-Tolosane (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud-ouest Toulouse. Audit Flash sur mesure.",
   seoHook: "artisanat & commerce détail",
   ecosystemFr:
     "Villeneuve-Tolosane est une commune résidentielle du sud-ouest de Toulouse, en bordure de Cugnaux et Frouzins. Tissu TPE artisans, PME de services, commerces de quartier, professions libérales. Zone pavillonnaire avec économie de proximité dynamique.",
@@ -56,7 +56,7 @@ export const VILLENEUVE_TOLOSANE_COPY: VilleCopy = {
       a: "Nous accompagnons tous types d'activités : TPE artisans, PME de services, professions libérales, commerces, restauration. Aucun secteur exclu.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Villeneuve-Tolosane ?",
+      q: "Combien coûte un audit IA à Villeneuve-Tolosane  ?",
       a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics, pas de devis opaque.",
     },
     {

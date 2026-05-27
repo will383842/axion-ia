@@ -11,9 +11,9 @@ export const ALBI_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Albi, une ville où le commerce de détail et la construction sont prédominants. Notre cabinet national se déplace pour optimiser vos processus grâce à l'IA, tout comme à Paris avec des pôles comme Cap Digital et Station F.",
   directAnswerFr:
-    "Axion-IA propose des interventions sur site à Albi, où le commerce de détail et la santé humaine dominent. Nous offrons des audits à partir de 490 € HT et des implémentations dès 990 € HT. Nos services, similaires à ceux proposés dans des villes comme Paris avec LVMH et BNP Paribas, sont adaptés aux besoins spécifiques de chaque entreprise albigeoise.",
+    "Axion-IA propose des interventions sur site à Albi, où le commerce de détail et la santé humaine dominent. Nous offrons des audits et des implémentations. Nos services, similaires à ceux proposés dans des villes comme Paris avec LVMH et BNP Paribas, sont adaptés aux besoins spécifiques de chaque entreprise albigeoise.",
   directAnswerEn:
-    "Axion-IA propose des interventions sur site à Albi, où le commerce de détail et la santé humaine dominent. Nous offrons des audits à partir de 490 € HT et des implémentations dès 990 € HT. Nos services, similaires à ceux proposés dans des villes comme Paris avec LVMH et BNP Paribas, sont adaptés aux besoins spécifiques de chaque entreprise albigeoise.",
+    "Axion-IA propose des interventions sur site à Albi, où le commerce de détail et la santé humaine dominent. Nous offrons des audits et des implémentations. Nos services, similaires à ceux proposés dans des villes comme Paris avec LVMH et BNP Paribas, sont adaptés aux besoins spécifiques de chaque entreprise albigeoise.",
   seoHook: "commerce détail & construction",
   ecosystemFr:
     "Le tissu économique d'Albi est marqué par la présence de la Zone Industrielle de Ranteil et l'Institut National Universitaire Champollion. Ces entités soutiennent le commerce de détail et la construction, secteurs clés de la région.",

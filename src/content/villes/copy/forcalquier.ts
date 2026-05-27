@@ -60,7 +60,7 @@ export const FORCALQUIER_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les distilleries et lavandiculteurs autour de Forcalquier : automatisation traçabilité distillation, prédiction qualité huile essentielle, classification lots, agents e-commerce vente directe producteur.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Forcalquier ?",
+      q: "Quel est le tarif d'un audit IA à Forcalquier  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE artisans, PME cosmétique et commerçants forcalquiérans. Tarifs publics transparents, sans frais cachés.",
     },
     {

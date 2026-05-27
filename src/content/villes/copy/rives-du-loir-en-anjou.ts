@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const RIVES_DU_LOIR_EN_ANJOU_COPY: VilleCopy = {
   pitchFr:
-    "Rives-du-Loir-en-Anjou (49), commune nouvelle du Maine-et-Loire entre Angers et La Flèche le long du Loir, rassemble un tissu de TPE artisans, PME agricoles et viticoles, commerces ruraux, exploitations maraîchères et prestataires de services du bassin du Loir. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Rives-du-Loir-en-Anjou (49), commune nouvelle du Maine-et-Loire entre Angers et La Flèche le long du Loir, rassemble un tissu de TPE artisans, PME agricoles et viticoles, commerces ruraux, exploitations maraîchères et prestataires de services du bassin du Loir. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Rives-du-Loir-en-Anjou (49), commune nouvelle du Maine-et-Loire entre Angers et La Flèche le long du Loir, rassemble un tissu de TPE artisans, PME agricoles et viticoles, commerces ruraux, exploitations maraîchères et prestataires de services du bassin du Loir. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Rives-du-Loir-en-Anjou (49), commune nouvelle du Maine-et-Loire entre Angers et La Flèche le long du Loir, rassemble un tissu de TPE artisans, PME agricoles et viticoles, commerces ruraux, exploitations maraîchères et prestataires de services du bassin du Loir. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rives-du-Loir-en-Anjou (49). Nous accompagnons tous types d'activités : TPE artisans, PME agricoles et viticoles, maraîchers, commerçants de bourg, professions libérales et prestataires de services du bassin du Loir entre Angers et La Flèche.",
   directAnswerEn:
@@ -56,7 +56,7 @@ export const RIVES_DU_LOIR_EN_ANJOU_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les agriculteurs et viticulteurs du bassin du Loir sur leurs cas IA : traçabilité parcellaire, prédiction récoltes, optimisation irrigation, gestion cave, automatisation administratif.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Rives-du-Loir-en-Anjou ?",
+      q: "Quel est le tarif d'un audit IA à Rives-du-Loir-en-Anjou  ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic complet. Adapté aux TPE artisans, PME agricoles et viticulteurs du bassin du Loir. Tarifs publics, sans surprise.",
     },
     {

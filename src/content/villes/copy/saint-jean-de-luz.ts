@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_JEAN_DE_LUZ_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Jean-de-Luz (64), commune de 14 857 habitants dans les Pyrénées-Atlantiques, est un port de pêche historique et une station balnéaire prisée de la Côte Basque. Célèbre pour la maison Louis XIV et le mariage du Roi-Soleil, son économie repose sur un tissu de TPE commerçants et artisans, PME tourisme et hôtellerie-restauration, pêche et filière halieutique, professions libérales et services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Saint-Jean-de-Luz (64), commune de 14 857 habitants dans les Pyrénées-Atlantiques, est un port de pêche historique et une station balnéaire prisée de la Côte Basque. Célèbre pour la maison Louis XIV et le mariage du Roi-Soleil, son économie repose sur un tissu de TPE commerçants et artisans, PME tourisme et hôtellerie-restauration, pêche et filière halieutique, professions libérales et services. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Saint-Jean-de-Luz (64), commune de 14 857 habitants dans les Pyrénées-Atlantiques, est un port de pêche historique et une station balnéaire prisée de la Côte Basque. Célèbre pour la maison Louis XIV et le mariage du Roi-Soleil, son économie repose sur un tissu de TPE commerçants et artisans, PME tourisme et hôtellerie-restauration, pêche et filière halieutique, professions libérales et services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Saint-Jean-de-Luz (64), commune de 14 857 habitants dans les Pyrénées-Atlantiques, est un port de pêche historique et une station balnéaire prisée de la Côte Basque. Célèbre pour la maison Louis XIV et le mariage du Roi-Soleil, son économie repose sur un tissu de TPE commerçants et artisans, PME tourisme et hôtellerie-restauration, pêche et filière halieutique, professions libérales et services. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean-de-Luz (64). Nous accompagnons TPE et PME de la Côte Basque : acteurs du tourisme balnéaire, hôteliers-restaurateurs, commerçants centre-ville, professionnels de la pêche, artisans et professions libérales du bassin luzien. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean-de-Luz (64). Nous accompagnons TPE et PME de la Côte Basque : acteurs du tourisme balnéaire, hôteliers-restaurateurs, commerçants centre-ville, professionnels de la pêche, artisans et professions libérales du bassin luzien. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean-de-Luz (64). Nous accompagnons TPE et PME de la Côte Basque : acteurs du tourisme balnéaire, hôteliers-restaurateurs, commerçants centre-ville, professionnels de la pêche, artisans et professions libérales du bassin luzien. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean-de-Luz (64). Nous accompagnons TPE et PME de la Côte Basque : acteurs du tourisme balnéaire, hôteliers-restaurateurs, commerçants centre-ville, professionnels de la pêche, artisans et professions libérales du bassin luzien. Audit Flash sur mesure.",
   ecosystemFr:
     "Saint-Jean-de-Luz est un port de pêche historique et une station balnéaire emblématique de la Côte Basque. La maison Louis XIV rappelle le mariage royal de 1660. Son économie s'appuie sur le tourisme (plage, patrimoine, gastronomie), l'hôtellerie-restauration haut de gamme, le port de pêche (thon, anchois, sardine), le commerce de centre-ville (boutiques basques, artisanat), les professions libérales et les services. Le bassin d'emploi s'étend à Ciboure, Hendaye et au BAB.",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const SAINT_JEAN_DE_LUZ_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Saint-Jean-de-Luz et sur toute la Côte Basque (Ciboure, Hendaye, Bayonne, Biarritz, Anglet). Consultants accessibles via la gare SNCF Saint-Jean-de-Luz—Ciboure (TGV Paris) et l'aéroport Biarritz.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Saint-Jean-de-Luz ?",
+      q: "Quel est le tarif d'un audit IA à Saint-Jean-de-Luz  ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME luziennes : hôteliers-restaurateurs, commerçants, professionnels de la pêche, artisans basques et professions libérales. ROI chiffré dès le diagnostic.",
     },
     {

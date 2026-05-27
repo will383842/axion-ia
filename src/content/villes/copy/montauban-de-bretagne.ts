@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MONTAUBAN_DE_BRETAGNE_COPY: VilleCopy = {
   pitchFr:
-    "Montauban-de-Bretagne (35), bourg du centre de l'Ille-et-Vilaine entre Rennes et Saint-Brieuc, est un pôle de services rural dynamique. Tissu de TPE artisans BTP, PME de services et logistique, commerces de bourg, professions libérales, exploitants agricoles (polyculture-élevage laitier breton) et agroalimentaire. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Montauban-de-Bretagne (35), bourg du centre de l'Ille-et-Vilaine entre Rennes et Saint-Brieuc, est un pôle de services rural dynamique. Tissu de TPE artisans BTP, PME de services et logistique, commerces de bourg, professions libérales, exploitants agricoles (polyculture-élevage laitier breton) et agroalimentaire. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Montauban-de-Bretagne (35), bourg du centre de l'Ille-et-Vilaine entre Rennes et Saint-Brieuc, est un pôle de services rural dynamique. Tissu de TPE artisans BTP, PME de services et logistique, commerces de bourg, professions libérales, exploitants agricoles (polyculture-élevage laitier breton) et agroalimentaire. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Montauban-de-Bretagne (35), bourg du centre de l'Ille-et-Vilaine entre Rennes et Saint-Brieuc, est un pôle de services rural dynamique. Tissu de TPE artisans BTP, PME de services et logistique, commerces de bourg, professions libérales, exploitants agricoles (polyculture-élevage laitier breton) et agroalimentaire. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montauban-de-Bretagne (35). Nous accompagnons tous types d'activités : TPE artisans BTP, PME de services et logistique du corridor Rennes-Saint-Brieuc, commerçants, professions libérales, exploitants agricoles et acteurs agroalimentaires bretons.",
   directAnswerEn:
@@ -56,7 +56,7 @@ export const MONTAUBAN_DE_BRETAGNE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les exploitants agricoles du centre Ille-et-Vilaine sur leurs cas IA : traçabilité élevage laitier, automatisation gestion troupeau, classification données agronomiques, optimisation collecte et chaîne agroalimentaire.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Montauban-de-Bretagne ?",
+      q: "Quel est le tarif d'un audit IA à Montauban-de-Bretagne  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du centre Ille-et-Vilaine, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics, transparents.",
     },
     {

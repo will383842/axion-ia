@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const ISBERGUES_COPY: VilleCopy = {
   pitchFr:
-    "Isbergues (62), commune industrielle du Pas-de-Calais au passé métallurgique reconverti, accueille PME industrielles, TPE artisanales, commerces et services. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin artésien.",
+    "Isbergues (62), commune industrielle du Pas-de-Calais au passé métallurgique reconverti, accueille PME industrielles, TPE artisanales, commerces et services. Axion-IA y conduit ses missions auprès des entreprises locales du bassin artésien.",
   pitchEn:
-    "Isbergues (62), commune industrielle du Pas-de-Calais au passé métallurgique reconverti, accueille PME industrielles, TPE artisanales, commerces et services. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin artésien.",
+    "Isbergues (62), commune industrielle du Pas-de-Calais au passé métallurgique reconverti, accueille PME industrielles, TPE artisanales, commerces et services. Axion-IA y conduit ses missions auprès des entreprises locales du bassin artésien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Isbergues (62). Nous accompagnons PME industrielles reconverties, TPE artisanales, commerçants et professions libérales du bassin artésien. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Isbergues (62). Nous accompagnons PME industrielles reconverties, TPE artisanales, commerçants et professions libérales du bassin artésien. Audit Flash sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Isbergues (62). Nous accompagnons PME industrielles reconverties, TPE artisanales, commerçants et professions libérales du bassin artésien. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Isbergues (62). Nous accompagnons PME industrielles reconverties, TPE artisanales, commerçants et professions libérales du bassin artésien. Audit Flash sur mesure, intervention sur site ou en visio.",
   seoHook: "industrielles & commerce détail",
   ecosystemFr:
     "Isbergues est une commune à tradition métallurgique reconvertie entre Aire-sur-la-Lys et Lillers. Présence de PME industrielles (tréfilerie, mécanique), TPE artisanales BTP, commerces de proximité et professions libérales. Reconversion progressive vers les services et la diversification industrielle.",
@@ -52,7 +52,7 @@ export const ISBERGUES_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Isbergues et dans le bassin artésien (Aire-sur-la-Lys, Lillers, Béthune, Saint-Omer). Déplacements sur site ou sessions en visio.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Isbergues ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Isbergues  ?",
       a: "L'Audit Flash Axion-IA démarre à 490 € HT pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux PME industrielles et TPE artésiennes.",
     },
     {

@@ -11,9 +11,9 @@ export const LA_CELLE_SAINT_CLOUD_COPY: VilleCopy = {
   pitchEn:
     "À La Celle-Saint-Cloud, Axion-IA intervient pour optimiser les processus des entreprises locales. Avec des acteurs comme LVMH et Inria, nous apportons notre expertise en IA opérationnelle au cœur de l'Île-de-France.",
   directAnswerFr:
-    "Axion-IA propose des interventions à La Celle-Saint-Cloud, en s'appuyant sur notre expérience nationale. Nous travaillons avec les entreprises locales pour automatiser les tâches administratives et optimiser les processus. Notre approche est particulièrement pertinente pour des secteurs tels que le commerce de détail et les activités immobilières. Les tarifs publics commencent à 490 € HT pour un audit Flash de 4 heures.",
+    "Axion-IA propose des interventions à La Celle-Saint-Cloud, en s'appuyant sur notre expérience nationale. Nous travaillons avec les entreprises locales pour automatiser les tâches administratives et optimiser les processus. Notre approche est particulièrement pertinente pour des secteurs tels que le commerce de détail et les activités immobilières. Les tarifs publics commencent à pour un audit Flash de 4 heures.",
   directAnswerEn:
-    "Axion-IA propose des interventions à La Celle-Saint-Cloud, en s'appuyant sur notre expérience nationale. Nous travaillons avec les entreprises locales pour automatiser les tâches administratives et optimiser les processus. Notre approche est particulièrement pertinente pour des secteurs tels que le commerce de détail et les activités immobilières. Les tarifs publics commencent à 490 € HT pour un audit Flash de 4 heures.",
+    "Axion-IA propose des interventions à La Celle-Saint-Cloud, en s'appuyant sur notre expérience nationale. Nous travaillons avec les entreprises locales pour automatiser les tâches administratives et optimiser les processus. Notre approche est particulièrement pertinente pour des secteurs tels que le commerce de détail et les activités immobilières. Les tarifs publics commencent à pour un audit Flash de 4 heures.",
   seoHook: "commerce détail & activités des",
   ecosystemFr:
     "La Celle-Saint-Cloud bénéficie de la proximité de Versailles et Garches, et d'un tissu économique riche. Les activités des sièges sociaux et le commerce de détail sont prédominants, soutenus par des infrastructures de transport vers Paris.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BULLY_LES_MINES_COPY: VilleCopy = {
   pitchFr:
-    "Bully-les-Mines (62), commune du Pas-de-Calais dans l'agglomération Lens-Liévin (région Hauts-de-France), porte l'héritage du bassin minier reconverti inscrit UNESCO. Tissu TPE artisanat BTP et services, PME industrie reconvertie et sous-traitance, commerces de proximité, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Bully-les-Mines (62), commune du Pas-de-Calais dans l'agglomération Lens-Liévin (région Hauts-de-France), porte l'héritage du bassin minier reconverti inscrit UNESCO. Tissu TPE artisanat BTP et services, PME industrie reconvertie et sous-traitance, commerces de proximité, professions libérales. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "Bully-les-Mines (62), commune du Pas-de-Calais dans l'agglomération Lens-Liévin (région Hauts-de-France), porte l'héritage du bassin minier reconverti inscrit UNESCO. Tissu TPE artisanat BTP et services, PME industrie reconvertie et sous-traitance, commerces de proximité, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Bully-les-Mines (62), commune du Pas-de-Calais dans l'agglomération Lens-Liévin (région Hauts-de-France), porte l'héritage du bassin minier reconverti inscrit UNESCO. Tissu TPE artisanat BTP et services, PME industrie reconvertie et sous-traitance, commerces de proximité, professions libérales. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bully-les-Mines (62). Nous accompagnons tous types d'activités : TPE artisans BTP et services du bassin minier, PME industrie reconvertie et sous-traitance, commerçants de proximité, professions libérales de l'agglomération Lens-Liévin.",
   directAnswerEn:

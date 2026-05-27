@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PLUVIGNER_COPY: VilleCopy = {
   pitchFr:
-    "Pluvigner (56), bourg rural du centre Morbihan entre Auray et Baud, accueille un tissu de TPE/PME agricoles, agroalimentaires, artisans BTP, commerces, professions libérales et entreprises touristiques et tertiaires du pays d'Auray. Axion-IA couvre l'ensemble des activités professionnelles présentes du Morbihan rural.",
+    "Pluvigner (56), bourg rural du centre Morbihan entre Auray et Baud, accueille un tissu de TPE/PME agricoles, agroalimentaires, artisans BTP, commerces, professions libérales et entreprises touristiques et tertiaires du pays d'Auray. Axion-IA répond aux besoins des activités professionnelles présentes du Morbihan rural.",
   pitchEn:
-    "Pluvigner (56), bourg rural du centre Morbihan entre Auray et Baud, accueille un tissu de TPE/PME agricoles, agroalimentaires, artisans BTP, commerces, professions libérales et entreprises touristiques et tertiaires du pays d'Auray. Axion-IA couvre l'ensemble des activités professionnelles présentes du Morbihan rural.",
+    "Pluvigner (56), bourg rural du centre Morbihan entre Auray et Baud, accueille un tissu de TPE/PME agricoles, agroalimentaires, artisans BTP, commerces, professions libérales et entreprises touristiques et tertiaires du pays d'Auray. Axion-IA répond aux besoins des activités professionnelles présentes du Morbihan rural.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pluvigner (56). Nous accompagnons TPE et PME : exploitations agricoles, PME agroalimentaires, artisans BTP, commerçants du bourg, professions libérales, entreprises touristiques et tertiaires du pays d'Auray.",
   directAnswerEn:
@@ -56,7 +56,7 @@ export const PLUVIGNER_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les exploitations agricoles et PME agroalimentaires du centre Morbihan sur leurs cas IA : traçabilité, automatisation gestion troupeau et cultures, agents IA conseil agronomique, optimisation tournées collecte, outils IA administratifs PAC.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Pluvigner ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Pluvigner  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du pays d'Auray, il identifie les cas d'usage IA à fort ROI pour votre activité (agriculture, agroalimentaire, BTP, tourisme, libéral). Tarifs publics.",
     },
     {

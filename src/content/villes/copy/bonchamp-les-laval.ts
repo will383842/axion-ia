@@ -56,7 +56,7 @@ export const BONCHAMP_LES_LAVAL_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME industrielles et agroalimentaires de l'est de Laval sur leurs cas IA : maintenance prédictive, contrôle qualité, automatisation production, optimisation supply chain A81.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Bonchamp-lès-Laval ?",
+      q: "Combien coûte un audit IA à Bonchamp-lès-Laval  ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic complet. Adapté aux TPE artisans, PME industrielles et prestataires B2B du bassin lavallois. Tarifs publics, sans surprise.",
     },
     {

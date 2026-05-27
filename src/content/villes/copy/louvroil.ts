@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LOUVROIL_COPY: VilleCopy = {
   pitchFr:
-    "Louvroil (59), commune du département du Nord (région Hauts-de-France) dans l'agglomération de Maubeuge-Val de Sambre, historiquement liée à la métallurgie et la sidérurgie. Tissu TPE artisanat BTP et services, PME industrie métallurgique et mécanique, sous-traitance, commerces de proximité et activités liées au bassin industriel de la Sambre. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Louvroil (59), commune du département du Nord (région Hauts-de-France) dans l'agglomération de Maubeuge-Val de Sambre, historiquement liée à la métallurgie et la sidérurgie. Tissu TPE artisanat BTP et services, PME industrie métallurgique et mécanique, sous-traitance, commerces de proximité et activités liées au bassin industriel de la Sambre. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Louvroil (59), commune du département du Nord (région Hauts-de-France) dans l'agglomération de Maubeuge-Val de Sambre, historiquement liée à la métallurgie et la sidérurgie. Tissu TPE artisanat BTP et services, PME industrie métallurgique et mécanique, sous-traitance, commerces de proximité et activités liées au bassin industriel de la Sambre. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Louvroil (59), commune du département du Nord (région Hauts-de-France) dans l'agglomération de Maubeuge-Val de Sambre, historiquement liée à la métallurgie et la sidérurgie. Tissu TPE artisanat BTP et services, PME industrie métallurgique et mécanique, sous-traitance, commerces de proximité et activités liées au bassin industriel de la Sambre. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Louvroil (59). Nous accompagnons tous types d'activités : TPE artisans BTP et services, PME industrie métallurgique et mécanique, sous-traitants, commerçants et entreprises du bassin industriel Maubeuge-Val de Sambre.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const YFFINIAC_COPY: VilleCopy = {
   pitchFr:
-    "Yffiniac (22), commune de l'agglomération de Saint-Brieuc au fond de la baie de Saint-Brieuc dans les Côtes-d'Armor, est bordée par la réserve naturelle de la baie. TPE artisans, PME de services, commerces de proximité, professions libérales, exploitants agricoles et acteurs du tourisme nature composent son économie. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération briochine.",
+    "Yffiniac (22), commune de l'agglomération de Saint-Brieuc au fond de la baie de Saint-Brieuc dans les Côtes-d'Armor, est bordée par la réserve naturelle de la baie. TPE artisans, PME de services, commerces de proximité, professions libérales, exploitants agricoles et acteurs du tourisme nature composent son économie. Axion-IA répond aux besoins des activités professionnelles présentes de l'agglomération briochine.",
   pitchEn:
-    "Yffiniac (22), commune de l'agglomération de Saint-Brieuc au fond de la baie de Saint-Brieuc dans les Côtes-d'Armor, est bordée par la réserve naturelle de la baie. TPE artisans, PME de services, commerces de proximité, professions libérales, exploitants agricoles et acteurs du tourisme nature composent son économie. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération briochine.",
+    "Yffiniac (22), commune de l'agglomération de Saint-Brieuc au fond de la baie de Saint-Brieuc dans les Côtes-d'Armor, est bordée par la réserve naturelle de la baie. TPE artisans, PME de services, commerces de proximité, professions libérales, exploitants agricoles et acteurs du tourisme nature composent son économie. Axion-IA répond aux besoins des activités professionnelles présentes de l'agglomération briochine.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Yffiniac (22). Nous accompagnons tous types d'activités : TPE artisans, PME de services de l'agglomération briochine, commerces de proximité, professions libérales, exploitants agricoles, indépendants et prestataires du tourisme nature de la baie de Saint-Brieuc.",
   directAnswerEn:
@@ -61,7 +61,7 @@ export const YFFINIAC_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour une TPE ou PME de la baie de Saint-Brieuc ?",
-      a: "L'audit Flash démarre à 490 € HT, accessible aux TPE. Pour les PME de services et exploitants agricoles, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
+      a: "L'audit Flash propose un tarif d'entrée accessible, accessible aux TPE. Pour les PME de services et exploitants agricoles, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
     },
     {
       q: "Comment se déroule une mission IA à Yffiniac ?",

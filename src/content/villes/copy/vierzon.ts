@@ -11,9 +11,9 @@ export const VIERZON_COPY: VilleCopy = {
   pitchEn:
     "À Vierzon, Axion-IA propose des services d'IA sur site pour les entreprises locales. Avec la présence de groupes comme MBDA et SNCF, nous aidons les TPE et PME à intégrer des solutions IA efficaces.",
   directAnswerFr:
-    "Axion-IA intervient à Vierzon, une ville marquée par la présence de grands groupes tels que MBDA et SNCF. Nous offrons des audits à partir de 490 € HT et des implémentations dès 990 € HT. Notre équipe se déplace pour vous fournir des solutions IA adaptées à vos besoins, garantissant un retour sur investissement mesurable.",
+    "Axion-IA intervient à Vierzon, une ville marquée par la présence de grands groupes tels que MBDA et SNCF. Nous offrons des audits et des implémentations. Notre équipe se déplace pour vous fournir des solutions IA adaptées à vos besoins, garantissant un retour sur investissement mesurable.",
   directAnswerEn:
-    "Axion-IA intervient à Vierzon, une ville marquée par la présence de grands groupes tels que MBDA et SNCF. Nous offrons des audits à partir de 490 € HT et des implémentations dès 990 € HT. Notre équipe se déplace pour vous fournir des solutions IA adaptées à vos besoins, garantissant un retour sur investissement mesurable.",
+    "Axion-IA intervient à Vierzon, une ville marquée par la présence de grands groupes tels que MBDA et SNCF. Nous offrons des audits et des implémentations. Notre équipe se déplace pour vous fournir des solutions IA adaptées à vos besoins, garantissant un retour sur investissement mesurable.",
   seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Le tissu économique de Vierzon inclut des entreprises comme MBDA et SNCF, avec un secteur industriel fort dans la fabrication de produits métalliques et les transports terrestres.",

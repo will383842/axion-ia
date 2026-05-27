@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const ROUSSET_COPY: VilleCopy = {
   pitchFr:
-    "Rousset (13), commune à l'est d'Aix-en-Provence, abrite l'une des plus importantes zones industrielles microélectronique de France (semi-conducteurs, salles blanches, sous-traitance high-tech). Tissu de PME industrielles, sous-traitants microélectronique, TPE artisans, PME services et commerces de proximité au pied de la montagne Sainte-Victoire. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Rousset (13), commune à l'est d'Aix-en-Provence, abrite l'une des plus importantes zones industrielles microélectronique de France (semi-conducteurs, salles blanches, sous-traitance high-tech). Tissu de PME industrielles, sous-traitants microélectronique, TPE artisans, PME services et commerces de proximité au pied de la montagne Sainte-Victoire. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Rousset (13), commune à l'est d'Aix-en-Provence, abrite l'une des plus importantes zones industrielles microélectronique de France (semi-conducteurs, salles blanches, sous-traitance high-tech). Tissu de PME industrielles, sous-traitants microélectronique, TPE artisans, PME services et commerces de proximité au pied de la montagne Sainte-Victoire. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Rousset (13), commune à l'est d'Aix-en-Provence, abrite l'une des plus importantes zones industrielles microélectronique de France (semi-conducteurs, salles blanches, sous-traitance high-tech). Tissu de PME industrielles, sous-traitants microélectronique, TPE artisans, PME services et commerces de proximité au pied de la montagne Sainte-Victoire. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rousset (13). Nous accompagnons TPE artisans, PME industrielles, sous-traitants microélectronique, PME services et commerces de proximité de la zone industrielle est-aixoise. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rousset (13). Nous accompagnons TPE artisans, PME industrielles, sous-traitants microélectronique, PME services et commerces de proximité de la zone industrielle est-aixoise. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rousset (13). Nous accompagnons TPE artisans, PME industrielles, sous-traitants microélectronique, PME services et commerces de proximité de la zone industrielle est-aixoise. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rousset (13). Nous accompagnons TPE artisans, PME industrielles, sous-traitants microélectronique, PME services et commerces de proximité de la zone industrielle est-aixoise. Audit Flash sur mesure.",
   seoHook: "aoc côtes-de-",
   ecosystemFr:
     "Rousset est positionnée à l'est d'Aix-en-Provence, au pied de la Sainte-Victoire, et accueille l'une des plus grandes zones industrielles microélectronique de France avec STMicroelectronics, ATMEL (Microchip), salles blanches et sous-traitants semi-conducteurs. Tissu économique de PME industrielles, sous-traitants high-tech, TPE artisans (BTP, services à la personne), PME tertiaires, viticulture AOP Côtes-de-Provence Sainte-Victoire et commerces de proximité.",
@@ -52,7 +52,7 @@ export const ROUSSET_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Rousset et dans tout l'est aixois (Trets, Peynier, Châteauneuf-le-Rouge, Fuveau, Pourrières). Proximité immédiate de la zone industrielle microélectronique et accès direct A8.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Rousset ?",
+      q: "Combien coûte un audit IA à Rousset  ?",
       a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, PME industrielles microélectronique, sous-traitants high-tech et commerces roussetains. Tarifs publics, sans engagement.",
     },
     {

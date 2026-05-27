@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MUNDOLSHEIM_COPY: VilleCopy = {
   pitchFr:
-    "Mundolsheim (67), commune de 5 322 habitants au nord de l'Eurométropole de Strasbourg, est un pôle commercial et tertiaire majeur du Bas-Rhin. Centre commercial régional (zone Cora). Tissu commerce et grande distribution, PME tertiaires, TPE services et artisans, restauration, logistique, services aux entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Mundolsheim (67), commune de 5 322 habitants au nord de l'Eurométropole de Strasbourg, est un pôle commercial et tertiaire majeur du Bas-Rhin. Centre commercial régional (zone Cora). Tissu commerce et grande distribution, PME tertiaires, TPE services et artisans, restauration, logistique, services aux entreprises. Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Mundolsheim (67), commune de 5 322 habitants au nord de l'Eurométropole de Strasbourg, est un pôle commercial et tertiaire majeur du Bas-Rhin. Centre commercial régional (zone Cora). Tissu commerce et grande distribution, PME tertiaires, TPE services et artisans, restauration, logistique, services aux entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Mundolsheim (67), commune de 5 322 habitants au nord de l'Eurométropole de Strasbourg, est un pôle commercial et tertiaire majeur du Bas-Rhin. Centre commercial régional (zone Cora). Tissu commerce et grande distribution, PME tertiaires, TPE services et artisans, restauration, logistique, services aux entreprises. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mundolsheim (67). Nous accompagnons tous types d'activités : TPE/PME commerce et grande distribution, services tertiaires, artisans, restauration, logistique et services aux entreprises de l'Eurométropole nord de Strasbourg.",
   directAnswerEn:
@@ -65,7 +65,7 @@ export const MUNDOLSHEIM_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'entrée pour une TPE à Mundolsheim ?",
-      a: "L'audit Flash démarre à 490 € HT. Coaching 1-to-1 à partir de 990 € HT. Tarifs publics, pas de devis opaque.",
+      a: "L'audit Flash s'adapte à votre périmètre. Coaching 1-to-1 à partir de 990 € HT. Tarifs publics, pas de devis opaque.",
     },
   ],
 };

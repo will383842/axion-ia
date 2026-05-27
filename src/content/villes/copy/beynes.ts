@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BEYNES_COPY: VilleCopy = {
   pitchFr:
-    "Beynes (78), commune résidentielle de la plaine de Versailles ouest dans les Yvelines, rassemble un tissu de TPE artisanales, professions libérales, PME de services et commerces de proximité dans un cadre semi-rural entre Plaisir et Thiverval-Grignon. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'ouest yvelinois.",
+    "Beynes (78), commune résidentielle de la plaine de Versailles ouest dans les Yvelines, rassemble un tissu de TPE artisanales, professions libérales, PME de services et commerces de proximité dans un cadre semi-rural entre Plaisir et Thiverval-Grignon. Axion-IA collabore avec toutes les structures locales de l'ouest yvelinois.",
   pitchEn:
-    "Beynes (78), commune résidentielle de la plaine de Versailles ouest dans les Yvelines, rassemble un tissu de TPE artisanales, professions libérales, PME de services et commerces de proximité dans un cadre semi-rural entre Plaisir et Thiverval-Grignon. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'ouest yvelinois.",
+    "Beynes (78), commune résidentielle de la plaine de Versailles ouest dans les Yvelines, rassemble un tissu de TPE artisanales, professions libérales, PME de services et commerces de proximité dans un cadre semi-rural entre Plaisir et Thiverval-Grignon. Axion-IA collabore avec toutes les structures locales de l'ouest yvelinois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beynes (78). Nous accompagnons TPE et PME : artisans, professions libérales, PME de services, commerçants et entreprises de la plaine de Versailles ouest entre Plaisir et Jouars-Pontchartrain.",
   directAnswerEn:
@@ -56,7 +56,7 @@ export const BEYNES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE et artisans de Beynes et de la plaine de Versailles sur leurs cas IA concrets : automatisation devis et facturation, gestion planning, CRM client, suivi chantiers. Formats courts adaptés aux petites structures.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Beynes ?",
+      q: "Tarifs audit IA à Beynes  : quel budget prévoir ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de l'ouest Yvelines, il identifie les cas d'usage IA à fort ROI pour votre activité (artisanat, services, professions libérales). Tarifs publics.",
     },
     {

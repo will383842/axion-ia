@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const GOUVIEUX_COPY: VilleCopy = {
   pitchFr:
-    "Gouvieux (60), commune de 8 867 habitants dans l'Oise, est située au pied du domaine de Chantilly et accueille de nombreux centres d'entraînement hippiques de renommée internationale. Ville résidentielle et touristique, son économie repose sur un tissu de TPE/PME filière équestre, hôtellerie-restauration, tourisme, services et artisanat. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Gouvieux (60), commune de 8 867 habitants dans l'Oise, est située au pied du domaine de Chantilly et accueille de nombreux centres d'entraînement hippiques de renommée internationale. Ville résidentielle et touristique, son économie repose sur un tissu de TPE/PME filière équestre, hôtellerie-restauration, tourisme, services et artisanat. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Gouvieux (60), commune de 8 867 habitants dans l'Oise, est située au pied du domaine de Chantilly et accueille de nombreux centres d'entraînement hippiques de renommée internationale. Ville résidentielle et touristique, son économie repose sur un tissu de TPE/PME filière équestre, hôtellerie-restauration, tourisme, services et artisanat. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Gouvieux (60), commune de 8 867 habitants dans l'Oise, est située au pied du domaine de Chantilly et accueille de nombreux centres d'entraînement hippiques de renommée internationale. Ville résidentielle et touristique, son économie repose sur un tissu de TPE/PME filière équestre, hôtellerie-restauration, tourisme, services et artisanat. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gouvieux (60). Nous accompagnons TPE et PME du bassin de Chantilly : professionnels de la filière équestre, hôteliers, restaurateurs, prestataires de services et artisans. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gouvieux (60). Nous accompagnons TPE et PME du bassin de Chantilly : professionnels de la filière équestre, hôteliers, restaurateurs, prestataires de services et artisans. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gouvieux (60). Nous accompagnons TPE et PME du bassin de Chantilly : professionnels de la filière équestre, hôteliers, restaurateurs, prestataires de services et artisans. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gouvieux (60). Nous accompagnons TPE et PME du bassin de Chantilly : professionnels de la filière équestre, hôteliers, restaurateurs, prestataires de services et artisans. Audit Flash sur mesure.",
   ecosystemFr:
     "Gouvieux est une commune résidentielle et touristique au pied du domaine de Chantilly, abritant une forte concentration de centres d'entraînement hippiques de niveau international. Son économie locale s'appuie sur la filière équestre, l'hôtellerie-restauration (dont le château de Montvillargenne et l'Auberge du Jeu de Paume à proximité), le tourisme patrimonial, les services aux particuliers et l'artisanat. Le bassin d'emploi s'articule avec Chantilly, Lamorlaye et Senlis via la gare TER Chantilly-Gouvieux.",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const GOUVIEUX_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Gouvieux et dans tout le bassin de Chantilly (Chantilly, Lamorlaye, Coye-la-Forêt, Senlis). Consultants accessibles via gare SNCF Chantilly-Gouvieux (TER Paris-Nord en 25 min). Aéroport CDG à 25 min.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Gouvieux ?",
+      q: "Combien coûte un audit IA à Gouvieux  ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME gouvieusiennes : professionnels de la filière équestre, hôteliers, restaurateurs, prestataires de services et artisans. ROI chiffré dès le diagnostic.",
     },
     {

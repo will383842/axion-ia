@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_COURONNE_COPY: VilleCopy = {
   pitchFr:
-    "La Couronne (16), commune au sud de l'agglomération d'Angoulême en Charente, pôle industriel et résidentiel du GrandAngoulême. Tissu de TPE artisans, PME industrielles, papeterie, commerces de proximité et services. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération angoumoisine.",
+    "La Couronne (16), commune au sud de l'agglomération d'Angoulême en Charente, pôle industriel et résidentiel du GrandAngoulême. Tissu de TPE artisans, PME industrielles, papeterie, commerces de proximité et services. Axion-IA collabore avec toutes les structures locales de l'agglomération angoumoisine.",
   pitchEn:
-    "La Couronne (16), commune au sud de l'agglomération d'Angoulême en Charente, pôle industriel et résidentiel du GrandAngoulême. Tissu de TPE artisans, PME industrielles, papeterie, commerces de proximité et services. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération angoumoisine.",
+    "La Couronne (16), commune au sud de l'agglomération d'Angoulême en Charente, pôle industriel et résidentiel du GrandAngoulême. Tissu de TPE artisans, PME industrielles, papeterie, commerces de proximité et services. Axion-IA collabore avec toutes les structures locales de l'agglomération angoumoisine.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Couronne (16). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles, professionnels de la papeterie et de l'imprimerie, commerçants et indépendants de cette commune dynamique de l'agglomération d'Angoulême.",
   directAnswerEn:

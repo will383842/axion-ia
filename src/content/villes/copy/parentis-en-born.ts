@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PARENTIS_EN_BORN_COPY: VilleCopy = {
   pitchFr:
-    "Parentis-en-Born (40), troisième ville du pays de Born dans les Landes, s'étend sur la rive est du lac de Parentis-Biscarrosse (deuxième lac landais). Exploitation pétrolière historique, forêt landaise, tourisme lacustre, agriculture, TPE artisans, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Parentis-en-Born (40), troisième ville du pays de Born dans les Landes, s'étend sur la rive est du lac de Parentis-Biscarrosse (deuxième lac landais). Exploitation pétrolière historique, forêt landaise, tourisme lacustre, agriculture, TPE artisans, commerces. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Parentis-en-Born (40), troisième ville du pays de Born dans les Landes, s'étend sur la rive est du lac de Parentis-Biscarrosse (deuxième lac landais). Exploitation pétrolière historique, forêt landaise, tourisme lacustre, agriculture, TPE artisans, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Parentis-en-Born (40), troisième ville du pays de Born dans les Landes, s'étend sur la rive est du lac de Parentis-Biscarrosse (deuxième lac landais). Exploitation pétrolière historique, forêt landaise, tourisme lacustre, agriculture, TPE artisans, commerces. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Parentis-en-Born (40). Nous accompagnons TPE et PME du tourisme lacustre, exploitants forestiers, entreprises pétrolières et parapétrolières, agriculteurs, commerçants, artisans BTP et professions libérales du pays de Born.",
   directAnswerEn:
@@ -65,7 +65,7 @@ export const PARENTIS_EN_BORN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'entrée pour une mission à Parentis-en-Born ?",
-      a: "L'audit Flash démarre à 490 € HT, livrable en 5 jours ouvrés. Inclut diagnostic complet, cartographie processus automatisables, ROI chiffré et feuille de route IA. Déplacement inclus dans le pays de Born.",
+      a: "L'audit Flash propose un tarif d'entrée accessible, livrable en 5 jours ouvrés. Inclut diagnostic complet, cartographie processus automatisables, ROI chiffré et feuille de route IA. Déplacement inclus dans le pays de Born.",
     },
   ],
 };

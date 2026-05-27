@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const THEIX_NOYALO_COPY: VilleCopy = {
   pitchFr:
-    "Theix-Noyalo (56), commune nouvelle de l'agglomération de Vannes aux portes du Golfe du Morbihan, allie dynamisme résidentiel et tissu économique diversifié. TPE de services, PME artisanales, commerces de proximité, professions libérales et exploitants agricoles composent son économie. Axion-IA y déploie ses missions auprès de toutes les organisations de l'agglomération vannetaise.",
+    "Theix-Noyalo (56), commune nouvelle de l'agglomération de Vannes aux portes du Golfe du Morbihan, allie dynamisme résidentiel et tissu économique diversifié. TPE de services, PME artisanales, commerces de proximité, professions libérales et exploitants agricoles composent son économie. Axion-IA y déploie son expertise pour toutes les organisations de l'agglomération vannetaise.",
   pitchEn:
-    "Theix-Noyalo (56), commune nouvelle de l'agglomération de Vannes aux portes du Golfe du Morbihan, allie dynamisme résidentiel et tissu économique diversifié. TPE de services, PME artisanales, commerces de proximité, professions libérales et exploitants agricoles composent son économie. Axion-IA y déploie ses missions auprès de toutes les organisations de l'agglomération vannetaise.",
+    "Theix-Noyalo (56), commune nouvelle de l'agglomération de Vannes aux portes du Golfe du Morbihan, allie dynamisme résidentiel et tissu économique diversifié. TPE de services, PME artisanales, commerces de proximité, professions libérales et exploitants agricoles composent son économie. Axion-IA y déploie son expertise pour toutes les organisations de l'agglomération vannetaise.",
   seoHook: "services, artisanat & agriculture",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Theix-Noyalo (56). Nous accompagnons tous types d'activités : TPE de services, PME artisanales, commerçants, professions libérales, exploitants agricoles et indépendants de l'agglomération vannetaise. Audit Flash dès 490 € HT, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Theix-Noyalo (56). Nous accompagnons tous types d'activités : TPE de services, PME artisanales, commerçants, professions libérales, exploitants agricoles et indépendants de l'agglomération vannetaise. Audit Flash sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Theix-Noyalo (56). Nous accompagnons tous types d'activités : TPE de services, PME artisanales, commerçants, professions libérales, exploitants agricoles et indépendants de l'agglomération vannetaise. Audit Flash dès 490 € HT, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Theix-Noyalo (56). Nous accompagnons tous types d'activités : TPE de services, PME artisanales, commerçants, professions libérales, exploitants agricoles et indépendants de l'agglomération vannetaise. Audit Flash sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Theix-Noyalo est une commune nouvelle née de la fusion de Theix et Noyalo en 2019, située dans l'agglomération de Vannes à proximité immédiate du Golfe du Morbihan. L'économie locale repose sur les zones d'activités artisanales et commerciales, les services aux entreprises, l'agriculture périurbaine et les professions libérales. La commune bénéficie de la dynamique économique vannetaise tout en conservant un cadre semi-rural attractif.",
   ecosystemEn:
@@ -56,7 +56,7 @@ export const THEIX_NOYALO_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME artisanales, entreprises de services et commerces des zones d'activités de Theix-Noyalo sur leurs cas IA : automatisation processus, CRM intelligent, gestion documentaire, reporting augmenté et marketing digital.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Theix-Noyalo ?",
+      q: "Combien coûte un audit IA à Theix-Noyalo  ?",
       a: "L'Audit Flash Axion-IA démarre à 490 € HT. Adapté aux TPE et PME de Theix-Noyalo, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {

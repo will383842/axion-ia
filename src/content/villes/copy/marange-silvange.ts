@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const MARANGE_SILVANGE_COPY: VilleCopy = {
   pitchFr:
-    "Marange-Silvange (57), commune résidentielle du Pays de l'Orne en Moselle, à proximité immédiate de Metz et de l'agglomération messine. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales et indépendants. Axion-IA accompagne entreprises et indépendants de tous secteurs du nord mosellan.",
+    "Marange-Silvange (57), commune résidentielle du Pays de l'Orne en Moselle, à proximité immédiate de Metz et de l'agglomération messine. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales et indépendants. Axion-IA collabore avec toutes les structures locales du nord mosellan.",
   pitchEn:
-    "Marange-Silvange (57), commune résidentielle du Pays de l'Orne en Moselle, à proximité immédiate de Metz et de l'agglomération messine. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales et indépendants. Axion-IA accompagne entreprises et indépendants de tous secteurs du nord mosellan.",
+    "Marange-Silvange (57), commune résidentielle du Pays de l'Orne en Moselle, à proximité immédiate de Metz et de l'agglomération messine. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales et indépendants. Axion-IA collabore avec toutes les structures locales du nord mosellan.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marange-Silvange (57). Nous accompagnons TPE artisans, PME de services, commerçants, professions libérales et indépendants du Pays de l'Orne et de l'agglomération messine. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marange-Silvange (57). Nous accompagnons TPE artisans, PME de services, commerçants, professions libérales et indépendants du Pays de l'Orne et de l'agglomération messine. Audit Flash sur mesure, interventions sur site et coaching dirigeants.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marange-Silvange (57). Nous accompagnons TPE artisans, PME de services, commerçants, professions libérales et indépendants du Pays de l'Orne et de l'agglomération messine. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marange-Silvange (57). Nous accompagnons TPE artisans, PME de services, commerçants, professions libérales et indépendants du Pays de l'Orne et de l'agglomération messine. Audit Flash sur mesure, interventions sur site et coaching dirigeants.",
   seoHook: "artisanat & professions libérales",
   ecosystemFr:
     "Marange-Silvange est une commune résidentielle attractive du Pays de l'Orne, à 15 min de Metz. Cadre de vie prisé avec son château, à mi-chemin entre l'agglomération messine et la vallée de l'Orne. Tissu TPE artisans BTP, PME de services aux entreprises, commerces de bourg, professions libérales (santé, juridique, conseil) et indépendants. Proximité du sillon mosellan et du Luxembourg.",
@@ -52,7 +52,7 @@ export const MARANGE_SILVANGE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Marange-Silvange et dans tout le Pays de l'Orne (Hagondange, Amnéville, Rombas, Maizières-lès-Metz). Nos consultants se déplacent depuis Metz, accessibles en 15 min via A31.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Marange-Silvange ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Marange-Silvange  ?",
       a: "L'Audit Flash IA démarre à 490 € HT pour une session de 4h. Idéal pour les TPE et PME de Marange-Silvange souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré sous 10 jours.",
     },
     {

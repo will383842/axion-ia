@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const PAMIERS_COPY: VilleCopy = {
   pitchFr:
-    "Pamiers (09), sous-préfecture de l'Ariège et plus grande ville du département, est un pôle économique de la plaine ariégeoise en bord de rivière Ariège. Tissu TPE artisans, PME agroalimentaire et métallurgie, commerces centre-ville, agriculture plaine. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin pamiséen.",
+    "Pamiers (09), sous-préfecture de l'Ariège et plus grande ville du département, est un pôle économique de la plaine ariégeoise en bord de rivière Ariège. Tissu TPE artisans, PME agroalimentaire et métallurgie, commerces centre-ville, agriculture plaine. Axion-IA y conduit ses missions auprès des entreprises locales du bassin pamiséen.",
   pitchEn:
-    "Pamiers (09), sous-préfecture de l'Ariège et plus grande ville du département, est un pôle économique de la plaine ariégeoise en bord de rivière Ariège. Tissu TPE artisans, PME agroalimentaire et métallurgie, commerces centre-ville, agriculture plaine. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin pamiséen.",
+    "Pamiers (09), sous-préfecture de l'Ariège et plus grande ville du département, est un pôle économique de la plaine ariégeoise en bord de rivière Ariège. Tissu TPE artisans, PME agroalimentaire et métallurgie, commerces centre-ville, agriculture plaine. Axion-IA y conduit ses missions auprès des entreprises locales du bassin pamiséen.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pamiers (09), sous-préfecture de l'Ariège. Nous accompagnons TPE artisans, PME agroalimentaire et métallurgie, commerçants, agriculteurs et professions libérales du premier bassin économique ariégeois. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pamiers (09), sous-préfecture de l'Ariège. Nous accompagnons TPE artisans, PME agroalimentaire et métallurgie, commerçants, agriculteurs et professions libérales du premier bassin économique ariégeois. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pamiers (09), sous-préfecture de l'Ariège. Nous accompagnons TPE artisans, PME agroalimentaire et métallurgie, commerçants, agriculteurs et professions libérales du premier bassin économique ariégeois. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pamiers (09), sous-préfecture de l'Ariège. Nous accompagnons TPE artisans, PME agroalimentaire et métallurgie, commerçants, agriculteurs et professions libérales du premier bassin économique ariégeois. Audit Flash sur mesure.",
   seoHook: "bassin pamiséen",
   ecosystemFr:
     "Pamiers est la plus grande ville et la sous-préfecture de l'Ariège, en plaine au bord de la rivière Ariège. Pôle économique départemental avec métallurgie (fonderie, acier spéciaux historiques), agroalimentaire, agriculture plaine (grandes cultures, élevage), commerce centre-ville dynamique, services aux entreprises. Zone industrielle et artisanale active.",
@@ -56,8 +56,8 @@ export const PAMIERS_COPY: VilleCopy = {
       a: "Nous accompagnons tous types d'activités : PME métallurgie et fonderie, agroalimentaire, TPE artisans BTP, commerces centre-ville, agriculture plaine, professions libérales, services aux entreprises. Cas IA adaptés à chaque métier.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Pamiers ?",
-      a: "L'audit Flash démarre à 490 € HT pour une TPE. Pour les PME industrielles (métallurgie, agroalimentaire), un audit approfondi entre 1 900 et 3 900 € HT selon la complexité. Tarifs publics, transparents.",
+      q: "Combien coûte un audit IA à Pamiers  ?",
+      a: "L'audit Flash débute selon la taille de votre activité pour une TPE. Pour les PME industrielles (métallurgie, agroalimentaire), un audit approfondi entre 1 900 et 3 900 € HT selon la complexité. Tarifs publics, transparents.",
     },
     {
       q: "Travaillez-vous avec les PME métallurgie et fonderie de Pamiers ?",

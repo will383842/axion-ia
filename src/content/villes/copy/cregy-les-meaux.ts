@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const CREGY_LES_MEAUX_COPY: VilleCopy = {
   pitchFr:
-    "Crégy-lès-Meaux (77), commune limitrophe de Meaux en Seine-et-Marne, avec zones commerciales et tissu résidentiel dynamique. TPE commerce, PME services, artisanat BTP, restauration, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Crégy-lès-Meaux (77), commune limitrophe de Meaux en Seine-et-Marne, avec zones commerciales et tissu résidentiel dynamique. TPE commerce, PME services, artisanat BTP, restauration, professions libérales. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "Crégy-lès-Meaux (77), commune limitrophe de Meaux en Seine-et-Marne, avec zones commerciales et tissu résidentiel dynamique. TPE commerce, PME services, artisanat BTP, restauration, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Crégy-lès-Meaux (77), commune limitrophe de Meaux en Seine-et-Marne, avec zones commerciales et tissu résidentiel dynamique. TPE commerce, PME services, artisanat BTP, restauration, professions libérales. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Crégy-lès-Meaux (77). Nous accompagnons TPE et PME : commerçants zones commerciales, prestataires de services, artisans BTP, restaurateurs, professions libérales de l'agglomération meldoise. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Crégy-lès-Meaux (77). Nous accompagnons TPE et PME : commerçants zones commerciales, prestataires de services, artisans BTP, restaurateurs, professions libérales de l'agglomération meldoise. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Crégy-lès-Meaux (77). Nous accompagnons TPE et PME : commerçants zones commerciales, prestataires de services, artisans BTP, restaurateurs, professions libérales de l'agglomération meldoise. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Crégy-lès-Meaux (77). Nous accompagnons TPE et PME : commerçants zones commerciales, prestataires de services, artisans BTP, restaurateurs, professions libérales de l'agglomération meldoise. Audit Flash sur mesure.",
   seoHook: "commerce zones & services",
   ecosystemFr:
     "Crégy-lès-Meaux est une commune limitrophe de Meaux disposant de zones commerciales actives et d'un tissu résidentiel dynamique. TPE commerce et restauration, PME services, artisanat BTP, professions libérales.",
@@ -60,7 +60,7 @@ export const CREGY_LES_MEAUX_COPY: VilleCopy = {
       a: "Automatisation réservation et commande, gestion stocks cuisine, planning équipes, marketing digital IA, analyse avis clients. Coaching 1-to-1 dirigeant inclus.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Crégy-lès-Meaux ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Crégy-lès-Meaux  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics, sans engagement. Devis sous 48h après premier échange.",
     },
     {

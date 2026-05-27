@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GAILLON_COPY: VilleCopy = {
   pitchFr:
-    "Gaillon (27), commune de l'Eure en bords de Seine, connue pour son château Renaissance (premier de France). Tissu TPE artisans, PME industrie et logistique vallée de Seine, commerces, agriculture, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Gaillon (27), commune de l'Eure en bords de Seine, connue pour son château Renaissance (premier de France). Tissu TPE artisans, PME industrie et logistique vallée de Seine, commerces, agriculture, services aux entreprises. Axion-IA répond aux besoins des activités professionnelles présentes.",
   pitchEn:
-    "Gaillon (27), commune de l'Eure en bords de Seine, connue pour son château Renaissance (premier de France). Tissu TPE artisans, PME industrie et logistique vallée de Seine, commerces, agriculture, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Gaillon (27), commune de l'Eure en bords de Seine, connue pour son château Renaissance (premier de France). Tissu TPE artisans, PME industrie et logistique vallée de Seine, commerces, agriculture, services aux entreprises. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gaillon (27). Nous accompagnons tous types d'activités : TPE artisans, PME industrie et logistique vallée de Seine, commerces, exploitants agricoles, indépendants et services aux entreprises de Seine Normandie Agglomération.",
   directAnswerEn:

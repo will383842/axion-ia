@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SEYSSINS_COPY: VilleCopy = {
   pitchFr:
-    "Seyssins (38), commune de l'aire urbaine de Grenoble adhérente à Grenoble-Alpes Métropole, jouxte Seyssinet-Pariset à l'ouest immédiat de Grenoble. Tissu mixte résidentiel et tissu local de TPE/PME : artisans BTP, commerces, professions libérales et services. Axion-IA y déploie ses missions auprès de toutes les organisations seyssinoises.",
+    "Seyssins (38), commune de l'aire urbaine de Grenoble adhérente à Grenoble-Alpes Métropole, jouxte Seyssinet-Pariset à l'ouest immédiat de Grenoble. Tissu mixte résidentiel et tissu local de TPE/PME : artisans BTP, commerces, professions libérales et services. Axion-IA y travaille avec les organisations du territoire seyssinoises.",
   pitchEn:
-    "Seyssins (38), commune de l'aire urbaine de Grenoble adhérente à Grenoble-Alpes Métropole, jouxte Seyssinet-Pariset à l'ouest immédiat de Grenoble. Tissu mixte résidentiel et tissu local de TPE/PME : artisans BTP, commerces, professions libérales et services. Axion-IA y déploie ses missions auprès de toutes les organisations seyssinoises.",
+    "Seyssins (38), commune de l'aire urbaine de Grenoble adhérente à Grenoble-Alpes Métropole, jouxte Seyssinet-Pariset à l'ouest immédiat de Grenoble. Tissu mixte résidentiel et tissu local de TPE/PME : artisans BTP, commerces, professions libérales et services. Axion-IA y travaille avec les organisations du territoire seyssinoises.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Seyssins (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants centre-ville, professions libérales (médecins, avocats, expert-comptables), PME tertiaires seyssinoises, indépendants et entreprises de Grenoble-Alpes Métropole en zone ouest.",
   directAnswerEn:

@@ -9,9 +9,9 @@ export const VAISON_LA_ROMAINE_COPY: VilleCopy = {
   pitchEn:
     "Vaison-la-Romaine (84), commune du Haut-Vaucluse adossée au Mont Ventoux nord, compte près de 6 058 habitants. Site archéologique romain majeur, pont antique, vignoble Cairanne et Côtes-du-Rhône, tourisme patrimonial, tissu de TPE artisanales, domaines viticoles, PME agroalimentaires, hébergements et commerces. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vaison-la-Romaine (84). Nous accompagnons tous types d'activités : TPE artisans et commerces, domaines viticoles Cairanne et Côtes-du-Rhône, PME agroalimentaires, hébergements touristiques et services du Haut-Vaucluse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vaison-la-Romaine (84). Nous accompagnons tous types d'activités : TPE artisans et commerces, domaines viticoles Cairanne et Côtes-du-Rhône, PME agroalimentaires, hébergements touristiques et services du Haut-Vaucluse. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vaison-la-Romaine (84). Nous accompagnons tous types d'activités : TPE artisans et commerces, domaines viticoles Cairanne et Côtes-du-Rhône, PME agroalimentaires, hébergements touristiques et services du Haut-Vaucluse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vaison-la-Romaine (84). Nous accompagnons tous types d'activités : TPE artisans et commerces, domaines viticoles Cairanne et Côtes-du-Rhône, PME agroalimentaires, hébergements touristiques et services du Haut-Vaucluse. Audit Flash sur mesure.",
   seoHook: "viticulture cairanne & tourisme patrimonial",
   ecosystemFr:
     "Vaison-la-Romaine est un pôle patrimonial et viticole du Haut-Vaucluse, au nord du Mont Ventoux. Site romain et pont antique, vignoble Cairanne, Rasteau et Côtes-du-Rhône Villages, tourisme culturel international. Tissu de TPE artisans, domaines viticoles, PME agroalimentaires, hébergements et restaurants. Orange à 30 min, Avignon à 50 min.",
@@ -60,7 +60,7 @@ export const VAISON_LA_ROMAINE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons hôtels, gîtes, chambres d'hôtes et restaurants de Vaison-la-Romaine : gestion réservations, agents conversationnels multilingues, fiches Google Business, content marketing local, automatisation administrative.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Vaison-la-Romaine ?",
+      q: "Tarifs audit IA à Vaison-la-Romaine  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {

@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const MARMANDE_COPY: VilleCopy = {
   pitchFr:
-    "Marmande (47), sous-préfecture du Lot-et-Garonne, est la capitale de la tomate et un pôle agroalimentaire majeur de la vallée de la Garonne. Ville de 17 328 habitants, son économie repose sur un tissu de TPE maraîchères et agricoles, PME agroalimentaires, commerces de centre-ville, artisans BTP et services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Marmande (47), sous-préfecture du Lot-et-Garonne, est la capitale de la tomate et un pôle agroalimentaire majeur de la vallée de la Garonne. Ville de 17 328 habitants, son économie repose sur un tissu de TPE maraîchères et agricoles, PME agroalimentaires, commerces de centre-ville, artisans BTP et services aux entreprises. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Marmande (47), sous-préfecture du Lot-et-Garonne, est la capitale de la tomate et un pôle agroalimentaire majeur de la vallée de la Garonne. Ville de 17 328 habitants, son économie repose sur un tissu de TPE maraîchères et agricoles, PME agroalimentaires, commerces de centre-ville, artisans BTP et services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Marmande (47), sous-préfecture du Lot-et-Garonne, est la capitale de la tomate et un pôle agroalimentaire majeur de la vallée de la Garonne. Ville de 17 328 habitants, son économie repose sur un tissu de TPE maraîchères et agricoles, PME agroalimentaires, commerces de centre-ville, artisans BTP et services aux entreprises. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marmande (47). Nous accompagnons TPE et PME de la vallée de la Garonne : exploitations agricoles et maraîchères, entreprises agroalimentaires, commerçants, artisans, professions libérales et services aux entreprises du Marmandais. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marmande (47). Nous accompagnons TPE et PME de la vallée de la Garonne : exploitations agricoles et maraîchères, entreprises agroalimentaires, commerçants, artisans, professions libérales et services aux entreprises du Marmandais. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marmande (47). Nous accompagnons TPE et PME de la vallée de la Garonne : exploitations agricoles et maraîchères, entreprises agroalimentaires, commerçants, artisans, professions libérales et services aux entreprises du Marmandais. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marmande (47). Nous accompagnons TPE et PME de la vallée de la Garonne : exploitations agricoles et maraîchères, entreprises agroalimentaires, commerçants, artisans, professions libérales et services aux entreprises du Marmandais. Audit Flash sur mesure.",
   ecosystemFr:
     "Marmande est la sous-préfecture ouest du Lot-et-Garonne, située sur la rive droite de la Garonne. Capitale de la tomate (Fête de la Tomate chaque été), la ville est un pôle agroalimentaire régional majeur. Son économie s'appuie sur les filières agricoles (maraîchage, arboriculture, viticulture), l'industrie agroalimentaire, le commerce de centre-ville, les services et l'artisanat. Le bassin d'emploi irrigue tout le Marmandais jusqu'à Tonneins et Casteljaloux.",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const MARMANDE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Marmande et dans tout le Marmandais (Tonneins, Casteljaloux, Sainte-Bazeille, Meilhan-sur-Garonne). Consultants accessibles via la gare SNCF Marmande (TER Bordeaux-Agen).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Marmande ?",
+      q: "Quel est le tarif d'un audit IA à Marmande  ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME marmandaises : exploitations agricoles, entreprises agroalimentaires, commerçants, artisans et professions libérales. ROI chiffré dès le diagnostic.",
     },
     {

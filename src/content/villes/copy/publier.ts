@@ -60,7 +60,7 @@ export const PUBLIER_COPY: VilleCopy = {
       a: "Pour l'hôtellerie-restauration à Publier et rives du Léman, nous proposons audit Flash 490 € HT, intervention formation pratique, implémentation sur mesure. Cas typiques : yield management IA, chatbot réservation, automatisation avis clients, gestion stocks cuisine intelligente.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Publier ?",
+      q: "Tarifs audit IA à Publier  : quel budget prévoir ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du Chablais, il identifie les cas d'usage IA à fort ROI pour votre activité (thermalisme, tourisme, hôtellerie, commerce). Tarifs publics, sans engagement.",
     },
     {

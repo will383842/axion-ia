@@ -11,9 +11,9 @@ export const YERRES_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Yerres, facilitant l'adoption de l'IA dans les secteurs du commerce de détail et de la programmation informatique. Avec des clients dans toute l'Île-de-France, nous apportons notre expertise nationale directement sur site.",
   directAnswerFr:
-    "À Yerres, Axion-IA propose des services adaptés aux besoins locaux. Avec une proximité de Paris, abritant Cap Digital et Station F, nous offrons des audits à partir de 490 € HT et des interventions dès 590 € HT. Notre équipe nationale se déplace chez vous pour garantir des résultats concrets et mesurables.",
+    "À Yerres, Axion-IA propose des services adaptés aux besoins locaux. Avec une proximité de Paris, abritant Cap Digital et Station F, nous offrons des audits et des interventions. Notre équipe nationale se déplace chez vous pour garantir des résultats concrets et mesurables.",
   directAnswerEn:
-    "À Yerres, Axion-IA propose des services adaptés aux besoins locaux. Avec une proximité de Paris, abritant Cap Digital et Station F, nous offrons des audits à partir de 490 € HT et des interventions dès 590 € HT. Notre équipe nationale se déplace chez vous pour garantir des résultats concrets et mesurables.",
+    "À Yerres, Axion-IA propose des services adaptés aux besoins locaux. Avec une proximité de Paris, abritant Cap Digital et Station F, nous offrons des audits et des interventions. Notre équipe nationale se déplace chez vous pour garantir des résultats concrets et mesurables.",
   seoHook: "commerce détail & programmation informatique",
   ecosystemFr:
     "Yerres bénéficie de la proximité de grands pôles économiques tels que Montgeron et Brunoy. L'écosystème local, marqué par le commerce de détail et la programmation informatique, est propice à l'adoption de l'IA.",

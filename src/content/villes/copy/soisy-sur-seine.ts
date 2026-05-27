@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SOISY_SUR_SEINE_COPY: VilleCopy = {
   pitchFr:
-    "Soisy-sur-Seine (91), commune résidentielle entre Seine et forêt de Sénart à 24 km au sud-est de Paris, est intégrée au bassin d'emploi Évry-Corbeil. Tissu TPE artisans, PME tertiaires, commerces, professions libérales et indépendants. Axion-IA accompagne entreprises et indépendants de tous secteurs du sud francilien.",
+    "Soisy-sur-Seine (91), commune résidentielle entre Seine et forêt de Sénart à 24 km au sud-est de Paris, est intégrée au bassin d'emploi Évry-Corbeil. Tissu TPE artisans, PME tertiaires, commerces, professions libérales et indépendants. Axion-IA répond aux besoins de toutes les entreprises du sud francilien.",
   pitchEn:
-    "Soisy-sur-Seine (91), commune résidentielle entre Seine et forêt de Sénart à 24 km au sud-est de Paris, est intégrée au bassin d'emploi Évry-Corbeil. Tissu TPE artisans, PME tertiaires, commerces, professions libérales et indépendants. Axion-IA accompagne entreprises et indépendants de tous secteurs du sud francilien.",
+    "Soisy-sur-Seine (91), commune résidentielle entre Seine et forêt de Sénart à 24 km au sud-est de Paris, est intégrée au bassin d'emploi Évry-Corbeil. Tissu TPE artisans, PME tertiaires, commerces, professions libérales et indépendants. Axion-IA répond aux besoins de toutes les entreprises du sud francilien.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Soisy-sur-Seine (91). Nous accompagnons tous types d'activités : TPE artisans, commerçants, professions libérales, PME tertiaires, indépendants et structures du bassin Évry-Corbeil en bord de Seine et lisière de la forêt de Sénart.",
   directAnswerEn:
@@ -52,7 +52,7 @@ export const SOISY_SUR_SEINE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Soisy-sur-Seine et tout le bassin Évry-Corbeil (Évry-Courcouronnes, Corbeil-Essonnes, Ris-Orangis, Saint-Germain-lès-Corbeil). Nos consultants se déplacent depuis Paris (40 min) ou Évry (10 min).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Soisy-sur-Seine ?",
+      q: "Tarifs audit IA à Soisy-sur-Seine  : quel budget prévoir ?",
       a: "L'audit Flash IA à Soisy-sur-Seine débute à 490 € HT pour 4 heures de diagnostic. Tarifs publics, sans engagement, adaptés aux TPE et PME locales. ROI chiffré et plan d'action livré sous 48h.",
     },
     {

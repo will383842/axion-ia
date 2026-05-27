@@ -9,9 +9,9 @@ export const LES_PONTS_DE_CE_COPY: VilleCopy = {
   pitchEn:
     "Les Ponts-de-Cé (49), cité historique au confluent de la Loire et de la Maine au sud d'Angers, compte plus de 13 000 habitants. Axion-IA opère pour toutes les structures économiques de la commune : commerces, artisanat, PME industrielles, services et professions libérales.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient aux Ponts-de-Cé (49). Nous accompagnons les TPE, PME et commerçants pontdecéens dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict, tarifs publics.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient aux Ponts-de-Cé (49). Nous accompagnons les TPE, PME et commerçants pontdecéens dans l'adoption de l'IA : audit Flash, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict, tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient aux Ponts-de-Cé (49). Nous accompagnons les TPE, PME et commerçants pontdecéens dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict, tarifs publics.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient aux Ponts-de-Cé (49). Nous accompagnons les TPE, PME et commerçants pontdecéens dans l'adoption de l'IA : audit Flash, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict, tarifs publics.",
   seoHook: "commerce détail & artisanat second",
   ecosystemFr:
     "Les Ponts-de-Cé bénéficient de leur position stratégique au confluent Loire-Maine, porte sud d'Angers. Zone commerciale Atoll à proximité, tissu de PME et TPE diversifié, artisanat, commerces de centre-bourg historique et activités liées au fleuve. Horticulture et pépinières angevines.",

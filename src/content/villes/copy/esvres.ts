@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ESVRES_COPY: VilleCopy = {
   pitchFr:
-    "Esvres (37), commune résidentielle de la vallée de l'Indre au sud-est de Tours, bénéficie d'un cadre de vie entre campagne tourangelle et agglomération. Tissu TPE artisans BTP, commerçants de proximité, PME tertiaires, professions libérales, exploitations agricoles et entreprises de services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Esvres (37), commune résidentielle de la vallée de l'Indre au sud-est de Tours, bénéficie d'un cadre de vie entre campagne tourangelle et agglomération. Tissu TPE artisans BTP, commerçants de proximité, PME tertiaires, professions libérales, exploitations agricoles et entreprises de services. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Esvres (37), commune résidentielle de la vallée de l'Indre au sud-est de Tours, bénéficie d'un cadre de vie entre campagne tourangelle et agglomération. Tissu TPE artisans BTP, commerçants de proximité, PME tertiaires, professions libérales, exploitations agricoles et entreprises de services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Esvres (37), commune résidentielle de la vallée de l'Indre au sud-est de Tours, bénéficie d'un cadre de vie entre campagne tourangelle et agglomération. Tissu TPE artisans BTP, commerçants de proximité, PME tertiaires, professions libérales, exploitations agricoles et entreprises de services. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Esvres (37). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, PME tertiaires, professions libérales, exploitants agricoles, prestataires de services et entreprises de la vallée de l'Indre sud-tourangelle.",
   directAnswerEn:
@@ -60,8 +60,8 @@ export const ESVRES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les exploitants agricoles à Esvres et vallée de l'Indre sur leurs cas IA : suivi parcellaire, classification photos cultures, prédiction rendements, automatisation gestion administrative, agents IA relation coopératives. Conformité réglementation agricole.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Esvres ?",
-      a: "L'audit Flash démarre à 490 € HT. Il couvre le diagnostic de vos processus, l'identification des cas d'usage IA prioritaires et un ROI chiffré. Intervention possible sous 5 jours ouvrés après validation.",
+      q: "Combien coûte un audit IA à Esvres  ?",
+      a: "L'audit Flash est tarifé selon vos enjeux. Il couvre le diagnostic de vos processus, l'identification des cas d'usage IA prioritaires et un ROI chiffré. Intervention possible sous 5 jours ouvrés après validation.",
     },
     {
       q: "Comment se passe une mission Axion-IA à Esvres ?",

@@ -9,9 +9,9 @@ export const BEAUZELLE_COPY: VilleCopy = {
   pitchEn:
     "Beauzelle (31), commune résidentielle du nord-ouest de Toulouse avec plus de 8 700 habitants. Tissu TPE de services, PME tertiaires, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités de la couronne nord-ouest de Toulouse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beauzelle (31). Nous accompagnons TPE de services, PME tertiaires, professions libérales et commerçants du nord-ouest Toulouse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beauzelle (31). Nous accompagnons TPE de services, PME tertiaires, professions libérales et commerçants du nord-ouest Toulouse. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beauzelle (31). Nous accompagnons TPE de services, PME tertiaires, professions libérales et commerçants du nord-ouest Toulouse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beauzelle (31). Nous accompagnons TPE de services, PME tertiaires, professions libérales et commerçants du nord-ouest Toulouse. Audit Flash sur mesure.",
   seoHook: "professions libérales & commerce détail",
   ecosystemFr:
     "Beauzelle est une commune résidentielle du nord-ouest de Toulouse, entre Blagnac et Aussonne. Tissu TPE de services, PME tertiaires, professions libérales, commerces de proximité. Proximité de l'aéroport et du pôle aéronautique.",
@@ -56,7 +56,7 @@ export const BEAUZELLE_COPY: VilleCopy = {
       a: "Nous accompagnons tous types d'activités : TPE de services, PME tertiaires, professions libérales, commerces, artisans. Aucun secteur exclu.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Beauzelle ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Beauzelle  ?",
       a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics.",
     },
     {

@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const MOURENX_COPY: VilleCopy = {
   pitchFr:
-    "Mourenx (64), ville nouvelle créée pour le gisement de gaz de Lacq, 5 695 habitants. Reconversion industrielle vers la chimie verte et les matériaux, TPE artisans, PME industrielles et commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin de Lacq.",
+    "Mourenx (64), ville nouvelle créée pour le gisement de gaz de Lacq, 5 695 habitants. Reconversion industrielle vers la chimie verte et les matériaux, TPE artisans, PME industrielles et commerces. Axion-IA couvre les activités professionnelles du bassin du bassin de Lacq.",
   pitchEn:
-    "Mourenx (64), ville nouvelle créée pour le gisement de gaz de Lacq, 5 695 habitants. Reconversion industrielle vers la chimie verte et les matériaux, TPE artisans, PME industrielles et commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin de Lacq.",
+    "Mourenx (64), ville nouvelle créée pour le gisement de gaz de Lacq, 5 695 habitants. Reconversion industrielle vers la chimie verte et les matériaux, TPE artisans, PME industrielles et commerces. Axion-IA couvre les activités professionnelles du bassin du bassin de Lacq.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mourenx (64). Nous accompagnons TPE, PME et industriels du bassin de Lacq : chimie, matériaux, industrie, services. Audit Flash à partir de 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mourenx (64). Nous accompagnons TPE, PME et industriels du bassin de Lacq : chimie, matériaux, industrie, services. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mourenx (64). Nous accompagnons TPE, PME et industriels du bassin de Lacq : chimie, matériaux, industrie, services. Audit Flash à partir de 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mourenx (64). Nous accompagnons TPE, PME et industriels du bassin de Lacq : chimie, matériaux, industrie, services. Audit Flash sur mesure.",
   seoHook: "chimie verte & industrie",
   ecosystemFr:
     "Mourenx est une ville nouvelle de 5 695 habitants, construite dans les années 1960 pour le gisement de gaz de Lacq. En reconversion : plateforme chimie Induslacq (chimie verte, matériaux avancés, carbonates), PME industrielles sous-traitantes, TPE artisans, commerces et services de proximité.",

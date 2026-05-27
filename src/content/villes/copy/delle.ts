@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const DELLE_COPY: VilleCopy = {
   pitchFr:
-    "Delle (90), deuxième ville du Territoire de Belfort à la frontière suisse (canton du Jura), est un pôle industriel et transfrontalier au cœur de l'Aire urbaine Belfort-Montbéliard. TPE artisanat et services, PME industrielles et sous-traitance, commerces de centre-bourg, professions libérales, prestataires transfrontaliers. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Delle (90), deuxième ville du Territoire de Belfort à la frontière suisse (canton du Jura), est un pôle industriel et transfrontalier au cœur de l'Aire urbaine Belfort-Montbéliard. TPE artisanat et services, PME industrielles et sous-traitance, commerces de centre-bourg, professions libérales, prestataires transfrontaliers. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Delle (90), deuxième ville du Territoire de Belfort à la frontière suisse (canton du Jura), est un pôle industriel et transfrontalier au cœur de l'Aire urbaine Belfort-Montbéliard. TPE artisanat et services, PME industrielles et sous-traitance, commerces de centre-bourg, professions libérales, prestataires transfrontaliers. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Delle (90), deuxième ville du Territoire de Belfort à la frontière suisse (canton du Jura), est un pôle industriel et transfrontalier au cœur de l'Aire urbaine Belfort-Montbéliard. TPE artisanat et services, PME industrielles et sous-traitance, commerces de centre-bourg, professions libérales, prestataires transfrontaliers. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Delle (90). Nous accompagnons TPE et PME : artisans et prestataires de services, PME industrielles et sous-traitance Aire urbaine Belfort-Montbéliard, commerçants de centre-bourg, professions libérales, prestataires transfrontaliers Suisse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Delle (90). Nous accompagnons TPE et PME : artisans et prestataires de services, PME industrielles et sous-traitance Aire urbaine Belfort-Montbéliard, commerçants de centre-bourg, professions libérales, prestataires transfrontaliers Suisse. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Delle (90). Nous accompagnons TPE et PME : artisans et prestataires de services, PME industrielles et sous-traitance Aire urbaine Belfort-Montbéliard, commerçants de centre-bourg, professions libérales, prestataires transfrontaliers Suisse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Delle (90). Nous accompagnons TPE et PME : artisans et prestataires de services, PME industrielles et sous-traitance Aire urbaine Belfort-Montbéliard, commerçants de centre-bourg, professions libérales, prestataires transfrontaliers Suisse. Audit Flash sur mesure.",
   seoHook: "artisanat & industrielles sous-traitance",
   ecosystemFr:
     "Delle est la deuxième ville du Territoire de Belfort après Belfort, située à la frontière suisse (canton du Jura) avec une agglomération transfrontalière. Tissu TPE artisanat et services, PME industrielles et sous-traitance (Aire urbaine Belfort-Montbéliard, ferroviaire, automobile, énergie), commerce de centre-bourg, professions libérales, prestataires transfrontaliers.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VALOGNES_COPY: VilleCopy = {
   pitchFr:
-    "Valognes (50), surnommée le « Versailles normand » pour ses hôtels particuliers, est un bourg historique du Cotentin dans la Manche (Normandie). Tissu TPE commerces et artisanat, PME agroalimentaires cidricoles, services de proximité, tourisme patrimonial et élevage normand. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Valognes (50), surnommée le « Versailles normand » pour ses hôtels particuliers, est un bourg historique du Cotentin dans la Manche (Normandie). Tissu TPE commerces et artisanat, PME agroalimentaires cidricoles, services de proximité, tourisme patrimonial et élevage normand. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Valognes (50), surnommée le « Versailles normand » pour ses hôtels particuliers, est un bourg historique du Cotentin dans la Manche (Normandie). Tissu TPE commerces et artisanat, PME agroalimentaires cidricoles, services de proximité, tourisme patrimonial et élevage normand. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Valognes (50), surnommée le « Versailles normand » pour ses hôtels particuliers, est un bourg historique du Cotentin dans la Manche (Normandie). Tissu TPE commerces et artisanat, PME agroalimentaires cidricoles, services de proximité, tourisme patrimonial et élevage normand. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Valognes (50). Nous accompagnons tous types d'activités : TPE commerçants et artisans du centre historique, PME agroalimentaires cidricoles du Cotentin, éleveurs normands, prestataires tourisme patrimonial, professions libérales et services.",
   directAnswerEn:

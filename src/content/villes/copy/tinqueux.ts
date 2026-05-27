@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const TINQUEUX_COPY: VilleCopy = {
   pitchFr:
-    "Tinqueux (51), commune de l'agglomération rémoise dans la Marne, concentre d'importantes zones commerciales et d'activités aux portes de Reims. Tissu de TPE commerciales, PME distribution et services aux entreprises, artisans et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Tinqueux (51), commune de l'agglomération rémoise dans la Marne, concentre d'importantes zones commerciales et d'activités aux portes de Reims. Tissu de TPE commerciales, PME distribution et services aux entreprises, artisans et professions libérales. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Tinqueux (51), commune de l'agglomération rémoise dans la Marne, concentre d'importantes zones commerciales et d'activités aux portes de Reims. Tissu de TPE commerciales, PME distribution et services aux entreprises, artisans et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Tinqueux (51), commune de l'agglomération rémoise dans la Marne, concentre d'importantes zones commerciales et d'activités aux portes de Reims. Tissu de TPE commerciales, PME distribution et services aux entreprises, artisans et professions libérales. Axion-IA y déploie son expertise pour toutes les organisations.",
   seoHook: "zones commerciales & services agglo Reims",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tinqueux (51). Nous accompagnons TPE et PME de l'agglo rémoise : enseignes commerciales, PME distribution et services, artisans, professions libérales et prestataires tertiaires. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tinqueux (51). Nous accompagnons TPE et PME de l'agglo rémoise : enseignes commerciales, PME distribution et services, artisans, professions libérales et prestataires tertiaires. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tinqueux (51). Nous accompagnons TPE et PME de l'agglo rémoise : enseignes commerciales, PME distribution et services, artisans, professions libérales et prestataires tertiaires. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tinqueux (51). Nous accompagnons TPE et PME de l'agglo rémoise : enseignes commerciales, PME distribution et services, artisans, professions libérales et prestataires tertiaires. Audit Flash sur mesure.",
   ecosystemFr:
     "Tinqueux est une commune de l'agglomération de Reims dans la Marne, connue pour ses zones commerciales (centres commerciaux, grandes enseignes, retail). L'économie locale repose sur le commerce de détail et de gros, la distribution, les services aux entreprises, l'artisanat et les professions libérales. Proximité du vignoble champenois et du pôle économique rémois.",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const TINQUEUX_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Tinqueux et dans toute l'agglomération rémoise (Reims, Cormontreuil, Bétheny, Saint-Brice-Courcelles). Gare TGV Reims à 10 min, Paris à 45 min en TGV.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Tinqueux ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Tinqueux  ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Tinqueux et de l'agglo rémoise, il identifie les cas d'usage IA à fort ROI pour votre activité.",
     },
     {

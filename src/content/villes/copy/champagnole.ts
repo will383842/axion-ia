@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const CHAMPAGNOLE_COPY: VilleCopy = {
   pitchFr:
-    "Champagnole (39), ville industrielle du plateau du Jura entre Lons-le-Saunier et Pontarlier, concentre un tissu de TPE/PME de la plasturgie, de la lunetterie, de la sous-traitance industrielle, du commerce de centre-ville et des services de proximité. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Champagnole (39), ville industrielle du plateau du Jura entre Lons-le-Saunier et Pontarlier, concentre un tissu de TPE/PME de la plasturgie, de la lunetterie, de la sous-traitance industrielle, du commerce de centre-ville et des services de proximité. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Champagnole (39), ville industrielle du plateau du Jura entre Lons-le-Saunier et Pontarlier, concentre un tissu de TPE/PME de la plasturgie, de la lunetterie, de la sous-traitance industrielle, du commerce de centre-ville et des services de proximité. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Champagnole (39), ville industrielle du plateau du Jura entre Lons-le-Saunier et Pontarlier, concentre un tissu de TPE/PME de la plasturgie, de la lunetterie, de la sous-traitance industrielle, du commerce de centre-ville et des services de proximité. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Champagnole (39). Nous accompagnons TPE et PME : plasturgistes, lunettiers, sous-traitants industriels, commerçants de centre-ville, artisans du bâtiment et professions libérales du plateau jurassien. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Champagnole (39). Nous accompagnons TPE et PME : plasturgistes, lunettiers, sous-traitants industriels, commerçants de centre-ville, artisans du bâtiment et professions libérales du plateau jurassien. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Champagnole (39). Nous accompagnons TPE et PME : plasturgistes, lunettiers, sous-traitants industriels, commerçants de centre-ville, artisans du bâtiment et professions libérales du plateau jurassien. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Champagnole (39). Nous accompagnons TPE et PME : plasturgistes, lunettiers, sous-traitants industriels, commerçants de centre-ville, artisans du bâtiment et professions libérales du plateau jurassien. Audit Flash sur mesure.",
   seoHook: "TPE & PME Jura",
   ecosystemFr:
     "Champagnole est une ville industrielle du plateau du Jura, positionnée entre Lons-le-Saunier (30 min) et Pontarlier (40 min). Tissu économique historiquement ancré dans la plasturgie et la lunetterie jurassienne, complété par la sous-traitance industrielle, le commerce de centre-ville, l'artisanat BTP et le tourisme vert (lacs, cascades du Hérisson).",
@@ -56,7 +56,7 @@ export const CHAMPAGNOLE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE et PME de la plasturgie et de la lunetterie jurassienne sur des cas IA concrets : contrôle qualité vision, automatisation production, maintenance prédictive, gestion stocks, traçabilité. Audit Flash 490 € HT.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Champagnole ?",
+      q: "Quel est le tarif d'un audit IA à Champagnole  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du plateau jurassien, il identifie les cas d'usage IA à fort ROI pour votre activité industrielle, commerciale ou libérale. Tarifs publics.",
     },
     {

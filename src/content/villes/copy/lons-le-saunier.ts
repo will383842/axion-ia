@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LONS_LE_SAUNIER_COPY: VilleCopy = {
   pitchFr:
-    "Lons-le-Saunier (39), préfecture du Jura, est une ville thermale et administrative au coeur de la Franche-Comté. Berceau de la Marseillaise (Rouget de Lisle) et de la Vache qui rit, elle concentre TPE artisans, PME agroalimentaires et fromagères, commerces, professions libérales, services publics et acteurs du thermalisme. Axion-IA y déploie ses missions auprès de toutes les organisations du Jura.",
+    "Lons-le-Saunier (39), préfecture du Jura, est une ville thermale et administrative au coeur de la Franche-Comté. Berceau de la Marseillaise (Rouget de Lisle) et de la Vache qui rit, elle concentre TPE artisans, PME agroalimentaires et fromagères, commerces, professions libérales, services publics et acteurs du thermalisme. Axion-IA y travaille avec les organisations du territoire du Jura.",
   pitchEn:
-    "Lons-le-Saunier (39), préfecture du Jura, est une ville thermale et administrative au coeur de la Franche-Comté. Berceau de la Marseillaise (Rouget de Lisle) et de la Vache qui rit, elle concentre TPE artisans, PME agroalimentaires et fromagères, commerces, professions libérales, services publics et acteurs du thermalisme. Axion-IA y déploie ses missions auprès de toutes les organisations du Jura.",
+    "Lons-le-Saunier (39), préfecture du Jura, est une ville thermale et administrative au coeur de la Franche-Comté. Berceau de la Marseillaise (Rouget de Lisle) et de la Vache qui rit, elle concentre TPE artisans, PME agroalimentaires et fromagères, commerces, professions libérales, services publics et acteurs du thermalisme. Axion-IA y travaille avec les organisations du territoire du Jura.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lons-le-Saunier (39), préfecture du Jura. Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et fromagères, commerçants, acteurs du thermalisme et du tourisme, professions libérales, indépendants et services publics jurassiens.",
   directAnswerEn:

@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const AURIOL_COPY: VilleCopy = {
   pitchFr:
-    "Auriol (13), commune de la vallée de l'Huveaune à l'est de Marseille dans les Bouches-du-Rhône, conjugue vignoble provençal et activité économique résidentielle. TPE artisans viticoles, PME services, commerces de village et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de la haute vallée de l'Huveaune.",
+    "Auriol (13), commune de la vallée de l'Huveaune à l'est de Marseille dans les Bouches-du-Rhône, conjugue vignoble provençal et activité économique résidentielle. TPE artisans viticoles, PME services, commerces de village et professions libérales. Axion-IA couvre les activités professionnelles du bassin de la haute vallée de l'Huveaune.",
   pitchEn:
-    "Auriol (13), commune de la vallée de l'Huveaune à l'est de Marseille dans les Bouches-du-Rhône, conjugue vignoble provençal et activité économique résidentielle. TPE artisans viticoles, PME services, commerces de village et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de la haute vallée de l'Huveaune.",
+    "Auriol (13), commune de la vallée de l'Huveaune à l'est de Marseille dans les Bouches-du-Rhône, conjugue vignoble provençal et activité économique résidentielle. TPE artisans viticoles, PME services, commerces de village et professions libérales. Axion-IA couvre les activités professionnelles du bassin de la haute vallée de l'Huveaune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auriol (13). Nous accompagnons TPE artisans et viticulteurs, PME de services de la vallée de l'Huveaune, commerces de village et professions libérales. Audit Flash dès 490 € HT, sans engagement.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auriol (13). Nous accompagnons TPE artisans et viticulteurs, PME de services de la vallée de l'Huveaune, commerces de village et professions libérales. Audit Flash sur mesure, sans engagement.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auriol (13). Nous accompagnons TPE artisans et viticulteurs, PME de services de la vallée de l'Huveaune, commerces de village et professions libérales. Audit Flash dès 490 € HT, sans engagement.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auriol (13). Nous accompagnons TPE artisans et viticulteurs, PME de services de la vallée de l'Huveaune, commerces de village et professions libérales. Audit Flash sur mesure, sans engagement.",
   seoHook: "vignoble, artisanat & vallée Huveaune",
   ecosystemFr:
     "Auriol est une commune de la haute vallée de l'Huveaune, entre Marseille et le massif de la Sainte-Baume. Économie locale autour du vignoble provençal, de l'artisanat et des services. TPE viticulteurs, artisans du bâtiment, commerces de village, professions libérales et prestataires résidentiels.",

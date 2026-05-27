@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const RIVES_COPY: VilleCopy = {
   pitchFr:
-    "Rives (38), commune du Pays voironnais en Isère sur la vallée de la Fure, possède un héritage industriel papetier historique. Tissu PME industrielles, TPE artisans BTP, commerces, agriculture périphérique et services. Axion-IA accompagne entreprises et indépendants de tous secteurs du Voironnais.",
+    "Rives (38), commune du Pays voironnais en Isère sur la vallée de la Fure, possède un héritage industriel papetier historique. Tissu PME industrielles, TPE artisans BTP, commerces, agriculture périphérique et services. Axion-IA répond aux besoins de toutes les entreprises du Voironnais.",
   pitchEn:
-    "Rives (38), commune du Pays voironnais en Isère sur la vallée de la Fure, possède un héritage industriel papetier historique. Tissu PME industrielles, TPE artisans BTP, commerces, agriculture périphérique et services. Axion-IA accompagne entreprises et indépendants de tous secteurs du Voironnais.",
+    "Rives (38), commune du Pays voironnais en Isère sur la vallée de la Fure, possède un héritage industriel papetier historique. Tissu PME industrielles, TPE artisans BTP, commerces, agriculture périphérique et services. Axion-IA répond aux besoins de toutes les entreprises du Voironnais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rives (38). Nous accompagnons tous types d'activités : PME industrielles du Voironnais (héritage papetier vallée Fure), TPE artisans BTP, commerçants, agriculteurs, indépendants, professions libérales et services aux entreprises du Pays voironnais.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHASSIEU_COPY: VilleCopy = {
   pitchFr:
-    "Chassieu (69), commune en banlieue est de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Abrite Eurexpo (parc des expositions de Lyon, l'un des plus grands de France) et des zones d'activités majeures. Tissu PME événementielles et logistiques, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Chassieu (69), commune en banlieue est de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Abrite Eurexpo (parc des expositions de Lyon, l'un des plus grands de France) et des zones d'activités majeures. Tissu PME événementielles et logistiques, TPE artisans BTP, commerces. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Chassieu (69), commune en banlieue est de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Abrite Eurexpo (parc des expositions de Lyon, l'un des plus grands de France) et des zones d'activités majeures. Tissu PME événementielles et logistiques, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Chassieu (69), commune en banlieue est de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Abrite Eurexpo (parc des expositions de Lyon, l'un des plus grands de France) et des zones d'activités majeures. Tissu PME événementielles et logistiques, TPE artisans BTP, commerces. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chassieu (69). Nous accompagnons tous types d'activités : acteurs événementiels Eurexpo, PME logistiques et tertiaires zones d'activités, TPE artisans BTP, commerçants, indépendants et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:

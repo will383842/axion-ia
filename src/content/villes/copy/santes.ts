@@ -56,7 +56,7 @@ export const SANTES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les professions libérales et TPE de services du sud lillois sur leurs cas IA : automatisation gestion documentaire et archivage, copilotes IA rédaction rapports et comptes-rendus, agents conversationnels prise de rendez-vous patients ou clients, CRM augmenté suivi dossiers, génération propositions commerciales.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Santes ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Santes  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du sud lillois, il identifie les cas d'usage IA à fort ROI pour votre activité (services, professions libérales, artisanat, commerce, logistique). Tarifs publics, sans engagement.",
     },
     {

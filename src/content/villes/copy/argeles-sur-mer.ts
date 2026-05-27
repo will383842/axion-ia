@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ARGELES_SUR_MER_COPY: VilleCopy = {
   pitchFr:
-    "Argelès-sur-Mer (66), station balnéaire majeure de la Côte Vermeille avec la plus grande concentration de campings d'Europe, fait partie de la Communauté de communes des Albères, de la Côte Vermeille et de l'Illibéris. Tissu TPE tourisme, PME campings-hôtellerie, commerces saisonniers, viticulture. Axion-IA couvre l'ensemble des activités professionnelles présentes du littoral catalan.",
+    "Argelès-sur-Mer (66), station balnéaire majeure de la Côte Vermeille avec la plus grande concentration de campings d'Europe, fait partie de la Communauté de communes des Albères, de la Côte Vermeille et de l'Illibéris. Tissu TPE tourisme, PME campings-hôtellerie, commerces saisonniers, viticulture. Axion-IA répond aux besoins des activités professionnelles présentes du littoral catalan.",
   pitchEn:
-    "Argelès-sur-Mer (66), station balnéaire majeure de la Côte Vermeille avec la plus grande concentration de campings d'Europe, fait partie de la Communauté de communes des Albères, de la Côte Vermeille et de l'Illibéris. Tissu TPE tourisme, PME campings-hôtellerie, commerces saisonniers, viticulture. Axion-IA couvre l'ensemble des activités professionnelles présentes du littoral catalan.",
+    "Argelès-sur-Mer (66), station balnéaire majeure de la Côte Vermeille avec la plus grande concentration de campings d'Europe, fait partie de la Communauté de communes des Albères, de la Côte Vermeille et de l'Illibéris. Tissu TPE tourisme, PME campings-hôtellerie, commerces saisonniers, viticulture. Axion-IA répond aux besoins des activités professionnelles présentes du littoral catalan.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Argelès-sur-Mer (66). Nous accompagnons tous types d'activités : TPE tourisme, PME campings et hôtellerie, commerces saisonniers, viticulteurs, indépendants et professions libérales de la Côte Vermeille.",
   directAnswerEn:

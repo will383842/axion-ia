@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BALLAN_MIRE_COPY: VilleCopy = {
   pitchFr:
-    "Ballan-Miré (37), commune résidentielle du sud-ouest de Tours Métropole en Indre-et-Loire, allie cadre de vie verdoyant et proximité immédiate de l'agglomération tourangelle. Tissu TPE artisans BTP, PME tertiaires et services, commerces de proximité, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Ballan-Miré (37), commune résidentielle du sud-ouest de Tours Métropole en Indre-et-Loire, allie cadre de vie verdoyant et proximité immédiate de l'agglomération tourangelle. Tissu TPE artisans BTP, PME tertiaires et services, commerces de proximité, professions libérales. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "Ballan-Miré (37), commune résidentielle du sud-ouest de Tours Métropole en Indre-et-Loire, allie cadre de vie verdoyant et proximité immédiate de l'agglomération tourangelle. Tissu TPE artisans BTP, PME tertiaires et services, commerces de proximité, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Ballan-Miré (37), commune résidentielle du sud-ouest de Tours Métropole en Indre-et-Loire, allie cadre de vie verdoyant et proximité immédiate de l'agglomération tourangelle. Tissu TPE artisans BTP, PME tertiaires et services, commerces de proximité, professions libérales. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ballan-Miré (37). Nous accompagnons tous types d'activités : TPE artisans BTP, PME tertiaires de Tours Métropole sud-ouest, commerçants, professions libérales et services aux entreprises ballanais.",
   directAnswerEn:

@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const NOGENT_SUR_SEINE_COPY: VilleCopy = {
   pitchFr:
-    "Nogent-sur-Seine (10), sous-préfecture de l'Aube en bord de Seine, accueille la centrale nucléaire EDF et le musée Camille Claudel. Tissu de TPE artisanales, PME industrielles et de maintenance, commerces de centre-ville et services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Nogent-sur-Seine (10), sous-préfecture de l'Aube en bord de Seine, accueille la centrale nucléaire EDF et le musée Camille Claudel. Tissu de TPE artisanales, PME industrielles et de maintenance, commerces de centre-ville et services. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Nogent-sur-Seine (10), sous-préfecture de l'Aube en bord de Seine, accueille la centrale nucléaire EDF et le musée Camille Claudel. Tissu de TPE artisanales, PME industrielles et de maintenance, commerces de centre-ville et services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Nogent-sur-Seine (10), sous-préfecture de l'Aube en bord de Seine, accueille la centrale nucléaire EDF et le musée Camille Claudel. Tissu de TPE artisanales, PME industrielles et de maintenance, commerces de centre-ville et services. Axion-IA accompagne entreprises et indépendants.",
   seoHook: "nucléaire, industrie & patrimoine sculptural",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nogent-sur-Seine (10). Nous accompagnons TPE et PME de la sous-préfecture auboise : sous-traitants nucléaires, PME industrielles, artisans BTP, commerçants, exploitants agricoles et prestataires de services. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nogent-sur-Seine (10). Nous accompagnons TPE et PME de la sous-préfecture auboise : sous-traitants nucléaires, PME industrielles, artisans BTP, commerçants, exploitants agricoles et prestataires de services. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nogent-sur-Seine (10). Nous accompagnons TPE et PME de la sous-préfecture auboise : sous-traitants nucléaires, PME industrielles, artisans BTP, commerçants, exploitants agricoles et prestataires de services. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nogent-sur-Seine (10). Nous accompagnons TPE et PME de la sous-préfecture auboise : sous-traitants nucléaires, PME industrielles, artisans BTP, commerçants, exploitants agricoles et prestataires de services. Audit Flash sur mesure.",
   ecosystemFr:
     "Nogent-sur-Seine est une sous-préfecture de l'Aube baignée par la Seine. La centrale nucléaire EDF structure l'emploi local avec un écosystème de sous-traitants industriels et de maintenance. Le musée Camille Claudel, inauguré en 2017, rayonne culturellement. Tissu de TPE artisanales, commerces de centre-ville, exploitations céréalières de la plaine de Champagne et services aux entreprises.",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const NOGENT_SUR_SEINE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Nogent-sur-Seine et dans le sud de l'Aube (Romilly-sur-Seine, Villenauxe-la-Grande, Pont-sur-Seine). Consultants depuis Troyes (55 min) ou Paris-Est (1h30).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Nogent-sur-Seine ?",
+      q: "Quel est le tarif d'un audit IA à Nogent-sur-Seine  ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Nogent-sur-Seine, il identifie les cas d'usage IA à fort ROI pour votre activité.",
     },
     {

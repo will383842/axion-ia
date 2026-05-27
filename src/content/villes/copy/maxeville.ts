@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MAXEVILLE_COPY: VilleCopy = {
   pitchFr:
-    "Maxéville (54), commune de l'agglomération nancéienne nord en Meurthe-et-Moselle, accueille le Zénith de Nancy et des zones d'activités commerciales et tertiaires dynamiques. Tissu TPE/PME commerce, services aux entreprises, restauration, artisanat, professions de santé. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Maxéville (54), commune de l'agglomération nancéienne nord en Meurthe-et-Moselle, accueille le Zénith de Nancy et des zones d'activités commerciales et tertiaires dynamiques. Tissu TPE/PME commerce, services aux entreprises, restauration, artisanat, professions de santé. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Maxéville (54), commune de l'agglomération nancéienne nord en Meurthe-et-Moselle, accueille le Zénith de Nancy et des zones d'activités commerciales et tertiaires dynamiques. Tissu TPE/PME commerce, services aux entreprises, restauration, artisanat, professions de santé. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Maxéville (54), commune de l'agglomération nancéienne nord en Meurthe-et-Moselle, accueille le Zénith de Nancy et des zones d'activités commerciales et tertiaires dynamiques. Tissu TPE/PME commerce, services aux entreprises, restauration, artisanat, professions de santé. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Maxéville (54). Nous accompagnons tous types d'activités : TPE/PME des zones commerciales nord Nancy, enseignes distribution, restaurants, prestataires de services aux entreprises et artisans maxévillois.",
   directAnswerEn:

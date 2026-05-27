@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const MONTIVILLIERS_COPY: VilleCopy = {
   pitchFr:
-    "Montivilliers (76), commune de l'agglomération du Havre en Seine-Maritime, est connue pour son abbaye fondée au VIIe siècle. Tissu TPE artisans, PME tertiaires et logistiques (proximité port du Havre), commerces, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations de l'agglo havraise.",
+    "Montivilliers (76), commune de l'agglomération du Havre en Seine-Maritime, est connue pour son abbaye fondée au VIIe siècle. Tissu TPE artisans, PME tertiaires et logistiques (proximité port du Havre), commerces, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales de l'agglo havraise.",
   pitchEn:
-    "Montivilliers (76), commune de l'agglomération du Havre en Seine-Maritime, est connue pour son abbaye fondée au VIIe siècle. Tissu TPE artisans, PME tertiaires et logistiques (proximité port du Havre), commerces, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations de l'agglo havraise.",
+    "Montivilliers (76), commune de l'agglomération du Havre en Seine-Maritime, est connue pour son abbaye fondée au VIIe siècle. Tissu TPE artisans, PME tertiaires et logistiques (proximité port du Havre), commerces, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales de l'agglo havraise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montivilliers (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires et logistiques de l'agglo havraise, professions libérales, services aux entreprises. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montivilliers (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires et logistiques de l'agglo havraise, professions libérales, services aux entreprises. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montivilliers (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires et logistiques de l'agglo havraise, professions libérales, services aux entreprises. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montivilliers (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires et logistiques de l'agglo havraise, professions libérales, services aux entreprises. Audit Flash sur mesure.",
   seoHook: "agglo Le Havre, logistique & tertiaire",
   ecosystemFr:
     "Montivilliers appartient à la communauté urbaine Le Havre Seine Métropole. Tissu PME tertiaires et logistiques (proximité grand port maritime du Havre), TPE artisans BTP, commerces de centre-ville, professions libérales. Ville résidentielle dynamique de l'agglo havraise.",
@@ -61,7 +61,7 @@ export const MONTIVILLIERS_COPY: VilleCopy = {
     },
     {
       q: "Quel budget prévoir pour un audit IA à Montivilliers ?",
-      a: "L'audit Flash démarre à 490 € HT pour les TPE. Pour les PME logistiques et tertiaires, l'audit stratégique complet est adapté au périmètre. Tarifs publics, pas de devis opaque.",
+      a: "L'audit Flash propose un tarif d'entrée accessible pour les TPE. Pour les PME logistiques et tertiaires, l'audit stratégique complet est adapté au périmètre. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Comment se passe une mission depuis Paris ?",

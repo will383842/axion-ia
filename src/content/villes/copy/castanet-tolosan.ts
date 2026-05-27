@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const CASTANET_TOLOSAN_COPY: VilleCopy = {
   pitchFr:
-    "Castanet-Tolosan (31), commune dynamique du sud-est toulousain traversée par le canal du Midi, plus de 15 000 habitants. Tissu TPE artisans, PME de services, professions libérales, commerces centre-ville. Axion-IA accompagne entreprises et indépendants de tous secteurs du Sicoval.",
+    "Castanet-Tolosan (31), commune dynamique du sud-est toulousain traversée par le canal du Midi, plus de 15 000 habitants. Tissu TPE artisans, PME de services, professions libérales, commerces centre-ville. Axion-IA répond aux besoins de toutes les entreprises du Sicoval.",
   pitchEn:
-    "Castanet-Tolosan (31), commune dynamique du sud-est toulousain traversée par le canal du Midi, plus de 15 000 habitants. Tissu TPE artisans, PME de services, professions libérales, commerces centre-ville. Axion-IA accompagne entreprises et indépendants de tous secteurs du Sicoval.",
+    "Castanet-Tolosan (31), commune dynamique du sud-est toulousain traversée par le canal du Midi, plus de 15 000 habitants. Tissu TPE artisans, PME de services, professions libérales, commerces centre-ville. Axion-IA répond aux besoins de toutes les entreprises du Sicoval.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Castanet-Tolosan (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du Sicoval sud-est toulousain. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Castanet-Tolosan (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du Sicoval sud-est toulousain. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Castanet-Tolosan (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du Sicoval sud-est toulousain. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Castanet-Tolosan (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du Sicoval sud-est toulousain. Audit Flash sur mesure.",
   seoHook: "professions libérales & commerce détail",
   ecosystemFr:
     "Castanet-Tolosan est le siège de la communauté d'agglomération du Sicoval. Commune résidentielle et commerçante du sud-est de Toulouse, traversée par le canal du Midi. TPE artisans, PME de services, cabinets de professions libérales, commerces de centre-ville, quelques entreprises technologiques liées au pôle spatial toulousain.",
@@ -56,7 +56,7 @@ export const CASTANET_TOLOSAN_COPY: VilleCopy = {
       a: "Nous accompagnons tous types d'activités : TPE artisans, PME de services, professions libérales, commerces de centre-ville, entreprises technologiques du Sicoval. Aucun secteur exclu.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Castanet-Tolosan ?",
+      q: "Tarifs audit IA à Castanet-Tolosan  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME, audit approfondi entre 1 900 et 3 900 € HT selon la complexité. Tarifs publics, pas de devis opaque.",
     },
     {

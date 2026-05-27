@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LANNILIS_COPY: VilleCopy = {
   pitchFr:
-    "Lannilis (29), commune du Pays des Abers en Finistère nord, vit de l'agriculture, de la conchyliculture, du tourisme littoral et d'un tissu artisanal et commerçant solide. TPE et PME agricoles, ostréiculteurs, artisans du bâtiment, commerces de bourg, hébergeurs touristiques, professions libérales et services à la personne. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Lannilis (29), commune du Pays des Abers en Finistère nord, vit de l'agriculture, de la conchyliculture, du tourisme littoral et d'un tissu artisanal et commerçant solide. TPE et PME agricoles, ostréiculteurs, artisans du bâtiment, commerces de bourg, hébergeurs touristiques, professions libérales et services à la personne. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "Lannilis (29), commune du Pays des Abers en Finistère nord, vit de l'agriculture, de la conchyliculture, du tourisme littoral et d'un tissu artisanal et commerçant solide. TPE et PME agricoles, ostréiculteurs, artisans du bâtiment, commerces de bourg, hébergeurs touristiques, professions libérales et services à la personne. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Lannilis (29), commune du Pays des Abers en Finistère nord, vit de l'agriculture, de la conchyliculture, du tourisme littoral et d'un tissu artisanal et commerçant solide. TPE et PME agricoles, ostréiculteurs, artisans du bâtiment, commerces de bourg, hébergeurs touristiques, professions libérales et services à la personne. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lannilis (29). Nous accompagnons TPE et PME : exploitations agricoles, ostréiculteurs des Abers, artisans du bâtiment, commerces de bourg, hébergeurs et restaurateurs du littoral, professions libérales. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lannilis (29). Nous accompagnons TPE et PME : exploitations agricoles, ostréiculteurs des Abers, artisans du bâtiment, commerces de bourg, hébergeurs et restaurateurs du littoral, professions libérales. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lannilis (29). Nous accompagnons TPE et PME : exploitations agricoles, ostréiculteurs des Abers, artisans du bâtiment, commerces de bourg, hébergeurs et restaurateurs du littoral, professions libérales. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lannilis (29). Nous accompagnons TPE et PME : exploitations agricoles, ostréiculteurs des Abers, artisans du bâtiment, commerces de bourg, hébergeurs et restaurateurs du littoral, professions libérales. Audit Flash sur mesure.",
   seoHook: "agriculture maraîchage & conchyliculture",
   ecosystemFr:
     "Lannilis est une commune du Pays des Abers, en Finistère nord, à proximité immédiate de l'Aber Wrac'h et de l'Aber Benoît. Tissu TPE/PME : agriculture (maraîchage, élevage laitier), conchyliculture (huîtres, moules), artisanat du bâtiment, commerces de bourg, hébergement touristique, services à la personne.",
@@ -52,7 +52,7 @@ export const LANNILIS_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Lannilis et dans tout le Pays des Abers (Plouguerneau, Landéda, Plabennec, Plouvien). Brest à 25 min en voiture, déplacements depuis l'agence Bretagne.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Lannilis ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Lannilis  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables en ligne, adaptés aux TPE agricoles, ostréiculteurs et artisans du Pays des Abers.",
     },
     {

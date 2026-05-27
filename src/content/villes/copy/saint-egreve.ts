@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_EGREVE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Égrève (38), au nord-ouest de l'agglomération grenobloise au pied du massif de la Chartreuse, abrite le Centre hospitalier Alpes-Isère (CHAI, important centre psychiatrique). Tissu PME tertiaires, santé, TPE artisans et commerces. Labellisée « Ville internet 5@ » (niveau le plus élevé). Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Saint-Égrève (38), au nord-ouest de l'agglomération grenobloise au pied du massif de la Chartreuse, abrite le Centre hospitalier Alpes-Isère (CHAI, important centre psychiatrique). Tissu PME tertiaires, santé, TPE artisans et commerces. Labellisée « Ville internet 5@ » (niveau le plus élevé). Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Saint-Égrève (38), au nord-ouest de l'agglomération grenobloise au pied du massif de la Chartreuse, abrite le Centre hospitalier Alpes-Isère (CHAI, important centre psychiatrique). Tissu PME tertiaires, santé, TPE artisans et commerces. Labellisée « Ville internet 5@ » (niveau le plus élevé). Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Saint-Égrève (38), au nord-ouest de l'agglomération grenobloise au pied du massif de la Chartreuse, abrite le Centre hospitalier Alpes-Isère (CHAI, important centre psychiatrique). Tissu PME tertiaires, santé, TPE artisans et commerces. Labellisée « Ville internet 5@ » (niveau le plus élevé). Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Égrève (38). Nous accompagnons tous types d'activités : structures de santé (CHAI, professions libérales médicales), TPE artisans BTP, commerçants, indépendants, PME tertiaires saint-égréviennes et entreprises du bassin nord-ouest grenoblois adhérant à Grenoble-Alpes Métropole.",
   directAnswerEn:

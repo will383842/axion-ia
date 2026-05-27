@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FERRIERE_LA_GRANDE_COPY: VilleCopy = {
   pitchFr:
-    "Ferrière-la-Grande (59), commune de l'agglomération de Maubeuge dans la vallée de la Sambre, compte 5 131 habitants. Tissu TPE artisans, PME industrielles (métallurgie, mécanique), commerces de proximité, professions libérales et services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Ferrière-la-Grande (59), commune de l'agglomération de Maubeuge dans la vallée de la Sambre, compte 5 131 habitants. Tissu TPE artisans, PME industrielles (métallurgie, mécanique), commerces de proximité, professions libérales et services aux entreprises. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Ferrière-la-Grande (59), commune de l'agglomération de Maubeuge dans la vallée de la Sambre, compte 5 131 habitants. Tissu TPE artisans, PME industrielles (métallurgie, mécanique), commerces de proximité, professions libérales et services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Ferrière-la-Grande (59), commune de l'agglomération de Maubeuge dans la vallée de la Sambre, compte 5 131 habitants. Tissu TPE artisans, PME industrielles (métallurgie, mécanique), commerces de proximité, professions libérales et services aux entreprises. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ferrière-la-Grande (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles métallurgiques et mécaniques de la Sambre, commerçants, professions libérales et acteurs de la reconversion du bassin sambre-avesnois.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SABLE_SUR_SARTHE_COPY: VilleCopy = {
   pitchFr:
-    "Sablé-sur-Sarthe (72), sous-préfecture de la Sarthe desservie par le TGV aux bords de la Sarthe, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-ville, professions libérales, prestataires logistiques et services aux entreprises. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Sablé-sur-Sarthe (72), sous-préfecture de la Sarthe desservie par le TGV aux bords de la Sarthe, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-ville, professions libérales, prestataires logistiques et services aux entreprises. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Sablé-sur-Sarthe (72), sous-préfecture de la Sarthe desservie par le TGV aux bords de la Sarthe, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-ville, professions libérales, prestataires logistiques et services aux entreprises. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Sablé-sur-Sarthe (72), sous-préfecture de la Sarthe desservie par le TGV aux bords de la Sarthe, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-ville, professions libérales, prestataires logistiques et services aux entreprises. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sablé-sur-Sarthe (72). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles, commerçants, professions libérales, prestataires logistiques et services aux entreprises du bassin sabolien.",
   directAnswerEn:

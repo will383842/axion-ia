@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const PEYROLLES_EN_PROVENCE_COPY: VilleCopy = {
   pitchFr:
-    "Peyrolles-en-Provence (13), commune de la vallée de la Durance au nord-est d'Aix-en-Provence, conjugue cadre historique (château Renaissance, vieux village) et tissu de TPE artisans, PME services, agriculture provençale et commerces de proximité. Bassin d'emploi tourné vers Aix, Manosque et Pertuis. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Peyrolles-en-Provence (13), commune de la vallée de la Durance au nord-est d'Aix-en-Provence, conjugue cadre historique (château Renaissance, vieux village) et tissu de TPE artisans, PME services, agriculture provençale et commerces de proximité. Bassin d'emploi tourné vers Aix, Manosque et Pertuis. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Peyrolles-en-Provence (13), commune de la vallée de la Durance au nord-est d'Aix-en-Provence, conjugue cadre historique (château Renaissance, vieux village) et tissu de TPE artisans, PME services, agriculture provençale et commerces de proximité. Bassin d'emploi tourné vers Aix, Manosque et Pertuis. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Peyrolles-en-Provence (13), commune de la vallée de la Durance au nord-est d'Aix-en-Provence, conjugue cadre historique (château Renaissance, vieux village) et tissu de TPE artisans, PME services, agriculture provençale et commerces de proximité. Bassin d'emploi tourné vers Aix, Manosque et Pertuis. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Peyrolles-en-Provence (13). Nous accompagnons TPE artisans, PME services, agriculteurs, professions libérales et commerces de proximité de la vallée de la Durance. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Peyrolles-en-Provence (13). Nous accompagnons TPE artisans, PME services, agriculteurs, professions libérales et commerces de proximité de la vallée de la Durance. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Peyrolles-en-Provence (13). Nous accompagnons TPE artisans, PME services, agriculteurs, professions libérales et commerces de proximité de la vallée de la Durance. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Peyrolles-en-Provence (13). Nous accompagnons TPE artisans, PME services, agriculteurs, professions libérales et commerces de proximité de la vallée de la Durance. Audit Flash sur mesure.",
   seoHook: "artisanat & agriculture provençale",
   ecosystemFr:
     "Peyrolles-en-Provence est positionnée dans la vallée de la Durance, au nord-est d'Aix-en-Provence, dotée d'un château Renaissance et d'un vieux village provençal. Tissu économique de TPE artisans (BTP, services à la personne, paysagistes), PME tertiaires, agriculture provençale (viticulture, oléiculture, maraîchage), commerces de proximité, professions libérales et tourisme patrimonial. Bassin d'emploi rattaché à Aix-en-Provence, Pertuis et Manosque.",
@@ -52,7 +52,7 @@ export const PEYROLLES_EN_PROVENCE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Peyrolles-en-Provence et dans toute la vallée de la Durance (Pertuis, Meyrargues, Jouques, Saint-Paul-lès-Durance, Le Puy-Sainte-Réparade). Accès A51 vers Aix et Manosque.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Peyrolles-en-Provence ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Peyrolles-en-Provence  ?",
       a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, PME services, agriculteurs et commerces peyrollais. Tarifs publics, sans engagement.",
     },
     {

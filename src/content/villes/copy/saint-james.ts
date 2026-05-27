@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_JAMES_COPY: VilleCopy = {
   pitchFr:
-    "Saint-James (50), bourg du bocage normand dans la Manche (Normandie), abrite un cimetière militaire américain de la Seconde Guerre mondiale. Tissu TPE agriculteurs et éleveurs, PME agroalimentaires du bocage, artisans, commerces de bourg et tourisme mémoriel. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Saint-James (50), bourg du bocage normand dans la Manche (Normandie), abrite un cimetière militaire américain de la Seconde Guerre mondiale. Tissu TPE agriculteurs et éleveurs, PME agroalimentaires du bocage, artisans, commerces de bourg et tourisme mémoriel. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Saint-James (50), bourg du bocage normand dans la Manche (Normandie), abrite un cimetière militaire américain de la Seconde Guerre mondiale. Tissu TPE agriculteurs et éleveurs, PME agroalimentaires du bocage, artisans, commerces de bourg et tourisme mémoriel. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Saint-James (50), bourg du bocage normand dans la Manche (Normandie), abrite un cimetière militaire américain de la Seconde Guerre mondiale. Tissu TPE agriculteurs et éleveurs, PME agroalimentaires du bocage, artisans, commerces de bourg et tourisme mémoriel. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-James (50). Nous accompagnons tous types d'activités : TPE éleveurs et agriculteurs du bocage, PME agroalimentaires, artisans BTP, commerçants de bourg, prestataires tourisme mémoriel, professions libérales et services du sud Manche.",
   directAnswerEn:

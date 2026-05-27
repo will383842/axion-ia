@@ -11,9 +11,9 @@ export const CENON_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Cenon, un carrefour stratégique proche de Bordeaux, pour optimiser les processus IA des entreprises locales. Avec des entités comme LVMH et BNP Paribas en toile de fond, nous offrons des solutions adaptées aux besoins spécifiques de chaque secteur.",
   directAnswerFr:
-    "Axion-IA se déplace à Cenon pour offrir des services IA opérationnels adaptés aux réalités locales. Avec une proximité à Bordeaux et des infrastructures comme la gare de Bordeaux-Saint-Jean, nous intervenons rapidement. Nos services incluent des audits dès 490 € HT et des interventions à partir de 590 € HT, garantissant une optimisation immédiate des processus métiers.",
+    "Axion-IA se déplace à Cenon pour offrir des services IA opérationnels adaptés aux réalités locales. Avec une proximité à Bordeaux et des infrastructures comme la gare de Bordeaux-Saint-Jean, nous intervenons rapidement. Nos services incluent des audits et des interventions, garantissant une optimisation immédiate des processus métiers.",
   directAnswerEn:
-    "Axion-IA se déplace à Cenon pour offrir des services IA opérationnels adaptés aux réalités locales. Avec une proximité à Bordeaux et des infrastructures comme la gare de Bordeaux-Saint-Jean, nous intervenons rapidement. Nos services incluent des audits dès 490 € HT et des interventions à partir de 590 € HT, garantissant une optimisation immédiate des processus métiers.",
+    "Axion-IA se déplace à Cenon pour offrir des services IA opérationnels adaptés aux réalités locales. Avec une proximité à Bordeaux et des infrastructures comme la gare de Bordeaux-Saint-Jean, nous intervenons rapidement. Nos services incluent des audits et des interventions, garantissant une optimisation immédiate des processus métiers.",
   seoHook: "commerce détail & travaux spécialisés",
   ecosystemFr:
     "Cenon, au cœur de la Nouvelle-Aquitaine, bénéficie de la proximité de Bordeaux et de son écosystème économique riche, incluant des entreprises comme LVMH et BNP Paribas. Ce contexte dynamique favorise l'innovation et l'optimisation des processus via l'IA.",

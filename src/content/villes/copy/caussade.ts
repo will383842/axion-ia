@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const CAUSSADE_COPY: VilleCopy = {
   pitchFr:
-    "Caussade (82), capitale historique de la chapellerie en Quercy blanc, près de 7 000 habitants. Tissu TPE artisans, PME agroalimentaires et industrielles, commerces, professions libérales et agriculture. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin caussadais.",
+    "Caussade (82), capitale historique de la chapellerie en Quercy blanc, près de 7 000 habitants. Tissu TPE artisans, PME agroalimentaires et industrielles, commerces, professions libérales et agriculture. Axion-IA opère sur l'ensemble des activités professionnelles locales du bassin caussadais.",
   pitchEn:
-    "Caussade (82), capitale historique de la chapellerie en Quercy blanc, près de 7 000 habitants. Tissu TPE artisans, PME agroalimentaires et industrielles, commerces, professions libérales et agriculture. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin caussadais.",
+    "Caussade (82), capitale historique de la chapellerie en Quercy blanc, près de 7 000 habitants. Tissu TPE artisans, PME agroalimentaires et industrielles, commerces, professions libérales et agriculture. Axion-IA opère sur l'ensemble des activités professionnelles locales du bassin caussadais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Caussade (82). Nous accompagnons TPE artisans, PME agroalimentaires et industrielles, commerçants, exploitants agricoles et professions libérales du Quercy blanc. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Caussade (82). Nous accompagnons TPE artisans, PME agroalimentaires et industrielles, commerçants, exploitants agricoles et professions libérales du Quercy blanc. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Caussade (82). Nous accompagnons TPE artisans, PME agroalimentaires et industrielles, commerçants, exploitants agricoles et professions libérales du Quercy blanc. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Caussade (82). Nous accompagnons TPE artisans, PME agroalimentaires et industrielles, commerçants, exploitants agricoles et professions libérales du Quercy blanc. Audit Flash sur mesure.",
   seoHook: "agriculture melon & commerce détail",
   ecosystemFr:
     "Caussade (6 803 hab) est la capitale historique de la chapellerie de paille, en Quercy blanc. Économie diversifiée : agriculture (melon, lavande, élevage), agroalimentaire, chapellerie résiduelle et artisanat, commerces de bourg, services et professions libérales. Sur l'axe A20 Montauban-Cahors. Proximité Montauban (25 min), Cahors (40 min).",

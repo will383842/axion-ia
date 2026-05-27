@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CAZOULS_LES_BEZIERS_COPY: VilleCopy = {
   pitchFr:
-    "Cazouls-lès-Béziers (34), commune viticole de l'agglomération de Béziers dans l'Hérault, au cœur du vignoble languedocien. Canal du Midi à proximité. Tissu TPE viticoles, PME négoce vin, artisans, commerces de proximité, tourisme œnotourisme et canal. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Cazouls-lès-Béziers (34), commune viticole de l'agglomération de Béziers dans l'Hérault, au cœur du vignoble languedocien. Canal du Midi à proximité. Tissu TPE viticoles, PME négoce vin, artisans, commerces de proximité, tourisme œnotourisme et canal. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Cazouls-lès-Béziers (34), commune viticole de l'agglomération de Béziers dans l'Hérault, au cœur du vignoble languedocien. Canal du Midi à proximité. Tissu TPE viticoles, PME négoce vin, artisans, commerces de proximité, tourisme œnotourisme et canal. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Cazouls-lès-Béziers (34), commune viticole de l'agglomération de Béziers dans l'Hérault, au cœur du vignoble languedocien. Canal du Midi à proximité. Tissu TPE viticoles, PME négoce vin, artisans, commerces de proximité, tourisme œnotourisme et canal. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cazouls-lès-Béziers (34). Nous accompagnons tous types d'activités : domaines viticoles, caves coopératives, PME négoce vin, TPE artisans, commerçants, indépendants, professions libérales et acteurs de l'œnotourisme du Biterrois.",
   directAnswerEn:

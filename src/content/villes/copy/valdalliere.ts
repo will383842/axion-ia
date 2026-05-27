@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VALDALLIERE_COPY: VilleCopy = {
   pitchFr:
-    "Valdallière (14), commune nouvelle du Calvados dans le bocage normand sud-ouest, regroupe plusieurs communes rurales autour de la vallée de l'Allière. Territoire agricole et artisanal, tissu TPE artisans BTP, exploitations agricoles, PME agroalimentaires, commerces de proximité, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Valdallière (14), commune nouvelle du Calvados dans le bocage normand sud-ouest, regroupe plusieurs communes rurales autour de la vallée de l'Allière. Territoire agricole et artisanal, tissu TPE artisans BTP, exploitations agricoles, PME agroalimentaires, commerces de proximité, professions libérales. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Valdallière (14), commune nouvelle du Calvados dans le bocage normand sud-ouest, regroupe plusieurs communes rurales autour de la vallée de l'Allière. Territoire agricole et artisanal, tissu TPE artisans BTP, exploitations agricoles, PME agroalimentaires, commerces de proximité, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Valdallière (14), commune nouvelle du Calvados dans le bocage normand sud-ouest, regroupe plusieurs communes rurales autour de la vallée de l'Allière. Territoire agricole et artisanal, tissu TPE artisans BTP, exploitations agricoles, PME agroalimentaires, commerces de proximité, professions libérales. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Valdallière (14). Nous accompagnons tous types d'activités : TPE artisans BTP et commerçants du bocage, exploitations agricoles, PME agroalimentaires, professions libérales, indépendants et services aux entreprises rurales du sud-ouest Calvados.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const VALDALLIERE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Valdallière, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Valdallière ?",
+      q: "Tarifs audit IA à Valdallière  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {

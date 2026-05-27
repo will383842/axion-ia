@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const ROOST_WARENDIN_COPY: VilleCopy = {
   pitchFr:
-    "Roost-Warendin (59), commune de 5 956 habitants dans le Nord (Hauts-de-France), intégrée à la Communauté d'Agglomération du Douaisis. Commune en reconversion post-minière avec le parc Arkeos (archéologie) et zones d'activités tertiaires. Tissu TPE artisans, PME services et sous-traitance, commerces de proximité, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Roost-Warendin (59), commune de 5 956 habitants dans le Nord (Hauts-de-France), intégrée à la Communauté d'Agglomération du Douaisis. Commune en reconversion post-minière avec le parc Arkeos (archéologie) et zones d'activités tertiaires. Tissu TPE artisans, PME services et sous-traitance, commerces de proximité, professions libérales. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Roost-Warendin (59), commune de 5 956 habitants dans le Nord (Hauts-de-France), intégrée à la Communauté d'Agglomération du Douaisis. Commune en reconversion post-minière avec le parc Arkeos (archéologie) et zones d'activités tertiaires. Tissu TPE artisans, PME services et sous-traitance, commerces de proximité, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Roost-Warendin (59), commune de 5 956 habitants dans le Nord (Hauts-de-France), intégrée à la Communauté d'Agglomération du Douaisis. Commune en reconversion post-minière avec le parc Arkeos (archéologie) et zones d'activités tertiaires. Tissu TPE artisans, PME services et sous-traitance, commerces de proximité, professions libérales. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Roost-Warendin (59). Nous accompagnons TPE artisans, PME services et sous-traitance, commerçants et professions libérales de l'agglomération de Douai. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Roost-Warendin (59). Nous accompagnons TPE artisans, PME services et sous-traitance, commerçants et professions libérales de l'agglomération de Douai. Audit Flash sur mesure, interventions sur site et coaching dirigeants.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Roost-Warendin (59). Nous accompagnons TPE artisans, PME services et sous-traitance, commerçants et professions libérales de l'agglomération de Douai. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Roost-Warendin (59). Nous accompagnons TPE artisans, PME services et sous-traitance, commerçants et professions libérales de l'agglomération de Douai. Audit Flash sur mesure, interventions sur site et coaching dirigeants.",
   seoHook: "bassin minier unesco",
   ecosystemFr:
     "Roost-Warendin est située en périphérie est de Douai, intégrée à la Communauté d'Agglomération du Douaisis. Commune en reconversion post-minière dynamique avec le parc Arkeos (archéologie et tourisme), zones d'activités tertiaires et éco-quartiers. Tissu TPE artisans BTP, PME services aux entreprises et sous-traitance, commerces de proximité, professions libérales. Bassin minier UNESCO à proximité immédiate.",
@@ -52,7 +52,7 @@ export const ROOST_WARENDIN_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Roost-Warendin et dans toute la Communauté d'Agglomération du Douaisis (Douai, Sin-le-Noble, Lallaing, Pecquencourt). Nos consultants se déplacent depuis Lille en 35 min ou Douai en 8 min.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Roost-Warendin ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Roost-Warendin  ?",
       a: "L'Audit Flash IA démarre à 490 € HT pour une session de 4h. Idéal pour les TPE et PME de Roost-Warendin souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré sous 10 jours.",
     },
     {

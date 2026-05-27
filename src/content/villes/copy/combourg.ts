@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const COMBOURG_COPY: VilleCopy = {
   pitchFr:
-    "Combourg (35), petite ville du nord de l'Ille-et-Vilaine célèbre pour son château où vécut Chateaubriand, conjugue tourisme patrimonial et tissu économique rural. TPE artisans, commerces de bourg, PME de services, professions libérales, exploitants agricoles (polyculture-élevage laitier) et acteurs tourisme littéraire. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Combourg (35), petite ville du nord de l'Ille-et-Vilaine célèbre pour son château où vécut Chateaubriand, conjugue tourisme patrimonial et tissu économique rural. TPE artisans, commerces de bourg, PME de services, professions libérales, exploitants agricoles (polyculture-élevage laitier) et acteurs tourisme littéraire. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Combourg (35), petite ville du nord de l'Ille-et-Vilaine célèbre pour son château où vécut Chateaubriand, conjugue tourisme patrimonial et tissu économique rural. TPE artisans, commerces de bourg, PME de services, professions libérales, exploitants agricoles (polyculture-élevage laitier) et acteurs tourisme littéraire. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Combourg (35), petite ville du nord de l'Ille-et-Vilaine célèbre pour son château où vécut Chateaubriand, conjugue tourisme patrimonial et tissu économique rural. TPE artisans, commerces de bourg, PME de services, professions libérales, exploitants agricoles (polyculture-élevage laitier) et acteurs tourisme littéraire. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Combourg (35). Nous accompagnons tous types d'activités : acteurs tourisme patrimonial (château de Chateaubriand), TPE artisans et commerçants du bourg, PME de services, professions libérales, exploitants agricoles et acteurs agroalimentaires du pays de Combourg.",
   directAnswerEn:
@@ -56,7 +56,7 @@ export const COMBOURG_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les acteurs tourisme du château de Chateaubriand et du pays de Combourg sur leurs cas IA : agents conversationnels visiteurs multilingue, automatisation réservations, classification photos patrimoine, recommandation parcours littéraires.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Combourg ?",
+      q: "Combien coûte un audit IA à Combourg  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du pays de Combourg, il identifie les cas d'usage IA à fort ROI pour votre activité (tourisme, artisanat, agriculture, commerce). Tarifs publics.",
     },
     {

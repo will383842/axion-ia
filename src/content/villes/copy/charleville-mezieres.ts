@@ -11,9 +11,9 @@ export const CHARLEVILLE_MEZIERES_COPY: VilleCopy = {
   pitchEn:
     "À Charleville-Mézières, Axion-IA intervient pour optimiser les processus des entreprises locales, notamment dans les secteurs de la fabrication et du commerce. Notre équipe se déplace pour des audits et implémentations sur site.",
   directAnswerFr:
-    "Axion-IA intervient à Charleville-Mézières pour accompagner les entreprises dans l'intégration de l'IA. Avec des acteurs comme PSA et ArcelorMittal présents, notre expertise aide à automatiser les tâches administratives et à améliorer l'efficacité des processus. Nos services incluent des audits à partir de 490 € HT et des interventions dès 590 € HT.",
+    "Axion-IA intervient à Charleville-Mézières pour accompagner les entreprises dans l'intégration de l'IA. Avec des acteurs comme PSA et ArcelorMittal présents, notre expertise aide à automatiser les tâches administratives et à améliorer l'efficacité des processus.",
   directAnswerEn:
-    "Axion-IA intervient à Charleville-Mézières pour accompagner les entreprises dans l'intégration de l'IA. Avec des acteurs comme PSA et ArcelorMittal présents, notre expertise aide à automatiser les tâches administratives et à améliorer l'efficacité des processus. Nos services incluent des audits à partir de 490 € HT et des interventions dès 590 € HT.",
+    "Axion-IA intervient à Charleville-Mézières pour accompagner les entreprises dans l'intégration de l'IA. Avec des acteurs comme PSA et ArcelorMittal présents, notre expertise aide à automatiser les tâches administratives et à améliorer l'efficacité des processus.",
   seoHook: "produits métalliques & machines équipements",
   ecosystemFr:
     "Charleville-Mézières est un pôle industriel avec PSA et ArcelorMittal. Le Parc d'activités de la Croisette renforce son attractivité, offrant un cadre propice à l'innovation et à l'optimisation des processus.",

@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const ORSAY_COPY: VilleCopy = {
   pitchFr:
-    "Orsay (91), commune de la Vallée de Chevreuse en Essonne, abrite le campus Paris-Saclay et des laboratoires CNRS de renommée mondiale. Tissu recherche et innovation, startups deeptech, services aux chercheurs, TPE conseil scientifique, PME high-tech. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Orsay (91), commune de la Vallée de Chevreuse en Essonne, abrite le campus Paris-Saclay et des laboratoires CNRS de renommée mondiale. Tissu recherche et innovation, startups deeptech, services aux chercheurs, TPE conseil scientifique, PME high-tech. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Orsay (91), commune de la Vallée de Chevreuse en Essonne, abrite le campus Paris-Saclay et des laboratoires CNRS de renommée mondiale. Tissu recherche et innovation, startups deeptech, services aux chercheurs, TPE conseil scientifique, PME high-tech. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Orsay (91), commune de la Vallée de Chevreuse en Essonne, abrite le campus Paris-Saclay et des laboratoires CNRS de renommée mondiale. Tissu recherche et innovation, startups deeptech, services aux chercheurs, TPE conseil scientifique, PME high-tech. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Orsay (91). Nous accompagnons TPE et PME : startups deeptech campus Paris-Saclay, spin-offs laboratoires CNRS, prestataires de services aux chercheurs, TPE conseil scientifique, PME high-tech Vallée de Chevreuse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Orsay (91). Nous accompagnons TPE et PME : startups deeptech campus Paris-Saclay, spin-offs laboratoires CNRS, prestataires de services aux chercheurs, TPE conseil scientifique, PME high-tech Vallée de Chevreuse. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Orsay (91). Nous accompagnons TPE et PME : startups deeptech campus Paris-Saclay, spin-offs laboratoires CNRS, prestataires de services aux chercheurs, TPE conseil scientifique, PME high-tech Vallée de Chevreuse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Orsay (91). Nous accompagnons TPE et PME : startups deeptech campus Paris-Saclay, spin-offs laboratoires CNRS, prestataires de services aux chercheurs, TPE conseil scientifique, PME high-tech Vallée de Chevreuse. Audit Flash sur mesure.",
   seoHook: "recherche scientifique & startups deeptech",
   ecosystemFr:
     "Orsay est au cœur du campus Paris-Saclay, premier pôle scientifique européen, avec l'université Paris-Saclay et de nombreux laboratoires CNRS. Tissu startups deeptech, recherche fondamentale et appliquée, TPE conseil scientifique, PME high-tech, services aux chercheurs.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_MARCEL_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Marcel (71), commune de l'agglomération de Chalon-sur-Saône en Saône-et-Loire, abrite d'importantes zones industrielles et tertiaires. Tissu TPE/PME industrie, métallurgie, logistique, services aux entreprises, artisans BTP. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Saint-Marcel (71), commune de l'agglomération de Chalon-sur-Saône en Saône-et-Loire, abrite d'importantes zones industrielles et tertiaires. Tissu TPE/PME industrie, métallurgie, logistique, services aux entreprises, artisans BTP. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Saint-Marcel (71), commune de l'agglomération de Chalon-sur-Saône en Saône-et-Loire, abrite d'importantes zones industrielles et tertiaires. Tissu TPE/PME industrie, métallurgie, logistique, services aux entreprises, artisans BTP. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Saint-Marcel (71), commune de l'agglomération de Chalon-sur-Saône en Saône-et-Loire, abrite d'importantes zones industrielles et tertiaires. Tissu TPE/PME industrie, métallurgie, logistique, services aux entreprises, artisans BTP. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Marcel (71). Nous accompagnons tous types d'activités : TPE/PME des zones industrielles Grand Chalon, sous-traitants industrie, logisticiens, artisans BTP et services aux entreprises.",
   directAnswerEn:

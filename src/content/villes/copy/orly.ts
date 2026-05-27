@@ -11,9 +11,9 @@ export const ORLY_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Orly, un hub de transport avec Air France et ADP. Nous accompagnons les entreprises locales dans l'automatisation de leurs processus grâce à notre expertise en IA.",
   directAnswerFr:
-    "À Orly, Axion-IA propose des interventions sur site pour optimiser les processus des entreprises locales. Avec des groupes comme Air France et ADP, nous aidons à automatiser les tâches administratives et à améliorer l'efficacité opérationnelle. Notre audit Flash commence à 490 € HT, permettant une évaluation rapide des besoins en IA.",
+    "À Orly, Axion-IA propose des interventions sur site pour optimiser les processus des entreprises locales. Avec des groupes comme Air France et ADP, nous aidons à automatiser les tâches administratives et à améliorer l'efficacité opérationnelle. Notre audit Flash commence à permettant une évaluation rapide des besoins en IA.",
   directAnswerEn:
-    "À Orly, Axion-IA propose des interventions sur site pour optimiser les processus des entreprises locales. Avec des groupes comme Air France et ADP, nous aidons à automatiser les tâches administratives et à améliorer l'efficacité opérationnelle. Notre audit Flash commence à 490 € HT, permettant une évaluation rapide des besoins en IA.",
+    "À Orly, Axion-IA propose des interventions sur site pour optimiser les processus des entreprises locales. Avec des groupes comme Air France et ADP, nous aidons à automatiser les tâches administratives et à améliorer l'efficacité opérationnelle. Notre audit Flash commence à permettant une évaluation rapide des besoins en IA.",
   seoHook: "entreposage & transports terrestres",
   ecosystemFr:
     "Orly est un centre de transport clé, abritant des géants comme Air France et ADP. Le Parc d'Activités des Saules contribue à l'activité économique locale.",

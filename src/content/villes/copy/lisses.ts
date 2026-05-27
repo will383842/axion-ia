@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LISSES_COPY: VilleCopy = {
   pitchFr:
-    "Lisses (91), commune de l'agglomération d'Évry-Courcouronnes dotée de zones d'activités économiques dynamiques, est un pôle PME et TPE du sud francilien. Logistique, commerce de gros, industrie légère, services aux entreprises et artisanat. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin Évry / Grand Paris Sud.",
+    "Lisses (91), commune de l'agglomération d'Évry-Courcouronnes dotée de zones d'activités économiques dynamiques, est un pôle PME et TPE du sud francilien. Logistique, commerce de gros, industrie légère, services aux entreprises et artisanat. Axion-IA accompagne tout le tissu professionnel local du bassin Évry / Grand Paris Sud.",
   pitchEn:
-    "Lisses (91), commune de l'agglomération d'Évry-Courcouronnes dotée de zones d'activités économiques dynamiques, est un pôle PME et TPE du sud francilien. Logistique, commerce de gros, industrie légère, services aux entreprises et artisanat. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin Évry / Grand Paris Sud.",
+    "Lisses (91), commune de l'agglomération d'Évry-Courcouronnes dotée de zones d'activités économiques dynamiques, est un pôle PME et TPE du sud francilien. Logistique, commerce de gros, industrie légère, services aux entreprises et artisanat. Axion-IA accompagne tout le tissu professionnel local du bassin Évry / Grand Paris Sud.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lisses (91). Nous accompagnons tous types d'activités : PME logistiques et commerce de gros des zones d'activités, TPE artisans BTP, industriels légers, services aux entreprises, commerçants et indépendants du bassin Évry / Grand Paris Sud.",
   directAnswerEn:
@@ -52,7 +52,7 @@ export const LISSES_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Lisses et toute la communauté d'agglomération Grand Paris Sud (Évry-Courcouronnes, Corbeil-Essonnes, Ris-Orangis, Bondoufle, Courcouronnes). Nos consultants se déplacent depuis Paris (40 min) ou Évry (10 min).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Lisses ?",
+      q: "Quel est le tarif d'un audit IA à Lisses  ?",
       a: "L'audit Flash IA à Lisses débute à 490 € HT pour 4 heures de diagnostic. Tarifs publics, sans engagement, adaptés aux TPE et PME des zones d'activités. ROI chiffré et plan d'action livré sous 48h.",
     },
     {

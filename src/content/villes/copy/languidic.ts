@@ -56,7 +56,7 @@ export const LANGUIDIC_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les exploitations agricoles et PME agroalimentaires du terroir lorientais sur leurs cas IA : traçabilité, automatisation gestion troupeau et cultures, agents IA conseil agronomique, optimisation tournées collecte, outils IA administratifs PAC.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Languidic ?",
+      q: "Combien coûte un audit IA à Languidic  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de l'arrière-pays lorientais, il identifie les cas d'usage IA à fort ROI pour votre activité (agriculture, agroalimentaire, BTP, commerce, libéral). Tarifs publics.",
     },
     {

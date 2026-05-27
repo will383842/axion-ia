@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const MIOS_COPY: VilleCopy = {
   pitchFr:
-    "Mios (33), commune du sud du Bassin d'Arcachon en pleine forêt landaise, connaît un essor démographique et économique avec un tissu de TPE/PME artisanales, commerces de proximité et services aux habitants. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin sud-arcachonnais.",
+    "Mios (33), commune du sud du Bassin d'Arcachon en pleine forêt landaise, connaît un essor démographique et économique avec un tissu de TPE/PME artisanales, commerces de proximité et services aux habitants. Axion-IA collabore avec toutes les structures locales du bassin sud-arcachonnais.",
   pitchEn:
-    "Mios (33), commune du sud du Bassin d'Arcachon en pleine forêt landaise, connaît un essor démographique et économique avec un tissu de TPE/PME artisanales, commerces de proximité et services aux habitants. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin sud-arcachonnais.",
+    "Mios (33), commune du sud du Bassin d'Arcachon en pleine forêt landaise, connaît un essor démographique et économique avec un tissu de TPE/PME artisanales, commerces de proximité et services aux habitants. Axion-IA collabore avec toutes les structures locales du bassin sud-arcachonnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mios (33). Nous accompagnons TPE et PME du sud Bassin d'Arcachon : artisans BTP, commerçants de proximité, PME de services, professions libérales et entreprises forestières. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mios (33). Nous accompagnons TPE et PME du sud Bassin d'Arcachon : artisans BTP, commerçants de proximité, PME de services, professions libérales et entreprises forestières. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mios (33). Nous accompagnons TPE et PME du sud Bassin d'Arcachon : artisans BTP, commerçants de proximité, PME de services, professions libérales et entreprises forestières. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mios (33). Nous accompagnons TPE et PME du sud Bassin d'Arcachon : artisans BTP, commerçants de proximité, PME de services, professions libérales et entreprises forestières. Audit Flash sur mesure.",
   seoHook: "artisanat & services personne",
   ecosystemFr:
     "Mios est une commune en forte croissance au sud du Bassin d'Arcachon. Économie résidentielle dynamique, tissu TPE artisanat BTP dense (construction neuve), commerces de proximité, services à la personne et exploitation forestière (pin maritime).",
@@ -52,7 +52,7 @@ export const MIOS_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Mios et dans tout le sud Bassin d'Arcachon (Biganos, Le Teich, Salles, Belin-Béliet). Nos consultants se déplacent depuis Bordeaux (40 min) ou Paris (TGV 2h + 40 min).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Mios ?",
+      q: "Tarifs audit IA à Mios  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Adapté aux TPE artisans et commerçants du sud Bassin d'Arcachon.",
     },
     {

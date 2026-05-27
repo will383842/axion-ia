@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const GUEMENE_PENFAO_COPY: VilleCopy = {
   pitchFr:
-    "Guémené-Penfao (44), bourg du nord Loire-Atlantique aux confins du Morbihan et de l'Ille-et-Vilaine, est un pôle de services rural entre Redon et Blain. Tissu de TPE artisanales, exploitations agricoles et d'élevage, commerces, PME agroalimentaires et forestières. Axion-IA accompagne entreprises et indépendants de tous secteurs du pays de Redon.",
+    "Guémené-Penfao (44), bourg du nord Loire-Atlantique aux confins du Morbihan et de l'Ille-et-Vilaine, est un pôle de services rural entre Redon et Blain. Tissu de TPE artisanales, exploitations agricoles et d'élevage, commerces, PME agroalimentaires et forestières. Axion-IA collabore avec toutes les structures locales du pays de Redon.",
   pitchEn:
-    "Guémené-Penfao (44), bourg du nord Loire-Atlantique aux confins du Morbihan et de l'Ille-et-Vilaine, est un pôle de services rural entre Redon et Blain. Tissu de TPE artisanales, exploitations agricoles et d'élevage, commerces, PME agroalimentaires et forestières. Axion-IA accompagne entreprises et indépendants de tous secteurs du pays de Redon.",
+    "Guémené-Penfao (44), bourg du nord Loire-Atlantique aux confins du Morbihan et de l'Ille-et-Vilaine, est un pôle de services rural entre Redon et Blain. Tissu de TPE artisanales, exploitations agricoles et d'élevage, commerces, PME agroalimentaires et forestières. Axion-IA collabore avec toutes les structures locales du pays de Redon.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guémené-Penfao (44). Nous accompagnons tous types d'activités : exploitations agricoles et d'élevage, TPE artisans BTP et bois, commerçants du bourg, PME agroalimentaires, professionnels de santé et services aux entreprises du nord Loire-Atlantique. Audit Flash accessible dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guémené-Penfao (44). Nous accompagnons tous types d'activités : exploitations agricoles et d'élevage, TPE artisans BTP et bois, commerçants du bourg, PME agroalimentaires, professionnels de santé et services aux entreprises du nord Loire-Atlantique. Audit Flash accessible.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guémené-Penfao (44). Nous accompagnons tous types d'activités : exploitations agricoles et d'élevage, TPE artisans BTP et bois, commerçants du bourg, PME agroalimentaires, professionnels de santé et services aux entreprises du nord Loire-Atlantique. Audit Flash accessible dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guémené-Penfao (44). Nous accompagnons tous types d'activités : exploitations agricoles et d'élevage, TPE artisans BTP et bois, commerçants du bourg, PME agroalimentaires, professionnels de santé et services aux entreprises du nord Loire-Atlantique. Audit Flash accessible.",
   seoHook: "agriculture élevage & filière bois",
   ecosystemFr:
     "Guémené-Penfao est un bourg de plus de 5 200 habitants au carrefour de trois départements (Loire-Atlantique, Morbihan, Ille-et-Vilaine). L'économie locale s'appuie sur l'agriculture (élevage bovin, polyculture), la filière bois (forêt de la Bretesche), l'artisanat BTP, le commerce de bourg et les services de proximité. Pôle de santé rural avec médecins, pharmaciens et paramédicaux.",

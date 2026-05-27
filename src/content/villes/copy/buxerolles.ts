@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BUXEROLLES_COPY: VilleCopy = {
   pitchFr:
-    "Buxerolles (86), commune de l'agglomération de Poitiers nord en Vienne, est l'une des plus peuplées du Grand Poitiers. Tissu TPE artisans, commerces de proximité, PME tertiaires, professions libérales (santé, droit), services aux entreprises et associations. Axion-IA accompagne entreprises et indépendants de tous secteurs du nord de l'agglomération poitevine.",
+    "Buxerolles (86), commune de l'agglomération de Poitiers nord en Vienne, est l'une des plus peuplées du Grand Poitiers. Tissu TPE artisans, commerces de proximité, PME tertiaires, professions libérales (santé, droit), services aux entreprises et associations. Axion-IA opère pour entreprises et indépendants du secteur du nord de l'agglomération poitevine.",
   pitchEn:
-    "Buxerolles (86), commune de l'agglomération de Poitiers nord en Vienne, est l'une des plus peuplées du Grand Poitiers. Tissu TPE artisans, commerces de proximité, PME tertiaires, professions libérales (santé, droit), services aux entreprises et associations. Axion-IA accompagne entreprises et indépendants de tous secteurs du nord de l'agglomération poitevine.",
+    "Buxerolles (86), commune de l'agglomération de Poitiers nord en Vienne, est l'une des plus peuplées du Grand Poitiers. Tissu TPE artisans, commerces de proximité, PME tertiaires, professions libérales (santé, droit), services aux entreprises et associations. Axion-IA opère pour entreprises et indépendants du secteur du nord de l'agglomération poitevine.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Buxerolles (86). Nous accompagnons tous types d'activités : TPE artisans, commerçants de proximité, PME tertiaires, professions libérales (médecins, avocats, experts-comptables), services aux entreprises et associations du Grand Poitiers nord.",
   directAnswerEn:

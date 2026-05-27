@@ -52,7 +52,7 @@ export const LARMOR_PLAGE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Larmor-Plage et toute Lorient Agglomération (Lorient, Lanester, Ploemeur, Hennebont, Guidel). Nos consultants se déplacent directement sur votre site, commerce ou établissement balnéaire.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Larmor-Plage ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Larmor-Plage  ?",
       a: "L'Audit Flash démarre à 490 € HT pour les TPE et PME de Larmor-Plage. Il comprend un diagnostic de 4 heures, une cartographie des processus automatisables et un rapport ROI chiffré sous 10 jours ouvrés.",
     },
     {

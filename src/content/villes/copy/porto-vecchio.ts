@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PORTO_VECCHIO_COPY: VilleCopy = {
   pitchFr:
-    "Porto-Vecchio (2A), troisième ville de Corse sur la côte sud-est, est un pôle majeur du tourisme balnéaire prestige (plages de Palombaggia et Santa Giulia). Port de plaisance, citadelle génoise, salines historiques. Tissu TPE/PME tourisme haut de gamme, hôtellerie-restauration, nautisme, commerce saisonnier, immobilier. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Porto-Vecchio (2A), troisième ville de Corse sur la côte sud-est, est un pôle majeur du tourisme balnéaire prestige (plages de Palombaggia et Santa Giulia). Port de plaisance, citadelle génoise, salines historiques. Tissu TPE/PME tourisme haut de gamme, hôtellerie-restauration, nautisme, commerce saisonnier, immobilier. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Porto-Vecchio (2A), troisième ville de Corse sur la côte sud-est, est un pôle majeur du tourisme balnéaire prestige (plages de Palombaggia et Santa Giulia). Port de plaisance, citadelle génoise, salines historiques. Tissu TPE/PME tourisme haut de gamme, hôtellerie-restauration, nautisme, commerce saisonnier, immobilier. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Porto-Vecchio (2A), troisième ville de Corse sur la côte sud-est, est un pôle majeur du tourisme balnéaire prestige (plages de Palombaggia et Santa Giulia). Port de plaisance, citadelle génoise, salines historiques. Tissu TPE/PME tourisme haut de gamme, hôtellerie-restauration, nautisme, commerce saisonnier, immobilier. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Porto-Vecchio (2A). Nous accompagnons tous types d'activités : TPE/PME tourisme balnéaire prestige, hôtellerie-restauration haut de gamme, nautisme et port de plaisance, commerces saisonniers, agences immobilières, artisans BTP, indépendants et services aux entreprises du sud-est corse.",
   directAnswerEn:

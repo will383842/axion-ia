@@ -56,7 +56,7 @@ export const LINSELLES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME textile-confection héritières du tissu lillois-tourquennois sur leurs cas IA spécifiques : génération fiches produits multilingues, contrôle qualité visuel atelier par caméra, gestion automatisée des collections saisonnières, agents conversationnels B2B clients distributeurs, prévision approvisionnements et stocks.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Linselles ?",
+      q: "Quel est le tarif d'un audit IA à Linselles  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du nord de l'agglo lilloise et transfrontalières, il identifie les cas d'usage IA à fort ROI pour votre activité (textile, B2B transfrontalier, commerce, artisanat, agriculture). Tarifs publics, sans engagement.",
     },
     {

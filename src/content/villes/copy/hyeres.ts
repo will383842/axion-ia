@@ -11,9 +11,9 @@ export const HYERES_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Hyères pour accompagner les entreprises dans leur transformation numérique. Avec des entités comme Cap Digital et Inria en France, nous proposons des solutions d'IA adaptées aux besoins spécifiques des secteurs locaux tels que le commerce de détail et la restauration.",
   directAnswerFr:
-    "À Hyères, Axion-IA propose des interventions sur site pour optimiser les processus métiers. L'écosystème français comprend des entités comme Cap Digital et Inria, qui soutiennent l'innovation technologique. Nos services incluent des audits à partir de 490 € HT et des interventions dès 590 € HT, offrant des solutions concrètes pour les entreprises locales.",
+    "À Hyères, Axion-IA propose des interventions sur site pour optimiser les processus métiers. L'écosystème français comprend des entités comme Cap Digital et Inria, qui soutiennent l'innovation technologique. offrant des solutions concrètes pour les entreprises locales.",
   directAnswerEn:
-    "À Hyères, Axion-IA propose des interventions sur site pour optimiser les processus métiers. L'écosystème français comprend des entités comme Cap Digital et Inria, qui soutiennent l'innovation technologique. Nos services incluent des audits à partir de 490 € HT et des interventions dès 590 € HT, offrant des solutions concrètes pour les entreprises locales.",
+    "À Hyères, Axion-IA propose des interventions sur site pour optimiser les processus métiers. L'écosystème français comprend des entités comme Cap Digital et Inria, qui soutiennent l'innovation technologique. offrant des solutions concrètes pour les entreprises locales.",
   seoHook: "commerce détail & hébergement",
   ecosystemFr:
     "Hyères bénéficie d'un tissu économique diversifié avec des secteurs dominants comme le commerce de détail et la restauration. La proximité de l'aéroport de Toulon-Hyères facilite les déplacements pour nos interventions.",

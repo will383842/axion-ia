@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const UGINE_COPY: VilleCopy = {
   pitchFr:
-    "Ugine (73), commune de la vallée d'Arly en Savoie entre Albertville et Annecy, est historiquement marquée par l'industrie métallurgique des aciers spéciaux. Tissu métallurgie aciers spéciaux, industrie mécanique, TPE artisanat, commerces vallée d'Arly, services aux entreprises. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Ugine (73), commune de la vallée d'Arly en Savoie entre Albertville et Annecy, est historiquement marquée par l'industrie métallurgique des aciers spéciaux. Tissu métallurgie aciers spéciaux, industrie mécanique, TPE artisanat, commerces vallée d'Arly, services aux entreprises. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Ugine (73), commune de la vallée d'Arly en Savoie entre Albertville et Annecy, est historiquement marquée par l'industrie métallurgique des aciers spéciaux. Tissu métallurgie aciers spéciaux, industrie mécanique, TPE artisanat, commerces vallée d'Arly, services aux entreprises. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Ugine (73), commune de la vallée d'Arly en Savoie entre Albertville et Annecy, est historiquement marquée par l'industrie métallurgique des aciers spéciaux. Tissu métallurgie aciers spéciaux, industrie mécanique, TPE artisanat, commerces vallée d'Arly, services aux entreprises. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ugine (73). Nous accompagnons TPE et PME de la vallée d'Arly : industriels métallurgie et aciers spéciaux, entreprises mécanique de précision, artisans, commerçants, services aux entreprises et indépendants du bassin Albertville-Annecy.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_BERTHEVIN_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Berthevin (53), commune de l'agglomération lavalloise à l'est de Laval en Mayenne, accueille des zones d'activités qui concentrent TPE artisans, PME industrielles et de services, commerces, professions libérales et prestataires B2B du bassin lavallois. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Saint-Berthevin (53), commune de l'agglomération lavalloise à l'est de Laval en Mayenne, accueille des zones d'activités qui concentrent TPE artisans, PME industrielles et de services, commerces, professions libérales et prestataires B2B du bassin lavallois. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "Saint-Berthevin (53), commune de l'agglomération lavalloise à l'est de Laval en Mayenne, accueille des zones d'activités qui concentrent TPE artisans, PME industrielles et de services, commerces, professions libérales et prestataires B2B du bassin lavallois. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Saint-Berthevin (53), commune de l'agglomération lavalloise à l'est de Laval en Mayenne, accueille des zones d'activités qui concentrent TPE artisans, PME industrielles et de services, commerces, professions libérales et prestataires B2B du bassin lavallois. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Berthevin (53). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et de services, commerçants, professions libérales, prestataires B2B et entreprises des zones d'activités de l'agglomération lavalloise est.",
   directAnswerEn:

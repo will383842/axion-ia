@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ERNEE_COPY: VilleCopy = {
   pitchFr:
-    "Ernée (53), bourg du nord-ouest de la Mayenne aux marches de la Bretagne, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-bourg, exploitations d'élevage (bovin laitier) et prestataires de services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Ernée (53), bourg du nord-ouest de la Mayenne aux marches de la Bretagne, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-bourg, exploitations d'élevage (bovin laitier) et prestataires de services. Axion-IA répond aux besoins des activités professionnelles présentes.",
   pitchEn:
-    "Ernée (53), bourg du nord-ouest de la Mayenne aux marches de la Bretagne, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-bourg, exploitations d'élevage (bovin laitier) et prestataires de services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Ernée (53), bourg du nord-ouest de la Mayenne aux marches de la Bretagne, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-bourg, exploitations d'élevage (bovin laitier) et prestataires de services. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ernée (53). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles, éleveurs laitiers, commerçants de bourg, professions libérales et prestataires de services des marches Bretagne-Mayenne.",
   directAnswerEn:

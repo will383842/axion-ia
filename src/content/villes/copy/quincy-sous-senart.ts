@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const QUINCY_SOUS_SENART_COPY: VilleCopy = {
   pitchFr:
-    "Quincy-sous-Sénart (91), commune résidentielle à 25 km au sud-est de Paris en lisière de la forêt de Sénart, accueille un tissu de TPE artisans, commerces de proximité, professions libérales et PME de services. Axion-IA y déploie ses missions auprès de toutes les organisations du sud-est essonnien.",
+    "Quincy-sous-Sénart (91), commune résidentielle à 25 km au sud-est de Paris en lisière de la forêt de Sénart, accueille un tissu de TPE artisans, commerces de proximité, professions libérales et PME de services. Axion-IA y mène ses missions auprès des organisations locales du sud-est essonnien.",
   pitchEn:
-    "Quincy-sous-Sénart (91), commune résidentielle à 25 km au sud-est de Paris en lisière de la forêt de Sénart, accueille un tissu de TPE artisans, commerces de proximité, professions libérales et PME de services. Axion-IA y déploie ses missions auprès de toutes les organisations du sud-est essonnien.",
+    "Quincy-sous-Sénart (91), commune résidentielle à 25 km au sud-est de Paris en lisière de la forêt de Sénart, accueille un tissu de TPE artisans, commerces de proximité, professions libérales et PME de services. Axion-IA y mène ses missions auprès des organisations locales du sud-est essonnien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Quincy-sous-Sénart (91). Nous accompagnons tous types d'activités : TPE artisans, commerçants de proximité, professions libérales, indépendants, PME tertiaires et services du sud-est de l'Essonne en lisière de la forêt de Sénart. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Quincy-sous-Sénart (91). Nous accompagnons tous types d'activités : TPE artisans, commerçants de proximité, professions libérales, indépendants, PME tertiaires et services du sud-est de l'Essonne en lisière de la forêt de Sénart. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Quincy-sous-Sénart (91). Nous accompagnons tous types d'activités : TPE artisans, commerçants de proximité, professions libérales, indépendants, PME tertiaires et services du sud-est de l'Essonne en lisière de la forêt de Sénart. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Quincy-sous-Sénart (91). Nous accompagnons tous types d'activités : TPE artisans, commerçants de proximité, professions libérales, indépendants, PME tertiaires et services du sud-est de l'Essonne en lisière de la forêt de Sénart. Audit Flash sur mesure.",
   seoHook: "professions libérales & services tertiaire",
   ecosystemFr:
     "Quincy-sous-Sénart est une commune résidentielle du sud-est de l'Essonne, en bordure de la forêt de Sénart, entre Yerres et Boussy-Saint-Antoine. Tissu économique de proximité : TPE artisans BTP, commerces, professions libérales de santé, PME tertiaires et services aux particuliers. Proximité immédiate des zones d'activités de Sénart et d'Orly.",

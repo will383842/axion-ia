@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MARLY_57_COPY: VilleCopy = {
   pitchFr:
-    "Marly (57), commune française du département de la Moselle (région Grand Est), située en banlieue sud immédiate de Metz, est une commune résidentielle dotée de zones d'activités tertiaires et commerciales. Tissu TPE commerces, artisans BTP, services aux entreprises, PME tertiaires, professions libérales. À distinguer de Marly (78). Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Marly (57), commune française du département de la Moselle (région Grand Est), située en banlieue sud immédiate de Metz, est une commune résidentielle dotée de zones d'activités tertiaires et commerciales. Tissu TPE commerces, artisans BTP, services aux entreprises, PME tertiaires, professions libérales. À distinguer de Marly (78). Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Marly (57), commune française du département de la Moselle (région Grand Est), située en banlieue sud immédiate de Metz, est une commune résidentielle dotée de zones d'activités tertiaires et commerciales. Tissu TPE commerces, artisans BTP, services aux entreprises, PME tertiaires, professions libérales. À distinguer de Marly (78). Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Marly (57), commune française du département de la Moselle (région Grand Est), située en banlieue sud immédiate de Metz, est une commune résidentielle dotée de zones d'activités tertiaires et commerciales. Tissu TPE commerces, artisans BTP, services aux entreprises, PME tertiaires, professions libérales. À distinguer de Marly (78). Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marly (57). Nous accompagnons tous types d'activités : TPE commerces et artisans, PME tertiaires zones d'activités, professions libérales, services aux entreprises de Metz Métropole sud, indépendants et résidents actifs travaillant à Metz ou Luxembourg.",
   directAnswerEn:

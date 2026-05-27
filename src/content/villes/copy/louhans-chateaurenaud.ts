@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LOUHANS_CHATEAURENAUD_COPY: VilleCopy = {
   pitchFr:
-    "Louhans-Châteaurenaud (71), capitale de la Bresse bourguignonne en Saône-et-Loire, est réputée pour son marché aux volailles AOC Bresse et ses arcades historiques (Grande Rue aux 157 arcades). Tissu TPE/PME agriculture Bresse, agroalimentaire volaille, commerces, artisans. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Louhans-Châteaurenaud (71), capitale de la Bresse bourguignonne en Saône-et-Loire, est réputée pour son marché aux volailles AOC Bresse et ses arcades historiques (Grande Rue aux 157 arcades). Tissu TPE/PME agriculture Bresse, agroalimentaire volaille, commerces, artisans. Axion-IA répond aux besoins des activités professionnelles présentes.",
   pitchEn:
-    "Louhans-Châteaurenaud (71), capitale de la Bresse bourguignonne en Saône-et-Loire, est réputée pour son marché aux volailles AOC Bresse et ses arcades historiques (Grande Rue aux 157 arcades). Tissu TPE/PME agriculture Bresse, agroalimentaire volaille, commerces, artisans. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Louhans-Châteaurenaud (71), capitale de la Bresse bourguignonne en Saône-et-Loire, est réputée pour son marché aux volailles AOC Bresse et ses arcades historiques (Grande Rue aux 157 arcades). Tissu TPE/PME agriculture Bresse, agroalimentaire volaille, commerces, artisans. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Louhans-Châteaurenaud (71). Nous accompagnons tous types d'activités : éleveurs volailles AOC Bresse, TPE/PME agroalimentaire, commerçants arcades, artisans, services aux entreprises de la Bresse bourguignonne.",
   directAnswerEn:

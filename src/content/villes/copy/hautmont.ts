@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const HAUTMONT_COPY: VilleCopy = {
   pitchFr:
-    "Hautmont (59), commune industrielle de l'agglomération de Maubeuge dans le val de Sambre, est historiquement liée à la métallurgie et à la sidérurgie. Tissu économique : TPE et PME de la métallurgie et transformation des métaux, sous-traitance industrielle automobile (proximité Maubeuge-Toyota), artisans, commerces de proximité et professions libérales du Sambre-Avesnois. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin sambre-avesnois.",
+    "Hautmont (59), commune industrielle de l'agglomération de Maubeuge dans le val de Sambre, est historiquement liée à la métallurgie et à la sidérurgie. Tissu économique : TPE et PME de la métallurgie et transformation des métaux, sous-traitance industrielle automobile (proximité Maubeuge-Toyota), artisans, commerces de proximité et professions libérales du Sambre-Avesnois. Axion-IA couvre les activités professionnelles du bassin du bassin sambre-avesnois.",
   pitchEn:
-    "Hautmont (59), commune industrielle de l'agglomération de Maubeuge dans le val de Sambre, est historiquement liée à la métallurgie et à la sidérurgie. Tissu économique : TPE et PME de la métallurgie et transformation des métaux, sous-traitance industrielle automobile (proximité Maubeuge-Toyota), artisans, commerces de proximité et professions libérales du Sambre-Avesnois. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin sambre-avesnois.",
+    "Hautmont (59), commune industrielle de l'agglomération de Maubeuge dans le val de Sambre, est historiquement liée à la métallurgie et à la sidérurgie. Tissu économique : TPE et PME de la métallurgie et transformation des métaux, sous-traitance industrielle automobile (proximité Maubeuge-Toyota), artisans, commerces de proximité et professions libérales du Sambre-Avesnois. Axion-IA couvre les activités professionnelles du bassin du bassin sambre-avesnois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hautmont (59). Nous accompagnons TPE et PME : PME métallurgie et transformation des métaux, sous-traitants industriels automobile, artisans, commerces de proximité et professions libérales du Sambre-Avesnois.",
   directAnswerEn:
@@ -52,7 +52,7 @@ export const HAUTMONT_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Hautmont et dans toute l'agglomération de Maubeuge (Maubeuge, Louvroil, Jeumont, Feignies, Aulnoye-Aymeries). Nos consultants couvrent l'ensemble du Sambre-Avesnois depuis Lille (1h15) ou Valenciennes (35 min).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Hautmont ?",
+      q: "Quel est le tarif d'un audit IA à Hautmont  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Hautmont et de l'agglomération maubeugeoise, il identifie les cas d'usage IA à fort ROI pour votre activité (métallurgie, sous-traitance auto, mécanique, commerce). Tarifs publics, sans engagement.",
     },
     {

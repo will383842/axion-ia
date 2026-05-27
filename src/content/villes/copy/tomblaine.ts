@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const TOMBLAINE_COPY: VilleCopy = {
   pitchFr:
-    "Tomblaine (54), commune de l'est de l'agglomération nancéienne en Meurthe-et-Moselle, accueille le stade Marcel-Picot (AS Nancy Lorraine) et des zones d'activités tertiaires. Tissu TPE/PME services, commerce, artisans BTP, professions libérales, restauration. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Tomblaine (54), commune de l'est de l'agglomération nancéienne en Meurthe-et-Moselle, accueille le stade Marcel-Picot (AS Nancy Lorraine) et des zones d'activités tertiaires. Tissu TPE/PME services, commerce, artisans BTP, professions libérales, restauration. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Tomblaine (54), commune de l'est de l'agglomération nancéienne en Meurthe-et-Moselle, accueille le stade Marcel-Picot (AS Nancy Lorraine) et des zones d'activités tertiaires. Tissu TPE/PME services, commerce, artisans BTP, professions libérales, restauration. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Tomblaine (54), commune de l'est de l'agglomération nancéienne en Meurthe-et-Moselle, accueille le stade Marcel-Picot (AS Nancy Lorraine) et des zones d'activités tertiaires. Tissu TPE/PME services, commerce, artisans BTP, professions libérales, restauration. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tomblaine (54). Nous accompagnons tous types d'activités : TPE/PME de services, commerçants, artisans BTP, professions libérales et restaurateurs de l'est de l'agglomération nancéienne.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const TOMBLAINE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les artisans BTP et professions libérales sur des cas IA pratiques : automatisation devis, gestion planning, agents IA prise de RDV, classification documentaire. Audit Flash 490 € HT.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Tomblaine ?",
+      q: "Combien coûte un audit IA à Tomblaine  ?",
       a: "L'audit Flash IA démarre à 490 € HT pour les TPE et PME de Tomblaine et de la Métropole du Grand Nancy. Tarifs publics et transparents. ROI chiffré dès le diagnostic initial.",
     },
     {

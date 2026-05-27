@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const EPONE_COPY: VilleCopy = {
   pitchFr:
-    "Épône (78), commune des bords de Seine rive gauche à 45 km à l'ouest de Paris dans les Yvelines, accueille TPE artisans, PME industrielles et logistiques, commerces de proximité et exploitants agricoles. Axion-IA accompagne entreprises et indépendants de tous secteurs de la vallée de Seine yvelinoise.",
+    "Épône (78), commune des bords de Seine rive gauche à 45 km à l'ouest de Paris dans les Yvelines, accueille TPE artisans, PME industrielles et logistiques, commerces de proximité et exploitants agricoles. Axion-IA accompagne entreprises et indépendants de la vallée de Seine yvelinoise.",
   pitchEn:
-    "Épône (78), commune des bords de Seine rive gauche à 45 km à l'ouest de Paris dans les Yvelines, accueille TPE artisans, PME industrielles et logistiques, commerces de proximité et exploitants agricoles. Axion-IA accompagne entreprises et indépendants de tous secteurs de la vallée de Seine yvelinoise.",
+    "Épône (78), commune des bords de Seine rive gauche à 45 km à l'ouest de Paris dans les Yvelines, accueille TPE artisans, PME industrielles et logistiques, commerces de proximité et exploitants agricoles. Axion-IA accompagne entreprises et indépendants de la vallée de Seine yvelinoise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Épône (78). Nous accompagnons TPE et PME : artisans locaux, PME industrielles et logistiques de la vallée de Seine, commerçants et professions libérales de cette commune dynamique entre Mantes-la-Jolie et Les Mureaux.",
   directAnswerEn:
@@ -56,7 +56,7 @@ export const EPONE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME logistiques et industrielles de l'axe Seine autour d'Épône : automatisation flux entrepôt, gestion stocks IA, planification tournées, maintenance prédictive, traçabilité augmentée. Solutions terrain concrètes.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Épône ?",
+      q: "Quel est le tarif d'un audit IA à Épône  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de la vallée de Seine, il identifie les cas d'usage IA à fort ROI pour votre activité (industrie, logistique, artisanat, commerce). Tarifs publics.",
     },
     {

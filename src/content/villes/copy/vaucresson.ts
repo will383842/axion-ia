@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const VAUCRESSON_COPY: VilleCopy = {
   pitchFr:
-    "Vaucresson (92), commune résidentielle de l'ouest parisien bordée par la forêt de Fausses-Reposes et le domaine de la Marche, allie cadre verdoyant et proximité de La Défense et Versailles. Tissu de TPE indépendantes, professions libérales, PME tertiaires et cabinets spécialisés. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Vaucresson (92), commune résidentielle de l'ouest parisien bordée par la forêt de Fausses-Reposes et le domaine de la Marche, allie cadre verdoyant et proximité de La Défense et Versailles. Tissu de TPE indépendantes, professions libérales, PME tertiaires et cabinets spécialisés. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Vaucresson (92), commune résidentielle de l'ouest parisien bordée par la forêt de Fausses-Reposes et le domaine de la Marche, allie cadre verdoyant et proximité de La Défense et Versailles. Tissu de TPE indépendantes, professions libérales, PME tertiaires et cabinets spécialisés. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Vaucresson (92), commune résidentielle de l'ouest parisien bordée par la forêt de Fausses-Reposes et le domaine de la Marche, allie cadre verdoyant et proximité de La Défense et Versailles. Tissu de TPE indépendantes, professions libérales, PME tertiaires et cabinets spécialisés. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vaucresson (92). Nous accompagnons tous types d'activités : TPE indépendantes, professions libérales, cabinets spécialisés, PME tertiaires de l'ouest parisien, commerçants et artisans vaucressonnais. Audit Flash à partir de 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vaucresson (92). Nous accompagnons tous types d'activités : TPE indépendantes, professions libérales, cabinets spécialisés, PME tertiaires de l'ouest parisien, commerçants et artisans vaucressonnais. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vaucresson (92). Nous accompagnons tous types d'activités : TPE indépendantes, professions libérales, cabinets spécialisés, PME tertiaires de l'ouest parisien, commerçants et artisans vaucressonnais. Audit Flash à partir de 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vaucresson (92). Nous accompagnons tous types d'activités : TPE indépendantes, professions libérales, cabinets spécialisés, PME tertiaires de l'ouest parisien, commerçants et artisans vaucressonnais. Audit Flash sur mesure.",
   seoHook: "professions libérales & conseil services",
   ecosystemFr:
     "Vaucresson est une commune résidentielle de standing des Hauts-de-Seine, adossée à la forêt de Fausses-Reposes, à 15 km de Paris et 5 km de Versailles. Tissu économique de professions libérales, TPE de conseil, cabinets d'expertise et PME tertiaires. Proximité directe de La Défense (10 min), Rueil-Malmaison et du pôle technologique de Saclay.",
@@ -52,7 +52,7 @@ export const VAUCRESSON_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Vaucresson et dans tout l'ouest des Hauts-de-Seine (Garches, Marnes-la-Coquette, Rueil-Malmaison, La Celle-Saint-Cloud, Ville-d'Avray). Accès rapide depuis La Défense (10 min) et Paris (25 min Transilien L).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Vaucresson ?",
+      q: "Quel est le tarif d'un audit IA à Vaucresson  ?",
       a: "L'Audit Flash IA à Vaucresson débute à 490 € HT pour 4 heures de diagnostic. Il couvre l'identification des processus automatisables, le chiffrage du ROI et un plan d'action priorisé adapté à votre activité.",
     },
     {

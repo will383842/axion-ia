@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LA_VILLE_DU_BOIS_COPY: VilleCopy = {
   pitchFr:
-    "La Ville-du-Bois (91), commune résidentielle du Hurepoix à 23 km au sud-ouest de Paris. Tissu TPE/PME tertiaires, commerces zone commerciale, professions libérales, artisanat, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "La Ville-du-Bois (91), commune résidentielle du Hurepoix à 23 km au sud-ouest de Paris. Tissu TPE/PME tertiaires, commerces zone commerciale, professions libérales, artisanat, services aux entreprises. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "La Ville-du-Bois (91), commune résidentielle du Hurepoix à 23 km au sud-ouest de Paris. Tissu TPE/PME tertiaires, commerces zone commerciale, professions libérales, artisanat, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "La Ville-du-Bois (91), commune résidentielle du Hurepoix à 23 km au sud-ouest de Paris. Tissu TPE/PME tertiaires, commerces zone commerciale, professions libérales, artisanat, services aux entreprises. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Ville-du-Bois (91). Nous accompagnons TPE et PME : entreprises tertiaires, commerces zone commerciale, professions libérales, artisans, prestataires de services du Hurepoix. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Ville-du-Bois (91). Nous accompagnons TPE et PME : entreprises tertiaires, commerces zone commerciale, professions libérales, artisans, prestataires de services du Hurepoix. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Ville-du-Bois (91). Nous accompagnons TPE et PME : entreprises tertiaires, commerces zone commerciale, professions libérales, artisans, prestataires de services du Hurepoix. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Ville-du-Bois (91). Nous accompagnons TPE et PME : entreprises tertiaires, commerces zone commerciale, professions libérales, artisans, prestataires de services du Hurepoix. Audit Flash sur mesure.",
   seoHook: "commerce zone",
   ecosystemFr:
     "La Ville-du-Bois est une commune résidentielle du Hurepoix en Essonne, à 23 km au sud-ouest de Paris, proche de Montlhéry et Longjumeau. Tissu TPE/PME tertiaires, commerces zone commerciale, professions libérales, artisanat, services.",
@@ -60,7 +60,7 @@ export const LA_VILLE_DU_BOIS_COPY: VilleCopy = {
       a: "Automatisation prise de rendez-vous, gestion dossiers patients/clients par IA, facturation, conformité RGPD. Coaching 1-to-1 dirigeant inclus.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à La Ville-du-Bois ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à La Ville-du-Bois  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics, sans engagement. Devis sous 48h après premier échange.",
     },
     {

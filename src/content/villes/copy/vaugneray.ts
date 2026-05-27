@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VAUGNERAY_COPY: VilleCopy = {
   pitchFr:
-    "Vaugneray (69), commune en banlieue ouest de Lyon dans le Rhône, est positionnée aux portes des monts du Lyonnais. Tissu mixte agriculture et péri-urbain : PME tertiaires, TPE artisans BTP, commerces, agriculture monts du Lyonnais, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Vaugneray (69), commune en banlieue ouest de Lyon dans le Rhône, est positionnée aux portes des monts du Lyonnais. Tissu mixte agriculture et péri-urbain : PME tertiaires, TPE artisans BTP, commerces, agriculture monts du Lyonnais, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Vaugneray (69), commune en banlieue ouest de Lyon dans le Rhône, est positionnée aux portes des monts du Lyonnais. Tissu mixte agriculture et péri-urbain : PME tertiaires, TPE artisans BTP, commerces, agriculture monts du Lyonnais, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Vaugneray (69), commune en banlieue ouest de Lyon dans le Rhône, est positionnée aux portes des monts du Lyonnais. Tissu mixte agriculture et péri-urbain : PME tertiaires, TPE artisans BTP, commerces, agriculture monts du Lyonnais, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vaugneray (69). Nous accompagnons tous types d'activités : PME tertiaires ouest lyonnais, agriculteurs monts du Lyonnais, TPE artisans BTP, commerçants, professions libérales et services aux entreprises.",
   directAnswerEn:

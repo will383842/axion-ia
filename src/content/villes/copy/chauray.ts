@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHAURAY_COPY: VilleCopy = {
   pitchFr:
-    "Chauray (79), commune de l'agglomération de Niort dans les Deux-Sèvres, concentre plusieurs zones d'activités économiques majeures (Mendès-France, La Coupe). Tissu TPE artisans, PME tertiaires et logistiques, commerces, prestataires de services. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération niortaise.",
+    "Chauray (79), commune de l'agglomération de Niort dans les Deux-Sèvres, concentre plusieurs zones d'activités économiques majeures (Mendès-France, La Coupe). Tissu TPE artisans, PME tertiaires et logistiques, commerces, prestataires de services. Axion-IA accompagne tout le tissu professionnel local de l'agglomération niortaise.",
   pitchEn:
-    "Chauray (79), commune de l'agglomération de Niort dans les Deux-Sèvres, concentre plusieurs zones d'activités économiques majeures (Mendès-France, La Coupe). Tissu TPE artisans, PME tertiaires et logistiques, commerces, prestataires de services. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération niortaise.",
+    "Chauray (79), commune de l'agglomération de Niort dans les Deux-Sèvres, concentre plusieurs zones d'activités économiques majeures (Mendès-France, La Coupe). Tissu TPE artisans, PME tertiaires et logistiques, commerces, prestataires de services. Axion-IA accompagne tout le tissu professionnel local de l'agglomération niortaise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chauray (79). Nous accompagnons tous types d'activités : TPE artisans et commerçants des zones d'activités, PME tertiaires et logistiques, prestataires mutuelles niortaises, professions libérales et services aux entreprises de l'agglomération de Niort.",
   directAnswerEn:

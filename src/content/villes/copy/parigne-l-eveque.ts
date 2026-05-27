@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PARIGNE_L_EVEQUE_COPY: VilleCopy = {
   pitchFr:
-    "Parigné-l'Évêque (72), commune sarthoise au sud du Mans, compte plus de 5 300 habitants. Environnement semi-rural attractif en périphérie de Le Mans Métropole, tissu de TPE artisanales, PME industrielles, commerces et exploitations agricoles. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Parigné-l'Évêque (72), commune sarthoise au sud du Mans, compte plus de 5 300 habitants. Environnement semi-rural attractif en périphérie de Le Mans Métropole, tissu de TPE artisanales, PME industrielles, commerces et exploitations agricoles. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Parigné-l'Évêque (72), commune sarthoise au sud du Mans, compte plus de 5 300 habitants. Environnement semi-rural attractif en périphérie de Le Mans Métropole, tissu de TPE artisanales, PME industrielles, commerces et exploitations agricoles. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Parigné-l'Évêque (72), commune sarthoise au sud du Mans, compte plus de 5 300 habitants. Environnement semi-rural attractif en périphérie de Le Mans Métropole, tissu de TPE artisanales, PME industrielles, commerces et exploitations agricoles. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Parigné-l'Évêque (72). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles sud Le Mans, exploitations agricoles, professions libérales et services de proximité.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const PARIGNE_L_EVEQUE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les exploitations agricoles sarthoises : gestion parcellaire prédictive, optimisation rotations, automatisation stocks et facturation, outils IA adaptés à votre exploitation.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Parigné-l'Évêque ?",
+      q: "Combien coûte un audit IA à Parigné-l'Évêque  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {

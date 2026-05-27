@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const HERBIGNAC_COPY: VilleCopy = {
   pitchFr:
-    "Herbignac (44), bourg du nord de la Brière en Loire-Atlantique, entre Guérande et Pontchâteau. Tissu TPE artisans et commerçants, PME services, exploitations agricoles, tourisme vert Brière, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du nord Brière.",
+    "Herbignac (44), bourg du nord de la Brière en Loire-Atlantique, entre Guérande et Pontchâteau. Tissu TPE artisans et commerçants, PME services, exploitations agricoles, tourisme vert Brière, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes du nord Brière.",
   pitchEn:
-    "Herbignac (44), bourg du nord de la Brière en Loire-Atlantique, entre Guérande et Pontchâteau. Tissu TPE artisans et commerçants, PME services, exploitations agricoles, tourisme vert Brière, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du nord Brière.",
+    "Herbignac (44), bourg du nord de la Brière en Loire-Atlantique, entre Guérande et Pontchâteau. Tissu TPE artisans et commerçants, PME services, exploitations agricoles, tourisme vert Brière, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes du nord Brière.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Herbignac (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME services, exploitations agricoles, acteurs du tourisme vert en Brière, professions libérales et entreprises du nord Brière.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const HERBIGNAC_COPY: VilleCopy = {
       a: "Pour les acteurs tourisme de la Brière, nous proposons audit IA, interventions sur site, implémentation (chatbot réservation, automatisation planning, analyse données visiteurs), coaching 1-to-1 et plateformes web IA sur mesure.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Herbignac ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Herbignac  ?",
       a: "L'Audit Flash démarre à 490 € HT (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du nord Brière.",
     },
     {

@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const RETHEL_COPY: VilleCopy = {
   pitchFr:
-    "Rethel (08), sous-préfecture des Ardennes en bord d'Aisne, est célèbre pour son boudin blanc IGP et son patrimoine agroalimentaire. TPE artisans, PME agroalimentaires, commerçants de centre-ville, exploitations agricoles et professions libérales forment le tissu économique local. Axion-IA y déploie ses missions auprès de toutes les organisations du Rethélois.",
+    "Rethel (08), sous-préfecture des Ardennes en bord d'Aisne, est célèbre pour son boudin blanc IGP et son patrimoine agroalimentaire. TPE artisans, PME agroalimentaires, commerçants de centre-ville, exploitations agricoles et professions libérales forment le tissu économique local. Axion-IA y mène ses missions auprès des organisations locales du Rethélois.",
   pitchEn:
-    "Rethel (08), sous-préfecture des Ardennes en bord d'Aisne, est célèbre pour son boudin blanc IGP et son patrimoine agroalimentaire. TPE artisans, PME agroalimentaires, commerçants de centre-ville, exploitations agricoles et professions libérales forment le tissu économique local. Axion-IA y déploie ses missions auprès de toutes les organisations du Rethélois.",
+    "Rethel (08), sous-préfecture des Ardennes en bord d'Aisne, est célèbre pour son boudin blanc IGP et son patrimoine agroalimentaire. TPE artisans, PME agroalimentaires, commerçants de centre-ville, exploitations agricoles et professions libérales forment le tissu économique local. Axion-IA y mène ses missions auprès des organisations locales du Rethélois.",
   seoHook: "agroalimentaire & filière agricole ardennaise",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rethel (08). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires (boudin blanc, charcuterie), commerçants, exploitations agricoles et professions libérales du Rethélois. Audit Flash dès 490 € HT, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rethel (08). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires (boudin blanc, charcuterie), commerçants, exploitations agricoles et professions libérales du Rethélois. Audit Flash sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rethel (08). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires (boudin blanc, charcuterie), commerçants, exploitations agricoles et professions libérales du Rethélois. Audit Flash dès 490 € HT, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rethel (08). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires (boudin blanc, charcuterie), commerçants, exploitations agricoles et professions libérales du Rethélois. Audit Flash sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Rethel (environ 7 400 habitants) est sous-préfecture des Ardennes et carrefour de la plaine agricole champenoise. La ville est célèbre pour le boudin blanc de Rethel IGP, fleuron de son patrimoine agroalimentaire. L'économie locale repose sur l'agroalimentaire (charcuterie, transformation viande), l'agriculture céréalière, le commerce de proximité, l'artisanat et les services tertiaires. Située en bord d'Aisne, la commune bénéficie d'un axe ferroviaire Reims-Charleville stratégique.",
   ecosystemEn:
@@ -56,7 +56,7 @@ export const RETHEL_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les charcuteries, artisans et industriels du boudin blanc IGP de Rethel avec des solutions IA adaptées : traçabilité IGP, contrôle qualité, gestion stocks, optimisation production. Audit Flash 490 € HT.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Rethel ?",
+      q: "Combien coûte un audit IA à Rethel  ?",
       a: "L'Audit Flash Axion-IA démarre à 490 € HT. Adapté aux TPE et PME rethéloises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {

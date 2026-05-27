@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const ARCACHON_COPY: VilleCopy = {
   pitchFr:
-    "Arcachon (33), station balnéaire de renommée internationale au coeur du Bassin éponyme, associe tourisme prestige (Ville d'Hiver, dune du Pilat), ostréiculture, hôtellerie-restauration haut de gamme et commerces. Axion-IA y déploie ses missions auprès de toutes les organisations : TPE touristiques, hôteliers, restaurateurs, ostréiculteurs, commerçants et professions libérales.",
+    "Arcachon (33), station balnéaire de renommée internationale au coeur du Bassin éponyme, associe tourisme prestige (Ville d'Hiver, dune du Pilat), ostréiculture, hôtellerie-restauration haut de gamme et commerces. Axion-IA y travaille avec les organisations du territoire : TPE touristiques, hôteliers, restaurateurs, ostréiculteurs, commerçants et professions libérales.",
   pitchEn:
-    "Arcachon (33), station balnéaire de renommée internationale au coeur du Bassin éponyme, associe tourisme prestige (Ville d'Hiver, dune du Pilat), ostréiculture, hôtellerie-restauration haut de gamme et commerces. Axion-IA y déploie ses missions auprès de toutes les organisations : TPE touristiques, hôteliers, restaurateurs, ostréiculteurs, commerçants et professions libérales.",
+    "Arcachon (33), station balnéaire de renommée internationale au coeur du Bassin éponyme, associe tourisme prestige (Ville d'Hiver, dune du Pilat), ostréiculture, hôtellerie-restauration haut de gamme et commerces. Axion-IA y travaille avec les organisations du territoire : TPE touristiques, hôteliers, restaurateurs, ostréiculteurs, commerçants et professions libérales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arcachon (33). Nous accompagnons TPE et PME de la station balnéaire : hôteliers et résidences de tourisme, restaurateurs, ostréiculteurs, commerçants de centre-ville et professions libérales. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arcachon (33). Nous accompagnons TPE et PME de la station balnéaire : hôteliers et résidences de tourisme, restaurateurs, ostréiculteurs, commerçants de centre-ville et professions libérales. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arcachon (33). Nous accompagnons TPE et PME de la station balnéaire : hôteliers et résidences de tourisme, restaurateurs, ostréiculteurs, commerçants de centre-ville et professions libérales. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arcachon (33). Nous accompagnons TPE et PME de la station balnéaire : hôteliers et résidences de tourisme, restaurateurs, ostréiculteurs, commerçants de centre-ville et professions libérales. Audit Flash sur mesure.",
   seoHook: "hôtellerie tourisme & ostréiculture produits",
   ecosystemFr:
     "Arcachon est la station balnéaire emblématique de la Gironde. Tourisme prestige (Ville d'Hiver classée, dune du Pilat, plages), ostréiculture (huîtres du Bassin, ports ostréicoles), hôtellerie-restauration haut de gamme, commerces de centre-ville et économie résidentielle toute l'année.",
@@ -52,7 +52,7 @@ export const ARCACHON_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Arcachon et sur tout le Bassin (La Teste-de-Buch, Gujan-Mestras, Le Teich, Andernos, Lège-Cap-Ferret). Nos consultants se déplacent depuis Bordeaux (TER 50 min) ou Paris (TGV 2h + TER).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Arcachon ?",
+      q: "Tarifs audit IA à Arcachon  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Adapté aux TPE touristiques et ostréicoles d'Arcachon.",
     },
     {

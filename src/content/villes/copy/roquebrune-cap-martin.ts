@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ROQUEBRUNE_CAP_MARTIN_COPY: VilleCopy = {
   pitchFr:
-    "Roquebrune-Cap-Martin (06), entre Monaco et Menton sur la Côte d'Azur, est célèbre pour le Cabanon de Le Corbusier et sa villa E-1027 d'Eileen Gray (patrimoine architectural mondial). Tissu TPE/PME tourisme haut de gamme, hôtellerie-restauration, services résidentiels et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Roquebrune-Cap-Martin (06), entre Monaco et Menton sur la Côte d'Azur, est célèbre pour le Cabanon de Le Corbusier et sa villa E-1027 d'Eileen Gray (patrimoine architectural mondial). Tissu TPE/PME tourisme haut de gamme, hôtellerie-restauration, services résidentiels et professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Roquebrune-Cap-Martin (06), entre Monaco et Menton sur la Côte d'Azur, est célèbre pour le Cabanon de Le Corbusier et sa villa E-1027 d'Eileen Gray (patrimoine architectural mondial). Tissu TPE/PME tourisme haut de gamme, hôtellerie-restauration, services résidentiels et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Roquebrune-Cap-Martin (06), entre Monaco et Menton sur la Côte d'Azur, est célèbre pour le Cabanon de Le Corbusier et sa villa E-1027 d'Eileen Gray (patrimoine architectural mondial). Tissu TPE/PME tourisme haut de gamme, hôtellerie-restauration, services résidentiels et professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Roquebrune-Cap-Martin (06). Nous accompagnons tous types d'activités : TPE hôtellerie-restauration haut de gamme, commerces de bord de mer, professions libérales, PME services résidentiels et entreprises touristiques de la Riviera entre Monaco et Menton.",
   directAnswerEn:

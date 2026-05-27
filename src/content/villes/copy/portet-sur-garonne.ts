@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const PORTET_SUR_GARONNE_COPY: VilleCopy = {
   pitchFr:
-    "Portet-sur-Garonne (31), commune au confluent de la Garonne et de l'Ariège, près de 10 000 habitants. Pôle commercial majeur du sud toulousain, tissu TPE artisans, PME commerciales et logistiques, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du sud de Toulouse.",
+    "Portet-sur-Garonne (31), commune au confluent de la Garonne et de l'Ariège, près de 10 000 habitants. Pôle commercial majeur du sud toulousain, tissu TPE artisans, PME commerciales et logistiques, professions libérales. Axion-IA opère pour entreprises et indépendants du secteur du sud de Toulouse.",
   pitchEn:
-    "Portet-sur-Garonne (31), commune au confluent de la Garonne et de l'Ariège, près de 10 000 habitants. Pôle commercial majeur du sud toulousain, tissu TPE artisans, PME commerciales et logistiques, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du sud de Toulouse.",
+    "Portet-sur-Garonne (31), commune au confluent de la Garonne et de l'Ariège, près de 10 000 habitants. Pôle commercial majeur du sud toulousain, tissu TPE artisans, PME commerciales et logistiques, professions libérales. Axion-IA opère pour entreprises et indépendants du secteur du sud de Toulouse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Portet-sur-Garonne (31). Nous accompagnons TPE artisans, PME commerciales et logistiques, professions libérales et commerçants du sud Toulouse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Portet-sur-Garonne (31). Nous accompagnons TPE artisans, PME commerciales et logistiques, professions libérales et commerçants du sud Toulouse. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Portet-sur-Garonne (31). Nous accompagnons TPE artisans, PME commerciales et logistiques, professions libérales et commerçants du sud Toulouse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Portet-sur-Garonne (31). Nous accompagnons TPE artisans, PME commerciales et logistiques, professions libérales et commerçants du sud Toulouse. Audit Flash sur mesure.",
   seoHook: "commerce détail & logistique entreposage",
   ecosystemFr:
     "Portet-sur-Garonne est un pôle commercial majeur du sud de Toulouse, au confluent de la Garonne et de l'Ariège. Grande zone commerciale (Portet Commerce), PME de distribution et logistique, TPE artisans, professions libérales. Axe A64 et proximité Muret.",
@@ -56,7 +56,7 @@ export const PORTET_SUR_GARONNE_COPY: VilleCopy = {
       a: "Nous accompagnons tous types d'activités : PME commerciales, logistique, TPE artisans, professions libérales, restauration. Aucun secteur exclu.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Portet-sur-Garonne ?",
+      q: "Combien coûte un audit IA à Portet-sur-Garonne  ?",
       a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME commerciales, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics.",
     },
     {

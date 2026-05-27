@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LA_FERRIERE_COPY: VilleCopy = {
   pitchFr:
-    "La Ferrière (85), commune périurbaine de l'agglomération de La Roche-sur-Yon en Pays de la Loire, plus de 5 400 habitants. Pôle résidentiel et économique dynamique au nord-est de la préfecture vendéenne. Tissu TPE artisans, PME industrielles et BTP, commerces et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération yonnaise.",
+    "La Ferrière (85), commune périurbaine de l'agglomération de La Roche-sur-Yon en Pays de la Loire, plus de 5 400 habitants. Pôle résidentiel et économique dynamique au nord-est de la préfecture vendéenne. Tissu TPE artisans, PME industrielles et BTP, commerces et professions libérales. Axion-IA accompagne tout le tissu professionnel local de l'agglomération yonnaise.",
   pitchEn:
-    "La Ferrière (85), commune périurbaine de l'agglomération de La Roche-sur-Yon en Pays de la Loire, plus de 5 400 habitants. Pôle résidentiel et économique dynamique au nord-est de la préfecture vendéenne. Tissu TPE artisans, PME industrielles et BTP, commerces et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération yonnaise.",
+    "La Ferrière (85), commune périurbaine de l'agglomération de La Roche-sur-Yon en Pays de la Loire, plus de 5 400 habitants. Pôle résidentiel et économique dynamique au nord-est de la préfecture vendéenne. Tissu TPE artisans, PME industrielles et BTP, commerces et professions libérales. Axion-IA accompagne tout le tissu professionnel local de l'agglomération yonnaise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Ferrière (85). Nous accompagnons TPE artisans, PME industrielles et BTP, commerçants et professions libérales de l'agglomération de La Roche-sur-Yon. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Ferrière (85). Nous accompagnons TPE artisans, PME industrielles et BTP, commerçants et professions libérales de l'agglomération de La Roche-sur-Yon. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Ferrière (85). Nous accompagnons TPE artisans, PME industrielles et BTP, commerçants et professions libérales de l'agglomération de La Roche-sur-Yon. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Ferrière (85). Nous accompagnons TPE artisans, PME industrielles et BTP, commerçants et professions libérales de l'agglomération de La Roche-sur-Yon. Audit Flash sur mesure.",
   seoHook: "industrie & artisanat construction",
   ecosystemFr:
     "La Ferrière (5 454 hab) est une commune périurbaine de l'agglomération yonnaise (La Roche-sur-Yon Agglomération). Économie diversifiée : industrie, BTP, artisanat, agriculture, commerces et services. Proximité immédiate La Roche-sur-Yon (10 min), Nantes (1h), Cholet (45 min). Zones d'activités sur l'axe D763, bassin résidentiel attractif.",
@@ -52,7 +52,7 @@ export const LA_FERRIERE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à La Ferrière et dans toute l'agglomération de La Roche-sur-Yon (Aizenay, Mouilleron-le-Captif, Dompierre-sur-Yon). Nos consultants se déplacent depuis Nantes (1h) ou directement sur site.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à La Ferrière ?",
+      q: "Combien coûte un audit IA à La Ferrière  ?",
       a: "L'Audit Flash IA démarre à 490 € HT pour les TPE de La Ferrière. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur industriel, BTP ou artisanal.",
     },
     {

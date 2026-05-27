@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CESSON_SEVIGNE_COPY: VilleCopy = {
   pitchFr:
-    "Cesson-Sévigné (35), commune de l'est de Rennes Métropole, accueille le technopôle Rennes Atalante et un écosystème numérique/télécoms de premier plan breton. Tissu TPE/PME tech, ESN, startups, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Cesson-Sévigné (35), commune de l'est de Rennes Métropole, accueille le technopôle Rennes Atalante et un écosystème numérique/télécoms de premier plan breton. Tissu TPE/PME tech, ESN, startups, services aux entreprises. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Cesson-Sévigné (35), commune de l'est de Rennes Métropole, accueille le technopôle Rennes Atalante et un écosystème numérique/télécoms de premier plan breton. Tissu TPE/PME tech, ESN, startups, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Cesson-Sévigné (35), commune de l'est de Rennes Métropole, accueille le technopôle Rennes Atalante et un écosystème numérique/télécoms de premier plan breton. Tissu TPE/PME tech, ESN, startups, services aux entreprises. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cesson-Sévigné (35). Nous accompagnons tous types d'activités : TPE et PME du numérique, ESN, startups Rennes Atalante, éditeurs logiciels, télécoms, commerçants, indépendants et services aux entreprises de la métropole rennaise.",
   directAnswerEn:

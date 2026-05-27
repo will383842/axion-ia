@@ -52,7 +52,7 @@ export const EVIAN_LES_BAINS_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Évian-les-Bains et tout le Chablais (Thonon-les-Bains à 10 min). Déplacements depuis Genève (45 min) ou Annecy (1h15).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Évian-les-Bains ?",
+      q: "Tarifs audit IA à Évian-les-Bains  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Tarifs publics consultables sur notre site, adaptés aux TPE et PME du tourisme et de l'hôtellerie.",
     },
     {

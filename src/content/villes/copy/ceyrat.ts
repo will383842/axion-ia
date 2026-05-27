@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CEYRAT_COPY: VilleCopy = {
   pitchFr:
-    "Ceyrat (63), commune résidentielle au sud-ouest de Clermont-Ferrand en Puy-de-Dôme, se situe au piémont de la chaîne des Puys (volcans d'Auvergne, patrimoine mondial UNESCO). Professions libérales santé, PME tertiaires, TPE artisanat, commerces de proximité, tourisme volcans. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Ceyrat (63), commune résidentielle au sud-ouest de Clermont-Ferrand en Puy-de-Dôme, se situe au piémont de la chaîne des Puys (volcans d'Auvergne, patrimoine mondial UNESCO). Professions libérales santé, PME tertiaires, TPE artisanat, commerces de proximité, tourisme volcans. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Ceyrat (63), commune résidentielle au sud-ouest de Clermont-Ferrand en Puy-de-Dôme, se situe au piémont de la chaîne des Puys (volcans d'Auvergne, patrimoine mondial UNESCO). Professions libérales santé, PME tertiaires, TPE artisanat, commerces de proximité, tourisme volcans. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Ceyrat (63), commune résidentielle au sud-ouest de Clermont-Ferrand en Puy-de-Dôme, se situe au piémont de la chaîne des Puys (volcans d'Auvergne, patrimoine mondial UNESCO). Professions libérales santé, PME tertiaires, TPE artisanat, commerces de proximité, tourisme volcans. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ceyrat (63). Nous accompagnons TPE et PME : professions libérales santé, sociétés tertiaires, artisans, commerçants et acteurs du tourisme volcans d'Auvergne du sud-ouest clermontois.",
   directAnswerEn:

@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const VIARMES_COPY: VilleCopy = {
   pitchFr:
-    "Viarmes (95), commune résidentielle du Pays de France dans le Val-d'Oise, en lisière de la forêt de Carnelle, allie cadre verdoyant et vie économique locale. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, services à la personne. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Viarmes (95), commune résidentielle du Pays de France dans le Val-d'Oise, en lisière de la forêt de Carnelle, allie cadre verdoyant et vie économique locale. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, services à la personne. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Viarmes (95), commune résidentielle du Pays de France dans le Val-d'Oise, en lisière de la forêt de Carnelle, allie cadre verdoyant et vie économique locale. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, services à la personne. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Viarmes (95), commune résidentielle du Pays de France dans le Val-d'Oise, en lisière de la forêt de Carnelle, allie cadre verdoyant et vie économique locale. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, services à la personne. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Viarmes (95). Nous accompagnons TPE et PME : commerçants et artisans du centre-bourg, PME services du Pays de France, professions libérales, restaurateurs, prestataires services à la personne nord Val-d'Oise. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Viarmes (95). Nous accompagnons TPE et PME : commerçants et artisans du centre-bourg, PME services du Pays de France, professions libérales, restaurateurs, prestataires services à la personne nord Val-d'Oise. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Viarmes (95). Nous accompagnons TPE et PME : commerçants et artisans du centre-bourg, PME services du Pays de France, professions libérales, restaurateurs, prestataires services à la personne nord Val-d'Oise. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Viarmes (95). Nous accompagnons TPE et PME : commerçants et artisans du centre-bourg, PME services du Pays de France, professions libérales, restaurateurs, prestataires services à la personne nord Val-d'Oise. Audit Flash sur mesure.",
   seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Viarmes est une commune résidentielle du Pays de France, en lisière de la forêt de Carnelle, appréciée pour son cadre de vie verdoyant et sa proximité avec Luzarches et Beaumont-sur-Oise. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, services à la personne.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ORNEX_COPY: VilleCopy = {
   pitchFr:
-    "Ornex (01), commune du pays de Gex dans l'Ain, est positionnée à proximité de la frontière suisse et de Genève. Tissu économie frontalière, PME tertiaires, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations gessiennes.",
+    "Ornex (01), commune du pays de Gex dans l'Ain, est positionnée à proximité de la frontière suisse et de Genève. Tissu économie frontalière, PME tertiaires, TPE artisans BTP, commerces. Axion-IA y conduit ses missions auprès des entreprises locales gessiennes.",
   pitchEn:
-    "Ornex (01), commune du pays de Gex dans l'Ain, est positionnée à proximité de la frontière suisse et de Genève. Tissu économie frontalière, PME tertiaires, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations gessiennes.",
+    "Ornex (01), commune du pays de Gex dans l'Ain, est positionnée à proximité de la frontière suisse et de Genève. Tissu économie frontalière, PME tertiaires, TPE artisans BTP, commerces. Axion-IA y conduit ses missions auprès des entreprises locales gessiennes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ornex (01). Nous accompagnons tous types d'activités : PME tertiaires pays de Gex, économie frontalière Genève, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:

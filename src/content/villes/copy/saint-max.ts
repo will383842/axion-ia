@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_MAX_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Max (54), commune résidentielle de Meurthe-et-Moselle à l'est de Nancy, est intégrée à la Métropole du Grand Nancy avec un tissu commercial et tertiaire de proximité. TPE et PME tertiaires, commerces de proximité, services aux entreprises, artisanat BTP, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Saint-Max (54), commune résidentielle de Meurthe-et-Moselle à l'est de Nancy, est intégrée à la Métropole du Grand Nancy avec un tissu commercial et tertiaire de proximité. TPE et PME tertiaires, commerces de proximité, services aux entreprises, artisanat BTP, professions libérales. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Saint-Max (54), commune résidentielle de Meurthe-et-Moselle à l'est de Nancy, est intégrée à la Métropole du Grand Nancy avec un tissu commercial et tertiaire de proximité. TPE et PME tertiaires, commerces de proximité, services aux entreprises, artisanat BTP, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Saint-Max (54), commune résidentielle de Meurthe-et-Moselle à l'est de Nancy, est intégrée à la Métropole du Grand Nancy avec un tissu commercial et tertiaire de proximité. TPE et PME tertiaires, commerces de proximité, services aux entreprises, artisanat BTP, professions libérales. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Max (54). Nous accompagnons TPE et PME : sociétés tertiaires de l'est nancéien, commerçants de proximité, artisans BTP, services aux entreprises, professions libérales de la Métropole Grand Nancy. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Max (54). Nous accompagnons TPE et PME : sociétés tertiaires de l'est nancéien, commerçants de proximité, artisans BTP, services aux entreprises, professions libérales de la Métropole Grand Nancy. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Max (54). Nous accompagnons TPE et PME : sociétés tertiaires de l'est nancéien, commerçants de proximité, artisans BTP, services aux entreprises, professions libérales de la Métropole Grand Nancy. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Max (54). Nous accompagnons TPE et PME : sociétés tertiaires de l'est nancéien, commerçants de proximité, artisans BTP, services aux entreprises, professions libérales de la Métropole Grand Nancy. Audit Flash sur mesure.",
   seoHook: "tertiaires & artisanat",
   ecosystemFr:
     "Saint-Max est une commune résidentielle de l'est de la Métropole du Grand Nancy (Meurthe-et-Moselle). Tissu TPE/PME tertiaires, commerces de proximité, services aux entreprises, artisanat BTP, professions libérales adossés au bassin économique nancéien.",
@@ -52,7 +52,7 @@ export const SAINT_MAX_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Saint-Max et toute la Métropole du Grand Nancy. Consultants depuis Metz (50 min), Strasbourg (1 h 40) ou Paris (1 h 30 via TGV).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Saint-Max ?",
+      q: "Combien coûte un audit IA à Saint-Max  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables en ligne, adaptés aux TPE et PME tertiaires, commerçants, artisans et professions libérales de l'est nancéien.",
     },
     {

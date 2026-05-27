@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LUCCIANA_COPY: VilleCopy = {
   pitchFr:
-    "Lucciana (2B), commune de la plaine orientale et de l'agglomération bastiaise, abrite le site archéologique de Mariana (cité gallo-romaine fondée par Marius) et l'aéroport Bastia-Poretta. Tissu agricole plaine orientale (viticulture, agrumes), commerces et services agglo Bastia, TPE artisanat, tourisme patrimonial et balnéaire. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Lucciana (2B), commune de la plaine orientale et de l'agglomération bastiaise, abrite le site archéologique de Mariana (cité gallo-romaine fondée par Marius) et l'aéroport Bastia-Poretta. Tissu agricole plaine orientale (viticulture, agrumes), commerces et services agglo Bastia, TPE artisanat, tourisme patrimonial et balnéaire. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Lucciana (2B), commune de la plaine orientale et de l'agglomération bastiaise, abrite le site archéologique de Mariana (cité gallo-romaine fondée par Marius) et l'aéroport Bastia-Poretta. Tissu agricole plaine orientale (viticulture, agrumes), commerces et services agglo Bastia, TPE artisanat, tourisme patrimonial et balnéaire. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Lucciana (2B), commune de la plaine orientale et de l'agglomération bastiaise, abrite le site archéologique de Mariana (cité gallo-romaine fondée par Marius) et l'aéroport Bastia-Poretta. Tissu agricole plaine orientale (viticulture, agrumes), commerces et services agglo Bastia, TPE artisanat, tourisme patrimonial et balnéaire. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lucciana (2B). Nous accompagnons TPE et PME : exploitants agricoles plaine orientale (viticulture, agrumes), commerces et services agglo Bastia, acteurs aéroportuaires Bastia-Poretta, artisans, acteurs tourisme patrimonial (site de Mariana) et balnéaire. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lucciana (2B). Nous accompagnons TPE et PME : exploitants agricoles plaine orientale (viticulture, agrumes), commerces et services agglo Bastia, acteurs aéroportuaires Bastia-Poretta, artisans, acteurs tourisme patrimonial (site de Mariana) et balnéaire. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lucciana (2B). Nous accompagnons TPE et PME : exploitants agricoles plaine orientale (viticulture, agrumes), commerces et services agglo Bastia, acteurs aéroportuaires Bastia-Poretta, artisans, acteurs tourisme patrimonial (site de Mariana) et balnéaire. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lucciana (2B). Nous accompagnons TPE et PME : exploitants agricoles plaine orientale (viticulture, agrumes), commerces et services agglo Bastia, acteurs aéroportuaires Bastia-Poretta, artisans, acteurs tourisme patrimonial (site de Mariana) et balnéaire. Audit Flash sur mesure.",
   seoHook: "agriculture plaine & commerces services",
   ecosystemFr:
     "Lucciana est une commune de la plaine orientale et de l'agglomération bastiaise, accueillant l'aéroport Bastia-Poretta et le site archéologique de Mariana. Tissu agricole (viticulture, agrumes), commerces et services agglo Bastia, TPE artisanat, tourisme patrimonial et balnéaire Costa Serena.",

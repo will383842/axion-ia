@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_JORIOZ_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Jorioz (74), commune de la rive ouest du lac d'Annecy en Haute-Savoie, allie cadre résidentiel prisé et tourisme lacustre. Plage de Saint-Jorioz, réserve naturelle du Bout du Lac, piste cyclable. Tissu TPE artisans, commerces, hébergeurs, PME services, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Saint-Jorioz (74), commune de la rive ouest du lac d'Annecy en Haute-Savoie, allie cadre résidentiel prisé et tourisme lacustre. Plage de Saint-Jorioz, réserve naturelle du Bout du Lac, piste cyclable. Tissu TPE artisans, commerces, hébergeurs, PME services, professions libérales. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "Saint-Jorioz (74), commune de la rive ouest du lac d'Annecy en Haute-Savoie, allie cadre résidentiel prisé et tourisme lacustre. Plage de Saint-Jorioz, réserve naturelle du Bout du Lac, piste cyclable. Tissu TPE artisans, commerces, hébergeurs, PME services, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Saint-Jorioz (74), commune de la rive ouest du lac d'Annecy en Haute-Savoie, allie cadre résidentiel prisé et tourisme lacustre. Plage de Saint-Jorioz, réserve naturelle du Bout du Lac, piste cyclable. Tissu TPE artisans, commerces, hébergeurs, PME services, professions libérales. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jorioz (74). Nous accompagnons TPE et PME : hébergeurs et restaurateurs du lac d'Annecy, commerces de proximité, artisans BTP, professions libérales, PME services et acteurs du tourisme lacustre rive ouest.",
   directAnswerEn:

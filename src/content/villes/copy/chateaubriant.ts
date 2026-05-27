@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const CHATEAUBRIANT_COPY: VilleCopy = {
   pitchFr:
-    "Châteaubriant (44), sous-préfecture de Loire-Atlantique aux marches de Bretagne, plus de 12 000 habitants. Château Renaissance, industrie agroalimentaire, commerces, artisanat et professions libérales. Tissu TPE artisans, PME agroalimentaires et industrielles. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin castelbriantais.",
+    "Châteaubriant (44), sous-préfecture de Loire-Atlantique aux marches de Bretagne, plus de 12 000 habitants. Château Renaissance, industrie agroalimentaire, commerces, artisanat et professions libérales. Tissu TPE artisans, PME agroalimentaires et industrielles. Axion-IA y travaille avec les organisations du territoire du bassin castelbriantais.",
   pitchEn:
-    "Châteaubriant (44), sous-préfecture de Loire-Atlantique aux marches de Bretagne, plus de 12 000 habitants. Château Renaissance, industrie agroalimentaire, commerces, artisanat et professions libérales. Tissu TPE artisans, PME agroalimentaires et industrielles. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin castelbriantais.",
+    "Châteaubriant (44), sous-préfecture de Loire-Atlantique aux marches de Bretagne, plus de 12 000 habitants. Château Renaissance, industrie agroalimentaire, commerces, artisanat et professions libérales. Tissu TPE artisans, PME agroalimentaires et industrielles. Axion-IA y travaille avec les organisations du territoire du bassin castelbriantais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châteaubriant (44), sous-préfecture de Loire-Atlantique. Nous accompagnons TPE artisans, PME agroalimentaires et industrielles, commerçants et professions libérales des marches de Bretagne. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châteaubriant (44), sous-préfecture de Loire-Atlantique. Nous accompagnons TPE artisans, PME agroalimentaires et industrielles, commerçants et professions libérales des marches de Bretagne. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châteaubriant (44), sous-préfecture de Loire-Atlantique. Nous accompagnons TPE artisans, PME agroalimentaires et industrielles, commerçants et professions libérales des marches de Bretagne. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châteaubriant (44), sous-préfecture de Loire-Atlantique. Nous accompagnons TPE artisans, PME agroalimentaires et industrielles, commerçants et professions libérales des marches de Bretagne. Audit Flash sur mesure.",
   seoHook: "bassin castelbriantais",
   ecosystemFr:
     "Châteaubriant (12 260 hab) est la sous-préfecture du nord de la Loire-Atlantique, aux marches de Bretagne. Château Renaissance classé, industrie agroalimentaire (viande bovine, laiteries), métallurgie, commerces de centre-ville, artisanat et professions libérales. Proximité Nantes (1h), Rennes (50 min), Laval (55 min). Bassin d'emploi rural structurant du nord-44.",
@@ -52,7 +52,7 @@ export const CHATEAUBRIANT_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Châteaubriant et dans tout le nord de la Loire-Atlantique (Derval, Nozay, Blain). Nos consultants se déplacent depuis Nantes (1h, tram-train) ou Rennes (50 min).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Châteaubriant ?",
+      q: "Quel est le tarif d'un audit IA à Châteaubriant  ?",
       a: "L'Audit Flash IA démarre à 490 € HT pour les TPE de Châteaubriant. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur.",
     },
     {

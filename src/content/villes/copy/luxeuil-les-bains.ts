@@ -56,7 +56,7 @@ export const LUXEUIL_LES_BAINS_COPY: VilleCopy = {
       a: "Nous accompagnons les établissements thermaux et bien-être sur leurs cas IA : agents conversationnels réservation, optimisation planning curistes, marketing automatisé, gestion avis en ligne, chatbots info cures.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Luxeuil-les-Bains ?",
+      q: "Quel est le tarif d'un audit IA à Luxeuil-les-Bains  ?",
       a: "L'Audit Flash commence à 490 € HT, adapté aux TPE et PME tourisme, hôtellerie et commerce. Diagnostic complet des opportunités IA avec ROI chiffré, livrable sous 5 jours. Tarifs publics sur notre site.",
     },
     {

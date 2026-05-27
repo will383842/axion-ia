@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const DRUSENHEIM_COPY: VilleCopy = {
   pitchFr:
-    "Drusenheim (67), commune de 5 388 habitants sur les bords du Rhin frontalier avec l'Allemagne, est un pôle industriel et logistique du nord-est Alsace. Plateforme industrielle pétrochimique et chimique. Tissu industrie chimique/pétrochimique, PME sous-traitants industriels, TPE artisans, logistique fluviale, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Drusenheim (67), commune de 5 388 habitants sur les bords du Rhin frontalier avec l'Allemagne, est un pôle industriel et logistique du nord-est Alsace. Plateforme industrielle pétrochimique et chimique. Tissu industrie chimique/pétrochimique, PME sous-traitants industriels, TPE artisans, logistique fluviale, commerces. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Drusenheim (67), commune de 5 388 habitants sur les bords du Rhin frontalier avec l'Allemagne, est un pôle industriel et logistique du nord-est Alsace. Plateforme industrielle pétrochimique et chimique. Tissu industrie chimique/pétrochimique, PME sous-traitants industriels, TPE artisans, logistique fluviale, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Drusenheim (67), commune de 5 388 habitants sur les bords du Rhin frontalier avec l'Allemagne, est un pôle industriel et logistique du nord-est Alsace. Plateforme industrielle pétrochimique et chimique. Tissu industrie chimique/pétrochimique, PME sous-traitants industriels, TPE artisans, logistique fluviale, commerces. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Drusenheim (67). Nous accompagnons tous types d'activités : TPE/PME industries pétrochimique et chimique, sous-traitants industriels, logistique fluviale (port rhénan), artisans, commerçants et services aux entreprises transfrontaliers (Allemagne).",
   directAnswerEn:
@@ -65,7 +65,7 @@ export const DRUSENHEIM_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'entrée pour une TPE à Drusenheim ?",
-      a: "L'audit Flash démarre à 490 € HT. Coaching 1-to-1 à partir de 990 € HT. Tarifs publics, pas de devis opaque.",
+      a: "L'audit Flash s'adapte à votre périmètre. Coaching 1-to-1 à partir de 990 € HT. Tarifs publics, pas de devis opaque.",
     },
   ],
 };

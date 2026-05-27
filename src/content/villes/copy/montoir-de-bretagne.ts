@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MONTOIR_DE_BRETAGNE_COPY: VilleCopy = {
   pitchFr:
-    "Montoir-de-Bretagne (44), commune industrielle et portuaire de l'agglomération nazairienne en Loire-Atlantique. Terminal méthanier, zones logistiques, industrie aéronautique et navale. Tissu TPE sous-traitants, PME industrielles, logistique portuaire, services aux entreprises. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin nazairien.",
+    "Montoir-de-Bretagne (44), commune industrielle et portuaire de l'agglomération nazairienne en Loire-Atlantique. Terminal méthanier, zones logistiques, industrie aéronautique et navale. Tissu TPE sous-traitants, PME industrielles, logistique portuaire, services aux entreprises. Axion-IA y conduit ses missions auprès des entreprises locales du bassin nazairien.",
   pitchEn:
-    "Montoir-de-Bretagne (44), commune industrielle et portuaire de l'agglomération nazairienne en Loire-Atlantique. Terminal méthanier, zones logistiques, industrie aéronautique et navale. Tissu TPE sous-traitants, PME industrielles, logistique portuaire, services aux entreprises. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin nazairien.",
+    "Montoir-de-Bretagne (44), commune industrielle et portuaire de l'agglomération nazairienne en Loire-Atlantique. Terminal méthanier, zones logistiques, industrie aéronautique et navale. Tissu TPE sous-traitants, PME industrielles, logistique portuaire, services aux entreprises. Axion-IA y conduit ses missions auprès des entreprises locales du bassin nazairien.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montoir-de-Bretagne (44). Nous accompagnons tous types d'activités : TPE sous-traitants industriels, PME aéronautique et navale, logistique portuaire, services aux entreprises du bassin nazairien et prestataires des zones d'activités.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const MONTOIR_DE_BRETAGNE_COPY: VilleCopy = {
       a: "Pour les entreprises logistiques de Montoir-de-Bretagne et du port Nantes-Saint-Nazaire, nous proposons audit IA, interventions sur site, implémentation (automatisation tracking, agents IA planification, optimisation flux), coaching 1-to-1.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Montoir-de-Bretagne ?",
+      q: "Tarifs audit IA à Montoir-de-Bretagne  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du bassin nazairien.",
     },
     {

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CERET_COPY: VilleCopy = {
   pitchFr:
-    "Céret (66), capitale de la cerise et haut lieu de l'art moderne (musée Picasso, Chagall, Soutine), est la sous-préfecture du Vallespir au pied des Pyrénées catalanes. Tissu TPE artisans, PME arboriculture et agroalimentaire, commerces, tourisme culturel, artisanat d'art. Axion-IA couvre l'ensemble des activités professionnelles présentes du Vallespir.",
+    "Céret (66), capitale de la cerise et haut lieu de l'art moderne (musée Picasso, Chagall, Soutine), est la sous-préfecture du Vallespir au pied des Pyrénées catalanes. Tissu TPE artisans, PME arboriculture et agroalimentaire, commerces, tourisme culturel, artisanat d'art. Axion-IA opère sur l'ensemble des activités professionnelles locales du Vallespir.",
   pitchEn:
-    "Céret (66), capitale de la cerise et haut lieu de l'art moderne (musée Picasso, Chagall, Soutine), est la sous-préfecture du Vallespir au pied des Pyrénées catalanes. Tissu TPE artisans, PME arboriculture et agroalimentaire, commerces, tourisme culturel, artisanat d'art. Axion-IA couvre l'ensemble des activités professionnelles présentes du Vallespir.",
+    "Céret (66), capitale de la cerise et haut lieu de l'art moderne (musée Picasso, Chagall, Soutine), est la sous-préfecture du Vallespir au pied des Pyrénées catalanes. Tissu TPE artisans, PME arboriculture et agroalimentaire, commerces, tourisme culturel, artisanat d'art. Axion-IA opère sur l'ensemble des activités professionnelles locales du Vallespir.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Céret (66). Nous accompagnons tous types d'activités : TPE artisans et artisanat d'art, PME arboriculture et agroalimentaire, commerçants, acteurs du tourisme culturel, indépendants et professions libérales du Vallespir.",
   directAnswerEn:

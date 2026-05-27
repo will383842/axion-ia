@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ROQUEFORT_LES_PINS_COPY: VilleCopy = {
   pitchFr:
-    "Roquefort-les-Pins (06), commune résidentielle de l'arrière-pays azuréen entre Valbonne et Vence, offre un cadre provençal boisé prisé des familles. Tissu TPE/PME artisanat BTP, commerces de proximité, professions libérales, services aux particuliers et télétravail. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Roquefort-les-Pins (06), commune résidentielle de l'arrière-pays azuréen entre Valbonne et Vence, offre un cadre provençal boisé prisé des familles. Tissu TPE/PME artisanat BTP, commerces de proximité, professions libérales, services aux particuliers et télétravail. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Roquefort-les-Pins (06), commune résidentielle de l'arrière-pays azuréen entre Valbonne et Vence, offre un cadre provençal boisé prisé des familles. Tissu TPE/PME artisanat BTP, commerces de proximité, professions libérales, services aux particuliers et télétravail. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Roquefort-les-Pins (06), commune résidentielle de l'arrière-pays azuréen entre Valbonne et Vence, offre un cadre provençal boisé prisé des familles. Tissu TPE/PME artisanat BTP, commerces de proximité, professions libérales, services aux particuliers et télétravail. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Roquefort-les-Pins (06). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, indépendants en télétravail, PME services et entreprises de l'arrière-pays azuréen.",
   directAnswerEn:

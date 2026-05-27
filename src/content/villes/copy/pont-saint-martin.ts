@@ -60,7 +60,7 @@ export const PONT_SAINT_MARTIN_COPY: VilleCopy = {
       a: "Pour les PME tertiaires de Pont-Saint-Martin, nous proposons audit IA, interventions sur site, implémentation (agents conversationnels, automatisation workflow, extraction données), coaching 1-to-1 et plateformes web IA sur mesure.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Pont-Saint-Martin ?",
+      q: "Quel est le tarif d'un audit IA à Pont-Saint-Martin  ?",
       a: "L'Audit Flash démarre à 490 € HT (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du sud nantais.",
     },
     {

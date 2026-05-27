@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_FLECHE_COPY: VilleCopy = {
   pitchFr:
-    "La Flèche (72), sous-préfecture de la Sarthe dans la vallée du Loir, ville du Prytanée national militaire et du zoo de La Flèche, concentre un tissu de TPE artisans, PME de services et agroalimentaires, commerces de centre-ville, professions libérales et acteurs du tourisme. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "La Flèche (72), sous-préfecture de la Sarthe dans la vallée du Loir, ville du Prytanée national militaire et du zoo de La Flèche, concentre un tissu de TPE artisans, PME de services et agroalimentaires, commerces de centre-ville, professions libérales et acteurs du tourisme. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "La Flèche (72), sous-préfecture de la Sarthe dans la vallée du Loir, ville du Prytanée national militaire et du zoo de La Flèche, concentre un tissu de TPE artisans, PME de services et agroalimentaires, commerces de centre-ville, professions libérales et acteurs du tourisme. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "La Flèche (72), sous-préfecture de la Sarthe dans la vallée du Loir, ville du Prytanée national militaire et du zoo de La Flèche, concentre un tissu de TPE artisans, PME de services et agroalimentaires, commerces de centre-ville, professions libérales et acteurs du tourisme. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Flèche (72). Nous accompagnons tous types d'activités : TPE artisans, PME de services et agroalimentaires, commerçants de centre-ville, professions libérales, acteurs du tourisme (zoo, patrimoine) et prestataires de services de la vallée du Loir sarthoise.",
   directAnswerEn:

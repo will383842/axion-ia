@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const NEUVILLE_EN_FERRAIN_COPY: VilleCopy = {
   pitchFr:
-    "Neuville-en-Ferrain (59), commune de la Métropole Européenne de Lille limitrophe de Tourcoing et de la frontière belge (Mouscron-Rekkem à 2 min). Tissu économique : TPE et PME du commerce de gros, logistique transfrontalière, services aux entreprises, artisanat, sous-traitance industrielle textile-confection. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglo tourquennoise et transfrontalière.",
+    "Neuville-en-Ferrain (59), commune de la Métropole Européenne de Lille limitrophe de Tourcoing et de la frontière belge (Mouscron-Rekkem à 2 min). Tissu économique : TPE et PME du commerce de gros, logistique transfrontalière, services aux entreprises, artisanat, sous-traitance industrielle textile-confection. Axion-IA répond aux besoins des activités professionnelles présentes de l'agglo tourquennoise et transfrontalière.",
   pitchEn:
-    "Neuville-en-Ferrain (59), commune de la Métropole Européenne de Lille limitrophe de Tourcoing et de la frontière belge (Mouscron-Rekkem à 2 min). Tissu économique : TPE et PME du commerce de gros, logistique transfrontalière, services aux entreprises, artisanat, sous-traitance industrielle textile-confection. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglo tourquennoise et transfrontalière.",
+    "Neuville-en-Ferrain (59), commune de la Métropole Européenne de Lille limitrophe de Tourcoing et de la frontière belge (Mouscron-Rekkem à 2 min). Tissu économique : TPE et PME du commerce de gros, logistique transfrontalière, services aux entreprises, artisanat, sous-traitance industrielle textile-confection. Axion-IA répond aux besoins des activités professionnelles présentes de l'agglo tourquennoise et transfrontalière.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Neuville-en-Ferrain (59). Nous accompagnons TPE et PME : commerce de gros transfrontalier, logistique franco-belge, sous-traitance textile-confection, services aux entreprises, artisans et commerçants de proximité de l'agglo tourquennoise.",
   directAnswerEn:
@@ -56,7 +56,7 @@ export const NEUVILLE_EN_FERRAIN_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE et PME du commerce de gros et de la logistique transfrontalière franco-belge à Neuville-en-Ferrain : automatisation commandes cross-border, gestion stocks multi-entrepôts, agents conversationnels multilingues FR-NL-EN, optimisation flux et traçabilité, copilotes IA douane et TVA intracommunautaire.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Neuville-en-Ferrain ?",
+      q: "Combien coûte un audit IA à Neuville-en-Ferrain  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de l'agglo tourquennoise et transfrontalières, il identifie les cas d'usage IA à fort ROI pour votre activité (commerce de gros, logistique, textile, services B2B). Tarifs publics, sans engagement.",
     },
     {

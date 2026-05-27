@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const DINAN_COPY: VilleCopy = {
   pitchFr:
-    "Dinan (22), cité médiévale fortifiée surplombant la Rance, sous-préfecture des Côtes-d'Armor au carrefour de Saint-Malo et Saint-Brieuc. Tissu de TPE artisans d'art, PME tourisme et hôtellerie, commerces de centre historique, professions libérales et entreprises patrimoniales. Axion-IA couvre l'ensemble des activités professionnelles présentes du pays de Dinan.",
+    "Dinan (22), cité médiévale fortifiée surplombant la Rance, sous-préfecture des Côtes-d'Armor au carrefour de Saint-Malo et Saint-Brieuc. Tissu de TPE artisans d'art, PME tourisme et hôtellerie, commerces de centre historique, professions libérales et entreprises patrimoniales. Axion-IA couvre les activités professionnelles du bassin du pays de Dinan.",
   pitchEn:
-    "Dinan (22), cité médiévale fortifiée surplombant la Rance, sous-préfecture des Côtes-d'Armor au carrefour de Saint-Malo et Saint-Brieuc. Tissu de TPE artisans d'art, PME tourisme et hôtellerie, commerces de centre historique, professions libérales et entreprises patrimoniales. Axion-IA couvre l'ensemble des activités professionnelles présentes du pays de Dinan.",
+    "Dinan (22), cité médiévale fortifiée surplombant la Rance, sous-préfecture des Côtes-d'Armor au carrefour de Saint-Malo et Saint-Brieuc. Tissu de TPE artisans d'art, PME tourisme et hôtellerie, commerces de centre historique, professions libérales et entreprises patrimoniales. Axion-IA couvre les activités professionnelles du bassin du pays de Dinan.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Dinan (22). Nous accompagnons TPE et PME : artisans d'art, hôteliers-restaurateurs, commerces du centre historique, professions libérales et entreprises touristiques de cette cité médiévale surplombant la Rance. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Dinan (22). Nous accompagnons TPE et PME : artisans d'art, hôteliers-restaurateurs, commerces du centre historique, professions libérales et entreprises touristiques de cette cité médiévale surplombant la Rance. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Dinan (22). Nous accompagnons TPE et PME : artisans d'art, hôteliers-restaurateurs, commerces du centre historique, professions libérales et entreprises touristiques de cette cité médiévale surplombant la Rance. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Dinan (22). Nous accompagnons TPE et PME : artisans d'art, hôteliers-restaurateurs, commerces du centre historique, professions libérales et entreprises touristiques de cette cité médiévale surplombant la Rance. Audit Flash sur mesure.",
   seoHook: "tourisme, hôtellerie & artisanat d'art",
   ecosystemFr:
     "Dinan est une cité médiévale fortifiée surplombant la Rance, sous-préfecture des Côtes-d'Armor, pôle touristique majeur de Bretagne nord. Port de plaisance, remparts classés, centre historique à colombages. Tissu économique : TPE artisans d'art, hôtellerie-restauration, commerces patrimoniaux, PME de services, professions libérales. Communes voisines : Léhon, Lanvallay, Quévert, Taden, Plouër-sur-Rance.",
@@ -52,7 +52,7 @@ export const DINAN_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Dinan et dans tout le pays de Dinan (Lanvallay, Quévert, Léhon, Taden, Plouër-sur-Rance). Nos consultants se déplacent sur site ou en visio.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Dinan ?",
+      q: "Combien coûte un audit IA à Dinan  ?",
       a: "L'Audit Flash IA à Dinan démarre à 490 € HT pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {

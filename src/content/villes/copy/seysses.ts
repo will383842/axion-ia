@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SEYSSES_COPY: VilleCopy = {
   pitchFr:
-    "Seysses (31), commune du sud-ouest toulousain avec plus de 10 000 habitants. Tissu TPE artisans BTP, PME de services, commerces de proximité, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de la couronne sud-ouest de Toulouse.",
+    "Seysses (31), commune du sud-ouest toulousain avec plus de 10 000 habitants. Tissu TPE artisans BTP, PME de services, commerces de proximité, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes de la couronne sud-ouest de Toulouse.",
   pitchEn:
-    "Seysses (31), commune du sud-ouest toulousain avec plus de 10 000 habitants. Tissu TPE artisans BTP, PME de services, commerces de proximité, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de la couronne sud-ouest de Toulouse.",
+    "Seysses (31), commune du sud-ouest toulousain avec plus de 10 000 habitants. Tissu TPE artisans BTP, PME de services, commerces de proximité, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes de la couronne sud-ouest de Toulouse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Seysses (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud-ouest Toulouse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Seysses (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud-ouest Toulouse. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Seysses (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud-ouest Toulouse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Seysses (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud-ouest Toulouse. Audit Flash sur mesure.",
   seoHook: "artisanat & commerce détail",
   ecosystemFr:
     "Seysses est une commune résidentielle du sud-ouest de Toulouse, entre Muret et Cugnaux. Tissu TPE artisans BTP, PME de services, commerces de bourg, professions libérales, quelques exploitations agricoles. Croissance démographique soutenue.",
@@ -56,7 +56,7 @@ export const SEYSSES_COPY: VilleCopy = {
       a: "Nous accompagnons tous types d'activités : TPE artisans BTP, PME de services, professions libérales, commerces, agriculture. Aucun secteur exclu.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Seysses ?",
+      q: "Combien coûte un audit IA à Seysses  ?",
       a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics, pas de devis opaque.",
     },
     {

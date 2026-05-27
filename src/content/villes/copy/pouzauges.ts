@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const POUZAUGES_COPY: VilleCopy = {
   pitchFr:
-    "Pouzauges (85), petite ville du bocage vendéen perchée sur les collines à l'est de la Vendée, structure un bassin économique rural-industriel où prospèrent TPE artisans, PME agroalimentaires et industrielles, commerces, professions libérales et prestataires du haut bocage. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Pouzauges (85), petite ville du bocage vendéen perchée sur les collines à l'est de la Vendée, structure un bassin économique rural-industriel où prospèrent TPE artisans, PME agroalimentaires et industrielles, commerces, professions libérales et prestataires du haut bocage. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "Pouzauges (85), petite ville du bocage vendéen perchée sur les collines à l'est de la Vendée, structure un bassin économique rural-industriel où prospèrent TPE artisans, PME agroalimentaires et industrielles, commerces, professions libérales et prestataires du haut bocage. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Pouzauges (85), petite ville du bocage vendéen perchée sur les collines à l'est de la Vendée, structure un bassin économique rural-industriel où prospèrent TPE artisans, PME agroalimentaires et industrielles, commerces, professions libérales et prestataires du haut bocage. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pouzauges (85). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles (volaille, charcuterie, laiterie), commerces, professions libérales et prestataires du haut bocage vendéen.",
   directAnswerEn:

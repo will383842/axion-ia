@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PLOUGUERNEAU_COPY: VilleCopy = {
   pitchFr:
-    "Plouguerneau (29), commune littorale du pays des Abers dans le nord Finistère, abrite le phare de l'Île Vierge, le plus haut phare en pierre d'Europe. TPE artisans, PME touristiques, commerces de proximité, ostréiculteurs, goémoniers, professions libérales et exploitants agricoles composent son économie. Axion-IA y déploie ses missions auprès de toutes les organisations du pays des Abers.",
+    "Plouguerneau (29), commune littorale du pays des Abers dans le nord Finistère, abrite le phare de l'Île Vierge, le plus haut phare en pierre d'Europe. TPE artisans, PME touristiques, commerces de proximité, ostréiculteurs, goémoniers, professions libérales et exploitants agricoles composent son économie. Axion-IA y travaille avec les organisations du territoire du pays des Abers.",
   pitchEn:
-    "Plouguerneau (29), commune littorale du pays des Abers dans le nord Finistère, abrite le phare de l'Île Vierge, le plus haut phare en pierre d'Europe. TPE artisans, PME touristiques, commerces de proximité, ostréiculteurs, goémoniers, professions libérales et exploitants agricoles composent son économie. Axion-IA y déploie ses missions auprès de toutes les organisations du pays des Abers.",
+    "Plouguerneau (29), commune littorale du pays des Abers dans le nord Finistère, abrite le phare de l'Île Vierge, le plus haut phare en pierre d'Europe. TPE artisans, PME touristiques, commerces de proximité, ostréiculteurs, goémoniers, professions libérales et exploitants agricoles composent son économie. Axion-IA y travaille avec les organisations du territoire du pays des Abers.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plouguerneau (29). Nous accompagnons tous types d'activités : TPE artisans et goémoniers du littoral, PME touristiques du pays des Abers, ostréiculteurs, commerçants, professions libérales, exploitants agricoles et indépendants du secteur.",
   directAnswerEn:
@@ -61,7 +61,7 @@ export const PLOUGUERNEAU_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour une TPE ou PME du pays des Abers ?",
-      a: "L'audit Flash démarre à 490 € HT, accessible aux TPE. Pour les PME touristiques et exploitations marines, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
+      a: "L'audit Flash s'adapte à votre périmètre, accessible aux TPE. Pour les PME touristiques et exploitations marines, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
     },
     {
       q: "Comment se déroule une mission IA à Plouguerneau ?",

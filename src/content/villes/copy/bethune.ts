@@ -11,9 +11,9 @@ export const BETHUNE_COPY: VilleCopy = {
   pitchEn:
     "À Béthune, Axion-IA intervient pour optimiser les processus des entreprises locales. Bridgestone et le Parc d'activités de la Porte Nord illustrent le dynamisme économique de la région.",
   directAnswerFr:
-    "Axion-IA se déplace à Béthune pour accompagner les entreprises dans leur transition vers l'IA. Avec des acteurs comme Bridgestone et des infrastructures telles que le Parc d'activités de la Porte Nord, nous offrons des solutions adaptées aux besoins spécifiques de chaque secteur, qu'il s'agisse de commerce de détail ou de transports terrestres. Nos audits débutent à 490 € HT.",
+    "Axion-IA se déplace à Béthune pour accompagner les entreprises dans leur transition vers l'IA. Avec des acteurs comme Bridgestone et des infrastructures telles que le Parc d'activités de la Porte Nord, nous offrons des solutions adaptées aux besoins spécifiques de chaque secteur, qu'il s'agisse de commerce de détail ou de transports terrestres. Nos audits débutent à",
   directAnswerEn:
-    "Axion-IA se déplace à Béthune pour accompagner les entreprises dans leur transition vers l'IA. Avec des acteurs comme Bridgestone et des infrastructures telles que le Parc d'activités de la Porte Nord, nous offrons des solutions adaptées aux besoins spécifiques de chaque secteur, qu'il s'agisse de commerce de détail ou de transports terrestres. Nos audits débutent à 490 € HT.",
+    "Axion-IA se déplace à Béthune pour accompagner les entreprises dans leur transition vers l'IA. Avec des acteurs comme Bridgestone et des infrastructures telles que le Parc d'activités de la Porte Nord, nous offrons des solutions adaptées aux besoins spécifiques de chaque secteur, qu'il s'agisse de commerce de détail ou de transports terrestres. Nos audits débutent à",
   seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Béthune, avec des entreprises comme Bridgestone et le Parc d'activités de la Porte Nord, est un centre économique fortifié par le commerce de détail et les transports terrestres.",

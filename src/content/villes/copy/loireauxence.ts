@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LOIREAUXENCE_COPY: VilleCopy = {
   pitchFr:
-    "Loireauxence (44), commune nouvelle de Loire-Atlantique en bords de Loire entre Nantes et Ancenis, regroupe TPE artisanales, commerces de proximité, PME tertiaires et exploitations agricoles. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin nantais est.",
+    "Loireauxence (44), commune nouvelle de Loire-Atlantique en bords de Loire entre Nantes et Ancenis, regroupe TPE artisanales, commerces de proximité, PME tertiaires et exploitations agricoles. Axion-IA collabore avec toutes les structures locales du bassin nantais est.",
   pitchEn:
-    "Loireauxence (44), commune nouvelle de Loire-Atlantique en bords de Loire entre Nantes et Ancenis, regroupe TPE artisanales, commerces de proximité, PME tertiaires et exploitations agricoles. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin nantais est.",
+    "Loireauxence (44), commune nouvelle de Loire-Atlantique en bords de Loire entre Nantes et Ancenis, regroupe TPE artisanales, commerces de proximité, PME tertiaires et exploitations agricoles. Axion-IA collabore avec toutes les structures locales du bassin nantais est.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Loireauxence (44). Nous accompagnons les TPE artisans, commerçants, PME tertiaires, professions libérales et exploitants agricoles de cette commune nouvelle en bords de Loire. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Loireauxence (44). Nous accompagnons les TPE artisans, commerçants, PME tertiaires, professions libérales et exploitants agricoles de cette commune nouvelle en bords de Loire. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Loireauxence (44). Nous accompagnons les TPE artisans, commerçants, PME tertiaires, professions libérales et exploitants agricoles de cette commune nouvelle en bords de Loire. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Loireauxence (44). Nous accompagnons les TPE artisans, commerçants, PME tertiaires, professions libérales et exploitants agricoles de cette commune nouvelle en bords de Loire. Audit Flash sur mesure.",
   seoHook: "artisanat & agriculture élevage",
   ecosystemFr:
     "Loireauxence est une commune nouvelle (fusion 2016 de Varades, Belligné, La Chapelle-Saint-Sauveur, La Rouxière) en bords de Loire entre Nantes et Ancenis. Tissu TPE artisans, commerces de centre-bourg, PME tertiaires, professions libérales et exploitations agricoles.",

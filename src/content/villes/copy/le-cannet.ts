@@ -11,9 +11,9 @@ export const LE_CANNET_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Le Cannet, au cœur d'un bassin économique dynamique comprenant Cannes et Antibes, pour optimiser vos processus grâce à l'IA. Nos services s'adressent aux entreprises locales du commerce de détail et de la santé humaine.",
   directAnswerFr:
-    "Le Cannet, avec ses 4 000 établissements actifs, est un pôle économique important de la région Provence-Alpes-Côte d'Azur. Axion-IA propose des interventions sur site pour les entreprises locales, notamment dans le commerce de détail et le secteur de la santé humaine. Nos prestations incluent des audits à partir de 490 € HT et des implémentations dès 990 € HT, permettant de répondre aux besoins spécifiques des PME et ETI locales.",
+    "Le Cannet, avec ses 4 000 établissements actifs, est un pôle économique important de la région Provence-Alpes-Côte d'Azur. Axion-IA propose des interventions sur site pour les entreprises locales, notamment dans le commerce de détail et le secteur de la santé humaine. Nos prestations incluent des audits et des implémentations, permettant de répondre aux besoins spécifiques des PME et ETI locales.",
   directAnswerEn:
-    "Le Cannet, avec ses 4 000 établissements actifs, est un pôle économique important de la région Provence-Alpes-Côte d'Azur. Axion-IA propose des interventions sur site pour les entreprises locales, notamment dans le commerce de détail et le secteur de la santé humaine. Nos prestations incluent des audits à partir de 490 € HT et des implémentations dès 990 € HT, permettant de répondre aux besoins spécifiques des PME et ETI locales.",
+    "Le Cannet, avec ses 4 000 établissements actifs, est un pôle économique important de la région Provence-Alpes-Côte d'Azur. Axion-IA propose des interventions sur site pour les entreprises locales, notamment dans le commerce de détail et le secteur de la santé humaine. Nos prestations incluent des audits et des implémentations, permettant de répondre aux besoins spécifiques des PME et ETI locales.",
   seoHook: "commerce détail & restauration",
   ecosystemFr:
     "Le Cannet profite de la proximité de Cannes et Antibes, bénéficiant ainsi de l'influence économique de ces communes. Le secteur de la construction et celui de la restauration y sont particulièrement développés.",

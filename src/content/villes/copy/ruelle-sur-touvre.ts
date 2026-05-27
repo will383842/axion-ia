@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const RUELLE_SUR_TOUVRE_COPY: VilleCopy = {
   pitchFr:
-    "Ruelle-sur-Touvre (16), commune de l'agglomération d'Angoulême en Charente, site historique de la fonderie royale (arsenal de la Marine). Tissu de TPE artisans, PME industrielles défense et métallurgie, sous-traitants Naval Group, commerces et services. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération angoumoisine.",
+    "Ruelle-sur-Touvre (16), commune de l'agglomération d'Angoulême en Charente, site historique de la fonderie royale (arsenal de la Marine). Tissu de TPE artisans, PME industrielles défense et métallurgie, sous-traitants Naval Group, commerces et services. Axion-IA opère sur l'ensemble des activités professionnelles locales de l'agglomération angoumoisine.",
   pitchEn:
-    "Ruelle-sur-Touvre (16), commune de l'agglomération d'Angoulême en Charente, site historique de la fonderie royale (arsenal de la Marine). Tissu de TPE artisans, PME industrielles défense et métallurgie, sous-traitants Naval Group, commerces et services. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération angoumoisine.",
+    "Ruelle-sur-Touvre (16), commune de l'agglomération d'Angoulême en Charente, site historique de la fonderie royale (arsenal de la Marine). Tissu de TPE artisans, PME industrielles défense et métallurgie, sous-traitants Naval Group, commerces et services. Axion-IA opère sur l'ensemble des activités professionnelles locales de l'agglomération angoumoisine.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ruelle-sur-Touvre (16). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et métallurgiques, sous-traitants défense, commerçants et indépendants de cette commune industrielle de l'agglomération d'Angoulême.",
   directAnswerEn:

@@ -9,9 +9,9 @@ export const AIGUES_MORTES_COPY: VilleCopy = {
   pitchEn:
     "Aigues-Mortes (30), cité médiévale fortifiée au cœur de la Camargue gardoise, haut lieu touristique et patrimonial. Tissu TPE/PME tourisme, hôtellerie-restauration, salins du Midi, viticulture sable, commerces artisanaux et services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune de la Camargue gardoise.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Aigues-Mortes (30). Nous accompagnons les TPE, PME et ETI locales : acteurs touristiques, hôteliers-restaurateurs, viticulteurs des sables, commerçants artisanaux et professions libérales de la Camargue gardoise. Audit Flash à partir de 490 € HT.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Aigues-Mortes (30). Nous accompagnons les TPE, PME et ETI locales : acteurs touristiques, hôteliers-restaurateurs, viticulteurs des sables, commerçants artisanaux et professions libérales de la Camargue gardoise. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Aigues-Mortes (30). Nous accompagnons les TPE, PME et ETI locales : acteurs touristiques, hôteliers-restaurateurs, viticulteurs des sables, commerçants artisanaux et professions libérales de la Camargue gardoise. Audit Flash à partir de 490 € HT.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Aigues-Mortes (30). Nous accompagnons les TPE, PME et ETI locales : acteurs touristiques, hôteliers-restaurateurs, viticulteurs des sables, commerçants artisanaux et professions libérales de la Camargue gardoise. Audit Flash sur mesure.",
   seoHook: "TPE & PME Gard",
   ecosystemFr:
     "Aigues-Mortes (~8 700 hab) est une cité médiévale fortifiée emblématique de la Camargue gardoise. Tourisme patrimonial majeur (remparts, Tour de Constance), salins du Midi, viticulture des sables (vin des sables), hôtellerie-restauration, commerces artisanaux et agritourisme camarguais.",
@@ -56,7 +56,7 @@ export const AIGUES_MORTES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons hôtels, restaurants, boutiques, musées et offices de tourisme : agents conversationnels multilingues, optimisation tarification, analyse avis clients, automatisation réservations.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Aigues-Mortes ?",
+      q: "Quel est le tarif d'un audit IA à Aigues-Mortes  ?",
       a: "L'Audit Flash commence à 490 € HT. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {

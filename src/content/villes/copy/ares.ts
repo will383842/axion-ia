@@ -9,9 +9,9 @@ export const ARES_COPY: VilleCopy = {
   pitchEn:
     "Arès (33), station balnéaire du nord du Bassin d'Arcachon, allie tourisme familial, ostréiculture, commerces saisonniers et tissu résidentiel actif. Axion-IA y intervient pour tous types d'activités du nord du Bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arès (33). Nous accompagnons TPE et PME du nord Bassin d'Arcachon : hébergeurs touristiques, ostréiculteurs, commerçants saisonniers, artisans BTP et professions libérales. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arès (33). Nous accompagnons TPE et PME du nord Bassin d'Arcachon : hébergeurs touristiques, ostréiculteurs, commerçants saisonniers, artisans BTP et professions libérales. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arès (33). Nous accompagnons TPE et PME du nord Bassin d'Arcachon : hébergeurs touristiques, ostréiculteurs, commerçants saisonniers, artisans BTP et professions libérales. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arès (33). Nous accompagnons TPE et PME du nord Bassin d'Arcachon : hébergeurs touristiques, ostréiculteurs, commerçants saisonniers, artisans BTP et professions libérales. Audit Flash sur mesure.",
   seoHook: "tourisme hébergement & ostréiculture",
   ecosystemFr:
     "Arès est une station balnéaire familiale du nord du Bassin d'Arcachon. Tourisme (campings, locations, plages), ostréiculture (port ostréicole), commerces saisonniers, artisanat BTP et professions libérales. Réserve naturelle des prés salés.",
@@ -52,7 +52,7 @@ export const ARES_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Arès et dans tout le nord Bassin d'Arcachon (Andernos, Lanton, Lège-Cap-Ferret). Nos consultants se déplacent depuis Bordeaux (50 min) ou Paris (TGV 2h + 50 min).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Arès ?",
+      q: "Tarifs audit IA à Arès  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Adapté aux hébergeurs et TPE du nord Bassin d'Arcachon.",
     },
     {

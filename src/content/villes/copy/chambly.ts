@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const CHAMBLY_COPY: VilleCopy = {
   pitchFr:
-    "Chambly (60), commune de 9 959 habitants dans le sud de l'Oise, est une ville résidentielle dynamique aux portes de l'Île-de-France. Son économie repose sur un tissu de TPE/PME commerce, artisanat, BTP, services aux particuliers et aux entreprises, profitant de la proximité de Méru, Persan et de l'axe Paris-Beauvais. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Chambly (60), commune de 9 959 habitants dans le sud de l'Oise, est une ville résidentielle dynamique aux portes de l'Île-de-France. Son économie repose sur un tissu de TPE/PME commerce, artisanat, BTP, services aux particuliers et aux entreprises, profitant de la proximité de Méru, Persan et de l'axe Paris-Beauvais. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Chambly (60), commune de 9 959 habitants dans le sud de l'Oise, est une ville résidentielle dynamique aux portes de l'Île-de-France. Son économie repose sur un tissu de TPE/PME commerce, artisanat, BTP, services aux particuliers et aux entreprises, profitant de la proximité de Méru, Persan et de l'axe Paris-Beauvais. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Chambly (60), commune de 9 959 habitants dans le sud de l'Oise, est une ville résidentielle dynamique aux portes de l'Île-de-France. Son économie repose sur un tissu de TPE/PME commerce, artisanat, BTP, services aux particuliers et aux entreprises, profitant de la proximité de Méru, Persan et de l'axe Paris-Beauvais. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chambly (60). Nous accompagnons TPE et PME du sud de l'Oise : commerçants, artisans du BTP, prestataires de services aux particuliers et aux entreprises. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chambly (60). Nous accompagnons TPE et PME du sud de l'Oise : commerçants, artisans du BTP, prestataires de services aux particuliers et aux entreprises. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chambly (60). Nous accompagnons TPE et PME du sud de l'Oise : commerçants, artisans du BTP, prestataires de services aux particuliers et aux entreprises. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chambly (60). Nous accompagnons TPE et PME du sud de l'Oise : commerçants, artisans du BTP, prestataires de services aux particuliers et aux entreprises. Audit Flash sur mesure.",
   ecosystemFr:
     "Chambly est une commune résidentielle du sud de l'Oise, aux portes du Val-d'Oise et de l'Île-de-France. Son économie locale repose sur le commerce de proximité, l'artisanat du BTP, les services aux particuliers et aux entreprises. Le bassin d'emploi s'articule avec Méru, Persan et Beaumont-sur-Oise, et bénéficie de la proximité de la N1 et de la gare TER de Chambly (ligne Paris-Nord — Persan-Beaumont).",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const CHAMBLY_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Chambly et dans tout le sud de l'Oise (Méru, Persan, Beaumont-sur-Oise, Neuilly-en-Thelle). Consultants accessibles via gare SNCF Chambly (TER Paris-Nord — Persan-Beaumont). Paris à 50 min.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Chambly ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Chambly  ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME chamblisiennes : commerçants, artisans BTP, prestataires de services aux particuliers et aux entreprises. ROI chiffré dès le diagnostic.",
     },
     {

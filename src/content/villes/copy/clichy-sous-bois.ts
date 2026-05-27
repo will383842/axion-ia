@@ -11,9 +11,9 @@ export const CLICHY_SOUS_BOIS_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Clichy-sous-Bois, où le commerce de détail et les travaux de construction prédominent. Notre équipe se déplace partout en France pour accompagner les entreprises dans l'intégration de l'IA, en s'inspirant de l'écosystème parisien incluant Cap Digital et LVMH.",
   directAnswerFr:
-    "Axion-IA se déplace à Clichy-sous-Bois pour offrir ses services en IA, inspiré par l'écosystème d'innovation parisien comprenant Cap Digital et Station F. Nos interventions visent à automatiser les processus administratifs et à optimiser les opérations. Nous proposons des audits à partir de 490 € HT et des interventions dès 590 € HT, avec des tarifs publics consultables sur notre site.",
+    "Axion-IA se déplace à Clichy-sous-Bois pour offrir ses services en IA, inspiré par l'écosystème d'innovation parisien comprenant Cap Digital et Station F. Nos interventions visent à automatiser les processus administratifs et à optimiser les opérations. Nous proposons des audits et des interventions, avec des tarifs publics consultables sur notre site.",
   directAnswerEn:
-    "Axion-IA se déplace à Clichy-sous-Bois pour offrir ses services en IA, inspiré par l'écosystème d'innovation parisien comprenant Cap Digital et Station F. Nos interventions visent à automatiser les processus administratifs et à optimiser les opérations. Nous proposons des audits à partir de 490 € HT et des interventions dès 590 € HT, avec des tarifs publics consultables sur notre site.",
+    "Axion-IA se déplace à Clichy-sous-Bois pour offrir ses services en IA, inspiré par l'écosystème d'innovation parisien comprenant Cap Digital et Station F. Nos interventions visent à automatiser les processus administratifs et à optimiser les opérations. Nous proposons des audits et des interventions, avec des tarifs publics consultables sur notre site.",
   seoHook: "commerce détail & travaux construction",
   ecosystemFr:
     "Le tissu économique de Clichy-sous-Bois est influencé par la proximité de pôles comme Station F et Inria à Paris. Les entreprises locales bénéficient de cet environnement stimulant pour l'innovation et la technologie.",

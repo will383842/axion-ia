@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CROLLES_COPY: VilleCopy = {
   pitchFr:
-    "Crolles (38), petite ville de la vallée du Grésivaudan en Isère, abrite un tissu industriel microélectronique majeur en périphérie nord-est de Grenoble. Présence d'industries high-tech, TPE artisans BTP, commerces, agriculture résiduelle. Axion-IA y déploie ses missions auprès de toutes les organisations du Grésivaudan.",
+    "Crolles (38), petite ville de la vallée du Grésivaudan en Isère, abrite un tissu industriel microélectronique majeur en périphérie nord-est de Grenoble. Présence d'industries high-tech, TPE artisans BTP, commerces, agriculture résiduelle. Axion-IA y conduit ses missions auprès des entreprises locales du Grésivaudan.",
   pitchEn:
-    "Crolles (38), petite ville de la vallée du Grésivaudan en Isère, abrite un tissu industriel microélectronique majeur en périphérie nord-est de Grenoble. Présence d'industries high-tech, TPE artisans BTP, commerces, agriculture résiduelle. Axion-IA y déploie ses missions auprès de toutes les organisations du Grésivaudan.",
+    "Crolles (38), petite ville de la vallée du Grésivaudan en Isère, abrite un tissu industriel microélectronique majeur en périphérie nord-est de Grenoble. Présence d'industries high-tech, TPE artisans BTP, commerces, agriculture résiduelle. Axion-IA y conduit ses missions auprès des entreprises locales du Grésivaudan.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Crolles (38). Nous accompagnons tous types d'activités : industriels microélectroniques et sous-traitants tech du Grésivaudan, TPE artisans BTP, commerçants, indépendants, professions libérales, PME tertiaires et agriculteurs de la vallée du Grésivaudan.",
   directAnswerEn:

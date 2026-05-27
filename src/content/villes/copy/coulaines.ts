@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const COULAINES_COPY: VilleCopy = {
   pitchFr:
-    "Coulaines (72), commune de l'agglomération mancelle au nord du Mans en Sarthe, regroupe zones résidentielles et tissu économique de proximité où évoluent TPE artisans, PME de services, commerces, professions libérales et prestataires du bassin manceau nord. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Coulaines (72), commune de l'agglomération mancelle au nord du Mans en Sarthe, regroupe zones résidentielles et tissu économique de proximité où évoluent TPE artisans, PME de services, commerces, professions libérales et prestataires du bassin manceau nord. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Coulaines (72), commune de l'agglomération mancelle au nord du Mans en Sarthe, regroupe zones résidentielles et tissu économique de proximité où évoluent TPE artisans, PME de services, commerces, professions libérales et prestataires du bassin manceau nord. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Coulaines (72), commune de l'agglomération mancelle au nord du Mans en Sarthe, regroupe zones résidentielles et tissu économique de proximité où évoluent TPE artisans, PME de services, commerces, professions libérales et prestataires du bassin manceau nord. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coulaines (72). Nous accompagnons tous types d'activités : TPE artisans, PME de services, commerçants, professions libérales (santé, juridique), prestataires et entreprises du nord de l'agglomération mancelle.",
   directAnswerEn:

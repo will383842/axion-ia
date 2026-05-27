@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VAL_DE_REUIL_COPY: VilleCopy = {
   pitchFr:
-    "Val-de-Reuil (27), ville nouvelle de l'Eure en Normandie, pôle industriel pharmaceutique et logistique de la vallée de la Seine. Tissu TPE artisans, PME industrie pharmaceutique et chimie, logistique, commerces, services aux entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Val-de-Reuil (27), ville nouvelle de l'Eure en Normandie, pôle industriel pharmaceutique et logistique de la vallée de la Seine. Tissu TPE artisans, PME industrie pharmaceutique et chimie, logistique, commerces, services aux entreprises. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Val-de-Reuil (27), ville nouvelle de l'Eure en Normandie, pôle industriel pharmaceutique et logistique de la vallée de la Seine. Tissu TPE artisans, PME industrie pharmaceutique et chimie, logistique, commerces, services aux entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Val-de-Reuil (27), ville nouvelle de l'Eure en Normandie, pôle industriel pharmaceutique et logistique de la vallée de la Seine. Tissu TPE artisans, PME industrie pharmaceutique et chimie, logistique, commerces, services aux entreprises. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Val-de-Reuil (27). Nous accompagnons tous types d'activités : TPE artisans, PME industrie pharmaceutique et chimie, logistique vallée de Seine, commerces, indépendants et services aux entreprises de l'agglomération Seine-Eure.",
   directAnswerEn:

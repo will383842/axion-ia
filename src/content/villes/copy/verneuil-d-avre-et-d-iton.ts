@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VERNEUIL_D_AVRE_ET_D_ITON_COPY: VilleCopy = {
   pitchFr:
-    "Verneuil d'Avre et d'Iton (27), commune nouvelle de l'Eure aux confins du Perche et du Pays d'Ouche, riche patrimoine médiéval (tour de la Madeleine, maisons à pans de bois). Tissu TPE artisans, PME agriculture et élevage, commerces, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Verneuil d'Avre et d'Iton (27), commune nouvelle de l'Eure aux confins du Perche et du Pays d'Ouche, riche patrimoine médiéval (tour de la Madeleine, maisons à pans de bois). Tissu TPE artisans, PME agriculture et élevage, commerces, services aux entreprises. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Verneuil d'Avre et d'Iton (27), commune nouvelle de l'Eure aux confins du Perche et du Pays d'Ouche, riche patrimoine médiéval (tour de la Madeleine, maisons à pans de bois). Tissu TPE artisans, PME agriculture et élevage, commerces, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Verneuil d'Avre et d'Iton (27), commune nouvelle de l'Eure aux confins du Perche et du Pays d'Ouche, riche patrimoine médiéval (tour de la Madeleine, maisons à pans de bois). Tissu TPE artisans, PME agriculture et élevage, commerces, services aux entreprises. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Verneuil d'Avre et d'Iton (27). Nous accompagnons tous types d'activités : TPE artisans, PME agriculture et élevage Perche-Ouche, commerces centre médiéval, professions libérales, indépendants et services aux entreprises du sud de l'Eure.",
   directAnswerEn:

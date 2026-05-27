@@ -11,9 +11,9 @@ export const VILLIERS_SUR_MARNE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Villiers-sur-Marne, proche de pôles comme Station F et Cap Digital, pour optimiser vos processus grâce à l'IA.",
   directAnswerFr:
-    "À Villiers-sur-Marne, nous accompagnons les entreprises du commerce de détail et du transport terrestre. Axion-IA propose des services adaptés aux besoins spécifiques des TPE et PME. Grâce à notre expertise nationale, nous intervenons directement sur site pour des audits, implémentations et formations personnalisées. Nos tarifs publics, tels que l'audit Flash à partir de 490 € HT, sont consultables en ligne.",
+    "À Villiers-sur-Marne, nous accompagnons les entreprises du commerce de détail et du transport terrestre. Axion-IA propose des services adaptés aux besoins spécifiques des TPE et PME. Grâce à notre expertise nationale, nous intervenons directement sur site pour des audits, implémentations et formations personnalisées. Nos tarifs publics, tels que l'audit Flash, sont consultables en ligne.",
   directAnswerEn:
-    "À Villiers-sur-Marne, nous accompagnons les entreprises du commerce de détail et du transport terrestre. Axion-IA propose des services adaptés aux besoins spécifiques des TPE et PME. Grâce à notre expertise nationale, nous intervenons directement sur site pour des audits, implémentations et formations personnalisées. Nos tarifs publics, tels que l'audit Flash à partir de 490 € HT, sont consultables en ligne.",
+    "À Villiers-sur-Marne, nous accompagnons les entreprises du commerce de détail et du transport terrestre. Axion-IA propose des services adaptés aux besoins spécifiques des TPE et PME. Grâce à notre expertise nationale, nous intervenons directement sur site pour des audits, implémentations et formations personnalisées. Nos tarifs publics, tels que l'audit Flash, sont consultables en ligne.",
   seoHook: "commerce détail & travaux construction",
   ecosystemFr:
     "Villiers-sur-Marne est un centre d'activité pour le commerce de détail et les travaux de construction. Les entreprises locales interagissent avec les infrastructures économiques de l'Île-de-France, incluant des entités comme LVMH et BNP Paribas.",

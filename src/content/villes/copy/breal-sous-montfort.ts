@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BREAL_SOUS_MONTFORT_COPY: VilleCopy = {
   pitchFr:
-    "Bréal-sous-Montfort (35), commune résidentielle de l'ouest de Rennes Métropole en Ille-et-Vilaine, connaît une forte croissance démographique. Tissu de TPE artisans BTP portés par la dynamique immobilière, commerces de proximité, PME de services, professions libérales, indépendants et exploitants agricoles périurbains. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Bréal-sous-Montfort (35), commune résidentielle de l'ouest de Rennes Métropole en Ille-et-Vilaine, connaît une forte croissance démographique. Tissu de TPE artisans BTP portés par la dynamique immobilière, commerces de proximité, PME de services, professions libérales, indépendants et exploitants agricoles périurbains. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Bréal-sous-Montfort (35), commune résidentielle de l'ouest de Rennes Métropole en Ille-et-Vilaine, connaît une forte croissance démographique. Tissu de TPE artisans BTP portés par la dynamique immobilière, commerces de proximité, PME de services, professions libérales, indépendants et exploitants agricoles périurbains. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Bréal-sous-Montfort (35), commune résidentielle de l'ouest de Rennes Métropole en Ille-et-Vilaine, connaît une forte croissance démographique. Tissu de TPE artisans BTP portés par la dynamique immobilière, commerces de proximité, PME de services, professions libérales, indépendants et exploitants agricoles périurbains. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bréal-sous-Montfort (35). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, PME de services de l'ouest Rennes, professions libérales, indépendants et exploitants agricoles périurbains du secteur Montfort-Bréal.",
   directAnswerEn:
@@ -56,7 +56,7 @@ export const BREAL_SOUS_MONTFORT_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE artisans BTP de Bréal-sous-Montfort et communes voisines sur leurs cas IA : automatisation devis, agents IA prise de rendez-vous, classification photos chantier, suivi planning, facturation. Audit Flash 490 € HT.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Bréal-sous-Montfort ?",
+      q: "Tarifs audit IA à Bréal-sous-Montfort  : quel budget prévoir ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du secteur Montfort-Bréal, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics, transparents.",
     },
     {

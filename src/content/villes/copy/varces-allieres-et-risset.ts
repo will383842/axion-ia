@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VARCES_ALLIERES_ET_RISSET_COPY: VilleCopy = {
   pitchFr:
-    "Varces-Allières-et-Risset (38), commune du sud-Grenoble dans la vallée de la Gresse (affluent du Drac), conjugue tissu résidentiel péri-urbain et activités locales rurales. Tissu TPE artisans, commerces de proximité, professions libérales, agriculture résiduelle et PME services. Axion-IA y déploie ses missions auprès de toutes les organisations sud-grenobloises.",
+    "Varces-Allières-et-Risset (38), commune du sud-Grenoble dans la vallée de la Gresse (affluent du Drac), conjugue tissu résidentiel péri-urbain et activités locales rurales. Tissu TPE artisans, commerces de proximité, professions libérales, agriculture résiduelle et PME services. Axion-IA y déploie son expertise pour toutes les organisations sud-grenobloises.",
   pitchEn:
-    "Varces-Allières-et-Risset (38), commune du sud-Grenoble dans la vallée de la Gresse (affluent du Drac), conjugue tissu résidentiel péri-urbain et activités locales rurales. Tissu TPE artisans, commerces de proximité, professions libérales, agriculture résiduelle et PME services. Axion-IA y déploie ses missions auprès de toutes les organisations sud-grenobloises.",
+    "Varces-Allières-et-Risset (38), commune du sud-Grenoble dans la vallée de la Gresse (affluent du Drac), conjugue tissu résidentiel péri-urbain et activités locales rurales. Tissu TPE artisans, commerces de proximité, professions libérales, agriculture résiduelle et PME services. Axion-IA y déploie son expertise pour toutes les organisations sud-grenobloises.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Varces-Allières-et-Risset (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, agriculteurs résiduels de la vallée de la Gresse, professions libérales, indépendants, PME tertiaires et services du sud Grenoble-Alpes Métropole.",
   directAnswerEn:

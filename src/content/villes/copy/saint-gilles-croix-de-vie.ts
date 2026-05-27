@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_GILLES_CROIX_DE_VIE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Gilles-Croix-de-Vie (85), port de pêche vendéen, rassemble plus de 8 300 habitants. Premier port sardinier de la côte atlantique, station balnéaire dynamique, tissu de TPE artisanales, PME pêche et tourisme, commerces et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Saint-Gilles-Croix-de-Vie (85), port de pêche vendéen, rassemble plus de 8 300 habitants. Premier port sardinier de la côte atlantique, station balnéaire dynamique, tissu de TPE artisanales, PME pêche et tourisme, commerces et services. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Saint-Gilles-Croix-de-Vie (85), port de pêche vendéen, rassemble plus de 8 300 habitants. Premier port sardinier de la côte atlantique, station balnéaire dynamique, tissu de TPE artisanales, PME pêche et tourisme, commerces et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Saint-Gilles-Croix-de-Vie (85), port de pêche vendéen, rassemble plus de 8 300 habitants. Premier port sardinier de la côte atlantique, station balnéaire dynamique, tissu de TPE artisanales, PME pêche et tourisme, commerces et services. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Gilles-Croix-de-Vie (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, professionnels de la pêche et mareyage, hôteliers-restaurateurs, acteurs tourisme littoral et services.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const SAINT_GILLES_CROIX_DE_VIE_COPY: VilleCopy = {
       a: "Audit Flash 490 € HT, interventions sur site, coaching 1-to-1, implémentation IA. Cas restauration : gestion réservations IA, prédiction affluence, classification avis, automatisation commandes fournisseurs.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Saint-Gilles-Croix-de-Vie ?",
+      q: "Combien coûte un audit IA à Saint-Gilles-Croix-de-Vie  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {

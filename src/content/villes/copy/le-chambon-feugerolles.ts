@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_CHAMBON_FEUGEROLLES_COPY: VilleCopy = {
   pitchFr:
-    "Le Chambon-Feugerolles (42), commune de la vallée de l'Ondaine dans la Loire, est intégrée à Saint-Étienne Métropole. Héritage industriel important (métallurgie, petite mécanique fine). Tissu PME industrielles diversifiées, TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs vallée Ondaine.",
+    "Le Chambon-Feugerolles (42), commune de la vallée de l'Ondaine dans la Loire, est intégrée à Saint-Étienne Métropole. Héritage industriel important (métallurgie, petite mécanique fine). Tissu PME industrielles diversifiées, TPE artisans BTP, commerces. Axion-IA répond aux besoins de toutes les entreprises vallée Ondaine.",
   pitchEn:
-    "Le Chambon-Feugerolles (42), commune de la vallée de l'Ondaine dans la Loire, est intégrée à Saint-Étienne Métropole. Héritage industriel important (métallurgie, petite mécanique fine). Tissu PME industrielles diversifiées, TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs vallée Ondaine.",
+    "Le Chambon-Feugerolles (42), commune de la vallée de l'Ondaine dans la Loire, est intégrée à Saint-Étienne Métropole. Héritage industriel important (métallurgie, petite mécanique fine). Tissu PME industrielles diversifiées, TPE artisans BTP, commerces. Axion-IA répond aux besoins de toutes les entreprises vallée Ondaine.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Chambon-Feugerolles (42). Nous accompagnons tous types d'activités : PME industrielles vallée Ondaine (héritage métallurgique/petite mécanique), TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de Saint-Étienne Métropole.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const YSSINGEAUX_COPY: VilleCopy = {
   pitchFr:
-    "Yssingeaux (43), sous-préfecture de la Haute-Loire, est une commune rurale du Velay méridional. Drainée par le Lignon du Velay, environnement naturel remarquable (Natura 2000 gorges de la Loire). Tissu agroalimentaire, PME bois/menuiserie, TPE artisans, commerces, services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Yssingeaux (43), sous-préfecture de la Haute-Loire, est une commune rurale du Velay méridional. Drainée par le Lignon du Velay, environnement naturel remarquable (Natura 2000 gorges de la Loire). Tissu agroalimentaire, PME bois/menuiserie, TPE artisans, commerces, services. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Yssingeaux (43), sous-préfecture de la Haute-Loire, est une commune rurale du Velay méridional. Drainée par le Lignon du Velay, environnement naturel remarquable (Natura 2000 gorges de la Loire). Tissu agroalimentaire, PME bois/menuiserie, TPE artisans, commerces, services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Yssingeaux (43), sous-préfecture de la Haute-Loire, est une commune rurale du Velay méridional. Drainée par le Lignon du Velay, environnement naturel remarquable (Natura 2000 gorges de la Loire). Tissu agroalimentaire, PME bois/menuiserie, TPE artisans, commerces, services. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Yssingeaux (43). Nous accompagnons TPE et PME : entreprises agroalimentaire, filière bois/menuiserie, administration sous-préfecture, artisans BTP, commerçants et services aux entreprises yssingelais.",
   directAnswerEn:

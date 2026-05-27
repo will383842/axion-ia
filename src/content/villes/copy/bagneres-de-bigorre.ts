@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BAGNERES_DE_BIGORRE_COPY: VilleCopy = {
   pitchFr:
-    "Bagnères-de-Bigorre (65), station thermale des Hautes-Pyrénées au pied du col du Tourmalet et du Pic du Midi de Bigorre. Thermalisme, cyclisme, tourisme montagne. Tissu TPE artisans, PME thermalisme et tourisme, commerces de proximité, hôtellerie, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Bagnères-de-Bigorre (65), station thermale des Hautes-Pyrénées au pied du col du Tourmalet et du Pic du Midi de Bigorre. Thermalisme, cyclisme, tourisme montagne. Tissu TPE artisans, PME thermalisme et tourisme, commerces de proximité, hôtellerie, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Bagnères-de-Bigorre (65), station thermale des Hautes-Pyrénées au pied du col du Tourmalet et du Pic du Midi de Bigorre. Thermalisme, cyclisme, tourisme montagne. Tissu TPE artisans, PME thermalisme et tourisme, commerces de proximité, hôtellerie, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Bagnères-de-Bigorre (65), station thermale des Hautes-Pyrénées au pied du col du Tourmalet et du Pic du Midi de Bigorre. Thermalisme, cyclisme, tourisme montagne. Tissu TPE artisans, PME thermalisme et tourisme, commerces de proximité, hôtellerie, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bagnères-de-Bigorre (65). Nous accompagnons tous types d'activités : établissements thermaux, PME hôtelières, TPE artisans, commerçants, restaurateurs, indépendants, professions libérales et acteurs du tourisme montagne pyrénéen.",
   directAnswerEn:

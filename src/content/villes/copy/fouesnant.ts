@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FOUESNANT_COPY: VilleCopy = {
   pitchFr:
-    "Fouesnant (29), station balnéaire du littoral sud Finistère, est renommée pour son cidre AOP Cornouaille et ses plages (Cap Coz, Beg Meil, archipel des Glénan). Tissu TPE touristiques, PME cidricoles et agroalimentaires, artisans BTP, commerces saisonniers et services. Axion-IA y déploie ses missions auprès de toutes les organisations du Pays fouesnantais et de la Cornouaille.",
+    "Fouesnant (29), station balnéaire du littoral sud Finistère, est renommée pour son cidre AOP Cornouaille et ses plages (Cap Coz, Beg Meil, archipel des Glénan). Tissu TPE touristiques, PME cidricoles et agroalimentaires, artisans BTP, commerces saisonniers et services. Axion-IA y conduit ses missions auprès des entreprises locales du Pays fouesnantais et de la Cornouaille.",
   pitchEn:
-    "Fouesnant (29), station balnéaire du littoral sud Finistère, est renommée pour son cidre AOP Cornouaille et ses plages (Cap Coz, Beg Meil, archipel des Glénan). Tissu TPE touristiques, PME cidricoles et agroalimentaires, artisans BTP, commerces saisonniers et services. Axion-IA y déploie ses missions auprès de toutes les organisations du Pays fouesnantais et de la Cornouaille.",
+    "Fouesnant (29), station balnéaire du littoral sud Finistère, est renommée pour son cidre AOP Cornouaille et ses plages (Cap Coz, Beg Meil, archipel des Glénan). Tissu TPE touristiques, PME cidricoles et agroalimentaires, artisans BTP, commerces saisonniers et services. Axion-IA y conduit ses missions auprès des entreprises locales du Pays fouesnantais et de la Cornouaille.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fouesnant (29). Nous accompagnons tous types d'activités : TPE touristiques (hôtels, campings, restaurants), PME cidricoles AOP Cornouaille, artisans BTP, commerçants saisonniers, indépendants, professions libérales et services aux entreprises du Pays fouesnantais.",
   directAnswerEn:

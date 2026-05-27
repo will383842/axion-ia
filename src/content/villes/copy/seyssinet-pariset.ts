@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SEYSSINET_PARISET_COPY: VilleCopy = {
   pitchFr:
-    "Seyssinet-Pariset (38), banlieue ouest immédiate de Grenoble séparée par le Drac, mêle plaine urbanisée (Seyssinet) et flanc du massif du Vercors (Pariset, vers Saint-Nizier-du-Moucherotte). Tissu PME tertiaires, TPE artisans, professions libérales et commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin grenoblois.",
+    "Seyssinet-Pariset (38), banlieue ouest immédiate de Grenoble séparée par le Drac, mêle plaine urbanisée (Seyssinet) et flanc du massif du Vercors (Pariset, vers Saint-Nizier-du-Moucherotte). Tissu PME tertiaires, TPE artisans, professions libérales et commerces. Axion-IA accompagne tout le tissu professionnel local du bassin grenoblois.",
   pitchEn:
-    "Seyssinet-Pariset (38), banlieue ouest immédiate de Grenoble séparée par le Drac, mêle plaine urbanisée (Seyssinet) et flanc du massif du Vercors (Pariset, vers Saint-Nizier-du-Moucherotte). Tissu PME tertiaires, TPE artisans, professions libérales et commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin grenoblois.",
+    "Seyssinet-Pariset (38), banlieue ouest immédiate de Grenoble séparée par le Drac, mêle plaine urbanisée (Seyssinet) et flanc du massif du Vercors (Pariset, vers Saint-Nizier-du-Moucherotte). Tissu PME tertiaires, TPE artisans, professions libérales et commerces. Axion-IA accompagne tout le tissu professionnel local du bassin grenoblois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Seyssinet-Pariset (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales (médecins, avocats, expert-comptables), PME tertiaires seyssinardes, indépendants et entreprises de Grenoble-Alpes Métropole (« La Métro »).",
   directAnswerEn:

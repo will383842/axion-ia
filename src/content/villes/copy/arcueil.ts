@@ -11,9 +11,9 @@ export const ARCUEIL_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Arcueil, au cœur d'un tissu économique comprenant Orange et EDF. Notre expertise en IA accompagne les entreprises locales dans leurs projets technologiques.",
   directAnswerFr:
-    "Axion-IA se déplace à Arcueil pour offrir des services d'IA adaptés aux entreprises locales. Avec des acteurs comme Orange et EDF implantés dans la région, nous aidons à automatiser les processus métiers. Nos services incluent des audits dès 490 € HT et des interventions à partir de 590 € HT, garantissant des solutions concrètes et rapides.",
+    "Axion-IA se déplace à Arcueil pour offrir des services d'IA adaptés aux entreprises locales. Avec des acteurs comme Orange et EDF implantés dans la région, nous aidons à automatiser les processus métiers. Nos services incluent des audits et des interventions, garantissant des solutions concrètes et rapides.",
   directAnswerEn:
-    "Axion-IA se déplace à Arcueil pour offrir des services d'IA adaptés aux entreprises locales. Avec des acteurs comme Orange et EDF implantés dans la région, nous aidons à automatiser les processus métiers. Nos services incluent des audits dès 490 € HT et des interventions à partir de 590 € HT, garantissant des solutions concrètes et rapides.",
+    "Axion-IA se déplace à Arcueil pour offrir des services d'IA adaptés aux entreprises locales. Avec des acteurs comme Orange et EDF implantés dans la région, nous aidons à automatiser les processus métiers. Nos services incluent des audits et des interventions, garantissant des solutions concrètes et rapides.",
   seoHook: "programmation informatique & commerce détail",
   ecosystemFr:
     "Arcueil est un pôle économique avec Orange et EDF. La ZAC du Chaperon Vert renforce l'activité locale, facilitant l'intervention d'Axion-IA pour les entreprises.",

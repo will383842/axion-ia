@@ -9,9 +9,9 @@ export const VILLEFRANCHE_SUR_MER_COPY: VilleCopy = {
   pitchEn:
     "Villefranche-sur-Mer (06), commune littorale limitrophe de Nice en région Provence-Alpes-Côte d'Azur, plus de 5 000 habitants à l'année. Rade mythique de la Riviera, escale croisières internationales, patrimoine Cocteau et tourisme haut de gamme. Tissu TPE artisans, PME tourisme/hôtellerie haut de gamme, commerces, restauration et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de la Côte d'Azur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villefranche-sur-Mer (06). Nous accompagnons TPE artisans, PME tourisme et hôtellerie haut de gamme, restaurateurs, commerçants et professions libérales de la Riviera azuréenne. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villefranche-sur-Mer (06). Nous accompagnons TPE artisans, PME tourisme et hôtellerie haut de gamme, restaurateurs, commerçants et professions libérales de la Riviera azuréenne. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villefranche-sur-Mer (06). Nous accompagnons TPE artisans, PME tourisme et hôtellerie haut de gamme, restaurateurs, commerçants et professions libérales de la Riviera azuréenne. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villefranche-sur-Mer (06). Nous accompagnons TPE artisans, PME tourisme et hôtellerie haut de gamme, restaurateurs, commerçants et professions libérales de la Riviera azuréenne. Audit Flash sur mesure.",
   seoHook: "côte d'azur",
   ecosystemFr:
     "Villefranche-sur-Mer (5 008 hab) est une commune littorale de la Riviera, limitrophe de Nice. Économie centrée sur tourisme haut de gamme (hôtellerie de luxe, yachting, croisières internationales), patrimoine culturel (chapelle Cocteau), restauration gastronomique, commerces, art et services. Proximité immédiate Nice (15 min), Monaco (20 min), Cannes (45 min). Forte saisonnalité internationale.",
@@ -52,7 +52,7 @@ export const VILLEFRANCHE_SUR_MER_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Villefranche-sur-Mer et sur toute la Riviera azuréenne (Nice, Beaulieu-sur-Mer, Cap-Ferrat, Èze, Monaco). Nos consultants se déplacent depuis Nice (15 min) ou directement sur site.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Villefranche-sur-Mer ?",
+      q: "Combien coûte un audit IA à Villefranche-sur-Mer  ?",
       a: "L'Audit Flash IA démarre à 490 € HT pour les TPE de Villefranche-sur-Mer. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre activité touristique haut de gamme ou artisanale.",
     },
     {

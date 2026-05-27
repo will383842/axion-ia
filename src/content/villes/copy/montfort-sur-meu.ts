@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MONTFORT_SUR_MEU_COPY: VilleCopy = {
   pitchFr:
-    "Montfort-sur-Meu (35), chef-lieu de canton à l'ouest de Rennes au confluent du Meu et du Garun, est une petite ville de caractère avec son écomusée du pays de Montfort et sa tour du Papegaut. Tissu de TPE artisans, PME de services, commerces de centre-bourg, professions libérales et exploitants agricoles du pays de Brocéliande. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Montfort-sur-Meu (35), chef-lieu de canton à l'ouest de Rennes au confluent du Meu et du Garun, est une petite ville de caractère avec son écomusée du pays de Montfort et sa tour du Papegaut. Tissu de TPE artisans, PME de services, commerces de centre-bourg, professions libérales et exploitants agricoles du pays de Brocéliande. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Montfort-sur-Meu (35), chef-lieu de canton à l'ouest de Rennes au confluent du Meu et du Garun, est une petite ville de caractère avec son écomusée du pays de Montfort et sa tour du Papegaut. Tissu de TPE artisans, PME de services, commerces de centre-bourg, professions libérales et exploitants agricoles du pays de Brocéliande. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Montfort-sur-Meu (35), chef-lieu de canton à l'ouest de Rennes au confluent du Meu et du Garun, est une petite ville de caractère avec son écomusée du pays de Montfort et sa tour du Papegaut. Tissu de TPE artisans, PME de services, commerces de centre-bourg, professions libérales et exploitants agricoles du pays de Brocéliande. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montfort-sur-Meu (35). Nous accompagnons tous types d'activités : TPE artisans et commerçants du centre-bourg, PME de services ouest Rennes, professions libérales, acteurs du tourisme patrimonial (écomusée, Brocéliande) et exploitants agricoles du pays de Montfort.",
   directAnswerEn:
@@ -56,7 +56,7 @@ export const MONTFORT_SUR_MEU_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les acteurs tourisme patrimonial de Montfort-sur-Meu et Brocéliande sur leurs cas IA : agents conversationnels visiteurs multilingue, automatisation réservations, classification photos patrimoine, recommandation parcours.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Montfort-sur-Meu ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Montfort-sur-Meu  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du pays de Montfort, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics, transparents.",
     },
     {

@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_JEAN_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Jean (31), commune résidentielle du sud de Toulouse avec plus de 11 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de la couronne sud de Toulouse.",
+    "Saint-Jean (31), commune résidentielle du sud de Toulouse avec plus de 11 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes de la couronne sud de Toulouse.",
   pitchEn:
-    "Saint-Jean (31), commune résidentielle du sud de Toulouse avec plus de 11 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de la couronne sud de Toulouse.",
+    "Saint-Jean (31), commune résidentielle du sud de Toulouse avec plus de 11 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes de la couronne sud de Toulouse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud toulousain. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud toulousain. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud toulousain. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud toulousain. Audit Flash sur mesure.",
   seoHook: "artisanat & commerce détail",
   ecosystemFr:
     "Saint-Jean est une commune résidentielle du sud de Toulouse, entre Castanet-Tolosan et Ramonville. Tissu TPE artisans, PME de services, professions libérales, commerces de proximité. Cadre périurbain avec accès rapide au bassin d'emploi toulousain.",
@@ -56,7 +56,7 @@ export const SAINT_JEAN_COPY: VilleCopy = {
       a: "Nous accompagnons tous types d'activités : TPE artisans, PME de services, professions libérales, commerces de proximité, restauration. Aucun secteur exclu.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Saint-Jean ?",
+      q: "Combien coûte un audit IA à Saint-Jean  ?",
       a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics, pas de devis opaque.",
     },
     {

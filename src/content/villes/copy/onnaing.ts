@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ONNAING_COPY: VilleCopy = {
   pitchFr:
-    "Onnaing (59), commune de l'agglomération de Valenciennes abritant l'usine Toyota et le pôle automobile du Hainaut-Cambrésis. Tissu économique : TPE et PME de la sous-traitance automobile, équipementiers, logistique industrielle, services aux entreprises, commerce et artisanat local. Axion-IA couvre l'ensemble des activités professionnelles présentes du pôle industriel valenciennois et automobile.",
+    "Onnaing (59), commune de l'agglomération de Valenciennes abritant l'usine Toyota et le pôle automobile du Hainaut-Cambrésis. Tissu économique : TPE et PME de la sous-traitance automobile, équipementiers, logistique industrielle, services aux entreprises, commerce et artisanat local. Axion-IA couvre les activités professionnelles du bassin du pôle industriel valenciennois et automobile.",
   pitchEn:
-    "Onnaing (59), commune de l'agglomération de Valenciennes abritant l'usine Toyota et le pôle automobile du Hainaut-Cambrésis. Tissu économique : TPE et PME de la sous-traitance automobile, équipementiers, logistique industrielle, services aux entreprises, commerce et artisanat local. Axion-IA couvre l'ensemble des activités professionnelles présentes du pôle industriel valenciennois et automobile.",
+    "Onnaing (59), commune de l'agglomération de Valenciennes abritant l'usine Toyota et le pôle automobile du Hainaut-Cambrésis. Tissu économique : TPE et PME de la sous-traitance automobile, équipementiers, logistique industrielle, services aux entreprises, commerce et artisanat local. Axion-IA couvre les activités professionnelles du bassin du pôle industriel valenciennois et automobile.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Onnaing (59). Nous accompagnons TPE et PME : sous-traitants automobile et équipementiers du pôle Toyota, logisticiens industriels, prestataires de services aux entreprises, commerçants et artisans de l'agglo valenciennoise.",
   directAnswerEn:
@@ -56,7 +56,7 @@ export const ONNAING_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE et PME de la sous-traitance automobile et les équipementiers du pôle Toyota à Onnaing : maintenance prédictive lignes de production, contrôle qualité visuel pièces usinées, optimisation supply chain just-in-time, traçabilité composants, agents IA gestion fournisseurs et donneurs d'ordre.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Onnaing ?",
+      q: "Quel est le tarif d'un audit IA à Onnaing  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du pôle automobile valenciennois, il identifie les cas d'usage IA à fort ROI pour votre activité (sous-traitance auto, équipement, logistique, services industriels). Tarifs publics, sans engagement.",
     },
     {

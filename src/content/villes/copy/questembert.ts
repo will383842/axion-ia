@@ -56,7 +56,7 @@ export const QUESTEMBERT_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les exploitations agricoles et PME agroalimentaires du pays vannetais sur leurs cas IA : automatisation traçabilité, gestion administrative PAC, agents IA conseil cultures, optimisation tournées collecte, outils IA gestion troupeau et stocks.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Questembert ?",
+      q: "Tarifs audit IA à Questembert  : quel budget prévoir ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du pays vannetais, il identifie les cas d'usage IA à fort ROI pour votre activité (artisanat, agriculture, commerce, professions libérales). Tarifs publics.",
     },
     {

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_GERMAIN_LES_CORBEIL_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Germain-lès-Corbeil (91), commune résidentielle des bords de Seine à 29 km au sud-est de Paris, bénéficie de la proximité d'Évry-Courcouronnes (préfecture) et de Corbeil-Essonnes. Tissu TPE artisans, PME de services, commerces et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations de la vallée de Seine essonnienne.",
+    "Saint-Germain-lès-Corbeil (91), commune résidentielle des bords de Seine à 29 km au sud-est de Paris, bénéficie de la proximité d'Évry-Courcouronnes (préfecture) et de Corbeil-Essonnes. Tissu TPE artisans, PME de services, commerces et professions libérales. Axion-IA y mène ses missions auprès des organisations locales de la vallée de Seine essonnienne.",
   pitchEn:
-    "Saint-Germain-lès-Corbeil (91), commune résidentielle des bords de Seine à 29 km au sud-est de Paris, bénéficie de la proximité d'Évry-Courcouronnes (préfecture) et de Corbeil-Essonnes. Tissu TPE artisans, PME de services, commerces et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations de la vallée de Seine essonnienne.",
+    "Saint-Germain-lès-Corbeil (91), commune résidentielle des bords de Seine à 29 km au sud-est de Paris, bénéficie de la proximité d'Évry-Courcouronnes (préfecture) et de Corbeil-Essonnes. Tissu TPE artisans, PME de services, commerces et professions libérales. Axion-IA y mène ses missions auprès des organisations locales de la vallée de Seine essonnienne.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Germain-lès-Corbeil (91). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, professions libérales, PME de services aux entreprises, indépendants et structures de la vallée de Seine entre Corbeil-Essonnes et Évry-Courcouronnes.",
   directAnswerEn:
@@ -52,7 +52,7 @@ export const SAINT_GERMAIN_LES_CORBEIL_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Saint-Germain-lès-Corbeil et toute la vallée de Seine essonnienne (Corbeil-Essonnes, Évry-Courcouronnes, Ris-Orangis, Soisy-sur-Seine). Nos consultants se déplacent depuis Paris (45 min) ou Évry (10 min).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Saint-Germain-lès-Corbeil ?",
+      q: "Tarifs audit IA à Saint-Germain-lès-Corbeil  : quel budget prévoir ?",
       a: "L'audit Flash IA à Saint-Germain-lès-Corbeil débute à 490 € HT pour 4 heures de diagnostic. Tarifs publics, sans engagement, adaptés aux TPE et PME locales. ROI chiffré et plan d'action livré sous 48h.",
     },
     {

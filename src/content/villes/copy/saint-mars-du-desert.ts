@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_MARS_DU_DESERT_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Mars-du-Désert (44), commune résidentielle du nord-est de l'agglomération nantaise en Loire-Atlantique, sur l'axe Nantes-Ancenis. Tissu TPE artisans et commerçants, PME tertiaires, exploitations agricoles, professions libérales, services de proximité. Axion-IA y déploie ses missions auprès de toutes les organisations du nord-est nantais.",
+    "Saint-Mars-du-Désert (44), commune résidentielle du nord-est de l'agglomération nantaise en Loire-Atlantique, sur l'axe Nantes-Ancenis. Tissu TPE artisans et commerçants, PME tertiaires, exploitations agricoles, professions libérales, services de proximité. Axion-IA y conduit ses missions auprès des entreprises locales du nord-est nantais.",
   pitchEn:
-    "Saint-Mars-du-Désert (44), commune résidentielle du nord-est de l'agglomération nantaise en Loire-Atlantique, sur l'axe Nantes-Ancenis. Tissu TPE artisans et commerçants, PME tertiaires, exploitations agricoles, professions libérales, services de proximité. Axion-IA y déploie ses missions auprès de toutes les organisations du nord-est nantais.",
+    "Saint-Mars-du-Désert (44), commune résidentielle du nord-est de l'agglomération nantaise en Loire-Atlantique, sur l'axe Nantes-Ancenis. Tissu TPE artisans et commerçants, PME tertiaires, exploitations agricoles, professions libérales, services de proximité. Axion-IA y conduit ses missions auprès des entreprises locales du nord-est nantais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Mars-du-Désert (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires, exploitations agricoles, professions libérales et services de proximité du nord-est de l'agglomération nantaise.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const SAINT_MARS_DU_DESERT_COPY: VilleCopy = {
       a: "Pour les exploitations agricoles de Saint-Mars-du-Désert, nous proposons audit IA, interventions sur site, implémentation (automatisation suivi parcellaire, gestion stocks, traçabilité), coaching 1-to-1 et plateformes web IA sur mesure.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Saint-Mars-du-Désert ?",
+      q: "Combien coûte un audit IA à Saint-Mars-du-Désert  ?",
       a: "L'Audit Flash démarre à 490 € HT (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du nord-est nantais.",
     },
     {

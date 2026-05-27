@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_GENIS_POUILLY_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Genis-Pouilly (01), commune du pays de Gex dans l'Ain, est positionnée à la frontière suisse immédiate (Genève). Proximité notable du CERN (Organisation européenne pour la recherche nucléaire). Tissu économie frontalière dynamique, PME tertiaires et technologiques, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Saint-Genis-Pouilly (01), commune du pays de Gex dans l'Ain, est positionnée à la frontière suisse immédiate (Genève). Proximité notable du CERN (Organisation européenne pour la recherche nucléaire). Tissu économie frontalière dynamique, PME tertiaires et technologiques, TPE artisans BTP, commerces. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Saint-Genis-Pouilly (01), commune du pays de Gex dans l'Ain, est positionnée à la frontière suisse immédiate (Genève). Proximité notable du CERN (Organisation européenne pour la recherche nucléaire). Tissu économie frontalière dynamique, PME tertiaires et technologiques, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Saint-Genis-Pouilly (01), commune du pays de Gex dans l'Ain, est positionnée à la frontière suisse immédiate (Genève). Proximité notable du CERN (Organisation européenne pour la recherche nucléaire). Tissu économie frontalière dynamique, PME tertiaires et technologiques, TPE artisans BTP, commerces. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Genis-Pouilly (01). Nous accompagnons tous types d'activités : PME tertiaires et technologiques pays de Gex (proximité CERN), économie frontalière Genève, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
   directAnswerEn:

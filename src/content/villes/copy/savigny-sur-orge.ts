@@ -11,9 +11,9 @@ export const SAVIGNY_SUR_ORGE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Savigny-sur-Orge, une ville proche de l'aéroport de Paris-Orly, pour accompagner les entreprises locales dans l'optimisation de leurs processus grâce à l'IA, en lien avec l'écosystème parisien incluant Cap Digital et Inria.",
   directAnswerFr:
-    "À Savigny-sur-Orge, Axion-IA propose des services d'IA adaptés aux besoins des entreprises locales. Grâce à notre expérience avec des écosystèmes comme ceux de Cap Digital et Station F, nous aidons à automatiser les tâches administratives et à optimiser les processus métier. Nos audits commencent à partir de 490 € HT, et nos interventions dès 590 € HT.",
+    "À Savigny-sur-Orge, Axion-IA propose des services d'IA adaptés aux besoins des entreprises locales. Grâce à notre expérience avec des écosystèmes comme ceux de Cap Digital et Station F, nous aidons à automatiser les tâches administratives et à optimiser les processus métier. Nos audits commencent, et nos interventions.",
   directAnswerEn:
-    "À Savigny-sur-Orge, Axion-IA propose des services d'IA adaptés aux besoins des entreprises locales. Grâce à notre expérience avec des écosystèmes comme ceux de Cap Digital et Station F, nous aidons à automatiser les tâches administratives et à optimiser les processus métier. Nos audits commencent à partir de 490 € HT, et nos interventions dès 590 € HT.",
+    "À Savigny-sur-Orge, Axion-IA propose des services d'IA adaptés aux besoins des entreprises locales. Grâce à notre expérience avec des écosystèmes comme ceux de Cap Digital et Station F, nous aidons à automatiser les tâches administratives et à optimiser les processus métier. Nos audits commencent, et nos interventions.",
   seoHook: "commerce détail & programmation informatique",
   ecosystemFr:
     "Savigny-sur-Orge bénéficie d'une proximité avec Paris, abritant des pôles comme Cap Digital et Station F, qui enrichissent l'environnement technologique et entrepreneurial de la région.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MARIGNIER_COPY: VilleCopy = {
   pitchFr:
-    "Marignier (74), commune de la vallée de l'Arve en Haute-Savoie, se situe entre Cluses et Bonneville au cœur du bassin mondial du décolletage. Tissu industriel dense (sous-traitance automobile, horlogerie, médical), TPE artisans, commerces de proximité, PME logistique. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Marignier (74), commune de la vallée de l'Arve en Haute-Savoie, se situe entre Cluses et Bonneville au cœur du bassin mondial du décolletage. Tissu industriel dense (sous-traitance automobile, horlogerie, médical), TPE artisans, commerces de proximité, PME logistique. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "Marignier (74), commune de la vallée de l'Arve en Haute-Savoie, se situe entre Cluses et Bonneville au cœur du bassin mondial du décolletage. Tissu industriel dense (sous-traitance automobile, horlogerie, médical), TPE artisans, commerces de proximité, PME logistique. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Marignier (74), commune de la vallée de l'Arve en Haute-Savoie, se situe entre Cluses et Bonneville au cœur du bassin mondial du décolletage. Tissu industriel dense (sous-traitance automobile, horlogerie, médical), TPE artisans, commerces de proximité, PME logistique. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marignier (74). Nous accompagnons TPE et PME : sous-traitants du décolletage vallée de l'Arve, ateliers usinage, commerces, artisans BTP, professions libérales, services aux entreprises et acteurs logistique entre Cluses et Bonneville.",
   directAnswerEn:
@@ -57,7 +57,7 @@ export const MARIGNIER_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs pour un audit IA à Marignier ?",
-      a: "L'audit Flash démarre à 490 € HT (4 heures). Audit approfondi pour PME industrielle décolletage ou usinage : nous contacter pour un devis adapté à la complexité de votre parc machines et processus.",
+      a: "L'audit Flash débute selon la taille de votre activité (4 heures). Audit approfondi pour PME industrielle décolletage ou usinage : nous contacter pour un devis adapté à la complexité de votre parc machines et processus.",
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",

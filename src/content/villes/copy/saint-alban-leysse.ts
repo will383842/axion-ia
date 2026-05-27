@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_ALBAN_LEYSSE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Alban-Leysse (73), commune résidentielle de l'agglomération de Chambéry au sein de Grand Chambéry en Savoie. PME tertiaires, professions libérales, TPE artisanat, commerces de proximité, services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Saint-Alban-Leysse (73), commune résidentielle de l'agglomération de Chambéry au sein de Grand Chambéry en Savoie. PME tertiaires, professions libérales, TPE artisanat, commerces de proximité, services. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Saint-Alban-Leysse (73), commune résidentielle de l'agglomération de Chambéry au sein de Grand Chambéry en Savoie. PME tertiaires, professions libérales, TPE artisanat, commerces de proximité, services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Saint-Alban-Leysse (73), commune résidentielle de l'agglomération de Chambéry au sein de Grand Chambéry en Savoie. PME tertiaires, professions libérales, TPE artisanat, commerces de proximité, services. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Alban-Leysse (73). Nous accompagnons TPE et PME : entreprises tertiaires de Grand Chambéry, professions libérales, artisans, commerçants de proximité et sociétés de services.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const SAINT_ALBAN_LEYSSE_COPY: VilleCopy = {
       a: "Pour les PME tertiaires de Grand Chambéry, audit Flash 490 € HT, interventions formation sur site, implémentation agents IA, coaching 1-to-1 dirigeants. Cas typiques : automatisation processus, relation client, reporting IA.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Saint-Alban-Leysse ?",
+      q: "Tarifs audit IA à Saint-Alban-Leysse  : quel budget prévoir ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour une TPE à Saint-Alban-Leysse. Diagnostic complet en une journée : cartographie processus automatisables, ROI chiffré, feuille de route IA priorisée. Déplacement depuis Chambéry inclus (5 min).",
     },
     {

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHATENOY_LE_ROYAL_COPY: VilleCopy = {
   pitchFr:
-    "Châtenoy-le-Royal (71), commune de l'agglomération de Chalon-sur-Saône en Saône-et-Loire, accueille d'importantes zones d'activités commerciales et tertiaires. Tissu TPE/PME commerce, logistique, services aux entreprises, artisans BTP. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Châtenoy-le-Royal (71), commune de l'agglomération de Chalon-sur-Saône en Saône-et-Loire, accueille d'importantes zones d'activités commerciales et tertiaires. Tissu TPE/PME commerce, logistique, services aux entreprises, artisans BTP. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Châtenoy-le-Royal (71), commune de l'agglomération de Chalon-sur-Saône en Saône-et-Loire, accueille d'importantes zones d'activités commerciales et tertiaires. Tissu TPE/PME commerce, logistique, services aux entreprises, artisans BTP. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Châtenoy-le-Royal (71), commune de l'agglomération de Chalon-sur-Saône en Saône-et-Loire, accueille d'importantes zones d'activités commerciales et tertiaires. Tissu TPE/PME commerce, logistique, services aux entreprises, artisans BTP. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châtenoy-le-Royal (71). Nous accompagnons tous types d'activités : TPE/PME des zones commerciales et tertiaires Grand Chalon, enseignes retail, logisticiens, artisans BTP et services aux entreprises.",
   directAnswerEn:

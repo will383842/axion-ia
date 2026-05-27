@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const PLOUIGNEAU_COPY: VilleCopy = {
   pitchFr:
-    "Plouigneau (29), commune rurale du Trégor finistérien entre Morlaix et Guingamp, est un territoire agricole dynamique adossé aux filières lait, porc et légumes. TPE agricoles, PME agroalimentaires, artisans BTP, commerces de bourg et transporteurs composent son économie. Axion-IA y déploie ses missions auprès de toutes les organisations du Trégor finistérien.",
+    "Plouigneau (29), commune rurale du Trégor finistérien entre Morlaix et Guingamp, est un territoire agricole dynamique adossé aux filières lait, porc et légumes. TPE agricoles, PME agroalimentaires, artisans BTP, commerces de bourg et transporteurs composent son économie. Axion-IA y conduit ses missions auprès des entreprises locales du Trégor finistérien.",
   pitchEn:
-    "Plouigneau (29), commune rurale du Trégor finistérien entre Morlaix et Guingamp, est un territoire agricole dynamique adossé aux filières lait, porc et légumes. TPE agricoles, PME agroalimentaires, artisans BTP, commerces de bourg et transporteurs composent son économie. Axion-IA y déploie ses missions auprès de toutes les organisations du Trégor finistérien.",
+    "Plouigneau (29), commune rurale du Trégor finistérien entre Morlaix et Guingamp, est un territoire agricole dynamique adossé aux filières lait, porc et légumes. TPE agricoles, PME agroalimentaires, artisans BTP, commerces de bourg et transporteurs composent son économie. Axion-IA y conduit ses missions auprès des entreprises locales du Trégor finistérien.",
   seoHook: "agriculture, agroalimentaire & Trégor",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plouigneau (29). Nous accompagnons tous types d'activités : TPE agricoles, PME agroalimentaires, artisans BTP, commerçants de bourg, transporteurs et indépendants du Trégor finistérien. Audit Flash dès 490 € HT, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plouigneau (29). Nous accompagnons tous types d'activités : TPE agricoles, PME agroalimentaires, artisans BTP, commerçants de bourg, transporteurs et indépendants du Trégor finistérien. Audit Flash sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plouigneau (29). Nous accompagnons tous types d'activités : TPE agricoles, PME agroalimentaires, artisans BTP, commerçants de bourg, transporteurs et indépendants du Trégor finistérien. Audit Flash dès 490 € HT, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plouigneau (29). Nous accompagnons tous types d'activités : TPE agricoles, PME agroalimentaires, artisans BTP, commerçants de bourg, transporteurs et indépendants du Trégor finistérien. Audit Flash sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Plouigneau est une vaste commune rurale du Trégor finistérien, à mi-chemin entre Morlaix et Guingamp. L'économie locale est dominée par l'agriculture (élevage laitier, porcin, cultures légumières), l'agroalimentaire de transformation, l'artisanat BTP, le transport routier et le commerce de proximité. La commune bénéficie de la voie express Brest-Rennes (RN12) et irrigue un bassin rural actif.",
   ecosystemEn:
@@ -56,7 +56,7 @@ export const PLOUIGNEAU_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les exploitants agricoles du Trégor finistérien sur leurs cas IA : suivi troupeaux, optimisation ration alimentaire, gestion parcellaire, prédiction rendements, automatisation déclarations PAC. Confidentialité des données exploitation garantie.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Plouigneau ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Plouigneau  ?",
       a: "L'Audit Flash Axion-IA démarre à 490 € HT. Adapté aux TPE et PME du secteur, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {

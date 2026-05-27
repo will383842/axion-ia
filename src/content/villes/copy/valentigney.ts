@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VALENTIGNEY_COPY: VilleCopy = {
   pitchFr:
-    "Valentigney (25), commune du Pays de Montbéliard dans le Doubs, est le berceau historique de Peugeot (fondé en 1810). Tissu PME sous-traitance automobile et mécanique, TPE usinage de précision, industrie métallurgique, commerces, services aux entreprises du bassin industriel. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Valentigney (25), commune du Pays de Montbéliard dans le Doubs, est le berceau historique de Peugeot (fondé en 1810). Tissu PME sous-traitance automobile et mécanique, TPE usinage de précision, industrie métallurgique, commerces, services aux entreprises du bassin industriel. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Valentigney (25), commune du Pays de Montbéliard dans le Doubs, est le berceau historique de Peugeot (fondé en 1810). Tissu PME sous-traitance automobile et mécanique, TPE usinage de précision, industrie métallurgique, commerces, services aux entreprises du bassin industriel. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Valentigney (25), commune du Pays de Montbéliard dans le Doubs, est le berceau historique de Peugeot (fondé en 1810). Tissu PME sous-traitance automobile et mécanique, TPE usinage de précision, industrie métallurgique, commerces, services aux entreprises du bassin industriel. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Valentigney (25). Nous accompagnons TPE et PME du Pays de Montbéliard : sous-traitants automobile et mécanique, usineurs de précision, métallurgistes, commerçants et prestataires services aux entreprises du bassin industriel historique.",
   directAnswerEn:

@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const AY_CHAMPAGNE_COPY: VilleCopy = {
   pitchFr:
-    "Aÿ-Champagne (51), commune nouvelle au cœur de la Montagne de Reims, est un berceau historique du champagne classé UNESCO. TPE et PME viticoles, maisons de champagne, négoce et œnotourisme, artisans tonneliers et services viticoles, commerces de bourg. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Aÿ-Champagne (51), commune nouvelle au cœur de la Montagne de Reims, est un berceau historique du champagne classé UNESCO. TPE et PME viticoles, maisons de champagne, négoce et œnotourisme, artisans tonneliers et services viticoles, commerces de bourg. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Aÿ-Champagne (51), commune nouvelle au cœur de la Montagne de Reims, est un berceau historique du champagne classé UNESCO. TPE et PME viticoles, maisons de champagne, négoce et œnotourisme, artisans tonneliers et services viticoles, commerces de bourg. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Aÿ-Champagne (51), commune nouvelle au cœur de la Montagne de Reims, est un berceau historique du champagne classé UNESCO. TPE et PME viticoles, maisons de champagne, négoce et œnotourisme, artisans tonneliers et services viticoles, commerces de bourg. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aÿ-Champagne (51). Nous accompagnons TPE et PME : vignerons récoltants-manipulants, maisons de champagne, prestataires viticoles, acteurs de l'œnotourisme, commerces et artisans du bourg. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aÿ-Champagne (51). Nous accompagnons TPE et PME : vignerons récoltants-manipulants, maisons de champagne, prestataires viticoles, acteurs de l'œnotourisme, commerces et artisans du bourg. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aÿ-Champagne (51). Nous accompagnons TPE et PME : vignerons récoltants-manipulants, maisons de champagne, prestataires viticoles, acteurs de l'œnotourisme, commerces et artisans du bourg. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aÿ-Champagne (51). Nous accompagnons TPE et PME : vignerons récoltants-manipulants, maisons de champagne, prestataires viticoles, acteurs de l'œnotourisme, commerces et artisans du bourg. Audit Flash sur mesure.",
   seoHook: "viticulture vinification & négoce commerce",
   ecosystemFr:
     "Aÿ-Champagne est une commune nouvelle au cœur de la Montagne de Reims, berceau historique du champagne (coteaux classés UNESCO). Tissu TPE/PME : vignerons récoltants-manipulants, maisons de champagne, négoce, œnotourisme, services viticoles, artisanat tonnelier.",
@@ -52,7 +52,7 @@ export const AY_CHAMPAGNE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Aÿ-Champagne et dans tout le vignoble champenois. Épernay à 5 min, Reims à 25 min, Paris à 1 h 15 via A4.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Aÿ-Champagne ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Aÿ-Champagne  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables en ligne, adaptés aux TPE vignerons et PME du secteur champenois.",
     },
     {

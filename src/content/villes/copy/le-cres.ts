@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_CRES_COPY: VilleCopy = {
   pitchFr:
-    "Le Crès (34), commune résidentielle de l'est de Montpellier, en forte croissance démographique. Zones d'activités dynamiques, commerces, services. Tissu TPE commerçants, PME services et tertiaire, artisans BTP, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Le Crès (34), commune résidentielle de l'est de Montpellier, en forte croissance démographique. Zones d'activités dynamiques, commerces, services. Tissu TPE commerçants, PME services et tertiaire, artisans BTP, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Le Crès (34), commune résidentielle de l'est de Montpellier, en forte croissance démographique. Zones d'activités dynamiques, commerces, services. Tissu TPE commerçants, PME services et tertiaire, artisans BTP, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Le Crès (34), commune résidentielle de l'est de Montpellier, en forte croissance démographique. Zones d'activités dynamiques, commerces, services. Tissu TPE commerçants, PME services et tertiaire, artisans BTP, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Crès (34). Nous accompagnons TPE commerçants, PME de services et tertiaire, artisans BTP, professions libérales et entreprises des zones d'activités de l'est montpelliérain.",
   directAnswerEn:

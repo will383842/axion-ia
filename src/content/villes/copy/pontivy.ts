@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const PONTIVY_COPY: VilleCopy = {
   pitchFr:
-    "Pontivy (56), sous-préfecture du Morbihan (14 640 hab), est une cité napoléonienne au croisement du canal de Nantes à Brest et du canal du Blavet. Capitale du Centre Bretagne. TPE et PME agroalimentaire, industrie, BTP, commerces de centre-ville, services administratifs, santé, tourisme fluvial. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Pontivy (56), sous-préfecture du Morbihan (14 640 hab), est une cité napoléonienne au croisement du canal de Nantes à Brest et du canal du Blavet. Capitale du Centre Bretagne. TPE et PME agroalimentaire, industrie, BTP, commerces de centre-ville, services administratifs, santé, tourisme fluvial. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Pontivy (56), sous-préfecture du Morbihan (14 640 hab), est une cité napoléonienne au croisement du canal de Nantes à Brest et du canal du Blavet. Capitale du Centre Bretagne. TPE et PME agroalimentaire, industrie, BTP, commerces de centre-ville, services administratifs, santé, tourisme fluvial. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Pontivy (56), sous-préfecture du Morbihan (14 640 hab), est une cité napoléonienne au croisement du canal de Nantes à Brest et du canal du Blavet. Capitale du Centre Bretagne. TPE et PME agroalimentaire, industrie, BTP, commerces de centre-ville, services administratifs, santé, tourisme fluvial. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pontivy (56). Nous accompagnons TPE et PME : agroalimentaire et industrie du Centre Bretagne, BTP, commerces de la cité napoléonienne, services administratifs et de santé, acteurs du tourisme fluvial. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pontivy (56). Nous accompagnons TPE et PME : agroalimentaire et industrie du Centre Bretagne, BTP, commerces de la cité napoléonienne, services administratifs et de santé, acteurs du tourisme fluvial. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pontivy (56). Nous accompagnons TPE et PME : agroalimentaire et industrie du Centre Bretagne, BTP, commerces de la cité napoléonienne, services administratifs et de santé, acteurs du tourisme fluvial. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pontivy (56). Nous accompagnons TPE et PME : agroalimentaire et industrie du Centre Bretagne, BTP, commerces de la cité napoléonienne, services administratifs et de santé, acteurs du tourisme fluvial. Audit Flash sur mesure.",
   seoHook: "agroalimentaire & construction",
   ecosystemFr:
     "Pontivy est la sous-préfecture du Morbihan, capitale du Centre Bretagne, au croisement du canal de Nantes à Brest et du canal du Blavet. Cité napoléonienne (Napoléonville) au tissu TPE/PME diversifié : agroalimentaire, industrie, BTP, commerce, administration, santé, tourisme fluvial.",
@@ -52,7 +52,7 @@ export const PONTIVY_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Pontivy, capitale du Centre Bretagne, et alentours. Carrefour RN 24 (Rennes-Lorient) et RN 164. Vannes et Lorient à 50 min. Rennes à 1 h 30.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Pontivy ?",
+      q: "Tarifs audit IA à Pontivy  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables en ligne, adaptés aux TPE artisans et PME agroalimentaire/industrie du Centre Bretagne.",
     },
     {

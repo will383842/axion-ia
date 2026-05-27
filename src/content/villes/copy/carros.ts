@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CARROS_COPY: VilleCopy = {
   pitchFr:
-    "Carros (06), située dans le moyen-pays niçois à la confluence du Var et de l'Estéron, abrite la plus grande zone industrielle du département des Alpes-Maritimes (ZI de Carros-Le Broc, 450+ entreprises). Tissu TPE/PME industriel diversifié, logistique, BTP, agroalimentaire et services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Carros (06), située dans le moyen-pays niçois à la confluence du Var et de l'Estéron, abrite la plus grande zone industrielle du département des Alpes-Maritimes (ZI de Carros-Le Broc, 450+ entreprises). Tissu TPE/PME industriel diversifié, logistique, BTP, agroalimentaire et services. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Carros (06), située dans le moyen-pays niçois à la confluence du Var et de l'Estéron, abrite la plus grande zone industrielle du département des Alpes-Maritimes (ZI de Carros-Le Broc, 450+ entreprises). Tissu TPE/PME industriel diversifié, logistique, BTP, agroalimentaire et services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Carros (06), située dans le moyen-pays niçois à la confluence du Var et de l'Estéron, abrite la plus grande zone industrielle du département des Alpes-Maritimes (ZI de Carros-Le Broc, 450+ entreprises). Tissu TPE/PME industriel diversifié, logistique, BTP, agroalimentaire et services. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carros (06). Nous accompagnons tous types d'activités : TPE/PME industrielles de la ZI Carros-Le Broc, artisans BTP, logisticiens, agroalimentaire, commerces du village et entreprises de services du moyen-pays niçois.",
   directAnswerEn:

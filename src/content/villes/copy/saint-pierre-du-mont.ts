@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_PIERRE_DU_MONT_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Pierre-du-Mont (40), commune de l'agglomération de Mont-de-Marsan (préfecture des Landes), est un pôle commercial et résidentiel majeur du département. Zones d'activités, commerces grande distribution, TPE services, PME tertiaires, artisans BTP, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Saint-Pierre-du-Mont (40), commune de l'agglomération de Mont-de-Marsan (préfecture des Landes), est un pôle commercial et résidentiel majeur du département. Zones d'activités, commerces grande distribution, TPE services, PME tertiaires, artisans BTP, professions libérales. Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Saint-Pierre-du-Mont (40), commune de l'agglomération de Mont-de-Marsan (préfecture des Landes), est un pôle commercial et résidentiel majeur du département. Zones d'activités, commerces grande distribution, TPE services, PME tertiaires, artisans BTP, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Saint-Pierre-du-Mont (40), commune de l'agglomération de Mont-de-Marsan (préfecture des Landes), est un pôle commercial et résidentiel majeur du département. Zones d'activités, commerces grande distribution, TPE services, PME tertiaires, artisans BTP, professions libérales. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Pierre-du-Mont (40). Nous accompagnons TPE et PME des zones d'activités commerciales, commerces grande distribution, professions libérales, artisans BTP, prestataires de services et entreprises tertiaires de l'agglomération montoise.",
   directAnswerEn:
@@ -65,7 +65,7 @@ export const SAINT_PIERRE_DU_MONT_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'entrée pour une mission IA à Saint-Pierre-du-Mont ?",
-      a: "L'audit Flash démarre à 490 € HT, livrable en 5 jours ouvrés. Inclut diagnostic complet, cartographie processus automatisables, ROI chiffré et feuille de route IA. Déplacement inclus dans l'agglomération montoise.",
+      a: "L'audit Flash débute selon la taille de votre activité, livrable en 5 jours ouvrés. Inclut diagnostic complet, cartographie processus automatisables, ROI chiffré et feuille de route IA. Déplacement inclus dans l'agglomération montoise.",
     },
   ],
 };

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SURGERES_COPY: VilleCopy = {
   pitchFr:
-    "Surgères (17), commune de Charente-Maritime, capitale du beurre Charentes-Poitou AOP et pôle agroalimentaire laitier. Tissu de TPE artisans, PME agroalimentaires et laitières, coopératives, commerces de proximité et services. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin de Surgères.",
+    "Surgères (17), commune de Charente-Maritime, capitale du beurre Charentes-Poitou AOP et pôle agroalimentaire laitier. Tissu de TPE artisans, PME agroalimentaires et laitières, coopératives, commerces de proximité et services. Axion-IA accompagne tout le tissu professionnel local du bassin de Surgères.",
   pitchEn:
-    "Surgères (17), commune de Charente-Maritime, capitale du beurre Charentes-Poitou AOP et pôle agroalimentaire laitier. Tissu de TPE artisans, PME agroalimentaires et laitières, coopératives, commerces de proximité et services. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin de Surgères.",
+    "Surgères (17), commune de Charente-Maritime, capitale du beurre Charentes-Poitou AOP et pôle agroalimentaire laitier. Tissu de TPE artisans, PME agroalimentaires et laitières, coopératives, commerces de proximité et services. Axion-IA accompagne tout le tissu professionnel local du bassin de Surgères.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Surgères (17). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et laitières, coopératives agricoles, commerçants et indépendants de cette capitale du beurre AOP Charentes-Poitou.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_MARCELLIN_EN_FOREZ_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Marcellin-en-Forez (42), commune de la plaine du Forez sud dans la Loire, est intégrée à Loire Forez Agglo. Tissu péri-urbain : PME tertiaires, TPE artisans BTP, agriculture forézienne, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes foréziennes.",
+    "Saint-Marcellin-en-Forez (42), commune de la plaine du Forez sud dans la Loire, est intégrée à Loire Forez Agglo. Tissu péri-urbain : PME tertiaires, TPE artisans BTP, agriculture forézienne, commerces. Axion-IA répond aux besoins des activités professionnelles présentes foréziennes.",
   pitchEn:
-    "Saint-Marcellin-en-Forez (42), commune de la plaine du Forez sud dans la Loire, est intégrée à Loire Forez Agglo. Tissu péri-urbain : PME tertiaires, TPE artisans BTP, agriculture forézienne, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes foréziennes.",
+    "Saint-Marcellin-en-Forez (42), commune de la plaine du Forez sud dans la Loire, est intégrée à Loire Forez Agglo. Tissu péri-urbain : PME tertiaires, TPE artisans BTP, agriculture forézienne, commerces. Axion-IA répond aux besoins des activités professionnelles présentes foréziennes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Marcellin-en-Forez (42). Nous accompagnons tous types d'activités : PME tertiaires Loire Forez Agglo, TPE artisans BTP, commerçants, agriculteurs plaine Forez, indépendants, professions libérales et services aux entreprises foréziennes.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const COUTANCES_COPY: VilleCopy = {
   pitchFr:
-    "Coutances (50), sous-préfecture de la Manche en Normandie, est célèbre pour sa cathédrale gothique et son festival Jazz sous les Pommiers. Tissu TPE artisanales et commerçants, PME agroalimentaires du bocage coutançais, services publics, tourisme patrimonial et culturel. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Coutances (50), sous-préfecture de la Manche en Normandie, est célèbre pour sa cathédrale gothique et son festival Jazz sous les Pommiers. Tissu TPE artisanales et commerçants, PME agroalimentaires du bocage coutançais, services publics, tourisme patrimonial et culturel. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Coutances (50), sous-préfecture de la Manche en Normandie, est célèbre pour sa cathédrale gothique et son festival Jazz sous les Pommiers. Tissu TPE artisanales et commerçants, PME agroalimentaires du bocage coutançais, services publics, tourisme patrimonial et culturel. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Coutances (50), sous-préfecture de la Manche en Normandie, est célèbre pour sa cathédrale gothique et son festival Jazz sous les Pommiers. Tissu TPE artisanales et commerçants, PME agroalimentaires du bocage coutançais, services publics, tourisme patrimonial et culturel. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coutances (50). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agroalimentaires du bocage coutançais, prestataires tourisme et culture (Jazz sous les Pommiers, cathédrale), professions libérales et services publics.",
   directAnswerEn:

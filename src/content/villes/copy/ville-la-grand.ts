@@ -52,7 +52,7 @@ export const VILLE_LA_GRAND_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Ville-la-Grand et tout le Grand Genève (Annemasse à 5 min, Genève à 10 min). Aéroport Genève-Cointrin à 15 min.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Ville-la-Grand ?",
+      q: "Tarifs audit IA à Ville-la-Grand  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Tarifs publics consultables sur notre site, adaptés aux TPE et PME du Grand Genève.",
     },
     {

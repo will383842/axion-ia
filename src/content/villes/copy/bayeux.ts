@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BAYEUX_COPY: VilleCopy = {
   pitchFr:
-    "Bayeux (14), sous-préfecture du Calvados, est mondialement connue pour la Tapisserie de Bayeux (inscrite au registre Mémoire du monde UNESCO). Porte d'entrée des plages du Débarquement (Omaha Beach, Gold Beach). Tissu TPE artisans, PME tourisme patrimoine, commerces centre historique, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Bayeux (14), sous-préfecture du Calvados, est mondialement connue pour la Tapisserie de Bayeux (inscrite au registre Mémoire du monde UNESCO). Porte d'entrée des plages du Débarquement (Omaha Beach, Gold Beach). Tissu TPE artisans, PME tourisme patrimoine, commerces centre historique, professions libérales. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Bayeux (14), sous-préfecture du Calvados, est mondialement connue pour la Tapisserie de Bayeux (inscrite au registre Mémoire du monde UNESCO). Porte d'entrée des plages du Débarquement (Omaha Beach, Gold Beach). Tissu TPE artisans, PME tourisme patrimoine, commerces centre historique, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Bayeux (14), sous-préfecture du Calvados, est mondialement connue pour la Tapisserie de Bayeux (inscrite au registre Mémoire du monde UNESCO). Porte d'entrée des plages du Débarquement (Omaha Beach, Gold Beach). Tissu TPE artisans, PME tourisme patrimoine, commerces centre historique, professions libérales. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bayeux (14). Nous accompagnons tous types d'activités : acteurs du tourisme patrimoine (Tapisserie de Bayeux, plages du Débarquement), hôteliers-restaurateurs, TPE artisans, commerçants centre historique, professions libérales et services aux entreprises du Bessin.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const BAYEUX_COPY: VilleCopy = {
       a: "Pour les hôteliers-restaurateurs de Bayeux, audit Flash 490 € HT, interventions formations, coaching 1-to-1. Cas typiques : agents IA réservation multilingues, classification avis TripAdvisor, prédiction taux d'occupation saisonnier.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Bayeux ?",
+      q: "Tarifs audit IA à Bayeux  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {

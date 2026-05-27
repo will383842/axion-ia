@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MESNILS_SUR_ITON_COPY: VilleCopy = {
   pitchFr:
-    "Mesnils-sur-Iton (27), commune nouvelle de l'Eure dans l'agglomération d'Évreux, le long de la vallée de l'Iton. Tissu TPE artisans, PME services et tertiaire agglo Évreux, agriculture, commerces de proximité, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Mesnils-sur-Iton (27), commune nouvelle de l'Eure dans l'agglomération d'Évreux, le long de la vallée de l'Iton. Tissu TPE artisans, PME services et tertiaire agglo Évreux, agriculture, commerces de proximité, professions libérales. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Mesnils-sur-Iton (27), commune nouvelle de l'Eure dans l'agglomération d'Évreux, le long de la vallée de l'Iton. Tissu TPE artisans, PME services et tertiaire agglo Évreux, agriculture, commerces de proximité, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Mesnils-sur-Iton (27), commune nouvelle de l'Eure dans l'agglomération d'Évreux, le long de la vallée de l'Iton. Tissu TPE artisans, PME services et tertiaire agglo Évreux, agriculture, commerces de proximité, professions libérales. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mesnils-sur-Iton (27). Nous accompagnons tous types d'activités : TPE artisans, PME services et tertiaire agglo Évreux, exploitants agricoles vallée de l'Iton, commerces, indépendants et professions libérales d'Évreux Portes de Normandie.",
   directAnswerEn:

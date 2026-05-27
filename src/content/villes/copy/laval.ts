@@ -11,9 +11,9 @@ export const LAVAL_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Laval, au cœur de la Technopole Laval Mayenne, pour optimiser les processus des entreprises locales. Nous accompagnons les acteurs de l'industrie agroalimentaire et de la fabrication d'équipements électriques.",
   directAnswerFr:
-    "Axion-IA propose des services d'IA à Laval, où des entreprises comme Lactalis et Valéo sont implantées. Notre équipe nationale se déplace pour réaliser des audits, interventions et implémentations, adaptés aux besoins spécifiques des entreprises locales. Les tarifs publics, tels que l'Audit Flash à partir de 490 € HT, sont consultables sur notre site. Notre approche vise à intégrer l'IA de manière opérationnelle et mesurable.",
+    "Axion-IA propose des services d'IA à Laval, où des entreprises comme Lactalis et Valéo sont implantées. Notre équipe nationale se déplace pour réaliser des audits, interventions et implémentations, adaptés aux besoins spécifiques des entreprises locales. Les tarifs publics, tels que l'Audit Flash sur mesure, sont consultables sur notre site. Notre approche vise à intégrer l'IA de manière opérationnelle et mesurable.",
   directAnswerEn:
-    "Axion-IA propose des services d'IA à Laval, où des entreprises comme Lactalis et Valéo sont implantées. Notre équipe nationale se déplace pour réaliser des audits, interventions et implémentations, adaptés aux besoins spécifiques des entreprises locales. Les tarifs publics, tels que l'Audit Flash à partir de 490 € HT, sont consultables sur notre site. Notre approche vise à intégrer l'IA de manière opérationnelle et mesurable.",
+    "Axion-IA propose des services d'IA à Laval, où des entreprises comme Lactalis et Valéo sont implantées. Notre équipe nationale se déplace pour réaliser des audits, interventions et implémentations, adaptés aux besoins spécifiques des entreprises locales. Les tarifs publics, tels que l'Audit Flash sur mesure, sont consultables sur notre site. Notre approche vise à intégrer l'IA de manière opérationnelle et mesurable.",
   seoHook: "TPE & PME · IA opérationnelle",
   ecosystemFr:
     "Laval abrite des entreprises majeures comme Lactalis et Valéo. La Technopole Laval Mayenne est un centre d'innovation où se croisent l'industrie agroalimentaire et la programmation informatique.",

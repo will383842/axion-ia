@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LALLAING_COPY: VilleCopy = {
   pitchFr:
-    "Lallaing (59), commune de 6 287 habitants dans le Nord (Hauts-de-France), intégrée à la Communauté d'Agglomération du Douaisis au coeur du bassin minier inscrit au patrimoine mondial UNESCO. Tissu TPE artisans BTP, PME logistique et sous-traitance industrielle, commerces de proximité, services aux entreprises du bassin douaisien. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Lallaing (59), commune de 6 287 habitants dans le Nord (Hauts-de-France), intégrée à la Communauté d'Agglomération du Douaisis au coeur du bassin minier inscrit au patrimoine mondial UNESCO. Tissu TPE artisans BTP, PME logistique et sous-traitance industrielle, commerces de proximité, services aux entreprises du bassin douaisien. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Lallaing (59), commune de 6 287 habitants dans le Nord (Hauts-de-France), intégrée à la Communauté d'Agglomération du Douaisis au coeur du bassin minier inscrit au patrimoine mondial UNESCO. Tissu TPE artisans BTP, PME logistique et sous-traitance industrielle, commerces de proximité, services aux entreprises du bassin douaisien. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Lallaing (59), commune de 6 287 habitants dans le Nord (Hauts-de-France), intégrée à la Communauté d'Agglomération du Douaisis au coeur du bassin minier inscrit au patrimoine mondial UNESCO. Tissu TPE artisans BTP, PME logistique et sous-traitance industrielle, commerces de proximité, services aux entreprises du bassin douaisien. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lallaing (59). Nous accompagnons TPE artisans BTP du bassin minier, PME logistique et sous-traitance industrielle, commerçants et services aux entreprises de l'agglomération de Douai. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lallaing (59). Nous accompagnons TPE artisans BTP du bassin minier, PME logistique et sous-traitance industrielle, commerçants et services aux entreprises de l'agglomération de Douai. Audit Flash sur mesure, interventions sur site et coaching dirigeants.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lallaing (59). Nous accompagnons TPE artisans BTP du bassin minier, PME logistique et sous-traitance industrielle, commerçants et services aux entreprises de l'agglomération de Douai. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lallaing (59). Nous accompagnons TPE artisans BTP du bassin minier, PME logistique et sous-traitance industrielle, commerçants et services aux entreprises de l'agglomération de Douai. Audit Flash sur mesure, interventions sur site et coaching dirigeants.",
   seoHook: "artisanat rénovation & logistique transport",
   ecosystemFr:
     "Lallaing est située dans l'agglomération de Douai, au coeur du bassin minier du Nord-Pas-de-Calais (UNESCO). Tissu TPE artisans BTP et rénovation, PME logistique et sous-traitance industrielle, commerces de proximité, services aux entreprises. Proximité immédiate de Douai et accès rapide vers Lille via A21. Reconversion économique active du bassin minier avec dynamique d'innovation.",
@@ -52,7 +52,7 @@ export const LALLAING_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Lallaing et dans toute la Communauté d'Agglomération du Douaisis (Douai, Sin-le-Noble, Roost-Warendin, Pecquencourt). Nos consultants se déplacent depuis Lille en 35 min ou Douai en 8 min.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Lallaing ?",
+      q: "Combien coûte un audit IA à Lallaing  ?",
       a: "L'Audit Flash IA démarre à 490 € HT pour une session de 4h. Idéal pour les TPE et PME de Lallaing souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré sous 10 jours.",
     },
     {

@@ -9,9 +9,9 @@ export const AUXONNE_COPY: VilleCopy = {
   pitchEn:
     "Auxonne (21), commune de Côte-d'Or sur les bords de la Saône, est marquée par son histoire militaire (jeune lieutenant Bonaparte y servit). Tissu agriculture céréalière plaine de Saône, PME industrielles, TPE artisans BTP, commerces, services. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auxonne (21). Nous accompagnons TPE et PME : agriculteurs plaine de Saône, PME industrielles, administration, artisans BTP, commerçants auxonnais et services aux entreprises. Audit Flash 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auxonne (21). Nous accompagnons TPE et PME : agriculteurs plaine de Saône, PME industrielles, administration, artisans BTP, commerçants auxonnais et services aux entreprises. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auxonne (21). Nous accompagnons TPE et PME : agriculteurs plaine de Saône, PME industrielles, administration, artisans BTP, commerçants auxonnais et services aux entreprises. Audit Flash 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auxonne (21). Nous accompagnons TPE et PME : agriculteurs plaine de Saône, PME industrielles, administration, artisans BTP, commerçants auxonnais et services aux entreprises. Audit Flash sur mesure.",
   seoHook: "agriculture céréalière & industrielles",
   ecosystemFr:
     "Auxonne est positionnée sur les bords de la Saône en Côte-d'Or, à la frontière du Jura. Patrimoine militaire (caserne, statue Napoléon). Économie : agriculture céréalière plaine de Saône, PME industrielles, TPE artisanat, commerces de proximité.",

@@ -56,7 +56,7 @@ export const JOUY_EN_JOSAS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les startups et PME de l'écosystème HEC à Jouy-en-Josas sur leurs cas IA opérationnels : automatisation processus, agents conversationnels, analyse de données, CRM augmenté. Formats adaptés aux équipes tech comme non-tech.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Jouy-en-Josas ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Jouy-en-Josas  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de la vallée de la Bièvre, il identifie les cas d'usage IA à fort ROI pour votre activité (conseil, tech, santé, commerce). Tarifs publics.",
     },
     {

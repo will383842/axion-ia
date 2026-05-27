@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const VILLENNES_SUR_SEINE_COPY: VilleCopy = {
   pitchFr:
-    "Villennes-sur-Seine (78), commune résidentielle verdoyante en bord de Seine dans les Yvelines, entre Poissy et Médan. Tissu de TPE artisans, PME de services, commerces de village, professions libérales et activités liées au cadre fluvial et résidentiel haut de gamme. Axion-IA y déploie ses missions auprès de toutes les organisations de la boucle de Seine.",
+    "Villennes-sur-Seine (78), commune résidentielle verdoyante en bord de Seine dans les Yvelines, entre Poissy et Médan. Tissu de TPE artisans, PME de services, commerces de village, professions libérales et activités liées au cadre fluvial et résidentiel haut de gamme. Axion-IA y conduit ses missions auprès des entreprises locales de la boucle de Seine.",
   pitchEn:
-    "Villennes-sur-Seine (78), commune résidentielle verdoyante en bord de Seine dans les Yvelines, entre Poissy et Médan. Tissu de TPE artisans, PME de services, commerces de village, professions libérales et activités liées au cadre fluvial et résidentiel haut de gamme. Axion-IA y déploie ses missions auprès de toutes les organisations de la boucle de Seine.",
+    "Villennes-sur-Seine (78), commune résidentielle verdoyante en bord de Seine dans les Yvelines, entre Poissy et Médan. Tissu de TPE artisans, PME de services, commerces de village, professions libérales et activités liées au cadre fluvial et résidentiel haut de gamme. Axion-IA y conduit ses missions auprès des entreprises locales de la boucle de Seine.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villennes-sur-Seine (78). Nous accompagnons TPE et PME : artisans, commerces de village, PME de services et professions libérales de cette commune résidentielle verdoyante en bord de Seine, entre Poissy et Orgeval. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villennes-sur-Seine (78). Nous accompagnons TPE et PME : artisans, commerces de village, PME de services et professions libérales de cette commune résidentielle verdoyante en bord de Seine, entre Poissy et Orgeval. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villennes-sur-Seine (78). Nous accompagnons TPE et PME : artisans, commerces de village, PME de services et professions libérales de cette commune résidentielle verdoyante en bord de Seine, entre Poissy et Orgeval. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villennes-sur-Seine (78). Nous accompagnons TPE et PME : artisans, commerces de village, PME de services et professions libérales de cette commune résidentielle verdoyante en bord de Seine, entre Poissy et Orgeval. Audit Flash sur mesure.",
   seoHook: "services aux & commerce proximité",
   ecosystemFr:
     "Villennes-sur-Seine est une commune résidentielle verdoyante en bord de Seine, appréciée pour son cadre de vie entre eau et forêt. Tissu local : TPE artisans, commerces de village, PME de services, professions libérales, activités liées à l'immobilier et aux loisirs nautiques. Communes voisines : Poissy, Médan, Orgeval, Verneuil-sur-Seine, Triel-sur-Seine.",
@@ -52,7 +52,7 @@ export const VILLENNES_SUR_SEINE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Villennes-sur-Seine et dans toute la boucle de Seine (Poissy, Médan, Orgeval, Verneuil-sur-Seine, Triel-sur-Seine). Nos consultants se déplacent sur site ou en visio.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Villennes-sur-Seine ?",
+      q: "Combien coûte un audit IA à Villennes-sur-Seine  ?",
       a: "L'Audit Flash IA à Villennes-sur-Seine démarre à 490 € HT pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {

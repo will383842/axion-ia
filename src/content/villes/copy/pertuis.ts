@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const PERTUIS_COPY: VilleCopy = {
   pitchFr:
-    "Pertuis (84), sous-préfecture du Sud Luberon limitrophe des Bouches-du-Rhône, conjugue tissu agricole maraîcher et arboricole, zones d'activités tournées vers le bassin aixois et tertiaire local. TPE artisans, PME maraîchères et arboricoles, services aux entreprises, professions libérales et commerces de proximité dans un bassin de vie de près de 20 000 habitants à 25 min d'Aix. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Pertuis (84), sous-préfecture du Sud Luberon limitrophe des Bouches-du-Rhône, conjugue tissu agricole maraîcher et arboricole, zones d'activités tournées vers le bassin aixois et tertiaire local. TPE artisans, PME maraîchères et arboricoles, services aux entreprises, professions libérales et commerces de proximité dans un bassin de vie de près de 20 000 habitants à 25 min d'Aix. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Pertuis (84), sous-préfecture du Sud Luberon limitrophe des Bouches-du-Rhône, conjugue tissu agricole maraîcher et arboricole, zones d'activités tournées vers le bassin aixois et tertiaire local. TPE artisans, PME maraîchères et arboricoles, services aux entreprises, professions libérales et commerces de proximité dans un bassin de vie de près de 20 000 habitants à 25 min d'Aix. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Pertuis (84), sous-préfecture du Sud Luberon limitrophe des Bouches-du-Rhône, conjugue tissu agricole maraîcher et arboricole, zones d'activités tournées vers le bassin aixois et tertiaire local. TPE artisans, PME maraîchères et arboricoles, services aux entreprises, professions libérales et commerces de proximité dans un bassin de vie de près de 20 000 habitants à 25 min d'Aix. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pertuis (84). Nous accompagnons TPE artisans, PME maraîchères, arboriculteurs, services aux entreprises, professions libérales et commerces du Sud Luberon. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pertuis (84). Nous accompagnons TPE artisans, PME maraîchères, arboriculteurs, services aux entreprises, professions libérales et commerces du Sud Luberon. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pertuis (84). Nous accompagnons TPE artisans, PME maraîchères, arboriculteurs, services aux entreprises, professions libérales et commerces du Sud Luberon. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pertuis (84). Nous accompagnons TPE artisans, PME maraîchères, arboriculteurs, services aux entreprises, professions libérales et commerces du Sud Luberon. Audit Flash sur mesure.",
   seoHook: "agriculture maraîchère & artisanat",
   ecosystemFr:
     "Pertuis est positionnée au sud du Vaucluse, dans la vallée de la Durance, en limite des Bouches-du-Rhône, sous-préfecture du Sud Luberon. Commune dont l'activité économique repose sur l'agriculture maraîchère et arboricole (cerises, raisins de table, légumes plein champ), les TPE artisans (BTP, services), PME tertiaires et industrielles, professions libérales et commerces de proximité. Bassin d'emploi double : pôle Pertuis–Aix, et orientation Luberon.",
@@ -52,7 +52,7 @@ export const PERTUIS_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Pertuis et dans tout le Sud Luberon (La Tour-d'Aigues, Mirabeau, Beaumont-de-Pertuis, Cadenet, Villelaure). Accès direct via A51 et D973.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Pertuis ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Pertuis  ?",
       a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, PME maraîchères, arboriculteurs, services aux entreprises et commerces pertuisiens. Tarifs publics, sans engagement.",
     },
     {

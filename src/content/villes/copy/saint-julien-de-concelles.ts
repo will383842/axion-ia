@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_JULIEN_DE_CONCELLES_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Julien-de-Concelles (44), commune du vignoble nantais en Loire-Atlantique, conjugue viticulture Muscadet, maraîchage (premier bassin maraîcher de France), artisanat et commerces. Axion-IA y déploie ses missions auprès de toutes les organisations du vignoble et du maraîchage nantais.",
+    "Saint-Julien-de-Concelles (44), commune du vignoble nantais en Loire-Atlantique, conjugue viticulture Muscadet, maraîchage (premier bassin maraîcher de France), artisanat et commerces. Axion-IA y déploie son expertise pour toutes les organisations du vignoble et du maraîchage nantais.",
   pitchEn:
-    "Saint-Julien-de-Concelles (44), commune du vignoble nantais en Loire-Atlantique, conjugue viticulture Muscadet, maraîchage (premier bassin maraîcher de France), artisanat et commerces. Axion-IA y déploie ses missions auprès de toutes les organisations du vignoble et du maraîchage nantais.",
+    "Saint-Julien-de-Concelles (44), commune du vignoble nantais en Loire-Atlantique, conjugue viticulture Muscadet, maraîchage (premier bassin maraîcher de France), artisanat et commerces. Axion-IA y déploie son expertise pour toutes les organisations du vignoble et du maraîchage nantais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Julien-de-Concelles (44). Nous accompagnons les TPE maraîchères, vignerons, artisans, commerçants et PME du bassin nantais est sur leurs cas IA opérationnels. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Julien-de-Concelles (44). Nous accompagnons les TPE maraîchères, vignerons, artisans, commerçants et PME du bassin nantais est sur leurs cas IA opérationnels. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Julien-de-Concelles (44). Nous accompagnons les TPE maraîchères, vignerons, artisans, commerçants et PME du bassin nantais est sur leurs cas IA opérationnels. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Julien-de-Concelles (44). Nous accompagnons les TPE maraîchères, vignerons, artisans, commerçants et PME du bassin nantais est sur leurs cas IA opérationnels. Audit Flash sur mesure.",
   seoHook: "bassin maraîcher de",
   ecosystemFr:
     "Saint-Julien-de-Concelles est au coeur du premier bassin maraîcher de France (mâche nantaise, muguet) et du vignoble Muscadet. Tissu TPE agricoles et maraîchères, vignerons, artisans, commerces de proximité, PME agroalimentaires. Nantes Métropole est à 20 min.",

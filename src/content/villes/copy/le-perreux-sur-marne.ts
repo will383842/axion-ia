@@ -11,9 +11,9 @@ export const LE_PERREUX_SUR_MARNE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Le Perreux-sur-Marne, une ville proche de Paris, abritant des entreprises dans le commerce de détail et la programmation informatique. Nos services s'adaptent à cet environnement diversifié pour optimiser vos processus grâce à l'IA.",
   directAnswerFr:
-    "Axion-IA propose ses services à Le Perreux-sur-Marne, où le commerce de détail et la programmation informatique dominent. Nous intervenons sur site pour automatiser les tâches administratives et optimiser les processus. Nos audits débutent à 490 € HT et nos interventions à partir de 590 € HT. Le Perreux-sur-Marne bénéficie de la proximité de la Gare de Lyon et de l'aéroport de Paris-Orly, facilitant nos déplacements.",
+    "Axion-IA propose ses services à Le Perreux-sur-Marne, où le commerce de détail et la programmation informatique dominent. Nous intervenons sur site pour automatiser les tâches administratives et optimiser les processus. Nos audits débutent à et nos interventions. Le Perreux-sur-Marne bénéficie de la proximité de la Gare de Lyon et de l'aéroport de Paris-Orly, facilitant nos déplacements.",
   directAnswerEn:
-    "Axion-IA propose ses services à Le Perreux-sur-Marne, où le commerce de détail et la programmation informatique dominent. Nous intervenons sur site pour automatiser les tâches administratives et optimiser les processus. Nos audits débutent à 490 € HT et nos interventions à partir de 590 € HT. Le Perreux-sur-Marne bénéficie de la proximité de la Gare de Lyon et de l'aéroport de Paris-Orly, facilitant nos déplacements.",
+    "Axion-IA propose ses services à Le Perreux-sur-Marne, où le commerce de détail et la programmation informatique dominent. Nous intervenons sur site pour automatiser les tâches administratives et optimiser les processus. Nos audits débutent à et nos interventions. Le Perreux-sur-Marne bénéficie de la proximité de la Gare de Lyon et de l'aéroport de Paris-Orly, facilitant nos déplacements.",
   seoHook: "commerce détail & programmation informatique",
   ecosystemFr:
     "Le Perreux-sur-Marne est entouré de communes dynamiques comme Nogent-sur-Marne et Saint-Maur-des-Fossés. Le tissu économique local est marqué par le commerce de détail et les activités juridiques, offrant un cadre propice à l'innovation.",

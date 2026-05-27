@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const HERIC_COPY: VilleCopy = {
   pitchFr:
-    "Héric (44), commune résidentielle du nord de l'agglomération nantaise en Loire-Atlantique, sur l'axe Nantes-Rennes. Tissu TPE artisans et commerçants, PME services et bâtiment, exploitations agricoles, professions libérales, services de proximité. Axion-IA couvre l'ensemble des activités professionnelles présentes du nord nantais.",
+    "Héric (44), commune résidentielle du nord de l'agglomération nantaise en Loire-Atlantique, sur l'axe Nantes-Rennes. Tissu TPE artisans et commerçants, PME services et bâtiment, exploitations agricoles, professions libérales, services de proximité. Axion-IA opère sur l'ensemble des activités professionnelles locales du nord nantais.",
   pitchEn:
-    "Héric (44), commune résidentielle du nord de l'agglomération nantaise en Loire-Atlantique, sur l'axe Nantes-Rennes. Tissu TPE artisans et commerçants, PME services et bâtiment, exploitations agricoles, professions libérales, services de proximité. Axion-IA couvre l'ensemble des activités professionnelles présentes du nord nantais.",
+    "Héric (44), commune résidentielle du nord de l'agglomération nantaise en Loire-Atlantique, sur l'axe Nantes-Rennes. Tissu TPE artisans et commerçants, PME services et bâtiment, exploitations agricoles, professions libérales, services de proximité. Axion-IA opère sur l'ensemble des activités professionnelles locales du nord nantais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Héric (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME services et bâtiment, exploitations agricoles, professions libérales et services de proximité du nord nantais.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const HERIC_COPY: VilleCopy = {
       a: "Pour les exploitations agricoles d'Héric, nous proposons audit IA, interventions sur site, implémentation (automatisation suivi parcellaire, gestion stocks, traçabilité), coaching 1-to-1 et plateformes web IA sur mesure.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Héric ?",
+      q: "Tarifs audit IA à Héric  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du nord nantais.",
     },
     {

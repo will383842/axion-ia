@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MOUGINS_COPY: VilleCopy = {
   pitchFr:
-    "Mougins (06), commune des Alpes-Maritimes entre Cannes et Grasse, est réputée pour sa gastronomie étoilée et son patrimoine artistique (Picasso y a vécu). Proximité immédiate de Sophia Antipolis. Tissu TPE artisans, PME tech/gastronomie/hôtellerie, commerçants et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin mouginois.",
+    "Mougins (06), commune des Alpes-Maritimes entre Cannes et Grasse, est réputée pour sa gastronomie étoilée et son patrimoine artistique (Picasso y a vécu). Proximité immédiate de Sophia Antipolis. Tissu TPE artisans, PME tech/gastronomie/hôtellerie, commerçants et professions libérales. Axion-IA couvre les activités professionnelles du bassin du bassin mouginois.",
   pitchEn:
-    "Mougins (06), commune des Alpes-Maritimes entre Cannes et Grasse, est réputée pour sa gastronomie étoilée et son patrimoine artistique (Picasso y a vécu). Proximité immédiate de Sophia Antipolis. Tissu TPE artisans, PME tech/gastronomie/hôtellerie, commerçants et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin mouginois.",
+    "Mougins (06), commune des Alpes-Maritimes entre Cannes et Grasse, est réputée pour sa gastronomie étoilée et son patrimoine artistique (Picasso y a vécu). Proximité immédiate de Sophia Antipolis. Tissu TPE artisans, PME tech/gastronomie/hôtellerie, commerçants et professions libérales. Axion-IA couvre les activités professionnelles du bassin du bassin mouginois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mougins (06). Nous accompagnons tous types d'activités : TPE artisans, PME tech (Sophia Antipolis), restaurateurs étoilés, galeries, hôteliers, commerçants, professions libérales, indépendants et services aux entreprises du bassin mouginois.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const MOUGINS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les restaurateurs étoilés et gastronomiques de Mougins : agents conversationnels réservation multilingue, automatisation approvisionnement, optimisation planning équipes, classification avis clients.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Mougins ?",
+      q: "Tarifs audit IA à Mougins  : quel budget prévoir ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE artisans, startups tech et PME mouginoises. Tarifs publics transparents, sans frais cachés.",
     },
     {

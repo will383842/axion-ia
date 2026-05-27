@@ -9,9 +9,9 @@ export const ROQUEFORT_LA_BEDOULE_COPY: VilleCopy = {
   pitchEn:
     "Roquefort-la-Bédoule (13), commune au sud-est de Marseille marquée par son passé de carrières de pierre et son cadre périurbain provençal, conjugue tissu de TPE artisans bâtiment, PME services, commerces et professions libérales. Bassin résidentiel des actifs marseillais et ciotadens. Axion-IA opère pour toutes les structures économiques de la commune du bassin est marseillais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Roquefort-la-Bédoule (13). Nous accompagnons TPE artisans, PME services, commerçants et professions libérales du sud-est marseillais. Audit Flash dès 490 € HT, sans engagement.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Roquefort-la-Bédoule (13). Nous accompagnons TPE artisans, PME services, commerçants et professions libérales du sud-est marseillais. Audit Flash sur mesure, sans engagement.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Roquefort-la-Bédoule (13). Nous accompagnons TPE artisans, PME services, commerçants et professions libérales du sud-est marseillais. Audit Flash dès 490 € HT, sans engagement.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Roquefort-la-Bédoule (13). Nous accompagnons TPE artisans, PME services, commerçants et professions libérales du sud-est marseillais. Audit Flash sur mesure, sans engagement.",
   seoHook: "TPE bâtiment & PME est marseillais",
   ecosystemFr:
     "Roquefort-la-Bédoule s'étend au sud-est de Marseille entre Aubagne et Cassis, historiquement marquée par ses carrières de pierre. Économie locale de TPE artisans bâtiment (héritage carrières et taille de pierre), PME services, commerces de proximité, professions libérales et oléiculture. Cadre résidentiel privilégié pour les actifs travaillant à Marseille, Aubagne et La Ciotat.",
@@ -52,7 +52,7 @@ export const ROQUEFORT_LA_BEDOULE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Roquefort-la-Bédoule et dans tout le sud-est marseillais (Cassis à 10 min, Aubagne à 10 min, La Ciotat, Carnoux). Couverture complète bassin est marseillais.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Roquefort-la-Bédoule ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Roquefort-la-Bédoule  ?",
       a: "L'Audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, PME services et professions libérales de Roquefort-la-Bédoule. Tarifs publics, sans engagement.",
     },
     {

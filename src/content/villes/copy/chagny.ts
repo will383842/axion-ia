@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const CHAGNY_COPY: VilleCopy = {
   pitchFr:
-    "Chagny (71), commune au carrefour de la Côte chalonnaise et du canal du Centre en Saône-et-Loire, est un pôle viticole et gastronomique bourguignon. Tissu de TPE/PME viticulture, restauration, commerce, artisanat et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Chagny (71), commune au carrefour de la Côte chalonnaise et du canal du Centre en Saône-et-Loire, est un pôle viticole et gastronomique bourguignon. Tissu de TPE/PME viticulture, restauration, commerce, artisanat et services. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Chagny (71), commune au carrefour de la Côte chalonnaise et du canal du Centre en Saône-et-Loire, est un pôle viticole et gastronomique bourguignon. Tissu de TPE/PME viticulture, restauration, commerce, artisanat et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Chagny (71), commune au carrefour de la Côte chalonnaise et du canal du Centre en Saône-et-Loire, est un pôle viticole et gastronomique bourguignon. Tissu de TPE/PME viticulture, restauration, commerce, artisanat et services. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chagny (71). Nous accompagnons TPE et PME : viticulteurs, restaurateurs, commerçants de centre-ville, artisans et prestataires de services de la Côte chalonnaise en Bourgogne. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chagny (71). Nous accompagnons TPE et PME : viticulteurs, restaurateurs, commerçants de centre-ville, artisans et prestataires de services de la Côte chalonnaise en Bourgogne. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chagny (71). Nous accompagnons TPE et PME : viticulteurs, restaurateurs, commerçants de centre-ville, artisans et prestataires de services de la Côte chalonnaise en Bourgogne. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chagny (71). Nous accompagnons TPE et PME : viticulteurs, restaurateurs, commerçants de centre-ville, artisans et prestataires de services de la Côte chalonnaise en Bourgogne. Audit Flash sur mesure.",
   seoHook: "viticulture négoce & restauration gastronomie",
   ecosystemFr:
     "Chagny est situé au pied de la Côte chalonnaise, au croisement des vignobles de Bourgogne et du canal du Centre. La ville est connue pour sa gastronomie (Maison Lameloise, 3 étoiles Michelin) et son tissu viticole. L'économie locale repose sur la viticulture, la restauration, le commerce de proximité, l'artisanat BTP et les services. Proximité de Beaune (15 min) et Chalon-sur-Saône (15 min).",
@@ -52,7 +52,7 @@ export const CHAGNY_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Chagny et sur toute la Côte chalonnaise (Beaune, Chalon-sur-Saône, Mercurey, Rully, Givry). Gare TGV Le Creusot-Montchanin à 30 min, Paris à 1h20 en TGV.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Chagny ?",
+      q: "Combien coûte un audit IA à Chagny  ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Chagny et de la Côte chalonnaise, il identifie les cas d'usage IA à fort ROI pour votre domaine, restaurant ou commerce.",
     },
     {

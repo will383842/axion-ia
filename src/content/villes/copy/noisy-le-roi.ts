@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const NOISY_LE_ROI_COPY: VilleCopy = {
   pitchFr:
-    "Noisy-le-Roi (78), commune résidentielle des Yvelines en lisière de la forêt de Marly, accueille un tissu de TPE de services, professions libérales, PME tertiaires et artisans dans un cadre verdoyant entre Versailles et Saint-Germain-en-Laye. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'ouest yvelinois.",
+    "Noisy-le-Roi (78), commune résidentielle des Yvelines en lisière de la forêt de Marly, accueille un tissu de TPE de services, professions libérales, PME tertiaires et artisans dans un cadre verdoyant entre Versailles et Saint-Germain-en-Laye. Axion-IA accompagne tout le tissu professionnel local de l'ouest yvelinois.",
   pitchEn:
-    "Noisy-le-Roi (78), commune résidentielle des Yvelines en lisière de la forêt de Marly, accueille un tissu de TPE de services, professions libérales, PME tertiaires et artisans dans un cadre verdoyant entre Versailles et Saint-Germain-en-Laye. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'ouest yvelinois.",
+    "Noisy-le-Roi (78), commune résidentielle des Yvelines en lisière de la forêt de Marly, accueille un tissu de TPE de services, professions libérales, PME tertiaires et artisans dans un cadre verdoyant entre Versailles et Saint-Germain-en-Laye. Axion-IA accompagne tout le tissu professionnel local de l'ouest yvelinois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Noisy-le-Roi (78). Nous accompagnons TPE et PME : professions libérales, cabinets conseil, PME tertiaires de l'ouest yvelinois, artisans et commerçants de cette commune résidentielle entre forêt de Marly et plaine de Versailles.",
   directAnswerEn:
@@ -56,7 +56,7 @@ export const NOISY_LE_ROI_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les professions libérales à Noisy-le-Roi (médecins, paramédicaux, avocats, experts-comptables) sur des cas IA respectueux du secret professionnel : agents conversationnels, gestion RDV, transcription, classification dossiers. RGPD strict.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Noisy-le-Roi ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Noisy-le-Roi  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de l'ouest Yvelines, il identifie les cas d'usage IA à fort ROI pour votre activité (services, santé, artisanat, commerce). Tarifs publics.",
     },
     {

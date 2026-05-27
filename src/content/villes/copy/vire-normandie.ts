@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VIRE_NORMANDIE_COPY: VilleCopy = {
   pitchFr:
-    "Vire Normandie (14), commune nouvelle du bocage normand dans le Calvados, est la sous-préfecture sud du département. Célèbre pour l'andouille de Vire (IGP), la commune rayonne sur un bassin d'emploi agroalimentaire, industriel et artisanal. Tissu TPE artisans, PME agroalimentaires et industrielles, commerces de centre-ville. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Vire Normandie (14), commune nouvelle du bocage normand dans le Calvados, est la sous-préfecture sud du département. Célèbre pour l'andouille de Vire (IGP), la commune rayonne sur un bassin d'emploi agroalimentaire, industriel et artisanal. Tissu TPE artisans, PME agroalimentaires et industrielles, commerces de centre-ville. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Vire Normandie (14), commune nouvelle du bocage normand dans le Calvados, est la sous-préfecture sud du département. Célèbre pour l'andouille de Vire (IGP), la commune rayonne sur un bassin d'emploi agroalimentaire, industriel et artisanal. Tissu TPE artisans, PME agroalimentaires et industrielles, commerces de centre-ville. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Vire Normandie (14), commune nouvelle du bocage normand dans le Calvados, est la sous-préfecture sud du département. Célèbre pour l'andouille de Vire (IGP), la commune rayonne sur un bassin d'emploi agroalimentaire, industriel et artisanal. Tissu TPE artisans, PME agroalimentaires et industrielles, commerces de centre-ville. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vire Normandie (14). Nous accompagnons tous types d'activités : TPE artisans et commerçants du bocage, PME agroalimentaires (andouille de Vire IGP, produits laitiers), industriels, professions libérales, indépendants et services aux entreprises du sud-Calvados.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const VIRE_NORMANDIE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Vire Normandie, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Vire Normandie ?",
+      q: "Combien coûte un audit IA à Vire Normandie  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LAGNIEU_COPY: VilleCopy = {
   pitchFr:
-    "Lagnieu (01), commune du Bugey dans l'Ain, est positionnée dans la vallée du Rhône entre Ambérieu-en-Bugey et Belley. Tissu PME industrielles, agriculture vallée, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations du Bugey.",
+    "Lagnieu (01), commune du Bugey dans l'Ain, est positionnée dans la vallée du Rhône entre Ambérieu-en-Bugey et Belley. Tissu PME industrielles, agriculture vallée, TPE artisans BTP, commerces. Axion-IA y déploie son expertise pour toutes les organisations du Bugey.",
   pitchEn:
-    "Lagnieu (01), commune du Bugey dans l'Ain, est positionnée dans la vallée du Rhône entre Ambérieu-en-Bugey et Belley. Tissu PME industrielles, agriculture vallée, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations du Bugey.",
+    "Lagnieu (01), commune du Bugey dans l'Ain, est positionnée dans la vallée du Rhône entre Ambérieu-en-Bugey et Belley. Tissu PME industrielles, agriculture vallée, TPE artisans BTP, commerces. Axion-IA y déploie son expertise pour toutes les organisations du Bugey.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lagnieu (01). Nous accompagnons tous types d'activités : PME industrielles Bugey, agriculteurs vallée du Rhône, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
   directAnswerEn:

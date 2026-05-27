@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const ROQUES_COPY: VilleCopy = {
   pitchFr:
-    "Roques (31), commune du sud de Toulouse sur les bords de Garonne, plus de 5 400 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de la couronne sud de Toulouse.",
+    "Roques (31), commune du sud de Toulouse sur les bords de Garonne, plus de 5 400 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA accompagne tout le tissu professionnel local de la couronne sud de Toulouse.",
   pitchEn:
-    "Roques (31), commune du sud de Toulouse sur les bords de Garonne, plus de 5 400 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de la couronne sud de Toulouse.",
+    "Roques (31), commune du sud de Toulouse sur les bords de Garonne, plus de 5 400 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA accompagne tout le tissu professionnel local de la couronne sud de Toulouse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Roques (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud Toulouse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Roques (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud Toulouse. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Roques (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud Toulouse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Roques (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud Toulouse. Audit Flash sur mesure.",
   seoHook: "artisanat & commerce détail",
   ecosystemFr:
     "Roques est une commune résidentielle du sud de Toulouse, sur les bords de la Garonne entre Portet-sur-Garonne et Muret. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Proximité de la zone commerciale Portet.",
@@ -56,7 +56,7 @@ export const ROQUES_COPY: VilleCopy = {
       a: "Nous accompagnons tous types d'activités : TPE artisans, PME de services, professions libérales, commerces, restauration. Aucun secteur exclu.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Roques ?",
+      q: "Combien coûte un audit IA à Roques  ?",
       a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics.",
     },
     {

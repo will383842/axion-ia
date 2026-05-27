@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_PIERRE_EN_AUGE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Pierre-en-Auge (14), commune nouvelle du Calvados au cœur du Pays d'Auge, est un territoire de fromages AOP (Camembert, Pont-l'Évêque, Livarot) et de cidre normand. Bassin d'emploi agroalimentaire et agricole, tissu TPE artisans, PME laitières, exploitations, commerces de proximité. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Saint-Pierre-en-Auge (14), commune nouvelle du Calvados au cœur du Pays d'Auge, est un territoire de fromages AOP (Camembert, Pont-l'Évêque, Livarot) et de cidre normand. Bassin d'emploi agroalimentaire et agricole, tissu TPE artisans, PME laitières, exploitations, commerces de proximité. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Saint-Pierre-en-Auge (14), commune nouvelle du Calvados au cœur du Pays d'Auge, est un territoire de fromages AOP (Camembert, Pont-l'Évêque, Livarot) et de cidre normand. Bassin d'emploi agroalimentaire et agricole, tissu TPE artisans, PME laitières, exploitations, commerces de proximité. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Saint-Pierre-en-Auge (14), commune nouvelle du Calvados au cœur du Pays d'Auge, est un territoire de fromages AOP (Camembert, Pont-l'Évêque, Livarot) et de cidre normand. Bassin d'emploi agroalimentaire et agricole, tissu TPE artisans, PME laitières, exploitations, commerces de proximité. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Pierre-en-Auge (14). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME laitières et fromagères AOP, exploitations agricoles Pays d'Auge, professions libérales, indépendants et services aux entreprises augeronnes.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const SAINT_PIERRE_EN_AUGE_COPY: VilleCopy = {
       a: "Pour les exploitations agricoles et éleveurs du Pays d'Auge, audit Flash 490 € HT, intervention 1 journée, coaching 1-to-1. Cas typiques : gestion troupeaux, prédiction production laitière, automatisation traçabilité.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Saint-Pierre-en-Auge ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Saint-Pierre-en-Auge  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {

@@ -9,9 +9,9 @@ export const AVALLON_COPY: VilleCopy = {
   pitchEn:
     "Avallon (89), sous-préfecture de l'Yonne et porte nord du parc naturel régional du Morvan, est une cité médiévale animée par le tourisme vert. TPE artisanat et hôtellerie-restauration, commerces de centre-bourg historique, PME agroalimentaires et viticoles, professions libérales, prestataires touristiques. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Avallon (89). Nous accompagnons TPE et PME : hôteliers et restaurateurs du Morvan, artisans et commerçants du centre-bourg médiéval, PME agroalimentaires et viticoles, professions libérales, prestataires touristiques. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Avallon (89). Nous accompagnons TPE et PME : hôteliers et restaurateurs du Morvan, artisans et commerçants du centre-bourg médiéval, PME agroalimentaires et viticoles, professions libérales, prestataires touristiques. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Avallon (89). Nous accompagnons TPE et PME : hôteliers et restaurateurs du Morvan, artisans et commerçants du centre-bourg médiéval, PME agroalimentaires et viticoles, professions libérales, prestataires touristiques. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Avallon (89). Nous accompagnons TPE et PME : hôteliers et restaurateurs du Morvan, artisans et commerçants du centre-bourg médiéval, PME agroalimentaires et viticoles, professions libérales, prestataires touristiques. Audit Flash sur mesure.",
   seoHook: "TPE & PME Yonne",
   ecosystemFr:
     "Avallon est sous-préfecture de l'Yonne, cité médiévale perchée sur un éperon rocheux à la porte nord du parc naturel régional du Morvan. Tissu TPE hôtellerie-restauration, artisanat et commerce de centre-bourg, PME agroalimentaires et viticoles (Chablisien tout proche), professions libérales, prestataires tourisme vert.",

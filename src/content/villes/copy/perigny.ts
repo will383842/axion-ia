@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PERIGNY_COPY: VilleCopy = {
   pitchFr:
-    "Périgny (17), commune de l'agglomération de La Rochelle en Charente-Maritime, pôle résidentiel et tertiaire avec zones d'activités. Tissu de TPE artisans, PME tertiaires et technologiques, commerces, services aux entreprises et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération rochelaise.",
+    "Périgny (17), commune de l'agglomération de La Rochelle en Charente-Maritime, pôle résidentiel et tertiaire avec zones d'activités. Tissu de TPE artisans, PME tertiaires et technologiques, commerces, services aux entreprises et professions libérales. Axion-IA collabore avec toutes les structures locales de l'agglomération rochelaise.",
   pitchEn:
-    "Périgny (17), commune de l'agglomération de La Rochelle en Charente-Maritime, pôle résidentiel et tertiaire avec zones d'activités. Tissu de TPE artisans, PME tertiaires et technologiques, commerces, services aux entreprises et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération rochelaise.",
+    "Périgny (17), commune de l'agglomération de La Rochelle en Charente-Maritime, pôle résidentiel et tertiaire avec zones d'activités. Tissu de TPE artisans, PME tertiaires et technologiques, commerces, services aux entreprises et professions libérales. Axion-IA collabore avec toutes les structures locales de l'agglomération rochelaise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Périgny (17). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires et technologiques, prestataires de services, commerçants et indépendants de cette commune dynamique de l'agglomération de La Rochelle.",
   directAnswerEn:

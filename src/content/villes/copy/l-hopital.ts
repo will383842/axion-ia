@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const L_HOPITAL_COPY: VilleCopy = {
   pitchFr:
-    "L'Hôpital (57), commune de 5 183 habitants en Moselle, ancrée dans le bassin houiller lorrain et à proximité immédiate de la frontière franco-allemande, conserve l'héritage minier reconverti vers l'industrie, la logistique et l'artisanat. Tissu TPE/PME industrie reconvertie, sous-traitance, logistique transfrontalière, commerces de proximité, artisans, services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "L'Hôpital (57), commune de 5 183 habitants en Moselle, ancrée dans le bassin houiller lorrain et à proximité immédiate de la frontière franco-allemande, conserve l'héritage minier reconverti vers l'industrie, la logistique et l'artisanat. Tissu TPE/PME industrie reconvertie, sous-traitance, logistique transfrontalière, commerces de proximité, artisans, services. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "L'Hôpital (57), commune de 5 183 habitants en Moselle, ancrée dans le bassin houiller lorrain et à proximité immédiate de la frontière franco-allemande, conserve l'héritage minier reconverti vers l'industrie, la logistique et l'artisanat. Tissu TPE/PME industrie reconvertie, sous-traitance, logistique transfrontalière, commerces de proximité, artisans, services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "L'Hôpital (57), commune de 5 183 habitants en Moselle, ancrée dans le bassin houiller lorrain et à proximité immédiate de la frontière franco-allemande, conserve l'héritage minier reconverti vers l'industrie, la logistique et l'artisanat. Tissu TPE/PME industrie reconvertie, sous-traitance, logistique transfrontalière, commerces de proximité, artisans, services. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à L'Hôpital (57). Nous accompagnons tous types d'activités : TPE/PME industrie reconvertie, sous-traitance, logistique transfrontalière, artisans, commerces du centre, professions de services et acteurs du bassin houiller de Moselle-est.",
   directAnswerEn:

@@ -56,7 +56,7 @@ export const SAINT_PATHUS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE artisanales BTP de Saint-Pathus (maçons, plombiers, électriciens, couvreurs, paysagistes) sur des cas IA concrets : automatisation devis chantier, agents IA prise de rendez-vous, gestion planning équipes. Audit Flash 490 € HT.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Saint-Pathus ?",
+      q: "Quel est le tarif d'un audit IA à Saint-Pathus  ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du nord Seine-et-Marne, il identifie les cas d'usage IA à fort ROI pour votre activité (BTP, transport, commerce, services). Tarifs publics et transparents.",
     },
     {

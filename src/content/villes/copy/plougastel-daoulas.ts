@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PLOUGASTEL_DAOULAS_COPY: VilleCopy = {
   pitchFr:
-    "Plougastel-Daoulas (29), presqu'île emblématique du Finistère, est célèbre pour ses fraises AOC et son calvaire monumental du XVIe siècle. Tissu TPE agricoles (maraîchage, horticulture), PME ostréicoles et maritimes, artisans BTP, commerces et services. Axion-IA y déploie ses missions auprès de toutes les organisations de la presqu'île et de l'agglomération brestoise.",
+    "Plougastel-Daoulas (29), presqu'île emblématique du Finistère, est célèbre pour ses fraises AOC et son calvaire monumental du XVIe siècle. Tissu TPE agricoles (maraîchage, horticulture), PME ostréicoles et maritimes, artisans BTP, commerces et services. Axion-IA y déploie son expertise pour toutes les organisations de la presqu'île et de l'agglomération brestoise.",
   pitchEn:
-    "Plougastel-Daoulas (29), presqu'île emblématique du Finistère, est célèbre pour ses fraises AOC et son calvaire monumental du XVIe siècle. Tissu TPE agricoles (maraîchage, horticulture), PME ostréicoles et maritimes, artisans BTP, commerces et services. Axion-IA y déploie ses missions auprès de toutes les organisations de la presqu'île et de l'agglomération brestoise.",
+    "Plougastel-Daoulas (29), presqu'île emblématique du Finistère, est célèbre pour ses fraises AOC et son calvaire monumental du XVIe siècle. Tissu TPE agricoles (maraîchage, horticulture), PME ostréicoles et maritimes, artisans BTP, commerces et services. Axion-IA y déploie son expertise pour toutes les organisations de la presqu'île et de l'agglomération brestoise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plougastel-Daoulas (29). Nous accompagnons tous types d'activités : TPE maraîchères et horticoles (fraises AOC), PME ostréicoles et maritimes, artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de la presqu'île et de Brest Métropole.",
   directAnswerEn:

@@ -11,14 +11,14 @@ export const BIARRITZ_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Biarritz, une ville dynamique en Nouvelle-Aquitaine. Nous proposons des audits et implémentations IA adaptés aux entreprises locales, dans un contexte où le commerce de détail et l'hébergement sont prédominants.",
   directAnswerFr:
-    "Axion-IA propose des interventions IA à Biarritz, une ville où le commerce de détail et les activités sportives sont en plein essor. Nous nous déplaçons sur site pour automatiser vos processus métier. Notre Audit Flash est proposé à partir de 490 € HT et l'Intervention Essentielle dès 590 € HT. Consultez nos tarifs publics pour plus de détails.",
+    "Axion-IA propose des interventions IA à Biarritz, une ville où le commerce de détail et les activités sportives sont en plein essor. Nous nous déplaçons sur site pour automatiser vos processus métier. Notre Audit Flash est proposé et l'Intervention Essentielle. Consultez nos tarifs publics pour plus de détails.",
   directAnswerEn:
-    "Axion-IA propose des interventions IA à Biarritz, une ville où le commerce de détail et les activités sportives sont en plein essor. Nous nous déplaçons sur site pour automatiser vos processus métier. Notre Audit Flash est proposé à partir de 490 € HT et l'Intervention Essentielle dès 590 € HT. Consultez nos tarifs publics pour plus de détails.",
+    "Axion-IA propose des interventions IA à Biarritz, une ville où le commerce de détail et les activités sportives sont en plein essor. Nous nous déplaçons sur site pour automatiser vos processus métier. Notre Audit Flash est proposé et l'Intervention Essentielle. Consultez nos tarifs publics pour plus de détails.",
   seoHook: "tourisme premium & surf",
   ecosystemFr:
-    "Biarritz, avec ses 3 000 établissements actifs, est un centre d'activités économiques variées, principalement dans le commerce de détail et l'hébergement. La ville bénéficie de sa proximité avec l'aéroport de Biarritz Pays Basque et la gare TGV.",
+    "Biarritz, avec ses 3 000 établissements actifs, est un centre d'activités économiques variées, principalement dans le commerce de détail et l'hébergement. La ville bénéficie de sa proximité avec l'aéroport de Biarritz Pays Basque et la gare TGV.",
   ecosystemEn:
-    "Biarritz, avec ses 3 000 établissements actifs, est un centre d'activités économiques variées, principalement dans le commerce de détail et l'hébergement. La ville bénéficie de sa proximité avec l'aéroport de Biarritz Pays Basque et la gare TGV.",
+    "Biarritz, avec ses 3 000 établissements actifs, est un centre d'activités économiques variées, principalement dans le commerce de détail et l'hébergement. La ville bénéficie de sa proximité avec l'aéroport de Biarritz Pays Basque et la gare TGV.",
   distancesFr:
     "La gare TGV de Biarritz est à 0 km, et l'aéroport de Biarritz Pays Basque est à seulement 3 km.",
   distancesEn:

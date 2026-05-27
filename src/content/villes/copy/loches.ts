@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LOCHES_COPY: VilleCopy = {
   pitchFr:
-    "Loches (37), sous-préfecture d'Indre-et-Loire, est une cité royale remarquable avec son donjon roman du XIe siècle (l'un des mieux conservés d'Europe) et le Logis Royal où séjournèrent Charles VII et Jeanne d'Arc. Porte de la Touraine sud. Tissu TPE artisans, commerçants, PME de services, acteurs du tourisme patrimonial, professions libérales et exploitants agricoles. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Loches (37), sous-préfecture d'Indre-et-Loire, est une cité royale remarquable avec son donjon roman du XIe siècle (l'un des mieux conservés d'Europe) et le Logis Royal où séjournèrent Charles VII et Jeanne d'Arc. Porte de la Touraine sud. Tissu TPE artisans, commerçants, PME de services, acteurs du tourisme patrimonial, professions libérales et exploitants agricoles. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Loches (37), sous-préfecture d'Indre-et-Loire, est une cité royale remarquable avec son donjon roman du XIe siècle (l'un des mieux conservés d'Europe) et le Logis Royal où séjournèrent Charles VII et Jeanne d'Arc. Porte de la Touraine sud. Tissu TPE artisans, commerçants, PME de services, acteurs du tourisme patrimonial, professions libérales et exploitants agricoles. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Loches (37), sous-préfecture d'Indre-et-Loire, est une cité royale remarquable avec son donjon roman du XIe siècle (l'un des mieux conservés d'Europe) et le Logis Royal où séjournèrent Charles VII et Jeanne d'Arc. Porte de la Touraine sud. Tissu TPE artisans, commerçants, PME de services, acteurs du tourisme patrimonial, professions libérales et exploitants agricoles. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Loches (37). Nous accompagnons tous types d'activités : acteurs du tourisme patrimonial (cité royale, donjon, Logis Royal), TPE artisans, commerçants, PME de services, professions libérales, hôteliers-restaurateurs, exploitants agricoles et entreprises de la Touraine sud.",
   directAnswerEn:

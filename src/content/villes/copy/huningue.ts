@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const HUNINGUE_COPY: VilleCopy = {
   pitchFr:
-    "Huningue (68), commune de 7 487 habitants en Haut-Rhin, est située au carrefour des trois frontières (France, Allemagne, Suisse) aux portes de Bâle. Port rhénan, industries chimiques et pharmaceutiques, tissu TPE/PME logistique transfrontalière, commerce, services et artisanat. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Huningue (68), commune de 7 487 habitants en Haut-Rhin, est située au carrefour des trois frontières (France, Allemagne, Suisse) aux portes de Bâle. Port rhénan, industries chimiques et pharmaceutiques, tissu TPE/PME logistique transfrontalière, commerce, services et artisanat. Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Huningue (68), commune de 7 487 habitants en Haut-Rhin, est située au carrefour des trois frontières (France, Allemagne, Suisse) aux portes de Bâle. Port rhénan, industries chimiques et pharmaceutiques, tissu TPE/PME logistique transfrontalière, commerce, services et artisanat. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Huningue (68), commune de 7 487 habitants en Haut-Rhin, est située au carrefour des trois frontières (France, Allemagne, Suisse) aux portes de Bâle. Port rhénan, industries chimiques et pharmaceutiques, tissu TPE/PME logistique transfrontalière, commerce, services et artisanat. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Huningue (68). Nous accompagnons TPE et PME du bassin des trois frontières : logisticiens, industriels chimie/pharma, commerçants, artisans et prestataires de services. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Huningue (68). Nous accompagnons TPE et PME du bassin des trois frontières : logisticiens, industriels chimie/pharma, commerçants, artisans et prestataires de services. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Huningue (68). Nous accompagnons TPE et PME du bassin des trois frontières : logisticiens, industriels chimie/pharma, commerçants, artisans et prestataires de services. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Huningue (68). Nous accompagnons TPE et PME du bassin des trois frontières : logisticiens, industriels chimie/pharma, commerçants, artisans et prestataires de services. Audit Flash sur mesure.",
   ecosystemFr:
     "Huningue occupe une position stratégique au carrefour des trois frontières, limitrophe de Bâle (Suisse) et de Weil am Rhein (Allemagne). Son économie s'appuie sur un port rhénan actif, un héritage industriel chimique et pharmaceutique (proximité pôle bâlois Novartis/Roche), un tissu TPE/PME logistique transfrontalière, des commerces de proximité et des services aux entreprises. Le bassin d'emploi trinational (Agglo Bâle ~900 000 hab.) dynamise fortement le territoire.",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const HUNINGUE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Huningue et dans tout le bassin trinational (Saint-Louis, Village-Neuf, Hégenheim, Bartenheim). Bâle à 5 min à pied via la passerelle des Trois Pays. EuroAirport à 15 min. Nos consultants se déplacent depuis Paris via TGV Mulhouse.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Huningue ?",
+      q: "Combien coûte un audit IA à Huningue  ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Huningue : industriels chimie/pharma, logisticiens, commerçants, artisans et prestataires de services du bassin trinational. ROI chiffré dès le diagnostic.",
     },
     {

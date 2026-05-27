@@ -9,9 +9,9 @@ export const LONGUE_JUMELLES_COPY: VilleCopy = {
   pitchEn:
     "Longué-Jumelles (49), bourg-centre du Baugeois en Val de Loire, compte plus de 6 500 habitants dans un territoire agricole et commerçant. Axion-IA opère pour toutes les structures économiques de la commune : agriculture, artisanat, commerces de bourg, PME agroalimentaires et services.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Longué-Jumelles (49). Nous accompagnons les TPE, PME et exploitants agricoles du Baugeois dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict, tarifs publics.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Longué-Jumelles (49). Nous accompagnons les TPE, PME et exploitants agricoles du Baugeois dans l'adoption de l'IA : audit Flash, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict, tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Longué-Jumelles (49). Nous accompagnons les TPE, PME et exploitants agricoles du Baugeois dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict, tarifs publics.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Longué-Jumelles (49). Nous accompagnons les TPE, PME et exploitants agricoles du Baugeois dans l'adoption de l'IA : audit Flash, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict, tarifs publics.",
   seoHook: "TPE & PME Maine-et-Loire",
   ecosystemFr:
     "Longué-Jumelles est un bourg commercial et agricole du Baugeois, en position de carrefour entre Angers, Saumur et La Flèche. Agriculture céréalière, cultures spécialisées (champignonnières, semences), PME agroalimentaires, artisanat et commerces de centre-bourg. Champignonnières troglodytiques emblématiques.",
@@ -52,7 +52,7 @@ export const LONGUE_JUMELLES_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Longué-Jumelles et dans tout le Baugeois (Baugé-en-Anjou, Beaufort-en-Anjou, Vernantes). Nos consultants se déplacent sur site, démarrage sous 5 jours.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Longué-Jumelles ?",
+      q: "Tarifs audit IA à Longué-Jumelles  : quel budget prévoir ?",
       a: "L'Audit Flash IA à Longué-Jumelles démarre à 490 € HT pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics.",
     },
     {

@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const PORT_DE_BOUC_COPY: VilleCopy = {
   pitchFr:
-    "Port-de-Bouc (13), commune industrielle et portuaire sur le golfe de Fos dans les Bouches-du-Rhône, accueille un tissu économique dense autour de la pétrochimie, la logistique maritime et les services associés. TPE sous-traitants industriels, PME maintenance et ingénierie, commerces de centre-ville. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin de Fos-sur-Mer.",
+    "Port-de-Bouc (13), commune industrielle et portuaire sur le golfe de Fos dans les Bouches-du-Rhône, accueille un tissu économique dense autour de la pétrochimie, la logistique maritime et les services associés. TPE sous-traitants industriels, PME maintenance et ingénierie, commerces de centre-ville. Axion-IA répond aux besoins des activités professionnelles présentes du bassin de Fos-sur-Mer.",
   pitchEn:
-    "Port-de-Bouc (13), commune industrielle et portuaire sur le golfe de Fos dans les Bouches-du-Rhône, accueille un tissu économique dense autour de la pétrochimie, la logistique maritime et les services associés. TPE sous-traitants industriels, PME maintenance et ingénierie, commerces de centre-ville. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin de Fos-sur-Mer.",
+    "Port-de-Bouc (13), commune industrielle et portuaire sur le golfe de Fos dans les Bouches-du-Rhône, accueille un tissu économique dense autour de la pétrochimie, la logistique maritime et les services associés. TPE sous-traitants industriels, PME maintenance et ingénierie, commerces de centre-ville. Axion-IA répond aux besoins des activités professionnelles présentes du bassin de Fos-sur-Mer.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Port-de-Bouc (13). Nous accompagnons TPE sous-traitants industriels, PME maintenance et ingénierie du golfe de Fos, commerces de proximité et entreprises de la zone industrialo-portuaire. Audit Flash dès 490 € HT, sans engagement.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Port-de-Bouc (13). Nous accompagnons TPE sous-traitants industriels, PME maintenance et ingénierie du golfe de Fos, commerces de proximité et entreprises de la zone industrialo-portuaire. Audit Flash sur mesure, sans engagement.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Port-de-Bouc (13). Nous accompagnons TPE sous-traitants industriels, PME maintenance et ingénierie du golfe de Fos, commerces de proximité et entreprises de la zone industrialo-portuaire. Audit Flash dès 490 € HT, sans engagement.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Port-de-Bouc (13). Nous accompagnons TPE sous-traitants industriels, PME maintenance et ingénierie du golfe de Fos, commerces de proximité et entreprises de la zone industrialo-portuaire. Audit Flash sur mesure, sans engagement.",
   seoHook: "industrie portuaire & pétrochimie",
   ecosystemFr:
     "Port-de-Bouc est une commune industrielle du golfe de Fos, au carrefour de la pétrochimie, de la logistique maritime et de la maintenance industrielle. Tissu dense de TPE sous-traitants, PME ingénierie, commerces de centre-ville et services portuaires. Proximité immédiate des plateformes Lavéra et Fos.",

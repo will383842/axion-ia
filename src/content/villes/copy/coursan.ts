@@ -9,9 +9,9 @@ export const COURSAN_COPY: VilleCopy = {
   pitchEn:
     "Coursan (11), commune de l'agglomération narbonnaise en Aude, traversée par le canal de la Robine (patrimoine UNESCO). Tissu viticole historique, TPE artisans, PME négoce et services, commerces de proximité, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coursan (11). Nous accompagnons TPE viticoles, artisans, PME négoce, commerçants, professions libérales et services de l'agglomération narbonnaise. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coursan (11). Nous accompagnons TPE viticoles, artisans, PME négoce, commerçants, professions libérales et services de l'agglomération narbonnaise. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coursan (11). Nous accompagnons TPE viticoles, artisans, PME négoce, commerçants, professions libérales et services de l'agglomération narbonnaise. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coursan (11). Nous accompagnons TPE viticoles, artisans, PME négoce, commerçants, professions libérales et services de l'agglomération narbonnaise. Audit Flash sur mesure.",
   seoHook: "viticulture vinification & négoce commerce",
   ecosystemFr:
     "Coursan est une commune viticole de l'agglomération narbonnaise, traversée par le canal de la Robine (classé UNESCO). Économie dominée par la viticulture (AOC Corbières, Coteaux de Narbonne), le négoce vinicole, les services à la personne et les commerces de proximité. Proximité immédiate de Narbonne (5 km) avec son bassin d'emploi tertiaire.",
@@ -56,7 +56,7 @@ export const COURSAN_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE et PME viticoles du Narbonnais sur leurs cas IA : traçabilité parcellaire, automatisation gestion cave, prédiction vendanges, classification qualité, gestion relation clients B2B négoce.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Coursan ?",
+      q: "Tarifs audit IA à Coursan  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME négoce ou viticoles, audit approfondi entre 1 900 et 3 900 € HT selon la complexité. Tarifs publics, pas de devis opaque.",
     },
     {

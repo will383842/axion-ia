@@ -9,9 +9,9 @@ export const MERVILLE_31_COPY: VilleCopy = {
   pitchEn:
     "Merville (31), commune du nord de Toulouse avec plus de 6 700 habitants. Tissu TPE artisans, PME de services et agriculture, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités du nord de la Haute-Garonne.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Merville (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Haute-Garonne. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Merville (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Haute-Garonne. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Merville (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Haute-Garonne. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Merville (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Haute-Garonne. Audit Flash sur mesure.",
   seoHook: "agriculture céréales & artisanat",
   ecosystemFr:
     "Merville est une commune périurbaine du nord de Toulouse, entre Grenade et Aussonne. Tissu TPE artisans, PME de services, exploitations agricoles céréalières, commerces de bourg, professions libérales.",
@@ -56,7 +56,7 @@ export const MERVILLE_31_COPY: VilleCopy = {
       a: "Nous accompagnons tous types d'activités : TPE artisans, PME de services, agriculture céréalière, commerces, professions libérales. Aucun secteur exclu.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Merville ?",
+      q: "Tarifs audit IA à Merville  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics.",
     },
     {

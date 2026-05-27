@@ -9,9 +9,9 @@ export const MAZAN_COPY: VilleCopy = {
   pitchEn:
     "Mazan (84), commune du Comtat Venaissin au pied sud du Mont Ventoux, compte près de 6 285 habitants. Vignoble AOC Ventoux, agriculture, tourisme oenologique et patrimonial, tissu de TPE artisanales, domaines viticoles familiaux, PME agroalimentaires et commerces de proximité. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mazan (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles, domaines viticoles AOC Ventoux, PME agroalimentaires, hébergements touristiques, commerces et services du Comtat Venaissin. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mazan (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles, domaines viticoles AOC Ventoux, PME agroalimentaires, hébergements touristiques, commerces et services du Comtat Venaissin. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mazan (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles, domaines viticoles AOC Ventoux, PME agroalimentaires, hébergements touristiques, commerces et services du Comtat Venaissin. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mazan (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles, domaines viticoles AOC Ventoux, PME agroalimentaires, hébergements touristiques, commerces et services du Comtat Venaissin. Audit Flash sur mesure.",
   seoHook: "viticulture ventoux & agriculture maraîchage",
   ecosystemFr:
     "Mazan est un pôle agricole et viticole du Comtat Venaissin, au pied sud du Mont Ventoux. Vignoble AOC Ventoux, vergers et maraîchage, tourisme patrimonial et oenologique. Tissu de TPE artisans, domaines viticoles familiaux, PME agroalimentaires et hébergements. Carpentras à 10 min, Avignon à 35 min.",
@@ -60,7 +60,7 @@ export const MAZAN_COPY: VilleCopy = {
       a: "Oui, nous accompagnons gîtes, chambres d'hôtes et hébergements oenotouristiques de Mazan : fiches Google Business, gestion réservations, agents conversationnels multilingues, content marketing local, automatisation administrative.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Mazan ?",
+      q: "Quel est le tarif d'un audit IA à Mazan  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {

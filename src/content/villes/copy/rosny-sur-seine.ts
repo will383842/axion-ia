@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ROSNY_SUR_SEINE_COPY: VilleCopy = {
   pitchFr:
-    "Rosny-sur-Seine (78), commune des bords de Seine à l'ouest de Mantes-la-Jolie dans les Yvelines, accueille TPE artisans, PME industrielles et logistiques, commerces de proximité et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin mantois.",
+    "Rosny-sur-Seine (78), commune des bords de Seine à l'ouest de Mantes-la-Jolie dans les Yvelines, accueille TPE artisans, PME industrielles et logistiques, commerces de proximité et professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes du bassin mantois.",
   pitchEn:
-    "Rosny-sur-Seine (78), commune des bords de Seine à l'ouest de Mantes-la-Jolie dans les Yvelines, accueille TPE artisans, PME industrielles et logistiques, commerces de proximité et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin mantois.",
+    "Rosny-sur-Seine (78), commune des bords de Seine à l'ouest de Mantes-la-Jolie dans les Yvelines, accueille TPE artisans, PME industrielles et logistiques, commerces de proximité et professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes du bassin mantois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rosny-sur-Seine (78). Nous accompagnons TPE et PME : artisans bords de Seine, PME industrielles et logistiques du bassin mantois, commerçants et professions libérales de ce pôle résidentiel historique près du château de Sully.",
   directAnswerEn:
@@ -56,7 +56,7 @@ export const ROSNY_SUR_SEINE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME industrielles et logistiques de l'axe Seine autour de Rosny-sur-Seine : automatisation flux, gestion stocks IA, planification tournées, maintenance prédictive. Solutions adaptées aux contraintes terrain.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Rosny-sur-Seine ?",
+      q: "Quel est le tarif d'un audit IA à Rosny-sur-Seine  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du bassin mantois, il identifie les cas d'usage IA à fort ROI pour votre activité (artisanat, industrie, commerce, services). Tarifs publics.",
     },
     {

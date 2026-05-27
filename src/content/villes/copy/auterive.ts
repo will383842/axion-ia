@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const AUTERIVE_COPY: VilleCopy = {
   pitchFr:
-    "Auterive (31), commune des bords de l'Ariège au sud de Toulouse avec plus de 10 000 habitants. Tissu TPE artisans, PME industrielles et agroalimentaires, commerces de centre-ville, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du sud de la Haute-Garonne.",
+    "Auterive (31), commune des bords de l'Ariège au sud de Toulouse avec plus de 10 000 habitants. Tissu TPE artisans, PME industrielles et agroalimentaires, commerces de centre-ville, professions libérales. Axion-IA répond aux besoins de toutes les entreprises du sud de la Haute-Garonne.",
   pitchEn:
-    "Auterive (31), commune des bords de l'Ariège au sud de Toulouse avec plus de 10 000 habitants. Tissu TPE artisans, PME industrielles et agroalimentaires, commerces de centre-ville, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du sud de la Haute-Garonne.",
+    "Auterive (31), commune des bords de l'Ariège au sud de Toulouse avec plus de 10 000 habitants. Tissu TPE artisans, PME industrielles et agroalimentaires, commerces de centre-ville, professions libérales. Axion-IA répond aux besoins de toutes les entreprises du sud de la Haute-Garonne.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auterive (31). Nous accompagnons TPE artisans, PME industrielles et agroalimentaires, commerçants et professions libérales du sud Toulouse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auterive (31). Nous accompagnons TPE artisans, PME industrielles et agroalimentaires, commerçants et professions libérales du sud Toulouse. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auterive (31). Nous accompagnons TPE artisans, PME industrielles et agroalimentaires, commerçants et professions libérales du sud Toulouse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auterive (31). Nous accompagnons TPE artisans, PME industrielles et agroalimentaires, commerçants et professions libérales du sud Toulouse. Audit Flash sur mesure.",
   seoHook: "industrie fabrication & agroalimentaire",
   ecosystemFr:
     "Auterive est un bourg structurant du sud de la Haute-Garonne, sur les bords de l'Ariège. PME industrielles, artisans BTP, entreprises agroalimentaires, commerces de centre-ville, professions libérales. Zone d'activités en développement sur l'axe Toulouse-Pamiers.",
@@ -56,7 +56,7 @@ export const AUTERIVE_COPY: VilleCopy = {
       a: "Nous accompagnons tous types d'activités : PME industrielles, agroalimentaire, artisans BTP, commerces de centre-ville, professions libérales. Aucun secteur exclu.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Auterive ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Auterive  ?",
       a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME industrielles, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics, pas de devis opaque.",
     },
     {

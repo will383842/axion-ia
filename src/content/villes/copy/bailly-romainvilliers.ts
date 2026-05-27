@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const BAILLY_ROMAINVILLIERS_COPY: VilleCopy = {
   pitchFr:
-    "Bailly-Romainvilliers (77), commune de Seine-et-Marne au coeur du Val d'Europe (Marne-la-Vallée secteur IV), bénéficie du dynamisme du centre commercial international et de la proximité de Disneyland Paris. Tissu TPE et PME commerce, hôtellerie-restauration, services aux entreprises, immobilier et activités tertiaires. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Bailly-Romainvilliers (77), commune de Seine-et-Marne au coeur du Val d'Europe (Marne-la-Vallée secteur IV), bénéficie du dynamisme du centre commercial international et de la proximité de Disneyland Paris. Tissu TPE et PME commerce, hôtellerie-restauration, services aux entreprises, immobilier et activités tertiaires. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Bailly-Romainvilliers (77), commune de Seine-et-Marne au coeur du Val d'Europe (Marne-la-Vallée secteur IV), bénéficie du dynamisme du centre commercial international et de la proximité de Disneyland Paris. Tissu TPE et PME commerce, hôtellerie-restauration, services aux entreprises, immobilier et activités tertiaires. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Bailly-Romainvilliers (77), commune de Seine-et-Marne au coeur du Val d'Europe (Marne-la-Vallée secteur IV), bénéficie du dynamisme du centre commercial international et de la proximité de Disneyland Paris. Tissu TPE et PME commerce, hôtellerie-restauration, services aux entreprises, immobilier et activités tertiaires. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bailly-Romainvilliers (77). Nous accompagnons TPE et PME : commerçants du Val d'Europe, hôteliers et restaurateurs, agences immobilières, prestataires de services aux entreprises et sociétés tertiaires. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bailly-Romainvilliers (77). Nous accompagnons TPE et PME : commerçants du Val d'Europe, hôteliers et restaurateurs, agences immobilières, prestataires de services aux entreprises et sociétés tertiaires. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bailly-Romainvilliers (77). Nous accompagnons TPE et PME : commerçants du Val d'Europe, hôteliers et restaurateurs, agences immobilières, prestataires de services aux entreprises et sociétés tertiaires. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bailly-Romainvilliers (77). Nous accompagnons TPE et PME : commerçants du Val d'Europe, hôteliers et restaurateurs, agences immobilières, prestataires de services aux entreprises et sociétés tertiaires. Audit Flash sur mesure.",
   seoHook: "commerce & hôtellerie-restauration",
   ecosystemFr:
     "Bailly-Romainvilliers est au coeur du Val d'Europe (Marne-la-Vallée secteur IV), pôle commercial et tertiaire majeur d'Île-de-France. Centre commercial international La Vallée Village, proximité Disneyland Paris, quartiers résidentiels en croissance. TPE et PME commerce, hôtellerie-restauration, immobilier, services aux entreprises et activités tertiaires.",
@@ -52,7 +52,7 @@ export const BAILLY_ROMAINVILLIERS_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Bailly-Romainvilliers et dans tout le Val d'Europe (Serris, Chessy, Montévrain, Magny-le-Hongre). Gare RER A Val d'Europe à 5 min, Paris à 40 min.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Bailly-Romainvilliers ?",
+      q: "Combien coûte un audit IA à Bailly-Romainvilliers  ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures. Pour les TPE et PME du Val d'Europe, nous proposons des audits approfondis adaptés aux enjeux commerce, hôtellerie et services.",
     },
     {

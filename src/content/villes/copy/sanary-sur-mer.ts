@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SANARY_SUR_MER_COPY: VilleCopy = {
   pitchFr:
-    "Sanary-sur-Mer (83), station balnéaire de la côte varoise, compte plus de 18 500 habitants. Port de pêche actif, marché provençal réputé, tourisme balnéaire, tissu de TPE artisanales, PME hôtellerie-restauration, commerces et services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Sanary-sur-Mer (83), station balnéaire de la côte varoise, compte plus de 18 500 habitants. Port de pêche actif, marché provençal réputé, tourisme balnéaire, tissu de TPE artisanales, PME hôtellerie-restauration, commerces et services. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Sanary-sur-Mer (83), station balnéaire de la côte varoise, compte plus de 18 500 habitants. Port de pêche actif, marché provençal réputé, tourisme balnéaire, tissu de TPE artisanales, PME hôtellerie-restauration, commerces et services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Sanary-sur-Mer (83), station balnéaire de la côte varoise, compte plus de 18 500 habitants. Port de pêche actif, marché provençal réputé, tourisme balnéaire, tissu de TPE artisanales, PME hôtellerie-restauration, commerces et services. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sanary-sur-Mer (83). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME hôtellerie-restauration, professionnels du tourisme balnéaire, pêcheurs et services côte varoise.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const SANARY_SUR_MER_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les commerces, restaurateurs et exposants du marché de Sanary-sur-Mer : outils prédictifs stocks, automatisation commande fournisseurs, fidélisation, communication digitale adaptée saisonnalité.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Sanary-sur-Mer ?",
+      q: "Combien coûte un audit IA à Sanary-sur-Mer  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {

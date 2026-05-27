@@ -11,9 +11,9 @@ export const LE_PETIT_QUEVILLY_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Le Petit-Quevilly, à proximité de Rouen, pour automatiser les processus administratifs des entreprises locales, telles que celles du secteur du commerce de détail et du transport. Nos solutions IA sont adaptées aux besoins des TPE et PME.",
   directAnswerFr:
-    "Axion-IA propose des interventions sur site à Le Petit-Quevilly, facilitant l'automatisation pour les entreprises locales. Avec des acteurs économiques comme le Groupe Renault et la SNCF dans la région, nous aidons à optimiser les processus métiers. Nos audits commencent à 490 € HT pour un audit flash de 4 heures, et nos interventions essentielles dès 590 € HT.",
+    "Axion-IA propose des interventions sur site à Le Petit-Quevilly, facilitant l'automatisation pour les entreprises locales. Avec des acteurs économiques comme le Groupe Renault et la SNCF dans la région, nous aidons à optimiser les processus métiers. Nos audits commencent à pour un audit flash de 4 heures, et nos interventions essentielles.",
   directAnswerEn:
-    "Axion-IA propose des interventions sur site à Le Petit-Quevilly, facilitant l'automatisation pour les entreprises locales. Avec des acteurs économiques comme le Groupe Renault et la SNCF dans la région, nous aidons à optimiser les processus métiers. Nos audits commencent à 490 € HT pour un audit flash de 4 heures, et nos interventions essentielles dès 590 € HT.",
+    "Axion-IA propose des interventions sur site à Le Petit-Quevilly, facilitant l'automatisation pour les entreprises locales. Avec des acteurs économiques comme le Groupe Renault et la SNCF dans la région, nous aidons à optimiser les processus métiers. Nos audits commencent à pour un audit flash de 4 heures, et nos interventions essentielles.",
   seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Le Petit-Quevilly bénéficie de la proximité de grands groupes comme le Groupe Renault et la SNCF, renforçant son tissu économique. Le secteur du commerce de détail et des transports terrestres y est particulièrement dynamique.",

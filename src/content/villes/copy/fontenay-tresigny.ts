@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FONTENAY_TRESIGNY_COPY: VilleCopy = {
   pitchFr:
-    "Fontenay-Trésigny (77), commune résidentielle de la Brie en Seine-et-Marne, accueille un tissu de TPE artisans du bâtiment, commerces de centre-bourg, PME de services et logistique, professions libérales et exploitants agricoles. Axion-IA y déploie ses missions auprès de toutes les organisations de l'est francilien.",
+    "Fontenay-Trésigny (77), commune résidentielle de la Brie en Seine-et-Marne, accueille un tissu de TPE artisans du bâtiment, commerces de centre-bourg, PME de services et logistique, professions libérales et exploitants agricoles. Axion-IA y conduit ses missions auprès des entreprises locales de l'est francilien.",
   pitchEn:
-    "Fontenay-Trésigny (77), commune résidentielle de la Brie en Seine-et-Marne, accueille un tissu de TPE artisans du bâtiment, commerces de centre-bourg, PME de services et logistique, professions libérales et exploitants agricoles. Axion-IA y déploie ses missions auprès de toutes les organisations de l'est francilien.",
+    "Fontenay-Trésigny (77), commune résidentielle de la Brie en Seine-et-Marne, accueille un tissu de TPE artisans du bâtiment, commerces de centre-bourg, PME de services et logistique, professions libérales et exploitants agricoles. Axion-IA y conduit ses missions auprès des entreprises locales de l'est francilien.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fontenay-Trésigny (77). Nous accompagnons TPE et PME : artisans du bâtiment, commerçants, PME de services et logistique de la Brie, professions libérales et exploitants agricoles de l'est Seine-et-Marne.",
   directAnswerEn:
@@ -52,7 +52,7 @@ export const FONTENAY_TRESIGNY_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Fontenay-Trésigny et dans toute la Brie seine-et-marnaise (Rozay-en-Brie à 10 min, Tournan-en-Brie à 10 min, Marne-la-Vallée à 25 min). Nos consultants couvrent l'est Seine-et-Marne depuis Paris (50 min via N4/A4).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Fontenay-Trésigny ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Fontenay-Trésigny  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Fontenay-Trésigny et de la Brie, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics.",
     },
     {

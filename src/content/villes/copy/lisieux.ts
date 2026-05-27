@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LISIEUX_COPY: VilleCopy = {
   pitchFr:
-    "Lisieux (14), sous-préfecture du Calvados en Normandie, deuxième ville du département. Pôle de pèlerinage (basilique Sainte-Thérèse), tissu de TPE artisans, PME industrielles, agroalimentaire normand (fromages, cidre), tourisme religieux et commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes du Pays d'Auge.",
+    "Lisieux (14), sous-préfecture du Calvados en Normandie, deuxième ville du département. Pôle de pèlerinage (basilique Sainte-Thérèse), tissu de TPE artisans, PME industrielles, agroalimentaire normand (fromages, cidre), tourisme religieux et commerces. Axion-IA répond aux besoins des activités professionnelles présentes du Pays d'Auge.",
   pitchEn:
-    "Lisieux (14), sous-préfecture du Calvados en Normandie, deuxième ville du département. Pôle de pèlerinage (basilique Sainte-Thérèse), tissu de TPE artisans, PME industrielles, agroalimentaire normand (fromages, cidre), tourisme religieux et commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes du Pays d'Auge.",
+    "Lisieux (14), sous-préfecture du Calvados en Normandie, deuxième ville du département. Pôle de pèlerinage (basilique Sainte-Thérèse), tissu de TPE artisans, PME industrielles, agroalimentaire normand (fromages, cidre), tourisme religieux et commerces. Axion-IA répond aux besoins des activités professionnelles présentes du Pays d'Auge.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lisieux (14). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles, producteurs agroalimentaires normands (fromages AOP, cidre), professionnels du tourisme et pèlerinage, commerçants et indépendants du Pays d'Auge.",
   directAnswerEn:

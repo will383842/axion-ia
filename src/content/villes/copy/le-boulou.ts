@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_BOULOU_COPY: VilleCopy = {
   pitchFr:
-    "Le Boulou (66), station thermale et ville frontalière sur l'axe A9 France-Espagne, fait partie de la Communauté de communes du Vallespir. Tissu TPE artisans, PME transport et logistique transfrontalière, commerces, thermalisme, agriculture. Axion-IA couvre l'ensemble des activités professionnelles présentes du Vallespir frontalier.",
+    "Le Boulou (66), station thermale et ville frontalière sur l'axe A9 France-Espagne, fait partie de la Communauté de communes du Vallespir. Tissu TPE artisans, PME transport et logistique transfrontalière, commerces, thermalisme, agriculture. Axion-IA opère sur l'ensemble des activités professionnelles locales du Vallespir frontalier.",
   pitchEn:
-    "Le Boulou (66), station thermale et ville frontalière sur l'axe A9 France-Espagne, fait partie de la Communauté de communes du Vallespir. Tissu TPE artisans, PME transport et logistique transfrontalière, commerces, thermalisme, agriculture. Axion-IA couvre l'ensemble des activités professionnelles présentes du Vallespir frontalier.",
+    "Le Boulou (66), station thermale et ville frontalière sur l'axe A9 France-Espagne, fait partie de la Communauté de communes du Vallespir. Tissu TPE artisans, PME transport et logistique transfrontalière, commerces, thermalisme, agriculture. Axion-IA opère sur l'ensemble des activités professionnelles locales du Vallespir frontalier.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Boulou (66). Nous accompagnons tous types d'activités : TPE artisans, PME transport et logistique transfrontalière, commerçants, professionnels du thermalisme, indépendants et professions libérales du Vallespir frontalier.",
   directAnswerEn:

@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const PARMAIN_COPY: VilleCopy = {
   pitchFr:
-    "Parmain (95), commune résidentielle verdoyante des bords de l'Oise dans le Val-d'Oise, offre un cadre de vie privilégié à proximité de L'Isle-Adam et de la forêt. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, services à la personne. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Parmain (95), commune résidentielle verdoyante des bords de l'Oise dans le Val-d'Oise, offre un cadre de vie privilégié à proximité de L'Isle-Adam et de la forêt. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, services à la personne. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Parmain (95), commune résidentielle verdoyante des bords de l'Oise dans le Val-d'Oise, offre un cadre de vie privilégié à proximité de L'Isle-Adam et de la forêt. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, services à la personne. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Parmain (95), commune résidentielle verdoyante des bords de l'Oise dans le Val-d'Oise, offre un cadre de vie privilégié à proximité de L'Isle-Adam et de la forêt. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, services à la personne. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Parmain (95). Nous accompagnons TPE et PME : commerçants et artisans locaux, PME services bords de l'Oise, professions libérales, restaurateurs, prestataires services à la personne vallée de l'Oise. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Parmain (95). Nous accompagnons TPE et PME : commerçants et artisans locaux, PME services bords de l'Oise, professions libérales, restaurateurs, prestataires services à la personne vallée de l'Oise. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Parmain (95). Nous accompagnons TPE et PME : commerçants et artisans locaux, PME services bords de l'Oise, professions libérales, restaurateurs, prestataires services à la personne vallée de l'Oise. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Parmain (95). Nous accompagnons TPE et PME : commerçants et artisans locaux, PME services bords de l'Oise, professions libérales, restaurateurs, prestataires services à la personne vallée de l'Oise. Audit Flash sur mesure.",
   seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Parmain est une commune résidentielle verdoyante des bords de l'Oise, voisine de L'Isle-Adam, appréciée pour son cadre de vie boisé et sa qualité de vie. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, services à la personne.",

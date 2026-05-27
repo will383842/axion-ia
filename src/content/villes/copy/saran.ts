@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SARAN_COPY: VilleCopy = {
   pitchFr:
-    "Saran (45), commune du nord de l'agglomération orléanaise dans le Loiret, concentre d'importantes zones d'activités commerciales et logistiques. Tissu dense de TPE, PME et ETI entre logistique, commerce, services aux entreprises et industrie. Axion-IA y déploie ses missions auprès de toutes les organisations du nord orléanais.",
+    "Saran (45), commune du nord de l'agglomération orléanaise dans le Loiret, concentre d'importantes zones d'activités commerciales et logistiques. Tissu dense de TPE, PME et ETI entre logistique, commerce, services aux entreprises et industrie. Axion-IA y mène ses missions auprès des organisations locales du nord orléanais.",
   pitchEn:
-    "Saran (45), commune du nord de l'agglomération orléanaise dans le Loiret, concentre d'importantes zones d'activités commerciales et logistiques. Tissu dense de TPE, PME et ETI entre logistique, commerce, services aux entreprises et industrie. Axion-IA y déploie ses missions auprès de toutes les organisations du nord orléanais.",
+    "Saran (45), commune du nord de l'agglomération orléanaise dans le Loiret, concentre d'importantes zones d'activités commerciales et logistiques. Tissu dense de TPE, PME et ETI entre logistique, commerce, services aux entreprises et industrie. Axion-IA y mène ses missions auprès des organisations locales du nord orléanais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saran (45), au nord d'Orléans. Nous accompagnons TPE commerces, PME logistique et services, ETI industrie. Audit Flash dès 490 € HT, démarrage sous 10 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saran (45), au nord d'Orléans. Nous accompagnons TPE commerces, PME logistique et services, ETI industrie. Audit Flash sur mesure, démarrage sous 10 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saran (45), au nord d'Orléans. Nous accompagnons TPE commerces, PME logistique et services, ETI industrie. Audit Flash dès 490 € HT, démarrage sous 10 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saran (45), au nord d'Orléans. Nous accompagnons TPE commerces, PME logistique et services, ETI industrie. Audit Flash sur mesure, démarrage sous 10 jours.",
   ecosystemFr:
     "Saran est un pôle économique majeur du nord orléanais avec de grandes zones commerciales et logistiques (Saran-Nord, Cap Saran). Entrepôts logistique, commerces grande distribution, PME services aux entreprises, TPE artisanat.",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const SARAN_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Saran et dans toute l'agglomération orléanaise. Consultants sur site, Orléans centre à 10 min.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Saran ?",
+      q: "Combien coûte un audit IA à Saran  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics, devis détaillé gratuit, ROI chiffré sous 10 jours.",
     },
     {

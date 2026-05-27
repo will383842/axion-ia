@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const AUBENAS_COPY: VilleCopy = {
   pitchFr:
-    "Aubenas (07), sous-préfecture de l'Ardèche méridionale, est positionnée en surplomb de la vallée de l'Ardèche (château d'Aubenas, centre historique). Tissu tourisme Ardèche méridionale (gorges de l'Ardèche à proximité), agriculture (châtaigneraie, viticulture), TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Aubenas (07), sous-préfecture de l'Ardèche méridionale, est positionnée en surplomb de la vallée de l'Ardèche (château d'Aubenas, centre historique). Tissu tourisme Ardèche méridionale (gorges de l'Ardèche à proximité), agriculture (châtaigneraie, viticulture), TPE artisans BTP, commerces. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Aubenas (07), sous-préfecture de l'Ardèche méridionale, est positionnée en surplomb de la vallée de l'Ardèche (château d'Aubenas, centre historique). Tissu tourisme Ardèche méridionale (gorges de l'Ardèche à proximité), agriculture (châtaigneraie, viticulture), TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Aubenas (07), sous-préfecture de l'Ardèche méridionale, est positionnée en surplomb de la vallée de l'Ardèche (château d'Aubenas, centre historique). Tissu tourisme Ardèche méridionale (gorges de l'Ardèche à proximité), agriculture (châtaigneraie, viticulture), TPE artisans BTP, commerces. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aubenas (07). Nous accompagnons tous types d'activités : acteurs tourisme Ardèche méridionale (gorges), agriculteurs (châtaigneraie, viticulture), administration sous-préfecture, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:

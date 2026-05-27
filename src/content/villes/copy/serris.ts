@@ -9,9 +9,9 @@ export const SERRIS_COPY: VilleCopy = {
   pitchEn:
     "Serris, commune dynamique de Seine-et-Marne (77) au coeur du Val d'Europe (Marne-la-Vallée secteur IV), 30 km à l'est de Paris. Tissu TPE commerçants, PME retail et tertiaires, professions libérales et prestataires tourisme-loisirs. Axion-IA opère pour toutes les structures économiques de la commune du pôle Val d'Europe.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Serris (77). Nous accompagnons tous types d'activités : TPE commerçants, PME retail et tertiaires, professions libérales et prestataires tourisme-loisirs du pôle Val d'Europe. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Serris (77). Nous accompagnons tous types d'activités : TPE commerçants, PME retail et tertiaires, professions libérales et prestataires tourisme-loisirs du pôle Val d'Europe. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Serris (77). Nous accompagnons tous types d'activités : TPE commerçants, PME retail et tertiaires, professions libérales et prestataires tourisme-loisirs du pôle Val d'Europe. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Serris (77). Nous accompagnons tous types d'activités : TPE commerçants, PME retail et tertiaires, professions libérales et prestataires tourisme-loisirs du pôle Val d'Europe. Audit Flash sur mesure.",
   seoHook: "commerce détail & tourisme, loisirs",
   ecosystemFr:
     "Serris est le coeur du Val d'Europe, pôle commercial et tertiaire majeur de Marne-la-Vallée secteur IV. Son tissu économique repose sur le centre commercial Val d'Europe, La Vallée Village (outlets), PME tertiaires, TPE commerçants et prestataires liés au tourisme Disneyland Paris. Proximité directe avec Chessy, Montévrain et Bailly-Romainvilliers.",

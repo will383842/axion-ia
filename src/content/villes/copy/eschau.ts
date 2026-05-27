@@ -9,9 +9,9 @@ export const ESCHAU_COPY: VilleCopy = {
   pitchEn:
     "Eschau (67), commune du sud de l''Eurométropole de Strasbourg en Alsace, célèbre pour son ancienne abbaye Sainte-Sophie sur l''île de l''Ill, conjugue patrimoine carolingien, cadre naturel rhénan et économie périurbaine strasbourgeoise. Tissu de TPE/PME commerce, artisanat, services aux entreprises, agriculture, hôtellerie-restauration et industrie légère. Axion-IA y intervient pour tous types d''activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Eschau (67). Nous accompagnons TPE et PME : commerçants, artisans, prestataires de services, exploitants agricoles, restaurateurs et industriels de l''Eurométropole de Strasbourg. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Eschau (67). Nous accompagnons TPE et PME : commerçants, artisans, prestataires de services, exploitants agricoles, restaurateurs et industriels de l''Eurométropole de Strasbourg. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Eschau (67). Nous accompagnons TPE et PME : commerçants, artisans, prestataires de services, exploitants agricoles, restaurateurs et industriels de l''Eurométropole de Strasbourg. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Eschau (67). Nous accompagnons TPE et PME : commerçants, artisans, prestataires de services, exploitants agricoles, restaurateurs et industriels de l''Eurométropole de Strasbourg. Audit Flash sur mesure.",
   seoHook: "commerce proximité & artisanat second",
   ecosystemFr:
     "Eschau est une commune de l''Eurométropole de Strasbourg, située au sud de l''agglomération sur les bords de l''Ill. La commune est connue pour son église-abbatiale Sainte-Sophie d''origine carolingienne, son patrimoine naturel rhénan (forêt rhénane, bras de l''Ill) et son cadre périurbain résidentiel. L''économie locale repose sur le commerce de proximité, l''artisanat BTP, les services aux entreprises strasbourgeoises, l''agriculture périurbaine et la restauration.",

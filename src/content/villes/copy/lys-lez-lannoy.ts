@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LYS_LEZ_LANNOY_COPY: VilleCopy = {
   pitchFr:
-    "Lys-lez-Lannoy (59), commune de la Métropole Européenne de Lille dans l'agglomération Roubaix-Tourcoing, au cœur du bassin historique textile du Nord. Tissu économique : TPE et PME du commerce de gros et détail, services aux entreprises, sous-traitance industrielle textile-confection, logistique, artisanat local. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglo roubaisienne.",
+    "Lys-lez-Lannoy (59), commune de la Métropole Européenne de Lille dans l'agglomération Roubaix-Tourcoing, au cœur du bassin historique textile du Nord. Tissu économique : TPE et PME du commerce de gros et détail, services aux entreprises, sous-traitance industrielle textile-confection, logistique, artisanat local. Axion-IA répond aux besoins de toutes les entreprises de l'agglo roubaisienne.",
   pitchEn:
-    "Lys-lez-Lannoy (59), commune de la Métropole Européenne de Lille dans l'agglomération Roubaix-Tourcoing, au cœur du bassin historique textile du Nord. Tissu économique : TPE et PME du commerce de gros et détail, services aux entreprises, sous-traitance industrielle textile-confection, logistique, artisanat local. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglo roubaisienne.",
+    "Lys-lez-Lannoy (59), commune de la Métropole Européenne de Lille dans l'agglomération Roubaix-Tourcoing, au cœur du bassin historique textile du Nord. Tissu économique : TPE et PME du commerce de gros et détail, services aux entreprises, sous-traitance industrielle textile-confection, logistique, artisanat local. Axion-IA répond aux besoins de toutes les entreprises de l'agglo roubaisienne.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lys-lez-Lannoy (59). Nous accompagnons TPE et PME : commerce de gros et détail roubaisien, sous-traitants industriels textile-confection, prestataires de services aux entreprises, logisticiens, artisans et professions libérales de l'agglo lilloise.",
   directAnswerEn:
@@ -56,7 +56,7 @@ export const LYS_LEZ_LANNOY_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE et PME du commerce de gros et détail à Lys-lez-Lannoy sur leurs cas IA spécifiques : automatisation gestion stocks et réapprovisionnement, génération fiches produits et descriptifs e-commerce, prévision des ventes saisonnières, agents conversationnels service client, CRM augmenté B2B fournisseurs-distributeurs.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Lys-lez-Lannoy ?",
+      q: "Quel est le tarif d'un audit IA à Lys-lez-Lannoy  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de l'agglo roubaisienne, il identifie les cas d'usage IA à fort ROI pour votre activité (commerce, textile, services B2B, logistique, artisanat). Tarifs publics, sans engagement.",
     },
     {

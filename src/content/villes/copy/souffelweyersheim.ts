@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SOUFFELWEYERSHEIM_COPY: VilleCopy = {
   pitchFr:
-    "Souffelweyersheim (67), commune de l'eurométropole de Strasbourg située au nord immédiat de la capitale alsacienne, structurée autour de zones d'activités tertiaires, logistiques et artisanales. Tissu TPE/PME services, logistique, commerce de gros, BTP, artisanat, commerces de proximité. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Souffelweyersheim (67), commune de l'eurométropole de Strasbourg située au nord immédiat de la capitale alsacienne, structurée autour de zones d'activités tertiaires, logistiques et artisanales. Tissu TPE/PME services, logistique, commerce de gros, BTP, artisanat, commerces de proximité. Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Souffelweyersheim (67), commune de l'eurométropole de Strasbourg située au nord immédiat de la capitale alsacienne, structurée autour de zones d'activités tertiaires, logistiques et artisanales. Tissu TPE/PME services, logistique, commerce de gros, BTP, artisanat, commerces de proximité. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Souffelweyersheim (67), commune de l'eurométropole de Strasbourg située au nord immédiat de la capitale alsacienne, structurée autour de zones d'activités tertiaires, logistiques et artisanales. Tissu TPE/PME services, logistique, commerce de gros, BTP, artisanat, commerces de proximité. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Souffelweyersheim (67). Nous accompagnons tous types d'activités : TPE/PME services et logistique, commerce de gros, artisans BTP, commerces de proximité et entrepreneurs des zones d'activités de l'eurométropole nord.",
   directAnswerEn:

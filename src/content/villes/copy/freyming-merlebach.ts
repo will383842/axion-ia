@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FREYMING_MERLEBACH_COPY: VilleCopy = {
   pitchFr:
-    "Freyming-Merlebach (57), commune mosellane du bassin houiller lorrain en reconversion, frontalière de la Sarre allemande. Tissu TPE/PME industrie, sous-traitance, logistique transfrontalière, BTP, commerces de proximité, services, et nombreux frontaliers actifs en Allemagne. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Freyming-Merlebach (57), commune mosellane du bassin houiller lorrain en reconversion, frontalière de la Sarre allemande. Tissu TPE/PME industrie, sous-traitance, logistique transfrontalière, BTP, commerces de proximité, services, et nombreux frontaliers actifs en Allemagne. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Freyming-Merlebach (57), commune mosellane du bassin houiller lorrain en reconversion, frontalière de la Sarre allemande. Tissu TPE/PME industrie, sous-traitance, logistique transfrontalière, BTP, commerces de proximité, services, et nombreux frontaliers actifs en Allemagne. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Freyming-Merlebach (57), commune mosellane du bassin houiller lorrain en reconversion, frontalière de la Sarre allemande. Tissu TPE/PME industrie, sous-traitance, logistique transfrontalière, BTP, commerces de proximité, services, et nombreux frontaliers actifs en Allemagne. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Freyming-Merlebach (57). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance, acteurs logistique transfrontalière, artisans BTP, commerces de proximité, professions de services et entrepreneurs frontaliers de la Sarre.",
   directAnswerEn:

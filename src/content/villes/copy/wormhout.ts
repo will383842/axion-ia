@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const WORMHOUT_COPY: VilleCopy = {
   pitchFr:
-    "Wormhout (59), bourg flamand de Flandre intérieure dans le Nord, est un pôle rural dynamique au patrimoine flamand affirmé (moulin Deschodt, musée Jeanne-Devos). Tissu TPE artisans, PME agricoles et agroalimentaires, commerces, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Wormhout (59), bourg flamand de Flandre intérieure dans le Nord, est un pôle rural dynamique au patrimoine flamand affirmé (moulin Deschodt, musée Jeanne-Devos). Tissu TPE artisans, PME agricoles et agroalimentaires, commerces, professions libérales. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Wormhout (59), bourg flamand de Flandre intérieure dans le Nord, est un pôle rural dynamique au patrimoine flamand affirmé (moulin Deschodt, musée Jeanne-Devos). Tissu TPE artisans, PME agricoles et agroalimentaires, commerces, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Wormhout (59), bourg flamand de Flandre intérieure dans le Nord, est un pôle rural dynamique au patrimoine flamand affirmé (moulin Deschodt, musée Jeanne-Devos). Tissu TPE artisans, PME agricoles et agroalimentaires, commerces, professions libérales. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wormhout (59). Nous accompagnons TPE artisans, PME agricoles et agroalimentaires, commerçants, indépendants et professions libérales de ce bourg flamand de Flandre intérieure. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wormhout (59). Nous accompagnons TPE artisans, PME agricoles et agroalimentaires, commerçants, indépendants et professions libérales de ce bourg flamand de Flandre intérieure. Audit Flash sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wormhout (59). Nous accompagnons TPE artisans, PME agricoles et agroalimentaires, commerçants, indépendants et professions libérales de ce bourg flamand de Flandre intérieure. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wormhout (59). Nous accompagnons TPE artisans, PME agricoles et agroalimentaires, commerçants, indépendants et professions libérales de ce bourg flamand de Flandre intérieure. Audit Flash sur mesure, intervention sur site ou en visio.",
   ecosystemFr:
     "Wormhout est un bourg flamand de Flandre intérieure entre Dunkerque et Cassel. Patrimoine flamand riche (moulin Deschodt classé, musée Jeanne-Devos des arts et traditions populaires flamands). Économie agricole (grandes cultures, élevage), agroalimentaire, TPE artisans et commerces de proximité au service du bassin rural Flandre intérieure.",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const WORMHOUT_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Wormhout et dans toute la Flandre intérieure (Cassel, Esquelbecq, Herzeele, Bergues). Déplacement sur site ou sessions en visio selon vos besoins.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Wormhout ?",
+      q: "Combien coûte un audit IA à Wormhout  ?",
       a: "L'audit Flash IA à Wormhout démarre à 490 € HT. Il couvre le diagnostic de vos processus, l'identification des cas d'usage IA prioritaires et un ROI chiffré. Tous nos tarifs sont publics.",
     },
     {

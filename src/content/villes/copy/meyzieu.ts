@@ -11,9 +11,9 @@ export const MEYZIEU_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Meyzieu, au cœur d'un écosystème industriel comprenant Renault Trucks et Bosch Rexroth, pour optimiser vos processus grâce à l'IA.",
   directAnswerFr:
-    "À Meyzieu, Axion-IA propose des services d'IA pour les entreprises locales. Le Parc Industriel de Meyzieu, avec des acteurs comme Renault Trucks et Bosch Rexroth, offre un cadre idéal pour nos interventions. Nous aidons les entreprises à automatiser leurs processus, à partir de 590 € HT pour une intervention essentielle, et un audit flash est disponible dès 490 € HT.",
+    "À Meyzieu, Axion-IA propose des services d'IA pour les entreprises locales. Le Parc Industriel de Meyzieu, avec des acteurs comme Renault Trucks et Bosch Rexroth, offre un cadre idéal pour nos interventions. Nous aidons les entreprises à automatiser leurs processus, 590 une intervention essentielle, et un audit flash est disponible.",
   directAnswerEn:
-    "À Meyzieu, Axion-IA propose des services d'IA pour les entreprises locales. Le Parc Industriel de Meyzieu, avec des acteurs comme Renault Trucks et Bosch Rexroth, offre un cadre idéal pour nos interventions. Nous aidons les entreprises à automatiser leurs processus, à partir de 590 € HT pour une intervention essentielle, et un audit flash est disponible dès 490 € HT.",
+    "À Meyzieu, Axion-IA propose des services d'IA pour les entreprises locales. Le Parc Industriel de Meyzieu, avec des acteurs comme Renault Trucks et Bosch Rexroth, offre un cadre idéal pour nos interventions. Nous aidons les entreprises à automatiser leurs processus, 590 une intervention essentielle, et un audit flash est disponible.",
   seoHook: "automobiles & commerce gros",
   ecosystemFr:
     "Le tissu économique de Meyzieu est marqué par la présence de Renault Trucks et Bosch Rexroth, favorisant le développement d'initiatives industrielles. Axion-IA intervient pour soutenir ces entreprises dans leur adoption de l'IA.",

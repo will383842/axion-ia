@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LABARTHE_SUR_LEZE_COPY: VilleCopy = {
   pitchFr:
-    "Labarthe-sur-Lèze (31), commune des bords de la Lèze au sud de Toulouse, plus de 6 500 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du sud de la Haute-Garonne.",
+    "Labarthe-sur-Lèze (31), commune des bords de la Lèze au sud de Toulouse, plus de 6 500 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA opère pour entreprises et indépendants du secteur du sud de la Haute-Garonne.",
   pitchEn:
-    "Labarthe-sur-Lèze (31), commune des bords de la Lèze au sud de Toulouse, plus de 6 500 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du sud de la Haute-Garonne.",
+    "Labarthe-sur-Lèze (31), commune des bords de la Lèze au sud de Toulouse, plus de 6 500 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA opère pour entreprises et indépendants du secteur du sud de la Haute-Garonne.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Labarthe-sur-Lèze (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud Toulouse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Labarthe-sur-Lèze (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud Toulouse. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Labarthe-sur-Lèze (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud Toulouse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Labarthe-sur-Lèze (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud Toulouse. Audit Flash sur mesure.",
   seoHook: "artisanat & commerce détail",
   ecosystemFr:
     "Labarthe-sur-Lèze est une commune résidentielle du sud de Toulouse, sur les bords de la Lèze. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axe Muret-Auterive.",
@@ -56,7 +56,7 @@ export const LABARTHE_SUR_LEZE_COPY: VilleCopy = {
       a: "Nous accompagnons tous types d'activités : TPE artisans, PME de services, professions libérales, commerces, agriculture. Aucun secteur exclu.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Labarthe-sur-Lèze ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Labarthe-sur-Lèze  ?",
       a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics.",
     },
     {

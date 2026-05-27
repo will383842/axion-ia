@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FAVERGES_SEYTHENEX_COPY: VilleCopy = {
   pitchFr:
-    "Faverges-Seythenex (74), commune nouvelle née de la fusion de Faverges et Seythenex en 2016, se situe entre Annecy et Albertville au pied des massifs alpins. Tissu industriel historique (mécanique, horlogerie), tourisme de montagne, agriculture alpine et artisanat local. Axion-IA accompagne entreprises et indépendants de tous secteurs de ce carrefour montagnard.",
+    "Faverges-Seythenex (74), commune nouvelle née de la fusion de Faverges et Seythenex en 2016, se situe entre Annecy et Albertville au pied des massifs alpins. Tissu industriel historique (mécanique, horlogerie), tourisme de montagne, agriculture alpine et artisanat local. Axion-IA collabore avec toutes les structures locales de ce carrefour montagnard.",
   pitchEn:
-    "Faverges-Seythenex (74), commune nouvelle née de la fusion de Faverges et Seythenex en 2016, se situe entre Annecy et Albertville au pied des massifs alpins. Tissu industriel historique (mécanique, horlogerie), tourisme de montagne, agriculture alpine et artisanat local. Axion-IA accompagne entreprises et indépendants de tous secteurs de ce carrefour montagnard.",
+    "Faverges-Seythenex (74), commune nouvelle née de la fusion de Faverges et Seythenex en 2016, se situe entre Annecy et Albertville au pied des massifs alpins. Tissu industriel historique (mécanique, horlogerie), tourisme de montagne, agriculture alpine et artisanat local. Axion-IA collabore avec toutes les structures locales de ce carrefour montagnard.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Faverges-Seythenex (74). Nous accompagnons TPE et PME : industries mécaniques et horlogères, prestataires tourisme montagne, exploitations agricoles alpines, artisans locaux et commerces du bourg.",
   directAnswerEn:
@@ -56,7 +56,7 @@ export const FAVERGES_SEYTHENEX_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME de mécanique de précision et d'horlogerie à Faverges-Seythenex sur leurs cas IA spécifiques : contrôle qualité visuel par caméra, maintenance prédictive machines-outils, automatisation planning production, optimisation stocks et traçabilité pièces.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Faverges-Seythenex ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Faverges-Seythenex  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de ce carrefour montagnard, il identifie les cas d'usage IA à fort ROI pour votre activité (industrie, tourisme, agriculture, artisanat). Tarifs publics.",
     },
     {

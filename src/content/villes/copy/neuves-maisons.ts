@@ -9,9 +9,9 @@ export const NEUVES_MAISONS_COPY: VilleCopy = {
   pitchEn:
     "Neuves-Maisons (54), commune de la vallée de la Moselle au sud de Nancy en Meurthe-et-Moselle, est un ancien bastion sidérurgique reconverti vers la métallurgie spécialisée et les services. Tissu de TPE/PME industrie, métallurgie, artisanat, commerce et services. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Neuves-Maisons (54). Nous accompagnons TPE et PME : industriels métallurgistes, artisans, commerçants et prestataires de services de la vallée de la Moselle au sud de Nancy en Lorraine. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Neuves-Maisons (54). Nous accompagnons TPE et PME : industriels métallurgistes, artisans, commerçants et prestataires de services de la vallée de la Moselle au sud de Nancy en Lorraine. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Neuves-Maisons (54). Nous accompagnons TPE et PME : industriels métallurgistes, artisans, commerçants et prestataires de services de la vallée de la Moselle au sud de Nancy en Lorraine. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Neuves-Maisons (54). Nous accompagnons TPE et PME : industriels métallurgistes, artisans, commerçants et prestataires de services de la vallée de la Moselle au sud de Nancy en Lorraine. Audit Flash sur mesure.",
   seoHook: "vallée moselle",
   ecosystemFr:
     "Neuves-Maisons est située dans la vallée de la Moselle, à 15 km au sud de Nancy. Ancienne ville sidérurgique, elle a reconverti son tissu vers la métallurgie spécialisée (aciérie électrique encore active), la mécanique, l'artisanat et les services. L'économie locale repose sur l'industrie métallurgique, l'artisanat BTP, le commerce de proximité et les services aux entreprises. Intégration à la Communauté de communes Moselle et Madon.",
@@ -52,7 +52,7 @@ export const NEUVES_MAISONS_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Neuves-Maisons et sur toute la vallée de la Moselle (Pont-Saint-Vincent, Chaligny, Pulnoy, Toul, Nancy). Accès direct via A33, Paris à 1h30 en TGV depuis la gare Lorraine.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Neuves-Maisons ?",
+      q: "Combien coûte un audit IA à Neuves-Maisons  ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Neuves-Maisons et de la vallée de la Moselle, il identifie les cas d'usage IA à fort ROI pour votre aciérie, atelier ou commerce.",
     },
     {

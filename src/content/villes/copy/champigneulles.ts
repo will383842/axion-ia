@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const CHAMPIGNEULLES_COPY: VilleCopy = {
   pitchFr:
-    "Champigneulles (54), commune de la périphérie nord de Nancy en Meurthe-et-Moselle, est un pôle industriel et logistique connu pour sa brasserie historique et ses zones d'activités. Tissu de TPE/PME industrie, logistique, commerce, artisanat et services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Champigneulles (54), commune de la périphérie nord de Nancy en Meurthe-et-Moselle, est un pôle industriel et logistique connu pour sa brasserie historique et ses zones d'activités. Tissu de TPE/PME industrie, logistique, commerce, artisanat et services. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "Champigneulles (54), commune de la périphérie nord de Nancy en Meurthe-et-Moselle, est un pôle industriel et logistique connu pour sa brasserie historique et ses zones d'activités. Tissu de TPE/PME industrie, logistique, commerce, artisanat et services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Champigneulles (54), commune de la périphérie nord de Nancy en Meurthe-et-Moselle, est un pôle industriel et logistique connu pour sa brasserie historique et ses zones d'activités. Tissu de TPE/PME industrie, logistique, commerce, artisanat et services. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Champigneulles (54). Nous accompagnons TPE et PME : industriels, logisticiens, commerçants, artisans et prestataires de services de la périphérie nord de Nancy en Lorraine. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Champigneulles (54). Nous accompagnons TPE et PME : industriels, logisticiens, commerçants, artisans et prestataires de services de la périphérie nord de Nancy en Lorraine. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Champigneulles (54). Nous accompagnons TPE et PME : industriels, logisticiens, commerçants, artisans et prestataires de services de la périphérie nord de Nancy en Lorraine. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Champigneulles (54). Nous accompagnons TPE et PME : industriels, logisticiens, commerçants, artisans et prestataires de services de la périphérie nord de Nancy en Lorraine. Audit Flash sur mesure.",
   seoHook: "agglomération nancy",
   ecosystemFr:
     "Champigneulles est situé en première couronne nord de Nancy, sur l'axe Nancy-Metz. La ville est connue pour sa brasserie historique (Brasseries de Champigneulles, l'une des plus grandes de France) et ses zones d'activités industrielles et logistiques. L'économie locale repose sur l'industrie agroalimentaire, la logistique, l'artisanat BTP, le commerce et les services. Intégration à la Métropole du Grand Nancy.",
@@ -52,7 +52,7 @@ export const CHAMPIGNEULLES_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Champigneulles et sur toute la Métropole du Grand Nancy (Nancy, Maxéville, Pompey, Frouard, Laxou). Accès direct via A31 et TER, Paris à 1h30 en TGV depuis la gare Lorraine.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Champigneulles ?",
+      q: "Combien coûte un audit IA à Champigneulles  ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Champigneulles et de la périphérie nancéienne, il identifie les cas d'usage IA à fort ROI pour votre industrie, atelier ou commerce.",
     },
     {

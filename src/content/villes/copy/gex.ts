@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GEX_COPY: VilleCopy = {
   pitchFr:
-    "Gex (01), sous-préfecture de l'Ain et chef-lieu du pays de Gex, est positionnée au pied du Jura avec panorama sur le Mont-Blanc, à proximité de la frontière suisse et de Genève. Tissu économie frontalière, PME tertiaires, tourisme montagne, TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs gessiens.",
+    "Gex (01), sous-préfecture de l'Ain et chef-lieu du pays de Gex, est positionnée au pied du Jura avec panorama sur le Mont-Blanc, à proximité de la frontière suisse et de Genève. Tissu économie frontalière, PME tertiaires, tourisme montagne, TPE artisans BTP, commerces. Axion-IA opère pour entreprises et indépendants du secteur gessiens.",
   pitchEn:
-    "Gex (01), sous-préfecture de l'Ain et chef-lieu du pays de Gex, est positionnée au pied du Jura avec panorama sur le Mont-Blanc, à proximité de la frontière suisse et de Genève. Tissu économie frontalière, PME tertiaires, tourisme montagne, TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs gessiens.",
+    "Gex (01), sous-préfecture de l'Ain et chef-lieu du pays de Gex, est positionnée au pied du Jura avec panorama sur le Mont-Blanc, à proximité de la frontière suisse et de Genève. Tissu économie frontalière, PME tertiaires, tourisme montagne, TPE artisans BTP, commerces. Axion-IA opère pour entreprises et indépendants du secteur gessiens.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gex (01). Nous accompagnons tous types d'activités : PME tertiaires et administration sous-préfecture, économie frontalière Genève, acteurs tourisme montagne Jura, TPE artisans BTP, commerçants et services aux entreprises du pays de Gex.",
   directAnswerEn:

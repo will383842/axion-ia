@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const ANCENIS_SAINT_GEREON_COPY: VilleCopy = {
   pitchFr:
-    "Ancenis-Saint-Géréon (44), commune nouvelle en bords de Loire, près de 12 000 habitants. Sous-préfecture historique, vignoble, industrie agroalimentaire, logistique, commerces et professions libérales. Tissu TPE artisans, PME viticoles et industrielles. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin ancenien.",
+    "Ancenis-Saint-Géréon (44), commune nouvelle en bords de Loire, près de 12 000 habitants. Sous-préfecture historique, vignoble, industrie agroalimentaire, logistique, commerces et professions libérales. Tissu TPE artisans, PME viticoles et industrielles. Axion-IA répond aux besoins de toutes les entreprises du bassin ancenien.",
   pitchEn:
-    "Ancenis-Saint-Géréon (44), commune nouvelle en bords de Loire, près de 12 000 habitants. Sous-préfecture historique, vignoble, industrie agroalimentaire, logistique, commerces et professions libérales. Tissu TPE artisans, PME viticoles et industrielles. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin ancenien.",
+    "Ancenis-Saint-Géréon (44), commune nouvelle en bords de Loire, près de 12 000 habitants. Sous-préfecture historique, vignoble, industrie agroalimentaire, logistique, commerces et professions libérales. Tissu TPE artisans, PME viticoles et industrielles. Axion-IA répond aux besoins de toutes les entreprises du bassin ancenien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ancenis-Saint-Géréon (44), commune nouvelle en bords de Loire. Nous accompagnons TPE artisans, PME viticoles et agroalimentaires, commerçants et professions libérales du pays d'Ancenis. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ancenis-Saint-Géréon (44), commune nouvelle en bords de Loire. Nous accompagnons TPE artisans, PME viticoles et agroalimentaires, commerçants et professions libérales du pays d'Ancenis. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ancenis-Saint-Géréon (44), commune nouvelle en bords de Loire. Nous accompagnons TPE artisans, PME viticoles et agroalimentaires, commerçants et professions libérales du pays d'Ancenis. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ancenis-Saint-Géréon (44), commune nouvelle en bords de Loire. Nous accompagnons TPE artisans, PME viticoles et agroalimentaires, commerçants et professions libérales du pays d'Ancenis. Audit Flash sur mesure.",
   seoHook: "bassin ancenien",
   ecosystemFr:
     "Ancenis-Saint-Géréon (11 600 hab) est une commune nouvelle en bords de Loire, sous-préfecture historique de Loire-Atlantique est. Vignoble (coteaux d'Ancenis), agroalimentaire, industrie, logistique (axe Nantes-Angers), commerces et professions libérales. Proximité Nantes (40 min), Angers (45 min). Carrefour fluvial et routier dynamique (A11/N23).",
@@ -52,7 +52,7 @@ export const ANCENIS_SAINT_GEREON_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Ancenis-Saint-Géréon et dans tout le pays d'Ancenis (Ligné, Oudon, Varades). Nos consultants se déplacent depuis Nantes (40 min) ou Angers (45 min).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Ancenis ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Ancenis  ?",
       a: "L'Audit Flash IA démarre à 490 € HT pour les TPE d'Ancenis-Saint-Géréon. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur.",
     },
     {

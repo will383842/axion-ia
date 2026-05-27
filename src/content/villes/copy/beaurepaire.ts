@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BEAUREPAIRE_COPY: VilleCopy = {
   pitchFr:
-    "Beaurepaire (38), commune du sud-Isère dans la plaine du Bas-Dauphiné, est positionnée entre Vienne et Romans-sur-Isère sur l'axe Lyon-Valence. Tissu agricole céréalier majeur, PME industrielles agroalimentaires, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations du Bas-Dauphiné méridional.",
+    "Beaurepaire (38), commune du sud-Isère dans la plaine du Bas-Dauphiné, est positionnée entre Vienne et Romans-sur-Isère sur l'axe Lyon-Valence. Tissu agricole céréalier majeur, PME industrielles agroalimentaires, TPE artisans BTP, commerces. Axion-IA y mène ses missions auprès des organisations locales du Bas-Dauphiné méridional.",
   pitchEn:
-    "Beaurepaire (38), commune du sud-Isère dans la plaine du Bas-Dauphiné, est positionnée entre Vienne et Romans-sur-Isère sur l'axe Lyon-Valence. Tissu agricole céréalier majeur, PME industrielles agroalimentaires, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations du Bas-Dauphiné méridional.",
+    "Beaurepaire (38), commune du sud-Isère dans la plaine du Bas-Dauphiné, est positionnée entre Vienne et Romans-sur-Isère sur l'axe Lyon-Valence. Tissu agricole céréalier majeur, PME industrielles agroalimentaires, TPE artisans BTP, commerces. Axion-IA y mène ses missions auprès des organisations locales du Bas-Dauphiné méridional.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beaurepaire (38). Nous accompagnons tous types d'activités : agriculteurs céréaliers Bas-Dauphiné, PME agroalimentaires, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises du sud-Isère plaine.",
   directAnswerEn:

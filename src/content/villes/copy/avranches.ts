@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const AVRANCHES_COPY: VilleCopy = {
   pitchFr:
-    "Avranches (50), sous-préfecture de la Manche en Normandie, offre une vue emblématique sur le Mont-Saint-Michel depuis son jardin des plantes. Tissu TPE commerces et artisanat, PME agroalimentaires du bocage, tourisme lié au Mont-Saint-Michel, services publics de sous-préfecture. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Avranches (50), sous-préfecture de la Manche en Normandie, offre une vue emblématique sur le Mont-Saint-Michel depuis son jardin des plantes. Tissu TPE commerces et artisanat, PME agroalimentaires du bocage, tourisme lié au Mont-Saint-Michel, services publics de sous-préfecture. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Avranches (50), sous-préfecture de la Manche en Normandie, offre une vue emblématique sur le Mont-Saint-Michel depuis son jardin des plantes. Tissu TPE commerces et artisanat, PME agroalimentaires du bocage, tourisme lié au Mont-Saint-Michel, services publics de sous-préfecture. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Avranches (50), sous-préfecture de la Manche en Normandie, offre une vue emblématique sur le Mont-Saint-Michel depuis son jardin des plantes. Tissu TPE commerces et artisanat, PME agroalimentaires du bocage, tourisme lié au Mont-Saint-Michel, services publics de sous-préfecture. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Avranches (50). Nous accompagnons tous types d'activités : TPE commerçants et artisans du centre-ville, PME agroalimentaires du bocage avranchin, prestataires tourisme Mont-Saint-Michel, professions libérales, services publics et associations.",
   directAnswerEn:

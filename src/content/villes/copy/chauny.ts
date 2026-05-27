@@ -9,9 +9,9 @@ export const CHAUNY_COPY: VilleCopy = {
   pitchEn:
     "Chauny (02), commune de 11 596 habitants dans l'Aisne, est implantée sur les bords de l'Oise au cœur du sud de la Picardie. Pôle industriel historique (chimie, verrerie, métallurgie), la ville concentre un tissu de TPE/PME industrie chimique, agroalimentaire, logistique fluviale, commerce et services. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chauny (02). Nous accompagnons TPE et PME du sud de l'Aisne : industriels chimie, agroalimentaire, logisticiens, commerçants et prestataires de services. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chauny (02). Nous accompagnons TPE et PME du sud de l'Aisne : industriels chimie, agroalimentaire, logisticiens, commerçants et prestataires de services. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chauny (02). Nous accompagnons TPE et PME du sud de l'Aisne : industriels chimie, agroalimentaire, logisticiens, commerçants et prestataires de services. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chauny (02). Nous accompagnons TPE et PME du sud de l'Aisne : industriels chimie, agroalimentaire, logisticiens, commerçants et prestataires de services. Audit Flash sur mesure.",
   ecosystemFr:
     "Chauny est un pôle industriel et commercial du sud de l'Aisne, situé sur les bords de l'Oise et du canal de Saint-Quentin. Son économie hérite d'un passé industriel fort (chimie, verrerie, métallurgie) et se diversifie autour de l'agroalimentaire, la logistique fluviale, le commerce de proximité et les services. Le bassin d'emploi s'articule avec Tergnier, La Fère et Noyon, et bénéficie de la connexion ferroviaire vers Paris et Saint-Quentin.",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const CHAUNY_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Chauny et dans tout le sud de l'Aisne (Tergnier, La Fère, Noyon, Coucy-le-Château). Consultants accessibles via gare SNCF Chauny (TER Paris-Nord via Tergnier). Paris à 1h20, Saint-Quentin à 30 min.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Chauny ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Chauny  ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME chaunoises : industriels chimie, agroalimentaire, logisticiens, commerçants et prestataires de services. ROI chiffré dès le diagnostic.",
     },
     {

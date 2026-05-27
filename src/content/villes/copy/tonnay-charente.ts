@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const TONNAY_CHARENTE_COPY: VilleCopy = {
   pitchFr:
-    "Tonnay-Charente (17), commune en bords de Charente en Charente-Maritime, connue pour son pont suspendu historique. Tissu de TPE artisans, PME industrielles et logistiques, commerces de proximité, agriculture et services. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin Rochefort-Tonnay.",
+    "Tonnay-Charente (17), commune en bords de Charente en Charente-Maritime, connue pour son pont suspendu historique. Tissu de TPE artisans, PME industrielles et logistiques, commerces de proximité, agriculture et services. Axion-IA répond aux besoins des activités professionnelles présentes du bassin Rochefort-Tonnay.",
   pitchEn:
-    "Tonnay-Charente (17), commune en bords de Charente en Charente-Maritime, connue pour son pont suspendu historique. Tissu de TPE artisans, PME industrielles et logistiques, commerces de proximité, agriculture et services. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin Rochefort-Tonnay.",
+    "Tonnay-Charente (17), commune en bords de Charente en Charente-Maritime, connue pour son pont suspendu historique. Tissu de TPE artisans, PME industrielles et logistiques, commerces de proximité, agriculture et services. Axion-IA répond aux besoins des activités professionnelles présentes du bassin Rochefort-Tonnay.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tonnay-Charente (17). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et logistiques, agriculteurs, commerçants et indépendants de cette commune stratégique entre Rochefort et La Rochelle.",
   directAnswerEn:

@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SUCE_SUR_ERDRE_COPY: VilleCopy = {
   pitchFr:
-    "Sucé-sur-Erdre (44), commune résidentielle en bords d'Erdre au nord de Nantes en Loire-Atlantique, accueille un tissu de TPE artisanales, commerces de proximité, PME tertiaires et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin nantais nord.",
+    "Sucé-sur-Erdre (44), commune résidentielle en bords d'Erdre au nord de Nantes en Loire-Atlantique, accueille un tissu de TPE artisanales, commerces de proximité, PME tertiaires et professions libérales. Axion-IA opère sur l'ensemble des activités professionnelles locales du bassin nantais nord.",
   pitchEn:
-    "Sucé-sur-Erdre (44), commune résidentielle en bords d'Erdre au nord de Nantes en Loire-Atlantique, accueille un tissu de TPE artisanales, commerces de proximité, PME tertiaires et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin nantais nord.",
+    "Sucé-sur-Erdre (44), commune résidentielle en bords d'Erdre au nord de Nantes en Loire-Atlantique, accueille un tissu de TPE artisanales, commerces de proximité, PME tertiaires et professions libérales. Axion-IA opère sur l'ensemble des activités professionnelles locales du bassin nantais nord.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sucé-sur-Erdre (44). Nous accompagnons les TPE, indépendants, PME tertiaires, professions libérales et commerçants des bords de l'Erdre et du nord nantais sur leurs cas IA opérationnels. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sucé-sur-Erdre (44). Nous accompagnons les TPE, indépendants, PME tertiaires, professions libérales et commerçants des bords de l'Erdre et du nord nantais sur leurs cas IA opérationnels. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sucé-sur-Erdre (44). Nous accompagnons les TPE, indépendants, PME tertiaires, professions libérales et commerçants des bords de l'Erdre et du nord nantais sur leurs cas IA opérationnels. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sucé-sur-Erdre (44). Nous accompagnons les TPE, indépendants, PME tertiaires, professions libérales et commerçants des bords de l'Erdre et du nord nantais sur leurs cas IA opérationnels. Audit Flash sur mesure.",
   seoHook: "artisanat & professions libérales",
   ecosystemFr:
     "Sucé-sur-Erdre est une commune résidentielle prisée en bords d'Erdre, au nord de Nantes Métropole. Cadre fluvial attractif pour les professions libérales, TPE artisanales, PME tertiaires et commerces de proximité. Proximité La Chapelle-sur-Erdre (5 min) et Nantes centre (20 min).",

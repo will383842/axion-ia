@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const PECQUENCOURT_COPY: VilleCopy = {
   pitchFr:
-    "Pecquencourt (59), commune de 6 092 habitants dans le Nord (Hauts-de-France), au coeur du bassin minier Nord-Pas-de-Calais (UNESCO), limitrophe de Douai et Sin-le-Noble. Tissu TPE artisans BTP et rénovation, PME industrie et sous-traitance, commerces de proximité, services aux entreprises du bassin douaisien. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Pecquencourt (59), commune de 6 092 habitants dans le Nord (Hauts-de-France), au coeur du bassin minier Nord-Pas-de-Calais (UNESCO), limitrophe de Douai et Sin-le-Noble. Tissu TPE artisans BTP et rénovation, PME industrie et sous-traitance, commerces de proximité, services aux entreprises du bassin douaisien. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Pecquencourt (59), commune de 6 092 habitants dans le Nord (Hauts-de-France), au coeur du bassin minier Nord-Pas-de-Calais (UNESCO), limitrophe de Douai et Sin-le-Noble. Tissu TPE artisans BTP et rénovation, PME industrie et sous-traitance, commerces de proximité, services aux entreprises du bassin douaisien. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Pecquencourt (59), commune de 6 092 habitants dans le Nord (Hauts-de-France), au coeur du bassin minier Nord-Pas-de-Calais (UNESCO), limitrophe de Douai et Sin-le-Noble. Tissu TPE artisans BTP et rénovation, PME industrie et sous-traitance, commerces de proximité, services aux entreprises du bassin douaisien. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pecquencourt (59). Nous accompagnons TPE artisans BTP du bassin minier, PME industrie et sous-traitance, commerçants et services aux entreprises de l'agglomération de Douai. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pecquencourt (59). Nous accompagnons TPE artisans BTP du bassin minier, PME industrie et sous-traitance, commerçants et services aux entreprises de l'agglomération de Douai. Audit Flash sur mesure, interventions sur site et coaching dirigeants.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pecquencourt (59). Nous accompagnons TPE artisans BTP du bassin minier, PME industrie et sous-traitance, commerçants et services aux entreprises de l'agglomération de Douai. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pecquencourt (59). Nous accompagnons TPE artisans BTP du bassin minier, PME industrie et sous-traitance, commerçants et services aux entreprises de l'agglomération de Douai. Audit Flash sur mesure, interventions sur site et coaching dirigeants.",
   seoHook: "bassin minier nord-pas-de-calais",
   ecosystemFr:
     "Pecquencourt est située dans le bassin minier Nord-Pas-de-Calais (UNESCO), limitrophe de Douai et Sin-le-Noble, intégrée à la Communauté d'Agglomération du Douaisis. Tissu TPE artisans BTP et rénovation du patrimoine minier, PME industrie et sous-traitance, commerces de proximité, services aux entreprises. Reconversion économique post-minière avec développement de zones d'activités et éco-quartiers.",
@@ -52,7 +52,7 @@ export const PECQUENCOURT_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Pecquencourt et dans toute la Communauté d'Agglomération du Douaisis (Douai, Sin-le-Noble, Lallaing, Roost-Warendin). Nos consultants se déplacent depuis Lille en 35 min ou Douai en 10 min.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Pecquencourt ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Pecquencourt  ?",
       a: "L'Audit Flash IA démarre à 490 € HT pour une session de 4h. Idéal pour les TPE et PME de Pecquencourt souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré sous 10 jours.",
     },
     {

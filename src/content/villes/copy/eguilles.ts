@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const EGUILLES_COPY: VilleCopy = {
   pitchFr:
-    "Éguilles (13), village résidentiel perché au nord d'Aix-en-Provence, offre un cadre provençal prisé des cadres et professions libérales du bassin aixois. Tissu de TPE indépendants, professions libérales, commerçants et PME tertiaires. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Éguilles (13), village résidentiel perché au nord d'Aix-en-Provence, offre un cadre provençal prisé des cadres et professions libérales du bassin aixois. Tissu de TPE indépendants, professions libérales, commerçants et PME tertiaires. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Éguilles (13), village résidentiel perché au nord d'Aix-en-Provence, offre un cadre provençal prisé des cadres et professions libérales du bassin aixois. Tissu de TPE indépendants, professions libérales, commerçants et PME tertiaires. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Éguilles (13), village résidentiel perché au nord d'Aix-en-Provence, offre un cadre provençal prisé des cadres et professions libérales du bassin aixois. Tissu de TPE indépendants, professions libérales, commerçants et PME tertiaires. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Éguilles (13). Nous accompagnons TPE indépendants, professions libérales, commerçants, PME tertiaires et entreprises du bassin nord-aixois. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Éguilles (13). Nous accompagnons TPE indépendants, professions libérales, commerçants, PME tertiaires et entreprises du bassin nord-aixois. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Éguilles (13). Nous accompagnons TPE indépendants, professions libérales, commerçants, PME tertiaires et entreprises du bassin nord-aixois. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Éguilles (13). Nous accompagnons TPE indépendants, professions libérales, commerçants, PME tertiaires et entreprises du bassin nord-aixois. Audit Flash sur mesure.",
   seoHook: "bassin aixois",
   ecosystemFr:
     "Éguilles est un village perché typiquement provençal à 10 km au nord d'Aix-en-Provence. Population résidentielle aisée, nombreuses professions libérales (avocats, médecins, consultants), TPE indépendants (télétravail), artisans et commerces de proximité. Proximité immédiate du technopôle de l'Arbois et du pôle d'activités des Milles.",

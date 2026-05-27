@@ -11,9 +11,9 @@ export const TROYES_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Troyes, une ville abritant Petit Bateau et l'Université de Technologie de Troyes, pour optimiser vos processus grâce à l'IA.",
   directAnswerFr:
-    "À Troyes, Axion-IA propose des interventions sur site pour les entreprises, y compris celles de l'industrie agroalimentaire et de la fabrication de produits métalliques. Nos services incluent des audits à partir de 490 € HT et des implémentations dès 990 € HT. Nous nous déplaçons dans des zones telles que la Technopole de l'Aube pour accompagner votre transformation IA.",
+    "À Troyes, Axion-IA propose des interventions sur site pour les entreprises, y compris celles de l'industrie agroalimentaire et de la fabrication de produits métalliques. Nos services incluent des audits et des implémentations. Nous nous déplaçons dans des zones telles que la Technopole de l'Aube pour accompagner votre transformation IA.",
   directAnswerEn:
-    "À Troyes, Axion-IA propose des interventions sur site pour les entreprises, y compris celles de l'industrie agroalimentaire et de la fabrication de produits métalliques. Nos services incluent des audits à partir de 490 € HT et des implémentations dès 990 € HT. Nous nous déplaçons dans des zones telles que la Technopole de l'Aube pour accompagner votre transformation IA.",
+    "À Troyes, Axion-IA propose des interventions sur site pour les entreprises, y compris celles de l'industrie agroalimentaire et de la fabrication de produits métalliques. Nos services incluent des audits et des implémentations. Nous nous déplaçons dans des zones telles que la Technopole de l'Aube pour accompagner votre transformation IA.",
   seoHook: "commerce détail & industrie agroalimentaire",
   ecosystemFr:
     "L'écosystème économique de Troyes inclut des entreprises telles que Petit Bateau et Devanlay, ainsi que des institutions académiques comme l'Université de Technologie de Troyes.",

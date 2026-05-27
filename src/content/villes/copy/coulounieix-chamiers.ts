@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const COULOUNIEIX_CHAMIERS_COPY: VilleCopy = {
   pitchFr:
-    "Coulounieix-Chamiers (24), commune résidentielle et commerciale de l'agglomération de Périgueux en Dordogne. Tissu TPE/PME commerce, artisanat BTP, services, professions libérales et agroalimentaire périgourdin. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Coulounieix-Chamiers (24), commune résidentielle et commerciale de l'agglomération de Périgueux en Dordogne. Tissu TPE/PME commerce, artisanat BTP, services, professions libérales et agroalimentaire périgourdin. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Coulounieix-Chamiers (24), commune résidentielle et commerciale de l'agglomération de Périgueux en Dordogne. Tissu TPE/PME commerce, artisanat BTP, services, professions libérales et agroalimentaire périgourdin. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Coulounieix-Chamiers (24), commune résidentielle et commerciale de l'agglomération de Périgueux en Dordogne. Tissu TPE/PME commerce, artisanat BTP, services, professions libérales et agroalimentaire périgourdin. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coulounieix-Chamiers (24). Nous accompagnons TPE/PME du commerce, de l'artisanat BTP, des services et des professions libérales de l'agglo périgourdine. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coulounieix-Chamiers (24). Nous accompagnons TPE/PME du commerce, de l'artisanat BTP, des services et des professions libérales de l'agglo périgourdine. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coulounieix-Chamiers (24). Nous accompagnons TPE/PME du commerce, de l'artisanat BTP, des services et des professions libérales de l'agglo périgourdine. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coulounieix-Chamiers (24). Nous accompagnons TPE/PME du commerce, de l'artisanat BTP, des services et des professions libérales de l'agglo périgourdine. Audit Flash sur mesure.",
   ecosystemFr:
     "Coulounieix-Chamiers est la deuxième commune de l'agglomération de Périgueux, à caractère résidentiel et commercial. Zones d'activités, commerces de proximité, artisanat BTP et second œuvre, professions libérales, services aux entreprises et secteur médico-social. Proximité immédiate de Périgueux et de l'axe A89.",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const COULOUNIEIX_CHAMIERS_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Coulounieix-Chamiers et dans toute l'agglomération de Périgueux (Boulazac, Trélissac, Marsac). Périgueux à 5 min, A89 accès direct.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Coulounieix-Chamiers ?",
+      q: "Tarifs audit IA à Coulounieix-Chamiers  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME de l'agglo périgourdine. Tarifs publics et transparents.",
     },
     {

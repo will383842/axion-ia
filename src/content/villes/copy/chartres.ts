@@ -11,9 +11,9 @@ export const CHARTRES_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Chartres, où le Groupe L'Oréal et Sanofi sont implantés, pour automatiser vos processus administratifs et améliorer l'efficacité opérationnelle.",
   directAnswerFr:
-    "À Chartres, Axion-IA propose des services d'IA adaptés aux secteurs dominants tels que l'industrie agroalimentaire et chimique. Notre équipe se déplace pour réaliser des audits, des interventions et des implémentations, offrant une expertise nationale aux entreprises locales. Nos tarifs sont transparents : audit dès 490 € HT, intervention à partir de 590 € HT. Consultez nos services pour plus de détails.",
+    "À Chartres, Axion-IA propose des services d'IA adaptés aux secteurs dominants tels que l'industrie agroalimentaire et chimique. Notre équipe se déplace pour réaliser des audits, des interventions et des implémentations, offrant une expertise nationale aux entreprises locales. Nos tarifs sont transparents: audit, intervention. Consultez nos services pour plus de détails.",
   directAnswerEn:
-    "À Chartres, Axion-IA propose des services d'IA adaptés aux secteurs dominants tels que l'industrie agroalimentaire et chimique. Notre équipe se déplace pour réaliser des audits, des interventions et des implémentations, offrant une expertise nationale aux entreprises locales. Nos tarifs sont transparents : audit dès 490 € HT, intervention à partir de 590 € HT. Consultez nos services pour plus de détails.",
+    "À Chartres, Axion-IA propose des services d'IA adaptés aux secteurs dominants tels que l'industrie agroalimentaire et chimique. Notre équipe se déplace pour réaliser des audits, des interventions et des implémentations, offrant une expertise nationale aux entreprises locales. Nos tarifs sont transparents: audit, intervention. Consultez nos services pour plus de détails.",
   seoHook: "commerce détail & industrie agroalimentaire",
   ecosystemFr:
     "Le tissu économique de Chartres inclut des entreprises comme le Groupe L'Oréal et Sanofi, reflétant une forte présence dans l'industrie chimique et agroalimentaire.",

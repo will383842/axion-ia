@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LA_GORGUE_COPY: VilleCopy = {
   pitchFr:
-    "La Gorgue (59), commune flamande des bords de la Lys dans le Nord, hérite d'un passé textile et industriel reconverti. Tissu TPE artisans, PME logistique et agroalimentaire, commerces de proximité, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "La Gorgue (59), commune flamande des bords de la Lys dans le Nord, hérite d'un passé textile et industriel reconverti. Tissu TPE artisans, PME logistique et agroalimentaire, commerces de proximité, professions libérales. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "La Gorgue (59), commune flamande des bords de la Lys dans le Nord, hérite d'un passé textile et industriel reconverti. Tissu TPE artisans, PME logistique et agroalimentaire, commerces de proximité, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "La Gorgue (59), commune flamande des bords de la Lys dans le Nord, hérite d'un passé textile et industriel reconverti. Tissu TPE artisans, PME logistique et agroalimentaire, commerces de proximité, professions libérales. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Gorgue (59). Nous accompagnons TPE artisans, PME logistique et agroalimentaire, commerçants, indépendants et professions libérales de cette commune flamande des bords de la Lys. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Gorgue (59). Nous accompagnons TPE artisans, PME logistique et agroalimentaire, commerçants, indépendants et professions libérales de cette commune flamande des bords de la Lys. Audit Flash sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Gorgue (59). Nous accompagnons TPE artisans, PME logistique et agroalimentaire, commerçants, indépendants et professions libérales de cette commune flamande des bords de la Lys. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Gorgue (59). Nous accompagnons TPE artisans, PME logistique et agroalimentaire, commerçants, indépendants et professions libérales de cette commune flamande des bords de la Lys. Audit Flash sur mesure, intervention sur site ou en visio.",
   ecosystemFr:
     "La Gorgue est une commune flamande des bords de la Lys entre Estaires et Merville. Héritière du textile industriel (lin, toile), elle s'est diversifiée vers la logistique, l'agroalimentaire et les services. Tissu dense de TPE artisans BTP, PME logistique, commerces de proximité et professions libérales desservant le bassin Lys-Flandre.",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const LA_GORGUE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à La Gorgue et dans tout le bassin Lys-Flandre (Estaires, Merville, Laventie, Sailly-sur-la-Lys). Déplacement sur site ou sessions en visio selon vos besoins.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à La Gorgue ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à La Gorgue  ?",
       a: "L'audit Flash IA à La Gorgue démarre à 490 € HT. Il couvre le diagnostic de vos processus, l'identification des cas d'usage IA prioritaires et un ROI chiffré. Tous nos tarifs sont publics.",
     },
     {

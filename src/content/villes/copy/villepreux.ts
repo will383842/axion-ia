@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const VILLEPREUX_COPY: VilleCopy = {
   pitchFr:
-    "Villepreux (78), commune de la plaine de Versailles à 20 km au sud-ouest de Paris, compte plus de 11 200 habitants. TPE artisanat et BTP, PME services aux entreprises, commerces de proximité, professions libérales, restauration. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Villepreux (78), commune de la plaine de Versailles à 20 km au sud-ouest de Paris, compte plus de 11 200 habitants. TPE artisanat et BTP, PME services aux entreprises, commerces de proximité, professions libérales, restauration. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Villepreux (78), commune de la plaine de Versailles à 20 km au sud-ouest de Paris, compte plus de 11 200 habitants. TPE artisanat et BTP, PME services aux entreprises, commerces de proximité, professions libérales, restauration. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Villepreux (78), commune de la plaine de Versailles à 20 km au sud-ouest de Paris, compte plus de 11 200 habitants. TPE artisanat et BTP, PME services aux entreprises, commerces de proximité, professions libérales, restauration. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villepreux (78). Nous accompagnons TPE et PME : artisans BTP, PME services aux entreprises, commerçants de proximité, professions libérales, restaurateurs. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villepreux (78). Nous accompagnons TPE et PME : artisans BTP, PME services aux entreprises, commerçants de proximité, professions libérales, restaurateurs. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villepreux (78). Nous accompagnons TPE et PME : artisans BTP, PME services aux entreprises, commerçants de proximité, professions libérales, restaurateurs. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villepreux (78). Nous accompagnons TPE et PME : artisans BTP, PME services aux entreprises, commerçants de proximité, professions libérales, restaurateurs. Audit Flash sur mesure.",
   seoHook: "artisanat & services aux",
   ecosystemFr:
     "Villepreux est située dans la plaine de Versailles, à proximité du Technocentre Renault de Guyancourt et du technopôle Saint-Quentin-en-Yvelines. Tissu TPE artisanat et BTP, PME services aux entreprises, commerces de proximité, professions libérales.",

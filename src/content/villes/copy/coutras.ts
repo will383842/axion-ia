@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const COUTRAS_COPY: VilleCopy = {
   pitchFr:
-    "Coutras (33), commune du Libournais au carrefour ferroviaire Bordeaux-Angoulême-Périgueux, combine tissu industriel, vignoble bordelais, artisanat et commerce de bourg actif. Axion-IA accompagne entreprises et indépendants de tous secteurs : TPE viticoles, PME industrielles, artisans, commerçants et professions libérales du nord Libournais.",
+    "Coutras (33), commune du Libournais au carrefour ferroviaire Bordeaux-Angoulême-Périgueux, combine tissu industriel, vignoble bordelais, artisanat et commerce de bourg actif. Axion-IA répond aux besoins de toutes les entreprises : TPE viticoles, PME industrielles, artisans, commerçants et professions libérales du nord Libournais.",
   pitchEn:
-    "Coutras (33), commune du Libournais au carrefour ferroviaire Bordeaux-Angoulême-Périgueux, combine tissu industriel, vignoble bordelais, artisanat et commerce de bourg actif. Axion-IA accompagne entreprises et indépendants de tous secteurs : TPE viticoles, PME industrielles, artisans, commerçants et professions libérales du nord Libournais.",
+    "Coutras (33), commune du Libournais au carrefour ferroviaire Bordeaux-Angoulême-Périgueux, combine tissu industriel, vignoble bordelais, artisanat et commerce de bourg actif. Axion-IA répond aux besoins de toutes les entreprises : TPE viticoles, PME industrielles, artisans, commerçants et professions libérales du nord Libournais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coutras (33). Nous accompagnons TPE et PME du nord Libournais : vignerons, PME industrielles, artisans BTP, commerçants et professions libérales. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coutras (33). Nous accompagnons TPE et PME du nord Libournais : vignerons, PME industrielles, artisans BTP, commerçants et professions libérales. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coutras (33). Nous accompagnons TPE et PME du nord Libournais : vignerons, PME industrielles, artisans BTP, commerçants et professions libérales. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coutras (33). Nous accompagnons TPE et PME du nord Libournais : vignerons, PME industrielles, artisans BTP, commerçants et professions libérales. Audit Flash sur mesure.",
   seoHook: "vignoble bordelais",
   ecosystemFr:
     "Coutras est un noeud ferroviaire majeur du Libournais (croisement lignes Bordeaux-Angoulême et Coutras-Périgueux). Tissu PME industriel, vignoble bordelais, commerce de bourg dynamique et artisanat. Proximité Libourne (15 min) et Périgueux (50 min).",
@@ -52,7 +52,7 @@ export const COUTRAS_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Coutras et dans tout le nord Libournais (Libourne, Saint-Denis-de-Pile, Izon). Nos consultants se déplacent via la gare de Coutras ou depuis Bordeaux (40 min).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Coutras ?",
+      q: "Quel est le tarif d'un audit IA à Coutras  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Adapté aux TPE viticoles et PME industrielles du Libournais.",
     },
     {

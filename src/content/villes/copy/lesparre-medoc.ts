@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LESPARRE_MEDOC_COPY: VilleCopy = {
   pitchFr:
-    "Lesparre-Médoc (33), sous-préfecture au coeur du Médoc viticole, est le pôle administratif et commercial de la presqu'île médocaine. Vignoble AOC Médoc, commerces de centre-ville, artisanat BTP et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du Médoc.",
+    "Lesparre-Médoc (33), sous-préfecture au coeur du Médoc viticole, est le pôle administratif et commercial de la presqu'île médocaine. Vignoble AOC Médoc, commerces de centre-ville, artisanat BTP et professions libérales. Axion-IA couvre les activités professionnelles du bassin du Médoc.",
   pitchEn:
-    "Lesparre-Médoc (33), sous-préfecture au coeur du Médoc viticole, est le pôle administratif et commercial de la presqu'île médocaine. Vignoble AOC Médoc, commerces de centre-ville, artisanat BTP et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du Médoc.",
+    "Lesparre-Médoc (33), sous-préfecture au coeur du Médoc viticole, est le pôle administratif et commercial de la presqu'île médocaine. Vignoble AOC Médoc, commerces de centre-ville, artisanat BTP et professions libérales. Axion-IA couvre les activités professionnelles du bassin du Médoc.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lesparre-Médoc (33). Nous accompagnons TPE et PME du Médoc : vignerons AOC Médoc, commerçants, PME de services, artisans BTP et professions libérales de la sous-préfecture. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lesparre-Médoc (33). Nous accompagnons TPE et PME du Médoc : vignerons AOC Médoc, commerçants, PME de services, artisans BTP et professions libérales de la sous-préfecture. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lesparre-Médoc (33). Nous accompagnons TPE et PME du Médoc : vignerons AOC Médoc, commerçants, PME de services, artisans BTP et professions libérales de la sous-préfecture. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lesparre-Médoc (33). Nous accompagnons TPE et PME du Médoc : vignerons AOC Médoc, commerçants, PME de services, artisans BTP et professions libérales de la sous-préfecture. Audit Flash sur mesure.",
   seoHook: "viticulture médoc & commerce centre-ville",
   ecosystemFr:
     "Lesparre-Médoc est la sous-préfecture et le pôle de services du Médoc. Vignoble AOC Médoc et Haut-Médoc, commerces de centre-ville (marché, services publics), artisanat BTP, professions libérales et services de santé. Accès D1215 vers Bordeaux et Pointe du Médoc.",
@@ -52,7 +52,7 @@ export const LESPARRE_MEDOC_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Lesparre-Médoc et dans tout le Médoc (Pauillac, Saint-Estèphe, Margaux, Lacanau). Nos consultants se déplacent depuis Bordeaux (1h) ou Paris (TGV 2h + 1h).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Lesparre-Médoc ?",
+      q: "Quel est le tarif d'un audit IA à Lesparre-Médoc  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics. Adapté aux vignerons AOC Médoc et commerçants de la sous-préfecture.",
     },
     {

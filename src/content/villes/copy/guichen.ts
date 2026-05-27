@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GUICHEN_COPY: VilleCopy = {
   pitchFr:
-    "Guichen (35), commune du sud de Rennes dans la vallée de la Vilaine, fait partie de Rennes Métropole. Tissu résidentiel dynamique avec TPE artisans BTP, commerces de proximité, PME de services, professions libérales et exploitants agricoles périurbains. Axion-IA y déploie ses missions auprès de toutes les organisations du sud de Rennes Métropole.",
+    "Guichen (35), commune du sud de Rennes dans la vallée de la Vilaine, fait partie de Rennes Métropole. Tissu résidentiel dynamique avec TPE artisans BTP, commerces de proximité, PME de services, professions libérales et exploitants agricoles périurbains. Axion-IA y déploie son expertise pour toutes les organisations du sud de Rennes Métropole.",
   pitchEn:
-    "Guichen (35), commune du sud de Rennes dans la vallée de la Vilaine, fait partie de Rennes Métropole. Tissu résidentiel dynamique avec TPE artisans BTP, commerces de proximité, PME de services, professions libérales et exploitants agricoles périurbains. Axion-IA y déploie ses missions auprès de toutes les organisations du sud de Rennes Métropole.",
+    "Guichen (35), commune du sud de Rennes dans la vallée de la Vilaine, fait partie de Rennes Métropole. Tissu résidentiel dynamique avec TPE artisans BTP, commerces de proximité, PME de services, professions libérales et exploitants agricoles périurbains. Axion-IA y déploie son expertise pour toutes les organisations du sud de Rennes Métropole.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guichen (35). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, PME de services et tertiaire sud Rennes, professions libérales, indépendants et exploitants agricoles périurbains du sud de Rennes Métropole.",
   directAnswerEn:
@@ -61,7 +61,7 @@ export const GUICHEN_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour une TPE ou PME à Guichen ?",
-      a: "L'audit Flash démarre à 490 € HT, accessible aux TPE. Pour les PME de services, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
+      a: "L'audit Flash est tarifé selon vos enjeux, accessible aux TPE. Pour les PME de services, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
     },
     {
       q: "Comment se déroule une mission IA à Guichen ?",

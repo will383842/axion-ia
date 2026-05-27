@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const VILLEFRANCHE_DE_ROUERGUE_COPY: VilleCopy = {
   pitchFr:
-    "Villefranche-de-Rouergue (12), sous-préfecture de l'Aveyron et bastide médiévale fondée en 1252. Place Notre-Dame à couverts, collégiale gothique, chartreuse Saint-Sauveur. Tissu TPE artisans, PME agroalimentaires, commerces de centre-ville, professions libérales, tourisme patrimonial. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Villefranche-de-Rouergue (12), sous-préfecture de l'Aveyron et bastide médiévale fondée en 1252. Place Notre-Dame à couverts, collégiale gothique, chartreuse Saint-Sauveur. Tissu TPE artisans, PME agroalimentaires, commerces de centre-ville, professions libérales, tourisme patrimonial. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Villefranche-de-Rouergue (12), sous-préfecture de l'Aveyron et bastide médiévale fondée en 1252. Place Notre-Dame à couverts, collégiale gothique, chartreuse Saint-Sauveur. Tissu TPE artisans, PME agroalimentaires, commerces de centre-ville, professions libérales, tourisme patrimonial. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Villefranche-de-Rouergue (12), sous-préfecture de l'Aveyron et bastide médiévale fondée en 1252. Place Notre-Dame à couverts, collégiale gothique, chartreuse Saint-Sauveur. Tissu TPE artisans, PME agroalimentaires, commerces de centre-ville, professions libérales, tourisme patrimonial. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villefranche-de-Rouergue (12). Nous accompagnons TPE artisans, PME agroalimentaires aveyronnaises, commerçants du centre bastide, professions libérales, acteurs du tourisme patrimonial et services du bassin villefranchois. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villefranche-de-Rouergue (12). Nous accompagnons TPE artisans, PME agroalimentaires aveyronnaises, commerçants du centre bastide, professions libérales, acteurs du tourisme patrimonial et services du bassin villefranchois. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villefranche-de-Rouergue (12). Nous accompagnons TPE artisans, PME agroalimentaires aveyronnaises, commerçants du centre bastide, professions libérales, acteurs du tourisme patrimonial et services du bassin villefranchois. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villefranche-de-Rouergue (12). Nous accompagnons TPE artisans, PME agroalimentaires aveyronnaises, commerçants du centre bastide, professions libérales, acteurs du tourisme patrimonial et services du bassin villefranchois. Audit Flash sur mesure.",
   seoHook: "TPE & PME Aveyron",
   ecosystemFr:
     "Villefranche-de-Rouergue est une sous-préfecture de l'Aveyron, bastide royale du XIIIe siècle au patrimoine médiéval remarquable (place Notre-Dame, chartreuse Saint-Sauveur). Économie diversifiée : agroalimentaire aveyronnais (charcuterie, fromages, produits du terroir), artisanat d'art, commerce de centre-ville dynamique, professions libérales, tourisme patrimonial et marchés traditionnels réputés.",
@@ -56,7 +56,7 @@ export const VILLEFRANCHE_DE_ROUERGUE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME agroalimentaires du Villefranchois sur leurs cas IA : traçabilité produits terroir, automatisation qualité, gestion stocks, prédiction production saisonnière, classification documents réglementaires.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Villefranche-de-Rouergue ?",
+      q: "Quel est le tarif d'un audit IA à Villefranche-de-Rouergue  ?",
       a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME agroalimentaires, audit approfondi entre 1 900 et 3 900 € HT selon la complexité. Tarifs publics, pas de devis opaque.",
     },
     {

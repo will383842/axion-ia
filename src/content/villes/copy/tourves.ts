@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const TOURVES_COPY: VilleCopy = {
   pitchFr:
-    "Tourves (83), commune viticole du Centre-Var sur l'axe Brignoles–Saint-Maximin, conjugue patrimoine castral et tissu agricole tourné vers les AOP Côtes de Provence. TPE artisans, PME viticoles, exploitations agricoles, professions libérales et commerces de proximité dans un bassin de vie ancré entre la Provence verte et la vallée de l'Arc. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Tourves (83), commune viticole du Centre-Var sur l'axe Brignoles–Saint-Maximin, conjugue patrimoine castral et tissu agricole tourné vers les AOP Côtes de Provence. TPE artisans, PME viticoles, exploitations agricoles, professions libérales et commerces de proximité dans un bassin de vie ancré entre la Provence verte et la vallée de l'Arc. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Tourves (83), commune viticole du Centre-Var sur l'axe Brignoles–Saint-Maximin, conjugue patrimoine castral et tissu agricole tourné vers les AOP Côtes de Provence. TPE artisans, PME viticoles, exploitations agricoles, professions libérales et commerces de proximité dans un bassin de vie ancré entre la Provence verte et la vallée de l'Arc. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Tourves (83), commune viticole du Centre-Var sur l'axe Brignoles–Saint-Maximin, conjugue patrimoine castral et tissu agricole tourné vers les AOP Côtes de Provence. TPE artisans, PME viticoles, exploitations agricoles, professions libérales et commerces de proximité dans un bassin de vie ancré entre la Provence verte et la vallée de l'Arc. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tourves (83). Nous accompagnons TPE artisans, PME viticoles, exploitations agricoles, professions libérales et commerces du Centre-Var. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tourves (83). Nous accompagnons TPE artisans, PME viticoles, exploitations agricoles, professions libérales et commerces du Centre-Var. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tourves (83). Nous accompagnons TPE artisans, PME viticoles, exploitations agricoles, professions libérales et commerces du Centre-Var. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tourves (83). Nous accompagnons TPE artisans, PME viticoles, exploitations agricoles, professions libérales et commerces du Centre-Var. Audit Flash sur mesure.",
   seoHook: "viticulture côtes & artisanat",
   ecosystemFr:
     "Tourves est positionnée dans le Centre-Var, sur l'axe Brignoles–Saint-Maximin, en bordure de l'A8. Commune dont l'activité économique repose sur la viticulture (AOP Côtes de Provence), les TPE artisans (BTP, services), PME tertiaires, exploitations agricoles et oléicoles, professions libérales et commerces de proximité. Bassin d'emploi double : Brignoles à l'est, Saint-Maximin à l'ouest.",
@@ -52,7 +52,7 @@ export const TOURVES_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Tourves et dans tout le Centre-Var (Brignoles, Saint-Maximin, Bras, Mazaugues, La Celle). Accès direct via A8.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Tourves ?",
+      q: "Tarifs audit IA à Tourves  : quel budget prévoir ?",
       a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, PME viticoles, exploitations agricoles et commerces tourvains. Tarifs publics, sans engagement.",
     },
     {

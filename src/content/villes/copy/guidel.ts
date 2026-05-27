@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const GUIDEL_COPY: VilleCopy = {
   pitchFr:
-    "Guidel (56), commune littorale de l'agglomération de Lorient (12 338 hab), conjugue les plages de Guidel-Plages, un cadre de vie attractif et un tissu économique varié. TPE et PME tourisme balnéaire, hôtellerie-restauration, commerces, artisanat, BTP, services, nautisme, agriculture. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Guidel (56), commune littorale de l'agglomération de Lorient (12 338 hab), conjugue les plages de Guidel-Plages, un cadre de vie attractif et un tissu économique varié. TPE et PME tourisme balnéaire, hôtellerie-restauration, commerces, artisanat, BTP, services, nautisme, agriculture. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Guidel (56), commune littorale de l'agglomération de Lorient (12 338 hab), conjugue les plages de Guidel-Plages, un cadre de vie attractif et un tissu économique varié. TPE et PME tourisme balnéaire, hôtellerie-restauration, commerces, artisanat, BTP, services, nautisme, agriculture. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Guidel (56), commune littorale de l'agglomération de Lorient (12 338 hab), conjugue les plages de Guidel-Plages, un cadre de vie attractif et un tissu économique varié. TPE et PME tourisme balnéaire, hôtellerie-restauration, commerces, artisanat, BTP, services, nautisme, agriculture. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guidel (56). Nous accompagnons TPE et PME : tourisme balnéaire et hôtellerie-restauration de Guidel-Plages, commerces, artisans, BTP, services, nautisme, agriculteurs de l'agglomération de Lorient. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guidel (56). Nous accompagnons TPE et PME : tourisme balnéaire et hôtellerie-restauration de Guidel-Plages, commerces, artisans, BTP, services, nautisme, agriculteurs de l'agglomération de Lorient. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guidel (56). Nous accompagnons TPE et PME : tourisme balnéaire et hôtellerie-restauration de Guidel-Plages, commerces, artisans, BTP, services, nautisme, agriculteurs de l'agglomération de Lorient. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guidel (56). Nous accompagnons TPE et PME : tourisme balnéaire et hôtellerie-restauration de Guidel-Plages, commerces, artisans, BTP, services, nautisme, agriculteurs de l'agglomération de Lorient. Audit Flash sur mesure.",
   seoHook: "tourisme balnéaire & artisanat",
   ecosystemFr:
     "Guidel est une commune littorale morbihannaise de Lorient Agglomération, connue pour ses plages (Guidel-Plages, Le Loc'h) et son cadre de vie. Tissu TPE/PME : tourisme balnéaire, hôtellerie-restauration, commerce, artisanat, BTP, services, nautisme, agriculture.",
@@ -52,7 +52,7 @@ export const GUIDEL_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Guidel et dans toute Lorient Agglomération. Lorient centre à 20 min, aéroport Lorient Bretagne Sud à 15 min, voie express RN 165 à 5 min.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Guidel ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Guidel  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables en ligne, adaptés aux TPE artisans et PME tourisme balnéaire de Guidel-Plages.",
     },
     {

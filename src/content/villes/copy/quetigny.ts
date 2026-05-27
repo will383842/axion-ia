@@ -10,9 +10,9 @@ export const QUETIGNY_COPY: VilleCopy = {
     "Quetigny (21), commune dynamique à l'est de Dijon, concentre un pôle commercial majeur et des zones d'activités denses. Tissu économique mixte : grande distribution, TPE/PME commerce et services, artisanat, restauration. Axion-IA y intervient pour tous types d'activités du bassin est-dijonnais.",
   seoHook: "commerce, services & zones d'activités",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Quetigny (21). Nous accompagnons TPE, PME et commerçants du pôle commercial est-dijonnais : distribution, restauration, services aux entreprises, artisanat. Audit Flash dès 490 € HT, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Quetigny (21). Nous accompagnons TPE, PME et commerçants du pôle commercial est-dijonnais : distribution, restauration, services aux entreprises, artisanat. Audit Flash sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Quetigny (21). Nous accompagnons TPE, PME et commerçants du pôle commercial est-dijonnais : distribution, restauration, services aux entreprises, artisanat. Audit Flash dès 490 € HT, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Quetigny (21). Nous accompagnons TPE, PME et commerçants du pôle commercial est-dijonnais : distribution, restauration, services aux entreprises, artisanat. Audit Flash sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Quetigny est un pôle commercial et économique majeur de l'est dijonnais. Son centre commercial et ses zones d'activités attirent un tissu dense de TPE/PME : grande distribution, commerce spécialisé, restauration, services aux entreprises, artisanat. Commune limitrophe de Chevigny-Saint-Sauveur, bien desservie par le réseau Divia et l'A39.",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const QUETIGNY_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Quetigny et dans tout le bassin est de Dijon (Chevigny-Saint-Sauveur, Saint-Apollinaire, Crimolois). Nos consultants se déplacent depuis Dijon en 10 minutes via le tram T1.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Quetigny ?",
+      q: "Quel est le tarif d'un audit IA à Quetigny  ?",
       a: "L'Audit Flash Axion-IA démarre à 490 € HT. Adapté aux TPE et PME quetignois, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {

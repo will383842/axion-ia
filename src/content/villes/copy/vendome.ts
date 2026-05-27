@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VENDOME_COPY: VilleCopy = {
   pitchFr:
-    "Vendôme (41), sous-préfecture du Loir-et-Cher en bords du Loir, bénéficie d'une desserte TGV exceptionnelle (Paris 42 min, gare TGV Vendôme-Villiers). Abbaye de la Trinité, patrimoine médiéval, tissu TPE/PME diversifié. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Vendôme (41), sous-préfecture du Loir-et-Cher en bords du Loir, bénéficie d'une desserte TGV exceptionnelle (Paris 42 min, gare TGV Vendôme-Villiers). Abbaye de la Trinité, patrimoine médiéval, tissu TPE/PME diversifié. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Vendôme (41), sous-préfecture du Loir-et-Cher en bords du Loir, bénéficie d'une desserte TGV exceptionnelle (Paris 42 min, gare TGV Vendôme-Villiers). Abbaye de la Trinité, patrimoine médiéval, tissu TPE/PME diversifié. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Vendôme (41), sous-préfecture du Loir-et-Cher en bords du Loir, bénéficie d'une desserte TGV exceptionnelle (Paris 42 min, gare TGV Vendôme-Villiers). Abbaye de la Trinité, patrimoine médiéval, tissu TPE/PME diversifié. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vendôme (41). Nous accompagnons tous types d'activités : PME industrielles du Vendômois, TPE artisans BTP, commerçants centre-ville, acteurs du tourisme patrimonial (abbaye de la Trinité), professions libérales, indépendants et services aux entreprises. TGV Paris 42 min.",
   directAnswerEn:

@@ -11,9 +11,9 @@ export const VILLEFRANCHE_SUR_SAONE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Villefranche-sur-Saône, optimisant les processus pour les entreprises locales. Avec des acteurs comme Blédina et le Groupe Seb, nous apportons notre expertise IA sur site.",
   directAnswerFr:
-    "À Villefranche-sur-Saône, Axion-IA propose des services adaptés aux entreprises locales, y compris celles du Parc d'activités de la Sauvagère. Que vous soyez dans le commerce de détail ou l'industrie alimentaire, nos interventions IA visent à améliorer l'efficacité opérationnelle. L'audit Flash commence à 490 € HT, et l'intervention essentielle à 590 € HT.",
+    "À Villefranche-sur-Saône, Axion-IA propose des services adaptés aux entreprises locales, y compris celles du Parc d'activités de la Sauvagère. Que vous soyez dans le commerce de détail ou l'industrie alimentaire, nos interventions IA visent à améliorer l'efficacité opérationnelle. L'audit Flash commence à et l'intervention essentielle à",
   directAnswerEn:
-    "À Villefranche-sur-Saône, Axion-IA propose des services adaptés aux entreprises locales, y compris celles du Parc d'activités de la Sauvagère. Que vous soyez dans le commerce de détail ou l'industrie alimentaire, nos interventions IA visent à améliorer l'efficacité opérationnelle. L'audit Flash commence à 490 € HT, et l'intervention essentielle à 590 € HT.",
+    "À Villefranche-sur-Saône, Axion-IA propose des services adaptés aux entreprises locales, y compris celles du Parc d'activités de la Sauvagère. Que vous soyez dans le commerce de détail ou l'industrie alimentaire, nos interventions IA visent à améliorer l'efficacité opérationnelle. L'audit Flash commence à et l'intervention essentielle à",
   seoHook: "commerce détail & commerce gros",
   ecosystemFr:
     "Villefranche-sur-Saône héberge des entreprises telles que Blédina et le Groupe Seb, reflétant un tissu économique diversifié. Le commerce de gros et l'industrie alimentaire y sont particulièrement développés.",

@@ -10,9 +10,9 @@ export const CANCALE_COPY: VilleCopy = {
     "Cancale (35), commune emblématique de la Côte d'Émeraude peuplée de 5 672 habitants, est mondialement réputée pour ses huîtres plates sauvages et son port de pêche. TPE et PME ostréicoles, pêcheurs, restaurateurs, hôteliers, commerçants, artisans et professions libérales animent son économie. Axion-IA opère pour toutes les structures économiques de la commune du nord-Ille-et-Vilaine littoral.",
   seoHook: "ostréiculture, pêche & tourisme Côte d'Émeraude",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cancale (35). Nous accompagnons tous types d'activités : TPE et PME ostréicoles, pêcheurs, restaurateurs, hôteliers, commerçants et artisans de la Côte d'Émeraude. Audit Flash dès 490 € HT, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cancale (35). Nous accompagnons tous types d'activités : TPE et PME ostréicoles, pêcheurs, restaurateurs, hôteliers, commerçants et artisans de la Côte d'Émeraude. Audit Flash sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cancale (35). Nous accompagnons tous types d'activités : TPE et PME ostréicoles, pêcheurs, restaurateurs, hôteliers, commerçants et artisans de la Côte d'Émeraude. Audit Flash dès 490 € HT, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cancale (35). Nous accompagnons tous types d'activités : TPE et PME ostréicoles, pêcheurs, restaurateurs, hôteliers, commerçants et artisans de la Côte d'Émeraude. Audit Flash sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Cancale est l'une des places fortes de l'ostréiculture française, célèbre pour ses huîtres plates sauvages issues de bancs naturels et ses huîtres creuses d'élevage. La commune combine activité maritime (pêche, ostréiculture, conchyliculture), tourisme balnéaire et gastronomique (restaurants étoilés, hôtellerie, créperies), commerce, artisanat et services aux résidents de la Côte d'Émeraude.",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const CANCALE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Cancale et sur toute la Côte d'Émeraude (Saint-Malo, Dinard, Saint-Coulomb, Saint-Méloir-des-Ondes, Le Vivier-sur-Mer). Nos consultants couvrent le littoral nord-Ille-et-Vilaine et l'arrière-pays malouin.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Cancale ?",
+      q: "Tarifs audit IA à Cancale  : quel budget prévoir ?",
       a: "L'Audit Flash Axion-IA démarre à 490 € HT. Adapté aux TPE, PME ostréicoles, restaurateurs, hôteliers et commerçants cancalais, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA et un ROI chiffré sous 5 jours.",
     },
     {

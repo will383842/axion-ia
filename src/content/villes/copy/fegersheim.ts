@@ -9,9 +9,9 @@ export const FEGERSHEIM_COPY: VilleCopy = {
   pitchEn:
     "Fegersheim (67), commune du sud de l''Eurométropole de Strasbourg en Alsace, conjugue activité industrielle structurée (zones industrielles, pharmaceutique, sous-traitance), tissu commercial et cadre résidentiel périurbain proche du Rhin. Tissu de TPE/PME sous-traitance industrielle, logistique, services aux entreprises, BTP, commerce, hôtellerie-restauration et professions libérales. Axion-IA y intervient pour tous types d''activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Fegersheim (67). Nous accompagnons TPE et PME : sous-traitants industriels, prestataires logistiques, services aux entreprises, artisans BTP, commerçants et restaurateurs de l''Eurométropole de Strasbourg. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Fegersheim (67). Nous accompagnons TPE et PME : sous-traitants industriels, prestataires logistiques, services aux entreprises, artisans BTP, commerçants et restaurateurs de l''Eurométropole de Strasbourg. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Fegersheim (67). Nous accompagnons TPE et PME : sous-traitants industriels, prestataires logistiques, services aux entreprises, artisans BTP, commerçants et restaurateurs de l''Eurométropole de Strasbourg. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Fegersheim (67). Nous accompagnons TPE et PME : sous-traitants industriels, prestataires logistiques, services aux entreprises, artisans BTP, commerçants et restaurateurs de l''Eurométropole de Strasbourg. Audit Flash sur mesure.",
   seoHook: "TPE & PME Bas-Rhin",
   ecosystemFr:
     "Fegersheim est une commune de l''Eurométropole de Strasbourg, située au sud de l''agglomération sur l''axe A35. La commune accueille une zone industrielle importante (industrie pharmaceutique notamment, sous-traitance, logistique) ainsi qu''un tissu commercial et résidentiel périurbain. L''économie locale repose sur l''industrie pharmaceutique et chimique, la sous-traitance industrielle, la logistique, les services aux entreprises, l''artisanat BTP, le commerce et la restauration.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_POIRE_SUR_VIE_COPY: VilleCopy = {
   pitchFr:
-    "Le Poiré-sur-Vie (85), commune du bocage vendéen, compte plus de 8 600 habitants. Bourg dynamique proche de La Roche-sur-Yon, zones d'activités artisanales et industrielles, tissu de TPE artisanales, PME, commerces et exploitations agricoles. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Le Poiré-sur-Vie (85), commune du bocage vendéen, compte plus de 8 600 habitants. Bourg dynamique proche de La Roche-sur-Yon, zones d'activités artisanales et industrielles, tissu de TPE artisanales, PME, commerces et exploitations agricoles. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Le Poiré-sur-Vie (85), commune du bocage vendéen, compte plus de 8 600 habitants. Bourg dynamique proche de La Roche-sur-Yon, zones d'activités artisanales et industrielles, tissu de TPE artisanales, PME, commerces et exploitations agricoles. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Le Poiré-sur-Vie (85), commune du bocage vendéen, compte plus de 8 600 habitants. Bourg dynamique proche de La Roche-sur-Yon, zones d'activités artisanales et industrielles, tissu de TPE artisanales, PME, commerces et exploitations agricoles. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Poiré-sur-Vie (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles bocage vendéen, exploitations agricoles, professions libérales et services de proximité.",
   directAnswerEn:

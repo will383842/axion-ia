@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const BUC_COPY: VilleCopy = {
   pitchFr:
-    "Buc (78), commune résidentielle de la vallée de la Bièvre, proche de Versailles dans les Yvelines. Tissu de TPE artisans, PME de services, commerces de village, professions libérales et prestataires tertiaires bénéficiant de la proximité du plateau de Saclay et de Versailles. Axion-IA accompagne entreprises et indépendants de tous secteurs de la vallée de la Bièvre.",
+    "Buc (78), commune résidentielle de la vallée de la Bièvre, proche de Versailles dans les Yvelines. Tissu de TPE artisans, PME de services, commerces de village, professions libérales et prestataires tertiaires bénéficiant de la proximité du plateau de Saclay et de Versailles. Axion-IA opère pour entreprises et indépendants du secteur de la vallée de la Bièvre.",
   pitchEn:
-    "Buc (78), commune résidentielle de la vallée de la Bièvre, proche de Versailles dans les Yvelines. Tissu de TPE artisans, PME de services, commerces de village, professions libérales et prestataires tertiaires bénéficiant de la proximité du plateau de Saclay et de Versailles. Axion-IA accompagne entreprises et indépendants de tous secteurs de la vallée de la Bièvre.",
+    "Buc (78), commune résidentielle de la vallée de la Bièvre, proche de Versailles dans les Yvelines. Tissu de TPE artisans, PME de services, commerces de village, professions libérales et prestataires tertiaires bénéficiant de la proximité du plateau de Saclay et de Versailles. Axion-IA opère pour entreprises et indépendants du secteur de la vallée de la Bièvre.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Buc (78). Nous accompagnons TPE et PME : artisans, commerces de village, PME de services et professions libérales de cette commune résidentielle de la vallée de la Bièvre, entre Versailles et le plateau de Saclay. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Buc (78). Nous accompagnons TPE et PME : artisans, commerces de village, PME de services et professions libérales de cette commune résidentielle de la vallée de la Bièvre, entre Versailles et le plateau de Saclay. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Buc (78). Nous accompagnons TPE et PME : artisans, commerces de village, PME de services et professions libérales de cette commune résidentielle de la vallée de la Bièvre, entre Versailles et le plateau de Saclay. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Buc (78). Nous accompagnons TPE et PME : artisans, commerces de village, PME de services et professions libérales de cette commune résidentielle de la vallée de la Bièvre, entre Versailles et le plateau de Saclay. Audit Flash sur mesure.",
   seoHook: "services aux & professions libérales",
   ecosystemFr:
     "Buc est une commune résidentielle de la vallée de la Bièvre, entre Versailles et le plateau de Saclay. Proximité de pôles d'innovation et de recherche. Tissu économique : TPE artisans, commerces de village, PME de services, professions libérales, conseil et ingénierie. Communes voisines : Versailles, Jouy-en-Josas, Les Loges-en-Josas, Toussus-le-Noble, Guyancourt.",
@@ -52,7 +52,7 @@ export const BUC_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Buc et dans toute la vallée de la Bièvre (Versailles, Jouy-en-Josas, Les Loges-en-Josas, Toussus-le-Noble, Guyancourt). Nos consultants se déplacent sur site ou en visio.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Buc ?",
+      q: "Quel est le tarif d'un audit IA à Buc  ?",
       a: "L'Audit Flash IA à Buc démarre à 490 € HT pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {

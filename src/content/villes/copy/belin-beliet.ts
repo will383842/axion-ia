@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const BELIN_BELIET_COPY: VilleCopy = {
   pitchFr:
-    "Belin-Béliet (33), commune de la forêt landaise traversée par la Leyre, combine exploitation forestière, artisanat BTP, commerces de bourg et tourisme nature. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud Bordeaux et de la vallée de la Leyre.",
+    "Belin-Béliet (33), commune de la forêt landaise traversée par la Leyre, combine exploitation forestière, artisanat BTP, commerces de bourg et tourisme nature. Axion-IA opère sur l'ensemble des activités professionnelles locales du sud Bordeaux et de la vallée de la Leyre.",
   pitchEn:
-    "Belin-Béliet (33), commune de la forêt landaise traversée par la Leyre, combine exploitation forestière, artisanat BTP, commerces de bourg et tourisme nature. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud Bordeaux et de la vallée de la Leyre.",
+    "Belin-Béliet (33), commune de la forêt landaise traversée par la Leyre, combine exploitation forestière, artisanat BTP, commerces de bourg et tourisme nature. Axion-IA opère sur l'ensemble des activités professionnelles locales du sud Bordeaux et de la vallée de la Leyre.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Belin-Béliet (33). Nous accompagnons TPE et PME de la forêt landaise : entreprises forestières, artisans BTP, commerçants, prestataires tourisme nature et professions libérales. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Belin-Béliet (33). Nous accompagnons TPE et PME de la forêt landaise : entreprises forestières, artisans BTP, commerçants, prestataires tourisme nature et professions libérales. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Belin-Béliet (33). Nous accompagnons TPE et PME de la forêt landaise : entreprises forestières, artisans BTP, commerçants, prestataires tourisme nature et professions libérales. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Belin-Béliet (33). Nous accompagnons TPE et PME de la forêt landaise : entreprises forestières, artisans BTP, commerçants, prestataires tourisme nature et professions libérales. Audit Flash sur mesure.",
   seoHook: "exploitation forestière & commerce bourg",
   ecosystemFr:
     "Belin-Béliet se situe en coeur de forêt landaise, à la jonction A63/A65. Exploitation forestière (pin maritime), artisanat BTP, commerces de bourg, tourisme nature (Leyre, canoë) et services à la personne. Noeud autoroutier vers Bordeaux, Bayonne et Pau.",
@@ -52,7 +52,7 @@ export const BELIN_BELIET_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Belin-Béliet et dans la vallée de la Leyre (Salles, Le Barp, Mios, Hostens). Depuis Bordeaux (40 min A63) ou Paris (TGV 2h + 40 min).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Belin-Béliet ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Belin-Béliet  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics. Adapté aux entreprises forestières et TPE artisans de la vallée de la Leyre.",
     },
     {

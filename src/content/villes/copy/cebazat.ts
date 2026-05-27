@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CEBAZAT_COPY: VilleCopy = {
   pitchFr:
-    "Cébazat (63), commune du nord de l'agglomération clermontoise en Puy-de-Dôme, fait partie de Clermont Auvergne Métropole. Zone d'activités nord Clermont dynamique, PME tertiaires, TPE artisanat BTP, commerces de proximité, services aux entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Cébazat (63), commune du nord de l'agglomération clermontoise en Puy-de-Dôme, fait partie de Clermont Auvergne Métropole. Zone d'activités nord Clermont dynamique, PME tertiaires, TPE artisanat BTP, commerces de proximité, services aux entreprises. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "Cébazat (63), commune du nord de l'agglomération clermontoise en Puy-de-Dôme, fait partie de Clermont Auvergne Métropole. Zone d'activités nord Clermont dynamique, PME tertiaires, TPE artisanat BTP, commerces de proximité, services aux entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Cébazat (63), commune du nord de l'agglomération clermontoise en Puy-de-Dôme, fait partie de Clermont Auvergne Métropole. Zone d'activités nord Clermont dynamique, PME tertiaires, TPE artisanat BTP, commerces de proximité, services aux entreprises. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cébazat (63). Nous accompagnons TPE et PME : entreprises tertiaires zone nord Clermont, artisans BTP, commerçants, professions libérales, services aux entreprises de Clermont Auvergne Métropole.",
   directAnswerEn:

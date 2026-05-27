@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const RIORGES_COPY: VilleCopy = {
   pitchFr:
-    "Riorges (42), commune en banlieue immédiate de Roanne dans la Loire, est intégrée à Roannais Agglomération. Tissu PME industrielles (héritage textile roannais) et tertiaires, TPE artisans BTP, commerces, agriculture périphérique. Axion-IA y déploie ses missions auprès de toutes les organisations du Roannais.",
+    "Riorges (42), commune en banlieue immédiate de Roanne dans la Loire, est intégrée à Roannais Agglomération. Tissu PME industrielles (héritage textile roannais) et tertiaires, TPE artisans BTP, commerces, agriculture périphérique. Axion-IA y déploie son expertise pour toutes les organisations du Roannais.",
   pitchEn:
-    "Riorges (42), commune en banlieue immédiate de Roanne dans la Loire, est intégrée à Roannais Agglomération. Tissu PME industrielles (héritage textile roannais) et tertiaires, TPE artisans BTP, commerces, agriculture périphérique. Axion-IA y déploie ses missions auprès de toutes les organisations du Roannais.",
+    "Riorges (42), commune en banlieue immédiate de Roanne dans la Loire, est intégrée à Roannais Agglomération. Tissu PME industrielles (héritage textile roannais) et tertiaires, TPE artisans BTP, commerces, agriculture périphérique. Axion-IA y déploie son expertise pour toutes les organisations du Roannais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Riorges (42). Nous accompagnons tous types d'activités : PME industrielles Roannais (héritage textile fort), tertiaires, TPE artisans BTP, commerçants, agriculteurs périphériques, indépendants, professions libérales et services aux entreprises de Roannais Agglomération.",
   directAnswerEn:

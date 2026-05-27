@@ -11,9 +11,9 @@ export const VERSAILLES_COPY: VilleCopy = {
   pitchEn:
     "À Versailles, Axion-IA intervient pour optimiser les processus des entreprises locales. Avec des acteurs comme Renault et Thales, notre expertise en IA s'adapte aux besoins spécifiques de chaque secteur.",
   directAnswerFr:
-    "Axion-IA propose des interventions sur site à Versailles, où le tissu économique comprend des entreprises comme Renault et Thales. Nous offrons des audits à partir de 490 € HT et des interventions dès 590 € HT. Nos consultants se déplacent pour automatiser les tâches administratives et améliorer l'efficacité des processus métier.",
+    "Axion-IA propose des interventions sur site à Versailles, où le tissu économique comprend des entreprises comme Renault et Thales. Nous offrons des audits et des interventions. Nos consultants se déplacent pour automatiser les tâches administratives et améliorer l'efficacité des processus métier.",
   directAnswerEn:
-    "Axion-IA propose des interventions sur site à Versailles, où le tissu économique comprend des entreprises comme Renault et Thales. Nous offrons des audits à partir de 490 € HT et des interventions dès 590 € HT. Nos consultants se déplacent pour automatiser les tâches administratives et améliorer l'efficacité des processus métier.",
+    "Axion-IA propose des interventions sur site à Versailles, où le tissu économique comprend des entreprises comme Renault et Thales. Nous offrons des audits et des interventions. Nos consultants se déplacent pour automatiser les tâches administratives et améliorer l'efficacité des processus métier.",
   seoHook: "commerce détail & administration publique",
   ecosystemFr:
     "Versailles est un pôle économique avec des entreprises telles que Renault et Thales. L'Université de Versailles Saint-Quentin-en-Yvelines contribue à la formation des talents locaux.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const WAMBRECHIES_COPY: VilleCopy = {
   pitchFr:
-    "Wambrechies (59), commune résidentielle au nord de Lille sur les bords de la Deûle, connue pour sa distillerie de genièvre et son cadre de vie prisé. Tissu TPE/PME services aux entreprises, conseil, professions libérales, commerces, artisanat et activités liées à la Métropole Européenne de Lille. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Wambrechies (59), commune résidentielle au nord de Lille sur les bords de la Deûle, connue pour sa distillerie de genièvre et son cadre de vie prisé. Tissu TPE/PME services aux entreprises, conseil, professions libérales, commerces, artisanat et activités liées à la Métropole Européenne de Lille. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Wambrechies (59), commune résidentielle au nord de Lille sur les bords de la Deûle, connue pour sa distillerie de genièvre et son cadre de vie prisé. Tissu TPE/PME services aux entreprises, conseil, professions libérales, commerces, artisanat et activités liées à la Métropole Européenne de Lille. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Wambrechies (59), commune résidentielle au nord de Lille sur les bords de la Deûle, connue pour sa distillerie de genièvre et son cadre de vie prisé. Tissu TPE/PME services aux entreprises, conseil, professions libérales, commerces, artisanat et activités liées à la Métropole Européenne de Lille. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wambrechies (59). Nous accompagnons TPE et PME : cabinets conseil et professions libérales, prestataires B2B de la MEL, commerces, artisans, entreprises agroalimentaires et de services du nord lillois.",
   directAnswerEn:
@@ -56,7 +56,7 @@ export const WAMBRECHIES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les cabinets conseil et professions libérales de Wambrechies : automatisation reporting, copilotes IA rédaction, gestion documentaire intelligente, CRM augmenté, prospection B2B assistée, conformité RGPD.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Wambrechies ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Wambrechies  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du nord lillois, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics, sans engagement.",
     },
     {

@@ -11,9 +11,9 @@ export const BEGLES_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Bègles pour accompagner les entreprises locales dans l'adoption de l'IA. Avec des acteurs économiques comme LVMH et Cap Digital en France, nous proposons des solutions adaptées aux besoins des TPE et PME de la région.",
   directAnswerFr:
-    "À Bègles, Axion-IA offre des services d'IA adaptés aux secteurs du commerce de détail et de la construction. Notre équipe nationale se déplace sur site pour réaliser des audits et implémentations. Avec des tarifs publics transparents, comme l'Audit Flash à partir de 490 € HT, nous garantissons une intervention rapide et efficace.",
+    "À Bègles, Axion-IA offre des services d'IA adaptés aux secteurs du commerce de détail et de la construction. Notre équipe nationale se déplace sur site pour réaliser des audits et implémentations. Avec des tarifs publics transparents, comme l'Audit Flash sur mesure, nous garantissons une intervention rapide et efficace.",
   directAnswerEn:
-    "À Bègles, Axion-IA offre des services d'IA adaptés aux secteurs du commerce de détail et de la construction. Notre équipe nationale se déplace sur site pour réaliser des audits et implémentations. Avec des tarifs publics transparents, comme l'Audit Flash à partir de 490 € HT, nous garantissons une intervention rapide et efficace.",
+    "À Bègles, Axion-IA offre des services d'IA adaptés aux secteurs du commerce de détail et de la construction. Notre équipe nationale se déplace sur site pour réaliser des audits et implémentations. Avec des tarifs publics transparents, comme l'Audit Flash sur mesure, nous garantissons une intervention rapide et efficace.",
   seoHook: "commerce détail & construction",
   ecosystemFr:
     "Bègles bénéficie de la proximité de Bordeaux, un centre économique où se trouvent des entreprises comme Sanofi et Hermès. La ZAC de Bègles accueille de nombreuses entreprises, renforçant le dynamisme économique local.",

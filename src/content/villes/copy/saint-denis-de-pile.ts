@@ -9,9 +9,9 @@ export const SAINT_DENIS_DE_PILE_COPY: VilleCopy = {
   pitchEn:
     "Saint-Denis-de-Pile (33), commune résidentielle du Libournais, combine vignoble bordelais, artisanat BTP en croissance, commerces et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune du bassin libournais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Denis-de-Pile (33). Nous accompagnons TPE et PME du Libournais : vignerons, artisans BTP, commerçants, professions libérales et PME de services. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Denis-de-Pile (33). Nous accompagnons TPE et PME du Libournais : vignerons, artisans BTP, commerçants, professions libérales et PME de services. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Denis-de-Pile (33). Nous accompagnons TPE et PME du Libournais : vignerons, artisans BTP, commerçants, professions libérales et PME de services. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Denis-de-Pile (33). Nous accompagnons TPE et PME du Libournais : vignerons, artisans BTP, commerçants, professions libérales et PME de services. Audit Flash sur mesure.",
   seoHook: "viticulture & services",
   ecosystemFr:
     "Saint-Denis-de-Pile est une commune résidentielle du Libournais en croissance. Vignoble bordelais (proximité Pomerol, Lalande-de-Pomerol), tissu TPE artisanat BTP dense, commerces de proximité et professions libérales. Gare TER, accès A89 vers Bordeaux.",
@@ -52,7 +52,7 @@ export const SAINT_DENIS_DE_PILE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Saint-Denis-de-Pile et dans le Libournais (Libourne, Coutras, Izon). Nos consultants se déplacent depuis Bordeaux (30 min A89) ou Paris (TGV Libourne 3h).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Saint-Denis-de-Pile ?",
+      q: "Tarifs audit IA à Saint-Denis-de-Pile  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics. Adapté aux vignerons et TPE artisans du Libournais.",
     },
     {

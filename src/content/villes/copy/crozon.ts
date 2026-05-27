@@ -5,18 +5,18 @@ import type { VilleCopy } from "./types";
 
 export const CROZON_COPY: VilleCopy = {
   pitchFr:
-    "Crozon (29), commune principale de la presqu'île de Crozon dans le Finistère, est intégrée au Parc naturel régional d'Armorique. Tourisme nature et balnéaire (plages, sentiers côtiers GR34), TPE artisans, commerces saisonniers, activités nautiques et services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Crozon (29), commune principale de la presqu'île de Crozon dans le Finistère, est intégrée au Parc naturel régional d'Armorique. Tourisme nature et balnéaire (plages, sentiers côtiers GR34), TPE artisans, commerces saisonniers, activités nautiques et services. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Crozon (29), commune principale de la presqu'île de Crozon dans le Finistère, est intégrée au Parc naturel régional d'Armorique. Tourisme nature et balnéaire (plages, sentiers côtiers GR34), TPE artisans, commerces saisonniers, activités nautiques et services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Crozon (29), commune principale de la presqu'île de Crozon dans le Finistère, est intégrée au Parc naturel régional d'Armorique. Tourisme nature et balnéaire (plages, sentiers côtiers GR34), TPE artisans, commerces saisonniers, activités nautiques et services. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Crozon (29). Nous accompagnons tous types d'activités : TPE artisans, hébergeurs et acteurs du tourisme nature (presqu'île de Crozon, PNR Armorique), commerçants saisonniers, activités nautiques, professions libérales et services. Audit Flash à 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Crozon (29). Nous accompagnons tous types d'activités: TPE artisans, hébergeurs et acteurs du tourisme nature (presqu'île de Crozon, PNR Armorique), commerçants saisonniers, activités nautiques, professions libérales et services. Audit Flash à",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Crozon (29). Nous accompagnons tous types d'activités : TPE artisans, hébergeurs et acteurs du tourisme nature (presqu'île de Crozon, PNR Armorique), commerçants saisonniers, activités nautiques, professions libérales et services. Audit Flash à 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Crozon (29). Nous accompagnons tous types d'activités: TPE artisans, hébergeurs et acteurs du tourisme nature (presqu'île de Crozon, PNR Armorique), commerçants saisonniers, activités nautiques, professions libérales et services. Audit Flash à",
   seoHook: "tourisme nature & hébergement restauration",
   ecosystemFr:
-    "Crozon est la commune principale de la presqu'île de Crozon, au cœur du Parc naturel régional d'Armorique. Destination touristique majeure du Finistère : plages (Pen-Hat, Morgat, l'Aber), sentier GR34, pointe de Pen-Hir, grottes marines de Morgat. Économie marquée par le tourisme nature et balnéaire, les activités nautiques, l'artisanat, le commerce saisonnier et les services.",
+    "Crozon est la commune principale de la presqu'île de Crozon, au cœur du Parc naturel régional d'Armorique. Destination touristique majeure du Finistère: plages (Pen-Hat, Morgat, l'Aber), sentier GR34, pointe de Pen-Hir, grottes marines de Morgat. Économie marquée par le tourisme nature et balnéaire, les activités nautiques, l'artisanat, le commerce saisonnier et les services.",
   ecosystemEn:
-    "Crozon est la commune principale de la presqu'île de Crozon, au cœur du Parc naturel régional d'Armorique. Destination touristique majeure du Finistère : plages (Pen-Hat, Morgat, l'Aber), sentier GR34, pointe de Pen-Hir, grottes marines de Morgat. Économie marquée par le tourisme nature et balnéaire, les activités nautiques, l'artisanat, le commerce saisonnier et les services.",
+    "Crozon est la commune principale de la presqu'île de Crozon, au cœur du Parc naturel régional d'Armorique. Destination touristique majeure du Finistère: plages (Pen-Hat, Morgat, l'Aber), sentier GR34, pointe de Pen-Hir, grottes marines de Morgat. Économie marquée par le tourisme nature et balnéaire, les activités nautiques, l'artisanat, le commerce saisonnier et les services.",
   distancesFr:
     "Brest centre à 50 min voiture (D791 via Daoulas). Quimper à 55 min. Aéroport Brest Bretagne à 55 min. Pas de gare ferroviaire directe ; gare la plus proche Châteaulin à 35 min. Accès maritime via Morgat.",
   distancesEn:

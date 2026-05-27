@@ -11,9 +11,9 @@ export const SALON_DE_PROVENCE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Salon-de-Provence pour accompagner les entreprises dans leur déploiement IA. Avec des acteurs économiques tels que LVMH et BNP Paribas présents en France, notre expertise nationale permet d'optimiser les processus métier sur site.",
   directAnswerFr:
-    "Salon-de-Provence, avec sa Zone d'Activités de la Gandonne, est un lieu stratégique pour nos interventions. Nous y proposons des audits IA et des implémentations sur site. La proximité de la Gare TGV d'Aix-en-Provence et de l'Aéroport Marseille Provence facilite nos déplacements. Nos services incluent des audits à partir de 490 € HT et des implémentations dès 990 € HT.",
+    "Salon-de-Provence, avec sa Zone d'Activités de la Gandonne, est un lieu stratégique pour nos interventions. Nous y proposons des audits IA et des implémentations sur site. La proximité de la Gare TGV d'Aix-en-Provence et de l'Aéroport Marseille Provence facilite nos déplacements. Nos services incluent des audits et des implémentations.",
   directAnswerEn:
-    "Salon-de-Provence, avec sa Zone d'Activités de la Gandonne, est un lieu stratégique pour nos interventions. Nous y proposons des audits IA et des implémentations sur site. La proximité de la Gare TGV d'Aix-en-Provence et de l'Aéroport Marseille Provence facilite nos déplacements. Nos services incluent des audits à partir de 490 € HT et des implémentations dès 990 € HT.",
+    "Salon-de-Provence, avec sa Zone d'Activités de la Gandonne, est un lieu stratégique pour nos interventions. Nous y proposons des audits IA et des implémentations sur site. La proximité de la Gare TGV d'Aix-en-Provence et de l'Aéroport Marseille Provence facilite nos déplacements. Nos services incluent des audits et des implémentations.",
   seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Salon-de-Provence abrite un tissu économique diversifié avec des secteurs comme le Commerce de détail et la Construction. La Zone d'Activités de la Gandonne est un pôle clé pour les entreprises locales. Axion-IA s'y déplace pour des interventions IA sur site.",

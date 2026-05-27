@@ -11,9 +11,9 @@ export const ORANGE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Orange, une ville dynamique de Provence-Alpes-Côte d'Azur, pour automatiser les processus métiers. L'écosystème local inclut des secteurs comme le commerce de détail et la construction.",
   directAnswerFr:
-    "Axion-IA se déplace à Orange pour offrir des solutions IA adaptées aux entreprises locales. Avec des services tels que l'audit à partir de 490 € HT et l'intervention dès 590 € HT, nous accompagnons les entreprises dans leur transformation numérique. Orange, avec son tissu économique comprenant le commerce de détail et la construction, est un terrain propice pour nos interventions.",
+    "Axion-IA se déplace à Orange pour offrir des solutions IA adaptées aux entreprises locales. Avec des services tels que l'audit et l'intervention, nous accompagnons les entreprises dans leur transformation numérique. Orange, avec son tissu économique comprenant le commerce de détail et la construction, est un terrain propice pour nos interventions.",
   directAnswerEn:
-    "Axion-IA se déplace à Orange pour offrir des solutions IA adaptées aux entreprises locales. Avec des services tels que l'audit à partir de 490 € HT et l'intervention dès 590 € HT, nous accompagnons les entreprises dans leur transformation numérique. Orange, avec son tissu économique comprenant le commerce de détail et la construction, est un terrain propice pour nos interventions.",
+    "Axion-IA se déplace à Orange pour offrir des solutions IA adaptées aux entreprises locales. Avec des services tels que l'audit et l'intervention, nous accompagnons les entreprises dans leur transformation numérique. Orange, avec son tissu économique comprenant le commerce de détail et la construction, est un terrain propice pour nos interventions.",
   seoHook: "commerce détail & construction",
   ecosystemFr:
     "Orange abrite un tissu économique diversifié avec 3 000 établissements actifs. Les secteurs du commerce de détail et de la construction dominent, offrant un cadre propice aux interventions IA.",

@@ -11,9 +11,9 @@ export const LIVRY_GARGAN_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Livry-Gargan, un lieu stratégique proche de Paris-Charles de Gaulle. Notre expertise nationale nous permet de répondre aux besoins des entreprises locales, en s'appuyant sur l'écosystème dynamique de l'Île-de-France, incluant Cap Digital et Inria.",
   directAnswerFr:
-    "Axion-IA propose des interventions sur site à Livry-Gargan, répondant aux besoins spécifiques des entreprises locales. Avec notre audit Flash à partir de 490 € HT, nous aidons à identifier les opportunités d'optimisation. Notre présence nationale nous permet de bénéficier de l'écosystème de l'Île-de-France, où l'on trouve des acteurs comme LVMH et Station F, sans lien commercial direct.",
+    "Axion-IA propose des interventions sur site à Livry-Gargan, répondant aux besoins spécifiques des entreprises locales. Avec notre audit Flash, nous aidons à identifier les opportunités d'optimisation. Notre présence nationale nous permet de bénéficier de l'écosystème de l'Île-de-France, où l'on trouve des acteurs comme LVMH et Station F, sans lien commercial direct.",
   directAnswerEn:
-    "Axion-IA propose des interventions sur site à Livry-Gargan, répondant aux besoins spécifiques des entreprises locales. Avec notre audit Flash à partir de 490 € HT, nous aidons à identifier les opportunités d'optimisation. Notre présence nationale nous permet de bénéficier de l'écosystème de l'Île-de-France, où l'on trouve des acteurs comme LVMH et Station F, sans lien commercial direct.",
+    "Axion-IA propose des interventions sur site à Livry-Gargan, répondant aux besoins spécifiques des entreprises locales. Avec notre audit Flash, nous aidons à identifier les opportunités d'optimisation. Notre présence nationale nous permet de bénéficier de l'écosystème de l'Île-de-France, où l'on trouve des acteurs comme LVMH et Station F, sans lien commercial direct.",
   seoHook: "commerce détail & travaux construction",
   ecosystemFr:
     "Livry-Gargan bénéficie de la proximité avec des pôles économiques tels que Station F et Cap Digital, facilitant l'accès aux innovations numériques. Les entreprises locales peuvent ainsi évoluer au sein d'un environnement propice à l'innovation.",

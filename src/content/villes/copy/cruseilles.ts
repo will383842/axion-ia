@@ -56,7 +56,7 @@ export const CRUSEILLES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de Cruseilles sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, gestion stocks, CRM augmenté client. Audit Flash 490 € HT adapté aux petites structures.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Cruseilles ?",
+      q: "Combien coûte un audit IA à Cruseilles  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du Genevois, il identifie les cas d'usage IA à fort ROI pour votre activité (artisanat, commerce, professions libérales, services transfrontaliers). Tarifs publics.",
     },
     {

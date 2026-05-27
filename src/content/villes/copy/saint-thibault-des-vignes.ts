@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_THIBAULT_DES_VIGNES_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Thibault-des-Vignes (77), commune résidentielle et commerciale de l'est Seine-et-Marne proche de Lagny-sur-Marne, concentre zones d'activités commerciales, TPE artisanales, PME de négoce et de services, commerçants et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Saint-Thibault-des-Vignes (77), commune résidentielle et commerciale de l'est Seine-et-Marne proche de Lagny-sur-Marne, concentre zones d'activités commerciales, TPE artisanales, PME de négoce et de services, commerçants et professions libérales. Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Saint-Thibault-des-Vignes (77), commune résidentielle et commerciale de l'est Seine-et-Marne proche de Lagny-sur-Marne, concentre zones d'activités commerciales, TPE artisanales, PME de négoce et de services, commerçants et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Saint-Thibault-des-Vignes (77), commune résidentielle et commerciale de l'est Seine-et-Marne proche de Lagny-sur-Marne, concentre zones d'activités commerciales, TPE artisanales, PME de négoce et de services, commerçants et professions libérales. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Thibault-des-Vignes (77). Nous accompagnons TPE et PME : enseignes commerciales, TPE artisanales, PME de négoce et services, professions libérales et restaurateurs du secteur Lagny–Marne-la-Vallée.",
   directAnswerEn:
@@ -56,7 +56,7 @@ export const SAINT_THIBAULT_DES_VIGNES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les enseignes commerciales et commerçants de proximité de Saint-Thibault-des-Vignes sur leurs cas IA : gestion de stocks automatisée, agents conversationnels clients, CRM augmenté, pricing dynamique. Audit Flash 490 € HT.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Saint-Thibault-des-Vignes ?",
+      q: "Quel est le tarif d'un audit IA à Saint-Thibault-des-Vignes  ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME des zones commerciales de Saint-Thibault-des-Vignes, il identifie les cas d'usage IA à fort ROI. Tarifs publics et transparents.",
     },
     {

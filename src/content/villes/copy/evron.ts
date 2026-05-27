@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const EVRON_COPY: VilleCopy = {
   pitchFr:
-    "Évron (53), bourg de la Mayenne adossé à son abbaye bénédictine et sa basilique Notre-Dame-de-l'Épine, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-bourg, exploitations agricoles (élevage, lait) et prestataires de services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Évron (53), bourg de la Mayenne adossé à son abbaye bénédictine et sa basilique Notre-Dame-de-l'Épine, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-bourg, exploitations agricoles (élevage, lait) et prestataires de services. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Évron (53), bourg de la Mayenne adossé à son abbaye bénédictine et sa basilique Notre-Dame-de-l'Épine, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-bourg, exploitations agricoles (élevage, lait) et prestataires de services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Évron (53), bourg de la Mayenne adossé à son abbaye bénédictine et sa basilique Notre-Dame-de-l'Épine, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-bourg, exploitations agricoles (élevage, lait) et prestataires de services. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Évron (53). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles, éleveurs laitiers, commerçants, professions libérales, prestataires de services et acteurs du tourisme patrimonial du centre-Mayenne.",
   directAnswerEn:

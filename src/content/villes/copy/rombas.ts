@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ROMBAS_COPY: VilleCopy = {
   pitchFr:
-    "Rombas (57), commune française du département de la Moselle (région Grand Est) située en vallée de l'Orne, est une ancienne ville sidérurgique reconvertie en pôle PME industrielles diversifiées, logistique et services. Tissu TPE artisans BTP, PME industrielles reconverties, commerces, services aux entreprises, professions libérales. Ses habitants sont les Rombasiens. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Rombas (57), commune française du département de la Moselle (région Grand Est) située en vallée de l'Orne, est une ancienne ville sidérurgique reconvertie en pôle PME industrielles diversifiées, logistique et services. Tissu TPE artisans BTP, PME industrielles reconverties, commerces, services aux entreprises, professions libérales. Ses habitants sont les Rombasiens. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Rombas (57), commune française du département de la Moselle (région Grand Est) située en vallée de l'Orne, est une ancienne ville sidérurgique reconvertie en pôle PME industrielles diversifiées, logistique et services. Tissu TPE artisans BTP, PME industrielles reconverties, commerces, services aux entreprises, professions libérales. Ses habitants sont les Rombasiens. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Rombas (57), commune française du département de la Moselle (région Grand Est) située en vallée de l'Orne, est une ancienne ville sidérurgique reconvertie en pôle PME industrielles diversifiées, logistique et services. Tissu TPE artisans BTP, PME industrielles reconverties, commerces, services aux entreprises, professions libérales. Ses habitants sont les Rombasiens. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rombas (57). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles vallée de l'Orne issues de la reconversion sidérurgique, logistique sillon mosellan, commerçants, services aux entreprises de la Communauté de communes Rives de Moselle et Pays Orne-Moselle.",
   directAnswerEn:

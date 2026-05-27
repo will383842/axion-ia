@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LURE_COPY: VilleCopy = {
   pitchFr:
-    "Lure (70), sous-préfecture de Haute-Saône, compte environ 7 900 habitants au carrefour des vallées de l'Ognon et du Breuchin. Tissu de TPE/PME industrielles, artisanat BTP, commerces, services de santé et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du Pays de Lure et nord Haute-Saône.",
+    "Lure (70), sous-préfecture de Haute-Saône, compte environ 7 900 habitants au carrefour des vallées de l'Ognon et du Breuchin. Tissu de TPE/PME industrielles, artisanat BTP, commerces, services de santé et professions libérales. Axion-IA collabore avec toutes les structures locales du Pays de Lure et nord Haute-Saône.",
   pitchEn:
-    "Lure (70), sous-préfecture de Haute-Saône, compte environ 7 900 habitants au carrefour des vallées de l'Ognon et du Breuchin. Tissu de TPE/PME industrielles, artisanat BTP, commerces, services de santé et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du Pays de Lure et nord Haute-Saône.",
+    "Lure (70), sous-préfecture de Haute-Saône, compte environ 7 900 habitants au carrefour des vallées de l'Ognon et du Breuchin. Tissu de TPE/PME industrielles, artisanat BTP, commerces, services de santé et professions libérales. Axion-IA collabore avec toutes les structures locales du Pays de Lure et nord Haute-Saône.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lure (70), sous-préfecture de Haute-Saône. Nous accompagnons TPE et PME : industries locales, artisans BTP, commerçants, professionnels de santé, professions libérales et services aux entreprises du Pays de Lure.",
   directAnswerEn:
@@ -52,7 +52,7 @@ export const LURE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Lure et sur tout le nord Haute-Saône (Luxeuil-les-Bains, Héricourt, Ronchamp, Faucogney). Nos consultants se déplacent depuis Belfort (30 min) ou Besançon (1h).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Lure ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Lure  ?",
       a: "L'Audit Flash commence à 490 € HT, adapté aux TPE et PME du Pays de Lure. Diagnostic complet des opportunités IA avec ROI chiffré, livrable sous 5 jours. Tarifs publics sur notre site.",
     },
     {

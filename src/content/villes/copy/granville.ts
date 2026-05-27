@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GRANVILLE_COPY: VilleCopy = {
   pitchFr:
-    "Granville (50), port de pêche et de plaisance de la Manche en Normandie, est une station balnéaire réputée pour sa Haute Ville fortifiée et les îles Chausey. Tissu TPE pêche et ostréiculture, PME tourisme et hôtellerie-restauration, commerces du port, artisanat local. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Granville (50), port de pêche et de plaisance de la Manche en Normandie, est une station balnéaire réputée pour sa Haute Ville fortifiée et les îles Chausey. Tissu TPE pêche et ostréiculture, PME tourisme et hôtellerie-restauration, commerces du port, artisanat local. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Granville (50), port de pêche et de plaisance de la Manche en Normandie, est une station balnéaire réputée pour sa Haute Ville fortifiée et les îles Chausey. Tissu TPE pêche et ostréiculture, PME tourisme et hôtellerie-restauration, commerces du port, artisanat local. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Granville (50), port de pêche et de plaisance de la Manche en Normandie, est une station balnéaire réputée pour sa Haute Ville fortifiée et les îles Chausey. Tissu TPE pêche et ostréiculture, PME tourisme et hôtellerie-restauration, commerces du port, artisanat local. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Granville (50). Nous accompagnons tous types d'activités : TPE pêche et ostréiculture, PME tourisme balnéaire et hôtellerie-restauration, commerçants du port et de la Haute Ville, artisans, prestataires nautiques et professionnels des îles Chausey.",
   directAnswerEn:

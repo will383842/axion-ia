@@ -9,9 +9,9 @@ export const MARCOUSSIS_COPY: VilleCopy = {
   pitchEn:
     "Marcoussis (91), commune du Hurepoix en Essonne connue pour le centre national du rugby (FFR), accueille un tissu de TPE artisans, commerces, professions libérales, PME de services et activités liées au sport. Axion-IA y intervient pour tous types d'activités du Hurepoix essonnien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marcoussis (91). Nous accompagnons tous types d'activités : TPE artisans, commerçants de proximité, professions libérales, PME de services, indépendants et structures du Hurepoix essonnien. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marcoussis (91). Nous accompagnons tous types d'activités : TPE artisans, commerçants de proximité, professions libérales, PME de services, indépendants et structures du Hurepoix essonnien. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marcoussis (91). Nous accompagnons tous types d'activités : TPE artisans, commerçants de proximité, professions libérales, PME de services, indépendants et structures du Hurepoix essonnien. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marcoussis (91). Nous accompagnons tous types d'activités : TPE artisans, commerçants de proximité, professions libérales, PME de services, indépendants et structures du Hurepoix essonnien. Audit Flash sur mesure.",
   seoHook: "professions libérales & services bureaux",
   ecosystemFr:
     "Marcoussis est une commune du Hurepoix en Essonne, mondialement connue pour le centre national du rugby (FFR). Tissu économique diversifié : TPE artisans BTP, commerces de centre-bourg, professions libérales, PME tertiaires et bureaux d'études, activités sportives et de loisirs. Proximité du plateau de Courtabœuf (Les Ulis) et de la zone Paris-Saclay.",

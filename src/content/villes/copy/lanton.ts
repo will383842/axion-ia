@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LANTON_COPY: VilleCopy = {
   pitchFr:
-    "Lanton (33), commune du Bassin d'Arcachon entre Audenge et Andernos-les-Bains, combine tissu résidentiel en croissance, ostréiculture, artisanat BTP et commerces de proximité. Axion-IA y déploie ses missions auprès de toutes les organisations du nord du Bassin d'Arcachon.",
+    "Lanton (33), commune du Bassin d'Arcachon entre Audenge et Andernos-les-Bains, combine tissu résidentiel en croissance, ostréiculture, artisanat BTP et commerces de proximité. Axion-IA y travaille avec les organisations du territoire du nord du Bassin d'Arcachon.",
   pitchEn:
-    "Lanton (33), commune du Bassin d'Arcachon entre Audenge et Andernos-les-Bains, combine tissu résidentiel en croissance, ostréiculture, artisanat BTP et commerces de proximité. Axion-IA y déploie ses missions auprès de toutes les organisations du nord du Bassin d'Arcachon.",
+    "Lanton (33), commune du Bassin d'Arcachon entre Audenge et Andernos-les-Bains, combine tissu résidentiel en croissance, ostréiculture, artisanat BTP et commerces de proximité. Axion-IA y travaille avec les organisations du territoire du nord du Bassin d'Arcachon.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lanton (33). Nous accompagnons TPE et PME du nord Bassin d'Arcachon : ostréiculteurs, artisans BTP, commerçants, professions libérales et entreprises de services. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lanton (33). Nous accompagnons TPE et PME du nord Bassin d'Arcachon : ostréiculteurs, artisans BTP, commerçants, professions libérales et entreprises de services. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lanton (33). Nous accompagnons TPE et PME du nord Bassin d'Arcachon : ostréiculteurs, artisans BTP, commerçants, professions libérales et entreprises de services. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lanton (33). Nous accompagnons TPE et PME du nord Bassin d'Arcachon : ostréiculteurs, artisans BTP, commerçants, professions libérales et entreprises de services. Audit Flash sur mesure.",
   seoHook: "ostréiculture & artisanat",
   ecosystemFr:
     "Lanton est une commune résidentielle du nord du Bassin d'Arcachon. Économie mixte : ostréiculture, artisanat BTP (construction neuve), commerces de proximité et professions libérales. Plages et ports ostréicoles (Taussat, Cassy). Accès D3 vers Bordeaux et Bassin.",
@@ -52,7 +52,7 @@ export const LANTON_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Lanton et dans tout le nord Bassin d'Arcachon (Andernos, Arès, Audenge, Lège-Cap-Ferret). Nos consultants se déplacent depuis Bordeaux (45 min) ou Paris (TGV 2h + 45 min).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Lanton ?",
+      q: "Quel est le tarif d'un audit IA à Lanton  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Adapté aux TPE ostréicoles et artisans du Bassin d'Arcachon.",
     },
     {

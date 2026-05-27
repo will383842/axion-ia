@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GANNAT_COPY: VilleCopy = {
   pitchFr:
-    "Gannat (03), commune de la Limagne bourbonnaise dans l'Allier, est positionnée sur l'axe A71 Clermont-Paris. Tissu agricole (grandes cultures Limagne, élevage), PME tertiaires et industrielles, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations du Bourbonnais.",
+    "Gannat (03), commune de la Limagne bourbonnaise dans l'Allier, est positionnée sur l'axe A71 Clermont-Paris. Tissu agricole (grandes cultures Limagne, élevage), PME tertiaires et industrielles, TPE artisans BTP, commerces. Axion-IA y mène ses missions auprès des organisations locales du Bourbonnais.",
   pitchEn:
-    "Gannat (03), commune de la Limagne bourbonnaise dans l'Allier, est positionnée sur l'axe A71 Clermont-Paris. Tissu agricole (grandes cultures Limagne, élevage), PME tertiaires et industrielles, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations du Bourbonnais.",
+    "Gannat (03), commune de la Limagne bourbonnaise dans l'Allier, est positionnée sur l'axe A71 Clermont-Paris. Tissu agricole (grandes cultures Limagne, élevage), PME tertiaires et industrielles, TPE artisans BTP, commerces. Axion-IA y mène ses missions auprès des organisations locales du Bourbonnais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gannat (03). Nous accompagnons tous types d'activités : agriculteurs/éleveurs Limagne bourbonnaise, PME tertiaires et industrielles, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:

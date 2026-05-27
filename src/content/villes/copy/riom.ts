@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const RIOM_COPY: VilleCopy = {
   pitchFr:
-    "Riom (63), sous-préfecture du Puy-de-Dôme, est une ancienne capitale judiciaire de l'Auvergne (patrimoine Renaissance remarquable, Sainte-Chapelle). Tissu administration et services publics, PME tertiaires, agriculture Limagne, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Riom (63), sous-préfecture du Puy-de-Dôme, est une ancienne capitale judiciaire de l'Auvergne (patrimoine Renaissance remarquable, Sainte-Chapelle). Tissu administration et services publics, PME tertiaires, agriculture Limagne, TPE artisans BTP, commerces. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Riom (63), sous-préfecture du Puy-de-Dôme, est une ancienne capitale judiciaire de l'Auvergne (patrimoine Renaissance remarquable, Sainte-Chapelle). Tissu administration et services publics, PME tertiaires, agriculture Limagne, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Riom (63), sous-préfecture du Puy-de-Dôme, est une ancienne capitale judiciaire de l'Auvergne (patrimoine Renaissance remarquable, Sainte-Chapelle). Tissu administration et services publics, PME tertiaires, agriculture Limagne, TPE artisans BTP, commerces. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Riom (63). Nous accompagnons tous types d'activités : administration sous-préfecture, PME tertiaires Clermont Métropole nord, acteurs tourisme patrimonial Renaissance, agriculteurs Limagne, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:

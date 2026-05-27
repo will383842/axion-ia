@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const BOUFFEMONT_COPY: VilleCopy = {
   pitchFr:
-    "Bouffémont (95), commune résidentielle en orée de la forêt de Montmorency dans le Val-d'Oise. Tissu TPE artisans et commerces de proximité, PME de services, professions libérales, consultants indépendants et activités liées au cadre forestier. Axion-IA accompagne entreprises et indépendants de tous secteurs du nord valdoisien.",
+    "Bouffémont (95), commune résidentielle en orée de la forêt de Montmorency dans le Val-d'Oise. Tissu TPE artisans et commerces de proximité, PME de services, professions libérales, consultants indépendants et activités liées au cadre forestier. Axion-IA collabore avec toutes les structures locales du nord valdoisien.",
   pitchEn:
-    "Bouffémont (95), commune résidentielle en orée de la forêt de Montmorency dans le Val-d'Oise. Tissu TPE artisans et commerces de proximité, PME de services, professions libérales, consultants indépendants et activités liées au cadre forestier. Axion-IA accompagne entreprises et indépendants de tous secteurs du nord valdoisien.",
+    "Bouffémont (95), commune résidentielle en orée de la forêt de Montmorency dans le Val-d'Oise. Tissu TPE artisans et commerces de proximité, PME de services, professions libérales, consultants indépendants et activités liées au cadre forestier. Axion-IA collabore avec toutes les structures locales du nord valdoisien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bouffémont (95). Nous accompagnons tous types d'activités : TPE artisans et commerces, PME de services, professions libérales, consultants indépendants et structures associatives de l'orée de la forêt de Montmorency. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bouffémont (95). Nous accompagnons tous types d'activités : TPE artisans et commerces, PME de services, professions libérales, consultants indépendants et structures associatives de l'orée de la forêt de Montmorency. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bouffémont (95). Nous accompagnons tous types d'activités : TPE artisans et commerces, PME de services, professions libérales, consultants indépendants et structures associatives de l'orée de la forêt de Montmorency. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bouffémont (95). Nous accompagnons tous types d'activités : TPE artisans et commerces, PME de services, professions libérales, consultants indépendants et structures associatives de l'orée de la forêt de Montmorency. Audit Flash sur mesure.",
   seoHook: "professions libérales & commerce proximité",
   ecosystemFr:
     "Bouffémont bénéficie du cadre de la forêt de Montmorency et d'une situation résidentielle prisée au nord du Val-d'Oise. Son tissu économique associe TPE artisans, commerces de proximité, professions libérales, PME de services et activités de loisirs nature. Communes voisines : Domont, Moisselles, Attainville, Saint-Prix, Montlignon.",

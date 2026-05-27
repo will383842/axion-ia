@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const THYEZ_COPY: VilleCopy = {
   pitchFr:
-    "Thyez (74), commune du canton de Bonneville en Haute-Savoie, se situe dans la vallée de l'Arve au carrefour des axes vers Genève et le Mont-Blanc. Tissu TPE artisans décolletage, PME industrielles, commerces, professions libérales et services. Axion-IA couvre l'ensemble des activités professionnelles présentes de la vallée de l'Arve.",
+    "Thyez (74), commune du canton de Bonneville en Haute-Savoie, se situe dans la vallée de l'Arve au carrefour des axes vers Genève et le Mont-Blanc. Tissu TPE artisans décolletage, PME industrielles, commerces, professions libérales et services. Axion-IA accompagne tout le tissu professionnel local de la vallée de l'Arve.",
   pitchEn:
-    "Thyez (74), commune du canton de Bonneville en Haute-Savoie, se situe dans la vallée de l'Arve au carrefour des axes vers Genève et le Mont-Blanc. Tissu TPE artisans décolletage, PME industrielles, commerces, professions libérales et services. Axion-IA couvre l'ensemble des activités professionnelles présentes de la vallée de l'Arve.",
+    "Thyez (74), commune du canton de Bonneville en Haute-Savoie, se situe dans la vallée de l'Arve au carrefour des axes vers Genève et le Mont-Blanc. Tissu TPE artisans décolletage, PME industrielles, commerces, professions libérales et services. Axion-IA accompagne tout le tissu professionnel local de la vallée de l'Arve.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thyez (74). Nous accompagnons tous types d'activités : TPE artisans du décolletage et de la micromécanique, PME industrielles de la vallée de l'Arve, commerçants, indépendants, professions libérales et prestataires de services du canton de Bonneville.",
   directAnswerEn:

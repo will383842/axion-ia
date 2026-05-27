@@ -11,9 +11,9 @@ export const MONTIGNY_LES_METZ_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Montigny-lès-Metz pour accompagner les entreprises locales. Avec des entités comme LVMH et Hermès dans l'écosystème national, nous offrons des solutions IA adaptées aux besoins spécifiques des TPE et PME.",
   directAnswerFr:
-    "À Montigny-lès-Metz, Axion-IA propose des interventions sur site pour optimiser les processus des entreprises locales. Avec des voisins économiques comme Renault et Sanofi, la région bénéficie d'un tissu industriel solide. Nos services incluent des audits à partir de 490 € HT et une implémentation dès 990 € HT, adaptés aux exigences des entreprises de la région.",
+    "À Montigny-lès-Metz, Axion-IA propose des interventions sur site pour optimiser les processus des entreprises locales. Avec des voisins économiques comme Renault et Sanofi, la région bénéficie d'un tissu industriel solide. Nos services incluent des audits et une implémentation, adaptés aux exigences des entreprises de la région.",
   directAnswerEn:
-    "À Montigny-lès-Metz, Axion-IA propose des interventions sur site pour optimiser les processus des entreprises locales. Avec des voisins économiques comme Renault et Sanofi, la région bénéficie d'un tissu industriel solide. Nos services incluent des audits à partir de 490 € HT et une implémentation dès 990 € HT, adaptés aux exigences des entreprises de la région.",
+    "À Montigny-lès-Metz, Axion-IA propose des interventions sur site pour optimiser les processus des entreprises locales. Avec des voisins économiques comme Renault et Sanofi, la région bénéficie d'un tissu industriel solide. Nos services incluent des audits et une implémentation, adaptés aux exigences des entreprises de la région.",
   seoHook: "commerce détail & construction",
   ecosystemFr:
     "Le bassin industriel autour de Montigny-lès-Metz inclut des entreprises telles que Bouygues et Sanofi, renforçant son tissu économique. Axion-IA s'engage à soutenir ce dynamisme industriel par ses interventions spécialisées.",

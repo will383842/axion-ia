@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BORGO_COPY: VilleCopy = {
   pitchFr:
-    "Borgo (2B), commune de la plaine orientale en Haute-Corse, fait partie de l'agglomération de Bastia (sud). Elle accueille l'aéroport Bastia-Poretta, principal aéroport de Haute-Corse, et une zone commerciale/logistique majeure. Tissu TPE/PME logistique, transport, commerce, BTP, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Borgo (2B), commune de la plaine orientale en Haute-Corse, fait partie de l'agglomération de Bastia (sud). Elle accueille l'aéroport Bastia-Poretta, principal aéroport de Haute-Corse, et une zone commerciale/logistique majeure. Tissu TPE/PME logistique, transport, commerce, BTP, services aux entreprises. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Borgo (2B), commune de la plaine orientale en Haute-Corse, fait partie de l'agglomération de Bastia (sud). Elle accueille l'aéroport Bastia-Poretta, principal aéroport de Haute-Corse, et une zone commerciale/logistique majeure. Tissu TPE/PME logistique, transport, commerce, BTP, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Borgo (2B), commune de la plaine orientale en Haute-Corse, fait partie de l'agglomération de Bastia (sud). Elle accueille l'aéroport Bastia-Poretta, principal aéroport de Haute-Corse, et une zone commerciale/logistique majeure. Tissu TPE/PME logistique, transport, commerce, BTP, services aux entreprises. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Borgo (2B). Nous accompagnons tous types d'activités : TPE/PME logistique et transport (zone aéroport Bastia-Poretta), commerces zone commerciale, artisans BTP, indépendants, professions libérales et services aux entreprises de l'agglomération bastiaise sud.",
   directAnswerEn:

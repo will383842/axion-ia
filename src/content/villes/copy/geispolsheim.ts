@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GEISPOLSHEIM_COPY: VilleCopy = {
   pitchFr:
-    "Geispolsheim (67), commune de l'eurométropole de Strasbourg située au sud immédiat de la capitale alsacienne, connue pour ses vergers de cerises et son industrie sucrière historique. Tissu TPE/PME industrie agroalimentaire, arboriculture, services, BTP, commerces et artisanat. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Geispolsheim (67), commune de l'eurométropole de Strasbourg située au sud immédiat de la capitale alsacienne, connue pour ses vergers de cerises et son industrie sucrière historique. Tissu TPE/PME industrie agroalimentaire, arboriculture, services, BTP, commerces et artisanat. Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Geispolsheim (67), commune de l'eurométropole de Strasbourg située au sud immédiat de la capitale alsacienne, connue pour ses vergers de cerises et son industrie sucrière historique. Tissu TPE/PME industrie agroalimentaire, arboriculture, services, BTP, commerces et artisanat. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Geispolsheim (67), commune de l'eurométropole de Strasbourg située au sud immédiat de la capitale alsacienne, connue pour ses vergers de cerises et son industrie sucrière historique. Tissu TPE/PME industrie agroalimentaire, arboriculture, services, BTP, commerces et artisanat. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Geispolsheim (67). Nous accompagnons tous types d'activités : TPE/PME industrie agroalimentaire et sucrière, arboriculteurs, artisans BTP, commerces de proximité et entrepreneurs du sud de l'eurométropole strasbourgeoise.",
   directAnswerEn:

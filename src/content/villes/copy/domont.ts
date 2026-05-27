@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const DOMONT_COPY: VilleCopy = {
   pitchFr:
-    "Domont, commune résidentielle du Val-d'Oise (95) en Pays de France, 20 km au nord de Paris. Tissu TPE artisans BTP, commerçants de centre-bourg, PME de services, professions libérales et indépendants. Axion-IA couvre l'ensemble des activités professionnelles présentes du nord du Val-d'Oise.",
+    "Domont, commune résidentielle du Val-d'Oise (95) en Pays de France, 20 km au nord de Paris. Tissu TPE artisans BTP, commerçants de centre-bourg, PME de services, professions libérales et indépendants. Axion-IA opère sur l'ensemble des activités professionnelles locales du nord du Val-d'Oise.",
   pitchEn:
-    "Domont, commune résidentielle du Val-d'Oise (95) en Pays de France, 20 km au nord de Paris. Tissu TPE artisans BTP, commerçants de centre-bourg, PME de services, professions libérales et indépendants. Axion-IA couvre l'ensemble des activités professionnelles présentes du nord du Val-d'Oise.",
+    "Domont, commune résidentielle du Val-d'Oise (95) en Pays de France, 20 km au nord de Paris. Tissu TPE artisans BTP, commerçants de centre-bourg, PME de services, professions libérales et indépendants. Axion-IA opère sur l'ensemble des activités professionnelles locales du nord du Val-d'Oise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Domont (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME de services, professions libérales et indépendants du Pays de France et nord Val-d'Oise. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Domont (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME de services, professions libérales et indépendants du Pays de France et nord Val-d'Oise. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Domont (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME de services, professions libérales et indépendants du Pays de France et nord Val-d'Oise. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Domont (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME de services, professions libérales et indépendants du Pays de France et nord Val-d'Oise. Audit Flash sur mesure.",
   seoHook: "artisanat rénovation & commerce centre-bourg",
   ecosystemFr:
     "Domont est une commune résidentielle du nord du Val-d'Oise, en lisière de la forêt de Montmorency, bien desservie par le Transilien H vers Paris. Son tissu économique comprend TPE artisans BTP, commerces de centre-bourg, PME de services, professions libérales et indépendants. Proximité avec Montmorency, Ezanville et Bouffémont.",

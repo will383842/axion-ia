@@ -56,7 +56,7 @@ export const MARLY_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE, PME et enseignes de la zone commerciale de Marly (Place Verte) sur leurs cas IA spécifiques : automatisation gestion stocks et réapprovisionnement, prévision ventes et affluence, agents conversationnels service client, génération contenus marketing personnalisés, optimisation plannings équipes vente.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Marly ?",
+      q: "Quel est le tarif d'un audit IA à Marly  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du sud valenciennois, il identifie les cas d'usage IA à fort ROI pour votre activité (commerce, services, professions libérales, artisanat, industrie). Tarifs publics, sans engagement.",
     },
     {

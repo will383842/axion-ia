@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GUILERS_COPY: VilleCopy = {
   pitchFr:
-    "Guilers (29), commune résidentielle de Brest Métropole dans le Finistère, offre un cadre de vie attractif en périphérie ouest de Brest. TPE artisanales, commerces de proximité, professions libérales, PME de services et prestataires. Axion-IA couvre l'ensemble des activités professionnelles présentes de la métropole brestoise.",
+    "Guilers (29), commune résidentielle de Brest Métropole dans le Finistère, offre un cadre de vie attractif en périphérie ouest de Brest. TPE artisanales, commerces de proximité, professions libérales, PME de services et prestataires. Axion-IA répond aux besoins des activités professionnelles présentes de la métropole brestoise.",
   pitchEn:
-    "Guilers (29), commune résidentielle de Brest Métropole dans le Finistère, offre un cadre de vie attractif en périphérie ouest de Brest. TPE artisanales, commerces de proximité, professions libérales, PME de services et prestataires. Axion-IA couvre l'ensemble des activités professionnelles présentes de la métropole brestoise.",
+    "Guilers (29), commune résidentielle de Brest Métropole dans le Finistère, offre un cadre de vie attractif en périphérie ouest de Brest. TPE artisanales, commerces de proximité, professions libérales, PME de services et prestataires. Axion-IA répond aux besoins des activités professionnelles présentes de la métropole brestoise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guilers (29). Nous accompagnons tous types d'activités : TPE artisanales et commerçants guilériens, PME de services de Brest Métropole, professions libérales, indépendants et prestataires implantés sur la commune.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const GUILERS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE artisans BTP (maçons, plombiers, électriciens) et commerçants de Guilers sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation automatique. Audit Flash 490 € HT adapté aux petites structures.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Guilers ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Guilers  ?",
       a: "L'audit Flash IA démarre à 490 € HT pour les TPE et PME de Guilers et de Brest Métropole. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
     },
     {

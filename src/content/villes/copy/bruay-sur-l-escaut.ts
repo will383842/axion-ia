@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const BRUAY_SUR_L_ESCAUT_COPY: VilleCopy = {
   pitchFr:
-    "Bruay-sur-l'Escaut (59), commune de 11 644 habitants de l'agglomération de Valenciennes dans le Nord, ancien fief du bassin minier du Hainaut sur les rives de l'Escaut. Tissu TPE artisans, PME industrielles et logistique, commerces de proximité, sous-traitance automobile et BTP. Axion-IA y déploie ses missions auprès de toutes les organisations du Valenciennois.",
+    "Bruay-sur-l'Escaut (59), commune de 11 644 habitants de l'agglomération de Valenciennes dans le Nord, ancien fief du bassin minier du Hainaut sur les rives de l'Escaut. Tissu TPE artisans, PME industrielles et logistique, commerces de proximité, sous-traitance automobile et BTP. Axion-IA y déploie son expertise pour toutes les organisations du Valenciennois.",
   pitchEn:
-    "Bruay-sur-l'Escaut (59), commune de 11 644 habitants de l'agglomération de Valenciennes dans le Nord, ancien fief du bassin minier du Hainaut sur les rives de l'Escaut. Tissu TPE artisans, PME industrielles et logistique, commerces de proximité, sous-traitance automobile et BTP. Axion-IA y déploie ses missions auprès de toutes les organisations du Valenciennois.",
+    "Bruay-sur-l'Escaut (59), commune de 11 644 habitants de l'agglomération de Valenciennes dans le Nord, ancien fief du bassin minier du Hainaut sur les rives de l'Escaut. Tissu TPE artisans, PME industrielles et logistique, commerces de proximité, sous-traitance automobile et BTP. Axion-IA y déploie son expertise pour toutes les organisations du Valenciennois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bruay-sur-l'Escaut (59). Nous accompagnons TPE artisans, PME industrielles, sous-traitants automobile, logisticiens, commerçants et indépendants du Valenciennois, héritier du bassin minier du Hainaut. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bruay-sur-l'Escaut (59). Nous accompagnons TPE artisans, PME industrielles, sous-traitants automobile, logisticiens, commerçants et indépendants du Valenciennois, héritier du bassin minier du Hainaut. Audit Flash sur mesure, interventions sur site et coaching dirigeants.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bruay-sur-l'Escaut (59). Nous accompagnons TPE artisans, PME industrielles, sous-traitants automobile, logisticiens, commerçants et indépendants du Valenciennois, héritier du bassin minier du Hainaut. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bruay-sur-l'Escaut (59). Nous accompagnons TPE artisans, PME industrielles, sous-traitants automobile, logisticiens, commerçants et indépendants du Valenciennois, héritier du bassin minier du Hainaut. Audit Flash sur mesure, interventions sur site et coaching dirigeants.",
   seoHook: "bassin minier du",
   ecosystemFr:
     "Bruay-sur-l'Escaut s'inscrit dans le bassin économique de Valenciennes Métropole, terre de reconversion post-minière tournée vers l'automobile (proximité PSA Trith-Saint-Léger, Toyota Onnaing), la logistique de l'Escaut canalisé, l'industrie ferroviaire (Alstom Petite-Forêt) et la sous-traitance B2B. Tissu TPE artisans BTP, PME mécanique de précision, commerces de centre-bourg et services de proximité.",
@@ -52,7 +52,7 @@ export const BRUAY_SUR_L_ESCAUT_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Bruay-sur-l'Escaut et dans toute l'agglomération de Valenciennes (Anzin, Petite-Forêt, Trith-Saint-Léger, Saint-Saulve). Nos consultants se déplacent depuis Lille ou Paris, accès direct par A23 et A2.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Bruay-sur-l'Escaut ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Bruay-sur-l'Escaut  ?",
       a: "L'Audit Flash IA démarre à 490 € HT pour une session de 4h. Idéal pour les TPE et PME de Bruay-sur-l'Escaut et du bassin minier souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré sous 10 jours.",
     },
     {

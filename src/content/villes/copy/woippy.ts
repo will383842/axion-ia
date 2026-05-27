@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const WOIPPY_COPY: VilleCopy = {
   pitchFr:
-    "Woippy (57), commune mosellane au nord de l'agglomération messine, connue historiquement pour ses vergers et la fraise de Woippy, aujourd'hui pôle résidentiel et économique dynamique de Metz Métropole. Tissu TPE/PME services, commerces, logistique, BTP, agroalimentaire, et nombreux artisans. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Woippy (57), commune mosellane au nord de l'agglomération messine, connue historiquement pour ses vergers et la fraise de Woippy, aujourd'hui pôle résidentiel et économique dynamique de Metz Métropole. Tissu TPE/PME services, commerces, logistique, BTP, agroalimentaire, et nombreux artisans. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Woippy (57), commune mosellane au nord de l'agglomération messine, connue historiquement pour ses vergers et la fraise de Woippy, aujourd'hui pôle résidentiel et économique dynamique de Metz Métropole. Tissu TPE/PME services, commerces, logistique, BTP, agroalimentaire, et nombreux artisans. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Woippy (57), commune mosellane au nord de l'agglomération messine, connue historiquement pour ses vergers et la fraise de Woippy, aujourd'hui pôle résidentiel et économique dynamique de Metz Métropole. Tissu TPE/PME services, commerces, logistique, BTP, agroalimentaire, et nombreux artisans. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Woippy (57). Nous accompagnons tous types d'activités : TPE/PME services et logistique, artisans BTP, commerces de proximité, acteurs agroalimentaires et professions libérales de Metz Métropole.",
   directAnswerEn:

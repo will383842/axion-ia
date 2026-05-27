@@ -9,9 +9,9 @@ export const EPINAY_SOUS_SENART_COPY: VilleCopy = {
   pitchEn:
     "Épinay-sous-Sénart (91), commune résidentielle de l'Essonne à 20 km au sud-est de Paris, s'inscrit dans le tissu périurbain du Val-d'Yerres-Val-de-Seine et du bassin Sénart. Tissu TPE artisanat BTP, commerces de proximité, PME services, professions libérales, services à la personne. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Épinay-sous-Sénart (91). Nous accompagnons TPE et PME : artisans BTP, commerçants, professions libérales, PME services aux entreprises, prestataires de services à la personne du bassin Sénart. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Épinay-sous-Sénart (91). Nous accompagnons TPE et PME : artisans BTP, commerçants, professions libérales, PME services aux entreprises, prestataires de services à la personne du bassin Sénart. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Épinay-sous-Sénart (91). Nous accompagnons TPE et PME : artisans BTP, commerçants, professions libérales, PME services aux entreprises, prestataires de services à la personne du bassin Sénart. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Épinay-sous-Sénart (91). Nous accompagnons TPE et PME : artisans BTP, commerçants, professions libérales, PME services aux entreprises, prestataires de services à la personne du bassin Sénart. Audit Flash sur mesure.",
   seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Épinay-sous-Sénart est une commune résidentielle de l'Essonne à proximité de la forêt de Sénart. Rattachée à la communauté d'agglomération Val-d'Yerres-Val-de-Seine. Tissu TPE artisanat BTP, commerces de proximité, PME tertiaires, professions libérales, services à la personne et restauration.",

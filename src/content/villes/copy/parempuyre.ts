@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const PAREMPUYRE_COPY: VilleCopy = {
   pitchFr:
-    "Parempuyre (33), commune entre le nord de Bordeaux Métropole et l'entrée du Médoc, allie tissu résidentiel en croissance, vignoble AOC Haut-Médoc, artisanat BTP et commerces de proximité. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin nord-bordelais.",
+    "Parempuyre (33), commune entre le nord de Bordeaux Métropole et l'entrée du Médoc, allie tissu résidentiel en croissance, vignoble AOC Haut-Médoc, artisanat BTP et commerces de proximité. Axion-IA opère pour entreprises et indépendants du secteur du bassin nord-bordelais.",
   pitchEn:
-    "Parempuyre (33), commune entre le nord de Bordeaux Métropole et l'entrée du Médoc, allie tissu résidentiel en croissance, vignoble AOC Haut-Médoc, artisanat BTP et commerces de proximité. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin nord-bordelais.",
+    "Parempuyre (33), commune entre le nord de Bordeaux Métropole et l'entrée du Médoc, allie tissu résidentiel en croissance, vignoble AOC Haut-Médoc, artisanat BTP et commerces de proximité. Axion-IA opère pour entreprises et indépendants du secteur du bassin nord-bordelais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Parempuyre (33). Nous accompagnons TPE et PME du nord Bordeaux-Médoc : vignerons, artisans BTP, commerçants, PME de services et professions libérales. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Parempuyre (33). Nous accompagnons TPE et PME du nord Bordeaux-Médoc : vignerons, artisans BTP, commerçants, PME de services et professions libérales. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Parempuyre (33). Nous accompagnons TPE et PME du nord Bordeaux-Médoc : vignerons, artisans BTP, commerçants, PME de services et professions libérales. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Parempuyre (33). Nous accompagnons TPE et PME du nord Bordeaux-Médoc : vignerons, artisans BTP, commerçants, PME de services et professions libérales. Audit Flash sur mesure.",
   seoHook: "viticulture haut-médoc & services",
   ecosystemFr:
     "Parempuyre se situe entre Bordeaux Métropole nord et le Médoc viticole. Vignoble AOC Haut-Médoc, tissu TPE artisanat BTP (croissance résidentielle), commerces de proximité et professions libérales. Accès tramway C (terminus Blanquefort) et rocade A630.",
@@ -52,7 +52,7 @@ export const PAREMPUYRE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Parempuyre et dans tout le nord Bordeaux-Médoc (Blanquefort, Le Taillan-Médoc, Ludon-Médoc). Nos consultants se déplacent depuis Bordeaux centre (25 min) ou Paris (TGV 2h).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Parempuyre ?",
+      q: "Combien coûte un audit IA à Parempuyre  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Adapté aux TPE viticoles et artisans de Parempuyre.",
     },
     {

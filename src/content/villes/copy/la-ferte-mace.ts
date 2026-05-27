@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LA_FERTE_MACE_COPY: VilleCopy = {
   pitchFr:
-    "La Ferté-Macé (61), commune du bocage normand dans l'Orne, est labellisée Station Verte et connue pour sa tradition de tripes ferthoises. Tissu TPE artisans, PME agroalimentaires, commerces, professions libérales, acteurs touristiques du bocage. Axion-IA y déploie ses missions auprès de toutes les organisations du bocage ornais.",
+    "La Ferté-Macé (61), commune du bocage normand dans l'Orne, est labellisée Station Verte et connue pour sa tradition de tripes ferthoises. Tissu TPE artisans, PME agroalimentaires, commerces, professions libérales, acteurs touristiques du bocage. Axion-IA y conduit ses missions auprès des entreprises locales du bocage ornais.",
   pitchEn:
-    "La Ferté-Macé (61), commune du bocage normand dans l'Orne, est labellisée Station Verte et connue pour sa tradition de tripes ferthoises. Tissu TPE artisans, PME agroalimentaires, commerces, professions libérales, acteurs touristiques du bocage. Axion-IA y déploie ses missions auprès de toutes les organisations du bocage ornais.",
+    "La Ferté-Macé (61), commune du bocage normand dans l'Orne, est labellisée Station Verte et connue pour sa tradition de tripes ferthoises. Tissu TPE artisans, PME agroalimentaires, commerces, professions libérales, acteurs touristiques du bocage. Axion-IA y conduit ses missions auprès des entreprises locales du bocage ornais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Ferté-Macé (61). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agroalimentaires, acteurs touristiques Station Verte, professions libérales, services aux entreprises du bocage normand ornais. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Ferté-Macé (61). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agroalimentaires, acteurs touristiques Station Verte, professions libérales, services aux entreprises du bocage normand ornais. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Ferté-Macé (61). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agroalimentaires, acteurs touristiques Station Verte, professions libérales, services aux entreprises du bocage normand ornais. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Ferté-Macé (61). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agroalimentaires, acteurs touristiques Station Verte, professions libérales, services aux entreprises du bocage normand ornais. Audit Flash sur mesure.",
   seoHook: "bocage normand, tourisme & agroalimentaire",
   ecosystemFr:
     "La Ferté-Macé est au coeur du bocage normand ornais, labellisée Station Verte. Tradition gastronomique (tripes ferthoises), tissu PME agroalimentaires, acteurs tourisme vert, TPE artisans BTP, commerces de proximité et professions libérales.",
@@ -65,7 +65,7 @@ export const LA_FERTE_MACE_COPY: VilleCopy = {
     },
     {
       q: "Quel budget prévoir pour un audit IA à La Ferté-Macé ?",
-      a: "L'audit Flash démarre à 490 € HT pour les TPE. Pour les PME agroalimentaires et touristiques, l'audit stratégique complet est adapté au périmètre. Tarifs publics, pas de devis opaque.",
+      a: "L'audit Flash débute selon la taille de votre activité pour les TPE. Pour les PME agroalimentaires et touristiques, l'audit stratégique complet est adapté au périmètre. Tarifs publics, pas de devis opaque.",
     },
   ],
 };

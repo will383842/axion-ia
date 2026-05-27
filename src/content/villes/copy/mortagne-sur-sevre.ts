@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MORTAGNE_SUR_SEVRE_COPY: VilleCopy = {
   pitchFr:
-    "Mortagne-sur-Sèvre (85), commune du bocage vendéen, compte plus de 6 000 habitants. Surplombant les gorges de la Sèvre nantaise, la ville conjugue industrie (mécanique, agroalimentaire), artisanat, tourisme vert et commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Mortagne-sur-Sèvre (85), commune du bocage vendéen, compte plus de 6 000 habitants. Surplombant les gorges de la Sèvre nantaise, la ville conjugue industrie (mécanique, agroalimentaire), artisanat, tourisme vert et commerces. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Mortagne-sur-Sèvre (85), commune du bocage vendéen, compte plus de 6 000 habitants. Surplombant les gorges de la Sèvre nantaise, la ville conjugue industrie (mécanique, agroalimentaire), artisanat, tourisme vert et commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Mortagne-sur-Sèvre (85), commune du bocage vendéen, compte plus de 6 000 habitants. Surplombant les gorges de la Sèvre nantaise, la ville conjugue industrie (mécanique, agroalimentaire), artisanat, tourisme vert et commerces. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mortagne-sur-Sèvre (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles du bocage, exploitations agricoles, acteurs tourisme vert et professions libérales.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const MORTAGNE_SUR_SEVRE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME agroalimentaires du bocage vendéen : contrôle qualité IA, optimisation chaîne production, prédiction demande, traçabilité, gestion stocks automatisée.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Mortagne-sur-Sèvre ?",
+      q: "Combien coûte un audit IA à Mortagne-sur-Sèvre  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {

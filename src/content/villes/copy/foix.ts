@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const FOIX_COPY: VilleCopy = {
   pitchFr:
-    "Foix (09), préfecture de l'Ariège, ville historique dominée par son château cathare au confluent de l'Ariège et de l'Arget. Tissu TPE artisans, PME services publics et tertiaire, commerces centre-ville, tourisme patrimonial, agriculture montagne. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin fuxéen.",
+    "Foix (09), préfecture de l'Ariège, ville historique dominée par son château cathare au confluent de l'Ariège et de l'Arget. Tissu TPE artisans, PME services publics et tertiaire, commerces centre-ville, tourisme patrimonial, agriculture montagne. Axion-IA répond aux besoins de toutes les entreprises du bassin fuxéen.",
   pitchEn:
-    "Foix (09), préfecture de l'Ariège, ville historique dominée par son château cathare au confluent de l'Ariège et de l'Arget. Tissu TPE artisans, PME services publics et tertiaire, commerces centre-ville, tourisme patrimonial, agriculture montagne. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin fuxéen.",
+    "Foix (09), préfecture de l'Ariège, ville historique dominée par son château cathare au confluent de l'Ariège et de l'Arget. Tissu TPE artisans, PME services publics et tertiaire, commerces centre-ville, tourisme patrimonial, agriculture montagne. Axion-IA répond aux besoins de toutes les entreprises du bassin fuxéen.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Foix (09), préfecture de l'Ariège. Nous accompagnons TPE artisans, PME tertiaire, commerçants, acteurs du tourisme patrimonial (château de Foix, grottes) et professions libérales du bassin fuxéen. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Foix (09), préfecture de l'Ariège. Nous accompagnons TPE artisans, PME tertiaire, commerçants, acteurs du tourisme patrimonial (château de Foix, grottes) et professions libérales du bassin fuxéen. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Foix (09), préfecture de l'Ariège. Nous accompagnons TPE artisans, PME tertiaire, commerçants, acteurs du tourisme patrimonial (château de Foix, grottes) et professions libérales du bassin fuxéen. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Foix (09), préfecture de l'Ariège. Nous accompagnons TPE artisans, PME tertiaire, commerçants, acteurs du tourisme patrimonial (château de Foix, grottes) et professions libérales du bassin fuxéen. Audit Flash sur mesure.",
   seoHook: "tourisme patrimonial & secteur public",
   ecosystemFr:
     "Foix est la préfecture de l'Ariège, ville médiévale dominée par le château des comtes de Foix (haut lieu cathare). Économie portée par le secteur public (préfecture, hôpital, administrations), le tourisme patrimonial et de montagne, l'artisanat, le commerce centre-ville et les services. Agriculture montagne (élevage bovin/ovin, fromages) dans les vallées environnantes.",
@@ -56,8 +56,8 @@ export const FOIX_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les acteurs du tourisme patrimonial fuxéen (château de Foix, grottes préhistoriques, hébergements) sur leurs cas IA : agents conversationnels multilingues, automatisation billetterie et réservations, classification avis clients, gestion saisonnalité.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Foix ?",
-      a: "L'audit Flash démarre à 490 € HT pour une TPE. Pour les PME tertiaire ou tourisme, un audit approfondi entre 1 900 et 3 900 € HT selon la complexité. Tarifs publics, pas de devis opaque.",
+      q: "Quel est le tarif d'un audit IA à Foix  ?",
+      a: "L'audit Flash est tarifé selon vos enjeux pour une TPE. Pour les PME tertiaire ou tourisme, un audit approfondi entre 1 900 et 3 900 € HT selon la complexité. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Travaillez-vous avec les agriculteurs de montagne ariégeois ?",

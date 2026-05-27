@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const TETEGHEM_COUDEKERQUE_VILLAGE_COPY: VilleCopy = {
   pitchFr:
-    "Téteghem-Coudekerque-Village (59), commune nouvelle de l'agglomération dunkerquoise (CUD) issue de la fusion 2016, profite de la proximité du port de Dunkerque, deuxième port maritime français en tonnage. Tissu économique : services portuaires et logistiques, PME industrielles sous-traitantes, commerces, artisanat, agriculture flandrienne. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin dunkerquois.",
+    "Téteghem-Coudekerque-Village (59), commune nouvelle de l'agglomération dunkerquoise (CUD) issue de la fusion 2016, profite de la proximité du port de Dunkerque, deuxième port maritime français en tonnage. Tissu économique : services portuaires et logistiques, PME industrielles sous-traitantes, commerces, artisanat, agriculture flandrienne. Axion-IA opère sur l'ensemble des activités professionnelles locales du bassin dunkerquois.",
   pitchEn:
-    "Téteghem-Coudekerque-Village (59), commune nouvelle de l'agglomération dunkerquoise (CUD) issue de la fusion 2016, profite de la proximité du port de Dunkerque, deuxième port maritime français en tonnage. Tissu économique : services portuaires et logistiques, PME industrielles sous-traitantes, commerces, artisanat, agriculture flandrienne. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin dunkerquois.",
+    "Téteghem-Coudekerque-Village (59), commune nouvelle de l'agglomération dunkerquoise (CUD) issue de la fusion 2016, profite de la proximité du port de Dunkerque, deuxième port maritime français en tonnage. Tissu économique : services portuaires et logistiques, PME industrielles sous-traitantes, commerces, artisanat, agriculture flandrienne. Axion-IA opère sur l'ensemble des activités professionnelles locales du bassin dunkerquois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Téteghem-Coudekerque-Village (59). Nous accompagnons TPE et PME : prestataires logistiques et portuaires (Dunkerque-Port), PME industrielles sous-traitantes, commerçants, artisans, et exploitations agricoles flandriennes.",
   directAnswerEn:
@@ -56,7 +56,7 @@ export const TETEGHEM_COUDEKERQUE_VILLAGE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les prestataires logistiques et portuaires du bassin dunkerquois sur leurs cas IA spécifiques : tracking conteneurs et flux portuaires, optimisation tournées et chargements, agents IA douane et documentation, prévision flux entrants-sortants, maintenance prédictive matériel de manutention.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Téteghem-Coudekerque-Village ?",
+      q: "Tarifs audit IA à Téteghem-Coudekerque-Village  : quel budget prévoir ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du Dunkerquois, il identifie les cas d'usage IA à fort ROI pour votre activité (logistique, industrie sous-traitante, commerce, agriculture). Tarifs publics, sans engagement.",
     },
     {

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VILLERS_LE_LAC_COPY: VilleCopy = {
   pitchFr:
-    "Villers-le-Lac (25), commune du Haut-Doubs frontalière de la Suisse, est connue pour le Saut du Doubs et sa tradition horlogère héritée du Val de Morteau. TPE artisans, PME horlogères et de micro-mécanique, commerces touristiques, professions libérales et indépendants transfrontaliers composent son tissu économique. Axion-IA accompagne entreprises et indépendants de tous secteurs du Haut-Doubs.",
+    "Villers-le-Lac (25), commune du Haut-Doubs frontalière de la Suisse, est connue pour le Saut du Doubs et sa tradition horlogère héritée du Val de Morteau. TPE artisans, PME horlogères et de micro-mécanique, commerces touristiques, professions libérales et indépendants transfrontaliers composent son tissu économique. Axion-IA accompagne entreprises et indépendants du Haut-Doubs.",
   pitchEn:
-    "Villers-le-Lac (25), commune du Haut-Doubs frontalière de la Suisse, est connue pour le Saut du Doubs et sa tradition horlogère héritée du Val de Morteau. TPE artisans, PME horlogères et de micro-mécanique, commerces touristiques, professions libérales et indépendants transfrontaliers composent son tissu économique. Axion-IA accompagne entreprises et indépendants de tous secteurs du Haut-Doubs.",
+    "Villers-le-Lac (25), commune du Haut-Doubs frontalière de la Suisse, est connue pour le Saut du Doubs et sa tradition horlogère héritée du Val de Morteau. TPE artisans, PME horlogères et de micro-mécanique, commerces touristiques, professions libérales et indépendants transfrontaliers composent son tissu économique. Axion-IA accompagne entreprises et indépendants du Haut-Doubs.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villers-le-Lac (25). Nous accompagnons tous types d'activités : TPE artisans, PME horlogères et de micro-mécanique du Val de Morteau, commerçants du secteur touristique du Saut du Doubs, indépendants, professions libérales et travailleurs frontaliers vers la Suisse.",
   directAnswerEn:
@@ -61,7 +61,7 @@ export const VILLERS_LE_LAC_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour une TPE ou PME de Villers-le-Lac ?",
-      a: "L'audit Flash démarre à 490 € HT, accessible aux TPE. Pour les PME horlogères ou de micro-mécanique, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
+      a: "L'audit Flash est tarifé selon vos enjeux, accessible aux TPE. Pour les PME horlogères ou de micro-mécanique, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
     },
     {
       q: "Comment se déroule une mission IA depuis Besançon ou la Suisse ?",

@@ -11,9 +11,9 @@ export const PERIGUEUX_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Périgueux, au cœur d'un écosystème comprenant Boulazac Isle Manoire. Nos services s'adressent aux entreprises locales souhaitant optimiser leurs processus grâce à l'IA.",
   directAnswerFr:
-    "À Périgueux, Axion-IA propose des interventions sur site pour les entreprises locales. Nous nous déplaçons dans des communes comme Marsac-sur-l'Isle et Trélissac pour offrir des services d'IA adaptés aux besoins spécifiques des secteurs tels que le commerce de détail et la construction. Nos tarifs publics incluent l'audit dès 490 € HT et l'intervention à partir de 590 € HT.",
+    "À Périgueux, Axion-IA propose des interventions sur site pour les entreprises locales. Nous nous déplaçons dans des communes comme Marsac-sur-l'Isle et Trélissac pour offrir des services d'IA adaptés aux besoins spécifiques des secteurs tels que le commerce de détail et la construction. Nos tarifs publics incluent l'audit et l'intervention.",
   directAnswerEn:
-    "À Périgueux, Axion-IA propose des interventions sur site pour les entreprises locales. Nous nous déplaçons dans des communes comme Marsac-sur-l'Isle et Trélissac pour offrir des services d'IA adaptés aux besoins spécifiques des secteurs tels que le commerce de détail et la construction. Nos tarifs publics incluent l'audit dès 490 € HT et l'intervention à partir de 590 € HT.",
+    "À Périgueux, Axion-IA propose des interventions sur site pour les entreprises locales. Nous nous déplaçons dans des communes comme Marsac-sur-l'Isle et Trélissac pour offrir des services d'IA adaptés aux besoins spécifiques des secteurs tels que le commerce de détail et la construction. Nos tarifs publics incluent l'audit et l'intervention.",
   seoHook: "commerce détail & restauration",
   ecosystemFr:
     "Périgueux et ses environs, comme Notre-Dame-de-Sanilhac, bénéficient d'un tissu économique actif. Les secteurs dominants incluent le commerce de détail et la restauration, soutenus par des établissements comme ceux de Boulazac Isle Manoire.",

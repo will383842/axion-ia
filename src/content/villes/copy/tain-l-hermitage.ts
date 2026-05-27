@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const TAIN_L_HERMITAGE_COPY: VilleCopy = {
   pitchFr:
-    "Tain-l'Hermitage (26), commune de la vallée du Rhône drômoise face à Tournon-sur-Rhône, est mondialement réputée pour la viticulture (AOC Hermitage, Crozes-Hermitage et Saint-Joseph en rive opposée). Tissu viticole haut de gamme, oenotourisme, TPE artisans, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Tain-l'Hermitage (26), commune de la vallée du Rhône drômoise face à Tournon-sur-Rhône, est mondialement réputée pour la viticulture (AOC Hermitage, Crozes-Hermitage et Saint-Joseph en rive opposée). Tissu viticole haut de gamme, oenotourisme, TPE artisans, commerces. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Tain-l'Hermitage (26), commune de la vallée du Rhône drômoise face à Tournon-sur-Rhône, est mondialement réputée pour la viticulture (AOC Hermitage, Crozes-Hermitage et Saint-Joseph en rive opposée). Tissu viticole haut de gamme, oenotourisme, TPE artisans, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Tain-l'Hermitage (26), commune de la vallée du Rhône drômoise face à Tournon-sur-Rhône, est mondialement réputée pour la viticulture (AOC Hermitage, Crozes-Hermitage et Saint-Joseph en rive opposée). Tissu viticole haut de gamme, oenotourisme, TPE artisans, commerces. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tain-l'Hermitage (26). Nous accompagnons tous types d'activités : viticulteurs AOC Hermitage / Crozes-Hermitage / Saint-Joseph, négociants en vins, acteurs oenotourisme, PME agroalimentaires (chocolat Valrhona, etc.), TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:

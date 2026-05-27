@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LUCON_COPY: VilleCopy = {
   pitchFr:
-    "Luçon (85), sous-préfecture de la Vendée, est connue pour sa cathédrale où Richelieu fut évêque et sa proximité avec le marais poitevin. Plus de 9 400 habitants, pôle administratif et commercial, tissu de TPE artisanales, PME, commerces, agriculture et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Luçon (85), sous-préfecture de la Vendée, est connue pour sa cathédrale où Richelieu fut évêque et sa proximité avec le marais poitevin. Plus de 9 400 habitants, pôle administratif et commercial, tissu de TPE artisanales, PME, commerces, agriculture et services. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Luçon (85), sous-préfecture de la Vendée, est connue pour sa cathédrale où Richelieu fut évêque et sa proximité avec le marais poitevin. Plus de 9 400 habitants, pôle administratif et commercial, tissu de TPE artisanales, PME, commerces, agriculture et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Luçon (85), sous-préfecture de la Vendée, est connue pour sa cathédrale où Richelieu fut évêque et sa proximité avec le marais poitevin. Plus de 9 400 habitants, pôle administratif et commercial, tissu de TPE artisanales, PME, commerces, agriculture et services. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Luçon (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agricoles et agroalimentaires, professions libérales, acteurs du tourisme marais poitevin et services de la sous-préfecture.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const LUCON_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME agroalimentaires de la plaine vendéenne : contrôle qualité IA, optimisation chaîne de production, prédiction demande, automatisation traçabilité, gestion stocks.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Luçon ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Luçon  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {

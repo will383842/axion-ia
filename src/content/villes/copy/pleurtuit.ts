@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const PLEURTUIT_COPY: VilleCopy = {
   pitchFr:
-    "Pleurtuit (35), commune de la Côte d'Émeraude en Ille-et-Vilaine, accueille l'aéroport Dinard-Bretagne et se situe entre Saint-Malo et Dinan. Tissu TPE artisans, PME tourisme et hôtellerie, commerces, services et entreprises de la zone aéroportuaire. Axion-IA couvre l'ensemble des activités professionnelles présentes de la Côte d'Émeraude.",
+    "Pleurtuit (35), commune de la Côte d'Émeraude en Ille-et-Vilaine, accueille l'aéroport Dinard-Bretagne et se situe entre Saint-Malo et Dinan. Tissu TPE artisans, PME tourisme et hôtellerie, commerces, services et entreprises de la zone aéroportuaire. Axion-IA opère sur l'ensemble des activités professionnelles locales de la Côte d'Émeraude.",
   pitchEn:
-    "Pleurtuit (35), commune de la Côte d'Émeraude en Ille-et-Vilaine, accueille l'aéroport Dinard-Bretagne et se situe entre Saint-Malo et Dinan. Tissu TPE artisans, PME tourisme et hôtellerie, commerces, services et entreprises de la zone aéroportuaire. Axion-IA couvre l'ensemble des activités professionnelles présentes de la Côte d'Émeraude.",
+    "Pleurtuit (35), commune de la Côte d'Émeraude en Ille-et-Vilaine, accueille l'aéroport Dinard-Bretagne et se situe entre Saint-Malo et Dinan. Tissu TPE artisans, PME tourisme et hôtellerie, commerces, services et entreprises de la zone aéroportuaire. Axion-IA opère sur l'ensemble des activités professionnelles locales de la Côte d'Émeraude.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pleurtuit (35). Nous accompagnons TPE artisans, PME tourisme et hôtellerie, commerçants et entreprises de la Côte d'Émeraude, proche Saint-Malo et Dinard. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pleurtuit (35). Nous accompagnons TPE artisans, PME tourisme et hôtellerie, commerçants et entreprises de la Côte d'Émeraude, proche Saint-Malo et Dinard. Audit Flash sur mesure, interventions sur site et coaching dirigeants.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pleurtuit (35). Nous accompagnons TPE artisans, PME tourisme et hôtellerie, commerçants et entreprises de la Côte d'Émeraude, proche Saint-Malo et Dinard. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pleurtuit (35). Nous accompagnons TPE artisans, PME tourisme et hôtellerie, commerçants et entreprises de la Côte d'Émeraude, proche Saint-Malo et Dinard. Audit Flash sur mesure, interventions sur site et coaching dirigeants.",
   seoHook: "tourisme hôtellerie-restauration & artisanat",
   ecosystemFr:
     "Pleurtuit bénéficie de sa position stratégique sur la Côte d'Émeraude entre Saint-Malo (10 min) et Dinan (15 min), avec l'aéroport Dinard-Bretagne sur son territoire. Économie tournée vers le tourisme, l'hôtellerie-restauration, le commerce, l'artisanat BTP, les services aéroportuaires et les activités nautiques. Tissu TPE/PME dynamique porté par l'attractivité balnéaire.",
@@ -52,7 +52,7 @@ export const PLEURTUIT_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Pleurtuit et sur toute la Côte d'Émeraude (Saint-Malo, Dinard, Dinan, Cancale, Saint-Lunaire). Nos consultants se déplacent depuis Rennes en 1h ou directement sur zone.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Pleurtuit ?",
+      q: "Tarifs audit IA à Pleurtuit  : quel budget prévoir ?",
       a: "L'Audit Flash IA démarre à 490 € HT pour une session de 4h. Idéal pour les TPE et PME de la Côte d'Émeraude souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré.",
     },
     {

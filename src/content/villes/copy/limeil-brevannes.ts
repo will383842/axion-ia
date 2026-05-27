@@ -26,8 +26,8 @@ export const LIMEIL_BREVANNES_COPY: VilleCopy = {
   topSectorsNaf: ["Commerce de gros", "Transports terrestres", "Travaux de construction"],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Limeil-Brévannes permet d'identifier des améliorations immédiates. L'audit Flash démarre à 490 € HT.",
-      en: "Réaliser un audit à Limeil-Brévannes permet d'identifier des améliorations immédiates. L'audit Flash démarre à 490 € HT.",
+      fr: "Réaliser un audit à Limeil-Brévannes permet d'identifier des améliorations immédiates. L'audit Flash est tarifé selon vos enjeux.",
+      en: "Réaliser un audit à Limeil-Brévannes permet d'identifier des améliorations immédiates. L'audit Flash est tarifé selon vos enjeux.",
     },
     interventions: {
       fr: "Intervenir à Limeil-Brévannes optimise vos processus métiers. Nos interventions commencent à 590 € HT.",

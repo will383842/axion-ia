@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const CARBONNE_COPY: VilleCopy = {
   pitchFr:
-    "Carbonne (31), commune des bords de Garonne au sud de Toulouse, plus de 5 500 habitants. Tissu TPE artisans, PME industrielles et de services, commerces de centre-ville, professions libérales, activités agricoles. Axion-IA accompagne entreprises et indépendants de tous secteurs du sud de la Haute-Garonne.",
+    "Carbonne (31), commune des bords de Garonne au sud de Toulouse, plus de 5 500 habitants. Tissu TPE artisans, PME industrielles et de services, commerces de centre-ville, professions libérales, activités agricoles. Axion-IA collabore avec toutes les structures locales du sud de la Haute-Garonne.",
   pitchEn:
-    "Carbonne (31), commune des bords de Garonne au sud de Toulouse, plus de 5 500 habitants. Tissu TPE artisans, PME industrielles et de services, commerces de centre-ville, professions libérales, activités agricoles. Axion-IA accompagne entreprises et indépendants de tous secteurs du sud de la Haute-Garonne.",
+    "Carbonne (31), commune des bords de Garonne au sud de Toulouse, plus de 5 500 habitants. Tissu TPE artisans, PME industrielles et de services, commerces de centre-ville, professions libérales, activités agricoles. Axion-IA collabore avec toutes les structures locales du sud de la Haute-Garonne.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carbonne (31). Nous accompagnons TPE artisans, PME industrielles, commerçants et professions libérales du sud Haute-Garonne. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carbonne (31). Nous accompagnons TPE artisans, PME industrielles, commerçants et professions libérales du sud Haute-Garonne. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carbonne (31). Nous accompagnons TPE artisans, PME industrielles, commerçants et professions libérales du sud Haute-Garonne. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carbonne (31). Nous accompagnons TPE artisans, PME industrielles, commerçants et professions libérales du sud Haute-Garonne. Audit Flash sur mesure.",
   seoHook: "industrie fabrication & artisanat",
   ecosystemFr:
     "Carbonne est un bourg structurant du sud de la Haute-Garonne, sur les bords de la Garonne. PME industrielles, artisans BTP, commerces de centre-ville, professions libérales, exploitations agricoles. Axe A64 vers les Pyrénées.",
@@ -56,7 +56,7 @@ export const CARBONNE_COPY: VilleCopy = {
       a: "Nous accompagnons tous types d'activités : PME industrielles, artisans, commerces, agriculture, professions libérales. Aucun secteur exclu.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Carbonne ?",
+      q: "Combien coûte un audit IA à Carbonne  ?",
       a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME industrielles, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics.",
     },
     {

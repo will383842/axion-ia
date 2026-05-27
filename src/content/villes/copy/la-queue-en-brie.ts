@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LA_QUEUE_EN_BRIE_COPY: VilleCopy = {
   pitchFr:
-    "La Queue-en-Brie (94), commune semi-rurale de l'est du Val-de-Marne aux portes de la Brie, offre un cadre verdoyant entre plateau agricole et zones pavillonnaires. TPE artisans, commerces de proximité, professions libérales, PME services, exploitations agricoles. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "La Queue-en-Brie (94), commune semi-rurale de l'est du Val-de-Marne aux portes de la Brie, offre un cadre verdoyant entre plateau agricole et zones pavillonnaires. TPE artisans, commerces de proximité, professions libérales, PME services, exploitations agricoles. Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "La Queue-en-Brie (94), commune semi-rurale de l'est du Val-de-Marne aux portes de la Brie, offre un cadre verdoyant entre plateau agricole et zones pavillonnaires. TPE artisans, commerces de proximité, professions libérales, PME services, exploitations agricoles. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "La Queue-en-Brie (94), commune semi-rurale de l'est du Val-de-Marne aux portes de la Brie, offre un cadre verdoyant entre plateau agricole et zones pavillonnaires. TPE artisans, commerces de proximité, professions libérales, PME services, exploitations agricoles. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Queue-en-Brie (94). Nous accompagnons TPE et PME : artisans, commerçants de proximité, professions libérales, prestataires de services, exploitants agricoles de l'est Val-de-Marne. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Queue-en-Brie (94). Nous accompagnons TPE et PME : artisans, commerçants de proximité, professions libérales, prestataires de services, exploitants agricoles de l'est Val-de-Marne. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Queue-en-Brie (94). Nous accompagnons TPE et PME : artisans, commerçants de proximité, professions libérales, prestataires de services, exploitants agricoles de l'est Val-de-Marne. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Queue-en-Brie (94). Nous accompagnons TPE et PME : artisans, commerçants de proximité, professions libérales, prestataires de services, exploitants agricoles de l'est Val-de-Marne. Audit Flash sur mesure.",
   seoHook: "artisanat paysagisme & commerce proximité",
   ecosystemFr:
     "La Queue-en-Brie est une commune semi-rurale de l'est du Val-de-Marne, aux portes du plateau de la Brie. Tissu économique de proximité : TPE artisans BTP et paysagistes, commerces de centre-bourg, professions libérales, PME de services, quelques exploitations agricoles. Proximité Francilienne N104.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_GELY_DU_FESC_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Gély-du-Fesc (34), commune résidentielle prisée au nord de Montpellier, adossée aux garrigues du Pic Saint-Loup. Cadre de vie attractif, forte croissance démographique, vignoble Pic Saint-Loup. Tissu TPE professions libérales, PME services, artisans, commerces de proximité. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Saint-Gély-du-Fesc (34), commune résidentielle prisée au nord de Montpellier, adossée aux garrigues du Pic Saint-Loup. Cadre de vie attractif, forte croissance démographique, vignoble Pic Saint-Loup. Tissu TPE professions libérales, PME services, artisans, commerces de proximité. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Saint-Gély-du-Fesc (34), commune résidentielle prisée au nord de Montpellier, adossée aux garrigues du Pic Saint-Loup. Cadre de vie attractif, forte croissance démographique, vignoble Pic Saint-Loup. Tissu TPE professions libérales, PME services, artisans, commerces de proximité. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Saint-Gély-du-Fesc (34), commune résidentielle prisée au nord de Montpellier, adossée aux garrigues du Pic Saint-Loup. Cadre de vie attractif, forte croissance démographique, vignoble Pic Saint-Loup. Tissu TPE professions libérales, PME services, artisans, commerces de proximité. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Gély-du-Fesc (34). Nous accompagnons TPE professions libérales, PME de services, artisans, commerces de proximité et acteurs du vignoble Pic Saint-Loup dans le nord Montpellier.",
   directAnswerEn:

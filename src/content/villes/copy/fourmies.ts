@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FOURMIES_COPY: VilleCopy = {
   pitchFr:
-    "Fourmies (59), ville de l'Avesnois au sud du département du Nord, héritière d'une longue tradition textile (laine peignée) et industrielle. Tissu TPE/PME industrie reconvertie, plasturgie, agroalimentaire, commerces et services de proximité, artisanat. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Fourmies (59), ville de l'Avesnois au sud du département du Nord, héritière d'une longue tradition textile (laine peignée) et industrielle. Tissu TPE/PME industrie reconvertie, plasturgie, agroalimentaire, commerces et services de proximité, artisanat. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Fourmies (59), ville de l'Avesnois au sud du département du Nord, héritière d'une longue tradition textile (laine peignée) et industrielle. Tissu TPE/PME industrie reconvertie, plasturgie, agroalimentaire, commerces et services de proximité, artisanat. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Fourmies (59), ville de l'Avesnois au sud du département du Nord, héritière d'une longue tradition textile (laine peignée) et industrielle. Tissu TPE/PME industrie reconvertie, plasturgie, agroalimentaire, commerces et services de proximité, artisanat. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fourmies (59). Nous accompagnons TPE et PME de l'Avesnois : industrie reconvertie textile-plasturgie, agroalimentaire, BTP, commerces de proximité, artisans et professions libérales du sud du Nord.",
   directAnswerEn:
@@ -56,7 +56,7 @@ export const FOURMIES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE et PME industrielles reconverties de Fourmies : plasturgie, agroalimentaire, sous-traitance mécanique. Cas d'usage IA : contrôle qualité visuel, maintenance prédictive, automatisation workflow production, agents IA gestion fournisseurs.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Fourmies ?",
+      q: "Combien coûte un audit IA à Fourmies  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de l'Avesnois, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics, sans engagement.",
     },
     {

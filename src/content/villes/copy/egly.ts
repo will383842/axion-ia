@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const EGLY_COPY: VilleCopy = {
   pitchFr:
-    "Égly (91), commune résidentielle du Hurepoix dans le sud de l'Essonne, est positionnée entre Arpajon et Brétigny-sur-Orge sur l'axe RN20. Tissu TPE artisans, commerçants, professions libérales, PME de services et indépendants. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud Essonne / Hurepoix.",
+    "Égly (91), commune résidentielle du Hurepoix dans le sud de l'Essonne, est positionnée entre Arpajon et Brétigny-sur-Orge sur l'axe RN20. Tissu TPE artisans, commerçants, professions libérales, PME de services et indépendants. Axion-IA opère sur l'ensemble des activités professionnelles locales du sud Essonne / Hurepoix.",
   pitchEn:
-    "Égly (91), commune résidentielle du Hurepoix dans le sud de l'Essonne, est positionnée entre Arpajon et Brétigny-sur-Orge sur l'axe RN20. Tissu TPE artisans, commerçants, professions libérales, PME de services et indépendants. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud Essonne / Hurepoix.",
+    "Égly (91), commune résidentielle du Hurepoix dans le sud de l'Essonne, est positionnée entre Arpajon et Brétigny-sur-Orge sur l'axe RN20. Tissu TPE artisans, commerçants, professions libérales, PME de services et indépendants. Axion-IA opère sur l'ensemble des activités professionnelles locales du sud Essonne / Hurepoix.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Égly (91). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, PME de services, agriculteurs et indépendants du sud Essonne entre Arpajon et Brétigny-sur-Orge, cœur du Hurepoix.",
   directAnswerEn:
@@ -52,7 +52,7 @@ export const EGLY_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Égly et tout le sud Essonne / Hurepoix (Arpajon, Brétigny-sur-Orge, La Norville, Ollainville, Leuville-sur-Orge). Nos consultants se déplacent depuis Paris (40 min) ou Massy (20 min).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Égly ?",
+      q: "Quel est le tarif d'un audit IA à Égly  ?",
       a: "L'audit Flash IA à Égly débute à 490 € HT pour 4 heures de diagnostic. Tarifs publics, sans engagement, adaptés aux TPE et PME locales. ROI chiffré et plan d'action livré sous 48h.",
     },
     {

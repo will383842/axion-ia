@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const ROMILLY_SUR_SEINE_COPY: VilleCopy = {
   pitchFr:
-    "Romilly-sur-Seine (10), sous-préfecture de l'Aube et 3e ville du département (15 000 habitants), héritière d'une tradition bonneterie historique et idéalement située sur les bords de Seine. TPE et PME textile et confection, sous-traitants industriels, commerces, artisans, services et acteurs logistiques. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Romilly-sur-Seine (10), sous-préfecture de l'Aube et 3e ville du département (15 000 habitants), héritière d'une tradition bonneterie historique et idéalement située sur les bords de Seine. TPE et PME textile et confection, sous-traitants industriels, commerces, artisans, services et acteurs logistiques. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "Romilly-sur-Seine (10), sous-préfecture de l'Aube et 3e ville du département (15 000 habitants), héritière d'une tradition bonneterie historique et idéalement située sur les bords de Seine. TPE et PME textile et confection, sous-traitants industriels, commerces, artisans, services et acteurs logistiques. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Romilly-sur-Seine (10), sous-préfecture de l'Aube et 3e ville du département (15 000 habitants), héritière d'une tradition bonneterie historique et idéalement située sur les bords de Seine. TPE et PME textile et confection, sous-traitants industriels, commerces, artisans, services et acteurs logistiques. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Romilly-sur-Seine (10). Nous accompagnons TPE et PME : ateliers bonneterie et confection, sous-traitants industriels, commerces du centre-ville, artisans, acteurs logistiques des bords de Seine. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Romilly-sur-Seine (10). Nous accompagnons TPE et PME : ateliers bonneterie et confection, sous-traitants industriels, commerces du centre-ville, artisans, acteurs logistiques des bords de Seine. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Romilly-sur-Seine (10). Nous accompagnons TPE et PME : ateliers bonneterie et confection, sous-traitants industriels, commerces du centre-ville, artisans, acteurs logistiques des bords de Seine. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Romilly-sur-Seine (10). Nous accompagnons TPE et PME : ateliers bonneterie et confection, sous-traitants industriels, commerces du centre-ville, artisans, acteurs logistiques des bords de Seine. Audit Flash sur mesure.",
   seoHook: "vallée seine",
   ecosystemFr:
     "Romilly-sur-Seine est une sous-préfecture auboise au passé bonnetier marqué, à proximité immédiate de la Seine. Tissu TPE/PME diversifié : textile et confection, sous-traitance industrielle, logistique, artisanat, commerce de centre-ville et services aux entreprises.",
@@ -52,7 +52,7 @@ export const ROMILLY_SUR_SEINE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Romilly-sur-Seine et dans tout l'ouest aubois. Troyes à 40 min via N19, Paris-Est à 1 h 30 en TER direct, Nogent-sur-Seine à 20 min.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Romilly-sur-Seine ?",
+      q: "Combien coûte un audit IA à Romilly-sur-Seine  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables en ligne, adaptés aux TPE artisanales et PME textile auboises.",
     },
     {

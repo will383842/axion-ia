@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LE_CENDRE_COPY: VilleCopy = {
   pitchFr:
-    "Le Cendre (63), commune résidentielle au sud de Clermont-Ferrand dans Clermont Auvergne Métropole (proximité Cournon-d'Auvergne). Tissu PME tertiaires, professions libérales, TPE artisanat BTP, commerce de proximité, services aux entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Le Cendre (63), commune résidentielle au sud de Clermont-Ferrand dans Clermont Auvergne Métropole (proximité Cournon-d'Auvergne). Tissu PME tertiaires, professions libérales, TPE artisanat BTP, commerce de proximité, services aux entreprises. Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Le Cendre (63), commune résidentielle au sud de Clermont-Ferrand dans Clermont Auvergne Métropole (proximité Cournon-d'Auvergne). Tissu PME tertiaires, professions libérales, TPE artisanat BTP, commerce de proximité, services aux entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Le Cendre (63), commune résidentielle au sud de Clermont-Ferrand dans Clermont Auvergne Métropole (proximité Cournon-d'Auvergne). Tissu PME tertiaires, professions libérales, TPE artisanat BTP, commerce de proximité, services aux entreprises. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Cendre (63). Nous accompagnons TPE et PME : entreprises tertiaires sud Clermont, professions libérales, artisans BTP, commerçants de proximité, prestataires services aux entreprises. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Cendre (63). Nous accompagnons TPE et PME : entreprises tertiaires sud Clermont, professions libérales, artisans BTP, commerçants de proximité, prestataires services aux entreprises. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Cendre (63). Nous accompagnons TPE et PME : entreprises tertiaires sud Clermont, professions libérales, artisans BTP, commerçants de proximité, prestataires services aux entreprises. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Cendre (63). Nous accompagnons TPE et PME : entreprises tertiaires sud Clermont, professions libérales, artisans BTP, commerçants de proximité, prestataires services aux entreprises. Audit Flash sur mesure.",
   seoHook: "proche clermont-ferrand",
   ecosystemFr:
     "Le Cendre est une commune résidentielle du sud de l'agglomération clermontoise, dans Clermont Auvergne Métropole. Tissu PME tertiaires, professions libérales, TPE artisanat BTP, commerce de proximité, services aux entreprises.",

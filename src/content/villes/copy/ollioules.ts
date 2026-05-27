@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const OLLIOULES_COPY: VilleCopy = {
   pitchFr:
-    "Ollioules (83), commune de l'agglomération toulonnaise ouest dans la vallée du Reppe, compte plus de 14 500 habitants. Capitale historique de la fleur coupée et de l'horticulture, zones d'activités, tissu de TPE artisanales, PME horticoles et agroalimentaires, commerces et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Ollioules (83), commune de l'agglomération toulonnaise ouest dans la vallée du Reppe, compte plus de 14 500 habitants. Capitale historique de la fleur coupée et de l'horticulture, zones d'activités, tissu de TPE artisanales, PME horticoles et agroalimentaires, commerces et services. Axion-IA répond aux besoins des activités professionnelles présentes.",
   pitchEn:
-    "Ollioules (83), commune de l'agglomération toulonnaise ouest dans la vallée du Reppe, compte plus de 14 500 habitants. Capitale historique de la fleur coupée et de l'horticulture, zones d'activités, tissu de TPE artisanales, PME horticoles et agroalimentaires, commerces et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Ollioules (83), commune de l'agglomération toulonnaise ouest dans la vallée du Reppe, compte plus de 14 500 habitants. Capitale historique de la fleur coupée et de l'horticulture, zones d'activités, tissu de TPE artisanales, PME horticoles et agroalimentaires, commerces et services. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ollioules (83). Nous accompagnons tous types d'activités : TPE horticulteurs et artisans, PME agroalimentaires vallée du Reppe, commerces, professions libérales et services de l'agglo Toulon ouest.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const OLLIOULES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME agroalimentaires de la vallée du Reppe : automatisation chaîne production, maintenance prédictive, gestion qualité, optimisation supply chain et relation client B2B.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Ollioules ?",
+      q: "Tarifs audit IA à Ollioules  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {

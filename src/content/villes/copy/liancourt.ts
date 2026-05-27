@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LIANCOURT_COPY: VilleCopy = {
   pitchFr:
-    "Liancourt (60), commune de 6 785 habitants dans l'Oise, est un bourg historique lié à la famille de La Rochefoucauld, situé entre Clermont et Creil. Tissu économique de TPE/PME : industrie mécanique et plasturgie, agroalimentaire, artisanat BTP, commerces de proximité et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Liancourt (60), commune de 6 785 habitants dans l'Oise, est un bourg historique lié à la famille de La Rochefoucauld, situé entre Clermont et Creil. Tissu économique de TPE/PME : industrie mécanique et plasturgie, agroalimentaire, artisanat BTP, commerces de proximité et services. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Liancourt (60), commune de 6 785 habitants dans l'Oise, est un bourg historique lié à la famille de La Rochefoucauld, situé entre Clermont et Creil. Tissu économique de TPE/PME : industrie mécanique et plasturgie, agroalimentaire, artisanat BTP, commerces de proximité et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Liancourt (60), commune de 6 785 habitants dans l'Oise, est un bourg historique lié à la famille de La Rochefoucauld, situé entre Clermont et Creil. Tissu économique de TPE/PME : industrie mécanique et plasturgie, agroalimentaire, artisanat BTP, commerces de proximité et services. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Liancourt (60). Nous accompagnons TPE et PME du sud de l'Oise : industriels mécanique et plasturgie, agroalimentaire, artisans BTP, commerçants et prestataires de services. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Liancourt (60). Nous accompagnons TPE et PME du sud de l'Oise : industriels mécanique et plasturgie, agroalimentaire, artisans BTP, commerçants et prestataires de services. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Liancourt (60). Nous accompagnons TPE et PME du sud de l'Oise : industriels mécanique et plasturgie, agroalimentaire, artisans BTP, commerçants et prestataires de services. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Liancourt (60). Nous accompagnons TPE et PME du sud de l'Oise : industriels mécanique et plasturgie, agroalimentaire, artisans BTP, commerçants et prestataires de services. Audit Flash sur mesure.",
   ecosystemFr:
     "Liancourt est un bourg industriel et commerçant du sud de l'Oise, entre Clermont-de-l'Oise et Creil. Historiquement lié à la famille de La Rochefoucauld (château, fondation sociale), la commune conserve un tissu économique diversifié : mécanique de précision, plasturgie, agroalimentaire, artisanat BTP, commerce de proximité et services. Le bassin d'emploi s'articule avec Clermont, Creil et Pont-Sainte-Maxence.",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const LIANCOURT_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Liancourt et dans tout le sud de l'Oise (Clermont, Creil, Pont-Sainte-Maxence, Rantigny). Consultants accessibles via gare de Liancourt-Rantigny (TER Paris-Nord, 50 min).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Liancourt ?",
+      q: "Combien coûte un audit IA à Liancourt  ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME liancouroises : industriels mécanique/plasturgie, agroalimentaire, artisans BTP, commerçants. ROI chiffré dès le diagnostic.",
     },
     {

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ANICHE_COPY: VilleCopy = {
   pitchFr:
-    "Aniche (59), commune française du département du Nord (région Hauts-de-France) dans le bassin minier Nord-Pas-de-Calais reconverti (UNESCO), conserve un héritage industriel verrier (cristallerie, verrerie). Tissu TPE artisanat BTP, PME industrie et services, commerces de proximité, services aux entreprises de l'arrondissement de Douai. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Aniche (59), commune française du département du Nord (région Hauts-de-France) dans le bassin minier Nord-Pas-de-Calais reconverti (UNESCO), conserve un héritage industriel verrier (cristallerie, verrerie). Tissu TPE artisanat BTP, PME industrie et services, commerces de proximité, services aux entreprises de l'arrondissement de Douai. Axion-IA répond aux besoins des activités professionnelles présentes.",
   pitchEn:
-    "Aniche (59), commune française du département du Nord (région Hauts-de-France) dans le bassin minier Nord-Pas-de-Calais reconverti (UNESCO), conserve un héritage industriel verrier (cristallerie, verrerie). Tissu TPE artisanat BTP, PME industrie et services, commerces de proximité, services aux entreprises de l'arrondissement de Douai. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Aniche (59), commune française du département du Nord (région Hauts-de-France) dans le bassin minier Nord-Pas-de-Calais reconverti (UNESCO), conserve un héritage industriel verrier (cristallerie, verrerie). Tissu TPE artisanat BTP, PME industrie et services, commerces de proximité, services aux entreprises de l'arrondissement de Douai. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aniche (59). Nous accompagnons tous types d'activités : TPE artisans BTP du bassin minier reconverti, PME industrie verrière et services, commerçants, sous-traitants industriels et services aux entreprises de l'arrondissement de Douai dans le Nord.",
   directAnswerEn:

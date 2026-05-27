@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PORTES_LES_VALENCE_COPY: VilleCopy = {
   pitchFr:
-    "Portes-lès-Valence (26), commune en banlieue sud immédiate de Valence dans la Drôme, est intégrée à Valence Romans Agglo. Position ferroviaire stratégique (gare de triage SNCF) et axe rhodanien A7. Tissu PME industrielles, logistique, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Portes-lès-Valence (26), commune en banlieue sud immédiate de Valence dans la Drôme, est intégrée à Valence Romans Agglo. Position ferroviaire stratégique (gare de triage SNCF) et axe rhodanien A7. Tissu PME industrielles, logistique, TPE artisans BTP, commerces. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Portes-lès-Valence (26), commune en banlieue sud immédiate de Valence dans la Drôme, est intégrée à Valence Romans Agglo. Position ferroviaire stratégique (gare de triage SNCF) et axe rhodanien A7. Tissu PME industrielles, logistique, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Portes-lès-Valence (26), commune en banlieue sud immédiate de Valence dans la Drôme, est intégrée à Valence Romans Agglo. Position ferroviaire stratégique (gare de triage SNCF) et axe rhodanien A7. Tissu PME industrielles, logistique, TPE artisans BTP, commerces. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Portes-lès-Valence (26). Nous accompagnons tous types d'activités : PME industrielles et logistiques (axe ferroviaire et A7), TPE artisans BTP, commerçants, agriculteurs vallée du Rhône, indépendants, professions libérales et services aux entreprises de Valence Romans Agglo.",
   directAnswerEn:

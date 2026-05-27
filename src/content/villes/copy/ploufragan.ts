@@ -9,9 +9,9 @@ export const PLOUFRAGAN_COPY: VilleCopy = {
   pitchEn:
     "Ploufragan (22), commune de l'agglomération de Saint-Brieuc abritant le Zoopôle, pôle d'excellence agroalimentaire et vétérinaire des Côtes-d'Armor. Tissu de TPE et PME agroalimentaires, laboratoires, entreprises de services, artisans et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de l'agglo briochine.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ploufragan (22). Nous accompagnons TPE et PME : entreprises agroalimentaires, laboratoires du Zoopôle, artisans, PME de services et professions libérales de l'agglomération de Saint-Brieuc. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ploufragan (22). Nous accompagnons TPE et PME : entreprises agroalimentaires, laboratoires du Zoopôle, artisans, PME de services et professions libérales de l'agglomération de Saint-Brieuc. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ploufragan (22). Nous accompagnons TPE et PME : entreprises agroalimentaires, laboratoires du Zoopôle, artisans, PME de services et professions libérales de l'agglomération de Saint-Brieuc. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ploufragan (22). Nous accompagnons TPE et PME : entreprises agroalimentaires, laboratoires du Zoopôle, artisans, PME de services et professions libérales de l'agglomération de Saint-Brieuc. Audit Flash sur mesure.",
   seoHook: "TPE & PME Côtes-d'Armor",
   ecosystemFr:
     "Ploufragan est une commune de l'agglomération de Saint-Brieuc, siège du Zoopôle, pôle d'excellence agroalimentaire, vétérinaire et environnemental. Zones d'activités économiques structurantes. Tissu économique : PME agroalimentaires, laboratoires, TPE artisans, services aux entreprises, professions libérales. Communes voisines : Saint-Brieuc, Trégueux, Langueux, Plérin, Saint-Julien.",
@@ -52,7 +52,7 @@ export const PLOUFRAGAN_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Ploufragan et dans toute l'agglomération de Saint-Brieuc (Saint-Brieuc, Trégueux, Langueux, Plérin, Saint-Julien). Nos consultants se déplacent sur site ou en visio.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Ploufragan ?",
+      q: "Combien coûte un audit IA à Ploufragan  ?",
       a: "L'Audit Flash IA à Ploufragan démarre à 490 € HT pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {

@@ -9,9 +9,9 @@ export const LE_PALAIS_SUR_VIENNE_COPY: VilleCopy = {
   pitchEn:
     "Le Palais-sur-Vienne (87), commune de l'agglomération de Limoges en Haute-Vienne, bénéficie de la dynamique économique du pôle limougeaud. Tissu TPE artisans, PME industrielles porcelaine et luxe, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités de la première couronne nord de Limoges.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Palais-sur-Vienne (87). Nous accompagnons TPE artisans, PME industrielles porcelaine et luxe, commerçants, professions libérales et services aux entreprises de l'agglomération nord de Limoges. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Palais-sur-Vienne (87). Nous accompagnons TPE artisans, PME industrielles porcelaine et luxe, commerçants, professions libérales et services aux entreprises de l'agglomération nord de Limoges. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Palais-sur-Vienne (87). Nous accompagnons TPE artisans, PME industrielles porcelaine et luxe, commerçants, professions libérales et services aux entreprises de l'agglomération nord de Limoges. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Palais-sur-Vienne (87). Nous accompagnons TPE artisans, PME industrielles porcelaine et luxe, commerçants, professions libérales et services aux entreprises de l'agglomération nord de Limoges. Audit Flash sur mesure.",
   seoHook: "industrie porcelaine & professions libérales",
   ecosystemFr:
     "Le Palais-sur-Vienne est une commune résidentielle et économique de la première couronne nord de Limoges. Tissu TPE artisans BTP, PME industrielles héritières de la tradition porcelaine et luxe limougeaude, commerces centre-bourg, professions libérales. Zones d'activités connectées au pôle Limoges Métropole.",
@@ -57,7 +57,7 @@ export const LE_PALAIS_SUR_VIENNE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA au Palais-sur-Vienne ?",
-      a: "L'audit Flash démarre à 490 € HT pour une TPE. Pour les PME industrielles, un audit approfondi est proposé entre 1 900 et 3 900 € HT selon la complexité des process. Tarifs publics, pas de devis opaque.",
+      a: "L'audit Flash propose un tarif d'entrée accessible pour une TPE. Pour les PME industrielles, un audit approfondi est proposé entre 1 900 et 3 900 € HT selon la complexité des process. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles porcelaine et luxe ?",

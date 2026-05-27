@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_QUENTIN_FALLAVIER_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Quentin-Fallavier (38), commune de l'unité urbaine Villefontaine en Isère, héberge des zones d'activités industrielles majeures aménagées dans le cadre de la ville nouvelle de L'Isle-d'Abeau (CAPI). Tissu PME industrielles, logistique d'envergure (proximité Saint-Exupéry), TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Saint-Quentin-Fallavier (38), commune de l'unité urbaine Villefontaine en Isère, héberge des zones d'activités industrielles majeures aménagées dans le cadre de la ville nouvelle de L'Isle-d'Abeau (CAPI). Tissu PME industrielles, logistique d'envergure (proximité Saint-Exupéry), TPE artisans BTP, commerces. Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Saint-Quentin-Fallavier (38), commune de l'unité urbaine Villefontaine en Isère, héberge des zones d'activités industrielles majeures aménagées dans le cadre de la ville nouvelle de L'Isle-d'Abeau (CAPI). Tissu PME industrielles, logistique d'envergure (proximité Saint-Exupéry), TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Saint-Quentin-Fallavier (38), commune de l'unité urbaine Villefontaine en Isère, héberge des zones d'activités industrielles majeures aménagées dans le cadre de la ville nouvelle de L'Isle-d'Abeau (CAPI). Tissu PME industrielles, logistique d'envergure (proximité Saint-Exupéry), TPE artisans BTP, commerces. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Quentin-Fallavier (38). Nous accompagnons tous types d'activités : PME industrielles et logistiques des zones d'activités CAPI, opérateurs e-commerce et logistique Lyon-Saint-Exupéry, TPE artisans BTP, commerçants et services aux entreprises de la ville nouvelle.",
   directAnswerEn:

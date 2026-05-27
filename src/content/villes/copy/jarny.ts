@@ -60,7 +60,7 @@ export const JARNY_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les artisans BTP et commerçants sur des cas IA pratiques : automatisation devis, gestion planning chantier, agents IA prise de RDV, gestion stocks, facturation automatique. Audit Flash 490 € HT.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Jarny ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Jarny  ?",
       a: "L'audit Flash IA démarre à 490 € HT pour les TPE et PME de Jarny et du Pays Haut. Tarifs publics et transparents. ROI chiffré dès le diagnostic initial.",
     },
     {

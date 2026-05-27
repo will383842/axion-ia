@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ARPAJON_SUR_CERE_COPY: VilleCopy = {
   pitchFr:
-    "Arpajon-sur-Cère (15), commune en banlieue immédiate d'Aurillac dans le Cantal, est positionnée en vallée de la Cère. Tissu PME tertiaires, agriculture Cantal (élevage Salers), TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations cantaliennes.",
+    "Arpajon-sur-Cère (15), commune en banlieue immédiate d'Aurillac dans le Cantal, est positionnée en vallée de la Cère. Tissu PME tertiaires, agriculture Cantal (élevage Salers), TPE artisans BTP, commerces. Axion-IA y conduit ses missions auprès des entreprises locales cantaliennes.",
   pitchEn:
-    "Arpajon-sur-Cère (15), commune en banlieue immédiate d'Aurillac dans le Cantal, est positionnée en vallée de la Cère. Tissu PME tertiaires, agriculture Cantal (élevage Salers), TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations cantaliennes.",
+    "Arpajon-sur-Cère (15), commune en banlieue immédiate d'Aurillac dans le Cantal, est positionnée en vallée de la Cère. Tissu PME tertiaires, agriculture Cantal (élevage Salers), TPE artisans BTP, commerces. Axion-IA y conduit ses missions auprès des entreprises locales cantaliennes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arpajon-sur-Cère (15). Nous accompagnons tous types d'activités : PME tertiaires agglomération Aurillac, éleveurs Salers Cantal, agriculteurs, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:

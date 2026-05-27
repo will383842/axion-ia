@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SURZUR_COPY: VilleCopy = {
   pitchFr:
-    "Surzur (56), commune aux portes de la presqu'île de Rhuys et du golfe du Morbihan, conjugue ruralité et proximité littorale. Tissu TPE artisans BTP, exploitations agricoles (maraîchage, élevage), PME services, commerces, tourisme vert et hébergements. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Surzur (56), commune aux portes de la presqu'île de Rhuys et du golfe du Morbihan, conjugue ruralité et proximité littorale. Tissu TPE artisans BTP, exploitations agricoles (maraîchage, élevage), PME services, commerces, tourisme vert et hébergements. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Surzur (56), commune aux portes de la presqu'île de Rhuys et du golfe du Morbihan, conjugue ruralité et proximité littorale. Tissu TPE artisans BTP, exploitations agricoles (maraîchage, élevage), PME services, commerces, tourisme vert et hébergements. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Surzur (56), commune aux portes de la presqu'île de Rhuys et du golfe du Morbihan, conjugue ruralité et proximité littorale. Tissu TPE artisans BTP, exploitations agricoles (maraîchage, élevage), PME services, commerces, tourisme vert et hébergements. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Surzur (56). Nous accompagnons tous types d'activités : TPE artisans BTP, exploitants agricoles (maraîchage, élevage), PME de services, commerçants, hébergeurs touristiques, indépendants et entreprises de la presqu'île de Rhuys et du bassin vannetais.",
   directAnswerEn:

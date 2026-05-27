@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FALAISE_COPY: VilleCopy = {
   pitchFr:
-    "Falaise (14), sous-préfecture du Calvados, est la ville natale de Guillaume le Conquérant. Son château médiéval domine la ville. Pôle économique entre bocage et plaine de Caen, tissu TPE artisans BTP, PME industrielles et agroalimentaires, commerces, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Falaise (14), sous-préfecture du Calvados, est la ville natale de Guillaume le Conquérant. Son château médiéval domine la ville. Pôle économique entre bocage et plaine de Caen, tissu TPE artisans BTP, PME industrielles et agroalimentaires, commerces, professions libérales. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Falaise (14), sous-préfecture du Calvados, est la ville natale de Guillaume le Conquérant. Son château médiéval domine la ville. Pôle économique entre bocage et plaine de Caen, tissu TPE artisans BTP, PME industrielles et agroalimentaires, commerces, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Falaise (14), sous-préfecture du Calvados, est la ville natale de Guillaume le Conquérant. Son château médiéval domine la ville. Pôle économique entre bocage et plaine de Caen, tissu TPE artisans BTP, PME industrielles et agroalimentaires, commerces, professions libérales. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Falaise (14). Nous accompagnons tous types d'activités : TPE artisans BTP et commerçants, PME industrielles et agroalimentaires, acteurs du tourisme patrimoine (château Guillaume le Conquérant), professions libérales et services aux entreprises du pays de Falaise.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const FALAISE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Falaise, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Falaise ?",
+      q: "Combien coûte un audit IA à Falaise  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {

@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const FONTENILLES_COPY: VilleCopy = {
   pitchFr:
-    "Fontenilles (31), commune de l'ouest toulousain en forte croissance, près de 6 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales, activités agricoles. Axion-IA y déploie ses missions auprès de toutes les organisations de la couronne ouest de Toulouse.",
+    "Fontenilles (31), commune de l'ouest toulousain en forte croissance, près de 6 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales, activités agricoles. Axion-IA y déploie son expertise pour toutes les organisations de la couronne ouest de Toulouse.",
   pitchEn:
-    "Fontenilles (31), commune de l'ouest toulousain en forte croissance, près de 6 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales, activités agricoles. Axion-IA y déploie ses missions auprès de toutes les organisations de la couronne ouest de Toulouse.",
+    "Fontenilles (31), commune de l'ouest toulousain en forte croissance, près de 6 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales, activités agricoles. Axion-IA y déploie son expertise pour toutes les organisations de la couronne ouest de Toulouse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fontenilles (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'ouest Toulouse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fontenilles (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'ouest Toulouse. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fontenilles (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'ouest Toulouse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fontenilles (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'ouest Toulouse. Audit Flash sur mesure.",
   seoHook: "artisanat & agriculture céréales",
   ecosystemFr:
     "Fontenilles est une commune en forte croissance démographique de l'ouest de Toulouse. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales, exploitations agricoles céréalières. Cadre semi-rural prisé.",
@@ -56,7 +56,7 @@ export const FONTENILLES_COPY: VilleCopy = {
       a: "Nous accompagnons tous types d'activités : TPE artisans, PME de services, professions libérales, commerces, agriculture. Aucun secteur exclu.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Fontenilles ?",
+      q: "Tarifs audit IA à Fontenilles  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics.",
     },
     {

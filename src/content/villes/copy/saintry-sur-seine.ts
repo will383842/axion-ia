@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINTRY_SUR_SEINE_COPY: VilleCopy = {
   pitchFr:
-    "Saintry-sur-Seine (91), commune résidentielle de l'Essonne en bord de Seine, à 30 km au sud-est de Paris. Tissu TPE artisanales, commerces de proximité, PME tertiaires, indépendants. Axion-IA accompagne entreprises et indépendants de tous secteurs de la vallée de Seine essonnienne.",
+    "Saintry-sur-Seine (91), commune résidentielle de l'Essonne en bord de Seine, à 30 km au sud-est de Paris. Tissu TPE artisanales, commerces de proximité, PME tertiaires, indépendants. Axion-IA opère pour entreprises et indépendants du secteur de la vallée de Seine essonnienne.",
   pitchEn:
-    "Saintry-sur-Seine (91), commune résidentielle de l'Essonne en bord de Seine, à 30 km au sud-est de Paris. Tissu TPE artisanales, commerces de proximité, PME tertiaires, indépendants. Axion-IA accompagne entreprises et indépendants de tous secteurs de la vallée de Seine essonnienne.",
+    "Saintry-sur-Seine (91), commune résidentielle de l'Essonne en bord de Seine, à 30 km au sud-est de Paris. Tissu TPE artisanales, commerces de proximité, PME tertiaires, indépendants. Axion-IA opère pour entreprises et indépendants du secteur de la vallée de Seine essonnienne.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saintry-sur-Seine (91). Nous accompagnons tous types d'activités : TPE artisanales, commerces de proximité, PME tertiaires, indépendants, professions libérales et services aux entreprises de la vallée de Seine.",
   directAnswerEn:

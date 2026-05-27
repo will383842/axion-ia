@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const BONNIERES_SUR_SEINE_COPY: VilleCopy = {
   pitchFr:
-    "Bonnières-sur-Seine (78), commune des Yvelines en bord de Seine dans le Mantois ouest, à la limite du Vexin. Tissu de TPE artisans et commerçants, PME industrielles et de services, professions libérales, agriculture et logistique fluviale. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Bonnières-sur-Seine (78), commune des Yvelines en bord de Seine dans le Mantois ouest, à la limite du Vexin. Tissu de TPE artisans et commerçants, PME industrielles et de services, professions libérales, agriculture et logistique fluviale. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Bonnières-sur-Seine (78), commune des Yvelines en bord de Seine dans le Mantois ouest, à la limite du Vexin. Tissu de TPE artisans et commerçants, PME industrielles et de services, professions libérales, agriculture et logistique fluviale. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Bonnières-sur-Seine (78), commune des Yvelines en bord de Seine dans le Mantois ouest, à la limite du Vexin. Tissu de TPE artisans et commerçants, PME industrielles et de services, professions libérales, agriculture et logistique fluviale. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bonnières-sur-Seine (78). Nous accompagnons TPE et PME : artisans et commerçants, PME industrielles et de services, professions libérales, exploitants agricoles et acteurs logistiques du Mantois ouest en bord de Seine. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bonnières-sur-Seine (78). Nous accompagnons TPE et PME : artisans et commerçants, PME industrielles et de services, professions libérales, exploitants agricoles et acteurs logistiques du Mantois ouest en bord de Seine. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bonnières-sur-Seine (78). Nous accompagnons TPE et PME : artisans et commerçants, PME industrielles et de services, professions libérales, exploitants agricoles et acteurs logistiques du Mantois ouest en bord de Seine. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bonnières-sur-Seine (78). Nous accompagnons TPE et PME : artisans et commerçants, PME industrielles et de services, professions libérales, exploitants agricoles et acteurs logistiques du Mantois ouest en bord de Seine. Audit Flash sur mesure.",
   seoHook: "commerce proximité & industrielles services",
   ecosystemFr:
     "Bonnières-sur-Seine est une commune des Yvelines en bord de Seine dans le Mantois ouest, à la limite du Vexin. Gare Transilien J directe vers Paris. Tissu économique : TPE artisans bâtiment, commerces de proximité, PME industrielles et de services, professions libérales, agriculture, logistique. Communes voisines : Freneuse, Rosny-sur-Seine, Mantes-la-Jolie, Limay, Bennecourt.",
@@ -52,7 +52,7 @@ export const BONNIERES_SUR_SEINE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Bonnières-sur-Seine et dans tout le Mantois ouest (Rosny-sur-Seine à 5 min, Mantes-la-Jolie à 10 min, Vernon à 15 min). Nos consultants se déplacent sur site ou en visio.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Bonnières-sur-Seine ?",
+      q: "Tarifs audit IA à Bonnières-sur-Seine  : quel budget prévoir ?",
       a: "L'Audit Flash IA à Bonnières-sur-Seine démarre à 490 € HT pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {

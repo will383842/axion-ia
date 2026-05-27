@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_BASSEE_COPY: VilleCopy = {
   pitchFr:
-    "La Bassée (59), commune du département du Nord (région Hauts-de-France) dans le sud-ouest de la métropole lilloise, bourg historique du pays de Weppes aux portes du bassin minier. Tissu TPE artisanat BTP et services, PME logistique et transport routier, agriculture périurbaine, commerces de centre-bourg et activités liées au bassin d'emploi lillois. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "La Bassée (59), commune du département du Nord (région Hauts-de-France) dans le sud-ouest de la métropole lilloise, bourg historique du pays de Weppes aux portes du bassin minier. Tissu TPE artisanat BTP et services, PME logistique et transport routier, agriculture périurbaine, commerces de centre-bourg et activités liées au bassin d'emploi lillois. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "La Bassée (59), commune du département du Nord (région Hauts-de-France) dans le sud-ouest de la métropole lilloise, bourg historique du pays de Weppes aux portes du bassin minier. Tissu TPE artisanat BTP et services, PME logistique et transport routier, agriculture périurbaine, commerces de centre-bourg et activités liées au bassin d'emploi lillois. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "La Bassée (59), commune du département du Nord (région Hauts-de-France) dans le sud-ouest de la métropole lilloise, bourg historique du pays de Weppes aux portes du bassin minier. Tissu TPE artisanat BTP et services, PME logistique et transport routier, agriculture périurbaine, commerces de centre-bourg et activités liées au bassin d'emploi lillois. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Bassée (59). Nous accompagnons tous types d'activités : TPE artisans BTP et services, PME logistique et transport routier, agriculteurs, commerçants et entreprises du sud-ouest de la métropole lilloise aux portes du bassin minier.",
   directAnswerEn:

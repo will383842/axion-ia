@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BRIGNAIS_COPY: VilleCopy = {
   pitchFr:
-    "Brignais (69), commune en banlieue sud-ouest de Lyon dans le Rhône, est positionnée dans la vallée du Garon. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du SO lyonnais.",
+    "Brignais (69), commune en banlieue sud-ouest de Lyon dans le Rhône, est positionnée dans la vallée du Garon. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes du SO lyonnais.",
   pitchEn:
-    "Brignais (69), commune en banlieue sud-ouest de Lyon dans le Rhône, est positionnée dans la vallée du Garon. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du SO lyonnais.",
+    "Brignais (69), commune en banlieue sud-ouest de Lyon dans le Rhône, est positionnée dans la vallée du Garon. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes du SO lyonnais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Brignais (69). Nous accompagnons tous types d'activités : PME tertiaires SO lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la banlieue sud-ouest lyonnaise.",
   directAnswerEn:

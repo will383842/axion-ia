@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const LA_MEZIERE_COPY: VilleCopy = {
   pitchFr:
-    "La Mézière (35), commune du nord de Rennes Métropole peuplée de 5 033 habitants, conjugue cadre résidentiel paisible et proximité du grand pôle économique rennais. TPE, PME, artisans, commerçants et professions libérales y constituent l'essentiel du tissu économique. Axion-IA y déploie ses missions auprès de toutes les organisations du nord-rennais.",
+    "La Mézière (35), commune du nord de Rennes Métropole peuplée de 5 033 habitants, conjugue cadre résidentiel paisible et proximité du grand pôle économique rennais. TPE, PME, artisans, commerçants et professions libérales y constituent l'essentiel du tissu économique. Axion-IA y conduit ses missions auprès des entreprises locales du nord-rennais.",
   pitchEn:
-    "La Mézière (35), commune du nord de Rennes Métropole peuplée de 5 033 habitants, conjugue cadre résidentiel paisible et proximité du grand pôle économique rennais. TPE, PME, artisans, commerçants et professions libérales y constituent l'essentiel du tissu économique. Axion-IA y déploie ses missions auprès de toutes les organisations du nord-rennais.",
+    "La Mézière (35), commune du nord de Rennes Métropole peuplée de 5 033 habitants, conjugue cadre résidentiel paisible et proximité du grand pôle économique rennais. TPE, PME, artisans, commerçants et professions libérales y constituent l'essentiel du tissu économique. Axion-IA y conduit ses missions auprès des entreprises locales du nord-rennais.",
   seoHook: "résidentiel & proximité nord Rennes",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Mézière (35). Nous accompagnons tous types d'activités : TPE et PME locales, artisans, commerçants et professions libérales du nord de Rennes Métropole. Audit Flash dès 490 € HT, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Mézière (35). Nous accompagnons tous types d'activités : TPE et PME locales, artisans, commerçants et professions libérales du nord de Rennes Métropole. Audit Flash sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Mézière (35). Nous accompagnons tous types d'activités : TPE et PME locales, artisans, commerçants et professions libérales du nord de Rennes Métropole. Audit Flash dès 490 € HT, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Mézière (35). Nous accompagnons tous types d'activités : TPE et PME locales, artisans, commerçants et professions libérales du nord de Rennes Métropole. Audit Flash sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "La Mézière fait partie des 43 communes de Rennes Métropole, en première couronne nord sur l'axe Rennes-Saint-Malo. Son tissu économique s'appuie sur la zone d'activités de Cap Malo (commerces, services, hôtellerie, loisirs), l'artisanat du BTP, le commerce de proximité, les TPE/PME résidentielles et les professions libérales. Cadre de vie verdoyant et accessibilité métropolitaine.",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const LA_MEZIERE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à La Mézière et dans tout le nord de Rennes Métropole (Melesse, Betton, Saint-Grégoire, Montreuil-le-Gast, Pacé). Nos consultants couvrent l'ensemble de l'agglomération rennaise avec déplacement inclus.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à La Mézière ?",
+      q: "Tarifs audit IA à La Mézière  : quel budget prévoir ?",
       a: "L'Audit Flash Axion-IA démarre à 490 € HT. Adapté aux TPE, PME, commerçants Cap Malo, artisans et professions libérales mézièroises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {

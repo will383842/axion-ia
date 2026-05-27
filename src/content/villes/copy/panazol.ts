@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PANAZOL_COPY: VilleCopy = {
   pitchFr:
-    "Panazol (87), commune résidentielle et commerciale de l'est de l'agglomération de Limoges, est intégrée à Limoges Métropole. Tissu TPE artisans, PME tertiaires, commerces grande distribution et proximité, professions libérales et services. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglo limougeaude est.",
+    "Panazol (87), commune résidentielle et commerciale de l'est de l'agglomération de Limoges, est intégrée à Limoges Métropole. Tissu TPE artisans, PME tertiaires, commerces grande distribution et proximité, professions libérales et services. Axion-IA opère sur l'ensemble des activités professionnelles locales de l'agglo limougeaude est.",
   pitchEn:
-    "Panazol (87), commune résidentielle et commerciale de l'est de l'agglomération de Limoges, est intégrée à Limoges Métropole. Tissu TPE artisans, PME tertiaires, commerces grande distribution et proximité, professions libérales et services. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglo limougeaude est.",
+    "Panazol (87), commune résidentielle et commerciale de l'est de l'agglomération de Limoges, est intégrée à Limoges Métropole. Tissu TPE artisans, PME tertiaires, commerces grande distribution et proximité, professions libérales et services. Axion-IA opère sur l'ensemble des activités professionnelles locales de l'agglo limougeaude est.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Panazol (87). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, commerçants, professions libérales, indépendants et services aux entreprises de l'agglomération de Limoges est.",
   directAnswerEn:

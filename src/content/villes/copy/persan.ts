@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PERSAN_COPY: VilleCopy = {
   pitchFr:
-    "Persan (95), commune du nord du Val-d'Oise en bords de l'Oise, concentre un tissu de TPE artisans, PME industrielles et tertiaires, commerçants et professions libérales autour de ses zones d'activités. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Persan (95), commune du nord du Val-d'Oise en bords de l'Oise, concentre un tissu de TPE artisans, PME industrielles et tertiaires, commerçants et professions libérales autour de ses zones d'activités. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Persan (95), commune du nord du Val-d'Oise en bords de l'Oise, concentre un tissu de TPE artisans, PME industrielles et tertiaires, commerçants et professions libérales autour de ses zones d'activités. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Persan (95), commune du nord du Val-d'Oise en bords de l'Oise, concentre un tissu de TPE artisans, PME industrielles et tertiaires, commerçants et professions libérales autour de ses zones d'activités. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Persan (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME industrielles et tertiaires des zones d'activités persanaises, professions libérales, indépendants et entreprises du nord Val-d'Oise.",
   directAnswerEn:

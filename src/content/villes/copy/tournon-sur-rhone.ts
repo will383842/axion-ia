@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const TOURNON_SUR_RHONE_COPY: VilleCopy = {
   pitchFr:
-    "Tournon-sur-Rhône (07), sous-préfecture de l'Ardèche, est positionnée face à Tain-l'Hermitage dans la vallée du Rhône. Position viticole notable (AOC Saint-Joseph). Tissu viticulture, tourisme oenotouristique, PME tertiaires, TPE artisans BTP, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Tournon-sur-Rhône (07), sous-préfecture de l'Ardèche, est positionnée face à Tain-l'Hermitage dans la vallée du Rhône. Position viticole notable (AOC Saint-Joseph). Tissu viticulture, tourisme oenotouristique, PME tertiaires, TPE artisans BTP, commerces. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Tournon-sur-Rhône (07), sous-préfecture de l'Ardèche, est positionnée face à Tain-l'Hermitage dans la vallée du Rhône. Position viticole notable (AOC Saint-Joseph). Tissu viticulture, tourisme oenotouristique, PME tertiaires, TPE artisans BTP, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Tournon-sur-Rhône (07), sous-préfecture de l'Ardèche, est positionnée face à Tain-l'Hermitage dans la vallée du Rhône. Position viticole notable (AOC Saint-Joseph). Tissu viticulture, tourisme oenotouristique, PME tertiaires, TPE artisans BTP, commerces. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tournon-sur-Rhône (07). Nous accompagnons tous types d'activités : viticulteurs AOC Saint-Joseph, acteurs oenotourisme vallée Rhône, administration sous-préfecture, PME tertiaires, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:

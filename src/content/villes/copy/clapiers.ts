@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CLAPIERS_COPY: VilleCopy = {
   pitchFr:
-    "Clapiers (34), commune résidentielle du nord de Montpellier, entre garrigue et campus universitaire. Cadre de vie prisé, tramway T2. Tissu TPE professions libérales, PME services, artisans, commerces de proximité. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Clapiers (34), commune résidentielle du nord de Montpellier, entre garrigue et campus universitaire. Cadre de vie prisé, tramway T2. Tissu TPE professions libérales, PME services, artisans, commerces de proximité. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Clapiers (34), commune résidentielle du nord de Montpellier, entre garrigue et campus universitaire. Cadre de vie prisé, tramway T2. Tissu TPE professions libérales, PME services, artisans, commerces de proximité. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Clapiers (34), commune résidentielle du nord de Montpellier, entre garrigue et campus universitaire. Cadre de vie prisé, tramway T2. Tissu TPE professions libérales, PME services, artisans, commerces de proximité. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Clapiers (34). Nous accompagnons TPE professions libérales, PME de services, artisans, commerces et entreprises du nord montpelliérain.",
   directAnswerEn:

@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const VILLERS_SAINT_PAUL_COPY: VilleCopy = {
   pitchFr:
-    "Villers-Saint-Paul (60), commune de 6 480 habitants dans l'Oise, est située dans l'agglomération creilloise en bordure de l'Oise. Pôle d'activités économiques avec plusieurs zones industrielles et commerciales, la ville concentre un tissu de TPE/PME : logistique, industrie, commerce, artisanat BTP et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Villers-Saint-Paul (60), commune de 6 480 habitants dans l'Oise, est située dans l'agglomération creilloise en bordure de l'Oise. Pôle d'activités économiques avec plusieurs zones industrielles et commerciales, la ville concentre un tissu de TPE/PME : logistique, industrie, commerce, artisanat BTP et services. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Villers-Saint-Paul (60), commune de 6 480 habitants dans l'Oise, est située dans l'agglomération creilloise en bordure de l'Oise. Pôle d'activités économiques avec plusieurs zones industrielles et commerciales, la ville concentre un tissu de TPE/PME : logistique, industrie, commerce, artisanat BTP et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Villers-Saint-Paul (60), commune de 6 480 habitants dans l'Oise, est située dans l'agglomération creilloise en bordure de l'Oise. Pôle d'activités économiques avec plusieurs zones industrielles et commerciales, la ville concentre un tissu de TPE/PME : logistique, industrie, commerce, artisanat BTP et services. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villers-Saint-Paul (60). Nous accompagnons TPE et PME de l'agglomération creilloise : logisticiens, industriels, commerçants, artisans BTP et prestataires de services. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villers-Saint-Paul (60). Nous accompagnons TPE et PME de l'agglomération creilloise : logisticiens, industriels, commerçants, artisans BTP et prestataires de services. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villers-Saint-Paul (60). Nous accompagnons TPE et PME de l'agglomération creilloise : logisticiens, industriels, commerçants, artisans BTP et prestataires de services. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villers-Saint-Paul (60). Nous accompagnons TPE et PME de l'agglomération creilloise : logisticiens, industriels, commerçants, artisans BTP et prestataires de services. Audit Flash sur mesure.",
   ecosystemFr:
     "Villers-Saint-Paul est un pôle d'activités de l'agglomération creilloise, en bordure de l'Oise. La commune accueille plusieurs zones d'activités économiques (ZAE des Marais, ZA du Moulin) qui concentrent logistique, industrie manufacturière, commerce de gros et services aux entreprises. Le bassin d'emploi s'articule avec Creil, Nogent-sur-Oise, Montataire et Senlis, et bénéficie de la desserte ferroviaire Paris-Nord.",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const VILLERS_SAINT_PAUL_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Villers-Saint-Paul et dans toute l'agglomération creilloise (Creil, Nogent-sur-Oise, Montataire, Verneuil-en-Halatte). Consultants accessibles via gare de Creil (TER/Intercités Paris-Nord, 35 min).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Villers-Saint-Paul ?",
+      q: "Quel est le tarif d'un audit IA à Villers-Saint-Paul  ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME des zones d'activités villeroises : logisticiens, industriels, grossistes, artisans BTP. ROI chiffré dès le diagnostic.",
     },
     {

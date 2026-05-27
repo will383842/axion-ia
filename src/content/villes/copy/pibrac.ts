@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const PIBRAC_COPY: VilleCopy = {
   pitchFr:
-    "Pibrac (31), commune résidentielle prisée de l'ouest toulousain, près de 9 000 habitants. Tissu TPE de services, PME tertiaires, professions libérales, commerces de centre-bourg. Axion-IA y déploie ses missions auprès de toutes les organisations de la couronne ouest de Toulouse.",
+    "Pibrac (31), commune résidentielle prisée de l'ouest toulousain, près de 9 000 habitants. Tissu TPE de services, PME tertiaires, professions libérales, commerces de centre-bourg. Axion-IA y travaille avec les organisations du territoire de la couronne ouest de Toulouse.",
   pitchEn:
-    "Pibrac (31), commune résidentielle prisée de l'ouest toulousain, près de 9 000 habitants. Tissu TPE de services, PME tertiaires, professions libérales, commerces de centre-bourg. Axion-IA y déploie ses missions auprès de toutes les organisations de la couronne ouest de Toulouse.",
+    "Pibrac (31), commune résidentielle prisée de l'ouest toulousain, près de 9 000 habitants. Tissu TPE de services, PME tertiaires, professions libérales, commerces de centre-bourg. Axion-IA y travaille avec les organisations du territoire de la couronne ouest de Toulouse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pibrac (31). Nous accompagnons TPE de services, PME tertiaires, professions libérales et commerçants de l'ouest Toulouse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pibrac (31). Nous accompagnons TPE de services, PME tertiaires, professions libérales et commerçants de l'ouest Toulouse. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pibrac (31). Nous accompagnons TPE de services, PME tertiaires, professions libérales et commerçants de l'ouest Toulouse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pibrac (31). Nous accompagnons TPE de services, PME tertiaires, professions libérales et commerçants de l'ouest Toulouse. Audit Flash sur mesure.",
   seoHook: "professions libérales & commerce détail",
   ecosystemFr:
     "Pibrac est une commune résidentielle verdoyante de l'ouest de Toulouse. Tissu TPE de services, PME tertiaires, cabinets de professions libérales, commerces de centre-bourg. Cadre de vie prisé, proximité Léguevin et Brax.",
@@ -56,7 +56,7 @@ export const PIBRAC_COPY: VilleCopy = {
       a: "Nous accompagnons tous types d'activités : professions libérales, TPE de services, PME tertiaires, commerces, artisans. Aucun secteur exclu.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Pibrac ?",
+      q: "Combien coûte un audit IA à Pibrac  ?",
       a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics.",
     },
     {

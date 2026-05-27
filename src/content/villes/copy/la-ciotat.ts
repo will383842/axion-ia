@@ -11,9 +11,9 @@ export const LA_CIOTAT_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à La Ciotat, une ville dynamique de Provence-Alpes-Côte d'Azur, pour accompagner les entreprises locales dans l'optimisation de leurs processus grâce à l'IA. Avec des tarifs publics et une approche opérationnelle, nous répondons aux besoins des TPE, PME et ETI.",
   directAnswerFr:
-    "À La Ciotat, Axion-IA propose des interventions sur site pour automatiser les processus administratifs et commerciaux. Nous nous déplaçons pour répondre aux spécificités des entreprises locales, notamment dans les secteurs du commerce de détail et de l'hébergement. Nos services incluent l'audit, l'implémentation et le suivi, avec des tarifs publics transparents, à partir de 490 € HT pour un audit flash.",
+    "À La Ciotat, Axion-IA propose des interventions sur site pour automatiser les processus administratifs et commerciaux. Nous nous déplaçons pour répondre aux spécificités des entreprises locales, notamment dans les secteurs du commerce de détail et de l'hébergement. Nos services incluent l'audit, l'implémentation et le suivi, avec des tarifs publics transparents pour un audit flash.",
   directAnswerEn:
-    "À La Ciotat, Axion-IA propose des interventions sur site pour automatiser les processus administratifs et commerciaux. Nous nous déplaçons pour répondre aux spécificités des entreprises locales, notamment dans les secteurs du commerce de détail et de l'hébergement. Nos services incluent l'audit, l'implémentation et le suivi, avec des tarifs publics transparents, à partir de 490 € HT pour un audit flash.",
+    "À La Ciotat, Axion-IA propose des interventions sur site pour automatiser les processus administratifs et commerciaux. Nous nous déplaçons pour répondre aux spécificités des entreprises locales, notamment dans les secteurs du commerce de détail et de l'hébergement. Nos services incluent l'audit, l'implémentation et le suivi, avec des tarifs publics transparents pour un audit flash.",
   seoHook: "commerce détail & hébergement",
   ecosystemFr:
     "La Ciotat abrite le Chantier Naval de La Ciotat et la zone Athélia, contribuant à un écosystème économique varié. Ces entités renforcent la diversité des secteurs d'activité, allant du commerce de détail à la restauration, en passant par les activités sportives.",

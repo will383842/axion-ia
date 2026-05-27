@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BEAUCOUZE_COPY: VilleCopy = {
   pitchFr:
-    "Beaucouzé (49), commune de l'ouest d'Angers en Maine-et-Loire, accueille d'importantes zones d'activités commerciales et tertiaires (Atoll, parc technologique) qui concentrent TPE de services, PME du numérique, commerces, professions libérales et prestataires B2B. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Beaucouzé (49), commune de l'ouest d'Angers en Maine-et-Loire, accueille d'importantes zones d'activités commerciales et tertiaires (Atoll, parc technologique) qui concentrent TPE de services, PME du numérique, commerces, professions libérales et prestataires B2B. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Beaucouzé (49), commune de l'ouest d'Angers en Maine-et-Loire, accueille d'importantes zones d'activités commerciales et tertiaires (Atoll, parc technologique) qui concentrent TPE de services, PME du numérique, commerces, professions libérales et prestataires B2B. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Beaucouzé (49), commune de l'ouest d'Angers en Maine-et-Loire, accueille d'importantes zones d'activités commerciales et tertiaires (Atoll, parc technologique) qui concentrent TPE de services, PME du numérique, commerces, professions libérales et prestataires B2B. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beaucouzé (49). Nous accompagnons tous types d'activités : TPE de services, PME du numérique et du tertiaire, commerces des zones Atoll et parc d'activités, professions libérales, prestataires B2B et entreprises du pôle technologique ouest angevin.",
   directAnswerEn:

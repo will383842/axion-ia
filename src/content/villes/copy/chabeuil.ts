@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHABEUIL_COPY: VilleCopy = {
   pitchFr:
-    "Chabeuil (26), commune à proximité immédiate de Valence dans la Drôme, abrite l'aérodrome Valence-Chabeuil (aviation générale, école de pilotage) et fait partie de Valence Romans Agglo. Tissu PME tertiaires, TPE artisans BTP, agriculture périphérique, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Chabeuil (26), commune à proximité immédiate de Valence dans la Drôme, abrite l'aérodrome Valence-Chabeuil (aviation générale, école de pilotage) et fait partie de Valence Romans Agglo. Tissu PME tertiaires, TPE artisans BTP, agriculture périphérique, commerces. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Chabeuil (26), commune à proximité immédiate de Valence dans la Drôme, abrite l'aérodrome Valence-Chabeuil (aviation générale, école de pilotage) et fait partie de Valence Romans Agglo. Tissu PME tertiaires, TPE artisans BTP, agriculture périphérique, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Chabeuil (26), commune à proximité immédiate de Valence dans la Drôme, abrite l'aérodrome Valence-Chabeuil (aviation générale, école de pilotage) et fait partie de Valence Romans Agglo. Tissu PME tertiaires, TPE artisans BTP, agriculture périphérique, commerces. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chabeuil (26). Nous accompagnons tous types d'activités : acteurs aéronautiques aérodrome Valence-Chabeuil, PME tertiaires Valence Romans Agglo, TPE artisans BTP, commerçants, agriculteurs périphériques, indépendants et services aux entreprises drômoises.",
   directAnswerEn:

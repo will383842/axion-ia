@@ -11,9 +11,9 @@ export const CHALLANS_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Challans, facilitant l'adoption de l'IA pour les entreprises locales. Avec des références comme LVMH et Cap Digital, nous apportons notre expertise nationale pour optimiser vos processus.",
   directAnswerFr:
-    "Axion-IA propose des services d'IA adaptés aux besoins des entreprises de Challans. Avec un audit Flash à partir de 490 € HT et une intervention dès 590 € HT, nous offrons des solutions concrètes. Notre approche s'inspire de réussites observées dans des écosystèmes comme ceux de LVMH et Cap Digital, garantissant des résultats mesurables.",
+    "Axion-IA propose des services d'IA adaptés aux besoins des entreprises de Challans. Avec un audit Flash et une intervention, nous offrons des solutions concrètes. Notre approche s'inspire de réussites observées dans des écosystèmes comme ceux de LVMH et Cap Digital, garantissant des résultats mesurables.",
   directAnswerEn:
-    "Axion-IA propose des services d'IA adaptés aux besoins des entreprises de Challans. Avec un audit Flash à partir de 490 € HT et une intervention dès 590 € HT, nous offrons des solutions concrètes. Notre approche s'inspire de réussites observées dans des écosystèmes comme ceux de LVMH et Cap Digital, garantissant des résultats mesurables.",
+    "Axion-IA propose des services d'IA adaptés aux besoins des entreprises de Challans. Avec un audit Flash et une intervention, nous offrons des solutions concrètes. Notre approche s'inspire de réussites observées dans des écosystèmes comme ceux de LVMH et Cap Digital, garantissant des résultats mesurables.",
   seoHook: "commerce détail & industrie alimentaire",
   ecosystemFr:
     "Challans, avec ses 2 000 établissements actifs, bénéficie d'une proximité avec des centres économiques influents comme Nantes et son aéroport. Les entreprises locales peuvent s'inspirer de modèles tels que Station F et Inria.",

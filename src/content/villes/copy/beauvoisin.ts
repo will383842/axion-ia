@@ -9,9 +9,9 @@ export const BEAUVOISIN_COPY: VilleCopy = {
   pitchEn:
     "Beauvoisin (30), commune gardoise entre Vaunage et Petite Camargue, au carrefour agricole et résidentiel. Tissu TPE/PME viticulture, agriculture, commerces, artisanat BTP et services aux entreprises. Axion-IA y intervient pour tous types d'activités entre Vaunage et Camargue.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Beauvoisin (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs, agriculteurs, commerçants, artisans BTP et professions libérales entre Vaunage et Petite Camargue. Audit Flash à partir de 490 € HT.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Beauvoisin (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs, agriculteurs, commerçants, artisans BTP et professions libérales entre Vaunage et Petite Camargue. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Beauvoisin (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs, agriculteurs, commerçants, artisans BTP et professions libérales entre Vaunage et Petite Camargue. Audit Flash à partir de 490 € HT.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Beauvoisin (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs, agriculteurs, commerçants, artisans BTP et professions libérales entre Vaunage et Petite Camargue. Audit Flash sur mesure.",
   seoHook: "viticulture & agriculture méditerranéenne",
   ecosystemFr:
     "Beauvoisin (~6 100 hab) est une commune entre Vaunage et Petite Camargue, à 20 min de Nîmes. Viticulture, agriculture méditerranéenne, commerces de proximité, artisanat BTP et services aux entreprises. Cadre de vie attractif entre garrigue et plaine camarguaise.",
@@ -56,7 +56,7 @@ export const BEAUVOISIN_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les viticulteurs de Beauvoisin : prédiction vendanges, gestion parcellaire, automatisation traçabilité, optimisation vente directe et gestion cave.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Beauvoisin ?",
+      q: "Combien coûte un audit IA à Beauvoisin  ?",
       a: "L'Audit Flash commence à 490 € HT. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {

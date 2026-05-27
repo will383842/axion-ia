@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BRIGNOLES_COPY: VilleCopy = {
   pitchFr:
-    "Brignoles (83), sous-préfecture du Var et capitale historique de la bauxite, compte près de 17 850 habitants. Pôle administratif et économique du centre-Var, zones d'activités industrielles, tissu de TPE artisanales, PME industrielles, commerces et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Brignoles (83), sous-préfecture du Var et capitale historique de la bauxite, compte près de 17 850 habitants. Pôle administratif et économique du centre-Var, zones d'activités industrielles, tissu de TPE artisanales, PME industrielles, commerces et services. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Brignoles (83), sous-préfecture du Var et capitale historique de la bauxite, compte près de 17 850 habitants. Pôle administratif et économique du centre-Var, zones d'activités industrielles, tissu de TPE artisanales, PME industrielles, commerces et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Brignoles (83), sous-préfecture du Var et capitale historique de la bauxite, compte près de 17 850 habitants. Pôle administratif et économique du centre-Var, zones d'activités industrielles, tissu de TPE artisanales, PME industrielles, commerces et services. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Brignoles (83). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles centre-Var, professions libérales, exploitations viticoles Côtes de Provence et services administratifs.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const BRIGNOLES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les domaines viticoles Côtes de Provence du centre-Var : traçabilité parcellaire, gestion vendanges, optimisation cave, relation client B2B export et œnotourisme.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Brignoles ?",
+      q: "Combien coûte un audit IA à Brignoles  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {

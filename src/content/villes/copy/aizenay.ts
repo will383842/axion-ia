@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const AIZENAY_COPY: VilleCopy = {
   pitchFr:
-    "Aizenay (85), commune du bocage vendéen, compte plus de 10 300 habitants. Carrefour routier entre La Roche-sur-Yon et Challans, avec des zones d'activités dynamiques, un tissu de TPE artisanales, PME industrielles, commerces et services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Aizenay (85), commune du bocage vendéen, compte plus de 10 300 habitants. Carrefour routier entre La Roche-sur-Yon et Challans, avec des zones d'activités dynamiques, un tissu de TPE artisanales, PME industrielles, commerces et services. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Aizenay (85), commune du bocage vendéen, compte plus de 10 300 habitants. Carrefour routier entre La Roche-sur-Yon et Challans, avec des zones d'activités dynamiques, un tissu de TPE artisanales, PME industrielles, commerces et services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Aizenay (85), commune du bocage vendéen, compte plus de 10 300 habitants. Carrefour routier entre La Roche-sur-Yon et Challans, avec des zones d'activités dynamiques, un tissu de TPE artisanales, PME industrielles, commerces et services. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aizenay (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles bocage vendéen, professions libérales, exploitations agricoles et services de proximité.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const AIZENAY_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les exploitations agricoles du bocage vendéen : gestion parcellaire prédictive, optimisation élevage, automatisation traçabilité, outils IA adaptés à votre exploitation.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Aizenay ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Aizenay  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {

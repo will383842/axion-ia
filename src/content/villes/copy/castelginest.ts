@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const CASTELGINEST_COPY: VilleCopy = {
   pitchFr:
-    "Castelginest (31), commune du nord toulousain avec plus de 11 000 habitants. Tissu TPE artisans, PME de services et logistique, commerces de proximité, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de la couronne nord de Toulouse.",
+    "Castelginest (31), commune du nord toulousain avec plus de 11 000 habitants. Tissu TPE artisans, PME de services et logistique, commerces de proximité, professions libérales. Axion-IA opère sur l'ensemble des activités professionnelles locales de la couronne nord de Toulouse.",
   pitchEn:
-    "Castelginest (31), commune du nord toulousain avec plus de 11 000 habitants. Tissu TPE artisans, PME de services et logistique, commerces de proximité, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de la couronne nord de Toulouse.",
+    "Castelginest (31), commune du nord toulousain avec plus de 11 000 habitants. Tissu TPE artisans, PME de services et logistique, commerces de proximité, professions libérales. Axion-IA opère sur l'ensemble des activités professionnelles locales de la couronne nord de Toulouse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Castelginest (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord de Toulouse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Castelginest (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord de Toulouse. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Castelginest (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord de Toulouse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Castelginest (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord de Toulouse. Audit Flash sur mesure.",
   seoHook: "artisanat & logistique transport",
   ecosystemFr:
     "Castelginest est une commune résidentielle et économique du nord de Toulouse. Tissu TPE artisans, PME de services et logistique, commerces centre-bourg, professions libérales. Proximité de l'axe A62 et des zones d'emploi nord toulousaines.",
@@ -56,7 +56,7 @@ export const CASTELGINEST_COPY: VilleCopy = {
       a: "Nous accompagnons tous types d'activités : TPE artisans, PME logistique et services, professions libérales, commerces de proximité. Aucun secteur exclu.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Castelginest ?",
+      q: "Tarifs audit IA à Castelginest  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics, pas de devis opaque.",
     },
     {

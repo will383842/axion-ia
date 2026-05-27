@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SCIEZ_COPY: VilleCopy = {
   pitchFr:
-    "Sciez (74), commune du Chablais haut-savoyard sur la rive sud du lac Léman, est connue sous le nom de Sciez-sur-Léman. Vignobles AOC Crépy, port de Sciez, tourisme lacustre, résidentiel frontalier Genève. Tissu TPE artisans, commerces saisonniers, PME viticoles et touristiques. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Sciez (74), commune du Chablais haut-savoyard sur la rive sud du lac Léman, est connue sous le nom de Sciez-sur-Léman. Vignobles AOC Crépy, port de Sciez, tourisme lacustre, résidentiel frontalier Genève. Tissu TPE artisans, commerces saisonniers, PME viticoles et touristiques. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Sciez (74), commune du Chablais haut-savoyard sur la rive sud du lac Léman, est connue sous le nom de Sciez-sur-Léman. Vignobles AOC Crépy, port de Sciez, tourisme lacustre, résidentiel frontalier Genève. Tissu TPE artisans, commerces saisonniers, PME viticoles et touristiques. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Sciez (74), commune du Chablais haut-savoyard sur la rive sud du lac Léman, est connue sous le nom de Sciez-sur-Léman. Vignobles AOC Crépy, port de Sciez, tourisme lacustre, résidentiel frontalier Genève. Tissu TPE artisans, commerces saisonniers, PME viticoles et touristiques. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sciez (74). Nous accompagnons TPE et PME : acteurs du tourisme lacustre Léman, viticulteurs AOC Crépy, commerces saisonniers, artisans BTP, professions libérales, hébergeurs et restaurateurs du Chablais.",
   directAnswerEn:

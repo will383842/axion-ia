@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BOIS_LE_ROI_COPY: VilleCopy = {
   pitchFr:
-    "Bois-le-Roi (77), commune résidentielle en bords de Seine aux portes de la forêt de Fontainebleau en Seine-et-Marne, accueille un tissu de TPE artisans, commerces de village, professions libérales, PME de services et acteurs du tourisme vert. Axion-IA y déploie ses missions auprès de toutes les organisations du sud francilien.",
+    "Bois-le-Roi (77), commune résidentielle en bords de Seine aux portes de la forêt de Fontainebleau en Seine-et-Marne, accueille un tissu de TPE artisans, commerces de village, professions libérales, PME de services et acteurs du tourisme vert. Axion-IA y déploie son expertise pour toutes les organisations du sud francilien.",
   pitchEn:
-    "Bois-le-Roi (77), commune résidentielle en bords de Seine aux portes de la forêt de Fontainebleau en Seine-et-Marne, accueille un tissu de TPE artisans, commerces de village, professions libérales, PME de services et acteurs du tourisme vert. Axion-IA y déploie ses missions auprès de toutes les organisations du sud francilien.",
+    "Bois-le-Roi (77), commune résidentielle en bords de Seine aux portes de la forêt de Fontainebleau en Seine-et-Marne, accueille un tissu de TPE artisans, commerces de village, professions libérales, PME de services et acteurs du tourisme vert. Axion-IA y déploie son expertise pour toutes les organisations du sud francilien.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bois-le-Roi (77). Nous accompagnons TPE et PME : artisans, commerçants de village, professions libérales, PME de services et hébergeurs touristiques de cette commune résidentielle entre Seine et forêt de Fontainebleau.",
   directAnswerEn:
@@ -52,7 +52,7 @@ export const BOIS_LE_ROI_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Bois-le-Roi et dans tout le secteur sud Seine-et-Marne (Fontainebleau à 10 min, Melun à 15 min, Samois-sur-Seine, Chartrettes). Nos consultants rejoignent Bois-le-Roi depuis Paris Gare de Lyon en 45 min via Transilien R.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Bois-le-Roi ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Bois-le-Roi  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Bois-le-Roi et du sud Seine-et-Marne, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics.",
     },
     {

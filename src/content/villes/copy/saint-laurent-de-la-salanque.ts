@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_LAURENT_DE_LA_SALANQUE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Laurent-de-la-Salanque (66), bourg-centre de la Salanque avec zones commerciales importantes, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME commerce et logistique, agriculture maraîchère, services. Axion-IA y déploie ses missions auprès de toutes les organisations de la Salanque.",
+    "Saint-Laurent-de-la-Salanque (66), bourg-centre de la Salanque avec zones commerciales importantes, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME commerce et logistique, agriculture maraîchère, services. Axion-IA y mène ses missions auprès des organisations locales de la Salanque.",
   pitchEn:
-    "Saint-Laurent-de-la-Salanque (66), bourg-centre de la Salanque avec zones commerciales importantes, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME commerce et logistique, agriculture maraîchère, services. Axion-IA y déploie ses missions auprès de toutes les organisations de la Salanque.",
+    "Saint-Laurent-de-la-Salanque (66), bourg-centre de la Salanque avec zones commerciales importantes, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME commerce et logistique, agriculture maraîchère, services. Axion-IA y mène ses missions auprès des organisations locales de la Salanque.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Laurent-de-la-Salanque (66). Nous accompagnons tous types d'activités : TPE artisans, PME commerce et logistique, agriculteurs maraîchers, commerçants, indépendants et professions libérales de la Salanque.",
   directAnswerEn:

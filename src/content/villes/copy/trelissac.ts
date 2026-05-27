@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const TRELISSAC_COPY: VilleCopy = {
   pitchFr:
-    "Trélissac (24), commune de l'est de l'agglomération de Périgueux en Dordogne, dotée de zones commerciales et d'activités dynamiques. Tissu TPE/PME commerce, artisanat, services, logistique et agroalimentaire. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Trélissac (24), commune de l'est de l'agglomération de Périgueux en Dordogne, dotée de zones commerciales et d'activités dynamiques. Tissu TPE/PME commerce, artisanat, services, logistique et agroalimentaire. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Trélissac (24), commune de l'est de l'agglomération de Périgueux en Dordogne, dotée de zones commerciales et d'activités dynamiques. Tissu TPE/PME commerce, artisanat, services, logistique et agroalimentaire. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Trélissac (24), commune de l'est de l'agglomération de Périgueux en Dordogne, dotée de zones commerciales et d'activités dynamiques. Tissu TPE/PME commerce, artisanat, services, logistique et agroalimentaire. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trélissac (24). Nous accompagnons TPE/PME du commerce, de l'artisanat, des services et de la logistique de l'est de l'agglomération périgourdine. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trélissac (24). Nous accompagnons TPE/PME du commerce, de l'artisanat, des services et de la logistique de l'est de l'agglomération périgourdine. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trélissac (24). Nous accompagnons TPE/PME du commerce, de l'artisanat, des services et de la logistique de l'est de l'agglomération périgourdine. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trélissac (24). Nous accompagnons TPE/PME du commerce, de l'artisanat, des services et de la logistique de l'est de l'agglomération périgourdine. Audit Flash sur mesure.",
   ecosystemFr:
     "Trélissac est une commune dynamique de l'est de l'agglomération de Périgueux. Importantes zones commerciales (Boulazac–Trélissac), artisanat et PME industrielles, logistique, services aux entreprises et agroalimentaire périgourdin. Axe routier vers Brive et Sarlat, porte d'entrée du Périgord Noir depuis Périgueux.",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const TRELISSAC_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Trélissac et dans toute l'agglomération de Périgueux (Boulazac, Coulounieix-Chamiers, Marsac). Périgueux à 7 min, A89 accès proche.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Trélissac ?",
+      q: "Combien coûte un audit IA à Trélissac  ?",
       a: "L'Audit Flash démarre à 490 € HT. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME de l'agglo périgourdine. Tarifs publics et transparents.",
     },
     {

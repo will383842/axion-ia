@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const COGNIN_COPY: VilleCopy = {
   pitchFr:
-    "Cognin (73), 4e commune de l'agglomération de Chambéry en Savoie, est une ville chargée d'histoire au tissu économique diversifié. PME tertiaires, TPE artisanat BTP, commerces de proximité, professions libérales, services aux entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Cognin (73), 4e commune de l'agglomération de Chambéry en Savoie, est une ville chargée d'histoire au tissu économique diversifié. PME tertiaires, TPE artisanat BTP, commerces de proximité, professions libérales, services aux entreprises. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Cognin (73), 4e commune de l'agglomération de Chambéry en Savoie, est une ville chargée d'histoire au tissu économique diversifié. PME tertiaires, TPE artisanat BTP, commerces de proximité, professions libérales, services aux entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Cognin (73), 4e commune de l'agglomération de Chambéry en Savoie, est une ville chargée d'histoire au tissu économique diversifié. PME tertiaires, TPE artisanat BTP, commerces de proximité, professions libérales, services aux entreprises. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cognin (73). Nous accompagnons TPE et PME : entreprises tertiaires de l'agglomération chambérienne, artisans BTP, commerçants de proximité, professions libérales et sociétés de services.",
   directAnswerEn:

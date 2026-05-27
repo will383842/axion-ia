@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_HILAIRE_DE_RIEZ_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Hilaire-de-Riez (85), station balnéaire du littoral vendéen, compte plus de 13 000 habitants. Entre corniche vendéenne et marais breton, la commune vit du tourisme, des campings, de l'hôtellerie-restauration et des commerces saisonniers. Tissu de TPE et PME touristiques. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Saint-Hilaire-de-Riez (85), station balnéaire du littoral vendéen, compte plus de 13 000 habitants. Entre corniche vendéenne et marais breton, la commune vit du tourisme, des campings, de l'hôtellerie-restauration et des commerces saisonniers. Tissu de TPE et PME touristiques. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Saint-Hilaire-de-Riez (85), station balnéaire du littoral vendéen, compte plus de 13 000 habitants. Entre corniche vendéenne et marais breton, la commune vit du tourisme, des campings, de l'hôtellerie-restauration et des commerces saisonniers. Tissu de TPE et PME touristiques. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Saint-Hilaire-de-Riez (85), station balnéaire du littoral vendéen, compte plus de 13 000 habitants. Entre corniche vendéenne et marais breton, la commune vit du tourisme, des campings, de l'hôtellerie-restauration et des commerces saisonniers. Tissu de TPE et PME touristiques. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Hilaire-de-Riez (85). Nous accompagnons tous types d'activités : TPE et PME touristiques, campings, hôteliers-restaurateurs, commerces saisonniers littoral vendéen, professions libérales et services de proximité.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const SAINT_HILAIRE_DE_RIEZ_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les commerces saisonniers du littoral vendéen : automatisation stocks, prédiction ventes par météo, marketing digital saisonnier, agents conversationnels clients, gestion plannings.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Saint-Hilaire-de-Riez ?",
+      q: "Quel est le tarif d'un audit IA à Saint-Hilaire-de-Riez  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {

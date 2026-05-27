@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LAILLE_COPY: VilleCopy = {
   pitchFr:
-    "Laillé (35), commune résidentielle et rurale au sud de Rennes en Ille-et-Vilaine, s'appuie sur un tissu économique de TPE artisanales, commerces de proximité, exploitations agricoles, PME de services et professions libérales du bassin rennais. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Laillé (35), commune résidentielle et rurale au sud de Rennes en Ille-et-Vilaine, s'appuie sur un tissu économique de TPE artisanales, commerces de proximité, exploitations agricoles, PME de services et professions libérales du bassin rennais. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Laillé (35), commune résidentielle et rurale au sud de Rennes en Ille-et-Vilaine, s'appuie sur un tissu économique de TPE artisanales, commerces de proximité, exploitations agricoles, PME de services et professions libérales du bassin rennais. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Laillé (35), commune résidentielle et rurale au sud de Rennes en Ille-et-Vilaine, s'appuie sur un tissu économique de TPE artisanales, commerces de proximité, exploitations agricoles, PME de services et professions libérales du bassin rennais. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Laillé (35). Nous accompagnons TPE et PME du sud rennais : artisans, commerçants, exploitants agricoles, professions libérales, prestataires de services et PME adossées au dynamisme de Rennes Métropole. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Laillé (35). Nous accompagnons TPE et PME du sud rennais : artisans, commerçants, exploitants agricoles, professions libérales, prestataires de services et PME adossées au dynamisme de Rennes Métropole. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Laillé (35). Nous accompagnons TPE et PME du sud rennais : artisans, commerçants, exploitants agricoles, professions libérales, prestataires de services et PME adossées au dynamisme de Rennes Métropole. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Laillé (35). Nous accompagnons TPE et PME du sud rennais : artisans, commerçants, exploitants agricoles, professions libérales, prestataires de services et PME adossées au dynamisme de Rennes Métropole. Audit Flash sur mesure.",
   ecosystemFr:
     "Laillé est une commune résidentielle et rurale du sud de Rennes Métropole (Ille-et-Vilaine), attractive pour les familles avec un cadre de vie verdoyant. L'économie locale associe TPE artisanales, exploitations agricoles (maraîchage, élevage), commerces de proximité et PME de services tirant parti de la proximité rennaise.",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const LAILLE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Laillé et dans toute la couronne sud de Rennes Métropole (Bruz, Chartres-de-Bretagne, Pont-Péan, Orgères, Guichen). Gare TGV de Rennes à 20 min, Paris en 1h25.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Laillé ?",
+      q: "Quel est le tarif d'un audit IA à Laillé  ?",
       a: "L'audit Flash IA démarre à 490 € HT pour les TPE et PME de Laillé et du bassin sud-rennais. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
     },
     {

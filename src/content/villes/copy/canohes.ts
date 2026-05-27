@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CANOHES_COPY: VilleCopy = {
   pitchFr:
-    "Canohès (66), commune résidentielle en périphérie sud de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME tertiaires, commerces, agriculture, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération perpignanaise.",
+    "Canohès (66), commune résidentielle en périphérie sud de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME tertiaires, commerces, agriculture, professions libérales. Axion-IA opère sur l'ensemble des activités professionnelles locales de l'agglomération perpignanaise.",
   pitchEn:
-    "Canohès (66), commune résidentielle en périphérie sud de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME tertiaires, commerces, agriculture, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération perpignanaise.",
+    "Canohès (66), commune résidentielle en périphérie sud de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME tertiaires, commerces, agriculture, professions libérales. Axion-IA opère sur l'ensemble des activités professionnelles locales de l'agglomération perpignanaise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Canohès (66). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, commerçants, agriculteurs, indépendants et professions libérales de l'agglo Perpignan sud.",
   directAnswerEn:

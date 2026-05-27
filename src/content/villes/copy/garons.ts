@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const GARONS_COPY: VilleCopy = {
   pitchFr:
-    "Garons (30), commune de l'agglomération nîmoise sud accueillant l'aéroport Nîmes-Alès-Camargue-Cévennes. Tissu TPE/PME logistique aéroportuaire, services aux entreprises, commerces, artisanat BTP et viticulture Costières de Nîmes. Axion-IA accompagne entreprises et indépendants de tous secteurs de la zone aéroport / agglo Nîmes sud.",
+    "Garons (30), commune de l'agglomération nîmoise sud accueillant l'aéroport Nîmes-Alès-Camargue-Cévennes. Tissu TPE/PME logistique aéroportuaire, services aux entreprises, commerces, artisanat BTP et viticulture Costières de Nîmes. Axion-IA accompagne entreprises et indépendants de la zone aéroport / agglo Nîmes sud.",
   pitchEn:
-    "Garons (30), commune de l'agglomération nîmoise sud accueillant l'aéroport Nîmes-Alès-Camargue-Cévennes. Tissu TPE/PME logistique aéroportuaire, services aux entreprises, commerces, artisanat BTP et viticulture Costières de Nîmes. Axion-IA accompagne entreprises et indépendants de tous secteurs de la zone aéroport / agglo Nîmes sud.",
+    "Garons (30), commune de l'agglomération nîmoise sud accueillant l'aéroport Nîmes-Alès-Camargue-Cévennes. Tissu TPE/PME logistique aéroportuaire, services aux entreprises, commerces, artisanat BTP et viticulture Costières de Nîmes. Axion-IA accompagne entreprises et indépendants de la zone aéroport / agglo Nîmes sud.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Garons (30). Nous accompagnons les TPE, PME et ETI locales : entreprises logistique aéroportuaire, services aux entreprises, commerçants, artisans BTP et viticulteurs Costières de l'agglo nîmoise sud. Audit Flash à partir de 490 € HT.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Garons (30). Nous accompagnons les TPE, PME et ETI locales : entreprises logistique aéroportuaire, services aux entreprises, commerçants, artisans BTP et viticulteurs Costières de l'agglo nîmoise sud. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Garons (30). Nous accompagnons les TPE, PME et ETI locales : entreprises logistique aéroportuaire, services aux entreprises, commerçants, artisans BTP et viticulteurs Costières de l'agglo nîmoise sud. Audit Flash à partir de 490 € HT.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Garons (30). Nous accompagnons les TPE, PME et ETI locales : entreprises logistique aéroportuaire, services aux entreprises, commerçants, artisans BTP et viticulteurs Costières de l'agglo nîmoise sud. Audit Flash sur mesure.",
   seoHook: "agglomération nîmes",
   ecosystemFr:
     "Garons (~5 400 hab) accueille l'aéroport Nîmes-Alès-Camargue-Cévennes (ancienne base aéronavale). Logistique aéroportuaire, services aux entreprises, viticulture Costières de Nîmes, artisanat BTP et commerces. Zone d'activité dynamique portée par l'aéroport et la proximité de Nîmes (10 min).",
@@ -56,7 +56,7 @@ export const GARONS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les entreprises logistique : optimisation flux, automatisation documentation, prédiction volumes, agents IA suivi expéditions, gestion planning équipes.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Garons ?",
+      q: "Combien coûte un audit IA à Garons  ?",
       a: "L'Audit Flash commence à 490 € HT. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {

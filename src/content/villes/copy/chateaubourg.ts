@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const CHATEAUBOURG_COPY: VilleCopy = {
   pitchFr:
-    "Châteaubourg (35), commune dynamique à l'est de Rennes en Ille-et-Vilaine, concentre d'importantes zones d'activités sur l'axe Rennes-Laval (RN157). Tissu PME industrielles agroalimentaires, TPE artisans, logistique et services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'est rennais.",
+    "Châteaubourg (35), commune dynamique à l'est de Rennes en Ille-et-Vilaine, concentre d'importantes zones d'activités sur l'axe Rennes-Laval (RN157). Tissu PME industrielles agroalimentaires, TPE artisans, logistique et services aux entreprises. Axion-IA répond aux besoins des activités professionnelles présentes de l'est rennais.",
   pitchEn:
-    "Châteaubourg (35), commune dynamique à l'est de Rennes en Ille-et-Vilaine, concentre d'importantes zones d'activités sur l'axe Rennes-Laval (RN157). Tissu PME industrielles agroalimentaires, TPE artisans, logistique et services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'est rennais.",
+    "Châteaubourg (35), commune dynamique à l'est de Rennes en Ille-et-Vilaine, concentre d'importantes zones d'activités sur l'axe Rennes-Laval (RN157). Tissu PME industrielles agroalimentaires, TPE artisans, logistique et services aux entreprises. Axion-IA répond aux besoins des activités professionnelles présentes de l'est rennais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châteaubourg (35). Nous accompagnons TPE artisans, PME industrielles agroalimentaires, entreprises logistiques et services de l'est rennais. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châteaubourg (35). Nous accompagnons TPE artisans, PME industrielles agroalimentaires, entreprises logistiques et services de l'est rennais. Audit Flash sur mesure, interventions sur site et coaching dirigeants.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châteaubourg (35). Nous accompagnons TPE artisans, PME industrielles agroalimentaires, entreprises logistiques et services de l'est rennais. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châteaubourg (35). Nous accompagnons TPE artisans, PME industrielles agroalimentaires, entreprises logistiques et services de l'est rennais. Audit Flash sur mesure, interventions sur site et coaching dirigeants.",
   seoHook: "vallée vilaine",
   ecosystemFr:
     "Châteaubourg est un pôle économique majeur de l'est rennais avec plusieurs zones d'activités (ZA de la Gaultière, ZA du Bois de Teillay). Forte présence de l'industrie agroalimentaire bretonne, logistique (axe RN157 Rennes-Laval), PME manufacturières, TPE artisans BTP et services aux entreprises. Bords de Vilaine attractifs.",
@@ -52,7 +52,7 @@ export const CHATEAUBOURG_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Châteaubourg et dans tout l'est de Rennes Métropole (Noyal-sur-Vilaine, Servon-sur-Vilaine, Vitré). Nos consultants sont basés sur Rennes, déplacement en 25 min via la RN157.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Châteaubourg ?",
+      q: "Tarifs audit IA à Châteaubourg  : quel budget prévoir ?",
       a: "L'Audit Flash IA démarre à 490 € HT pour une session de 4h. Idéal pour les TPE et PME des zones d'activités de Châteaubourg souhaitant identifier rapidement leurs cas d'usage IA avec ROI chiffré.",
     },
     {

@@ -11,9 +11,9 @@ export const SOTTEVILLE_LES_ROUEN_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Sotteville-lès-Rouen, optimisant les processus pour les entreprises locales. Profitez de notre expertise pour intégrer l'IA dans vos opérations, à l'instar des grands groupes comme SNCF.",
   directAnswerFr:
-    "Axion-IA propose des services sur site à Sotteville-lès-Rouen, où le secteur du transport terrestre domine avec la présence notable de la SNCF. Nous offrons des audits à partir de 490 € HT et des interventions dès 590 € HT, permettant aux entreprises locales de bénéficier de solutions IA adaptées à leurs besoins spécifiques.",
+    "Axion-IA propose des services sur site à Sotteville-lès-Rouen, où le secteur du transport terrestre domine avec la présence notable de la SNCF. Nous offrons des audits et des interventions, permettant aux entreprises locales de bénéficier de solutions IA adaptées à leurs besoins spécifiques.",
   directAnswerEn:
-    "Axion-IA propose des services sur site à Sotteville-lès-Rouen, où le secteur du transport terrestre domine avec la présence notable de la SNCF. Nous offrons des audits à partir de 490 € HT et des interventions dès 590 € HT, permettant aux entreprises locales de bénéficier de solutions IA adaptées à leurs besoins spécifiques.",
+    "Axion-IA propose des services sur site à Sotteville-lès-Rouen, où le secteur du transport terrestre domine avec la présence notable de la SNCF. Nous offrons des audits et des interventions, permettant aux entreprises locales de bénéficier de solutions IA adaptées à leurs besoins spécifiques.",
   seoHook: "transport terrestre & entreposage",
   ecosystemFr:
     "Sotteville-lès-Rouen est un pôle économique avec la SNCF et des infrastructures comme la Gare de Rouen Rive Droite. Le commerce de gros et de détail y est également bien implanté.",

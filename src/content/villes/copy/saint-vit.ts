@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_VIT_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Vit (25), commune de la vallée du Doubs située entre Besançon et Dole, est un bourg résidentiel et industriel de Franche-Comté. TPE artisans, PME industrielles et logistiques, commerces de proximité, professions libérales et exploitants agricoles de la plaine du Doubs composent son tissu économique. Axion-IA y déploie ses missions auprès de toutes les organisations entre Besançon et Dole.",
+    "Saint-Vit (25), commune de la vallée du Doubs située entre Besançon et Dole, est un bourg résidentiel et industriel de Franche-Comté. TPE artisans, PME industrielles et logistiques, commerces de proximité, professions libérales et exploitants agricoles de la plaine du Doubs composent son tissu économique. Axion-IA y travaille avec les organisations du territoire entre Besançon et Dole.",
   pitchEn:
-    "Saint-Vit (25), commune de la vallée du Doubs située entre Besançon et Dole, est un bourg résidentiel et industriel de Franche-Comté. TPE artisans, PME industrielles et logistiques, commerces de proximité, professions libérales et exploitants agricoles de la plaine du Doubs composent son tissu économique. Axion-IA y déploie ses missions auprès de toutes les organisations entre Besançon et Dole.",
+    "Saint-Vit (25), commune de la vallée du Doubs située entre Besançon et Dole, est un bourg résidentiel et industriel de Franche-Comté. TPE artisans, PME industrielles et logistiques, commerces de proximité, professions libérales et exploitants agricoles de la plaine du Doubs composent son tissu économique. Axion-IA y travaille avec les organisations du territoire entre Besançon et Dole.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Vit (25). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et logistiques de l'axe Besançon-Dole, commerçants, professions libérales, indépendants et exploitants agricoles de la plaine du Doubs.",
   directAnswerEn:
@@ -61,7 +61,7 @@ export const SAINT_VIT_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour une TPE ou PME de Saint-Vit ?",
-      a: "L'audit Flash démarre à 490 € HT, accessible aux TPE. Pour les PME industrielles et logistiques, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
+      a: "L'audit Flash est tarifé selon vos enjeux, accessible aux TPE. Pour les PME industrielles et logistiques, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
     },
     {
       q: "Comment se déroule une mission IA à Saint-Vit ?",

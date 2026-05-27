@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_VERPILLIERE_COPY: VilleCopy = {
   pitchFr:
-    "La Verpillière (38), commune de l'unité urbaine de Villefontaine en Isère, est dans la partie orientale de l'aire urbaine de Lyon. Membre de la Communauté d'agglomération Porte de l'Isère (CAPI). Tissu PME logistiques (proximité Saint-Exupéry), industries, TPE artisans, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs du Nord-Isère.",
+    "La Verpillière (38), commune de l'unité urbaine de Villefontaine en Isère, est dans la partie orientale de l'aire urbaine de Lyon. Membre de la Communauté d'agglomération Porte de l'Isère (CAPI). Tissu PME logistiques (proximité Saint-Exupéry), industries, TPE artisans, commerces. Axion-IA collabore avec toutes les structures locales du Nord-Isère.",
   pitchEn:
-    "La Verpillière (38), commune de l'unité urbaine de Villefontaine en Isère, est dans la partie orientale de l'aire urbaine de Lyon. Membre de la Communauté d'agglomération Porte de l'Isère (CAPI). Tissu PME logistiques (proximité Saint-Exupéry), industries, TPE artisans, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs du Nord-Isère.",
+    "La Verpillière (38), commune de l'unité urbaine de Villefontaine en Isère, est dans la partie orientale de l'aire urbaine de Lyon. Membre de la Communauté d'agglomération Porte de l'Isère (CAPI). Tissu PME logistiques (proximité Saint-Exupéry), industries, TPE artisans, commerces. Axion-IA collabore avec toutes les structures locales du Nord-Isère.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Verpillière (38). Nous accompagnons tous types d'activités : opérateurs logistiques aéroportuaires Saint-Exupéry, PME industrielles Nord-Isère, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de la CAPI.",
   directAnswerEn:

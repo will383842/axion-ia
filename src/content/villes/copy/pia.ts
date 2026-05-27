@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PIA_COPY: VilleCopy = {
   pitchFr:
-    "Pia (66), commune résidentielle de la Salanque en périphérie nord de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME zones d'activités, commerces, agriculture maraîchère Salanque. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération perpignanaise.",
+    "Pia (66), commune résidentielle de la Salanque en périphérie nord de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME zones d'activités, commerces, agriculture maraîchère Salanque. Axion-IA répond aux besoins des activités professionnelles présentes de l'agglomération perpignanaise.",
   pitchEn:
-    "Pia (66), commune résidentielle de la Salanque en périphérie nord de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME zones d'activités, commerces, agriculture maraîchère Salanque. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération perpignanaise.",
+    "Pia (66), commune résidentielle de la Salanque en périphérie nord de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME zones d'activités, commerces, agriculture maraîchère Salanque. Axion-IA répond aux besoins des activités professionnelles présentes de l'agglomération perpignanaise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pia (66). Nous accompagnons tous types d'activités : TPE artisans, PME zones d'activités, commerçants, agriculteurs maraîchers Salanque, indépendants et professions libérales de l'agglo Perpignan nord.",
   directAnswerEn:

@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const L_ISLE_JOURDAIN_COPY: VilleCopy = {
   pitchFr:
-    "L'Isle-Jourdain (32), bourg de 9 537 habitants situé dans le Gers entre Toulouse et Auch, sur les bords de la Save. Son économie repose sur un tissu de TPE artisans, commerçants et professions libérales, PME agroalimentaires et de services, coopératives agricoles et entreprises du bassin gersois nord. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "L'Isle-Jourdain (32), bourg de 9 537 habitants situé dans le Gers entre Toulouse et Auch, sur les bords de la Save. Son économie repose sur un tissu de TPE artisans, commerçants et professions libérales, PME agroalimentaires et de services, coopératives agricoles et entreprises du bassin gersois nord. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "L'Isle-Jourdain (32), bourg de 9 537 habitants situé dans le Gers entre Toulouse et Auch, sur les bords de la Save. Son économie repose sur un tissu de TPE artisans, commerçants et professions libérales, PME agroalimentaires et de services, coopératives agricoles et entreprises du bassin gersois nord. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "L'Isle-Jourdain (32), bourg de 9 537 habitants situé dans le Gers entre Toulouse et Auch, sur les bords de la Save. Son économie repose sur un tissu de TPE artisans, commerçants et professions libérales, PME agroalimentaires et de services, coopératives agricoles et entreprises du bassin gersois nord. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à L'Isle-Jourdain (32). Nous accompagnons TPE et PME du bassin gersois nord entre Toulouse et Auch : commerçants, artisans, professions libérales, coopératives agricoles et entreprises agroalimentaires. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à L'Isle-Jourdain (32). Nous accompagnons TPE et PME du bassin gersois nord entre Toulouse et Auch : commerçants, artisans, professions libérales, coopératives agricoles et entreprises agroalimentaires. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à L'Isle-Jourdain (32). Nous accompagnons TPE et PME du bassin gersois nord entre Toulouse et Auch : commerçants, artisans, professions libérales, coopératives agricoles et entreprises agroalimentaires. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à L'Isle-Jourdain (32). Nous accompagnons TPE et PME du bassin gersois nord entre Toulouse et Auch : commerçants, artisans, professions libérales, coopératives agricoles et entreprises agroalimentaires. Audit Flash sur mesure.",
   ecosystemFr:
     "L'Isle-Jourdain est un bourg dynamique du Gers nord, carrefour entre Toulouse (45 min) et Auch (30 min), traversé par la Save. Son économie s'appuie sur l'agroalimentaire, les coopératives agricoles (céréales, élevage), le commerce de proximité, l'artisanat BTP, les professions libérales et les services aux entreprises. Zone d'activité Pont de Lannelongue.",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const L_ISLE_JOURDAIN_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à L'Isle-Jourdain et dans tout le Gers nord. Consultants accessibles via la gare SNCF L'Isle-Jourdain (ligne Toulouse-Auch) et l'aéroport Toulouse-Blagnac à 40 min.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à L'Isle-Jourdain ?",
+      q: "Quel est le tarif d'un audit IA à L'Isle-Jourdain  ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de L'Isle-Jourdain : coopératives agricoles, commerçants, artisans et professions libérales du bassin gersois. ROI chiffré dès le diagnostic.",
     },
     {

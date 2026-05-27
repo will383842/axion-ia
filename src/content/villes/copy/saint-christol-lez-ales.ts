@@ -9,9 +9,9 @@ export const SAINT_CHRISTOL_LEZ_ALES_COPY: VilleCopy = {
   pitchEn:
     "Saint-Christol-lez-Alès (30), commune de l'agglomération d'Alès en Cévennes gardoises. Tissu TPE/PME services aux entreprises, commerces zone commerciale, artisanat BTP, professions libérales et sous-traitance industrielle Alès Agglomération. Axion-IA y intervient pour tous types d'activités du bassin alésien.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Saint-Christol-lez-Alès (30). Nous accompagnons les TPE, PME et ETI locales : entreprises industrielles, commerçants, artisans BTP, professions libérales et services aux entreprises du bassin alésien. Audit Flash à partir de 490 € HT.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Saint-Christol-lez-Alès (30). Nous accompagnons les TPE, PME et ETI locales : entreprises industrielles, commerçants, artisans BTP, professions libérales et services aux entreprises du bassin alésien. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Saint-Christol-lez-Alès (30). Nous accompagnons les TPE, PME et ETI locales : entreprises industrielles, commerçants, artisans BTP, professions libérales et services aux entreprises du bassin alésien. Audit Flash à partir de 490 € HT.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Saint-Christol-lez-Alès (30). Nous accompagnons les TPE, PME et ETI locales : entreprises industrielles, commerçants, artisans BTP, professions libérales et services aux entreprises du bassin alésien. Audit Flash sur mesure.",
   seoHook: "commerce zone & artisanat",
   ecosystemFr:
     "Saint-Christol-lez-Alès (~7 300 hab) fait partie d'Alès Agglomération, aux portes des Cévennes. Zone commerciale dynamique, services aux entreprises, sous-traitance industrielle (héritage minier reconverti), artisanat BTP, professions libérales et commerces de proximité.",
@@ -52,7 +52,7 @@ export const SAINT_CHRISTOL_LEZ_ALES_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Saint-Christol-lez-Alès et dans toute l'agglomération d'Alès (Alès, Saint-Privat-des-Vieux, Saint-Martin-de-Valgalgues). Nos consultants viennent de Nîmes (40 min).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Saint-Christol-lez-Alès ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Saint-Christol-lez-Alès  ?",
       a: "L'Audit Flash commence à 490 € HT. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {

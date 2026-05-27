@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LONGUENEE_EN_ANJOU_COPY: VilleCopy = {
   pitchFr:
-    "Longuenée-en-Anjou (49), commune nouvelle au nord d'Angers, rassemble plus de 6 500 habitants dans un territoire semi-rural en croissance. Axion-IA couvre l'ensemble des activités professionnelles présentes : agriculture, artisanat, commerces, PME tertiaires et services de proximité.",
+    "Longuenée-en-Anjou (49), commune nouvelle au nord d'Angers, rassemble plus de 6 500 habitants dans un territoire semi-rural en croissance. Axion-IA répond aux besoins des activités professionnelles présentes : agriculture, artisanat, commerces, PME tertiaires et services de proximité.",
   pitchEn:
-    "Longuenée-en-Anjou (49), commune nouvelle au nord d'Angers, rassemble plus de 6 500 habitants dans un territoire semi-rural en croissance. Axion-IA couvre l'ensemble des activités professionnelles présentes : agriculture, artisanat, commerces, PME tertiaires et services de proximité.",
+    "Longuenée-en-Anjou (49), commune nouvelle au nord d'Angers, rassemble plus de 6 500 habitants dans un territoire semi-rural en croissance. Axion-IA répond aux besoins des activités professionnelles présentes : agriculture, artisanat, commerces, PME tertiaires et services de proximité.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Longuenée-en-Anjou (49). Nous accompagnons les TPE, PME et exploitants agricoles du nord angevin dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Longuenée-en-Anjou (49). Nous accompagnons les TPE, PME et exploitants agricoles du nord angevin dans l'adoption de l'IA : audit Flash, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Longuenée-en-Anjou (49). Nous accompagnons les TPE, PME et exploitants agricoles du nord angevin dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Longuenée-en-Anjou (49). Nous accompagnons les TPE, PME et exploitants agricoles du nord angevin dans l'adoption de l'IA : audit Flash, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
   seoHook: "agriculture élevage & artisanat second",
   ecosystemFr:
     "Longuenée-en-Anjou est née de la fusion de 4 communes déléguées (dont La Meignanne, Le Plessis-Macé) au nord d'Angers. Territoire semi-rural attractif : agriculture (polyculture, élevage), artisanat BTP, PME tertiaires, commerces de proximité. Château du Plessis-Macé, patrimoine médiéval remarquable.",
@@ -52,7 +52,7 @@ export const LONGUENEE_EN_ANJOU_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Longuenée-en-Anjou et dans tout le nord angevin (Avrillé, Montreuil-Juigné, Les Hauts-d'Anjou). Nos consultants se déplacent sur site, démarrage sous 5 jours.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Longuenée-en-Anjou ?",
+      q: "Combien coûte un audit IA à Longuenée-en-Anjou  ?",
       a: "L'Audit Flash IA à Longuenée-en-Anjou démarre à 490 € HT pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics.",
     },
     {

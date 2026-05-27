@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SOMMIERES_COPY: VilleCopy = {
   pitchFr:
-    "Sommières (30), bourg médiéval du Gard sur le Vidourle, entre Nîmes et Montpellier. Patrimoine médiéval remarquable (château, pont romain). Tissu TPE artisans, PME viticoles et agroalimentaires, commerces de proximité, tourisme patrimoine, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Sommières (30), bourg médiéval du Gard sur le Vidourle, entre Nîmes et Montpellier. Patrimoine médiéval remarquable (château, pont romain). Tissu TPE artisans, PME viticoles et agroalimentaires, commerces de proximité, tourisme patrimoine, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes.",
   pitchEn:
-    "Sommières (30), bourg médiéval du Gard sur le Vidourle, entre Nîmes et Montpellier. Patrimoine médiéval remarquable (château, pont romain). Tissu TPE artisans, PME viticoles et agroalimentaires, commerces de proximité, tourisme patrimoine, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Sommières (30), bourg médiéval du Gard sur le Vidourle, entre Nîmes et Montpellier. Patrimoine médiéval remarquable (château, pont romain). Tissu TPE artisans, PME viticoles et agroalimentaires, commerces de proximité, tourisme patrimoine, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sommières (30). Nous accompagnons tous types d'activités : domaines viticoles, PME agroalimentaires, TPE artisans, commerçants du centre médiéval, restaurateurs, indépendants, professions libérales et acteurs du tourisme patrimoine gardois.",
   directAnswerEn:

@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const CLUSES_COPY: VilleCopy = {
   pitchFr:
-    "Cluses (74), capitale historique du décolletage et de la micromécanique dans la vallée de l'Arve en Haute-Savoie, concentre un tissu industriel dense de PME sous-traitantes horlogerie, aéronautique et automobile. Centre technique CETIM, TPE artisanat, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations de la vallée de l'Arve.",
+    "Cluses (74), capitale historique du décolletage et de la micromécanique dans la vallée de l'Arve en Haute-Savoie, concentre un tissu industriel dense de PME sous-traitantes horlogerie, aéronautique et automobile. Centre technique CETIM, TPE artisanat, commerces. Axion-IA y conduit ses missions auprès des entreprises locales de la vallée de l'Arve.",
   pitchEn:
-    "Cluses (74), capitale historique du décolletage et de la micromécanique dans la vallée de l'Arve en Haute-Savoie, concentre un tissu industriel dense de PME sous-traitantes horlogerie, aéronautique et automobile. Centre technique CETIM, TPE artisanat, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations de la vallée de l'Arve.",
+    "Cluses (74), capitale historique du décolletage et de la micromécanique dans la vallée de l'Arve en Haute-Savoie, concentre un tissu industriel dense de PME sous-traitantes horlogerie, aéronautique et automobile. Centre technique CETIM, TPE artisanat, commerces. Axion-IA y conduit ses missions auprès des entreprises locales de la vallée de l'Arve.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cluses (74). Nous accompagnons TPE et PME : industriels décolletage/micromécanique vallée de l'Arve, sous-traitants horlogerie et aéronautique, artisans, commerçants et prestataires de services. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cluses (74). Nous accompagnons TPE et PME : industriels décolletage/micromécanique vallée de l'Arve, sous-traitants horlogerie et aéronautique, artisans, commerçants et prestataires de services. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cluses (74). Nous accompagnons TPE et PME : industriels décolletage/micromécanique vallée de l'Arve, sous-traitants horlogerie et aéronautique, artisans, commerçants et prestataires de services. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cluses (74). Nous accompagnons TPE et PME : industriels décolletage/micromécanique vallée de l'Arve, sous-traitants horlogerie et aéronautique, artisans, commerçants et prestataires de services. Audit Flash sur mesure.",
   seoHook: "vallée arve",
   ecosystemFr:
     "Cluses est le coeur historique du décolletage mondial (vallée de l'Arve, ~800 entreprises spécialisées). Sous-traitance de précision pour l'horlogerie suisse, l'aéronautique, l'automobile et le médical. Le CETIM (Centre Technique des Industries Mécaniques) y opère un pôle R&D. 4e ville de Haute-Savoie, entre Annecy et Chamonix, à 50 min de Genève.",
@@ -56,7 +56,7 @@ export const CLUSES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME décolletage et micromécanique de la vallée de l'Arve sur leurs cas IA : contrôle qualité par vision, prédiction maintenance machines-outils, optimisation cadences, classification plans CAO, traçabilité production.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Cluses ?",
+      q: "Quel est le tarif d'un audit IA à Cluses  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Adapté aux PME industrielles vallée de l'Arve comme aux TPE artisans et commerçants.",
     },
     {

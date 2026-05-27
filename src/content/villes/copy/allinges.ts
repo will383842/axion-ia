@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ALLINGES_COPY: VilleCopy = {
   pitchFr:
-    "Allinges (74), commune résidentielle du Chablais haut-savoyard entre Thonon-les-Bains et le lac Léman, accueille un tissu de TPE/PME tertiaires, artisans BTP, commerces, professions libérales et entreprises liées au tourisme lacustre et thermal. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin thononais.",
+    "Allinges (74), commune résidentielle du Chablais haut-savoyard entre Thonon-les-Bains et le lac Léman, accueille un tissu de TPE/PME tertiaires, artisans BTP, commerces, professions libérales et entreprises liées au tourisme lacustre et thermal. Axion-IA collabore avec toutes les structures locales du bassin thononais.",
   pitchEn:
-    "Allinges (74), commune résidentielle du Chablais haut-savoyard entre Thonon-les-Bains et le lac Léman, accueille un tissu de TPE/PME tertiaires, artisans BTP, commerces, professions libérales et entreprises liées au tourisme lacustre et thermal. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin thononais.",
+    "Allinges (74), commune résidentielle du Chablais haut-savoyard entre Thonon-les-Bains et le lac Léman, accueille un tissu de TPE/PME tertiaires, artisans BTP, commerces, professions libérales et entreprises liées au tourisme lacustre et thermal. Axion-IA collabore avec toutes les structures locales du bassin thononais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Allinges (74). Nous accompagnons TPE et PME : PME tertiaires du Chablais, artisans BTP, commerçants, professions libérales, entreprises touristiques et de services du bassin thononais proche Genève.",
   directAnswerEn:
@@ -56,7 +56,7 @@ export const ALLINGES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les entreprises touristiques et thermales du Chablais sur leurs cas IA : agents conversationnels réservation multilingue, automatisation gestion locative saisonnière, CRM augmenté client, optimisation yield management hébergement.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Allinges ?",
+      q: "Tarifs audit IA à Allinges  : quel budget prévoir ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du Chablais, il identifie les cas d'usage IA à fort ROI pour votre activité (tertiaire, tourisme, BTP, professions libérales). Tarifs publics.",
     },
     {

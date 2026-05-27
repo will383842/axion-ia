@@ -9,9 +9,9 @@ export const VILLE_D_AVRAY_COPY: VilleCopy = {
   pitchEn:
     "Ville-d'Avray (92), commune résidentielle nichée entre les forêts de Fausses-Reposes et de Meudon, est célèbre pour ses étangs immortalisés par Corot et sa proximité immédiate avec Versailles et le plateau de Vélizy. Tissu de TPE indépendantes, professions libérales, cabinets de conseil et PME tertiaires ouest-parisien. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ville-d'Avray (92). Nous accompagnons tous types d'activités : TPE indépendantes, professions libérales, cabinets de conseil, PME tertiaires du secteur ouest-parisien, commerçants de proximité et artisans davraysiens. Audit Flash à partir de 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ville-d'Avray (92). Nous accompagnons tous types d'activités : TPE indépendantes, professions libérales, cabinets de conseil, PME tertiaires du secteur ouest-parisien, commerçants de proximité et artisans davraysiens. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ville-d'Avray (92). Nous accompagnons tous types d'activités : TPE indépendantes, professions libérales, cabinets de conseil, PME tertiaires du secteur ouest-parisien, commerçants de proximité et artisans davraysiens. Audit Flash à partir de 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ville-d'Avray (92). Nous accompagnons tous types d'activités : TPE indépendantes, professions libérales, cabinets de conseil, PME tertiaires du secteur ouest-parisien, commerçants de proximité et artisans davraysiens. Audit Flash sur mesure.",
   seoHook: "professions libérales & services tertiaires",
   ecosystemFr:
     "Ville-d'Avray est une commune résidentielle prisée des Hauts-de-Seine, entre forêt de Fausses-Reposes et étangs de Corot, à 12 km de Paris et 3 km de Versailles. Tissu économique dominé par les professions libérales, TPE de conseil, cabinets d'architectes et PME tertiaires. Proximité immédiate du pôle d'activités Vélizy-Villacoublay et du campus technologique de Saclay.",
@@ -52,7 +52,7 @@ export const VILLE_D_AVRAY_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Ville-d'Avray et dans tout le secteur ouest-parisien (Sèvres, Chaville, Marnes-la-Coquette, Versailles, Vélizy-Villacoublay). Déplacement rapide depuis Paris (20 min Transilien L) ou La Défense (15 min).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Ville-d'Avray ?",
+      q: "Quel est le tarif d'un audit IA à Ville-d'Avray  ?",
       a: "L'Audit Flash IA à Ville-d'Avray débute à 490 € HT pour 4 heures de diagnostic. Il couvre l'identification des processus automatisables, le chiffrage du ROI et un plan d'action priorisé adapté à votre structure.",
     },
     {

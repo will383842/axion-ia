@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VIF_COPY: VilleCopy = {
   pitchFr:
-    "Vif (38), commune du sud-Grenoble dans la vallée de la Gresse, conjugue caractère résidentiel péri-urbain et tissu local de TPE/PME. Activité économique mixte : artisanat BTP, commerces, professions libérales, agriculture résiduelle, services. Axion-IA y déploie ses missions auprès de toutes les organisations du sud-grenoblois rural.",
+    "Vif (38), commune du sud-Grenoble dans la vallée de la Gresse, conjugue caractère résidentiel péri-urbain et tissu local de TPE/PME. Activité économique mixte : artisanat BTP, commerces, professions libérales, agriculture résiduelle, services. Axion-IA y conduit ses missions auprès des entreprises locales du sud-grenoblois rural.",
   pitchEn:
-    "Vif (38), commune du sud-Grenoble dans la vallée de la Gresse, conjugue caractère résidentiel péri-urbain et tissu local de TPE/PME. Activité économique mixte : artisanat BTP, commerces, professions libérales, agriculture résiduelle, services. Axion-IA y déploie ses missions auprès de toutes les organisations du sud-grenoblois rural.",
+    "Vif (38), commune du sud-Grenoble dans la vallée de la Gresse, conjugue caractère résidentiel péri-urbain et tissu local de TPE/PME. Activité économique mixte : artisanat BTP, commerces, professions libérales, agriculture résiduelle, services. Axion-IA y conduit ses missions auprès des entreprises locales du sud-grenoblois rural.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vif (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, agriculteurs et éleveurs de la vallée de la Gresse, professions libérales, indépendants, PME tertiaires et structures rurales du sud-grenoblois.",
   directAnswerEn:

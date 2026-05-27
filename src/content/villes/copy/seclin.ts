@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SECLIN_COPY: VilleCopy = {
   pitchFr:
-    "Seclin (59), commune au sud de la Métropole Européenne de Lille, à proximité de l'aéroport Lille-Lesquin et du centre hospitalier. Tissu économique : TPE et PME de la santé et du médico-social, logistique et transport, agroalimentaire, commerce, services aux entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs du sud de l'agglo lilloise.",
+    "Seclin (59), commune au sud de la Métropole Européenne de Lille, à proximité de l'aéroport Lille-Lesquin et du centre hospitalier. Tissu économique : TPE et PME de la santé et du médico-social, logistique et transport, agroalimentaire, commerce, services aux entreprises. Axion-IA opère pour entreprises et indépendants du secteur du sud de l'agglo lilloise.",
   pitchEn:
-    "Seclin (59), commune au sud de la Métropole Européenne de Lille, à proximité de l'aéroport Lille-Lesquin et du centre hospitalier. Tissu économique : TPE et PME de la santé et du médico-social, logistique et transport, agroalimentaire, commerce, services aux entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs du sud de l'agglo lilloise.",
+    "Seclin (59), commune au sud de la Métropole Européenne de Lille, à proximité de l'aéroport Lille-Lesquin et du centre hospitalier. Tissu économique : TPE et PME de la santé et du médico-social, logistique et transport, agroalimentaire, commerce, services aux entreprises. Axion-IA opère pour entreprises et indépendants du secteur du sud de l'agglo lilloise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Seclin (59). Nous accompagnons TPE et PME : acteurs de la santé et du médico-social, logisticiens et transporteurs du pôle aéroportuaire Lesquin, PME agroalimentaires, commerçants, artisans et prestataires de services aux entreprises.",
   directAnswerEn:
@@ -56,7 +56,7 @@ export const SECLIN_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE et PME du secteur santé et médico-social à Seclin sur leurs cas IA spécifiques : tri et pré-analyse dossiers patients, automatisation plannings soignants, agents conversationnels accueil patient, gestion documentaire IA conforme RGPD santé, copilotes administratifs facturation et codage PMSI.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Seclin ?",
+      q: "Combien coûte un audit IA à Seclin  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du sud lillois, il identifie les cas d'usage IA à fort ROI pour votre activité (santé, logistique, agroalimentaire, commerce, services). Tarifs publics, sans engagement.",
     },
     {

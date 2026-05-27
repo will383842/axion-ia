@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BEAUMONT_COPY: VilleCopy = {
   pitchFr:
-    "Beaumont (63), commune résidentielle au sud de Clermont-Ferrand, fait partie de Clermont Auvergne Métropole. Tissu PME tertiaires et services, professions libérales, commerces de proximité, TPE artisanat, immobilier résidentiel. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Beaumont (63), commune résidentielle au sud de Clermont-Ferrand, fait partie de Clermont Auvergne Métropole. Tissu PME tertiaires et services, professions libérales, commerces de proximité, TPE artisanat, immobilier résidentiel. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Beaumont (63), commune résidentielle au sud de Clermont-Ferrand, fait partie de Clermont Auvergne Métropole. Tissu PME tertiaires et services, professions libérales, commerces de proximité, TPE artisanat, immobilier résidentiel. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Beaumont (63), commune résidentielle au sud de Clermont-Ferrand, fait partie de Clermont Auvergne Métropole. Tissu PME tertiaires et services, professions libérales, commerces de proximité, TPE artisanat, immobilier résidentiel. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beaumont (63). Nous accompagnons TPE et PME : cabinets professions libérales, sociétés de services tertiaires, commerçants de proximité, artisans, professionnels de l'immobilier résidentiel.",
   directAnswerEn:

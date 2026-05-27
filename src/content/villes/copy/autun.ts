@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const AUTUN_COPY: VilleCopy = {
   pitchFr:
-    "Autun (71), cité gallo-romaine et sous-préfecture de Saône-et-Loire aux portes du Morvan. Cathédrale Saint-Lazare, vestiges romains (temple de Janus, portes d'Arroux). Tissu TPE artisanat, PME tertiaires, tourisme patrimonial, services publics, commerce centre-bourg. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Autun (71), cité gallo-romaine et sous-préfecture de Saône-et-Loire aux portes du Morvan. Cathédrale Saint-Lazare, vestiges romains (temple de Janus, portes d'Arroux). Tissu TPE artisanat, PME tertiaires, tourisme patrimonial, services publics, commerce centre-bourg. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Autun (71), cité gallo-romaine et sous-préfecture de Saône-et-Loire aux portes du Morvan. Cathédrale Saint-Lazare, vestiges romains (temple de Janus, portes d'Arroux). Tissu TPE artisanat, PME tertiaires, tourisme patrimonial, services publics, commerce centre-bourg. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Autun (71), cité gallo-romaine et sous-préfecture de Saône-et-Loire aux portes du Morvan. Cathédrale Saint-Lazare, vestiges romains (temple de Janus, portes d'Arroux). Tissu TPE artisanat, PME tertiaires, tourisme patrimonial, services publics, commerce centre-bourg. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Autun (71). Nous accompagnons TPE et PME : artisans et commerçants centre-bourg, acteurs tourisme patrimonial (cathédrale Saint-Lazare, vestiges romains), PME tertiaires, services publics sous-préfecture, professionnels Morvan. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Autun (71). Nous accompagnons TPE et PME : artisans et commerçants centre-bourg, acteurs tourisme patrimonial (cathédrale Saint-Lazare, vestiges romains), PME tertiaires, services publics sous-préfecture, professionnels Morvan. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Autun (71). Nous accompagnons TPE et PME : artisans et commerçants centre-bourg, acteurs tourisme patrimonial (cathédrale Saint-Lazare, vestiges romains), PME tertiaires, services publics sous-préfecture, professionnels Morvan. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Autun (71). Nous accompagnons TPE et PME : artisans et commerçants centre-bourg, acteurs tourisme patrimonial (cathédrale Saint-Lazare, vestiges romains), PME tertiaires, services publics sous-préfecture, professionnels Morvan. Audit Flash sur mesure.",
   ecosystemFr:
     "Autun est une sous-préfecture de Saône-et-Loire aux portes du Morvan, riche d'un patrimoine gallo-romain exceptionnel (cathédrale Saint-Lazare, temple de Janus). Tissu TPE artisanat et commerce, PME tertiaires, tourisme patrimonial et culturel, services publics, filière bois Morvan.",
   ecosystemEn:

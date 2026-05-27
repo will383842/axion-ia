@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const REIGNIER_ESERY_COPY: VilleCopy = {
   pitchFr:
-    "Reignier-Ésery (74), commune du Grand Genève en Haute-Savoie, est située entre Annemasse et La Roche-sur-Foron sur un axe transfrontalier dynamique. Tissu varié de PME tertiaires, services transfrontaliers, TPE artisans BTP, agriculture et commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération Grand Genève.",
+    "Reignier-Ésery (74), commune du Grand Genève en Haute-Savoie, est située entre Annemasse et La Roche-sur-Foron sur un axe transfrontalier dynamique. Tissu varié de PME tertiaires, services transfrontaliers, TPE artisans BTP, agriculture et commerces. Axion-IA accompagne tout le tissu professionnel local de l'agglomération Grand Genève.",
   pitchEn:
-    "Reignier-Ésery (74), commune du Grand Genève en Haute-Savoie, est située entre Annemasse et La Roche-sur-Foron sur un axe transfrontalier dynamique. Tissu varié de PME tertiaires, services transfrontaliers, TPE artisans BTP, agriculture et commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération Grand Genève.",
+    "Reignier-Ésery (74), commune du Grand Genève en Haute-Savoie, est située entre Annemasse et La Roche-sur-Foron sur un axe transfrontalier dynamique. Tissu varié de PME tertiaires, services transfrontaliers, TPE artisans BTP, agriculture et commerces. Axion-IA accompagne tout le tissu professionnel local de l'agglomération Grand Genève.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Reignier-Ésery (74). Nous accompagnons TPE et PME : entreprises de services transfrontaliers, PME tertiaires, artisans BTP, agriculteurs et commerçants de l'agglomération Grand Genève.",
   directAnswerEn:

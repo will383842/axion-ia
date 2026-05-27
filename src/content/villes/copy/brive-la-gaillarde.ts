@@ -11,9 +11,9 @@ export const BRIVE_LA_GAILLARDE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Brive-la-Gaillarde pour optimiser les processus des entreprises locales. Avec des références comme Euralis et les Papeteries de Condat, nous apportons notre expertise IA directement sur site.",
   directAnswerFr:
-    "Axion-IA se déplace à Brive-la-Gaillarde pour accompagner les entreprises dans leur transformation IA. Avec des secteurs comme le commerce de détail et la construction, notre équipe nationale propose des audits à partir de 490 € HT ou des interventions dès 590 € HT. Nous travaillons directement sur site pour garantir une mise en œuvre rapide et efficace.",
+    "Axion-IA se déplace à Brive-la-Gaillarde pour accompagner les entreprises dans leur transformation IA. Avec des secteurs comme le commerce de détail et la construction, notre équipe nationale propose des audits ou des interventions. Nous travaillons directement sur site pour garantir une mise en œuvre rapide et efficace.",
   directAnswerEn:
-    "Axion-IA se déplace à Brive-la-Gaillarde pour accompagner les entreprises dans leur transformation IA. Avec des secteurs comme le commerce de détail et la construction, notre équipe nationale propose des audits à partir de 490 € HT ou des interventions dès 590 € HT. Nous travaillons directement sur site pour garantir une mise en œuvre rapide et efficace.",
+    "Axion-IA se déplace à Brive-la-Gaillarde pour accompagner les entreprises dans leur transformation IA. Avec des secteurs comme le commerce de détail et la construction, notre équipe nationale propose des audits ou des interventions. Nous travaillons directement sur site pour garantir une mise en œuvre rapide et efficace.",
   seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Brive-la-Gaillarde, avec sa Zone Industrielle de Brive Laroche, est un pôle économique actif, abritant des entreprises comme Euralis et les Papeteries de Condat, renforçant son tissu économique.",

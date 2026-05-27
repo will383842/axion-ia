@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const VALENTON_COPY: VilleCopy = {
   pitchFr:
-    "Valenton (94), commune du sud du Val-de-Marne, abrite la plus grande gare de triage d'Île-de-France et des zones logistiques et industrielles majeures. TPE artisans, PME transport ferroviaire et routier, logistique, BTP, commerces, services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Valenton (94), commune du sud du Val-de-Marne, abrite la plus grande gare de triage d'Île-de-France et des zones logistiques et industrielles majeures. TPE artisans, PME transport ferroviaire et routier, logistique, BTP, commerces, services. Axion-IA répond aux besoins des activités professionnelles présentes.",
   pitchEn:
-    "Valenton (94), commune du sud du Val-de-Marne, abrite la plus grande gare de triage d'Île-de-France et des zones logistiques et industrielles majeures. TPE artisans, PME transport ferroviaire et routier, logistique, BTP, commerces, services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Valenton (94), commune du sud du Val-de-Marne, abrite la plus grande gare de triage d'Île-de-France et des zones logistiques et industrielles majeures. TPE artisans, PME transport ferroviaire et routier, logistique, BTP, commerces, services. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Valenton (94). Nous accompagnons TPE et PME : entreprises logistiques et transport autour de la gare de triage, PME industrielles, artisans BTP, commerçants, prestataires de services du sud Val-de-Marne. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Valenton (94). Nous accompagnons TPE et PME : entreprises logistiques et transport autour de la gare de triage, PME industrielles, artisans BTP, commerçants, prestataires de services du sud Val-de-Marne. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Valenton (94). Nous accompagnons TPE et PME : entreprises logistiques et transport autour de la gare de triage, PME industrielles, artisans BTP, commerçants, prestataires de services du sud Val-de-Marne. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Valenton (94). Nous accompagnons TPE et PME : entreprises logistiques et transport autour de la gare de triage, PME industrielles, artisans BTP, commerçants, prestataires de services du sud Val-de-Marne. Audit Flash sur mesure.",
   seoHook: "TPE & PME Val-de-Marne",
   ecosystemFr:
     "Valenton est une commune du sud du Val-de-Marne structurée autour de la gare de triage de Villeneuve-Saint-Georges/Valenton, la plus grande d'Île-de-France. Zones logistiques et industrielles actives, PME transport, TPE artisans BTP, commerces de proximité et services aux entreprises.",

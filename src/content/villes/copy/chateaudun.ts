@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHATEAUDUN_COPY: VilleCopy = {
   pitchFr:
-    "Châteaudun (28), sous-préfecture d'Eure-et-Loir, est une cité historique dominée par son château médiéval (donjon XIIe siècle). Tissu TPE/PME industrielles, services défense (base aérienne 279), commerces centre-ville, agroalimentaire Beauce. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Châteaudun (28), sous-préfecture d'Eure-et-Loir, est une cité historique dominée par son château médiéval (donjon XIIe siècle). Tissu TPE/PME industrielles, services défense (base aérienne 279), commerces centre-ville, agroalimentaire Beauce. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Châteaudun (28), sous-préfecture d'Eure-et-Loir, est une cité historique dominée par son château médiéval (donjon XIIe siècle). Tissu TPE/PME industrielles, services défense (base aérienne 279), commerces centre-ville, agroalimentaire Beauce. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Châteaudun (28), sous-préfecture d'Eure-et-Loir, est une cité historique dominée par son château médiéval (donjon XIIe siècle). Tissu TPE/PME industrielles, services défense (base aérienne 279), commerces centre-ville, agroalimentaire Beauce. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châteaudun (28). Nous accompagnons tous types d'activités : TPE/PME industrielles, sous-traitants défense, commerçants centre-ville, acteurs agroalimentaires Beauce, services aux entreprises du Dunois.",
   directAnswerEn:

@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const HAUTS_DE_BIENNE_COPY: VilleCopy = {
   pitchFr:
-    "Hauts de Bienne (39), commune nouvelle du Haut-Jura née de la fusion de Morez et Les Rousses, est le berceau historique de la lunetterie française. TPE/PME lunettiers, artisans du bois et du BTP, commerces de station, hébergeurs touristiques et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Hauts de Bienne (39), commune nouvelle du Haut-Jura née de la fusion de Morez et Les Rousses, est le berceau historique de la lunetterie française. TPE/PME lunettiers, artisans du bois et du BTP, commerces de station, hébergeurs touristiques et professions libérales. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Hauts de Bienne (39), commune nouvelle du Haut-Jura née de la fusion de Morez et Les Rousses, est le berceau historique de la lunetterie française. TPE/PME lunettiers, artisans du bois et du BTP, commerces de station, hébergeurs touristiques et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Hauts de Bienne (39), commune nouvelle du Haut-Jura née de la fusion de Morez et Les Rousses, est le berceau historique de la lunetterie française. TPE/PME lunettiers, artisans du bois et du BTP, commerces de station, hébergeurs touristiques et professions libérales. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hauts de Bienne (39). Nous accompagnons TPE et PME : lunettiers du Haut-Jura, artisans bois et BTP, commerces de station, hébergeurs touristiques, moniteurs et professions libérales. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hauts de Bienne (39). Nous accompagnons TPE et PME : lunettiers du Haut-Jura, artisans bois et BTP, commerces de station, hébergeurs touristiques, moniteurs et professions libérales. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hauts de Bienne (39). Nous accompagnons TPE et PME : lunettiers du Haut-Jura, artisans bois et BTP, commerces de station, hébergeurs touristiques, moniteurs et professions libérales. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hauts de Bienne (39). Nous accompagnons TPE et PME : lunettiers du Haut-Jura, artisans bois et BTP, commerces de station, hébergeurs touristiques, moniteurs et professions libérales. Audit Flash sur mesure.",
   seoHook: "lunetterie optique & tourisme hébergement",
   ecosystemFr:
     "Hauts de Bienne est la commune nouvelle du Haut-Jura, réunissant Morez (berceau de la lunetterie française) et Les Rousses (station de ski nordique et alpin). Tissu économique : TPE/PME lunetterie et optique, artisanat bois et BTP, commerces de station, hébergement touristique (hôtels, gîtes, locations saisonnières), professions libérales et services de montagne.",
@@ -56,7 +56,7 @@ export const HAUTS_DE_BIENNE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE et PME de la lunetterie jurassienne sur des cas IA concrets : contrôle qualité vision, automatisation production, gestion stocks montures, traçabilité, maintenance prédictive machines. Audit Flash 490 € HT.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Hauts de Bienne ?",
+      q: "Quel est le tarif d'un audit IA à Hauts de Bienne  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du Haut-Jura, il identifie les cas d'usage IA à fort ROI pour votre activité (lunetterie, tourisme, commerce, artisanat). Tarifs publics.",
     },
     {

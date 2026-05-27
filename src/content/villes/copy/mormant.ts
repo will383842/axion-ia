@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const MORMANT_COPY: VilleCopy = {
   pitchFr:
-    "Mormant (77), bourg rural de la Brie en Seine-et-Marne, carrefour agricole et commercial entre Melun et Provins. TPE artisanat, commerces de bourg, PME agroalimentaire, exploitations agricoles, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Mormant (77), bourg rural de la Brie en Seine-et-Marne, carrefour agricole et commercial entre Melun et Provins. TPE artisanat, commerces de bourg, PME agroalimentaire, exploitations agricoles, professions libérales. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Mormant (77), bourg rural de la Brie en Seine-et-Marne, carrefour agricole et commercial entre Melun et Provins. TPE artisanat, commerces de bourg, PME agroalimentaire, exploitations agricoles, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Mormant (77), bourg rural de la Brie en Seine-et-Marne, carrefour agricole et commercial entre Melun et Provins. TPE artisanat, commerces de bourg, PME agroalimentaire, exploitations agricoles, professions libérales. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mormant (77). Nous accompagnons TPE et PME : artisans, commerçants de bourg, PME agroalimentaire, exploitants agricoles de la Brie, professions libérales. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mormant (77). Nous accompagnons TPE et PME : artisans, commerçants de bourg, PME agroalimentaire, exploitants agricoles de la Brie, professions libérales. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mormant (77). Nous accompagnons TPE et PME : artisans, commerçants de bourg, PME agroalimentaire, exploitants agricoles de la Brie, professions libérales. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mormant (77). Nous accompagnons TPE et PME : artisans, commerçants de bourg, PME agroalimentaire, exploitants agricoles de la Brie, professions libérales. Audit Flash sur mesure.",
   seoHook: "commerce bourg & agroalimentaire",
   ecosystemFr:
     "Mormant est un bourg rural de la Brie en Seine-et-Marne, carrefour entre Melun et Provins. Tissu TPE artisanat, commerces de bourg, PME agroalimentaire, exploitations agricoles céréalières et betteravières, professions libérales.",
@@ -60,7 +60,7 @@ export const MORMANT_COPY: VilleCopy = {
       a: "Automatisation traçabilité produits, gestion stocks et production, conformité normes sanitaires, maintenance prédictive machines, optimisation logistique expéditions.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Mormant ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Mormant  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics, sans engagement. Devis sous 48h après premier échange.",
     },
     {

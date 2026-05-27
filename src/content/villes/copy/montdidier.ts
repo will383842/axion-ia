@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MONTDIDIER_COPY: VilleCopy = {
   pitchFr:
-    "Montdidier (80), sous-préfecture de la Somme en Picardie, bourg historique sur le plateau picard. Tissu de TPE artisans BTP, PME agroalimentaires, commerces de proximité, exploitations agricoles grandes cultures et services aux entreprises. Axion-IA y déploie ses missions auprès de toutes les organisations du Santerre.",
+    "Montdidier (80), sous-préfecture de la Somme en Picardie, bourg historique sur le plateau picard. Tissu de TPE artisans BTP, PME agroalimentaires, commerces de proximité, exploitations agricoles grandes cultures et services aux entreprises. Axion-IA y conduit ses missions auprès des entreprises locales du Santerre.",
   pitchEn:
-    "Montdidier (80), sous-préfecture de la Somme en Picardie, bourg historique sur le plateau picard. Tissu de TPE artisans BTP, PME agroalimentaires, commerces de proximité, exploitations agricoles grandes cultures et services aux entreprises. Axion-IA y déploie ses missions auprès de toutes les organisations du Santerre.",
+    "Montdidier (80), sous-préfecture de la Somme en Picardie, bourg historique sur le plateau picard. Tissu de TPE artisans BTP, PME agroalimentaires, commerces de proximité, exploitations agricoles grandes cultures et services aux entreprises. Axion-IA y conduit ses missions auprès des entreprises locales du Santerre.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montdidier (80). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires, exploitations agricoles grandes cultures du Santerre, commerçants, professions libérales, indépendants et services aux entreprises de cette sous-préfecture picarde.",
   directAnswerEn:

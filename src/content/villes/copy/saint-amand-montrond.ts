@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_AMAND_MONTROND_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Amand-Montrond (18), sous-préfecture du Cher, est historiquement liée à la bijouterie et au travail de l'or. Bords du Cher, tissu de TPE artisans, PME industrielles et tertiaires, commerces centre-ville, services publics. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Saint-Amand-Montrond (18), sous-préfecture du Cher, est historiquement liée à la bijouterie et au travail de l'or. Bords du Cher, tissu de TPE artisans, PME industrielles et tertiaires, commerces centre-ville, services publics. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Saint-Amand-Montrond (18), sous-préfecture du Cher, est historiquement liée à la bijouterie et au travail de l'or. Bords du Cher, tissu de TPE artisans, PME industrielles et tertiaires, commerces centre-ville, services publics. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Saint-Amand-Montrond (18), sous-préfecture du Cher, est historiquement liée à la bijouterie et au travail de l'or. Bords du Cher, tissu de TPE artisans, PME industrielles et tertiaires, commerces centre-ville, services publics. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Amand-Montrond (18). Nous accompagnons TPE artisans (bijouterie, métiers d'art), PME industrielles et tertiaires, commerçants, professions libérales et toutes les activités de cette sous-préfecture du Cher. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Amand-Montrond (18). Nous accompagnons TPE artisans (bijouterie, métiers d'art), PME industrielles et tertiaires, commerçants, professions libérales et toutes les activités de cette sous-préfecture du Cher. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Amand-Montrond (18). Nous accompagnons TPE artisans (bijouterie, métiers d'art), PME industrielles et tertiaires, commerçants, professions libérales et toutes les activités de cette sous-préfecture du Cher. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Amand-Montrond (18). Nous accompagnons TPE artisans (bijouterie, métiers d'art), PME industrielles et tertiaires, commerçants, professions libérales et toutes les activités de cette sous-préfecture du Cher. Audit Flash sur mesure.",
   seoHook: "bijouterie travail & industrielles tertiaires",
   ecosystemFr:
     "Saint-Amand-Montrond est la sous-préfecture du Cher, historiquement capitale de la bijouterie et du travail de l'or en France. Tissu de TPE artisans (bijouterie, métiers d'art), PME industrielles et tertiaires, commerces centre-ville, services publics sous-préfectoraux. Bords du Cher, proximité Bourges.",

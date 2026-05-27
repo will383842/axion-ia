@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VALLEIRY_COPY: VilleCopy = {
   pitchFr:
-    "Valleiry (74), commune frontalière du Grand Genève en Haute-Savoie, bénéficie de la dynamique transfrontalière franco-suisse avec un tissu de TPE/PME de services, artisans BTP, commerces, professions libérales et entreprises liées au bassin d'emploi genevois. Axion-IA accompagne entreprises et indépendants de tous secteurs du Genevois français.",
+    "Valleiry (74), commune frontalière du Grand Genève en Haute-Savoie, bénéficie de la dynamique transfrontalière franco-suisse avec un tissu de TPE/PME de services, artisans BTP, commerces, professions libérales et entreprises liées au bassin d'emploi genevois. Axion-IA collabore avec toutes les structures locales du Genevois français.",
   pitchEn:
-    "Valleiry (74), commune frontalière du Grand Genève en Haute-Savoie, bénéficie de la dynamique transfrontalière franco-suisse avec un tissu de TPE/PME de services, artisans BTP, commerces, professions libérales et entreprises liées au bassin d'emploi genevois. Axion-IA accompagne entreprises et indépendants de tous secteurs du Genevois français.",
+    "Valleiry (74), commune frontalière du Grand Genève en Haute-Savoie, bénéficie de la dynamique transfrontalière franco-suisse avec un tissu de TPE/PME de services, artisans BTP, commerces, professions libérales et entreprises liées au bassin d'emploi genevois. Axion-IA collabore avec toutes les structures locales du Genevois français.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Valleiry (74). Nous accompagnons TPE et PME : entreprises de services transfrontaliers Grand Genève, artisans BTP, commerces, professions libérales et PME tertiaires du Genevois français.",
   directAnswerEn:
@@ -56,7 +56,7 @@ export const VALLEIRY_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME de services transfrontaliers à Valleiry sur leurs cas IA spécifiques : automatisation comptabilité multi-devises EUR/CHF, agents conversationnels bilingues, CRM augmenté clientèle franco-suisse, conformité réglementaire automatisée.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Valleiry ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Valleiry  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du Genevois français, il identifie les cas d'usage IA à fort ROI pour votre activité (services transfrontaliers, BTP, commerce, professions libérales). Tarifs publics.",
     },
     {

@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const PETITE_FORET_COPY: VilleCopy = {
   pitchFr:
-    "Petite-Forêt (59), commune du Nord dans l'agglomération de Valenciennes, est une ville résidentielle de la vallée de l'Escaut. Tissu mixte : TPE artisans bâtiment, PME logistique et transport, commerces de proximité, professions libérales, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Petite-Forêt (59), commune du Nord dans l'agglomération de Valenciennes, est une ville résidentielle de la vallée de l'Escaut. Tissu mixte : TPE artisans bâtiment, PME logistique et transport, commerces de proximité, professions libérales, services aux entreprises. Axion-IA répond aux besoins des activités professionnelles présentes.",
   pitchEn:
-    "Petite-Forêt (59), commune du Nord dans l'agglomération de Valenciennes, est une ville résidentielle de la vallée de l'Escaut. Tissu mixte : TPE artisans bâtiment, PME logistique et transport, commerces de proximité, professions libérales, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Petite-Forêt (59), commune du Nord dans l'agglomération de Valenciennes, est une ville résidentielle de la vallée de l'Escaut. Tissu mixte : TPE artisans bâtiment, PME logistique et transport, commerces de proximité, professions libérales, services aux entreprises. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Petite-Forêt (59). Nous accompagnons tous types d'activités : TPE artisans bâtiment, PME logistique et transport, commerces de proximité, professions libérales et services aux entreprises de l'agglomération valenciennoise. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Petite-Forêt (59). Nous accompagnons tous types d'activités : TPE artisans bâtiment, PME logistique et transport, commerces de proximité, professions libérales et services aux entreprises de l'agglomération valenciennoise. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Petite-Forêt (59). Nous accompagnons tous types d'activités : TPE artisans bâtiment, PME logistique et transport, commerces de proximité, professions libérales et services aux entreprises de l'agglomération valenciennoise. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Petite-Forêt (59). Nous accompagnons tous types d'activités : TPE artisans bâtiment, PME logistique et transport, commerces de proximité, professions libérales et services aux entreprises de l'agglomération valenciennoise. Audit Flash sur mesure.",
   ecosystemFr:
     "Petite-Forêt est intégrée à Valenciennes Métropole, entre zones industrielles et quartiers résidentiels. Tissu péri-urbain : TPE artisanat bâtiment, PME logistique et transport (proximité autoroutes A2/A23), commerces de proximité, professions libérales, services B2B de l'agglomération valenciennoise.",
   ecosystemEn:

@@ -56,7 +56,7 @@ export const LESQUIN_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE et PME de la logistique et du transport à Lesquin : optimisation flux entrepôts, prévision volumes fret aérien et routier, planification tournées par IA, traçabilité colis temps réel, agents conversationnels pour gestion clients expéditeurs, automatisation devis-facturation transport.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Lesquin ?",
+      q: "Quel est le tarif d'un audit IA à Lesquin  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du pôle aéroportuaire et logistique lillois, il identifie les cas d'usage IA à fort ROI pour votre activité (logistique, transport, fret, hôtellerie, services). Tarifs publics, sans engagement.",
     },
     {

@@ -11,9 +11,9 @@ export const CHATOU_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Chatou, où des entreprises comme EDF et Alstom soutiennent le secteur de l'ingénierie. Nous proposons des services IA adaptés aux besoins locaux.",
   directAnswerFr:
-    "À Chatou, Axion-IA offre des services IA pour les entreprises du secteur de l'ingénierie et de la programmation informatique. Avec des acteurs comme EDF et Alstom présents dans la région, nous aidons à optimiser les processus métiers. Nos audits commencent à 490 € HT, et nous nous déplaçons directement sur site pour un accompagnement personnalisé.",
+    "À Chatou, Axion-IA offre des services IA pour les entreprises du secteur de l'ingénierie et de la programmation informatique. Avec des acteurs comme EDF et Alstom présents dans la région, nous aidons à optimiser les processus métiers. Nos audits commencent à et nous nous déplaçons directement sur site pour un accompagnement personnalisé.",
   directAnswerEn:
-    "À Chatou, Axion-IA offre des services IA pour les entreprises du secteur de l'ingénierie et de la programmation informatique. Avec des acteurs comme EDF et Alstom présents dans la région, nous aidons à optimiser les processus métiers. Nos audits commencent à 490 € HT, et nous nous déplaçons directement sur site pour un accompagnement personnalisé.",
+    "À Chatou, Axion-IA offre des services IA pour les entreprises du secteur de l'ingénierie et de la programmation informatique. Avec des acteurs comme EDF et Alstom présents dans la région, nous aidons à optimiser les processus métiers. Nos audits commencent à et nous nous déplaçons directement sur site pour un accompagnement personnalisé.",
   seoHook: "programmation informatique & ingénierie",
   ecosystemFr:
     "Chatou bénéficie de la présence d'EDF et Alstom, influençant fortement le secteur de l'ingénierie et des études techniques. Notre intervention s'inscrit dans cet environnement industriel.",

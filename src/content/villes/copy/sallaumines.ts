@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SALLAUMINES_COPY: VilleCopy = {
   pitchFr:
-    "Sallaumines (62), commune du bassin minier lensois dans le Pas-de-Calais, s'est reconvertie vers les services, le commerce et l'artisanat. TPE, PME de proximité et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin minier.",
+    "Sallaumines (62), commune du bassin minier lensois dans le Pas-de-Calais, s'est reconvertie vers les services, le commerce et l'artisanat. TPE, PME de proximité et professions libérales. Axion-IA répond aux besoins de toutes les entreprises du bassin minier.",
   pitchEn:
-    "Sallaumines (62), commune du bassin minier lensois dans le Pas-de-Calais, s'est reconvertie vers les services, le commerce et l'artisanat. TPE, PME de proximité et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin minier.",
+    "Sallaumines (62), commune du bassin minier lensois dans le Pas-de-Calais, s'est reconvertie vers les services, le commerce et l'artisanat. TPE, PME de proximité et professions libérales. Axion-IA répond aux besoins de toutes les entreprises du bassin minier.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sallaumines (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier lensois. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sallaumines (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier lensois. Audit Flash sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sallaumines (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier lensois. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sallaumines (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier lensois. Audit Flash sur mesure, intervention sur site ou en visio.",
   seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Sallaumines est une commune résidentielle du bassin minier, limitrophe de Lens. Économie reconvertie vers le commerce de proximité, l'artisanat BTP, les services aux particuliers et les professions libérales. Proximité du Louvre-Lens et du stade Bollaert-Delelis.",
@@ -52,7 +52,7 @@ export const SALLAUMINES_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Sallaumines et dans tout le bassin minier lensois (Lens, Méricourt, Avion, Noyelles-sous-Lens). Déplacements sur site ou sessions en visio.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Sallaumines ?",
+      q: "Tarifs audit IA à Sallaumines  : quel budget prévoir ?",
       a: "L'Audit Flash Axion-IA démarre à 490 € HT pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du bassin minier. Tarifs publics.",
     },
     {

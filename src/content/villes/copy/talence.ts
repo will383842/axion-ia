@@ -11,9 +11,9 @@ export const TALENCE_COPY: VilleCopy = {
   pitchEn:
     "À Talence, Axion-IA intervient pour optimiser les processus des entreprises locales. Avec des infrastructures comme l'Université de Bordeaux et Kedge Business School, nous adaptons nos solutions IA aux besoins spécifiques du territoire.",
   directAnswerFr:
-    "Axion-IA se déplace à Talence pour accompagner les entreprises dans leur transformation IA. Profitant de la proximité de l'Université de Bordeaux et de Kedge Business School, nous proposons des audits à partir de 490 € HT et des interventions dès 590 € HT. Notre approche est adaptée aux secteurs clés de la région, tels que l'enseignement et la recherche-développement.",
+    "Axion-IA se déplace à Talence pour accompagner les entreprises dans leur transformation IA. Profitant de la proximité de l'Université de Bordeaux et de Kedge Business School, nous proposons des audits et des interventions. Notre approche est adaptée aux secteurs clés de la région, tels que l'enseignement et la recherche-développement.",
   directAnswerEn:
-    "Axion-IA se déplace à Talence pour accompagner les entreprises dans leur transformation IA. Profitant de la proximité de l'Université de Bordeaux et de Kedge Business School, nous proposons des audits à partir de 490 € HT et des interventions dès 590 € HT. Notre approche est adaptée aux secteurs clés de la région, tels que l'enseignement et la recherche-développement.",
+    "Axion-IA se déplace à Talence pour accompagner les entreprises dans leur transformation IA. Profitant de la proximité de l'Université de Bordeaux et de Kedge Business School, nous proposons des audits et des interventions. Notre approche est adaptée aux secteurs clés de la région, tels que l'enseignement et la recherche-développement.",
   seoHook: "enseignement & recherche-développement",
   ecosystemFr:
     "Talence bénéficie d'un écosystème riche avec l'Université de Bordeaux et Kedge Business School, favorisant le développement dans les secteurs de l'enseignement et de la recherche-développement.",

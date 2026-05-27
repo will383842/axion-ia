@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_TRINITE_COPY: VilleCopy = {
   pitchFr:
-    "La Trinité (06), dans la vallée du Paillon à l'est de Nice, est une commune résidentielle dynamique de la Métropole Nice Côte d'Azur. Tissu TPE/PME commerces, artisanat BTP, services aux entreprises, professions libérales et zone d'activités des Music. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "La Trinité (06), dans la vallée du Paillon à l'est de Nice, est une commune résidentielle dynamique de la Métropole Nice Côte d'Azur. Tissu TPE/PME commerces, artisanat BTP, services aux entreprises, professions libérales et zone d'activités des Music. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "La Trinité (06), dans la vallée du Paillon à l'est de Nice, est une commune résidentielle dynamique de la Métropole Nice Côte d'Azur. Tissu TPE/PME commerces, artisanat BTP, services aux entreprises, professions libérales et zone d'activités des Music. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "La Trinité (06), dans la vallée du Paillon à l'est de Nice, est une commune résidentielle dynamique de la Métropole Nice Côte d'Azur. Tissu TPE/PME commerces, artisanat BTP, services aux entreprises, professions libérales et zone d'activités des Music. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Trinité (06). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, PME de la zone d'activités des Music et entreprises de services de la vallée du Paillon.",
   directAnswerEn:

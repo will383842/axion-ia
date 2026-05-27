@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const PORNICHET_COPY: VilleCopy = {
   pitchFr:
-    "Pornichet (44), station balnéaire de la baie de La Baule, près de 13 000 habitants. Tourisme balnéaire, thalassothérapie, port de plaisance, commerces, artisanat et professions libérales. Tissu TPE commerçants, PME hôtelières et de services. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin pornichétin.",
+    "Pornichet (44), station balnéaire de la baie de La Baule, près de 13 000 habitants. Tourisme balnéaire, thalassothérapie, port de plaisance, commerces, artisanat et professions libérales. Tissu TPE commerçants, PME hôtelières et de services. Axion-IA y conduit ses missions auprès des entreprises locales du bassin pornichétin.",
   pitchEn:
-    "Pornichet (44), station balnéaire de la baie de La Baule, près de 13 000 habitants. Tourisme balnéaire, thalassothérapie, port de plaisance, commerces, artisanat et professions libérales. Tissu TPE commerçants, PME hôtelières et de services. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin pornichétin.",
+    "Pornichet (44), station balnéaire de la baie de La Baule, près de 13 000 habitants. Tourisme balnéaire, thalassothérapie, port de plaisance, commerces, artisanat et professions libérales. Tissu TPE commerçants, PME hôtelières et de services. Axion-IA y conduit ses missions auprès des entreprises locales du bassin pornichétin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pornichet (44), station balnéaire de la baie de La Baule. Nous accompagnons TPE commerçants, PME hôtelières, restaurants, artisans et professions libérales de la côte d'Amour. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pornichet (44), station balnéaire de la baie de La Baule. Nous accompagnons TPE commerçants, PME hôtelières, restaurants, artisans et professions libérales de la côte d'Amour. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pornichet (44), station balnéaire de la baie de La Baule. Nous accompagnons TPE commerçants, PME hôtelières, restaurants, artisans et professions libérales de la côte d'Amour. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pornichet (44), station balnéaire de la baie de La Baule. Nous accompagnons TPE commerçants, PME hôtelières, restaurants, artisans et professions libérales de la côte d'Amour. Audit Flash sur mesure.",
   seoHook: "bassin pornichétin",
   ecosystemFr:
     "Pornichet (12 800 hab) est une station balnéaire de la baie de La Baule, entre Saint-Nazaire et La Baule. Port de plaisance, thalassothérapie, hôtellerie-restauration, commerces, artisanat et professions libérales. Proximité Saint-Nazaire (10 min), La Baule (5 min), Nantes (1h). Hippodrome et casino renforcent l'attractivité touristique annuelle.",
@@ -52,7 +52,7 @@ export const PORNICHET_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Pornichet et dans toute la baie de La Baule (La Baule, Saint-Nazaire, Le Pouliguen). Nos consultants se déplacent depuis Nantes (1h) ou Saint-Nazaire (10 min).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Pornichet ?",
+      q: "Combien coûte un audit IA à Pornichet  ?",
       a: "L'Audit Flash IA démarre à 490 € HT pour les TPE de Pornichet. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur touristique ou artisanal.",
     },
     {

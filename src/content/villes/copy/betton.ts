@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BETTON_COPY: VilleCopy = {
   pitchFr:
-    "Betton (35), commune résidentielle au nord de Rennes Métropole, bordée par le canal d'Ille-et-Rance. Tissu TPE/PME de services, artisanat, commerces de proximité et activités tertiaires périurbaines. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Betton (35), commune résidentielle au nord de Rennes Métropole, bordée par le canal d'Ille-et-Rance. Tissu TPE/PME de services, artisanat, commerces de proximité et activités tertiaires périurbaines. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Betton (35), commune résidentielle au nord de Rennes Métropole, bordée par le canal d'Ille-et-Rance. Tissu TPE/PME de services, artisanat, commerces de proximité et activités tertiaires périurbaines. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Betton (35), commune résidentielle au nord de Rennes Métropole, bordée par le canal d'Ille-et-Rance. Tissu TPE/PME de services, artisanat, commerces de proximité et activités tertiaires périurbaines. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Betton (35). Nous accompagnons tous types d'activités : TPE et PME de services, artisans, commerçants, professions libérales, indépendants et activités tertiaires du nord de la métropole rennaise.",
   directAnswerEn:

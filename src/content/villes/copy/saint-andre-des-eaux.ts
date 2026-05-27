@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_ANDRE_DES_EAUX_COPY: VilleCopy = {
   pitchFr:
-    "Saint-André-des-Eaux (44), commune de la Brière en Loire-Atlantique, aux portes de La Baule et de la presqu'île guérandaise. Tissu TPE artisans et commerçants, PME tourisme balnéaire, hébergements, restauration, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin Brière-La Baule.",
+    "Saint-André-des-Eaux (44), commune de la Brière en Loire-Atlantique, aux portes de La Baule et de la presqu'île guérandaise. Tissu TPE artisans et commerçants, PME tourisme balnéaire, hébergements, restauration, professions libérales. Axion-IA collabore avec toutes les structures locales du bassin Brière-La Baule.",
   pitchEn:
-    "Saint-André-des-Eaux (44), commune de la Brière en Loire-Atlantique, aux portes de La Baule et de la presqu'île guérandaise. Tissu TPE artisans et commerçants, PME tourisme balnéaire, hébergements, restauration, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin Brière-La Baule.",
+    "Saint-André-des-Eaux (44), commune de la Brière en Loire-Atlantique, aux portes de La Baule et de la presqu'île guérandaise. Tissu TPE artisans et commerçants, PME tourisme balnéaire, hébergements, restauration, professions libérales. Axion-IA collabore avec toutes les structures locales du bassin Brière-La Baule.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-André-des-Eaux (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tourisme balnéaire, hébergements, restauration, professions libérales et entreprises du bassin Brière-La Baule.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const SAINT_ANDRE_DES_EAUX_COPY: VilleCopy = {
       a: "Pour les PME tourisme de Saint-André-des-Eaux, nous proposons audit IA, interventions sur site, implémentation (chatbot, automatisation, analyse données visiteurs), coaching 1-to-1 et plateformes web IA sur mesure.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Saint-André-des-Eaux ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Saint-André-des-Eaux  ?",
       a: "L'Audit Flash démarre à 490 € HT (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du bassin La Baule.",
     },
     {

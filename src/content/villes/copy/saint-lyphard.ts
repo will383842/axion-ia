@@ -9,9 +9,9 @@ export const SAINT_LYPHARD_COPY: VilleCopy = {
   pitchEn:
     "Saint-Lyphard (44), commune au cœur du parc naturel régional de Brière en Loire-Atlantique, entre La Baule et Saint-Nazaire. Tissu de TPE touristiques (gîtes, barques, artisanat), commerçants, exploitants agricoles et maraîchers, PME de services. Axion-IA y intervient pour tous types d'activités du pays de Brière.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Lyphard (44). Nous accompagnons tous types d'activités : TPE touristiques et gîtes de Brière, artisans et commerçants, exploitations agricoles et maraîchères, PME de services, professions libérales et entreprises du bassin Saint-Nazaire–La Baule. Audit Flash accessible dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Lyphard (44). Nous accompagnons tous types d'activités : TPE touristiques et gîtes de Brière, artisans et commerçants, exploitations agricoles et maraîchères, PME de services, professions libérales et entreprises du bassin Saint-Nazaire–La Baule. Audit Flash accessible.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Lyphard (44). Nous accompagnons tous types d'activités : TPE touristiques et gîtes de Brière, artisans et commerçants, exploitations agricoles et maraîchères, PME de services, professions libérales et entreprises du bassin Saint-Nazaire–La Baule. Audit Flash accessible dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Lyphard (44). Nous accompagnons tous types d'activités : TPE touristiques et gîtes de Brière, artisans et commerçants, exploitations agricoles et maraîchères, PME de services, professions libérales et entreprises du bassin Saint-Nazaire–La Baule. Audit Flash accessible.",
   seoHook: "tourisme vert & artisanat chaume",
   ecosystemFr:
     "Saint-Lyphard est une commune de plus de 5 300 habitants au cœur du parc naturel régional de Brière, deuxième plus grande zone humide de France. L'économie locale repose sur le tourisme vert (clocher panoramique, balades en chaland dans les marais), l'artisanat du chaume, l'agriculture et l'élevage, les commerces saisonniers et les services liés au bassin Saint-Nazaire–La Baule.",

@@ -11,9 +11,9 @@ export const GARGES_LES_GONESSE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Garges-lès-Gonesse, une ville proche de Paris, où des entreprises comme LVMH et BNP Paribas façonnent l'économie locale. Nous proposons des solutions IA adaptées aux besoins des entreprises locales.",
   directAnswerFr:
-    "À Garges-lès-Gonesse, Axion-IA propose des interventions pour optimiser les processus des entreprises. Proches de pôles économiques tels que LVMH et BNP Paribas, nous offrons des audits dès 490 € HT et des interventions dès 590 € HT. Notre approche permet une intégration fluide de l'IA dans des secteurs variés sans dépendre de partenariats locaux.",
+    "À Garges-lès-Gonesse, Axion-IA propose des interventions pour optimiser les processus des entreprises. Proches de pôles économiques tels que LVMH et BNP Paribas, nous offrons des audits et des interventions. Notre approche permet une intégration fluide de l'IA dans des secteurs variés sans dépendre de partenariats locaux.",
   directAnswerEn:
-    "À Garges-lès-Gonesse, Axion-IA propose des interventions pour optimiser les processus des entreprises. Proches de pôles économiques tels que LVMH et BNP Paribas, nous offrons des audits dès 490 € HT et des interventions dès 590 € HT. Notre approche permet une intégration fluide de l'IA dans des secteurs variés sans dépendre de partenariats locaux.",
+    "À Garges-lès-Gonesse, Axion-IA propose des interventions pour optimiser les processus des entreprises. Proches de pôles économiques tels que LVMH et BNP Paribas, nous offrons des audits et des interventions. Notre approche permet une intégration fluide de l'IA dans des secteurs variés sans dépendre de partenariats locaux.",
   seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Garges-lès-Gonesse bénéficie de la proximité avec Paris, abritant des acteurs économiques majeurs comme LVMH et BNP Paribas. Les entreprises locales peuvent ainsi s'inspirer de cet environnement pour intégrer l'IA.",

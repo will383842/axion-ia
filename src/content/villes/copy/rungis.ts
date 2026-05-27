@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const RUNGIS_COPY: VilleCopy = {
   pitchFr:
-    "Rungis (94), mondialement connue pour son Marché international (MIN), est le premier pôle de logistique alimentaire d'Europe. Grossistes et négoce alimentaire, logistique frigorifique, TPE artisanat alimentaire, PME transport et distribution, restauration professionnelle. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Rungis (94), mondialement connue pour son Marché international (MIN), est le premier pôle de logistique alimentaire d'Europe. Grossistes et négoce alimentaire, logistique frigorifique, TPE artisanat alimentaire, PME transport et distribution, restauration professionnelle. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Rungis (94), mondialement connue pour son Marché international (MIN), est le premier pôle de logistique alimentaire d'Europe. Grossistes et négoce alimentaire, logistique frigorifique, TPE artisanat alimentaire, PME transport et distribution, restauration professionnelle. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Rungis (94), mondialement connue pour son Marché international (MIN), est le premier pôle de logistique alimentaire d'Europe. Grossistes et négoce alimentaire, logistique frigorifique, TPE artisanat alimentaire, PME transport et distribution, restauration professionnelle. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rungis (94). Nous accompagnons TPE et PME : grossistes et négociants alimentaires du MIN, entreprises de logistique frigorifique, artisans alimentaires, PME transport et distribution, restaurateurs professionnels. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rungis (94). Nous accompagnons TPE et PME : grossistes et négociants alimentaires du MIN, entreprises de logistique frigorifique, artisans alimentaires, PME transport et distribution, restaurateurs professionnels. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rungis (94). Nous accompagnons TPE et PME : grossistes et négociants alimentaires du MIN, entreprises de logistique frigorifique, artisans alimentaires, PME transport et distribution, restaurateurs professionnels. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rungis (94). Nous accompagnons TPE et PME : grossistes et négociants alimentaires du MIN, entreprises de logistique frigorifique, artisans alimentaires, PME transport et distribution, restaurateurs professionnels. Audit Flash sur mesure.",
   seoHook: "grossistes négoce & logistique frigorifique",
   ecosystemFr:
     "Rungis est le siège du Marché international de Rungis (MIN), premier marché de produits frais au monde. Tissu grossistes alimentaires, logistique frigorifique, TPE artisanat alimentaire, PME transport et distribution, restauration professionnelle.",

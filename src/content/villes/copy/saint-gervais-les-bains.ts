@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_GERVAIS_LES_BAINS_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Gervais-les-Bains (74), station thermale et de ski au pied du Mont-Blanc en Haute-Savoie, conjugue tourisme quatre saisons et thermalisme. Tissu TPE hôtellerie-restauration, PME tourisme et bien-être, commerces saisonniers, professions libérales et prestataires montagne. Axion-IA y déploie ses missions auprès de toutes les organisations du Val Montjoie.",
+    "Saint-Gervais-les-Bains (74), station thermale et de ski au pied du Mont-Blanc en Haute-Savoie, conjugue tourisme quatre saisons et thermalisme. Tissu TPE hôtellerie-restauration, PME tourisme et bien-être, commerces saisonniers, professions libérales et prestataires montagne. Axion-IA y déploie son expertise pour toutes les organisations du Val Montjoie.",
   pitchEn:
-    "Saint-Gervais-les-Bains (74), station thermale et de ski au pied du Mont-Blanc en Haute-Savoie, conjugue tourisme quatre saisons et thermalisme. Tissu TPE hôtellerie-restauration, PME tourisme et bien-être, commerces saisonniers, professions libérales et prestataires montagne. Axion-IA y déploie ses missions auprès de toutes les organisations du Val Montjoie.",
+    "Saint-Gervais-les-Bains (74), station thermale et de ski au pied du Mont-Blanc en Haute-Savoie, conjugue tourisme quatre saisons et thermalisme. Tissu TPE hôtellerie-restauration, PME tourisme et bien-être, commerces saisonniers, professions libérales et prestataires montagne. Axion-IA y déploie son expertise pour toutes les organisations du Val Montjoie.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Gervais-les-Bains (74). Nous accompagnons tous types d'activités : TPE hôtellerie-restauration, PME tourisme et thermalisme, commerces saisonniers, indépendants, professions libérales et prestataires montagne du Val Montjoie.",
   directAnswerEn:

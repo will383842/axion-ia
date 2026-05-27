@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PLOUHINEC_COPY: VilleCopy = {
   pitchFr:
-    "Plouhinec (56), commune littorale du Morbihan entre ria d'Étel et océan Atlantique, est marquée par la célèbre barre d'Étel (passe maritime) et un patrimoine mégalithique. Tissu TPE artisans (pêche, ostréiculture), PME maritimes, commerces, tourisme balnéaire et vert, campings. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Plouhinec (56), commune littorale du Morbihan entre ria d'Étel et océan Atlantique, est marquée par la célèbre barre d'Étel (passe maritime) et un patrimoine mégalithique. Tissu TPE artisans (pêche, ostréiculture), PME maritimes, commerces, tourisme balnéaire et vert, campings. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Plouhinec (56), commune littorale du Morbihan entre ria d'Étel et océan Atlantique, est marquée par la célèbre barre d'Étel (passe maritime) et un patrimoine mégalithique. Tissu TPE artisans (pêche, ostréiculture), PME maritimes, commerces, tourisme balnéaire et vert, campings. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Plouhinec (56), commune littorale du Morbihan entre ria d'Étel et océan Atlantique, est marquée par la célèbre barre d'Étel (passe maritime) et un patrimoine mégalithique. Tissu TPE artisans (pêche, ostréiculture), PME maritimes, commerces, tourisme balnéaire et vert, campings. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plouhinec (56). Nous accompagnons tous types d'activités : TPE artisans pêche et ostréiculture de la ria d'Étel, PME maritimes, hébergeurs touristiques (campings, gîtes littoraux), commerçants, indépendants et services aux entreprises du littoral morbihannais.",
   directAnswerEn:

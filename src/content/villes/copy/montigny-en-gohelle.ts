@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const MONTIGNY_EN_GOHELLE_COPY: VilleCopy = {
   pitchFr:
-    "Montigny-en-Gohelle (62), commune du bassin minier lensois dans le Pas-de-Calais, s'est reconvertie vers le résidentiel et les services. TPE artisanales, commerces, PME de services et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Montigny-en-Gohelle (62), commune du bassin minier lensois dans le Pas-de-Calais, s'est reconvertie vers le résidentiel et les services. TPE artisanales, commerces, PME de services et professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Montigny-en-Gohelle (62), commune du bassin minier lensois dans le Pas-de-Calais, s'est reconvertie vers le résidentiel et les services. TPE artisanales, commerces, PME de services et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Montigny-en-Gohelle (62), commune du bassin minier lensois dans le Pas-de-Calais, s'est reconvertie vers le résidentiel et les services. TPE artisanales, commerces, PME de services et professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montigny-en-Gohelle (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier lensois. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montigny-en-Gohelle (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier lensois. Audit Flash sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montigny-en-Gohelle (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier lensois. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montigny-en-Gohelle (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier lensois. Audit Flash sur mesure, intervention sur site ou en visio.",
   seoHook: "commerce détail & professions libérales",
   ecosystemFr:
     "Montigny-en-Gohelle est une commune résidentielle du bassin minier au sud de Lens. Économie reconvertie vers les services, le commerce de proximité, l'artisanat BTP et les professions libérales. Proximité du Louvre-Lens dynamise le tissu économique local.",
@@ -52,7 +52,7 @@ export const MONTIGNY_EN_GOHELLE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Montigny-en-Gohelle et dans tout le bassin minier lensois (Lens, Courrières, Billy-Montigny, Sallaumines). Déplacements sur site ou visio.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Montigny-en-Gohelle ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Montigny-en-Gohelle  ?",
       a: "L'Audit Flash Axion-IA démarre à 490 € HT pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du bassin minier. Tarifs publics.",
     },
     {

@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const ERSTEIN_COPY: VilleCopy = {
   pitchFr:
-    "Erstein (67), ville du sud Bas-Rhin dans la plaine du Ried entre Strasbourg et Sélestat, conjugue héritage agro-industriel (sucrerie Erstein historique), bords de l'Ill et tissu économique mixte. TPE/PME agroalimentaires, exploitations agricoles du Ried, commerces, artisans BTP et professions libérales rayonnent sur la plaine alsacienne. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Erstein (67), ville du sud Bas-Rhin dans la plaine du Ried entre Strasbourg et Sélestat, conjugue héritage agro-industriel (sucrerie Erstein historique), bords de l'Ill et tissu économique mixte. TPE/PME agroalimentaires, exploitations agricoles du Ried, commerces, artisans BTP et professions libérales rayonnent sur la plaine alsacienne. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Erstein (67), ville du sud Bas-Rhin dans la plaine du Ried entre Strasbourg et Sélestat, conjugue héritage agro-industriel (sucrerie Erstein historique), bords de l'Ill et tissu économique mixte. TPE/PME agroalimentaires, exploitations agricoles du Ried, commerces, artisans BTP et professions libérales rayonnent sur la plaine alsacienne. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Erstein (67), ville du sud Bas-Rhin dans la plaine du Ried entre Strasbourg et Sélestat, conjugue héritage agro-industriel (sucrerie Erstein historique), bords de l'Ill et tissu économique mixte. TPE/PME agroalimentaires, exploitations agricoles du Ried, commerces, artisans BTP et professions libérales rayonnent sur la plaine alsacienne. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Erstein (67). Nous accompagnons TPE et PME : agro-industriels et coopératives, exploitations agricoles du Ried, commerçants, artisans BTP et professions libérales du sud Bas-Rhin. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Erstein (67). Nous accompagnons TPE et PME : agro-industriels et coopératives, exploitations agricoles du Ried, commerçants, artisans BTP et professions libérales du sud Bas-Rhin. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Erstein (67). Nous accompagnons TPE et PME : agro-industriels et coopératives, exploitations agricoles du Ried, commerçants, artisans BTP et professions libérales du sud Bas-Rhin. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Erstein (67). Nous accompagnons TPE et PME : agro-industriels et coopératives, exploitations agricoles du Ried, commerçants, artisans BTP et professions libérales du sud Bas-Rhin. Audit Flash sur mesure.",
   seoHook: "vallée ill",
   ecosystemFr:
     "Erstein, ville du sud Bas-Rhin au cœur de la plaine du Ried, est marquée par son héritage agro-industriel — la sucrerie d'Erstein, fleuron historique de la transformation betteravière alsacienne. Tissu mixte : exploitations agricoles du Ried, agroalimentaire et coopératives, commerces de centre-ville, artisans BTP, professions libérales et services aux entreprises. Bords de l'Ill, patrimoine naturel et activités tertiaires.",
@@ -52,7 +52,7 @@ export const ERSTEIN_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Erstein et sur tout le sud Bas-Rhin (Sélestat, Obernai, Benfeld, Geispolsheim). Strasbourg à 30 min via A35, gare SNCF Erstein connectée à la ligne Strasbourg-Sélestat.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Erstein ?",
+      q: "Quel est le tarif d'un audit IA à Erstein  ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME d'Erstein et du Bas-Rhin, il identifie les cas d'usage IA à fort ROI pour votre agro-industrie, exploitation agricole, coopérative, commerce ou activité artisanale.",
     },
     {

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const NANDY_COPY: VilleCopy = {
   pitchFr:
-    "Nandy (77), commune résidentielle de l'agglomération Grand Paris Sud en Seine-et-Marne, accueille un tissu de TPE artisans, commerces de proximité, PME tertiaires du pôle de Sénart, professions libérales et prestataires de services. Axion-IA y déploie ses missions auprès de toutes les organisations du sud francilien.",
+    "Nandy (77), commune résidentielle de l'agglomération Grand Paris Sud en Seine-et-Marne, accueille un tissu de TPE artisans, commerces de proximité, PME tertiaires du pôle de Sénart, professions libérales et prestataires de services. Axion-IA y déploie son expertise pour toutes les organisations du sud francilien.",
   pitchEn:
-    "Nandy (77), commune résidentielle de l'agglomération Grand Paris Sud en Seine-et-Marne, accueille un tissu de TPE artisans, commerces de proximité, PME tertiaires du pôle de Sénart, professions libérales et prestataires de services. Axion-IA y déploie ses missions auprès de toutes les organisations du sud francilien.",
+    "Nandy (77), commune résidentielle de l'agglomération Grand Paris Sud en Seine-et-Marne, accueille un tissu de TPE artisans, commerces de proximité, PME tertiaires du pôle de Sénart, professions libérales et prestataires de services. Axion-IA y déploie son expertise pour toutes les organisations du sud francilien.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nandy (77). Nous accompagnons TPE et PME : artisans, commerçants, PME tertiaires de l'agglomération Grand Paris Sud — Sénart, professions libérales et prestataires de services du sud Seine-et-Marne.",
   directAnswerEn:
@@ -52,7 +52,7 @@ export const NANDY_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Nandy et dans toute l'agglomération Grand Paris Sud (Sénart, Cesson, Savigny-le-Temple, Melun à 15 min). Nos consultants couvrent le sud Seine-et-Marne et l'Essonne depuis Paris (45 min via RER D).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Nandy ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Nandy  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de l'agglomération Grand Paris Sud, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics.",
     },
     {

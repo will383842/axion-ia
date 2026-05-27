@@ -52,7 +52,7 @@ export const MOUROUX_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Mouroux et dans toute l'agglomération de Coulommiers (Coulommiers à 5 min, La Ferté-sous-Jouarre à 20 min, Meaux à 25 min). Nos consultants rejoignent Mouroux depuis Paris Est en 55 min via Transilien P.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Mouroux ?",
+      q: "Quel est le tarif d'un audit IA à Mouroux  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Mouroux et de l'agglomération Coulommiers, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics.",
     },
     {

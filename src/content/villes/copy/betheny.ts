@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const BETHENY_COPY: VilleCopy = {
   pitchFr:
-    "Bétheny (51), commune au nord de Reims dans la Marne, est marquée par son ancien aérodrome historique (pionniers de l'aviation) et la proximité du vignoble champenois. Tissu de TPE artisanales, PME viticoles et négoce Champagne, commerces, services et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Bétheny (51), commune au nord de Reims dans la Marne, est marquée par son ancien aérodrome historique (pionniers de l'aviation) et la proximité du vignoble champenois. Tissu de TPE artisanales, PME viticoles et négoce Champagne, commerces, services et professions libérales. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Bétheny (51), commune au nord de Reims dans la Marne, est marquée par son ancien aérodrome historique (pionniers de l'aviation) et la proximité du vignoble champenois. Tissu de TPE artisanales, PME viticoles et négoce Champagne, commerces, services et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Bétheny (51), commune au nord de Reims dans la Marne, est marquée par son ancien aérodrome historique (pionniers de l'aviation) et la proximité du vignoble champenois. Tissu de TPE artisanales, PME viticoles et négoce Champagne, commerces, services et professions libérales. Axion-IA accompagne entreprises et indépendants.",
   seoHook: "Champagne, vignoble & services nord Reims",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bétheny (51). Nous accompagnons TPE et PME du nord rémois : maisons de Champagne, viticulteurs, TPE artisanales, commerçants, professions libérales et prestataires de services. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bétheny (51). Nous accompagnons TPE et PME du nord rémois : maisons de Champagne, viticulteurs, TPE artisanales, commerçants, professions libérales et prestataires de services. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bétheny (51). Nous accompagnons TPE et PME du nord rémois : maisons de Champagne, viticulteurs, TPE artisanales, commerçants, professions libérales et prestataires de services. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bétheny (51). Nous accompagnons TPE et PME du nord rémois : maisons de Champagne, viticulteurs, TPE artisanales, commerçants, professions libérales et prestataires de services. Audit Flash sur mesure.",
   ecosystemFr:
     "Bétheny est une commune résidentielle au nord de Reims dans la Marne, site de l'ancien aérodrome historique (meetings aériens pionniers de l'aviation début XXe). Proche du vignoble champenois (Montagne de Reims), l'économie locale intègre le négoce et la viticulture Champagne, les TPE artisanales, les commerces de proximité, les services aux entreprises et les professions libérales. Zones d'activités en développement.",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const BETHENY_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Bétheny et dans tout le nord rémois (Cernay-lès-Reims, Witry-lès-Reims, La Neuvillette). Gare TGV Reims à 10 min, Paris à 45 min en TGV.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Bétheny ?",
+      q: "Tarifs audit IA à Bétheny  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Bétheny et du nord rémois, il identifie les cas d'usage IA à fort ROI pour votre activité.",
     },
     {

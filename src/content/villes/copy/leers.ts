@@ -56,7 +56,7 @@ export const LEERS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE et PME textile-distribution héritières du bassin roubaisien à Leers : génération fiches produits multilingues, gestion automatisée collections saisonnières, agents IA clients distributeurs B2B, prévision stocks et approvisionnements, contrôle qualité visuel par caméra, copilotes e-commerce textile.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Leers ?",
+      q: "Tarifs audit IA à Leers  : quel budget prévoir ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de l'agglo roubaisienne et transfrontalières, il identifie les cas d'usage IA à fort ROI pour votre activité (textile, commerce transfrontalier, artisanat, sous-traitance). Tarifs publics, sans engagement.",
     },
     {

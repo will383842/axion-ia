@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const HABSHEIM_COPY: VilleCopy = {
   pitchFr:
-    "Habsheim (68), commune du sud-est de l'agglomération mulhousienne dans le Haut-Rhin, 5 076 habitants, est marquée par son terroir viticole (route des vins d'Alsace), son aérodrome historique et son cadre de vie résidentiel. Tissu de TPE/PME viticulture, artisanat, industrie, commerce et services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Habsheim (68), commune du sud-est de l'agglomération mulhousienne dans le Haut-Rhin, 5 076 habitants, est marquée par son terroir viticole (route des vins d'Alsace), son aérodrome historique et son cadre de vie résidentiel. Tissu de TPE/PME viticulture, artisanat, industrie, commerce et services. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Habsheim (68), commune du sud-est de l'agglomération mulhousienne dans le Haut-Rhin, 5 076 habitants, est marquée par son terroir viticole (route des vins d'Alsace), son aérodrome historique et son cadre de vie résidentiel. Tissu de TPE/PME viticulture, artisanat, industrie, commerce et services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Habsheim (68), commune du sud-est de l'agglomération mulhousienne dans le Haut-Rhin, 5 076 habitants, est marquée par son terroir viticole (route des vins d'Alsace), son aérodrome historique et son cadre de vie résidentiel. Tissu de TPE/PME viticulture, artisanat, industrie, commerce et services. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Habsheim (68). Nous accompagnons TPE et PME : viticulteurs, artisans, industriels, commerçants et prestataires de services du sud-est mulhousien. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Habsheim (68). Nous accompagnons TPE et PME : viticulteurs, artisans, industriels, commerçants et prestataires de services du sud-est mulhousien. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Habsheim (68). Nous accompagnons TPE et PME : viticulteurs, artisans, industriels, commerçants et prestataires de services du sud-est mulhousien. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Habsheim (68). Nous accompagnons TPE et PME : viticulteurs, artisans, industriels, commerçants et prestataires de services du sud-est mulhousien. Audit Flash sur mesure.",
   ecosystemFr:
     "Habsheim est intégrée à Mulhouse Alsace Agglomération, à la jonction de la plaine d'Alsace et du Sundgau. Son économie s'appuie sur un terroir viticole (route des vins d'Alsace, AOC pinot blanc, gewurztraminer), un tissu artisanal et industriel diffus, un aérodrome ULM-aviation légère, des commerces de proximité et des services aux entreprises. La commune profite de la dynamique économique transfrontalière de Mulhouse-Bâle.",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const HABSHEIM_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Habsheim et sur toute Mulhouse Alsace Agglomération (Mulhouse, Rixheim, Riedisheim, Bruebach). Accès direct via A35, proximité Bâle et EuroAirport. Nos consultants se déplacent depuis Paris en 2h40 via TGV.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Habsheim ?",
+      q: "Quel est le tarif d'un audit IA à Habsheim  ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Habsheim et du sud-est mulhousien, il identifie les cas d'usage IA à fort ROI pour votre domaine viticole, atelier artisanal, commerce ou unité de production.",
     },
     {

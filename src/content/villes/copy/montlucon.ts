@@ -11,9 +11,9 @@ export const MONTLUCON_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Montluçon, une ville où Dunlop et Safran sont des acteurs clés. Nous accompagnons les entreprises locales dans l'intégration de l'IA.",
   directAnswerFr:
-    "À Montluçon, Axion-IA propose des services adaptés aux besoins des entreprises locales, notamment dans la fabrication de produits métalliques et de machines. Notre expertise s'étend à des secteurs variés, permettant aux entreprises de bénéficier d'un audit dès 490 € HT. Nos interventions sur site garantissent une mise en œuvre rapide et efficace de solutions IA.",
+    "À Montluçon, Axion-IA propose des services adaptés aux besoins des entreprises locales, notamment dans la fabrication de produits métalliques et de machines. Notre expertise s'étend à des secteurs variés, permettant aux entreprises de bénéficier d'un audit. Nos interventions sur site garantissent une mise en œuvre rapide et efficace de solutions IA.",
   directAnswerEn:
-    "À Montluçon, Axion-IA propose des services adaptés aux besoins des entreprises locales, notamment dans la fabrication de produits métalliques et de machines. Notre expertise s'étend à des secteurs variés, permettant aux entreprises de bénéficier d'un audit dès 490 € HT. Nos interventions sur site garantissent une mise en œuvre rapide et efficace de solutions IA.",
+    "À Montluçon, Axion-IA propose des services adaptés aux besoins des entreprises locales, notamment dans la fabrication de produits métalliques et de machines. Notre expertise s'étend à des secteurs variés, permettant aux entreprises de bénéficier d'un audit. Nos interventions sur site garantissent une mise en œuvre rapide et efficace de solutions IA.",
   seoHook: "produits métalliques & machines",
   ecosystemFr:
     "Le tissu économique de Montluçon inclut des entreprises comme Dunlop et Safran, situées dans la Zone Industrielle de Châteaugay.",

@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const BADEN_COPY: VilleCopy = {
   pitchFr:
-    "Baden (56), commune du golfe du Morbihan face à l'île Gavrinis, est un pôle de tourisme nautique et résidentiel. TPE artisans, PME tertiaires, commerces, ostréiculture, tourisme nautique et patrimonial. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Baden (56), commune du golfe du Morbihan face à l'île Gavrinis, est un pôle de tourisme nautique et résidentiel. TPE artisans, PME tertiaires, commerces, ostréiculture, tourisme nautique et patrimonial. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Baden (56), commune du golfe du Morbihan face à l'île Gavrinis, est un pôle de tourisme nautique et résidentiel. TPE artisans, PME tertiaires, commerces, ostréiculture, tourisme nautique et patrimonial. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Baden (56), commune du golfe du Morbihan face à l'île Gavrinis, est un pôle de tourisme nautique et résidentiel. TPE artisans, PME tertiaires, commerces, ostréiculture, tourisme nautique et patrimonial. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Baden (56). Nous accompagnons TPE artisans, PME tertiaires, ostréiculteurs, acteurs du tourisme nautique et patrimonial (île Gavrinis), commerçants et toutes les activités du golfe du Morbihan. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Baden (56). Nous accompagnons TPE artisans, PME tertiaires, ostréiculteurs, acteurs du tourisme nautique et patrimonial (île Gavrinis), commerçants et toutes les activités du golfe du Morbihan. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Baden (56). Nous accompagnons TPE artisans, PME tertiaires, ostréiculteurs, acteurs du tourisme nautique et patrimonial (île Gavrinis), commerçants et toutes les activités du golfe du Morbihan. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Baden (56). Nous accompagnons TPE artisans, PME tertiaires, ostréiculteurs, acteurs du tourisme nautique et patrimonial (île Gavrinis), commerçants et toutes les activités du golfe du Morbihan. Audit Flash sur mesure.",
   seoHook: "tourisme nautique & ostréiculture golfe",
   ecosystemFr:
     "Baden est une commune résidentielle et touristique du golfe du Morbihan, point de départ vers l'île Gavrinis (cairn néolithique). Tissu de TPE artisans, PME tertiaires, ostréiculture, tourisme nautique et patrimonial, commerces de proximité. Proximité immédiate Vannes et Auray.",

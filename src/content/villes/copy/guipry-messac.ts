@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const GUIPRY_MESSAC_COPY: VilleCopy = {
   pitchFr:
-    "Guipry-Messac (35), commune nouvelle rurale en Ille-et-Vilaine au sud de Rennes, est située sur les bords de la Vilaine. Tissu TPE artisans, PME agricoles et agroalimentaires, commerces de proximité et services. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud rennais et du Pays de Redon.",
+    "Guipry-Messac (35), commune nouvelle rurale en Ille-et-Vilaine au sud de Rennes, est située sur les bords de la Vilaine. Tissu TPE artisans, PME agricoles et agroalimentaires, commerces de proximité et services. Axion-IA accompagne tout le tissu professionnel local du sud rennais et du Pays de Redon.",
   pitchEn:
-    "Guipry-Messac (35), commune nouvelle rurale en Ille-et-Vilaine au sud de Rennes, est située sur les bords de la Vilaine. Tissu TPE artisans, PME agricoles et agroalimentaires, commerces de proximité et services. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud rennais et du Pays de Redon.",
+    "Guipry-Messac (35), commune nouvelle rurale en Ille-et-Vilaine au sud de Rennes, est située sur les bords de la Vilaine. Tissu TPE artisans, PME agricoles et agroalimentaires, commerces de proximité et services. Axion-IA accompagne tout le tissu professionnel local du sud rennais et du Pays de Redon.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guipry-Messac (35). Nous accompagnons TPE artisans, PME agricoles et agroalimentaires, commerçants et indépendants du sud rennais et du Pays de Redon. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guipry-Messac (35). Nous accompagnons TPE artisans, PME agricoles et agroalimentaires, commerçants et indépendants du sud rennais et du Pays de Redon. Audit Flash sur mesure, interventions sur site et coaching dirigeants.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guipry-Messac (35). Nous accompagnons TPE artisans, PME agricoles et agroalimentaires, commerçants et indépendants du sud rennais et du Pays de Redon. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guipry-Messac (35). Nous accompagnons TPE artisans, PME agricoles et agroalimentaires, commerçants et indépendants du sud rennais et du Pays de Redon. Audit Flash sur mesure, interventions sur site et coaching dirigeants.",
   seoHook: "agriculture élevage & agroalimentaire",
   ecosystemFr:
     "Guipry-Messac, commune nouvelle née de la fusion de Guipry et Messac en 2016, est implantée sur les bords de la Vilaine au sud de Rennes. Tissu TPE artisans BTP, PME agricoles (élevage, céréales), agroalimentaire, commerces de bourg, tourisme fluvial Vilaine et services aux particuliers. Territoire rural dynamique entre Rennes et Redon.",
@@ -52,7 +52,7 @@ export const GUIPRY_MESSAC_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Guipry-Messac et dans tout le sud rennais jusqu'au Pays de Redon (Bain-de-Bretagne, Pipriac, Grand-Fougeray). Nos consultants se déplacent depuis Rennes en 40 min via la D177.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Guipry-Messac ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Guipry-Messac  ?",
       a: "L'Audit Flash IA démarre à 490 € HT pour une session de 4h. Idéal pour les TPE et PME rurales de Guipry-Messac souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré.",
     },
     {

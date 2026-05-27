@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SAINTE_SAVINE_COPY: VilleCopy = {
   pitchFr:
-    "Sainte-Savine (10), commune résidentielle et commerciale de 10 000 habitants dans l'agglomération de Troyes. TPE et PME services aux entreprises, commerces de centre-ville, restauration, artisans, professions libérales, santé et sous-traitants industriels du bassin troyen. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Sainte-Savine (10), commune résidentielle et commerciale de 10 000 habitants dans l'agglomération de Troyes. TPE et PME services aux entreprises, commerces de centre-ville, restauration, artisans, professions libérales, santé et sous-traitants industriels du bassin troyen. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Sainte-Savine (10), commune résidentielle et commerciale de 10 000 habitants dans l'agglomération de Troyes. TPE et PME services aux entreprises, commerces de centre-ville, restauration, artisans, professions libérales, santé et sous-traitants industriels du bassin troyen. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Sainte-Savine (10), commune résidentielle et commerciale de 10 000 habitants dans l'agglomération de Troyes. TPE et PME services aux entreprises, commerces de centre-ville, restauration, artisans, professions libérales, santé et sous-traitants industriels du bassin troyen. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sainte-Savine (10). Nous accompagnons TPE et PME : commerces de centre-ville, services, restauration, artisans, professions libérales, santé, sous-traitants industriels de l'agglo Troyes. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sainte-Savine (10). Nous accompagnons TPE et PME : commerces de centre-ville, services, restauration, artisans, professions libérales, santé, sous-traitants industriels de l'agglo Troyes. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sainte-Savine (10). Nous accompagnons TPE et PME : commerces de centre-ville, services, restauration, artisans, professions libérales, santé, sous-traitants industriels de l'agglo Troyes. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sainte-Savine (10). Nous accompagnons TPE et PME : commerces de centre-ville, services, restauration, artisans, professions libérales, santé, sous-traitants industriels de l'agglo Troyes. Audit Flash sur mesure.",
   seoHook: "commerce centre-ville & santé professions",
   ecosystemFr:
     "Sainte-Savine est une commune résidentielle et commerciale de l'agglo Troyes, dotée d'un tissu économique de proximité actif. TPE/PME diversifiées : commerce centre-ville, services, restauration, artisanat, professions libérales, santé, sous-traitance industrielle.",
@@ -52,7 +52,7 @@ export const SAINTE_SAVINE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Sainte-Savine et dans toute l'agglomération de Troyes. Troyes centre à 5 min, A5 à 10 min, Paris-Est à 1 h 30 en TGV depuis Troyes.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Sainte-Savine ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Sainte-Savine  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables en ligne, adaptés aux TPE artisanales et PME commerces de l'agglo Troyes.",
     },
     {

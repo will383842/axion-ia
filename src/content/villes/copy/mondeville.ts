@@ -60,7 +60,7 @@ export const MONDEVILLE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Mondeville, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Mondeville ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Mondeville  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {

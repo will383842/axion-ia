@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ROSHEIM_COPY: VilleCopy = {
   pitchFr:
-    "Rosheim (67), commune de 5 457 habitants sur la Route des Vins d'Alsace, est un pôle viticole et patrimonial du Bas-Rhin. Centre médiéval préservé (Maison romane, église Saints-Pierre-et-Paul). Tissu viticulture AOC Alsace, TPE artisans-vignerons, PME oenotourisme, hôtellerie-restauration, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Rosheim (67), commune de 5 457 habitants sur la Route des Vins d'Alsace, est un pôle viticole et patrimonial du Bas-Rhin. Centre médiéval préservé (Maison romane, église Saints-Pierre-et-Paul). Tissu viticulture AOC Alsace, TPE artisans-vignerons, PME oenotourisme, hôtellerie-restauration, commerces. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Rosheim (67), commune de 5 457 habitants sur la Route des Vins d'Alsace, est un pôle viticole et patrimonial du Bas-Rhin. Centre médiéval préservé (Maison romane, église Saints-Pierre-et-Paul). Tissu viticulture AOC Alsace, TPE artisans-vignerons, PME oenotourisme, hôtellerie-restauration, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Rosheim (67), commune de 5 457 habitants sur la Route des Vins d'Alsace, est un pôle viticole et patrimonial du Bas-Rhin. Centre médiéval préservé (Maison romane, église Saints-Pierre-et-Paul). Tissu viticulture AOC Alsace, TPE artisans-vignerons, PME oenotourisme, hôtellerie-restauration, commerces. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rosheim (67). Nous accompagnons tous types d'activités : TPE viticulteurs AOC Alsace de la Route des Vins, artisans-vignerons, PME oenotourisme, hôteliers-restaurateurs, commerçants et services aux entreprises du piémont des Vosges alsacien.",
   directAnswerEn:
@@ -65,7 +65,7 @@ export const ROSHEIM_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'entrée pour une TPE à Rosheim ?",
-      a: "L'audit Flash démarre à 490 € HT. Coaching 1-to-1 à partir de 990 € HT. Tarifs publics, pas de devis opaque.",
+      a: "L'audit Flash débute selon la taille de votre activité. Coaching 1-to-1 à partir de 990 € HT. Tarifs publics, pas de devis opaque.",
     },
   ],
 };

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const TOULOUGES_COPY: VilleCopy = {
   pitchFr:
-    "Toulouges (66), commune résidentielle en périphérie sud-ouest de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME tertiaires, commerces, zones d'activités, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération perpignanaise.",
+    "Toulouges (66), commune résidentielle en périphérie sud-ouest de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME tertiaires, commerces, zones d'activités, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes de l'agglomération perpignanaise.",
   pitchEn:
-    "Toulouges (66), commune résidentielle en périphérie sud-ouest de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME tertiaires, commerces, zones d'activités, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération perpignanaise.",
+    "Toulouges (66), commune résidentielle en périphérie sud-ouest de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME tertiaires, commerces, zones d'activités, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes de l'agglomération perpignanaise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Toulouges (66). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, commerçants, professions libérales, indépendants et services aux entreprises de l'agglo Perpignan sud-ouest.",
   directAnswerEn:

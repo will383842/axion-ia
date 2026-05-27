@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHAUVIGNY_COPY: VilleCopy = {
   pitchFr:
-    "Chauvigny (86), cité médiévale aux cinq châteaux surplombant la Vienne, est un pôle patrimonial et économique de l'est du département. Tissu TPE artisans (pierre de Chauvigny, BTP), PME industrielles/carrières, tourisme patrimonial, commerces, professions libérales et services. Axion-IA y déploie ses missions auprès de toutes les organisations du Chauvinois.",
+    "Chauvigny (86), cité médiévale aux cinq châteaux surplombant la Vienne, est un pôle patrimonial et économique de l'est du département. Tissu TPE artisans (pierre de Chauvigny, BTP), PME industrielles/carrières, tourisme patrimonial, commerces, professions libérales et services. Axion-IA y déploie son expertise pour toutes les organisations du Chauvinois.",
   pitchEn:
-    "Chauvigny (86), cité médiévale aux cinq châteaux surplombant la Vienne, est un pôle patrimonial et économique de l'est du département. Tissu TPE artisans (pierre de Chauvigny, BTP), PME industrielles/carrières, tourisme patrimonial, commerces, professions libérales et services. Axion-IA y déploie ses missions auprès de toutes les organisations du Chauvinois.",
+    "Chauvigny (86), cité médiévale aux cinq châteaux surplombant la Vienne, est un pôle patrimonial et économique de l'est du département. Tissu TPE artisans (pierre de Chauvigny, BTP), PME industrielles/carrières, tourisme patrimonial, commerces, professions libérales et services. Axion-IA y déploie son expertise pour toutes les organisations du Chauvinois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chauvigny (86). Nous accompagnons tous types d'activités : TPE artisans pierre/BTP, PME industrielles et carriers, acteurs tourisme patrimonial (5 châteaux médiévaux), commerçants, professions libérales et services aux entreprises de l'est Vienne.",
   directAnswerEn:

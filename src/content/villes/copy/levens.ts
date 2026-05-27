@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LEVENS_COPY: VilleCopy = {
   pitchFr:
-    "Levens (06), village perché du moyen-pays niçois à 600 m d'altitude, domine la vallée de la Vésubie et offre un panorama exceptionnel sur les Alpes et la mer. Tissu TPE/PME artisanat BTP, commerces de village, professions libérales, tourisme nature et agriculture de montagne. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Levens (06), village perché du moyen-pays niçois à 600 m d'altitude, domine la vallée de la Vésubie et offre un panorama exceptionnel sur les Alpes et la mer. Tissu TPE/PME artisanat BTP, commerces de village, professions libérales, tourisme nature et agriculture de montagne. Axion-IA répond aux besoins des activités professionnelles présentes.",
   pitchEn:
-    "Levens (06), village perché du moyen-pays niçois à 600 m d'altitude, domine la vallée de la Vésubie et offre un panorama exceptionnel sur les Alpes et la mer. Tissu TPE/PME artisanat BTP, commerces de village, professions libérales, tourisme nature et agriculture de montagne. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Levens (06), village perché du moyen-pays niçois à 600 m d'altitude, domine la vallée de la Vésubie et offre un panorama exceptionnel sur les Alpes et la mer. Tissu TPE/PME artisanat BTP, commerces de village, professions libérales, tourisme nature et agriculture de montagne. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Levens (06). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, acteurs tourisme nature et agriculteurs de montagne du moyen-pays niçois.",
   directAnswerEn:

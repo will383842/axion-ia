@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const TREBES_COPY: VilleCopy = {
   pitchFr:
-    "Trèbes (11), commune de l'agglomération carcassonnaise en Aude, traversée par le canal du Midi (patrimoine UNESCO) et l'Aude. Vignoble Minervois, tissu TPE artisans, PME viticoles et agroalimentaires, commerces de proximité, services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Trèbes (11), commune de l'agglomération carcassonnaise en Aude, traversée par le canal du Midi (patrimoine UNESCO) et l'Aude. Vignoble Minervois, tissu TPE artisans, PME viticoles et agroalimentaires, commerces de proximité, services. Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Trèbes (11), commune de l'agglomération carcassonnaise en Aude, traversée par le canal du Midi (patrimoine UNESCO) et l'Aude. Vignoble Minervois, tissu TPE artisans, PME viticoles et agroalimentaires, commerces de proximité, services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Trèbes (11), commune de l'agglomération carcassonnaise en Aude, traversée par le canal du Midi (patrimoine UNESCO) et l'Aude. Vignoble Minervois, tissu TPE artisans, PME viticoles et agroalimentaires, commerces de proximité, services. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trèbes (11). Nous accompagnons TPE artisans, PME viticoles Minervois, professionnels du canal du Midi, commerçants, restaurateurs et services de l'agglomération carcassonnaise. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trèbes (11). Nous accompagnons TPE artisans, PME viticoles Minervois, professionnels du canal du Midi, commerçants, restaurateurs et services de l'agglomération carcassonnaise. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trèbes (11). Nous accompagnons TPE artisans, PME viticoles Minervois, professionnels du canal du Midi, commerçants, restaurateurs et services de l'agglomération carcassonnaise. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trèbes (11). Nous accompagnons TPE artisans, PME viticoles Minervois, professionnels du canal du Midi, commerçants, restaurateurs et services de l'agglomération carcassonnaise. Audit Flash sur mesure.",
   seoHook: "viticulture minervois & tourisme fluvial",
   ecosystemFr:
     "Trèbes est une commune de l'agglomération de Carcassonne, traversée par le canal du Midi (classé UNESCO) et la rivière Aude. Économie viticole (AOC Minervois, Cabardès), tourisme fluvial sur le canal du Midi, TPE artisans BTP, PME agroalimentaires, commerces de proximité, hôtellerie-restauration liée au tourisme carcassonnais.",
@@ -56,7 +56,7 @@ export const TREBES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les domaines viticoles AOC Minervois et Cabardès sur leurs cas IA : traçabilité parcellaire, automatisation gestion cave, prédiction vendanges, gestion relation négoce, classification qualité.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Trèbes ?",
+      q: "Quel est le tarif d'un audit IA à Trèbes  ?",
       a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME viticoles ou agroalimentaires, audit approfondi entre 1 900 et 3 900 € HT selon la complexité. Tarifs publics, pas de devis opaque.",
     },
     {

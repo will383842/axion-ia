@@ -11,9 +11,9 @@ export const LE_BLANC_MESNIL_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Le Blanc-Mesnil, au cœur de l'Île-de-France, pour optimiser les processus des entreprises locales. Avec des acteurs comme Air France Industries et SNCF Réseau, nous apportons notre expertise IA pour automatiser et améliorer l'efficacité opérationnelle.",
   directAnswerFr:
-    "Axion-IA se déplace à Le Blanc-Mesnil pour accompagner les entreprises dans l'optimisation de leurs processus grâce à l'IA. Dans un environnement économique comprenant Air France Industries et le Parc d'activités du Coudray, nous proposons des audits dès 490 € HT et des interventions à partir de 590 € HT. Nos services incluent également des implémentations et des formations personnalisées.",
+    "Axion-IA se déplace à Le Blanc-Mesnil pour accompagner les entreprises dans l'optimisation de leurs processus grâce à l'IA. Dans un environnement économique comprenant Air France Industries et le Parc d'activités du Coudray, nous proposons des audits et des interventions. Nos services incluent également des implémentations et des formations personnalisées.",
   directAnswerEn:
-    "Axion-IA se déplace à Le Blanc-Mesnil pour accompagner les entreprises dans l'optimisation de leurs processus grâce à l'IA. Dans un environnement économique comprenant Air France Industries et le Parc d'activités du Coudray, nous proposons des audits dès 490 € HT et des interventions à partir de 590 € HT. Nos services incluent également des implémentations et des formations personnalisées.",
+    "Axion-IA se déplace à Le Blanc-Mesnil pour accompagner les entreprises dans l'optimisation de leurs processus grâce à l'IA. Dans un environnement économique comprenant Air France Industries et le Parc d'activités du Coudray, nous proposons des audits et des interventions. Nos services incluent également des implémentations et des formations personnalisées.",
   seoHook: "transport terrestre & commerce gros",
   ecosystemFr:
     "Le Blanc-Mesnil est un pôle industriel avec des entreprises comme Air France Industries et SNCF Réseau. Le Parc d'activités du Coudray renforce l'attractivité économique de la région, offrant un terreau fertile pour nos interventions IA.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ANZIN_COPY: VilleCopy = {
   pitchFr:
-    "Anzin (59), commune de l'agglomération de Valenciennes au cœur du bassin minier du Nord, inscrit au Patrimoine mondial UNESCO. Tissu économique : TPE et PME de la construction et du BTP, commerce, services à la personne, sous-traitance industrielle automobile (filière valenciannoise), artisanat, économie sociale et solidaire. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin minier valenciennois.",
+    "Anzin (59), commune de l'agglomération de Valenciennes au cœur du bassin minier du Nord, inscrit au Patrimoine mondial UNESCO. Tissu économique : TPE et PME de la construction et du BTP, commerce, services à la personne, sous-traitance industrielle automobile (filière valenciannoise), artisanat, économie sociale et solidaire. Axion-IA y déploie son expertise pour toutes les organisations du bassin minier valenciennois.",
   pitchEn:
-    "Anzin (59), commune de l'agglomération de Valenciennes au cœur du bassin minier du Nord, inscrit au Patrimoine mondial UNESCO. Tissu économique : TPE et PME de la construction et du BTP, commerce, services à la personne, sous-traitance industrielle automobile (filière valenciannoise), artisanat, économie sociale et solidaire. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin minier valenciennois.",
+    "Anzin (59), commune de l'agglomération de Valenciennes au cœur du bassin minier du Nord, inscrit au Patrimoine mondial UNESCO. Tissu économique : TPE et PME de la construction et du BTP, commerce, services à la personne, sous-traitance industrielle automobile (filière valenciannoise), artisanat, économie sociale et solidaire. Axion-IA y déploie son expertise pour toutes les organisations du bassin minier valenciennois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Anzin (59). Nous accompagnons TPE et PME : entreprises BTP et construction, sous-traitants de la filière automobile valenciannoise, commerçants, artisans, prestataires de services à la personne et structures de l'économie sociale et solidaire du bassin minier.",
   directAnswerEn:
@@ -56,7 +56,7 @@ export const ANZIN_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE et PME du BTP et de la construction à Anzin sur leurs cas IA spécifiques : automatisation devis et facturation chantier, planification IA des interventions, copilotes IA conformité réglementaire et DTU, génération documents de suivi chantier, prévision approvisionnements matériaux.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Anzin ?",
+      q: "Quel est le tarif d'un audit IA à Anzin  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du bassin minier valenciennois, il identifie les cas d'usage IA à fort ROI pour votre activité (BTP, sous-traitance auto, commerce, services à la personne, ESS). Tarifs publics, sans engagement.",
     },
     {

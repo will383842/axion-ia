@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MONTLOUIS_SUR_LOIRE_COPY: VilleCopy = {
   pitchFr:
-    "Montlouis-sur-Loire (37), commune d'Indre-et-Loire sur les bords de Loire, est renommée pour son AOC viticole Montlouis-sur-Loire (vins blancs effervescents et tranquilles). Tissu TPE viticulteurs, PME tourisme œnotouristique Loire, artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Montlouis-sur-Loire (37), commune d'Indre-et-Loire sur les bords de Loire, est renommée pour son AOC viticole Montlouis-sur-Loire (vins blancs effervescents et tranquilles). Tissu TPE viticulteurs, PME tourisme œnotouristique Loire, artisans BTP, commerces. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Montlouis-sur-Loire (37), commune d'Indre-et-Loire sur les bords de Loire, est renommée pour son AOC viticole Montlouis-sur-Loire (vins blancs effervescents et tranquilles). Tissu TPE viticulteurs, PME tourisme œnotouristique Loire, artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Montlouis-sur-Loire (37), commune d'Indre-et-Loire sur les bords de Loire, est renommée pour son AOC viticole Montlouis-sur-Loire (vins blancs effervescents et tranquilles). Tissu TPE viticulteurs, PME tourisme œnotouristique Loire, artisans BTP, commerces. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montlouis-sur-Loire (37). Nous accompagnons tous types d'activités : TPE viticulteurs AOC Montlouis, PME tourisme œnotouristique Loire, artisans BTP, commerçants et services aux entreprises de l'agglomération tourangelle.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BOIS_D_ARCY_COPY: VilleCopy = {
   pitchFr:
-    "Bois-d'Arcy (78), commune résidentielle des Yvelines à l'ouest immédiat de Versailles, accueille un tissu de TPE/PME tertiaires, artisans, commerces de proximité, professions libérales et services aux particuliers. Zone d'activités proche de Saint-Quentin-en-Yvelines. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Bois-d'Arcy (78), commune résidentielle des Yvelines à l'ouest immédiat de Versailles, accueille un tissu de TPE/PME tertiaires, artisans, commerces de proximité, professions libérales et services aux particuliers. Zone d'activités proche de Saint-Quentin-en-Yvelines. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Bois-d'Arcy (78), commune résidentielle des Yvelines à l'ouest immédiat de Versailles, accueille un tissu de TPE/PME tertiaires, artisans, commerces de proximité, professions libérales et services aux particuliers. Zone d'activités proche de Saint-Quentin-en-Yvelines. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Bois-d'Arcy (78), commune résidentielle des Yvelines à l'ouest immédiat de Versailles, accueille un tissu de TPE/PME tertiaires, artisans, commerces de proximité, professions libérales et services aux particuliers. Zone d'activités proche de Saint-Quentin-en-Yvelines. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bois-d'Arcy (78). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, commerçants de proximité, professions libérales, indépendants et entreprises de la zone Saint-Quentin-en-Yvelines ouest.",
   directAnswerEn:

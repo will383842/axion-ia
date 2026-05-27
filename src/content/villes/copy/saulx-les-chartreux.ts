@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SAULX_LES_CHARTREUX_COPY: VilleCopy = {
   pitchFr:
-    "Saulx-les-Chartreux (91), commune résidentielle de l'Essonne au sud de Longjumeau, conserve un patrimoine maraîcher historique. Tissu TPE artisans, exploitants maraîchers, commerces de proximité, PME services, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Saulx-les-Chartreux (91), commune résidentielle de l'Essonne au sud de Longjumeau, conserve un patrimoine maraîcher historique. Tissu TPE artisans, exploitants maraîchers, commerces de proximité, PME services, professions libérales. Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Saulx-les-Chartreux (91), commune résidentielle de l'Essonne au sud de Longjumeau, conserve un patrimoine maraîcher historique. Tissu TPE artisans, exploitants maraîchers, commerces de proximité, PME services, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Saulx-les-Chartreux (91), commune résidentielle de l'Essonne au sud de Longjumeau, conserve un patrimoine maraîcher historique. Tissu TPE artisans, exploitants maraîchers, commerces de proximité, PME services, professions libérales. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saulx-les-Chartreux (91). Nous accompagnons TPE et PME : exploitants maraîchers, artisans BTP, commerces de proximité, professions libérales, PME services du sud Longjumeau. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saulx-les-Chartreux (91). Nous accompagnons TPE et PME : exploitants maraîchers, artisans BTP, commerces de proximité, professions libérales, PME services du sud Longjumeau. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saulx-les-Chartreux (91). Nous accompagnons TPE et PME : exploitants maraîchers, artisans BTP, commerces de proximité, professions libérales, PME services du sud Longjumeau. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saulx-les-Chartreux (91). Nous accompagnons TPE et PME : exploitants maraîchers, artisans BTP, commerces de proximité, professions libérales, PME services du sud Longjumeau. Audit Flash sur mesure.",
   seoHook: "maraîchage horticulture & artisanat second",
   ecosystemFr:
     "Saulx-les-Chartreux est une commune résidentielle de l'Essonne, au sud de Longjumeau, connue pour son maraîchage historique (cresson, légumes). Proximité immédiate de la N20 et de Massy. Tissu TPE artisans, exploitants maraîchers, commerces de proximité, PME services, professions libérales.",

@@ -9,9 +9,9 @@ export const MONTREVAULT_SUR_EVRE_COPY: VilleCopy = {
   pitchEn:
     "Montrevault-sur-Èvre (49), commune nouvelle au cœur des Mauges, fédère un territoire rural dynamique de plus de 15 000 habitants entre bocage angevin et vallée de l'Èvre. Axion-IA opère pour toutes les structures économiques de la commune : agriculture, artisanat, industrie locale, commerces et services.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Montrevault-sur-Èvre (49). Nous accompagnons les TPE, PME et exploitants agricoles des Mauges dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Montrevault-sur-Èvre (49). Nous accompagnons les TPE, PME et exploitants agricoles des Mauges dans l'adoption de l'IA : audit Flash, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Montrevault-sur-Èvre (49). Nous accompagnons les TPE, PME et exploitants agricoles des Mauges dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Montrevault-sur-Èvre (49). Nous accompagnons les TPE, PME et exploitants agricoles des Mauges dans l'adoption de l'IA : audit Flash, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict.",
   seoHook: "agriculture élevage & artisanat second",
   ecosystemFr:
     "Montrevault-sur-Èvre est née de la fusion de 11 communes déléguées dans les Mauges. Territoire à dominante agricole (élevage bovin, polyculture) avec un tissu d'artisanat BTP, de PME industrielles (agroalimentaire, métallurgie) et de commerces de bourg. Proximité Beaupréau-en-Mauges et Cholet.",
@@ -52,7 +52,7 @@ export const MONTREVAULT_SUR_EVRE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Montrevault-sur-Èvre et sur tout le territoire des Mauges (Beaupréau-en-Mauges, Saint-Macaire-en-Mauges, Le Fuilet). Nos consultants se déplacent sur site, démarrage sous 5 jours.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Montrevault-sur-Èvre ?",
+      q: "Combien coûte un audit IA à Montrevault-sur-Èvre  ?",
       a: "L'Audit Flash IA à Montrevault-sur-Èvre démarre à 490 € HT pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics, sans surprise.",
     },
     {

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ERDRE_EN_ANJOU_COPY: VilleCopy = {
   pitchFr:
-    "Erdre-en-Anjou (49), commune nouvelle du Maine-et-Loire au nord d'Angers entre vallée de l'Erdre et Segréen, réunit un tissu de TPE artisans, PME agricoles et agroalimentaires, commerces ruraux, exploitations d'élevage et prestataires de services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Erdre-en-Anjou (49), commune nouvelle du Maine-et-Loire au nord d'Angers entre vallée de l'Erdre et Segréen, réunit un tissu de TPE artisans, PME agricoles et agroalimentaires, commerces ruraux, exploitations d'élevage et prestataires de services. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Erdre-en-Anjou (49), commune nouvelle du Maine-et-Loire au nord d'Angers entre vallée de l'Erdre et Segréen, réunit un tissu de TPE artisans, PME agricoles et agroalimentaires, commerces ruraux, exploitations d'élevage et prestataires de services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Erdre-en-Anjou (49), commune nouvelle du Maine-et-Loire au nord d'Angers entre vallée de l'Erdre et Segréen, réunit un tissu de TPE artisans, PME agricoles et agroalimentaires, commerces ruraux, exploitations d'élevage et prestataires de services. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Erdre-en-Anjou (49). Nous accompagnons tous types d'activités : TPE artisans, PME agricoles et agroalimentaires, éleveurs, commerçants de bourg, professions libérales, prestataires de services et acteurs du tourisme rural entre Erdre et Segréen.",
   directAnswerEn:

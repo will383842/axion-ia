@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LIBERCOURT_COPY: VilleCopy = {
   pitchFr:
-    "Libercourt (62), commune du bassin minier du Pas-de-Calais sur l'axe A1, combine logistique, TPE artisanales, commerces et PME de services. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin minier.",
+    "Libercourt (62), commune du bassin minier du Pas-de-Calais sur l'axe A1, combine logistique, TPE artisanales, commerces et PME de services. Axion-IA y déploie son expertise pour toutes les organisations du bassin minier.",
   pitchEn:
-    "Libercourt (62), commune du bassin minier du Pas-de-Calais sur l'axe A1, combine logistique, TPE artisanales, commerces et PME de services. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin minier.",
+    "Libercourt (62), commune du bassin minier du Pas-de-Calais sur l'axe A1, combine logistique, TPE artisanales, commerces et PME de services. Axion-IA y déploie son expertise pour toutes les organisations du bassin minier.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Libercourt (62). Nous accompagnons TPE artisanales, PME logistiques et de services, commerçants et professions libérales du bassin minier. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Libercourt (62). Nous accompagnons TPE artisanales, PME logistiques et de services, commerçants et professions libérales du bassin minier. Audit Flash sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Libercourt (62). Nous accompagnons TPE artisanales, PME logistiques et de services, commerçants et professions libérales du bassin minier. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Libercourt (62). Nous accompagnons TPE artisanales, PME logistiques et de services, commerçants et professions libérales du bassin minier. Audit Flash sur mesure, intervention sur site ou en visio.",
   seoHook: "logistique transports & commerce détail",
   ecosystemFr:
     "Libercourt est une commune du bassin minier sur l'axe autoroutier A1, entre Lens et Douai. Position stratégique pour la logistique (proximité plateforme Delta 3 Dourges). Tissu de TPE artisanales, commerces, PME de services et professions libérales. Gare TER desservant Lille et Douai.",
@@ -52,7 +52,7 @@ export const LIBERCOURT_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Libercourt et dans le bassin minier (Oignies, Carvin, Dourges, Hénin-Beaumont). Déplacements sur site ou sessions en visio.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Libercourt ?",
+      q: "Quel est le tarif d'un audit IA à Libercourt  ?",
       a: "L'Audit Flash Axion-IA démarre à 490 € HT pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du bassin minier. Tarifs publics.",
     },
     {

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GRANDCHAMP_DES_FONTAINES_COPY: VilleCopy = {
   pitchFr:
-    "Grandchamp-des-Fontaines (44), commune résidentielle du nord de l'agglomération nantaise en Loire-Atlantique. Tissu TPE artisans et commerçants, PME tertiaires, entreprises zones d'activités, professions libérales, services de proximité. Axion-IA accompagne entreprises et indépendants de tous secteurs du nord Nantes.",
+    "Grandchamp-des-Fontaines (44), commune résidentielle du nord de l'agglomération nantaise en Loire-Atlantique. Tissu TPE artisans et commerçants, PME tertiaires, entreprises zones d'activités, professions libérales, services de proximité. Axion-IA collabore avec toutes les structures locales du nord Nantes.",
   pitchEn:
-    "Grandchamp-des-Fontaines (44), commune résidentielle du nord de l'agglomération nantaise en Loire-Atlantique. Tissu TPE artisans et commerçants, PME tertiaires, entreprises zones d'activités, professions libérales, services de proximité. Axion-IA accompagne entreprises et indépendants de tous secteurs du nord Nantes.",
+    "Grandchamp-des-Fontaines (44), commune résidentielle du nord de l'agglomération nantaise en Loire-Atlantique. Tissu TPE artisans et commerçants, PME tertiaires, entreprises zones d'activités, professions libérales, services de proximité. Axion-IA collabore avec toutes les structures locales du nord Nantes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Grandchamp-des-Fontaines (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires, entreprises des zones d'activités, professions libérales et services de proximité du nord nantais.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const GRANDCHAMP_DES_FONTAINES_COPY: VilleCopy = {
       a: "Pour les TPE artisans et commerçants, nous proposons audit IA (Flash 490 € HT), interventions sur site, implémentation (agents IA prise de RDV, automatisation devis, gestion stocks), coaching 1-to-1 et plateformes web IA.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Grandchamp-des-Fontaines ?",
+      q: "Combien coûte un audit IA à Grandchamp-des-Fontaines  ?",
       a: "L'Audit Flash démarre à 490 € HT (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du nord nantais.",
     },
     {

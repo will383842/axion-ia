@@ -60,8 +60,8 @@ export const MONTS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les professions libérales à Monts (avocats, comptables, architectes, praticiens santé) sur leurs cas IA : classification courriers et dossiers, automatisation rendez-vous patients/clients, agents conversationnels accueil, synthèse documentaire.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Monts ?",
-      a: "L'audit Flash démarre à 490 € HT. Il couvre le diagnostic de vos processus, l'identification des cas d'usage IA prioritaires et un ROI chiffré. Intervention possible sous 5 jours ouvrés après validation.",
+      q: "Combien coûte un audit IA à Monts  ?",
+      a: "L'audit Flash s'adapte à votre périmètre. Il couvre le diagnostic de vos processus, l'identification des cas d'usage IA prioritaires et un ROI chiffré. Intervention possible sous 5 jours ouvrés après validation.",
     },
     {
       q: "Comment se passe une mission Axion-IA à Monts ?",

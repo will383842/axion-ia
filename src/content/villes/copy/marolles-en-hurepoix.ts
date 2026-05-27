@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MAROLLES_EN_HUREPOIX_COPY: VilleCopy = {
   pitchFr:
-    "Marolles-en-Hurepoix (91), commune résidentielle du Hurepoix en Essonne, est située à 33 km au sud de Paris. Tissu TPE artisanales, commerces de proximité, PME tertiaires, professions libérales, indépendants. Axion-IA y déploie ses missions auprès de toutes les organisations du sud-Essonne.",
+    "Marolles-en-Hurepoix (91), commune résidentielle du Hurepoix en Essonne, est située à 33 km au sud de Paris. Tissu TPE artisanales, commerces de proximité, PME tertiaires, professions libérales, indépendants. Axion-IA y déploie son expertise pour toutes les organisations du sud-Essonne.",
   pitchEn:
-    "Marolles-en-Hurepoix (91), commune résidentielle du Hurepoix en Essonne, est située à 33 km au sud de Paris. Tissu TPE artisanales, commerces de proximité, PME tertiaires, professions libérales, indépendants. Axion-IA y déploie ses missions auprès de toutes les organisations du sud-Essonne.",
+    "Marolles-en-Hurepoix (91), commune résidentielle du Hurepoix en Essonne, est située à 33 km au sud de Paris. Tissu TPE artisanales, commerces de proximité, PME tertiaires, professions libérales, indépendants. Axion-IA y déploie son expertise pour toutes les organisations du sud-Essonne.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marolles-en-Hurepoix (91). Nous accompagnons tous types d'activités : TPE artisanales, commerces de proximité, PME tertiaires, professions libérales, indépendants et services aux entreprises du Hurepoix.",
   directAnswerEn:

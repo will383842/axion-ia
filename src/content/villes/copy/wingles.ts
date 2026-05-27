@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const WINGLES_COPY: VilleCopy = {
   pitchFr:
-    "Wingles (62), commune du bassin minier du Pas-de-Calais entre Lens et La Bassée, accueille TPE artisanales, commerces, PME de services et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin minier.",
+    "Wingles (62), commune du bassin minier du Pas-de-Calais entre Lens et La Bassée, accueille TPE artisanales, commerces, PME de services et professions libérales. Axion-IA collabore avec toutes les structures locales du bassin minier.",
   pitchEn:
-    "Wingles (62), commune du bassin minier du Pas-de-Calais entre Lens et La Bassée, accueille TPE artisanales, commerces, PME de services et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin minier.",
+    "Wingles (62), commune du bassin minier du Pas-de-Calais entre Lens et La Bassée, accueille TPE artisanales, commerces, PME de services et professions libérales. Axion-IA collabore avec toutes les structures locales du bassin minier.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wingles (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wingles (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier. Audit Flash sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wingles (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wingles (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier. Audit Flash sur mesure, intervention sur site ou en visio.",
   seoHook: "commerce détail & professions libérales",
   ecosystemFr:
     "Wingles est une commune du bassin minier entre Lens et La Bassée, en reconversion économique. Tissu de TPE artisanales BTP, commerces de proximité, PME de services et professions libérales. Proximité de zones logistiques et industrielles du secteur Lens-Hénin.",
@@ -52,7 +52,7 @@ export const WINGLES_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Wingles et dans tout le bassin minier (Lens, Vendin-le-Vieil, Mazingarbe, La Bassée). Déplacements sur site ou sessions en visio.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Wingles ?",
+      q: "Quel est le tarif d'un audit IA à Wingles  ?",
       a: "L'Audit Flash Axion-IA démarre à 490 € HT pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du bassin minier. Tarifs publics.",
     },
     {

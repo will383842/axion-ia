@@ -56,7 +56,7 @@ export const GARCHES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les professions libérales de santé à Garches (médecins, spécialistes, paramédicaux, secteur Raymond-Poincaré) sur leurs cas IA respectueux du secret médical : agents conversationnels patient, automatisation secrétariat, classification dossiers. RGPD et HDS.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Garches ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Garches  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de l'ouest parisien, il identifie les cas d'usage IA à fort ROI pour votre activité (santé, conseil, patrimoine, commerce). Tarifs publics.",
     },
     {

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const L_ISLE_ADAM_COPY: VilleCopy = {
   pitchFr:
-    "L'Isle-Adam (95), commune résidentielle verdoyante du Val-d'Oise en bords de l'Oise, est connue pour sa plage fluviale et son cadre de vie prisé. Tissu TPE artisans, commerçants, PME tertiaires, professions libérales et prestataires de services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "L'Isle-Adam (95), commune résidentielle verdoyante du Val-d'Oise en bords de l'Oise, est connue pour sa plage fluviale et son cadre de vie prisé. Tissu TPE artisans, commerçants, PME tertiaires, professions libérales et prestataires de services. Axion-IA répond aux besoins des activités professionnelles présentes.",
   pitchEn:
-    "L'Isle-Adam (95), commune résidentielle verdoyante du Val-d'Oise en bords de l'Oise, est connue pour sa plage fluviale et son cadre de vie prisé. Tissu TPE artisans, commerçants, PME tertiaires, professions libérales et prestataires de services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "L'Isle-Adam (95), commune résidentielle verdoyante du Val-d'Oise en bords de l'Oise, est connue pour sa plage fluviale et son cadre de vie prisé. Tissu TPE artisans, commerçants, PME tertiaires, professions libérales et prestataires de services. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à L'Isle-Adam (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants du centre historique, PME tertiaires et de services, professions libérales, indépendants et entreprises du nord Val-d'Oise bords de l'Oise.",
   directAnswerEn:

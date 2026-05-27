@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_HILAIRE_DU_HARCOUET_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Hilaire-du-Harcouët (50), bourg-centre du bocage normand dans la Manche (Normandie), est historiquement un important marché aux bestiaux. Tissu TPE agriculteurs et éleveurs, PME agroalimentaires (lait, viande), artisans BTP, commerces de bourg et services de proximité. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Saint-Hilaire-du-Harcouët (50), bourg-centre du bocage normand dans la Manche (Normandie), est historiquement un important marché aux bestiaux. Tissu TPE agriculteurs et éleveurs, PME agroalimentaires (lait, viande), artisans BTP, commerces de bourg et services de proximité. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Saint-Hilaire-du-Harcouët (50), bourg-centre du bocage normand dans la Manche (Normandie), est historiquement un important marché aux bestiaux. Tissu TPE agriculteurs et éleveurs, PME agroalimentaires (lait, viande), artisans BTP, commerces de bourg et services de proximité. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Saint-Hilaire-du-Harcouët (50), bourg-centre du bocage normand dans la Manche (Normandie), est historiquement un important marché aux bestiaux. Tissu TPE agriculteurs et éleveurs, PME agroalimentaires (lait, viande), artisans BTP, commerces de bourg et services de proximité. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Hilaire-du-Harcouët (50). Nous accompagnons tous types d'activités : TPE éleveurs et agriculteurs du bocage, PME agroalimentaires laitières et viande, artisans BTP, commerçants de bourg, professions libérales et services du sud Manche.",
   directAnswerEn:

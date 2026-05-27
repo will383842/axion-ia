@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ORAISON_COPY: VilleCopy = {
   pitchFr:
-    "Oraison (04), commune de la Moyenne Durance en Alpes-de-Haute-Provence, se situe au cœur d'un bassin agricole (vergers, lavande, maraîchage). Tissu TPE artisans, PME agroalimentaires, agriculteurs, commerçants et services de proximité. Axion-IA y déploie ses missions auprès de toutes les organisations de la vallée de la Durance.",
+    "Oraison (04), commune de la Moyenne Durance en Alpes-de-Haute-Provence, se situe au cœur d'un bassin agricole (vergers, lavande, maraîchage). Tissu TPE artisans, PME agroalimentaires, agriculteurs, commerçants et services de proximité. Axion-IA y mène ses missions auprès des organisations locales de la vallée de la Durance.",
   pitchEn:
-    "Oraison (04), commune de la Moyenne Durance en Alpes-de-Haute-Provence, se situe au cœur d'un bassin agricole (vergers, lavande, maraîchage). Tissu TPE artisans, PME agroalimentaires, agriculteurs, commerçants et services de proximité. Axion-IA y déploie ses missions auprès de toutes les organisations de la vallée de la Durance.",
+    "Oraison (04), commune de la Moyenne Durance en Alpes-de-Haute-Provence, se situe au cœur d'un bassin agricole (vergers, lavande, maraîchage). Tissu TPE artisans, PME agroalimentaires, agriculteurs, commerçants et services de proximité. Axion-IA y mène ses missions auprès des organisations locales de la vallée de la Durance.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Oraison (04). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires, agriculteurs (vergers, lavande, maraîchage), commerçants, indépendants et services aux entreprises de la Moyenne Durance.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const ORAISON_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME agroalimentaires d'Oraison et alentours : automatisation conditionnement, classification photos qualité, optimisation logistique expéditions, traçabilité champ-à-assiette.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Oraison ?",
+      q: "Tarifs audit IA à Oraison  : quel budget prévoir ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE artisans, agriculteurs et PME de la Moyenne Durance. Tarifs publics transparents, sans frais cachés.",
     },
     {

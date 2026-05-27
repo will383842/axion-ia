@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_PHILBERT_DE_GRAND_LIEU_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Philbert-de-Grand-Lieu (44), commune de Loire-Atlantique en bordure du lac de Grand-Lieu (plus grand lac naturel de plaine en hiver en France, réserve naturelle), abrite une abbatiale carolingienne du IXe siècle. Tissu de TPE artisans, PME agroalimentaires, exploitations agricoles (maraîchage, élevage), commerces et tourisme nature. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Saint-Philbert-de-Grand-Lieu (44), commune de Loire-Atlantique en bordure du lac de Grand-Lieu (plus grand lac naturel de plaine en hiver en France, réserve naturelle), abrite une abbatiale carolingienne du IXe siècle. Tissu de TPE artisans, PME agroalimentaires, exploitations agricoles (maraîchage, élevage), commerces et tourisme nature. Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Saint-Philbert-de-Grand-Lieu (44), commune de Loire-Atlantique en bordure du lac de Grand-Lieu (plus grand lac naturel de plaine en hiver en France, réserve naturelle), abrite une abbatiale carolingienne du IXe siècle. Tissu de TPE artisans, PME agroalimentaires, exploitations agricoles (maraîchage, élevage), commerces et tourisme nature. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Saint-Philbert-de-Grand-Lieu (44), commune de Loire-Atlantique en bordure du lac de Grand-Lieu (plus grand lac naturel de plaine en hiver en France, réserve naturelle), abrite une abbatiale carolingienne du IXe siècle. Tissu de TPE artisans, PME agroalimentaires, exploitations agricoles (maraîchage, élevage), commerces et tourisme nature. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Philbert-de-Grand-Lieu (44). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires, maraîchers et éleveurs du sud nantais, commerçants, professions libérales, acteurs du tourisme nature lac de Grand-Lieu et services aux entreprises du pays de Retz.",
   directAnswerEn:

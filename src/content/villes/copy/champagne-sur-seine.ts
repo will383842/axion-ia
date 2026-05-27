@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHAMPAGNE_SUR_SEINE_COPY: VilleCopy = {
   pitchFr:
-    "Champagne-sur-Seine (77), commune du sud Seine-et-Marne en bord de Seine, allie héritage industriel historique (Schneider Electric) et tissu de TPE artisanales, PME industrielles et de services, commerçants et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Champagne-sur-Seine (77), commune du sud Seine-et-Marne en bord de Seine, allie héritage industriel historique (Schneider Electric) et tissu de TPE artisanales, PME industrielles et de services, commerçants et professions libérales. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Champagne-sur-Seine (77), commune du sud Seine-et-Marne en bord de Seine, allie héritage industriel historique (Schneider Electric) et tissu de TPE artisanales, PME industrielles et de services, commerçants et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Champagne-sur-Seine (77), commune du sud Seine-et-Marne en bord de Seine, allie héritage industriel historique (Schneider Electric) et tissu de TPE artisanales, PME industrielles et de services, commerçants et professions libérales. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Champagne-sur-Seine (77). Nous accompagnons TPE et PME : sous-traitants industriels, TPE artisanales, PME de maintenance et de services, commerçants de proximité et professions libérales du sud Seine-et-Marne.",
   directAnswerEn:
@@ -56,7 +56,7 @@ export const CHAMPAGNE_SUR_SEINE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME industrielles et sous-traitants de Champagne-sur-Seine sur des cas IA concrets : maintenance prédictive, contrôle qualité automatisé, planification production, suivi de flotte, reporting augmenté. Audit Flash 490 € HT.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Champagne-sur-Seine ?",
+      q: "Combien coûte un audit IA à Champagne-sur-Seine  ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du sud Seine-et-Marne et du bassin de Fontainebleau, il identifie les cas d'usage IA à fort ROI. Tarifs publics et transparents.",
     },
     {

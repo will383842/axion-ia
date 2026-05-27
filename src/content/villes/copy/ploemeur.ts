@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const PLOEMEUR_COPY: VilleCopy = {
   pitchFr:
-    "Ploemeur (56), 4e commune du Morbihan peuplée de 18 872 habitants, conjugue façade littorale atlantique, plages familiales, nautisme et économie résidentielle au sein de Lorient Agglomération. TPE et PME locales, artisans, commerçants, professionnels du nautisme, hôteliers et professions libérales y prospèrent. Axion-IA accompagne entreprises et indépendants de tous secteurs du pays de Lorient.",
+    "Ploemeur (56), 4e commune du Morbihan peuplée de 18 872 habitants, conjugue façade littorale atlantique, plages familiales, nautisme et économie résidentielle au sein de Lorient Agglomération. TPE et PME locales, artisans, commerçants, professionnels du nautisme, hôteliers et professions libérales y prospèrent. Axion-IA répond aux besoins de toutes les entreprises du pays de Lorient.",
   pitchEn:
-    "Ploemeur (56), 4e commune du Morbihan peuplée de 18 872 habitants, conjugue façade littorale atlantique, plages familiales, nautisme et économie résidentielle au sein de Lorient Agglomération. TPE et PME locales, artisans, commerçants, professionnels du nautisme, hôteliers et professions libérales y prospèrent. Axion-IA accompagne entreprises et indépendants de tous secteurs du pays de Lorient.",
+    "Ploemeur (56), 4e commune du Morbihan peuplée de 18 872 habitants, conjugue façade littorale atlantique, plages familiales, nautisme et économie résidentielle au sein de Lorient Agglomération. TPE et PME locales, artisans, commerçants, professionnels du nautisme, hôteliers et professions libérales y prospèrent. Axion-IA répond aux besoins de toutes les entreprises du pays de Lorient.",
   seoHook: "littoral, nautisme & tourisme pays de Lorient",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ploemeur (56). Nous accompagnons tous types d'activités : TPE et PME locales, artisans, commerçants, professionnels du nautisme, hôteliers et professions libérales du pays de Lorient. Audit Flash dès 490 € HT, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ploemeur (56). Nous accompagnons tous types d'activités : TPE et PME locales, artisans, commerçants, professionnels du nautisme, hôteliers et professions libérales du pays de Lorient. Audit Flash sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ploemeur (56). Nous accompagnons tous types d'activités : TPE et PME locales, artisans, commerçants, professionnels du nautisme, hôteliers et professions libérales du pays de Lorient. Audit Flash dès 490 € HT, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ploemeur (56). Nous accompagnons tous types d'activités : TPE et PME locales, artisans, commerçants, professionnels du nautisme, hôteliers et professions libérales du pays de Lorient. Audit Flash sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Ploemeur, 4e commune du Morbihan et 14e de Bretagne, fait partie de Lorient Agglomération. Son économie repose sur le tourisme balnéaire (plages du Fort-Bloqué, Kerroc'h, Lomener), le nautisme (port de Lomener, plaisance), les TPE/PME résidentielles, l'artisanat, le commerce de proximité, l'hôtellerie-restauration et les professions libérales rayonnant sur le bassin lorientais.",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const PLOEMEUR_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Ploemeur et dans toute Lorient Agglomération (Lorient, Lanester, Hennebont, Larmor-Plage, Quéven, Guidel). Nos consultants couvrent le bassin lorientais et le littoral sud-Morbihan.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Ploemeur ?",
+      q: "Combien coûte un audit IA à Ploemeur  ?",
       a: "L'Audit Flash Axion-IA démarre à 490 € HT. Adapté aux TPE, PME, hôteliers, restaurateurs, professionnels du nautisme et commerçants ploemeurois, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA et un ROI chiffré sous 5 jours.",
     },
     {

@@ -11,9 +11,9 @@ export const COLOMIERS_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Colomiers, un hub pour l'industrie aéronautique avec Airbus et Safran. Nous vous accompagnons dans l'optimisation de vos processus grâce à l'IA.",
   directAnswerFr:
-    "À Colomiers, Axion-IA propose des services d'IA opérationnelle adaptés aux entreprises locales. Avec des acteurs comme Airbus et Safran, nous intervenons pour automatiser les tâches administratives et optimiser les processus industriels. Nos audits débutent à 490 € HT et nos interventions essentielles à 590 € HT, garantissant un retour sur investissement rapide.",
+    "À Colomiers, Axion-IA propose des services d'IA opérationnelle adaptés aux entreprises locales. Avec des acteurs comme Airbus et Safran, nous intervenons pour automatiser les tâches administratives et optimiser les processus industriels. Nos audits débutent à et nos interventions essentielles à garantissant un retour sur investissement rapide.",
   directAnswerEn:
-    "À Colomiers, Axion-IA propose des services d'IA opérationnelle adaptés aux entreprises locales. Avec des acteurs comme Airbus et Safran, nous intervenons pour automatiser les tâches administratives et optimiser les processus industriels. Nos audits débutent à 490 € HT et nos interventions essentielles à 590 € HT, garantissant un retour sur investissement rapide.",
+    "À Colomiers, Axion-IA propose des services d'IA opérationnelle adaptés aux entreprises locales. Avec des acteurs comme Airbus et Safran, nous intervenons pour automatiser les tâches administratives et optimiser les processus industriels. Nos audits débutent à et nos interventions essentielles à garantissant un retour sur investissement rapide.",
   seoHook: "TPE & PME · IA opérationnelle",
   ecosystemFr:
     "Colomiers est un centre industriel important, abritant Airbus et Safran. Le secteur aéronautique et la programmation informatique y sont prédominants, renforçant l'attrait pour les technologies de pointe.",

@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const IZON_COPY: VilleCopy = {
   pitchFr:
-    "Izon (33), commune résidentielle du Libournais entre Bordeaux et Libourne, combine vignoble bordelais, artisanat BTP en croissance, commerces et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin Libourne-Bordeaux.",
+    "Izon (33), commune résidentielle du Libournais entre Bordeaux et Libourne, combine vignoble bordelais, artisanat BTP en croissance, commerces et professions libérales. Axion-IA répond aux besoins de toutes les entreprises du bassin Libourne-Bordeaux.",
   pitchEn:
-    "Izon (33), commune résidentielle du Libournais entre Bordeaux et Libourne, combine vignoble bordelais, artisanat BTP en croissance, commerces et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin Libourne-Bordeaux.",
+    "Izon (33), commune résidentielle du Libournais entre Bordeaux et Libourne, combine vignoble bordelais, artisanat BTP en croissance, commerces et professions libérales. Axion-IA répond aux besoins de toutes les entreprises du bassin Libourne-Bordeaux.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Izon (33). Nous accompagnons TPE et PME du Libournais : vignerons, artisans BTP, commerçants, professions libérales et PME de services. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Izon (33). Nous accompagnons TPE et PME du Libournais : vignerons, artisans BTP, commerçants, professions libérales et PME de services. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Izon (33). Nous accompagnons TPE et PME du Libournais : vignerons, artisans BTP, commerçants, professions libérales et PME de services. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Izon (33). Nous accompagnons TPE et PME du Libournais : vignerons, artisans BTP, commerçants, professions libérales et PME de services. Audit Flash sur mesure.",
   seoHook: "viticulture bordelaise & services",
   ecosystemFr:
     "Izon est une commune résidentielle en croissance entre Bordeaux et Libourne. Vignoble bordelais, tissu TPE artisanat BTP dense, commerces de proximité et professions libérales. Accès A89 vers Bordeaux et Périgueux, proximité Libourne (10 min).",
@@ -52,7 +52,7 @@ export const IZON_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Izon et dans tout le Libournais (Libourne, Saint-Denis-de-Pile, Coutras). Nos consultants se déplacent depuis Bordeaux (25 min A89) ou Paris (TGV Libourne 3h).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Izon ?",
+      q: "Combien coûte un audit IA à Izon  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Adapté aux vignerons et TPE artisans du Libournais.",
     },
     {

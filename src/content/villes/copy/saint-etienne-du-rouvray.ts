@@ -11,9 +11,9 @@ export const SAINT_ETIENNE_DU_ROUVRAY_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Saint-Étienne-du-Rouvray, où l'écosystème économique comprend Renault et Safran. Nos solutions opérationnelles s'adaptent aux besoins des entreprises locales.",
   directAnswerFr:
-    "À Saint-Étienne-du-Rouvray, Axion-IA propose des interventions adaptées aux entreprises locales telles que celles du Parc d'activités du Madrillet. Avec des secteurs comme la fabrication de produits métalliques et le commerce de gros, notre expertise en IA optimise les processus. Les entreprises peuvent bénéficier d'audits dès 490 € HT et d'interventions à partir de 590 € HT.",
+    "À Saint-Étienne-du-Rouvray, Axion-IA propose des interventions adaptées aux entreprises locales telles que celles du Parc d'activités du Madrillet. Avec des secteurs comme la fabrication de produits métalliques et le commerce de gros, notre expertise en IA optimise les processus. Les entreprises peuvent bénéficier d'audits et d'interventions.",
   directAnswerEn:
-    "À Saint-Étienne-du-Rouvray, Axion-IA propose des interventions adaptées aux entreprises locales telles que celles du Parc d'activités du Madrillet. Avec des secteurs comme la fabrication de produits métalliques et le commerce de gros, notre expertise en IA optimise les processus. Les entreprises peuvent bénéficier d'audits dès 490 € HT et d'interventions à partir de 590 € HT.",
+    "À Saint-Étienne-du-Rouvray, Axion-IA propose des interventions adaptées aux entreprises locales telles que celles du Parc d'activités du Madrillet. Avec des secteurs comme la fabrication de produits métalliques et le commerce de gros, notre expertise en IA optimise les processus. Les entreprises peuvent bénéficier d'audits et d'interventions.",
   seoHook: "produits métalliques & machines",
   ecosystemFr:
     "Saint-Étienne-du-Rouvray accueille des groupes comme Renault et Safran, renforçant son tissu industriel. Le Parc d'activités du Madrillet soutient l'innovation locale.",

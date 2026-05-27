@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LOUVRES_COPY: VilleCopy = {
   pitchFr:
-    "Louvres (95), commune du Val-d'Oise aux portes de l'aéroport Roissy-CDG, concentre un tissu de TPE artisans, PME logistiques et tertiaires aéroportuaires, commerçants et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Louvres (95), commune du Val-d'Oise aux portes de l'aéroport Roissy-CDG, concentre un tissu de TPE artisans, PME logistiques et tertiaires aéroportuaires, commerçants et professions libérales. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Louvres (95), commune du Val-d'Oise aux portes de l'aéroport Roissy-CDG, concentre un tissu de TPE artisans, PME logistiques et tertiaires aéroportuaires, commerçants et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Louvres (95), commune du Val-d'Oise aux portes de l'aéroport Roissy-CDG, concentre un tissu de TPE artisans, PME logistiques et tertiaires aéroportuaires, commerçants et professions libérales. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Louvres (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME logistiques et tertiaires de la zone aéroportuaire Roissy-CDG, professions libérales, indépendants et entreprises du Pays de France.",
   directAnswerEn:

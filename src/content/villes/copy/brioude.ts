@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BRIOUDE_COPY: VilleCopy = {
   pitchFr:
-    "Brioude (43), sous-préfecture de la Haute-Loire, est la quatrième ville du département. Célèbre pour la basilique Saint-Julien (plus grande église romane d'Auvergne) dans la vallée de l'Allier. Tissu tourisme patrimoine, agriculture (saumon Allier, maraîchage), TPE artisans, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Brioude (43), sous-préfecture de la Haute-Loire, est la quatrième ville du département. Célèbre pour la basilique Saint-Julien (plus grande église romane d'Auvergne) dans la vallée de l'Allier. Tissu tourisme patrimoine, agriculture (saumon Allier, maraîchage), TPE artisans, commerces. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Brioude (43), sous-préfecture de la Haute-Loire, est la quatrième ville du département. Célèbre pour la basilique Saint-Julien (plus grande église romane d'Auvergne) dans la vallée de l'Allier. Tissu tourisme patrimoine, agriculture (saumon Allier, maraîchage), TPE artisans, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Brioude (43), sous-préfecture de la Haute-Loire, est la quatrième ville du département. Célèbre pour la basilique Saint-Julien (plus grande église romane d'Auvergne) dans la vallée de l'Allier. Tissu tourisme patrimoine, agriculture (saumon Allier, maraîchage), TPE artisans, commerces. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Brioude (43). Nous accompagnons TPE et PME : acteurs tourisme patrimoine (basilique Saint-Julien), agriculteurs vallée Allier, administration sous-préfecture, artisans BTP, commerçants brivadois.",
   directAnswerEn:

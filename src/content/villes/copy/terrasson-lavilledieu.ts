@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const TERRASSON_LAVILLEDIEU_COPY: VilleCopy = {
   pitchFr:
-    "Terrasson-Lavilledieu (24), bourg du Périgord Noir en Dordogne sur la Vézère, entre Brive et Montignac-Lascaux. Tissu TPE/PME commerce, artisanat, agroalimentaire (noix, fraises), tourisme et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Terrasson-Lavilledieu (24), bourg du Périgord Noir en Dordogne sur la Vézère, entre Brive et Montignac-Lascaux. Tissu TPE/PME commerce, artisanat, agroalimentaire (noix, fraises), tourisme et services. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Terrasson-Lavilledieu (24), bourg du Périgord Noir en Dordogne sur la Vézère, entre Brive et Montignac-Lascaux. Tissu TPE/PME commerce, artisanat, agroalimentaire (noix, fraises), tourisme et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Terrasson-Lavilledieu (24), bourg du Périgord Noir en Dordogne sur la Vézère, entre Brive et Montignac-Lascaux. Tissu TPE/PME commerce, artisanat, agroalimentaire (noix, fraises), tourisme et services. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Terrasson-Lavilledieu (24). Nous accompagnons TPE/PME du commerce, de l'artisanat, de l'agroalimentaire périgourdin et du tourisme en vallée de la Vézère. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Terrasson-Lavilledieu (24). Nous accompagnons TPE/PME du commerce, de l'artisanat, de l'agroalimentaire périgourdin et du tourisme en vallée de la Vézère. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Terrasson-Lavilledieu (24). Nous accompagnons TPE/PME du commerce, de l'artisanat, de l'agroalimentaire périgourdin et du tourisme en vallée de la Vézère. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Terrasson-Lavilledieu (24). Nous accompagnons TPE/PME du commerce, de l'artisanat, de l'agroalimentaire périgourdin et du tourisme en vallée de la Vézère. Audit Flash sur mesure.",
   ecosystemFr:
     "Terrasson-Lavilledieu est un bourg-centre du Périgord Noir, situé sur la Vézère entre Brive-la-Gaillarde et Montignac-Lascaux. Connu pour ses Jardins de l'Imaginaire. Économie : commerce de proximité, artisanat, agroalimentaire (nuciculture, fraises, élevage), tourisme vert et patrimonial, services et BTP.",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const TERRASSON_LAVILLEDIEU_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Terrasson-Lavilledieu et en vallée de la Vézère (Montignac-Lascaux, Hautefort, Le Lardin-Saint-Lazare). Gare SNCF Terrasson ligne Brive–Périgueux.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Terrasson ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Terrasson  ?",
       a: "L'Audit Flash démarre à 490 € HT. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du Périgord Noir. Tarifs publics et transparents.",
     },
     {

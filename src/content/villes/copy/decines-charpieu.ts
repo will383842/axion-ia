@@ -11,9 +11,9 @@ export const DECINES_CHARPIEU_COPY: VilleCopy = {
   pitchEn:
     "À Décines-Charpieu, Axion-IA intervient pour optimiser vos processus grâce à l'IA. Le Parc d'activités de la Soie et des groupes comme Adecco forment un écosystème propice à l'innovation.",
   directAnswerFr:
-    "Axion-IA se déplace à Décines-Charpieu pour accompagner les entreprises locales dans l'intégration de l'IA. Avec des acteurs comme GL Events et le pôle Lyonbiopôle, nous proposons des audits dès 490 € HT et des interventions à partir de 590 € HT pour automatiser et optimiser vos opérations administratives.",
+    "Axion-IA se déplace à Décines-Charpieu pour accompagner les entreprises locales dans l'intégration de l'IA. Avec des acteurs comme GL Events et le pôle Lyonbiopôle, nous proposons des audits et des interventions 590 automatiser et optimiser vos opérations administratives.",
   directAnswerEn:
-    "Axion-IA se déplace à Décines-Charpieu pour accompagner les entreprises locales dans l'intégration de l'IA. Avec des acteurs comme GL Events et le pôle Lyonbiopôle, nous proposons des audits dès 490 € HT et des interventions à partir de 590 € HT pour automatiser et optimiser vos opérations administratives.",
+    "Axion-IA se déplace à Décines-Charpieu pour accompagner les entreprises locales dans l'intégration de l'IA. Avec des acteurs comme GL Events et le pôle Lyonbiopôle, nous proposons des audits et des interventions 590 automatiser et optimiser vos opérations administratives.",
   seoHook: "commerce détail & programmation informatique",
   ecosystemFr:
     "Décines-Charpieu bénéficie de la proximité de Lyonbiopôle et du Parc d'activités de la Soie, facilitant ainsi l'accès à des ressources technologiques et industrielles pour les entreprises.",

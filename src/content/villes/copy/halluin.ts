@@ -11,9 +11,9 @@ export const HALLUIN_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Halluin, au cœur de la région Hauts-de-France, pour optimiser les processus des entreprises locales. Grâce à notre expertise, nous accompagnons les structures dans la mise en œuvre de solutions IA adaptées à leurs besoins spécifiques.",
   directAnswerFr:
-    "À Halluin, Axion-IA propose des solutions adaptées aux secteurs dominants tels que le commerce de détail et la fabrication de produits métalliques. Nous intervenons directement sur site pour réaliser des audits et implémentations. Nos services s'adressent aussi bien aux TPE qu'aux grandes entreprises, avec des tarifs publics transparents, comme l'Audit Flash à partir de 490 € HT.",
+    "À Halluin, Axion-IA propose des solutions adaptées aux secteurs dominants tels que le commerce de détail et la fabrication de produits métalliques. Nous intervenons directement sur site pour réaliser des audits et implémentations. Nos services s'adressent aussi bien aux TPE qu'aux grandes entreprises, avec des tarifs publics transparents, comme l'Audit Flash sur mesure.",
   directAnswerEn:
-    "À Halluin, Axion-IA propose des solutions adaptées aux secteurs dominants tels que le commerce de détail et la fabrication de produits métalliques. Nous intervenons directement sur site pour réaliser des audits et implémentations. Nos services s'adressent aussi bien aux TPE qu'aux grandes entreprises, avec des tarifs publics transparents, comme l'Audit Flash à partir de 490 € HT.",
+    "À Halluin, Axion-IA propose des solutions adaptées aux secteurs dominants tels que le commerce de détail et la fabrication de produits métalliques. Nous intervenons directement sur site pour réaliser des audits et implémentations. Nos services s'adressent aussi bien aux TPE qu'aux grandes entreprises, avec des tarifs publics transparents, comme l'Audit Flash sur mesure.",
   seoHook: "commerce détail & transport terrestre",
   ecosystemFr:
     "Halluin bénéficie de la proximité de la Zone Industrielle de la Rouge Porte et de la Gare de Lille-Europe. Ce contexte industriel dynamique est propice à l'intégration de solutions IA pour les entreprises locales.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHINON_COPY: VilleCopy = {
   pitchFr:
-    "Chinon (37), cité médiévale sur les bords de la Vienne en Touraine, est mondialement connue pour son AOC Chinon (vins rouges cabernet franc) et sa forteresse royale où Jeanne d'Arc rencontra le dauphin Charles VII. Tissu viticole dense, tourisme patrimonial, TPE artisans, commerçants, PME agroalimentaires et restaurateurs. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Chinon (37), cité médiévale sur les bords de la Vienne en Touraine, est mondialement connue pour son AOC Chinon (vins rouges cabernet franc) et sa forteresse royale où Jeanne d'Arc rencontra le dauphin Charles VII. Tissu viticole dense, tourisme patrimonial, TPE artisans, commerçants, PME agroalimentaires et restaurateurs. Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Chinon (37), cité médiévale sur les bords de la Vienne en Touraine, est mondialement connue pour son AOC Chinon (vins rouges cabernet franc) et sa forteresse royale où Jeanne d'Arc rencontra le dauphin Charles VII. Tissu viticole dense, tourisme patrimonial, TPE artisans, commerçants, PME agroalimentaires et restaurateurs. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Chinon (37), cité médiévale sur les bords de la Vienne en Touraine, est mondialement connue pour son AOC Chinon (vins rouges cabernet franc) et sa forteresse royale où Jeanne d'Arc rencontra le dauphin Charles VII. Tissu viticole dense, tourisme patrimonial, TPE artisans, commerçants, PME agroalimentaires et restaurateurs. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chinon (37). Nous accompagnons tous types d'activités : vignerons AOC Chinon, acteurs du tourisme patrimonial (forteresse royale, cité médiévale), TPE artisans, commerçants, restaurateurs, PME agroalimentaires, professions libérales et hôteliers du Chinonais.",
   directAnswerEn:

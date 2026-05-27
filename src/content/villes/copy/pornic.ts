@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const PORNIC_COPY: VilleCopy = {
   pitchFr:
-    "Pornic (44), station balnéaire et port de la Côte de Jade, près de 19 000 habitants. Économie touristique, thalassothérapie, commerce de centre-ville, artisanat, pêche et ostréiculture. Tissu TPE commerçants, PME hôtelières et touristiques, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin pornicais.",
+    "Pornic (44), station balnéaire et port de la Côte de Jade, près de 19 000 habitants. Économie touristique, thalassothérapie, commerce de centre-ville, artisanat, pêche et ostréiculture. Tissu TPE commerçants, PME hôtelières et touristiques, professions libérales. Axion-IA accompagne entreprises et indépendants du bassin pornicais.",
   pitchEn:
-    "Pornic (44), station balnéaire et port de la Côte de Jade, près de 19 000 habitants. Économie touristique, thalassothérapie, commerce de centre-ville, artisanat, pêche et ostréiculture. Tissu TPE commerçants, PME hôtelières et touristiques, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin pornicais.",
+    "Pornic (44), station balnéaire et port de la Côte de Jade, près de 19 000 habitants. Économie touristique, thalassothérapie, commerce de centre-ville, artisanat, pêche et ostréiculture. Tissu TPE commerçants, PME hôtelières et touristiques, professions libérales. Axion-IA accompagne entreprises et indépendants du bassin pornicais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pornic (44), station balnéaire de la Côte de Jade. Nous accompagnons TPE commerçants, PME hôtelières et touristiques, artisans et professions libérales du littoral sud-Loire. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pornic (44), station balnéaire de la Côte de Jade. Nous accompagnons TPE commerçants, PME hôtelières et touristiques, artisans et professions libérales du littoral sud-Loire. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pornic (44), station balnéaire de la Côte de Jade. Nous accompagnons TPE commerçants, PME hôtelières et touristiques, artisans et professions libérales du littoral sud-Loire. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pornic (44), station balnéaire de la Côte de Jade. Nous accompagnons TPE commerçants, PME hôtelières et touristiques, artisans et professions libérales du littoral sud-Loire. Audit Flash sur mesure.",
   seoHook: "bassin pornicais",
   ecosystemFr:
     "Pornic (18 745 hab) est une station balnéaire réputée de la Côte de Jade, en Loire-Atlantique. Port de plaisance et de pêche, thalassothérapie, commerces touristiques, artisanat, ostréiculture et agriculture périurbaine. Proximité Nantes (50 min), Saint-Nazaire (35 min). Destination touristique majeure du littoral atlantique sud-Loire.",
@@ -52,7 +52,7 @@ export const PORNIC_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Pornic et sur toute la Côte de Jade (Saint-Brevin, La Plaine-sur-Mer, Préfailles). Nos consultants se déplacent depuis Nantes (50 min) ou Saint-Nazaire (35 min).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Pornic ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Pornic  ?",
       a: "L'Audit Flash IA démarre à 490 € HT pour les TPE de Pornic. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur touristique ou artisanal.",
     },
     {

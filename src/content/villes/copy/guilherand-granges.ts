@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GUILHERAND_GRANGES_COPY: VilleCopy = {
   pitchFr:
-    "Guilherand-Granges (07), commune de l'Ardèche positionnée face à Valence (rive droite du Rhône), fait partie de l'agglomération valentinoise. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations de l'agglomération Valence.",
+    "Guilherand-Granges (07), commune de l'Ardèche positionnée face à Valence (rive droite du Rhône), fait partie de l'agglomération valentinoise. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces. Axion-IA y mène ses missions auprès des organisations locales de l'agglomération Valence.",
   pitchEn:
-    "Guilherand-Granges (07), commune de l'Ardèche positionnée face à Valence (rive droite du Rhône), fait partie de l'agglomération valentinoise. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations de l'agglomération Valence.",
+    "Guilherand-Granges (07), commune de l'Ardèche positionnée face à Valence (rive droite du Rhône), fait partie de l'agglomération valentinoise. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces. Axion-IA y mène ses missions auprès des organisations locales de l'agglomération Valence.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guilherand-Granges (07). Nous accompagnons tous types d'activités : PME tertiaires et industrielles agglomération Valence, TPE artisans BTP, commerçants, professions libérales et services aux entreprises.",
   directAnswerEn:

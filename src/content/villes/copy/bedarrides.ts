@@ -9,9 +9,9 @@ export const BEDARRIDES_COPY: VilleCopy = {
   pitchEn:
     "Bédarrides (84), commune de la vallée de l'Ouvèze proche de Châteauneuf-du-Pape, compte près de 5 671 habitants. Vignoble AOC Châteauneuf-du-Pape et Côtes-du-Rhône, agriculture, tissu de TPE artisanales, domaines viticoles prestigieux, PME agroalimentaires et commerces de proximité. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bédarrides (84). Nous accompagnons tous types d'activités : TPE artisans, domaines viticoles AOC Châteauneuf-du-Pape et Côtes-du-Rhône, PME agroalimentaires, commerces et services de la vallée de l'Ouvèze. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bédarrides (84). Nous accompagnons tous types d'activités : TPE artisans, domaines viticoles AOC Châteauneuf-du-Pape et Côtes-du-Rhône, PME agroalimentaires, commerces et services de la vallée de l'Ouvèze. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bédarrides (84). Nous accompagnons tous types d'activités : TPE artisans, domaines viticoles AOC Châteauneuf-du-Pape et Côtes-du-Rhône, PME agroalimentaires, commerces et services de la vallée de l'Ouvèze. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bédarrides (84). Nous accompagnons tous types d'activités : TPE artisans, domaines viticoles AOC Châteauneuf-du-Pape et Côtes-du-Rhône, PME agroalimentaires, commerces et services de la vallée de l'Ouvèze. Audit Flash sur mesure.",
   seoHook: "vallée ouvèze",
   ecosystemFr:
     "Bédarrides est un pôle viticole et agricole de la vallée de l'Ouvèze, à proximité immédiate de Châteauneuf-du-Pape. Vignoble AOC Châteauneuf-du-Pape (cru prestigieux), Côtes-du-Rhône, oenotourisme international. Tissu de TPE artisans, domaines viticoles, PME agroalimentaires et commerces. Orange à 15 min, Avignon à 20 min, A7 directe.",
@@ -60,7 +60,7 @@ export const BEDARRIDES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons gîtes, chambres d'hôtes et hébergements oenotouristiques de Bédarrides et environs : gestion réservations, agents conversationnels multilingues, fiches Google Business, content marketing local, automatisation administrative.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Bédarrides ?",
+      q: "Quel est le tarif d'un audit IA à Bédarrides  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {

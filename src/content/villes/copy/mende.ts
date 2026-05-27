@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MENDE_COPY: VilleCopy = {
   pitchFr:
-    "Mende (48), préfecture de la Lozère, plus petite préfecture de France métropolitaine. Cathédrale Notre-Dame-et-Saint-Privat, terre du Gévaudan. Tissu TPE artisans, PME agroalimentaires, commerces de proximité, tourisme nature et patrimoine, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Mende (48), préfecture de la Lozère, plus petite préfecture de France métropolitaine. Cathédrale Notre-Dame-et-Saint-Privat, terre du Gévaudan. Tissu TPE artisans, PME agroalimentaires, commerces de proximité, tourisme nature et patrimoine, professions libérales. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Mende (48), préfecture de la Lozère, plus petite préfecture de France métropolitaine. Cathédrale Notre-Dame-et-Saint-Privat, terre du Gévaudan. Tissu TPE artisans, PME agroalimentaires, commerces de proximité, tourisme nature et patrimoine, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Mende (48), préfecture de la Lozère, plus petite préfecture de France métropolitaine. Cathédrale Notre-Dame-et-Saint-Privat, terre du Gévaudan. Tissu TPE artisans, PME agroalimentaires, commerces de proximité, tourisme nature et patrimoine, professions libérales. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mende (48). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires, commerçants du centre historique, professions libérales, acteurs du tourisme nature Gévaudan, services publics et administrations locales.",
   directAnswerEn:

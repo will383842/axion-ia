@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GENLIS_COPY: VilleCopy = {
   pitchFr:
-    "Genlis (21), bourg de la plaine de Saône à l'est de Dijon en Côte-d'Or, est un pôle résidentiel et de services pour l'est dijonnais. Tissu TPE artisans BTP, PME services aux entreprises, commerces de proximité, agriculture céréalière plaine de Saône, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Genlis (21), bourg de la plaine de Saône à l'est de Dijon en Côte-d'Or, est un pôle résidentiel et de services pour l'est dijonnais. Tissu TPE artisans BTP, PME services aux entreprises, commerces de proximité, agriculture céréalière plaine de Saône, professions libérales. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Genlis (21), bourg de la plaine de Saône à l'est de Dijon en Côte-d'Or, est un pôle résidentiel et de services pour l'est dijonnais. Tissu TPE artisans BTP, PME services aux entreprises, commerces de proximité, agriculture céréalière plaine de Saône, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Genlis (21), bourg de la plaine de Saône à l'est de Dijon en Côte-d'Or, est un pôle résidentiel et de services pour l'est dijonnais. Tissu TPE artisans BTP, PME services aux entreprises, commerces de proximité, agriculture céréalière plaine de Saône, professions libérales. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Genlis (21). Nous accompagnons TPE et PME de la plaine de Saône est dijonnais : artisans BTP, prestataires services aux entreprises, commerçants, exploitants agricoles céréaliers et professions libérales.",
   directAnswerEn:

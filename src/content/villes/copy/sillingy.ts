@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SILLINGY_COPY: VilleCopy = {
   pitchFr:
-    "Sillingy (74), commune résidentielle au nord-ouest d'Annecy en Haute-Savoie, bénéficie de la dynamique du bassin annécien. Tissu TPE artisans, PME de services, commerces, professions libérales et prestataires BtoB installés dans un cadre périurbain attractif. Axion-IA accompagne entreprises et indépendants de tous secteurs du Grand Annecy.",
+    "Sillingy (74), commune résidentielle au nord-ouest d'Annecy en Haute-Savoie, bénéficie de la dynamique du bassin annécien. Tissu TPE artisans, PME de services, commerces, professions libérales et prestataires BtoB installés dans un cadre périurbain attractif. Axion-IA opère pour entreprises et indépendants du secteur du Grand Annecy.",
   pitchEn:
-    "Sillingy (74), commune résidentielle au nord-ouest d'Annecy en Haute-Savoie, bénéficie de la dynamique du bassin annécien. Tissu TPE artisans, PME de services, commerces, professions libérales et prestataires BtoB installés dans un cadre périurbain attractif. Axion-IA accompagne entreprises et indépendants de tous secteurs du Grand Annecy.",
+    "Sillingy (74), commune résidentielle au nord-ouest d'Annecy en Haute-Savoie, bénéficie de la dynamique du bassin annécien. Tissu TPE artisans, PME de services, commerces, professions libérales et prestataires BtoB installés dans un cadre périurbain attractif. Axion-IA opère pour entreprises et indépendants du secteur du Grand Annecy.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sillingy (74). Nous accompagnons tous types d'activités : TPE artisans, PME de services et conseil, commerçants, indépendants, professions libérales et prestataires BtoB du bassin annécien nord-ouest.",
   directAnswerEn:

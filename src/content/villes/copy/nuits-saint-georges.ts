@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const NUITS_SAINT_GEORGES_COPY: VilleCopy = {
   pitchFr:
-    "Nuits-Saint-Georges (21), capitale de la Côte de Nuits au cœur de la Bourgogne viticole, est réputée pour ses grands crus classés Climats du vignoble de Bourgogne (UNESCO). Tissu viticulture et négoce vins, oenotourisme, TPE artisans tonnellerie, PME services aux domaines, commerces centre-bourg. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Nuits-Saint-Georges (21), capitale de la Côte de Nuits au cœur de la Bourgogne viticole, est réputée pour ses grands crus classés Climats du vignoble de Bourgogne (UNESCO). Tissu viticulture et négoce vins, oenotourisme, TPE artisans tonnellerie, PME services aux domaines, commerces centre-bourg. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Nuits-Saint-Georges (21), capitale de la Côte de Nuits au cœur de la Bourgogne viticole, est réputée pour ses grands crus classés Climats du vignoble de Bourgogne (UNESCO). Tissu viticulture et négoce vins, oenotourisme, TPE artisans tonnellerie, PME services aux domaines, commerces centre-bourg. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Nuits-Saint-Georges (21), capitale de la Côte de Nuits au cœur de la Bourgogne viticole, est réputée pour ses grands crus classés Climats du vignoble de Bourgogne (UNESCO). Tissu viticulture et négoce vins, oenotourisme, TPE artisans tonnellerie, PME services aux domaines, commerces centre-bourg. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nuits-Saint-Georges (21). Nous accompagnons TPE et PME de la Côte de Nuits : viticulteurs et domaines viticoles, négociants en vins, acteurs de l'oenotourisme, artisans tonneliers, prestataires services aux domaines et commerçants du centre-bourg.",
   directAnswerEn:

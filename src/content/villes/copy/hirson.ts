@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const HIRSON_COPY: VilleCopy = {
   pitchFr:
-    "Hirson (02), commune de la Thiérache axonaise proche de la frontière belge, ancien pôle métallurgique et ferroviaire reconverti vers le commerce, les services et la sous-traitance industrielle. Tissu TPE/PME industrie, artisans BTP, commerces de proximité, professions de services, agriculteurs et frontaliers belges. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Hirson (02), commune de la Thiérache axonaise proche de la frontière belge, ancien pôle métallurgique et ferroviaire reconverti vers le commerce, les services et la sous-traitance industrielle. Tissu TPE/PME industrie, artisans BTP, commerces de proximité, professions de services, agriculteurs et frontaliers belges. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Hirson (02), commune de la Thiérache axonaise proche de la frontière belge, ancien pôle métallurgique et ferroviaire reconverti vers le commerce, les services et la sous-traitance industrielle. Tissu TPE/PME industrie, artisans BTP, commerces de proximité, professions de services, agriculteurs et frontaliers belges. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Hirson (02), commune de la Thiérache axonaise proche de la frontière belge, ancien pôle métallurgique et ferroviaire reconverti vers le commerce, les services et la sous-traitance industrielle. Tissu TPE/PME industrie, artisans BTP, commerces de proximité, professions de services, agriculteurs et frontaliers belges. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hirson (02). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance, artisans BTP, commerces de proximité, professions de services, exploitations agricoles thiérachiennes et entrepreneurs frontaliers de la Belgique.",
   directAnswerEn:

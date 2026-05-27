@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const RAMONVILLE_SAINT_AGNE_COPY: VilleCopy = {
   pitchFr:
-    "Ramonville-Saint-Agne (31), commune du sud de Toulouse à proximité immédiate du campus universitaire Rangueil et du CNES, plus de 15 000 habitants. Tissu TPE innovantes, PME tech et spatial, startups, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud toulousain.",
+    "Ramonville-Saint-Agne (31), commune du sud de Toulouse à proximité immédiate du campus universitaire Rangueil et du CNES, plus de 15 000 habitants. Tissu TPE innovantes, PME tech et spatial, startups, professions libérales. Axion-IA couvre les activités professionnelles du bassin du sud toulousain.",
   pitchEn:
-    "Ramonville-Saint-Agne (31), commune du sud de Toulouse à proximité immédiate du campus universitaire Rangueil et du CNES, plus de 15 000 habitants. Tissu TPE innovantes, PME tech et spatial, startups, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud toulousain.",
+    "Ramonville-Saint-Agne (31), commune du sud de Toulouse à proximité immédiate du campus universitaire Rangueil et du CNES, plus de 15 000 habitants. Tissu TPE innovantes, PME tech et spatial, startups, professions libérales. Axion-IA couvre les activités professionnelles du bassin du sud toulousain.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ramonville-Saint-Agne (31). Nous accompagnons TPE innovantes, PME tech et spatial, startups, professions libérales et commerçants du sud de Toulouse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ramonville-Saint-Agne (31). Nous accompagnons TPE innovantes, PME tech et spatial, startups, professions libérales et commerçants du sud de Toulouse. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ramonville-Saint-Agne (31). Nous accompagnons TPE innovantes, PME tech et spatial, startups, professions libérales et commerçants du sud de Toulouse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ramonville-Saint-Agne (31). Nous accompagnons TPE innovantes, PME tech et spatial, startups, professions libérales et commerçants du sud de Toulouse. Audit Flash sur mesure.",
   seoHook: "proche toulouse",
   ecosystemFr:
     "Ramonville-Saint-Agne bénéficie de la proximité du campus Rangueil (Université Toulouse III), du CNES et du pôle spatial. TPE innovantes, PME tech, startups deeptech, professions libérales, commerces de proximité. Desserte métro ligne B (Ramonville).",
@@ -56,7 +56,7 @@ export const RAMONVILLE_SAINT_AGNE_COPY: VilleCopy = {
       a: "Nous accompagnons tous types d'activités : TPE innovantes, PME tech et spatial, startups deeptech, professions libérales, commerces de proximité, services aux entreprises. Aucun secteur exclu.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Ramonville-Saint-Agne ?",
+      q: "Combien coûte un audit IA à Ramonville-Saint-Agne  ?",
       a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME tech, audit approfondi entre 1 900 et 3 900 € HT selon la complexité. Tarifs publics, pas de devis opaque.",
     },
     {

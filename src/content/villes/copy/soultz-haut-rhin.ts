@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SOULTZ_HAUT_RHIN_COPY: VilleCopy = {
   pitchFr:
-    "Soultz-Haut-Rhin (68), bourg historique du vignoble alsacien dans l'aire d'attraction de Mulhouse en Sud-Alsace. Tissu TPE viticulture et artisanat, PME services et industrie légère, commerçants, professions libérales, restaurateurs et indépendants du piémont vosgien. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Soultz-Haut-Rhin (68), bourg historique du vignoble alsacien dans l'aire d'attraction de Mulhouse en Sud-Alsace. Tissu TPE viticulture et artisanat, PME services et industrie légère, commerçants, professions libérales, restaurateurs et indépendants du piémont vosgien. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Soultz-Haut-Rhin (68), bourg historique du vignoble alsacien dans l'aire d'attraction de Mulhouse en Sud-Alsace. Tissu TPE viticulture et artisanat, PME services et industrie légère, commerçants, professions libérales, restaurateurs et indépendants du piémont vosgien. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Soultz-Haut-Rhin (68), bourg historique du vignoble alsacien dans l'aire d'attraction de Mulhouse en Sud-Alsace. Tissu TPE viticulture et artisanat, PME services et industrie légère, commerçants, professions libérales, restaurateurs et indépendants du piémont vosgien. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Soultz-Haut-Rhin (68). Nous accompagnons tous types d'activités : TPE viticulture et artisanat, PME services et industrie légère, commerçants, professions libérales, restaurateurs et indépendants du Sud-Alsace. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Soultz-Haut-Rhin (68). Nous accompagnons tous types d'activités : TPE viticulture et artisanat, PME services et industrie légère, commerçants, professions libérales, restaurateurs et indépendants du Sud-Alsace. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Soultz-Haut-Rhin (68). Nous accompagnons tous types d'activités : TPE viticulture et artisanat, PME services et industrie légère, commerçants, professions libérales, restaurateurs et indépendants du Sud-Alsace. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Soultz-Haut-Rhin (68). Nous accompagnons tous types d'activités : TPE viticulture et artisanat, PME services et industrie légère, commerçants, professions libérales, restaurateurs et indépendants du Sud-Alsace. Audit Flash sur mesure.",
   seoHook: "viticulture caves & artisanat commerce",
   ecosystemFr:
     "Soultz-Haut-Rhin est un bourg historique du vignoble alsacien situé à 19 km au nord-ouest de Mulhouse, en Sud-Alsace. Son tissu économique mêle TPE viticulture et caves indépendantes, PME services et industrie légère, artisans, commerces de proximité, restaurateurs et professions libérales. Proximité directe avec Guebwiller, Mulhouse et Cernay.",

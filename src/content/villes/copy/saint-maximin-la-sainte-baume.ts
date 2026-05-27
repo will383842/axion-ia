@@ -60,7 +60,7 @@ export const SAINT_MAXIMIN_LA_SAINTE_BAUME_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les hôtels, restaurants et activités touristiques autour de la basilique de Saint-Maximin : gestion réservations, optimisation yield, fidélisation pèlerins, automatisation devis groupes.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Saint-Maximin-la-Sainte-Baume ?",
+      q: "Quel est le tarif d'un audit IA à Saint-Maximin-la-Sainte-Baume  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {

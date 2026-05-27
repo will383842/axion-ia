@@ -60,7 +60,7 @@ export const AUBIGNY_LES_CLOUZEAUX_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les artisans BTP de l'agglo La Roche-sur-Yon : automatisation devis, gestion chantiers IA, planification équipes, facturation, relation client digitalisée.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Aubigny-Les Clouzeaux ?",
+      q: "Tarifs audit IA à Aubigny-Les Clouzeaux  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {

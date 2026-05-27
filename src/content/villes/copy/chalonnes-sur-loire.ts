@@ -9,9 +9,9 @@ export const CHALONNES_SUR_LOIRE_COPY: VilleCopy = {
   pitchEn:
     "Chalonnes-sur-Loire (49), cité ligérienne au pied de la corniche angevine, compte plus de 6 600 habitants entre vignoble AOC et patrimoine Loire UNESCO. Axion-IA opère pour toutes les structures économiques de la commune : viticulture, tourisme, artisanat, commerces et services.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Chalonnes-sur-Loire (49). Nous accompagnons les TPE viticoles, PME touristiques et commerçants chalonnais dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Chalonnes-sur-Loire (49). Nous accompagnons les TPE viticoles, PME touristiques et commerçants chalonnais dans l'adoption de l'IA : audit Flash, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Chalonnes-sur-Loire (49). Nous accompagnons les TPE viticoles, PME touristiques et commerçants chalonnais dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Chalonnes-sur-Loire (49). Nous accompagnons les TPE viticoles, PME touristiques et commerçants chalonnais dans l'adoption de l'IA : audit Flash, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
   seoHook: "viticulture vignoble & tourisme fluvial",
   ecosystemFr:
     "Chalonnes-sur-Loire se situe au pied de la corniche angevine, surplomb spectaculaire de la Loire classée UNESCO. Vignoble AOC (Coteaux du Layon, Savennières) et domaines viticoles familiaux constituent le socle économique. Commerce de bourg, artisanat, tourisme fluvial (Loire à Vélo) et agriculture complètent le tissu local.",
@@ -52,7 +52,7 @@ export const CHALONNES_SUR_LOIRE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Chalonnes-sur-Loire et sur toute la corniche angevine (Lys-Haut-Layon, Bouchemaine, Saint-Georges-sur-Loire). Nos consultants se déplacent sur site, démarrage sous 5 jours.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Chalonnes-sur-Loire ?",
+      q: "Tarifs audit IA à Chalonnes-sur-Loire  : quel budget prévoir ?",
       a: "L'Audit Flash IA à Chalonnes-sur-Loire démarre à 490 € HT pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics.",
     },
     {

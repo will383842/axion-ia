@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const HOMECOURT_COPY: VilleCopy = {
   pitchFr:
-    "Homécourt (54), commune du Pays Haut en Meurthe-et-Moselle, est une ancienne ville sidérurgique reconvertie au cœur du bassin transfrontalier lorrain-luxembourgeois. Tissu de TPE/PME industrie reconvertie, artisanat, commerce, services et frontaliers. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Homécourt (54), commune du Pays Haut en Meurthe-et-Moselle, est une ancienne ville sidérurgique reconvertie au cœur du bassin transfrontalier lorrain-luxembourgeois. Tissu de TPE/PME industrie reconvertie, artisanat, commerce, services et frontaliers. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Homécourt (54), commune du Pays Haut en Meurthe-et-Moselle, est une ancienne ville sidérurgique reconvertie au cœur du bassin transfrontalier lorrain-luxembourgeois. Tissu de TPE/PME industrie reconvertie, artisanat, commerce, services et frontaliers. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Homécourt (54), commune du Pays Haut en Meurthe-et-Moselle, est une ancienne ville sidérurgique reconvertie au cœur du bassin transfrontalier lorrain-luxembourgeois. Tissu de TPE/PME industrie reconvertie, artisanat, commerce, services et frontaliers. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Homécourt (54). Nous accompagnons TPE et PME : industriels, artisans, commerçants, prestataires de services et frontaliers du Pays Haut lorrain. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Homécourt (54). Nous accompagnons TPE et PME : industriels, artisans, commerçants, prestataires de services et frontaliers du Pays Haut lorrain. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Homécourt (54). Nous accompagnons TPE et PME : industriels, artisans, commerçants, prestataires de services et frontaliers du Pays Haut lorrain. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Homécourt (54). Nous accompagnons TPE et PME : industriels, artisans, commerçants, prestataires de services et frontaliers du Pays Haut lorrain. Audit Flash sur mesure.",
   seoHook: "industrie métallurgie & artisanat second",
   ecosystemFr:
     "Homécourt est située dans la vallée de l'Orne, au cœur du Pays Haut lorrain, ancien bassin sidérurgique reconverti. Située à 25 km de la frontière luxembourgeoise, la ville bénéficie de l'attractivité transfrontalière (travailleurs frontaliers, sous-traitance industrielle). L'économie locale repose sur l'industrie reconvertie, l'artisanat BTP, le commerce de proximité, les services et l'activité frontalière. Intégration à la Communauté de communes Orne Lorraine Confluences.",
@@ -52,7 +52,7 @@ export const HOMECOURT_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Homécourt et sur tout le Pays Haut lorrain (Jœuf, Auboué, Briey, Jarny, Hagondange). Proximité Luxembourg à 50 min, Metz à 35 min via A4, Paris à 1h30 en TGV depuis la gare Lorraine.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Homécourt ?",
+      q: "Combien coûte un audit IA à Homécourt  ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Homécourt et de la vallée de l'Orne, il identifie les cas d'usage IA à fort ROI pour votre industrie reconvertie, atelier ou commerce.",
     },
     {

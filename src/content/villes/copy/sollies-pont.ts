@@ -7,9 +7,9 @@ export const SOLLIES_PONT_COPY: VilleCopy = {
   pitchEn:
     "Solliès-Pont (83, Var), capitale de la figue AOP au cœur de la vallée du Gapeau, accueille TPE agricoles, PME agroalimentaires, coopératives, commerces de proximité et artisans. Axion-IA opère pour toutes les structures économiques de la commune de la vallée du Gapeau.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Solliès-Pont (83). Nous accompagnons TPE agricoles, PME agroalimentaires, coopératives et commerces de la vallée du Gapeau. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Solliès-Pont (83). Nous accompagnons TPE agricoles, PME agroalimentaires, coopératives et commerces de la vallée du Gapeau. Audit Flash sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Solliès-Pont (83). Nous accompagnons TPE agricoles, PME agroalimentaires, coopératives et commerces de la vallée du Gapeau. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Solliès-Pont (83). Nous accompagnons TPE agricoles, PME agroalimentaires, coopératives et commerces de la vallée du Gapeau. Audit Flash sur mesure, intervention sur site ou en visio.",
   seoHook: "vallée du",
   ecosystemFr:
     'Solliès-Pont est la capitale française de la figue AOP "Figue de Solliès", au cœur de la vallée du Gapeau. Tissu de TPE agricoles, coopératives, PME agroalimentaires, commerces de proximité, artisans BTP et professions libérales. Tradition maraîchère et oléicole, agglomération de l\'aire toulonnaise.',
@@ -50,7 +50,7 @@ export const SOLLIES_PONT_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Solliès-Pont et dans toute la vallée du Gapeau (Solliès-Toucas, Solliès-Ville, La Farlède, Belgentier, Cuers). Déplacements sur site ou sessions en visio.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Solliès-Pont ?",
+      q: "Tarifs audit IA à Solliès-Pont  : quel budget prévoir ?",
       a: "L'Audit Flash Axion-IA démarre à 490 € HT pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE agricoles et PME varoises. Tarifs publics.",
     },
     {

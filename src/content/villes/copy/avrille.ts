@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const AVRILLE_COPY: VilleCopy = {
   pitchFr:
-    "Avrillé (49), commune résidentielle prisée au nord d'Angers, accueille plus de 15 000 habitants et un tissu économique dynamique de TPE, PME tertiaires et commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes : services, conseil, santé, commerce et artisanat.",
+    "Avrillé (49), commune résidentielle prisée au nord d'Angers, accueille plus de 15 000 habitants et un tissu économique dynamique de TPE, PME tertiaires et commerces. Axion-IA couvre les activités professionnelles du bassin : services, conseil, santé, commerce et artisanat.",
   pitchEn:
-    "Avrillé (49), commune résidentielle prisée au nord d'Angers, accueille plus de 15 000 habitants et un tissu économique dynamique de TPE, PME tertiaires et commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes : services, conseil, santé, commerce et artisanat.",
+    "Avrillé (49), commune résidentielle prisée au nord d'Angers, accueille plus de 15 000 habitants et un tissu économique dynamique de TPE, PME tertiaires et commerces. Axion-IA couvre les activités professionnelles du bassin : services, conseil, santé, commerce et artisanat.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Avrillé (49). Nous accompagnons les TPE, PME et professions libérales avrillaises dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict, tarifs publics.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Avrillé (49). Nous accompagnons les TPE, PME et professions libérales avrillaises dans l'adoption de l'IA : audit Flash, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict, tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Avrillé (49). Nous accompagnons les TPE, PME et professions libérales avrillaises dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict, tarifs publics.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Avrillé (49). Nous accompagnons les TPE, PME et professions libérales avrillaises dans l'adoption de l'IA : audit Flash, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict, tarifs publics.",
   seoHook: "services aux & professions santé",
   ecosystemFr:
     "Avrillé bénéficie de sa proximité avec Angers tout en conservant un cadre résidentiel attractif. Zones d'activités tertiaires, pôle santé, commerces de centre-ville et grandes enseignes. PME conseil, professions libérales et services à la personne constituent l'ossature économique.",
@@ -52,7 +52,7 @@ export const AVRILLE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Avrillé et dans tout le nord d'Angers Loire Métropole (Cantenay-Épinard, Saint-Lambert-la-Potherie, Montreuil-Juigné). Nos consultants se déplacent sur site, démarrage sous 5 jours.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Avrillé ?",
+      q: "Tarifs audit IA à Avrillé  : quel budget prévoir ?",
       a: "L'Audit Flash IA à Avrillé démarre à 490 € HT pour une session de 4 heures. Diagnostic complet, ROI chiffré et plan d'action concret inclus. Tarifs publics, sans surprise.",
     },
     {

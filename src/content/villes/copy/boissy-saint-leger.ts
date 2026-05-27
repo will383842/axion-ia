@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const BOISSY_SAINT_LEGER_COPY: VilleCopy = {
   pitchFr:
-    "Boissy-Saint-Léger (94), commune résidentielle de l'est du Val-de-Marne, est le terminus de la branche sud du RER A. Tissu TPE artisans, PME services, commerces de centre-ville, professions libérales, prestataires santé et éducation. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Boissy-Saint-Léger (94), commune résidentielle de l'est du Val-de-Marne, est le terminus de la branche sud du RER A. Tissu TPE artisans, PME services, commerces de centre-ville, professions libérales, prestataires santé et éducation. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Boissy-Saint-Léger (94), commune résidentielle de l'est du Val-de-Marne, est le terminus de la branche sud du RER A. Tissu TPE artisans, PME services, commerces de centre-ville, professions libérales, prestataires santé et éducation. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Boissy-Saint-Léger (94), commune résidentielle de l'est du Val-de-Marne, est le terminus de la branche sud du RER A. Tissu TPE artisans, PME services, commerces de centre-ville, professions libérales, prestataires santé et éducation. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Boissy-Saint-Léger (94). Nous accompagnons TPE et PME : commerçants de centre-ville, artisans, professions libérales, prestataires santé, PME de services de l'est Val-de-Marne. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Boissy-Saint-Léger (94). Nous accompagnons TPE et PME : commerçants de centre-ville, artisans, professions libérales, prestataires santé, PME de services de l'est Val-de-Marne. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Boissy-Saint-Léger (94). Nous accompagnons TPE et PME : commerçants de centre-ville, artisans, professions libérales, prestataires santé, PME de services de l'est Val-de-Marne. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Boissy-Saint-Léger (94). Nous accompagnons TPE et PME : commerçants de centre-ville, artisans, professions libérales, prestataires santé, PME de services de l'est Val-de-Marne. Audit Flash sur mesure.",
   seoHook: "commerce centre-ville & professions libérales",
   ecosystemFr:
     "Boissy-Saint-Léger est une commune résidentielle de l'est du Val-de-Marne, terminus du RER A branche Boissy. Tissu économique de proximité : commerces de centre-ville, TPE artisans BTP et maintenance, professions libérales, cabinets de santé, PME de services aux entreprises.",

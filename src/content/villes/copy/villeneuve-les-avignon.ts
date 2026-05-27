@@ -9,9 +9,9 @@ export const VILLENEUVE_LES_AVIGNON_COPY: VilleCopy = {
   pitchEn:
     "Villeneuve-lès-Avignon (30), cité résidentielle face à Avignon sur la rive droite du Rhône, dotée d'un patrimoine remarquable (chartreuse, fort Saint-André). Tissu TPE/PME services aux entreprises, professions libérales, commerces, artisanat et tourisme culturel. Axion-IA y intervient pour tous types d'activités du Grand Avignon gardois.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Villeneuve-lès-Avignon (30). Nous accompagnons les TPE, PME et ETI locales : professions libérales, entreprises de services, commerçants, artisans, acteurs culturels et touristiques du Grand Avignon rive droite. Audit Flash à partir de 490 € HT.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Villeneuve-lès-Avignon (30). Nous accompagnons les TPE, PME et ETI locales : professions libérales, entreprises de services, commerçants, artisans, acteurs culturels et touristiques du Grand Avignon rive droite. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Villeneuve-lès-Avignon (30). Nous accompagnons les TPE, PME et ETI locales : professions libérales, entreprises de services, commerçants, artisans, acteurs culturels et touristiques du Grand Avignon rive droite. Audit Flash à partir de 490 € HT.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Villeneuve-lès-Avignon (30). Nous accompagnons les TPE, PME et ETI locales : professions libérales, entreprises de services, commerçants, artisans, acteurs culturels et touristiques du Grand Avignon rive droite. Audit Flash sur mesure.",
   seoHook: "professions libérales & tourisme culturel",
   ecosystemFr:
     "Villeneuve-lès-Avignon (~13 100 hab) est une commune résidentielle premium face au palais des Papes d'Avignon. Services aux entreprises, professions libérales (santé, droit, conseil), commerces, artisanat, tourisme culturel (chartreuse, fort Saint-André, festival d'Avignon). Proximité immédiate du bassin d'emploi Grand Avignon.",
@@ -52,7 +52,7 @@ export const VILLENEUVE_LES_AVIGNON_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Villeneuve-lès-Avignon et dans tout le Grand Avignon (Les Angles, Rochefort-du-Gard, Saze). Nos consultants sont à 5 min d'Avignon centre et 15 min de la gare TGV.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Villeneuve-lès-Avignon ?",
+      q: "Combien coûte un audit IA à Villeneuve-lès-Avignon  ?",
       a: "L'Audit Flash commence à 490 € HT. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PLONEOUR_LANVERN_COPY: VilleCopy = {
   pitchFr:
-    "Plonéour-Lanvern (29), commune rurale du Pays Bigouden en Finistère, est un pôle agricole et maraîcher majeur du sud-ouest Cornouaille. Tissu TPE agricoles, maraîchers légumiers, PME agroalimentaires, artisans BTP, commerces de proximité et services. Axion-IA accompagne entreprises et indépendants de tous secteurs du Pays Bigouden.",
+    "Plonéour-Lanvern (29), commune rurale du Pays Bigouden en Finistère, est un pôle agricole et maraîcher majeur du sud-ouest Cornouaille. Tissu TPE agricoles, maraîchers légumiers, PME agroalimentaires, artisans BTP, commerces de proximité et services. Axion-IA collabore avec toutes les structures locales du Pays Bigouden.",
   pitchEn:
-    "Plonéour-Lanvern (29), commune rurale du Pays Bigouden en Finistère, est un pôle agricole et maraîcher majeur du sud-ouest Cornouaille. Tissu TPE agricoles, maraîchers légumiers, PME agroalimentaires, artisans BTP, commerces de proximité et services. Axion-IA accompagne entreprises et indépendants de tous secteurs du Pays Bigouden.",
+    "Plonéour-Lanvern (29), commune rurale du Pays Bigouden en Finistère, est un pôle agricole et maraîcher majeur du sud-ouest Cornouaille. Tissu TPE agricoles, maraîchers légumiers, PME agroalimentaires, artisans BTP, commerces de proximité et services. Axion-IA collabore avec toutes les structures locales du Pays Bigouden.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plonéour-Lanvern (29). Nous accompagnons tous types d'activités : TPE agricoles et maraîchers bigoudens, PME agroalimentaires, artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises du Pays Bigouden / sud Cornouaille.",
   directAnswerEn:

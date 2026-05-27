@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const CHARNAY_LES_MACON_COPY: VilleCopy = {
   pitchFr:
-    "Charnay-lès-Mâcon (71), commune résidentielle de l'agglomération mâconnaise en Saône-et-Loire. Vignoble Mâconnais (AOC), cadre péri-urbain entre Mâcon et campagne viticole. Tissu TPE artisanat, PME tertiaires agglo Mâcon, viticulteurs, commerce, services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Charnay-lès-Mâcon (71), commune résidentielle de l'agglomération mâconnaise en Saône-et-Loire. Vignoble Mâconnais (AOC), cadre péri-urbain entre Mâcon et campagne viticole. Tissu TPE artisanat, PME tertiaires agglo Mâcon, viticulteurs, commerce, services. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Charnay-lès-Mâcon (71), commune résidentielle de l'agglomération mâconnaise en Saône-et-Loire. Vignoble Mâconnais (AOC), cadre péri-urbain entre Mâcon et campagne viticole. Tissu TPE artisanat, PME tertiaires agglo Mâcon, viticulteurs, commerce, services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Charnay-lès-Mâcon (71), commune résidentielle de l'agglomération mâconnaise en Saône-et-Loire. Vignoble Mâconnais (AOC), cadre péri-urbain entre Mâcon et campagne viticole. Tissu TPE artisanat, PME tertiaires agglo Mâcon, viticulteurs, commerce, services. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Charnay-lès-Mâcon (71). Nous accompagnons TPE et PME : PME tertiaires agglomération Mâcon, viticulteurs Mâconnais AOC, artisans et commerçants, prestataires de services. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Charnay-lès-Mâcon (71). Nous accompagnons TPE et PME : PME tertiaires agglomération Mâcon, viticulteurs Mâconnais AOC, artisans et commerçants, prestataires de services. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Charnay-lès-Mâcon (71). Nous accompagnons TPE et PME : PME tertiaires agglomération Mâcon, viticulteurs Mâconnais AOC, artisans et commerçants, prestataires de services. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Charnay-lès-Mâcon (71). Nous accompagnons TPE et PME : PME tertiaires agglomération Mâcon, viticulteurs Mâconnais AOC, artisans et commerçants, prestataires de services. Audit Flash sur mesure.",
   ecosystemFr:
     "Charnay-lès-Mâcon est une commune résidentielle de l'agglomération mâconnaise, aux portes du vignoble Mâconnais (AOC Mâcon, Pouilly-Fuissé, Saint-Véran). Tissu PME tertiaires agglo Mâcon, viticulteurs et négoce vinicole, TPE artisanat, commerce, services aux entreprises.",
   ecosystemEn:

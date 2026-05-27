@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const USSEL_COPY: VilleCopy = {
   pitchFr:
-    "Ussel (19), sous-préfecture de la Corrèze aux portes du plateau de Millevaches. Tissu TPE/PME commerce, artisanat, bois-forêt, services de santé, BTP et tourisme nature en haute Corrèze. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Ussel (19), sous-préfecture de la Corrèze aux portes du plateau de Millevaches. Tissu TPE/PME commerce, artisanat, bois-forêt, services de santé, BTP et tourisme nature en haute Corrèze. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "Ussel (19), sous-préfecture de la Corrèze aux portes du plateau de Millevaches. Tissu TPE/PME commerce, artisanat, bois-forêt, services de santé, BTP et tourisme nature en haute Corrèze. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Ussel (19), sous-préfecture de la Corrèze aux portes du plateau de Millevaches. Tissu TPE/PME commerce, artisanat, bois-forêt, services de santé, BTP et tourisme nature en haute Corrèze. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ussel (19). Nous accompagnons TPE/PME du commerce, de l'artisanat, de la filière bois, des services de santé et du tourisme nature en haute Corrèze. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ussel (19). Nous accompagnons TPE/PME du commerce, de l'artisanat, de la filière bois, des services de santé et du tourisme nature en haute Corrèze. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ussel (19). Nous accompagnons TPE/PME du commerce, de l'artisanat, de la filière bois, des services de santé et du tourisme nature en haute Corrèze. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ussel (19). Nous accompagnons TPE/PME du commerce, de l'artisanat, de la filière bois, des services de santé et du tourisme nature en haute Corrèze. Audit Flash sur mesure.",
   ecosystemFr:
     "Ussel, sous-préfecture de la Corrèze, est la porte d'entrée du plateau de Millevaches (PNR). Économie locale : commerce et artisanat de proximité, filière bois-forêt (scieries, exploitation forestière), services de santé (hôpital, maisons médicales), BTP montagne et tourisme nature (randonnée, lac de Séchemailles).",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const USSEL_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Ussel et dans toute la haute Corrèze (Égletons, Meymac, Bort-les-Orgues). Gare SNCF Ussel ou déplacement route depuis Brive ou Clermont.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Ussel ?",
+      q: "Combien coûte un audit IA à Ussel  ?",
       a: "L'Audit Flash démarre à 490 € HT. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME de la haute Corrèze. Tarifs publics et transparents.",
     },
     {

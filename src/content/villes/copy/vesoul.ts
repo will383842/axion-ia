@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const VESOUL_COPY: VilleCopy = {
   pitchFr:
-    "Vesoul (70), préfecture de la Haute-Saône au pied de la colline de la Motte, concentre un tissu de TPE/PME de l'industrie automobile, de la mécanique, du commerce de centre-ville, de l'artisanat BTP, des professions libérales et des services publics. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Vesoul (70), préfecture de la Haute-Saône au pied de la colline de la Motte, concentre un tissu de TPE/PME de l'industrie automobile, de la mécanique, du commerce de centre-ville, de l'artisanat BTP, des professions libérales et des services publics. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Vesoul (70), préfecture de la Haute-Saône au pied de la colline de la Motte, concentre un tissu de TPE/PME de l'industrie automobile, de la mécanique, du commerce de centre-ville, de l'artisanat BTP, des professions libérales et des services publics. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Vesoul (70), préfecture de la Haute-Saône au pied de la colline de la Motte, concentre un tissu de TPE/PME de l'industrie automobile, de la mécanique, du commerce de centre-ville, de l'artisanat BTP, des professions libérales et des services publics. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vesoul (70). Nous accompagnons TPE et PME : sous-traitants automobile et mécanique, commerçants de centre-ville, artisans BTP, professions libérales et prestataires de services de la préfecture haut-saônoise. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vesoul (70). Nous accompagnons TPE et PME : sous-traitants automobile et mécanique, commerçants de centre-ville, artisans BTP, professions libérales et prestataires de services de la préfecture haut-saônoise. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vesoul (70). Nous accompagnons TPE et PME : sous-traitants automobile et mécanique, commerçants de centre-ville, artisans BTP, professions libérales et prestataires de services de la préfecture haut-saônoise. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vesoul (70). Nous accompagnons TPE et PME : sous-traitants automobile et mécanique, commerçants de centre-ville, artisans BTP, professions libérales et prestataires de services de la préfecture haut-saônoise. Audit Flash sur mesure.",
   seoHook: "TPE & PME Hte-Saône",
   ecosystemFr:
     "Vesoul est la préfecture de la Haute-Saône, ville administrative et commerciale au pied de la colline de la Motte. Tissu économique structuré autour de l'industrie automobile (centre logistique pièces de rechange majeur en Europe), de la sous-traitance mécanique, du commerce de centre-ville, de l'artisanat BTP, des professions libérales et des services publics départementaux.",
@@ -56,7 +56,7 @@ export const VESOUL_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE et PME de l'industrie automobile vésulienne : maintenance prédictive IA, gestion stocks pièces, automatisation qualité, planification production, traçabilité logistique. Audit Flash 490 € HT.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Vesoul ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Vesoul  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de la préfecture haut-saônoise, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics.",
     },
     {

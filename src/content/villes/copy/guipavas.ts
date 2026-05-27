@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const GUIPAVAS_COPY: VilleCopy = {
   pitchFr:
-    "Guipavas (29), commune de Brest Métropole accueillant l'aéroport Brest-Bretagne et une zone d'activités dynamique aux portes du Technopôle Brest-Iroise. Tissu de TPE de services, PME logistiques et transport, commerces de zone, sous-traitants aéronautiques et prestataires tertiaires. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Guipavas (29), commune de Brest Métropole accueillant l'aéroport Brest-Bretagne et une zone d'activités dynamique aux portes du Technopôle Brest-Iroise. Tissu de TPE de services, PME logistiques et transport, commerces de zone, sous-traitants aéronautiques et prestataires tertiaires. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "Guipavas (29), commune de Brest Métropole accueillant l'aéroport Brest-Bretagne et une zone d'activités dynamique aux portes du Technopôle Brest-Iroise. Tissu de TPE de services, PME logistiques et transport, commerces de zone, sous-traitants aéronautiques et prestataires tertiaires. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Guipavas (29), commune de Brest Métropole accueillant l'aéroport Brest-Bretagne et une zone d'activités dynamique aux portes du Technopôle Brest-Iroise. Tissu de TPE de services, PME logistiques et transport, commerces de zone, sous-traitants aéronautiques et prestataires tertiaires. Axion-IA collabore avec toutes les structures locales.",
   seoHook: "aéroport, logistique & technopôle",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guipavas (29). Nous accompagnons TPE et PME : prestataires logistiques, sous-traitants aéronautiques, commerces de zone, PME de services et entreprises du Technopôle Brest-Iroise dans l'agglomération brestoise. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guipavas (29). Nous accompagnons TPE et PME : prestataires logistiques, sous-traitants aéronautiques, commerces de zone, PME de services et entreprises du Technopôle Brest-Iroise dans l'agglomération brestoise. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guipavas (29). Nous accompagnons TPE et PME : prestataires logistiques, sous-traitants aéronautiques, commerces de zone, PME de services et entreprises du Technopôle Brest-Iroise dans l'agglomération brestoise. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guipavas (29). Nous accompagnons TPE et PME : prestataires logistiques, sous-traitants aéronautiques, commerces de zone, PME de services et entreprises du Technopôle Brest-Iroise dans l'agglomération brestoise. Audit Flash sur mesure.",
   ecosystemFr:
     "Guipavas est la porte d'entrée aérienne de la pointe bretonne grâce à l'aéroport Brest-Bretagne (1 million de passagers/an). Les zones d'activités de Kergaradec et de la Fontaine-Margot concentrent logistique, transport, commerce de gros et sous-traitance. Le Technopôle Brest-Iroise est à proximité immédiate. Communes voisines : Brest, Plougastel-Daoulas, Gouesnou, Le Relecq-Kerhuon, Bohars.",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const GUIPAVAS_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Guipavas et dans toute Brest Métropole (Brest, Gouesnou, Le Relecq-Kerhuon, Plougastel-Daoulas, Bohars). Nos consultants se déplacent sur site ou en visio.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Guipavas ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Guipavas  ?",
       a: "L'Audit Flash IA à Guipavas démarre à 490 € HT pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {

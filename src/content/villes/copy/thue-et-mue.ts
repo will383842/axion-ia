@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const THUE_ET_MUE_COPY: VilleCopy = {
   pitchFr:
-    "Thue et Mue (14), commune nouvelle du Calvados dans la plaine de Caen nord-ouest, regroupe plusieurs villages entre les rivières Thue et Mue. Territoire résidentiel périurbain attractif, tissu TPE artisans BTP, PME services et agriculture céréalière, commerces de proximité, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Thue et Mue (14), commune nouvelle du Calvados dans la plaine de Caen nord-ouest, regroupe plusieurs villages entre les rivières Thue et Mue. Territoire résidentiel périurbain attractif, tissu TPE artisans BTP, PME services et agriculture céréalière, commerces de proximité, professions libérales. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Thue et Mue (14), commune nouvelle du Calvados dans la plaine de Caen nord-ouest, regroupe plusieurs villages entre les rivières Thue et Mue. Territoire résidentiel périurbain attractif, tissu TPE artisans BTP, PME services et agriculture céréalière, commerces de proximité, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Thue et Mue (14), commune nouvelle du Calvados dans la plaine de Caen nord-ouest, regroupe plusieurs villages entre les rivières Thue et Mue. Territoire résidentiel périurbain attractif, tissu TPE artisans BTP, PME services et agriculture céréalière, commerces de proximité, professions libérales. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thue et Mue (14). Nous accompagnons tous types d'activités : TPE artisans BTP et commerçants, PME services agglomération caennaise, exploitations céréalières plaine de Caen, professions libérales, indépendants et services aux entreprises périurbaines.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const THUE_ET_MUE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Thue et Mue, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Thue et Mue ?",
+      q: "Quel est le tarif d'un audit IA à Thue et Mue  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {

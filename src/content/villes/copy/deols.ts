@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const DEOLS_COPY: VilleCopy = {
   pitchFr:
-    "Déols (36), commune de l'agglomération de Châteauroux dans l'Indre, accueille l'aéroport de Châteauroux-Centre et hérite d'un passé militaire avec l'ancienne base aérienne. TPE artisans, PME logistiques et industrielles, commerçants, professions libérales, indépendants et acteurs de la zone aéroportuaire composent son tissu économique. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération castelroussine.",
+    "Déols (36), commune de l'agglomération de Châteauroux dans l'Indre, accueille l'aéroport de Châteauroux-Centre et hérite d'un passé militaire avec l'ancienne base aérienne. TPE artisans, PME logistiques et industrielles, commerçants, professions libérales, indépendants et acteurs de la zone aéroportuaire composent son tissu économique. Axion-IA collabore avec toutes les structures locales de l'agglomération castelroussine.",
   pitchEn:
-    "Déols (36), commune de l'agglomération de Châteauroux dans l'Indre, accueille l'aéroport de Châteauroux-Centre et hérite d'un passé militaire avec l'ancienne base aérienne. TPE artisans, PME logistiques et industrielles, commerçants, professions libérales, indépendants et acteurs de la zone aéroportuaire composent son tissu économique. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération castelroussine.",
+    "Déols (36), commune de l'agglomération de Châteauroux dans l'Indre, accueille l'aéroport de Châteauroux-Centre et hérite d'un passé militaire avec l'ancienne base aérienne. TPE artisans, PME logistiques et industrielles, commerçants, professions libérales, indépendants et acteurs de la zone aéroportuaire composent son tissu économique. Axion-IA collabore avec toutes les structures locales de l'agglomération castelroussine.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Déols (36), dans l'agglomération de Châteauroux. Nous accompagnons tous types d'activités : TPE artisans, PME logistiques et industrielles, commerçants, professions libérales, indépendants et entreprises de la zone aéroportuaire.",
   directAnswerEn:

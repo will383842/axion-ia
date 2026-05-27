@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_REMY_LES_CHEVREUSE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Rémy-lès-Chevreuse (78), terminus du RER B sud dans les Yvelines, est la porte d'entrée de la vallée de Chevreuse. Commune résidentielle prisée, elle accueille TPE conseil et services, professions libérales, PME tertiaires et indépendants télétravaillant entre nature et Paris. Axion-IA accompagne entreprises et indépendants de tous secteurs du sud Yvelines.",
+    "Saint-Rémy-lès-Chevreuse (78), terminus du RER B sud dans les Yvelines, est la porte d'entrée de la vallée de Chevreuse. Commune résidentielle prisée, elle accueille TPE conseil et services, professions libérales, PME tertiaires et indépendants télétravaillant entre nature et Paris. Axion-IA accompagne entreprises et indépendants du sud Yvelines.",
   pitchEn:
-    "Saint-Rémy-lès-Chevreuse (78), terminus du RER B sud dans les Yvelines, est la porte d'entrée de la vallée de Chevreuse. Commune résidentielle prisée, elle accueille TPE conseil et services, professions libérales, PME tertiaires et indépendants télétravaillant entre nature et Paris. Axion-IA accompagne entreprises et indépendants de tous secteurs du sud Yvelines.",
+    "Saint-Rémy-lès-Chevreuse (78), terminus du RER B sud dans les Yvelines, est la porte d'entrée de la vallée de Chevreuse. Commune résidentielle prisée, elle accueille TPE conseil et services, professions libérales, PME tertiaires et indépendants télétravaillant entre nature et Paris. Axion-IA accompagne entreprises et indépendants du sud Yvelines.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Rémy-lès-Chevreuse (78). Nous accompagnons TPE et PME : consultants indépendants, professions libérales, PME tertiaires de la vallée de Chevreuse et entreprises du sud Yvelines connectées à Paris via le RER B.",
   directAnswerEn:
@@ -56,7 +56,7 @@ export const SAINT_REMY_LES_CHEVREUSE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les indépendants et consultants en télétravail à Saint-Rémy-lès-Chevreuse sur leurs cas IA : automatisation tâches récurrentes, agents conversationnels, rédaction assistée, gestion client augmentée. Formats courts adaptés aux solos et micro-entreprises.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Saint-Rémy-lès-Chevreuse ?",
+      q: "Tarifs audit IA à Saint-Rémy-lès-Chevreuse  : quel budget prévoir ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de la vallée de Chevreuse, il identifie les cas d'usage IA à fort ROI pour votre activité (conseil, santé, juridique, commerce). Tarifs publics.",
     },
     {

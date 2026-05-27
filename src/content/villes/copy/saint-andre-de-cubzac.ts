@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_ANDRE_DE_CUBZAC_COPY: VilleCopy = {
   pitchFr:
-    "Saint-André-de-Cubzac (33), pôle commercial du Cubzaguais au nord de Bordeaux, combine vignoble (Côtes de Bourg, Fronsac), commerces dynamiques et tissu artisanal dense. Axion-IA y déploie ses missions auprès de toutes les organisations : TPE viticoles, commerçants, PME de services, artisans BTP et professions libérales.",
+    "Saint-André-de-Cubzac (33), pôle commercial du Cubzaguais au nord de Bordeaux, combine vignoble (Côtes de Bourg, Fronsac), commerces dynamiques et tissu artisanal dense. Axion-IA y déploie son expertise pour toutes les organisations : TPE viticoles, commerçants, PME de services, artisans BTP et professions libérales.",
   pitchEn:
-    "Saint-André-de-Cubzac (33), pôle commercial du Cubzaguais au nord de Bordeaux, combine vignoble (Côtes de Bourg, Fronsac), commerces dynamiques et tissu artisanal dense. Axion-IA y déploie ses missions auprès de toutes les organisations : TPE viticoles, commerçants, PME de services, artisans BTP et professions libérales.",
+    "Saint-André-de-Cubzac (33), pôle commercial du Cubzaguais au nord de Bordeaux, combine vignoble (Côtes de Bourg, Fronsac), commerces dynamiques et tissu artisanal dense. Axion-IA y déploie son expertise pour toutes les organisations : TPE viticoles, commerçants, PME de services, artisans BTP et professions libérales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-André-de-Cubzac (33). Nous accompagnons TPE et PME du Cubzaguais : vignerons, commerçants du centre-bourg, PME de services, artisans BTP et professions libérales. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-André-de-Cubzac (33). Nous accompagnons TPE et PME du Cubzaguais : vignerons, commerçants du centre-bourg, PME de services, artisans BTP et professions libérales. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-André-de-Cubzac (33). Nous accompagnons TPE et PME du Cubzaguais : vignerons, commerçants du centre-bourg, PME de services, artisans BTP et professions libérales. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-André-de-Cubzac (33). Nous accompagnons TPE et PME du Cubzaguais : vignerons, commerçants du centre-bourg, PME de services, artisans BTP et professions libérales. Audit Flash sur mesure.",
   seoHook: "viticulture & commerce centre-bourg",
   ecosystemFr:
     "Saint-André-de-Cubzac est le pôle commercial et de services du Cubzaguais. Carrefour entre vignoble bordelais (Côtes de Bourg, Fronsac), commerce de centre-bourg dynamique et tissu artisanal. Accès A10 (Paris) et N10, noeud routier vers Libourne et Blaye.",
@@ -52,7 +52,7 @@ export const SAINT_ANDRE_DE_CUBZAC_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Saint-André-de-Cubzac et dans tout le Cubzaguais (Cubzac-les-Ponts, Saint-Loubès, Gauriaguet). Nos consultants se déplacent depuis Bordeaux (25 min A10) ou Paris (TGV 2h + 25 min).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Saint-André-de-Cubzac ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Saint-André-de-Cubzac  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Adapté aux TPE viticoles et commerçants du Cubzaguais.",
     },
     {

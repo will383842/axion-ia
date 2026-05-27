@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ESTAIRES_COPY: VilleCopy = {
   pitchFr:
-    "Estaires (59), commune du département du Nord (région Hauts-de-France) en Flandre intérieure, sur les bords de la Lys. Tissu TPE artisanat et négoce agricole, PME agroalimentaire et textile, commerces de centre-bourg, services de proximité et activités liées au bassin économique Flandre-Lys. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Estaires (59), commune du département du Nord (région Hauts-de-France) en Flandre intérieure, sur les bords de la Lys. Tissu TPE artisanat et négoce agricole, PME agroalimentaire et textile, commerces de centre-bourg, services de proximité et activités liées au bassin économique Flandre-Lys. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Estaires (59), commune du département du Nord (région Hauts-de-France) en Flandre intérieure, sur les bords de la Lys. Tissu TPE artisanat et négoce agricole, PME agroalimentaire et textile, commerces de centre-bourg, services de proximité et activités liées au bassin économique Flandre-Lys. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Estaires (59), commune du département du Nord (région Hauts-de-France) en Flandre intérieure, sur les bords de la Lys. Tissu TPE artisanat et négoce agricole, PME agroalimentaire et textile, commerces de centre-bourg, services de proximité et activités liées au bassin économique Flandre-Lys. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Estaires (59). Nous accompagnons tous types d'activités : TPE artisans et négoce agricole, PME agroalimentaire et textile, commerçants, services de proximité et entreprises du bassin économique Flandre-Lys.",
   directAnswerEn:

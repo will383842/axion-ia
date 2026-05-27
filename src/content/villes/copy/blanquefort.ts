@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const BLANQUEFORT_COPY: VilleCopy = {
   pitchFr:
-    "Blanquefort (33), commune au nord de Bordeaux Métropole aux portes du vignoble du Médoc, associe activités industrielles (agroalimentaire, métallurgie) et tissu tertiaire. Axion-IA couvre l'ensemble des activités professionnelles présentes : TPE viticoles, PME industrielles, commerces, professions libérales et entreprises de services.",
+    "Blanquefort (33), commune au nord de Bordeaux Métropole aux portes du vignoble du Médoc, associe activités industrielles (agroalimentaire, métallurgie) et tissu tertiaire. Axion-IA opère sur l'ensemble des activités professionnelles locales : TPE viticoles, PME industrielles, commerces, professions libérales et entreprises de services.",
   pitchEn:
-    "Blanquefort (33), commune au nord de Bordeaux Métropole aux portes du vignoble du Médoc, associe activités industrielles (agroalimentaire, métallurgie) et tissu tertiaire. Axion-IA couvre l'ensemble des activités professionnelles présentes : TPE viticoles, PME industrielles, commerces, professions libérales et entreprises de services.",
+    "Blanquefort (33), commune au nord de Bordeaux Métropole aux portes du vignoble du Médoc, associe activités industrielles (agroalimentaire, métallurgie) et tissu tertiaire. Axion-IA opère sur l'ensemble des activités professionnelles locales : TPE viticoles, PME industrielles, commerces, professions libérales et entreprises de services.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Blanquefort (33). Nous accompagnons TPE et PME du nord Bordeaux-Médoc : exploitations viticoles, PME agroalimentaires et industrielles, artisans BTP, commerçants et professions libérales. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Blanquefort (33). Nous accompagnons TPE et PME du nord Bordeaux-Médoc : exploitations viticoles, PME agroalimentaires et industrielles, artisans BTP, commerçants et professions libérales. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Blanquefort (33). Nous accompagnons TPE et PME du nord Bordeaux-Médoc : exploitations viticoles, PME agroalimentaires et industrielles, artisans BTP, commerçants et professions libérales. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Blanquefort (33). Nous accompagnons TPE et PME du nord Bordeaux-Médoc : exploitations viticoles, PME agroalimentaires et industrielles, artisans BTP, commerçants et professions libérales. Audit Flash sur mesure.",
   seoHook: "viticulture agroalimentaire & industrie",
   ecosystemFr:
     "Blanquefort s'inscrit entre Bordeaux Métropole et l'entrée du Médoc viticole. Industries historiques (agroalimentaire, métallurgie), vignoble AOC Haut-Médoc, tissu PME tertiaires en croissance. Tramway C vers Bordeaux centre, accès rocade et A10.",
@@ -52,7 +52,7 @@ export const BLANQUEFORT_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Blanquefort, au Taillan-Médoc, à Parempuyre et dans tout le nord Bordeaux-Médoc. Nos consultants se déplacent depuis Bordeaux centre (25 min tramway C) ou Paris (TGV 2h).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Blanquefort ?",
+      q: "Quel est le tarif d'un audit IA à Blanquefort  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Adapté aux TPE viticoles, PME industrielles et commerces de Blanquefort.",
     },
     {

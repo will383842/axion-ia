@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const GIGNAC_LA_NERTHE_COPY: VilleCopy = {
   pitchFr:
-    "Gignac-la-Nerthe (13), commune résidentielle au sud de l'étang de Berre dans les Bouches-du-Rhône, bénéficie de la proximité de Martigues et de l'axe Marseille-Fos. TPE artisans, PME services, commerces de village et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud de l'étang de Berre.",
+    "Gignac-la-Nerthe (13), commune résidentielle au sud de l'étang de Berre dans les Bouches-du-Rhône, bénéficie de la proximité de Martigues et de l'axe Marseille-Fos. TPE artisans, PME services, commerces de village et professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes du sud de l'étang de Berre.",
   pitchEn:
-    "Gignac-la-Nerthe (13), commune résidentielle au sud de l'étang de Berre dans les Bouches-du-Rhône, bénéficie de la proximité de Martigues et de l'axe Marseille-Fos. TPE artisans, PME services, commerces de village et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud de l'étang de Berre.",
+    "Gignac-la-Nerthe (13), commune résidentielle au sud de l'étang de Berre dans les Bouches-du-Rhône, bénéficie de la proximité de Martigues et de l'axe Marseille-Fos. TPE artisans, PME services, commerces de village et professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes du sud de l'étang de Berre.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gignac-la-Nerthe (13). Nous accompagnons TPE artisans, PME de services du sud de l'étang de Berre, commerçants et professions libérales. Audit Flash dès 490 € HT, sans engagement.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gignac-la-Nerthe (13). Nous accompagnons TPE artisans, PME de services du sud de l'étang de Berre, commerçants et professions libérales. Audit Flash sur mesure, sans engagement.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gignac-la-Nerthe (13). Nous accompagnons TPE artisans, PME de services du sud de l'étang de Berre, commerçants et professions libérales. Audit Flash dès 490 € HT, sans engagement.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gignac-la-Nerthe (13). Nous accompagnons TPE artisans, PME de services du sud de l'étang de Berre, commerçants et professions libérales. Audit Flash sur mesure, sans engagement.",
   seoHook: "résidentiel & services étang de Berre sud",
   ecosystemFr:
     "Gignac-la-Nerthe est une commune résidentielle au sud de l'étang de Berre, entre Martigues et l'autoroute A55 vers Marseille. Économie locale de proximité : TPE artisans, commerçants, professions libérales, PME services et prestataires résidentiels. Accès rapide au bassin industriel de Fos.",

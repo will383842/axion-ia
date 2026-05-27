@@ -11,9 +11,9 @@ export const BELFORT_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA propose ses interventions à Belfort, où se trouvent General Electric et Alstom, pour optimiser vos processus grâce à l'IA.",
   directAnswerFr:
-    "À Belfort, Axion-IA intervient auprès des acteurs des secteurs de la fabrication de machines et de la programmation informatique. Nous proposons des audits dès 490 € HT et des implémentations à partir de 990 € HT, adaptés aux besoins des entreprises locales. Nos services incluent des déplacements sur site, garantissant une approche personnalisée pour chaque client.",
+    "À Belfort, Axion-IA intervient auprès des acteurs des secteurs de la fabrication de machines et de la programmation informatique. Nous proposons des audits et des implémentations, adaptés aux besoins des entreprises locales. Nos services incluent des déplacements sur site, garantissant une approche personnalisée pour chaque client.",
   directAnswerEn:
-    "À Belfort, Axion-IA intervient auprès des acteurs des secteurs de la fabrication de machines et de la programmation informatique. Nous proposons des audits dès 490 € HT et des implémentations à partir de 990 € HT, adaptés aux besoins des entreprises locales. Nos services incluent des déplacements sur site, garantissant une approche personnalisée pour chaque client.",
+    "À Belfort, Axion-IA intervient auprès des acteurs des secteurs de la fabrication de machines et de la programmation informatique. Nous proposons des audits et des implémentations, adaptés aux besoins des entreprises locales. Nos services incluent des déplacements sur site, garantissant une approche personnalisée pour chaque client.",
   seoHook: "TPE & PME · IA opérationnelle",
   ecosystemFr:
     "Belfort accueille des groupes comme General Electric et Alstom, ainsi que le technopôle Techn'Hom, renforçant son secteur industriel.",

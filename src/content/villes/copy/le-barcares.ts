@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_BARCARES_COPY: VilleCopy = {
   pitchFr:
-    "Le Barcarès (66), station balnéaire méditerranéenne célèbre pour le Lydia (seul paquebot ensablé au monde), fait partie de la Communauté de communes Perpignan Méditerranée Métropole. Tissu TPE tourisme, PME hôtellerie-restauration, commerces saisonniers, activités nautiques. Axion-IA y déploie ses missions auprès de toutes les organisations du littoral nord catalan.",
+    "Le Barcarès (66), station balnéaire méditerranéenne célèbre pour le Lydia (seul paquebot ensablé au monde), fait partie de la Communauté de communes Perpignan Méditerranée Métropole. Tissu TPE tourisme, PME hôtellerie-restauration, commerces saisonniers, activités nautiques. Axion-IA y déploie son expertise pour toutes les organisations du littoral nord catalan.",
   pitchEn:
-    "Le Barcarès (66), station balnéaire méditerranéenne célèbre pour le Lydia (seul paquebot ensablé au monde), fait partie de la Communauté de communes Perpignan Méditerranée Métropole. Tissu TPE tourisme, PME hôtellerie-restauration, commerces saisonniers, activités nautiques. Axion-IA y déploie ses missions auprès de toutes les organisations du littoral nord catalan.",
+    "Le Barcarès (66), station balnéaire méditerranéenne célèbre pour le Lydia (seul paquebot ensablé au monde), fait partie de la Communauté de communes Perpignan Méditerranée Métropole. Tissu TPE tourisme, PME hôtellerie-restauration, commerces saisonniers, activités nautiques. Axion-IA y déploie son expertise pour toutes les organisations du littoral nord catalan.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Barcarès (66). Nous accompagnons tous types d'activités : TPE tourisme balnéaire, PME hôtellerie-restauration, commerces saisonniers, activités nautiques, indépendants et professions libérales du littoral nord catalan.",
   directAnswerEn:

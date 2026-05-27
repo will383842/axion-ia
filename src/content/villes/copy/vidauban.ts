@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VIDAUBAN_COPY: VilleCopy = {
   pitchFr:
-    "Vidauban (83), commune du centre-Var au cœur du vignoble Côtes de Provence, compte plus de 12 600 habitants. Viticulture historique de grands crus, agriculture, zones d'activités, tissu de TPE artisanales, PME viticoles et agroalimentaires, commerces et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Vidauban (83), commune du centre-Var au cœur du vignoble Côtes de Provence, compte plus de 12 600 habitants. Viticulture historique de grands crus, agriculture, zones d'activités, tissu de TPE artisanales, PME viticoles et agroalimentaires, commerces et services. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Vidauban (83), commune du centre-Var au cœur du vignoble Côtes de Provence, compte plus de 12 600 habitants. Viticulture historique de grands crus, agriculture, zones d'activités, tissu de TPE artisanales, PME viticoles et agroalimentaires, commerces et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Vidauban (83), commune du centre-Var au cœur du vignoble Côtes de Provence, compte plus de 12 600 habitants. Viticulture historique de grands crus, agriculture, zones d'activités, tissu de TPE artisanales, PME viticoles et agroalimentaires, commerces et services. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vidauban (83). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME viticoles Côtes de Provence et grands crus, agroalimentaires, professions libérales et services du centre-Var.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const VIDAUBAN_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les caves coopératives, négociants et PME agroalimentaires du vignoble Vidauban : automatisation chaîne production, traçabilité, gestion qualité, optimisation supply chain et relation client B2B export.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Vidauban ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Vidauban  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {

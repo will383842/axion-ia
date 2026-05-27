@@ -11,9 +11,9 @@ export const VITROLLES_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Vitrolles, une ville dynamique avec des entreprises comme Geodis et DHL. Notre cabinet national se déplace pour optimiser vos processus grâce à l'IA.",
   directAnswerFr:
-    "Axion-IA se déplace à Vitrolles pour accompagner les entreprises locales dans l'optimisation de leurs processus. Avec des acteurs économiques tels que Geodis et Kuehne + Nagel, Vitrolles est un centre stratégique pour le transport et l'entreposage. Notre équipe propose des audits à partir de 490 € HT et des interventions dès 590 € HT, adaptés aux besoins spécifiques de chaque secteur.",
+    "Axion-IA se déplace à Vitrolles pour accompagner les entreprises locales dans l'optimisation de leurs processus. Avec des acteurs économiques tels que Geodis et Kuehne + Nagel, Vitrolles est un centre stratégique pour le transport et l'entreposage. Notre équipe propose des audits et des interventions, adaptés aux besoins spécifiques de chaque secteur.",
   directAnswerEn:
-    "Axion-IA se déplace à Vitrolles pour accompagner les entreprises locales dans l'optimisation de leurs processus. Avec des acteurs économiques tels que Geodis et Kuehne + Nagel, Vitrolles est un centre stratégique pour le transport et l'entreposage. Notre équipe propose des audits à partir de 490 € HT et des interventions dès 590 € HT, adaptés aux besoins spécifiques de chaque secteur.",
+    "Axion-IA se déplace à Vitrolles pour accompagner les entreprises locales dans l'optimisation de leurs processus. Avec des acteurs économiques tels que Geodis et Kuehne + Nagel, Vitrolles est un centre stratégique pour le transport et l'entreposage. Notre équipe propose des audits et des interventions, adaptés aux besoins spécifiques de chaque secteur.",
   seoHook: "transports terrestres & entreposage",
   ecosystemFr:
     "Vitrolles accueille des géants du transport comme Geodis et DHL. La ville est également proche de la ZAC de l'Anjoly, un pôle d'activité clé pour les entreprises de la région.",

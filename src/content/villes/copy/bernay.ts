@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BERNAY_COPY: VilleCopy = {
   pitchFr:
-    "Bernay (27), sous-préfecture de l'Eure en Normandie, ville d'art et d'histoire connue pour son abbatiale romane et ses brocantes réputées. Tissu TPE artisans, PME agriculture et agroalimentaire, commerces centre-ville, antiquaires, services aux entreprises. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Bernay (27), sous-préfecture de l'Eure en Normandie, ville d'art et d'histoire connue pour son abbatiale romane et ses brocantes réputées. Tissu TPE artisans, PME agriculture et agroalimentaire, commerces centre-ville, antiquaires, services aux entreprises. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Bernay (27), sous-préfecture de l'Eure en Normandie, ville d'art et d'histoire connue pour son abbatiale romane et ses brocantes réputées. Tissu TPE artisans, PME agriculture et agroalimentaire, commerces centre-ville, antiquaires, services aux entreprises. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Bernay (27), sous-préfecture de l'Eure en Normandie, ville d'art et d'histoire connue pour son abbatiale romane et ses brocantes réputées. Tissu TPE artisans, PME agriculture et agroalimentaire, commerces centre-ville, antiquaires, services aux entreprises. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bernay (27). Nous accompagnons tous types d'activités : TPE artisans, PME agriculture et agroalimentaire Pays de Bernay, commerces et antiquaires centre-ville, professions libérales, indépendants et services aux entreprises de l'Intercom Bernay Terres de Normandie.",
   directAnswerEn:

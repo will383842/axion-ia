@@ -9,9 +9,9 @@ export const ELBEUF_COPY: VilleCopy = {
   pitchEn:
     "Elbeuf (76), commune de la boucle de Seine en Seine-Maritime, est historiquement connue pour son industrie du drap, aujourd'hui reconvertie. Membre de la Métropole Rouen Normandie, tissu TPE artisans, PME industrielles reconverties, commerces, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de la boucle de Seine.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Elbeuf (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles reconverties, professions libérales, services aux entreprises de la boucle de Seine (Métropole Rouen Normandie). Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Elbeuf (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles reconverties, professions libérales, services aux entreprises de la boucle de Seine (Métropole Rouen Normandie). Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Elbeuf (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles reconverties, professions libérales, services aux entreprises de la boucle de Seine (Métropole Rouen Normandie). Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Elbeuf (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles reconverties, professions libérales, services aux entreprises de la boucle de Seine (Métropole Rouen Normandie). Audit Flash sur mesure.",
   seoHook: "industrie reconvertie & boucle de Seine",
   ecosystemFr:
     "Elbeuf est dans la boucle de Seine, membre de la Métropole Rouen Normandie. Ancienne capitale du drap reconvertie vers l'industrie légère et les services. Tissu TPE artisans, PME industrielles, commerces de centre-ville et professions libérales.",
@@ -61,7 +61,7 @@ export const ELBEUF_COPY: VilleCopy = {
     },
     {
       q: "Quel budget prévoir pour un audit IA à Elbeuf ?",
-      a: "L'audit Flash démarre à 490 € HT pour les TPE. Pour les PME industrielles, l'audit stratégique complet est adapté au périmètre. Tarifs publics, pas de devis opaque.",
+      a: "L'audit Flash débute selon la taille de votre activité pour les TPE. Pour les PME industrielles, l'audit stratégique complet est adapté au périmètre. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Comment se passe une mission depuis Rouen ou Paris ?",

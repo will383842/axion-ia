@@ -11,9 +11,9 @@ export const CONFLANS_SAINTE_HONORINE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Conflans-Sainte-Honorine pour accompagner les entreprises locales dans l'intégration de l'IA. Cette ville, proche de Paris, est un centre d'activités avec des entreprises telles que Renault et SNCF.",
   directAnswerFr:
-    "À Conflans-Sainte-Honorine, Axion-IA propose des services adaptés aux entreprises du commerce de détail et de la construction. Avec des entités comme Renault et la Zone d'Activités des Boutries, notre cabinet se déplace pour optimiser vos processus. Nos audits commencent à 490 € HT, et nos interventions à partir de 590 € HT.",
+    "À Conflans-Sainte-Honorine, Axion-IA propose des services adaptés aux entreprises du commerce de détail et de la construction. Avec des entités comme Renault et la Zone d'Activités des Boutries, notre cabinet se déplace pour optimiser vos processus. Nos audits commencent à et nos interventions.",
   directAnswerEn:
-    "À Conflans-Sainte-Honorine, Axion-IA propose des services adaptés aux entreprises du commerce de détail et de la construction. Avec des entités comme Renault et la Zone d'Activités des Boutries, notre cabinet se déplace pour optimiser vos processus. Nos audits commencent à 490 € HT, et nos interventions à partir de 590 € HT.",
+    "À Conflans-Sainte-Honorine, Axion-IA propose des services adaptés aux entreprises du commerce de détail et de la construction. Avec des entités comme Renault et la Zone d'Activités des Boutries, notre cabinet se déplace pour optimiser vos processus. Nos audits commencent à et nos interventions.",
   seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Conflans-Sainte-Honorine abrite Renault et la SNCF. Ces grands groupes, associés à la Zone d'Activités des Boutries, forment un tissu économique diversifié où Axion-IA propose ses services IA.",

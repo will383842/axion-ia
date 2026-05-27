@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const BLOTZHEIM_COPY: VilleCopy = {
   pitchFr:
-    "Blotzheim (68), commune frontalière du Haut-Rhin, 5 282 habitants, est située aux portes de Bâle et à proximité immédiate de l'aéroport EuroAirport Bâle-Mulhouse-Fribourg. La commune bénéficie d'un statut transfrontalier privilégié avec un tissu de TPE/PME industrie aéronautique, logistique, sous-traitance suisse, services frontaliers et commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Blotzheim (68), commune frontalière du Haut-Rhin, 5 282 habitants, est située aux portes de Bâle et à proximité immédiate de l'aéroport EuroAirport Bâle-Mulhouse-Fribourg. La commune bénéficie d'un statut transfrontalier privilégié avec un tissu de TPE/PME industrie aéronautique, logistique, sous-traitance suisse, services frontaliers et commerces. Axion-IA répond aux besoins des activités professionnelles présentes.",
   pitchEn:
-    "Blotzheim (68), commune frontalière du Haut-Rhin, 5 282 habitants, est située aux portes de Bâle et à proximité immédiate de l'aéroport EuroAirport Bâle-Mulhouse-Fribourg. La commune bénéficie d'un statut transfrontalier privilégié avec un tissu de TPE/PME industrie aéronautique, logistique, sous-traitance suisse, services frontaliers et commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Blotzheim (68), commune frontalière du Haut-Rhin, 5 282 habitants, est située aux portes de Bâle et à proximité immédiate de l'aéroport EuroAirport Bâle-Mulhouse-Fribourg. La commune bénéficie d'un statut transfrontalier privilégié avec un tissu de TPE/PME industrie aéronautique, logistique, sous-traitance suisse, services frontaliers et commerces. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Blotzheim (68). Nous accompagnons TPE et PME : industriels aéronautiques, logisticiens, sous-traitants des industries suisses, prestataires de services frontaliers FR/CH/DE et commerçants. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Blotzheim (68). Nous accompagnons TPE et PME : industriels aéronautiques, logisticiens, sous-traitants des industries suisses, prestataires de services frontaliers FR/CH/DE et commerçants. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Blotzheim (68). Nous accompagnons TPE et PME : industriels aéronautiques, logisticiens, sous-traitants des industries suisses, prestataires de services frontaliers FR/CH/DE et commerçants. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Blotzheim (68). Nous accompagnons TPE et PME : industriels aéronautiques, logisticiens, sous-traitants des industries suisses, prestataires de services frontaliers FR/CH/DE et commerçants. Audit Flash sur mesure.",
   ecosystemFr:
     "Blotzheim est une commune frontalière de Saint-Louis Agglomération à la jonction des trois frontières (France, Suisse, Allemagne). Son économie est portée par la zone d'activité de l'EuroAirport (maintenance aéronautique, fret, logistique), la sous-traitance pour les groupes pharmaceutiques et chimiques bâlois, les services aux travailleurs frontaliers, l'artisanat et un commerce de proximité dynamisé par la clientèle suisse.",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const BLOTZHEIM_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Blotzheim et sur toute Saint-Louis Agglomération (Saint-Louis, Hégenheim, Hésingue, Village-Neuf). Position trinationale FR/CH/DE, accès direct via A35 et proximité immédiate de l'EuroAirport facilitant nos missions consultants.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Blotzheim ?",
+      q: "Tarifs audit IA à Blotzheim  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de la zone EuroAirport et du tissu frontalier, il identifie les cas d'usage IA à fort ROI pour votre activité aéronautique, logistique ou sous-traitance.",
     },
     {

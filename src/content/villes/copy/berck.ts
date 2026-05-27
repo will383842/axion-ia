@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BERCK_COPY: VilleCopy = {
   pitchFr:
-    "Berck (62), station balnéaire du Pas-de-Calais sur la Côte d'Opale (région Hauts-de-France), est réputée pour son hôpital maritime historique et sa plage immense. Tissu TPE tourisme et hôtellerie-restauration, PME santé et rééducation, commerces de centre-ville, professions paramédicales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Berck (62), station balnéaire du Pas-de-Calais sur la Côte d'Opale (région Hauts-de-France), est réputée pour son hôpital maritime historique et sa plage immense. Tissu TPE tourisme et hôtellerie-restauration, PME santé et rééducation, commerces de centre-ville, professions paramédicales. Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Berck (62), station balnéaire du Pas-de-Calais sur la Côte d'Opale (région Hauts-de-France), est réputée pour son hôpital maritime historique et sa plage immense. Tissu TPE tourisme et hôtellerie-restauration, PME santé et rééducation, commerces de centre-ville, professions paramédicales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Berck (62), station balnéaire du Pas-de-Calais sur la Côte d'Opale (région Hauts-de-France), est réputée pour son hôpital maritime historique et sa plage immense. Tissu TPE tourisme et hôtellerie-restauration, PME santé et rééducation, commerces de centre-ville, professions paramédicales. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Berck (62). Nous accompagnons tous types d'activités : TPE hôtellerie-restauration et tourisme balnéaire, PME santé et rééducation, commerçants du centre-ville, professions paramédicales, prestataires saisonniers de la Côte d'Opale.",
   directAnswerEn:

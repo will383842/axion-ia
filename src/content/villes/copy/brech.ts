@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const BRECH_COPY: VilleCopy = {
   pitchFr:
-    "Brech (56), commune du pays d'Auray aux portes du sanctuaire de Sainte-Anne-d'Auray, s'appuie sur un tissu économique mêlant tourisme religieux, artisanat, agriculture et services de proximité. TPE artisanales, PME touristiques, commerces, exploitants agricoles et professions libérales composent son économie. Axion-IA couvre l'ensemble des activités professionnelles présentes du pays d'Auray.",
+    "Brech (56), commune du pays d'Auray aux portes du sanctuaire de Sainte-Anne-d'Auray, s'appuie sur un tissu économique mêlant tourisme religieux, artisanat, agriculture et services de proximité. TPE artisanales, PME touristiques, commerces, exploitants agricoles et professions libérales composent son économie. Axion-IA accompagne tout le tissu professionnel local du pays d'Auray.",
   pitchEn:
-    "Brech (56), commune du pays d'Auray aux portes du sanctuaire de Sainte-Anne-d'Auray, s'appuie sur un tissu économique mêlant tourisme religieux, artisanat, agriculture et services de proximité. TPE artisanales, PME touristiques, commerces, exploitants agricoles et professions libérales composent son économie. Axion-IA couvre l'ensemble des activités professionnelles présentes du pays d'Auray.",
+    "Brech (56), commune du pays d'Auray aux portes du sanctuaire de Sainte-Anne-d'Auray, s'appuie sur un tissu économique mêlant tourisme religieux, artisanat, agriculture et services de proximité. TPE artisanales, PME touristiques, commerces, exploitants agricoles et professions libérales composent son économie. Axion-IA accompagne tout le tissu professionnel local du pays d'Auray.",
   seoHook: "tourisme, artisanat & agriculture",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Brech (56). Nous accompagnons tous types d'activités : TPE artisanales, PME touristiques, commerces, exploitants agricoles et professions libérales du pays d'Auray. Audit Flash dès 490 € HT, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Brech (56). Nous accompagnons tous types d'activités : TPE artisanales, PME touristiques, commerces, exploitants agricoles et professions libérales du pays d'Auray. Audit Flash sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Brech (56). Nous accompagnons tous types d'activités : TPE artisanales, PME touristiques, commerces, exploitants agricoles et professions libérales du pays d'Auray. Audit Flash dès 490 € HT, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Brech (56). Nous accompagnons tous types d'activités : TPE artisanales, PME touristiques, commerces, exploitants agricoles et professions libérales du pays d'Auray. Audit Flash sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Brech est une commune résidentielle et rurale du pays d'Auray, connue pour sa proximité avec le pèlerinage de Sainte-Anne-d'Auray, premier lieu de pèlerinage breton. L'économie locale repose sur le tourisme religieux et culturel, l'agriculture (élevage, maraîchage), l'artisanat BTP, les services aux particuliers et le commerce. La proximité d'Auray et du golfe du Morbihan renforce l'attractivité économique du secteur.",
   ecosystemEn:
@@ -56,7 +56,7 @@ export const BRECH_COPY: VilleCopy = {
       a: "Nous proposons l'Audit Flash dès 490 € HT, des interventions formation sur site, l'implémentation d'outils IA métier (réservation, accueil visiteurs, gestion flux) et du coaching individuel pour les dirigeants du secteur touristique.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Brech ?",
+      q: "Quel est le tarif d'un audit IA à Brech  ?",
       a: "L'Audit Flash Axion-IA démarre à 490 € HT. Adapté aux TPE et PME brécharoises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {

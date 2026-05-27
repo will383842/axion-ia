@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const AVION_COPY: VilleCopy = {
   pitchFr:
-    "Avion (62), commune de l'agglomération de Lens dans le bassin minier du Pas-de-Calais (patrimoine UNESCO), présente un tissu de TPE artisanales, PME tertiaires et de services, commerces de proximité et acteurs de la reconversion économique post-minière. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglo Lens-Liévin.",
+    "Avion (62), commune de l'agglomération de Lens dans le bassin minier du Pas-de-Calais (patrimoine UNESCO), présente un tissu de TPE artisanales, PME tertiaires et de services, commerces de proximité et acteurs de la reconversion économique post-minière. Axion-IA répond aux besoins de toutes les entreprises de l'agglo Lens-Liévin.",
   pitchEn:
-    "Avion (62), commune de l'agglomération de Lens dans le bassin minier du Pas-de-Calais (patrimoine UNESCO), présente un tissu de TPE artisanales, PME tertiaires et de services, commerces de proximité et acteurs de la reconversion économique post-minière. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglo Lens-Liévin.",
+    "Avion (62), commune de l'agglomération de Lens dans le bassin minier du Pas-de-Calais (patrimoine UNESCO), présente un tissu de TPE artisanales, PME tertiaires et de services, commerces de proximité et acteurs de la reconversion économique post-minière. Axion-IA répond aux besoins de toutes les entreprises de l'agglo Lens-Liévin.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Avion (62). Nous accompagnons tous types d'activités : TPE artisans, PME de services et tertiaires, commerçants, indépendants, professions libérales et acteurs de la reconversion économique de l'agglomération Lens-Liévin / bassin minier.",
   directAnswerEn:

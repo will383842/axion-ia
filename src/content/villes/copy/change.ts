@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHANGE_COPY: VilleCopy = {
   pitchFr:
-    "Changé (72), commune résidentielle de l'agglomération mancelle au nord-est du Mans en Sarthe, accueille un tissu économique de proximité où coexistent TPE artisans, PME de services, commerces, professions libérales et prestataires du bassin manceau. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Changé (72), commune résidentielle de l'agglomération mancelle au nord-est du Mans en Sarthe, accueille un tissu économique de proximité où coexistent TPE artisans, PME de services, commerces, professions libérales et prestataires du bassin manceau. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "Changé (72), commune résidentielle de l'agglomération mancelle au nord-est du Mans en Sarthe, accueille un tissu économique de proximité où coexistent TPE artisans, PME de services, commerces, professions libérales et prestataires du bassin manceau. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Changé (72), commune résidentielle de l'agglomération mancelle au nord-est du Mans en Sarthe, accueille un tissu économique de proximité où coexistent TPE artisans, PME de services, commerces, professions libérales et prestataires du bassin manceau. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Changé (72). Nous accompagnons tous types d'activités : TPE artisans, PME de services, commerçants, professions libérales (santé, juridique, expertise) et prestataires du nord-est de l'agglomération mancelle.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LONGUEAU_COPY: VilleCopy = {
   pitchFr:
-    "Longueau (80), commune limitrophe d'Amiens dans la Somme, nœud ferroviaire historique SNCF (gare de triage). Tissu de TPE artisans, PME logistique et transport, sous-traitants ferroviaires, commerces de proximité et services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération amiénoise.",
+    "Longueau (80), commune limitrophe d'Amiens dans la Somme, nœud ferroviaire historique SNCF (gare de triage). Tissu de TPE artisans, PME logistique et transport, sous-traitants ferroviaires, commerces de proximité et services aux entreprises. Axion-IA répond aux besoins des activités professionnelles présentes de l'agglomération amiénoise.",
   pitchEn:
-    "Longueau (80), commune limitrophe d'Amiens dans la Somme, nœud ferroviaire historique SNCF (gare de triage). Tissu de TPE artisans, PME logistique et transport, sous-traitants ferroviaires, commerces de proximité et services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération amiénoise.",
+    "Longueau (80), commune limitrophe d'Amiens dans la Somme, nœud ferroviaire historique SNCF (gare de triage). Tissu de TPE artisans, PME logistique et transport, sous-traitants ferroviaires, commerces de proximité et services aux entreprises. Axion-IA répond aux besoins des activités professionnelles présentes de l'agglomération amiénoise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Longueau (80). Nous accompagnons tous types d'activités : TPE artisans, PME logistique et transport, sous-traitants ferroviaires SNCF, commerçants, indépendants et services aux entreprises de cette commune stratégique de l'agglomération amiénoise.",
   directAnswerEn:

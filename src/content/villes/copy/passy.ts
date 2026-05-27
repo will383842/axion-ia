@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PASSY_COPY: VilleCopy = {
   pitchFr:
-    "Passy (74), commune de la vallée de l'Arve en Haute-Savoie, est implantée face au Mont-Blanc avec son célèbre plateau d'Assy (sanatoriums historiques, église d'art moderne classée). Tissu tourisme montagne Mont-Blanc, hôtellerie et hébergement, patrimoine culturel, TPE artisanat, commerces de proximité. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Passy (74), commune de la vallée de l'Arve en Haute-Savoie, est implantée face au Mont-Blanc avec son célèbre plateau d'Assy (sanatoriums historiques, église d'art moderne classée). Tissu tourisme montagne Mont-Blanc, hôtellerie et hébergement, patrimoine culturel, TPE artisanat, commerces de proximité. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "Passy (74), commune de la vallée de l'Arve en Haute-Savoie, est implantée face au Mont-Blanc avec son célèbre plateau d'Assy (sanatoriums historiques, église d'art moderne classée). Tissu tourisme montagne Mont-Blanc, hôtellerie et hébergement, patrimoine culturel, TPE artisanat, commerces de proximité. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Passy (74), commune de la vallée de l'Arve en Haute-Savoie, est implantée face au Mont-Blanc avec son célèbre plateau d'Assy (sanatoriums historiques, église d'art moderne classée). Tissu tourisme montagne Mont-Blanc, hôtellerie et hébergement, patrimoine culturel, TPE artisanat, commerces de proximité. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Passy (74). Nous accompagnons TPE et PME : acteurs tourisme montagne Mont-Blanc, hébergeurs et hôteliers de la vallée de l'Arve, artisans du bâtiment, commerçants, acteurs patrimoine culturel plateau d'Assy.",
   directAnswerEn:
@@ -52,7 +52,7 @@ export const PASSY_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Passy et dans toute la vallée de l'Arve (Sallanches à 5 min, Chamonix à 20 min, Cluses à 25 min). Déplacements depuis Annecy (50 min) ou Genève (1h10).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Passy ?",
+      q: "Combien coûte un audit IA à Passy  ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Tarifs publics consultables sur notre site, adaptés aux TPE et PME de la vallée de l'Arve.",
     },
     {

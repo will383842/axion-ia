@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const JANZE_COPY: VilleCopy = {
   pitchFr:
-    "Janzé (35), commune dynamique du sud-est de Rennes en Ille-et-Vilaine, est connue pour son marché aux volailles (label rouge poulet de Janzé) et son tissu agroalimentaire. TPE et PME agricoles, éleveurs label rouge, ateliers agroalimentaires, artisans du bâtiment, commerces de centre-bourg, professions libérales et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Janzé (35), commune dynamique du sud-est de Rennes en Ille-et-Vilaine, est connue pour son marché aux volailles (label rouge poulet de Janzé) et son tissu agroalimentaire. TPE et PME agricoles, éleveurs label rouge, ateliers agroalimentaires, artisans du bâtiment, commerces de centre-bourg, professions libérales et services. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Janzé (35), commune dynamique du sud-est de Rennes en Ille-et-Vilaine, est connue pour son marché aux volailles (label rouge poulet de Janzé) et son tissu agroalimentaire. TPE et PME agricoles, éleveurs label rouge, ateliers agroalimentaires, artisans du bâtiment, commerces de centre-bourg, professions libérales et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Janzé (35), commune dynamique du sud-est de Rennes en Ille-et-Vilaine, est connue pour son marché aux volailles (label rouge poulet de Janzé) et son tissu agroalimentaire. TPE et PME agricoles, éleveurs label rouge, ateliers agroalimentaires, artisans du bâtiment, commerces de centre-bourg, professions libérales et services. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Janzé (35). Nous accompagnons TPE et PME : éleveurs label rouge poulet de Janzé, ateliers agroalimentaires, artisans du bâtiment, commerces de centre-bourg, professions libérales. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Janzé (35). Nous accompagnons TPE et PME : éleveurs label rouge poulet de Janzé, ateliers agroalimentaires, artisans du bâtiment, commerces de centre-bourg, professions libérales. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Janzé (35). Nous accompagnons TPE et PME : éleveurs label rouge poulet de Janzé, ateliers agroalimentaires, artisans du bâtiment, commerces de centre-bourg, professions libérales. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Janzé (35). Nous accompagnons TPE et PME : éleveurs label rouge poulet de Janzé, ateliers agroalimentaires, artisans du bâtiment, commerces de centre-bourg, professions libérales. Audit Flash sur mesure.",
   seoHook: "proche rennes",
   ecosystemFr:
     "Janzé est une commune du sud-est de Rennes, en Ille-et-Vilaine, connue pour son marché aux volailles et sa filière label rouge poulet de Janzé. Tissu TPE/PME : élevage label rouge, agroalimentaire, artisanat du bâtiment, commerces de centre-bourg, services à la personne, professions libérales.",
@@ -52,7 +52,7 @@ export const JANZE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Janzé et dans tout le sud-est de Rennes (Châteaugiron, Retiers, La Guerche-de-Bretagne, Argentré-du-Plessis). Rennes à 30 min en voiture.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Janzé ?",
+      q: "Tarifs audit IA à Janzé  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables en ligne, adaptés aux TPE éleveurs label rouge, ateliers agroalimentaires et artisans de Janzé.",
     },
     {

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PACE_COPY: VilleCopy = {
   pitchFr:
-    "Pacé (35), commune résidentielle dynamique à l'ouest de Rennes Métropole, en croissance démographique continue. Tissu TPE/PME de services, artisanat, commerces de proximité et activités tertiaires. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Pacé (35), commune résidentielle dynamique à l'ouest de Rennes Métropole, en croissance démographique continue. Tissu TPE/PME de services, artisanat, commerces de proximité et activités tertiaires. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Pacé (35), commune résidentielle dynamique à l'ouest de Rennes Métropole, en croissance démographique continue. Tissu TPE/PME de services, artisanat, commerces de proximité et activités tertiaires. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Pacé (35), commune résidentielle dynamique à l'ouest de Rennes Métropole, en croissance démographique continue. Tissu TPE/PME de services, artisanat, commerces de proximité et activités tertiaires. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pacé (35). Nous accompagnons tous types d'activités : TPE et PME de services, artisans, commerçants, professions libérales, indépendants et activités tertiaires de l'ouest de la métropole rennaise.",
   directAnswerEn:

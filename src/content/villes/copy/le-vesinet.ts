@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_VESINET_COPY: VilleCopy = {
   pitchFr:
-    "Le Vésinet (78), ville-parc des Yvelines fondée en 1875 avec ses lacs et pelouses classés, est l'une des communes résidentielles les plus prisées de l'ouest parisien. Tissu de TPE/PME tertiaires, professions libérales haut de gamme, commerces de centre-ville, services aux particuliers. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Le Vésinet (78), ville-parc des Yvelines fondée en 1875 avec ses lacs et pelouses classés, est l'une des communes résidentielles les plus prisées de l'ouest parisien. Tissu de TPE/PME tertiaires, professions libérales haut de gamme, commerces de centre-ville, services aux particuliers. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Le Vésinet (78), ville-parc des Yvelines fondée en 1875 avec ses lacs et pelouses classés, est l'une des communes résidentielles les plus prisées de l'ouest parisien. Tissu de TPE/PME tertiaires, professions libérales haut de gamme, commerces de centre-ville, services aux particuliers. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Le Vésinet (78), ville-parc des Yvelines fondée en 1875 avec ses lacs et pelouses classés, est l'une des communes résidentielles les plus prisées de l'ouest parisien. Tissu de TPE/PME tertiaires, professions libérales haut de gamme, commerces de centre-ville, services aux particuliers. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Vésinet (78). Nous accompagnons tous types d'activités : TPE et PME tertiaires, professions libérales haut de gamme (santé, juridique, patrimoine), commerces de centre-ville, agences immobilières prestige, indépendants et services aux particuliers de cette ville-parc de l'ouest parisien.",
   directAnswerEn:

@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const VENTABREN_COPY: VilleCopy = {
   pitchFr:
-    "Ventabren (13), commune perchée à l'ouest d'Aix-en-Provence proche du célèbre aqueduc de Roquefavour, conjugue cadre résidentiel haut de gamme, tissu de TPE artisans, PME tertiaires et professions libérales travaillant à Aix, Marseille et au technopôle de l'Arbois. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin aixois ouest.",
+    "Ventabren (13), commune perchée à l'ouest d'Aix-en-Provence proche du célèbre aqueduc de Roquefavour, conjugue cadre résidentiel haut de gamme, tissu de TPE artisans, PME tertiaires et professions libérales travaillant à Aix, Marseille et au technopôle de l'Arbois. Axion-IA couvre les activités professionnelles du bassin du bassin aixois ouest.",
   pitchEn:
-    "Ventabren (13), commune perchée à l'ouest d'Aix-en-Provence proche du célèbre aqueduc de Roquefavour, conjugue cadre résidentiel haut de gamme, tissu de TPE artisans, PME tertiaires et professions libérales travaillant à Aix, Marseille et au technopôle de l'Arbois. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin aixois ouest.",
+    "Ventabren (13), commune perchée à l'ouest d'Aix-en-Provence proche du célèbre aqueduc de Roquefavour, conjugue cadre résidentiel haut de gamme, tissu de TPE artisans, PME tertiaires et professions libérales travaillant à Aix, Marseille et au technopôle de l'Arbois. Axion-IA couvre les activités professionnelles du bassin du bassin aixois ouest.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ventabren (13). Nous accompagnons TPE artisans, professions libérales, PME tertiaires, commerçants et exploitations viticoles de l'ouest aixois. Audit Flash dès 490 € HT, sans engagement.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ventabren (13). Nous accompagnons TPE artisans, professions libérales, PME tertiaires, commerçants et exploitations viticoles de l'ouest aixois. Audit Flash sur mesure, sans engagement.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ventabren (13). Nous accompagnons TPE artisans, professions libérales, PME tertiaires, commerçants et exploitations viticoles de l'ouest aixois. Audit Flash dès 490 € HT, sans engagement.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ventabren (13). Nous accompagnons TPE artisans, professions libérales, PME tertiaires, commerçants et exploitations viticoles de l'ouest aixois. Audit Flash sur mesure, sans engagement.",
   seoHook: "TPE, PME & libéraux ouest aixois",
   ecosystemFr:
     "Ventabren est une commune résidentielle perchée à l'ouest d'Aix-en-Provence, célèbre pour son aqueduc de Roquefavour et son cadre provençal préservé. Économie locale de TPE artisans, PME tertiaires, professions libérales, commerces, viticulture AOC Coteaux d'Aix et oléiculture. Proximité immédiate gare TGV Aix et technopôle de l'Arbois (cleantech, environnement).",
@@ -52,7 +52,7 @@ export const VENTABREN_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Ventabren et dans tout l'ouest aixois (Coudoux à 5 min, Velaux, Éguilles, Aix à 15 min). Proximité immédiate gare TGV Aix-en-Provence et technopôle de l'Arbois.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Ventabren ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Ventabren  ?",
       a: "L'Audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, professions libérales, PME tertiaires et viticulteurs ventabrennois. Tarifs publics, sans engagement.",
     },
     {

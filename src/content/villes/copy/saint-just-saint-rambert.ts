@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_JUST_SAINT_RAMBERT_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Just-Saint-Rambert (42), commune issue de la fusion de Saint-Just-sur-Loire et Saint-Rambert-sur-Loire (Loire), est intégrée à Loire Forez Agglo. Position plaine du Forez à proximité de Saint-Étienne. Tissu PME tertiaires et industrielles, TPE artisans BTP, agriculture forézienne, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Saint-Just-Saint-Rambert (42), commune issue de la fusion de Saint-Just-sur-Loire et Saint-Rambert-sur-Loire (Loire), est intégrée à Loire Forez Agglo. Position plaine du Forez à proximité de Saint-Étienne. Tissu PME tertiaires et industrielles, TPE artisans BTP, agriculture forézienne, commerces. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Saint-Just-Saint-Rambert (42), commune issue de la fusion de Saint-Just-sur-Loire et Saint-Rambert-sur-Loire (Loire), est intégrée à Loire Forez Agglo. Position plaine du Forez à proximité de Saint-Étienne. Tissu PME tertiaires et industrielles, TPE artisans BTP, agriculture forézienne, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Saint-Just-Saint-Rambert (42), commune issue de la fusion de Saint-Just-sur-Loire et Saint-Rambert-sur-Loire (Loire), est intégrée à Loire Forez Agglo. Position plaine du Forez à proximité de Saint-Étienne. Tissu PME tertiaires et industrielles, TPE artisans BTP, agriculture forézienne, commerces. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Just-Saint-Rambert (42). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Loire Forez Agglo, TPE artisans BTP, commerçants, agriculteurs plaine du Forez, indépendants, professions libérales et services aux entreprises foréziennes.",
   directAnswerEn:

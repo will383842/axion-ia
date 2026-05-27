@@ -3,13 +3,13 @@ import type { VilleCopy } from "./types";
 
 export const LA_FARLEDE_COPY: VilleCopy = {
   pitchFr:
-    "La Farlède (83, Var), commune de la vallée du Gapeau membre de la Métropole Toulon-Provence-Méditerranée, accueille TPE artisanales, PME maraîchères et agroalimentaires, commerces, zones d'activités et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations de la vallée du Gapeau.",
+    "La Farlède (83, Var), commune de la vallée du Gapeau membre de la Métropole Toulon-Provence-Méditerranée, accueille TPE artisanales, PME maraîchères et agroalimentaires, commerces, zones d'activités et professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales de la vallée du Gapeau.",
   pitchEn:
-    "La Farlède (83, Var), commune de la vallée du Gapeau membre de la Métropole Toulon-Provence-Méditerranée, accueille TPE artisanales, PME maraîchères et agroalimentaires, commerces, zones d'activités et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations de la vallée du Gapeau.",
+    "La Farlède (83, Var), commune de la vallée du Gapeau membre de la Métropole Toulon-Provence-Méditerranée, accueille TPE artisanales, PME maraîchères et agroalimentaires, commerces, zones d'activités et professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales de la vallée du Gapeau.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Farlède (83). Nous accompagnons TPE artisanales, PME maraîchères, commerces et professions libérales de la vallée du Gapeau (agglo toulonnaise). Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Farlède (83). Nous accompagnons TPE artisanales, PME maraîchères, commerces et professions libérales de la vallée du Gapeau (agglo toulonnaise). Audit Flash sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Farlède (83). Nous accompagnons TPE artisanales, PME maraîchères, commerces et professions libérales de la vallée du Gapeau (agglo toulonnaise). Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Farlède (83). Nous accompagnons TPE artisanales, PME maraîchères, commerces et professions libérales de la vallée du Gapeau (agglo toulonnaise). Audit Flash sur mesure, intervention sur site ou en visio.",
   seoHook: "vallée du",
   ecosystemFr:
     "La Farlède est une commune de la vallée du Gapeau au pied du Coudon, membre de la Métropole Toulon-Provence-Méditerranée. Tissu de TPE artisanales, PME maraîchères et agroalimentaires (tradition Solliès), commerces, zones d'activités (Roumagayrol, Garrigues), professions libérales et résidentiel péri-urbain.",
@@ -50,7 +50,7 @@ export const LA_FARLEDE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à La Farlède et dans toute la vallée du Gapeau (Solliès-Pont, Solliès-Ville, La Crau, La Garde, Cuers). Déplacements sur site ou sessions en visio.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à La Farlède ?",
+      q: "Tarifs audit IA à La Farlède  : quel budget prévoir ?",
       a: "L'Audit Flash Axion-IA démarre à 490 € HT pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME varoises. Tarifs publics.",
     },
     {

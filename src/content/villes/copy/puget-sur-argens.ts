@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const PUGET_SUR_ARGENS_COPY: VilleCopy = {
   pitchFr:
-    "Puget-sur-Argens (83), porte de l'Estérel et de l'agglomération de Fréjus-Saint-Raphaël, est un pôle logistique et résidentiel desservi par l'A8 sortie 37. Tissu de TPE artisans, PME logistique, commerce et services, ainsi que tourisme balnéaire de proximité. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Puget-sur-Argens (83), porte de l'Estérel et de l'agglomération de Fréjus-Saint-Raphaël, est un pôle logistique et résidentiel desservi par l'A8 sortie 37. Tissu de TPE artisans, PME logistique, commerce et services, ainsi que tourisme balnéaire de proximité. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Puget-sur-Argens (83), porte de l'Estérel et de l'agglomération de Fréjus-Saint-Raphaël, est un pôle logistique et résidentiel desservi par l'A8 sortie 37. Tissu de TPE artisans, PME logistique, commerce et services, ainsi que tourisme balnéaire de proximité. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Puget-sur-Argens (83), porte de l'Estérel et de l'agglomération de Fréjus-Saint-Raphaël, est un pôle logistique et résidentiel desservi par l'A8 sortie 37. Tissu de TPE artisans, PME logistique, commerce et services, ainsi que tourisme balnéaire de proximité. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Puget-sur-Argens (83). Nous accompagnons TPE artisans, PME logistique, commerçants, professionnels du tourisme et services de l'agglomération Var-Estérel. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Puget-sur-Argens (83). Nous accompagnons TPE artisans, PME logistique, commerçants, professionnels du tourisme et services de l'agglomération Var-Estérel. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Puget-sur-Argens (83). Nous accompagnons TPE artisans, PME logistique, commerçants, professionnels du tourisme et services de l'agglomération Var-Estérel. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Puget-sur-Argens (83). Nous accompagnons TPE artisans, PME logistique, commerçants, professionnels du tourisme et services de l'agglomération Var-Estérel. Audit Flash sur mesure.",
   seoHook: "logistique transport & artisanat",
   ecosystemFr:
     "Puget-sur-Argens est un pôle économique mixte de l'agglomération Var-Estérel. Position stratégique sortie A8 favorisant la logistique, le commerce et les services. Tissu de TPE artisanat, PME logistique et BTP, commerces de proximité et zones d'activités (Bouverie, Pierres Vieilles). Tourisme tiré par la proximité de Fréjus et de l'Estérel.",

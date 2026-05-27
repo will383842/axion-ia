@@ -52,7 +52,7 @@ export const VILLEMOISSON_SUR_ORGE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Villemoisson-sur-Orge et toute la vallée de l'Orge (Sainte-Geneviève-des-Bois, Épinay-sur-Orge, Morsang-sur-Orge, Juvisy-sur-Orge). Nos consultants se déplacent depuis Paris (35 min) ou Massy (15 min).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Villemoisson-sur-Orge ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Villemoisson-sur-Orge  ?",
       a: "L'audit Flash IA à Villemoisson-sur-Orge débute à 490 € HT pour 4 heures de diagnostic. Tarifs publics, sans engagement, adaptés aux TPE et PME locales. ROI chiffré et plan d'action livré sous 48h.",
     },
     {

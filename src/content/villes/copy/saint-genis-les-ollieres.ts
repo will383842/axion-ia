@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_GENIS_LES_OLLIERES_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Genis-les-Ollières (69), commune en banlieue ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations de l'ouest lyonnais.",
+    "Saint-Genis-les-Ollières (69), commune en banlieue ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y mène ses missions auprès des organisations locales de l'ouest lyonnais.",
   pitchEn:
-    "Saint-Genis-les-Ollières (69), commune en banlieue ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations de l'ouest lyonnais.",
+    "Saint-Genis-les-Ollières (69), commune en banlieue ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y mène ses missions auprès des organisations locales de l'ouest lyonnais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Genis-les-Ollières (69). Nous accompagnons tous types d'activités : PME tertiaires ouest lyonnais, TPE artisans BTP, commerçants, professions libérales et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:

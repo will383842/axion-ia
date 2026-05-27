@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SOYAUX_COPY: VilleCopy = {
   pitchFr:
-    "Soyaux (16), commune de l'agglomération d'Angoulême en Charente, deuxième ville du GrandAngoulême. Tissu de TPE artisans, PME tertiaires, services aux entreprises, commerces de proximité et équipements publics. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération angoumoisine.",
+    "Soyaux (16), commune de l'agglomération d'Angoulême en Charente, deuxième ville du GrandAngoulême. Tissu de TPE artisans, PME tertiaires, services aux entreprises, commerces de proximité et équipements publics. Axion-IA répond aux besoins des activités professionnelles présentes de l'agglomération angoumoisine.",
   pitchEn:
-    "Soyaux (16), commune de l'agglomération d'Angoulême en Charente, deuxième ville du GrandAngoulême. Tissu de TPE artisans, PME tertiaires, services aux entreprises, commerces de proximité et équipements publics. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération angoumoisine.",
+    "Soyaux (16), commune de l'agglomération d'Angoulême en Charente, deuxième ville du GrandAngoulême. Tissu de TPE artisans, PME tertiaires, services aux entreprises, commerces de proximité et équipements publics. Axion-IA répond aux besoins des activités professionnelles présentes de l'agglomération angoumoisine.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Soyaux (16). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, prestataires de services, commerçants et indépendants de cette commune résidentielle stratégique de l'agglomération d'Angoulême.",
   directAnswerEn:

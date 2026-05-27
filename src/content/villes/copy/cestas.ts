@@ -9,9 +9,9 @@ export const CESTAS_COPY: VilleCopy = {
   pitchEn:
     "Cestas (33), commune au sud-ouest de Bordeaux Métropole en lisière de la forêt des Landes, abrite le technopôle Bordeaux-Cestas (laser, photonique, numérique) et un tissu dynamique de TPE/PME. Axion-IA opère pour toutes les structures économiques de la commune : startups tech, PME industrielles, artisans, commerces et professions libérales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cestas (33). Nous accompagnons TPE et PME du technopôle Bordeaux-Cestas et du bassin sud-ouest bordelais : entreprises tech (laser, photonique), PME industrielles, artisans, commerçants et professions libérales. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cestas (33). Nous accompagnons TPE et PME du technopôle Bordeaux-Cestas et du bassin sud-ouest bordelais : entreprises tech (laser, photonique), PME industrielles, artisans, commerçants et professions libérales. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cestas (33). Nous accompagnons TPE et PME du technopôle Bordeaux-Cestas et du bassin sud-ouest bordelais : entreprises tech (laser, photonique), PME industrielles, artisans, commerçants et professions libérales. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cestas (33). Nous accompagnons TPE et PME du technopôle Bordeaux-Cestas et du bassin sud-ouest bordelais : entreprises tech (laser, photonique), PME industrielles, artisans, commerçants et professions libérales. Audit Flash sur mesure.",
   seoHook: "tech photonique & industrielles",
   ecosystemFr:
     "Cestas accueille le technopôle Bordeaux-Cestas, pôle de compétitivité laser-photonique-numérique de rang européen. En lisière de forêt des Landes, la commune allie R&D high-tech, PME industrielles et tissu TPE résidentiel. Accès rapide A63 (Bayonne) et rocade Bordeaux.",
@@ -52,7 +52,7 @@ export const CESTAS_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Cestas et dans tout le bassin sud-ouest Bordeaux (Pessac, Gradignan, Léognan, Canéjan). Nos consultants se déplacent depuis Bordeaux centre (20 min) ou Paris (TGV 2h).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Cestas ?",
+      q: "Combien coûte un audit IA à Cestas  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Adapté aux startups tech du technopôle comme aux TPE artisans de Cestas.",
     },
     {

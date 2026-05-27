@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const GRUISSAN_COPY: VilleCopy = {
   pitchFr:
-    "Gruissan (11), station balnéaire audoise entre Méditerranée et étang de Gruissan, connue pour ses salins, son village circulaire médiéval et ses chalets sur pilotis. Tissu TPE artisans, PME tourisme balnéaire, commerces saisonniers, hôtellerie-restauration, viticulture (La Clape). Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Gruissan (11), station balnéaire audoise entre Méditerranée et étang de Gruissan, connue pour ses salins, son village circulaire médiéval et ses chalets sur pilotis. Tissu TPE artisans, PME tourisme balnéaire, commerces saisonniers, hôtellerie-restauration, viticulture (La Clape). Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "Gruissan (11), station balnéaire audoise entre Méditerranée et étang de Gruissan, connue pour ses salins, son village circulaire médiéval et ses chalets sur pilotis. Tissu TPE artisans, PME tourisme balnéaire, commerces saisonniers, hôtellerie-restauration, viticulture (La Clape). Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Gruissan (11), station balnéaire audoise entre Méditerranée et étang de Gruissan, connue pour ses salins, son village circulaire médiéval et ses chalets sur pilotis. Tissu TPE artisans, PME tourisme balnéaire, commerces saisonniers, hôtellerie-restauration, viticulture (La Clape). Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gruissan (11). Nous accompagnons TPE artisans, PME tourisme balnéaire, commerçants saisonniers, hôteliers-restaurateurs, viticulteurs La Clape et professionnels des salins. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gruissan (11). Nous accompagnons TPE artisans, PME tourisme balnéaire, commerçants saisonniers, hôteliers-restaurateurs, viticulteurs La Clape et professionnels des salins. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gruissan (11). Nous accompagnons TPE artisans, PME tourisme balnéaire, commerçants saisonniers, hôteliers-restaurateurs, viticulteurs La Clape et professionnels des salins. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gruissan (11). Nous accompagnons TPE artisans, PME tourisme balnéaire, commerçants saisonniers, hôteliers-restaurateurs, viticulteurs La Clape et professionnels des salins. Audit Flash sur mesure.",
   seoHook: "tourisme balnéaire & viticulture clape",
   ecosystemFr:
     "Gruissan est une station balnéaire audoise emblématique, entre plage méditerranéenne et étangs. Village circulaire médiéval (tour Barberousse), chalets sur pilotis iconiques, salins de Gruissan. Économie touristique saisonnière forte (campings, résidences, sports nautiques), viticulture AOC La Clape, salines, TPE artisans, commerces saisonniers, hôtellerie-restauration.",
@@ -56,7 +56,7 @@ export const GRUISSAN_COPY: VilleCopy = {
       a: "Oui, nous accompagnons campings, résidences de tourisme, écoles de sports nautiques et hébergeurs de Gruissan sur leurs cas IA : gestion saisonnalité, agents conversationnels multilingues, automatisation check-in, classification avis clients.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Gruissan ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Gruissan  ?",
       a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME tourisme ou hébergement saisonnier, audit approfondi entre 1 900 et 3 900 € HT selon la complexité. Tarifs publics.",
     },
     {

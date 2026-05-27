@@ -11,9 +11,9 @@ export const EYSINES_COPY: VilleCopy = {
   pitchEn:
     "À Eysines, Axion-IA intervient pour optimiser les processus des entreprises locales. L'écosystème comprend des secteurs variés comme le commerce de détail et les transports terrestres, à l'image de Cap Digital à Paris.",
   directAnswerFr:
-    "Axion-IA propose des interventions sur site à Eysines, une ville bénéficiant de l'influence économique des communes voisines comme Bordeaux et Mérignac. Avec notre Audit Flash à partir de 490 € HT, nous aidons les entreprises à identifier rapidement des axes d'amélioration. Nos services incluent également des interventions essentielles dès 590 € HT, adaptées aux besoins spécifiques des TPE et PME.",
+    "Axion-IA propose des interventions sur site à Eysines, une ville bénéficiant de l'influence économique des communes voisines comme Bordeaux et Mérignac. Avec notre Audit Flash sur mesure, nous aidons les entreprises à identifier rapidement des axes d'amélioration. Nos services incluent également des interventions essentielles, adaptées aux besoins spécifiques des TPE et PME.",
   directAnswerEn:
-    "Axion-IA propose des interventions sur site à Eysines, une ville bénéficiant de l'influence économique des communes voisines comme Bordeaux et Mérignac. Avec notre Audit Flash à partir de 490 € HT, nous aidons les entreprises à identifier rapidement des axes d'amélioration. Nos services incluent également des interventions essentielles dès 590 € HT, adaptées aux besoins spécifiques des TPE et PME.",
+    "Axion-IA propose des interventions sur site à Eysines, une ville bénéficiant de l'influence économique des communes voisines comme Bordeaux et Mérignac. Avec notre Audit Flash sur mesure, nous aidons les entreprises à identifier rapidement des axes d'amélioration. Nos services incluent également des interventions essentielles, adaptées aux besoins spécifiques des TPE et PME.",
   seoHook: "commerce détail & travaux construction",
   ecosystemFr:
     "Eysines, proche de Bordeaux, partage un tissu économique diversifié avec des secteurs comme le commerce de détail et la construction. L'influence de grandes villes comme Paris, abritant Cap Digital et Station F, inspire le développement local.",

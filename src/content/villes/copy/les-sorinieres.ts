@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LES_SORINIERES_COPY: VilleCopy = {
   pitchFr:
-    "Les Sorinières (44), commune de la première couronne sud de Nantes Métropole en Loire-Atlantique, est un bourg résidentiel en croissance avec zones d'activités (proximité périphérique sud et route de Clisson). Tissu de TPE tertiaires, PME services, professions libérales, artisans et commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Les Sorinières (44), commune de la première couronne sud de Nantes Métropole en Loire-Atlantique, est un bourg résidentiel en croissance avec zones d'activités (proximité périphérique sud et route de Clisson). Tissu de TPE tertiaires, PME services, professions libérales, artisans et commerces. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Les Sorinières (44), commune de la première couronne sud de Nantes Métropole en Loire-Atlantique, est un bourg résidentiel en croissance avec zones d'activités (proximité périphérique sud et route de Clisson). Tissu de TPE tertiaires, PME services, professions libérales, artisans et commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Les Sorinières (44), commune de la première couronne sud de Nantes Métropole en Loire-Atlantique, est un bourg résidentiel en croissance avec zones d'activités (proximité périphérique sud et route de Clisson). Tissu de TPE tertiaires, PME services, professions libérales, artisans et commerces. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient aux Sorinières (44). Nous accompagnons tous types d'activités : TPE tertiaires, PME services et logistique, professions libérales, artisans BTP, commerçants et entreprises de la couronne sud de Nantes Métropole (axe Nantes-Clisson).",
   directAnswerEn:

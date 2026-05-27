@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PRADES_LE_LEZ_COPY: VilleCopy = {
   pitchFr:
-    "Prades-le-Lez (34), commune résidentielle du nord de Montpellier, source du Lez (alimentation en eau de Montpellier). Cadre naturel garrigue, forte croissance. Tissu TPE professions libérales, PME services, artisans, commerces de proximité. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Prades-le-Lez (34), commune résidentielle du nord de Montpellier, source du Lez (alimentation en eau de Montpellier). Cadre naturel garrigue, forte croissance. Tissu TPE professions libérales, PME services, artisans, commerces de proximité. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "Prades-le-Lez (34), commune résidentielle du nord de Montpellier, source du Lez (alimentation en eau de Montpellier). Cadre naturel garrigue, forte croissance. Tissu TPE professions libérales, PME services, artisans, commerces de proximité. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Prades-le-Lez (34), commune résidentielle du nord de Montpellier, source du Lez (alimentation en eau de Montpellier). Cadre naturel garrigue, forte croissance. Tissu TPE professions libérales, PME services, artisans, commerces de proximité. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Prades-le-Lez (34). Nous accompagnons TPE professions libérales, PME de services, artisans, commerces et entreprises du nord montpelliérain.",
   directAnswerEn:

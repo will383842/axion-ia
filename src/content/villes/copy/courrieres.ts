@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const COURRIERES_COPY: VilleCopy = {
   pitchFr:
-    "Courrières (62), commune du bassin minier du Pas-de-Calais marquée par la catastrophe de 1906, s'est reconvertie vers les services, le commerce et l'artisanat. TPE, PME et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Courrières (62), commune du bassin minier du Pas-de-Calais marquée par la catastrophe de 1906, s'est reconvertie vers les services, le commerce et l'artisanat. TPE, PME et professions libérales. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Courrières (62), commune du bassin minier du Pas-de-Calais marquée par la catastrophe de 1906, s'est reconvertie vers les services, le commerce et l'artisanat. TPE, PME et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Courrières (62), commune du bassin minier du Pas-de-Calais marquée par la catastrophe de 1906, s'est reconvertie vers les services, le commerce et l'artisanat. TPE, PME et professions libérales. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Courrières (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier lensois. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Courrières (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier lensois. Audit Flash sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Courrières (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier lensois. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Courrières (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier lensois. Audit Flash sur mesure, intervention sur site ou en visio.",
   seoHook: "commerce détail & professions libérales",
   ecosystemFr:
     "Courrières est une commune du bassin minier entre Lens et Hénin-Beaumont, marquée par la catastrophe minière de 1906. Économie reconvertie vers les services, le commerce de proximité, l'artisanat BTP et les professions libérales. Tissu résidentiel avec TPE et PME de services.",
@@ -52,7 +52,7 @@ export const COURRIERES_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Courrières et dans tout le bassin minier lensois (Lens, Hénin-Beaumont, Billy-Montigny, Montigny-en-Gohelle). Déplacements sur site ou visio.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Courrières ?",
+      q: "Quel est le tarif d'un audit IA à Courrières  ?",
       a: "L'Audit Flash Axion-IA démarre à 490 € HT pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du bassin minier. Tarifs publics.",
     },
     {

@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const PLAN_DE_CUQUES_COPY: VilleCopy = {
   pitchFr:
-    "Plan-de-Cuques (13), commune résidentielle au nord-est de Marseille dans les Bouches-du-Rhône, offre un cadre de vie prisé entre collines et proximité métropolitaine. TPE artisans, PME services, commerces de village, professions libérales et prestataires de proximité. Axion-IA couvre l'ensemble des activités professionnelles présentes du nord-est marseillais.",
+    "Plan-de-Cuques (13), commune résidentielle au nord-est de Marseille dans les Bouches-du-Rhône, offre un cadre de vie prisé entre collines et proximité métropolitaine. TPE artisans, PME services, commerces de village, professions libérales et prestataires de proximité. Axion-IA opère sur l'ensemble des activités professionnelles locales du nord-est marseillais.",
   pitchEn:
-    "Plan-de-Cuques (13), commune résidentielle au nord-est de Marseille dans les Bouches-du-Rhône, offre un cadre de vie prisé entre collines et proximité métropolitaine. TPE artisans, PME services, commerces de village, professions libérales et prestataires de proximité. Axion-IA couvre l'ensemble des activités professionnelles présentes du nord-est marseillais.",
+    "Plan-de-Cuques (13), commune résidentielle au nord-est de Marseille dans les Bouches-du-Rhône, offre un cadre de vie prisé entre collines et proximité métropolitaine. TPE artisans, PME services, commerces de village, professions libérales et prestataires de proximité. Axion-IA opère sur l'ensemble des activités professionnelles locales du nord-est marseillais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plan-de-Cuques (13). Nous accompagnons TPE artisans et commerçants, PME de services du nord-est de Marseille, professions libérales et entreprises résidentielles. Audit Flash dès 490 € HT, sans engagement.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plan-de-Cuques (13). Nous accompagnons TPE artisans et commerçants, PME de services du nord-est de Marseille, professions libérales et entreprises résidentielles. Audit Flash sur mesure, sans engagement.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plan-de-Cuques (13). Nous accompagnons TPE artisans et commerçants, PME de services du nord-est de Marseille, professions libérales et entreprises résidentielles. Audit Flash dès 490 € HT, sans engagement.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plan-de-Cuques (13). Nous accompagnons TPE artisans et commerçants, PME de services du nord-est de Marseille, professions libérales et entreprises résidentielles. Audit Flash sur mesure, sans engagement.",
   seoHook: "résidentiel & services nord-est Marseille",
   ecosystemFr:
     "Plan-de-Cuques est une commune résidentielle prisée au nord-est immédiat de Marseille, entre Allauch et les quartiers nord-est. Économie locale de proximité : TPE artisans du bâtiment, commerces de village, professions libérales, PME services et prestataires pour particuliers et entreprises.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BRINDAS_COPY: VilleCopy = {
   pitchFr:
-    "Brindas (69), commune en banlieue ouest de Lyon dans le Rhône, est positionnée aux portes des monts du Lyonnais. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales, agriculture résiduelle. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'ouest lyonnais.",
+    "Brindas (69), commune en banlieue ouest de Lyon dans le Rhône, est positionnée aux portes des monts du Lyonnais. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales, agriculture résiduelle. Axion-IA couvre les activités professionnelles du bassin de l'ouest lyonnais.",
   pitchEn:
-    "Brindas (69), commune en banlieue ouest de Lyon dans le Rhône, est positionnée aux portes des monts du Lyonnais. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales, agriculture résiduelle. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'ouest lyonnais.",
+    "Brindas (69), commune en banlieue ouest de Lyon dans le Rhône, est positionnée aux portes des monts du Lyonnais. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisans BTP, commerces, professions libérales, agriculture résiduelle. Axion-IA couvre les activités professionnelles du bassin de l'ouest lyonnais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Brindas (69). Nous accompagnons tous types d'activités : PME tertiaires ouest lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants, agriculteurs monts du Lyonnais et services aux entreprises.",
   directAnswerEn:

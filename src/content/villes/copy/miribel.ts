@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MIRIBEL_COPY: VilleCopy = {
   pitchFr:
-    "Miribel (01), commune de la Côtière dans l'Ain, est positionnée en banlieue nord-est immédiate de Lyon. Connue pour le Grand Parc Miribel Jonage (espace naturel majeur de l'agglomération lyonnaise). Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Miribel (01), commune de la Côtière dans l'Ain, est positionnée en banlieue nord-est immédiate de Lyon. Connue pour le Grand Parc Miribel Jonage (espace naturel majeur de l'agglomération lyonnaise). Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Miribel (01), commune de la Côtière dans l'Ain, est positionnée en banlieue nord-est immédiate de Lyon. Connue pour le Grand Parc Miribel Jonage (espace naturel majeur de l'agglomération lyonnaise). Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Miribel (01), commune de la Côtière dans l'Ain, est positionnée en banlieue nord-est immédiate de Lyon. Connue pour le Grand Parc Miribel Jonage (espace naturel majeur de l'agglomération lyonnaise). Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Miribel (01). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Côtière Ain, acteurs loisirs Grand Parc Miribel Jonage, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
   directAnswerEn:

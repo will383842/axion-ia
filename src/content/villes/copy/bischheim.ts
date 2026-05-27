@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BISCHHEIM_COPY: VilleCopy = {
   pitchFr:
-    "Bischheim (67), commune de 18 558 habitants en Bas-Rhin, située dans la proche couronne nord de l'Eurométropole de Strasbourg, conjugue zones d'activités, tissu industriel, commerces et services tournés vers la métropole. Tissu TPE/PME industrie, logistique, BTP, commerces, artisans, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Bischheim (67), commune de 18 558 habitants en Bas-Rhin, située dans la proche couronne nord de l'Eurométropole de Strasbourg, conjugue zones d'activités, tissu industriel, commerces et services tournés vers la métropole. Tissu TPE/PME industrie, logistique, BTP, commerces, artisans, services aux entreprises. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Bischheim (67), commune de 18 558 habitants en Bas-Rhin, située dans la proche couronne nord de l'Eurométropole de Strasbourg, conjugue zones d'activités, tissu industriel, commerces et services tournés vers la métropole. Tissu TPE/PME industrie, logistique, BTP, commerces, artisans, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Bischheim (67), commune de 18 558 habitants en Bas-Rhin, située dans la proche couronne nord de l'Eurométropole de Strasbourg, conjugue zones d'activités, tissu industriel, commerces et services tournés vers la métropole. Tissu TPE/PME industrie, logistique, BTP, commerces, artisans, services aux entreprises. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bischheim (67). Nous accompagnons tous types d'activités : TPE/PME industrie, logistique, BTP, artisans, commerces, professions de services et acteurs des zones d'activités de la proche couronne nord de l'Eurométropole de Strasbourg.",
   directAnswerEn:

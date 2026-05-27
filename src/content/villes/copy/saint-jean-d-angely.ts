@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_JEAN_D_ANGELY_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Jean-d'Angély (17), sous-préfecture de Charente-Maritime, étape historique du chemin de Compostelle (abbaye royale UNESCO). Tissu de TPE artisans, PME agroalimentaires, agriculture (céréales, élevage), commerces de centre-ville et services publics. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin angérien.",
+    "Saint-Jean-d'Angély (17), sous-préfecture de Charente-Maritime, étape historique du chemin de Compostelle (abbaye royale UNESCO). Tissu de TPE artisans, PME agroalimentaires, agriculture (céréales, élevage), commerces de centre-ville et services publics. Axion-IA répond aux besoins des activités professionnelles présentes du bassin angérien.",
   pitchEn:
-    "Saint-Jean-d'Angély (17), sous-préfecture de Charente-Maritime, étape historique du chemin de Compostelle (abbaye royale UNESCO). Tissu de TPE artisans, PME agroalimentaires, agriculture (céréales, élevage), commerces de centre-ville et services publics. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin angérien.",
+    "Saint-Jean-d'Angély (17), sous-préfecture de Charente-Maritime, étape historique du chemin de Compostelle (abbaye royale UNESCO). Tissu de TPE artisans, PME agroalimentaires, agriculture (céréales, élevage), commerces de centre-ville et services publics. Axion-IA répond aux besoins des activités professionnelles présentes du bassin angérien.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean-d'Angély (17). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires, exploitants agricoles, commerçants, professions libérales et indépendants de cette sous-préfecture historique du chemin de Compostelle.",
   directAnswerEn:

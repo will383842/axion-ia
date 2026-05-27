@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const ARQUES_COPY: VilleCopy = {
   pitchFr:
-    "Arques (62), commune industrielle du Pas-de-Calais célèbre pour son ascenseur à bateaux et sa cristallerie, accueille PME industrielles, TPE artisanales et services. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération audomaroise.",
+    "Arques (62), commune industrielle du Pas-de-Calais célèbre pour son ascenseur à bateaux et sa cristallerie, accueille PME industrielles, TPE artisanales et services. Axion-IA opère pour entreprises et indépendants du secteur de l'agglomération audomaroise.",
   pitchEn:
-    "Arques (62), commune industrielle du Pas-de-Calais célèbre pour son ascenseur à bateaux et sa cristallerie, accueille PME industrielles, TPE artisanales et services. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération audomaroise.",
+    "Arques (62), commune industrielle du Pas-de-Calais célèbre pour son ascenseur à bateaux et sa cristallerie, accueille PME industrielles, TPE artisanales et services. Axion-IA opère pour entreprises et indépendants du secteur de l'agglomération audomaroise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arques (62). Nous accompagnons PME industrielles, TPE artisanales, commerçants et professions libérales de l'agglomération de Saint-Omer. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arques (62). Nous accompagnons PME industrielles, TPE artisanales, commerçants et professions libérales de l'agglomération de Saint-Omer. Audit Flash sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arques (62). Nous accompagnons PME industrielles, TPE artisanales, commerçants et professions libérales de l'agglomération de Saint-Omer. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arques (62). Nous accompagnons PME industrielles, TPE artisanales, commerçants et professions libérales de l'agglomération de Saint-Omer. Audit Flash sur mesure, intervention sur site ou en visio.",
   seoHook: "industrie verrière & industrielles mécaniques",
   ecosystemFr:
     "Arques est une commune industrielle de l'agglomération audomaroise, connue pour son ascenseur à bateaux des Fontinettes et la cristallerie Arc (anciennement Arc International). Tissu PME industrielles (verrerie, mécanique), TPE artisanales, commerces et services liés au bassin industriel.",
@@ -52,7 +52,7 @@ export const ARQUES_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Arques et dans toute l'agglomération audomaroise (Saint-Omer, Longuenesse, Blendecques, Wizernes). Déplacements sur site ou sessions en visio.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Arques ?",
+      q: "Tarifs audit IA à Arques  : quel budget prévoir ?",
       a: "L'Audit Flash Axion-IA démarre à 490 € HT pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux PME industrielles et TPE du bassin audomarois.",
     },
     {

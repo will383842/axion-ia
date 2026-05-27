@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const COMMENTRY_COPY: VilleCopy = {
   pitchFr:
-    "Commentry (03), commune du bassin de Montluçon dans l'Allier, a un héritage minier et industriel fort (ancien bassin houiller, métallurgie historique). Tissu PME industrielles diversifiées, TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs du Bourbonnais.",
+    "Commentry (03), commune du bassin de Montluçon dans l'Allier, a un héritage minier et industriel fort (ancien bassin houiller, métallurgie historique). Tissu PME industrielles diversifiées, TPE artisans BTP, commerces. Axion-IA opère pour entreprises et indépendants du secteur du Bourbonnais.",
   pitchEn:
-    "Commentry (03), commune du bassin de Montluçon dans l'Allier, a un héritage minier et industriel fort (ancien bassin houiller, métallurgie historique). Tissu PME industrielles diversifiées, TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs du Bourbonnais.",
+    "Commentry (03), commune du bassin de Montluçon dans l'Allier, a un héritage minier et industriel fort (ancien bassin houiller, métallurgie historique). Tissu PME industrielles diversifiées, TPE artisans BTP, commerces. Axion-IA opère pour entreprises et indépendants du secteur du Bourbonnais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Commentry (03). Nous accompagnons tous types d'activités : PME industrielles diversifiées (héritage minier/métallurgique), TPE artisans BTP, commerçants et services aux entreprises du bassin Montluçon.",
   directAnswerEn:

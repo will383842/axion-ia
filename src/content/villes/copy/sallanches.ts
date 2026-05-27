@@ -9,9 +9,9 @@ export const SALLANCHES_COPY: VilleCopy = {
   pitchEn:
     "Sallanches (74), ville-étape de la vallée de l'Arve face au Mont-Blanc en Haute-Savoie, concentre commerces, hôtellerie, services et TPE artisanat BTP au service du tourisme montagnard et du bassin de vie local. Axion-IA y intervient pour tous types d'activités du Pays du Mont-Blanc.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sallanches (74). Nous accompagnons TPE et PME : hôteliers et acteurs du tourisme montagne, commerçants zone commerciale, artisans BTP, prestataires de services et professions libérales du Pays du Mont-Blanc. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sallanches (74). Nous accompagnons TPE et PME : hôteliers et acteurs du tourisme montagne, commerçants zone commerciale, artisans BTP, prestataires de services et professions libérales du Pays du Mont-Blanc. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sallanches (74). Nous accompagnons TPE et PME : hôteliers et acteurs du tourisme montagne, commerçants zone commerciale, artisans BTP, prestataires de services et professions libérales du Pays du Mont-Blanc. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sallanches (74). Nous accompagnons TPE et PME : hôteliers et acteurs du tourisme montagne, commerçants zone commerciale, artisans BTP, prestataires de services et professions libérales du Pays du Mont-Blanc. Audit Flash sur mesure.",
   seoHook: "tourisme montagne & commerce zone",
   ecosystemFr:
     "Sallanches est la ville-centre du Pays du Mont-Blanc, face au massif. Pôle de commerces et services pour le bassin de vie (zone commerciale Sallanches-Passy), tissu hôtelier et touristique important (étape vers Chamonix, Megève, Saint-Gervais), TPE artisanat BTP (rénovation montagne), professions libérales. Proximité Cluses (20 min) et Chamonix (25 min).",
@@ -56,7 +56,7 @@ export const SALLANCHES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons hôteliers, hébergeurs, restaurateurs et prestataires touristiques de Sallanches sur leurs cas IA : chatbots réservation multilingues, automatisation avis clients, prédiction affluence saisonnière, yield management.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Sallanches ?",
+      q: "Quel est le tarif d'un audit IA à Sallanches  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Adapté aux TPE tourisme montagne comme aux PME services et artisans BTP du bassin.",
     },
     {

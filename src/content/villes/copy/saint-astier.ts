@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_ASTIER_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Astier (24), bourg de la vallée de l'Isle en Dordogne, connu pour sa cimenterie historique et son abbatiale romane. Tissu TPE/PME commerce, artisanat, industrie ciment, agroalimentaire et services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Saint-Astier (24), bourg de la vallée de l'Isle en Dordogne, connu pour sa cimenterie historique et son abbatiale romane. Tissu TPE/PME commerce, artisanat, industrie ciment, agroalimentaire et services. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Saint-Astier (24), bourg de la vallée de l'Isle en Dordogne, connu pour sa cimenterie historique et son abbatiale romane. Tissu TPE/PME commerce, artisanat, industrie ciment, agroalimentaire et services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Saint-Astier (24), bourg de la vallée de l'Isle en Dordogne, connu pour sa cimenterie historique et son abbatiale romane. Tissu TPE/PME commerce, artisanat, industrie ciment, agroalimentaire et services. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Astier (24). Nous accompagnons TPE/PME du commerce, de l'artisanat, de l'industrie, de l'agroalimentaire périgourdin et des services en vallée de l'Isle. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Astier (24). Nous accompagnons TPE/PME du commerce, de l'artisanat, de l'industrie, de l'agroalimentaire périgourdin et des services en vallée de l'Isle. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Astier (24). Nous accompagnons TPE/PME du commerce, de l'artisanat, de l'industrie, de l'agroalimentaire périgourdin et des services en vallée de l'Isle. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Astier (24). Nous accompagnons TPE/PME du commerce, de l'artisanat, de l'industrie, de l'agroalimentaire périgourdin et des services en vallée de l'Isle. Audit Flash sur mesure.",
   ecosystemFr:
     "Saint-Astier est un bourg historique de la vallée de l'Isle, entre Périgueux et Mussidan. Connu pour sa cimenterie (chaux hydraulique naturelle, référence BTP/restauration patrimoine) et son abbatiale romane. Économie : commerce de proximité, artisanat, industrie ciment et matériaux, agroalimentaire (élevage, cultures), BTP et services.",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const SAINT_ASTIER_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Saint-Astier et dans la vallée de l'Isle (Mussidan, Neuvic, Montpon-Ménestérol). Gare SNCF Saint-Astier ligne Bordeaux–Périgueux.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Saint-Astier ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Saint-Astier  ?",
       a: "L'Audit Flash démarre à 490 € HT. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME de la vallée de l'Isle. Tarifs publics et transparents.",
     },
     {

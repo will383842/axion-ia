@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ONDRES_COPY: VilleCopy = {
   pitchFr:
-    "Ondres (40), village touristique du littoral landais dans l'agglomération bayonnaise, possède une plage sur l'océan Atlantique. Tourisme balnéaire, résidentiel, TPE hébergement, commerces, artisans BTP, services de proximité. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Ondres (40), village touristique du littoral landais dans l'agglomération bayonnaise, possède une plage sur l'océan Atlantique. Tourisme balnéaire, résidentiel, TPE hébergement, commerces, artisans BTP, services de proximité. Axion-IA répond aux besoins des activités professionnelles présentes.",
   pitchEn:
-    "Ondres (40), village touristique du littoral landais dans l'agglomération bayonnaise, possède une plage sur l'océan Atlantique. Tourisme balnéaire, résidentiel, TPE hébergement, commerces, artisans BTP, services de proximité. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Ondres (40), village touristique du littoral landais dans l'agglomération bayonnaise, possède une plage sur l'océan Atlantique. Tourisme balnéaire, résidentiel, TPE hébergement, commerces, artisans BTP, services de proximité. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ondres (40). Nous accompagnons TPE et PME du tourisme balnéaire, hébergeurs saisonniers, campings, commerçants, artisans BTP, professions libérales et prestataires de services du littoral landais sud.",
   directAnswerEn:
@@ -65,7 +65,7 @@ export const ONDRES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'entrée pour une mission IA à Ondres ?",
-      a: "L'audit Flash démarre à 490 € HT, livrable en 5 jours ouvrés. Inclut diagnostic complet, cartographie processus automatisables, ROI chiffré et feuille de route IA. Déplacement inclus littoral landais sud.",
+      a: "L'audit Flash est tarifé selon vos enjeux, livrable en 5 jours ouvrés. Inclut diagnostic complet, cartographie processus automatisables, ROI chiffré et feuille de route IA. Déplacement inclus littoral landais sud.",
     },
   ],
 };

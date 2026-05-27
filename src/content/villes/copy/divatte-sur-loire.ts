@@ -60,7 +60,7 @@ export const DIVATTE_SUR_LOIRE_COPY: VilleCopy = {
       a: "Pour les PME agroalimentaires de Divatte-sur-Loire, nous proposons audit IA, interventions sur site, implémentation (automatisation qualité, traçabilité, gestion flux), coaching 1-to-1 et plateformes web IA sur mesure.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Divatte-sur-Loire ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Divatte-sur-Loire  ?",
       a: "L'Audit Flash démarre à 490 € HT (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du vignoble nantais.",
     },
     {

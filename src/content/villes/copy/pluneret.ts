@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PLUNERET_COPY: VilleCopy = {
   pitchFr:
-    "Pluneret (56), commune du Pays d'Auray aux portes du golfe du Morbihan, mêle tissu résidentiel, TPE artisanales, PME de services et activités liées au nautisme et au tourisme côtier. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Pluneret (56), commune du Pays d'Auray aux portes du golfe du Morbihan, mêle tissu résidentiel, TPE artisanales, PME de services et activités liées au nautisme et au tourisme côtier. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Pluneret (56), commune du Pays d'Auray aux portes du golfe du Morbihan, mêle tissu résidentiel, TPE artisanales, PME de services et activités liées au nautisme et au tourisme côtier. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Pluneret (56), commune du Pays d'Auray aux portes du golfe du Morbihan, mêle tissu résidentiel, TPE artisanales, PME de services et activités liées au nautisme et au tourisme côtier. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pluneret (56). Nous accompagnons tous types d'activités : TPE artisanales, PME de services, professions libérales, commerces de proximité, acteurs du nautisme et du tourisme du Pays d'Auray et du golfe du Morbihan.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const PLUNERET_COPY: VilleCopy = {
       a: "Oui, nous accompagnons TPE artisanales et PME de services de Pluneret sur des cas IA concrets : automatisation devis et facturation, chatbots relation client, gestion documentaire, agents IA prise de RDV. Audit Flash 490 € HT adapté aux petites structures.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Pluneret ?",
+      q: "Tarifs audit IA à Pluneret  : quel budget prévoir ?",
       a: "L'audit Flash IA démarre à 490 € HT pour les TPE et PME de Pluneret et du Pays d'Auray. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
     },
     {

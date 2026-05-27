@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ANDREZIEUX_BOUTHEON_COPY: VilleCopy = {
   pitchFr:
-    "Andrézieux-Bouthéon (42), commune intégrée à Saint-Étienne Métropole, abrite l'aéroport Saint-Étienne-Bouthéon (vols low cost saisonniers, aviation d'affaires). Tissu PME tertiaires et logistiques, zones d'activités importantes, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Andrézieux-Bouthéon (42), commune intégrée à Saint-Étienne Métropole, abrite l'aéroport Saint-Étienne-Bouthéon (vols low cost saisonniers, aviation d'affaires). Tissu PME tertiaires et logistiques, zones d'activités importantes, TPE artisans BTP, commerces. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Andrézieux-Bouthéon (42), commune intégrée à Saint-Étienne Métropole, abrite l'aéroport Saint-Étienne-Bouthéon (vols low cost saisonniers, aviation d'affaires). Tissu PME tertiaires et logistiques, zones d'activités importantes, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Andrézieux-Bouthéon (42), commune intégrée à Saint-Étienne Métropole, abrite l'aéroport Saint-Étienne-Bouthéon (vols low cost saisonniers, aviation d'affaires). Tissu PME tertiaires et logistiques, zones d'activités importantes, TPE artisans BTP, commerces. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Andrézieux-Bouthéon (42). Nous accompagnons tous types d'activités : acteurs aéroportuaires Saint-Étienne-Bouthéon, PME tertiaires et logistiques zones d'activités, TPE artisans BTP, commerçants, indépendants et services aux entreprises de Saint-Étienne Métropole.",
   directAnswerEn:

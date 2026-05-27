@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ECULLY_COPY: VilleCopy = {
   pitchFr:
-    "Écully (69), commune en banlieue ouest immédiate de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position résidentielle prestigieuse, accueille de grandes écoles supérieures (notamment commerce) et des sièges sociaux. Tissu PME tertiaires haut de gamme, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Écully (69), commune en banlieue ouest immédiate de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position résidentielle prestigieuse, accueille de grandes écoles supérieures (notamment commerce) et des sièges sociaux. Tissu PME tertiaires haut de gamme, TPE artisans BTP, commerces. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Écully (69), commune en banlieue ouest immédiate de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position résidentielle prestigieuse, accueille de grandes écoles supérieures (notamment commerce) et des sièges sociaux. Tissu PME tertiaires haut de gamme, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Écully (69), commune en banlieue ouest immédiate de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position résidentielle prestigieuse, accueille de grandes écoles supérieures (notamment commerce) et des sièges sociaux. Tissu PME tertiaires haut de gamme, TPE artisans BTP, commerces. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Écully (69). Nous accompagnons tous types d'activités : PME tertiaires haut de gamme et sièges sociaux ouest lyonnais, écoles supérieures, TPE artisans BTP, commerçants, professions libérales et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:

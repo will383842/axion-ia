@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MAYENNE_COPY: VilleCopy = {
   pitchFr:
-    "Mayenne (53), sous-préfecture du nord de la Mayenne aux bords de la rivière éponyme, dotée d'un château carolingien classé, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-ville, professions libérales et prestataires de services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Mayenne (53), sous-préfecture du nord de la Mayenne aux bords de la rivière éponyme, dotée d'un château carolingien classé, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-ville, professions libérales et prestataires de services. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Mayenne (53), sous-préfecture du nord de la Mayenne aux bords de la rivière éponyme, dotée d'un château carolingien classé, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-ville, professions libérales et prestataires de services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Mayenne (53), sous-préfecture du nord de la Mayenne aux bords de la rivière éponyme, dotée d'un château carolingien classé, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-ville, professions libérales et prestataires de services. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mayenne (53). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles, commerçants, professions libérales, éleveurs, services aux entreprises et acteurs du tourisme patrimonial du nord-Mayenne.",
   directAnswerEn:

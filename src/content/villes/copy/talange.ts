@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const TALANGE_COPY: VilleCopy = {
   pitchFr:
-    "Talange (57), commune du pays de l'Orne dans l'agglomération de Thionville, ancrée dans la vallée sidérurgique reconvertie en pôle commercial et tertiaire. Tissu TPE/PME commerce, services, BTP, professions libérales, artisanat et logistique. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Talange (57), commune du pays de l'Orne dans l'agglomération de Thionville, ancrée dans la vallée sidérurgique reconvertie en pôle commercial et tertiaire. Tissu TPE/PME commerce, services, BTP, professions libérales, artisanat et logistique. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Talange (57), commune du pays de l'Orne dans l'agglomération de Thionville, ancrée dans la vallée sidérurgique reconvertie en pôle commercial et tertiaire. Tissu TPE/PME commerce, services, BTP, professions libérales, artisanat et logistique. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Talange (57), commune du pays de l'Orne dans l'agglomération de Thionville, ancrée dans la vallée sidérurgique reconvertie en pôle commercial et tertiaire. Tissu TPE/PME commerce, services, BTP, professions libérales, artisanat et logistique. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Talange (57). Nous accompagnons tous types d'activités : TPE/PME commerce et services, artisans BTP, professions libérales, logisticiens et acteurs tertiaires de l'agglomération de Thionville.",
   directAnswerEn:

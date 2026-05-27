@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const ORGERES_COPY: VilleCopy = {
   pitchFr:
-    "Orgères (35), commune résidentielle au sud de Rennes en Ille-et-Vilaine, accueille un tissu de TPE artisanales, commerces de proximité, PME de services, professions libérales et exploitations agricoles périurbaines. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Orgères (35), commune résidentielle au sud de Rennes en Ille-et-Vilaine, accueille un tissu de TPE artisanales, commerces de proximité, PME de services, professions libérales et exploitations agricoles périurbaines. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Orgères (35), commune résidentielle au sud de Rennes en Ille-et-Vilaine, accueille un tissu de TPE artisanales, commerces de proximité, PME de services, professions libérales et exploitations agricoles périurbaines. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Orgères (35), commune résidentielle au sud de Rennes en Ille-et-Vilaine, accueille un tissu de TPE artisanales, commerces de proximité, PME de services, professions libérales et exploitations agricoles périurbaines. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Orgères (35). Nous accompagnons TPE et PME : artisans, commerçants, PME de services, professions libérales et exploitants agricoles du sud rennais. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Orgères (35). Nous accompagnons TPE et PME : artisans, commerçants, PME de services, professions libérales et exploitants agricoles du sud rennais. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Orgères (35). Nous accompagnons TPE et PME : artisans, commerçants, PME de services, professions libérales et exploitants agricoles du sud rennais. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Orgères (35). Nous accompagnons TPE et PME : artisans, commerçants, PME de services, professions libérales et exploitants agricoles du sud rennais. Audit Flash sur mesure.",
   ecosystemFr:
     "Orgères est une commune résidentielle en croissance au sud de Rennes Métropole (Ille-et-Vilaine), desservie par l'axe routier vers Nantes. Son économie locale repose sur l'artisanat, les commerces de centre-bourg, les services aux entreprises, les professions libérales et une agriculture périurbaine active.",
   ecosystemEn:

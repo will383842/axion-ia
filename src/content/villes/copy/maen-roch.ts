@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const MAEN_ROCH_COPY: VilleCopy = {
   pitchFr:
-    "Maen Roch (35), commune nouvelle du nord de l'Ille-et-Vilaine née de la fusion d'Antrain, Tremblay et Saint-Ouen-la-Rouërie, se situe dans le bassin de Fougères entre Bretagne et Normandie. TPE artisanales, PME agroalimentaires, commerces ruraux, exploitations agricoles. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Maen Roch (35), commune nouvelle du nord de l'Ille-et-Vilaine née de la fusion d'Antrain, Tremblay et Saint-Ouen-la-Rouërie, se situe dans le bassin de Fougères entre Bretagne et Normandie. TPE artisanales, PME agroalimentaires, commerces ruraux, exploitations agricoles. Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Maen Roch (35), commune nouvelle du nord de l'Ille-et-Vilaine née de la fusion d'Antrain, Tremblay et Saint-Ouen-la-Rouërie, se situe dans le bassin de Fougères entre Bretagne et Normandie. TPE artisanales, PME agroalimentaires, commerces ruraux, exploitations agricoles. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Maen Roch (35), commune nouvelle du nord de l'Ille-et-Vilaine née de la fusion d'Antrain, Tremblay et Saint-Ouen-la-Rouërie, se situe dans le bassin de Fougères entre Bretagne et Normandie. TPE artisanales, PME agroalimentaires, commerces ruraux, exploitations agricoles. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Maen Roch (35). Nous accompagnons TPE et PME du nord-est breton : exploitants agricoles, PME agroalimentaires, artisans, commerçants ruraux et prestataires du bassin de Fougères. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Maen Roch (35). Nous accompagnons TPE et PME du nord-est breton : exploitants agricoles, PME agroalimentaires, artisans, commerçants ruraux et prestataires du bassin de Fougères. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Maen Roch (35). Nous accompagnons TPE et PME du nord-est breton : exploitants agricoles, PME agroalimentaires, artisans, commerçants ruraux et prestataires du bassin de Fougères. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Maen Roch (35). Nous accompagnons TPE et PME du nord-est breton : exploitants agricoles, PME agroalimentaires, artisans, commerçants ruraux et prestataires du bassin de Fougères. Audit Flash sur mesure.",
   ecosystemFr:
     "Maen Roch est une commune nouvelle du Pays de Fougères (Ille-et-Vilaine), créée en 2019. Située au carrefour Bretagne-Normandie, elle s'appuie sur un tissu rural dynamique : agriculture laitière et bovine, agroalimentaire, artisanat BTP, commerces de bourg et PME de services en lien avec Fougères et Rennes.",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const MAEN_ROCH_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Maen Roch et dans tout le Pays de Fougères (Fougères, Louvigné-du-Désert, Saint-Brice-en-Coglès, Bazouges-la-Pérouse). Rennes à 50 min (A84), TGV Paris 1h25 depuis Rennes.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Maen Roch ?",
+      q: "Tarifs audit IA à Maen Roch  : quel budget prévoir ?",
       a: "L'audit Flash IA démarre à 490 € HT pour les TPE et PME de Maen Roch et du bassin de Fougères. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
     },
     {

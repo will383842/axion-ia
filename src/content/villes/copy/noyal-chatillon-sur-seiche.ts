@@ -9,9 +9,9 @@ export const NOYAL_CHATILLON_SUR_SEICHE_COPY: VilleCopy = {
   pitchEn:
     "Noyal-Châtillon-sur-Seiche (35), commune périurbaine au sud de Rennes en Ille-et-Vilaine, bénéficie de la proximité immédiate de la métropole et de la vallée de la Seiche. TPE et PME tertiaires, artisans du bâtiment, commerces et services de proximité, professions libérales, hébergeurs et restaurateurs, sous-traitants industriels rennais. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Noyal-Châtillon-sur-Seiche (35). Nous accompagnons TPE et PME : sociétés tertiaires périurbaines, artisans du bâtiment, commerces et services de proximité, sous-traitants industriels rennais, professions libérales. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Noyal-Châtillon-sur-Seiche (35). Nous accompagnons TPE et PME : sociétés tertiaires périurbaines, artisans du bâtiment, commerces et services de proximité, sous-traitants industriels rennais, professions libérales. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Noyal-Châtillon-sur-Seiche (35). Nous accompagnons TPE et PME : sociétés tertiaires périurbaines, artisans du bâtiment, commerces et services de proximité, sous-traitants industriels rennais, professions libérales. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Noyal-Châtillon-sur-Seiche (35). Nous accompagnons TPE et PME : sociétés tertiaires périurbaines, artisans du bâtiment, commerces et services de proximité, sous-traitants industriels rennais, professions libérales. Audit Flash sur mesure.",
   seoHook: "services tertiaires & artisanat bâtiment",
   ecosystemFr:
     "Noyal-Châtillon-sur-Seiche est une commune périurbaine au sud de Rennes, en Ille-et-Vilaine, traversée par la vallée de la Seiche. Tissu TPE/PME : tertiaire de proximité, artisanat du bâtiment, commerces et services, sous-traitance industrielle rennaise, hébergement et restauration, professions libérales.",
@@ -52,7 +52,7 @@ export const NOYAL_CHATILLON_SUR_SEICHE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Noyal-Châtillon-sur-Seiche et dans tout le sud rennais (Chartres-de-Bretagne, Bruz, Vern-sur-Seiche, Saint-Jacques-de-la-Lande). Rennes centre à 15 min.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Noyal-Châtillon-sur-Seiche ?",
+      q: "Tarifs audit IA à Noyal-Châtillon-sur-Seiche  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables en ligne, adaptés aux TPE tertiaires, artisans et commerces de proximité du sud rennais.",
     },
     {

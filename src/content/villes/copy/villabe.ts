@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VILLABE_COPY: VilleCopy = {
   pitchFr:
-    "Villabé (91), commune de l'Essonne à 31 km au sud-est de Paris, dispose d'importantes zones d'activités commerciales et logistiques. Tissu TPE artisanales, commerces, PME distribution et logistique, services aux entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs de la zone Villabé–Corbeil.",
+    "Villabé (91), commune de l'Essonne à 31 km au sud-est de Paris, dispose d'importantes zones d'activités commerciales et logistiques. Tissu TPE artisanales, commerces, PME distribution et logistique, services aux entreprises. Axion-IA accompagne entreprises et indépendants de la zone Villabé–Corbeil.",
   pitchEn:
-    "Villabé (91), commune de l'Essonne à 31 km au sud-est de Paris, dispose d'importantes zones d'activités commerciales et logistiques. Tissu TPE artisanales, commerces, PME distribution et logistique, services aux entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs de la zone Villabé–Corbeil.",
+    "Villabé (91), commune de l'Essonne à 31 km au sud-est de Paris, dispose d'importantes zones d'activités commerciales et logistiques. Tissu TPE artisanales, commerces, PME distribution et logistique, services aux entreprises. Axion-IA accompagne entreprises et indépendants de la zone Villabé–Corbeil.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villabé (91). Nous accompagnons tous types d'activités : TPE artisanales, commerces, PME distribution et logistique, services aux entreprises, indépendants et professions libérales de la zone Villabé–Corbeil.",
   directAnswerEn:

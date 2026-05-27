@@ -60,7 +60,7 @@ export const ESSARTS_EN_BOCAGE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME industrielles du bocage vendéen : maintenance prédictive, contrôle qualité vision IA, optimisation production, automatisation logistique, gestion stocks.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Essarts-en-Bocage ?",
+      q: "Tarifs audit IA à Essarts-en-Bocage  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {

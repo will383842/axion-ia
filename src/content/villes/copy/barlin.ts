@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const BARLIN_COPY: VilleCopy = {
   pitchFr:
-    "Barlin (62), commune du bassin minier du Pas-de-Calais entre Béthune et Bruay-la-Buissière, accueille TPE artisanales, commerces, PME de services et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin minier.",
+    "Barlin (62), commune du bassin minier du Pas-de-Calais entre Béthune et Bruay-la-Buissière, accueille TPE artisanales, commerces, PME de services et professions libérales. Axion-IA accompagne tout le tissu professionnel local du bassin minier.",
   pitchEn:
-    "Barlin (62), commune du bassin minier du Pas-de-Calais entre Béthune et Bruay-la-Buissière, accueille TPE artisanales, commerces, PME de services et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin minier.",
+    "Barlin (62), commune du bassin minier du Pas-de-Calais entre Béthune et Bruay-la-Buissière, accueille TPE artisanales, commerces, PME de services et professions libérales. Axion-IA accompagne tout le tissu professionnel local du bassin minier.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Barlin (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthunois. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Barlin (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthunois. Audit Flash sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Barlin (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthunois. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Barlin (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthunois. Audit Flash sur mesure, intervention sur site ou en visio.",
   seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Barlin est une commune résidentielle du bassin minier entre Béthune et Bruay-la-Buissière. Tissu économique de TPE artisanales BTP, commerces de proximité, professions libérales et PME de services. Économie post-minière orientée vers les activités résidentielles et l'artisanat.",
@@ -52,7 +52,7 @@ export const BARLIN_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Barlin et dans le bassin minier béthunois (Béthune, Bruay-la-Buissière, Auchel, Nœux-les-Mines). Déplacements sur site ou visio.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Barlin ?",
+      q: "Quel est le tarif d'un audit IA à Barlin  ?",
       a: "L'Audit Flash Axion-IA démarre à 490 € HT pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du bassin minier. Tarifs publics.",
     },
     {

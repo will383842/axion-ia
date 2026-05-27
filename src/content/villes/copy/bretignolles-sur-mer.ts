@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const BRETIGNOLLES_SUR_MER_COPY: VilleCopy = {
   pitchFr:
-    "Bretignolles-sur-Mer (85), station balnéaire de la côte de Lumière en Pays de la Loire, plus de 5 300 habitants à l'année et population multipliée en saison. Capitale vendéenne du surf avec plages, ports, tourisme et activités nautiques. Tissu TPE artisans, PME tourisme/hôtellerie, commerces saisonniers et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations du littoral vendéen.",
+    "Bretignolles-sur-Mer (85), station balnéaire de la côte de Lumière en Pays de la Loire, plus de 5 300 habitants à l'année et population multipliée en saison. Capitale vendéenne du surf avec plages, ports, tourisme et activités nautiques. Tissu TPE artisans, PME tourisme/hôtellerie, commerces saisonniers et professions libérales. Axion-IA y déploie son expertise pour toutes les organisations du littoral vendéen.",
   pitchEn:
-    "Bretignolles-sur-Mer (85), station balnéaire de la côte de Lumière en Pays de la Loire, plus de 5 300 habitants à l'année et population multipliée en saison. Capitale vendéenne du surf avec plages, ports, tourisme et activités nautiques. Tissu TPE artisans, PME tourisme/hôtellerie, commerces saisonniers et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations du littoral vendéen.",
+    "Bretignolles-sur-Mer (85), station balnéaire de la côte de Lumière en Pays de la Loire, plus de 5 300 habitants à l'année et population multipliée en saison. Capitale vendéenne du surf avec plages, ports, tourisme et activités nautiques. Tissu TPE artisans, PME tourisme/hôtellerie, commerces saisonniers et professions libérales. Axion-IA y déploie son expertise pour toutes les organisations du littoral vendéen.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bretignolles-sur-Mer (85). Nous accompagnons TPE artisans, PME tourisme et hôtellerie, commerçants saisonniers et professions libérales de la côte de Lumière vendéenne. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bretignolles-sur-Mer (85). Nous accompagnons TPE artisans, PME tourisme et hôtellerie, commerçants saisonniers et professions libérales de la côte de Lumière vendéenne. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bretignolles-sur-Mer (85). Nous accompagnons TPE artisans, PME tourisme et hôtellerie, commerçants saisonniers et professions libérales de la côte de Lumière vendéenne. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bretignolles-sur-Mer (85). Nous accompagnons TPE artisans, PME tourisme et hôtellerie, commerçants saisonniers et professions libérales de la côte de Lumière vendéenne. Audit Flash sur mesure.",
   seoHook: "tourisme hôtellerie & restauration commerce",
   ecosystemFr:
     "Bretignolles-sur-Mer (5 344 hab) est une station balnéaire de la côte de Lumière, capitale vendéenne du surf. Économie centrée sur tourisme (hôtellerie, campings, locations saisonnières), nautisme, commerces, restauration, artisanat et BTP. Proximité Saint-Gilles-Croix-de-Vie (10 min), Les Sables-d'Olonne (30 min), Nantes (1h10). Forte saisonnalité estivale.",
@@ -52,7 +52,7 @@ export const BRETIGNOLLES_SUR_MER_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Bretignolles-sur-Mer et sur toute la côte de Lumière vendéenne (Saint-Gilles-Croix-de-Vie, Brem-sur-Mer, Saint-Hilaire-de-Riez). Nos consultants se déplacent depuis Nantes (1h10) ou La Roche-sur-Yon (40 min).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Bretignolles-sur-Mer ?",
+      q: "Tarifs audit IA à Bretignolles-sur-Mer  : quel budget prévoir ?",
       a: "L'Audit Flash IA démarre à 490 € HT pour les TPE de Bretignolles-sur-Mer. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre activité touristique ou artisanale.",
     },
     {

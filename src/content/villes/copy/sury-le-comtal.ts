@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SURY_LE_COMTAL_COPY: VilleCopy = {
   pitchFr:
-    "Sury-le-Comtal (42), commune de la plaine du Forez dans la Loire, est intégrée à Loire Forez Agglo. Position péri-urbaine entre Saint-Étienne et Montbrison. Tissu PME tertiaires et industrielles, TPE artisans BTP, agriculture forézienne, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations foréziennes.",
+    "Sury-le-Comtal (42), commune de la plaine du Forez dans la Loire, est intégrée à Loire Forez Agglo. Position péri-urbaine entre Saint-Étienne et Montbrison. Tissu PME tertiaires et industrielles, TPE artisans BTP, agriculture forézienne, commerces. Axion-IA y mène ses missions auprès des organisations locales foréziennes.",
   pitchEn:
-    "Sury-le-Comtal (42), commune de la plaine du Forez dans la Loire, est intégrée à Loire Forez Agglo. Position péri-urbaine entre Saint-Étienne et Montbrison. Tissu PME tertiaires et industrielles, TPE artisans BTP, agriculture forézienne, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations foréziennes.",
+    "Sury-le-Comtal (42), commune de la plaine du Forez dans la Loire, est intégrée à Loire Forez Agglo. Position péri-urbaine entre Saint-Étienne et Montbrison. Tissu PME tertiaires et industrielles, TPE artisans BTP, agriculture forézienne, commerces. Axion-IA y mène ses missions auprès des organisations locales foréziennes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sury-le-Comtal (42). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Loire Forez Agglo, TPE artisans BTP, commerçants, agriculteurs plaine Forez, indépendants et services aux entreprises foréziennes.",
   directAnswerEn:

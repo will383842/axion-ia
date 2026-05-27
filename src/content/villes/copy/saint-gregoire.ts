@@ -56,7 +56,7 @@ export const SAINT_GREGOIRE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME tertiaires et services B2B des zones d'activités de Saint-Grégoire (Espace Performance, Saint-Sulpice) : automatisation workflow, agents conversationnels, veille augmentée, CRM. Audit Flash 490 € HT.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Saint-Grégoire ?",
+      q: "Tarifs audit IA à Saint-Grégoire  : quel budget prévoir ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du nord rennais, il identifie les cas d'usage IA à fort ROI pour votre activité (tertiaire, conseil, services, BTP). Tarifs publics.",
     },
     {

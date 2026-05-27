@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VITRE_COPY: VilleCopy = {
   pitchFr:
-    "Vitré (35), sous-préfecture d'Ille-et-Vilaine aux portes de la Bretagne, est un pôle agroalimentaire majeur des marches bretonnes. Château médiéval classé, gare TGV Paris-Rennes, tissu TPE/PME industriel et tertiaire. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Vitré (35), sous-préfecture d'Ille-et-Vilaine aux portes de la Bretagne, est un pôle agroalimentaire majeur des marches bretonnes. Château médiéval classé, gare TGV Paris-Rennes, tissu TPE/PME industriel et tertiaire. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Vitré (35), sous-préfecture d'Ille-et-Vilaine aux portes de la Bretagne, est un pôle agroalimentaire majeur des marches bretonnes. Château médiéval classé, gare TGV Paris-Rennes, tissu TPE/PME industriel et tertiaire. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Vitré (35), sous-préfecture d'Ille-et-Vilaine aux portes de la Bretagne, est un pôle agroalimentaire majeur des marches bretonnes. Château médiéval classé, gare TGV Paris-Rennes, tissu TPE/PME industriel et tertiaire. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vitré (35). Nous accompagnons tous types d'activités : TPE et PME agroalimentaires, industries des marches bretonnes, artisans, commerçants, professions libérales, indépendants et services aux entreprises de Vitré Communauté.",
   directAnswerEn:

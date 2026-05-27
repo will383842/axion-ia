@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const OSNY_COPY: VilleCopy = {
   pitchFr:
-    "Osny (95), commune de l'agglomération Cergy-Pontoise traversée par la Viosne, allie patrimoine rural et dynamisme économique tertiaire. Tissu TPE commerces et artisanat, PME services et conseil, professions libérales, restauration, prestataires formation. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Osny (95), commune de l'agglomération Cergy-Pontoise traversée par la Viosne, allie patrimoine rural et dynamisme économique tertiaire. Tissu TPE commerces et artisanat, PME services et conseil, professions libérales, restauration, prestataires formation. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Osny (95), commune de l'agglomération Cergy-Pontoise traversée par la Viosne, allie patrimoine rural et dynamisme économique tertiaire. Tissu TPE commerces et artisanat, PME services et conseil, professions libérales, restauration, prestataires formation. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Osny (95), commune de l'agglomération Cergy-Pontoise traversée par la Viosne, allie patrimoine rural et dynamisme économique tertiaire. Tissu TPE commerces et artisanat, PME services et conseil, professions libérales, restauration, prestataires formation. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Osny (95). Nous accompagnons TPE et PME : commerçants et artisans centre-bourg, PME services et conseil agglo Cergy-Pontoise, professions libérales, restaurateurs, prestataires formation Val-d'Oise. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Osny (95). Nous accompagnons TPE et PME : commerçants et artisans centre-bourg, PME services et conseil agglo Cergy-Pontoise, professions libérales, restaurateurs, prestataires formation Val-d'Oise. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Osny (95). Nous accompagnons TPE et PME : commerçants et artisans centre-bourg, PME services et conseil agglo Cergy-Pontoise, professions libérales, restaurateurs, prestataires formation Val-d'Oise. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Osny (95). Nous accompagnons TPE et PME : commerçants et artisans centre-bourg, PME services et conseil agglo Cergy-Pontoise, professions libérales, restaurateurs, prestataires formation Val-d'Oise. Audit Flash sur mesure.",
   seoHook: "commerce détail & services conseil",
   ecosystemFr:
     "Osny est une commune de l'agglomération Cergy-Pontoise, traversée par la Viosne, associant patrimoine rural et activités tertiaires. Tissu TPE commerces et artisanat, PME services et conseil, professions libérales, restauration, prestataires formation.",

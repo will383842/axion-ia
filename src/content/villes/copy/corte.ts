@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const CORTE_COPY: VilleCopy = {
   pitchFr:
-    "Corte (2B), sous-préfecture et cœur historique de la Corse, abrite l'Université de Corse Pasquale Paoli et sa citadelle emblématique. TPE artisans, PME de services, commerçants de centre-ville, acteurs touristiques et professions libérales forment le tissu économique local. Axion-IA couvre l'ensemble des activités professionnelles présentes du centre Corse.",
+    "Corte (2B), sous-préfecture et cœur historique de la Corse, abrite l'Université de Corse Pasquale Paoli et sa citadelle emblématique. TPE artisans, PME de services, commerçants de centre-ville, acteurs touristiques et professions libérales forment le tissu économique local. Axion-IA couvre les activités professionnelles du bassin du centre Corse.",
   pitchEn:
-    "Corte (2B), sous-préfecture et cœur historique de la Corse, abrite l'Université de Corse Pasquale Paoli et sa citadelle emblématique. TPE artisans, PME de services, commerçants de centre-ville, acteurs touristiques et professions libérales forment le tissu économique local. Axion-IA couvre l'ensemble des activités professionnelles présentes du centre Corse.",
+    "Corte (2B), sous-préfecture et cœur historique de la Corse, abrite l'Université de Corse Pasquale Paoli et sa citadelle emblématique. TPE artisans, PME de services, commerçants de centre-ville, acteurs touristiques et professions libérales forment le tissu économique local. Axion-IA couvre les activités professionnelles du bassin du centre Corse.",
   seoHook: "université, tourisme & artisanat corse",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Corte (2B). Nous accompagnons tous types d'activités : TPE artisans, PME de services, commerçants, acteurs touristiques, professions libérales et structures liées à l'Université de Corse. Audit Flash dès 490 € HT, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Corte (2B). Nous accompagnons tous types d'activités : TPE artisans, PME de services, commerçants, acteurs touristiques, professions libérales et structures liées à l'Université de Corse. Audit Flash sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Corte (2B). Nous accompagnons tous types d'activités : TPE artisans, PME de services, commerçants, acteurs touristiques, professions libérales et structures liées à l'Université de Corse. Audit Flash dès 490 € HT, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Corte (2B). Nous accompagnons tous types d'activités : TPE artisans, PME de services, commerçants, acteurs touristiques, professions libérales et structures liées à l'Université de Corse. Audit Flash sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Corte est la capitale historique de la Corse et siège de l'Université de Corse Pasquale Paoli (environ 4 700 étudiants). Sous-préfecture de Haute-Corse, la ville domine le centre montagneux de l'île. L'économie repose sur les services universitaires, le tourisme culturel et de montagne (citadelle, gorges de la Restonica, vallée du Tavignano), le commerce de proximité, l'artisanat et les services publics.",
   ecosystemEn:
@@ -56,7 +56,7 @@ export const CORTE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les structures en lien avec l'Université de Corse Pasquale Paoli : start-ups spin-off, labos, associations étudiantes et prestataires locaux. Diagnostic IA adapté à l'écosystème recherche et formation.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Corte ?",
+      q: "Quel est le tarif d'un audit IA à Corte  ?",
       a: "L'Audit Flash Axion-IA démarre à 490 € HT. Adapté aux TPE et PME cortenaises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {

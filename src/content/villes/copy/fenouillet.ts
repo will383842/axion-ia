@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const FENOUILLET_COPY: VilleCopy = {
   pitchFr:
-    "Fenouillet (31), commune du nord de Toulouse avec près de 5 800 habitants. Tissu TPE artisans, PME de services et commerciales, commerces de proximité, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de la couronne nord de Toulouse.",
+    "Fenouillet (31), commune du nord de Toulouse avec près de 5 800 habitants. Tissu TPE artisans, PME de services et commerciales, commerces de proximité, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes de la couronne nord de Toulouse.",
   pitchEn:
-    "Fenouillet (31), commune du nord de Toulouse avec près de 5 800 habitants. Tissu TPE artisans, PME de services et commerciales, commerces de proximité, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de la couronne nord de Toulouse.",
+    "Fenouillet (31), commune du nord de Toulouse avec près de 5 800 habitants. Tissu TPE artisans, PME de services et commerciales, commerces de proximité, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes de la couronne nord de Toulouse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fenouillet (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fenouillet (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fenouillet (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fenouillet (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit Flash sur mesure.",
   seoHook: "commerce détail & artisanat",
   ecosystemFr:
     "Fenouillet est une commune commerçante du nord de Toulouse, avec une zone commerciale importante. Tissu TPE artisans, PME commerciales et de services, professions libérales. Proximité d'Aucamville et de l'axe A62.",
@@ -56,7 +56,7 @@ export const FENOUILLET_COPY: VilleCopy = {
       a: "Nous accompagnons tous types d'activités : PME commerciales, TPE artisans, professions libérales, restauration, services. Aucun secteur exclu.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Fenouillet ?",
+      q: "Tarifs audit IA à Fenouillet  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME commerciales, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics.",
     },
     {

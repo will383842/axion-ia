@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_MAURICE_L_EXIL_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Maurice-l'Exil (38), commune du sud-Isère dans la vallée du Rhône, est ancrée dans le bassin industriel rhodanien (proximité plateformes industrielles historiques). Tissu PME industrielles, logistique, TPE artisans BTP, commerces, agriculture. Axion-IA accompagne entreprises et indépendants de tous secteurs samauritaines et du sud-Isère.",
+    "Saint-Maurice-l'Exil (38), commune du sud-Isère dans la vallée du Rhône, est ancrée dans le bassin industriel rhodanien (proximité plateformes industrielles historiques). Tissu PME industrielles, logistique, TPE artisans BTP, commerces, agriculture. Axion-IA accompagne entreprises et indépendants samauritaines et du sud-Isère.",
   pitchEn:
-    "Saint-Maurice-l'Exil (38), commune du sud-Isère dans la vallée du Rhône, est ancrée dans le bassin industriel rhodanien (proximité plateformes industrielles historiques). Tissu PME industrielles, logistique, TPE artisans BTP, commerces, agriculture. Axion-IA accompagne entreprises et indépendants de tous secteurs samauritaines et du sud-Isère.",
+    "Saint-Maurice-l'Exil (38), commune du sud-Isère dans la vallée du Rhône, est ancrée dans le bassin industriel rhodanien (proximité plateformes industrielles historiques). Tissu PME industrielles, logistique, TPE artisans BTP, commerces, agriculture. Axion-IA accompagne entreprises et indépendants samauritaines et du sud-Isère.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Maurice-l'Exil (38). Nous accompagnons tous types d'activités : PME industrielles et sous-traitants techniques du bassin rhodanien, TPE artisans BTP, commerçants, agriculteurs/arboriculteurs vallée du Rhône, indépendants, professions libérales et services.",
   directAnswerEn:

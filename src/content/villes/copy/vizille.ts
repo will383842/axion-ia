@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VIZILLE_COPY: VilleCopy = {
   pitchFr:
-    "Vizille (38), commune de la vallée de la Romanche en Isère, est historiquement le berceau de la Révolution française (Assemblée des États du Dauphiné, 21 juillet 1788, au château de Vizille). Elle abrite le Musée de la Révolution française. Route Napoléon. Tissu PME industrielles, tourisme patrimoine, TPE artisans, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Vizille (38), commune de la vallée de la Romanche en Isère, est historiquement le berceau de la Révolution française (Assemblée des États du Dauphiné, 21 juillet 1788, au château de Vizille). Elle abrite le Musée de la Révolution française. Route Napoléon. Tissu PME industrielles, tourisme patrimoine, TPE artisans, commerces. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Vizille (38), commune de la vallée de la Romanche en Isère, est historiquement le berceau de la Révolution française (Assemblée des États du Dauphiné, 21 juillet 1788, au château de Vizille). Elle abrite le Musée de la Révolution française. Route Napoléon. Tissu PME industrielles, tourisme patrimoine, TPE artisans, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Vizille (38), commune de la vallée de la Romanche en Isère, est historiquement le berceau de la Révolution française (Assemblée des États du Dauphiné, 21 juillet 1788, au château de Vizille). Elle abrite le Musée de la Révolution française. Route Napoléon. Tissu PME industrielles, tourisme patrimoine, TPE artisans, commerces. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vizille (38). Nous accompagnons tous types d'activités : acteurs du tourisme patrimoine (Musée Révolution française, château de Vizille), PME industrielles vallée Romanche, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises sud-grenobloises.",
   directAnswerEn:

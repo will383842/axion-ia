@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SARLAT_LA_CANEDA_COPY: VilleCopy = {
   pitchFr:
-    "Sarlat-la-Canéda (24), cité médiévale du Périgord Noir en Dordogne, haut lieu du tourisme patrimonial et de la gastronomie (foie gras, truffes, noix). Tissu TPE/PME tourisme, hôtellerie-restauration, commerce, artisanat d'art et agroalimentaire. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Sarlat-la-Canéda (24), cité médiévale du Périgord Noir en Dordogne, haut lieu du tourisme patrimonial et de la gastronomie (foie gras, truffes, noix). Tissu TPE/PME tourisme, hôtellerie-restauration, commerce, artisanat d'art et agroalimentaire. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Sarlat-la-Canéda (24), cité médiévale du Périgord Noir en Dordogne, haut lieu du tourisme patrimonial et de la gastronomie (foie gras, truffes, noix). Tissu TPE/PME tourisme, hôtellerie-restauration, commerce, artisanat d'art et agroalimentaire. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Sarlat-la-Canéda (24), cité médiévale du Périgord Noir en Dordogne, haut lieu du tourisme patrimonial et de la gastronomie (foie gras, truffes, noix). Tissu TPE/PME tourisme, hôtellerie-restauration, commerce, artisanat d'art et agroalimentaire. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sarlat-la-Canéda (24). Nous accompagnons TPE/PME du tourisme, de l'hôtellerie-restauration, du commerce, de l'artisanat d'art et de l'agroalimentaire du Périgord Noir. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sarlat-la-Canéda (24). Nous accompagnons TPE/PME du tourisme, de l'hôtellerie-restauration, du commerce, de l'artisanat d'art et de l'agroalimentaire du Périgord Noir. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sarlat-la-Canéda (24). Nous accompagnons TPE/PME du tourisme, de l'hôtellerie-restauration, du commerce, de l'artisanat d'art et de l'agroalimentaire du Périgord Noir. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sarlat-la-Canéda (24). Nous accompagnons TPE/PME du tourisme, de l'hôtellerie-restauration, du commerce, de l'artisanat d'art et de l'agroalimentaire du Périgord Noir. Audit Flash sur mesure.",
   ecosystemFr:
     "Sarlat-la-Canéda, capitale du Périgord Noir, est l'une des cités médiévales les mieux préservées d'Europe. Économie dominée par le tourisme patrimonial (1,5 M visiteurs/an), l'hôtellerie-restauration, la gastronomie (foie gras, truffes, noix AOP), l'artisanat d'art, le commerce de centre-ville et les marchés traditionnels (classés parmi les plus beaux de France).",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const SARLAT_LA_CANEDA_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Sarlat et dans tout le Périgord Noir (Montignac-Lascaux, Domme, La Roque-Gageac). Gare SNCF Sarlat ou aéroport Brive à 50 min.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Sarlat ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Sarlat  ?",
       a: "L'Audit Flash démarre à 490 € HT. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du tourisme et de la gastronomie sarladaise. Tarifs publics.",
     },
     {

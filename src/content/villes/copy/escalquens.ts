@@ -9,9 +9,9 @@ export const ESCALQUENS_COPY: VilleCopy = {
   pitchEn:
     "Escalquens (31), commune du sud-est de Toulouse avec près de 7 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités du Sicoval sud-est toulousain.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Escalquens (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud-est Toulouse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Escalquens (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud-est Toulouse. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Escalquens (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud-est Toulouse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Escalquens (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud-est Toulouse. Audit Flash sur mesure.",
   seoHook: "artisanat & commerce détail",
   ecosystemFr:
     "Escalquens est une commune résidentielle du sud-est de Toulouse, dans le Sicoval. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Proximité de Castanet-Tolosan et Labège.",
@@ -56,7 +56,7 @@ export const ESCALQUENS_COPY: VilleCopy = {
       a: "Nous accompagnons tous types d'activités : TPE artisans, PME de services, professions libérales, commerces, restauration. Aucun secteur exclu.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Escalquens ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Escalquens  ?",
       a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics.",
     },
     {

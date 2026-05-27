@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const CONDOM_COPY: VilleCopy = {
   pitchFr:
-    "Condom (32), sous-préfecture du Gers de 6 473 habitants, capitale de l'Armagnac sur les bords de la Baïse. Son économie repose sur un tissu de TPE viticoles et artisanales, PME agroalimentaires, négoce de spiritueux, tourisme fluvial et patrimonial, et commerces de centre-bourg. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Condom (32), sous-préfecture du Gers de 6 473 habitants, capitale de l'Armagnac sur les bords de la Baïse. Son économie repose sur un tissu de TPE viticoles et artisanales, PME agroalimentaires, négoce de spiritueux, tourisme fluvial et patrimonial, et commerces de centre-bourg. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Condom (32), sous-préfecture du Gers de 6 473 habitants, capitale de l'Armagnac sur les bords de la Baïse. Son économie repose sur un tissu de TPE viticoles et artisanales, PME agroalimentaires, négoce de spiritueux, tourisme fluvial et patrimonial, et commerces de centre-bourg. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Condom (32), sous-préfecture du Gers de 6 473 habitants, capitale de l'Armagnac sur les bords de la Baïse. Son économie repose sur un tissu de TPE viticoles et artisanales, PME agroalimentaires, négoce de spiritueux, tourisme fluvial et patrimonial, et commerces de centre-bourg. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Condom (32). Nous accompagnons TPE et PME de la capitale de l'Armagnac : domaines viticoles, négoce spiritueux, entreprises agroalimentaires, commerces et professionnels du tourisme fluvial. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Condom (32). Nous accompagnons TPE et PME de la capitale de l'Armagnac : domaines viticoles, négoce spiritueux, entreprises agroalimentaires, commerces et professionnels du tourisme fluvial. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Condom (32). Nous accompagnons TPE et PME de la capitale de l'Armagnac : domaines viticoles, négoce spiritueux, entreprises agroalimentaires, commerces et professionnels du tourisme fluvial. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Condom (32). Nous accompagnons TPE et PME de la capitale de l'Armagnac : domaines viticoles, négoce spiritueux, entreprises agroalimentaires, commerces et professionnels du tourisme fluvial. Audit Flash sur mesure.",
   ecosystemFr:
     "Condom est la capitale de l'Armagnac, sous-préfecture du Gers baignée par la Baïse. Son économie s'appuie sur la viticulture et le négoce d'Armagnac, l'agroalimentaire (foie gras, conserves), le tourisme patrimonial et fluvial (navigation sur la Baïse), les commerces de centre-bourg, l'artisanat et les professions libérales. Cathédrale Saint-Pierre classée.",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const CONDOM_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Condom et dans tout le Gers ouest. Consultants accessibles via Agen (gare TGV, 40 min) et l'aéroport Toulouse-Blagnac à 1h30. Intervention sous 5 jours ouvrés.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Condom ?",
+      q: "Quel est le tarif d'un audit IA à Condom  ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Condom : domaines viticoles, négoce Armagnac, agroalimentaire, commerces et professionnels du tourisme. ROI chiffré dès le diagnostic.",
     },
     {

@@ -11,14 +11,14 @@ export const NEVERS_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Nevers pour optimiser les processus des entreprises locales. Avec des acteurs comme Faurecia et Eiffage, Nevers est un pôle industriel clé où nous apportons notre expertise en IA.",
   directAnswerFr:
-    "Axion-IA se déplace à Nevers pour accompagner les entreprises dans l'adoption de l'IA. Avec des secteurs dominants tels que la fabrication de composants électroniques et des entreprises comme Faurecia, notre intervention vise à automatiser les tâches administratives et de relance, permettant un retour sur investissement rapide. Nos tarifs publics sont disponibles dès 490 € HT pour un audit.",
+    "Axion-IA se déplace à Nevers pour accompagner les entreprises dans l'adoption de l'IA. Avec des secteurs dominants tels que la fabrication de composants électroniques et des entreprises comme Faurecia, notre intervention vise à automatiser les tâches administratives et de relance, permettant un retour sur investissement rapide. Nos tarifs publics sont disponibles pour un audit.",
   directAnswerEn:
-    "Axion-IA se déplace à Nevers pour accompagner les entreprises dans l'adoption de l'IA. Avec des secteurs dominants tels que la fabrication de composants électroniques et des entreprises comme Faurecia, notre intervention vise à automatiser les tâches administratives et de relance, permettant un retour sur investissement rapide. Nos tarifs publics sont disponibles dès 490 € HT pour un audit.",
+    "Axion-IA se déplace à Nevers pour accompagner les entreprises dans l'adoption de l'IA. Avec des secteurs dominants tels que la fabrication de composants électroniques et des entreprises comme Faurecia, notre intervention vise à automatiser les tâches administratives et de relance, permettant un retour sur investissement rapide. Nos tarifs publics sont disponibles pour un audit.",
   seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
-    "Nevers, avec ses 3 000 établissements actifs, est le siège de grands groupes tels que Faurecia et Eiffage. L'Institut Universitaire de Technologie de Nevers forme les talents de demain.",
+    "Nevers, avec ses 3 000 établissements actifs, est le siège de grands groupes tels que Faurecia et Eiffage. L'Institut Universitaire de Technologie de Nevers forme les talents de demain.",
   ecosystemEn:
-    "Nevers, avec ses 3 000 établissements actifs, est le siège de grands groupes tels que Faurecia et Eiffage. L'Institut Universitaire de Technologie de Nevers forme les talents de demain.",
+    "Nevers, avec ses 3 000 établissements actifs, est le siège de grands groupes tels que Faurecia et Eiffage. L'Institut Universitaire de Technologie de Nevers forme les talents de demain.",
   distancesFr: "Nevers est desservie par la Gare TGV de Nevers, située à 0 km du centre-ville.",
   distancesEn: "Nevers est desservie par la Gare TGV de Nevers, située à 0 km du centre-ville.",
   topSectorsNaf: [

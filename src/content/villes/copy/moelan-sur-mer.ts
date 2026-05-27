@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MOELAN_SUR_MER_COPY: VilleCopy = {
   pitchFr:
-    "Moëlan-sur-Mer (29), commune littorale du sud Finistère entre les rias du Belon et de l'Aven, est mondialement connue pour ses huîtres plates Belon. TPE ostréicoles, PME touristiques, artisans, commerces de bourg, professions libérales et exploitants agricoles composent son tissu économique. Axion-IA accompagne entreprises et indépendants de tous secteurs des rias du Belon et de l'Aven.",
+    "Moëlan-sur-Mer (29), commune littorale du sud Finistère entre les rias du Belon et de l'Aven, est mondialement connue pour ses huîtres plates Belon. TPE ostréicoles, PME touristiques, artisans, commerces de bourg, professions libérales et exploitants agricoles composent son tissu économique. Axion-IA opère pour entreprises et indépendants du secteur des rias du Belon et de l'Aven.",
   pitchEn:
-    "Moëlan-sur-Mer (29), commune littorale du sud Finistère entre les rias du Belon et de l'Aven, est mondialement connue pour ses huîtres plates Belon. TPE ostréicoles, PME touristiques, artisans, commerces de bourg, professions libérales et exploitants agricoles composent son tissu économique. Axion-IA accompagne entreprises et indépendants de tous secteurs des rias du Belon et de l'Aven.",
+    "Moëlan-sur-Mer (29), commune littorale du sud Finistère entre les rias du Belon et de l'Aven, est mondialement connue pour ses huîtres plates Belon. TPE ostréicoles, PME touristiques, artisans, commerces de bourg, professions libérales et exploitants agricoles composent son tissu économique. Axion-IA opère pour entreprises et indépendants du secteur des rias du Belon et de l'Aven.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Moëlan-sur-Mer (29). Nous accompagnons tous types d'activités : TPE ostréicoles des rias du Belon et de l'Aven, PME touristiques, artisans, commerçants de bourg, professions libérales, exploitants agricoles et indépendants du secteur.",
   directAnswerEn:
@@ -61,7 +61,7 @@ export const MOELAN_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour une TPE ou PME de la côte sud Finistère ?",
-      a: "L'audit Flash démarre à 490 € HT, accessible aux TPE. Pour les PME touristiques et exploitations ostréicoles, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
+      a: "L'audit Flash est tarifé selon vos enjeux, accessible aux TPE. Pour les PME touristiques et exploitations ostréicoles, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
     },
     {
       q: "Comment se déroule une mission IA à Moëlan-sur-Mer ?",

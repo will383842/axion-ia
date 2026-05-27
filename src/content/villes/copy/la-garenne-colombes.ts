@@ -11,9 +11,9 @@ export const LA_GARENNE_COLOMBES_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à La Garenne-Colombes, proche de pôles comme Cap Digital et Station F, pour optimiser vos processus grâce à l'IA.",
   directAnswerFr:
-    "Axion-IA se déplace à La Garenne-Colombes pour aider les entreprises locales à intégrer l'IA dans leurs opérations. Avec des voisins comme TotalEnergies et Capgemini, la ville bénéficie d'un environnement économique dynamique. Nos services incluent des audits dès 490 € HT et des interventions à partir de 590 € HT, adaptés à vos besoins spécifiques.",
+    "Axion-IA se déplace à La Garenne-Colombes pour aider les entreprises locales à intégrer l'IA dans leurs opérations. Avec des voisins comme TotalEnergies et Capgemini, la ville bénéficie d'un environnement économique dynamique. Nos services incluent des audits et des interventions, adaptés à vos besoins spécifiques.",
   directAnswerEn:
-    "Axion-IA se déplace à La Garenne-Colombes pour aider les entreprises locales à intégrer l'IA dans leurs opérations. Avec des voisins comme TotalEnergies et Capgemini, la ville bénéficie d'un environnement économique dynamique. Nos services incluent des audits dès 490 € HT et des interventions à partir de 590 € HT, adaptés à vos besoins spécifiques.",
+    "Axion-IA se déplace à La Garenne-Colombes pour aider les entreprises locales à intégrer l'IA dans leurs opérations. Avec des voisins comme TotalEnergies et Capgemini, la ville bénéficie d'un environnement économique dynamique. Nos services incluent des audits et des interventions, adaptés à vos besoins spécifiques.",
   seoHook: "programmation informatique & activités sièges",
   ecosystemFr:
     "La Garenne-Colombes est un pôle économique avec TotalEnergies et Capgemini. La proximité avec Paris renforce son attrait pour les entreprises technologiques.",

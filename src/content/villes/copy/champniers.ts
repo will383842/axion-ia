@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHAMPNIERS_COPY: VilleCopy = {
   pitchFr:
-    "Champniers (16), commune au nord de l'agglomération d'Angoulême en Charente, pôle de zones d'activités du GrandAngoulême (parc Agora, ZI). Tissu de TPE artisans, PME industrielles et logistiques, commerces et services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération angoumoisine.",
+    "Champniers (16), commune au nord de l'agglomération d'Angoulême en Charente, pôle de zones d'activités du GrandAngoulême (parc Agora, ZI). Tissu de TPE artisans, PME industrielles et logistiques, commerces et services aux entreprises. Axion-IA opère sur l'ensemble des activités professionnelles locales de l'agglomération angoumoisine.",
   pitchEn:
-    "Champniers (16), commune au nord de l'agglomération d'Angoulême en Charente, pôle de zones d'activités du GrandAngoulême (parc Agora, ZI). Tissu de TPE artisans, PME industrielles et logistiques, commerces et services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération angoumoisine.",
+    "Champniers (16), commune au nord de l'agglomération d'Angoulême en Charente, pôle de zones d'activités du GrandAngoulême (parc Agora, ZI). Tissu de TPE artisans, PME industrielles et logistiques, commerces et services aux entreprises. Axion-IA opère sur l'ensemble des activités professionnelles locales de l'agglomération angoumoisine.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Champniers (16). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et logistiques, entreprises des zones d'activités, commerçants et indépendants de cette commune dynamique du nord de l'agglomération d'Angoulême.",
   directAnswerEn:

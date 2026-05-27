@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const FECAMP_COPY: VilleCopy = {
   pitchFr:
-    "Fécamp (76), commune littorale de Seine-Maritime, est un port de pêche historique connu pour la liqueur Bénédictine et ses falaises de la Côte d'Albâtre. Tissu TPE artisans, PME agroalimentaires et maritimes, commerces, tourisme côtier, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations du littoral cauchois.",
+    "Fécamp (76), commune littorale de Seine-Maritime, est un port de pêche historique connu pour la liqueur Bénédictine et ses falaises de la Côte d'Albâtre. Tissu TPE artisans, PME agroalimentaires et maritimes, commerces, tourisme côtier, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales du littoral cauchois.",
   pitchEn:
-    "Fécamp (76), commune littorale de Seine-Maritime, est un port de pêche historique connu pour la liqueur Bénédictine et ses falaises de la Côte d'Albâtre. Tissu TPE artisans, PME agroalimentaires et maritimes, commerces, tourisme côtier, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations du littoral cauchois.",
+    "Fécamp (76), commune littorale de Seine-Maritime, est un port de pêche historique connu pour la liqueur Bénédictine et ses falaises de la Côte d'Albâtre. Tissu TPE artisans, PME agroalimentaires et maritimes, commerces, tourisme côtier, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales du littoral cauchois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fécamp (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agroalimentaires et maritimes, acteurs tourisme littoral (Côte d'Albâtre), professions libérales, services du Pays de Caux. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fécamp (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agroalimentaires et maritimes, acteurs tourisme littoral (Côte d'Albâtre), professions libérales, services du Pays de Caux. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fécamp (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agroalimentaires et maritimes, acteurs tourisme littoral (Côte d'Albâtre), professions libérales, services du Pays de Caux. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fécamp (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agroalimentaires et maritimes, acteurs tourisme littoral (Côte d'Albâtre), professions libérales, services du Pays de Caux. Audit Flash sur mesure.",
   seoHook: "port de pêche, agroalimentaire & tourisme littoral",
   ecosystemFr:
     "Fécamp est un port de pêche historique de la Côte d'Albâtre en Pays de Caux. Industrie agroalimentaire (pêche, transformation), tourisme littoral (Palais Bénédictine, falaises), tissu TPE artisans BTP, commerces de centre-ville et professions libérales.",
@@ -61,7 +61,7 @@ export const FECAMP_COPY: VilleCopy = {
     },
     {
       q: "Quel budget prévoir pour un audit IA à Fécamp ?",
-      a: "L'audit Flash démarre à 490 € HT pour les TPE. Pour les PME maritimes et touristiques, l'audit stratégique complet est adapté au périmètre. Tarifs publics, pas de devis opaque.",
+      a: "L'audit Flash propose un tarif d'entrée accessible pour les TPE. Pour les PME maritimes et touristiques, l'audit stratégique complet est adapté au périmètre. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Comment se passe une mission depuis Le Havre ou Paris ?",

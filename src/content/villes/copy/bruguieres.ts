@@ -9,9 +9,9 @@ export const BRUGUIERES_COPY: VilleCopy = {
   pitchEn:
     "Bruguières (31), commune du nord de Toulouse avec plus de 6 200 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de la couronne nord de Toulouse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bruguières (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bruguières (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bruguières (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bruguières (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit Flash sur mesure.",
   seoHook: "artisanat & commerce détail",
   ecosystemFr:
     "Bruguières est une commune résidentielle du nord de Toulouse, entre Saint-Jory et Castelginest. Tissu TPE artisans, PME de services, commerces de bourg, professions libérales. Proximité de l'axe A62.",
@@ -56,7 +56,7 @@ export const BRUGUIERES_COPY: VilleCopy = {
       a: "Nous accompagnons tous types d'activités : TPE artisans, PME de services, professions libérales, commerces, transport. Aucun secteur exclu.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Bruguières ?",
+      q: "Quel est le tarif d'un audit IA à Bruguières  ?",
       a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics.",
     },
     {

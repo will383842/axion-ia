@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_MESNIL_SAINT_DENIS_COPY: VilleCopy = {
   pitchFr:
-    "Le Mesnil-Saint-Denis (78), commune résidentielle verdoyante à 28 km au sud-ouest de Paris dans les Yvelines, accueille TPE artisans, PME de services, commerces de proximité, professions libérales et prestataires IT. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud Yvelines.",
+    "Le Mesnil-Saint-Denis (78), commune résidentielle verdoyante à 28 km au sud-ouest de Paris dans les Yvelines, accueille TPE artisans, PME de services, commerces de proximité, professions libérales et prestataires IT. Axion-IA accompagne tout le tissu professionnel local du sud Yvelines.",
   pitchEn:
-    "Le Mesnil-Saint-Denis (78), commune résidentielle verdoyante à 28 km au sud-ouest de Paris dans les Yvelines, accueille TPE artisans, PME de services, commerces de proximité, professions libérales et prestataires IT. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud Yvelines.",
+    "Le Mesnil-Saint-Denis (78), commune résidentielle verdoyante à 28 km au sud-ouest de Paris dans les Yvelines, accueille TPE artisans, PME de services, commerces de proximité, professions libérales et prestataires IT. Axion-IA accompagne tout le tissu professionnel local du sud Yvelines.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Mesnil-Saint-Denis (78). Nous accompagnons TPE et PME : prestataires IT sud Yvelines, artisans du bâtiment, commerces de centre-ville, professions libérales et PME de services de cette commune résidentielle entre Trappes et Chevreuse.",
   directAnswerEn:

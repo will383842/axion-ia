@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LA_VERRIERE_COPY: VilleCopy = {
   pitchFr:
-    "La Verrière (78), commune résidentielle de la communauté d'agglomération de Saint-Quentin-en-Yvelines, au cœur des Yvelines. Tissu de TPE artisans, PME de services, commerces de quartier, professions libérales et prestataires liés au bassin d'emploi SQY. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud des Yvelines.",
+    "La Verrière (78), commune résidentielle de la communauté d'agglomération de Saint-Quentin-en-Yvelines, au cœur des Yvelines. Tissu de TPE artisans, PME de services, commerces de quartier, professions libérales et prestataires liés au bassin d'emploi SQY. Axion-IA opère sur l'ensemble des activités professionnelles locales du sud des Yvelines.",
   pitchEn:
-    "La Verrière (78), commune résidentielle de la communauté d'agglomération de Saint-Quentin-en-Yvelines, au cœur des Yvelines. Tissu de TPE artisans, PME de services, commerces de quartier, professions libérales et prestataires liés au bassin d'emploi SQY. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud des Yvelines.",
+    "La Verrière (78), commune résidentielle de la communauté d'agglomération de Saint-Quentin-en-Yvelines, au cœur des Yvelines. Tissu de TPE artisans, PME de services, commerces de quartier, professions libérales et prestataires liés au bassin d'emploi SQY. Axion-IA opère sur l'ensemble des activités professionnelles locales du sud des Yvelines.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Verrière (78). Nous accompagnons TPE et PME : artisans, commerces de quartier, PME de services et professions libérales de cette commune résidentielle intégrée au pôle économique de Saint-Quentin-en-Yvelines. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Verrière (78). Nous accompagnons TPE et PME : artisans, commerces de quartier, PME de services et professions libérales de cette commune résidentielle intégrée au pôle économique de Saint-Quentin-en-Yvelines. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Verrière (78). Nous accompagnons TPE et PME : artisans, commerces de quartier, PME de services et professions libérales de cette commune résidentielle intégrée au pôle économique de Saint-Quentin-en-Yvelines. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Verrière (78). Nous accompagnons TPE et PME : artisans, commerces de quartier, PME de services et professions libérales de cette commune résidentielle intégrée au pôle économique de Saint-Quentin-en-Yvelines. Audit Flash sur mesure.",
   seoHook: "services aux & commerce proximité",
   ecosystemFr:
     "La Verrière est une commune résidentielle de Saint-Quentin-en-Yvelines, bénéficiant de la dynamique économique de ce pôle majeur francilien. Tissu local : TPE artisans bâtiment, commerces de proximité, PME de services, professions libérales, prestataires tertiaires. Communes voisines : Trappes, Élancourt, Coignières, Le Mesnil-Saint-Denis, Maurepas.",
@@ -52,7 +52,7 @@ export const LA_VERRIERE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à La Verrière et dans tout le bassin de Saint-Quentin-en-Yvelines (Trappes, Élancourt, Maurepas, Coignières, Le Mesnil-Saint-Denis). Nos consultants se déplacent sur site ou en visio.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à La Verrière ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à La Verrière  ?",
       a: "L'Audit Flash IA à La Verrière démarre à 490 € HT pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ISLE_COPY: VilleCopy = {
   pitchFr:
-    "Isle (87), commune du nord de l'agglomération de Limoges traversée par la Vienne, est intégrée à Limoges Métropole. Tissu TPE artisans, PME industrielles et tertiaires, zones d'activités, commerces, agriculture et services. Axion-IA y déploie ses missions auprès de toutes les organisations de l'agglo limougeaude nord.",
+    "Isle (87), commune du nord de l'agglomération de Limoges traversée par la Vienne, est intégrée à Limoges Métropole. Tissu TPE artisans, PME industrielles et tertiaires, zones d'activités, commerces, agriculture et services. Axion-IA y conduit ses missions auprès des entreprises locales de l'agglo limougeaude nord.",
   pitchEn:
-    "Isle (87), commune du nord de l'agglomération de Limoges traversée par la Vienne, est intégrée à Limoges Métropole. Tissu TPE artisans, PME industrielles et tertiaires, zones d'activités, commerces, agriculture et services. Axion-IA y déploie ses missions auprès de toutes les organisations de l'agglo limougeaude nord.",
+    "Isle (87), commune du nord de l'agglomération de Limoges traversée par la Vienne, est intégrée à Limoges Métropole. Tissu TPE artisans, PME industrielles et tertiaires, zones d'activités, commerces, agriculture et services. Axion-IA y conduit ses missions auprès des entreprises locales de l'agglo limougeaude nord.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Isle (87). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et tertiaires, commerçants, agriculteurs, professions libérales, indépendants et services aux entreprises de l'agglomération de Limoges nord.",
   directAnswerEn:

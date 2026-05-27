@@ -9,9 +9,9 @@ export const SAINT_SATURNIN_LES_AVIGNON_COPY: VilleCopy = {
   pitchEn:
     "Saint-Saturnin-lès-Avignon (84), commune de l'agglomération du Grand Avignon en première couronne est, compte près de 5 206 habitants. Tissu résidentiel et économique mixte, zones d'activités, TPE artisanales, PME services, commerces de proximité et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Saturnin-lès-Avignon (84). Nous accompagnons tous types d'activités : TPE artisans, PME services, commerces, professions libérales et exploitations agricoles de l'agglo Grand Avignon est. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Saturnin-lès-Avignon (84). Nous accompagnons tous types d'activités : TPE artisans, PME services, commerces, professions libérales et exploitations agricoles de l'agglo Grand Avignon est. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Saturnin-lès-Avignon (84). Nous accompagnons tous types d'activités : TPE artisans, PME services, commerces, professions libérales et exploitations agricoles de l'agglo Grand Avignon est. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Saturnin-lès-Avignon (84). Nous accompagnons tous types d'activités : TPE artisans, PME services, commerces, professions libérales et exploitations agricoles de l'agglo Grand Avignon est. Audit Flash sur mesure.",
   seoHook: "artisanat & services commerce",
   ecosystemFr:
     "Saint-Saturnin-lès-Avignon est positionnée en première couronne est d'Avignon, dans l'agglomération du Grand Avignon. Zones d'activités, agriculture maraîchère et fruitière, commerces et services de proximité. Tissu de TPE artisans, PME services, professions libérales. Avignon centre à 10 min, Carpentras à 25 min.",
@@ -60,7 +60,7 @@ export const SAINT_SATURNIN_LES_AVIGNON_COPY: VilleCopy = {
       a: "Oui, nous accompagnons PME services et commerces du Grand Avignon est : fiches Google Business, content marketing local, SAV conversationnel, fidélisation client, automatisation administrative et optimisation de la relation client B2B.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Saint-Saturnin-lès-Avignon ?",
+      q: "Quel est le tarif d'un audit IA à Saint-Saturnin-lès-Avignon  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {

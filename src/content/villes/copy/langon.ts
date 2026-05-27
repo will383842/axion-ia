@@ -9,9 +9,9 @@ export const LANGON_COPY: VilleCopy = {
   pitchEn:
     "Langon (33), sous-préfecture de la Gironde au bord de la Garonne, est le pôle économique du sud-Gironde avec un commerce de centre-ville dynamique, un vignoble prestigieux (AOC Sauternes, Graves) et un tissu de TPE/PME diversifié. Axion-IA opère pour toutes les structures économiques de la commune du sud-Gironde.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Langon (33). Nous accompagnons TPE et PME du sud-Gironde : vignerons de Sauternes et Graves, commerçants, PME de services, artisans BTP et professions libérales. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Langon (33). Nous accompagnons TPE et PME du sud-Gironde : vignerons de Sauternes et Graves, commerçants, PME de services, artisans BTP et professions libérales. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Langon (33). Nous accompagnons TPE et PME du sud-Gironde : vignerons de Sauternes et Graves, commerçants, PME de services, artisans BTP et professions libérales. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Langon (33). Nous accompagnons TPE et PME du sud-Gironde : vignerons de Sauternes et Graves, commerçants, PME de services, artisans BTP et professions libérales. Audit Flash sur mesure.",
   seoHook: "viticulture sauternes & commerce centre-ville",
   ecosystemFr:
     "Langon est la sous-préfecture et le pôle commercial du sud-Gironde. Vignoble AOC Sauternes (vins liquoreux prestigieux) et Graves, commerce de centre-ville actif, tissu PME de services, artisanat BTP et professions libérales. Gare SNCF sur la ligne Bordeaux-Toulouse, accès A62.",
@@ -52,7 +52,7 @@ export const LANGON_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Langon et dans tout le sud-Gironde (Sauternes, Bazas, La Réole, Cadillac). Nos consultants se déplacent depuis Bordeaux (45 min A62) ou Paris (TGV + TER).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Langon ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Langon  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Adapté aux TPE viticoles et commerçants du sud-Gironde.",
     },
     {

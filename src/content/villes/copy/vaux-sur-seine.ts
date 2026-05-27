@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const VAUX_SUR_SEINE_COPY: VilleCopy = {
   pitchFr:
-    "Vaux-sur-Seine (78), commune résidentielle des Yvelines en bord de Seine, entre Meulan et Triel-sur-Seine. Cadre verdoyant prisé, tissu de TPE artisans et commerçants, PME de services, professions libérales, immobilier et activités liées au fleuve. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Vaux-sur-Seine (78), commune résidentielle des Yvelines en bord de Seine, entre Meulan et Triel-sur-Seine. Cadre verdoyant prisé, tissu de TPE artisans et commerçants, PME de services, professions libérales, immobilier et activités liées au fleuve. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Vaux-sur-Seine (78), commune résidentielle des Yvelines en bord de Seine, entre Meulan et Triel-sur-Seine. Cadre verdoyant prisé, tissu de TPE artisans et commerçants, PME de services, professions libérales, immobilier et activités liées au fleuve. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Vaux-sur-Seine (78), commune résidentielle des Yvelines en bord de Seine, entre Meulan et Triel-sur-Seine. Cadre verdoyant prisé, tissu de TPE artisans et commerçants, PME de services, professions libérales, immobilier et activités liées au fleuve. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vaux-sur-Seine (78). Nous accompagnons TPE et PME : artisans et commerçants, PME de services, professions libérales, agences immobilières et entreprises des bords de Seine entre Meulan et Triel. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vaux-sur-Seine (78). Nous accompagnons TPE et PME : artisans et commerçants, PME de services, professions libérales, agences immobilières et entreprises des bords de Seine entre Meulan et Triel. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vaux-sur-Seine (78). Nous accompagnons TPE et PME : artisans et commerçants, PME de services, professions libérales, agences immobilières et entreprises des bords de Seine entre Meulan et Triel. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vaux-sur-Seine (78). Nous accompagnons TPE et PME : artisans et commerçants, PME de services, professions libérales, agences immobilières et entreprises des bords de Seine entre Meulan et Triel. Audit Flash sur mesure.",
   seoHook: "commerce proximité & services aux",
   ecosystemFr:
     "Vaux-sur-Seine est une commune résidentielle des Yvelines en bord de Seine, entre Meulan-en-Yvelines et Triel-sur-Seine. Cadre verdoyant et calme prisé des familles. Tissu économique : TPE artisans bâtiment, commerces de proximité, PME de services, professions libérales, immobilier. Communes voisines : Meulan-en-Yvelines, Évecquemont, Triel-sur-Seine, Hardricourt.",
@@ -52,7 +52,7 @@ export const VAUX_SUR_SEINE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Vaux-sur-Seine et sur les bords de Seine ouest (Meulan à 5 min, Les Mureaux à 10 min, Poissy à 20 min, La Défense à 35 min). Nos consultants se déplacent sur site ou en visio.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Vaux-sur-Seine ?",
+      q: "Tarifs audit IA à Vaux-sur-Seine  : quel budget prévoir ?",
       a: "L'Audit Flash IA à Vaux-sur-Seine démarre à 490 € HT pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {

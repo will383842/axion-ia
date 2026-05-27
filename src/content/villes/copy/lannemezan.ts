@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LANNEMEZAN_COPY: VilleCopy = {
   pitchFr:
-    "Lannemezan (65), sous-préfecture des Hautes-Pyrénées sur le plateau de Lannemezan, carrefour routier du piémont pyrénéen. Tissu TPE artisans, PME agroalimentaires, commerces de proximité, services publics, professions libérales, agriculture et élevage. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Lannemezan (65), sous-préfecture des Hautes-Pyrénées sur le plateau de Lannemezan, carrefour routier du piémont pyrénéen. Tissu TPE artisans, PME agroalimentaires, commerces de proximité, services publics, professions libérales, agriculture et élevage. Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Lannemezan (65), sous-préfecture des Hautes-Pyrénées sur le plateau de Lannemezan, carrefour routier du piémont pyrénéen. Tissu TPE artisans, PME agroalimentaires, commerces de proximité, services publics, professions libérales, agriculture et élevage. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Lannemezan (65), sous-préfecture des Hautes-Pyrénées sur le plateau de Lannemezan, carrefour routier du piémont pyrénéen. Tissu TPE artisans, PME agroalimentaires, commerces de proximité, services publics, professions libérales, agriculture et élevage. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lannemezan (65). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires, commerçants du centre-ville, professions libérales, acteurs de l'agriculture et de l'élevage du plateau pyrénéen.",
   directAnswerEn:

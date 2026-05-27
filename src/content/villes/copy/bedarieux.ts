@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BEDARIEUX_COPY: VilleCopy = {
   pitchFr:
-    "Bédarieux (34), commune des hauts cantons de l'Hérault, dans la vallée de l'Orb. Patrimoine industriel (textile, charbon), Voie Verte (Passa Païs), tourisme nature. Tissu TPE commerçants, artisans BTP, professions libérales, services publics, PME services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Bédarieux (34), commune des hauts cantons de l'Hérault, dans la vallée de l'Orb. Patrimoine industriel (textile, charbon), Voie Verte (Passa Païs), tourisme nature. Tissu TPE commerçants, artisans BTP, professions libérales, services publics, PME services. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Bédarieux (34), commune des hauts cantons de l'Hérault, dans la vallée de l'Orb. Patrimoine industriel (textile, charbon), Voie Verte (Passa Païs), tourisme nature. Tissu TPE commerçants, artisans BTP, professions libérales, services publics, PME services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Bédarieux (34), commune des hauts cantons de l'Hérault, dans la vallée de l'Orb. Patrimoine industriel (textile, charbon), Voie Verte (Passa Païs), tourisme nature. Tissu TPE commerçants, artisans BTP, professions libérales, services publics, PME services. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bédarieux (34). Nous accompagnons TPE commerçants, artisans BTP, professions libérales, services publics et acteurs du tourisme nature des hauts cantons de l'Hérault.",
   directAnswerEn:

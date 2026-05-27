@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CARENTAN_LES_MARAIS_COPY: VilleCopy = {
   pitchFr:
-    "Carentan-les-Marais (50), commune nouvelle au cœur des marais du Cotentin dans la Manche (Normandie), est un haut lieu du Débarquement de 1944 et un bourg-centre agricole historique. Tissu TPE agricoles et éleveurs, PME agroalimentaires, commerces de bourg, tourisme mémoriel et nature. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Carentan-les-Marais (50), commune nouvelle au cœur des marais du Cotentin dans la Manche (Normandie), est un haut lieu du Débarquement de 1944 et un bourg-centre agricole historique. Tissu TPE agricoles et éleveurs, PME agroalimentaires, commerces de bourg, tourisme mémoriel et nature. Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Carentan-les-Marais (50), commune nouvelle au cœur des marais du Cotentin dans la Manche (Normandie), est un haut lieu du Débarquement de 1944 et un bourg-centre agricole historique. Tissu TPE agricoles et éleveurs, PME agroalimentaires, commerces de bourg, tourisme mémoriel et nature. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Carentan-les-Marais (50), commune nouvelle au cœur des marais du Cotentin dans la Manche (Normandie), est un haut lieu du Débarquement de 1944 et un bourg-centre agricole historique. Tissu TPE agricoles et éleveurs, PME agroalimentaires, commerces de bourg, tourisme mémoriel et nature. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carentan-les-Marais (50). Nous accompagnons tous types d'activités : TPE éleveurs et agriculteurs des marais du Cotentin, PME agroalimentaires (lait, viande), commerçants de bourg, prestataires tourisme mémoriel D-Day, artisans et professions libérales.",
   directAnswerEn:

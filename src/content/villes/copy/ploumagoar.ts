@@ -61,7 +61,7 @@ export const PLOUMAGOAR_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour une TPE ou PME du bassin guingampais ?",
-      a: "L'audit Flash démarre à 490 € HT, accessible aux TPE. Pour les PME de services et agroalimentaires, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
+      a: "L'audit Flash s'adapte à votre périmètre, accessible aux TPE. Pour les PME de services et agroalimentaires, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
     },
     {
       q: "Comment se déroule une mission IA à Ploumagoar ?",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ENTRELACS_COPY: VilleCopy = {
   pitchFr:
-    "Entrelacs (73), commune nouvelle en Savoie située entre Aix-les-Bains et Annecy, à proximité du lac du Bourget. Tourisme lacustre, agriculture et viticulture savoyarde, TPE artisanat, commerces de proximité, hôtellerie. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Entrelacs (73), commune nouvelle en Savoie située entre Aix-les-Bains et Annecy, à proximité du lac du Bourget. Tourisme lacustre, agriculture et viticulture savoyarde, TPE artisanat, commerces de proximité, hôtellerie. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Entrelacs (73), commune nouvelle en Savoie située entre Aix-les-Bains et Annecy, à proximité du lac du Bourget. Tourisme lacustre, agriculture et viticulture savoyarde, TPE artisanat, commerces de proximité, hôtellerie. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Entrelacs (73), commune nouvelle en Savoie située entre Aix-les-Bains et Annecy, à proximité du lac du Bourget. Tourisme lacustre, agriculture et viticulture savoyarde, TPE artisanat, commerces de proximité, hôtellerie. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Entrelacs (73). Nous accompagnons TPE et PME : acteurs du tourisme lacustre, exploitations viticoles et agricoles savoyardes, artisans, commerçants et hôteliers du bassin Aix-les-Bains.",
   directAnswerEn:

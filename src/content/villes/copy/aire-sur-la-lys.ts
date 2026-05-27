@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const AIRE_SUR_LA_LYS_COPY: VilleCopy = {
   pitchFr:
-    "Aire-sur-la-Lys (62), cité historique du Pas-de-Calais au beffroi inscrit UNESCO, mêle patrimoine, agriculture, TPE artisanales et PME de services sur les bords de la Lys. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Aire-sur-la-Lys (62), cité historique du Pas-de-Calais au beffroi inscrit UNESCO, mêle patrimoine, agriculture, TPE artisanales et PME de services sur les bords de la Lys. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Aire-sur-la-Lys (62), cité historique du Pas-de-Calais au beffroi inscrit UNESCO, mêle patrimoine, agriculture, TPE artisanales et PME de services sur les bords de la Lys. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Aire-sur-la-Lys (62), cité historique du Pas-de-Calais au beffroi inscrit UNESCO, mêle patrimoine, agriculture, TPE artisanales et PME de services sur les bords de la Lys. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aire-sur-la-Lys (62). Nous accompagnons TPE artisanales, PME agroalimentaires, commerçants et professions libérales de la vallée de la Lys. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aire-sur-la-Lys (62). Nous accompagnons TPE artisanales, PME agroalimentaires, commerçants et professions libérales de la vallée de la Lys. Audit Flash sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aire-sur-la-Lys (62). Nous accompagnons TPE artisanales, PME agroalimentaires, commerçants et professions libérales de la vallée de la Lys. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aire-sur-la-Lys (62). Nous accompagnons TPE artisanales, PME agroalimentaires, commerçants et professions libérales de la vallée de la Lys. Audit Flash sur mesure, intervention sur site ou en visio.",
   seoHook: "agriculture agroalimentaire & commerce détail",
   ecosystemFr:
     "Aire-sur-la-Lys est une cité historique au confluent de la Lys et de la Laquette, dont le beffroi est inscrit au patrimoine UNESCO. Économie mêlant agriculture (grandes cultures), agroalimentaire, commerces de bourg, TPE artisanales et professions libérales. Sous-préfecture naturelle du secteur.",
@@ -52,7 +52,7 @@ export const AIRE_SUR_LA_LYS_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Aire-sur-la-Lys et dans la vallée de la Lys (Saint-Omer, Isbergues, Lillers, Thérouanne). Déplacements sur site ou sessions en visio.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Aire-sur-la-Lys ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Aire-sur-la-Lys  ?",
       a: "L'Audit Flash Axion-IA démarre à 490 € HT pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME de la vallée de la Lys. Tarifs publics.",
     },
     {

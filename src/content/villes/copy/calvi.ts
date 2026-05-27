@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const CALVI_COPY: VilleCopy = {
   pitchFr:
-    "Calvi (2B), station balnéaire de Balagne dominée par sa citadelle génoise du XIIIe siècle, abrite la base aérienne de la Légion étrangère et l'un des plus beaux ports de plaisance de Corse. TPE artisans, PME hôtelières, restaurateurs, commerçants saisonniers et acteurs nautiques forment le tissu économique local. Axion-IA accompagne entreprises et indépendants de tous secteurs de la Balagne.",
+    "Calvi (2B), station balnéaire de Balagne dominée par sa citadelle génoise du XIIIe siècle, abrite la base aérienne de la Légion étrangère et l'un des plus beaux ports de plaisance de Corse. TPE artisans, PME hôtelières, restaurateurs, commerçants saisonniers et acteurs nautiques forment le tissu économique local. Axion-IA répond aux besoins de toutes les entreprises de la Balagne.",
   pitchEn:
-    "Calvi (2B), station balnéaire de Balagne dominée par sa citadelle génoise du XIIIe siècle, abrite la base aérienne de la Légion étrangère et l'un des plus beaux ports de plaisance de Corse. TPE artisans, PME hôtelières, restaurateurs, commerçants saisonniers et acteurs nautiques forment le tissu économique local. Axion-IA accompagne entreprises et indépendants de tous secteurs de la Balagne.",
+    "Calvi (2B), station balnéaire de Balagne dominée par sa citadelle génoise du XIIIe siècle, abrite la base aérienne de la Légion étrangère et l'un des plus beaux ports de plaisance de Corse. TPE artisans, PME hôtelières, restaurateurs, commerçants saisonniers et acteurs nautiques forment le tissu économique local. Axion-IA répond aux besoins de toutes les entreprises de la Balagne.",
   seoHook: "tourisme balnéaire & nautisme corse",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Calvi (2B). Nous accompagnons tous types d'activités : TPE artisans, PME hôtelières, restaurateurs, commerçants saisonniers, acteurs nautiques et professionnels du tourisme de Balagne. Audit Flash dès 490 € HT, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Calvi (2B). Nous accompagnons tous types d'activités : TPE artisans, PME hôtelières, restaurateurs, commerçants saisonniers, acteurs nautiques et professionnels du tourisme de Balagne. Audit Flash sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Calvi (2B). Nous accompagnons tous types d'activités : TPE artisans, PME hôtelières, restaurateurs, commerçants saisonniers, acteurs nautiques et professionnels du tourisme de Balagne. Audit Flash dès 490 € HT, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Calvi (2B). Nous accompagnons tous types d'activités : TPE artisans, PME hôtelières, restaurateurs, commerçants saisonniers, acteurs nautiques et professionnels du tourisme de Balagne. Audit Flash sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Calvi est la station phare de la Balagne (environ 5 800 habitants à l'année, multiplié par 5 en haute saison). La citadelle génoise XIIIe, le port de plaisance et la plage de 6 km structurent l'activité touristique. La base aérienne du 2e REP de la Légion étrangère est un employeur public majeur. L'économie repose sur le tourisme saisonnier (hôtellerie, restauration, plaisance), le commerce de proximité, l'artisanat et l'agriculture (oliveraies, vignobles AOC Calvi).",
   ecosystemEn:
@@ -56,7 +56,7 @@ export const CALVI_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les hôteliers, restaurateurs et activités saisonnières de Calvi avec des solutions IA adaptées au pic d'été : réservation multilingue, planning équipes, gestion avis clients. Audit Flash 490 € HT.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Calvi ?",
+      q: "Tarifs audit IA à Calvi  : quel budget prévoir ?",
       a: "L'Audit Flash Axion-IA démarre à 490 € HT. Adapté aux TPE et PME calvaises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {

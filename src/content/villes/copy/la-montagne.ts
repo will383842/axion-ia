@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_MONTAGNE_COPY: VilleCopy = {
   pitchFr:
-    "La Montagne (44), commune de l'agglomération nantaise sud-ouest en Loire-Atlantique, en bords de Loire face à Indre. Tissu TPE artisans et commerçants, PME tertiaires, professions libérales, services à la personne, restauration. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud-ouest nantais.",
+    "La Montagne (44), commune de l'agglomération nantaise sud-ouest en Loire-Atlantique, en bords de Loire face à Indre. Tissu TPE artisans et commerçants, PME tertiaires, professions libérales, services à la personne, restauration. Axion-IA accompagne tout le tissu professionnel local du sud-ouest nantais.",
   pitchEn:
-    "La Montagne (44), commune de l'agglomération nantaise sud-ouest en Loire-Atlantique, en bords de Loire face à Indre. Tissu TPE artisans et commerçants, PME tertiaires, professions libérales, services à la personne, restauration. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud-ouest nantais.",
+    "La Montagne (44), commune de l'agglomération nantaise sud-ouest en Loire-Atlantique, en bords de Loire face à Indre. Tissu TPE artisans et commerçants, PME tertiaires, professions libérales, services à la personne, restauration. Axion-IA accompagne tout le tissu professionnel local du sud-ouest nantais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Montagne (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires, professions libérales, services à la personne et entreprises du sud-ouest de l'agglomération nantaise.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const LA_MONTAGNE_COPY: VilleCopy = {
       a: "Pour les TPE et commerçants de La Montagne, nous proposons audit IA (Flash 490 € HT), interventions sur site, implémentation (agents IA, automatisation devis, gestion stocks), coaching 1-to-1 et plateformes web IA.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à La Montagne ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à La Montagne  ?",
       a: "L'Audit Flash démarre à 490 € HT (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du sud-ouest nantais.",
     },
     {

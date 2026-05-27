@@ -9,9 +9,9 @@ export const SOISY_SOUS_MONTMORENCY_COPY: VilleCopy = {
   pitchEn:
     "Soisy-sous-Montmorency (95), commune résidentielle de la vallée de Montmorency au nord de Paris, offre un cadre verdoyant adossé à la forêt de Montmorency. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, prestataires santé. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Soisy-sous-Montmorency (95). Nous accompagnons TPE et PME : commerçants et artisans centre-ville, PME services aux entreprises, professions libérales de santé, restaurateurs, prestataires bien-être vallée de Montmorency. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Soisy-sous-Montmorency (95). Nous accompagnons TPE et PME : commerçants et artisans centre-ville, PME services aux entreprises, professions libérales de santé, restaurateurs, prestataires bien-être vallée de Montmorency. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Soisy-sous-Montmorency (95). Nous accompagnons TPE et PME : commerçants et artisans centre-ville, PME services aux entreprises, professions libérales de santé, restaurateurs, prestataires bien-être vallée de Montmorency. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Soisy-sous-Montmorency (95). Nous accompagnons TPE et PME : commerçants et artisans centre-ville, PME services aux entreprises, professions libérales de santé, restaurateurs, prestataires bien-être vallée de Montmorency. Audit Flash sur mesure.",
   seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Soisy-sous-Montmorency est une commune résidentielle de la vallée de Montmorency, adossée à la forêt éponyme, à proximité d'Enghien-les-Bains et Montmorency. Tissu TPE commerces et artisanat, PME services, professions libérales de santé, restauration, prestataires bien-être.",

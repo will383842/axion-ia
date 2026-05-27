@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GISORS_COPY: VilleCopy = {
   pitchFr:
-    "Gisors (27), sous-préfecture de l'Eure et capitale historique du Vexin normand, dominée par son château fort médiéval. Tissu TPE artisans, PME agriculture et agroalimentaire Vexin, commerces centre-ville, services aux entreprises, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Gisors (27), sous-préfecture de l'Eure et capitale historique du Vexin normand, dominée par son château fort médiéval. Tissu TPE artisans, PME agriculture et agroalimentaire Vexin, commerces centre-ville, services aux entreprises, professions libérales. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Gisors (27), sous-préfecture de l'Eure et capitale historique du Vexin normand, dominée par son château fort médiéval. Tissu TPE artisans, PME agriculture et agroalimentaire Vexin, commerces centre-ville, services aux entreprises, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Gisors (27), sous-préfecture de l'Eure et capitale historique du Vexin normand, dominée par son château fort médiéval. Tissu TPE artisans, PME agriculture et agroalimentaire Vexin, commerces centre-ville, services aux entreprises, professions libérales. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gisors (27). Nous accompagnons tous types d'activités : TPE artisans, PME agriculture et agroalimentaire Vexin normand, commerces centre-ville, professions libérales, indépendants et services aux entreprises de l'arrondissement des Andelys.",
   directAnswerEn:

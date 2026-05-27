@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const HAUTE_GOULAINE_COPY: VilleCopy = {
   pitchFr:
-    "Haute-Goulaine (44), commune du vignoble nantais en Loire-Atlantique, connue pour son château et sa proximité avec le Muscadet. Tissu TPE viticulteurs et artisans, PME tertiaires, commerces de proximité, professions libérales, restauration. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'est nantais viticole.",
+    "Haute-Goulaine (44), commune du vignoble nantais en Loire-Atlantique, connue pour son château et sa proximité avec le Muscadet. Tissu TPE viticulteurs et artisans, PME tertiaires, commerces de proximité, professions libérales, restauration. Axion-IA collabore avec toutes les structures locales de l'est nantais viticole.",
   pitchEn:
-    "Haute-Goulaine (44), commune du vignoble nantais en Loire-Atlantique, connue pour son château et sa proximité avec le Muscadet. Tissu TPE viticulteurs et artisans, PME tertiaires, commerces de proximité, professions libérales, restauration. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'est nantais viticole.",
+    "Haute-Goulaine (44), commune du vignoble nantais en Loire-Atlantique, connue pour son château et sa proximité avec le Muscadet. Tissu TPE viticulteurs et artisans, PME tertiaires, commerces de proximité, professions libérales, restauration. Axion-IA collabore avec toutes les structures locales de l'est nantais viticole.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Haute-Goulaine (44). Nous accompagnons tous types d'activités : TPE viticulteurs et artisans du Muscadet, PME tertiaires, commerces de proximité, professions libérales et restauration de l'est nantais.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const HAUTE_GOULAINE_COPY: VilleCopy = {
       a: "Pour les PME tertiaires de Haute-Goulaine, nous proposons audit IA, interventions sur site, implémentation (agents conversationnels, automatisation workflow, extraction données), coaching 1-to-1 et plateformes web IA sur mesure.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Haute-Goulaine ?",
+      q: "Quel est le tarif d'un audit IA à Haute-Goulaine  ?",
       a: "L'Audit Flash démarre à 490 € HT (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME de l'est nantais.",
     },
     {

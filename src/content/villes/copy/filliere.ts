@@ -52,7 +52,7 @@ export const FILLIERE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Fillière et tout le nord du bassin annécien (La Roche-sur-Foron à 10 min, Annecy à 15 min). Déplacements depuis Genève (40 min).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Fillière ?",
+      q: "Combien coûte un audit IA à Fillière  ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Tarifs publics consultables sur notre site, adaptés aux TPE et PME du plateau des Bornes.",
     },
     {

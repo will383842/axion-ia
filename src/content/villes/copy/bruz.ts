@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const BRUZ_COPY: VilleCopy = {
   pitchFr:
-    "Bruz (35), commune dynamique du sud de Rennes Métropole, accueille le campus de l'ÉNS Rennes et de CentraleSupélec ainsi que plusieurs zones d'activités tertiaires et technologiques. TPE et PME tech, start-up deeptech, artisans, commerces et professions libérales composent son économie. Axion-IA accompagne entreprises et indépendants de tous secteurs du sud rennais.",
+    "Bruz (35), commune dynamique du sud de Rennes Métropole, accueille le campus de l'ÉNS Rennes et de CentraleSupélec ainsi que plusieurs zones d'activités tertiaires et technologiques. TPE et PME tech, start-up deeptech, artisans, commerces et professions libérales composent son économie. Axion-IA collabore avec toutes les structures locales du sud rennais.",
   pitchEn:
-    "Bruz (35), commune dynamique du sud de Rennes Métropole, accueille le campus de l'ÉNS Rennes et de CentraleSupélec ainsi que plusieurs zones d'activités tertiaires et technologiques. TPE et PME tech, start-up deeptech, artisans, commerces et professions libérales composent son économie. Axion-IA accompagne entreprises et indépendants de tous secteurs du sud rennais.",
+    "Bruz (35), commune dynamique du sud de Rennes Métropole, accueille le campus de l'ÉNS Rennes et de CentraleSupélec ainsi que plusieurs zones d'activités tertiaires et technologiques. TPE et PME tech, start-up deeptech, artisans, commerces et professions libérales composent son économie. Axion-IA collabore avec toutes les structures locales du sud rennais.",
   seoHook: "tech, deeptech & campus ENS-Supélec",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bruz (35). Nous accompagnons tous types d'activités : TPE et PME tech, start-up deeptech du campus ÉNS Rennes-CentraleSupélec, artisans, commerçants et professions libérales du sud de Rennes Métropole. Audit Flash dès 490 € HT, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bruz (35). Nous accompagnons tous types d'activités : TPE et PME tech, start-up deeptech du campus ÉNS Rennes-CentraleSupélec, artisans, commerçants et professions libérales du sud de Rennes Métropole. Audit Flash sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bruz (35). Nous accompagnons tous types d'activités : TPE et PME tech, start-up deeptech du campus ÉNS Rennes-CentraleSupélec, artisans, commerçants et professions libérales du sud de Rennes Métropole. Audit Flash dès 490 € HT, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bruz (35). Nous accompagnons tous types d'activités : TPE et PME tech, start-up deeptech du campus ÉNS Rennes-CentraleSupélec, artisans, commerçants et professions libérales du sud de Rennes Métropole. Audit Flash sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Bruz est la quatrième ville de Rennes Métropole, positionnée au sud de Rennes sur l'axe Nantes. Elle héberge le campus de Ker Lann (ÉNS Rennes, CentraleSupélec, ESIR, IGN-ENSG) et plusieurs zones d'activités (Cicé-Blossac, ZA des Gressinières). L'économie locale mêle PME tech et deeptech, services numériques, sous-traitance industrielle, artisanat, commerce résidentiel et professions libérales.",
   ecosystemEn:
@@ -56,7 +56,7 @@ export const BRUZ_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les start-up deeptech, PME tech et spin-off du campus ÉNS Rennes-CentraleSupélec sur leurs cas IA : automatisation R&D, analyse données scientifiques, agents IA support technique, classification brevets et documentation. Confidentialité IP garantie.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Bruz ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Bruz  ?",
       a: "L'Audit Flash Axion-IA démarre à 490 € HT. Adapté aux TPE, PME et start-up bruzéennes, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {

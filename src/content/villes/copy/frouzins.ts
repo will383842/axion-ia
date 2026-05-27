@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const FROUZINS_COPY: VilleCopy = {
   pitchFr:
-    "Frouzins (31), commune résidentielle du sud de Toulouse avec près de 10 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations de la couronne sud de Toulouse.",
+    "Frouzins (31), commune résidentielle du sud de Toulouse avec près de 10 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA y travaille avec les organisations du territoire de la couronne sud de Toulouse.",
   pitchEn:
-    "Frouzins (31), commune résidentielle du sud de Toulouse avec près de 10 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations de la couronne sud de Toulouse.",
+    "Frouzins (31), commune résidentielle du sud de Toulouse avec près de 10 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA y travaille avec les organisations du territoire de la couronne sud de Toulouse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Frouzins (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud Toulouse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Frouzins (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud Toulouse. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Frouzins (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud Toulouse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Frouzins (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud Toulouse. Audit Flash sur mesure.",
   seoHook: "artisanat & commerce détail",
   ecosystemFr:
     "Frouzins est une commune résidentielle en forte croissance du sud de Toulouse, entre Cugnaux et Villeneuve-Tolosane. Tissu TPE artisans, PME de services, commerces de quartier, professions libérales. Cadre périurbain verdoyant avec économie de proximité.",
@@ -56,7 +56,7 @@ export const FROUZINS_COPY: VilleCopy = {
       a: "Nous accompagnons tous types d'activités : TPE artisans, PME de services, professions libérales, commerces, restauration. Aucun secteur exclu.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Frouzins ?",
+      q: "Tarifs audit IA à Frouzins  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics, pas de devis opaque.",
     },
     {

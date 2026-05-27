@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CORBAS_COPY: VilleCopy = {
   pitchFr:
-    "Corbas (69), commune en banlieue sud-est de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Abrite le MIN de Lyon (Marché d'Intérêt National — marché de gros alimentaire régional) et des zones logistiques majeures. Tissu PME logistiques et agroalimentaires, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Corbas (69), commune en banlieue sud-est de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Abrite le MIN de Lyon (Marché d'Intérêt National — marché de gros alimentaire régional) et des zones logistiques majeures. Tissu PME logistiques et agroalimentaires, TPE artisans BTP, commerces. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Corbas (69), commune en banlieue sud-est de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Abrite le MIN de Lyon (Marché d'Intérêt National — marché de gros alimentaire régional) et des zones logistiques majeures. Tissu PME logistiques et agroalimentaires, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Corbas (69), commune en banlieue sud-est de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Abrite le MIN de Lyon (Marché d'Intérêt National — marché de gros alimentaire régional) et des zones logistiques majeures. Tissu PME logistiques et agroalimentaires, TPE artisans BTP, commerces. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Corbas (69). Nous accompagnons tous types d'activités : opérateurs MIN de Lyon (marché de gros), PME logistiques et agroalimentaires, TPE artisans BTP, commerçants, indépendants et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:

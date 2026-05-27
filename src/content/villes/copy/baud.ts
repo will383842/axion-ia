@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BAUD_COPY: VilleCopy = {
   pitchFr:
-    "Baud (56), bourg historique du centre Morbihan, est connu pour la Vénus de Quinipily et son tissu de TPE artisanales, PME agroalimentaires et commerces de proximité. Axion-IA accompagne entreprises et indépendants de tous secteurs du centre Morbihan.",
+    "Baud (56), bourg historique du centre Morbihan, est connu pour la Vénus de Quinipily et son tissu de TPE artisanales, PME agroalimentaires et commerces de proximité. Axion-IA opère pour entreprises et indépendants du secteur du centre Morbihan.",
   pitchEn:
-    "Baud (56), bourg historique du centre Morbihan, est connu pour la Vénus de Quinipily et son tissu de TPE artisanales, PME agroalimentaires et commerces de proximité. Axion-IA accompagne entreprises et indépendants de tous secteurs du centre Morbihan.",
+    "Baud (56), bourg historique du centre Morbihan, est connu pour la Vénus de Quinipily et son tissu de TPE artisanales, PME agroalimentaires et commerces de proximité. Axion-IA opère pour entreprises et indépendants du secteur du centre Morbihan.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Baud (56). Nous accompagnons tous types d'activités : TPE artisanales, PME agroalimentaires et de services, commerces de centre-bourg, professions libérales, exploitations agricoles et acteurs touristiques du centre Morbihan.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const BAUD_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE artisans et commerces de Baud sur des cas IA concrets : automatisation devis et facturation, agents IA prise de RDV, gestion documentaire, chatbots relation client. Audit Flash 490 € HT adapté aux petites structures.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Baud ?",
+      q: "Tarifs audit IA à Baud  : quel budget prévoir ?",
       a: "L'audit Flash IA démarre à 490 € HT pour les TPE et PME de Baud et du centre Morbihan. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
     },
     {

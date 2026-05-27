@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MORCENX_LA_NOUVELLE_COPY: VilleCopy = {
   pitchFr:
-    "Morcenx-la-Nouvelle (40), commune nouvelle des Landes née en 2019 de la fusion de Morcenx, Arjuzanx, Garrosse et Sindères. Lac d'Arjuzanx et sa réserve naturelle (grues cendrées), forêt landaise, nœud ferroviaire historique, TPE artisans, commerces, agriculture, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Morcenx-la-Nouvelle (40), commune nouvelle des Landes née en 2019 de la fusion de Morcenx, Arjuzanx, Garrosse et Sindères. Lac d'Arjuzanx et sa réserve naturelle (grues cendrées), forêt landaise, nœud ferroviaire historique, TPE artisans, commerces, agriculture, professions libérales. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "Morcenx-la-Nouvelle (40), commune nouvelle des Landes née en 2019 de la fusion de Morcenx, Arjuzanx, Garrosse et Sindères. Lac d'Arjuzanx et sa réserve naturelle (grues cendrées), forêt landaise, nœud ferroviaire historique, TPE artisans, commerces, agriculture, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Morcenx-la-Nouvelle (40), commune nouvelle des Landes née en 2019 de la fusion de Morcenx, Arjuzanx, Garrosse et Sindères. Lac d'Arjuzanx et sa réserve naturelle (grues cendrées), forêt landaise, nœud ferroviaire historique, TPE artisans, commerces, agriculture, professions libérales. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Morcenx-la-Nouvelle (40). Nous accompagnons TPE et PME de la filière bois et forestière, acteurs du tourisme nature (lac Arjuzanx, réserve grues cendrées), agriculteurs, commerçants, artisans BTP et professions libérales du cœur des Landes.",
   directAnswerEn:

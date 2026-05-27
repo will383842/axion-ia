@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHAMALIERES_COPY: VilleCopy = {
   pitchFr:
-    "Chamalières (63), commune en banlieue ouest immédiate de Clermont-Ferrand dans le Puy-de-Dôme, est intégrée à Clermont Auvergne Métropole. Position résidentielle. Tissu PME tertiaires, professions libérales, TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs clermontoises.",
+    "Chamalières (63), commune en banlieue ouest immédiate de Clermont-Ferrand dans le Puy-de-Dôme, est intégrée à Clermont Auvergne Métropole. Position résidentielle. Tissu PME tertiaires, professions libérales, TPE artisans BTP, commerces. Axion-IA répond aux besoins de toutes les entreprises clermontoises.",
   pitchEn:
-    "Chamalières (63), commune en banlieue ouest immédiate de Clermont-Ferrand dans le Puy-de-Dôme, est intégrée à Clermont Auvergne Métropole. Position résidentielle. Tissu PME tertiaires, professions libérales, TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs clermontoises.",
+    "Chamalières (63), commune en banlieue ouest immédiate de Clermont-Ferrand dans le Puy-de-Dôme, est intégrée à Clermont Auvergne Métropole. Position résidentielle. Tissu PME tertiaires, professions libérales, TPE artisans BTP, commerces. Axion-IA répond aux besoins de toutes les entreprises clermontoises.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chamalières (63). Nous accompagnons tous types d'activités : PME tertiaires Clermont Métropole ouest, professions libérales, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:

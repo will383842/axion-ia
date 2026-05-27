@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_NICOLAS_DE_PORT_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Nicolas-de-Port (54), commune historique du sud-est de l'agglomération nancéienne en Meurthe-et-Moselle, est célèbre pour sa basilique gothique flamboyant Saint-Nicolas (lieu de pèlerinage majeur de Lorraine). Tissu TPE/PME services, commerce, artisans BTP, restauration, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Saint-Nicolas-de-Port (54), commune historique du sud-est de l'agglomération nancéienne en Meurthe-et-Moselle, est célèbre pour sa basilique gothique flamboyant Saint-Nicolas (lieu de pèlerinage majeur de Lorraine). Tissu TPE/PME services, commerce, artisans BTP, restauration, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes.",
   pitchEn:
-    "Saint-Nicolas-de-Port (54), commune historique du sud-est de l'agglomération nancéienne en Meurthe-et-Moselle, est célèbre pour sa basilique gothique flamboyant Saint-Nicolas (lieu de pèlerinage majeur de Lorraine). Tissu TPE/PME services, commerce, artisans BTP, restauration, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Saint-Nicolas-de-Port (54), commune historique du sud-est de l'agglomération nancéienne en Meurthe-et-Moselle, est célèbre pour sa basilique gothique flamboyant Saint-Nicolas (lieu de pèlerinage majeur de Lorraine). Tissu TPE/PME services, commerce, artisans BTP, restauration, professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Nicolas-de-Port (54). Nous accompagnons tous types d'activités : TPE/PME de services, commerçants, artisans BTP, restaurateurs et professions libérales du sud-est de l'agglomération nancéienne.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const SAINT_NICOLAS_DE_PORT_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les artisans BTP et professions libérales sur des cas IA pratiques : automatisation devis, gestion planning, agents IA prise de RDV, classification documentaire. Audit Flash 490 € HT.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Saint-Nicolas-de-Port ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Saint-Nicolas-de-Port  ?",
       a: "L'audit Flash IA démarre à 490 € HT pour les TPE et PME de Saint-Nicolas-de-Port et de la Métropole du Grand Nancy. Tarifs publics et transparents. ROI chiffré dès le diagnostic initial.",
     },
     {

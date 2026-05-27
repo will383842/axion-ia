@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_SULPICE_LA_POINTE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Sulpice-la-Pointe (81), commune dynamique à la charnière Toulouse-Tarn avec près de 10 000 habitants. Tissu TPE artisans, PME sous-traitance aéronautique et industrie, commerces, services et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin saint-sulpicien.",
+    "Saint-Sulpice-la-Pointe (81), commune dynamique à la charnière Toulouse-Tarn avec près de 10 000 habitants. Tissu TPE artisans, PME sous-traitance aéronautique et industrie, commerces, services et professions libérales. Axion-IA répond aux besoins de toutes les entreprises du bassin saint-sulpicien.",
   pitchEn:
-    "Saint-Sulpice-la-Pointe (81), commune dynamique à la charnière Toulouse-Tarn avec près de 10 000 habitants. Tissu TPE artisans, PME sous-traitance aéronautique et industrie, commerces, services et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin saint-sulpicien.",
+    "Saint-Sulpice-la-Pointe (81), commune dynamique à la charnière Toulouse-Tarn avec près de 10 000 habitants. Tissu TPE artisans, PME sous-traitance aéronautique et industrie, commerces, services et professions libérales. Axion-IA répond aux besoins de toutes les entreprises du bassin saint-sulpicien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Sulpice-la-Pointe (81). Nous accompagnons TPE artisans, PME aéronautique et industrielles, commerçants et professions libérales entre Toulouse et Tarn. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Sulpice-la-Pointe (81). Nous accompagnons TPE artisans, PME aéronautique et industrielles, commerçants et professions libérales entre Toulouse et Tarn. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Sulpice-la-Pointe (81). Nous accompagnons TPE artisans, PME aéronautique et industrielles, commerçants et professions libérales entre Toulouse et Tarn. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Sulpice-la-Pointe (81). Nous accompagnons TPE artisans, PME aéronautique et industrielles, commerçants et professions libérales entre Toulouse et Tarn. Audit Flash sur mesure.",
   seoHook: "sous-traitance aéronautique & commerce détail",
   ecosystemFr:
     "Saint-Sulpice-la-Pointe (9 719 hab) est une commune en forte croissance à la charnière Toulouse-Tarn, sur l'axe A68. Zones d'activités accueillant sous-traitants aéronautique, PME industrielles et tertiaires. Proximité immédiate Toulouse (30 min), Albi (40 min). Tissu TPE artisans, commerces de bourg, professions libérales, services aux entreprises.",
@@ -52,7 +52,7 @@ export const SAINT_SULPICE_LA_POINTE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Saint-Sulpice-la-Pointe et sur tout l'axe Toulouse-Tarn (Lavaur, Rabastens, Gaillac). Nos consultants se déplacent depuis Toulouse (30 min A68) ou Albi (40 min).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Saint-Sulpice-la-Pointe ?",
+      q: "Combien coûte un audit IA à Saint-Sulpice-la-Pointe  ?",
       a: "L'Audit Flash IA démarre à 490 € HT pour les TPE de Saint-Sulpice-la-Pointe. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre métier.",
     },
     {

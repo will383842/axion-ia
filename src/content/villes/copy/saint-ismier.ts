@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_ISMIER_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Ismier (38), commune de la vallée du Grésivaudan en banlieue est de Grenoble, mêle résidentiel haut de gamme, tissu tertiaire et activités locales. Tissu PME tertiaires, TPE artisans BTP haut de gamme, professions libérales et commerces. Axion-IA y déploie ses missions auprès de toutes les organisations du Grésivaudan.",
+    "Saint-Ismier (38), commune de la vallée du Grésivaudan en banlieue est de Grenoble, mêle résidentiel haut de gamme, tissu tertiaire et activités locales. Tissu PME tertiaires, TPE artisans BTP haut de gamme, professions libérales et commerces. Axion-IA y conduit ses missions auprès des entreprises locales du Grésivaudan.",
   pitchEn:
-    "Saint-Ismier (38), commune de la vallée du Grésivaudan en banlieue est de Grenoble, mêle résidentiel haut de gamme, tissu tertiaire et activités locales. Tissu PME tertiaires, TPE artisans BTP haut de gamme, professions libérales et commerces. Axion-IA y déploie ses missions auprès de toutes les organisations du Grésivaudan.",
+    "Saint-Ismier (38), commune de la vallée du Grésivaudan en banlieue est de Grenoble, mêle résidentiel haut de gamme, tissu tertiaire et activités locales. Tissu PME tertiaires, TPE artisans BTP haut de gamme, professions libérales et commerces. Axion-IA y conduit ses missions auprès des entreprises locales du Grésivaudan.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Ismier (38). Nous accompagnons tous types d'activités : TPE artisans BTP haut de gamme, commerçants, professions libérales (médecins, avocats, expert-comptables), PME tertiaires saint-ismiéroises, indépendants et services aux entreprises du Grésivaudan.",
   directAnswerEn:

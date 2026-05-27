@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_CHEVROLIERE_COPY: VilleCopy = {
   pitchFr:
-    "La Chevrolière (44), commune résidentielle du sud de l'agglomération nantaise en Loire-Atlantique, en bordure du lac de Grand-Lieu. Tissu TPE artisans et commerçants, PME tertiaires, professions libérales, exploitations maraîchères, services de proximité. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud nantais.",
+    "La Chevrolière (44), commune résidentielle du sud de l'agglomération nantaise en Loire-Atlantique, en bordure du lac de Grand-Lieu. Tissu TPE artisans et commerçants, PME tertiaires, professions libérales, exploitations maraîchères, services de proximité. Axion-IA couvre les activités professionnelles du bassin du sud nantais.",
   pitchEn:
-    "La Chevrolière (44), commune résidentielle du sud de l'agglomération nantaise en Loire-Atlantique, en bordure du lac de Grand-Lieu. Tissu TPE artisans et commerçants, PME tertiaires, professions libérales, exploitations maraîchères, services de proximité. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud nantais.",
+    "La Chevrolière (44), commune résidentielle du sud de l'agglomération nantaise en Loire-Atlantique, en bordure du lac de Grand-Lieu. Tissu TPE artisans et commerçants, PME tertiaires, professions libérales, exploitations maraîchères, services de proximité. Axion-IA couvre les activités professionnelles du bassin du sud nantais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Chevrolière (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires, professions libérales, exploitations maraîchères et services de proximité du sud nantais, en bordure du lac de Grand-Lieu.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const LA_CHEVROLIERE_COPY: VilleCopy = {
       a: "Pour les PME tertiaires de La Chevrolière, nous proposons audit IA, interventions sur site, implémentation (agents conversationnels, automatisation workflow, extraction données), coaching 1-to-1 et plateformes web IA sur mesure.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à La Chevrolière ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à La Chevrolière  ?",
       a: "L'Audit Flash démarre à 490 € HT (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du sud nantais.",
     },
     {

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_PRYVE_SAINT_MESMIN_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Pryvé-Saint-Mesmin (45), commune résidentielle de l'agglomération orléanaise sud-ouest en bords de Loire et du Loiret, offre un cadre verdoyant prisé des familles et professions libérales. Tissu TPE artisans, commerçants, professions libérales, PME tertiaires, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Saint-Pryvé-Saint-Mesmin (45), commune résidentielle de l'agglomération orléanaise sud-ouest en bords de Loire et du Loiret, offre un cadre verdoyant prisé des familles et professions libérales. Tissu TPE artisans, commerçants, professions libérales, PME tertiaires, services aux entreprises. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Saint-Pryvé-Saint-Mesmin (45), commune résidentielle de l'agglomération orléanaise sud-ouest en bords de Loire et du Loiret, offre un cadre verdoyant prisé des familles et professions libérales. Tissu TPE artisans, commerçants, professions libérales, PME tertiaires, services aux entreprises. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Saint-Pryvé-Saint-Mesmin (45), commune résidentielle de l'agglomération orléanaise sud-ouest en bords de Loire et du Loiret, offre un cadre verdoyant prisé des familles et professions libérales. Tissu TPE artisans, commerçants, professions libérales, PME tertiaires, services aux entreprises. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Pryvé-Saint-Mesmin (45). Nous accompagnons tous types d'activités : professions libérales, TPE artisans et commerçants, PME tertiaires et de services, indépendants, cabinets conseil et entreprises de l'agglomération orléanaise sud-ouest.",
   directAnswerEn:

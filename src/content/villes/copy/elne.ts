@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ELNE_COPY: VilleCopy = {
   pitchFr:
-    "Elne (66), cité historique d'Illibéris avec sa cathédrale et son cloître roman, fait partie de la Communauté de communes des Albères, de la Côte Vermeille et de l'Illibéris. Tissu TPE artisans, PME agriculture et viticulture, commerces, tourisme patrimonial. Axion-IA accompagne entreprises et indépendants de tous secteurs de la plaine du Roussillon.",
+    "Elne (66), cité historique d'Illibéris avec sa cathédrale et son cloître roman, fait partie de la Communauté de communes des Albères, de la Côte Vermeille et de l'Illibéris. Tissu TPE artisans, PME agriculture et viticulture, commerces, tourisme patrimonial. Axion-IA accompagne entreprises et indépendants de la plaine du Roussillon.",
   pitchEn:
-    "Elne (66), cité historique d'Illibéris avec sa cathédrale et son cloître roman, fait partie de la Communauté de communes des Albères, de la Côte Vermeille et de l'Illibéris. Tissu TPE artisans, PME agriculture et viticulture, commerces, tourisme patrimonial. Axion-IA accompagne entreprises et indépendants de tous secteurs de la plaine du Roussillon.",
+    "Elne (66), cité historique d'Illibéris avec sa cathédrale et son cloître roman, fait partie de la Communauté de communes des Albères, de la Côte Vermeille et de l'Illibéris. Tissu TPE artisans, PME agriculture et viticulture, commerces, tourisme patrimonial. Axion-IA accompagne entreprises et indépendants de la plaine du Roussillon.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Elne (66). Nous accompagnons tous types d'activités : TPE artisans, PME agriculture et viticulture, commerçants, acteurs du tourisme patrimonial, indépendants et professions libérales de la plaine du Roussillon.",
   directAnswerEn:

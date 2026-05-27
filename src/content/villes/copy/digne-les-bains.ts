@@ -60,7 +60,7 @@ export const DIGNE_LES_BAINS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE et PME lavandicoles autour de Digne (plateau Valensole, vallée Bléone) : prédiction récolte, classification qualité huile essentielle, automatisation traçabilité champ-à-distillerie, agents e-commerce vente directe.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Digne-les-Bains ?",
+      q: "Quel est le tarif d'un audit IA à Digne-les-Bains  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE artisans, commerçants et PME dignoises. Tarifs publics transparents, sans frais cachés.",
     },
     {

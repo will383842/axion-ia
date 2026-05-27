@@ -9,9 +9,9 @@ export const LA_WANTZENAU_COPY: VilleCopy = {
   pitchEn:
     "La Wantzenau (67), commune du nord de l''Eurométropole de Strasbourg en Alsace, célèbre pour sa gastronomie réputée (poularde, tradition winstub étoilée) et son cadre naturel entre Ill et Rhin, conjugue patrimoine gastronomique, économie résidentielle aisée et activités périurbaines strasbourgeoises. Tissu de TPE/PME hôtellerie-restauration gastronomique, commerce de proximité, artisanat de qualité, services aux entreprises et professions libérales. Axion-IA y intervient pour tous types d''activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d''architectes IA seniors qui intervient à La Wantzenau (67). Nous accompagnons TPE et PME : restaurateurs gastronomiques, commerçants, artisans, professions libérales et prestataires de services de l''Eurométropole de Strasbourg. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d''architectes IA seniors qui intervient à La Wantzenau (67). Nous accompagnons TPE et PME : restaurateurs gastronomiques, commerçants, artisans, professions libérales et prestataires de services de l''Eurométropole de Strasbourg. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d''architectes IA seniors qui intervient à La Wantzenau (67). Nous accompagnons TPE et PME : restaurateurs gastronomiques, commerçants, artisans, professions libérales et prestataires de services de l''Eurométropole de Strasbourg. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d''architectes IA seniors qui intervient à La Wantzenau (67). Nous accompagnons TPE et PME : restaurateurs gastronomiques, commerçants, artisans, professions libérales et prestataires de services de l''Eurométropole de Strasbourg. Audit Flash sur mesure.",
   seoHook: "gastronomie restauration & hôtellerie charme",
   ecosystemFr:
     "La Wantzenau est une commune de l''Eurométropole de Strasbourg, située au nord de l''agglomération entre l''Ill et le Rhin. La ville est mondialement connue dans la sphère gastronomique pour ses restaurants étoilés et sa tradition culinaire alsacienne (poularde, foie gras, choucroute). L''économie locale repose sur la gastronomie haut de gamme, l''hôtellerie de charme, le commerce de proximité aisé, l''artisanat de qualité, les professions libérales et les services aux PME strasbourgeoises.",

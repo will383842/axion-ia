@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PONT_DE_CHERUY_COPY: VilleCopy = {
   pitchFr:
-    "Pont-de-Chéruy (38), commune du Nord-Isère dans l'aire d'attraction est de Lyon, voisine de Charvieu-Chavagneux et Tignieu-Jameyzieu. Tissu PME industrielles, logistique périphérique (axe rhodanien), TPE artisans BTP, commerces et services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Pont-de-Chéruy (38), commune du Nord-Isère dans l'aire d'attraction est de Lyon, voisine de Charvieu-Chavagneux et Tignieu-Jameyzieu. Tissu PME industrielles, logistique périphérique (axe rhodanien), TPE artisans BTP, commerces et services. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Pont-de-Chéruy (38), commune du Nord-Isère dans l'aire d'attraction est de Lyon, voisine de Charvieu-Chavagneux et Tignieu-Jameyzieu. Tissu PME industrielles, logistique périphérique (axe rhodanien), TPE artisans BTP, commerces et services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Pont-de-Chéruy (38), commune du Nord-Isère dans l'aire d'attraction est de Lyon, voisine de Charvieu-Chavagneux et Tignieu-Jameyzieu. Tissu PME industrielles, logistique périphérique (axe rhodanien), TPE artisans BTP, commerces et services. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pont-de-Chéruy (38). Nous accompagnons tous types d'activités : PME industrielles Nord-Isère, opérateurs logistiques aire lyonnaise est, TPE artisans BTP, commerçants, indépendants, agriculteurs et services aux entreprises de la Communauté de communes Lyon Saint-Exupéry en Dauphiné.",
   directAnswerEn:

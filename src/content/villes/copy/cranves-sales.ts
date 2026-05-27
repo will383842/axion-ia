@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CRANVES_SALES_COPY: VilleCopy = {
   pitchFr:
-    "Cranves-Sales (74), commune résidentielle dynamique de l'agglomération Grand Genève côté français, concentre un tissu de TPE/PME tertiaires, artisans BTP, commerces et professions libérales au service d'une population frontalière en croissance. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin genevois nord.",
+    "Cranves-Sales (74), commune résidentielle dynamique de l'agglomération Grand Genève côté français, concentre un tissu de TPE/PME tertiaires, artisans BTP, commerces et professions libérales au service d'une population frontalière en croissance. Axion-IA y déploie son expertise pour toutes les organisations du bassin genevois nord.",
   pitchEn:
-    "Cranves-Sales (74), commune résidentielle dynamique de l'agglomération Grand Genève côté français, concentre un tissu de TPE/PME tertiaires, artisans BTP, commerces et professions libérales au service d'une population frontalière en croissance. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin genevois nord.",
+    "Cranves-Sales (74), commune résidentielle dynamique de l'agglomération Grand Genève côté français, concentre un tissu de TPE/PME tertiaires, artisans BTP, commerces et professions libérales au service d'une population frontalière en croissance. Axion-IA y déploie son expertise pour toutes les organisations du bassin genevois nord.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cranves-Sales (74). Nous accompagnons TPE et PME : entreprises de services transfrontaliers Grand Genève, PME tertiaires, artisans BTP, commerces locaux et professions libérales du bassin annémassien.",
   directAnswerEn:
@@ -56,7 +56,7 @@ export const CRANVES_SALES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME de services transfrontaliers à Cranves-Sales sur leurs cas IA spécifiques : automatisation comptabilité multi-devises EUR/CHF, agents conversationnels bilingues, CRM augmenté clientèle franco-suisse, conformité réglementaire automatisée.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Cranves-Sales ?",
+      q: "Combien coûte un audit IA à Cranves-Sales  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du bassin annémassien, il identifie les cas d'usage IA à fort ROI pour votre activité (services, BTP, commerce, professions libérales). Tarifs publics.",
     },
     {

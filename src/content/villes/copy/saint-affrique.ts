@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_AFFRIQUE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Affrique (12), commune du sud Aveyron dans la vallée de la Sorgue, porte d'entrée du pays de Roquefort. Tissu TPE artisans, PME agroalimentaires (filière Roquefort, charcuterie), commerces de centre-ville, professions libérales, tourisme vert (Grands Causses). Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Saint-Affrique (12), commune du sud Aveyron dans la vallée de la Sorgue, porte d'entrée du pays de Roquefort. Tissu TPE artisans, PME agroalimentaires (filière Roquefort, charcuterie), commerces de centre-ville, professions libérales, tourisme vert (Grands Causses). Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Saint-Affrique (12), commune du sud Aveyron dans la vallée de la Sorgue, porte d'entrée du pays de Roquefort. Tissu TPE artisans, PME agroalimentaires (filière Roquefort, charcuterie), commerces de centre-ville, professions libérales, tourisme vert (Grands Causses). Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Saint-Affrique (12), commune du sud Aveyron dans la vallée de la Sorgue, porte d'entrée du pays de Roquefort. Tissu TPE artisans, PME agroalimentaires (filière Roquefort, charcuterie), commerces de centre-ville, professions libérales, tourisme vert (Grands Causses). Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Affrique (12). Nous accompagnons TPE artisans, PME agroalimentaires de la filière Roquefort, commerçants, professions libérales, acteurs du tourisme vert Grands Causses et services du sud Aveyron. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Affrique (12). Nous accompagnons TPE artisans, PME agroalimentaires de la filière Roquefort, commerçants, professions libérales, acteurs du tourisme vert Grands Causses et services du sud Aveyron. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Affrique (12). Nous accompagnons TPE artisans, PME agroalimentaires de la filière Roquefort, commerçants, professions libérales, acteurs du tourisme vert Grands Causses et services du sud Aveyron. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Affrique (12). Nous accompagnons TPE artisans, PME agroalimentaires de la filière Roquefort, commerçants, professions libérales, acteurs du tourisme vert Grands Causses et services du sud Aveyron. Audit Flash sur mesure.",
   seoHook: "agroalimentaire filière & élevage ovin",
   ecosystemFr:
     "Saint-Affrique est le pôle urbain du sud Aveyron, dans la vallée de la Sorgue, à proximité immédiate de Roquefort-sur-Soulzon (caves Roquefort). Économie structurée autour de l'agroalimentaire (filière laitière Roquefort AOP, charcuterie, produits du terroir), de l'élevage ovin, du commerce de centre-ville, des professions libérales et du tourisme vert (Parc naturel régional des Grands Causses).",
@@ -56,7 +56,7 @@ export const SAINT_AFFRIQUE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME agroalimentaires de la filière Roquefort AOP sur leurs cas IA : traçabilité laitière, automatisation contrôle qualité caves, prédiction affinage, gestion relation producteurs-affineurs, optimisation logistique.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Saint-Affrique ?",
+      q: "Tarifs audit IA à Saint-Affrique  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME agroalimentaires filière Roquefort, audit approfondi entre 1 900 et 3 900 € HT selon la complexité. Tarifs publics, pas de devis opaque.",
     },
     {

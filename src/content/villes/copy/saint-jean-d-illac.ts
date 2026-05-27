@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_JEAN_D_ILLAC_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Jean-d'Illac (33), commune résidentielle de l'ouest de Bordeaux Métropole en lisière de forêt, abrite un tissu de TPE/PME artisanales, professions libérales et commerces de proximité. Axion-IA y déploie ses missions auprès de toutes les organisations de l'ouest bordelais.",
+    "Saint-Jean-d'Illac (33), commune résidentielle de l'ouest de Bordeaux Métropole en lisière de forêt, abrite un tissu de TPE/PME artisanales, professions libérales et commerces de proximité. Axion-IA y déploie son expertise pour toutes les organisations de l'ouest bordelais.",
   pitchEn:
-    "Saint-Jean-d'Illac (33), commune résidentielle de l'ouest de Bordeaux Métropole en lisière de forêt, abrite un tissu de TPE/PME artisanales, professions libérales et commerces de proximité. Axion-IA y déploie ses missions auprès de toutes les organisations de l'ouest bordelais.",
+    "Saint-Jean-d'Illac (33), commune résidentielle de l'ouest de Bordeaux Métropole en lisière de forêt, abrite un tissu de TPE/PME artisanales, professions libérales et commerces de proximité. Axion-IA y déploie son expertise pour toutes les organisations de l'ouest bordelais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean-d'Illac (33). Nous accompagnons TPE et PME de l'ouest bordelais : artisans BTP, commerçants, PME de services, professions libérales et indépendants. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean-d'Illac (33). Nous accompagnons TPE et PME de l'ouest bordelais : artisans BTP, commerçants, PME de services, professions libérales et indépendants. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean-d'Illac (33). Nous accompagnons TPE et PME de l'ouest bordelais : artisans BTP, commerçants, PME de services, professions libérales et indépendants. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean-d'Illac (33). Nous accompagnons TPE et PME de l'ouest bordelais : artisans BTP, commerçants, PME de services, professions libérales et indépendants. Audit Flash sur mesure.",
   seoHook: "artisanat & services personne",
   ecosystemFr:
     "Saint-Jean-d'Illac est une commune résidentielle en croissance de l'ouest bordelais, en lisière de la forêt des Landes. Tissu TPE artisanat BTP dense (construction neuve), professions libérales, commerces de proximité et services à la personne. Proximité Martignas-sur-Jalle et Cestas.",
@@ -52,7 +52,7 @@ export const SAINT_JEAN_D_ILLAC_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Saint-Jean-d'Illac et dans tout l'ouest bordelais (Martignas-sur-Jalle, Le Haillan, Cestas, Mérignac). Depuis Bordeaux centre (20 min) ou Paris (TGV 2h).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Saint-Jean-d'Illac ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Saint-Jean-d'Illac  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Adapté aux TPE artisans et professions libérales de l'ouest bordelais.",
     },
     {

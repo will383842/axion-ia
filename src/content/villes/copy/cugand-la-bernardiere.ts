@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CUGAND_LA_BERNARDIERE_COPY: VilleCopy = {
   pitchFr:
-    "Cugand-la-Bernardière (85), commune nouvelle du bocage vendéen sur les bords de la Sèvre nantaise, rassemble plus de 5 700 habitants. Aux portes de Clisson et du vignoble nantais, tissu de TPE artisanales, PME, exploitations viticoles, commerces et services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Cugand-la-Bernardière (85), commune nouvelle du bocage vendéen sur les bords de la Sèvre nantaise, rassemble plus de 5 700 habitants. Aux portes de Clisson et du vignoble nantais, tissu de TPE artisanales, PME, exploitations viticoles, commerces et services. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Cugand-la-Bernardière (85), commune nouvelle du bocage vendéen sur les bords de la Sèvre nantaise, rassemble plus de 5 700 habitants. Aux portes de Clisson et du vignoble nantais, tissu de TPE artisanales, PME, exploitations viticoles, commerces et services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Cugand-la-Bernardière (85), commune nouvelle du bocage vendéen sur les bords de la Sèvre nantaise, rassemble plus de 5 700 habitants. Aux portes de Clisson et du vignoble nantais, tissu de TPE artisanales, PME, exploitations viticoles, commerces et services. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cugand-la-Bernardière (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, exploitations viticoles Sèvre nantaise, PME industrielles, professions libérales et services de proximité.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const CUGAND_LA_BERNARDIERE_COPY: VilleCopy = {
       a: "Audit Flash 490 € HT, interventions sur site, coaching 1-to-1, implémentation IA. Nous adaptons chaque mission aux artisans, viticulteurs, PME et commerçants de la commune nouvelle.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Cugand-la-Bernardière ?",
+      q: "Combien coûte un audit IA à Cugand-la-Bernardière  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {

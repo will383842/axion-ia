@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PACY_SUR_EURE_COPY: VilleCopy = {
   pitchFr:
-    "Pacy-sur-Eure (27), bourg de l'Eure niché dans la vallée de l'Eure entre Évreux et Vernon, carrefour entre Normandie et Île-de-France. Tissu TPE artisans, PME services et commerce, agriculture vallée de l'Eure, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Pacy-sur-Eure (27), bourg de l'Eure niché dans la vallée de l'Eure entre Évreux et Vernon, carrefour entre Normandie et Île-de-France. Tissu TPE artisans, PME services et commerce, agriculture vallée de l'Eure, professions libérales. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Pacy-sur-Eure (27), bourg de l'Eure niché dans la vallée de l'Eure entre Évreux et Vernon, carrefour entre Normandie et Île-de-France. Tissu TPE artisans, PME services et commerce, agriculture vallée de l'Eure, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Pacy-sur-Eure (27), bourg de l'Eure niché dans la vallée de l'Eure entre Évreux et Vernon, carrefour entre Normandie et Île-de-France. Tissu TPE artisans, PME services et commerce, agriculture vallée de l'Eure, professions libérales. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pacy-sur-Eure (27). Nous accompagnons tous types d'activités : TPE artisans, PME services et commerce, exploitants agricoles vallée de l'Eure, professions libérales, indépendants et services aux entreprises du secteur Évreux-Vernon.",
   directAnswerEn:

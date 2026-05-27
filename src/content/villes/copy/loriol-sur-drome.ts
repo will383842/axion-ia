@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LORIOL_SUR_DROME_COPY: VilleCopy = {
   pitchFr:
-    "Loriol-sur-Drôme (26), commune limitrophe de Livron-sur-Drôme dans la Drôme, est positionnée sur l'axe A7 au sud de Valence. Tissu PME industrielles et logistiques, agriculture vallée du Rhône (vergers), TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs du sud-Valence drômois.",
+    "Loriol-sur-Drôme (26), commune limitrophe de Livron-sur-Drôme dans la Drôme, est positionnée sur l'axe A7 au sud de Valence. Tissu PME industrielles et logistiques, agriculture vallée du Rhône (vergers), TPE artisans BTP, commerces. Axion-IA collabore avec toutes les structures locales du sud-Valence drômois.",
   pitchEn:
-    "Loriol-sur-Drôme (26), commune limitrophe de Livron-sur-Drôme dans la Drôme, est positionnée sur l'axe A7 au sud de Valence. Tissu PME industrielles et logistiques, agriculture vallée du Rhône (vergers), TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs du sud-Valence drômois.",
+    "Loriol-sur-Drôme (26), commune limitrophe de Livron-sur-Drôme dans la Drôme, est positionnée sur l'axe A7 au sud de Valence. Tissu PME industrielles et logistiques, agriculture vallée du Rhône (vergers), TPE artisans BTP, commerces. Axion-IA collabore avec toutes les structures locales du sud-Valence drômois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Loriol-sur-Drôme (26). Nous accompagnons tous types d'activités : PME industrielles et logistiques axe A7, agriculteurs et arboriculteurs vallée du Rhône, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises.",
   directAnswerEn:

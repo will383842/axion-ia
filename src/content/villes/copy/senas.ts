@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SENAS_COPY: VilleCopy = {
   pitchFr:
-    "Sénas (13), commune agricole et logistique en bordure de Durance sur l'axe A7, se situe entre Salon-de-Provence et Cavaillon. Tissu de TPE agricoles, transporteurs, artisans BTP, commerçants et PME logistique. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Sénas (13), commune agricole et logistique en bordure de Durance sur l'axe A7, se situe entre Salon-de-Provence et Cavaillon. Tissu de TPE agricoles, transporteurs, artisans BTP, commerçants et PME logistique. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Sénas (13), commune agricole et logistique en bordure de Durance sur l'axe A7, se situe entre Salon-de-Provence et Cavaillon. Tissu de TPE agricoles, transporteurs, artisans BTP, commerçants et PME logistique. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Sénas (13), commune agricole et logistique en bordure de Durance sur l'axe A7, se situe entre Salon-de-Provence et Cavaillon. Tissu de TPE agricoles, transporteurs, artisans BTP, commerçants et PME logistique. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sénas (13). Nous accompagnons TPE agricoles, artisans BTP, transporteurs, PME logistique et commerçants de la vallée de la Durance. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sénas (13). Nous accompagnons TPE agricoles, artisans BTP, transporteurs, PME logistique et commerçants de la vallée de la Durance. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sénas (13). Nous accompagnons TPE agricoles, artisans BTP, transporteurs, PME logistique et commerçants de la vallée de la Durance. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sénas (13). Nous accompagnons TPE agricoles, artisans BTP, transporteurs, PME logistique et commerçants de la vallée de la Durance. Audit Flash sur mesure.",
   seoHook: "agriculture maraîchage & logistique transport",
   ecosystemFr:
     "Sénas est une commune de la vallée de la Durance, au carrefour de l'A7 (autoroute du Soleil) et de la RD7n. Économie mixte agriculture (vergers, maraîchage Durance), logistique et transport (nœud autoroutier), artisanat BTP et commerces de proximité. Zone d'activités en développement.",

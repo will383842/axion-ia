@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LUDRES_COPY: VilleCopy = {
   pitchFr:
-    "Ludres (54), commune périurbaine au sud de Nancy en Meurthe-et-Moselle, accueille d'importantes zones d'activités (parc industriel et tertiaire) et un tissu résidentiel familial. Tissu TPE/PME industrie, logistique, commerces, services aux entreprises, artisans. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Ludres (54), commune périurbaine au sud de Nancy en Meurthe-et-Moselle, accueille d'importantes zones d'activités (parc industriel et tertiaire) et un tissu résidentiel familial. Tissu TPE/PME industrie, logistique, commerces, services aux entreprises, artisans. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Ludres (54), commune périurbaine au sud de Nancy en Meurthe-et-Moselle, accueille d'importantes zones d'activités (parc industriel et tertiaire) et un tissu résidentiel familial. Tissu TPE/PME industrie, logistique, commerces, services aux entreprises, artisans. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Ludres (54), commune périurbaine au sud de Nancy en Meurthe-et-Moselle, accueille d'importantes zones d'activités (parc industriel et tertiaire) et un tissu résidentiel familial. Tissu TPE/PME industrie, logistique, commerces, services aux entreprises, artisans. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ludres (54). Nous accompagnons tous types d'activités : TPE/PME des zones d'activités sud-Nancy, sous-traitants industriels, logisticiens, commerces, artisans et professions de services ludréennes.",
   directAnswerEn:

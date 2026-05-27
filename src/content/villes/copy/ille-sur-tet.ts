@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ILLE_SUR_TET_COPY: VilleCopy = {
   pitchFr:
-    "Ille-sur-Têt (66), bourg de la vallée de la Têt célèbre pour ses orgues de calcaire (cheminées de fées), fait partie de la Communauté de communes Roussillon Conflent. Tissu TPE artisans, PME agriculture et arboriculture, commerces, tourisme nature. Axion-IA y déploie ses missions auprès de toutes les organisations de la vallée de la Têt.",
+    "Ille-sur-Têt (66), bourg de la vallée de la Têt célèbre pour ses orgues de calcaire (cheminées de fées), fait partie de la Communauté de communes Roussillon Conflent. Tissu TPE artisans, PME agriculture et arboriculture, commerces, tourisme nature. Axion-IA y mène ses missions auprès des organisations locales de la vallée de la Têt.",
   pitchEn:
-    "Ille-sur-Têt (66), bourg de la vallée de la Têt célèbre pour ses orgues de calcaire (cheminées de fées), fait partie de la Communauté de communes Roussillon Conflent. Tissu TPE artisans, PME agriculture et arboriculture, commerces, tourisme nature. Axion-IA y déploie ses missions auprès de toutes les organisations de la vallée de la Têt.",
+    "Ille-sur-Têt (66), bourg de la vallée de la Têt célèbre pour ses orgues de calcaire (cheminées de fées), fait partie de la Communauté de communes Roussillon Conflent. Tissu TPE artisans, PME agriculture et arboriculture, commerces, tourisme nature. Axion-IA y mène ses missions auprès des organisations locales de la vallée de la Têt.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ille-sur-Têt (66). Nous accompagnons tous types d'activités : TPE artisans, PME agriculture et arboriculture, commerçants, acteurs du tourisme nature, indépendants et professions libérales de la vallée de la Têt.",
   directAnswerEn:

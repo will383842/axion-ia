@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MOULINS_COPY: VilleCopy = {
   pitchFr:
-    "Moulins (03), préfecture de l'Allier et capitale historique du Bourbonnais, est positionnée au bord de l'Allier. Patrimoine ducal remarquable (cathédrale, château des ducs de Bourbon). Tissu administration et services publics, PME tertiaires, TPE artisans BTP, agriculture bourbonnaise, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Moulins (03), préfecture de l'Allier et capitale historique du Bourbonnais, est positionnée au bord de l'Allier. Patrimoine ducal remarquable (cathédrale, château des ducs de Bourbon). Tissu administration et services publics, PME tertiaires, TPE artisans BTP, agriculture bourbonnaise, commerces. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Moulins (03), préfecture de l'Allier et capitale historique du Bourbonnais, est positionnée au bord de l'Allier. Patrimoine ducal remarquable (cathédrale, château des ducs de Bourbon). Tissu administration et services publics, PME tertiaires, TPE artisans BTP, agriculture bourbonnaise, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Moulins (03), préfecture de l'Allier et capitale historique du Bourbonnais, est positionnée au bord de l'Allier. Patrimoine ducal remarquable (cathédrale, château des ducs de Bourbon). Tissu administration et services publics, PME tertiaires, TPE artisans BTP, agriculture bourbonnaise, commerces. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Moulins (03). Nous accompagnons tous types d'activités : administration préfecture, PME tertiaires Bourbonnais, agriculteurs/éleveurs allier, acteurs tourisme patrimonial, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:

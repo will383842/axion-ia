@@ -10,9 +10,9 @@ export const MORLAIX_COPY: VilleCopy = {
     "Morlaix (29), sous-préfecture du Finistère dominée par son viaduc monumental, au fond d'un estuaire ouvert sur la Manche. Tissu de TPE artisanales, PME agroalimentaires, commerces de centre-bourg, professions libérales et acteurs du tourisme culturel (Manufacture des Tabacs, maisons à pondalez). Axion-IA y intervient pour tous types d'activités.",
   seoHook: "agroalimentaire, tourisme & artisanat",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Morlaix (29). Nous accompagnons TPE et PME : artisans, commerces de centre-ville, PME agroalimentaires, acteurs du tourisme et professions libérales de cette sous-préfecture du nord-Finistère au pied du viaduc. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Morlaix (29). Nous accompagnons TPE et PME : artisans, commerces de centre-ville, PME agroalimentaires, acteurs du tourisme et professions libérales de cette sous-préfecture du nord-Finistère au pied du viaduc. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Morlaix (29). Nous accompagnons TPE et PME : artisans, commerces de centre-ville, PME agroalimentaires, acteurs du tourisme et professions libérales de cette sous-préfecture du nord-Finistère au pied du viaduc. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Morlaix (29). Nous accompagnons TPE et PME : artisans, commerces de centre-ville, PME agroalimentaires, acteurs du tourisme et professions libérales de cette sous-préfecture du nord-Finistère au pied du viaduc. Audit Flash sur mesure.",
   ecosystemFr:
     "Morlaix est une sous-préfecture historique du nord-Finistère, connue pour son viaduc ferroviaire à deux niveaux et son patrimoine médiéval (maisons à pondalez). La Manufacture des Tabacs reconvertie accueille un pôle culturel. L'agroalimentaire breton (légumes, produits laitiers) et le tourisme structurent l'économie locale. Communes voisines : Saint-Martin-des-Champs, Plourin-lès-Morlaix, Garlan, Sainte-Sève, Taulé.",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const MORLAIX_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Morlaix et dans tout le pays de Morlaix (Saint-Martin-des-Champs, Plourin-lès-Morlaix, Garlan, Taulé, Plougonven). Nos consultants se déplacent sur site ou en visio.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Morlaix ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Morlaix  ?",
       a: "L'Audit Flash IA à Morlaix démarre à 490 € HT pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {

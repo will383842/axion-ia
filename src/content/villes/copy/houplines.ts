@@ -56,7 +56,7 @@ export const HOUPLINES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME textile et industrie héritières du bassin armentiérois à Houplines sur leurs cas IA spécifiques : génération fiches produits textile multilingues, maintenance prédictive lignes industrielles, contrôle qualité visuel par caméra, agents IA gestion fournisseurs et clients B2B, copilotes administratifs export.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Houplines ?",
+      q: "Tarifs audit IA à Houplines  : quel budget prévoir ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du bassin armentiérois et transfrontalières, il identifie les cas d'usage IA à fort ROI pour votre activité (textile-industrie, B2B transfrontalier, commerce, artisanat). Tarifs publics, sans engagement.",
     },
     {

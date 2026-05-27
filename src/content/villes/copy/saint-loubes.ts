@@ -9,9 +9,9 @@ export const SAINT_LOUBES_COPY: VilleCopy = {
   pitchEn:
     "Saint-Loubès (33), commune au nord-est de Bordeaux Métropole aux portes de l'Entre-deux-Mers, combine zones d'activités logistiques, vignoble, artisanat BTP et tissu résidentiel en croissance. Axion-IA opère pour toutes les structures économiques de la commune du bassin nord-est bordelais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Loubès (33). Nous accompagnons TPE et PME du nord-est Bordeaux : entreprises logistiques, vignerons de l'Entre-deux-Mers, artisans BTP, commerçants et professions libérales. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Loubès (33). Nous accompagnons TPE et PME du nord-est Bordeaux : entreprises logistiques, vignerons de l'Entre-deux-Mers, artisans BTP, commerçants et professions libérales. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Loubès (33). Nous accompagnons TPE et PME du nord-est Bordeaux : entreprises logistiques, vignerons de l'Entre-deux-Mers, artisans BTP, commerçants et professions libérales. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Loubès (33). Nous accompagnons TPE et PME du nord-est Bordeaux : entreprises logistiques, vignerons de l'Entre-deux-Mers, artisans BTP, commerçants et professions libérales. Audit Flash sur mesure.",
   seoHook: "bassin nord-est bordelais",
   ecosystemFr:
     "Saint-Loubès se situe au carrefour entre Bordeaux Métropole nord-est et l'Entre-deux-Mers viticole. Zones d'activités logistiques (plateforme multimodale), vignoble bordelais, tissu TPE artisanat BTP et commerces en croissance résidentielle. Accès A10 et A89.",
@@ -52,7 +52,7 @@ export const SAINT_LOUBES_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Saint-Loubès et dans tout le nord-est bordelais (Ambarès-et-Lagrave, Izon, Saint-André-de-Cubzac). Nos consultants se déplacent depuis Bordeaux (20 min) ou Paris (TGV 2h).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Saint-Loubès ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Saint-Loubès  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Adapté aux PME logistiques et TPE artisans du nord-est Bordeaux.",
     },
     {

@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const BON_ENCONTRE_COPY: VilleCopy = {
   pitchFr:
-    "Bon-Encontre (47), commune de 6 530 habitants dans le Lot-et-Garonne, fait partie de l'agglomération d'Agen dont elle est un faubourg est résidentiel et dynamique. Son économie repose sur un tissu de TPE artisans et commerçants, PME services aux entreprises, professions libérales, santé et commerces de proximité. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Bon-Encontre (47), commune de 6 530 habitants dans le Lot-et-Garonne, fait partie de l'agglomération d'Agen dont elle est un faubourg est résidentiel et dynamique. Son économie repose sur un tissu de TPE artisans et commerçants, PME services aux entreprises, professions libérales, santé et commerces de proximité. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Bon-Encontre (47), commune de 6 530 habitants dans le Lot-et-Garonne, fait partie de l'agglomération d'Agen dont elle est un faubourg est résidentiel et dynamique. Son économie repose sur un tissu de TPE artisans et commerçants, PME services aux entreprises, professions libérales, santé et commerces de proximité. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Bon-Encontre (47), commune de 6 530 habitants dans le Lot-et-Garonne, fait partie de l'agglomération d'Agen dont elle est un faubourg est résidentiel et dynamique. Son économie repose sur un tissu de TPE artisans et commerçants, PME services aux entreprises, professions libérales, santé et commerces de proximité. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bon-Encontre (47). Nous accompagnons TPE et PME de l'agglomération agenaise est : artisans, commerçants, professions libérales, prestataires de services et entreprises du bassin agenais. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bon-Encontre (47). Nous accompagnons TPE et PME de l'agglomération agenaise est : artisans, commerçants, professions libérales, prestataires de services et entreprises du bassin agenais. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bon-Encontre (47). Nous accompagnons TPE et PME de l'agglomération agenaise est : artisans, commerçants, professions libérales, prestataires de services et entreprises du bassin agenais. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bon-Encontre (47). Nous accompagnons TPE et PME de l'agglomération agenaise est : artisans, commerçants, professions libérales, prestataires de services et entreprises du bassin agenais. Audit Flash sur mesure.",
   ecosystemFr:
     "Bon-Encontre est un faubourg est de l'agglomération d'Agen, commune résidentielle et dynamique. Son économie s'appuie sur les commerces de proximité, l'artisanat, les professions libérales (santé, conseil), les services aux entreprises et quelques zones d'activité. Le bassin d'emploi est intégré à celui d'Agen (préfecture à 5 min), Le Passage et Boé.",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const BON_ENCONTRE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Bon-Encontre et dans toute l'agglomération d'Agen (Agen, Le Passage, Boé, Foulayronnes). Consultants accessibles via la gare SNCF Agen (TGV Paris-Agen, 5 min de Bon-Encontre).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Bon-Encontre ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Bon-Encontre  ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Bon-Encontre : artisans, commerçants, professions libérales et prestataires de services. ROI chiffré dès le diagnostic.",
     },
     {

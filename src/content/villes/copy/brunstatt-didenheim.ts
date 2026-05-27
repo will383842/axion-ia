@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const BRUNSTATT_DIDENHEIM_COPY: VilleCopy = {
   pitchFr:
-    "Brunstatt-Didenheim (68), commune nouvelle issue de la fusion de Brunstatt et Didenheim en 2016, est située au sud de Mulhouse dans le Haut-Rhin. Profil résidentiel et tertiaire avec un tissu de TPE/PME en services, professions libérales, commerce et artisanat. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Brunstatt-Didenheim (68), commune nouvelle issue de la fusion de Brunstatt et Didenheim en 2016, est située au sud de Mulhouse dans le Haut-Rhin. Profil résidentiel et tertiaire avec un tissu de TPE/PME en services, professions libérales, commerce et artisanat. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Brunstatt-Didenheim (68), commune nouvelle issue de la fusion de Brunstatt et Didenheim en 2016, est située au sud de Mulhouse dans le Haut-Rhin. Profil résidentiel et tertiaire avec un tissu de TPE/PME en services, professions libérales, commerce et artisanat. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Brunstatt-Didenheim (68), commune nouvelle issue de la fusion de Brunstatt et Didenheim en 2016, est située au sud de Mulhouse dans le Haut-Rhin. Profil résidentiel et tertiaire avec un tissu de TPE/PME en services, professions libérales, commerce et artisanat. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Brunstatt-Didenheim (68). Nous accompagnons TPE et PME : prestataires de services, professions libérales, artisans, commerçants et sous-traitants industriels du sud mulhousien. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Brunstatt-Didenheim (68). Nous accompagnons TPE et PME : prestataires de services, professions libérales, artisans, commerçants et sous-traitants industriels du sud mulhousien. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Brunstatt-Didenheim (68). Nous accompagnons TPE et PME : prestataires de services, professions libérales, artisans, commerçants et sous-traitants industriels du sud mulhousien. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Brunstatt-Didenheim (68). Nous accompagnons TPE et PME : prestataires de services, professions libérales, artisans, commerçants et sous-traitants industriels du sud mulhousien. Audit Flash sur mesure.",
   seoHook: "services aux & commerce proximité",
   ecosystemFr:
     "Brunstatt-Didenheim, commune nouvelle créée en 2016, s'inscrit en première couronne sud de Mulhouse au sein de Mulhouse Alsace Agglomération (m2A). Profil mixte résidentiel et tertiaire, avec présence de zones d'activités, commerces de proximité, services aux entreprises et professions libérales. Proximité immédiate du pôle universitaire et hospitalier mulhousien.",
@@ -52,7 +52,7 @@ export const BRUNSTATT_DIDENHEIM_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Brunstatt-Didenheim et sur toute Mulhouse Alsace Agglomération (Mulhouse, Riedisheim, Rixheim, Illzach, Habsheim). Accès direct via A35/A36 et gare TGV Mulhouse-Ville (Paris à 2h40).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Brunstatt-Didenheim ?",
+      q: "Combien coûte un audit IA à Brunstatt-Didenheim  ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Brunstatt-Didenheim et du sud mulhousien, il identifie les cas d'usage IA à fort ROI pour votre cabinet, atelier, commerce ou activité de services.",
     },
     {

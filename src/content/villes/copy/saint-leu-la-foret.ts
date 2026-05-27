@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_LEU_LA_FORET_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Leu-la-Forêt, commune résidentielle boisée du Val-d'Oise (95) en vallée de Montmorency, 20 km au nord de Paris. Tissu TPE artisans, commerçants de centre-ville, PME tertiaires, professions libérales et indépendants. Axion-IA couvre l'ensemble des activités professionnelles présentes de la vallée de Montmorency.",
+    "Saint-Leu-la-Forêt, commune résidentielle boisée du Val-d'Oise (95) en vallée de Montmorency, 20 km au nord de Paris. Tissu TPE artisans, commerçants de centre-ville, PME tertiaires, professions libérales et indépendants. Axion-IA opère sur l'ensemble des activités professionnelles locales de la vallée de Montmorency.",
   pitchEn:
-    "Saint-Leu-la-Forêt, commune résidentielle boisée du Val-d'Oise (95) en vallée de Montmorency, 20 km au nord de Paris. Tissu TPE artisans, commerçants de centre-ville, PME tertiaires, professions libérales et indépendants. Axion-IA couvre l'ensemble des activités professionnelles présentes de la vallée de Montmorency.",
+    "Saint-Leu-la-Forêt, commune résidentielle boisée du Val-d'Oise (95) en vallée de Montmorency, 20 km au nord de Paris. Tissu TPE artisans, commerçants de centre-ville, PME tertiaires, professions libérales et indépendants. Axion-IA opère sur l'ensemble des activités professionnelles locales de la vallée de Montmorency.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Leu-la-Forêt (95). Nous accompagnons tous types d'activités : TPE artisans, commerçants, PME tertiaires, professions libérales et indépendants de la vallée de Montmorency. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Leu-la-Forêt (95). Nous accompagnons tous types d'activités : TPE artisans, commerçants, PME tertiaires, professions libérales et indépendants de la vallée de Montmorency. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Leu-la-Forêt (95). Nous accompagnons tous types d'activités : TPE artisans, commerçants, PME tertiaires, professions libérales et indépendants de la vallée de Montmorency. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Leu-la-Forêt (95). Nous accompagnons tous types d'activités : TPE artisans, commerçants, PME tertiaires, professions libérales et indépendants de la vallée de Montmorency. Audit Flash sur mesure.",
   seoHook: "commerce centre-ville & artisanat rénovation",
   ecosystemFr:
     "Saint-Leu-la-Forêt est une commune résidentielle verdoyante en forêt de Montmorency, intégrée à la CA Val Parisis. Son tissu économique repose sur les commerces de centre-ville, TPE artisanales, cabinets de professions libérales, PME de services et indépendants. Proximité directe avec Taverny, Eaubonne et Ermont.",

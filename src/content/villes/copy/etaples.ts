@@ -9,9 +9,9 @@ export const ETAPLES_COPY: VilleCopy = {
   pitchEn:
     "Étaples (62), port de pêche historique de la Côte d'Opale dans le Pas-de-Calais, mêle activités maritimes, tourisme côtier, TPE artisanales et PME de services. Axion-IA y intervient pour tous types d'activités de l'estuaire de la Canche.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Étaples (62). Nous accompagnons TPE de la pêche et du tourisme, PME de services, artisans, commerçants et professions libérales de la Côte d'Opale. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Étaples (62). Nous accompagnons TPE de la pêche et du tourisme, PME de services, artisans, commerçants et professions libérales de la Côte d'Opale. Audit Flash sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Étaples (62). Nous accompagnons TPE de la pêche et du tourisme, PME de services, artisans, commerçants et professions libérales de la Côte d'Opale. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Étaples (62). Nous accompagnons TPE de la pêche et du tourisme, PME de services, artisans, commerçants et professions libérales de la Côte d'Opale. Audit Flash sur mesure, intervention sur site ou en visio.",
   seoHook: "côte d'opale",
   ecosystemFr:
     "Étaples est un port de pêche artisanale actif sur l'estuaire de la Canche, face au Touquet-Paris-Plage. Économie mêlant filière halieutique, tourisme côtier saisonnier, TPE artisanales, commerces de proximité et professions libérales. La proximité du Touquet dynamise les activités de services.",
@@ -52,7 +52,7 @@ export const ETAPLES_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Étaples et sur toute la Côte d'Opale (Le Touquet, Berck, Montreuil-sur-Mer, Boulogne-sur-Mer). Déplacements sur site ou sessions en visio.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Étaples ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Étaples  ?",
       a: "L'Audit Flash Axion-IA démarre à 490 € HT pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME étaploises. Tarifs publics.",
     },
     {

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MEXIMIEUX_COPY: VilleCopy = {
   pitchFr:
-    "Meximieux (01), commune de la plaine de l'Ain dans l'Ain, est positionnée sur la Côtière est de Lyon. Tissu PME tertiaires et industrielles (plaine de l'Ain), TPE artisans BTP, commerces, agriculture. Axion-IA accompagne entreprises et indépendants de tous secteurs de la plaine de l'Ain.",
+    "Meximieux (01), commune de la plaine de l'Ain dans l'Ain, est positionnée sur la Côtière est de Lyon. Tissu PME tertiaires et industrielles (plaine de l'Ain), TPE artisans BTP, commerces, agriculture. Axion-IA accompagne entreprises et indépendants de la plaine de l'Ain.",
   pitchEn:
-    "Meximieux (01), commune de la plaine de l'Ain dans l'Ain, est positionnée sur la Côtière est de Lyon. Tissu PME tertiaires et industrielles (plaine de l'Ain), TPE artisans BTP, commerces, agriculture. Axion-IA accompagne entreprises et indépendants de tous secteurs de la plaine de l'Ain.",
+    "Meximieux (01), commune de la plaine de l'Ain dans l'Ain, est positionnée sur la Côtière est de Lyon. Tissu PME tertiaires et industrielles (plaine de l'Ain), TPE artisans BTP, commerces, agriculture. Axion-IA accompagne entreprises et indépendants de la plaine de l'Ain.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Meximieux (01). Nous accompagnons tous types d'activités : PME tertiaires et industrielles plaine de l'Ain, TPE artisans BTP, commerçants, agriculteurs, indépendants et services aux entreprises.",
   directAnswerEn:

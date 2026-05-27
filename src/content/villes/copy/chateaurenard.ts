@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const CHATEAURENARD_COPY: VilleCopy = {
   pitchFr:
-    "Châteaurenard (13), capitale historique du marché des fruits et légumes provençaux entre Avignon et Salon-de-Provence, vit autour de son MIN (Marché d'Intérêt National) et de l'agriculture maraîchère. TPE agricoles, négociants, transporteurs, PME agroalimentaires et commerces de proximité. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Châteaurenard (13), capitale historique du marché des fruits et légumes provençaux entre Avignon et Salon-de-Provence, vit autour de son MIN (Marché d'Intérêt National) et de l'agriculture maraîchère. TPE agricoles, négociants, transporteurs, PME agroalimentaires et commerces de proximité. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Châteaurenard (13), capitale historique du marché des fruits et légumes provençaux entre Avignon et Salon-de-Provence, vit autour de son MIN (Marché d'Intérêt National) et de l'agriculture maraîchère. TPE agricoles, négociants, transporteurs, PME agroalimentaires et commerces de proximité. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Châteaurenard (13), capitale historique du marché des fruits et légumes provençaux entre Avignon et Salon-de-Provence, vit autour de son MIN (Marché d'Intérêt National) et de l'agriculture maraîchère. TPE agricoles, négociants, transporteurs, PME agroalimentaires et commerces de proximité. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châteaurenard (13). Nous accompagnons TPE agricoles, négociants du MIN, transporteurs frigorifiques, PME agroalimentaires et commerces de la plaine de la Durance. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châteaurenard (13). Nous accompagnons TPE agricoles, négociants du MIN, transporteurs frigorifiques, PME agroalimentaires et commerces de la plaine de la Durance. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châteaurenard (13). Nous accompagnons TPE agricoles, négociants du MIN, transporteurs frigorifiques, PME agroalimentaires et commerces de la plaine de la Durance. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châteaurenard (13). Nous accompagnons TPE agricoles, négociants du MIN, transporteurs frigorifiques, PME agroalimentaires et commerces de la plaine de la Durance. Audit Flash sur mesure.",
   seoHook: "agriculture maraîchère & négoce fruits",
   ecosystemFr:
     "Châteaurenard est au cœur de la plaine maraîchère entre Avignon et Cavaillon. Son MIN (Marché d'Intérêt National) est l'un des principaux pôles d'expédition de fruits et légumes provençaux. Agriculture intensive (tomates, melons, fraises, salades), négoce, transport frigorifique, conditionnement, PME agroalimentaires. Tissu dense de TPE artisans.",
@@ -52,7 +52,7 @@ export const CHATEAURENARD_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Châteaurenard et dans toute la plaine maraîchère (Cavaillon, Noves, Eyragues, Saint-Andiol, Rognonas, Barbentane). Proximité Avignon TGV et axe A7.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Châteaurenard ?",
+      q: "Tarifs audit IA à Châteaurenard  : quel budget prévoir ?",
       a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE agricoles, négociants du MIN et PME agroalimentaires châteaurenardais. Tarifs publics, sans engagement.",
     },
     {

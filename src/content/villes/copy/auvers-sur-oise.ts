@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const AUVERS_SUR_OISE_COPY: VilleCopy = {
   pitchFr:
-    "Auvers-sur-Oise (95), village emblématique des impressionnistes immortalisé par Van Gogh, pôle de tourisme culturel du Val-d'Oise. Tissu TPE artisans et commerces, PME hôtellerie-restauration, galeries, professions libérales et structures culturelles. Axion-IA y déploie ses missions auprès de toutes les organisations de la vallée de l'Oise.",
+    "Auvers-sur-Oise (95), village emblématique des impressionnistes immortalisé par Van Gogh, pôle de tourisme culturel du Val-d'Oise. Tissu TPE artisans et commerces, PME hôtellerie-restauration, galeries, professions libérales et structures culturelles. Axion-IA y mène ses missions auprès des organisations locales de la vallée de l'Oise.",
   pitchEn:
-    "Auvers-sur-Oise (95), village emblématique des impressionnistes immortalisé par Van Gogh, pôle de tourisme culturel du Val-d'Oise. Tissu TPE artisans et commerces, PME hôtellerie-restauration, galeries, professions libérales et structures culturelles. Axion-IA y déploie ses missions auprès de toutes les organisations de la vallée de l'Oise.",
+    "Auvers-sur-Oise (95), village emblématique des impressionnistes immortalisé par Van Gogh, pôle de tourisme culturel du Val-d'Oise. Tissu TPE artisans et commerces, PME hôtellerie-restauration, galeries, professions libérales et structures culturelles. Axion-IA y mène ses missions auprès des organisations locales de la vallée de l'Oise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auvers-sur-Oise (95). Nous accompagnons tous types d'activités : TPE artisans et commerces, PME hôtellerie-restauration et tourisme, galeries, professions libérales et structures culturelles de la vallée de l'Oise. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auvers-sur-Oise (95). Nous accompagnons tous types d'activités : TPE artisans et commerces, PME hôtellerie-restauration et tourisme, galeries, professions libérales et structures culturelles de la vallée de l'Oise. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auvers-sur-Oise (95). Nous accompagnons tous types d'activités : TPE artisans et commerces, PME hôtellerie-restauration et tourisme, galeries, professions libérales et structures culturelles de la vallée de l'Oise. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auvers-sur-Oise (95). Nous accompagnons tous types d'activités : TPE artisans et commerces, PME hôtellerie-restauration et tourisme, galeries, professions libérales et structures culturelles de la vallée de l'Oise. Audit Flash sur mesure.",
   seoHook: "tourisme culturel & hôtellerie-restauration",
   ecosystemFr:
     "Auvers-sur-Oise attire chaque année des milliers de visiteurs sur les traces de Van Gogh, Cézanne et Daubigny. Son tissu économique mêle tourisme culturel, hôtellerie-restauration, artisanat d'art, commerces de proximité et professions libérales. Communes voisines : Pontoise, Méry-sur-Oise, Butry-sur-Oise, Valmondois, Nesles-la-Vallée.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const AMBILLY_COPY: VilleCopy = {
   pitchFr:
-    "Ambilly (74), commune frontalière de l'agglomération Grand Genève en Haute-Savoie, jouxte directement Annemasse et la frontière suisse. Économie transfrontalière dynamique, commerces, TPE services, PME tertiaires, professions libérales, logistique douanière. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Ambilly (74), commune frontalière de l'agglomération Grand Genève en Haute-Savoie, jouxte directement Annemasse et la frontière suisse. Économie transfrontalière dynamique, commerces, TPE services, PME tertiaires, professions libérales, logistique douanière. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Ambilly (74), commune frontalière de l'agglomération Grand Genève en Haute-Savoie, jouxte directement Annemasse et la frontière suisse. Économie transfrontalière dynamique, commerces, TPE services, PME tertiaires, professions libérales, logistique douanière. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Ambilly (74), commune frontalière de l'agglomération Grand Genève en Haute-Savoie, jouxte directement Annemasse et la frontière suisse. Économie transfrontalière dynamique, commerces, TPE services, PME tertiaires, professions libérales, logistique douanière. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ambilly (74). Nous accompagnons TPE et PME : commerces frontaliers, PME tertiaires du Grand Genève, artisans BTP, professions libérales, prestataires logistique douanière et services aux entreprises de l'agglomération annemassienne.",
   directAnswerEn:
@@ -57,7 +57,7 @@ export const AMBILLY_COPY: VilleCopy = {
     },
     {
       q: "Quels sont les tarifs pour un audit IA à Ambilly ?",
-      a: "L'audit Flash démarre à 490 € HT (4 heures). Pour les PME tertiaires du Grand Genève avec enjeux transfrontaliers complexes, nous proposons des audits approfondis sur devis adapté.",
+      a: "L'audit Flash propose un tarif d'entrée accessible (4 heures). Pour les PME tertiaires du Grand Genève avec enjeux transfrontaliers complexes, nous proposons des audits approfondis sur devis adapté.",
     },
     {
       q: "Quels services pour les TPE artisans et commerces ?",

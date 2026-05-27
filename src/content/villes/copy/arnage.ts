@@ -60,7 +60,7 @@ export const ARNAGE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les sous-traitants automobile et mécanique de la zone Arnage / sud Le Mans : IA qualité, optimisation production, gestion stocks, prédiction maintenance équipements.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Arnage ?",
+      q: "Tarifs audit IA à Arnage  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {

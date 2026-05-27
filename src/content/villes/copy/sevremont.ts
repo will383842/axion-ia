@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SEVREMONT_COPY: VilleCopy = {
   pitchFr:
-    "Sèvremont (85), commune nouvelle du bocage vendéen, compte plus de 6 300 habitants. Née de la fusion de quatre communes, entre Les Herbiers et Pouzauges. Tissu de TPE artisanales, PME industrielles et agroalimentaires, exploitations agricoles et commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Sèvremont (85), commune nouvelle du bocage vendéen, compte plus de 6 300 habitants. Née de la fusion de quatre communes, entre Les Herbiers et Pouzauges. Tissu de TPE artisanales, PME industrielles et agroalimentaires, exploitations agricoles et commerces. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Sèvremont (85), commune nouvelle du bocage vendéen, compte plus de 6 300 habitants. Née de la fusion de quatre communes, entre Les Herbiers et Pouzauges. Tissu de TPE artisanales, PME industrielles et agroalimentaires, exploitations agricoles et commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Sèvremont (85), commune nouvelle du bocage vendéen, compte plus de 6 300 habitants. Née de la fusion de quatre communes, entre Les Herbiers et Pouzauges. Tissu de TPE artisanales, PME industrielles et agroalimentaires, exploitations agricoles et commerces. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sèvremont (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles du bocage, exploitations agricoles, professions libérales et services de proximité.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const SEVREMONT_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME industrielles du bocage vendéen : maintenance prédictive, contrôle qualité vision, optimisation production, automatisation logistique et gestion stocks.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Sèvremont ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Sèvremont  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {

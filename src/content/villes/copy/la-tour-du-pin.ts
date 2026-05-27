@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_TOUR_DU_PIN_COPY: VilleCopy = {
   pitchFr:
-    "La Tour-du-Pin (38), sous-préfecture de l'Isère en Bas-Dauphiné (Nord-Isère), occupe une position carrefour entre Lyon, Grenoble et Chambéry. Tissu PME industrielles, services administratifs, TPE artisans BTP, commerces et agriculture périphérique. Axion-IA couvre l'ensemble des activités professionnelles présentes du Nord-Isère.",
+    "La Tour-du-Pin (38), sous-préfecture de l'Isère en Bas-Dauphiné (Nord-Isère), occupe une position carrefour entre Lyon, Grenoble et Chambéry. Tissu PME industrielles, services administratifs, TPE artisans BTP, commerces et agriculture périphérique. Axion-IA couvre les activités professionnelles du bassin du Nord-Isère.",
   pitchEn:
-    "La Tour-du-Pin (38), sous-préfecture de l'Isère en Bas-Dauphiné (Nord-Isère), occupe une position carrefour entre Lyon, Grenoble et Chambéry. Tissu PME industrielles, services administratifs, TPE artisans BTP, commerces et agriculture périphérique. Axion-IA couvre l'ensemble des activités professionnelles présentes du Nord-Isère.",
+    "La Tour-du-Pin (38), sous-préfecture de l'Isère en Bas-Dauphiné (Nord-Isère), occupe une position carrefour entre Lyon, Grenoble et Chambéry. Tissu PME industrielles, services administratifs, TPE artisans BTP, commerces et agriculture périphérique. Axion-IA couvre les activités professionnelles du bassin du Nord-Isère.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Tour-du-Pin (38). Nous accompagnons tous types d'activités : services publics (sous-préfecture, tribunal d'instance), PME industrielles Nord-Isère, TPE artisans BTP, commerçants, professions libérales, agriculteurs/éleveurs périphériques et entreprises du Bas-Dauphiné.",
   directAnswerEn:

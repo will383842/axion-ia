@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SOUSTONS_COPY: VilleCopy = {
   pitchFr:
-    "Soustons (40), « l'isle verte » des Landes, bénéficie d'un cadre naturel exceptionnel avec 5 lacs et étangs et une plage océane de 6 km sur la côte d'Argent. Forêt landaise, tourisme nature, agriculture, TPE hébergement, commerces, artisans. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Soustons (40), « l'isle verte » des Landes, bénéficie d'un cadre naturel exceptionnel avec 5 lacs et étangs et une plage océane de 6 km sur la côte d'Argent. Forêt landaise, tourisme nature, agriculture, TPE hébergement, commerces, artisans. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Soustons (40), « l'isle verte » des Landes, bénéficie d'un cadre naturel exceptionnel avec 5 lacs et étangs et une plage océane de 6 km sur la côte d'Argent. Forêt landaise, tourisme nature, agriculture, TPE hébergement, commerces, artisans. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Soustons (40), « l'isle verte » des Landes, bénéficie d'un cadre naturel exceptionnel avec 5 lacs et étangs et une plage océane de 6 km sur la côte d'Argent. Forêt landaise, tourisme nature, agriculture, TPE hébergement, commerces, artisans. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Soustons (40). Nous accompagnons TPE et PME du tourisme nature et lacustre, campings, hébergeurs, agriculteurs, commerçants, artisans BTP et professions libérales de la côte d'Argent landaise.",
   directAnswerEn:

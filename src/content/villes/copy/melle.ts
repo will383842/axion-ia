@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MELLE_COPY: VilleCopy = {
   pitchFr:
-    "Melle (79), petite ville des Deux-Sèvres classée pour ses mines d'argent mérovingiennes et ses églises romanes inscrites au patrimoine mondial UNESCO, est un pôle de services du Mellois en Poitou. Tissu TPE artisans, commerçants, PME agricoles et agroalimentaires, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du sud Deux-Sèvres.",
+    "Melle (79), petite ville des Deux-Sèvres classée pour ses mines d'argent mérovingiennes et ses églises romanes inscrites au patrimoine mondial UNESCO, est un pôle de services du Mellois en Poitou. Tissu TPE artisans, commerçants, PME agricoles et agroalimentaires, professions libérales. Axion-IA répond aux besoins de toutes les entreprises du sud Deux-Sèvres.",
   pitchEn:
-    "Melle (79), petite ville des Deux-Sèvres classée pour ses mines d'argent mérovingiennes et ses églises romanes inscrites au patrimoine mondial UNESCO, est un pôle de services du Mellois en Poitou. Tissu TPE artisans, commerçants, PME agricoles et agroalimentaires, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du sud Deux-Sèvres.",
+    "Melle (79), petite ville des Deux-Sèvres classée pour ses mines d'argent mérovingiennes et ses églises romanes inscrites au patrimoine mondial UNESCO, est un pôle de services du Mellois en Poitou. Tissu TPE artisans, commerçants, PME agricoles et agroalimentaires, professions libérales. Axion-IA répond aux besoins de toutes les entreprises du sud Deux-Sèvres.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Melle (79). Nous accompagnons tous types d'activités : TPE artisans et commerçants du centre-bourg, PME agricoles et agroalimentaires du Mellois, professions libérales, acteurs du tourisme patrimonial (mines d'argent, art roman UNESCO) et services aux entreprises.",
   directAnswerEn:

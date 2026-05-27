@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SOMAIN_COPY: VilleCopy = {
   pitchFr:
-    "Somain (59), commune du bassin minier du Nord-Pas-de-Calais inscrit au patrimoine mondial UNESCO, nœud ferroviaire historique entre Douai et Valenciennes. Tissu TPE/PME logistique, transport, industrie agroalimentaire, BTP, commerces et services de proximité. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Somain (59), commune du bassin minier du Nord-Pas-de-Calais inscrit au patrimoine mondial UNESCO, nœud ferroviaire historique entre Douai et Valenciennes. Tissu TPE/PME logistique, transport, industrie agroalimentaire, BTP, commerces et services de proximité. Axion-IA répond aux besoins des activités professionnelles présentes.",
   pitchEn:
-    "Somain (59), commune du bassin minier du Nord-Pas-de-Calais inscrit au patrimoine mondial UNESCO, nœud ferroviaire historique entre Douai et Valenciennes. Tissu TPE/PME logistique, transport, industrie agroalimentaire, BTP, commerces et services de proximité. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Somain (59), commune du bassin minier du Nord-Pas-de-Calais inscrit au patrimoine mondial UNESCO, nœud ferroviaire historique entre Douai et Valenciennes. Tissu TPE/PME logistique, transport, industrie agroalimentaire, BTP, commerces et services de proximité. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Somain (59). Nous accompagnons TPE et PME du bassin minier : logistique et transport ferroviaire, industrie agroalimentaire, BTP reconversion, commerces de proximité, artisans et professions libérales du Douaisis-Valenciennois.",
   directAnswerEn:
@@ -56,7 +56,7 @@ export const SOMAIN_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE et PME logistique et transport du nœud ferroviaire de Somain : optimisation flux entrepôts, traçabilité expéditions, automatisation planning, agents IA gestion fournisseurs et donneurs d'ordres.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Somain ?",
+      q: "Tarifs audit IA à Somain  : quel budget prévoir ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du bassin minier, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics, sans engagement.",
     },
     {

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VILLENEUVE_LOUBET_COPY: VilleCopy = {
   pitchFr:
-    "Villeneuve-Loubet (06), commune littorale des Alpes-Maritimes entre Nice et Antibes, est connue pour la Marina Baie des Anges et le musée Escoffier (père de la cuisine moderne). Tissu TPE artisans, PME tourisme/hôtellerie balnéaire, commerçants, professions libérales et services. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin villeneuvois.",
+    "Villeneuve-Loubet (06), commune littorale des Alpes-Maritimes entre Nice et Antibes, est connue pour la Marina Baie des Anges et le musée Escoffier (père de la cuisine moderne). Tissu TPE artisans, PME tourisme/hôtellerie balnéaire, commerçants, professions libérales et services. Axion-IA répond aux besoins de toutes les entreprises du bassin villeneuvois.",
   pitchEn:
-    "Villeneuve-Loubet (06), commune littorale des Alpes-Maritimes entre Nice et Antibes, est connue pour la Marina Baie des Anges et le musée Escoffier (père de la cuisine moderne). Tissu TPE artisans, PME tourisme/hôtellerie balnéaire, commerçants, professions libérales et services. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin villeneuvois.",
+    "Villeneuve-Loubet (06), commune littorale des Alpes-Maritimes entre Nice et Antibes, est connue pour la Marina Baie des Anges et le musée Escoffier (père de la cuisine moderne). Tissu TPE artisans, PME tourisme/hôtellerie balnéaire, commerçants, professions libérales et services. Axion-IA répond aux besoins de toutes les entreprises du bassin villeneuvois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villeneuve-Loubet (06). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme balnéaire et hôtellerie, commerçants, restaurateurs, professions libérales, indépendants et services aux entreprises du littoral entre Nice et Antibes.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const VILLENEUVE_LOUBET_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les restaurateurs villeneuvois (héritage Escoffier, cuisine méditerranéenne) : agents conversationnels réservation, automatisation approvisionnement, optimisation planning équipes, classification avis en ligne.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Villeneuve-Loubet ?",
+      q: "Quel est le tarif d'un audit IA à Villeneuve-Loubet  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE artisans, hébergeurs et PME villeneuvoises. Tarifs publics transparents, sans frais cachés.",
     },
     {

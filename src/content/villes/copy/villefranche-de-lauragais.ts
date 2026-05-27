@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const VILLEFRANCHE_DE_LAURAGAIS_COPY: VilleCopy = {
   pitchFr:
-    "Villefranche-de-Lauragais (31), bastide médiévale et sous-préfecture du Lauragais, plus de 5 000 habitants. Tissu TPE artisans, PME agroalimentaires et de services, commerces de centre-ville, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du Lauragais.",
+    "Villefranche-de-Lauragais (31), bastide médiévale et sous-préfecture du Lauragais, plus de 5 000 habitants. Tissu TPE artisans, PME agroalimentaires et de services, commerces de centre-ville, professions libérales. Axion-IA accompagne tout le tissu professionnel local du Lauragais.",
   pitchEn:
-    "Villefranche-de-Lauragais (31), bastide médiévale et sous-préfecture du Lauragais, plus de 5 000 habitants. Tissu TPE artisans, PME agroalimentaires et de services, commerces de centre-ville, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du Lauragais.",
+    "Villefranche-de-Lauragais (31), bastide médiévale et sous-préfecture du Lauragais, plus de 5 000 habitants. Tissu TPE artisans, PME agroalimentaires et de services, commerces de centre-ville, professions libérales. Axion-IA accompagne tout le tissu professionnel local du Lauragais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villefranche-de-Lauragais (31). Nous accompagnons TPE artisans, PME agroalimentaires, commerçants et professions libérales du Lauragais. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villefranche-de-Lauragais (31). Nous accompagnons TPE artisans, PME agroalimentaires, commerçants et professions libérales du Lauragais. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villefranche-de-Lauragais (31). Nous accompagnons TPE artisans, PME agroalimentaires, commerçants et professions libérales du Lauragais. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villefranche-de-Lauragais (31). Nous accompagnons TPE artisans, PME agroalimentaires, commerçants et professions libérales du Lauragais. Audit Flash sur mesure.",
   seoHook: "TPE & PME Hte-Garonne",
   ecosystemFr:
     "Villefranche-de-Lauragais est une bastide du XIIIe siècle, sous-préfecture du Lauragais sur l'axe Toulouse-Carcassonne (A61). TPE artisans, PME agroalimentaires, commerces de centre-ville, professions libérales, exploitations céréalières. Marché traditionnel du vendredi.",
@@ -56,7 +56,7 @@ export const VILLEFRANCHE_DE_LAURAGAIS_COPY: VilleCopy = {
       a: "Nous accompagnons tous types d'activités : PME agroalimentaires, TPE artisans, commerces, professions libérales, transport. Aucun secteur exclu.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Villefranche-de-Lauragais ?",
+      q: "Tarifs audit IA à Villefranche-de-Lauragais  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME agroalimentaires, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics.",
     },
     {

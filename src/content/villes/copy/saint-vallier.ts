@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_VALLIER_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Vallier (71), commune du bassin minier Le Creusot-Montceau en Saône-et-Loire. Héritage industriel et minier reconverti, proximité Montceau-les-Mines. Tissu TPE artisanat BTP, PME industrielles reconversion, commerce, services, logistique. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Saint-Vallier (71), commune du bassin minier Le Creusot-Montceau en Saône-et-Loire. Héritage industriel et minier reconverti, proximité Montceau-les-Mines. Tissu TPE artisanat BTP, PME industrielles reconversion, commerce, services, logistique. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Saint-Vallier (71), commune du bassin minier Le Creusot-Montceau en Saône-et-Loire. Héritage industriel et minier reconverti, proximité Montceau-les-Mines. Tissu TPE artisanat BTP, PME industrielles reconversion, commerce, services, logistique. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Saint-Vallier (71), commune du bassin minier Le Creusot-Montceau en Saône-et-Loire. Héritage industriel et minier reconverti, proximité Montceau-les-Mines. Tissu TPE artisanat BTP, PME industrielles reconversion, commerce, services, logistique. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Vallier (71). Nous accompagnons TPE et PME : artisans BTP, PME industrielles bassin Le Creusot-Montceau, commerçants, prestataires logistique, entreprises en reconversion industrielle. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Vallier (71). Nous accompagnons TPE et PME : artisans BTP, PME industrielles bassin Le Creusot-Montceau, commerçants, prestataires logistique, entreprises en reconversion industrielle. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Vallier (71). Nous accompagnons TPE et PME : artisans BTP, PME industrielles bassin Le Creusot-Montceau, commerçants, prestataires logistique, entreprises en reconversion industrielle. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Vallier (71). Nous accompagnons TPE et PME : artisans BTP, PME industrielles bassin Le Creusot-Montceau, commerçants, prestataires logistique, entreprises en reconversion industrielle. Audit Flash sur mesure.",
   ecosystemFr:
     "Saint-Vallier est une commune du bassin minier Le Creusot-Montceau, marquée par un héritage industriel en reconversion. Proximité directe avec Montceau-les-Mines. Tissu TPE artisanat BTP, PME industrielles diversifiées, commerce, logistique, services aux entreprises.",
   ecosystemEn:

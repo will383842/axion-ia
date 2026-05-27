@@ -9,9 +9,9 @@ export const BILLY_MONTIGNY_COPY: VilleCopy = {
   pitchEn:
     "Billy-Montigny (62), commune du bassin minier lensois dans le Pas-de-Calais, accueille TPE artisanales, commerces de proximité, PME de services et professions libérales. Axion-IA y intervient pour tous types d'activités du bassin minier.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Billy-Montigny (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier lensois. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Billy-Montigny (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier lensois. Audit Flash sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Billy-Montigny (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier lensois. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Billy-Montigny (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier lensois. Audit Flash sur mesure, intervention sur site ou en visio.",
   seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Billy-Montigny est une commune résidentielle du bassin minier au sud de Lens, entre Montigny-en-Gohelle et Courrières. Tissu de TPE artisanales BTP, commerces de proximité, professions libérales et PME de services. Économie post-minière tournée vers les activités résidentielles.",
@@ -52,7 +52,7 @@ export const BILLY_MONTIGNY_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Billy-Montigny et dans le bassin minier lensois (Lens, Montigny-en-Gohelle, Courrières, Sallaumines). Déplacements sur site ou visio.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Billy-Montigny ?",
+      q: "Quel est le tarif d'un audit IA à Billy-Montigny  ?",
       a: "L'Audit Flash Axion-IA démarre à 490 € HT pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du bassin minier. Tarifs publics.",
     },
     {

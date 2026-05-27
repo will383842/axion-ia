@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_DIZIER_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Dizier, sous-préfecture de la Haute-Marne (52) en Grand-Est, est un pôle industriel historique (métallurgie, fonderie, mécanique) et tissu agroalimentaire rural. Forte présence d'usines (équipementiers automobile, fonderie d'art) et tissu TPE artisanat. Axion-IA accompagne entreprises et indépendants de tous secteurs : industriels, artisans, agriculteurs, PME tertiaires.",
+    "Saint-Dizier, sous-préfecture de la Haute-Marne (52) en Grand-Est, est un pôle industriel historique (métallurgie, fonderie, mécanique) et tissu agroalimentaire rural. Forte présence d'usines (équipementiers automobile, fonderie d'art) et tissu TPE artisanat. Axion-IA opère pour entreprises et indépendants du secteur : industriels, artisans, agriculteurs, PME tertiaires.",
   pitchEn:
-    "Saint-Dizier, sous-préfecture de la Haute-Marne (52) en Grand-Est, est un pôle industriel historique (métallurgie, fonderie, mécanique) et tissu agroalimentaire rural. Forte présence d'usines (équipementiers automobile, fonderie d'art) et tissu TPE artisanat. Axion-IA accompagne entreprises et indépendants de tous secteurs : industriels, artisans, agriculteurs, PME tertiaires.",
+    "Saint-Dizier, sous-préfecture de la Haute-Marne (52) en Grand-Est, est un pôle industriel historique (métallurgie, fonderie, mécanique) et tissu agroalimentaire rural. Forte présence d'usines (équipementiers automobile, fonderie d'art) et tissu TPE artisanat. Axion-IA opère pour entreprises et indépendants du secteur : industriels, artisans, agriculteurs, PME tertiaires.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Dizier (52) en Haute-Marne. Nous accompagnons tous types d'activités : industriels métallurgistes et fondeurs (équipementiers, fonderie d'art), PME mécaniques, agriculteurs/éleveurs ruraux, TPE artisans BTP, commerçants centre-ville, professions libérales et services publics bragards.",
   directAnswerEn:

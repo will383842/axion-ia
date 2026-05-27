@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const L_ILE_SAINT_DENIS_COPY: VilleCopy = {
   pitchFr:
-    "L'Île-Saint-Denis (93), seule commune-île de Seine-Saint-Denis posée sur la Seine entre Saint-Denis et Saint-Ouen, est engagée dans une mutation urbaine majeure avec son éco-quartier fluvial. Tissu de TPE créatives, artisans, PME de services et acteurs de l'économie circulaire. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "L'Île-Saint-Denis (93), seule commune-île de Seine-Saint-Denis posée sur la Seine entre Saint-Denis et Saint-Ouen, est engagée dans une mutation urbaine majeure avec son éco-quartier fluvial. Tissu de TPE créatives, artisans, PME de services et acteurs de l'économie circulaire. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "L'Île-Saint-Denis (93), seule commune-île de Seine-Saint-Denis posée sur la Seine entre Saint-Denis et Saint-Ouen, est engagée dans une mutation urbaine majeure avec son éco-quartier fluvial. Tissu de TPE créatives, artisans, PME de services et acteurs de l'économie circulaire. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "L'Île-Saint-Denis (93), seule commune-île de Seine-Saint-Denis posée sur la Seine entre Saint-Denis et Saint-Ouen, est engagée dans une mutation urbaine majeure avec son éco-quartier fluvial. Tissu de TPE créatives, artisans, PME de services et acteurs de l'économie circulaire. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à L'Île-Saint-Denis (93). Nous accompagnons tous types d'activités : TPE créatives et artisanales, PME de services et économie circulaire, commerçants de proximité, professions libérales, acteurs culturels et associatifs de cette île fluviale en pleine transformation urbaine.",
   directAnswerEn:

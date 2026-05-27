@@ -9,9 +9,9 @@ export const BOUGIVAL_COPY: VilleCopy = {
   pitchEn:
     "Bougival (78), commune pittoresque des bords de Seine dans les Yvelines, célèbre pour son patrimoine impressionniste (Renoir, Monet, Berthe Morisot) et la Machine de Marly. Tissu de TPE artisans, PME tertiaires, commerces de proximité, professions libérales et acteurs du tourisme culturel. Axion-IA opère pour toutes les structures économiques de la commune de la boucle de la Seine.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bougival (78). Nous accompagnons TPE et PME : commerces, professions libérales, PME tertiaires, artisans et acteurs du tourisme culturel de cette commune des bords de Seine, entre Rueil-Malmaison et Louveciennes. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bougival (78). Nous accompagnons TPE et PME : commerces, professions libérales, PME tertiaires, artisans et acteurs du tourisme culturel de cette commune des bords de Seine, entre Rueil-Malmaison et Louveciennes. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bougival (78). Nous accompagnons TPE et PME : commerces, professions libérales, PME tertiaires, artisans et acteurs du tourisme culturel de cette commune des bords de Seine, entre Rueil-Malmaison et Louveciennes. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bougival (78). Nous accompagnons TPE et PME : commerces, professions libérales, PME tertiaires, artisans et acteurs du tourisme culturel de cette commune des bords de Seine, entre Rueil-Malmaison et Louveciennes. Audit Flash sur mesure.",
   seoHook: "professions libérales & commerce proximité",
   ecosystemFr:
     "Bougival est une commune résidentielle et culturelle des bords de Seine, dans la boucle entre Rueil-Malmaison et Louveciennes. Patrimoine impressionniste majeur (Renoir, Monet, Berthe Morisot) et historique (Machine de Marly). Tissu économique : TPE artisans, commerces de centre-bourg, professions libérales, PME tertiaires, acteurs culturels et touristiques. Communes voisines : Louveciennes, La Celle-Saint-Cloud, Croissy-sur-Seine, Rueil-Malmaison.",
@@ -52,7 +52,7 @@ export const BOUGIVAL_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Bougival et dans toute la boucle de la Seine (Louveciennes, La Celle-Saint-Cloud, Croissy-sur-Seine, Rueil-Malmaison). Nos consultants se déplacent sur site ou en visio.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Bougival ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Bougival  ?",
       a: "L'Audit Flash IA à Bougival démarre à 490 € HT pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {

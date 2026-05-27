@@ -52,7 +52,7 @@ export const RONCHIN_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Ronchin et dans toute la banlieue sud de Lille (Faches-Thumesnil, Lezennes, Lesquin, Wattignies, Templemars). Nos consultants sont basés à Lille (10 min) et couvrent l'ensemble de la Métropole Européenne de Lille.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Ronchin ?",
+      q: "Tarifs audit IA à Ronchin  : quel budget prévoir ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Ronchin et de l'agglomération lilloise sud, il identifie les cas d'usage IA à fort ROI pour votre activité (logistique, commerce, artisanat, professions libérales). Tarifs publics, sans engagement.",
     },
     {

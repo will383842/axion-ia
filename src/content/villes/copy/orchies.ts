@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ORCHIES_COPY: VilleCopy = {
   pitchFr:
-    "Orchies (59), bourg du Pévèle Carembault entre Lille et Douai, est la capitale historique française de la chicorée. Tissu économique ancré : agroalimentaire chicorée (filière patrimoniale), commerce de bourg, artisanat, PME agricoles et de transformation, services de proximité. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin de la Pévèle.",
+    "Orchies (59), bourg du Pévèle Carembault entre Lille et Douai, est la capitale historique française de la chicorée. Tissu économique ancré : agroalimentaire chicorée (filière patrimoniale), commerce de bourg, artisanat, PME agricoles et de transformation, services de proximité. Axion-IA répond aux besoins des activités professionnelles présentes du bassin de la Pévèle.",
   pitchEn:
-    "Orchies (59), bourg du Pévèle Carembault entre Lille et Douai, est la capitale historique française de la chicorée. Tissu économique ancré : agroalimentaire chicorée (filière patrimoniale), commerce de bourg, artisanat, PME agricoles et de transformation, services de proximité. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin de la Pévèle.",
+    "Orchies (59), bourg du Pévèle Carembault entre Lille et Douai, est la capitale historique française de la chicorée. Tissu économique ancré : agroalimentaire chicorée (filière patrimoniale), commerce de bourg, artisanat, PME agricoles et de transformation, services de proximité. Axion-IA répond aux besoins des activités professionnelles présentes du bassin de la Pévèle.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Orchies (59). Nous accompagnons TPE et PME : producteurs et transformateurs agroalimentaires (filière chicorée), commerçants du bourg, artisans, PME agricoles de la Pévèle, et professions libérales.",
   directAnswerEn:
@@ -56,7 +56,7 @@ export const ORCHIES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les producteurs et transformateurs de la filière chicorée autour d'Orchies sur leurs cas IA spécifiques : traçabilité lot et terroir, prévision rendements parcellaires, contrôle qualité visuel torréfaction, agents conversationnels vente directe, optimisation logistique de transformation.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Orchies ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Orchies  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de la Pévèle, il identifie les cas d'usage IA à fort ROI pour votre activité (chicorée, agricole, transformation, commerce, artisanat). Tarifs publics, sans engagement.",
     },
     {

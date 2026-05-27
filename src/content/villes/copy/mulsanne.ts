@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MULSANNE_COPY: VilleCopy = {
   pitchFr:
-    "Mulsanne (72), commune de l'agglomération du Mans en Sarthe, est célèbre pour la ligne droite des Hunaudières du circuit des 24 Heures. Plus de 5 200 habitants, zones d'activités industrielles et commerciales, tissu de TPE artisanales et PME. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Mulsanne (72), commune de l'agglomération du Mans en Sarthe, est célèbre pour la ligne droite des Hunaudières du circuit des 24 Heures. Plus de 5 200 habitants, zones d'activités industrielles et commerciales, tissu de TPE artisanales et PME. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Mulsanne (72), commune de l'agglomération du Mans en Sarthe, est célèbre pour la ligne droite des Hunaudières du circuit des 24 Heures. Plus de 5 200 habitants, zones d'activités industrielles et commerciales, tissu de TPE artisanales et PME. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Mulsanne (72), commune de l'agglomération du Mans en Sarthe, est célèbre pour la ligne droite des Hunaudières du circuit des 24 Heures. Plus de 5 200 habitants, zones d'activités industrielles et commerciales, tissu de TPE artisanales et PME. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mulsanne (72). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles agglo Le Mans, sous-traitants automobile, professions libérales et services de proximité.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const MULSANNE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les entreprises logistiques Mulsanne / sud Le Mans : optimisation entrepôt IA, prédiction flux, gestion stocks automatisée, planification tournées, traçabilité temps réel.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Mulsanne ?",
+      q: "Combien coûte un audit IA à Mulsanne  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {

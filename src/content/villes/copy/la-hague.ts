@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_HAGUE_COPY: VilleCopy = {
   pitchFr:
-    "La Hague (50), commune nouvelle du nord Cotentin dans la Manche (Normandie), réunit un littoral sauvage préservé et le site industriel de retraitement nucléaire. Tissu TPE artisanales et agricoles, PME sous-traitance industrielle et nucléaire, commerces ruraux, tourisme de nature. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "La Hague (50), commune nouvelle du nord Cotentin dans la Manche (Normandie), réunit un littoral sauvage préservé et le site industriel de retraitement nucléaire. Tissu TPE artisanales et agricoles, PME sous-traitance industrielle et nucléaire, commerces ruraux, tourisme de nature. Axion-IA répond aux besoins des activités professionnelles présentes.",
   pitchEn:
-    "La Hague (50), commune nouvelle du nord Cotentin dans la Manche (Normandie), réunit un littoral sauvage préservé et le site industriel de retraitement nucléaire. Tissu TPE artisanales et agricoles, PME sous-traitance industrielle et nucléaire, commerces ruraux, tourisme de nature. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "La Hague (50), commune nouvelle du nord Cotentin dans la Manche (Normandie), réunit un littoral sauvage préservé et le site industriel de retraitement nucléaire. Tissu TPE artisanales et agricoles, PME sous-traitance industrielle et nucléaire, commerces ruraux, tourisme de nature. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Hague (50). Nous accompagnons tous types d'activités : TPE artisanales et agricoles du Cotentin, PME sous-traitance industrielle et nucléaire, commerçants ruraux, prestataires tourisme nature, professions libérales et services du nord Cotentin.",
   directAnswerEn:

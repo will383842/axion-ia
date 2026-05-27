@@ -9,9 +9,9 @@ export const FUVEAU_COPY: VilleCopy = {
   pitchEn:
     "Fuveau (13), commune de l'est aixois au pied de la Sainte-Victoire, est un ancien bassin minier reconverti vers le résidentiel, le tertiaire et les zones d'activités. TPE artisans, professions libérales, PME tertiaires, commerces et viticulteurs AOC Côtes-de-Provence. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fuveau (13). Nous accompagnons TPE artisans, professions libérales, PME tertiaires, viticulteurs AOC et commerces du bassin minier reconverti de l'est aixois. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fuveau (13). Nous accompagnons TPE artisans, professions libérales, PME tertiaires, viticulteurs AOC et commerces du bassin minier reconverti de l'est aixois. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fuveau (13). Nous accompagnons TPE artisans, professions libérales, PME tertiaires, viticulteurs AOC et commerces du bassin minier reconverti de l'est aixois. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fuveau (13). Nous accompagnons TPE artisans, professions libérales, PME tertiaires, viticulteurs AOC et commerces du bassin minier reconverti de l'est aixois. Audit Flash sur mesure.",
   seoHook: "bassin minier reconverti",
   ecosystemFr:
     "Fuveau est à l'est d'Aix-en-Provence, au pied de la Sainte-Victoire. Ancien bassin minier (charbon, fermeture années 2000) reconverti vers le résidentiel haut de gamme, le tertiaire et des zones d'activités (ZA Saint-Estève, parc d'activités). Viticulture AOC Côtes-de-Provence Sainte-Victoire, PME tertiaires, artisanat BTP, professions libérales travaillant à Aix ou Marseille.",
@@ -52,7 +52,7 @@ export const FUVEAU_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Fuveau et dans tout le pays de la Sainte-Victoire (Gardanne, Trets, Peynier, Rousset, Châteauneuf-le-Rouge, Meyreuil). Proximité Aix-en-Provence et axes A8/A52.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Fuveau ?",
+      q: "Quel est le tarif d'un audit IA à Fuveau  ?",
       a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, viticulteurs AOC et PME tertiaires fuvelains. Tarifs publics, sans engagement.",
     },
     {

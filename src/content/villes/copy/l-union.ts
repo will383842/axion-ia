@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const L_UNION_COPY: VilleCopy = {
   pitchFr:
-    "L'Union (31), commune résidentielle du nord-est toulousain avec plus de 12 000 habitants. Tissu TPE services, PME tertiaires, professions libérales, commerces de proximité. Axion-IA couvre l'ensemble des activités professionnelles présentes de la couronne nord-est de Toulouse.",
+    "L'Union (31), commune résidentielle du nord-est toulousain avec plus de 12 000 habitants. Tissu TPE services, PME tertiaires, professions libérales, commerces de proximité. Axion-IA couvre les activités professionnelles du bassin de la couronne nord-est de Toulouse.",
   pitchEn:
-    "L'Union (31), commune résidentielle du nord-est toulousain avec plus de 12 000 habitants. Tissu TPE services, PME tertiaires, professions libérales, commerces de proximité. Axion-IA couvre l'ensemble des activités professionnelles présentes de la couronne nord-est de Toulouse.",
+    "L'Union (31), commune résidentielle du nord-est toulousain avec plus de 12 000 habitants. Tissu TPE services, PME tertiaires, professions libérales, commerces de proximité. Axion-IA couvre les activités professionnelles du bassin de la couronne nord-est de Toulouse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à L'Union (31). Nous accompagnons TPE de services, PME tertiaires, professions libérales et commerçants du nord-est de Toulouse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à L'Union (31). Nous accompagnons TPE de services, PME tertiaires, professions libérales et commerçants du nord-est de Toulouse. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à L'Union (31). Nous accompagnons TPE de services, PME tertiaires, professions libérales et commerçants du nord-est de Toulouse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à L'Union (31). Nous accompagnons TPE de services, PME tertiaires, professions libérales et commerçants du nord-est de Toulouse. Audit Flash sur mesure.",
   seoHook: "professions libérales & commerce détail",
   ecosystemFr:
     "L'Union est une commune résidentielle du nord-est de Toulouse, au carrefour de Balma et Saint-Jean. Tissu TPE de services, PME tertiaires, cabinets de professions libérales, commerces de proximité. Cadre de vie verdoyant avec une économie orientée services.",
@@ -56,7 +56,7 @@ export const L_UNION_COPY: VilleCopy = {
       a: "Nous accompagnons tous types d'activités : TPE de services, PME tertiaires, professions libérales, commerces de proximité, artisans. Aucun secteur exclu.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à L'Union ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à L'Union  ?",
       a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics, pas de devis opaque.",
     },
     {

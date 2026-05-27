@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BELLEVILLE_EN_BEAUJOLAIS_COPY: VilleCopy = {
   pitchFr:
-    "Belleville-en-Beaujolais (69), commune au cœur du vignoble du Beaujolais dans le Rhône, est un centre viticole majeur (AOC Beaujolais, Beaujolais-Villages, crus du Beaujolais). Tissu PME viticoles et négoce en vins, oenotourisme, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations beaujolaises.",
+    "Belleville-en-Beaujolais (69), commune au cœur du vignoble du Beaujolais dans le Rhône, est un centre viticole majeur (AOC Beaujolais, Beaujolais-Villages, crus du Beaujolais). Tissu PME viticoles et négoce en vins, oenotourisme, TPE artisans BTP, commerces. Axion-IA y travaille avec les organisations du territoire beaujolaises.",
   pitchEn:
-    "Belleville-en-Beaujolais (69), commune au cœur du vignoble du Beaujolais dans le Rhône, est un centre viticole majeur (AOC Beaujolais, Beaujolais-Villages, crus du Beaujolais). Tissu PME viticoles et négoce en vins, oenotourisme, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations beaujolaises.",
+    "Belleville-en-Beaujolais (69), commune au cœur du vignoble du Beaujolais dans le Rhône, est un centre viticole majeur (AOC Beaujolais, Beaujolais-Villages, crus du Beaujolais). Tissu PME viticoles et négoce en vins, oenotourisme, TPE artisans BTP, commerces. Axion-IA y travaille avec les organisations du territoire beaujolaises.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Belleville-en-Beaujolais (69). Nous accompagnons tous types d'activités : viticulteurs AOC Beaujolais / Beaujolais-Villages / crus, négociants en vins, acteurs oenotourisme, PME agroalimentaires, TPE artisans BTP, commerçants et services aux entreprises beaujolaises.",
   directAnswerEn:

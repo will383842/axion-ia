@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const GRANS_COPY: VilleCopy = {
   pitchFr:
-    "Grans (13), commune de la plaine de la Crau dans l'agglomération de Salon-de-Provence, conjugue cadre rural provençal, agriculture (foin de Crau AOP) et tissu de TPE artisans, PME services et commerces de proximité. Bassin d'emploi tourné vers Salon, Istres et la base aérienne 701. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Grans (13), commune de la plaine de la Crau dans l'agglomération de Salon-de-Provence, conjugue cadre rural provençal, agriculture (foin de Crau AOP) et tissu de TPE artisans, PME services et commerces de proximité. Bassin d'emploi tourné vers Salon, Istres et la base aérienne 701. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Grans (13), commune de la plaine de la Crau dans l'agglomération de Salon-de-Provence, conjugue cadre rural provençal, agriculture (foin de Crau AOP) et tissu de TPE artisans, PME services et commerces de proximité. Bassin d'emploi tourné vers Salon, Istres et la base aérienne 701. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Grans (13), commune de la plaine de la Crau dans l'agglomération de Salon-de-Provence, conjugue cadre rural provençal, agriculture (foin de Crau AOP) et tissu de TPE artisans, PME services et commerces de proximité. Bassin d'emploi tourné vers Salon, Istres et la base aérienne 701. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Grans (13). Nous accompagnons TPE artisans, PME services, agriculteurs (foin de Crau, oliveraies) et commerces de proximité du pays salonais et de la Crau. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Grans (13). Nous accompagnons TPE artisans, PME services, agriculteurs (foin de Crau, oliveraies) et commerces de proximité du pays salonais et de la Crau. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Grans (13). Nous accompagnons TPE artisans, PME services, agriculteurs (foin de Crau, oliveraies) et commerces de proximité du pays salonais et de la Crau. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Grans (13). Nous accompagnons TPE artisans, PME services, agriculteurs (foin de Crau, oliveraies) et commerces de proximité du pays salonais et de la Crau. Audit Flash sur mesure.",
   seoHook: "artisanat & agriculture",
   ecosystemFr:
     "Grans est positionnée dans la plaine de la Crau, au sud-ouest de Salon-de-Provence, en bordure de la zone agricole AOP foin de Crau. Tissu économique de TPE artisans (BTP, services à la personne), PME tertiaires, agriculture (foin de Crau AOP, oliveraies, élevage ovin transhumant), commerces de proximité, professions libérales. Bassin d'emploi rattaché à Salon-de-Provence, Istres et la base aérienne 701.",
@@ -52,7 +52,7 @@ export const GRANS_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Grans et dans toute l'agglomération de Salon-de-Provence (Salon, Lançon-Provence, Miramas, Istres, La Fare-les-Oliviers, Pélissanne). Accès A54.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Grans ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Grans  ?",
       a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, PME services, agriculteurs et commerces grannais. Tarifs publics, sans engagement.",
     },
     {

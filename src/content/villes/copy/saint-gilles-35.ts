@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_GILLES_35_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Gilles (35), commune résidentielle de l'ouest rennais en Ille-et-Vilaine, accueille un tissu économique de proximité : TPE artisanales, PME de services, commerces locaux, professions libérales et prestataires du bassin rennais. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Saint-Gilles (35), commune résidentielle de l'ouest rennais en Ille-et-Vilaine, accueille un tissu économique de proximité : TPE artisanales, PME de services, commerces locaux, professions libérales et prestataires du bassin rennais. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Saint-Gilles (35), commune résidentielle de l'ouest rennais en Ille-et-Vilaine, accueille un tissu économique de proximité : TPE artisanales, PME de services, commerces locaux, professions libérales et prestataires du bassin rennais. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Saint-Gilles (35), commune résidentielle de l'ouest rennais en Ille-et-Vilaine, accueille un tissu économique de proximité : TPE artisanales, PME de services, commerces locaux, professions libérales et prestataires du bassin rennais. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Gilles (35). Nous accompagnons TPE et PME du tissu résidentiel ouest-rennais : artisans, commerçants, professions libérales, PME de services, prestataires du bassin de Rennes Métropole. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Gilles (35). Nous accompagnons TPE et PME du tissu résidentiel ouest-rennais : artisans, commerçants, professions libérales, PME de services, prestataires du bassin de Rennes Métropole. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Gilles (35). Nous accompagnons TPE et PME du tissu résidentiel ouest-rennais : artisans, commerçants, professions libérales, PME de services, prestataires du bassin de Rennes Métropole. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Gilles (35). Nous accompagnons TPE et PME du tissu résidentiel ouest-rennais : artisans, commerçants, professions libérales, PME de services, prestataires du bassin de Rennes Métropole. Audit Flash sur mesure.",
   ecosystemFr:
     "Saint-Gilles est une commune résidentielle de l'ouest de Rennes Métropole (Ille-et-Vilaine), prisée des familles et cadres du bassin rennais. L'économie locale repose sur les TPE artisanales, les commerces de proximité, les professions libérales et les PME de services adossées à la dynamique de la métropole rennaise.",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const SAINT_GILLES_35_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Saint-Gilles et dans toute la couronne ouest de Rennes Métropole (Pacé, Mordelles, Le Rheu, L'Hermitage, Montfort-sur-Meu). Gare TGV de Rennes à 20 min, Paris en 1h25.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Saint-Gilles (35) ?",
+      q: "Quel est le tarif d'un audit IA à Saint-Gilles (35)  ?",
       a: "L'audit Flash IA démarre à 490 € HT pour les TPE et PME de Saint-Gilles et du bassin ouest-rennais. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
     },
     {

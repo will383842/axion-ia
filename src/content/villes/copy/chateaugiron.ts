@@ -56,7 +56,7 @@ export const CHATEAUGIRON_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME tertiaires et services aux entreprises du secteur sur leurs cas IA : automatisation workflow, agents conversationnels B2B, classification documents, CRM augmenté. Audit Flash 490 € HT pour démarrer.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Châteaugiron ?",
+      q: "Quel est le tarif d'un audit IA à Châteaugiron  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du bassin rennais est, il identifie les cas d'usage IA à fort ROI pour votre activité (tertiaire, BTP, commerce, professions libérales). Tarifs publics.",
     },
     {

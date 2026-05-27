@@ -11,9 +11,9 @@ export const SAINT_QUENTIN_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Saint-Quentin, optimisant les processus pour les entreprises locales. L'écosystème inclut des acteurs comme Nestlé et le Groupe Holder, offrant un cadre propice à l'innovation IA.",
   directAnswerFr:
-    "À Saint-Quentin, Axion-IA propose des audits et interventions pour les entreprises de secteurs variés. Avec des références comme Nestlé, nous aidons à automatiser les tâches administratives et industrielles. Nos services incluent des audits dès 490 € HT et des interventions à partir de 590 € HT. Consultez nos tarifs publics pour plus de détails.",
+    "À Saint-Quentin, Axion-IA propose des audits et interventions pour les entreprises de secteurs variés. Avec des références comme Nestlé, nous aidons à automatiser les tâches administratives et industrielles. Nos services incluent des audits et des interventions. Consultez nos tarifs publics pour plus de détails.",
   directAnswerEn:
-    "À Saint-Quentin, Axion-IA propose des audits et interventions pour les entreprises de secteurs variés. Avec des références comme Nestlé, nous aidons à automatiser les tâches administratives et industrielles. Nos services incluent des audits dès 490 € HT et des interventions à partir de 590 € HT. Consultez nos tarifs publics pour plus de détails.",
+    "À Saint-Quentin, Axion-IA propose des audits et interventions pour les entreprises de secteurs variés. Avec des références comme Nestlé, nous aidons à automatiser les tâches administratives et industrielles. Nos services incluent des audits et des interventions. Consultez nos tarifs publics pour plus de détails.",
   seoHook: "commerce détail & industrie agroalimentaire",
   ecosystemFr:
     "Saint-Quentin est un pôle industriel avec des entreprises comme Nestlé et le Groupe Holder. La ZAC du Bois de la Chocque soutient le développement économique local.",

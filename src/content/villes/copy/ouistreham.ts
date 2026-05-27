@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const OUISTREHAM_COPY: VilleCopy = {
   pitchFr:
-    "Ouistreham (14), station balnéaire du Calvados, est le port ferry de Caen (liaison Caen-Portsmouth Brittany Ferries) et l'une des plages du Débarquement (Sword Beach, 6 juin 1944). Tissu TPE artisans, PME tourisme et nautisme, hôtellerie-restauration, commerces, activités portuaires. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Ouistreham (14), station balnéaire du Calvados, est le port ferry de Caen (liaison Caen-Portsmouth Brittany Ferries) et l'une des plages du Débarquement (Sword Beach, 6 juin 1944). Tissu TPE artisans, PME tourisme et nautisme, hôtellerie-restauration, commerces, activités portuaires. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Ouistreham (14), station balnéaire du Calvados, est le port ferry de Caen (liaison Caen-Portsmouth Brittany Ferries) et l'une des plages du Débarquement (Sword Beach, 6 juin 1944). Tissu TPE artisans, PME tourisme et nautisme, hôtellerie-restauration, commerces, activités portuaires. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Ouistreham (14), station balnéaire du Calvados, est le port ferry de Caen (liaison Caen-Portsmouth Brittany Ferries) et l'une des plages du Débarquement (Sword Beach, 6 juin 1944). Tissu TPE artisans, PME tourisme et nautisme, hôtellerie-restauration, commerces, activités portuaires. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ouistreham (14). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tourisme balnéaire et nautisme, hôteliers-restaurateurs Sword Beach, acteurs portuaires ferry, professions libérales et services aux entreprises de la Côte de Nacre.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const OUISTREHAM_COPY: VilleCopy = {
       a: "Pour les hôteliers-restaurateurs d'Ouistreham, audit Flash 490 € HT, interventions formations, coaching 1-to-1. Cas typiques : agents IA réservation multilingues (clientèle ferry UK), prédiction taux d'occupation, classification avis.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Ouistreham ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Ouistreham  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {

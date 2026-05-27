@@ -11,9 +11,9 @@ export const LINGOLSHEIM_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Lingolsheim, au cœur d'un bassin économique dynamique comprenant Strasbourg et Illkirch-Graffenstaden. Nous accompagnons les entreprises locales dans leur transformation IA, en s'appuyant sur notre expertise nationale.",
   directAnswerFr:
-    "Lingolsheim, proche de Strasbourg, offre un environnement propice aux entreprises, avec 2 000 établissements actifs. Parmi les secteurs dominants, le commerce de détail et la programmation informatique se distinguent. Axion-IA propose des audits à partir de 490 € HT et des interventions dès 590 € HT pour optimiser vos processus.",
+    "Lingolsheim, proche de Strasbourg, offre un environnement propice aux entreprises, avec 2 000 établissements actifs. Parmi les secteurs dominants, le commerce de détail et la programmation informatique se distinguent. Axion-IA propose des audits et des interventions pour optimiser vos processus.",
   directAnswerEn:
-    "Lingolsheim, proche de Strasbourg, offre un environnement propice aux entreprises, avec 2 000 établissements actifs. Parmi les secteurs dominants, le commerce de détail et la programmation informatique se distinguent. Axion-IA propose des audits à partir de 490 € HT et des interventions dès 590 € HT pour optimiser vos processus.",
+    "Lingolsheim, proche de Strasbourg, offre un environnement propice aux entreprises, avec 2 000 établissements actifs. Parmi les secteurs dominants, le commerce de détail et la programmation informatique se distinguent. Axion-IA propose des audits et des interventions pour optimiser vos processus.",
   seoHook: "commerce détail & programmation informatique",
   ecosystemFr:
     "Lingolsheim bénéficie de la proximité de Strasbourg, qui abrite des entreprises influentes comme Sanofi et Renault, renforçant l'attractivité du territoire.",

@@ -11,9 +11,9 @@ export const ISSY_LES_MOULINEAUX_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Issy-les-Moulineaux, un hub technologique abritant Microsoft France et Capgemini, pour optimiser vos processus grâce à l'IA. Nos solutions s'adaptent aux besoins spécifiques des entreprises locales, qu'elles soient TPE, PME ou grandes entreprises.",
   directAnswerFr:
-    "Issy-les-Moulineaux est un centre d'innovation avec des entreprises comme Microsoft France et Orange. Axion-IA y propose des interventions sur site pour automatiser les tâches administratives et améliorer l'efficacité opérationnelle. Nos services incluent des audits à partir de 490 € HT et des implémentations dès 990 € HT, adaptés aux besoins des entreprises locales.",
+    "Issy-les-Moulineaux est un centre d'innovation avec des entreprises comme Microsoft France et Orange. Axion-IA y propose des interventions sur site pour automatiser les tâches administratives et améliorer l'efficacité opérationnelle. Nos services incluent des audits et des implémentations, adaptés aux besoins des entreprises locales.",
   directAnswerEn:
-    "Issy-les-Moulineaux est un centre d'innovation avec des entreprises comme Microsoft France et Orange. Axion-IA y propose des interventions sur site pour automatiser les tâches administratives et améliorer l'efficacité opérationnelle. Nos services incluent des audits à partir de 490 € HT et des implémentations dès 990 € HT, adaptés aux besoins des entreprises locales.",
+    "Issy-les-Moulineaux est un centre d'innovation avec des entreprises comme Microsoft France et Orange. Axion-IA y propose des interventions sur site pour automatiser les tâches administratives et améliorer l'efficacité opérationnelle. Nos services incluent des audits et des implémentations, adaptés aux besoins des entreprises locales.",
   seoHook: "TPE & PME · IA opérationnelle",
   ecosystemFr:
     "Issy-les-Moulineaux accueille des entreprises de premier plan telles que Capgemini et Orange. Le secteur de la programmation informatique y est dominant, soutenu par des infrastructures comme le Village by CA et la ZAC Léon Blum.",

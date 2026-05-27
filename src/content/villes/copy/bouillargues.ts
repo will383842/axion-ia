@@ -9,9 +9,9 @@ export const BOUILLARGUES_COPY: VilleCopy = {
   pitchEn:
     "Bouillargues (30), commune résidentielle de l'agglomération nîmoise sud, proche de l'aéroport Nîmes-Garons. Tissu TPE/PME services aux entreprises, commerces, artisanat BTP, professions libérales et viticulture Costières. Axion-IA y intervient pour tous types d'activités de l'agglomération nîmoise sud.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Bouillargues (30). Nous accompagnons les TPE, PME et ETI locales : entreprises de services, commerçants, artisans BTP, professions libérales et viticulteurs Costières de l'agglo nîmoise sud. Audit Flash à partir de 490 € HT.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Bouillargues (30). Nous accompagnons les TPE, PME et ETI locales : entreprises de services, commerçants, artisans BTP, professions libérales et viticulteurs Costières de l'agglo nîmoise sud. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Bouillargues (30). Nous accompagnons les TPE, PME et ETI locales : entreprises de services, commerçants, artisans BTP, professions libérales et viticulteurs Costières de l'agglo nîmoise sud. Audit Flash à partir de 490 € HT.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Bouillargues (30). Nous accompagnons les TPE, PME et ETI locales : entreprises de services, commerçants, artisans BTP, professions libérales et viticulteurs Costières de l'agglo nîmoise sud. Audit Flash sur mesure.",
   seoHook: "artisanat & viticulture costières",
   ecosystemFr:
     "Bouillargues (~6 100 hab) est une commune résidentielle de l'agglo nîmoise sud, à proximité de l'aéroport Nîmes-Garons. Services aux entreprises, commerces, artisanat BTP, professions libérales, viticulture Costières de Nîmes. Croissance démographique soutenue, accès A9.",
@@ -52,7 +52,7 @@ export const BOUILLARGUES_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Bouillargues et dans toute l'agglo nîmoise sud (Milhaud, Garons, Bernis, Manduel). Nos consultants sont à 10 min de Nîmes centre et 5 min de l'aéroport.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Bouillargues ?",
+      q: "Tarifs audit IA à Bouillargues  : quel budget prévoir ?",
       a: "L'Audit Flash commence à 490 € HT. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {

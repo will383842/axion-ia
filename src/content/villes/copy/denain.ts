@@ -11,9 +11,9 @@ export const DENAIN_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Denain, au cœur de la région des Hauts-de-France, pour accompagner les entreprises locales dans l'optimisation de leurs processus grâce à l'IA. Nos services sont conçus pour répondre aux besoins spécifiques des secteurs dominants tels que la métallurgie et le commerce de détail.",
   directAnswerFr:
-    "Denain, située dans le département du Nord, est un pôle industriel clé avec la présence d'ArcelorMittal. Axion-IA propose des interventions sur site pour automatiser les processus administratifs et commerciaux. Nos audits, à partir de 490 € HT, permettent d'identifier des solutions IA concrètes et adaptées aux besoins des entreprises locales, notamment dans les secteurs de la métallurgie et de la construction.",
+    "Denain, située dans le département du Nord, est un pôle industriel clé avec la présence d'ArcelorMittal. Axion-IA propose des interventions sur site pour automatiser les processus administratifs et commerciaux. Nos audits, permettent d'identifier des solutions IA concrètes et adaptées aux besoins des entreprises locales, notamment dans les secteurs de la métallurgie et de la construction.",
   directAnswerEn:
-    "Denain, située dans le département du Nord, est un pôle industriel clé avec la présence d'ArcelorMittal. Axion-IA propose des interventions sur site pour automatiser les processus administratifs et commerciaux. Nos audits, à partir de 490 € HT, permettent d'identifier des solutions IA concrètes et adaptées aux besoins des entreprises locales, notamment dans les secteurs de la métallurgie et de la construction.",
+    "Denain, située dans le département du Nord, est un pôle industriel clé avec la présence d'ArcelorMittal. Axion-IA propose des interventions sur site pour automatiser les processus administratifs et commerciaux. Nos audits, permettent d'identifier des solutions IA concrètes et adaptées aux besoins des entreprises locales, notamment dans les secteurs de la métallurgie et de la construction.",
   seoHook: "métallurgie & construction",
   ecosystemFr:
     "Denain bénéficie d'un tissu économique riche avec des entreprises comme ArcelorMittal. Le secteur de la métallurgie y est particulièrement présent, tout comme à Valenciennes et Douchy-les-Mines, renforçant l'importance de l'innovation technologique dans la région.",

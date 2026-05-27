@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const MOISSAC_COPY: VilleCopy = {
   pitchFr:
-    "Moissac (82), cité d'art et d'histoire du Tarn-et-Garonne, plus de 13 000 habitants. Abbaye classée UNESCO, chasselas AOP, étape majeure du chemin de Saint-Jacques-de-Compostelle. Tissu TPE artisans, PME agroalimentaires, commerces, tourisme et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations du Moissagais.",
+    "Moissac (82), cité d'art et d'histoire du Tarn-et-Garonne, plus de 13 000 habitants. Abbaye classée UNESCO, chasselas AOP, étape majeure du chemin de Saint-Jacques-de-Compostelle. Tissu TPE artisans, PME agroalimentaires, commerces, tourisme et professions libérales. Axion-IA y travaille avec les organisations du territoire du Moissagais.",
   pitchEn:
-    "Moissac (82), cité d'art et d'histoire du Tarn-et-Garonne, plus de 13 000 habitants. Abbaye classée UNESCO, chasselas AOP, étape majeure du chemin de Saint-Jacques-de-Compostelle. Tissu TPE artisans, PME agroalimentaires, commerces, tourisme et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations du Moissagais.",
+    "Moissac (82), cité d'art et d'histoire du Tarn-et-Garonne, plus de 13 000 habitants. Abbaye classée UNESCO, chasselas AOP, étape majeure du chemin de Saint-Jacques-de-Compostelle. Tissu TPE artisans, PME agroalimentaires, commerces, tourisme et professions libérales. Axion-IA y travaille avec les organisations du territoire du Moissagais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Moissac (82). Nous accompagnons TPE artisans, PME agroalimentaires, commerçants, prestataires tourisme et professions libérales du Moissagais. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Moissac (82). Nous accompagnons TPE artisans, PME agroalimentaires, commerçants, prestataires tourisme et professions libérales du Moissagais. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Moissac (82). Nous accompagnons TPE artisans, PME agroalimentaires, commerçants, prestataires tourisme et professions libérales du Moissagais. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Moissac (82). Nous accompagnons TPE artisans, PME agroalimentaires, commerçants, prestataires tourisme et professions libérales du Moissagais. Audit Flash sur mesure.",
   seoHook: "TPE & PME Tarn-et-Garonne",
   ecosystemFr:
     "Moissac (13 419 hab) est une cité d'art UNESCO du Tarn-et-Garonne, célèbre pour son abbaye romane et le chasselas AOP. Économie structurée autour de l'arboriculture fruitière (chasselas, prune, pomme), du tourisme patrimonial et de Compostelle, des commerces et services. Sur le canal latéral à la Garonne et le Tarn. Proximité Castelsarrasin (10 min), Montauban (30 min).",
@@ -52,7 +52,7 @@ export const MOISSAC_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Moissac et dans tout le Moissagais (Castelsarrasin, Lauzerte, Valence-d'Agen, Bourg-de-Visa). Nos consultants se déplacent depuis Montauban (30 min) ou Toulouse (1h10).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Moissac ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Moissac  ?",
       a: "L'Audit Flash IA démarre à 490 € HT pour les TPE de Moissac. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre activité locale.",
     },
     {

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SASSENAGE_COPY: VilleCopy = {
   pitchFr:
-    "Sassenage (38), nord-ouest de Grenoble, fut une des quatre baronnies du Dauphiné et donne son nom au Bleu du Vercors-Sassenage (AOC fromagère). Sites patrimoniaux remarquables : château XVIIe, Cuves de Sassenage (l'une des 7 merveilles du Dauphiné). Tissu PME tertiaires, TPE artisans, professions libérales et commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Sassenage (38), nord-ouest de Grenoble, fut une des quatre baronnies du Dauphiné et donne son nom au Bleu du Vercors-Sassenage (AOC fromagère). Sites patrimoniaux remarquables : château XVIIe, Cuves de Sassenage (l'une des 7 merveilles du Dauphiné). Tissu PME tertiaires, TPE artisans, professions libérales et commerces. Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Sassenage (38), nord-ouest de Grenoble, fut une des quatre baronnies du Dauphiné et donne son nom au Bleu du Vercors-Sassenage (AOC fromagère). Sites patrimoniaux remarquables : château XVIIe, Cuves de Sassenage (l'une des 7 merveilles du Dauphiné). Tissu PME tertiaires, TPE artisans, professions libérales et commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Sassenage (38), nord-ouest de Grenoble, fut une des quatre baronnies du Dauphiné et donne son nom au Bleu du Vercors-Sassenage (AOC fromagère). Sites patrimoniaux remarquables : château XVIIe, Cuves de Sassenage (l'une des 7 merveilles du Dauphiné). Tissu PME tertiaires, TPE artisans, professions libérales et commerces. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sassenage (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, fromagers producteurs Bleu du Vercors-Sassenage AOC, acteurs touristiques (château, Cuves), professions libérales, PME tertiaires sassenageoises et entreprises de Grenoble-Alpes Métropole.",
   directAnswerEn:

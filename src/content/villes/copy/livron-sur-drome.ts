@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LIVRON_SUR_DROME_COPY: VilleCopy = {
   pitchFr:
-    "Livron-sur-Drôme (26), commune positionnée à la confluence de la Drôme et du Rhône au sud de Valence, conjugue tissu agricole (vallée du Rhône) et péri-urbain. Tissu PME industrielles, TPE artisans BTP, agriculture, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs du sud-Valence.",
+    "Livron-sur-Drôme (26), commune positionnée à la confluence de la Drôme et du Rhône au sud de Valence, conjugue tissu agricole (vallée du Rhône) et péri-urbain. Tissu PME industrielles, TPE artisans BTP, agriculture, commerces. Axion-IA collabore avec toutes les structures locales du sud-Valence.",
   pitchEn:
-    "Livron-sur-Drôme (26), commune positionnée à la confluence de la Drôme et du Rhône au sud de Valence, conjugue tissu agricole (vallée du Rhône) et péri-urbain. Tissu PME industrielles, TPE artisans BTP, agriculture, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs du sud-Valence.",
+    "Livron-sur-Drôme (26), commune positionnée à la confluence de la Drôme et du Rhône au sud de Valence, conjugue tissu agricole (vallée du Rhône) et péri-urbain. Tissu PME industrielles, TPE artisans BTP, agriculture, commerces. Axion-IA collabore avec toutes les structures locales du sud-Valence.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Livron-sur-Drôme (26). Nous accompagnons tous types d'activités : PME industrielles sud-Drôme, agriculteurs et viticulteurs vallée du Rhône, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises sud-Valence.",
   directAnswerEn:

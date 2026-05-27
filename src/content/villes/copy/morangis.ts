@@ -9,9 +9,9 @@ export const MORANGIS_COPY: VilleCopy = {
   pitchEn:
     "Morangis (91), commune de l'Essonne proche de l'aéroport Paris-Orly, dispose de zones d'activités économiques dynamiques. Tissu logistique et transport aérien, PME industrielles, TPE artisanat BTP, commerces, services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Morangis (91). Nous accompagnons TPE et PME : entreprises logistique et transport zone Orly, PME industrielles, artisans BTP, commerçants de proximité, prestataires services aux entreprises. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Morangis (91). Nous accompagnons TPE et PME : entreprises logistique et transport zone Orly, PME industrielles, artisans BTP, commerçants de proximité, prestataires services aux entreprises. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Morangis (91). Nous accompagnons TPE et PME : entreprises logistique et transport zone Orly, PME industrielles, artisans BTP, commerçants de proximité, prestataires services aux entreprises. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Morangis (91). Nous accompagnons TPE et PME : entreprises logistique et transport zone Orly, PME industrielles, artisans BTP, commerçants de proximité, prestataires services aux entreprises. Audit Flash sur mesure.",
   seoHook: "logistique transport & industrielles",
   ecosystemFr:
     "Morangis est une commune de l'Essonne proche d'Orly, avec des zones d'activités orientées logistique, transport et industrie. Tissu logistique aéroportuaire, PME industrielles, TPE artisanat BTP, commerces de proximité, services aux entreprises.",

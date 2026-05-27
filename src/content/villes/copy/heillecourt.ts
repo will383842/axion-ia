@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const HEILLECOURT_COPY: VilleCopy = {
   pitchFr:
-    "Heillecourt (54), commune périurbaine résidentielle au sud de Nancy en Meurthe-et-Moselle, accueille des zones d'activités tertiaires et un tissu commercial dynamique. Tissu TPE/PME services aux entreprises, commerces, artisans, professions libérales, sous-traitants. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Heillecourt (54), commune périurbaine résidentielle au sud de Nancy en Meurthe-et-Moselle, accueille des zones d'activités tertiaires et un tissu commercial dynamique. Tissu TPE/PME services aux entreprises, commerces, artisans, professions libérales, sous-traitants. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Heillecourt (54), commune périurbaine résidentielle au sud de Nancy en Meurthe-et-Moselle, accueille des zones d'activités tertiaires et un tissu commercial dynamique. Tissu TPE/PME services aux entreprises, commerces, artisans, professions libérales, sous-traitants. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Heillecourt (54), commune périurbaine résidentielle au sud de Nancy en Meurthe-et-Moselle, accueille des zones d'activités tertiaires et un tissu commercial dynamique. Tissu TPE/PME services aux entreprises, commerces, artisans, professions libérales, sous-traitants. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Heillecourt (54). Nous accompagnons tous types d'activités : TPE/PME des zones d'activités sud-Nancy, services aux entreprises, commerces, artisans, professions libérales et sous-traitants heillecourtois.",
   directAnswerEn:

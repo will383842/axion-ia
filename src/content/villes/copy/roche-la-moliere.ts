@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ROCHE_LA_MOLIERE_COPY: VilleCopy = {
   pitchFr:
-    "Roche-la-Molière (42), commune en banlieue ouest de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Héritage minier (ancien bassin charbonnier stéphanois). Tissu PME industrielles diversifiées, TPE artisans BTP, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes stéphanoises.",
+    "Roche-la-Molière (42), commune en banlieue ouest de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Héritage minier (ancien bassin charbonnier stéphanois). Tissu PME industrielles diversifiées, TPE artisans BTP, commerces. Axion-IA accompagne tout le tissu professionnel local stéphanoises.",
   pitchEn:
-    "Roche-la-Molière (42), commune en banlieue ouest de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Héritage minier (ancien bassin charbonnier stéphanois). Tissu PME industrielles diversifiées, TPE artisans BTP, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes stéphanoises.",
+    "Roche-la-Molière (42), commune en banlieue ouest de Saint-Étienne dans la Loire, est intégrée à Saint-Étienne Métropole. Héritage minier (ancien bassin charbonnier stéphanois). Tissu PME industrielles diversifiées, TPE artisans BTP, commerces. Axion-IA accompagne tout le tissu professionnel local stéphanoises.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Roche-la-Molière (42). Nous accompagnons tous types d'activités : PME industrielles diversifiées Saint-Étienne Métropole, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de la banlieue ouest stéphanoise.",
   directAnswerEn:

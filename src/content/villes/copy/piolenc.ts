@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const PIOLENC_COPY: VilleCopy = {
   pitchFr:
-    "Piolenc (84), commune de la vallée du Rhône au nord d'Orange, compte près de 5 718 habitants. Capitale de l'ail (Foire à l'ail), agriculture maraîchère et fruitière, vignoble Côtes-du-Rhône, tissu de TPE artisanales, exploitations agricoles, PME agroalimentaires et commerces de proximité. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Piolenc (84), commune de la vallée du Rhône au nord d'Orange, compte près de 5 718 habitants. Capitale de l'ail (Foire à l'ail), agriculture maraîchère et fruitière, vignoble Côtes-du-Rhône, tissu de TPE artisanales, exploitations agricoles, PME agroalimentaires et commerces de proximité. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Piolenc (84), commune de la vallée du Rhône au nord d'Orange, compte près de 5 718 habitants. Capitale de l'ail (Foire à l'ail), agriculture maraîchère et fruitière, vignoble Côtes-du-Rhône, tissu de TPE artisanales, exploitations agricoles, PME agroalimentaires et commerces de proximité. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Piolenc (84), commune de la vallée du Rhône au nord d'Orange, compte près de 5 718 habitants. Capitale de l'ail (Foire à l'ail), agriculture maraîchère et fruitière, vignoble Côtes-du-Rhône, tissu de TPE artisanales, exploitations agricoles, PME agroalimentaires et commerces de proximité. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Piolenc (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles (ail, maraîchage, fruits), domaines viticoles Côtes-du-Rhône, PME agroalimentaires, commerces et services de la vallée du Rhône. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Piolenc (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles (ail, maraîchage, fruits), domaines viticoles Côtes-du-Rhône, PME agroalimentaires, commerces et services de la vallée du Rhône. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Piolenc (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles (ail, maraîchage, fruits), domaines viticoles Côtes-du-Rhône, PME agroalimentaires, commerces et services de la vallée du Rhône. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Piolenc (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles (ail, maraîchage, fruits), domaines viticoles Côtes-du-Rhône, PME agroalimentaires, commerces et services de la vallée du Rhône. Audit Flash sur mesure.",
   seoHook: "vallée du",
   ecosystemFr:
     "Piolenc est un pôle agricole de la vallée du Rhône, capitale de l'ail (Foire à l'ail annuelle). Agriculture maraîchère et fruitière, vignoble Côtes-du-Rhône, coopératives agricoles. Tissu de TPE artisans, exploitations agricoles familiales, PME agroalimentaires et commerces. Orange à 10 min, Avignon à 35 min, A7 directe.",
@@ -60,7 +60,7 @@ export const PIOLENC_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les domaines viticoles Côtes-du-Rhône de Piolenc et environs : traçabilité parcellaire, gestion vendanges, optimisation cave, relation client B2B, fiches Google Business et oenotourisme.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Piolenc ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Piolenc  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {

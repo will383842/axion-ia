@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const HARNES_COPY: VilleCopy = {
   pitchFr:
-    "Harnes (62), commune du Pas-de-Calais dans l'agglomération Lens-Liévin (région Hauts-de-France), est ancrée dans le bassin minier reconverti inscrit UNESCO. Tissu TPE artisanat BTP et services, PME logistique et industrie reconvertie, commerces de proximité, prestataires du tertiaire péri-urbain. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Harnes (62), commune du Pas-de-Calais dans l'agglomération Lens-Liévin (région Hauts-de-France), est ancrée dans le bassin minier reconverti inscrit UNESCO. Tissu TPE artisanat BTP et services, PME logistique et industrie reconvertie, commerces de proximité, prestataires du tertiaire péri-urbain. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Harnes (62), commune du Pas-de-Calais dans l'agglomération Lens-Liévin (région Hauts-de-France), est ancrée dans le bassin minier reconverti inscrit UNESCO. Tissu TPE artisanat BTP et services, PME logistique et industrie reconvertie, commerces de proximité, prestataires du tertiaire péri-urbain. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Harnes (62), commune du Pas-de-Calais dans l'agglomération Lens-Liévin (région Hauts-de-France), est ancrée dans le bassin minier reconverti inscrit UNESCO. Tissu TPE artisanat BTP et services, PME logistique et industrie reconvertie, commerces de proximité, prestataires du tertiaire péri-urbain. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Harnes (62). Nous accompagnons tous types d'activités : TPE artisans BTP et services du bassin minier reconverti, PME logistique et industrie, commerçants de proximité, prestataires tertiaires de l'agglomération Lens-Liévin.",
   directAnswerEn:

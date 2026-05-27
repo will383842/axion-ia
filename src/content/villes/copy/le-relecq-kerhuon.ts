@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_RELECQ_KERHUON_COPY: VilleCopy = {
   pitchFr:
-    "Le Relecq-Kerhuon (29), commune résidentielle et économique de Brest Métropole, borde la rade de Brest et accueille plusieurs zones d'activités dynamiques. Tissu TPE artisans BTP, PME tertiaires et industrielles, commerces, services et économie maritime. Axion-IA y déploie ses missions auprès de toutes les organisations de la rive droite brestoise et de la métropole.",
+    "Le Relecq-Kerhuon (29), commune résidentielle et économique de Brest Métropole, borde la rade de Brest et accueille plusieurs zones d'activités dynamiques. Tissu TPE artisans BTP, PME tertiaires et industrielles, commerces, services et économie maritime. Axion-IA y mène ses missions auprès des organisations locales de la rive droite brestoise et de la métropole.",
   pitchEn:
-    "Le Relecq-Kerhuon (29), commune résidentielle et économique de Brest Métropole, borde la rade de Brest et accueille plusieurs zones d'activités dynamiques. Tissu TPE artisans BTP, PME tertiaires et industrielles, commerces, services et économie maritime. Axion-IA y déploie ses missions auprès de toutes les organisations de la rive droite brestoise et de la métropole.",
+    "Le Relecq-Kerhuon (29), commune résidentielle et économique de Brest Métropole, borde la rade de Brest et accueille plusieurs zones d'activités dynamiques. Tissu TPE artisans BTP, PME tertiaires et industrielles, commerces, services et économie maritime. Axion-IA y mène ses missions auprès des organisations locales de la rive droite brestoise et de la métropole.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Relecq-Kerhuon (29). Nous accompagnons tous types d'activités : TPE artisans BTP, PME tertiaires et industrielles des zones d'activités, commerçants, indépendants, professions libérales, acteurs maritimes et services aux entreprises de Brest Métropole rive droite.",
   directAnswerEn:

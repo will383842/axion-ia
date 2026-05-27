@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_COTEAU_COPY: VilleCopy = {
   pitchFr:
-    "Le Coteau (42), commune en banlieue est immédiate de Roanne (sur la rive opposée de la Loire) dans la Loire, est intégrée à Roannais Agglomération. Tissu PME tertiaires et industrielles (héritage textile), TPE artisans BTP, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes du Roannais.",
+    "Le Coteau (42), commune en banlieue est immédiate de Roanne (sur la rive opposée de la Loire) dans la Loire, est intégrée à Roannais Agglomération. Tissu PME tertiaires et industrielles (héritage textile), TPE artisans BTP, commerces. Axion-IA répond aux besoins des activités professionnelles présentes du Roannais.",
   pitchEn:
-    "Le Coteau (42), commune en banlieue est immédiate de Roanne (sur la rive opposée de la Loire) dans la Loire, est intégrée à Roannais Agglomération. Tissu PME tertiaires et industrielles (héritage textile), TPE artisans BTP, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes du Roannais.",
+    "Le Coteau (42), commune en banlieue est immédiate de Roanne (sur la rive opposée de la Loire) dans la Loire, est intégrée à Roannais Agglomération. Tissu PME tertiaires et industrielles (héritage textile), TPE artisans BTP, commerces. Axion-IA répond aux besoins des activités professionnelles présentes du Roannais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Coteau (42). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Roannais (héritage textile), TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de Roannais Agglomération.",
   directAnswerEn:

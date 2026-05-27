@@ -11,9 +11,9 @@ export const HAGUENAU_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Haguenau, ville dynamique du Grand Est, pour accompagner les entreprises locales telles que Siemens. Nos services incluent audits, interventions et implémentations IA adaptés aux besoins spécifiques de chaque secteur.",
   directAnswerFr:
-    "Haguenau, avec ses entreprises comme Siemens et Soprema, offre un environnement propice à l'innovation. Axion-IA y intervient pour optimiser les processus des industries agroalimentaires et métalliques. Nos audits commencent à 490 € HT, et nos interventions à 590 € HT, garantissant des solutions adaptées aux réalités locales.",
+    "Haguenau, avec ses entreprises comme Siemens et Soprema, offre un environnement propice à l'innovation. Axion-IA y intervient pour optimiser les processus des industries agroalimentaires et métalliques. Nos audits commencent à et nos interventions à garantissant des solutions adaptées aux réalités locales.",
   directAnswerEn:
-    "Haguenau, avec ses entreprises comme Siemens et Soprema, offre un environnement propice à l'innovation. Axion-IA y intervient pour optimiser les processus des industries agroalimentaires et métalliques. Nos audits commencent à 490 € HT, et nos interventions à 590 € HT, garantissant des solutions adaptées aux réalités locales.",
+    "Haguenau, avec ses entreprises comme Siemens et Soprema, offre un environnement propice à l'innovation. Axion-IA y intervient pour optimiser les processus des industries agroalimentaires et métalliques. Nos audits commencent à et nos interventions à garantissant des solutions adaptées aux réalités locales.",
   seoHook: "agglomération est",
   ecosystemFr:
     "Le Parc d'Activités de la Sandlach à Haguenau abrite des entreprises comme Siemens. Le tissu économique inclut aussi la fabrication de produits métalliques et le commerce de détail, offrant un cadre diversifié pour nos interventions IA.",

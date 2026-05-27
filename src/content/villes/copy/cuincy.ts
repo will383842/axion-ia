@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const CUINCY_COPY: VilleCopy = {
   pitchFr:
-    "Cuincy (59), commune résidentielle de 6 467 habitants de l'agglomération de Douai dans le Nord, intégrée à la Communauté d'Agglomération du Douaisis. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales et indépendants du bassin douaisien. Axion-IA y déploie ses missions auprès de toutes les organisations du Douaisis.",
+    "Cuincy (59), commune résidentielle de 6 467 habitants de l'agglomération de Douai dans le Nord, intégrée à la Communauté d'Agglomération du Douaisis. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales et indépendants du bassin douaisien. Axion-IA y mène ses missions auprès des organisations locales du Douaisis.",
   pitchEn:
-    "Cuincy (59), commune résidentielle de 6 467 habitants de l'agglomération de Douai dans le Nord, intégrée à la Communauté d'Agglomération du Douaisis. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales et indépendants du bassin douaisien. Axion-IA y déploie ses missions auprès de toutes les organisations du Douaisis.",
+    "Cuincy (59), commune résidentielle de 6 467 habitants de l'agglomération de Douai dans le Nord, intégrée à la Communauté d'Agglomération du Douaisis. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales et indépendants du bassin douaisien. Axion-IA y mène ses missions auprès des organisations locales du Douaisis.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cuincy (59). Nous accompagnons TPE artisans, PME de services, commerçants, professions libérales et indépendants de l'agglomération de Douai. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cuincy (59). Nous accompagnons TPE artisans, PME de services, commerçants, professions libérales et indépendants de l'agglomération de Douai. Audit Flash sur mesure, interventions sur site et coaching dirigeants.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cuincy (59). Nous accompagnons TPE artisans, PME de services, commerçants, professions libérales et indépendants de l'agglomération de Douai. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cuincy (59). Nous accompagnons TPE artisans, PME de services, commerçants, professions libérales et indépendants de l'agglomération de Douai. Audit Flash sur mesure, interventions sur site et coaching dirigeants.",
   seoHook: "artisanat & professions libérales",
   ecosystemFr:
     "Cuincy est une commune résidentielle attractive de la Communauté d'Agglomération du Douaisis, en proche périphérie ouest de Douai. Tissu TPE artisans BTP, PME de services aux entreprises, commerces de bourg, professions libérales (santé, juridique, conseil) et indépendants. Cadre de vie résidentiel avec proximité immédiate du pôle économique douaisien et accès rapide à la métropole lilloise.",
@@ -52,7 +52,7 @@ export const CUINCY_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Cuincy et dans toute la Communauté d'Agglomération du Douaisis (Douai, Lambres-lez-Douai, Flers-en-Escrebieux, Sin-le-Noble). Nos consultants se déplacent depuis Lille en 35 min ou Douai en 8 min.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Cuincy ?",
+      q: "Combien coûte un audit IA à Cuincy  ?",
       a: "L'Audit Flash IA démarre à 490 € HT pour une session de 4h. Idéal pour les TPE et PME de Cuincy souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré sous 10 jours.",
     },
     {

@@ -11,9 +11,9 @@ export const SEVREMOINE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Sèvremoine, optimisant les processus des entreprises locales. Avec des acteurs comme LVMH et Inria en tête, nous apportons notre expertise nationale en IA pour répondre aux besoins spécifiques des entreprises sèvremoinaises.",
   directAnswerFr:
-    "Axion-IA, cabinet national, se déplace à Sèvremoine pour accompagner les entreprises locales dans leur transformation IA. Avec un écosystème comprenant des géants comme LVMH et des pôles d'innovation tels qu'Inria, nous proposons des audits, interventions et implémentations adaptés aux spécificités locales. Nos tarifs sont transparents, avec des audits à partir de 490 € HT.",
+    "Axion-IA, cabinet national, se déplace à Sèvremoine pour accompagner les entreprises locales dans leur transformation IA. Avec un écosystème comprenant des géants comme LVMH et des pôles d'innovation tels qu'Inria, nous proposons des audits, interventions et implémentations adaptés aux spécificités locales. Nos tarifs sont transparents, avec des audits.",
   directAnswerEn:
-    "Axion-IA, cabinet national, se déplace à Sèvremoine pour accompagner les entreprises locales dans leur transformation IA. Avec un écosystème comprenant des géants comme LVMH et des pôles d'innovation tels qu'Inria, nous proposons des audits, interventions et implémentations adaptés aux spécificités locales. Nos tarifs sont transparents, avec des audits à partir de 490 € HT.",
+    "Axion-IA, cabinet national, se déplace à Sèvremoine pour accompagner les entreprises locales dans leur transformation IA. Avec un écosystème comprenant des géants comme LVMH et des pôles d'innovation tels qu'Inria, nous proposons des audits, interventions et implémentations adaptés aux spécificités locales. Nos tarifs sont transparents, avec des audits.",
   seoHook: "industrie agroalimentaire & commerce gros",
   ecosystemFr:
     "Sèvremoine bénéficie d'une proximité avec des pôles économiques comme Cholet et Clisson. L'industrie agroalimentaire et la fabrication de produits métalliques y sont prédominantes, offrant un terreau fertile pour l'innovation IA.",

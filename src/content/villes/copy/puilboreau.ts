@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PUILBOREAU_COPY: VilleCopy = {
   pitchFr:
-    "Puilboreau (17), commune de l'agglomération de La Rochelle en Charente-Maritime, pôle commercial majeur (zone commerciale Beaulieu). Tissu de TPE artisans, PME commerciales et de distribution, enseignes, services aux entreprises et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération rochelaise.",
+    "Puilboreau (17), commune de l'agglomération de La Rochelle en Charente-Maritime, pôle commercial majeur (zone commerciale Beaulieu). Tissu de TPE artisans, PME commerciales et de distribution, enseignes, services aux entreprises et professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes de l'agglomération rochelaise.",
   pitchEn:
-    "Puilboreau (17), commune de l'agglomération de La Rochelle en Charente-Maritime, pôle commercial majeur (zone commerciale Beaulieu). Tissu de TPE artisans, PME commerciales et de distribution, enseignes, services aux entreprises et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération rochelaise.",
+    "Puilboreau (17), commune de l'agglomération de La Rochelle en Charente-Maritime, pôle commercial majeur (zone commerciale Beaulieu). Tissu de TPE artisans, PME commerciales et de distribution, enseignes, services aux entreprises et professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes de l'agglomération rochelaise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Puilboreau (17). Nous accompagnons tous types d'activités : TPE artisans, PME commerciales et de distribution, enseignes, prestataires de services et indépendants de ce pôle commercial majeur de l'agglomération de La Rochelle.",
   directAnswerEn:

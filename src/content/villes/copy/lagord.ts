@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LAGORD_COPY: VilleCopy = {
   pitchFr:
-    "Lagord (17), commune au nord de l'agglomération de La Rochelle en Charente-Maritime, pôle résidentiel prisé et dynamique. Tissu de TPE artisans, PME tertiaires, commerces de proximité, services à la personne et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations de l'agglomération rochelaise.",
+    "Lagord (17), commune au nord de l'agglomération de La Rochelle en Charente-Maritime, pôle résidentiel prisé et dynamique. Tissu de TPE artisans, PME tertiaires, commerces de proximité, services à la personne et professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales de l'agglomération rochelaise.",
   pitchEn:
-    "Lagord (17), commune au nord de l'agglomération de La Rochelle en Charente-Maritime, pôle résidentiel prisé et dynamique. Tissu de TPE artisans, PME tertiaires, commerces de proximité, services à la personne et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations de l'agglomération rochelaise.",
+    "Lagord (17), commune au nord de l'agglomération de La Rochelle en Charente-Maritime, pôle résidentiel prisé et dynamique. Tissu de TPE artisans, PME tertiaires, commerces de proximité, services à la personne et professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales de l'agglomération rochelaise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lagord (17). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, prestataires de services, commerçants, professions libérales et indépendants de cette commune résidentielle du nord de l'agglomération de La Rochelle.",
   directAnswerEn:

@@ -9,9 +9,9 @@ export const VILLEBON_SUR_YVETTE_COPY: VilleCopy = {
   pitchEn:
     "Villebon-sur-Yvette (91), commune de l'Essonne sur le plateau de Saclay, conjugue zone d'activités et centre commercial Villebon 2 (un des plus grands d'Île-de-France). Proximité immédiate Courtaboeuf, Orsay, Palaiseau. Tissu TPE/PME commerce, services aux entreprises, ingénierie, professions libérales. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villebon-sur-Yvette (91). Nous accompagnons TPE et PME : enseignes commerciales Villebon 2, PME ingénierie et services de la zone Courtaboeuf, professions libérales, artisans, indépendants du plateau de Saclay. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villebon-sur-Yvette (91). Nous accompagnons TPE et PME : enseignes commerciales Villebon 2, PME ingénierie et services de la zone Courtaboeuf, professions libérales, artisans, indépendants du plateau de Saclay. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villebon-sur-Yvette (91). Nous accompagnons TPE et PME : enseignes commerciales Villebon 2, PME ingénierie et services de la zone Courtaboeuf, professions libérales, artisans, indépendants du plateau de Saclay. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villebon-sur-Yvette (91). Nous accompagnons TPE et PME : enseignes commerciales Villebon 2, PME ingénierie et services de la zone Courtaboeuf, professions libérales, artisans, indépendants du plateau de Saclay. Audit Flash sur mesure.",
   seoHook: "commerce & ingénierie services",
   ecosystemFr:
     "Villebon-sur-Yvette est positionnée sur le plateau de Saclay, à proximité de la zone d'activités de Courtaboeuf (plus grande ZA d'Île-de-France). Le centre commercial Villebon 2 est un pôle commercial majeur. Tissu PME ingénierie, services aux entreprises, commerces, professions libérales, TPE artisans.",

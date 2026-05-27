@@ -11,9 +11,9 @@ export const CACHAN_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Cachan, une ville dynamique proche de Paris, pour automatiser vos processus. Notre expertise s'étend à divers secteurs, y compris ceux présents à Cachan comme l'ingénierie et l'enseignement, en lien avec des pôles tels que Cap Digital.",
   directAnswerFr:
-    "À Cachan, Axion-IA propose des solutions IA pour optimiser les processus des entreprises locales. La proximité de l'École normale supérieure Paris-Saclay et de pôles comme Cap Digital enrichit l'écosystème local. Nous offrons des audits dès 490 € HT et des interventions à partir de 590 € HT, avec une approche personnalisée pour chaque entreprise.",
+    "À Cachan, Axion-IA propose des solutions IA pour optimiser les processus des entreprises locales. La proximité de l'École normale supérieure Paris-Saclay et de pôles comme Cap Digital enrichit l'écosystème local. Nous offrons des audits et des interventions, avec une approche personnalisée pour chaque entreprise.",
   directAnswerEn:
-    "À Cachan, Axion-IA propose des solutions IA pour optimiser les processus des entreprises locales. La proximité de l'École normale supérieure Paris-Saclay et de pôles comme Cap Digital enrichit l'écosystème local. Nous offrons des audits dès 490 € HT et des interventions à partir de 590 € HT, avec une approche personnalisée pour chaque entreprise.",
+    "À Cachan, Axion-IA propose des solutions IA pour optimiser les processus des entreprises locales. La proximité de l'École normale supérieure Paris-Saclay et de pôles comme Cap Digital enrichit l'écosystème local. Nous offrons des audits et des interventions, avec une approche personnalisée pour chaque entreprise.",
   seoHook: "programmation informatique & ingénierie",
   ecosystemFr:
     "Cachan, avec ses secteurs dominants comme la programmation informatique et l'ingénierie, bénéficie de la proximité de l'École normale supérieure Paris-Saclay et du dynamisme de Cap Digital.",

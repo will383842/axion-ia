@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_VINCENT_DE_TYROSSE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Vincent-de-Tyrosse (40), chef-lieu du canton du Pays tyrossais dans les Landes, est un bourg dynamique entre littoral et arrière-pays landais. Traditions (fêtes, corrida), commerce de proximité, TPE artisans, PME services, agriculture, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Saint-Vincent-de-Tyrosse (40), chef-lieu du canton du Pays tyrossais dans les Landes, est un bourg dynamique entre littoral et arrière-pays landais. Traditions (fêtes, corrida), commerce de proximité, TPE artisans, PME services, agriculture, professions libérales. Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Saint-Vincent-de-Tyrosse (40), chef-lieu du canton du Pays tyrossais dans les Landes, est un bourg dynamique entre littoral et arrière-pays landais. Traditions (fêtes, corrida), commerce de proximité, TPE artisans, PME services, agriculture, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Saint-Vincent-de-Tyrosse (40), chef-lieu du canton du Pays tyrossais dans les Landes, est un bourg dynamique entre littoral et arrière-pays landais. Traditions (fêtes, corrida), commerce de proximité, TPE artisans, PME services, agriculture, professions libérales. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Vincent-de-Tyrosse (40). Nous accompagnons TPE et PME du commerce de proximité, artisans BTP, agriculteurs, professions libérales, prestataires de services et acteurs du tourisme événementiel du Pays tyrossais.",
   directAnswerEn:

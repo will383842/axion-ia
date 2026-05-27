@@ -56,7 +56,7 @@ export const PERENCHIES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les commerçants de proximité et artisans à Pérenchies sur leurs cas IA spécifiques : fidélisation client par messagerie, automatisation devis-facturation, génération de fiches produits, gestion automatisée des avis Google, optimisation référencement local.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Pérenchies ?",
+      q: "Combien coûte un audit IA à Pérenchies  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de la MEL ouest, il identifie les cas d'usage IA à fort ROI pour votre activité (commerce, artisanat, services B2B, profession libérale). Tarifs publics, sans engagement.",
     },
     {

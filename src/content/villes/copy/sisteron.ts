@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SISTERON_COPY: VilleCopy = {
   pitchFr:
-    "Sisteron (04), sous-préfecture des Alpes-de-Haute-Provence, est la « Porte de la Provence » dominée par sa citadelle historique sur la Durance. Tissu TPE artisans, PME tourisme/hôtellerie, agriculteurs, commerçants et services. Axion-IA y déploie ses missions auprès de toutes les organisations du Sisteronais.",
+    "Sisteron (04), sous-préfecture des Alpes-de-Haute-Provence, est la « Porte de la Provence » dominée par sa citadelle historique sur la Durance. Tissu TPE artisans, PME tourisme/hôtellerie, agriculteurs, commerçants et services. Axion-IA y travaille avec les organisations du territoire du Sisteronais.",
   pitchEn:
-    "Sisteron (04), sous-préfecture des Alpes-de-Haute-Provence, est la « Porte de la Provence » dominée par sa citadelle historique sur la Durance. Tissu TPE artisans, PME tourisme/hôtellerie, agriculteurs, commerçants et services. Axion-IA y déploie ses missions auprès de toutes les organisations du Sisteronais.",
+    "Sisteron (04), sous-préfecture des Alpes-de-Haute-Provence, est la « Porte de la Provence » dominée par sa citadelle historique sur la Durance. Tissu TPE artisans, PME tourisme/hôtellerie, agriculteurs, commerçants et services. Axion-IA y travaille avec les organisations du territoire du Sisteronais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sisteron (04). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et hôtellerie (citadelle, Nuits de la Citadelle), agriculteurs, commerçants, indépendants et services aux entreprises de la sous-préfecture des Alpes-de-Haute-Provence.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const SISTERON_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les agriculteurs sisteronais (fruitiers, oléiculteurs) : prédiction récolte, classification qualité fruits/olives, automatisation traçabilité parcelle, agents e-commerce vente directe producteur.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Sisteron ?",
+      q: "Tarifs audit IA à Sisteron  : quel budget prévoir ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE artisans, commerçants et PME sisteronaises. Tarifs publics transparents, sans frais cachés.",
     },
     {

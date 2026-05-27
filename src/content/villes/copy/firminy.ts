@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FIRMINY_COPY: VilleCopy = {
   pitchFr:
-    "Firminy (42), commune de la vallée de l'Ondaine dans la Loire, est intégrée à Saint-Étienne Métropole. Réputée internationalement pour le Site Le Corbusier (ensemble architectural Firminy-Vert, inscrit au patrimoine mondial UNESCO). Tissu PME industrielles, TPE artisans BTP, tourisme architectural, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Firminy (42), commune de la vallée de l'Ondaine dans la Loire, est intégrée à Saint-Étienne Métropole. Réputée internationalement pour le Site Le Corbusier (ensemble architectural Firminy-Vert, inscrit au patrimoine mondial UNESCO). Tissu PME industrielles, TPE artisans BTP, tourisme architectural, commerces. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Firminy (42), commune de la vallée de l'Ondaine dans la Loire, est intégrée à Saint-Étienne Métropole. Réputée internationalement pour le Site Le Corbusier (ensemble architectural Firminy-Vert, inscrit au patrimoine mondial UNESCO). Tissu PME industrielles, TPE artisans BTP, tourisme architectural, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Firminy (42), commune de la vallée de l'Ondaine dans la Loire, est intégrée à Saint-Étienne Métropole. Réputée internationalement pour le Site Le Corbusier (ensemble architectural Firminy-Vert, inscrit au patrimoine mondial UNESCO). Tissu PME industrielles, TPE artisans BTP, tourisme architectural, commerces. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Firminy (42). Nous accompagnons tous types d'activités : PME industrielles héritage métallurgique vallée Ondaine, acteurs tourisme architectural Site Le Corbusier UNESCO, TPE artisans BTP, commerçants, indépendants et services aux entreprises de Saint-Étienne Métropole.",
   directAnswerEn:

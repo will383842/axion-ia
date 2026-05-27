@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const MARQUETTE_LEZ_LILLE_COPY: VilleCopy = {
   pitchFr:
-    "Marquette-lez-Lille (59), commune de la Métropole Européenne de Lille au nord de Lille sur les bords de la Deûle, dans le Nord. Tissu TPE artisans, PME industrielles et logistiques, commerces de proximité, professions libérales et indépendants. Axion-IA couvre l'ensemble des activités professionnelles présentes du nord lillois.",
+    "Marquette-lez-Lille (59), commune de la Métropole Européenne de Lille au nord de Lille sur les bords de la Deûle, dans le Nord. Tissu TPE artisans, PME industrielles et logistiques, commerces de proximité, professions libérales et indépendants. Axion-IA opère sur l'ensemble des activités professionnelles locales du nord lillois.",
   pitchEn:
-    "Marquette-lez-Lille (59), commune de la Métropole Européenne de Lille au nord de Lille sur les bords de la Deûle, dans le Nord. Tissu TPE artisans, PME industrielles et logistiques, commerces de proximité, professions libérales et indépendants. Axion-IA couvre l'ensemble des activités professionnelles présentes du nord lillois.",
+    "Marquette-lez-Lille (59), commune de la Métropole Européenne de Lille au nord de Lille sur les bords de la Deûle, dans le Nord. Tissu TPE artisans, PME industrielles et logistiques, commerces de proximité, professions libérales et indépendants. Axion-IA opère sur l'ensemble des activités professionnelles locales du nord lillois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marquette-lez-Lille (59). Nous accompagnons TPE artisans, PME industrielles et logistiques, commerçants, professions libérales et indépendants du nord lillois, bords de la Deûle. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marquette-lez-Lille (59). Nous accompagnons TPE artisans, PME industrielles et logistiques, commerçants, professions libérales et indépendants du nord lillois, bords de la Deûle. Audit Flash sur mesure, interventions sur site et coaching dirigeants.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marquette-lez-Lille (59). Nous accompagnons TPE artisans, PME industrielles et logistiques, commerçants, professions libérales et indépendants du nord lillois, bords de la Deûle. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marquette-lez-Lille (59). Nous accompagnons TPE artisans, PME industrielles et logistiques, commerçants, professions libérales et indépendants du nord lillois, bords de la Deûle. Audit Flash sur mesure, interventions sur site et coaching dirigeants.",
   seoHook: "industrie chimie & logistique fluviale",
   ecosystemFr:
     "Marquette-lez-Lille est une commune de la Métropole Européenne de Lille située sur les bords de la Deûle, au nord immédiat de Lille. Tissu TPE artisans BTP, PME industrielles (chimie, agroalimentaire historique, papeterie), logistique fluviale et routière, commerces de proximité et professions libérales. Position stratégique sur l'axe Lille-Lambersart-Saint-André.",
@@ -52,7 +52,7 @@ export const MARQUETTE_LEZ_LILLE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Marquette-lez-Lille et dans tout le nord de la Métropole Européenne de Lille (Saint-André-lez-Lille, Lambersart, La Madeleine, Wambrechies). Nos consultants sont basés sur Lille, déplacement en 10 min.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Marquette-lez-Lille ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Marquette-lez-Lille  ?",
       a: "L'Audit Flash IA démarre à 490 € HT pour une session de 4h. Idéal pour les TPE et PME de Marquette-lez-Lille souhaitant identifier rapidement leurs cas d'usage IA prioritaires avec ROI chiffré sous 10 jours.",
     },
     {

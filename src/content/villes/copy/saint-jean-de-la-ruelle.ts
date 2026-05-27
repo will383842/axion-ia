@@ -9,9 +9,9 @@ export const SAINT_JEAN_DE_LA_RUELLE_COPY: VilleCopy = {
   pitchEn:
     "Saint-Jean-de-la-Ruelle (45), commune de l'ouest de l'agglomération orléanaise dans le Loiret, accueille un tissu économique diversifié entre TPE artisans, PME industrielles et de services, commerces de quartier et activités tertiaires. Axion-IA opère pour toutes les structures économiques de la commune de l'ouest orléanais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean-de-la-Ruelle (45), dans l'agglomération d'Orléans. Nous accompagnons TPE artisans, PME industrielles et de services, commerces et professions libérales. Audit Flash dès 490 € HT, démarrage sous 10 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean-de-la-Ruelle (45), dans l'agglomération d'Orléans. Nous accompagnons TPE artisans, PME industrielles et de services, commerces et professions libérales. Audit Flash sur mesure, démarrage sous 10 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean-de-la-Ruelle (45), dans l'agglomération d'Orléans. Nous accompagnons TPE artisans, PME industrielles et de services, commerces et professions libérales. Audit Flash dès 490 € HT, démarrage sous 10 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean-de-la-Ruelle (45), dans l'agglomération d'Orléans. Nous accompagnons TPE artisans, PME industrielles et de services, commerces et professions libérales. Audit Flash sur mesure, démarrage sous 10 jours.",
   ecosystemFr:
     "Saint-Jean-de-la-Ruelle est une commune urbaine de l'ouest orléanais avec zones d'activités économiques, PME industrielles et tertiaires, commerces de quartier, TPE artisanat BTP et services aux entreprises. Tramway ligne B vers Orléans centre.",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const SAINT_JEAN_DE_LA_RUELLE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Saint-Jean-de-la-Ruelle et dans toute l'agglomération d'Orléans. Accessibilité directe tramway ligne B.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Saint-Jean-de-la-Ruelle ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Saint-Jean-de-la-Ruelle  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics, devis détaillé gratuit, ROI chiffré sous 10 jours.",
     },
     {

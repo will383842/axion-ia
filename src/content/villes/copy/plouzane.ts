@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const PLOUZANE_COPY: VilleCopy = {
   pitchFr:
-    "Plouzané (29), commune de Brest Métropole accueillant le Technopôle Brest-Iroise et le campus IFREMER/IMT Atlantique, pôle de recherche océanographique et numérique de rang mondial. Tissu de TPE de services, PME technologiques, sous-traitants recherche marine, professions libérales et prestataires tertiaires. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Plouzané (29), commune de Brest Métropole accueillant le Technopôle Brest-Iroise et le campus IFREMER/IMT Atlantique, pôle de recherche océanographique et numérique de rang mondial. Tissu de TPE de services, PME technologiques, sous-traitants recherche marine, professions libérales et prestataires tertiaires. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Plouzané (29), commune de Brest Métropole accueillant le Technopôle Brest-Iroise et le campus IFREMER/IMT Atlantique, pôle de recherche océanographique et numérique de rang mondial. Tissu de TPE de services, PME technologiques, sous-traitants recherche marine, professions libérales et prestataires tertiaires. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Plouzané (29), commune de Brest Métropole accueillant le Technopôle Brest-Iroise et le campus IFREMER/IMT Atlantique, pôle de recherche océanographique et numérique de rang mondial. Tissu de TPE de services, PME technologiques, sous-traitants recherche marine, professions libérales et prestataires tertiaires. Axion-IA y mène ses missions auprès des organisations locales.",
   seoHook: "technopôle, océanographie & recherche",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plouzané (29). Nous accompagnons TPE et PME : start-up du Technopôle Brest-Iroise, PME technologiques, sous-traitants recherche marine, professions libérales et services de cette commune de Brest Métropole à la pointe de la recherche océanographique. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plouzané (29). Nous accompagnons TPE et PME : start-up du Technopôle Brest-Iroise, PME technologiques, sous-traitants recherche marine, professions libérales et services de cette commune de Brest Métropole à la pointe de la recherche océanographique. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plouzané (29). Nous accompagnons TPE et PME : start-up du Technopôle Brest-Iroise, PME technologiques, sous-traitants recherche marine, professions libérales et services de cette commune de Brest Métropole à la pointe de la recherche océanographique. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plouzané (29). Nous accompagnons TPE et PME : start-up du Technopôle Brest-Iroise, PME technologiques, sous-traitants recherche marine, professions libérales et services de cette commune de Brest Métropole à la pointe de la recherche océanographique. Audit Flash sur mesure.",
   ecosystemFr:
     "Plouzané héberge le Technopôle Brest-Iroise, premier pôle européen en sciences et technologies marines, avec IFREMER, IMT Atlantique, le SHOM, le Cedre et de nombreux laboratoires CNRS. Plus de 3 000 chercheurs et ingénieurs travaillent sur ce campus. Le tissu économique local mêle start-up deeptech, PME de services numériques et prestataires de la filière marine. Communes voisines : Brest, Guilers, Le Conquet, Locmaria-Plouzané, Saint-Renan.",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const PLOUZANE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Plouzané et dans toute Brest Métropole (Brest, Guilers, Le Conquet, Locmaria-Plouzané, Saint-Renan). Nos consultants se déplacent sur site ou en visio.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Plouzané ?",
+      q: "Quel est le tarif d'un audit IA à Plouzané  ?",
       a: "L'Audit Flash IA à Plouzané démarre à 490 € HT pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {

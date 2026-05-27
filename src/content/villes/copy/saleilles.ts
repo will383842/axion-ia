@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SALEILLES_COPY: VilleCopy = {
   pitchFr:
-    "Saleilles (66), commune résidentielle en périphérie est de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME tertiaires, commerces, professions libérales, zones d'activités. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération perpignanaise.",
+    "Saleilles (66), commune résidentielle en périphérie est de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME tertiaires, commerces, professions libérales, zones d'activités. Axion-IA accompagne entreprises et indépendants de l'agglomération perpignanaise.",
   pitchEn:
-    "Saleilles (66), commune résidentielle en périphérie est de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME tertiaires, commerces, professions libérales, zones d'activités. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération perpignanaise.",
+    "Saleilles (66), commune résidentielle en périphérie est de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME tertiaires, commerces, professions libérales, zones d'activités. Axion-IA accompagne entreprises et indépendants de l'agglomération perpignanaise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saleilles (66). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, commerçants, professions libérales, indépendants et services aux entreprises de l'agglo Perpignan est.",
   directAnswerEn:

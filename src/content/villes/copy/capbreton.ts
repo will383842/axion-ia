@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CAPBRETON_COPY: VilleCopy = {
   pitchFr:
-    "Capbreton (40), port de pêche et de plaisance des Landes, est une station balnéaire réputée face à l'océan Atlantique. Le gouf de Capbreton (canyon sous-marin) est un patrimoine naturel unique. Surf, tourisme, pêche artisanale, TPE nautiques, commerces, restauration. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Capbreton (40), port de pêche et de plaisance des Landes, est une station balnéaire réputée face à l'océan Atlantique. Le gouf de Capbreton (canyon sous-marin) est un patrimoine naturel unique. Surf, tourisme, pêche artisanale, TPE nautiques, commerces, restauration. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Capbreton (40), port de pêche et de plaisance des Landes, est une station balnéaire réputée face à l'océan Atlantique. Le gouf de Capbreton (canyon sous-marin) est un patrimoine naturel unique. Surf, tourisme, pêche artisanale, TPE nautiques, commerces, restauration. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Capbreton (40), port de pêche et de plaisance des Landes, est une station balnéaire réputée face à l'océan Atlantique. Le gouf de Capbreton (canyon sous-marin) est un patrimoine naturel unique. Surf, tourisme, pêche artisanale, TPE nautiques, commerces, restauration. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Capbreton (40). Nous accompagnons TPE et PME de la pêche artisanale et du port de plaisance, hébergeurs balnéaires, écoles de surf, restaurateurs, commerçants saisonniers et artisans de la côte landaise sud.",
   directAnswerEn:

@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const WERVICQ_SUD_COPY: VilleCopy = {
   pitchFr:
-    "Wervicq-Sud (59), commune frontalière de la Belgique dans le Nord, est située sur les bords de la Lys face à Wervik (Belgique). Héritage textile reconverti, tissu TPE artisans, PME services et logistique transfrontalière, commerces, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Wervicq-Sud (59), commune frontalière de la Belgique dans le Nord, est située sur les bords de la Lys face à Wervik (Belgique). Héritage textile reconverti, tissu TPE artisans, PME services et logistique transfrontalière, commerces, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Wervicq-Sud (59), commune frontalière de la Belgique dans le Nord, est située sur les bords de la Lys face à Wervik (Belgique). Héritage textile reconverti, tissu TPE artisans, PME services et logistique transfrontalière, commerces, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Wervicq-Sud (59), commune frontalière de la Belgique dans le Nord, est située sur les bords de la Lys face à Wervik (Belgique). Héritage textile reconverti, tissu TPE artisans, PME services et logistique transfrontalière, commerces, professions libérales. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wervicq-Sud (59). Nous accompagnons TPE artisans, PME services et logistique transfrontalière, commerçants, indépendants et professions libérales de cette commune frontalière belge des bords de la Lys. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wervicq-Sud (59). Nous accompagnons TPE artisans, PME services et logistique transfrontalière, commerçants, indépendants et professions libérales de cette commune frontalière belge des bords de la Lys. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wervicq-Sud (59). Nous accompagnons TPE artisans, PME services et logistique transfrontalière, commerçants, indépendants et professions libérales de cette commune frontalière belge des bords de la Lys. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wervicq-Sud (59). Nous accompagnons TPE artisans, PME services et logistique transfrontalière, commerçants, indépendants et professions libérales de cette commune frontalière belge des bords de la Lys. Audit Flash sur mesure.",
   ecosystemFr:
     "Wervicq-Sud est une commune frontalière des bords de la Lys, face à Wervik en Belgique (Flandre occidentale). Héritage textile (industrie du lin et du tabac) reconverti vers les services, la logistique transfrontalière et l'artisanat. Position stratégique sur l'axe Lille-Comines-Ypres. Tissu TPE artisans, PME services, commerces et professions libérales.",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const WERVICQ_SUD_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Wervicq-Sud et dans toute la vallée de la Lys (Comines, Halluin, Bousbecque, Linselles). Couverture transfrontalière Wervik/Ypres/Courtrai incluse.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Wervicq-Sud ?",
+      q: "Quel est le tarif d'un audit IA à Wervicq-Sud  ?",
       a: "L'audit Flash IA à Wervicq-Sud démarre à 490 € HT. Il couvre le diagnostic de vos processus, l'identification des cas d'usage IA prioritaires et un ROI chiffré. Tous nos tarifs sont publics.",
     },
     {

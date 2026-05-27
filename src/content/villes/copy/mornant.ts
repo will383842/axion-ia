@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MORNANT_COPY: VilleCopy = {
   pitchFr:
-    "Mornant (69), commune du sud-ouest lyonnais dans le Rhône, est un bourg-centre du pays mornantais. Tissu mixte : PME tertiaires, agriculture (viticulture coteaux du Lyonnais), TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations du SO lyonnais.",
+    "Mornant (69), commune du sud-ouest lyonnais dans le Rhône, est un bourg-centre du pays mornantais. Tissu mixte : PME tertiaires, agriculture (viticulture coteaux du Lyonnais), TPE artisans BTP, commerces. Axion-IA y mène ses missions auprès des organisations locales du SO lyonnais.",
   pitchEn:
-    "Mornant (69), commune du sud-ouest lyonnais dans le Rhône, est un bourg-centre du pays mornantais. Tissu mixte : PME tertiaires, agriculture (viticulture coteaux du Lyonnais), TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations du SO lyonnais.",
+    "Mornant (69), commune du sud-ouest lyonnais dans le Rhône, est un bourg-centre du pays mornantais. Tissu mixte : PME tertiaires, agriculture (viticulture coteaux du Lyonnais), TPE artisans BTP, commerces. Axion-IA y mène ses missions auprès des organisations locales du SO lyonnais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mornant (69). Nous accompagnons tous types d'activités : PME tertiaires SO lyonnais, viticulteurs coteaux du Lyonnais, agriculteurs, TPE artisans BTP, commerçants et services aux entreprises du pays mornantais.",
   directAnswerEn:

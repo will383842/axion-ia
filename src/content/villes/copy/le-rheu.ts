@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_RHEU_COPY: VilleCopy = {
   pitchFr:
-    "Le Rheu (35), commune résidentielle à l'ouest de Rennes en Ille-et-Vilaine, intégrée à Rennes Métropole. Tissu de TPE/PME tertiaires, services aux entreprises, artisans BTP portés par le développement pavillonnaire, commerces de proximité et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations de l'ouest rennais.",
+    "Le Rheu (35), commune résidentielle à l'ouest de Rennes en Ille-et-Vilaine, intégrée à Rennes Métropole. Tissu de TPE/PME tertiaires, services aux entreprises, artisans BTP portés par le développement pavillonnaire, commerces de proximité et professions libérales. Axion-IA y déploie son expertise pour toutes les organisations de l'ouest rennais.",
   pitchEn:
-    "Le Rheu (35), commune résidentielle à l'ouest de Rennes en Ille-et-Vilaine, intégrée à Rennes Métropole. Tissu de TPE/PME tertiaires, services aux entreprises, artisans BTP portés par le développement pavillonnaire, commerces de proximité et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations de l'ouest rennais.",
+    "Le Rheu (35), commune résidentielle à l'ouest de Rennes en Ille-et-Vilaine, intégrée à Rennes Métropole. Tissu de TPE/PME tertiaires, services aux entreprises, artisans BTP portés par le développement pavillonnaire, commerces de proximité et professions libérales. Axion-IA y déploie son expertise pour toutes les organisations de l'ouest rennais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Rheu (35). Nous accompagnons TPE et PME : entreprises tertiaires de l'ouest rennais, artisans BTP, commerçants, professions libérales, services aux entreprises et indépendants de Rennes Métropole ouest.",
   directAnswerEn:

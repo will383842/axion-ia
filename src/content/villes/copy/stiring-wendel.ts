@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const STIRING_WENDEL_COPY: VilleCopy = {
   pitchFr:
-    "Stiring-Wendel (57), commune frontalière de 10 956 habitants en Moselle dans l'agglomération de Sarrebruck-Forbach, est ancrée dans l'héritage du bassin houiller lorrain et limitrophe de la Sarre allemande. Tissu TPE/PME industrie reconvertie, logistique transfrontalière, commerces, artisanat, services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Stiring-Wendel (57), commune frontalière de 10 956 habitants en Moselle dans l'agglomération de Sarrebruck-Forbach, est ancrée dans l'héritage du bassin houiller lorrain et limitrophe de la Sarre allemande. Tissu TPE/PME industrie reconvertie, logistique transfrontalière, commerces, artisanat, services. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Stiring-Wendel (57), commune frontalière de 10 956 habitants en Moselle dans l'agglomération de Sarrebruck-Forbach, est ancrée dans l'héritage du bassin houiller lorrain et limitrophe de la Sarre allemande. Tissu TPE/PME industrie reconvertie, logistique transfrontalière, commerces, artisanat, services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Stiring-Wendel (57), commune frontalière de 10 956 habitants en Moselle dans l'agglomération de Sarrebruck-Forbach, est ancrée dans l'héritage du bassin houiller lorrain et limitrophe de la Sarre allemande. Tissu TPE/PME industrie reconvertie, logistique transfrontalière, commerces, artisanat, services. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Stiring-Wendel (57). Nous accompagnons tous types d'activités : TPE/PME industrie reconvertie et logistique transfrontalière, artisans, commerces de proximité, professions de services et acteurs du bassin Sarrebruck-Forbach.",
   directAnswerEn:

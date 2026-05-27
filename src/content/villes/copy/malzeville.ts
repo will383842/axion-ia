@@ -60,7 +60,7 @@ export const MALZEVILLE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les professions libérales et artisans BTP sur des cas IA pratiques : automatisation devis, gestion planning, agents IA prise de RDV, classification documentaire. Audit Flash 490 € HT.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Malzéville ?",
+      q: "Tarifs audit IA à Malzéville  : quel budget prévoir ?",
       a: "L'audit Flash IA démarre à 490 € HT pour les TPE et PME de Malzéville et de la Métropole du Grand Nancy. Tarifs publics et transparents. ROI chiffré dès le diagnostic initial.",
     },
     {

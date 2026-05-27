@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const GEVEZE_COPY: VilleCopy = {
   pitchFr:
-    "Gévezé (35), commune résidentielle au nord-ouest de Rennes en Ille-et-Vilaine, abrite un tissu de TPE artisanales, commerces de proximité, PME de services, professions libérales et exploitations agricoles. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Gévezé (35), commune résidentielle au nord-ouest de Rennes en Ille-et-Vilaine, abrite un tissu de TPE artisanales, commerces de proximité, PME de services, professions libérales et exploitations agricoles. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Gévezé (35), commune résidentielle au nord-ouest de Rennes en Ille-et-Vilaine, abrite un tissu de TPE artisanales, commerces de proximité, PME de services, professions libérales et exploitations agricoles. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Gévezé (35), commune résidentielle au nord-ouest de Rennes en Ille-et-Vilaine, abrite un tissu de TPE artisanales, commerces de proximité, PME de services, professions libérales et exploitations agricoles. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gévezé (35). Nous accompagnons TPE et PME : artisans du bâtiment, commerçants, PME de services, professions libérales et exploitants agricoles du nord-ouest rennais. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gévezé (35). Nous accompagnons TPE et PME : artisans du bâtiment, commerçants, PME de services, professions libérales et exploitants agricoles du nord-ouest rennais. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gévezé (35). Nous accompagnons TPE et PME : artisans du bâtiment, commerçants, PME de services, professions libérales et exploitants agricoles du nord-ouest rennais. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gévezé (35). Nous accompagnons TPE et PME : artisans du bâtiment, commerçants, PME de services, professions libérales et exploitants agricoles du nord-ouest rennais. Audit Flash sur mesure.",
   ecosystemFr:
     "Gévezé est une commune résidentielle en croissance au nord-ouest de Rennes Métropole (Ille-et-Vilaine). Son économie locale combine artisanat du bâtiment, commerces de centre-bourg, services aux entreprises, professions libérales et agriculture périurbaine, dans un cadre attractif à proximité immédiate de la capitale bretonne.",
   ecosystemEn:

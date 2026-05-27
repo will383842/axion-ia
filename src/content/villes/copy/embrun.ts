@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const EMBRUN_COPY: VilleCopy = {
   pitchFr:
-    "Embrun (05), sous-préfecture des Hautes-Alpes, surplombe le lac de Serre-Ponçon (plus grand lac artificiel de France métropolitaine). Tissu TPE artisans, PME tourisme/sports nautiques/nature, commerçants, agriculteurs montagne et services. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'Embrunais.",
+    "Embrun (05), sous-préfecture des Hautes-Alpes, surplombe le lac de Serre-Ponçon (plus grand lac artificiel de France métropolitaine). Tissu TPE artisans, PME tourisme/sports nautiques/nature, commerçants, agriculteurs montagne et services. Axion-IA répond aux besoins de toutes les entreprises de l'Embrunais.",
   pitchEn:
-    "Embrun (05), sous-préfecture des Hautes-Alpes, surplombe le lac de Serre-Ponçon (plus grand lac artificiel de France métropolitaine). Tissu TPE artisans, PME tourisme/sports nautiques/nature, commerçants, agriculteurs montagne et services. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'Embrunais.",
+    "Embrun (05), sous-préfecture des Hautes-Alpes, surplombe le lac de Serre-Ponçon (plus grand lac artificiel de France métropolitaine). Tissu TPE artisans, PME tourisme/sports nautiques/nature, commerçants, agriculteurs montagne et services. Axion-IA répond aux besoins de toutes les entreprises de l'Embrunais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Embrun (05). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et sports nature (lac Serre-Ponçon, bases nautiques), commerçants, hébergeurs, agriculteurs montagne, indépendants et services aux entreprises de l'Embrunais.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const EMBRUN_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les campings et hébergeurs autour d'Embrun : automatisation check-in/check-out, agents conversationnels multilingue, classification avis clients, optimisation taux occupation été/hiver.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Embrun ?",
+      q: "Quel est le tarif d'un audit IA à Embrun  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE artisans, hébergeurs et PME embrunaises. Tarifs publics transparents, sans frais cachés.",
     },
     {

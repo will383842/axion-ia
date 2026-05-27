@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const REYRIEUX_COPY: VilleCopy = {
   pitchFr:
-    "Reyrieux (01), commune du val de Saône dans l'Ain, est positionnée aux portes de la Dombes. Tissu péri-urbain : PME tertiaires, TPE artisans BTP, commerces, professions libérales, agriculture Dombes. Axion-IA accompagne entreprises et indépendants de tous secteurs du val de Saône Ain.",
+    "Reyrieux (01), commune du val de Saône dans l'Ain, est positionnée aux portes de la Dombes. Tissu péri-urbain : PME tertiaires, TPE artisans BTP, commerces, professions libérales, agriculture Dombes. Axion-IA collabore avec toutes les structures locales du val de Saône Ain.",
   pitchEn:
-    "Reyrieux (01), commune du val de Saône dans l'Ain, est positionnée aux portes de la Dombes. Tissu péri-urbain : PME tertiaires, TPE artisans BTP, commerces, professions libérales, agriculture Dombes. Axion-IA accompagne entreprises et indépendants de tous secteurs du val de Saône Ain.",
+    "Reyrieux (01), commune du val de Saône dans l'Ain, est positionnée aux portes de la Dombes. Tissu péri-urbain : PME tertiaires, TPE artisans BTP, commerces, professions libérales, agriculture Dombes. Axion-IA collabore avec toutes les structures locales du val de Saône Ain.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Reyrieux (01). Nous accompagnons tous types d'activités : PME tertiaires val de Saône, agriculteurs Dombes, TPE artisans BTP, commerçants, professions libérales et services aux entreprises.",
   directAnswerEn:

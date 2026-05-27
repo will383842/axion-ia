@@ -9,9 +9,9 @@ export const LE_GRAU_DU_ROI_COPY: VilleCopy = {
   pitchEn:
     "Le Grau-du-Roi (30), station balnéaire du Gard entre Camargue et Méditerranée, port de pêche actif et plage de l'Espiguette. Tissu TPE/PME tourisme balnéaire, hôtellerie-restauration, pêche, commerces saisonniers et services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune du littoral gardois.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient au Grau-du-Roi (30). Nous accompagnons les TPE, PME et ETI locales : acteurs tourisme balnéaire, hôteliers-restaurateurs, pêcheurs, commerçants saisonniers et professions libérales du littoral gardois. Audit Flash à partir de 490 € HT.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient au Grau-du-Roi (30). Nous accompagnons les TPE, PME et ETI locales : acteurs tourisme balnéaire, hôteliers-restaurateurs, pêcheurs, commerçants saisonniers et professions libérales du littoral gardois. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient au Grau-du-Roi (30). Nous accompagnons les TPE, PME et ETI locales : acteurs tourisme balnéaire, hôteliers-restaurateurs, pêcheurs, commerçants saisonniers et professions libérales du littoral gardois. Audit Flash à partir de 490 € HT.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient au Grau-du-Roi (30). Nous accompagnons les TPE, PME et ETI locales : acteurs tourisme balnéaire, hôteliers-restaurateurs, pêcheurs, commerçants saisonniers et professions libérales du littoral gardois. Audit Flash sur mesure.",
   seoHook: "tourisme balnéaire & hôtellerie-restauration",
   ecosystemFr:
     "Le Grau-du-Roi (~8 600 hab) est une station balnéaire du littoral gardois avec Port-Camargue (plus grand port de plaisance d'Europe). Tourisme balnéaire, hôtellerie-restauration saisonnière, pêche professionnelle, commerces, nautisme et activités liées à la Camargue maritime.",

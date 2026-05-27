@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_COLLE_SUR_LOUP_COPY: VilleCopy = {
   pitchFr:
-    "La Colle-sur-Loup (06), dans l'arrière-pays de Saint-Paul-de-Vence entre Nice et Cannes, est une commune résidentielle et touristique traversée par le Loup. Tissu TPE/PME tourisme, artisanat, commerces, professions libérales et services aux entreprises du moyen-pays azuréen. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "La Colle-sur-Loup (06), dans l'arrière-pays de Saint-Paul-de-Vence entre Nice et Cannes, est une commune résidentielle et touristique traversée par le Loup. Tissu TPE/PME tourisme, artisanat, commerces, professions libérales et services aux entreprises du moyen-pays azuréen. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "La Colle-sur-Loup (06), dans l'arrière-pays de Saint-Paul-de-Vence entre Nice et Cannes, est une commune résidentielle et touristique traversée par le Loup. Tissu TPE/PME tourisme, artisanat, commerces, professions libérales et services aux entreprises du moyen-pays azuréen. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "La Colle-sur-Loup (06), dans l'arrière-pays de Saint-Paul-de-Vence entre Nice et Cannes, est une commune résidentielle et touristique traversée par le Loup. Tissu TPE/PME tourisme, artisanat, commerces, professions libérales et services aux entreprises du moyen-pays azuréen. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Colle-sur-Loup (06). Nous accompagnons tous types d'activités : TPE hôtellerie-restauration, artisans, commerçants, professions libérales, PME services et acteurs tourisme de l'arrière-pays Saint-Paul-de-Vence.",
   directAnswerEn:

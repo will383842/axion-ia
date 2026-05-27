@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const PARAY_VIEILLE_POSTE_COPY: VilleCopy = {
   pitchFr:
-    "Paray-Vieille-Poste (91), commune stratégique aux portes de l'aéroport Paris-Orly en Essonne. Zone d'activités aéroportuaire, logistique, fret, hôtellerie, services aux entreprises, TPE commerces de proximité. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Paray-Vieille-Poste (91), commune stratégique aux portes de l'aéroport Paris-Orly en Essonne. Zone d'activités aéroportuaire, logistique, fret, hôtellerie, services aux entreprises, TPE commerces de proximité. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Paray-Vieille-Poste (91), commune stratégique aux portes de l'aéroport Paris-Orly en Essonne. Zone d'activités aéroportuaire, logistique, fret, hôtellerie, services aux entreprises, TPE commerces de proximité. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Paray-Vieille-Poste (91), commune stratégique aux portes de l'aéroport Paris-Orly en Essonne. Zone d'activités aéroportuaire, logistique, fret, hôtellerie, services aux entreprises, TPE commerces de proximité. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Paray-Vieille-Poste (91). Nous accompagnons TPE et PME : entreprises logistique aéroportuaire, prestataires fret et handling, hôtellerie Orly, services aux entreprises, commerces de proximité. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Paray-Vieille-Poste (91). Nous accompagnons TPE et PME : entreprises logistique aéroportuaire, prestataires fret et handling, hôtellerie Orly, services aux entreprises, commerces de proximité. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Paray-Vieille-Poste (91). Nous accompagnons TPE et PME : entreprises logistique aéroportuaire, prestataires fret et handling, hôtellerie Orly, services aux entreprises, commerces de proximité. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Paray-Vieille-Poste (91). Nous accompagnons TPE et PME : entreprises logistique aéroportuaire, prestataires fret et handling, hôtellerie Orly, services aux entreprises, commerces de proximité. Audit Flash sur mesure.",
   seoHook: "logistique aéroportuaire & fret handling",
   ecosystemFr:
     "Paray-Vieille-Poste est une commune de l'Essonne située aux portes de l'aéroport Paris-Orly, au cœur d'une zone d'activités aéroportuaire majeure. Tissu TPE/PME logistique, fret, hôtellerie, services aux entreprises, commerce de proximité.",
@@ -60,7 +60,7 @@ export const PARAY_VIEILLE_POSTE_COPY: VilleCopy = {
       a: "Audit IA du parcours client, CRM augmenté réservations, chatbot multilingue, automatisation facturation et revenue management. Audit Flash 490 € HT.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Paray-Vieille-Poste ?",
+      q: "Combien coûte un audit IA à Paray-Vieille-Poste  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics, sans engagement. Devis sous 48h après premier échange.",
     },
     {

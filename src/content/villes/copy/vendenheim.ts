@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VENDENHEIM_COPY: VilleCopy = {
   pitchFr:
-    "Vendenheim (67), commune de 6 137 habitants en Bas-Rhin, située au nord de l'agglomération de Strasbourg, est ancrée dans un dense tissu de zones d'activités économiques, logistique et commerciales. Tissu TPE/PME logistique, services aux entreprises, commerces, artisanat, industrie légère. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Vendenheim (67), commune de 6 137 habitants en Bas-Rhin, située au nord de l'agglomération de Strasbourg, est ancrée dans un dense tissu de zones d'activités économiques, logistique et commerciales. Tissu TPE/PME logistique, services aux entreprises, commerces, artisanat, industrie légère. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "Vendenheim (67), commune de 6 137 habitants en Bas-Rhin, située au nord de l'agglomération de Strasbourg, est ancrée dans un dense tissu de zones d'activités économiques, logistique et commerciales. Tissu TPE/PME logistique, services aux entreprises, commerces, artisanat, industrie légère. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Vendenheim (67), commune de 6 137 habitants en Bas-Rhin, située au nord de l'agglomération de Strasbourg, est ancrée dans un dense tissu de zones d'activités économiques, logistique et commerciales. Tissu TPE/PME logistique, services aux entreprises, commerces, artisanat, industrie légère. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vendenheim (67). Nous accompagnons tous types d'activités : TPE/PME logistique et services aux entreprises du nord strasbourgeois, artisans, commerces, industriels légers et acteurs économiques des zones d'activités de l'Eurométropole.",
   directAnswerEn:

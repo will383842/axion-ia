@@ -9,9 +9,9 @@ export const LEGUEVIN_COPY: VilleCopy = {
   pitchEn:
     "Léguevin (31), commune dynamique de l'ouest toulousain avec près de 10 000 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales, quelques activités agricoles. Axion-IA opère pour toutes les structures économiques de la commune de la couronne ouest de Toulouse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Léguevin (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'ouest Toulouse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Léguevin (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'ouest Toulouse. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Léguevin (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'ouest Toulouse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Léguevin (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'ouest Toulouse. Audit Flash sur mesure.",
   seoHook: "artisanat & commerce détail",
   ecosystemFr:
     "Léguevin est une commune en croissance de l'ouest de Toulouse, sur l'axe de la RN124. Tissu TPE artisans, PME de services, commerces de centre-bourg, professions libérales, activités agricoles périurbaines. Proximité de Pibrac et Brax.",
@@ -56,7 +56,7 @@ export const LEGUEVIN_COPY: VilleCopy = {
       a: "Nous accompagnons tous types d'activités : TPE artisans, PME de services, professions libérales, commerces, agriculture. Aucun secteur exclu.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Léguevin ?",
+      q: "Tarifs audit IA à Léguevin  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics, pas de devis opaque.",
     },
     {

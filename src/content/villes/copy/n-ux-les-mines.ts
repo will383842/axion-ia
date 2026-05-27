@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const N_UX_LES_MINES_COPY: VilleCopy = {
   pitchFr:
-    "Nœux-les-Mines (62), commune du Pas-de-Calais dans l'agglomération de Béthune (région Hauts-de-France), est issue du bassin minier reconverti inscrit UNESCO. Connue pour son stade nautique Loisinord (unique piste de ski synthétique du nord de la France). Tissu TPE artisanat BTP et services, PME industrie reconvertie, commerces de proximité, acteurs du tourisme sportif. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Nœux-les-Mines (62), commune du Pas-de-Calais dans l'agglomération de Béthune (région Hauts-de-France), est issue du bassin minier reconverti inscrit UNESCO. Connue pour son stade nautique Loisinord (unique piste de ski synthétique du nord de la France). Tissu TPE artisanat BTP et services, PME industrie reconvertie, commerces de proximité, acteurs du tourisme sportif. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Nœux-les-Mines (62), commune du Pas-de-Calais dans l'agglomération de Béthune (région Hauts-de-France), est issue du bassin minier reconverti inscrit UNESCO. Connue pour son stade nautique Loisinord (unique piste de ski synthétique du nord de la France). Tissu TPE artisanat BTP et services, PME industrie reconvertie, commerces de proximité, acteurs du tourisme sportif. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Nœux-les-Mines (62), commune du Pas-de-Calais dans l'agglomération de Béthune (région Hauts-de-France), est issue du bassin minier reconverti inscrit UNESCO. Connue pour son stade nautique Loisinord (unique piste de ski synthétique du nord de la France). Tissu TPE artisanat BTP et services, PME industrie reconvertie, commerces de proximité, acteurs du tourisme sportif. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nœux-les-Mines (62). Nous accompagnons tous types d'activités : TPE artisans BTP et services du bassin minier reconverti, PME industrie et sous-traitance, commerçants de proximité, acteurs du tourisme sportif (Loisinord), prestataires de l'agglomération béthunoise.",
   directAnswerEn:

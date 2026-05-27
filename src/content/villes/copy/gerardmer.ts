@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const GERARDMER_COPY: VilleCopy = {
   pitchFr:
-    "Gérardmer (88), surnommée la « Perle des Vosges », est une station touristique majeure articulée autour de son lac glaciaire, de sa station de ski et de son célèbre Festival international du film fantastique. Tissu de TPE/PME hôtellerie-restauration, tourisme outdoor, commerce, artisanat textile (linge des Vosges) et services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Gérardmer (88), surnommée la « Perle des Vosges », est une station touristique majeure articulée autour de son lac glaciaire, de sa station de ski et de son célèbre Festival international du film fantastique. Tissu de TPE/PME hôtellerie-restauration, tourisme outdoor, commerce, artisanat textile (linge des Vosges) et services. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Gérardmer (88), surnommée la « Perle des Vosges », est une station touristique majeure articulée autour de son lac glaciaire, de sa station de ski et de son célèbre Festival international du film fantastique. Tissu de TPE/PME hôtellerie-restauration, tourisme outdoor, commerce, artisanat textile (linge des Vosges) et services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Gérardmer (88), surnommée la « Perle des Vosges », est une station touristique majeure articulée autour de son lac glaciaire, de sa station de ski et de son célèbre Festival international du film fantastique. Tissu de TPE/PME hôtellerie-restauration, tourisme outdoor, commerce, artisanat textile (linge des Vosges) et services. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gérardmer (88). Nous accompagnons TPE et PME : hôteliers-restaurateurs, professionnels du tourisme outdoor, commerçants, artisans textiles (linge des Vosges) et prestataires de services du massif vosgien. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gérardmer (88). Nous accompagnons TPE et PME : hôteliers-restaurateurs, professionnels du tourisme outdoor, commerçants, artisans textiles (linge des Vosges) et prestataires de services du massif vosgien. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gérardmer (88). Nous accompagnons TPE et PME : hôteliers-restaurateurs, professionnels du tourisme outdoor, commerçants, artisans textiles (linge des Vosges) et prestataires de services du massif vosgien. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gérardmer (88). Nous accompagnons TPE et PME : hôteliers-restaurateurs, professionnels du tourisme outdoor, commerçants, artisans textiles (linge des Vosges) et prestataires de services du massif vosgien. Audit Flash sur mesure.",
   seoHook: "massif des",
   ecosystemFr:
     "Gérardmer est une ville-station nichée au cœur du massif des Vosges, autour d'un lac glaciaire de 115 hectares. Elle accueille la station de ski La Mauselaine et le célèbre Festival international du film fantastique de Gérardmer chaque janvier. L'économie locale repose massivement sur l'hôtellerie-restauration, le tourisme outdoor (ski, randonnée, lac, baignade, VTT), le commerce touristique, l'artisanat textile historique (linge des Vosges, draperies) et les services aux touristes et résidents.",
@@ -52,7 +52,7 @@ export const GERARDMER_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Gérardmer et sur tout le massif des Vosges (La Bresse, Xonrupt-Longemer, Le Tholy, Saint-Dié-des-Vosges). Accès via Remiremont (30 min) puis route, ou par Épinal (50 min).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Gérardmer ?",
+      q: "Quel est le tarif d'un audit IA à Gérardmer  ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Gérardmer et du massif vosgien, il identifie les cas d'usage IA à fort ROI pour votre hôtel, restaurant, commerce touristique ou activité de services.",
     },
     {

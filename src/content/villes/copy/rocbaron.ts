@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const ROCBARON_COPY: VilleCopy = {
   pitchFr:
-    "Rocbaron (83), commune du Centre-Var ancrée dans le terroir viticole des Côtes de Provence, conjugue tradition agricole et essor résidentiel dans la plaine du Caramy. TPE artisans, PME viticoles, exploitations agricoles, professions libérales et commerces de proximité au cœur d'un bassin de vie tourné vers Brignoles. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Rocbaron (83), commune du Centre-Var ancrée dans le terroir viticole des Côtes de Provence, conjugue tradition agricole et essor résidentiel dans la plaine du Caramy. TPE artisans, PME viticoles, exploitations agricoles, professions libérales et commerces de proximité au cœur d'un bassin de vie tourné vers Brignoles. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Rocbaron (83), commune du Centre-Var ancrée dans le terroir viticole des Côtes de Provence, conjugue tradition agricole et essor résidentiel dans la plaine du Caramy. TPE artisans, PME viticoles, exploitations agricoles, professions libérales et commerces de proximité au cœur d'un bassin de vie tourné vers Brignoles. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Rocbaron (83), commune du Centre-Var ancrée dans le terroir viticole des Côtes de Provence, conjugue tradition agricole et essor résidentiel dans la plaine du Caramy. TPE artisans, PME viticoles, exploitations agricoles, professions libérales et commerces de proximité au cœur d'un bassin de vie tourné vers Brignoles. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rocbaron (83). Nous accompagnons TPE artisans, PME viticoles, exploitations agricoles, professions libérales et commerces du Centre-Var. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rocbaron (83). Nous accompagnons TPE artisans, PME viticoles, exploitations agricoles, professions libérales et commerces du Centre-Var. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rocbaron (83). Nous accompagnons TPE artisans, PME viticoles, exploitations agricoles, professions libérales et commerces du Centre-Var. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rocbaron (83). Nous accompagnons TPE artisans, PME viticoles, exploitations agricoles, professions libérales et commerces du Centre-Var. Audit Flash sur mesure.",
   seoHook: "viticulture domaines & artisanat",
   ecosystemFr:
     "Rocbaron est positionnée dans le Centre-Var, au cœur de la plaine du Caramy, à proximité de Brignoles, La Roquebrussanne et Forcalqueiret. Commune dont l'activité économique repose sur la viticulture (AOP Côtes de Provence), les TPE artisans (BTP, services), PME tertiaires, exploitations agricoles, professions libérales et commerces de proximité. Bassin d'emploi tourné vers Brignoles et Toulon.",
@@ -52,7 +52,7 @@ export const ROCBARON_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Rocbaron et dans tout le Centre-Var (Brignoles, La Roquebrussanne, Forcalqueiret, Garéoult, Néoules). Accès direct via A57 et axes départementaux.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Rocbaron ?",
+      q: "Tarifs audit IA à Rocbaron  : quel budget prévoir ?",
       a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, PME viticoles, exploitations agricoles et commerces rocbaronnais. Tarifs publics, sans engagement.",
     },
     {

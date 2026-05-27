@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_JEAN_DE_MONTS_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Jean-de-Monts (85), grande station balnéaire de la côte vendéenne, rassemble près de 8 900 habitants à l'année. Plages immenses, forêt domaniale, haute densité touristique (campings, hôtels, résidences). Tissu de TPE et PME tourisme, commerce saisonnier, santé et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Saint-Jean-de-Monts (85), grande station balnéaire de la côte vendéenne, rassemble près de 8 900 habitants à l'année. Plages immenses, forêt domaniale, haute densité touristique (campings, hôtels, résidences). Tissu de TPE et PME tourisme, commerce saisonnier, santé et services. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Saint-Jean-de-Monts (85), grande station balnéaire de la côte vendéenne, rassemble près de 8 900 habitants à l'année. Plages immenses, forêt domaniale, haute densité touristique (campings, hôtels, résidences). Tissu de TPE et PME tourisme, commerce saisonnier, santé et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Saint-Jean-de-Monts (85), grande station balnéaire de la côte vendéenne, rassemble près de 8 900 habitants à l'année. Plages immenses, forêt domaniale, haute densité touristique (campings, hôtels, résidences). Tissu de TPE et PME tourisme, commerce saisonnier, santé et services. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean-de-Monts (85). Nous accompagnons tous types d'activités : TPE et PME touristiques, campings, hôteliers-restaurateurs, commerces saisonniers, thalasso et bien-être, services de proximité.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const SAINT_JEAN_DE_MONTS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons hôtels et restaurants de Saint-Jean-de-Monts : pricing dynamique saisonnier, agents conversationnels réservation, classification avis en ligne, prédiction taux d'occupation.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Saint-Jean-de-Monts ?",
+      q: "Combien coûte un audit IA à Saint-Jean-de-Monts  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {

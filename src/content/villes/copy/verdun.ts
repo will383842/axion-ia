@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const VERDUN_COPY: VilleCopy = {
   pitchFr:
-    "Verdun (55), sous-préfecture de la Meuse mondialement connue pour son champ de bataille 14-18 et son mémorial, conjugue tourisme de mémoire, patrimoine militaire et économie locale meusienne. Tissu de TPE/PME tourisme, hôtellerie-restauration, commerce, artisanat et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Verdun (55), sous-préfecture de la Meuse mondialement connue pour son champ de bataille 14-18 et son mémorial, conjugue tourisme de mémoire, patrimoine militaire et économie locale meusienne. Tissu de TPE/PME tourisme, hôtellerie-restauration, commerce, artisanat et services. Axion-IA répond aux besoins des activités professionnelles présentes.",
   pitchEn:
-    "Verdun (55), sous-préfecture de la Meuse mondialement connue pour son champ de bataille 14-18 et son mémorial, conjugue tourisme de mémoire, patrimoine militaire et économie locale meusienne. Tissu de TPE/PME tourisme, hôtellerie-restauration, commerce, artisanat et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Verdun (55), sous-préfecture de la Meuse mondialement connue pour son champ de bataille 14-18 et son mémorial, conjugue tourisme de mémoire, patrimoine militaire et économie locale meusienne. Tissu de TPE/PME tourisme, hôtellerie-restauration, commerce, artisanat et services. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Verdun (55). Nous accompagnons TPE et PME : acteurs du tourisme de mémoire, hôteliers, restaurateurs, commerçants, artisans et prestataires de services de la Meuse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Verdun (55). Nous accompagnons TPE et PME : acteurs du tourisme de mémoire, hôteliers, restaurateurs, commerçants, artisans et prestataires de services de la Meuse. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Verdun (55). Nous accompagnons TPE et PME : acteurs du tourisme de mémoire, hôteliers, restaurateurs, commerçants, artisans et prestataires de services de la Meuse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Verdun (55). Nous accompagnons TPE et PME : acteurs du tourisme de mémoire, hôteliers, restaurateurs, commerçants, artisans et prestataires de services de la Meuse. Audit Flash sur mesure.",
   seoHook: "vallée meuse",
   ecosystemFr:
     "Verdun est sous-préfecture de la Meuse, située sur les bords de la Meuse. La ville est un pôle mondial du tourisme de mémoire (champ de bataille, Mémorial de Verdun, Ossuaire de Douaumont, Citadelle souterraine). L'économie locale repose sur le tourisme mémoriel, l'hôtellerie-restauration, le commerce de centre-ville, l'artisanat BTP et les services aux entreprises et particuliers.",
@@ -52,7 +52,7 @@ export const VERDUN_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Verdun et sur toute la Meuse (Bar-le-Duc, Commercy, Étain, Stenay). Gare Meuse TGV à 25 min, Paris à 1h05 en TGV.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Verdun ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Verdun  ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Verdun et de la Meuse, il identifie les cas d'usage IA à fort ROI pour votre activité touristique, hôtelière ou commerciale.",
     },
     {

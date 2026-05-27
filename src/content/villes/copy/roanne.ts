@@ -11,9 +11,9 @@ export const ROANNE_COPY: VilleCopy = {
   pitchEn:
     "À Roanne, Axion-IA intervient pour optimiser les processus des entreprises locales, en lien avec des acteurs tels qu'Eramet et Casino. Nos services s'adaptent aux besoins spécifiques de chaque secteur.",
   directAnswerFr:
-    "Axion-IA se déplace à Roanne pour accompagner les entreprises dans l'intégration de l'IA, en tenant compte de l'écosystème local comprenant Eramet et le Parc d'activités de Bonvert. Nos interventions, comme l'audit Flash à partir de 490 € HT, sont conçues pour répondre aux besoins spécifiques des secteurs dominants tels que l'industrie alimentaire et la fabrication de produits métalliques.",
+    "Axion-IA se déplace à Roanne pour accompagner les entreprises dans l'intégration de l'IA, en tenant compte de l'écosystème local comprenant Eramet et le Parc d'activités de Bonvert. Nos interventions, comme l'audit Flash, sont conçues pour répondre aux besoins spécifiques des secteurs dominants tels que l'industrie alimentaire et la fabrication de produits métalliques.",
   directAnswerEn:
-    "Axion-IA se déplace à Roanne pour accompagner les entreprises dans l'intégration de l'IA, en tenant compte de l'écosystème local comprenant Eramet et le Parc d'activités de Bonvert. Nos interventions, comme l'audit Flash à partir de 490 € HT, sont conçues pour répondre aux besoins spécifiques des secteurs dominants tels que l'industrie alimentaire et la fabrication de produits métalliques.",
+    "Axion-IA se déplace à Roanne pour accompagner les entreprises dans l'intégration de l'IA, en tenant compte de l'écosystème local comprenant Eramet et le Parc d'activités de Bonvert. Nos interventions, comme l'audit Flash, sont conçues pour répondre aux besoins spécifiques des secteurs dominants tels que l'industrie alimentaire et la fabrication de produits métalliques.",
   seoHook: "industrie alimentaire & produits métalliques",
   ecosystemFr:
     "Roanne, avec des entreprises comme Eramet et le Parc d'activités de Bonvert, offre un environnement propice à l'optimisation industrielle. Axion-IA s'intègre dans cet écosystème pour apporter des solutions IA sur site.",

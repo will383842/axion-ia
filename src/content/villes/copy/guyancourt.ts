@@ -7,9 +7,9 @@ import type { VilleCopy } from "./types";
 
 export const GUYANCOURT_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Guyancourt, un pôle économique dynamique avec Renault et Bouygues. Nous proposons des solutions IA adaptées aux besoins des entreprises locales, avec un audit dès 490 € HT.",
+    "Axion-IA intervient à Guyancourt, un pôle économique dynamique avec Renault et Bouygues. Nous proposons des solutions IA adaptées aux besoins des entreprises locales, avec un audit.",
   pitchEn:
-    "Axion-IA intervient à Guyancourt, un pôle économique dynamique avec Renault et Bouygues. Nous proposons des solutions IA adaptées aux besoins des entreprises locales, avec un audit dès 490 € HT.",
+    "Axion-IA intervient à Guyancourt, un pôle économique dynamique avec Renault et Bouygues. Nous proposons des solutions IA adaptées aux besoins des entreprises locales, avec un audit.",
   directAnswerFr:
     "À Guyancourt, Axion-IA propose des interventions sur site pour optimiser les processus des entreprises. Le Technocentre Renault et l'Université de Versailles Saint-Quentin-en-Yvelines sont des acteurs clés de l'écosystème local. Nos services incluent audits, implémentations et formations, adaptés aux spécificités des secteurs dominants tels que la programmation informatique et l'ingénierie.",
   directAnswerEn:

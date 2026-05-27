@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const PLERIN_COPY: VilleCopy = {
   pitchFr:
-    "Plérin (22), commune littorale de l'agglomération de Saint-Brieuc, entre plage Martin et zones d'activités commerciales en Côtes-d'Armor. Tissu de TPE et PME du commerce, de la restauration balnéaire, des services aux entreprises, professions libérales et artisans. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglo briochine.",
+    "Plérin (22), commune littorale de l'agglomération de Saint-Brieuc, entre plage Martin et zones d'activités commerciales en Côtes-d'Armor. Tissu de TPE et PME du commerce, de la restauration balnéaire, des services aux entreprises, professions libérales et artisans. Axion-IA couvre les activités professionnelles du bassin de l'agglo briochine.",
   pitchEn:
-    "Plérin (22), commune littorale de l'agglomération de Saint-Brieuc, entre plage Martin et zones d'activités commerciales en Côtes-d'Armor. Tissu de TPE et PME du commerce, de la restauration balnéaire, des services aux entreprises, professions libérales et artisans. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglo briochine.",
+    "Plérin (22), commune littorale de l'agglomération de Saint-Brieuc, entre plage Martin et zones d'activités commerciales en Côtes-d'Armor. Tissu de TPE et PME du commerce, de la restauration balnéaire, des services aux entreprises, professions libérales et artisans. Axion-IA couvre les activités professionnelles du bassin de l'agglo briochine.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plérin (22). Nous accompagnons TPE et PME : commerces, restaurateurs, artisans, PME de services et professions libérales de cette commune littorale de l'agglomération de Saint-Brieuc. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plérin (22). Nous accompagnons TPE et PME : commerces, restaurateurs, artisans, PME de services et professions libérales de cette commune littorale de l'agglomération de Saint-Brieuc. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plérin (22). Nous accompagnons TPE et PME : commerces, restaurateurs, artisans, PME de services et professions libérales de cette commune littorale de l'agglomération de Saint-Brieuc. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plérin (22). Nous accompagnons TPE et PME : commerces, restaurateurs, artisans, PME de services et professions libérales de cette commune littorale de l'agglomération de Saint-Brieuc. Audit Flash sur mesure.",
   seoHook: "commerce détail & restauration activités",
   ecosystemFr:
     "Plérin est une commune littorale de l'agglomération de Saint-Brieuc, en Côtes-d'Armor. Plage Martin, port du Légué partagé avec Saint-Brieuc, zones commerciales dynamiques. Tissu économique : TPE commerces, restauration, artisanat, PME services aux entreprises, professions libérales, activités balnéaires saisonnières. Communes voisines : Saint-Brieuc, Pordic, Trégueux, Langueux, Ploufragan.",
@@ -52,7 +52,7 @@ export const PLERIN_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Plérin et dans toute l'agglomération de Saint-Brieuc (Saint-Brieuc, Pordic, Trégueux, Langueux, Ploufragan). Nos consultants se déplacent sur site ou en visio.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Plérin ?",
+      q: "Quel est le tarif d'un audit IA à Plérin  ?",
       a: "L'Audit Flash IA à Plérin démarre à 490 € HT pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {

@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const CARNOUX_EN_PROVENCE_COPY: VilleCopy = {
   pitchFr:
-    "Carnoux-en-Provence (13), petite commune résidentielle à l'est de Marseille entre Cassis et Aubagne, offre un cadre de vie privilégié aux familles et cadres du bassin marseillais. Tissu de TPE indépendants, professions libérales, commerçants et artisans. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Carnoux-en-Provence (13), petite commune résidentielle à l'est de Marseille entre Cassis et Aubagne, offre un cadre de vie privilégié aux familles et cadres du bassin marseillais. Tissu de TPE indépendants, professions libérales, commerçants et artisans. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Carnoux-en-Provence (13), petite commune résidentielle à l'est de Marseille entre Cassis et Aubagne, offre un cadre de vie privilégié aux familles et cadres du bassin marseillais. Tissu de TPE indépendants, professions libérales, commerçants et artisans. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Carnoux-en-Provence (13), petite commune résidentielle à l'est de Marseille entre Cassis et Aubagne, offre un cadre de vie privilégié aux familles et cadres du bassin marseillais. Tissu de TPE indépendants, professions libérales, commerçants et artisans. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carnoux-en-Provence (13). Nous accompagnons TPE indépendants, professions libérales, commerçants, artisans et PME tertiaires de l'est marseillais. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carnoux-en-Provence (13). Nous accompagnons TPE indépendants, professions libérales, commerçants, artisans et PME tertiaires de l'est marseillais. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carnoux-en-Provence (13). Nous accompagnons TPE indépendants, professions libérales, commerçants, artisans et PME tertiaires de l'est marseillais. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carnoux-en-Provence (13). Nous accompagnons TPE indépendants, professions libérales, commerçants, artisans et PME tertiaires de l'est marseillais. Audit Flash sur mesure.",
   seoHook: "bassin marseillais",
   ecosystemFr:
     "Carnoux-en-Provence est une commune résidentielle créée dans les années 1950 (rapatriés d'Afrique du Nord), nichée entre les collines de Cassis et Aubagne. Population aisée, professions libérales et cadres. Centre commercial de proximité, TPE artisans et indépendants. Proximité immédiate d'Aubagne et de la technopôle de Gémenos.",
@@ -52,7 +52,7 @@ export const CARNOUX_EN_PROVENCE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Carnoux-en-Provence et dans tout l'est marseillais (Cassis, Aubagne, Gémenos, Roquefort-la-Bédoule, La Ciotat). Accès rapide A50 depuis Marseille centre.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Carnoux-en-Provence ?",
+      q: "Combien coûte un audit IA à Carnoux-en-Provence  ?",
       a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux professions libérales, TPE indépendants et commerçants carnousiens. Tarifs publics, sans engagement.",
     },
     {

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const WATTIGNIES_COPY: VilleCopy = {
   pitchFr:
-    "Wattignies (59), commune résidentielle de l'agglomération lilloise en banlieue sud, offre un cadre de vie prisé entre Lille et Seclin. Tissu économique : TPE et PME de services aux entreprises, commerces de proximité, artisans du bâtiment, professions libérales, prestataires santé et PME B2B desservant la métropole lilloise. Axion-IA couvre l'ensemble des activités professionnelles présentes de la métropole lilloise sud.",
+    "Wattignies (59), commune résidentielle de l'agglomération lilloise en banlieue sud, offre un cadre de vie prisé entre Lille et Seclin. Tissu économique : TPE et PME de services aux entreprises, commerces de proximité, artisans du bâtiment, professions libérales, prestataires santé et PME B2B desservant la métropole lilloise. Axion-IA répond aux besoins des activités professionnelles présentes de la métropole lilloise sud.",
   pitchEn:
-    "Wattignies (59), commune résidentielle de l'agglomération lilloise en banlieue sud, offre un cadre de vie prisé entre Lille et Seclin. Tissu économique : TPE et PME de services aux entreprises, commerces de proximité, artisans du bâtiment, professions libérales, prestataires santé et PME B2B desservant la métropole lilloise. Axion-IA couvre l'ensemble des activités professionnelles présentes de la métropole lilloise sud.",
+    "Wattignies (59), commune résidentielle de l'agglomération lilloise en banlieue sud, offre un cadre de vie prisé entre Lille et Seclin. Tissu économique : TPE et PME de services aux entreprises, commerces de proximité, artisans du bâtiment, professions libérales, prestataires santé et PME B2B desservant la métropole lilloise. Axion-IA répond aux besoins des activités professionnelles présentes de la métropole lilloise sud.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wattignies (59). Nous accompagnons TPE et PME : prestataires de services aux entreprises, commerces de proximité, artisans du bâtiment, professions libérales et PME B2B de la banlieue sud de Lille.",
   directAnswerEn:
@@ -52,7 +52,7 @@ export const WATTIGNIES_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Wattignies et dans toute la banlieue sud de Lille (Faches-Thumesnil, Ronchin, Templemars, Seclin, Lesquin). Nos consultants sont basés à Lille (12 min) et couvrent l'ensemble de la Métropole Européenne de Lille.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Wattignies ?",
+      q: "Combien coûte un audit IA à Wattignies  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Wattignies et de l'agglomération lilloise sud, il identifie les cas d'usage IA à fort ROI pour votre activité (services, commerce, artisanat, professions libérales). Tarifs publics, sans engagement.",
     },
     {

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHATEAU_GONTIER_SUR_MAYENNE_COPY: VilleCopy = {
   pitchFr:
-    "Château-Gontier-sur-Mayenne (53), sous-préfecture de la Mayenne aux bords de la rivière Mayenne, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-ville, professions libérales, prestataires de services et acteurs du tourisme fluvial. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Château-Gontier-sur-Mayenne (53), sous-préfecture de la Mayenne aux bords de la rivière Mayenne, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-ville, professions libérales, prestataires de services et acteurs du tourisme fluvial. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Château-Gontier-sur-Mayenne (53), sous-préfecture de la Mayenne aux bords de la rivière Mayenne, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-ville, professions libérales, prestataires de services et acteurs du tourisme fluvial. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Château-Gontier-sur-Mayenne (53), sous-préfecture de la Mayenne aux bords de la rivière Mayenne, concentre un tissu de TPE artisans, PME agroalimentaires et industrielles, commerces de centre-ville, professions libérales, prestataires de services et acteurs du tourisme fluvial. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Château-Gontier-sur-Mayenne (53). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles, commerçants de centre-ville, professions libérales, éleveurs, prestataires de services et acteurs du tourisme fluvial du sud-Mayenne.",
   directAnswerEn:
@@ -56,7 +56,7 @@ export const CHATEAU_GONTIER_SUR_MAYENNE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME agroalimentaires et éleveurs bovins du bassin de Château-Gontier sur leurs cas IA : traçabilité troupeau, contrôle qualité, prédiction laitière, automatisation logistique froide.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Château-Gontier-sur-Mayenne ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Château-Gontier-sur-Mayenne  ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic complet. Adapté aux TPE artisans, PME agroalimentaires et industriels du sud-Mayenne. Tarifs publics, sans surprise.",
     },
     {

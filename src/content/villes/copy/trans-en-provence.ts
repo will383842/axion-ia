@@ -9,9 +9,9 @@ export const TRANS_EN_PROVENCE_COPY: VilleCopy = {
   pitchEn:
     "Trans-en-Provence (83), commune du centre-Var dans la vallée de la Nartuby aux portes de Draguignan, est connue pour ses cascades et son patrimoine provençal. Tissu de TPE artisans, commerçants, restaurateurs et PME résidentielles, BTP et services autour de l'agglomération dracénoise. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trans-en-Provence (83). Nous accompagnons TPE artisans, commerçants, restaurateurs et PME BTP et services de l'agglomération dracénoise et du centre-Var. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trans-en-Provence (83). Nous accompagnons TPE artisans, commerçants, restaurateurs et PME BTP et services de l'agglomération dracénoise et du centre-Var. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trans-en-Provence (83). Nous accompagnons TPE artisans, commerçants, restaurateurs et PME BTP et services de l'agglomération dracénoise et du centre-Var. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trans-en-Provence (83). Nous accompagnons TPE artisans, commerçants, restaurateurs et PME BTP et services de l'agglomération dracénoise et du centre-Var. Audit Flash sur mesure.",
   seoHook: "artisanat résidentiel & commerce proximité",
   ecosystemFr:
     "Trans-en-Provence est une commune résidentielle et économique du centre-Var, intégrée à l'agglomération dracénoise (Communauté d'agglo Dracénoise). Économie tirée par les TPE artisanat, le BTP, le commerce de proximité, les services aux entreprises, la restauration et un tourisme patrimonial (cascades, vieux village). Tissu de TPE/PME local.",

@@ -56,7 +56,7 @@ export const FLINES_LEZ_RACHES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE et PME agricoles et agroalimentaires de la Pévèle sur leurs cas IA : prévision rendements et planification assolements, traçabilité et normes sanitaires automatisées, détection maladies cultures par imagerie, gestion optimisée stocks et approvisionnements, copilotes administratifs PAC et réglementation.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Flines-lez-Râches ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Flines-lez-Râches  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de la Pévèle et du Douaisis, il identifie les cas d'usage IA à fort ROI pour votre activité (agriculture, agroalimentaire, artisanat, commerce, services B2B). Tarifs publics, sans engagement.",
     },
     {

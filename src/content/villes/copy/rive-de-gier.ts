@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const RIVE_DE_GIER_COPY: VilleCopy = {
   pitchFr:
-    "Rive-de-Gier (42), commune de la vallée du Gier dans la Loire, est intégrée à Saint-Étienne Métropole. Héritage industriel notable (verrerie historique au XIXème, mécanique). Tissu PME industrielles diversifiées, TPE artisans BTP, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes de la vallée du Gier.",
+    "Rive-de-Gier (42), commune de la vallée du Gier dans la Loire, est intégrée à Saint-Étienne Métropole. Héritage industriel notable (verrerie historique au XIXème, mécanique). Tissu PME industrielles diversifiées, TPE artisans BTP, commerces. Axion-IA couvre les activités professionnelles du bassin de la vallée du Gier.",
   pitchEn:
-    "Rive-de-Gier (42), commune de la vallée du Gier dans la Loire, est intégrée à Saint-Étienne Métropole. Héritage industriel notable (verrerie historique au XIXème, mécanique). Tissu PME industrielles diversifiées, TPE artisans BTP, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes de la vallée du Gier.",
+    "Rive-de-Gier (42), commune de la vallée du Gier dans la Loire, est intégrée à Saint-Étienne Métropole. Héritage industriel notable (verrerie historique au XIXème, mécanique). Tissu PME industrielles diversifiées, TPE artisans BTP, commerces. Axion-IA couvre les activités professionnelles du bassin de la vallée du Gier.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rive-de-Gier (42). Nous accompagnons tous types d'activités : PME industrielles diversifiées vallée Gier (héritage verrier/mécanique), TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de Saint-Étienne Métropole.",
   directAnswerEn:

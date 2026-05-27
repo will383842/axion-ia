@@ -60,7 +60,7 @@ export const FONTENAY_LE_COMTE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les acteurs du tourisme marais poitevin et patrimoine Renaissance : hébergeurs, restaurateurs, guides, offices de tourisme. IA réservations, marketing saisonnier, agents multilingues.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Fontenay-le-Comte ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Fontenay-le-Comte  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {

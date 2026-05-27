@@ -11,9 +11,9 @@ export const VERNON_COPY: VilleCopy = {
   pitchEn:
     "À Vernon, Axion-IA propose des interventions IA sur site pour les entreprises locales. Avec des acteurs comme Safran et Thales, nous aidons à automatiser les processus métiers et à optimiser les opérations quotidiennes.",
   directAnswerFr:
-    "Axion-IA intervient à Vernon pour accompagner les entreprises dans l'automatisation de leurs processus. Avec des secteurs comme la fabrication de produits électroniques et la recherche-développement scientifique, notre expertise permet de répondre aux besoins spécifiques des entreprises locales. Nos services incluent des audits à partir de 490 € HT et des interventions dès 590 € HT.",
+    "Axion-IA intervient à Vernon pour accompagner les entreprises dans l'automatisation de leurs processus. Avec des secteurs comme la fabrication de produits électroniques et la recherche-développement scientifique, notre expertise permet de répondre aux besoins spécifiques des entreprises locales.",
   directAnswerEn:
-    "Axion-IA intervient à Vernon pour accompagner les entreprises dans l'automatisation de leurs processus. Avec des secteurs comme la fabrication de produits électroniques et la recherche-développement scientifique, notre expertise permet de répondre aux besoins spécifiques des entreprises locales. Nos services incluent des audits à partir de 490 € HT et des interventions dès 590 € HT.",
+    "Axion-IA intervient à Vernon pour accompagner les entreprises dans l'automatisation de leurs processus. Avec des secteurs comme la fabrication de produits électroniques et la recherche-développement scientifique, notre expertise permet de répondre aux besoins spécifiques des entreprises locales.",
   seoHook: "TPE & PME · IA opérationnelle",
   ecosystemFr:
     "Vernon accueille des entreprises comme Safran et Thales, renforçant son tissu industriel. Le Parc d'activités de la Grande Garenne est un pôle économique clé, soutenant la fabrication de produits électroniques et métalliques.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LES_AVENIERES_VEYRINS_THUELLIN_COPY: VilleCopy = {
   pitchFr:
-    "Les Avenières Veyrins-Thuellin (38), commune nouvelle issue de la fusion (Les Avenières + Veyrins-Thuellin), est située dans le Nord-Isère / Bas-Dauphiné en bordure de la vallée du Rhône. Tissu PME industrielles, agriculture, TPE artisans BTP, commerces et services. Axion-IA couvre l'ensemble des activités professionnelles présentes des Vals du Dauphiné.",
+    "Les Avenières Veyrins-Thuellin (38), commune nouvelle issue de la fusion (Les Avenières + Veyrins-Thuellin), est située dans le Nord-Isère / Bas-Dauphiné en bordure de la vallée du Rhône. Tissu PME industrielles, agriculture, TPE artisans BTP, commerces et services. Axion-IA couvre les activités professionnelles du bassin des Vals du Dauphiné.",
   pitchEn:
-    "Les Avenières Veyrins-Thuellin (38), commune nouvelle issue de la fusion (Les Avenières + Veyrins-Thuellin), est située dans le Nord-Isère / Bas-Dauphiné en bordure de la vallée du Rhône. Tissu PME industrielles, agriculture, TPE artisans BTP, commerces et services. Axion-IA couvre l'ensemble des activités professionnelles présentes des Vals du Dauphiné.",
+    "Les Avenières Veyrins-Thuellin (38), commune nouvelle issue de la fusion (Les Avenières + Veyrins-Thuellin), est située dans le Nord-Isère / Bas-Dauphiné en bordure de la vallée du Rhône. Tissu PME industrielles, agriculture, TPE artisans BTP, commerces et services. Axion-IA couvre les activités professionnelles du bassin des Vals du Dauphiné.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient aux Avenières Veyrins-Thuellin (38). Nous accompagnons tous types d'activités : PME industrielles Nord-Isère, TPE artisans BTP, commerçants, agriculteurs/éleveurs du Bas-Dauphiné, indépendants, professions libérales et services aux entreprises de la Communauté de communes Les Vals du Dauphiné.",
   directAnswerEn:

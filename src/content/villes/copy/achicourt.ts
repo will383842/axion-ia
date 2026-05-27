@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const ACHICOURT_COPY: VilleCopy = {
   pitchFr:
-    "Achicourt (62), commune de l'agglomération d'Arras dans le Pas-de-Calais, accueille TPE artisanales, PME de services, professions libérales et zones commerciales péri-urbaines. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'Arrageois.",
+    "Achicourt (62), commune de l'agglomération d'Arras dans le Pas-de-Calais, accueille TPE artisanales, PME de services, professions libérales et zones commerciales péri-urbaines. Axion-IA opère sur l'ensemble des activités professionnelles locales de l'Arrageois.",
   pitchEn:
-    "Achicourt (62), commune de l'agglomération d'Arras dans le Pas-de-Calais, accueille TPE artisanales, PME de services, professions libérales et zones commerciales péri-urbaines. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'Arrageois.",
+    "Achicourt (62), commune de l'agglomération d'Arras dans le Pas-de-Calais, accueille TPE artisanales, PME de services, professions libérales et zones commerciales péri-urbaines. Axion-IA opère sur l'ensemble des activités professionnelles locales de l'Arrageois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Achicourt (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales de l'agglomération arrageoise. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Achicourt (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales de l'agglomération arrageoise. Audit Flash sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Achicourt (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales de l'agglomération arrageoise. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Achicourt (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales de l'agglomération arrageoise. Audit Flash sur mesure, intervention sur site ou en visio.",
   seoHook: "commerce détail & professions libérales",
   ecosystemFr:
     "Achicourt est une commune résidentielle et commerciale de l'agglomération d'Arras, préfecture du Pas-de-Calais. Zones commerciales péri-urbaines, TPE artisanales, PME de services, professions libérales et activités tertiaires. Bénéficie du dynamisme administratif et universitaire d'Arras.",
@@ -52,7 +52,7 @@ export const ACHICOURT_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Achicourt et dans toute l'agglomération arrageoise (Arras, Beaurains, Saint-Nicolas, Dainville). Déplacements sur site ou sessions en visio.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Achicourt ?",
+      q: "Tarifs audit IA à Achicourt  : quel budget prévoir ?",
       a: "L'Audit Flash Axion-IA démarre à 490 € HT pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME arrageoises. Tarifs publics.",
     },
     {

@@ -11,9 +11,9 @@ export const VALENCIENNES_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Valenciennes, une ville dynamique avec des entreprises comme Alstom et Bombardier. Nous offrons des solutions IA adaptées aux spécificités locales.",
   directAnswerFr:
-    "À Valenciennes, Axion-IA propose des interventions sur site pour les entreprises locales, y compris celles de la Zone Industrielle de la Plaine. Notre expertise s'étend aux secteurs tels que la construction de véhicules automobiles et le génie civil. Nous offrons des audits à partir de 490 € HT pour optimiser vos processus.",
+    "À Valenciennes, Axion-IA propose des interventions sur site pour les entreprises locales, y compris celles de la Zone Industrielle de la Plaine. Notre expertise s'étend aux secteurs tels que la construction de véhicules automobiles et le génie civil. Nous offrons des audits pour optimiser vos processus.",
   directAnswerEn:
-    "À Valenciennes, Axion-IA propose des interventions sur site pour les entreprises locales, y compris celles de la Zone Industrielle de la Plaine. Notre expertise s'étend aux secteurs tels que la construction de véhicules automobiles et le génie civil. Nous offrons des audits à partir de 490 € HT pour optimiser vos processus.",
+    "À Valenciennes, Axion-IA propose des interventions sur site pour les entreprises locales, y compris celles de la Zone Industrielle de la Plaine. Notre expertise s'étend aux secteurs tels que la construction de véhicules automobiles et le génie civil. Nous offrons des audits pour optimiser vos processus.",
   seoHook: "automobile & génie civil",
   ecosystemFr:
     "Valenciennes abrite des entreprises clés comme Alstom et Bombardier, ainsi que l'Université Polytechnique Hauts-de-France. La Serre Numérique soutient l'innovation locale.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BRIEC_COPY: VilleCopy = {
   pitchFr:
-    "Briec (29), bourg-centre rural du centre Cornouaille en Finistère, est un pôle agricole et artisanal entre Quimper et Châteaulin. Tissu TPE agricoles (élevage, polyculture), PME agroalimentaires, artisans BTP, commerces de proximité et services. Axion-IA accompagne entreprises et indépendants de tous secteurs du Centre Cornouaille.",
+    "Briec (29), bourg-centre rural du centre Cornouaille en Finistère, est un pôle agricole et artisanal entre Quimper et Châteaulin. Tissu TPE agricoles (élevage, polyculture), PME agroalimentaires, artisans BTP, commerces de proximité et services. Axion-IA accompagne entreprises et indépendants du Centre Cornouaille.",
   pitchEn:
-    "Briec (29), bourg-centre rural du centre Cornouaille en Finistère, est un pôle agricole et artisanal entre Quimper et Châteaulin. Tissu TPE agricoles (élevage, polyculture), PME agroalimentaires, artisans BTP, commerces de proximité et services. Axion-IA accompagne entreprises et indépendants de tous secteurs du Centre Cornouaille.",
+    "Briec (29), bourg-centre rural du centre Cornouaille en Finistère, est un pôle agricole et artisanal entre Quimper et Châteaulin. Tissu TPE agricoles (élevage, polyculture), PME agroalimentaires, artisans BTP, commerces de proximité et services. Axion-IA accompagne entreprises et indépendants du Centre Cornouaille.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Briec (29). Nous accompagnons tous types d'activités : TPE agricoles et éleveurs cornouaillais, PME agroalimentaires, artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises du Centre Cornouaille.",
   directAnswerEn:

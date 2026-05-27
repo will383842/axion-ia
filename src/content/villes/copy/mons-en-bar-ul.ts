@@ -11,9 +11,9 @@ export const MONS_EN_BAR_UL_COPY: VilleCopy = {
   pitchEn:
     "À Mons-en-Barœul, Axion-IA intervient pour optimiser les processus des entreprises locales. Avec des secteurs comme la programmation informatique et le commerce de détail, nous apportons des solutions IA adaptées aux besoins spécifiques de chaque entreprise.",
   directAnswerFr:
-    "Axion-IA se déplace à Mons-en-Barœul pour accompagner les entreprises dans l'automatisation de leurs tâches administratives et commerciales. Avec un tissu économique comprenant la programmation informatique et le commerce de détail, nous proposons des audits à partir de 490 € HT et des interventions dès 590 € HT, pour un retour sur investissement rapide et mesurable.",
+    "Axion-IA se déplace à Mons-en-Barœul pour accompagner les entreprises dans l'automatisation de leurs tâches administratives et commerciales. Avec un tissu économique comprenant la programmation informatique et le commerce de détail, nous proposons des audits et des interventions, pour un retour sur investissement rapide et mesurable.",
   directAnswerEn:
-    "Axion-IA se déplace à Mons-en-Barœul pour accompagner les entreprises dans l'automatisation de leurs tâches administratives et commerciales. Avec un tissu économique comprenant la programmation informatique et le commerce de détail, nous proposons des audits à partir de 490 € HT et des interventions dès 590 € HT, pour un retour sur investissement rapide et mesurable.",
+    "Axion-IA se déplace à Mons-en-Barœul pour accompagner les entreprises dans l'automatisation de leurs tâches administratives et commerciales. Avec un tissu économique comprenant la programmation informatique et le commerce de détail, nous proposons des audits et des interventions, pour un retour sur investissement rapide et mesurable.",
   seoHook: "commerce détail & programmation informatique",
   ecosystemFr:
     "Mons-en-Barœul bénéficie de la proximité de Lille, un pôle économique majeur abritant des entreprises comme LVMH et BNP Paribas. Ce contexte offre des opportunités uniques pour l'implémentation de solutions IA.",

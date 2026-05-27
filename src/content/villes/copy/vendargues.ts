@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VENDARGUES_COPY: VilleCopy = {
   pitchFr:
-    "Vendargues (34), commune dynamique de l'est de Montpellier, avec d'importantes zones d'activités commerciales et tertiaires. Accès A9/A709, forte croissance. Tissu TPE commerçants, PME services et distribution, artisans BTP, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Vendargues (34), commune dynamique de l'est de Montpellier, avec d'importantes zones d'activités commerciales et tertiaires. Accès A9/A709, forte croissance. Tissu TPE commerçants, PME services et distribution, artisans BTP, professions libérales. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "Vendargues (34), commune dynamique de l'est de Montpellier, avec d'importantes zones d'activités commerciales et tertiaires. Accès A9/A709, forte croissance. Tissu TPE commerçants, PME services et distribution, artisans BTP, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Vendargues (34), commune dynamique de l'est de Montpellier, avec d'importantes zones d'activités commerciales et tertiaires. Accès A9/A709, forte croissance. Tissu TPE commerçants, PME services et distribution, artisans BTP, professions libérales. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vendargues (34). Nous accompagnons TPE commerçants, PME de distribution et services, artisans BTP, professions libérales et entreprises des zones d'activités de l'est montpelliérain.",
   directAnswerEn:

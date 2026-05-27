@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GOUESNOU_COPY: VilleCopy = {
   pitchFr:
-    "Gouesnou (29), commune de l'agglomération brestoise au nord de Brest, concentre d'importantes zones commerciales et d'activités économiques. TPE artisans, PME commerciales et logistiques, enseignes de distribution, professions libérales, prestataires de services et indépendants composent son tissu économique. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération brestoise.",
+    "Gouesnou (29), commune de l'agglomération brestoise au nord de Brest, concentre d'importantes zones commerciales et d'activités économiques. TPE artisans, PME commerciales et logistiques, enseignes de distribution, professions libérales, prestataires de services et indépendants composent son tissu économique. Axion-IA opère pour entreprises et indépendants du secteur de l'agglomération brestoise.",
   pitchEn:
-    "Gouesnou (29), commune de l'agglomération brestoise au nord de Brest, concentre d'importantes zones commerciales et d'activités économiques. TPE artisans, PME commerciales et logistiques, enseignes de distribution, professions libérales, prestataires de services et indépendants composent son tissu économique. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération brestoise.",
+    "Gouesnou (29), commune de l'agglomération brestoise au nord de Brest, concentre d'importantes zones commerciales et d'activités économiques. TPE artisans, PME commerciales et logistiques, enseignes de distribution, professions libérales, prestataires de services et indépendants composent son tissu économique. Axion-IA opère pour entreprises et indépendants du secteur de l'agglomération brestoise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gouesnou (29). Nous accompagnons tous types d'activités : TPE artisans, PME commerciales et logistiques des zones d'activités, prestataires de services, professions libérales, enseignes de distribution et indépendants de l'agglomération brestoise.",
   directAnswerEn:
@@ -61,7 +61,7 @@ export const GOUESNOU_COPY: VilleCopy = {
     },
     {
       q: "Quels tarifs pour une TPE ou PME de Brest Métropole ?",
-      a: "L'audit Flash démarre à 490 € HT, accessible aux TPE. Pour les PME commerciales et logistiques, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
+      a: "L'audit Flash propose un tarif d'entrée accessible, accessible aux TPE. Pour les PME commerciales et logistiques, les audits Stratégiques et implémentations sont dimensionnés selon vos effectifs et cas d'usage. Tarifs publics, transparents, sans engagement longue durée.",
     },
     {
       q: "Comment se déroule une mission IA à Gouesnou ?",

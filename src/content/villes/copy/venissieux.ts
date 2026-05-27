@@ -11,9 +11,9 @@ export const VENISSIEUX_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Vénissieux pour accompagner les entreprises locales dans l'intégration de l'IA. Avec des acteurs comme Renault Trucks et Bosch, nous optimisons vos processus grâce à nos services d'audit et d'implémentation.",
   directAnswerFr:
-    "À Vénissieux, Axion-IA propose des services adaptés aux besoins des entreprises locales. Avec la présence de Renault Trucks et Bosch, notre équipe nationale se déplace pour réaliser des audits, des interventions et des implémentations sur site. Nos tarifs publics incluent l'Audit Flash à partir de 490 € HT et l'Intervention Essentielle dès 590 € HT.",
+    "À Vénissieux, Axion-IA propose des services adaptés aux besoins des entreprises locales. Avec la présence de Renault Trucks et Bosch, notre équipe nationale se déplace pour réaliser des audits, des interventions et des implémentations sur site. Nos tarifs publics incluent l'Audit Flash sur mesure et l'Intervention Essentielle.",
   directAnswerEn:
-    "À Vénissieux, Axion-IA propose des services adaptés aux besoins des entreprises locales. Avec la présence de Renault Trucks et Bosch, notre équipe nationale se déplace pour réaliser des audits, des interventions et des implémentations sur site. Nos tarifs publics incluent l'Audit Flash à partir de 490 € HT et l'Intervention Essentielle dès 590 € HT.",
+    "À Vénissieux, Axion-IA propose des services adaptés aux besoins des entreprises locales. Avec la présence de Renault Trucks et Bosch, notre équipe nationale se déplace pour réaliser des audits, des interventions et des implémentations sur site. Nos tarifs publics incluent l'Audit Flash sur mesure et l'Intervention Essentielle.",
   seoHook: "automobile & produits métalliques",
   ecosystemFr:
     "Vénissieux, avec sa zone industrielle ZI Vénissieux, accueille des entreprises comme Renault Trucks et Bosch. Ce tissu économique dynamique offre un cadre propice à l'innovation et à l'optimisation des processus grâce à l'IA.",

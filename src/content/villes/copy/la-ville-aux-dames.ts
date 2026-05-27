@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_VILLE_AUX_DAMES_COPY: VilleCopy = {
   pitchFr:
-    "La Ville-aux-Dames (37), commune résidentielle de l'est de Tours Métropole en bords de Loire, accueille la zone d'activités des Granges et un tissu diversifié de TPE tertiaires, PME de services, commerces et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "La Ville-aux-Dames (37), commune résidentielle de l'est de Tours Métropole en bords de Loire, accueille la zone d'activités des Granges et un tissu diversifié de TPE tertiaires, PME de services, commerces et professions libérales. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "La Ville-aux-Dames (37), commune résidentielle de l'est de Tours Métropole en bords de Loire, accueille la zone d'activités des Granges et un tissu diversifié de TPE tertiaires, PME de services, commerces et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "La Ville-aux-Dames (37), commune résidentielle de l'est de Tours Métropole en bords de Loire, accueille la zone d'activités des Granges et un tissu diversifié de TPE tertiaires, PME de services, commerces et professions libérales. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Ville-aux-Dames (37). Nous accompagnons tous types d'activités : TPE tertiaires et de services, PME de la zone d'activités des Granges, commerçants, artisans BTP, professions libérales, indépendants et entreprises de Tours Métropole est.",
   directAnswerEn:

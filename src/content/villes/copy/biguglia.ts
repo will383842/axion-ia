@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const BIGUGLIA_COPY: VilleCopy = {
   pitchFr:
-    "Biguglia (2B), banlieue sud de Bastia et 5e commune la plus peuplée de Corse, bénéficie du dynamisme de l'agglomération bastiaise. Étang de Biguglia (réserve naturelle), tissu commercial et services agglo Bastia, TPE artisanat, agriculture plaine orientale, tourisme nature et balnéaire. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Biguglia (2B), banlieue sud de Bastia et 5e commune la plus peuplée de Corse, bénéficie du dynamisme de l'agglomération bastiaise. Étang de Biguglia (réserve naturelle), tissu commercial et services agglo Bastia, TPE artisanat, agriculture plaine orientale, tourisme nature et balnéaire. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Biguglia (2B), banlieue sud de Bastia et 5e commune la plus peuplée de Corse, bénéficie du dynamisme de l'agglomération bastiaise. Étang de Biguglia (réserve naturelle), tissu commercial et services agglo Bastia, TPE artisanat, agriculture plaine orientale, tourisme nature et balnéaire. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Biguglia (2B), banlieue sud de Bastia et 5e commune la plus peuplée de Corse, bénéficie du dynamisme de l'agglomération bastiaise. Étang de Biguglia (réserve naturelle), tissu commercial et services agglo Bastia, TPE artisanat, agriculture plaine orientale, tourisme nature et balnéaire. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Biguglia (2B). Nous accompagnons TPE et PME : commerces et services agglomération bastiaise, artisans, exploitants agricoles plaine orientale, acteurs tourisme nature (réserve étang de Biguglia) et balnéaire, hébergeurs Costa Serena. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Biguglia (2B). Nous accompagnons TPE et PME : commerces et services agglomération bastiaise, artisans, exploitants agricoles plaine orientale, acteurs tourisme nature (réserve étang de Biguglia) et balnéaire, hébergeurs Costa Serena. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Biguglia (2B). Nous accompagnons TPE et PME : commerces et services agglomération bastiaise, artisans, exploitants agricoles plaine orientale, acteurs tourisme nature (réserve étang de Biguglia) et balnéaire, hébergeurs Costa Serena. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Biguglia (2B). Nous accompagnons TPE et PME : commerces et services agglomération bastiaise, artisans, exploitants agricoles plaine orientale, acteurs tourisme nature (réserve étang de Biguglia) et balnéaire, hébergeurs Costa Serena. Audit Flash sur mesure.",
   seoHook: "commerces services & agriculture plaine",
   ecosystemFr:
     "Biguglia est la 5e commune la plus peuplée de Corse, banlieue sud de Bastia. Étang de Biguglia classé réserve naturelle. Tissu commercial et services agglo bastiaise, TPE artisanat, agriculture plaine orientale, tourisme nature et balnéaire Costa Serena.",

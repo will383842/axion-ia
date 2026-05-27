@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const APT_COPY: VilleCopy = {
   pitchFr:
-    "Apt (84), sous-préfecture du Vaucluse et capitale du Luberon, conjugue patrimoine industriel (fruits confits, ocres), tourisme nature et tissu artisanal-agricole structuré. TPE artisans et producteurs, PME agroalimentaires (confiseries), tourisme rural, viticulture Luberon, commerces et services publics. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Apt (84), sous-préfecture du Vaucluse et capitale du Luberon, conjugue patrimoine industriel (fruits confits, ocres), tourisme nature et tissu artisanal-agricole structuré. TPE artisans et producteurs, PME agroalimentaires (confiseries), tourisme rural, viticulture Luberon, commerces et services publics. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Apt (84), sous-préfecture du Vaucluse et capitale du Luberon, conjugue patrimoine industriel (fruits confits, ocres), tourisme nature et tissu artisanal-agricole structuré. TPE artisans et producteurs, PME agroalimentaires (confiseries), tourisme rural, viticulture Luberon, commerces et services publics. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Apt (84), sous-préfecture du Vaucluse et capitale du Luberon, conjugue patrimoine industriel (fruits confits, ocres), tourisme nature et tissu artisanal-agricole structuré. TPE artisans et producteurs, PME agroalimentaires (confiseries), tourisme rural, viticulture Luberon, commerces et services publics. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Apt (84). Nous accompagnons TPE artisans, PME agroalimentaires (confiseries, fruits confits), viticulteurs Luberon, acteurs touristiques et commerces de la sous-préfecture. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Apt (84). Nous accompagnons TPE artisans, PME agroalimentaires (confiseries, fruits confits), viticulteurs Luberon, acteurs touristiques et commerces de la sous-préfecture. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Apt (84). Nous accompagnons TPE artisans, PME agroalimentaires (confiseries, fruits confits), viticulteurs Luberon, acteurs touristiques et commerces de la sous-préfecture. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Apt (84). Nous accompagnons TPE artisans, PME agroalimentaires (confiseries, fruits confits), viticulteurs Luberon, acteurs touristiques et commerces de la sous-préfecture. Audit Flash sur mesure.",
   seoHook: "agroalimentaire & tourisme rural",
   ecosystemFr:
     "Apt est sous-préfecture du Vaucluse, positionnée au cœur du Parc Naturel Régional du Luberon. Son économie repose sur l'agroalimentaire historique (confiseries de fruits confits, capitale mondiale du fruit confit), les TPE artisans (BTP, métiers d'art, poteries d'ocre), les PME tourisme rural et hôtellerie, la viticulture AOC Luberon, les commerces et services administratifs de sous-préfecture.",
@@ -52,7 +52,7 @@ export const APT_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Apt et dans tout le Luberon (Roussillon, Gordes, Bonnieux, Cavaillon). Proximité de l'agglomération avignonnaise via N100, déplacements assurés malgré la ruralité.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Apt ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Apt  ?",
       a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, PME agroalimentaires, viticulteurs et hôteliers aptésiens. Tarifs publics, sans engagement.",
     },
     {

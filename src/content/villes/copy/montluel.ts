@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MONTLUEL_COPY: VilleCopy = {
   pitchFr:
-    "Montluel (01), commune de la Côtière dans l'Ain, est positionnée à proximité de l'aéroport Lyon-Saint-Exupéry. Tissu PME tertiaires et logistiques, TPE artisans BTP, commerces, agriculture plaine de l'Ain. Axion-IA couvre l'ensemble des activités professionnelles présentes de la Côtière.",
+    "Montluel (01), commune de la Côtière dans l'Ain, est positionnée à proximité de l'aéroport Lyon-Saint-Exupéry. Tissu PME tertiaires et logistiques, TPE artisans BTP, commerces, agriculture plaine de l'Ain. Axion-IA répond aux besoins des activités professionnelles présentes de la Côtière.",
   pitchEn:
-    "Montluel (01), commune de la Côtière dans l'Ain, est positionnée à proximité de l'aéroport Lyon-Saint-Exupéry. Tissu PME tertiaires et logistiques, TPE artisans BTP, commerces, agriculture plaine de l'Ain. Axion-IA couvre l'ensemble des activités professionnelles présentes de la Côtière.",
+    "Montluel (01), commune de la Côtière dans l'Ain, est positionnée à proximité de l'aéroport Lyon-Saint-Exupéry. Tissu PME tertiaires et logistiques, TPE artisans BTP, commerces, agriculture plaine de l'Ain. Axion-IA répond aux besoins des activités professionnelles présentes de la Côtière.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montluel (01). Nous accompagnons tous types d'activités : PME tertiaires et logistiques Côtière Ain, agriculteurs plaine de l'Ain, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:

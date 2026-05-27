@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LAMORLAYE_COPY: VilleCopy = {
   pitchFr:
-    "Lamorlaye (60), commune de 9 082 habitants dans l'Oise, est nichée en lisière de la forêt de Chantilly, au cœur du bassin hippique picard. Ville résidentielle prisée, son économie repose sur un tissu de TPE/PME filière équestre, services aux particuliers, commerce, professions libérales et artisanat. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Lamorlaye (60), commune de 9 082 habitants dans l'Oise, est nichée en lisière de la forêt de Chantilly, au cœur du bassin hippique picard. Ville résidentielle prisée, son économie repose sur un tissu de TPE/PME filière équestre, services aux particuliers, commerce, professions libérales et artisanat. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Lamorlaye (60), commune de 9 082 habitants dans l'Oise, est nichée en lisière de la forêt de Chantilly, au cœur du bassin hippique picard. Ville résidentielle prisée, son économie repose sur un tissu de TPE/PME filière équestre, services aux particuliers, commerce, professions libérales et artisanat. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Lamorlaye (60), commune de 9 082 habitants dans l'Oise, est nichée en lisière de la forêt de Chantilly, au cœur du bassin hippique picard. Ville résidentielle prisée, son économie repose sur un tissu de TPE/PME filière équestre, services aux particuliers, commerce, professions libérales et artisanat. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lamorlaye (60). Nous accompagnons TPE et PME du bassin de Chantilly : professionnels de la filière équestre, commerçants, prestataires de services et professions libérales. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lamorlaye (60). Nous accompagnons TPE et PME du bassin de Chantilly : professionnels de la filière équestre, commerçants, prestataires de services et professions libérales. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lamorlaye (60). Nous accompagnons TPE et PME du bassin de Chantilly : professionnels de la filière équestre, commerçants, prestataires de services et professions libérales. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lamorlaye (60). Nous accompagnons TPE et PME du bassin de Chantilly : professionnels de la filière équestre, commerçants, prestataires de services et professions libérales. Audit Flash sur mesure.",
   ecosystemFr:
     "Lamorlaye est une commune résidentielle prisée en lisière de la forêt de Chantilly, au cœur du bassin hippique de l'Oise. Son économie s'appuie sur la filière équestre (centres d'entraînement, haras, prestataires équins), les services aux particuliers, le commerce de proximité et les professions libérales. Le bassin d'emploi s'articule avec Chantilly, Gouvieux et Coye-la-Forêt, et bénéficie de la proximité de la gare TER Chantilly-Gouvieux et de l'aéroport Paris-CDG.",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const LAMORLAYE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Lamorlaye et dans tout le bassin de Chantilly (Gouvieux, Coye-la-Forêt, Chantilly, Senlis). Consultants accessibles via gare SNCF Chantilly-Gouvieux à 5 min (TER Paris-Nord en 25 min). Aéroport CDG à 25 min.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Lamorlaye ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Lamorlaye  ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Lamorlaye : professionnels de la filière équestre, commerçants, prestataires de services et professions libérales. ROI chiffré dès le diagnostic.",
     },
     {

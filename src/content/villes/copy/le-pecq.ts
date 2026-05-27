@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_PECQ_COPY: VilleCopy = {
   pitchFr:
-    "Le Pecq (78), commune des Yvelines en bords de Seine face à Saint-Germain-en-Laye, conjugue cadre résidentiel privilégié et tissu local de TPE/PME. Commerces de centre-ville, professions libérales, services, artisans. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Le Pecq (78), commune des Yvelines en bords de Seine face à Saint-Germain-en-Laye, conjugue cadre résidentiel privilégié et tissu local de TPE/PME. Commerces de centre-ville, professions libérales, services, artisans. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Le Pecq (78), commune des Yvelines en bords de Seine face à Saint-Germain-en-Laye, conjugue cadre résidentiel privilégié et tissu local de TPE/PME. Commerces de centre-ville, professions libérales, services, artisans. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Le Pecq (78), commune des Yvelines en bords de Seine face à Saint-Germain-en-Laye, conjugue cadre résidentiel privilégié et tissu local de TPE/PME. Commerces de centre-ville, professions libérales, services, artisans. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Pecq (78). Nous accompagnons tous types d'activités : TPE et PME tertiaires, professions libérales, commerces de centre-ville, restaurateurs, artisans, indépendants et services aux particuliers de cette commune résidentielle face à Saint-Germain-en-Laye.",
   directAnswerEn:

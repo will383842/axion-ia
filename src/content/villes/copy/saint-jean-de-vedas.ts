@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_JEAN_DE_VEDAS_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Jean-de-Védas (34), commune de 13 328 habitants dans l'agglomération de Montpellier sud-ouest. Son économie repose sur un tissu de TPE et PME du tertiaire, du commerce (zone Via Domitia), des services aux entreprises, de la santé, de la restauration et de l'artisanat. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Saint-Jean-de-Védas (34), commune de 13 328 habitants dans l'agglomération de Montpellier sud-ouest. Son économie repose sur un tissu de TPE et PME du tertiaire, du commerce (zone Via Domitia), des services aux entreprises, de la santé, de la restauration et de l'artisanat. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Saint-Jean-de-Védas (34), commune de 13 328 habitants dans l'agglomération de Montpellier sud-ouest. Son économie repose sur un tissu de TPE et PME du tertiaire, du commerce (zone Via Domitia), des services aux entreprises, de la santé, de la restauration et de l'artisanat. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Saint-Jean-de-Védas (34), commune de 13 328 habitants dans l'agglomération de Montpellier sud-ouest. Son économie repose sur un tissu de TPE et PME du tertiaire, du commerce (zone Via Domitia), des services aux entreprises, de la santé, de la restauration et de l'artisanat. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean-de-Védas (34). Nous accompagnons TPE et PME de l'agglo Montpellier sud-ouest : entreprises tertiaires, enseignes commerciales, prestataires de services, professions libérales et artisans. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean-de-Védas (34). Nous accompagnons TPE et PME de l'agglo Montpellier sud-ouest : entreprises tertiaires, enseignes commerciales, prestataires de services, professions libérales et artisans. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean-de-Védas (34). Nous accompagnons TPE et PME de l'agglo Montpellier sud-ouest : entreprises tertiaires, enseignes commerciales, prestataires de services, professions libérales et artisans. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean-de-Védas (34). Nous accompagnons TPE et PME de l'agglo Montpellier sud-ouest : entreprises tertiaires, enseignes commerciales, prestataires de services, professions libérales et artisans. Audit Flash sur mesure.",
   ecosystemFr:
     "Saint-Jean-de-Védas est une commune dynamique de la première couronne sud-ouest de Montpellier. Son économie s'appuie sur le parc d'activités Via Domitia (tertiaire, startups, bureaux), le commerce, la restauration, les professions libérales (santé, conseil juridique), l'artisanat et les services aux entreprises. Desservie par le tramway T2 vers Montpellier centre et autoroute A9.",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const SAINT_JEAN_DE_VEDAS_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Saint-Jean-de-Védas et dans toute l'agglomération de Montpellier sud-ouest. Consultants accessibles via le tramway T2 (10 min Montpellier centre), la gare TGV Montpellier-Saint-Roch (15 min) et l'aéroport (15 min).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Saint-Jean-de-Védas ?",
+      q: "Quel est le tarif d'un audit IA à Saint-Jean-de-Védas  ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Saint-Jean-de-Védas : entreprises tertiaires Via Domitia, commerces, professions libérales et artisans. ROI chiffré dès le diagnostic.",
     },
     {

@@ -9,9 +9,9 @@ export const SAINT_JUST_EN_CHAUSSEE_COPY: VilleCopy = {
   pitchEn:
     "Saint-Just-en-Chaussée (60), commune de 5 810 habitants dans l'Oise, est un bourg-centre du plateau picard entre Clermont et Breteuil. Carrefour routier historique, la ville concentre un tissu de TPE/PME : agriculture et agroalimentaire (grandes cultures Beauce picarde), industrie mécanique, artisanat BTP, commerce et services. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Just-en-Chaussée (60). Nous accompagnons TPE et PME du plateau picard : exploitants agricoles, agroalimentaires, industriels mécanique, artisans BTP, commerçants et prestataires de services. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Just-en-Chaussée (60). Nous accompagnons TPE et PME du plateau picard : exploitants agricoles, agroalimentaires, industriels mécanique, artisans BTP, commerçants et prestataires de services. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Just-en-Chaussée (60). Nous accompagnons TPE et PME du plateau picard : exploitants agricoles, agroalimentaires, industriels mécanique, artisans BTP, commerçants et prestataires de services. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Just-en-Chaussée (60). Nous accompagnons TPE et PME du plateau picard : exploitants agricoles, agroalimentaires, industriels mécanique, artisans BTP, commerçants et prestataires de services. Audit Flash sur mesure.",
   ecosystemFr:
     "Saint-Just-en-Chaussée est un bourg-centre du plateau picard, carrefour routier entre Clermont-de-l'Oise, Breteuil et Montdidier. L'économie locale repose sur l'agriculture céréalière (Beauce picarde, grandes cultures), l'agroalimentaire (stockage, négoce céréales), la mécanique agricole, l'artisanat BTP et le commerce de proximité. Le bassin d'emploi s'articule avec Clermont, Maignelay-Montigny et Estrées-Saint-Denis.",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const SAINT_JUST_EN_CHAUSSEE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Saint-Just-en-Chaussée et sur tout le plateau picard (Clermont, Maignelay-Montigny, Estrées-Saint-Denis, Breteuil). Consultants accessibles via gare de Saint-Just-en-Chaussée (TER Amiens-Paris via Creil).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Saint-Just-en-Chaussée ?",
+      q: "Combien coûte un audit IA à Saint-Just-en-Chaussée  ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME saint-justois : exploitants agricoles, agroalimentaires, mécaniciens, artisans BTP, commerçants. ROI chiffré dès le diagnostic.",
     },
     {

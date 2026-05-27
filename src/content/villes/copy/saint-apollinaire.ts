@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_APOLLINAIRE_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Apollinaire (21), commune de Côte-d'Or au nord-est immédiat de Dijon, est marquée par ses zones d'activités économiques (Cap Nord) et son positionnement logistique. Tissu PME logistique, commerce, TPE artisans, services aux entreprises, résidentiel périurbain dijonnais. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Saint-Apollinaire (21), commune de Côte-d'Or au nord-est immédiat de Dijon, est marquée par ses zones d'activités économiques (Cap Nord) et son positionnement logistique. Tissu PME logistique, commerce, TPE artisans, services aux entreprises, résidentiel périurbain dijonnais. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Saint-Apollinaire (21), commune de Côte-d'Or au nord-est immédiat de Dijon, est marquée par ses zones d'activités économiques (Cap Nord) et son positionnement logistique. Tissu PME logistique, commerce, TPE artisans, services aux entreprises, résidentiel périurbain dijonnais. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Saint-Apollinaire (21), commune de Côte-d'Or au nord-est immédiat de Dijon, est marquée par ses zones d'activités économiques (Cap Nord) et son positionnement logistique. Tissu PME logistique, commerce, TPE artisans, services aux entreprises, résidentiel périurbain dijonnais. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Apollinaire (21). Nous accompagnons TPE et PME : PME logistique et distribution Cap Nord, commerces, TPE artisans, services aux entreprises et résidentiel périurbain dijonnais. Audit Flash 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Apollinaire (21). Nous accompagnons TPE et PME : PME logistique et distribution Cap Nord, commerces, TPE artisans, services aux entreprises et résidentiel périurbain dijonnais. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Apollinaire (21). Nous accompagnons TPE et PME : PME logistique et distribution Cap Nord, commerces, TPE artisans, services aux entreprises et résidentiel périurbain dijonnais. Audit Flash 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Apollinaire (21). Nous accompagnons TPE et PME : PME logistique et distribution Cap Nord, commerces, TPE artisans, services aux entreprises et résidentiel périurbain dijonnais. Audit Flash sur mesure.",
   seoHook: "logistique distribution & commerce gros",
   ecosystemFr:
     "Saint-Apollinaire est positionnée au nord-est immédiat de Dijon, en première couronne. Zones d'activités Cap Nord (logistique, distribution, services). Économie : PME logistique, commerce de gros, TPE artisans, services aux entreprises, résidentiel familial périurbain.",

@@ -56,7 +56,7 @@ export const OTHIS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE et PME de transport et logistique du bassin Roissy-CDG (Othis, Dammartin, Moussy) sur des cas IA concrets : optimisation tournées, automatisation tracking, agents IA dispatch, planification équipes. Audit Flash 490 € HT.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Othis ?",
+      q: "Tarifs audit IA à Othis  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du nord Seine-et-Marne et du bassin Roissy, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics et transparents.",
     },
     {

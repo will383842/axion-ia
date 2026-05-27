@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const DIGOIN_COPY: VilleCopy = {
   pitchFr:
-    "Digoin (71), commune de Saône-et-Loire à la confluence de la Loire et de l'Arroux. Pont-canal emblématique, tradition céramique et faïence. Tissu TPE artisanat, PME industrielles céramique, commerce centre-bourg, tourisme fluvial, agriculture. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Digoin (71), commune de Saône-et-Loire à la confluence de la Loire et de l'Arroux. Pont-canal emblématique, tradition céramique et faïence. Tissu TPE artisanat, PME industrielles céramique, commerce centre-bourg, tourisme fluvial, agriculture. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Digoin (71), commune de Saône-et-Loire à la confluence de la Loire et de l'Arroux. Pont-canal emblématique, tradition céramique et faïence. Tissu TPE artisanat, PME industrielles céramique, commerce centre-bourg, tourisme fluvial, agriculture. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Digoin (71), commune de Saône-et-Loire à la confluence de la Loire et de l'Arroux. Pont-canal emblématique, tradition céramique et faïence. Tissu TPE artisanat, PME industrielles céramique, commerce centre-bourg, tourisme fluvial, agriculture. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Digoin (71). Nous accompagnons TPE et PME : artisans céramistes et faïenciers, commerçants centre-bourg, acteurs tourisme fluvial (pont-canal, Loire), PME industrielles, agriculteurs. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Digoin (71). Nous accompagnons TPE et PME : artisans céramistes et faïenciers, commerçants centre-bourg, acteurs tourisme fluvial (pont-canal, Loire), PME industrielles, agriculteurs. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Digoin (71). Nous accompagnons TPE et PME : artisans céramistes et faïenciers, commerçants centre-bourg, acteurs tourisme fluvial (pont-canal, Loire), PME industrielles, agriculteurs. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Digoin (71). Nous accompagnons TPE et PME : artisans céramistes et faïenciers, commerçants centre-bourg, acteurs tourisme fluvial (pont-canal, Loire), PME industrielles, agriculteurs. Audit Flash sur mesure.",
   ecosystemFr:
     "Digoin est situé à la confluence de la Loire et de l'Arroux, célèbre pour son pont-canal et sa tradition céramique/faïence. Tissu TPE artisanat (céramique, faïence), PME industrielles, commerce centre-bourg, tourisme fluvial et véloroute, agriculture Charolais.",
   ecosystemEn:

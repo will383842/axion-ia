@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MOYEUVRE_GRANDE_COPY: VilleCopy = {
   pitchFr:
-    "Moyeuvre-Grande (57), commune mosellane de la Vallée de l'Orne, héritière d'un passé sidérurgique majeur reconverti vers les services, le commerce et la sous-traitance industrielle. Tissu TPE/PME industrie, commerces, BTP, services et artisanat. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Moyeuvre-Grande (57), commune mosellane de la Vallée de l'Orne, héritière d'un passé sidérurgique majeur reconverti vers les services, le commerce et la sous-traitance industrielle. Tissu TPE/PME industrie, commerces, BTP, services et artisanat. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Moyeuvre-Grande (57), commune mosellane de la Vallée de l'Orne, héritière d'un passé sidérurgique majeur reconverti vers les services, le commerce et la sous-traitance industrielle. Tissu TPE/PME industrie, commerces, BTP, services et artisanat. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Moyeuvre-Grande (57), commune mosellane de la Vallée de l'Orne, héritière d'un passé sidérurgique majeur reconverti vers les services, le commerce et la sous-traitance industrielle. Tissu TPE/PME industrie, commerces, BTP, services et artisanat. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Moyeuvre-Grande (57). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance, artisans BTP, commerces de proximité, professions de services et entrepreneurs de la Vallée de l'Orne.",
   directAnswerEn:

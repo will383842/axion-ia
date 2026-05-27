@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LE_LAVANDOU_COPY: VilleCopy = {
   pitchFr:
-    "Le Lavandou (83), station balnéaire prestige de la Côte des Maures, est reconnue pour ses 12 plages, son port de plaisance et son tourisme haut de gamme face aux îles d'Or. Tissu de TPE hôteliers, restaurateurs, commerçants et PME tourisme, nautisme et services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Le Lavandou (83), station balnéaire prestige de la Côte des Maures, est reconnue pour ses 12 plages, son port de plaisance et son tourisme haut de gamme face aux îles d'Or. Tissu de TPE hôteliers, restaurateurs, commerçants et PME tourisme, nautisme et services. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Le Lavandou (83), station balnéaire prestige de la Côte des Maures, est reconnue pour ses 12 plages, son port de plaisance et son tourisme haut de gamme face aux îles d'Or. Tissu de TPE hôteliers, restaurateurs, commerçants et PME tourisme, nautisme et services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Le Lavandou (83), station balnéaire prestige de la Côte des Maures, est reconnue pour ses 12 plages, son port de plaisance et son tourisme haut de gamme face aux îles d'Or. Tissu de TPE hôteliers, restaurateurs, commerçants et PME tourisme, nautisme et services. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Lavandou (83). Nous accompagnons TPE hôteliers, restaurateurs, commerçants et PME du tourisme, du nautisme et des services de la Côte des Maures. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Lavandou (83). Nous accompagnons TPE hôteliers, restaurateurs, commerçants et PME du tourisme, du nautisme et des services de la Côte des Maures. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Lavandou (83). Nous accompagnons TPE hôteliers, restaurateurs, commerçants et PME du tourisme, du nautisme et des services de la Côte des Maures. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Lavandou (83). Nous accompagnons TPE hôteliers, restaurateurs, commerçants et PME du tourisme, du nautisme et des services de la Côte des Maures. Audit Flash sur mesure.",
   seoHook: "hôtellerie résidences & restauration plages",
   ecosystemFr:
     "Le Lavandou est une station balnéaire prestigieuse de la Côte des Maures, face aux îles d'Hyères (Port-Cros, Le Levant). 12 plages, port de plaisance, tourisme haut de gamme et nautisme. Économie saisonnière dominée par l'hôtellerie-restauration, les loisirs nautiques et les commerces de tourisme. Tissu dense de TPE/PME.",

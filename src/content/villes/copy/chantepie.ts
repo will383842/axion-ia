@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHANTEPIE_COPY: VilleCopy = {
   pitchFr:
-    "Chantepie (35), commune résidentielle au sud-est de Rennes en Ille-et-Vilaine, accueille des zones d'activités tertiaires dynamiques en périphérie immédiate de la métropole. Tissu de TPE/PME tertiaires, services aux entreprises, artisans BTP, commerces et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud-est rennais.",
+    "Chantepie (35), commune résidentielle au sud-est de Rennes en Ille-et-Vilaine, accueille des zones d'activités tertiaires dynamiques en périphérie immédiate de la métropole. Tissu de TPE/PME tertiaires, services aux entreprises, artisans BTP, commerces et professions libérales. Axion-IA accompagne tout le tissu professionnel local du sud-est rennais.",
   pitchEn:
-    "Chantepie (35), commune résidentielle au sud-est de Rennes en Ille-et-Vilaine, accueille des zones d'activités tertiaires dynamiques en périphérie immédiate de la métropole. Tissu de TPE/PME tertiaires, services aux entreprises, artisans BTP, commerces et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du sud-est rennais.",
+    "Chantepie (35), commune résidentielle au sud-est de Rennes en Ille-et-Vilaine, accueille des zones d'activités tertiaires dynamiques en périphérie immédiate de la métropole. Tissu de TPE/PME tertiaires, services aux entreprises, artisans BTP, commerces et professions libérales. Axion-IA accompagne tout le tissu professionnel local du sud-est rennais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chantepie (35). Nous accompagnons TPE et PME : entreprises tertiaires des zones d'activités sud-est rennais, services aux entreprises, artisans BTP, commerçants, professions libérales et indépendants de Rennes Métropole sud.",
   directAnswerEn:
@@ -56,7 +56,7 @@ export const CHANTEPIE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME tertiaires et bureaux d'études des zones d'activités de Chantepie sur leurs cas IA : automatisation workflow, agents conversationnels B2B, analyse documentaire, CRM augmenté. Audit Flash 490 € HT pour démarrer.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Chantepie ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Chantepie  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du sud-est rennais, il identifie les cas d'usage IA à fort ROI pour votre activité (tertiaire, BTP, informatique, professions libérales). Tarifs publics.",
     },
     {

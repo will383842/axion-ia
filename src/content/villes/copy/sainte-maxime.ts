@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINTE_MAXIME_COPY: VilleCopy = {
   pitchFr:
-    "Sainte-Maxime (83), station balnéaire du Var face au golfe de Saint-Tropez, compte plus de 14 100 habitants. Tourisme balnéaire haut de gamme, plaisance, port, tissu de TPE artisanales, PME hôtellerie-restauration, commerces de luxe et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Sainte-Maxime (83), station balnéaire du Var face au golfe de Saint-Tropez, compte plus de 14 100 habitants. Tourisme balnéaire haut de gamme, plaisance, port, tissu de TPE artisanales, PME hôtellerie-restauration, commerces de luxe et services. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Sainte-Maxime (83), station balnéaire du Var face au golfe de Saint-Tropez, compte plus de 14 100 habitants. Tourisme balnéaire haut de gamme, plaisance, port, tissu de TPE artisanales, PME hôtellerie-restauration, commerces de luxe et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Sainte-Maxime (83), station balnéaire du Var face au golfe de Saint-Tropez, compte plus de 14 100 habitants. Tourisme balnéaire haut de gamme, plaisance, port, tissu de TPE artisanales, PME hôtellerie-restauration, commerces de luxe et services. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sainte-Maxime (83). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME hôtellerie-restauration, professionnels du tourisme balnéaire et de la plaisance, commerces et services golfe de Saint-Tropez.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const SAINTE_MAXIME_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les professionnels de la plaisance, charters yacht et services portuaires : gestion réservations, automatisation devis, optimisation maintenance flotte, relation client international.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Sainte-Maxime ?",
+      q: "Tarifs audit IA à Sainte-Maxime  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {

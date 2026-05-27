@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const CARRY_LE_ROUET_COPY: VilleCopy = {
   pitchFr:
-    "Carry-le-Rouet (13), station balnéaire emblématique de la Côte Bleue, conjugue port de plaisance, plages et tradition des oursinades de février. Tissu de TPE tourisme et restauration, PME services, plaisance, commerces de proximité et professions libérales installées entre Marseille et Martigues. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Carry-le-Rouet (13), station balnéaire emblématique de la Côte Bleue, conjugue port de plaisance, plages et tradition des oursinades de février. Tissu de TPE tourisme et restauration, PME services, plaisance, commerces de proximité et professions libérales installées entre Marseille et Martigues. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Carry-le-Rouet (13), station balnéaire emblématique de la Côte Bleue, conjugue port de plaisance, plages et tradition des oursinades de février. Tissu de TPE tourisme et restauration, PME services, plaisance, commerces de proximité et professions libérales installées entre Marseille et Martigues. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Carry-le-Rouet (13), station balnéaire emblématique de la Côte Bleue, conjugue port de plaisance, plages et tradition des oursinades de février. Tissu de TPE tourisme et restauration, PME services, plaisance, commerces de proximité et professions libérales installées entre Marseille et Martigues. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carry-le-Rouet (13). Nous accompagnons TPE tourisme et restauration, PME services, professionnels de la plaisance et commerces de proximité de la station balnéaire et de la Côte Bleue. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carry-le-Rouet (13). Nous accompagnons TPE tourisme et restauration, PME services, professionnels de la plaisance et commerces de proximité de la station balnéaire et de la Côte Bleue. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carry-le-Rouet (13). Nous accompagnons TPE tourisme et restauration, PME services, professionnels de la plaisance et commerces de proximité de la station balnéaire et de la Côte Bleue. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carry-le-Rouet (13). Nous accompagnons TPE tourisme et restauration, PME services, professionnels de la plaisance et commerces de proximité de la station balnéaire et de la Côte Bleue. Audit Flash sur mesure.",
   seoHook: "tourisme hôtellerie & restauration oursinades",
   ecosystemFr:
     "Carry-le-Rouet est la station balnéaire phare de la Côte Bleue, entre Marseille et Martigues, célèbre pour son port de plaisance, ses plages familiales et ses oursinades hivernales. Tissu économique de TPE tourisme (locations saisonnières, hôtellerie indépendante, restauration de bord de mer), plaisance et clubs nautiques, commerces de proximité, PME services tertiaires et professions libérales. Saisonnalité marquée mais activité tourisme étalée.",
@@ -52,7 +52,7 @@ export const CARRY_LE_ROUET_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Carry-le-Rouet et dans toute la Côte Bleue (Sausset-les-Pins, Ensuès-la-Redonne, Le Rove, Martigues). Proximité Marseille via A55 et TER Côte Bleue.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Carry-le-Rouet ?",
+      q: "Quel est le tarif d'un audit IA à Carry-le-Rouet  ?",
       a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE tourisme, hôteliers, restaurateurs et commerces carryens. Tarifs publics, sans engagement.",
     },
     {

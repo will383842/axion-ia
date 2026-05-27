@@ -9,9 +9,9 @@ export const L_ETANG_LA_VILLE_COPY: VilleCopy = {
   pitchEn:
     "L'Étang-la-Ville (78), commune résidentielle verdoyante des Yvelines en lisière de la forêt de Marly, entre Saint-Germain-en-Laye et Versailles. Tissu de TPE artisans et commerçants, PME de services et conseil, professions libérales, immobilier et activités de bien-être. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à L'Étang-la-Ville (78). Nous accompagnons TPE et PME : artisans et commerçants, PME de services et conseil, professions libérales, agences immobilières et praticiens bien-être de cette commune résidentielle en forêt de Marly. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à L'Étang-la-Ville (78). Nous accompagnons TPE et PME : artisans et commerçants, PME de services et conseil, professions libérales, agences immobilières et praticiens bien-être de cette commune résidentielle en forêt de Marly. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à L'Étang-la-Ville (78). Nous accompagnons TPE et PME : artisans et commerçants, PME de services et conseil, professions libérales, agences immobilières et praticiens bien-être de cette commune résidentielle en forêt de Marly. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à L'Étang-la-Ville (78). Nous accompagnons TPE et PME : artisans et commerçants, PME de services et conseil, professions libérales, agences immobilières et praticiens bien-être de cette commune résidentielle en forêt de Marly. Audit Flash sur mesure.",
   seoHook: "commerce proximité & services aux",
   ecosystemFr:
     "L'Étang-la-Ville est une commune résidentielle verdoyante des Yvelines en lisière de la forêt de Marly, entre Saint-Germain-en-Laye et Versailles. Cadre naturel prisé, habitat pavillonnaire. Tissu économique : TPE artisans, commerces de proximité, PME de services et conseil, professions libérales, immobilier, bien-être. Communes voisines : Mareil-Marly, Saint-Germain-en-Laye, Noisy-le-Roi, Bailly.",
@@ -52,7 +52,7 @@ export const L_ETANG_LA_VILLE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à L'Étang-la-Ville et dans tout le secteur forêt de Marly (Saint-Germain-en-Laye à 5 min, Mareil-Marly, Noisy-le-Roi, Versailles à 15 min). Nos consultants se déplacent sur site ou en visio.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à L'Étang-la-Ville ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à L'Étang-la-Ville  ?",
       a: "L'Audit Flash IA à L'Étang-la-Ville démarre à 490 € HT pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {

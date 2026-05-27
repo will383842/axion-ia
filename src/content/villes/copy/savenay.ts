@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAVENAY_COPY: VilleCopy = {
   pitchFr:
-    "Savenay (44), commune de Loire-Atlantique dotée d'une gare TGV (ligne Nantes-Le Croisic) sur le nord de l'estuaire de la Loire, est un bourg-centre entre Nantes et Saint-Nazaire. Tissu de TPE artisans, PME tertiaires, exploitations agricoles (bocage), commerces de proximité et lycées. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Savenay (44), commune de Loire-Atlantique dotée d'une gare TGV (ligne Nantes-Le Croisic) sur le nord de l'estuaire de la Loire, est un bourg-centre entre Nantes et Saint-Nazaire. Tissu de TPE artisans, PME tertiaires, exploitations agricoles (bocage), commerces de proximité et lycées. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Savenay (44), commune de Loire-Atlantique dotée d'une gare TGV (ligne Nantes-Le Croisic) sur le nord de l'estuaire de la Loire, est un bourg-centre entre Nantes et Saint-Nazaire. Tissu de TPE artisans, PME tertiaires, exploitations agricoles (bocage), commerces de proximité et lycées. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Savenay (44), commune de Loire-Atlantique dotée d'une gare TGV (ligne Nantes-Le Croisic) sur le nord de l'estuaire de la Loire, est un bourg-centre entre Nantes et Saint-Nazaire. Tissu de TPE artisans, PME tertiaires, exploitations agricoles (bocage), commerces de proximité et lycées. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Savenay (44). Nous accompagnons tous types d'activités : TPE artisans BTP, PME tertiaires, exploitants agricoles du bocage, commerçants, professions libérales, établissements scolaires (lycées) et services aux entreprises du nord estuaire Loire.",
   directAnswerEn:

@@ -9,9 +9,9 @@ export const BASSENS_COPY: VilleCopy = {
   pitchEn:
     "Bassens (33), commune de la rive droite de Bordeaux Métropole, abrite le Grand Port Maritime de Bordeaux (terminaux industriels, logistique) et un tissu de PME industrielles, artisans BTP et commerces. Axion-IA opère pour toutes les structures économiques de la commune du port et de la rive droite bordelaise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bassens (33). Nous accompagnons TPE et PME de la rive droite bordelaise : entreprises portuaires et logistiques, PME industrielles, artisans BTP, commerçants et professions libérales. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bassens (33). Nous accompagnons TPE et PME de la rive droite bordelaise : entreprises portuaires et logistiques, PME industrielles, artisans BTP, commerçants et professions libérales. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bassens (33). Nous accompagnons TPE et PME de la rive droite bordelaise : entreprises portuaires et logistiques, PME industrielles, artisans BTP, commerçants et professions libérales. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bassens (33). Nous accompagnons TPE et PME de la rive droite bordelaise : entreprises portuaires et logistiques, PME industrielles, artisans BTP, commerçants et professions libérales. Audit Flash sur mesure.",
   seoHook: "agglomération port maritime",
   ecosystemFr:
     "Bassens accueille les terminaux du Grand Port Maritime de Bordeaux (vrac, céréales, hydrocarbures). Tissu industriel portuaire dense, PME logistiques et de transformation, artisanat BTP et commerces résidentiels. Accès rocade A630 et rive droite Bordeaux.",
@@ -52,7 +52,7 @@ export const BASSENS_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Bassens et sur toute la rive droite bordelaise (Carbon-Blanc, Lormont, Cenon, Floirac). Nos consultants se déplacent depuis Bordeaux centre (15 min) ou Paris (TGV 2h).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Bassens ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Bassens  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Adapté aux PME portuaires et industrielles de Bassens.",
     },
     {

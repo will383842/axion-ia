@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PLOUAY_COPY: VilleCopy = {
   pitchFr:
-    "Plouay (56), commune du centre Morbihan, est reconnue internationalement pour le cyclisme (vélodrome Raymond Poulidor, championnats du monde sur route). Tissu TPE artisans BTP, PME agroalimentaires, commerces, exploitations agricoles, tourisme sportif et vert (forêt de Pontcallec). Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Plouay (56), commune du centre Morbihan, est reconnue internationalement pour le cyclisme (vélodrome Raymond Poulidor, championnats du monde sur route). Tissu TPE artisans BTP, PME agroalimentaires, commerces, exploitations agricoles, tourisme sportif et vert (forêt de Pontcallec). Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Plouay (56), commune du centre Morbihan, est reconnue internationalement pour le cyclisme (vélodrome Raymond Poulidor, championnats du monde sur route). Tissu TPE artisans BTP, PME agroalimentaires, commerces, exploitations agricoles, tourisme sportif et vert (forêt de Pontcallec). Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Plouay (56), commune du centre Morbihan, est reconnue internationalement pour le cyclisme (vélodrome Raymond Poulidor, championnats du monde sur route). Tissu TPE artisans BTP, PME agroalimentaires, commerces, exploitations agricoles, tourisme sportif et vert (forêt de Pontcallec). Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plouay (56). Nous accompagnons tous types d'activités : acteurs du cyclisme et tourisme sportif (vélodrome Raymond Poulidor), TPE artisans BTP, PME agroalimentaires, exploitants agricoles, commerçants, indépendants et services aux entreprises du centre Morbihan.",
   directAnswerEn:

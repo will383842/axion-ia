@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const GOLBEY_COPY: VilleCopy = {
   pitchFr:
-    "Golbey (88), commune de l'agglomération d'Épinal nord, est un pôle industriel papetier majeur des Vosges (papeterie Norske Skog, zones d'activités étendues). Tissu de TPE/PME industrie papier-carton, logistique, sous-traitance, services aux entreprises, commerce et artisanat BTP. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Golbey (88), commune de l'agglomération d'Épinal nord, est un pôle industriel papetier majeur des Vosges (papeterie Norske Skog, zones d'activités étendues). Tissu de TPE/PME industrie papier-carton, logistique, sous-traitance, services aux entreprises, commerce et artisanat BTP. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Golbey (88), commune de l'agglomération d'Épinal nord, est un pôle industriel papetier majeur des Vosges (papeterie Norske Skog, zones d'activités étendues). Tissu de TPE/PME industrie papier-carton, logistique, sous-traitance, services aux entreprises, commerce et artisanat BTP. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Golbey (88), commune de l'agglomération d'Épinal nord, est un pôle industriel papetier majeur des Vosges (papeterie Norske Skog, zones d'activités étendues). Tissu de TPE/PME industrie papier-carton, logistique, sous-traitance, services aux entreprises, commerce et artisanat BTP. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Golbey (88). Nous accompagnons TPE et PME : industriels papier-carton, sous-traitants industriels, transporteurs-logisticiens, artisans BTP et prestataires de services de l'agglomération d'Épinal. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Golbey (88). Nous accompagnons TPE et PME : industriels papier-carton, sous-traitants industriels, transporteurs-logisticiens, artisans BTP et prestataires de services de l'agglomération d'Épinal. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Golbey (88). Nous accompagnons TPE et PME : industriels papier-carton, sous-traitants industriels, transporteurs-logisticiens, artisans BTP et prestataires de services de l'agglomération d'Épinal. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Golbey (88). Nous accompagnons TPE et PME : industriels papier-carton, sous-traitants industriels, transporteurs-logisticiens, artisans BTP et prestataires de services de l'agglomération d'Épinal. Audit Flash sur mesure.",
   seoHook: "bassin industriel",
   ecosystemFr:
     "Golbey est une commune de l'agglomération d'Épinal située au nord de la préfecture, au bord de la Moselle. La papeterie (site Norske Skog, l'un des plus grands d'Europe pour le papier journal) et les zones d'activités étendues structurent le bassin industriel. L'économie locale repose sur l'industrie papier-carton, la sous-traitance industrielle, la logistique-transport, le commerce, l'artisanat BTP et les services aux entreprises.",
@@ -52,7 +52,7 @@ export const GOLBEY_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Golbey et sur toute l'agglomération d'Épinal (Épinal, Chantraine, Thaon-les-Vosges, Dogneville). Accès rapide par N57 depuis Nancy (1h) et par TER ligne Nancy-Belfort.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Golbey ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Golbey  ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Golbey et de l'agglomération d'Épinal, il identifie les cas d'usage IA à fort ROI pour votre usine, atelier ou activité de services.",
     },
     {

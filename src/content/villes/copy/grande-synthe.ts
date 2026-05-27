@@ -11,9 +11,9 @@ export const GRANDE_SYNTHE_COPY: VilleCopy = {
   pitchEn:
     "À Grande-Synthe, Axion-IA propose des interventions IA opérationnelles adaptées aux secteurs de la métallurgie et des transports terrestres. Nos services incluent des audits, des implémentations et des formations personnalisées pour répondre aux besoins spécifiques des entreprises locales.",
   directAnswerFr:
-    "Axion-IA intervient à Grande-Synthe, un centre industriel regroupant ArcelorMittal et d'autres acteurs du secteur métallurgique. Nos services incluent des audits à partir de 490 € HT et des interventions dès 590 € HT, adaptés aux besoins des entreprises locales en matière d'automatisation et d'optimisation des processus.",
+    "Axion-IA intervient à Grande-Synthe, un centre industriel regroupant ArcelorMittal et d'autres acteurs du secteur métallurgique. adaptés aux besoins des entreprises locales en matière d'automatisation et d'optimisation des processus.",
   directAnswerEn:
-    "Axion-IA intervient à Grande-Synthe, un centre industriel regroupant ArcelorMittal et d'autres acteurs du secteur métallurgique. Nos services incluent des audits à partir de 490 € HT et des interventions dès 590 € HT, adaptés aux besoins des entreprises locales en matière d'automatisation et d'optimisation des processus.",
+    "Axion-IA intervient à Grande-Synthe, un centre industriel regroupant ArcelorMittal et d'autres acteurs du secteur métallurgique. adaptés aux besoins des entreprises locales en matière d'automatisation et d'optimisation des processus.",
   seoHook: "métallurgie & transports terrestres",
   ecosystemFr:
     "Grande-Synthe, située près de Dunkerque, est un pôle industriel majeur avec la présence d'ArcelorMittal. Le secteur des transports terrestres et de l'entreposage y est également bien représenté, offrant un environnement propice aux interventions IA d'Axion-IA.",

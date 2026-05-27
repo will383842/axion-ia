@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const KERVIGNAC_COPY: VilleCopy = {
   pitchFr:
-    "Kervignac (56), commune résidentielle de l'agglomération de Lorient en bordure de la ria d'Étel, bénéficie d'un tissu économique dynamique porté par la proximité du bassin lorientais. TPE artisanales, PME de services, commerces de proximité, professions libérales et ostréiculteurs composent son économie. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération lorientaise.",
+    "Kervignac (56), commune résidentielle de l'agglomération de Lorient en bordure de la ria d'Étel, bénéficie d'un tissu économique dynamique porté par la proximité du bassin lorientais. TPE artisanales, PME de services, commerces de proximité, professions libérales et ostréiculteurs composent son économie. Axion-IA opère pour entreprises et indépendants du secteur de l'agglomération lorientaise.",
   pitchEn:
-    "Kervignac (56), commune résidentielle de l'agglomération de Lorient en bordure de la ria d'Étel, bénéficie d'un tissu économique dynamique porté par la proximité du bassin lorientais. TPE artisanales, PME de services, commerces de proximité, professions libérales et ostréiculteurs composent son économie. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération lorientaise.",
+    "Kervignac (56), commune résidentielle de l'agglomération de Lorient en bordure de la ria d'Étel, bénéficie d'un tissu économique dynamique porté par la proximité du bassin lorientais. TPE artisanales, PME de services, commerces de proximité, professions libérales et ostréiculteurs composent son économie. Axion-IA opère pour entreprises et indépendants du secteur de l'agglomération lorientaise.",
   seoHook: "services, artisanat & ostréiculture",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Kervignac (56). Nous accompagnons tous types d'activités : TPE artisanales, PME de services, commerces, professions libérales et ostréiculteurs du bassin lorientais. Audit Flash dès 490 € HT, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Kervignac (56). Nous accompagnons tous types d'activités : TPE artisanales, PME de services, commerces, professions libérales et ostréiculteurs du bassin lorientais. Audit Flash sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Kervignac (56). Nous accompagnons tous types d'activités : TPE artisanales, PME de services, commerces, professions libérales et ostréiculteurs du bassin lorientais. Audit Flash dès 490 € HT, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Kervignac (56). Nous accompagnons tous types d'activités : TPE artisanales, PME de services, commerces, professions libérales et ostréiculteurs du bassin lorientais. Audit Flash sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Kervignac est une commune résidentielle de l'agglomération lorientaise, entre la ria d'Étel et le pôle économique de Lorient. L'économie locale associe artisanat BTP, services aux entreprises, commerce de proximité, professions libérales et ostréiculture. La proximité immédiate de la zone d'activités de Lorient Agglomération et du littoral offre un vivier de TPE et PME diversifiées.",
   ecosystemEn:
@@ -56,7 +56,7 @@ export const KERVIGNAC_COPY: VilleCopy = {
       a: "Nous proposons l'Audit Flash dès 490 € HT, des interventions formation sur site, l'implémentation d'outils IA métier et du coaching individuel. TPE artisanales, PME de services, commerces et professions libérales de Kervignac sont accompagnés avec un ROI chiffré.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Kervignac ?",
+      q: "Tarifs audit IA à Kervignac  : quel budget prévoir ?",
       a: "L'Audit Flash Axion-IA démarre à 490 € HT. Adapté aux TPE et PME kervignacaises, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {

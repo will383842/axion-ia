@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHAVANOZ_COPY: VilleCopy = {
   pitchFr:
-    "Chavanoz (38), commune du Nord-Isère dans l'aire lyonnaise est, fait partie du tissu péri-urbain de la zone Pont-de-Chéruy / Charvieu-Chavagneux. Tissu PME industrielles, TPE artisans BTP, commerces, agriculture périphérique. Axion-IA couvre l'ensemble des activités professionnelles présentes du Nord-Isère limitrophe Rhône.",
+    "Chavanoz (38), commune du Nord-Isère dans l'aire lyonnaise est, fait partie du tissu péri-urbain de la zone Pont-de-Chéruy / Charvieu-Chavagneux. Tissu PME industrielles, TPE artisans BTP, commerces, agriculture périphérique. Axion-IA couvre les activités professionnelles du bassin du Nord-Isère limitrophe Rhône.",
   pitchEn:
-    "Chavanoz (38), commune du Nord-Isère dans l'aire lyonnaise est, fait partie du tissu péri-urbain de la zone Pont-de-Chéruy / Charvieu-Chavagneux. Tissu PME industrielles, TPE artisans BTP, commerces, agriculture périphérique. Axion-IA couvre l'ensemble des activités professionnelles présentes du Nord-Isère limitrophe Rhône.",
+    "Chavanoz (38), commune du Nord-Isère dans l'aire lyonnaise est, fait partie du tissu péri-urbain de la zone Pont-de-Chéruy / Charvieu-Chavagneux. Tissu PME industrielles, TPE artisans BTP, commerces, agriculture périphérique. Axion-IA couvre les activités professionnelles du bassin du Nord-Isère limitrophe Rhône.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chavanoz (38). Nous accompagnons tous types d'activités : PME industrielles Nord-Isère, TPE artisans BTP, commerçants, agriculteurs périphériques, indépendants, professions libérales et services aux entreprises de la Communauté de communes Lyon Saint-Exupéry en Dauphiné.",
   directAnswerEn:

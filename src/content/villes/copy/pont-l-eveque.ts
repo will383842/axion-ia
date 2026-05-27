@@ -60,7 +60,7 @@ export const PONT_L_EVEQUE_COPY: VilleCopy = {
       a: "Pour les hôteliers-restaurateurs de Pont-l'Évêque et Pays d'Auge, audit Flash 490 € HT, interventions formations, coaching 1-to-1. Cas : agents IA réservation multilingues, prédiction taux d'occupation, classification avis.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Pont-l'Évêque ?",
+      q: "Combien coûte un audit IA à Pont-l'Évêque  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {

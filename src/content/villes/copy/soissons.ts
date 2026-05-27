@@ -11,9 +11,9 @@ export const SOISSONS_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Soissons, une ville où le commerce de détail et l'industrie alimentaire prospèrent. Nos services incluent audits et implémentations d'IA, adaptés aux besoins spécifiques des entreprises locales.",
   directAnswerFr:
-    "Axion-IA se déplace à Soissons pour offrir des services d'IA sur mesure. Avec des entreprises comme Nestlé et Cooperl présentes dans la région, nous comprenons les enjeux locaux. Nos prestations incluent des audits à partir de 490 € HT et des interventions dès 590 € HT, garantissant une approche personnalisée pour chaque secteur d'activité.",
+    "Axion-IA se déplace à Soissons pour offrir des services d'IA sur mesure. Avec des entreprises comme Nestlé et Cooperl présentes dans la région, nous comprenons les enjeux locaux. Nos prestations incluent des audits et des interventions, garantissant une approche personnalisée pour chaque secteur d'activité.",
   directAnswerEn:
-    "Axion-IA se déplace à Soissons pour offrir des services d'IA sur mesure. Avec des entreprises comme Nestlé et Cooperl présentes dans la région, nous comprenons les enjeux locaux. Nos prestations incluent des audits à partir de 490 € HT et des interventions dès 590 € HT, garantissant une approche personnalisée pour chaque secteur d'activité.",
+    "Axion-IA se déplace à Soissons pour offrir des services d'IA sur mesure. Avec des entreprises comme Nestlé et Cooperl présentes dans la région, nous comprenons les enjeux locaux. Nos prestations incluent des audits et des interventions, garantissant une approche personnalisée pour chaque secteur d'activité.",
   seoHook: "commerce détail & construction",
   ecosystemFr:
     "À Soissons, le tissu économique est renforcé par la présence de grands groupes tels que Nestlé et Cooperl. Le Parc d'activités du Plateau joue un rôle crucial dans le développement industriel local.",

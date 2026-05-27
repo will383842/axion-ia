@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_SEBASTIEN_DE_MORSENT_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Sébastien-de-Morsent (27), commune résidentielle de l'agglomération d'Évreux en Eure, cadre de vie prisé aux portes de la préfecture. Tissu TPE artisans, PME services et tertiaire agglo Évreux, commerces, professions libérales, santé. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Saint-Sébastien-de-Morsent (27), commune résidentielle de l'agglomération d'Évreux en Eure, cadre de vie prisé aux portes de la préfecture. Tissu TPE artisans, PME services et tertiaire agglo Évreux, commerces, professions libérales, santé. Axion-IA répond aux besoins des activités professionnelles présentes.",
   pitchEn:
-    "Saint-Sébastien-de-Morsent (27), commune résidentielle de l'agglomération d'Évreux en Eure, cadre de vie prisé aux portes de la préfecture. Tissu TPE artisans, PME services et tertiaire agglo Évreux, commerces, professions libérales, santé. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Saint-Sébastien-de-Morsent (27), commune résidentielle de l'agglomération d'Évreux en Eure, cadre de vie prisé aux portes de la préfecture. Tissu TPE artisans, PME services et tertiaire agglo Évreux, commerces, professions libérales, santé. Axion-IA répond aux besoins des activités professionnelles présentes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Sébastien-de-Morsent (27). Nous accompagnons tous types d'activités : TPE artisans, PME services et tertiaire agglo Évreux, commerces, professions libérales et de santé, indépendants et services aux entreprises d'Évreux Portes de Normandie.",
   directAnswerEn:

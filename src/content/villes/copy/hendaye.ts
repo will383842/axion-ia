@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const HENDAYE_COPY: VilleCopy = {
   pitchFr:
-    "Hendaye (64), commune de 18 102 habitants dans les Pyrénées-Atlantiques, est la ville-frontière franco-espagnole sur les bords de la Bidassoa et de l'océan Atlantique. Station balnéaire de la Côte Basque, son économie repose sur un tissu de TPE commerçants et artisans, PME tourisme et hôtellerie-restauration, commerce transfrontalier, services aux entreprises et transport. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Hendaye (64), commune de 18 102 habitants dans les Pyrénées-Atlantiques, est la ville-frontière franco-espagnole sur les bords de la Bidassoa et de l'océan Atlantique. Station balnéaire de la Côte Basque, son économie repose sur un tissu de TPE commerçants et artisans, PME tourisme et hôtellerie-restauration, commerce transfrontalier, services aux entreprises et transport. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Hendaye (64), commune de 18 102 habitants dans les Pyrénées-Atlantiques, est la ville-frontière franco-espagnole sur les bords de la Bidassoa et de l'océan Atlantique. Station balnéaire de la Côte Basque, son économie repose sur un tissu de TPE commerçants et artisans, PME tourisme et hôtellerie-restauration, commerce transfrontalier, services aux entreprises et transport. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Hendaye (64), commune de 18 102 habitants dans les Pyrénées-Atlantiques, est la ville-frontière franco-espagnole sur les bords de la Bidassoa et de l'océan Atlantique. Station balnéaire de la Côte Basque, son économie repose sur un tissu de TPE commerçants et artisans, PME tourisme et hôtellerie-restauration, commerce transfrontalier, services aux entreprises et transport. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hendaye (64). Nous accompagnons TPE et PME de la Côte Basque sud : acteurs du tourisme balnéaire, hôteliers-restaurateurs, commerçants transfrontaliers, artisans, transporteurs et professions libérales. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hendaye (64). Nous accompagnons TPE et PME de la Côte Basque sud : acteurs du tourisme balnéaire, hôteliers-restaurateurs, commerçants transfrontaliers, artisans, transporteurs et professions libérales. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hendaye (64). Nous accompagnons TPE et PME de la Côte Basque sud : acteurs du tourisme balnéaire, hôteliers-restaurateurs, commerçants transfrontaliers, artisans, transporteurs et professions libérales. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hendaye (64). Nous accompagnons TPE et PME de la Côte Basque sud : acteurs du tourisme balnéaire, hôteliers-restaurateurs, commerçants transfrontaliers, artisans, transporteurs et professions libérales. Audit Flash sur mesure.",
   ecosystemFr:
     "Hendaye est la dernière ville française avant l'Espagne (Irun, Fontarrabie), située à l'embouchure de la Bidassoa sur la Côte Basque. Station balnéaire réputée (plage des Deux Jumeaux, domaine d'Abbadia), son économie s'appuie sur le tourisme, l'hôtellerie-restauration, le commerce transfrontalier (ventas, flux Espagne), le transport et la logistique (gare internationale), l'artisanat et les services. Le bassin d'emploi s'étend à Saint-Jean-de-Luz et au BAB (Bayonne-Anglet-Biarritz).",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const HENDAYE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Hendaye et sur toute la Côte Basque (Saint-Jean-de-Luz, Bayonne, Anglet, Biarritz). Consultants accessibles via la gare SNCF Hendaye (TGV Paris-Hendaye) et l'aéroport Biarritz Pays Basque.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Hendaye ?",
+      q: "Tarifs audit IA à Hendaye  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME hendayaises : hôteliers-restaurateurs, commerçants transfrontaliers, transporteurs, artisans et professions libérales. ROI chiffré dès le diagnostic.",
     },
     {

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_AMAND_LES_EAUX_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Amand-les-Eaux (59), station thermale historique du Nord au cœur du parc naturel régional Scarpe-Escaut, est réputée pour sa faïencerie, son abbaye et ses thermes. Tissu économique : TPE et PME du thermalisme et bien-être, artisanat faïencier et métiers d'art, commerces de centre-ville, professions libérales de santé, PME agroalimentaire et brassicole du Valenciennois. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin amandinois.",
+    "Saint-Amand-les-Eaux (59), station thermale historique du Nord au cœur du parc naturel régional Scarpe-Escaut, est réputée pour sa faïencerie, son abbaye et ses thermes. Tissu économique : TPE et PME du thermalisme et bien-être, artisanat faïencier et métiers d'art, commerces de centre-ville, professions libérales de santé, PME agroalimentaire et brassicole du Valenciennois. Axion-IA opère pour entreprises et indépendants du secteur du bassin amandinois.",
   pitchEn:
-    "Saint-Amand-les-Eaux (59), station thermale historique du Nord au cœur du parc naturel régional Scarpe-Escaut, est réputée pour sa faïencerie, son abbaye et ses thermes. Tissu économique : TPE et PME du thermalisme et bien-être, artisanat faïencier et métiers d'art, commerces de centre-ville, professions libérales de santé, PME agroalimentaire et brassicole du Valenciennois. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin amandinois.",
+    "Saint-Amand-les-Eaux (59), station thermale historique du Nord au cœur du parc naturel régional Scarpe-Escaut, est réputée pour sa faïencerie, son abbaye et ses thermes. Tissu économique : TPE et PME du thermalisme et bien-être, artisanat faïencier et métiers d'art, commerces de centre-ville, professions libérales de santé, PME agroalimentaire et brassicole du Valenciennois. Axion-IA opère pour entreprises et indépendants du secteur du bassin amandinois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Amand-les-Eaux (59). Nous accompagnons TPE et PME : établissements thermaux et bien-être, artisans faïenciers et métiers d'art, commerces de centre-ville, professions libérales de santé et PME agroalimentaires du Valenciennois.",
   directAnswerEn:
@@ -52,7 +52,7 @@ export const SAINT_AMAND_LES_EAUX_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Saint-Amand-les-Eaux et dans tout le Valenciennois (Valenciennes, Condé-sur-l'Escaut, Mortagne-du-Nord, Vieux-Condé). Nos consultants couvrent l'ensemble du bassin amandinois et la vallée de la Scarpe depuis Lille (45 min) ou Valenciennes (20 min).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Saint-Amand-les-Eaux ?",
+      q: "Combien coûte un audit IA à Saint-Amand-les-Eaux  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Saint-Amand-les-Eaux, il identifie les cas d'usage IA à fort ROI pour votre activité (thermalisme, artisanat d'art, commerce, santé, agroalimentaire). Tarifs publics, sans engagement.",
     },
     {

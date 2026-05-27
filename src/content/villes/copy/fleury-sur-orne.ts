@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FLEURY_SUR_ORNE_COPY: VilleCopy = {
   pitchFr:
-    "Fleury-sur-Orne (14), commune de l'agglomération de Caen sud dans le Calvados, est connue pour ses anciennes carrières souterraines de pierre de Caen et ses zones d'activités dynamiques. Tissu TPE artisans BTP, PME services et industrie, commerces, professions libérales, indépendants. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Fleury-sur-Orne (14), commune de l'agglomération de Caen sud dans le Calvados, est connue pour ses anciennes carrières souterraines de pierre de Caen et ses zones d'activités dynamiques. Tissu TPE artisans BTP, PME services et industrie, commerces, professions libérales, indépendants. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "Fleury-sur-Orne (14), commune de l'agglomération de Caen sud dans le Calvados, est connue pour ses anciennes carrières souterraines de pierre de Caen et ses zones d'activités dynamiques. Tissu TPE artisans BTP, PME services et industrie, commerces, professions libérales, indépendants. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Fleury-sur-Orne (14), commune de l'agglomération de Caen sud dans le Calvados, est connue pour ses anciennes carrières souterraines de pierre de Caen et ses zones d'activités dynamiques. Tissu TPE artisans BTP, PME services et industrie, commerces, professions libérales, indépendants. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fleury-sur-Orne (14). Nous accompagnons tous types d'activités : TPE artisans BTP, PME services et industrielles de l'agglomération caennaise sud, commerçants zones d'activités, professions libérales, indépendants et prestataires du secteur tertiaire.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const FLEURY_SUR_ORNE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Fleury-sur-Orne, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Fleury-sur-Orne ?",
+      q: "Quel est le tarif d'un audit IA à Fleury-sur-Orne  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {

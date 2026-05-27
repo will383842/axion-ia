@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LA_FARE_LES_OLIVIERS_COPY: VilleCopy = {
   pitchFr:
-    "La Fare-les-Oliviers (13), commune provençale au nord de l'étang de Berre, mêle vocation résidentielle, oléiculture historique et services aux entreprises du bassin Aix-Marseille. Tissu de TPE artisans, professions libérales, commerçants, PME tertiaires, oléiculteurs et viticulteurs. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "La Fare-les-Oliviers (13), commune provençale au nord de l'étang de Berre, mêle vocation résidentielle, oléiculture historique et services aux entreprises du bassin Aix-Marseille. Tissu de TPE artisans, professions libérales, commerçants, PME tertiaires, oléiculteurs et viticulteurs. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "La Fare-les-Oliviers (13), commune provençale au nord de l'étang de Berre, mêle vocation résidentielle, oléiculture historique et services aux entreprises du bassin Aix-Marseille. Tissu de TPE artisans, professions libérales, commerçants, PME tertiaires, oléiculteurs et viticulteurs. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "La Fare-les-Oliviers (13), commune provençale au nord de l'étang de Berre, mêle vocation résidentielle, oléiculture historique et services aux entreprises du bassin Aix-Marseille. Tissu de TPE artisans, professions libérales, commerçants, PME tertiaires, oléiculteurs et viticulteurs. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Fare-les-Oliviers (13). Nous accompagnons TPE artisans, oléiculteurs, viticulteurs, professions libérales, commerçants et PME tertiaires du bassin de Berre. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Fare-les-Oliviers (13). Nous accompagnons TPE artisans, oléiculteurs, viticulteurs, professions libérales, commerçants et PME tertiaires du bassin de Berre. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Fare-les-Oliviers (13). Nous accompagnons TPE artisans, oléiculteurs, viticulteurs, professions libérales, commerçants et PME tertiaires du bassin de Berre. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Fare-les-Oliviers (13). Nous accompagnons TPE artisans, oléiculteurs, viticulteurs, professions libérales, commerçants et PME tertiaires du bassin de Berre. Audit Flash sur mesure.",
   seoHook: "oléiculture moulins & viticulture coteaux",
   ecosystemFr:
     "La Fare-les-Oliviers est une commune résidentielle au nord de l'étang de Berre, sur l'axe Aix-Salon (D113). Oléiculture historique (moulins, oliveraies), vignobles AOC Coteaux d'Aix, artisanat, commerces de proximité et résidents cadres travaillant à Aix, Marseille, Vitrolles, Marignane ou sur le technopôle de l'Arbois.",
@@ -52,7 +52,7 @@ export const LA_FARE_LES_OLIVIERS_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à La Fare-les-Oliviers et dans tout le pourtour nord de l'étang de Berre (Velaux, Coudoux, Ventabren, Pélissanne, Lançon-Provence, Berre-l'Étang). Accès A7-A8 immédiat.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à La Fare-les-Oliviers ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à La Fare-les-Oliviers  ?",
       a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, oléiculteurs, viticulteurs et PME farencques. Tarifs publics, sans engagement.",
     },
     {

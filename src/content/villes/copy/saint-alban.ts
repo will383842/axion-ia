@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_ALBAN_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Alban (31), commune du nord de Toulouse avec plus de 6 500 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de la couronne nord de Toulouse.",
+    "Saint-Alban (31), commune du nord de Toulouse avec plus de 6 500 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA opère sur l'ensemble des activités professionnelles locales de la couronne nord de Toulouse.",
   pitchEn:
-    "Saint-Alban (31), commune du nord de Toulouse avec plus de 6 500 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de la couronne nord de Toulouse.",
+    "Saint-Alban (31), commune du nord de Toulouse avec plus de 6 500 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA opère sur l'ensemble des activités professionnelles locales de la couronne nord de Toulouse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Alban (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Alban (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Alban (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Alban (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit Flash sur mesure.",
   seoHook: "artisanat & commerce détail",
   ecosystemFr:
     "Saint-Alban est une commune résidentielle du nord de Toulouse. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Proximité de l'axe A62 et de la zone d'emploi nord toulousaine.",
@@ -56,7 +56,7 @@ export const SAINT_ALBAN_COPY: VilleCopy = {
       a: "Nous accompagnons tous types d'activités : TPE artisans, PME de services, professions libérales, commerces, transport. Aucun secteur exclu.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Saint-Alban ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Saint-Alban  ?",
       a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics.",
     },
     {

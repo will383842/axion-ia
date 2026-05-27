@@ -9,9 +9,9 @@ export const JOUY_LE_MOUTIER_COPY: VilleCopy = {
   pitchEn:
     "Jouy-le-Moutier, commune du Val-d'Oise (95) au sein de l'agglomération Cergy-Pontoise, réunit TPE artisans du bâtiment, PME de services, commerçants de proximité, professions libérales et indépendants. Axion-IA y intervient pour tous types d'activités du bassin Cergy-Pontoise.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jouy-le-Moutier (95). Nous accompagnons tous types d'activités : TPE artisans BTP, PME tertiaires, commerçants de proximité, professions libérales et indépendants du bassin Cergy-Pontoise. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jouy-le-Moutier (95). Nous accompagnons tous types d'activités : TPE artisans BTP, PME tertiaires, commerçants de proximité, professions libérales et indépendants du bassin Cergy-Pontoise. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jouy-le-Moutier (95). Nous accompagnons tous types d'activités : TPE artisans BTP, PME tertiaires, commerçants de proximité, professions libérales et indépendants du bassin Cergy-Pontoise. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jouy-le-Moutier (95). Nous accompagnons tous types d'activités : TPE artisans BTP, PME tertiaires, commerçants de proximité, professions libérales et indépendants du bassin Cergy-Pontoise. Audit Flash sur mesure.",
   seoHook: "artisanat rénovation & commerce proximité",
   ecosystemFr:
     "Jouy-le-Moutier est une commune résidentielle de l'agglomération Cergy-Pontoise (200 000 hab), bordée par l'Oise et les coteaux boisés du Vexin. Son tissu économique comprend TPE artisans BTP, commerces de quartier, PME tertiaires, professions libérales et indépendants. Proximité directe avec Cergy, Vauréal et Pontoise.",

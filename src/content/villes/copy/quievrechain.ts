@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const QUIEVRECHAIN_COPY: VilleCopy = {
   pitchFr:
-    "Quiévrechain (59), commune frontalière belge de l'agglomération de Valenciennes, à la porte du Hainaut franco-belge. Tissu économique : TPE et PME industrielles héritières du bassin valenciennois (sidérurgie reconvertie, logistique), commerce de proximité, artisanat, prestataires B2B transfrontaliers franco-belges. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin valenciennois et du Hainaut transfrontalier.",
+    "Quiévrechain (59), commune frontalière belge de l'agglomération de Valenciennes, à la porte du Hainaut franco-belge. Tissu économique : TPE et PME industrielles héritières du bassin valenciennois (sidérurgie reconvertie, logistique), commerce de proximité, artisanat, prestataires B2B transfrontaliers franco-belges. Axion-IA y travaille avec les organisations du territoire du bassin valenciennois et du Hainaut transfrontalier.",
   pitchEn:
-    "Quiévrechain (59), commune frontalière belge de l'agglomération de Valenciennes, à la porte du Hainaut franco-belge. Tissu économique : TPE et PME industrielles héritières du bassin valenciennois (sidérurgie reconvertie, logistique), commerce de proximité, artisanat, prestataires B2B transfrontaliers franco-belges. Axion-IA y déploie ses missions auprès de toutes les organisations du bassin valenciennois et du Hainaut transfrontalier.",
+    "Quiévrechain (59), commune frontalière belge de l'agglomération de Valenciennes, à la porte du Hainaut franco-belge. Tissu économique : TPE et PME industrielles héritières du bassin valenciennois (sidérurgie reconvertie, logistique), commerce de proximité, artisanat, prestataires B2B transfrontaliers franco-belges. Axion-IA y travaille avec les organisations du territoire du bassin valenciennois et du Hainaut transfrontalier.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Quiévrechain (59). Nous accompagnons TPE et PME : PME industrielles et logistiques du bassin valenciennois reconverti, prestataires B2B transfrontaliers franco-belges (Hainaut), commerçants, artisans et professions libérales de l'agglomération de Valenciennes.",
   directAnswerEn:
@@ -56,7 +56,7 @@ export const QUIEVRECHAIN_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE et PME industrielles et logistiques héritières du bassin valenciennois reconverti sur leurs cas IA : optimisation flux entrepôts et supply chain, maintenance prédictive équipements, contrôle qualité visuel par caméra, agents IA gestion fournisseurs cross-border, copilotes administratifs export Hainaut.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Quiévrechain ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Quiévrechain  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du bassin valenciennois et transfrontalières Hainaut, il identifie les cas d'usage IA à fort ROI pour votre activité (industrie, logistique, B2B transfrontalier, commerce, artisanat). Tarifs publics, sans engagement.",
     },
     {

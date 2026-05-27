@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_CRECHE_COPY: VilleCopy = {
   pitchFr:
-    "La Crèche (79), commune résidentielle à l'est de l'agglomération niortaise dans les Deux-Sèvres, bénéficie de la proximité directe du bassin d'emploi de Niort (mutuelles, assurances). Tissu TPE artisans BTP, commerçants, PME tertiaires, professions libérales, services à la personne. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin niortais est.",
+    "La Crèche (79), commune résidentielle à l'est de l'agglomération niortaise dans les Deux-Sèvres, bénéficie de la proximité directe du bassin d'emploi de Niort (mutuelles, assurances). Tissu TPE artisans BTP, commerçants, PME tertiaires, professions libérales, services à la personne. Axion-IA accompagne entreprises et indépendants du bassin niortais est.",
   pitchEn:
-    "La Crèche (79), commune résidentielle à l'est de l'agglomération niortaise dans les Deux-Sèvres, bénéficie de la proximité directe du bassin d'emploi de Niort (mutuelles, assurances). Tissu TPE artisans BTP, commerçants, PME tertiaires, professions libérales, services à la personne. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin niortais est.",
+    "La Crèche (79), commune résidentielle à l'est de l'agglomération niortaise dans les Deux-Sèvres, bénéficie de la proximité directe du bassin d'emploi de Niort (mutuelles, assurances). Tissu TPE artisans BTP, commerçants, PME tertiaires, professions libérales, services à la personne. Axion-IA accompagne entreprises et indépendants du bassin niortais est.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Crèche (79). Nous accompagnons tous types d'activités : TPE artisans BTP et commerçants, PME tertiaires liées au bassin niortais mutuelles/assurances, professions libérales, services à la personne et prestataires du Haut-Val-de-Sèvre.",
   directAnswerEn:

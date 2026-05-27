@@ -9,9 +9,9 @@ export const BALMA_COPY: VilleCopy = {
   pitchEn:
     "Balma (31), commune résidentielle et tertiaire de l'est toulousain avec près de 18 000 habitants. Tissu TPE conseil et services, PME tertiaires, professions libérales, commerces de quartier. Axion-IA y intervient pour tous types d'activités de la première couronne est de Toulouse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Balma (31). Nous accompagnons TPE de conseil, PME tertiaires, professions libérales, commerçants et artisans de l'est toulousain. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Balma (31). Nous accompagnons TPE de conseil, PME tertiaires, professions libérales, commerçants et artisans de l'est toulousain. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Balma (31). Nous accompagnons TPE de conseil, PME tertiaires, professions libérales, commerçants et artisans de l'est toulousain. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Balma (31). Nous accompagnons TPE de conseil, PME tertiaires, professions libérales, commerçants et artisans de l'est toulousain. Audit Flash sur mesure.",
   seoHook: "conseil gestion & programmation informatique",
   ecosystemFr:
     "Balma est une commune résidentielle prisée de l'est de Toulouse, au tissu économique orienté tertiaire et services. TPE de conseil, cabinets de professions libérales, PME en informatique et services aux entreprises, commerces de proximité le long de la route de Castres. Proximité immédiate de la zone Balma-Gramont.",
@@ -56,7 +56,7 @@ export const BALMA_COPY: VilleCopy = {
       a: "Nous accompagnons tous types d'activités : TPE de conseil, PME tertiaires et informatiques, professions libérales, commerces de proximité, artisans, services aux entreprises. Aucun secteur exclu.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Balma ?",
+      q: "Combien coûte un audit IA à Balma  ?",
       a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME tertiaires, un audit approfondi est proposé entre 1 900 et 3 900 € HT selon la complexité des process. Tarifs publics, pas de devis opaque.",
     },
     {

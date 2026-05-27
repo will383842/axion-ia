@@ -9,9 +9,9 @@ export const CASTELNAU_D_ESTRETEFONDS_COPY: VilleCopy = {
   pitchEn:
     "Castelnau-d'Estrétefonds (31), commune du nord de Toulouse avec plus de 7 000 habitants, pôle logistique majeur (Eurocentre). Tissu TPE artisans, PME logistique et transport, commerces de proximité, professions libérales. Axion-IA y intervient pour tous types d'activités du nord de la Haute-Garonne.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Castelnau-d'Estrétefonds (31). Nous accompagnons TPE artisans, PME logistique et transport, professions libérales et commerçants du pôle Eurocentre nord Toulouse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Castelnau-d'Estrétefonds (31). Nous accompagnons TPE artisans, PME logistique et transport, professions libérales et commerçants du pôle Eurocentre nord Toulouse. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Castelnau-d'Estrétefonds (31). Nous accompagnons TPE artisans, PME logistique et transport, professions libérales et commerçants du pôle Eurocentre nord Toulouse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Castelnau-d'Estrétefonds (31). Nous accompagnons TPE artisans, PME logistique et transport, professions libérales et commerçants du pôle Eurocentre nord Toulouse. Audit Flash sur mesure.",
   seoHook: "logistique entreposage & transport routier",
   ecosystemFr:
     "Castelnau-d'Estrétefonds accueille la plateforme logistique Eurocentre, l'un des plus grands pôles logistiques du sud-ouest. PME de transport et logistique, entrepôts, TPE artisans, commerces de bourg, professions libérales. Nœud autoroutier A62/A68.",
@@ -56,7 +56,7 @@ export const CASTELNAU_D_ESTRETEFONDS_COPY: VilleCopy = {
       a: "Nous accompagnons tous types d'activités : PME logistique, transporteurs, TPE artisans, commerces, professions libérales. Aucun secteur exclu.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Castelnau-d'Estrétefonds ?",
+      q: "Tarifs audit IA à Castelnau-d'Estrétefonds  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME logistiques, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics.",
     },
     {

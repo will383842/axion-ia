@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_BALME_DE_SILLINGY_COPY: VilleCopy = {
   pitchFr:
-    "La Balme-de-Sillingy (74), commune résidentielle au nord d'Annecy dans la communauté de communes Fier et Usses, accueille un tissu de TPE/PME tertiaires, artisans BTP, exploitants agricoles, commerces et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin annécien nord.",
+    "La Balme-de-Sillingy (74), commune résidentielle au nord d'Annecy dans la communauté de communes Fier et Usses, accueille un tissu de TPE/PME tertiaires, artisans BTP, exploitants agricoles, commerces et professions libérales. Axion-IA opère pour entreprises et indépendants du secteur du bassin annécien nord.",
   pitchEn:
-    "La Balme-de-Sillingy (74), commune résidentielle au nord d'Annecy dans la communauté de communes Fier et Usses, accueille un tissu de TPE/PME tertiaires, artisans BTP, exploitants agricoles, commerces et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin annécien nord.",
+    "La Balme-de-Sillingy (74), commune résidentielle au nord d'Annecy dans la communauté de communes Fier et Usses, accueille un tissu de TPE/PME tertiaires, artisans BTP, exploitants agricoles, commerces et professions libérales. Axion-IA opère pour entreprises et indépendants du secteur du bassin annécien nord.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Balme-de-Sillingy (74). Nous accompagnons TPE et PME : entreprises tertiaires du bassin annécien nord, artisans BTP, exploitants agricoles, commerçants et professions libérales de la communauté de communes Fier et Usses.",
   directAnswerEn:
@@ -56,7 +56,7 @@ export const LA_BALME_DE_SILLINGY_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME tertiaires et bureaux d'études du secteur sur leurs cas IA : automatisation workflow, agents conversationnels B2B, classification documents, CRM augmenté. Audit Flash 490 € HT pour démarrer.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à La Balme-de-Sillingy ?",
+      q: "Tarifs audit IA à La Balme-de-Sillingy  : quel budget prévoir ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME du bassin annécien, il identifie les cas d'usage IA à fort ROI pour votre activité (tertiaire, BTP, agriculture, professions libérales). Tarifs publics.",
     },
     {

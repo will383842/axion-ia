@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const HERICOURT_COPY: VilleCopy = {
   pitchFr:
-    "Héricourt (70), commune industrielle de Haute-Saône dans l'aire urbaine de Montbéliard, compte plus de 10 600 habitants. Tissu dense de TPE/PME sous-traitance automobile, mécanique de précision, plasturgie, logistique et services aux entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs du nord Franche-Comté.",
+    "Héricourt (70), commune industrielle de Haute-Saône dans l'aire urbaine de Montbéliard, compte plus de 10 600 habitants. Tissu dense de TPE/PME sous-traitance automobile, mécanique de précision, plasturgie, logistique et services aux entreprises. Axion-IA répond aux besoins de toutes les entreprises du nord Franche-Comté.",
   pitchEn:
-    "Héricourt (70), commune industrielle de Haute-Saône dans l'aire urbaine de Montbéliard, compte plus de 10 600 habitants. Tissu dense de TPE/PME sous-traitance automobile, mécanique de précision, plasturgie, logistique et services aux entreprises. Axion-IA accompagne entreprises et indépendants de tous secteurs du nord Franche-Comté.",
+    "Héricourt (70), commune industrielle de Haute-Saône dans l'aire urbaine de Montbéliard, compte plus de 10 600 habitants. Tissu dense de TPE/PME sous-traitance automobile, mécanique de précision, plasturgie, logistique et services aux entreprises. Axion-IA répond aux besoins de toutes les entreprises du nord Franche-Comté.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Héricourt (70). Nous accompagnons TPE et PME industrielles de l'aire urbaine Montbéliard : sous-traitants automobile, ateliers mécanique de précision, plasturgie, logistique, artisans, commerçants et professions libérales du nord Franche-Comté.",
   directAnswerEn:
@@ -56,7 +56,7 @@ export const HERICOURT_COPY: VilleCopy = {
       a: "Nous accompagnons les sous-traitants automobile sur leurs cas IA : contrôle qualité par vision, prédiction maintenance, optimisation production, classification rapports qualité, automatisation traçabilité et agents conversationnels.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Héricourt ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Héricourt  ?",
       a: "L'Audit Flash commence à 490 € HT, adapté aux TPE et PME industrielles. Diagnostic complet des opportunités IA avec ROI chiffré, livrable sous 5 jours. Tarifs publics consultables sur notre site.",
     },
     {

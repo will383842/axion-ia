@@ -11,9 +11,9 @@ export const QUIMPER_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Quimper pour accompagner les entreprises dans l'optimisation de leurs processus grâce à l'IA. Avec des acteurs comme le Groupe Le Duff et Armor Lux, la ville offre un environnement propice à l'innovation technologique.",
   directAnswerFr:
-    "À Quimper, Axion-IA propose des services d'IA adaptés aux besoins des entreprises locales. Avec la présence de pôles comme Valorial et des entreprises comme Armor Lux, nous intervenons pour automatiser des tâches administratives, optimiser les processus et former les équipes. Nos audits commencent à partir de 490 € HT, garantissant un retour sur investissement rapide.",
+    "À Quimper, Axion-IA propose des services d'IA adaptés aux besoins des entreprises locales. Avec la présence de pôles comme Valorial et des entreprises comme Armor Lux, nous intervenons pour automatiser des tâches administratives, optimiser les processus et former les équipes. Nos audits commencent, garantissant un retour sur investissement rapide.",
   directAnswerEn:
-    "À Quimper, Axion-IA propose des services d'IA adaptés aux besoins des entreprises locales. Avec la présence de pôles comme Valorial et des entreprises comme Armor Lux, nous intervenons pour automatiser des tâches administratives, optimiser les processus et former les équipes. Nos audits commencent à partir de 490 € HT, garantissant un retour sur investissement rapide.",
+    "À Quimper, Axion-IA propose des services d'IA adaptés aux besoins des entreprises locales. Avec la présence de pôles comme Valorial et des entreprises comme Armor Lux, nous intervenons pour automatiser des tâches administratives, optimiser les processus et former les équipes. Nos audits commencent, garantissant un retour sur investissement rapide.",
   seoHook: "agro, faïence & tourisme",
   ecosystemFr:
     "Quimper est un centre économique dynamique avec des entreprises telles que le Groupe Le Duff et Armor Lux. Le pôle de compétitivité Valorial y soutient l'innovation dans l'industrie agroalimentaire.",

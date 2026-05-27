@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GRAND_CHAMP_COPY: VilleCopy = {
   pitchFr:
-    "Grand-Champ (56), commune rurale de l'arrière-pays vannetais dans le Morbihan, allie agriculture, TPE artisanales, PME agroalimentaires et commerces de bourg au coeur d'un territoire en croissance résidentielle. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Grand-Champ (56), commune rurale de l'arrière-pays vannetais dans le Morbihan, allie agriculture, TPE artisanales, PME agroalimentaires et commerces de bourg au coeur d'un territoire en croissance résidentielle. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Grand-Champ (56), commune rurale de l'arrière-pays vannetais dans le Morbihan, allie agriculture, TPE artisanales, PME agroalimentaires et commerces de bourg au coeur d'un territoire en croissance résidentielle. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Grand-Champ (56), commune rurale de l'arrière-pays vannetais dans le Morbihan, allie agriculture, TPE artisanales, PME agroalimentaires et commerces de bourg au coeur d'un territoire en croissance résidentielle. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Grand-Champ (56). Nous accompagnons tous types d'activités : exploitations agricoles, TPE artisanales, PME agroalimentaires, commerces de bourg, professions libérales et indépendants de l'arrière-pays vannetais.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const GRAND_CHAMP_COPY: VilleCopy = {
       a: "Oui, nous accompagnons TPE artisans et commerces de Grand-Champ sur des cas IA concrets : automatisation devis et facturation, chatbots relation client, gestion stocks, agents IA prise de RDV. Audit Flash 490 € HT adapté aux petites structures.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Grand-Champ ?",
+      q: "Tarifs audit IA à Grand-Champ  : quel budget prévoir ?",
       a: "L'audit Flash IA démarre à 490 € HT pour les TPE et PME de Grand-Champ et de l'arrière-pays vannetais. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
     },
     {

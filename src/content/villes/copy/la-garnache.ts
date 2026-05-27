@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LA_GARNACHE_COPY: VilleCopy = {
   pitchFr:
-    "La Garnache (85), commune du marais breton vendéen en Pays de la Loire, plus de 5 500 habitants. Ancienne seigneurie historique aujourd'hui pôle rural avec agriculture, artisanat, commerces et tourisme vert. Tissu TPE artisans, PME agroalimentaires, exploitations agricoles et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du bocage vendéen nord.",
+    "La Garnache (85), commune du marais breton vendéen en Pays de la Loire, plus de 5 500 habitants. Ancienne seigneurie historique aujourd'hui pôle rural avec agriculture, artisanat, commerces et tourisme vert. Tissu TPE artisans, PME agroalimentaires, exploitations agricoles et professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes du bocage vendéen nord.",
   pitchEn:
-    "La Garnache (85), commune du marais breton vendéen en Pays de la Loire, plus de 5 500 habitants. Ancienne seigneurie historique aujourd'hui pôle rural avec agriculture, artisanat, commerces et tourisme vert. Tissu TPE artisans, PME agroalimentaires, exploitations agricoles et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du bocage vendéen nord.",
+    "La Garnache (85), commune du marais breton vendéen en Pays de la Loire, plus de 5 500 habitants. Ancienne seigneurie historique aujourd'hui pôle rural avec agriculture, artisanat, commerces et tourisme vert. Tissu TPE artisans, PME agroalimentaires, exploitations agricoles et professions libérales. Axion-IA répond aux besoins des activités professionnelles présentes du bocage vendéen nord.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Garnache (85). Nous accompagnons TPE artisans, PME agroalimentaires, exploitations agricoles, commerçants et professions libérales du marais breton vendéen. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Garnache (85). Nous accompagnons TPE artisans, PME agroalimentaires, exploitations agricoles, commerçants et professions libérales du marais breton vendéen. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Garnache (85). Nous accompagnons TPE artisans, PME agroalimentaires, exploitations agricoles, commerçants et professions libérales du marais breton vendéen. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Garnache (85). Nous accompagnons TPE artisans, PME agroalimentaires, exploitations agricoles, commerçants et professions libérales du marais breton vendéen. Audit Flash sur mesure.",
   seoHook: "agriculture élevage & artisanat",
   ecosystemFr:
     "La Garnache (5 515 hab) est une commune du marais breton vendéen, ancienne seigneurie médiévale. Économie rurale diversifiée : agriculture (élevage, maraîchage), artisanat, agroalimentaire, commerces de proximité et tourisme vert. Proximité Challans (10 min), Nantes (45 min), Saint-Nazaire (50 min), côte vendéenne (20 min). Bassin de vie dynamique nord-Vendée.",
@@ -52,7 +52,7 @@ export const LA_GARNACHE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à La Garnache et dans tout le marais breton vendéen (Challans, Saint-Gilles-Croix-de-Vie, Beauvoir-sur-Mer). Nos consultants se déplacent depuis Nantes (45 min) ou La Roche-sur-Yon (45 min).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à La Garnache ?",
+      q: "Combien coûte un audit IA à La Garnache  ?",
       a: "L'Audit Flash IA démarre à 490 € HT pour les TPE de La Garnache. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur rural ou artisanal.",
     },
     {

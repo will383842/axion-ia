@@ -11,9 +11,9 @@ export const POITIERS_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Poitiers, une ville dynamique avec des institutions comme l'Université de Poitiers et le Futuroscope, pour optimiser vos processus grâce à l'IA.",
   directAnswerFr:
-    "Axion-IA se déplace à Poitiers pour accompagner les entreprises locales dans leur transformation numérique. Avec des acteurs comme l'Université de Poitiers et le Technopole du Futuroscope, nous proposons des audits, interventions et implémentations IA adaptés à vos besoins. Nos tarifs publics incluent l'Audit Flash à partir de 490 € HT et l'Intervention Essentielle dès 590 € HT.",
+    "Axion-IA se déplace à Poitiers pour accompagner les entreprises locales dans leur transformation numérique. Avec des acteurs comme l'Université de Poitiers et le Technopole du Futuroscope, nous proposons des audits, interventions et implémentations IA adaptés à vos besoins. Nos tarifs publics incluent l'Audit Flash sur mesure et l'Intervention Essentielle.",
   directAnswerEn:
-    "Axion-IA se déplace à Poitiers pour accompagner les entreprises locales dans leur transformation numérique. Avec des acteurs comme l'Université de Poitiers et le Technopole du Futuroscope, nous proposons des audits, interventions et implémentations IA adaptés à vos besoins. Nos tarifs publics incluent l'Audit Flash à partir de 490 € HT et l'Intervention Essentielle dès 590 € HT.",
+    "Axion-IA se déplace à Poitiers pour accompagner les entreprises locales dans leur transformation numérique. Avec des acteurs comme l'Université de Poitiers et le Technopole du Futuroscope, nous proposons des audits, interventions et implémentations IA adaptés à vos besoins. Nos tarifs publics incluent l'Audit Flash sur mesure et l'Intervention Essentielle.",
   seoHook: "université, assurance & tourisme",
   ecosystemFr:
     "Poitiers est un centre d'enseignement et de recherche avec l'Université de Poitiers et le Laboratoire de Mathématiques et Applications. Le Technopole du Futuroscope soutient l'innovation locale.",

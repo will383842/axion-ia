@@ -9,9 +9,9 @@ export const FONSORBES_COPY: VilleCopy = {
   pitchEn:
     "Fonsorbes (31), commune dynamique de l'ouest toulousain avec près de 13 000 habitants. Tissu TPE artisans BTP, PME de services, commerces de proximité, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune de la couronne ouest de Toulouse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fonsorbes (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'ouest toulousain. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fonsorbes (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'ouest toulousain. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fonsorbes (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'ouest toulousain. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fonsorbes (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'ouest toulousain. Audit Flash sur mesure.",
   seoHook: "artisanat & commerce détail",
   ecosystemFr:
     "Fonsorbes est une commune résidentielle en croissance de l'ouest de Toulouse. Tissu TPE artisans BTP et second œuvre, PME de services, commerces de centre-bourg, professions libérales. Proximité des zones d'emploi de Plaisance-du-Touch et Tournefeuille.",
@@ -56,7 +56,7 @@ export const FONSORBES_COPY: VilleCopy = {
       a: "Nous accompagnons tous types d'activités : TPE artisans BTP, PME de services, professions libérales, commerces de proximité, agriculture. Cas IA adaptés à chaque métier.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Fonsorbes ?",
+      q: "Tarifs audit IA à Fonsorbes  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics, pas de devis opaque.",
     },
     {

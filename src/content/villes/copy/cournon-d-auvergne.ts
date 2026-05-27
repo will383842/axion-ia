@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const COURNON_D_AUVERGNE_COPY: VilleCopy = {
   pitchFr:
-    "Cournon-d'Auvergne (63), commune en banlieue sud de Clermont-Ferrand dans le Puy-de-Dôme, est intégrée à Clermont Auvergne Métropole. Abrite des zones d'activités majeures et le zénith d'Auvergne. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Cournon-d'Auvergne (63), commune en banlieue sud de Clermont-Ferrand dans le Puy-de-Dôme, est intégrée à Clermont Auvergne Métropole. Abrite des zones d'activités majeures et le zénith d'Auvergne. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Cournon-d'Auvergne (63), commune en banlieue sud de Clermont-Ferrand dans le Puy-de-Dôme, est intégrée à Clermont Auvergne Métropole. Abrite des zones d'activités majeures et le zénith d'Auvergne. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Cournon-d'Auvergne (63), commune en banlieue sud de Clermont-Ferrand dans le Puy-de-Dôme, est intégrée à Clermont Auvergne Métropole. Abrite des zones d'activités majeures et le zénith d'Auvergne. Tissu PME tertiaires et industrielles, TPE artisans BTP, commerces. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cournon-d'Auvergne (63). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Clermont Auvergne Métropole, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
   directAnswerEn:

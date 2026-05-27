@@ -9,9 +9,9 @@ export const BEAUCAIRE_COPY: VilleCopy = {
   pitchEn:
     "Beaucaire (30), ville historique du Gard rhodanien face à Tarascon, héritière de la célèbre foire de la Madeleine. Tissu TPE/PME logistique vallée du Rhône, viticulture Costières de Nîmes, commerces, artisanat BTP et services aux entreprises. Axion-IA opère pour toutes les structures économiques de la commune du Gard rhodanien.",
   directAnswerFr:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Beaucaire (30). Nous accompagnons les TPE, PME et ETI locales : entreprises logistique Rhône, viticulteurs Costières de Nîmes, commerçants, artisans BTP, professions libérales et acteurs touristiques du Gard rhodanien. Audit Flash à partir de 490 € HT.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Beaucaire (30). Nous accompagnons les TPE, PME et ETI locales : entreprises logistique Rhône, viticulteurs Costières de Nîmes, commerçants, artisans BTP, professions libérales et acteurs touristiques du Gard rhodanien. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Beaucaire (30). Nous accompagnons les TPE, PME et ETI locales : entreprises logistique Rhône, viticulteurs Costières de Nîmes, commerçants, artisans BTP, professions libérales et acteurs touristiques du Gard rhodanien. Audit Flash à partir de 490 € HT.",
+    "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Beaucaire (30). Nous accompagnons les TPE, PME et ETI locales : entreprises logistique Rhône, viticulteurs Costières de Nîmes, commerçants, artisans BTP, professions libérales et acteurs touristiques du Gard rhodanien. Audit Flash sur mesure.",
   seoHook: "logistique vallée & viticulture costières",
   ecosystemFr:
     "Beaucaire (~15 700 hab) est une ville historique du Gard rhodanien, face à Tarascon (Bouches-du-Rhône). Carrefour logistique vallée du Rhône, viticulture Costières de Nîmes, commerces, artisanat BTP, tourisme patrimonial (château, canal du Rhône à Sète) et services aux entreprises.",
@@ -52,7 +52,7 @@ export const BEAUCAIRE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Beaucaire et dans tout le Gard rhodanien (Bellegarde, Saint-Gilles, Jonquières-Saint-Vincent). Nos consultants viennent de Nîmes (25 min) ou Avignon (20 min).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Beaucaire ?",
+      q: "Combien coûte un audit IA à Beaucaire  ?",
       a: "L'Audit Flash commence à 490 € HT. Il couvre le diagnostic complet de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const TREVOUX_COPY: VilleCopy = {
   pitchFr:
-    "Trévoux (01), commune du val de Saône dans l'Ain, est une ancienne capitale historique de la principauté de Dombes (patrimoine architectural remarquable, Parlement de Dombes). Tissu PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations du val de Saône Ain.",
+    "Trévoux (01), commune du val de Saône dans l'Ain, est une ancienne capitale historique de la principauté de Dombes (patrimoine architectural remarquable, Parlement de Dombes). Tissu PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y travaille avec les organisations du territoire du val de Saône Ain.",
   pitchEn:
-    "Trévoux (01), commune du val de Saône dans l'Ain, est une ancienne capitale historique de la principauté de Dombes (patrimoine architectural remarquable, Parlement de Dombes). Tissu PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations du val de Saône Ain.",
+    "Trévoux (01), commune du val de Saône dans l'Ain, est une ancienne capitale historique de la principauté de Dombes (patrimoine architectural remarquable, Parlement de Dombes). Tissu PME tertiaires, TPE artisans BTP, commerces, professions libérales. Axion-IA y travaille avec les organisations du territoire du val de Saône Ain.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trévoux (01). Nous accompagnons tous types d'activités : PME tertiaires val de Saône Ain, acteurs tourisme patrimonial Dombes, TPE artisans BTP, commerçants, professions libérales et services aux entreprises.",
   directAnswerEn:

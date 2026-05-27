@@ -11,9 +11,9 @@ export const CAHORS_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Cahors pour optimiser les processus des entreprises locales. Avec des entités comme LVMH et Cap Digital en France, nous apportons notre expertise nationale pour automatiser les tâches administratives, les relances et les devis.",
   directAnswerFr:
-    "À Cahors, Axion-IA propose des services adaptés aux besoins des entreprises locales. Avec des références comme Inria et Station F en France, nous offrons des audits, interventions et implémentations pour améliorer l'efficacité opérationnelle. Nos tarifs publics incluent l'Audit Flash à partir de 490 € HT et l'Intervention Essentielle dès 590 € HT.",
+    "À Cahors, Axion-IA propose des services adaptés aux besoins des entreprises locales. Avec des références comme Inria et Station F en France, nous offrons des audits, interventions et implémentations pour améliorer l'efficacité opérationnelle. Nos tarifs publics incluent l'Audit Flash sur mesure et l'Intervention Essentielle.",
   directAnswerEn:
-    "À Cahors, Axion-IA propose des services adaptés aux besoins des entreprises locales. Avec des références comme Inria et Station F en France, nous offrons des audits, interventions et implémentations pour améliorer l'efficacité opérationnelle. Nos tarifs publics incluent l'Audit Flash à partir de 490 € HT et l'Intervention Essentielle dès 590 € HT.",
+    "À Cahors, Axion-IA propose des services adaptés aux besoins des entreprises locales. Avec des références comme Inria et Station F en France, nous offrons des audits, interventions et implémentations pour améliorer l'efficacité opérationnelle. Nos tarifs publics incluent l'Audit Flash sur mesure et l'Intervention Essentielle.",
   seoHook: "commerce détail & restauration",
   ecosystemFr:
     "Le tissu économique de Cahors est marqué par des secteurs comme le commerce de détail et la construction. En France, des pôles comme Cap Digital et Station F illustrent l'importance de l'innovation. Les entreprises de Cahors peuvent bénéficier de notre expertise nationale pour se développer.",

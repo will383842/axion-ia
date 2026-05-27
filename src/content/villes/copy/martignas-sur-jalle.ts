@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const MARTIGNAS_SUR_JALLE_COPY: VilleCopy = {
   pitchFr:
-    "Martignas-sur-Jalle (33), commune de l'ouest de Bordeaux Métropole, est un pôle aéronautique et défense majeur (proximité site industriel de Saint-Médard-en-Jalles) avec un tissu de PME sous-traitantes, artisans et commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'ouest bordelais.",
+    "Martignas-sur-Jalle (33), commune de l'ouest de Bordeaux Métropole, est un pôle aéronautique et défense majeur (proximité site industriel de Saint-Médard-en-Jalles) avec un tissu de PME sous-traitantes, artisans et commerces. Axion-IA répond aux besoins des activités professionnelles présentes de l'ouest bordelais.",
   pitchEn:
-    "Martignas-sur-Jalle (33), commune de l'ouest de Bordeaux Métropole, est un pôle aéronautique et défense majeur (proximité site industriel de Saint-Médard-en-Jalles) avec un tissu de PME sous-traitantes, artisans et commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'ouest bordelais.",
+    "Martignas-sur-Jalle (33), commune de l'ouest de Bordeaux Métropole, est un pôle aéronautique et défense majeur (proximité site industriel de Saint-Médard-en-Jalles) avec un tissu de PME sous-traitantes, artisans et commerces. Axion-IA répond aux besoins des activités professionnelles présentes de l'ouest bordelais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Martignas-sur-Jalle (33). Nous accompagnons TPE et PME de l'ouest bordelais : sous-traitants aéronautique/défense, PME industrielles, artisans BTP, commerçants et professions libérales. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Martignas-sur-Jalle (33). Nous accompagnons TPE et PME de l'ouest bordelais : sous-traitants aéronautique/défense, PME industrielles, artisans BTP, commerçants et professions libérales. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Martignas-sur-Jalle (33). Nous accompagnons TPE et PME de l'ouest bordelais : sous-traitants aéronautique/défense, PME industrielles, artisans BTP, commerçants et professions libérales. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Martignas-sur-Jalle (33). Nous accompagnons TPE et PME de l'ouest bordelais : sous-traitants aéronautique/défense, PME industrielles, artisans BTP, commerçants et professions libérales. Audit Flash sur mesure.",
   seoHook: "aéronautique défense & industrie précision",
   ecosystemFr:
     "Martignas-sur-Jalle bénéficie de la proximité du pôle aéronautique et défense de Saint-Médard-en-Jalles. Tissu PME sous-traitantes aéronautique, industries de précision, artisanat BTP et commerces résidentiels. En lisière de forêt, accès rocade A630 et aéroport Mérignac.",
@@ -52,7 +52,7 @@ export const MARTIGNAS_SUR_JALLE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Martignas-sur-Jalle et dans tout l'ouest bordelais (Saint-Médard-en-Jalles, Le Haillan, Saint-Jean-d'Illac). Depuis Bordeaux centre (20 min) ou Paris (TGV 2h).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Martignas-sur-Jalle ?",
+      q: "Tarifs audit IA à Martignas-sur-Jalle  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Adapté aux PME aéronautique et TPE artisans de l'ouest bordelais.",
     },
     {

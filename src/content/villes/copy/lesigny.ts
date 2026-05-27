@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LESIGNY_COPY: VilleCopy = {
   pitchFr:
-    "Lésigny (77), commune résidentielle de l'est francilien en Seine-et-Marne, mêle cadre verdoyant (golf, espaces boisés) et tissu économique de TPE artisanales, PME de services, commerces de proximité et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Lésigny (77), commune résidentielle de l'est francilien en Seine-et-Marne, mêle cadre verdoyant (golf, espaces boisés) et tissu économique de TPE artisanales, PME de services, commerces de proximité et professions libérales. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Lésigny (77), commune résidentielle de l'est francilien en Seine-et-Marne, mêle cadre verdoyant (golf, espaces boisés) et tissu économique de TPE artisanales, PME de services, commerces de proximité et professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Lésigny (77), commune résidentielle de l'est francilien en Seine-et-Marne, mêle cadre verdoyant (golf, espaces boisés) et tissu économique de TPE artisanales, PME de services, commerces de proximité et professions libérales. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lésigny (77). Nous accompagnons TPE et PME : artisans du bâtiment, commerçants de proximité, PME tertiaires, professions libérales et prestataires de services de l'est Seine-et-Marne.",
   directAnswerEn:
@@ -56,7 +56,7 @@ export const LESIGNY_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE artisanales BTP de Lésigny (maçons, plombiers, électriciens, couvreurs, paysagistes) sur des cas IA concrets : automatisation devis chantier, agents IA prise de rendez-vous, gestion planning équipes. Audit Flash 490 € HT.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Lésigny ?",
+      q: "Quel est le tarif d'un audit IA à Lésigny  ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic sur site à Lésigny. Pour les audits approfondis (Audit Stratégique), comptez entre 1 900 et 3 900 € HT selon le périmètre. Tarifs publics et transparents.",
     },
     {

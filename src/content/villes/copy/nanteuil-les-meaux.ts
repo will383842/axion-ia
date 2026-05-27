@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const NANTEUIL_LES_MEAUX_COPY: VilleCopy = {
   pitchFr:
-    "Nanteuil-lès-Meaux (77), commune de Seine-et-Marne intégrée à l'agglomération de Meaux, dispose d'un tissu économique de TPE et PME diversifié. Artisanat, commerces, services à la personne, professions libérales et agriculture périurbaine. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Nanteuil-lès-Meaux (77), commune de Seine-et-Marne intégrée à l'agglomération de Meaux, dispose d'un tissu économique de TPE et PME diversifié. Artisanat, commerces, services à la personne, professions libérales et agriculture périurbaine. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Nanteuil-lès-Meaux (77), commune de Seine-et-Marne intégrée à l'agglomération de Meaux, dispose d'un tissu économique de TPE et PME diversifié. Artisanat, commerces, services à la personne, professions libérales et agriculture périurbaine. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Nanteuil-lès-Meaux (77), commune de Seine-et-Marne intégrée à l'agglomération de Meaux, dispose d'un tissu économique de TPE et PME diversifié. Artisanat, commerces, services à la personne, professions libérales et agriculture périurbaine. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nanteuil-lès-Meaux (77). Nous accompagnons TPE et PME : artisans et commerçants du bassin meldois, prestataires services à la personne, professions libérales et exploitants agricoles périurbains. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nanteuil-lès-Meaux (77). Nous accompagnons TPE et PME : artisans et commerçants du bassin meldois, prestataires services à la personne, professions libérales et exploitants agricoles périurbains. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nanteuil-lès-Meaux (77). Nous accompagnons TPE et PME : artisans et commerçants du bassin meldois, prestataires services à la personne, professions libérales et exploitants agricoles périurbains. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nanteuil-lès-Meaux (77). Nous accompagnons TPE et PME : artisans et commerçants du bassin meldois, prestataires services à la personne, professions libérales et exploitants agricoles périurbains. Audit Flash sur mesure.",
   seoHook: "services personne & agriculture périurbaine",
   ecosystemFr:
     "Nanteuil-lès-Meaux fait partie de l'agglomération de Meaux (sous-préfecture de Seine-et-Marne). Commune résidentielle dynamique, elle accueille des TPE et PME dans l'artisanat, le commerce, les services à la personne et les professions libérales. Agriculture périurbaine (Brie) en complément. Accès rapide Meaux centre et A140.",
@@ -52,7 +52,7 @@ export const NANTEUIL_LES_MEAUX_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Nanteuil-lès-Meaux et dans tout le bassin meldois (Meaux, Trilport, Fublaines, Mareuil-lès-Meaux). Gare Meaux Transilien P à 10 min, Paris à 50 min.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Nanteuil-lès-Meaux ?",
+      q: "Tarifs audit IA à Nanteuil-lès-Meaux  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures. Pour les TPE et PME du bassin meldois, nous proposons des audits approfondis adaptés aux enjeux artisanat, commerce et services locaux.",
     },
     {

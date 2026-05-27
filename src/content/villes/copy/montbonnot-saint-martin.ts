@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MONTBONNOT_SAINT_MARTIN_COPY: VilleCopy = {
   pitchFr:
-    "Montbonnot-Saint-Martin (38), commune de la vallée du Grésivaudan adhérente au Pays du Grésivaudan, abrite une partie du parc technologique Inovallée (cluster deep-tech, microélectronique, logiciel). Tissu PME tech, scale-ups innovation, TPE artisans, commerces et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Montbonnot-Saint-Martin (38), commune de la vallée du Grésivaudan adhérente au Pays du Grésivaudan, abrite une partie du parc technologique Inovallée (cluster deep-tech, microélectronique, logiciel). Tissu PME tech, scale-ups innovation, TPE artisans, commerces et professions libérales. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Montbonnot-Saint-Martin (38), commune de la vallée du Grésivaudan adhérente au Pays du Grésivaudan, abrite une partie du parc technologique Inovallée (cluster deep-tech, microélectronique, logiciel). Tissu PME tech, scale-ups innovation, TPE artisans, commerces et professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Montbonnot-Saint-Martin (38), commune de la vallée du Grésivaudan adhérente au Pays du Grésivaudan, abrite une partie du parc technologique Inovallée (cluster deep-tech, microélectronique, logiciel). Tissu PME tech, scale-ups innovation, TPE artisans, commerces et professions libérales. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montbonnot-Saint-Martin (38). Nous accompagnons tous types d'activités : scale-ups deep-tech Inovallée, PME tech et logiciel, structures R&D innovation, TPE artisans BTP, commerçants, professions libérales et services du Pays du Grésivaudan.",
   directAnswerEn:

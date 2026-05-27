@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LE_TEIL_COPY: VilleCopy = {
   pitchFr:
-    "Le Teil (07), commune du sud-Ardèche dans la vallée du Rhône, a un héritage industriel (cimenterie historique, carrières). Tissu PME industrielles diversifiées, agriculture, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations du sud-Ardèche vallée Rhône.",
+    "Le Teil (07), commune du sud-Ardèche dans la vallée du Rhône, a un héritage industriel (cimenterie historique, carrières). Tissu PME industrielles diversifiées, agriculture, TPE artisans BTP, commerces. Axion-IA y conduit ses missions auprès des entreprises locales du sud-Ardèche vallée Rhône.",
   pitchEn:
-    "Le Teil (07), commune du sud-Ardèche dans la vallée du Rhône, a un héritage industriel (cimenterie historique, carrières). Tissu PME industrielles diversifiées, agriculture, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations du sud-Ardèche vallée Rhône.",
+    "Le Teil (07), commune du sud-Ardèche dans la vallée du Rhône, a un héritage industriel (cimenterie historique, carrières). Tissu PME industrielles diversifiées, agriculture, TPE artisans BTP, commerces. Axion-IA y conduit ses missions auprès des entreprises locales du sud-Ardèche vallée Rhône.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Teil (07). Nous accompagnons tous types d'activités : PME industrielles sud-Ardèche, agriculteurs vallée Rhône, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:

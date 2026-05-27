@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const TRESSES_COPY: VilleCopy = {
   pitchFr:
-    "Tresses (33), commune résidentielle de l'est de Bordeaux Métropole, combine tissu TPE artisanal, commerces de proximité, professions libérales et PME de services. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'est bordelais.",
+    "Tresses (33), commune résidentielle de l'est de Bordeaux Métropole, combine tissu TPE artisanal, commerces de proximité, professions libérales et PME de services. Axion-IA répond aux besoins de toutes les entreprises de l'est bordelais.",
   pitchEn:
-    "Tresses (33), commune résidentielle de l'est de Bordeaux Métropole, combine tissu TPE artisanal, commerces de proximité, professions libérales et PME de services. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'est bordelais.",
+    "Tresses (33), commune résidentielle de l'est de Bordeaux Métropole, combine tissu TPE artisanal, commerces de proximité, professions libérales et PME de services. Axion-IA répond aux besoins de toutes les entreprises de l'est bordelais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tresses (33). Nous accompagnons TPE et PME de l'est bordelais : artisans BTP, commerçants, professions libérales et PME de services. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tresses (33). Nous accompagnons TPE et PME de l'est bordelais : artisans BTP, commerçants, professions libérales et PME de services. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tresses (33). Nous accompagnons TPE et PME de l'est bordelais : artisans BTP, commerçants, professions libérales et PME de services. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tresses (33). Nous accompagnons TPE et PME de l'est bordelais : artisans BTP, commerçants, professions libérales et PME de services. Audit Flash sur mesure.",
   seoHook: "services & restauration",
   ecosystemFr:
     "Tresses est une commune résidentielle de l'est de Bordeaux Métropole. Tissu TPE artisanat BTP, professions libérales, commerces de proximité et PME de services. Accès rocade A630 et A89 vers Périgueux. Proximité Artigues-près-Bordeaux.",
@@ -52,7 +52,7 @@ export const TRESSES_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Tresses et dans l'est bordelais (Artigues-près-Bordeaux, Fargues-Saint-Hilaire, Carignan-de-Bordeaux). Depuis Bordeaux centre (15 min).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Tresses ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Tresses  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics. Adapté aux TPE artisans et professions libérales de l'est bordelais.",
     },
     {

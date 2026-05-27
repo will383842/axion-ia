@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VEAUCHE_COPY: VilleCopy = {
   pitchFr:
-    "Veauche (42), commune de la plaine du Forez intégrée à Saint-Étienne Métropole, est connue pour son héritage industriel verrier (production de verre, conditionnement bouteilles, ancré localement). Tissu PME industrielles diversifiées, TPE artisans BTP, agriculture périphérique, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Veauche (42), commune de la plaine du Forez intégrée à Saint-Étienne Métropole, est connue pour son héritage industriel verrier (production de verre, conditionnement bouteilles, ancré localement). Tissu PME industrielles diversifiées, TPE artisans BTP, agriculture périphérique, commerces. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Veauche (42), commune de la plaine du Forez intégrée à Saint-Étienne Métropole, est connue pour son héritage industriel verrier (production de verre, conditionnement bouteilles, ancré localement). Tissu PME industrielles diversifiées, TPE artisans BTP, agriculture périphérique, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Veauche (42), commune de la plaine du Forez intégrée à Saint-Étienne Métropole, est connue pour son héritage industriel verrier (production de verre, conditionnement bouteilles, ancré localement). Tissu PME industrielles diversifiées, TPE artisans BTP, agriculture périphérique, commerces. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Veauche (42). Nous accompagnons tous types d'activités : PME industrielles diversifiées (héritage verrier fort), TPE artisans BTP, commerçants, agriculteurs plaine Forez, indépendants et services aux entreprises de Saint-Étienne Métropole.",
   directAnswerEn:

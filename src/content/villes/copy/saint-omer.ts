@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_OMER_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Omer (62), sous-préfecture du Pas-de-Calais, est un pôle administratif et économique de l'Audomarois avec son patrimoine remarquable (cathédrale, marais audomarois classé Ramsar). Tissu TPE artisanales, PME agroalimentaires et industrielles, commerces, tourisme et services publics. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'Audomarois.",
+    "Saint-Omer (62), sous-préfecture du Pas-de-Calais, est un pôle administratif et économique de l'Audomarois avec son patrimoine remarquable (cathédrale, marais audomarois classé Ramsar). Tissu TPE artisanales, PME agroalimentaires et industrielles, commerces, tourisme et services publics. Axion-IA couvre les activités professionnelles du bassin de l'Audomarois.",
   pitchEn:
-    "Saint-Omer (62), sous-préfecture du Pas-de-Calais, est un pôle administratif et économique de l'Audomarois avec son patrimoine remarquable (cathédrale, marais audomarois classé Ramsar). Tissu TPE artisanales, PME agroalimentaires et industrielles, commerces, tourisme et services publics. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'Audomarois.",
+    "Saint-Omer (62), sous-préfecture du Pas-de-Calais, est un pôle administratif et économique de l'Audomarois avec son patrimoine remarquable (cathédrale, marais audomarois classé Ramsar). Tissu TPE artisanales, PME agroalimentaires et industrielles, commerces, tourisme et services publics. Axion-IA couvre les activités professionnelles du bassin de l'Audomarois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Omer (62). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles, commerçants, professionnels du tourisme, indépendants, professions libérales et services aux entreprises de l'Audomarois.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const FLORENSAC_COPY: VilleCopy = {
   pitchFr:
-    "Florensac (34), commune viticole de l'Hérault entre Pézenas et Agde, au cœur du vignoble languedocien près du bassin de Thau. Cave coopérative réputée. Tissu TPE viticoles, PME négoce vin, artisans, commerces, tourisme littoral et œnotourisme. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Florensac (34), commune viticole de l'Hérault entre Pézenas et Agde, au cœur du vignoble languedocien près du bassin de Thau. Cave coopérative réputée. Tissu TPE viticoles, PME négoce vin, artisans, commerces, tourisme littoral et œnotourisme. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Florensac (34), commune viticole de l'Hérault entre Pézenas et Agde, au cœur du vignoble languedocien près du bassin de Thau. Cave coopérative réputée. Tissu TPE viticoles, PME négoce vin, artisans, commerces, tourisme littoral et œnotourisme. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Florensac (34), commune viticole de l'Hérault entre Pézenas et Agde, au cœur du vignoble languedocien près du bassin de Thau. Cave coopérative réputée. Tissu TPE viticoles, PME négoce vin, artisans, commerces, tourisme littoral et œnotourisme. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Florensac (34). Nous accompagnons tous types d'activités : domaines viticoles, caves coopératives, PME négoce vin, TPE artisans, commerçants, indépendants, professions libérales et acteurs du tourisme littoral héraultais.",
   directAnswerEn:

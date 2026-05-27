@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PLABENNEC_COPY: VilleCopy = {
   pitchFr:
-    "Plabennec (29), commune dynamique du Pays de Léon dans le Finistère nord, s'appuie sur un tissu économique structuré autour de l'agroalimentaire et de la production légumière. TPE maraîchères, PME de transformation alimentaire, artisans, commerces et services aux particuliers. Axion-IA accompagne entreprises et indépendants de tous secteurs du Pays de Léon.",
+    "Plabennec (29), commune dynamique du Pays de Léon dans le Finistère nord, s'appuie sur un tissu économique structuré autour de l'agroalimentaire et de la production légumière. TPE maraîchères, PME de transformation alimentaire, artisans, commerces et services aux particuliers. Axion-IA opère pour entreprises et indépendants du secteur du Pays de Léon.",
   pitchEn:
-    "Plabennec (29), commune dynamique du Pays de Léon dans le Finistère nord, s'appuie sur un tissu économique structuré autour de l'agroalimentaire et de la production légumière. TPE maraîchères, PME de transformation alimentaire, artisans, commerces et services aux particuliers. Axion-IA accompagne entreprises et indépendants de tous secteurs du Pays de Léon.",
+    "Plabennec (29), commune dynamique du Pays de Léon dans le Finistère nord, s'appuie sur un tissu économique structuré autour de l'agroalimentaire et de la production légumière. TPE maraîchères, PME de transformation alimentaire, artisans, commerces et services aux particuliers. Axion-IA opère pour entreprises et indépendants du secteur du Pays de Léon.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plabennec (29). Nous accompagnons tous types d'activités : TPE maraîchères et exploitations légumières du Léon, PME agroalimentaires, artisans du bâtiment, commerçants, indépendants, professions libérales et prestataires de services du Pays de Léon.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const PLABENNEC_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE artisans BTP à Plabennec (maçons, plombiers, électriciens) et commerçants sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation automatique. Audit Flash 490 € HT adapté aux petites structures.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Plabennec ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Plabennec  ?",
       a: "L'audit Flash IA démarre à 490 € HT pour les TPE et PME de Plabennec et du Pays de Léon. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
     },
     {

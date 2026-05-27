@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const ANDERNOS_LES_BAINS_COPY: VilleCopy = {
   pitchFr:
-    "Andernos-les-Bains (33), station balnéaire du nord du Bassin d'Arcachon, allie tourisme, ostréiculture, commerces saisonniers et tissu résidentiel actif. Axion-IA couvre l'ensemble des activités professionnelles présentes : TPE ostréicoles, commerces touristiques, PME de services, artisans BTP et professions libérales du Bassin.",
+    "Andernos-les-Bains (33), station balnéaire du nord du Bassin d'Arcachon, allie tourisme, ostréiculture, commerces saisonniers et tissu résidentiel actif. Axion-IA accompagne tout le tissu professionnel local : TPE ostréicoles, commerces touristiques, PME de services, artisans BTP et professions libérales du Bassin.",
   pitchEn:
-    "Andernos-les-Bains (33), station balnéaire du nord du Bassin d'Arcachon, allie tourisme, ostréiculture, commerces saisonniers et tissu résidentiel actif. Axion-IA couvre l'ensemble des activités professionnelles présentes : TPE ostréicoles, commerces touristiques, PME de services, artisans BTP et professions libérales du Bassin.",
+    "Andernos-les-Bains (33), station balnéaire du nord du Bassin d'Arcachon, allie tourisme, ostréiculture, commerces saisonniers et tissu résidentiel actif. Axion-IA accompagne tout le tissu professionnel local : TPE ostréicoles, commerces touristiques, PME de services, artisans BTP et professions libérales du Bassin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Andernos-les-Bains (33). Nous accompagnons TPE et PME du Bassin d'Arcachon : ostréiculteurs, hébergeurs touristiques, restaurateurs, commerçants saisonniers, artisans BTP et professions libérales. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Andernos-les-Bains (33). Nous accompagnons TPE et PME du Bassin d'Arcachon : ostréiculteurs, hébergeurs touristiques, restaurateurs, commerçants saisonniers, artisans BTP et professions libérales. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Andernos-les-Bains (33). Nous accompagnons TPE et PME du Bassin d'Arcachon : ostréiculteurs, hébergeurs touristiques, restaurateurs, commerçants saisonniers, artisans BTP et professions libérales. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Andernos-les-Bains (33). Nous accompagnons TPE et PME du Bassin d'Arcachon : ostréiculteurs, hébergeurs touristiques, restaurateurs, commerçants saisonniers, artisans BTP et professions libérales. Audit Flash sur mesure.",
   seoHook: "station balnéaire",
   ecosystemFr:
     "Andernos-les-Bains est une station balnéaire du nord du Bassin d'Arcachon. Économie mixte : ostréiculture (port ostréicole actif), tourisme balnéaire, commerces saisonniers, artisanat BTP et professions libérales. Marché immobilier dynamique, population en croissance.",
@@ -56,7 +56,7 @@ export const ANDERNOS_LES_BAINS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE ostréicoles d'Andernos-les-Bains sur des cas IA : traçabilité production, agents IA gestion commandes, automatisation facturation, prédiction stocks saisonniers.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Andernos-les-Bains ?",
+      q: "Tarifs audit IA à Andernos-les-Bains  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Adapté aux TPE touristiques et ostréicoles du Bassin d'Arcachon.",
     },
     {

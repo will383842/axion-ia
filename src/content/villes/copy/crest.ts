@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CREST_COPY: VilleCopy = {
   pitchFr:
-    "Crest (26), commune de la vallée de la Drôme, est dominée par la Tour de Crest — réputée comme le plus haut donjon médiéval de France (52 m). Tissu PME tourisme patrimonial, agriculture biologique (vallée Drôme pionnière du bio), TPE artisans BTP, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes drômoises.",
+    "Crest (26), commune de la vallée de la Drôme, est dominée par la Tour de Crest — réputée comme le plus haut donjon médiéval de France (52 m). Tissu PME tourisme patrimonial, agriculture biologique (vallée Drôme pionnière du bio), TPE artisans BTP, commerces. Axion-IA accompagne tout le tissu professionnel local drômoises.",
   pitchEn:
-    "Crest (26), commune de la vallée de la Drôme, est dominée par la Tour de Crest — réputée comme le plus haut donjon médiéval de France (52 m). Tissu PME tourisme patrimonial, agriculture biologique (vallée Drôme pionnière du bio), TPE artisans BTP, commerces. Axion-IA couvre l'ensemble des activités professionnelles présentes drômoises.",
+    "Crest (26), commune de la vallée de la Drôme, est dominée par la Tour de Crest — réputée comme le plus haut donjon médiéval de France (52 m). Tissu PME tourisme patrimonial, agriculture biologique (vallée Drôme pionnière du bio), TPE artisans BTP, commerces. Axion-IA accompagne tout le tissu professionnel local drômoises.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Crest (26). Nous accompagnons tous types d'activités : acteurs du tourisme patrimonial Tour de Crest, agriculteurs biologiques vallée Drôme, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de la vallée drômoise.",
   directAnswerEn:

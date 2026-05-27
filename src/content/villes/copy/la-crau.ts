@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LA_CRAU_COPY: VilleCopy = {
   pitchFr:
-    "La Crau (83), commune de l'agglomération toulonnaise, compte près de 19 600 habitants. Agriculture maraîchère, viticulture Côtes de Provence, zones d'activités tournées vers Toulon est, tissu de TPE artisanales, PME agroalimentaires, commerces et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "La Crau (83), commune de l'agglomération toulonnaise, compte près de 19 600 habitants. Agriculture maraîchère, viticulture Côtes de Provence, zones d'activités tournées vers Toulon est, tissu de TPE artisanales, PME agroalimentaires, commerces et services. Axion-IA accompagne tout le tissu professionnel local.",
   pitchEn:
-    "La Crau (83), commune de l'agglomération toulonnaise, compte près de 19 600 habitants. Agriculture maraîchère, viticulture Côtes de Provence, zones d'activités tournées vers Toulon est, tissu de TPE artisanales, PME agroalimentaires, commerces et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "La Crau (83), commune de l'agglomération toulonnaise, compte près de 19 600 habitants. Agriculture maraîchère, viticulture Côtes de Provence, zones d'activités tournées vers Toulon est, tissu de TPE artisanales, PME agroalimentaires, commerces et services. Axion-IA accompagne tout le tissu professionnel local.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Crau (83). Nous accompagnons tous types d'activités : TPE maraîchers et artisans, PME viticoles et agroalimentaires Côtes de Provence, commerces, professions libérales et services de l'agglo Toulon est.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const LA_CRAU_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les maraîchers et exploitations de la plaine de La Crau : gestion parcellaire, automatisation traçabilité, prévision rendements, outils IA adaptés à votre exploitation et circuits courts.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à La Crau ?",
+      q: "Tarifs audit IA à La Crau  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {

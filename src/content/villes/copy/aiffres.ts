@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const AIFFRES_COPY: VilleCopy = {
   pitchFr:
-    "Aiffres (79), commune résidentielle au sud de l'agglomération niortaise dans les Deux-Sèvres, bénéficie du dynamisme économique du bassin de Niort (mutuelles, assurances, services). Tissu TPE artisans, commerçants, PME tertiaires, professions libérales, services à la personne. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération niortaise sud.",
+    "Aiffres (79), commune résidentielle au sud de l'agglomération niortaise dans les Deux-Sèvres, bénéficie du dynamisme économique du bassin de Niort (mutuelles, assurances, services). Tissu TPE artisans, commerçants, PME tertiaires, professions libérales, services à la personne. Axion-IA répond aux besoins des activités professionnelles présentes de l'agglomération niortaise sud.",
   pitchEn:
-    "Aiffres (79), commune résidentielle au sud de l'agglomération niortaise dans les Deux-Sèvres, bénéficie du dynamisme économique du bassin de Niort (mutuelles, assurances, services). Tissu TPE artisans, commerçants, PME tertiaires, professions libérales, services à la personne. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération niortaise sud.",
+    "Aiffres (79), commune résidentielle au sud de l'agglomération niortaise dans les Deux-Sèvres, bénéficie du dynamisme économique du bassin de Niort (mutuelles, assurances, services). Tissu TPE artisans, commerçants, PME tertiaires, professions libérales, services à la personne. Axion-IA répond aux besoins des activités professionnelles présentes de l'agglomération niortaise sud.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aiffres (79). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires et prestataires du bassin niortais mutuelles/assurances, professions libérales, services à la personne et entreprises de l'agglomération sud de Niort.",
   directAnswerEn:

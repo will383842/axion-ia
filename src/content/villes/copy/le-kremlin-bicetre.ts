@@ -11,9 +11,9 @@ export const LE_KREMLIN_BICETRE_COPY: VilleCopy = {
   pitchEn:
     "Le Kremlin-Bicêtre, situé en Île-de-France, est un pôle d'activités avec Orange et l'Université Paris-Saclay. Axion-IA intervient ici pour optimiser les processus métiers grâce à l'IA, en s'appuyant sur l'écosystème local et les infrastructures de transport proches.",
   directAnswerFr:
-    "Axion-IA se déplace à Le Kremlin-Bicêtre pour accompagner les entreprises dans l'optimisation de leurs processus métiers. Avec des secteurs dominants tels que la programmation informatique et le commerce de détail, nous proposons des audits dès 490 € HT et des interventions à partir de 590 € HT. L'Université Paris-Saclay et Orange enrichissent l'environnement économique local.",
+    "Axion-IA se déplace à Le Kremlin-Bicêtre pour accompagner les entreprises dans l'optimisation de leurs processus métiers. Avec des secteurs dominants tels que la programmation informatique et le commerce de détail, nous proposons des audits et des interventions. L'Université Paris-Saclay et Orange enrichissent l'environnement économique local.",
   directAnswerEn:
-    "Axion-IA se déplace à Le Kremlin-Bicêtre pour accompagner les entreprises dans l'optimisation de leurs processus métiers. Avec des secteurs dominants tels que la programmation informatique et le commerce de détail, nous proposons des audits dès 490 € HT et des interventions à partir de 590 € HT. L'Université Paris-Saclay et Orange enrichissent l'environnement économique local.",
+    "Axion-IA se déplace à Le Kremlin-Bicêtre pour accompagner les entreprises dans l'optimisation de leurs processus métiers. Avec des secteurs dominants tels que la programmation informatique et le commerce de détail, nous proposons des audits et des interventions. L'Université Paris-Saclay et Orange enrichissent l'environnement économique local.",
   seoHook: "programmation informatique & santé humaine",
   ecosystemFr:
     "Le Kremlin-Bicêtre bénéficie de la proximité d'Orange et de l'Université Paris-Saclay, qui contribuent à un environnement propice aux innovations technologiques. Les entreprises locales peuvent ainsi tirer parti de ces ressources pour améliorer leurs opérations.",

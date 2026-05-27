@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const HETTANGE_GRANDE_COPY: VilleCopy = {
   pitchFr:
-    "Hettange-Grande (57), commune frontalière du Luxembourg au nord de Thionville, carrefour transfrontalier dynamique. Tissu TPE/PME services aux frontaliers, commerce, BTP, professions libérales, artisanat et transport. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Hettange-Grande (57), commune frontalière du Luxembourg au nord de Thionville, carrefour transfrontalier dynamique. Tissu TPE/PME services aux frontaliers, commerce, BTP, professions libérales, artisanat et transport. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Hettange-Grande (57), commune frontalière du Luxembourg au nord de Thionville, carrefour transfrontalier dynamique. Tissu TPE/PME services aux frontaliers, commerce, BTP, professions libérales, artisanat et transport. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Hettange-Grande (57), commune frontalière du Luxembourg au nord de Thionville, carrefour transfrontalier dynamique. Tissu TPE/PME services aux frontaliers, commerce, BTP, professions libérales, artisanat et transport. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hettange-Grande (57). Nous accompagnons tous types d'activités : TPE/PME services aux frontaliers, commerces, artisans BTP, professions libérales, transporteurs et acteurs transfrontaliers du nord mosellan.",
   directAnswerEn:

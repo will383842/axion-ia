@@ -11,9 +11,9 @@ export const MANOSQUE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Manosque, ville dynamique avec L'Occitane en Provence, pour optimiser vos processus avec l'IA. Nos services incluent audit, intervention et implémentation sur site.",
   directAnswerFr:
-    "À Manosque, Axion-IA propose des interventions personnalisées pour les entreprises locales. Avec des acteurs comme L'Occitane en Provence et un secteur commerce de détail florissant, nous adaptons nos solutions pour automatiser les tâches administratives ou améliorer les processus internes. Nos audits débutent à 490 € HT pour une analyse rapide et efficace de vos besoins en IA.",
+    "À Manosque, Axion-IA propose des interventions personnalisées pour les entreprises locales. Avec des acteurs comme L'Occitane en Provence et un secteur commerce de détail florissant, nous adaptons nos solutions pour automatiser les tâches administratives ou améliorer les processus internes. Nos audits débutent à pour une analyse rapide et efficace de vos besoins en IA.",
   directAnswerEn:
-    "À Manosque, Axion-IA propose des interventions personnalisées pour les entreprises locales. Avec des acteurs comme L'Occitane en Provence et un secteur commerce de détail florissant, nous adaptons nos solutions pour automatiser les tâches administratives ou améliorer les processus internes. Nos audits débutent à 490 € HT pour une analyse rapide et efficace de vos besoins en IA.",
+    "À Manosque, Axion-IA propose des interventions personnalisées pour les entreprises locales. Avec des acteurs comme L'Occitane en Provence et un secteur commerce de détail florissant, nous adaptons nos solutions pour automatiser les tâches administratives ou améliorer les processus internes. Nos audits débutent à pour une analyse rapide et efficace de vos besoins en IA.",
   seoHook: "commerce détail & restauration",
   ecosystemFr:
     "Manosque abrite L'Occitane en Provence et un secteur commerce de détail actif. Axion-IA intègre ces spécificités locales pour des interventions IA pertinentes.",

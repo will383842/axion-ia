@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BELLERIVE_SUR_ALLIER_COPY: VilleCopy = {
   pitchFr:
-    "Bellerive-sur-Allier (03), commune en banlieue immédiate de Vichy (rive droite de l'Allier) dans l'Allier, est intégrée à l'agglomération vichyssoise. Tissu thermalisme/hôtellerie associée, PME tertiaires, TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Bellerive-sur-Allier (03), commune en banlieue immédiate de Vichy (rive droite de l'Allier) dans l'Allier, est intégrée à l'agglomération vichyssoise. Tissu thermalisme/hôtellerie associée, PME tertiaires, TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Bellerive-sur-Allier (03), commune en banlieue immédiate de Vichy (rive droite de l'Allier) dans l'Allier, est intégrée à l'agglomération vichyssoise. Tissu thermalisme/hôtellerie associée, PME tertiaires, TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Bellerive-sur-Allier (03), commune en banlieue immédiate de Vichy (rive droite de l'Allier) dans l'Allier, est intégrée à l'agglomération vichyssoise. Tissu thermalisme/hôtellerie associée, PME tertiaires, TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bellerive-sur-Allier (03). Nous accompagnons tous types d'activités : acteurs thermalisme/hôtellerie agglomération Vichy, PME tertiaires, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:

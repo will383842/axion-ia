@@ -9,9 +9,9 @@ export const FAYENCE_COPY: VilleCopy = {
   pitchEn:
     "Fayence (83), chef-lieu du Pays de Fayence dans l'arrière-pays varois, est un village perché renommé pour son centre de vol à voile (planeurs) et son patrimoine provençal. Tissu de TPE artisans, restaurateurs, hôteliers, commerçants et PME tourisme, agriculture et services. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fayence (83). Nous accompagnons TPE artisans, restaurateurs, hôteliers, commerçants et PME du tourisme, de l'agriculture et des services du Pays de Fayence et de l'arrière-pays varois. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fayence (83). Nous accompagnons TPE artisans, restaurateurs, hôteliers, commerçants et PME du tourisme, de l'agriculture et des services du Pays de Fayence et de l'arrière-pays varois. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fayence (83). Nous accompagnons TPE artisans, restaurateurs, hôteliers, commerçants et PME du tourisme, de l'agriculture et des services du Pays de Fayence et de l'arrière-pays varois. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fayence (83). Nous accompagnons TPE artisans, restaurateurs, hôteliers, commerçants et PME du tourisme, de l'agriculture et des services du Pays de Fayence et de l'arrière-pays varois. Audit Flash sur mesure.",
   seoHook: "tourisme rural & centre vol",
   ecosystemFr:
     "Fayence est le chef-lieu du Pays de Fayence (9 communes), village perché provençal entre Var et Alpes-Maritimes. Centre de vol à voile mondialement reconnu, tourisme rural, oléiculture, viticulture, artisanat d'art. Tissu de TPE artisans, gîtes ruraux, restaurateurs et PME tourisme et services de l'arrière-pays.",

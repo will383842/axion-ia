@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const JARVILLE_LA_MALGRANGE_COPY: VilleCopy = {
   pitchFr:
-    "Jarville-la-Malgrange (54), commune du sud de l'agglomération nancéienne en Meurthe-et-Moselle, abrite le musée de l'Histoire du fer et des zones d'activités dynamiques. Tissu TPE/PME commerce, services aux entreprises, artisans BTP, professions libérales, restauration. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Jarville-la-Malgrange (54), commune du sud de l'agglomération nancéienne en Meurthe-et-Moselle, abrite le musée de l'Histoire du fer et des zones d'activités dynamiques. Tissu TPE/PME commerce, services aux entreprises, artisans BTP, professions libérales, restauration. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Jarville-la-Malgrange (54), commune du sud de l'agglomération nancéienne en Meurthe-et-Moselle, abrite le musée de l'Histoire du fer et des zones d'activités dynamiques. Tissu TPE/PME commerce, services aux entreprises, artisans BTP, professions libérales, restauration. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Jarville-la-Malgrange (54), commune du sud de l'agglomération nancéienne en Meurthe-et-Moselle, abrite le musée de l'Histoire du fer et des zones d'activités dynamiques. Tissu TPE/PME commerce, services aux entreprises, artisans BTP, professions libérales, restauration. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jarville-la-Malgrange (54). Nous accompagnons tous types d'activités : TPE/PME commerçantes, artisans BTP, professions libérales, prestataires de services et restaurateurs de l'agglomération sud de Nancy.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const JARVILLE_LA_MALGRANGE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les artisans BTP et professions libérales sur des cas IA pratiques : automatisation devis, gestion planning, agents IA prise de RDV, classification documentaire. Audit Flash 490 € HT.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Jarville-la-Malgrange ?",
+      q: "Tarifs audit IA à Jarville-la-Malgrange  : quel budget prévoir ?",
       a: "L'audit Flash IA démarre à 490 € HT pour les TPE et PME de Jarville-la-Malgrange et de la Métropole du Grand Nancy. Tarifs publics et transparents. ROI chiffré dès le diagnostic initial.",
     },
     {

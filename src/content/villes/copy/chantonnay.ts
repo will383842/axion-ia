@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const CHANTONNAY_COPY: VilleCopy = {
   pitchFr:
-    "Chantonnay (85), bourg important du bocage vendéen, compte plus de 8 500 habitants. Carrefour commercial entre La Roche-sur-Yon et Fontenay-le-Comte, tissu de TPE artisanales, PME industrielles et agroalimentaires, commerces, exploitations agricoles et services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Chantonnay (85), bourg important du bocage vendéen, compte plus de 8 500 habitants. Carrefour commercial entre La Roche-sur-Yon et Fontenay-le-Comte, tissu de TPE artisanales, PME industrielles et agroalimentaires, commerces, exploitations agricoles et services. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Chantonnay (85), bourg important du bocage vendéen, compte plus de 8 500 habitants. Carrefour commercial entre La Roche-sur-Yon et Fontenay-le-Comte, tissu de TPE artisanales, PME industrielles et agroalimentaires, commerces, exploitations agricoles et services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Chantonnay (85), bourg important du bocage vendéen, compte plus de 8 500 habitants. Carrefour commercial entre La Roche-sur-Yon et Fontenay-le-Comte, tissu de TPE artisanales, PME industrielles et agroalimentaires, commerces, exploitations agricoles et services. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chantonnay (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles et agroalimentaires du bocage, exploitations agricoles, professions libérales et services.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const CHANTONNAY_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME agroalimentaires du bocage vendéen : contrôle qualité vision IA, optimisation production, prédiction demande, automatisation traçabilité, gestion chaîne logistique.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Chantonnay ?",
+      q: "Quel est le tarif d'un audit IA à Chantonnay  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {

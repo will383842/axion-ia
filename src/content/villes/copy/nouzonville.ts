@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const NOUZONVILLE_COPY: VilleCopy = {
   pitchFr:
-    "Nouzonville (08), commune de 5 500 habitants nichée dans la vallée de la Meuse, héritière d'une forte tradition de métallurgie et de forge ardennaise. TPE et PME industrielles, ateliers de mécanique, sous-traitants automobile, artisans, commerces de proximité et acteurs de la transition. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Nouzonville (08), commune de 5 500 habitants nichée dans la vallée de la Meuse, héritière d'une forte tradition de métallurgie et de forge ardennaise. TPE et PME industrielles, ateliers de mécanique, sous-traitants automobile, artisans, commerces de proximité et acteurs de la transition. Axion-IA y travaille avec les organisations du territoire.",
   pitchEn:
-    "Nouzonville (08), commune de 5 500 habitants nichée dans la vallée de la Meuse, héritière d'une forte tradition de métallurgie et de forge ardennaise. TPE et PME industrielles, ateliers de mécanique, sous-traitants automobile, artisans, commerces de proximité et acteurs de la transition. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Nouzonville (08), commune de 5 500 habitants nichée dans la vallée de la Meuse, héritière d'une forte tradition de métallurgie et de forge ardennaise. TPE et PME industrielles, ateliers de mécanique, sous-traitants automobile, artisans, commerces de proximité et acteurs de la transition. Axion-IA y travaille avec les organisations du territoire.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nouzonville (08). Nous accompagnons TPE et PME : ateliers de métallurgie et forge, sous-traitants mécanique et automobile, artisans, commerces de proximité, acteurs de la vallée de la Meuse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nouzonville (08). Nous accompagnons TPE et PME : ateliers de métallurgie et forge, sous-traitants mécanique et automobile, artisans, commerces de proximité, acteurs de la vallée de la Meuse. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nouzonville (08). Nous accompagnons TPE et PME : ateliers de métallurgie et forge, sous-traitants mécanique et automobile, artisans, commerces de proximité, acteurs de la vallée de la Meuse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nouzonville (08). Nous accompagnons TPE et PME : ateliers de métallurgie et forge, sous-traitants mécanique et automobile, artisans, commerces de proximité, acteurs de la vallée de la Meuse. Audit Flash sur mesure.",
   seoHook: "métallurgie forge & mécanique sous-traitance",
   ecosystemFr:
     "Nouzonville est une commune ardennaise de la vallée de la Meuse, ancrée dans une longue tradition de métallurgie, forge et sous-traitance industrielle. Tissu TPE/PME : ateliers mécaniques, fonderie, sous-traitants automobile, artisans du bâtiment, commerces de proximité et services.",
@@ -52,7 +52,7 @@ export const NOUZONVILLE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Nouzonville et dans toute la vallée de la Meuse ardennaise. Charleville-Mézières à 10 min, Sedan à 30 min, Reims à 1 h via A34.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Nouzonville ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Nouzonville  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables en ligne, adaptés aux TPE artisanales et PME industrielles ardennaises.",
     },
     {

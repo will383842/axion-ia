@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const QUIMPERLE_COPY: VilleCopy = {
   pitchFr:
-    "Quimperlé (29), cité finistérienne au confluent de l'Ellé et de l'Isole, est connue pour son abbaye Sainte-Croix et son héritage papetier industriel. Tissu TPE artisans, PME agroalimentaires et papetières, commerces centre-ville, services et tourisme. Axion-IA accompagne entreprises et indépendants de tous secteurs du Pays de Quimperlé et du sud Finistère.",
+    "Quimperlé (29), cité finistérienne au confluent de l'Ellé et de l'Isole, est connue pour son abbaye Sainte-Croix et son héritage papetier industriel. Tissu TPE artisans, PME agroalimentaires et papetières, commerces centre-ville, services et tourisme. Axion-IA collabore avec toutes les structures locales du Pays de Quimperlé et du sud Finistère.",
   pitchEn:
-    "Quimperlé (29), cité finistérienne au confluent de l'Ellé et de l'Isole, est connue pour son abbaye Sainte-Croix et son héritage papetier industriel. Tissu TPE artisans, PME agroalimentaires et papetières, commerces centre-ville, services et tourisme. Axion-IA accompagne entreprises et indépendants de tous secteurs du Pays de Quimperlé et du sud Finistère.",
+    "Quimperlé (29), cité finistérienne au confluent de l'Ellé et de l'Isole, est connue pour son abbaye Sainte-Croix et son héritage papetier industriel. Tissu TPE artisans, PME agroalimentaires et papetières, commerces centre-ville, services et tourisme. Axion-IA collabore avec toutes les structures locales du Pays de Quimperlé et du sud Finistère.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Quimperlé (29). Nous accompagnons tous types d'activités : TPE artisans et commerçants centre-ville, PME agroalimentaires et papetières, indépendants, professions libérales, acteurs du tourisme et services aux entreprises du Pays de Quimperlé et du sud Finistère.",
   directAnswerEn:

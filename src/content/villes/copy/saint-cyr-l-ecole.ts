@@ -11,9 +11,9 @@ export const SAINT_CYR_L_ECOLE_COPY: VilleCopy = {
   pitchEn:
     "Saint-Cyr-l'École, proche de Versailles et Paris, bénéficie d'une économie diversifiée. Axion-IA intervient ici pour optimiser les processus des entreprises locales, en s'inspirant des innovations de Cap Digital et Station F.",
   directAnswerFr:
-    "À Saint-Cyr-l'École, Axion-IA propose des interventions sur site pour les entreprises, s'appuyant sur des méthodologies éprouvées. Nous nous inspirons des écosystèmes d'innovation de Cap Digital et Station F. Nos services incluent audits, implémentations et formations, avec des tarifs publics clairs, à partir de 490 € HT pour un audit Flash de 4 heures.",
+    "À Saint-Cyr-l'École, Axion-IA propose des interventions sur site pour les entreprises, s'appuyant sur des méthodologies éprouvées. Nous nous inspirons des écosystèmes d'innovation de Cap Digital et Station F. Nos services incluent audits, implémentations et formations, avec des tarifs publics clairs pour un audit Flash de 4 heures.",
   directAnswerEn:
-    "À Saint-Cyr-l'École, Axion-IA propose des interventions sur site pour les entreprises, s'appuyant sur des méthodologies éprouvées. Nous nous inspirons des écosystèmes d'innovation de Cap Digital et Station F. Nos services incluent audits, implémentations et formations, avec des tarifs publics clairs, à partir de 490 € HT pour un audit Flash de 4 heures.",
+    "À Saint-Cyr-l'École, Axion-IA propose des interventions sur site pour les entreprises, s'appuyant sur des méthodologies éprouvées. Nous nous inspirons des écosystèmes d'innovation de Cap Digital et Station F. Nos services incluent audits, implémentations et formations, avec des tarifs publics clairs pour un audit Flash de 4 heures.",
   seoHook: "commerce détail & programmation informatique",
   ecosystemFr:
     "Saint-Cyr-l'École est entourée par un tissu économique dynamique, incluant des entreprises dans le commerce de détail et la programmation informatique, proches de pôles comme Cap Digital et Station F.",

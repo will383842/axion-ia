@@ -9,9 +9,9 @@ export const LAXOU_COPY: VilleCopy = {
   pitchEn:
     "Laxou (54), commune de Meurthe-et-Moselle intégrée à la Métropole du Grand Nancy, conjugue zones résidentielles, parcs d'activités et tissu tertiaire en plein essor. TPE et PME tertiaires, ESN, cabinets conseil, commerces de zone et de proximité, services aux entreprises, professions libérales. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Laxou (54). Nous accompagnons TPE et PME : sociétés tertiaires des zones d'activités, ESN, cabinets conseil, commerçants de zone, services aux entreprises, professions libérales de la Métropole Grand Nancy. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Laxou (54). Nous accompagnons TPE et PME : sociétés tertiaires des zones d'activités, ESN, cabinets conseil, commerçants de zone, services aux entreprises, professions libérales de la Métropole Grand Nancy. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Laxou (54). Nous accompagnons TPE et PME : sociétés tertiaires des zones d'activités, ESN, cabinets conseil, commerçants de zone, services aux entreprises, professions libérales de la Métropole Grand Nancy. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Laxou (54). Nous accompagnons TPE et PME : sociétés tertiaires des zones d'activités, ESN, cabinets conseil, commerçants de zone, services aux entreprises, professions libérales de la Métropole Grand Nancy. Audit Flash sur mesure.",
   seoHook: "tertiaires & esn services",
   ecosystemFr:
     "Laxou est une commune résidentielle et tertiaire de la Métropole du Grand Nancy (Meurthe-et-Moselle). Tissu TPE/PME tertiaires, ESN, cabinets conseil, commerces de zone et de proximité, services aux entreprises, professions libérales adossés au bassin économique nancéien.",
@@ -52,7 +52,7 @@ export const LAXOU_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Laxou et toute la Métropole du Grand Nancy. Consultants depuis Metz (50 min), Strasbourg (1 h 40) ou Paris (1 h 30 via TGV).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Laxou ?",
+      q: "Tarifs audit IA à Laxou  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables en ligne, adaptés aux TPE et PME tertiaires, ESN, cabinets conseil et commerces de la Métropole nancéienne.",
     },
     {

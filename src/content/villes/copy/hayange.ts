@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const HAYANGE_COPY: VilleCopy = {
   pitchFr:
-    "Hayange (57), ville de la Vallée de la Fensch en Moselle, marquée par l'héritage sidérurgique (haut-fourneau historique) et sa proximité immédiate avec le Luxembourg. Tissu TPE/PME industrie, sous-traitance métallurgique, services, commerces, BTP, et nombreux frontaliers actifs. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Hayange (57), ville de la Vallée de la Fensch en Moselle, marquée par l'héritage sidérurgique (haut-fourneau historique) et sa proximité immédiate avec le Luxembourg. Tissu TPE/PME industrie, sous-traitance métallurgique, services, commerces, BTP, et nombreux frontaliers actifs. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Hayange (57), ville de la Vallée de la Fensch en Moselle, marquée par l'héritage sidérurgique (haut-fourneau historique) et sa proximité immédiate avec le Luxembourg. Tissu TPE/PME industrie, sous-traitance métallurgique, services, commerces, BTP, et nombreux frontaliers actifs. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Hayange (57), ville de la Vallée de la Fensch en Moselle, marquée par l'héritage sidérurgique (haut-fourneau historique) et sa proximité immédiate avec le Luxembourg. Tissu TPE/PME industrie, sous-traitance métallurgique, services, commerces, BTP, et nombreux frontaliers actifs. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hayange (57). Nous accompagnons tous types d'activités : TPE/PME industrie et sous-traitance, artisans BTP, commerces de proximité, professions de services et entrepreneurs frontaliers de la Vallée de la Fensch.",
   directAnswerEn:

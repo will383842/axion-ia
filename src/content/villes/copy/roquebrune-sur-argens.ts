@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ROQUEBRUNE_SUR_ARGENS_COPY: VilleCopy = {
   pitchFr:
-    "Roquebrune-sur-Argens (83), commune du Var est entre rocher emblématique, vallée de l'Argens et plages, compte plus de 15 400 habitants. Tourisme balnéaire et nature, viticulture, zones d'activités, tissu de TPE artisanales, PME hôtellerie-restauration, commerces et services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Roquebrune-sur-Argens (83), commune du Var est entre rocher emblématique, vallée de l'Argens et plages, compte plus de 15 400 habitants. Tourisme balnéaire et nature, viticulture, zones d'activités, tissu de TPE artisanales, PME hôtellerie-restauration, commerces et services. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Roquebrune-sur-Argens (83), commune du Var est entre rocher emblématique, vallée de l'Argens et plages, compte plus de 15 400 habitants. Tourisme balnéaire et nature, viticulture, zones d'activités, tissu de TPE artisanales, PME hôtellerie-restauration, commerces et services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Roquebrune-sur-Argens (83), commune du Var est entre rocher emblématique, vallée de l'Argens et plages, compte plus de 15 400 habitants. Tourisme balnéaire et nature, viticulture, zones d'activités, tissu de TPE artisanales, PME hôtellerie-restauration, commerces et services. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Roquebrune-sur-Argens (83). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME hôtellerie-restauration et campings, domaines viticoles, professionnels du tourisme et services Var est.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const ROQUEBRUNE_SUR_ARGENS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les domaines viticoles Côtes de Provence de la vallée de l'Argens : traçabilité parcellaire, gestion vendanges, optimisation cave, œnotourisme et relation client B2B export.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Roquebrune-sur-Argens ?",
+      q: "Combien coûte un audit IA à Roquebrune-sur-Argens  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {

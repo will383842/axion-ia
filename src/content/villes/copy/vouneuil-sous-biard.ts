@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VOUNEUIL_SOUS_BIARD_COPY: VilleCopy = {
   pitchFr:
-    "Vouneuil-sous-Biard (86), commune de l'agglomération de Poitiers ouest en Vienne, accueille l'aéroport Poitiers-Biard et des zones d'activités périurbaines. Tissu TPE artisans, PME tertiaires, logistique aéroportuaire, commerces, professions libérales, exploitations agricoles et services. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'ouest du Grand Poitiers.",
+    "Vouneuil-sous-Biard (86), commune de l'agglomération de Poitiers ouest en Vienne, accueille l'aéroport Poitiers-Biard et des zones d'activités périurbaines. Tissu TPE artisans, PME tertiaires, logistique aéroportuaire, commerces, professions libérales, exploitations agricoles et services. Axion-IA répond aux besoins de toutes les entreprises de l'ouest du Grand Poitiers.",
   pitchEn:
-    "Vouneuil-sous-Biard (86), commune de l'agglomération de Poitiers ouest en Vienne, accueille l'aéroport Poitiers-Biard et des zones d'activités périurbaines. Tissu TPE artisans, PME tertiaires, logistique aéroportuaire, commerces, professions libérales, exploitations agricoles et services. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'ouest du Grand Poitiers.",
+    "Vouneuil-sous-Biard (86), commune de l'agglomération de Poitiers ouest en Vienne, accueille l'aéroport Poitiers-Biard et des zones d'activités périurbaines. Tissu TPE artisans, PME tertiaires, logistique aéroportuaire, commerces, professions libérales, exploitations agricoles et services. Axion-IA répond aux besoins de toutes les entreprises de l'ouest du Grand Poitiers.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vouneuil-sous-Biard (86). Nous accompagnons tous types d'activités : PME tertiaires et logistique zone aéroportuaire, TPE artisans, commerçants, professions libérales, exploitants agricoles et services aux entreprises du Grand Poitiers ouest.",
   directAnswerEn:

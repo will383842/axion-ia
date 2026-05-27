@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PONT_L_ABBE_COPY: VilleCopy = {
   pitchFr:
-    "Pont-l'Abbé (29), sous-préfecture du Finistère et capitale historique du Pays Bigouden, est un pôle administratif et commercial réputé pour sa tradition de dentelle. TPE artisanales, commerçants, PME agroalimentaires, services publics et tourisme culturel. Axion-IA couvre l'ensemble des activités professionnelles présentes du Pays Bigouden.",
+    "Pont-l'Abbé (29), sous-préfecture du Finistère et capitale historique du Pays Bigouden, est un pôle administratif et commercial réputé pour sa tradition de dentelle. TPE artisanales, commerçants, PME agroalimentaires, services publics et tourisme culturel. Axion-IA répond aux besoins des activités professionnelles présentes du Pays Bigouden.",
   pitchEn:
-    "Pont-l'Abbé (29), sous-préfecture du Finistère et capitale historique du Pays Bigouden, est un pôle administratif et commercial réputé pour sa tradition de dentelle. TPE artisanales, commerçants, PME agroalimentaires, services publics et tourisme culturel. Axion-IA couvre l'ensemble des activités professionnelles présentes du Pays Bigouden.",
+    "Pont-l'Abbé (29), sous-préfecture du Finistère et capitale historique du Pays Bigouden, est un pôle administratif et commercial réputé pour sa tradition de dentelle. TPE artisanales, commerçants, PME agroalimentaires, services publics et tourisme culturel. Axion-IA répond aux besoins des activités professionnelles présentes du Pays Bigouden.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pont-l'Abbé (29). Nous accompagnons tous types d'activités : TPE artisanales et commerçants du centre-ville bigouden, PME agroalimentaires, acteurs du tourisme culturel, professions libérales, indépendants et services publics de la sous-préfecture.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const PONT_L_ABBE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE commerçants de centre-ville et artisans de Pont-l'Abbé sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion stocks, facturation automatique. Audit Flash 490 € HT adapté aux petites structures.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Pont-l'Abbé ?",
+      q: "Tarifs audit IA à Pont-l'Abbé  : quel budget prévoir ?",
       a: "L'audit Flash IA démarre à 490 € HT pour les TPE et PME de Pont-l'Abbé et du Pays Bigouden. Formats supérieurs disponibles selon la taille et la complexité de votre activité. Devis transparent, sans engagement.",
     },
     {

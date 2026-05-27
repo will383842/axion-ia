@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SIGEAN_COPY: VilleCopy = {
   pitchFr:
-    "Sigean (11), commune audoise entre littoral méditerranéen et garrigue, connue pour sa Réserve Africaine (parc animalier majeur du sud de la France). Tissu TPE artisans, PME tourisme animalier, commerces de proximité, viticulture (Corbières), hôtellerie-restauration. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Sigean (11), commune audoise entre littoral méditerranéen et garrigue, connue pour sa Réserve Africaine (parc animalier majeur du sud de la France). Tissu TPE artisans, PME tourisme animalier, commerces de proximité, viticulture (Corbières), hôtellerie-restauration. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Sigean (11), commune audoise entre littoral méditerranéen et garrigue, connue pour sa Réserve Africaine (parc animalier majeur du sud de la France). Tissu TPE artisans, PME tourisme animalier, commerces de proximité, viticulture (Corbières), hôtellerie-restauration. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Sigean (11), commune audoise entre littoral méditerranéen et garrigue, connue pour sa Réserve Africaine (parc animalier majeur du sud de la France). Tissu TPE artisans, PME tourisme animalier, commerces de proximité, viticulture (Corbières), hôtellerie-restauration. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sigean (11). Nous accompagnons TPE artisans, PME tourisme (Réserve Africaine), viticulteurs Corbières, commerçants, hôteliers-restaurateurs et professionnels du littoral audois. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sigean (11). Nous accompagnons TPE artisans, PME tourisme (Réserve Africaine), viticulteurs Corbières, commerçants, hôteliers-restaurateurs et professionnels du littoral audois. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sigean (11). Nous accompagnons TPE artisans, PME tourisme (Réserve Africaine), viticulteurs Corbières, commerçants, hôteliers-restaurateurs et professionnels du littoral audois. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sigean (11). Nous accompagnons TPE artisans, PME tourisme (Réserve Africaine), viticulteurs Corbières, commerçants, hôteliers-restaurateurs et professionnels du littoral audois. Audit Flash sur mesure.",
   seoHook: "tourisme animalier & viticulture corbières",
   ecosystemFr:
     "Sigean est une commune audoise réputée pour sa Réserve Africaine, parc animalier attirant plus de 300 000 visiteurs par an. Économie mixte : tourisme animalier et balnéaire (étang de Bages-Sigean, port de plaisance), viticulture AOC Corbières, ostréiculture, TPE artisans BTP, commerces de proximité, hôtellerie-restauration saisonnière.",
@@ -56,7 +56,7 @@ export const SIGEAN_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les professionnels du tourisme à Sigean sur leurs cas IA : agents conversationnels billetterie multilingues, prédiction fréquentation, automatisation gestion réservations groupes, classification feedback visiteurs.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Sigean ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Sigean  ?",
       a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME tourisme ou viticoles, audit approfondi entre 1 900 et 3 900 € HT selon la complexité. Tarifs publics, pas de devis opaque.",
     },
     {

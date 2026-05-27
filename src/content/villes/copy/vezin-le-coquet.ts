@@ -56,7 +56,7 @@ export const VEZIN_LE_COQUET_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME tertiaires et services aux entreprises de l'ouest rennais sur leurs cas IA : automatisation CRM, agents conversationnels B2B, classification documents, optimisation relation client. Audit Flash 490 € HT pour démarrer.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Vezin-le-Coquet ?",
+      q: "Combien coûte un audit IA à Vezin-le-Coquet  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de l'ouest Rennes Métropole, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics, transparents.",
     },
     {

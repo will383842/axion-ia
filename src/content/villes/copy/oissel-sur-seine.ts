@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const OISSEL_SUR_SEINE_COPY: VilleCopy = {
   pitchFr:
-    "Oissel-sur-Seine (76), commune de l'agglomération rouennaise sud en Seine-Maritime, est située en bords de Seine, membre de la Métropole Rouen Normandie. Tissu TPE artisans, PME industrielles et logistiques, commerces de quartier, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglo rouennaise sud.",
+    "Oissel-sur-Seine (76), commune de l'agglomération rouennaise sud en Seine-Maritime, est située en bords de Seine, membre de la Métropole Rouen Normandie. Tissu TPE artisans, PME industrielles et logistiques, commerces de quartier, professions libérales. Axion-IA répond aux besoins de toutes les entreprises de l'agglo rouennaise sud.",
   pitchEn:
-    "Oissel-sur-Seine (76), commune de l'agglomération rouennaise sud en Seine-Maritime, est située en bords de Seine, membre de la Métropole Rouen Normandie. Tissu TPE artisans, PME industrielles et logistiques, commerces de quartier, professions libérales. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglo rouennaise sud.",
+    "Oissel-sur-Seine (76), commune de l'agglomération rouennaise sud en Seine-Maritime, est située en bords de Seine, membre de la Métropole Rouen Normandie. Tissu TPE artisans, PME industrielles et logistiques, commerces de quartier, professions libérales. Axion-IA répond aux besoins de toutes les entreprises de l'agglo rouennaise sud.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Oissel-sur-Seine (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles et logistiques bords de Seine, professions libérales, services aux entreprises de l'agglo rouennaise sud. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Oissel-sur-Seine (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles et logistiques bords de Seine, professions libérales, services aux entreprises de l'agglo rouennaise sud. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Oissel-sur-Seine (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles et logistiques bords de Seine, professions libérales, services aux entreprises de l'agglo rouennaise sud. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Oissel-sur-Seine (76). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles et logistiques bords de Seine, professions libérales, services aux entreprises de l'agglo rouennaise sud. Audit Flash sur mesure.",
   seoHook: "agglo Rouen sud, industrie & bords de Seine",
   ecosystemFr:
     "Oissel-sur-Seine est en bords de Seine au sud de Rouen, membre de la Métropole Rouen Normandie. Proximité zones industrielles et logistiques (Saint-Étienne-du-Rouvray, Elbeuf), tissu TPE artisans, PME industrielles, commerces de quartier et professions libérales.",
@@ -61,7 +61,7 @@ export const OISSEL_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Quel budget prévoir pour un audit IA à Oissel-sur-Seine ?",
-      a: "L'audit Flash démarre à 490 € HT pour les TPE. Pour les PME industrielles et logistiques, l'audit stratégique complet est adapté au périmètre. Tarifs publics, pas de devis opaque.",
+      a: "L'audit Flash débute selon la taille de votre activité pour les TPE. Pour les PME industrielles et logistiques, l'audit stratégique complet est adapté au périmètre. Tarifs publics, pas de devis opaque.",
     },
     {
       q: "Comment se passe une mission depuis Paris ou Rouen ?",

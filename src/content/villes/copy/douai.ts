@@ -11,9 +11,9 @@ export const DOUAI_COPY: VilleCopy = {
   pitchEn:
     "À Douai, Axion-IA accompagne les entreprises dans l'optimisation de leurs processus grâce à l'IA. Ville marquée par la présence de Renault, Douai bénéficie d'une économie diversifiée que nous aidons à transformer via nos interventions.",
   directAnswerFr:
-    "Axion-IA intervient à Douai, un centre économique actif avec 3 000 établissements. Nous proposons des audits à partir de 490 € HT et des interventions dès 590 € HT. Douai, avec ses connexions vers Lille et l'Université d'Artois, est un lieu stratégique pour nos services d'IA opérationnelle.",
+    "Axion-IA intervient à Douai, un centre économique actif avec 3 000 établissements. Nous proposons des audits et des interventions. Douai, avec ses connexions vers Lille et l'Université d'Artois, est un lieu stratégique pour nos services d'IA opérationnelle.",
   directAnswerEn:
-    "Axion-IA intervient à Douai, un centre économique actif avec 3 000 établissements. Nous proposons des audits à partir de 490 € HT et des interventions dès 590 € HT. Douai, avec ses connexions vers Lille et l'Université d'Artois, est un lieu stratégique pour nos services d'IA opérationnelle.",
+    "Axion-IA intervient à Douai, un centre économique actif avec 3 000 établissements. Nous proposons des audits et des interventions. Douai, avec ses connexions vers Lille et l'Université d'Artois, est un lieu stratégique pour nos services d'IA opérationnelle.",
   seoHook: "transports terrestres & construction",
   ecosystemFr:
     "Douai est un pôle économique important avec Renault et l'Université d'Artois. Ces entités renforcent l'attractivité de la région pour des interventions en IA. Axion-IA s'adresse aux entreprises locales pour optimiser leurs opérations.",

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VALLONS_DE_L_ERDRE_COPY: VilleCopy = {
   pitchFr:
-    "Vallons-de-l'Erdre (44), commune nouvelle du nord de la Loire-Atlantique, née de la fusion de Bonnœuvre, Freigné, Maumusson, Saint-Mars-la-Jaille, Saint-Sulpice-des-Landes et Vritz. Tissu TPE artisans et commerçants, exploitations agricoles, PME agroalimentaires, services de proximité. Axion-IA accompagne entreprises et indépendants de tous secteurs du nord Loire-Atlantique.",
+    "Vallons-de-l'Erdre (44), commune nouvelle du nord de la Loire-Atlantique, née de la fusion de Bonnœuvre, Freigné, Maumusson, Saint-Mars-la-Jaille, Saint-Sulpice-des-Landes et Vritz. Tissu TPE artisans et commerçants, exploitations agricoles, PME agroalimentaires, services de proximité. Axion-IA collabore avec toutes les structures locales du nord Loire-Atlantique.",
   pitchEn:
-    "Vallons-de-l'Erdre (44), commune nouvelle du nord de la Loire-Atlantique, née de la fusion de Bonnœuvre, Freigné, Maumusson, Saint-Mars-la-Jaille, Saint-Sulpice-des-Landes et Vritz. Tissu TPE artisans et commerçants, exploitations agricoles, PME agroalimentaires, services de proximité. Axion-IA accompagne entreprises et indépendants de tous secteurs du nord Loire-Atlantique.",
+    "Vallons-de-l'Erdre (44), commune nouvelle du nord de la Loire-Atlantique, née de la fusion de Bonnœuvre, Freigné, Maumusson, Saint-Mars-la-Jaille, Saint-Sulpice-des-Landes et Vritz. Tissu TPE artisans et commerçants, exploitations agricoles, PME agroalimentaires, services de proximité. Axion-IA collabore avec toutes les structures locales du nord Loire-Atlantique.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vallons-de-l'Erdre (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, exploitations agricoles, PME agroalimentaires, services de proximité et entreprises du nord Loire-Atlantique.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const VALLONS_DE_L_ERDRE_COPY: VilleCopy = {
       a: "Pour les PME agroalimentaires de Vallons-de-l'Erdre, nous proposons audit IA, interventions sur site, implémentation (automatisation qualité, traçabilité, gestion flux production), coaching 1-to-1 et plateformes web IA sur mesure.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Vallons-de-l'Erdre ?",
+      q: "Tarifs audit IA à Vallons-de-l'Erdre  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du nord Loire-Atlantique.",
     },
     {

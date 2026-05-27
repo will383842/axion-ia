@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const RONCQ_COPY: VilleCopy = {
   pitchFr:
-    "Roncq (59), commune de l'agglomération Lille-Tourcoing à la frontière belge, est connue pour ses importantes zones commerciales et son tissu économique dynamique. TPE, PME et enseignes commerciales côtoient prestataires logistiques, artisans, professions libérales et PME B2B transfrontalières franco-belges sur l'axe Lille-Bruges. Axion-IA couvre l'ensemble des activités professionnelles présentes de la métropole lilloise nord.",
+    "Roncq (59), commune de l'agglomération Lille-Tourcoing à la frontière belge, est connue pour ses importantes zones commerciales et son tissu économique dynamique. TPE, PME et enseignes commerciales côtoient prestataires logistiques, artisans, professions libérales et PME B2B transfrontalières franco-belges sur l'axe Lille-Bruges. Axion-IA opère sur l'ensemble des activités professionnelles locales de la métropole lilloise nord.",
   pitchEn:
-    "Roncq (59), commune de l'agglomération Lille-Tourcoing à la frontière belge, est connue pour ses importantes zones commerciales et son tissu économique dynamique. TPE, PME et enseignes commerciales côtoient prestataires logistiques, artisans, professions libérales et PME B2B transfrontalières franco-belges sur l'axe Lille-Bruges. Axion-IA couvre l'ensemble des activités professionnelles présentes de la métropole lilloise nord.",
+    "Roncq (59), commune de l'agglomération Lille-Tourcoing à la frontière belge, est connue pour ses importantes zones commerciales et son tissu économique dynamique. TPE, PME et enseignes commerciales côtoient prestataires logistiques, artisans, professions libérales et PME B2B transfrontalières franco-belges sur l'axe Lille-Bruges. Axion-IA opère sur l'ensemble des activités professionnelles locales de la métropole lilloise nord.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Roncq (59). Nous accompagnons TPE et PME : enseignes et commerces de zones commerciales, prestataires logistiques, artisans, professions libérales et PME B2B transfrontalières franco-belges de l'axe Lille-Tourcoing.",
   directAnswerEn:
@@ -52,7 +52,7 @@ export const RONCQ_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Roncq et dans toute la métropole lilloise nord (Tourcoing, Halluin, Neuville-en-Ferrain, Linselles, Bousbecque) ainsi que côté belge (Mouscron, Menin). Nos consultants sont basés à Lille (20 min) et couvrent l'ensemble de l'axe Lille-Tourcoing-frontière belge.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Roncq ?",
+      q: "Combien coûte un audit IA à Roncq  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Roncq et de la métropole lilloise nord, il identifie les cas d'usage IA à fort ROI pour votre activité (commerce, logistique, B2B transfrontalier, artisanat). Tarifs publics, sans engagement.",
     },
     {

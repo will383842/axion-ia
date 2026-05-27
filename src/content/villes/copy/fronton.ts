@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const FRONTON_COPY: VilleCopy = {
   pitchFr:
-    "Fronton (31), cité viticole du nord de Toulouse célèbre pour son AOC négrette, plus de 6 600 habitants. Tissu TPE viticulteurs, PME agroalimentaires, commerces de centre-ville, professions libérales, tourisme viticole. Axion-IA y déploie ses missions auprès de toutes les organisations du Frontonnais.",
+    "Fronton (31), cité viticole du nord de Toulouse célèbre pour son AOC négrette, plus de 6 600 habitants. Tissu TPE viticulteurs, PME agroalimentaires, commerces de centre-ville, professions libérales, tourisme viticole. Axion-IA y conduit ses missions auprès des entreprises locales du Frontonnais.",
   pitchEn:
-    "Fronton (31), cité viticole du nord de Toulouse célèbre pour son AOC négrette, plus de 6 600 habitants. Tissu TPE viticulteurs, PME agroalimentaires, commerces de centre-ville, professions libérales, tourisme viticole. Axion-IA y déploie ses missions auprès de toutes les organisations du Frontonnais.",
+    "Fronton (31), cité viticole du nord de Toulouse célèbre pour son AOC négrette, plus de 6 600 habitants. Tissu TPE viticulteurs, PME agroalimentaires, commerces de centre-ville, professions libérales, tourisme viticole. Axion-IA y conduit ses missions auprès des entreprises locales du Frontonnais.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fronton (31). Nous accompagnons TPE viticulteurs, PME agroalimentaires, commerçants, professions libérales et acteurs du tourisme viticole. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fronton (31). Nous accompagnons TPE viticulteurs, PME agroalimentaires, commerçants, professions libérales et acteurs du tourisme viticole. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fronton (31). Nous accompagnons TPE viticulteurs, PME agroalimentaires, commerçants, professions libérales et acteurs du tourisme viticole. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fronton (31). Nous accompagnons TPE viticulteurs, PME agroalimentaires, commerçants, professions libérales et acteurs du tourisme viticole. Audit Flash sur mesure.",
   seoHook: "viticulture fronton & agroalimentaire",
   ecosystemFr:
     "Fronton est la capitale de l'AOC Fronton, vignoble de la négrette au nord de Toulouse. TPE viticulteurs et domaines, PME agroalimentaires, commerces de centre-ville, professions libérales, tourisme œnotourisme. Marché traditionnel actif.",
@@ -56,7 +56,7 @@ export const FRONTON_COPY: VilleCopy = {
       a: "Nous accompagnons tous types d'activités : viticulteurs, PME agroalimentaires, commerces, tourisme, professions libérales. Aucun secteur exclu.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Fronton ?",
+      q: "Combien coûte un audit IA à Fronton  ?",
       a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics.",
     },
     {

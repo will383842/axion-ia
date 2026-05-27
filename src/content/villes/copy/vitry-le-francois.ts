@@ -5,14 +5,14 @@ import type { VilleCopy } from "./types";
 
 export const VITRY_LE_FRANCOIS_COPY: VilleCopy = {
   pitchFr:
-    "Vitry-le-François (51), sous-préfecture de la Marne à la confluence de la Marne et du canal de la Marne au Rhin, est un carrefour logistique fluvial et routier historique. Tissu de TPE artisanales, PME logistique et transport, industrie agroalimentaire, commerces et services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Vitry-le-François (51), sous-préfecture de la Marne à la confluence de la Marne et du canal de la Marne au Rhin, est un carrefour logistique fluvial et routier historique. Tissu de TPE artisanales, PME logistique et transport, industrie agroalimentaire, commerces et services. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Vitry-le-François (51), sous-préfecture de la Marne à la confluence de la Marne et du canal de la Marne au Rhin, est un carrefour logistique fluvial et routier historique. Tissu de TPE artisanales, PME logistique et transport, industrie agroalimentaire, commerces et services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Vitry-le-François (51), sous-préfecture de la Marne à la confluence de la Marne et du canal de la Marne au Rhin, est un carrefour logistique fluvial et routier historique. Tissu de TPE artisanales, PME logistique et transport, industrie agroalimentaire, commerces et services. Axion-IA y mène ses missions auprès des organisations locales.",
   seoHook: "logistique fluviale, agroalimentaire & sous-préfecture",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vitry-le-François (51). Nous accompagnons TPE et PME de cette sous-préfecture marnaise : PME logistique et transport fluvial, industries agroalimentaires, artisans BTP, commerçants, exploitants agricoles et services. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vitry-le-François (51). Nous accompagnons TPE et PME de cette sous-préfecture marnaise : PME logistique et transport fluvial, industries agroalimentaires, artisans BTP, commerçants, exploitants agricoles et services. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vitry-le-François (51). Nous accompagnons TPE et PME de cette sous-préfecture marnaise : PME logistique et transport fluvial, industries agroalimentaires, artisans BTP, commerçants, exploitants agricoles et services. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vitry-le-François (51). Nous accompagnons TPE et PME de cette sous-préfecture marnaise : PME logistique et transport fluvial, industries agroalimentaires, artisans BTP, commerçants, exploitants agricoles et services. Audit Flash sur mesure.",
   ecosystemFr:
     "Vitry-le-François est une sous-préfecture de la Marne située à la confluence de la Marne et du canal de la Marne au Rhin. Carrefour logistique fluvial et routier historique, la ville accueille des PME de transport, logistique et industrie agroalimentaire (Champagne céréalière). Tissu de TPE artisanales, commerces de centre-ville, administration et services publics. Reconstruction ville géométrique XVIIe siècle.",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const VITRY_LE_FRANCOIS_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Vitry-le-François et dans le sud de la Marne (Saint-Dizier, Châlons-en-Champagne, Thiéblemont-Farémont). Gare SNCF Vitry-le-François desservie par TER Champagne-Ardenne.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Vitry-le-François ?",
+      q: "Tarifs audit IA à Vitry-le-François  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Vitry-le-François, il identifie les cas d'usage IA à fort ROI pour votre activité.",
     },
     {

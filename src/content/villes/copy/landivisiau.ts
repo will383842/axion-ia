@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const LANDIVISIAU_COPY: VilleCopy = {
   pitchFr:
-    "Landivisiau (29), commune du Pays de Léon dans le nord Finistère, accueille la base aéronavale de Landivisiau et un tissu agroalimentaire breton dense. TPE artisans, PME agroalimentaires et de sous-traitance aéronautique, commerces, services et activités liées à la Défense. Axion-IA accompagne entreprises et indépendants de tous secteurs du Pays de Léon et du nord Finistère.",
+    "Landivisiau (29), commune du Pays de Léon dans le nord Finistère, accueille la base aéronavale de Landivisiau et un tissu agroalimentaire breton dense. TPE artisans, PME agroalimentaires et de sous-traitance aéronautique, commerces, services et activités liées à la Défense. Axion-IA opère pour entreprises et indépendants du secteur du Pays de Léon et du nord Finistère.",
   pitchEn:
-    "Landivisiau (29), commune du Pays de Léon dans le nord Finistère, accueille la base aéronavale de Landivisiau et un tissu agroalimentaire breton dense. TPE artisans, PME agroalimentaires et de sous-traitance aéronautique, commerces, services et activités liées à la Défense. Axion-IA accompagne entreprises et indépendants de tous secteurs du Pays de Léon et du nord Finistère.",
+    "Landivisiau (29), commune du Pays de Léon dans le nord Finistère, accueille la base aéronavale de Landivisiau et un tissu agroalimentaire breton dense. TPE artisans, PME agroalimentaires et de sous-traitance aéronautique, commerces, services et activités liées à la Défense. Axion-IA opère pour entreprises et indépendants du secteur du Pays de Léon et du nord Finistère.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Landivisiau (29). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agroalimentaires bretonnes, sous-traitants aéronautiques, indépendants, professions libérales, prestataires liés à la base aéronavale et services aux entreprises du Pays de Léon.",
   directAnswerEn:

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const PALAVAS_LES_FLOTS_COPY: VilleCopy = {
   pitchFr:
-    "Palavas-les-Flots (34), station balnéaire mythique de Montpellier, plage emblématique du littoral héraultais (Albert Dubout). Port de pêche et de plaisance, tourisme estival, casino. Tissu TPE commerçants saisonniers, PME hôtellerie-restauration, artisans, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Palavas-les-Flots (34), station balnéaire mythique de Montpellier, plage emblématique du littoral héraultais (Albert Dubout). Port de pêche et de plaisance, tourisme estival, casino. Tissu TPE commerçants saisonniers, PME hôtellerie-restauration, artisans, professions libérales. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Palavas-les-Flots (34), station balnéaire mythique de Montpellier, plage emblématique du littoral héraultais (Albert Dubout). Port de pêche et de plaisance, tourisme estival, casino. Tissu TPE commerçants saisonniers, PME hôtellerie-restauration, artisans, professions libérales. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Palavas-les-Flots (34), station balnéaire mythique de Montpellier, plage emblématique du littoral héraultais (Albert Dubout). Port de pêche et de plaisance, tourisme estival, casino. Tissu TPE commerçants saisonniers, PME hôtellerie-restauration, artisans, professions libérales. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Palavas-les-Flots (34). Nous accompagnons TPE commerçants, PME hôtellerie-restauration, acteurs du tourisme balnéaire, pêcheurs professionnels et professions libérales du littoral montpelliérain.",
   directAnswerEn:

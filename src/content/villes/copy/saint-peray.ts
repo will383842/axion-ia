@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_PERAY_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Péray (07), commune de l'Ardèche face à Valence (rive droite du Rhône), est réputée pour le vignoble AOC Saint-Péray (vins blancs effervescents et tranquilles, l'un des crus septentrionaux du Rhône). Proximité immédiate AOC Cornas. Tissu viticole, PME tertiaires, TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Saint-Péray (07), commune de l'Ardèche face à Valence (rive droite du Rhône), est réputée pour le vignoble AOC Saint-Péray (vins blancs effervescents et tranquilles, l'un des crus septentrionaux du Rhône). Proximité immédiate AOC Cornas. Tissu viticole, PME tertiaires, TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants.",
   pitchEn:
-    "Saint-Péray (07), commune de l'Ardèche face à Valence (rive droite du Rhône), est réputée pour le vignoble AOC Saint-Péray (vins blancs effervescents et tranquilles, l'un des crus septentrionaux du Rhône). Proximité immédiate AOC Cornas. Tissu viticole, PME tertiaires, TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Saint-Péray (07), commune de l'Ardèche face à Valence (rive droite du Rhône), est réputée pour le vignoble AOC Saint-Péray (vins blancs effervescents et tranquilles, l'un des crus septentrionaux du Rhône). Proximité immédiate AOC Cornas. Tissu viticole, PME tertiaires, TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Péray (07). Nous accompagnons tous types d'activités : viticulteurs AOC Saint-Péray / Cornas, acteurs oenotourisme, PME tertiaires, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:

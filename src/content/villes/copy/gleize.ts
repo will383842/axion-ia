@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GLEIZE_COPY: VilleCopy = {
   pitchFr:
-    "Gleizé (69), commune en banlieue ouest immédiate de Villefranche-sur-Saône dans le Rhône, est positionnée à l'entrée du vignoble du Beaujolais. Tissu péri-urbain : PME tertiaires, viticulture périphérique, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations du Beaujolais-Villefranche.",
+    "Gleizé (69), commune en banlieue ouest immédiate de Villefranche-sur-Saône dans le Rhône, est positionnée à l'entrée du vignoble du Beaujolais. Tissu péri-urbain : PME tertiaires, viticulture périphérique, TPE artisans BTP, commerces. Axion-IA y travaille avec les organisations du territoire du Beaujolais-Villefranche.",
   pitchEn:
-    "Gleizé (69), commune en banlieue ouest immédiate de Villefranche-sur-Saône dans le Rhône, est positionnée à l'entrée du vignoble du Beaujolais. Tissu péri-urbain : PME tertiaires, viticulture périphérique, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations du Beaujolais-Villefranche.",
+    "Gleizé (69), commune en banlieue ouest immédiate de Villefranche-sur-Saône dans le Rhône, est positionnée à l'entrée du vignoble du Beaujolais. Tissu péri-urbain : PME tertiaires, viticulture périphérique, TPE artisans BTP, commerces. Axion-IA y travaille avec les organisations du territoire du Beaujolais-Villefranche.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gleizé (69). Nous accompagnons tous types d'activités : PME tertiaires Villefranche, viticulteurs Beaujolais, TPE artisans BTP, commerçants, indépendants et services aux entreprises de la communauté d'agglomération Villefranche Beaujolais Saône.",
   directAnswerEn:

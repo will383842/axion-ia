@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_DENIS_LES_BOURG_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Denis-lès-Bourg (01), commune en banlieue immédiate de Bourg-en-Bresse dans l'Ain, est positionnée en Bresse. Tissu PME tertiaires, TPE artisans BTP, commerces, agriculture Bresse. Axion-IA y déploie ses missions auprès de toutes les organisations bressoises.",
+    "Saint-Denis-lès-Bourg (01), commune en banlieue immédiate de Bourg-en-Bresse dans l'Ain, est positionnée en Bresse. Tissu PME tertiaires, TPE artisans BTP, commerces, agriculture Bresse. Axion-IA y mène ses missions auprès des organisations locales bressoises.",
   pitchEn:
-    "Saint-Denis-lès-Bourg (01), commune en banlieue immédiate de Bourg-en-Bresse dans l'Ain, est positionnée en Bresse. Tissu PME tertiaires, TPE artisans BTP, commerces, agriculture Bresse. Axion-IA y déploie ses missions auprès de toutes les organisations bressoises.",
+    "Saint-Denis-lès-Bourg (01), commune en banlieue immédiate de Bourg-en-Bresse dans l'Ain, est positionnée en Bresse. Tissu PME tertiaires, TPE artisans BTP, commerces, agriculture Bresse. Axion-IA y mène ses missions auprès des organisations locales bressoises.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Denis-lès-Bourg (01). Nous accompagnons tous types d'activités : PME tertiaires Bresse, agriculteurs/éleveurs, TPE artisans BTP, commerçants et services aux entreprises de l'agglomération burgienne.",
   directAnswerEn:

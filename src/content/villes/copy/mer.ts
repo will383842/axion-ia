@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const MER_COPY: VilleCopy = {
   pitchFr:
-    "Mer (41), bourg dynamique du Loir-et-Cher entre Beauce et Val de Loire, est un carrefour logistique et industriel avec zones d'activités, TPE artisans, PME logistique et agroalimentaire, commerces de centre-bourg. Axion-IA couvre l'ensemble des activités professionnelles présentes du nord blésois.",
+    "Mer (41), bourg dynamique du Loir-et-Cher entre Beauce et Val de Loire, est un carrefour logistique et industriel avec zones d'activités, TPE artisans, PME logistique et agroalimentaire, commerces de centre-bourg. Axion-IA opère sur l'ensemble des activités professionnelles locales du nord blésois.",
   pitchEn:
-    "Mer (41), bourg dynamique du Loir-et-Cher entre Beauce et Val de Loire, est un carrefour logistique et industriel avec zones d'activités, TPE artisans, PME logistique et agroalimentaire, commerces de centre-bourg. Axion-IA couvre l'ensemble des activités professionnelles présentes du nord blésois.",
+    "Mer (41), bourg dynamique du Loir-et-Cher entre Beauce et Val de Loire, est un carrefour logistique et industriel avec zones d'activités, TPE artisans, PME logistique et agroalimentaire, commerces de centre-bourg. Axion-IA opère sur l'ensemble des activités professionnelles locales du nord blésois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mer (41). Nous accompagnons TPE artisans, PME logistique et agroalimentaire, commerces et services. Audit Flash dès 490 € HT, démarrage sous 10 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mer (41). Nous accompagnons TPE artisans, PME logistique et agroalimentaire, commerces et services. Audit Flash sur mesure, démarrage sous 10 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mer (41). Nous accompagnons TPE artisans, PME logistique et agroalimentaire, commerces et services. Audit Flash dès 490 € HT, démarrage sous 10 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mer (41). Nous accompagnons TPE artisans, PME logistique et agroalimentaire, commerces et services. Audit Flash sur mesure, démarrage sous 10 jours.",
   seoHook: "logistique transport & agroalimentaire beauce",
   ecosystemFr:
     "Mer est situé entre Beauce et Val de Loire, le long de l'axe A10/RN152. Zones d'activités logistique et industrielles, PME agroalimentaire, entreprises de transport, TPE artisanat BTP et commerces de centre-bourg.",
@@ -52,7 +52,7 @@ export const MER_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Mer et dans tout le nord blésois. Consultants sur site depuis Blois (20 min) ou Orléans (40 min).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Mer ?",
+      q: "Quel est le tarif d'un audit IA à Mer  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics, devis détaillé gratuit, ROI chiffré sous 10 jours.",
     },
     {

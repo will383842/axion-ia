@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_PRIX_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Prix (95), commune résidentielle nichée au pied de la forêt de Montmorency dans le Val-d'Oise. Tissu TPE artisans et commerces de proximité, PME de services, professions libérales, consultants et associations locales. Axion-IA y déploie ses missions auprès de toutes les organisations de la vallée de Montmorency.",
+    "Saint-Prix (95), commune résidentielle nichée au pied de la forêt de Montmorency dans le Val-d'Oise. Tissu TPE artisans et commerces de proximité, PME de services, professions libérales, consultants et associations locales. Axion-IA y travaille avec les organisations du territoire de la vallée de Montmorency.",
   pitchEn:
-    "Saint-Prix (95), commune résidentielle nichée au pied de la forêt de Montmorency dans le Val-d'Oise. Tissu TPE artisans et commerces de proximité, PME de services, professions libérales, consultants et associations locales. Axion-IA y déploie ses missions auprès de toutes les organisations de la vallée de Montmorency.",
+    "Saint-Prix (95), commune résidentielle nichée au pied de la forêt de Montmorency dans le Val-d'Oise. Tissu TPE artisans et commerces de proximité, PME de services, professions libérales, consultants et associations locales. Axion-IA y travaille avec les organisations du territoire de la vallée de Montmorency.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Prix (95). Nous accompagnons tous types d'activités : TPE artisans et commerces, PME de services, professions libérales, consultants indépendants et associations de la vallée de Montmorency. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Prix (95). Nous accompagnons tous types d'activités : TPE artisans et commerces, PME de services, professions libérales, consultants indépendants et associations de la vallée de Montmorency. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Prix (95). Nous accompagnons tous types d'activités : TPE artisans et commerces, PME de services, professions libérales, consultants indépendants et associations de la vallée de Montmorency. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Prix (95). Nous accompagnons tous types d'activités : TPE artisans et commerces, PME de services, professions libérales, consultants indépendants et associations de la vallée de Montmorency. Audit Flash sur mesure.",
   seoHook: "professions libérales & commerce proximité",
   ecosystemFr:
     "Saint-Prix bénéficie du cadre verdoyant de la forêt de Montmorency et d'un tissu économique résidentiel actif : TPE artisans, commerces de proximité, professions libérales, PME de conseil et services. Communes voisines : Montmorency, Saint-Leu-la-Forêt, Eaubonne, Andilly, Margency.",

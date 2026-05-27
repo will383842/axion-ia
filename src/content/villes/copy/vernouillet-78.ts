@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const VERNOUILLET_78_COPY: VilleCopy = {
   pitchFr:
-    "Vernouillet (78), commune des bords de Seine dans les Yvelines, entre Poissy et Les Mureaux. Tissu économique actif de TPE artisans, PME de services, commerces de proximité, professions libérales et entreprises logistiques liées à l'axe Seine. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération Seine & Vexin.",
+    "Vernouillet (78), commune des bords de Seine dans les Yvelines, entre Poissy et Les Mureaux. Tissu économique actif de TPE artisans, PME de services, commerces de proximité, professions libérales et entreprises logistiques liées à l'axe Seine. Axion-IA répond aux besoins de toutes les entreprises de l'agglomération Seine & Vexin.",
   pitchEn:
-    "Vernouillet (78), commune des bords de Seine dans les Yvelines, entre Poissy et Les Mureaux. Tissu économique actif de TPE artisans, PME de services, commerces de proximité, professions libérales et entreprises logistiques liées à l'axe Seine. Axion-IA accompagne entreprises et indépendants de tous secteurs de l'agglomération Seine & Vexin.",
+    "Vernouillet (78), commune des bords de Seine dans les Yvelines, entre Poissy et Les Mureaux. Tissu économique actif de TPE artisans, PME de services, commerces de proximité, professions libérales et entreprises logistiques liées à l'axe Seine. Axion-IA répond aux besoins de toutes les entreprises de l'agglomération Seine & Vexin.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vernouillet (78). Nous accompagnons TPE et PME : artisans, commerces de proximité, PME de services et logistique, professions libérales de cette commune dynamique des bords de Seine entre Poissy et Les Mureaux. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vernouillet (78). Nous accompagnons TPE et PME : artisans, commerces de proximité, PME de services et logistique, professions libérales de cette commune dynamique des bords de Seine entre Poissy et Les Mureaux. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vernouillet (78). Nous accompagnons TPE et PME : artisans, commerces de proximité, PME de services et logistique, professions libérales de cette commune dynamique des bords de Seine entre Poissy et Les Mureaux. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vernouillet (78). Nous accompagnons TPE et PME : artisans, commerces de proximité, PME de services et logistique, professions libérales de cette commune dynamique des bords de Seine entre Poissy et Les Mureaux. Audit Flash sur mesure.",
   seoHook: "commerce proximité & services aux",
   ecosystemFr:
     "Vernouillet est une commune résidentielle et commerçante des bords de Seine, dans l'agglomération Grand Paris Seine & Oise. Tissu économique diversifié : TPE artisans bâtiment, PME de services, commerces de centre-ville, professions libérales, entreprises logistiques et transport liées à l'axe Seine. Communes voisines : Verneuil-sur-Seine, Médan, Triel-sur-Seine, Les Mureaux, Poissy.",
@@ -52,7 +52,7 @@ export const VERNOUILLET_78_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Vernouillet et dans toute l'agglomération Seine & Vexin (Verneuil-sur-Seine, Triel-sur-Seine, Les Mureaux, Poissy, Médan). Nos consultants se déplacent sur site ou en visio.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Vernouillet ?",
+      q: "Quel est le tarif d'un audit IA à Vernouillet  ?",
       a: "L'Audit Flash IA à Vernouillet démarre à 490 € HT pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {

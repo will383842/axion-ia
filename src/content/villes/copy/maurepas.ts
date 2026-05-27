@@ -11,9 +11,9 @@ export const MAUREPAS_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Maurepas, ville dynamique avec Renault et Thales, pour optimiser vos processus grâce à l'IA. Découvrez nos services adaptés aux besoins des entreprises locales.",
   directAnswerFr:
-    "Axion-IA propose des interventions sur site à Maurepas pour automatiser vos tâches administratives et optimiser vos processus métier. Avec des entreprises comme Renault et Thales dans la région, nous comprenons l'importance d'une approche personnalisée. Nos audits commencent à 490 € HT pour identifier vos priorités IA, avec une implémentation dès 990 € HT.",
+    "Axion-IA propose des interventions sur site à Maurepas pour automatiser vos tâches administratives et optimiser vos processus métier. Avec des entreprises comme Renault et Thales dans la région, nous comprenons l'importance d'une approche personnalisée. Nos audits commencent à pour identifier vos priorités IA, avec une implémentation.",
   directAnswerEn:
-    "Axion-IA propose des interventions sur site à Maurepas pour automatiser vos tâches administratives et optimiser vos processus métier. Avec des entreprises comme Renault et Thales dans la région, nous comprenons l'importance d'une approche personnalisée. Nos audits commencent à 490 € HT pour identifier vos priorités IA, avec une implémentation dès 990 € HT.",
+    "Axion-IA propose des interventions sur site à Maurepas pour automatiser vos tâches administratives et optimiser vos processus métier. Avec des entreprises comme Renault et Thales dans la région, nous comprenons l'importance d'une approche personnalisée. Nos audits commencent à pour identifier vos priorités IA, avec une implémentation.",
   seoHook: "commerce détail & programmation informatique",
   ecosystemFr:
     "Maurepas accueille des entreprises telles que Renault et Thales, formant un écosystème propice à l'innovation. La ZA Pariwest contribue également à la dynamique économique locale.",

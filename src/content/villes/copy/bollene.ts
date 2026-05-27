@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const BOLLENE_COPY: VilleCopy = {
   pitchFr:
-    "Bollène (84), commune du nord Vaucluse dans la vallée du Rhône, conjugue tissu agricole viticole (Côtes du Rhône), zones d'activités logistiques A7 et économie de service liée à la proximité du site nucléaire du Tricastin. TPE artisans, PME viticoles, services aux entreprises, logistique, professions libérales et commerces de proximité dans un bassin de 14 000 habitants à mi-chemin Avignon-Montélimar. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Bollène (84), commune du nord Vaucluse dans la vallée du Rhône, conjugue tissu agricole viticole (Côtes du Rhône), zones d'activités logistiques A7 et économie de service liée à la proximité du site nucléaire du Tricastin. TPE artisans, PME viticoles, services aux entreprises, logistique, professions libérales et commerces de proximité dans un bassin de 14 000 habitants à mi-chemin Avignon-Montélimar. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Bollène (84), commune du nord Vaucluse dans la vallée du Rhône, conjugue tissu agricole viticole (Côtes du Rhône), zones d'activités logistiques A7 et économie de service liée à la proximité du site nucléaire du Tricastin. TPE artisans, PME viticoles, services aux entreprises, logistique, professions libérales et commerces de proximité dans un bassin de 14 000 habitants à mi-chemin Avignon-Montélimar. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Bollène (84), commune du nord Vaucluse dans la vallée du Rhône, conjugue tissu agricole viticole (Côtes du Rhône), zones d'activités logistiques A7 et économie de service liée à la proximité du site nucléaire du Tricastin. TPE artisans, PME viticoles, services aux entreprises, logistique, professions libérales et commerces de proximité dans un bassin de 14 000 habitants à mi-chemin Avignon-Montélimar. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bollène (84). Nous accompagnons TPE artisans, PME viticoles, logistique, services aux entreprises, professions libérales et commerces du nord Vaucluse et de la vallée du Rhône. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bollène (84). Nous accompagnons TPE artisans, PME viticoles, logistique, services aux entreprises, professions libérales et commerces du nord Vaucluse et de la vallée du Rhône. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bollène (84). Nous accompagnons TPE artisans, PME viticoles, logistique, services aux entreprises, professions libérales et commerces du nord Vaucluse et de la vallée du Rhône. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bollène (84). Nous accompagnons TPE artisans, PME viticoles, logistique, services aux entreprises, professions libérales et commerces du nord Vaucluse et de la vallée du Rhône. Audit Flash sur mesure.",
   seoHook: "viticulture côtes & logistique transport",
   ecosystemFr:
     "Bollène est positionnée au nord du Vaucluse, dans la vallée du Rhône, à la limite de la Drôme, sortie A7. Commune dont l'activité économique repose sur la viticulture (AOP Côtes du Rhône), les services et sous-traitance liés au site nucléaire du Tricastin, la logistique A7, les TPE artisans (BTP, services), PME tertiaires, professions libérales et commerces de proximité. Bassin d'emploi tourné vers Pierrelatte, Orange et Montélimar.",
@@ -52,7 +52,7 @@ export const BOLLENE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Bollène et dans tout le nord Vaucluse / sud Drôme (Pierrelatte, Suze-la-Rousse, Mondragon, Lapalud, Saint-Paul-Trois-Châteaux). Accès direct via A7 sortie 19.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Bollène ?",
+      q: "Quel est le tarif d'un audit IA à Bollène  ?",
       a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, PME viticoles, logistique, sous-traitance industrielle et commerces bollénois. Tarifs publics, sans engagement.",
     },
     {

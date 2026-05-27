@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MONTVAL_SUR_LOIR_COPY: VilleCopy = {
   pitchFr:
-    "Montval-sur-Loir (72), commune nouvelle de la Sarthe née en 2016, s'étend dans la vallée du Loir entre La Flèche et Château-du-Loir. Près de 5 600 habitants, un tissu de TPE artisanales, PME viticoles (Jasnières AOC), commerces et services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Montval-sur-Loir (72), commune nouvelle de la Sarthe née en 2016, s'étend dans la vallée du Loir entre La Flèche et Château-du-Loir. Près de 5 600 habitants, un tissu de TPE artisanales, PME viticoles (Jasnières AOC), commerces et services. Axion-IA opère pour entreprises et indépendants du secteur.",
   pitchEn:
-    "Montval-sur-Loir (72), commune nouvelle de la Sarthe née en 2016, s'étend dans la vallée du Loir entre La Flèche et Château-du-Loir. Près de 5 600 habitants, un tissu de TPE artisanales, PME viticoles (Jasnières AOC), commerces et services. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Montval-sur-Loir (72), commune nouvelle de la Sarthe née en 2016, s'étend dans la vallée du Loir entre La Flèche et Château-du-Loir. Près de 5 600 habitants, un tissu de TPE artisanales, PME viticoles (Jasnières AOC), commerces et services. Axion-IA opère pour entreprises et indépendants du secteur.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montval-sur-Loir (72). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME viticoles Jasnières AOC, exploitations agricoles vallée du Loir, professions libérales et services entre La Flèche et Tours.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const MONTVAL_SUR_LOIR_COPY: VilleCopy = {
       a: "Audit Flash 490 € HT, interventions sur site, coaching 1-to-1, implémentation IA. Nous adaptons chaque mission aux TPE artisans, PME agricoles et commerces de la commune nouvelle.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Montval-sur-Loir ?",
+      q: "Tarifs audit IA à Montval-sur-Loir  : quel budget prévoir ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {

@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LA_SALVETAT_SAINT_GILLES_COPY: VilleCopy = {
   pitchFr:
-    "La Salvetat-Saint-Gilles (31), commune résidentielle de l'ouest toulousain avec plus de 8 500 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de la couronne ouest de Toulouse.",
+    "La Salvetat-Saint-Gilles (31), commune résidentielle de l'ouest toulousain avec plus de 8 500 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA couvre les activités professionnelles du bassin de la couronne ouest de Toulouse.",
   pitchEn:
-    "La Salvetat-Saint-Gilles (31), commune résidentielle de l'ouest toulousain avec plus de 8 500 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes de la couronne ouest de Toulouse.",
+    "La Salvetat-Saint-Gilles (31), commune résidentielle de l'ouest toulousain avec plus de 8 500 habitants. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axion-IA couvre les activités professionnelles du bassin de la couronne ouest de Toulouse.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Salvetat-Saint-Gilles (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'ouest Toulouse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Salvetat-Saint-Gilles (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'ouest Toulouse. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Salvetat-Saint-Gilles (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'ouest Toulouse. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Salvetat-Saint-Gilles (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'ouest Toulouse. Audit Flash sur mesure.",
   seoHook: "artisanat & commerce détail",
   ecosystemFr:
     "La Salvetat-Saint-Gilles est une commune résidentielle de l'ouest de Toulouse. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Cadre de vie prisé entre Plaisance-du-Touch et Fonsorbes.",
@@ -56,7 +56,7 @@ export const LA_SALVETAT_SAINT_GILLES_COPY: VilleCopy = {
       a: "Nous accompagnons tous types d'activités : TPE artisans, PME de services, professions libérales, commerces, restauration. Aucun secteur exclu.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à La Salvetat-Saint-Gilles ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à La Salvetat-Saint-Gilles  ?",
       a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics.",
     },
     {

@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_DIDIER_AU_MONT_D_OR_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Didier-au-Mont-d'Or (69), commune des monts d'Or en banlieue nord-ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position résidentielle prestigieuse en colline. Tissu PME tertiaires, professions libérales, TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Saint-Didier-au-Mont-d'Or (69), commune des monts d'Or en banlieue nord-ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position résidentielle prestigieuse en colline. Tissu PME tertiaires, professions libérales, TPE artisans BTP, commerces. Axion-IA collabore avec toutes les structures locales.",
   pitchEn:
-    "Saint-Didier-au-Mont-d'Or (69), commune des monts d'Or en banlieue nord-ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position résidentielle prestigieuse en colline. Tissu PME tertiaires, professions libérales, TPE artisans BTP, commerces. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Saint-Didier-au-Mont-d'Or (69), commune des monts d'Or en banlieue nord-ouest de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position résidentielle prestigieuse en colline. Tissu PME tertiaires, professions libérales, TPE artisans BTP, commerces. Axion-IA collabore avec toutes les structures locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Didier-au-Mont-d'Or (69). Nous accompagnons tous types d'activités : PME tertiaires monts d'Or lyonnais, professions libérales, TPE artisans BTP, commerçants, indépendants et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:

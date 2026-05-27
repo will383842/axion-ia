@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const NIEPPE_COPY: VilleCopy = {
   pitchFr:
-    "Nieppe (59), commune de 7 764 habitants dans le Nord, située en Flandre française sur les bords de la Lys aux portes d'Armentières, s'appuie sur un tissu agricole, agroalimentaire et de PME industrielles structuré par la proximité immédiate de la métropole lilloise et de la Belgique. Tissu TPE/PME agriculture, agroalimentaire, industrie, artisanat, commerces, restauration, services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Nieppe (59), commune de 7 764 habitants dans le Nord, située en Flandre française sur les bords de la Lys aux portes d'Armentières, s'appuie sur un tissu agricole, agroalimentaire et de PME industrielles structuré par la proximité immédiate de la métropole lilloise et de la Belgique. Tissu TPE/PME agriculture, agroalimentaire, industrie, artisanat, commerces, restauration, services. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Nieppe (59), commune de 7 764 habitants dans le Nord, située en Flandre française sur les bords de la Lys aux portes d'Armentières, s'appuie sur un tissu agricole, agroalimentaire et de PME industrielles structuré par la proximité immédiate de la métropole lilloise et de la Belgique. Tissu TPE/PME agriculture, agroalimentaire, industrie, artisanat, commerces, restauration, services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Nieppe (59), commune de 7 764 habitants dans le Nord, située en Flandre française sur les bords de la Lys aux portes d'Armentières, s'appuie sur un tissu agricole, agroalimentaire et de PME industrielles structuré par la proximité immédiate de la métropole lilloise et de la Belgique. Tissu TPE/PME agriculture, agroalimentaire, industrie, artisanat, commerces, restauration, services. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nieppe (59). Nous accompagnons tous types d'activités : TPE/PME agriculture, agroalimentaire et industrie nieppoises, artisans, commerçants, restaurateurs, professions de services et acteurs économiques de la Flandre française.",
   directAnswerEn:

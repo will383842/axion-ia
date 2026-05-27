@@ -9,9 +9,9 @@ export const LONGUENESSE_COPY: VilleCopy = {
   pitchEn:
     "Longuenesse (62), commune de l'agglomération de Saint-Omer dans le Pas-de-Calais, accueille zones commerciales, PME de services, TPE artisanales et professions libérales du bassin audomarois. Axion-IA y intervient pour tous types d'activités.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Longuenesse (62). Nous accompagnons TPE commerçantes, PME de services, professions libérales et artisans de l'agglomération de Saint-Omer. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Longuenesse (62). Nous accompagnons TPE commerçantes, PME de services, professions libérales et artisans de l'agglomération de Saint-Omer. Audit Flash sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Longuenesse (62). Nous accompagnons TPE commerçantes, PME de services, professions libérales et artisans de l'agglomération de Saint-Omer. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Longuenesse (62). Nous accompagnons TPE commerçantes, PME de services, professions libérales et artisans de l'agglomération de Saint-Omer. Audit Flash sur mesure, intervention sur site ou en visio.",
   seoHook: "commerce détail & professions libérales",
   ecosystemFr:
     "Longuenesse est la principale extension urbaine de Saint-Omer, concentrant zones commerciales, centres de services et activités tertiaires de l'agglomération audomaroise. TPE artisanales, PME de services aux entreprises, professions libérales santé et juridiques, et commerces de proximité.",
@@ -52,7 +52,7 @@ export const LONGUENESSE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Longuenesse et dans toute l'agglomération audomaroise (Saint-Omer, Arques, Blendecques, Wizernes). Déplacements sur site ou sessions en visio.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Longuenesse ?",
+      q: "Tarifs audit IA à Longuenesse  : quel budget prévoir ?",
       a: "L'Audit Flash Axion-IA démarre à 490 € HT pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME audomaroises. Tarifs publics.",
     },
     {

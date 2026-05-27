@@ -52,7 +52,7 @@ export const GRAY_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Gray et sur tout le sud Haute-Saône et val de Saône (Gy, Pesmes, Dampierre-sur-Salon, Arc-les-Gray). Nos consultants se déplacent depuis Dijon (45 min) ou Besançon (50 min).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Gray ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Gray  ?",
       a: "L'Audit Flash commence à 490 € HT, adapté aux TPE et PME du Pays de Gray. Diagnostic complet des opportunités IA avec ROI chiffré, livrable sous 5 jours. Tarifs publics consultables sur notre site.",
     },
     {

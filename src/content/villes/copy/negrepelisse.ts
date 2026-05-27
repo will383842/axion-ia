@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const NEGREPELISSE_COPY: VilleCopy = {
   pitchFr:
-    "Nègrepelisse (82), bourg quercinois au bord de l'Aveyron, près de 6 000 habitants. Tissu TPE artisans, PME agroalimentaires et viticoles, commerces de proximité, professions libérales. Petite industrie et services aux particuliers. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin négrepelissien.",
+    "Nègrepelisse (82), bourg quercinois au bord de l'Aveyron, près de 6 000 habitants. Tissu TPE artisans, PME agroalimentaires et viticoles, commerces de proximité, professions libérales. Petite industrie et services aux particuliers. Axion-IA opère pour entreprises et indépendants du secteur du bassin négrepelissien.",
   pitchEn:
-    "Nègrepelisse (82), bourg quercinois au bord de l'Aveyron, près de 6 000 habitants. Tissu TPE artisans, PME agroalimentaires et viticoles, commerces de proximité, professions libérales. Petite industrie et services aux particuliers. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin négrepelissien.",
+    "Nègrepelisse (82), bourg quercinois au bord de l'Aveyron, près de 6 000 habitants. Tissu TPE artisans, PME agroalimentaires et viticoles, commerces de proximité, professions libérales. Petite industrie et services aux particuliers. Axion-IA opère pour entreprises et indépendants du secteur du bassin négrepelissien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nègrepelisse (82). Nous accompagnons TPE artisans, PME agroalimentaires, viticulteurs, commerçants et professions libérales du bourg quercinois sur l'Aveyron. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nègrepelisse (82). Nous accompagnons TPE artisans, PME agroalimentaires, viticulteurs, commerçants et professions libérales du bourg quercinois sur l'Aveyron. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nègrepelisse (82). Nous accompagnons TPE artisans, PME agroalimentaires, viticulteurs, commerçants et professions libérales du bourg quercinois sur l'Aveyron. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nègrepelisse (82). Nous accompagnons TPE artisans, PME agroalimentaires, viticulteurs, commerçants et professions libérales du bourg quercinois sur l'Aveyron. Audit Flash sur mesure.",
   seoHook: "bassin négrepelissien",
   ecosystemFr:
     "Nègrepelisse (5 917 hab) est un bourg quercinois sur les bords de l'Aveyron, au cœur du Tarn-et-Garonne. Économie locale : agriculture (fruits, vignes, élevage), agroalimentaire, artisanat, commerces et professions libérales. Proximité Montauban (20 min), Caussade (10 min), Toulouse (1h10). Centre culturel La Cuisine y dynamise l'attractivité.",
@@ -52,7 +52,7 @@ export const NEGREPELISSE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Nègrepelisse et dans tout le Quercy tarn-et-garonnais (Caussade, Bruniquel, Saint-Antonin-Noble-Val). Nos consultants se déplacent depuis Montauban (20 min) ou Toulouse (1h10).",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Nègrepelisse ?",
+      q: "Quel est le tarif d'un audit IA à Nègrepelisse  ?",
       a: "L'Audit Flash IA démarre à 490 € HT pour les TPE de Nègrepelisse. Diagnostic complet des processus, cartographie cas d'usage IA et plan d'action ROI chiffré adapté à votre secteur.",
     },
     {

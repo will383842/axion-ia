@@ -10,9 +10,9 @@ export const LANDERNEAU_COPY: VilleCopy = {
     "Landerneau (29), sous-préfecture du Finistère nichée dans la vallée de l'Élorn, célèbre pour son pont habité de Rohan et le Fonds Hélène & Édouard Leclerc pour la culture. Tissu de TPE artisanales, PME agroalimentaires, commerces de centre-bourg, professions libérales et services aux entreprises au carrefour nord-Finistère. Axion-IA y intervient pour tous types d'activités.",
   seoHook: "agroalimentaire & commerce de centre-bourg",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Landerneau (29). Nous accompagnons TPE et PME : artisans, commerces de centre-ville, PME agroalimentaires, professions libérales et services de cette sous-préfecture du nord-Finistère au bord de l'Élorn. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Landerneau (29). Nous accompagnons TPE et PME : artisans, commerces de centre-ville, PME agroalimentaires, professions libérales et services de cette sous-préfecture du nord-Finistère au bord de l'Élorn. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Landerneau (29). Nous accompagnons TPE et PME : artisans, commerces de centre-ville, PME agroalimentaires, professions libérales et services de cette sous-préfecture du nord-Finistère au bord de l'Élorn. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Landerneau (29). Nous accompagnons TPE et PME : artisans, commerces de centre-ville, PME agroalimentaires, professions libérales et services de cette sous-préfecture du nord-Finistère au bord de l'Élorn. Audit Flash sur mesure.",
   ecosystemFr:
     "Landerneau est une sous-préfecture dynamique du nord-Finistère, à la confluence de l'Élorn et de la Penfeld. Son centre-ville animé mêle commerce de détail, artisanat et services. L'agroalimentaire (laiteries, légumiers bretons) structure le bassin d'emploi. Le Fonds Leclerc pour la Culture attire un rayonnement régional. Communes voisines : Brest, Plougastel-Daoulas, Daoulas, Dirinon, La Roche-Maurice.",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const LANDERNEAU_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Landerneau et dans tout le nord-Finistère (Brest, Plougastel-Daoulas, Daoulas, Dirinon, La Roche-Maurice). Nos consultants se déplacent sur site ou en visio.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Landerneau ?",
+      q: "Combien coûte un audit IA à Landerneau  ?",
       a: "L'Audit Flash IA à Landerneau démarre à 490 € HT pour 4 heures de diagnostic. Il couvre l'analyse de vos processus métier, l'identification des cas d'usage IA prioritaires et un plan d'action chiffré avec ROI estimé.",
     },
     {

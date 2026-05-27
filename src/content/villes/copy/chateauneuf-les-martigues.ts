@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const CHATEAUNEUF_LES_MARTIGUES_COPY: VilleCopy = {
   pitchFr:
-    "Châteauneuf-les-Martigues (13), commune du pourtour de l'étang de Berre, accueille un tissu industriel pétrochimie, aéronautique (Eurocopter à proximité immédiate à Marignane) et logistique. TPE artisans, PME industrielles, sous-traitants aéronautiques et commerces de proximité. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Châteauneuf-les-Martigues (13), commune du pourtour de l'étang de Berre, accueille un tissu industriel pétrochimie, aéronautique (Eurocopter à proximité immédiate à Marignane) et logistique. TPE artisans, PME industrielles, sous-traitants aéronautiques et commerces de proximité. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Châteauneuf-les-Martigues (13), commune du pourtour de l'étang de Berre, accueille un tissu industriel pétrochimie, aéronautique (Eurocopter à proximité immédiate à Marignane) et logistique. TPE artisans, PME industrielles, sous-traitants aéronautiques et commerces de proximité. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Châteauneuf-les-Martigues (13), commune du pourtour de l'étang de Berre, accueille un tissu industriel pétrochimie, aéronautique (Eurocopter à proximité immédiate à Marignane) et logistique. TPE artisans, PME industrielles, sous-traitants aéronautiques et commerces de proximité. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châteauneuf-les-Martigues (13). Nous accompagnons TPE artisans, PME industrielles, sous-traitants aéronautiques, pétrochimie et commerces du pourtour de l'étang de Berre. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châteauneuf-les-Martigues (13). Nous accompagnons TPE artisans, PME industrielles, sous-traitants aéronautiques, pétrochimie et commerces du pourtour de l'étang de Berre. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châteauneuf-les-Martigues (13). Nous accompagnons TPE artisans, PME industrielles, sous-traitants aéronautiques, pétrochimie et commerces du pourtour de l'étang de Berre. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châteauneuf-les-Martigues (13). Nous accompagnons TPE artisans, PME industrielles, sous-traitants aéronautiques, pétrochimie et commerces du pourtour de l'étang de Berre. Audit Flash sur mesure.",
   seoHook: "TPE & PME Bouches-du-Rhône",
   ecosystemFr:
     "Châteauneuf-les-Martigues est positionnée entre Martigues et Marignane, au cœur de la zone industrielle de l'étang de Berre. Pôle pétrochimie (raffineries, complexe industriel), aéronautique avec Airbus Helicopters (Eurocopter) à Marignane voisine, logistique portuaire, sous-traitants industriels. Tissu de TPE artisans et commerces de proximité.",
@@ -52,7 +52,7 @@ export const CHATEAUNEUF_LES_MARTIGUES_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Châteauneuf-les-Martigues et dans tout le pourtour de l'étang de Berre (Martigues, Marignane, Vitrolles, Istres, Fos-sur-Mer, Berre-l'Étang). Proximité aéroport Marseille-Provence et axe A55.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Châteauneuf-les-Martigues ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Châteauneuf-les-Martigues  ?",
       a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, PME industrielles et sous-traitants aéronautiques châteauneuvais. Tarifs publics, sans engagement.",
     },
     {

@@ -11,9 +11,9 @@ export const LA_COURNEUVE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à La Courneuve, où le Parc d'activités La Courneuve et des entreprises comme Veolia stimulent l'économie locale.",
   directAnswerFr:
-    "Axion-IA propose des interventions à La Courneuve pour optimiser les processus des entreprises locales. Avec des acteurs économiques tels que Veolia et la SNCF, nous aidons les entreprises à automatiser leurs tâches administratives et logistiques. Nos audits commencent à 490 € HT, et nos interventions à partir de 590 € HT, permettant une mise en œuvre rapide et efficace.",
+    "Axion-IA propose des interventions à La Courneuve pour optimiser les processus des entreprises locales. Avec des acteurs économiques tels que Veolia et la SNCF, nous aidons les entreprises à automatiser leurs tâches administratives et logistiques. Nos audits commencent à et nos interventions, permettant une mise en œuvre rapide et efficace.",
   directAnswerEn:
-    "Axion-IA propose des interventions à La Courneuve pour optimiser les processus des entreprises locales. Avec des acteurs économiques tels que Veolia et la SNCF, nous aidons les entreprises à automatiser leurs tâches administratives et logistiques. Nos audits commencent à 490 € HT, et nos interventions à partir de 590 € HT, permettant une mise en œuvre rapide et efficace.",
+    "Axion-IA propose des interventions à La Courneuve pour optimiser les processus des entreprises locales. Avec des acteurs économiques tels que Veolia et la SNCF, nous aidons les entreprises à automatiser leurs tâches administratives et logistiques. Nos audits commencent à et nos interventions, permettant une mise en œuvre rapide et efficace.",
   seoHook: "commerce gros & transports terrestres",
   ecosystemFr:
     "La Courneuve abrite le Parc d'activités La Courneuve et des entreprises comme Veolia, contribuant à un environnement économique diversifié.",

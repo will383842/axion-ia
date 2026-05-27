@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ESBLY_COPY: VilleCopy = {
   pitchFr:
-    "Esbly (77), commune périurbaine à la confluence de la Marne et du Grand Morin en Seine-et-Marne, accueille un tissu de TPE artisans, commerces de proximité, PME de services, professions libérales et activités liées au tourisme fluvial. Axion-IA y déploie ses missions auprès de toutes les organisations de l'est francilien.",
+    "Esbly (77), commune périurbaine à la confluence de la Marne et du Grand Morin en Seine-et-Marne, accueille un tissu de TPE artisans, commerces de proximité, PME de services, professions libérales et activités liées au tourisme fluvial. Axion-IA y conduit ses missions auprès des entreprises locales de l'est francilien.",
   pitchEn:
-    "Esbly (77), commune périurbaine à la confluence de la Marne et du Grand Morin en Seine-et-Marne, accueille un tissu de TPE artisans, commerces de proximité, PME de services, professions libérales et activités liées au tourisme fluvial. Axion-IA y déploie ses missions auprès de toutes les organisations de l'est francilien.",
+    "Esbly (77), commune périurbaine à la confluence de la Marne et du Grand Morin en Seine-et-Marne, accueille un tissu de TPE artisans, commerces de proximité, PME de services, professions libérales et activités liées au tourisme fluvial. Axion-IA y conduit ses missions auprès des entreprises locales de l'est francilien.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Esbly (77). Nous accompagnons TPE et PME : artisans, commerçants, PME de services de la vallée de la Marne, professions libérales et acteurs touristiques de cette commune à la confluence Marne — Grand Morin.",
   directAnswerEn:
@@ -52,7 +52,7 @@ export const ESBLY_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Esbly et dans toute la vallée de la Marne en Seine-et-Marne (Lagny-sur-Marne à 10 min, Meaux à 15 min, Crécy-la-Chapelle). Nos consultants rejoignent Esbly depuis Paris Est en 35 min via Transilien P.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Esbly ?",
+      q: "Combien coûte un audit IA à Esbly  ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME d'Esbly et de l'est Seine-et-Marne, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics.",
     },
     {

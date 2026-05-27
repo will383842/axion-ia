@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_DIE_DES_VOSGES_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Dié-des-Vosges (88), sous-préfecture des Vosges, 19 251 habitants, est un pôle industriel et culturel du massif vosgien. Berceau du baptême de l'Amérique (1507), siège du Festival International de Géographie (FIG), la ville concentre un tissu de TPE/PME textile, bois, papeterie, mécanique, commerce et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Saint-Dié-des-Vosges (88), sous-préfecture des Vosges, 19 251 habitants, est un pôle industriel et culturel du massif vosgien. Berceau du baptême de l'Amérique (1507), siège du Festival International de Géographie (FIG), la ville concentre un tissu de TPE/PME textile, bois, papeterie, mécanique, commerce et services. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Saint-Dié-des-Vosges (88), sous-préfecture des Vosges, 19 251 habitants, est un pôle industriel et culturel du massif vosgien. Berceau du baptême de l'Amérique (1507), siège du Festival International de Géographie (FIG), la ville concentre un tissu de TPE/PME textile, bois, papeterie, mécanique, commerce et services. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Saint-Dié-des-Vosges (88), sous-préfecture des Vosges, 19 251 habitants, est un pôle industriel et culturel du massif vosgien. Berceau du baptême de l'Amérique (1507), siège du Festival International de Géographie (FIG), la ville concentre un tissu de TPE/PME textile, bois, papeterie, mécanique, commerce et services. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Dié-des-Vosges (88). Nous accompagnons TPE et PME du massif vosgien : industriels textile, bois, papeterie, mécaniciens, commerçants et prestataires de services. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Dié-des-Vosges (88). Nous accompagnons TPE et PME du massif vosgien : industriels textile, bois, papeterie, mécaniciens, commerçants et prestataires de services. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Dié-des-Vosges (88). Nous accompagnons TPE et PME du massif vosgien : industriels textile, bois, papeterie, mécaniciens, commerçants et prestataires de services. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Dié-des-Vosges (88). Nous accompagnons TPE et PME du massif vosgien : industriels textile, bois, papeterie, mécaniciens, commerçants et prestataires de services. Audit Flash sur mesure.",
   ecosystemFr:
     "Saint-Dié-des-Vosges est la sous-préfecture des Vosges et un pôle économique structurant du massif vosgien. Son tissu industriel historique (textile, bois, papeterie, mécanique) se diversifie vers le numérique et les services. Le Festival International de Géographie (FIG) et le patrimoine cartographique (baptême de l'Amérique, 1507) soutiennent un tourisme culturel. Bassin d'emploi articulé autour de la vallée de la Meurthe, relié à Strasbourg, Nancy et Colmar.",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const SAINT_DIE_DES_VOSGES_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Saint-Dié-des-Vosges et dans la vallée de la Meurthe (Raon-l'Étape, Senones, Fraize, Gérardmer). Consultants accessibles via gare SNCF Saint-Dié (TER Strasbourg/Nancy). Strasbourg à 1h15, Nancy à 1h20.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Saint-Dié-des-Vosges ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Saint-Dié-des-Vosges  ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME déodatiennes : industriels textile, bois, papeterie, mécaniciens, commerçants et prestataires de services. ROI chiffré dès le diagnostic.",
     },
     {

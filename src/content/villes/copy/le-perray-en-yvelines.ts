@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LE_PERRAY_EN_YVELINES_COPY: VilleCopy = {
   pitchFr:
-    "Le Perray-en-Yvelines (78), commune résidentielle rurale en lisière de la forêt de Rambouillet, dans le sud-ouest des Yvelines. Tissu de TPE artisans, PME de services, commerces de proximité, professions libérales et entreprises liées au tourisme vert et à l'économie forestière. Axion-IA y déploie ses missions auprès de toutes les organisations du pays de Rambouillet.",
+    "Le Perray-en-Yvelines (78), commune résidentielle rurale en lisière de la forêt de Rambouillet, dans le sud-ouest des Yvelines. Tissu de TPE artisans, PME de services, commerces de proximité, professions libérales et entreprises liées au tourisme vert et à l'économie forestière. Axion-IA y conduit ses missions auprès des entreprises locales du pays de Rambouillet.",
   pitchEn:
-    "Le Perray-en-Yvelines (78), commune résidentielle rurale en lisière de la forêt de Rambouillet, dans le sud-ouest des Yvelines. Tissu de TPE artisans, PME de services, commerces de proximité, professions libérales et entreprises liées au tourisme vert et à l'économie forestière. Axion-IA y déploie ses missions auprès de toutes les organisations du pays de Rambouillet.",
+    "Le Perray-en-Yvelines (78), commune résidentielle rurale en lisière de la forêt de Rambouillet, dans le sud-ouest des Yvelines. Tissu de TPE artisans, PME de services, commerces de proximité, professions libérales et entreprises liées au tourisme vert et à l'économie forestière. Axion-IA y conduit ses missions auprès des entreprises locales du pays de Rambouillet.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Perray-en-Yvelines (78). Nous accompagnons TPE et PME : artisans, commerces de proximité, PME de services, professions libérales et acteurs du tourisme vert de cette commune résidentielle en lisière de la forêt de Rambouillet. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Perray-en-Yvelines (78). Nous accompagnons TPE et PME : artisans, commerces de proximité, PME de services, professions libérales et acteurs du tourisme vert de cette commune résidentielle en lisière de la forêt de Rambouillet. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Perray-en-Yvelines (78). Nous accompagnons TPE et PME : artisans, commerces de proximité, PME de services, professions libérales et acteurs du tourisme vert de cette commune résidentielle en lisière de la forêt de Rambouillet. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Perray-en-Yvelines (78). Nous accompagnons TPE et PME : artisans, commerces de proximité, PME de services, professions libérales et acteurs du tourisme vert de cette commune résidentielle en lisière de la forêt de Rambouillet. Audit Flash sur mesure.",
   seoHook: "commerce proximité & rénovation",
   ecosystemFr:
     "Le Perray-en-Yvelines est une commune résidentielle rurale en lisière de la forêt de Rambouillet, au sud-ouest des Yvelines. Cadre naturel préservé prisé des familles et navetteurs. Tissu économique : TPE artisans bâtiment, commerces de centre-bourg, PME de services, professions libérales, hébergements touristiques et exploitations forestières. Communes voisines : Rambouillet, Les Essarts-le-Roi, Auffargis, Saint-Léger-en-Yvelines.",

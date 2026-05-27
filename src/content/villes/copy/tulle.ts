@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const TULLE_COPY: VilleCopy = {
   pitchFr:
-    "Tulle (19), préfecture de la Corrèze, cité de la dentelle, de la manufacture d'armes et capitale de l'accordéon. Tissu TPE/PME commerce, artisanat, services publics, agroalimentaire et tourisme vert sur la Corrèze. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Tulle (19), préfecture de la Corrèze, cité de la dentelle, de la manufacture d'armes et capitale de l'accordéon. Tissu TPE/PME commerce, artisanat, services publics, agroalimentaire et tourisme vert sur la Corrèze. Axion-IA y mène ses missions auprès des organisations locales.",
   pitchEn:
-    "Tulle (19), préfecture de la Corrèze, cité de la dentelle, de la manufacture d'armes et capitale de l'accordéon. Tissu TPE/PME commerce, artisanat, services publics, agroalimentaire et tourisme vert sur la Corrèze. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Tulle (19), préfecture de la Corrèze, cité de la dentelle, de la manufacture d'armes et capitale de l'accordéon. Tissu TPE/PME commerce, artisanat, services publics, agroalimentaire et tourisme vert sur la Corrèze. Axion-IA y mène ses missions auprès des organisations locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tulle (19). Nous accompagnons TPE/PME du commerce, de l'artisanat, des services publics, de l'agroalimentaire corrézien et du tourisme vert. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tulle (19). Nous accompagnons TPE/PME du commerce, de l'artisanat, des services publics, de l'agroalimentaire corrézien et du tourisme vert. Audit Flash sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tulle (19). Nous accompagnons TPE/PME du commerce, de l'artisanat, des services publics, de l'agroalimentaire corrézien et du tourisme vert. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tulle (19). Nous accompagnons TPE/PME du commerce, de l'artisanat, des services publics, de l'agroalimentaire corrézien et du tourisme vert. Audit Flash sur mesure, intervention sur site ou en visio.",
   ecosystemFr:
     "Tulle, préfecture de la Corrèze, est connue pour sa dentelle (manufacture historique), sa manufacture d'armes (GIAT/Nexter) et son festival de l'accordéon (Nuits de Nacre). Économie diversifiée : services publics (préfecture, hôpital), commerce de proximité, artisanat, agroalimentaire (élevage limousin, noix, pommes) et tourisme vert en vallée de la Corrèze.",
   ecosystemEn:
@@ -52,7 +52,7 @@ export const TULLE_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Tulle et dans toute la Corrèze (Brive, Ussel, Égletons). Consultants via gare SNCF Tulle ou aéroport Brive-Vallée de la Dordogne.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Tulle ?",
+      q: "Quel est le tarif d'un audit IA à Tulle  ?",
       a: "L'Audit Flash Axion-IA démarre à 490 € HT. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME corréziennes. Tarifs publics et transparents.",
     },
     {

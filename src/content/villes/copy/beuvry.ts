@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const BEUVRY_COPY: VilleCopy = {
   pitchFr:
-    "Beuvry (62), commune du bassin minier entre Béthune et Lens dans le Pas-de-Calais, accueille TPE artisanales, commerces de proximité, PME de services et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin minier.",
+    "Beuvry (62), commune du bassin minier entre Béthune et Lens dans le Pas-de-Calais, accueille TPE artisanales, commerces de proximité, PME de services et professions libérales. Axion-IA accompagne tout le tissu professionnel local du bassin minier.",
   pitchEn:
-    "Beuvry (62), commune du bassin minier entre Béthune et Lens dans le Pas-de-Calais, accueille TPE artisanales, commerces de proximité, PME de services et professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes du bassin minier.",
+    "Beuvry (62), commune du bassin minier entre Béthune et Lens dans le Pas-de-Calais, accueille TPE artisanales, commerces de proximité, PME de services et professions libérales. Axion-IA accompagne tout le tissu professionnel local du bassin minier.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beuvry (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthuno-lensois. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beuvry (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthuno-lensois. Audit Flash sur mesure, intervention sur site ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beuvry (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthuno-lensois. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beuvry (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthuno-lensois. Audit Flash sur mesure, intervention sur site ou en visio.",
   seoHook: "commerce détail & professions libérales",
   ecosystemFr:
     "Beuvry est une commune résidentielle du bassin minier située entre Béthune et Lens. Tissu économique de TPE artisanales BTP, commerces de proximité, professions libérales et PME de services. Canal d'Aire traversant la commune, zones pavillonnaires et activités péri-urbaines.",
@@ -52,7 +52,7 @@ export const BEUVRY_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Beuvry et dans le bassin minier béthuno-lensois (Béthune, Lens, Nœux-les-Mines, Annezin). Déplacements sur site ou sessions en visio.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Beuvry ?",
+      q: "Tarifs audit IA à Beuvry  : quel budget prévoir ?",
       a: "L'Audit Flash Axion-IA démarre à 490 € HT pour 4 heures sur site. Diagnostic complet avec ROI chiffré, adapté aux TPE et PME du bassin minier. Tarifs publics.",
     },
     {

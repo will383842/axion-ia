@@ -9,9 +9,9 @@ export const VILLEMUR_SUR_TARN_COPY: VilleCopy = {
   pitchEn:
     "Villemur-sur-Tarn (31), commune des bords du Tarn au nord de Toulouse, plus de 6 300 habitants. Tissu TPE artisans, PME industrielles et agroalimentaires, commerces de centre-ville, professions libérales. Axion-IA y intervient pour tous types d'activités du nord de la Haute-Garonne.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villemur-sur-Tarn (31). Nous accompagnons TPE artisans, PME industrielles, commerçants et professions libérales du nord Haute-Garonne. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villemur-sur-Tarn (31). Nous accompagnons TPE artisans, PME industrielles, commerçants et professions libérales du nord Haute-Garonne. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villemur-sur-Tarn (31). Nous accompagnons TPE artisans, PME industrielles, commerçants et professions libérales du nord Haute-Garonne. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villemur-sur-Tarn (31). Nous accompagnons TPE artisans, PME industrielles, commerçants et professions libérales du nord Haute-Garonne. Audit Flash sur mesure.",
   seoHook: "industrie fabrication & artisanat",
   ecosystemFr:
     "Villemur-sur-Tarn est un bourg historique des bords du Tarn au nord de Toulouse. PME industrielles, artisans BTP, commerces de centre-ville, professions libérales, quelques exploitations agricoles. Ville-passerelle entre Toulouse nord et le Tarn-et-Garonne.",
@@ -56,7 +56,7 @@ export const VILLEMUR_SUR_TARN_COPY: VilleCopy = {
       a: "Nous accompagnons tous types d'activités : PME industrielles, artisans, commerces, professions libérales, agriculture. Aucun secteur exclu.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Villemur-sur-Tarn ?",
+      q: "Quel est le tarif d'un audit IA à Villemur-sur-Tarn  ?",
       a: "L'Audit Flash démarre à 490 € HT pour une TPE. Pour les PME industrielles, audit approfondi entre 1 900 et 3 900 € HT. Tarifs publics.",
     },
     {

@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const LAMBESC_COPY: VilleCopy = {
   pitchFr:
-    "Lambesc (13), commune provençale du pays d'Aix au pied du massif des Costes, mêle patrimoine historique (chapelle, fontaines, vieille ville) et dynamique résidentielle. Tissu de TPE artisans, commerçants, professions libérales, PME tertiaires, viticulteurs et exploitations oléicoles. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Lambesc (13), commune provençale du pays d'Aix au pied du massif des Costes, mêle patrimoine historique (chapelle, fontaines, vieille ville) et dynamique résidentielle. Tissu de TPE artisans, commerçants, professions libérales, PME tertiaires, viticulteurs et exploitations oléicoles. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Lambesc (13), commune provençale du pays d'Aix au pied du massif des Costes, mêle patrimoine historique (chapelle, fontaines, vieille ville) et dynamique résidentielle. Tissu de TPE artisans, commerçants, professions libérales, PME tertiaires, viticulteurs et exploitations oléicoles. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Lambesc (13), commune provençale du pays d'Aix au pied du massif des Costes, mêle patrimoine historique (chapelle, fontaines, vieille ville) et dynamique résidentielle. Tissu de TPE artisans, commerçants, professions libérales, PME tertiaires, viticulteurs et exploitations oléicoles. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lambesc (13). Nous accompagnons TPE artisans, professions libérales, viticulteurs, oléiculteurs, commerçants et PME tertiaires du pays d'Aix. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lambesc (13). Nous accompagnons TPE artisans, professions libérales, viticulteurs, oléiculteurs, commerçants et PME tertiaires du pays d'Aix. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lambesc (13). Nous accompagnons TPE artisans, professions libérales, viticulteurs, oléiculteurs, commerçants et PME tertiaires du pays d'Aix. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lambesc (13). Nous accompagnons TPE artisans, professions libérales, viticulteurs, oléiculteurs, commerçants et PME tertiaires du pays d'Aix. Audit Flash sur mesure.",
   seoHook: "massif des",
   ecosystemFr:
     "Lambesc est une commune patrimoniale du pays d'Aix sur la D7n entre Aix-en-Provence et Salon-de-Provence. Vignobles AOC Coteaux d'Aix, oliveraies, agriculture, artisanat d'art et tourisme patrimonial. Cadres et professions libérales travaillant à Aix, Marseille ou sur le technopôle de l'Arbois.",
@@ -52,7 +52,7 @@ export const LAMBESC_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Lambesc et dans tout le pays d'Aix (Saint-Cannat, Rognes, Le Puy-Sainte-Réparade, La Roque-d'Anthéron, Pélissanne). Proximité gare TGV Aix et technopôle Arbois.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Lambesc ?",
+      q: "Combien coûte un audit IA à Lambesc  ?",
       a: "L'audit Flash (4 heures, diagnostic + ROI chiffré) démarre à 490 € HT. Adapté aux TPE artisans, viticulteurs, oléiculteurs et PME lambescaines. Tarifs publics, sans engagement.",
     },
     {

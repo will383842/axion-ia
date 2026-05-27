@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const ISSOUDUN_COPY: VilleCopy = {
   pitchFr:
-    "Issoudun (36), sous-préfecture de l'Indre au coeur du Berry, est une ville historique marquée par sa tour Blanche et l'oeuvre de Balzac. TPE artisans, PME industrielles et agroalimentaires, commerçants, professions libérales, indépendants et acteurs des services publics composent son tissu économique. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin issoldunois.",
+    "Issoudun (36), sous-préfecture de l'Indre au coeur du Berry, est une ville historique marquée par sa tour Blanche et l'oeuvre de Balzac. TPE artisans, PME industrielles et agroalimentaires, commerçants, professions libérales, indépendants et acteurs des services publics composent son tissu économique. Axion-IA accompagne entreprises et indépendants du bassin issoldunois.",
   pitchEn:
-    "Issoudun (36), sous-préfecture de l'Indre au coeur du Berry, est une ville historique marquée par sa tour Blanche et l'oeuvre de Balzac. TPE artisans, PME industrielles et agroalimentaires, commerçants, professions libérales, indépendants et acteurs des services publics composent son tissu économique. Axion-IA accompagne entreprises et indépendants de tous secteurs du bassin issoldunois.",
+    "Issoudun (36), sous-préfecture de l'Indre au coeur du Berry, est une ville historique marquée par sa tour Blanche et l'oeuvre de Balzac. TPE artisans, PME industrielles et agroalimentaires, commerçants, professions libérales, indépendants et acteurs des services publics composent son tissu économique. Axion-IA accompagne entreprises et indépendants du bassin issoldunois.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Issoudun (36), sous-préfecture de l'Indre. Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et agroalimentaires, commerçants, professions libérales, indépendants et services publics du Berry.",
   directAnswerEn:

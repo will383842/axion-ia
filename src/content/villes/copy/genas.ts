@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const GENAS_COPY: VilleCopy = {
   pitchFr:
-    "Genas (69), commune en banlieue est de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position entre Lyon et aéroport Saint-Exupéry. Tissu PME tertiaires et logistiques, zones d'activités, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations de l'est lyonnais.",
+    "Genas (69), commune en banlieue est de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position entre Lyon et aéroport Saint-Exupéry. Tissu PME tertiaires et logistiques, zones d'activités, TPE artisans BTP, commerces. Axion-IA y travaille avec les organisations du territoire de l'est lyonnais.",
   pitchEn:
-    "Genas (69), commune en banlieue est de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position entre Lyon et aéroport Saint-Exupéry. Tissu PME tertiaires et logistiques, zones d'activités, TPE artisans BTP, commerces. Axion-IA y déploie ses missions auprès de toutes les organisations de l'est lyonnais.",
+    "Genas (69), commune en banlieue est de Lyon dans le Rhône, est intégrée à la Métropole de Lyon. Position entre Lyon et aéroport Saint-Exupéry. Tissu PME tertiaires et logistiques, zones d'activités, TPE artisans BTP, commerces. Axion-IA y travaille avec les organisations du territoire de l'est lyonnais.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Genas (69). Nous accompagnons tous types d'activités : PME tertiaires et logistiques est lyonnais, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:

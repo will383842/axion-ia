@@ -10,9 +10,9 @@ export const SARZEAU_COPY: VilleCopy = {
     "Sarzeau (56), commune touristique de la presqu'île de Rhuys entre Golfe du Morbihan et océan Atlantique, est un pôle balnéaire majeur du sud Bretagne. TPE touristiques, PME de l'hébergement et restauration, artisans, commerces saisonniers et professions libérales composent son tissu économique. Axion-IA y intervient pour tous types d'activités de la presqu'île de Rhuys.",
   seoHook: "tourisme balnéaire, hôtellerie & artisanat",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sarzeau (56). Nous accompagnons tous types d'activités : TPE touristiques, PME de l'hébergement, restaurateurs, artisans, commerçants saisonniers et indépendants de la presqu'île de Rhuys. Audit Flash dès 490 € HT, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sarzeau (56). Nous accompagnons tous types d'activités : TPE touristiques, PME de l'hébergement, restaurateurs, artisans, commerçants saisonniers et indépendants de la presqu'île de Rhuys. Audit Flash sur mesure, démarrage sous 5 jours.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sarzeau (56). Nous accompagnons tous types d'activités : TPE touristiques, PME de l'hébergement, restaurateurs, artisans, commerçants saisonniers et indépendants de la presqu'île de Rhuys. Audit Flash dès 490 € HT, démarrage sous 5 jours.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sarzeau (56). Nous accompagnons tous types d'activités : TPE touristiques, PME de l'hébergement, restaurateurs, artisans, commerçants saisonniers et indépendants de la presqu'île de Rhuys. Audit Flash sur mesure, démarrage sous 5 jours.",
   ecosystemFr:
     "Sarzeau est la commune principale de la presqu'île de Rhuys, entre le Golfe du Morbihan et l'océan Atlantique. L'économie locale est fortement saisonnière, tirée par le tourisme balnéaire (campings, hôtels, locations), la restauration, le nautisme, l'ostréiculture et l'artisanat d'art. Le château de Suscinio et les plages attirent plus de 500 000 visiteurs par an. En arrière-saison, les services de proximité et les professions libérales stabilisent l'activité.",
   ecosystemEn:
@@ -56,7 +56,7 @@ export const SARZEAU_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les hôtels, campings, gîtes et restaurants de Sarzeau sur leurs cas IA : yield management dynamique, chatbot accueil multilingue, automatisation réservations, gestion stocks saisonniers et marketing digital augmenté.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Sarzeau ?",
+      q: "Combien coûte un audit IA à Sarzeau  ?",
       a: "L'Audit Flash Axion-IA démarre à 490 € HT. Adapté aux TPE et PME sarzeautines, il inclut un diagnostic complet de vos processus, une cartographie des cas d'usage IA pertinents et un ROI chiffré sous 5 jours.",
     },
     {

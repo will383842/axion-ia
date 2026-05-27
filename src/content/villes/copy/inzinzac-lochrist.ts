@@ -56,7 +56,7 @@ export const INZINZAC_LOCHRIST_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME industrielles héritières du bassin métallurgique de la vallée du Blavet sur leurs cas IA : maintenance prédictive, optimisation production, automatisation contrôle qualité, gestion stocks et outils IA traçabilité industrielle.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Inzinzac-Lochrist ?",
+      q: "Tarifs audit IA à Inzinzac-Lochrist  : quel budget prévoir ?",
       a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de la vallée du Blavet, il identifie les cas d'usage IA à fort ROI pour votre activité (industrie, agroalimentaire, BTP, commerce, libéral). Tarifs publics.",
     },
     {

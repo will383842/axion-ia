@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const VILLARD_BONNOT_COPY: VilleCopy = {
   pitchFr:
-    "Villard-Bonnot (38), commune de la vallée du Grésivaudan en Isère, conserve un héritage industriel et papetier historique. Tissu PME industrielles, TPE artisans BTP, commerces, professions libérales et services. Axion-IA couvre l'ensemble des activités professionnelles présentes du Grésivaudan.",
+    "Villard-Bonnot (38), commune de la vallée du Grésivaudan en Isère, conserve un héritage industriel et papetier historique. Tissu PME industrielles, TPE artisans BTP, commerces, professions libérales et services. Axion-IA répond aux besoins des activités professionnelles présentes du Grésivaudan.",
   pitchEn:
-    "Villard-Bonnot (38), commune de la vallée du Grésivaudan en Isère, conserve un héritage industriel et papetier historique. Tissu PME industrielles, TPE artisans BTP, commerces, professions libérales et services. Axion-IA couvre l'ensemble des activités professionnelles présentes du Grésivaudan.",
+    "Villard-Bonnot (38), commune de la vallée du Grésivaudan en Isère, conserve un héritage industriel et papetier historique. Tissu PME industrielles, TPE artisans BTP, commerces, professions libérales et services. Axion-IA répond aux besoins des activités professionnelles présentes du Grésivaudan.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villard-Bonnot (38). Nous accompagnons tous types d'activités : PME industrielles du Grésivaudan, TPE artisans BTP, commerçants, indépendants, professions libérales, agriculteurs périphériques et services aux entreprises de la vallée Grésivaudan.",
   directAnswerEn:

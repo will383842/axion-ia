@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BOMPAS_COPY: VilleCopy = {
   pitchFr:
-    "Bompas (66), commune résidentielle en périphérie nord-est de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME zones d'activités, commerces, agriculture, services. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération perpignanaise.",
+    "Bompas (66), commune résidentielle en périphérie nord-est de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME zones d'activités, commerces, agriculture, services. Axion-IA opère sur l'ensemble des activités professionnelles locales de l'agglomération perpignanaise.",
   pitchEn:
-    "Bompas (66), commune résidentielle en périphérie nord-est de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME zones d'activités, commerces, agriculture, services. Axion-IA couvre l'ensemble des activités professionnelles présentes de l'agglomération perpignanaise.",
+    "Bompas (66), commune résidentielle en périphérie nord-est de Perpignan, fait partie de Perpignan Méditerranée Métropole. Tissu TPE artisans, PME zones d'activités, commerces, agriculture, services. Axion-IA opère sur l'ensemble des activités professionnelles locales de l'agglomération perpignanaise.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bompas (66). Nous accompagnons tous types d'activités : TPE artisans, PME zones d'activités, commerçants, agriculteurs, indépendants et professions libérales de l'agglo Perpignan nord-est.",
   directAnswerEn:

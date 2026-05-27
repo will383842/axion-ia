@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const MONTROND_LES_BAINS_COPY: VilleCopy = {
   pitchFr:
-    "Montrond-les-Bains (42), commune de la plaine du Forez dans la Loire, est une station thermale historique (sources thermales, casino). Tissu thermal et hôtelier, PME tertiaires, TPE artisans BTP, commerces, agriculture périphérique. Axion-IA y déploie ses missions auprès de toutes les organisations foréziennes.",
+    "Montrond-les-Bains (42), commune de la plaine du Forez dans la Loire, est une station thermale historique (sources thermales, casino). Tissu thermal et hôtelier, PME tertiaires, TPE artisans BTP, commerces, agriculture périphérique. Axion-IA y conduit ses missions auprès des entreprises locales foréziennes.",
   pitchEn:
-    "Montrond-les-Bains (42), commune de la plaine du Forez dans la Loire, est une station thermale historique (sources thermales, casino). Tissu thermal et hôtelier, PME tertiaires, TPE artisans BTP, commerces, agriculture périphérique. Axion-IA y déploie ses missions auprès de toutes les organisations foréziennes.",
+    "Montrond-les-Bains (42), commune de la plaine du Forez dans la Loire, est une station thermale historique (sources thermales, casino). Tissu thermal et hôtelier, PME tertiaires, TPE artisans BTP, commerces, agriculture périphérique. Axion-IA y conduit ses missions auprès des entreprises locales foréziennes.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montrond-les-Bains (42). Nous accompagnons tous types d'activités : acteurs thermalisme et hôtellerie (sources thermales, casino), PME tertiaires Loire Forez Agglo, TPE artisans BTP, commerçants, agriculteurs périphériques et services aux entreprises foréziennes.",
   directAnswerEn:

@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const PAIMPOL_COPY: VilleCopy = {
   pitchFr:
-    "Paimpol (22), port de pêche et de plaisance emblématique de la Côte du Goëlo en Côtes-d'Armor, vit du tourisme maritime, de la conchyliculture, de la pêche et d'un tissu TPE/PME commerçants et artisans. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Paimpol (22), port de pêche et de plaisance emblématique de la Côte du Goëlo en Côtes-d'Armor, vit du tourisme maritime, de la conchyliculture, de la pêche et d'un tissu TPE/PME commerçants et artisans. Axion-IA répond aux besoins de toutes les entreprises.",
   pitchEn:
-    "Paimpol (22), port de pêche et de plaisance emblématique de la Côte du Goëlo en Côtes-d'Armor, vit du tourisme maritime, de la conchyliculture, de la pêche et d'un tissu TPE/PME commerçants et artisans. Axion-IA accompagne entreprises et indépendants de tous secteurs.",
+    "Paimpol (22), port de pêche et de plaisance emblématique de la Côte du Goëlo en Côtes-d'Armor, vit du tourisme maritime, de la conchyliculture, de la pêche et d'un tissu TPE/PME commerçants et artisans. Axion-IA répond aux besoins de toutes les entreprises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Paimpol (22). Nous accompagnons TPE et PME : professionnels du tourisme maritime, conchyliculteurs, pêcheurs, commerçants du port, artisans, restaurateurs et hébergeurs de la Côte du Goëlo. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Paimpol (22). Nous accompagnons TPE et PME : professionnels du tourisme maritime, conchyliculteurs, pêcheurs, commerçants du port, artisans, restaurateurs et hébergeurs de la Côte du Goëlo. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Paimpol (22). Nous accompagnons TPE et PME : professionnels du tourisme maritime, conchyliculteurs, pêcheurs, commerçants du port, artisans, restaurateurs et hébergeurs de la Côte du Goëlo. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Paimpol (22). Nous accompagnons TPE et PME : professionnels du tourisme maritime, conchyliculteurs, pêcheurs, commerçants du port, artisans, restaurateurs et hébergeurs de la Côte du Goëlo. Audit Flash sur mesure.",
   seoHook: "tourisme maritime & conchyliculture pêche",
   ecosystemFr:
     "Paimpol est un port de pêche et de plaisance historique sur la Côte du Goëlo (Côtes-d'Armor). Économie tournée vers le tourisme maritime (île de Bréhat), la conchyliculture (huîtres de Paimpol), la pêche artisanale, les commerces du port, l'artisanat et la restauration/hôtellerie saisonnière.",

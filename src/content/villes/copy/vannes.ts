@@ -1,68 +1,79 @@
-// AUTO-GENERATED 2026-05-27 from GeneratedVilleCopy (T3 batch).
-// Quality score: 58 — Model: gpt-4o.
-// DO NOT EDIT manually — re-export via scripts/export-villecopy-db-to-ts.ts.
-// EN = mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).
+// MANUAL-REWRITE 2026-05-27 — Audit Will : ville worst (4 issues), rewrite complet.
+// Vannes (56, Morbihan) — Préfecture, Golfe du Morbihan UNESCO, nautisme Multiplast, Michelin R&D.
 
 import type { VilleCopy } from "./types";
 
 export const VANNES_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA intervient à Vannes, ville dynamique avec Yves Rocher et l'Université Bretagne Sud, pour optimiser vos processus grâce à l'IA.",
+    "Axion-IA accompagne les TPE et PME de Vannes (55 000 habitants, préfecture du Morbihan) sur leurs projets d'intelligence artificielle : automatisation, agents conversationnels, refonte de processus métier. Capitale historique des Vénètes et porte d'entrée du Golfe du Morbihan, Vannes concentre un tissu économique singulier : nautisme de haut niveau (Multiplast, course au large IMOCA, refit-yachting Vannes-Conleau), agroalimentaire et cosmétique végétale (Cargill, écosystème Yves Rocher à La Gacilly), R&D pneumatiques (Michelin), services financiers (Crédit Mutuel ARKEA). Nos architectes IA seniors interviennent sur site dans le centre historique, au parc de Laroiseau et autour de l'Université Bretagne Sud, avec une priorité claire aux TPE et PME — les ETI restent accompagnées en complément.",
   pitchEn:
-    "Axion-IA intervient à Vannes, ville dynamique avec Yves Rocher et l'Université Bretagne Sud, pour optimiser vos processus grâce à l'IA.",
+    "Axion-IA accompagne les TPE et PME de Vannes (55 000 habitants, préfecture du Morbihan) sur leurs projets d'intelligence artificielle : automatisation, agents conversationnels, refonte de processus métier. Capitale historique des Vénètes et porte d'entrée du Golfe du Morbihan, Vannes concentre un tissu économique singulier : nautisme de haut niveau (Multiplast, course au large IMOCA, refit-yachting Vannes-Conleau), agroalimentaire et cosmétique végétale (Cargill, écosystème Yves Rocher à La Gacilly), R&D pneumatiques (Michelin), services financiers (Crédit Mutuel ARKEA). Nos architectes IA seniors interviennent sur site dans le centre historique, au parc de Laroiseau et autour de l'Université Bretagne Sud, avec une priorité claire aux TPE et PME — les ETI restent accompagnées en complément.",
   directAnswerFr:
-    "À Vannes, Axion-IA propose des interventions sur site pour les entreprises locales. Le parc d'activités de Laroiseau et l'incubateur Vipe Vannes constituent des pôles stratégiques pour l'innovation. Nous offrons des audits dès 490 € HT et des interventions à partir de 590 € HT, permettant une intégration rapide de solutions IA adaptées à vos besoins spécifiques.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne en priorité les TPE et PME de Vannes et du Golfe du Morbihan sur leurs chantiers d'intelligence artificielle (audit, interventions sur site, implémentation, accompagnement un-à-un, sites web augmentés). Nous couvrons Vannes intra-muros, le parc d'activités de Laroiseau, le cluster nautique de Vannes-Conleau, ainsi que les communes du Golfe (Séné, Arradon, Ploeren, Sarzeau) et la zone d'influence Lorient-Auray. Les ETI locales sont accompagnées en complément, après les TPE/PME. Tarifs publics consultables sur la page Pricing, sans devis opaque.",
   directAnswerEn:
-    "À Vannes, Axion-IA propose des interventions sur site pour les entreprises locales. Le parc d'activités de Laroiseau et l'incubateur Vipe Vannes constituent des pôles stratégiques pour l'innovation. Nous offrons des audits dès 490 € HT et des interventions à partir de 590 € HT, permettant une intégration rapide de solutions IA adaptées à vos besoins spécifiques.",
-  seoHook: "tourisme golfe & agro",
+    "Axion-IA est un cabinet d'architectes IA seniors qui accompagne en priorité les TPE et PME de Vannes et du Golfe du Morbihan sur leurs chantiers d'intelligence artificielle (audit, interventions sur site, implémentation, accompagnement un-à-un, sites web augmentés). Nous couvrons Vannes intra-muros, le parc d'activités de Laroiseau, le cluster nautique de Vannes-Conleau, ainsi que les communes du Golfe (Séné, Arradon, Ploeren, Sarzeau) et la zone d'influence Lorient-Auray. Les ETI locales sont accompagnées en complément, après les TPE/PME. Tarifs publics consultables sur la page Pricing, sans devis opaque.",
+  seoHook: "nautisme, agro & Golfe",
   ecosystemFr:
-    "Vannes héberge Yves Rocher et SNCF, contribuant à un tissu économique diversifié. L'Université Bretagne Sud renforce le secteur de la programmation informatique.",
+    "Vannes structure un écosystème économique atypique pour une préfecture de 55 000 habitants. La filière nautique y est de classe mondiale : chantier Multiplast (multicoques IMOCA, Ultim, Class40), refit et équipementiers à Vannes-Conleau, course au large soutenue par les acteurs régionaux. L'agroalimentaire et la cosmétique végétale rayonnent depuis La Gacilly (écosystème Yves Rocher) et Cargill. Michelin opère un centre R&D pneumatiques tourisme à Vannes. Le Crédit Mutuel ARKEA y a un ancrage régional fort. Le tourisme côtier (Golfe du Morbihan, Quiberon, Carnac), le BTP (résidences secondaires) et le commerce du centre historique médiéval complètent un tissu très TPE/PME, irrigué par l'Université Bretagne Sud (UBS).",
   ecosystemEn:
-    "Vannes héberge Yves Rocher et SNCF, contribuant à un tissu économique diversifié. L'Université Bretagne Sud renforce le secteur de la programmation informatique.",
+    "Vannes structure un écosystème économique atypique pour une préfecture de 55 000 habitants. La filière nautique y est de classe mondiale : chantier Multiplast (multicoques IMOCA, Ultim, Class40), refit et équipementiers à Vannes-Conleau, course au large soutenue par les acteurs régionaux. L'agroalimentaire et la cosmétique végétale rayonnent depuis La Gacilly (écosystème Yves Rocher) et Cargill. Michelin opère un centre R&D pneumatiques tourisme à Vannes. Le Crédit Mutuel ARKEA y a un ancrage régional fort. Le tourisme côtier (Golfe du Morbihan, Quiberon, Carnac), le BTP (résidences secondaires) et le commerce du centre historique médiéval complètent un tissu très TPE/PME, irrigué par l'Université Bretagne Sud (UBS).",
   distancesFr:
-    "La gare TGV de Vannes est au cœur de la ville, l'aéroport de Lorient Bretagne Sud à 60 km.",
+    "Gare TGV de Vannes en centre-ville (Paris-Montparnasse en 2 h 45). Aéroport Lorient Bretagne Sud à 50 km, aéroport Rennes-Saint-Jacques à 110 km, aéroport Nantes-Atlantique à 115 km. Carnac et Quiberon à 30 km, presqu'île de Rhuys (Sarzeau) à 25 km, Lorient à 55 km, Rennes à 110 km, Nantes à 110 km.",
   distancesEn:
-    "La gare TGV de Vannes est au cœur de la ville, l'aéroport de Lorient Bretagne Sud à 60 km.",
+    "Gare TGV de Vannes en centre-ville (Paris-Montparnasse en 2 h 45). Aéroport Lorient Bretagne Sud à 50 km, aéroport Rennes-Saint-Jacques à 110 km, aéroport Nantes-Atlantique à 115 km. Carnac et Quiberon à 30 km, presqu'île de Rhuys (Sarzeau) à 25 km, Lorient à 55 km, Rennes à 110 km, Nantes à 110 km.",
   topSectorsNaf: [
-    "Commerce de détail",
-    "Restauration",
-    "Programmation informatique",
-    "Activités des sièges sociaux",
+    "Construction navale et nautisme (Multiplast, refit Vannes-Conleau)",
+    "Industrie agroalimentaire et cosmétique végétale (Cargill, écosystème Yves Rocher)",
+    "Recherche-développement industrielle (Michelin pneumatiques tourisme)",
+    "Hébergement-restauration et tourisme côtier (Golfe du Morbihan UNESCO)",
+    "Construction et BTP résidentiel (résidences secondaires littorales)",
   ],
   servicesContext: {
     audit: {
-      fr: "Réaliser un audit à Vannes avec nos experts IA — identifiez vos priorités d'automatisation.",
-      en: "Réaliser un audit à Vannes avec nos experts IA — identifiez vos priorités d'automatisation.",
+      fr: "Audit IA à Vannes pour les TPE et PME du Golfe du Morbihan : nautisme, agroalimentaire, tourisme, BTP, commerce du centre historique — diagnostic 360° des chantiers IA prioritaires.",
+      en: "Audit IA à Vannes pour les TPE et PME du Golfe du Morbihan : nautisme, agroalimentaire, tourisme, BTP, commerce du centre historique — diagnostic 360° des chantiers IA prioritaires.",
     },
     interventions: {
-      fr: "Intervenir à Vannes auprès des entreprises du Parc de Laroiseau — optimisez vos processus.",
-      en: "Intervenir à Vannes auprès des entreprises du Parc de Laroiseau — optimisez vos processus.",
+      fr: "Interventions sur site à Vannes (centre historique, parc de Laroiseau, Vannes-Conleau) et dans tout le Morbihan, en priorité auprès des TPE et PME, ETI en complément.",
+      en: "Interventions sur site à Vannes (centre historique, parc de Laroiseau, Vannes-Conleau) et dans tout le Morbihan, en priorité auprès des TPE et PME, ETI en complément.",
     },
     implementation: {
-      fr: "Implémenter des solutions IA à Vannes — intégrez l'IA dans votre système actuel.",
-      en: "Implémenter des solutions IA à Vannes — intégrez l'IA dans votre système actuel.",
+      fr: "Implémentation IA à Vannes : intégration agents conversationnels, automatisation des flux métier, copilotes RH/commerciaux pour TPE et PME du Morbihan.",
+      en: "Implémentation IA à Vannes : intégration agents conversationnels, automatisation des flux métier, copilotes RH/commerciaux pour TPE et PME du Morbihan.",
     },
     unAUn: {
-      fr: "Conduire des sessions 1-to-1 à Vannes — bénéficiez d'un accompagnement personnalisé.",
-      en: "Conduire des sessions 1-to-1 à Vannes — bénéficiez d'un accompagnement personnalisé.",
+      fr: "Accompagnement un-à-un des dirigeants TPE/PME de Vannes et du Golfe du Morbihan : montée en compétence IA, choix d'outils, gouvernance des données et conformité AI Act.",
+      en: "Accompagnement un-à-un des dirigeants TPE/PME de Vannes et du Golfe du Morbihan : montée en compétence IA, choix d'outils, gouvernance des données et conformité AI Act.",
+    },
+    sitesWeb: {
+      fr: "Sites web augmentés par IA pour les TPE et PME de Vannes : nautisme, tourisme du Golfe, restauration, artisans du centre historique — réservation, devis, contenu multilingue.",
+      en: "Sites web augmentés par IA pour les TPE et PME de Vannes : nautisme, tourisme du Golfe, restauration, artisans du centre historique — réservation, devis, contenu multilingue.",
     },
   },
   faqGeolocalisee: [
     {
-      q: "Quels sont les tarifs pour une intervention à Vannes ?",
-      a: "Nos interventions à Vannes débutent à partir de 590 € HT. Consultez nos tarifs publics pour plus de détails.",
+      q: "Axion-IA intervient-il auprès des TPE et PME de Vannes ?",
+      a: "Oui, notre priorité claire à Vannes est l'accompagnement des TPE puis des PME du Morbihan, dans tous les secteurs présents : nautisme, agroalimentaire, tourisme côtier, BTP, commerce du centre historique, services aux entreprises. Les ETI locales sont accompagnées en complément.",
     },
     {
-      q: "Comment se déroule un audit IA à Vannes ?",
-      a: "Nous réalisons des audits sur site à Vannes, incluant une analyse des processus et des recommandations. L'Audit Flash 4h commence à 490 € HT.",
+      q: "Quels secteurs vannetais accompagnez-vous le plus souvent ?",
+      a: "Nous travaillons régulièrement avec la filière nautique de Vannes-Conleau (chantiers, équipementiers, course au large), les acteurs agroalimentaires et cosmétiques (écosystème Yves Rocher, Cargill), le tourisme du Golfe du Morbihan, le BTP littoral et les commerces du centre médiéval.",
     },
     {
-      q: "Axion-IA intervient-il dans les communes autour de Vannes ?",
-      a: "Oui, nous intervenons également dans les communes voisines telles que Séné, Ploeren, et Arradon.",
+      q: "Où vous déplacez-vous autour de Vannes ?",
+      a: "Nous intervenons dans Vannes intra-muros et dans toutes les communes du Golfe : Séné, Arradon, Ploeren, Saint-Avé, Theix-Noyalo, Sarzeau et la presqu'île de Rhuys, ainsi qu'à Auray, Lorient et dans le sud-Morbihan plus largement.",
     },
     {
-      q: "Quels délais pour une intervention IA à Vannes ?",
-      a: "Nos interventions à Vannes sont planifiées dans un délai de 5 jours ouvrés après la prise de contact.",
+      q: "Comment rejoindre vos clients vannetais depuis Paris ?",
+      a: "Vannes est reliée à Paris-Montparnasse par TGV en 2 h 45, gare en centre-ville. L'aéroport Lorient Bretagne Sud (50 km) et Rennes-Saint-Jacques (110 km) complètent la desserte. Nos architectes IA seniors se déplacent depuis Paris pour les missions sur site.",
+    },
+    {
+      q: "L'Université Bretagne Sud joue-t-elle un rôle dans l'écosystème IA local ?",
+      a: "Oui, le campus UBS de Vannes (et son pendant à Lorient) alimente le bassin d'emploi en data, informatique et ingénierie, ce qui facilite le recrutement et la pérennisation des projets IA des TPE/PME locales.",
+    },
+    {
+      q: "Pouvez-vous accompagner un chantier nautique sur la course au large ?",
+      a: "Oui, Vannes-Conleau et Multiplast positionnent Vannes comme un pôle nautique de référence. Nous accompagnons les chantiers, équipementiers et écuries de course (IMOCA, Class40, Ultim) sur la donnée, l'automatisation back-office et les copilotes IA pour la R&D.",
     },
   ],
 };

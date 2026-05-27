@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const COLOMBELLES_COPY: VilleCopy = {
   pitchFr:
-    "Colombelles (14), commune de l'agglomération de Caen est dans le Calvados, est en pleine reconversion industrielle. L'ancien site sidérurgique accueille aujourd'hui des espaces culturels et créatifs (le Wip, le Big Band Café). Tissu TPE artisans BTP, PME services et industrie, commerces, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Colombelles (14), commune de l'agglomération de Caen est dans le Calvados, est en pleine reconversion industrielle. L'ancien site sidérurgique accueille aujourd'hui des espaces culturels et créatifs (le Wip, le Big Band Café). Tissu TPE artisans BTP, PME services et industrie, commerces, professions libérales. Axion-IA couvre les activités professionnelles du bassin.",
   pitchEn:
-    "Colombelles (14), commune de l'agglomération de Caen est dans le Calvados, est en pleine reconversion industrielle. L'ancien site sidérurgique accueille aujourd'hui des espaces culturels et créatifs (le Wip, le Big Band Café). Tissu TPE artisans BTP, PME services et industrie, commerces, professions libérales. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Colombelles (14), commune de l'agglomération de Caen est dans le Calvados, est en pleine reconversion industrielle. L'ancien site sidérurgique accueille aujourd'hui des espaces culturels et créatifs (le Wip, le Big Band Café). Tissu TPE artisans BTP, PME services et industrie, commerces, professions libérales. Axion-IA couvre les activités professionnelles du bassin.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Colombelles (14). Nous accompagnons tous types d'activités : TPE artisans BTP, PME services et industrielles de l'agglomération caennaise est, acteurs de la reconversion créative, commerçants, professions libérales et indépendants.",
   directAnswerEn:
@@ -60,7 +60,7 @@ export const COLOMBELLES_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Colombelles, audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Colombelles ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Colombelles  ?",
       a: "L'Audit Flash démarre à 490 € HT. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {

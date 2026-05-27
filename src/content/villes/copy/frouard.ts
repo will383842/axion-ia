@@ -9,9 +9,9 @@ export const FROUARD_COPY: VilleCopy = {
   pitchEn:
     "Frouard (54), commune de la périphérie nord de Nancy en Meurthe-et-Moselle, est un pôle logistique majeur de Lorraine grâce à son port fluvial sur la Moselle et ses zones d'activités. Tissu de TPE/PME logistique, transport, industrie, commerce et services. Axion-IA opère pour toutes les structures économiques de la commune.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Frouard (54). Nous accompagnons TPE et PME : logisticiens, transporteurs, industriels, commerçants et prestataires de services de la périphérie nord de Nancy et du port fluvial. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Frouard (54). Nous accompagnons TPE et PME : logisticiens, transporteurs, industriels, commerçants et prestataires de services de la périphérie nord de Nancy et du port fluvial. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Frouard (54). Nous accompagnons TPE et PME : logisticiens, transporteurs, industriels, commerçants et prestataires de services de la périphérie nord de Nancy et du port fluvial. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Frouard (54). Nous accompagnons TPE et PME : logisticiens, transporteurs, industriels, commerçants et prestataires de services de la périphérie nord de Nancy et du port fluvial. Audit Flash sur mesure.",
   seoHook: "agglomération nancy",
   ecosystemFr:
     "Frouard est situé en première couronne nord de Nancy, au confluent de la Moselle et de la Meurthe. La ville accueille le port fluvial de Nancy-Frouard, l'un des premiers ports intérieurs de France, et de vastes zones logistiques (Plate-forme Nancy-Frouard, Saint-Jacques). L'économie locale repose sur la logistique multimodale (fluvial-rail-route), le transport, l'industrie, l'artisanat BTP et les services. Intégration à la Métropole du Grand Nancy.",
@@ -52,7 +52,7 @@ export const FROUARD_COPY: VilleCopy = {
       a: "Oui, Axion-IA intervient à Frouard et sur toute la Métropole du Grand Nancy (Nancy, Champigneulles, Pompey, Maxéville, Laxou). Accès direct via A31 et TER, Paris à 1h30 en TGV depuis la gare Lorraine.",
     },
     {
-      q: "Quel est le tarif d'un audit IA à Frouard ?",
+      q: "Quel est le prix d'un audit IA pour entreprises à Frouard  ?",
       a: "L'Audit Flash démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de Frouard et de la périphérie nancéienne, il identifie les cas d'usage IA à fort ROI pour votre plate-forme logistique, entreprise de transport ou commerce.",
     },
     {

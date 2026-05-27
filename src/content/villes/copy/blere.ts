@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const BLERE_COPY: VilleCopy = {
   pitchFr:
-    "Bléré (37), bourg de la vallée du Cher en Indre-et-Loire, est la porte d'entrée du château de Chenonceau. Viticulture AOC Touraine, maraîchage, artisanat, commerces et TPE/PME de services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Bléré (37), bourg de la vallée du Cher en Indre-et-Loire, est la porte d'entrée du château de Chenonceau. Viticulture AOC Touraine, maraîchage, artisanat, commerces et TPE/PME de services. Axion-IA y conduit ses missions auprès des entreprises locales.",
   pitchEn:
-    "Bléré (37), bourg de la vallée du Cher en Indre-et-Loire, est la porte d'entrée du château de Chenonceau. Viticulture AOC Touraine, maraîchage, artisanat, commerces et TPE/PME de services. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Bléré (37), bourg de la vallée du Cher en Indre-et-Loire, est la porte d'entrée du château de Chenonceau. Viticulture AOC Touraine, maraîchage, artisanat, commerces et TPE/PME de services. Axion-IA y conduit ses missions auprès des entreprises locales.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bléré (37). Nous accompagnons tous types d'activités : acteurs du tourisme patrimonial (Chenonceau, châteaux de la Loire), viticulteurs AOC Touraine, maraîchers vallée du Cher, TPE artisans, commerçants, professions libérales et PME de services du sud-tourangeau.",
   directAnswerEn:

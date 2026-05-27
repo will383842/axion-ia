@@ -11,9 +11,9 @@ export const CLICHY_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA intervient à Clichy, au cœur d'un écosystème comprenant L'Oréal et BIC, pour optimiser vos processus grâce à l'IA.",
   directAnswerFr:
-    "Axion-IA propose des interventions sur site à Clichy, où l'on trouve des entreprises telles que L'Oréal et BIC. Notre approche inclut des audits dès 490 € HT pour identifier les opportunités d'automatisation. Nous offrons également des implémentations à partir de 990 € HT pour garantir une intégration fluide de l'IA dans vos processus existants.",
+    "Axion-IA propose des interventions sur site à Clichy, où l'on trouve des entreprises telles que L'Oréal et BIC. Notre approche inclut des audits pour identifier les opportunités d'automatisation. Nous offrons également des implémentations 990 garantir une intégration fluide de l'IA dans vos processus existants.",
   directAnswerEn:
-    "Axion-IA propose des interventions sur site à Clichy, où l'on trouve des entreprises telles que L'Oréal et BIC. Notre approche inclut des audits dès 490 € HT pour identifier les opportunités d'automatisation. Nous offrons également des implémentations à partir de 990 € HT pour garantir une intégration fluide de l'IA dans vos processus existants.",
+    "Axion-IA propose des interventions sur site à Clichy, où l'on trouve des entreprises telles que L'Oréal et BIC. Notre approche inclut des audits pour identifier les opportunités d'automatisation. Nous offrons également des implémentations 990 garantir une intégration fluide de l'IA dans vos processus existants.",
   seoHook: "commerce détail & programmation informatique",
   ecosystemFr:
     "Clichy accueille des entreprises comme L'Oréal et BIC, reflétant son dynamisme économique. Le secteur de la programmation informatique y est particulièrement présent.",

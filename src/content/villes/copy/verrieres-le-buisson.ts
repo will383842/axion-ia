@@ -5,13 +5,13 @@ import type { VilleCopy } from "./types";
 
 export const VERRIERES_LE_BUISSON_COPY: VilleCopy = {
   pitchFr:
-    "Verrières-le-Buisson (91), commune résidentielle verdoyante du nord de l'Essonne en limite des Hauts-de-Seine, bénéficie de la proximité d'Antony et du pôle Massy-Saclay. Tissu professions libérales, TPE conseil et services, PME tertiaires, commerces de proximité, artisanat. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Verrières-le-Buisson (91), commune résidentielle verdoyante du nord de l'Essonne en limite des Hauts-de-Seine, bénéficie de la proximité d'Antony et du pôle Massy-Saclay. Tissu professions libérales, TPE conseil et services, PME tertiaires, commerces de proximité, artisanat. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   pitchEn:
-    "Verrières-le-Buisson (91), commune résidentielle verdoyante du nord de l'Essonne en limite des Hauts-de-Seine, bénéficie de la proximité d'Antony et du pôle Massy-Saclay. Tissu professions libérales, TPE conseil et services, PME tertiaires, commerces de proximité, artisanat. Axion-IA couvre l'ensemble des activités professionnelles présentes.",
+    "Verrières-le-Buisson (91), commune résidentielle verdoyante du nord de l'Essonne en limite des Hauts-de-Seine, bénéficie de la proximité d'Antony et du pôle Massy-Saclay. Tissu professions libérales, TPE conseil et services, PME tertiaires, commerces de proximité, artisanat. Axion-IA opère sur l'ensemble des activités professionnelles locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Verrières-le-Buisson (91). Nous accompagnons TPE et PME : professions libérales, cabinets conseil, PME tertiaires, commerçants de proximité, artisans nord Essonne. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Verrières-le-Buisson (91). Nous accompagnons TPE et PME : professions libérales, cabinets conseil, PME tertiaires, commerçants de proximité, artisans nord Essonne. Audit Flash sur mesure.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Verrières-le-Buisson (91). Nous accompagnons TPE et PME : professions libérales, cabinets conseil, PME tertiaires, commerçants de proximité, artisans nord Essonne. Audit Flash dès 490 € HT.",
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Verrières-le-Buisson (91). Nous accompagnons TPE et PME : professions libérales, cabinets conseil, PME tertiaires, commerçants de proximité, artisans nord Essonne. Audit Flash sur mesure.",
   seoHook: "TPE & PME Essonne",
   ecosystemFr:
     "Verrières-le-Buisson est une commune résidentielle verdoyante du nord de l'Essonne, en limite des Hauts-de-Seine (Antony, Châtenay-Malabry). Proximité Massy TGV et pôle Paris-Saclay. Tissu professions libérales, TPE conseil, PME tertiaires, commerces, artisanat.",

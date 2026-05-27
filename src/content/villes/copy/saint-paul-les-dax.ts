@@ -5,9 +5,9 @@ import type { VilleCopy } from "./types";
 
 export const SAINT_PAUL_LES_DAX_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Paul-lès-Dax (40), station thermale de l'agglomération dacquoise dans les Landes, est la quatrième commune du département. Thermalisme, bien-être, commerces zone Grand Dax, TPE santé/bien-être, PME services, artisans. Tissu économique complémentaire de Dax. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Saint-Paul-lès-Dax (40), station thermale de l'agglomération dacquoise dans les Landes, est la quatrième commune du département. Thermalisme, bien-être, commerces zone Grand Dax, TPE santé/bien-être, PME services, artisans. Tissu économique complémentaire de Dax. Axion-IA y déploie son expertise pour toutes les organisations.",
   pitchEn:
-    "Saint-Paul-lès-Dax (40), station thermale de l'agglomération dacquoise dans les Landes, est la quatrième commune du département. Thermalisme, bien-être, commerces zone Grand Dax, TPE santé/bien-être, PME services, artisans. Tissu économique complémentaire de Dax. Axion-IA y déploie ses missions auprès de toutes les organisations.",
+    "Saint-Paul-lès-Dax (40), station thermale de l'agglomération dacquoise dans les Landes, est la quatrième commune du département. Thermalisme, bien-être, commerces zone Grand Dax, TPE santé/bien-être, PME services, artisans. Tissu économique complémentaire de Dax. Axion-IA y déploie son expertise pour toutes les organisations.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Paul-lès-Dax (40). Nous accompagnons TPE et PME du thermalisme et du bien-être, commerces de la zone Grand Dax, professions de santé, artisans BTP, hébergeurs et prestataires touristiques de l'agglomération dacquoise.",
   directAnswerEn:
