@@ -1,0 +1,70 @@
+﻿// AUTO-GENERATED 2026-05-27 — T4 batch #20 Claude Code (Will).
+// Nandy (77, Seine-et-Marne) — résidentielle, agglo Grand Paris Sud, proximité Sénart.
+
+import type { VilleCopy } from "./types";
+
+export const NANDY_COPY: VilleCopy = {
+  pitchFr:
+    "Nandy (77), commune résidentielle de l'agglomération Grand Paris Sud en Seine-et-Marne, accueille un tissu de TPE artisans, commerces de proximité, PME tertiaires du pôle de Sénart, professions libérales et prestataires de services. Axion-IA y intervient pour tous types d'activités du sud francilien.",
+  pitchEn:
+    "Nandy (77), commune résidentielle de l'agglomération Grand Paris Sud en Seine-et-Marne, accueille un tissu de TPE artisans, commerces de proximité, PME tertiaires du pôle de Sénart, professions libérales et prestataires de services. Axion-IA y intervient pour tous types d'activités du sud francilien.",
+  directAnswerFr:
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nandy (77). Nous accompagnons TPE et PME : artisans, commerçants, PME tertiaires de l'agglomération Grand Paris Sud — Sénart, professions libérales et prestataires de services du sud Seine-et-Marne.",
+  directAnswerEn:
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nandy (77). Nous accompagnons TPE et PME : artisans, commerçants, PME tertiaires de l'agglomération Grand Paris Sud — Sénart, professions libérales et prestataires de services du sud Seine-et-Marne.",
+  ecosystemFr:
+    "Nandy est une commune résidentielle de l'agglomération Grand Paris Sud, au sein du pôle urbain de Sénart en Seine-et-Marne. Tissu économique : TPE artisanat bâtiment et services, commerces de centre-ville, PME tertiaires implantées dans les zones d'activités de Sénart, professions libérales (santé, juridique). Proximité de Melun et de l'A5/Francilienne pour les échanges logistiques.",
+  ecosystemEn:
+    "Nandy est une commune résidentielle de l'agglomération Grand Paris Sud, au sein du pôle urbain de Sénart en Seine-et-Marne. Tissu économique : TPE artisanat bâtiment et services, commerces de centre-ville, PME tertiaires implantées dans les zones d'activités de Sénart, professions libérales (santé, juridique). Proximité de Melun et de l'A5/Francilienne pour les échanges logistiques.",
+  distancesFr:
+    "Melun à 15 min, Paris centre à 45 min via RER D (gare de Cesson). Évry-Courcouronnes à 20 min, Corbeil-Essonnes à 15 min. A5 et Francilienne accessibles en 10 min. Aéroport Paris-Orly à 30 min, Roissy-CDG à 55 min.",
+  distancesEn:
+    "Melun à 15 min, Paris centre à 45 min via RER D (gare de Cesson). Évry-Courcouronnes à 20 min, Corbeil-Essonnes à 15 min. A5 et Francilienne accessibles en 10 min. Aéroport Paris-Orly à 30 min, Roissy-CDG à 55 min.",
+  topSectorsNaf: [
+    "TPE artisanat bâtiment & services",
+    "Commerce de proximité & détail",
+    "PME tertiaires & prestataires de services",
+    "Professions libérales santé & juridique",
+    "Logistique & transport (pôle Sénart)",
+  ],
+  servicesContext: {
+    audit: {
+      fr: "Audit IA à Nandy : diagnostic adapté aux TPE artisans, commerces, PME tertiaires et professions libérales de l'agglomération Grand Paris Sud. ROI chiffré, audit Flash 490 € HT.",
+      en: "Audit IA à Nandy : diagnostic adapté aux TPE artisans, commerces, PME tertiaires et professions libérales de l'agglomération Grand Paris Sud. ROI chiffré, audit Flash 490 € HT.",
+    },
+    interventions: {
+      fr: "Interventions IA sur site à Nandy : formats adaptés au commerce, cabinet libéral, TPE ou PME tertiaire du pôle de Sénart. Vos équipes repartent autonomes sur outils IA configurés métier.",
+      en: "Interventions IA sur site à Nandy : formats adaptés au commerce, cabinet libéral, TPE ou PME tertiaire du pôle de Sénart. Vos équipes repartent autonomes sur outils IA configurés métier.",
+    },
+    implementation: {
+      fr: "Implémentation IA à Nandy : automatisation gestion commerciale, agents conversationnels clients, CRM augmenté PME, classification documents cabinets, optimisation logistique Sénart.",
+      en: "Implémentation IA à Nandy : automatisation gestion commerciale, agents conversationnels clients, CRM augmenté PME, classification documents cabinets, optimisation logistique Sénart.",
+    },
+    unAUn: {
+      fr: "Coaching 1-to-1 à Nandy : sessions dans vos locaux ou en visio. Dirigeants TPE, gérants PME, professions libérales du sud Seine-et-Marne souhaitant maîtriser l'IA dans leur pratique professionnelle.",
+      en: "Coaching 1-to-1 à Nandy : sessions dans vos locaux ou en visio. Dirigeants TPE, gérants PME, professions libérales du sud Seine-et-Marne souhaitant maîtriser l'IA dans leur pratique professionnelle.",
+    },
+  },
+  faqGeolocalisee: [
+    {
+      q: "Axion-IA intervient-il à Nandy et dans le sud Seine-et-Marne ?",
+      a: "Oui, Axion-IA intervient à Nandy et dans toute l'agglomération Grand Paris Sud (Sénart, Cesson, Savigny-le-Temple, Melun à 15 min). Nos consultants couvrent le sud Seine-et-Marne et l'Essonne depuis Paris (45 min via RER D).",
+    },
+    {
+      q: "Quel est le tarif d'un audit IA à Nandy ?",
+      a: "L'audit Flash Axion-IA démarre à 490 € HT pour 4 heures de diagnostic. Adapté aux TPE et PME de l'agglomération Grand Paris Sud, il identifie les cas d'usage IA à fort ROI pour votre activité. Tarifs publics.",
+    },
+    {
+      q: "Accompagnez-vous les TPE artisans à Nandy ?",
+      a: "Oui, nous accompagnons les TPE artisans et commerçants de Nandy sur leurs cas IA concrets : automatisation devis et facturation, gestion planning, communication digitale, CRM simplifié. Formats courts adaptés aux petites structures.",
+    },
+    {
+      q: "Travaillez-vous avec les PME du pôle de Sénart ?",
+      a: "Oui, nous intervenons auprès des PME tertiaires et prestataires de services implantés dans les zones d'activités de Sénart : automatisation workflow, agents conversationnels B2B, reporting augmenté, CRM intelligent.",
+    },
+    {
+      q: "Comment se déroule une mission à Nandy ?",
+      a: "Nos consultants interviennent à Nandy depuis Paris (45 min via RER D, gare de Cesson) ou en voiture via A5/Francilienne. Frais de déplacement intra-Île-de-France inclus ou facturés à part selon forfait, tarifs publics.",
+    },
+  ],
+};
