@@ -12,6 +12,7 @@ export const CHAMBRAY_LES_TOURS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chambray-lès-Tours (37). Nous accompagnons tous types d'activités : TPE commerces des zones commerciales sud Tours, PME tertiaires et logistique, prestataires de services aux entreprises de Tours Métropole.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chambray-lès-Tours (37). Nous accompagnons tous types d'activités : TPE commerces des zones commerciales sud Tours, PME tertiaires et logistique, prestataires de services aux entreprises de Tours Métropole.",
+  seoHook: "commerce détail & logistique distribution",
   ecosystemFr:
     "Chambray-lès-Tours est le pôle commercial sud de Tours Métropole avec plusieurs zones d'activités et centres commerciaux majeurs (La Vrillonnerie, Auchan Sud). TPE commerces de détail, PME tertiaires, logistique et distribution, services aux entreprises.",
   ecosystemEn:

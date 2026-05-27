@@ -12,6 +12,7 @@ export const MONTBRISON_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montbrison (42). Nous accompagnons tous types d'activités : administration et services publics sous-préfecture, PME tertiaires/industrielles, producteurs fromagers AOP Fourme de Montbrison, agriculteurs forez, TPE artisans BTP, commerçants et services aux entreprises Loire Forez Agglo.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montbrison (42). Nous accompagnons tous types d'activités : administration et services publics sous-préfecture, PME tertiaires/industrielles, producteurs fromagers AOP Fourme de Montbrison, agriculteurs forez, TPE artisans BTP, commerçants et services aux entreprises Loire Forez Agglo.",
+  seoHook: "administration services & fromages fourme",
   ecosystemFr:
     "Montbrison est la sous-préfecture de la Loire (héritage historique de capitale du Forez médiéval). Position centrale dans la plaine du Forez. Tissu administratif et services publics, PME tertiaires/industrielles, agriculture spécialisée notamment fromagère (Fourme de Montbrison AOP — l'un des fromages bleus emblématiques d'Auvergne-Rhône-Alpes), TPE artisanat BTP.",
   ecosystemEn:

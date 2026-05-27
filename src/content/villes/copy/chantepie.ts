@@ -12,6 +12,7 @@ export const CHANTEPIE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chantepie (35). Nous accompagnons TPE et PME : entreprises tertiaires des zones d'activités sud-est rennais, services aux entreprises, artisans BTP, commerçants, professions libérales et indépendants de Rennes Métropole sud.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chantepie (35). Nous accompagnons TPE et PME : entreprises tertiaires des zones d'activités sud-est rennais, services aux entreprises, artisans BTP, commerçants, professions libérales et indépendants de Rennes Métropole sud.",
+  seoHook: "tertiaires services & bureaux d'études",
   ecosystemFr:
     "Chantepie est une commune périurbaine au sud-est immédiat de Rennes, intégrée à Rennes Métropole. Forte croissance démographique, zones d'activités tertiaires (services B2B, bureaux d'études, informatique), TPE artisanat BTP portées par la pression immobilière, commerces de proximité, professions libérales. Desserte métro ligne b (station Chantepie-Rosa Parks) et rocade sud de Rennes.",
   ecosystemEn:

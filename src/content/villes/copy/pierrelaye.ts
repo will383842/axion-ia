@@ -12,6 +12,7 @@ export const PIERRELAYE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pierrelaye (95). Nous accompagnons TPE et PME : artisans, commerçants de proximité, PME de services, professions libérales et entreprises de l'agglomération Val Parisis. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pierrelaye (95). Nous accompagnons TPE et PME : artisans, commerçants de proximité, PME de services, professions libérales et entreprises de l'agglomération Val Parisis. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat second & commerce proximité",
   ecosystemFr:
     "Pierrelaye fait partie de l'agglomération Val Parisis et conserve une plaine maraîchère historique en cours de reconversion. Tissu économique de TPE artisanales, commerces de proximité, PME tertiaires et professions libérales. Proximité Cergy-Pontoise, Franconville et axes A15/A115 vers Paris et la Défense.",
   ecosystemEn:

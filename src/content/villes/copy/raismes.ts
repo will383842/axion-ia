@@ -12,6 +12,7 @@ export const RAISMES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Raismes (59). Nous accompagnons TPE artisans, PME industrielles et logistiques, commerçants, professions libérales et indépendants du Valenciennois, parc naturel Scarpe-Escaut. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Raismes (59). Nous accompagnons TPE artisans, PME industrielles et logistiques, commerçants, professions libérales et indépendants du Valenciennois, parc naturel Scarpe-Escaut. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
+  seoHook: "industrie métallurgie & logistique routière",
   ecosystemFr:
     "Raismes est une commune de la Communauté d'agglomération Valenciennes Métropole, située au cœur du parc naturel régional Scarpe-Escaut. Tissu TPE artisans BTP, PME industrielles (métallurgie, mécanique héritage minier), logistique routière A23, écotourisme parc naturel, commerces de proximité et professions libérales. Reconversion verte du bassin minier.",
   ecosystemEn:

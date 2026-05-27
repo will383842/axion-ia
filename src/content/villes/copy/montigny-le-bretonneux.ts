@@ -12,6 +12,7 @@ export const MONTIGNY_LE_BRETONNEUX_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montigny-le-Bretonneux (78) au cœur de Saint-Quentin-en-Yvelines. Nous accompagnons les scale-ups tech, sièges d'entreprises tertiaires, structures universitaires UVSQ et PME de l'agglomération sur leurs cas IA — diagnostic chiffré, plan d'action concret, automatisations métier.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montigny-le-Bretonneux (78) au cœur de Saint-Quentin-en-Yvelines. Nous accompagnons les scale-ups tech, sièges d'entreprises tertiaires, structures universitaires UVSQ et PME de l'agglomération sur leurs cas IA — diagnostic chiffré, plan d'action concret, automatisations métier.",
+  seoHook: "tech édition & sièges d'entreprises",
   ecosystemFr:
     "Montigny-le-Bretonneux est le cœur urbain de Saint-Quentin-en-Yvelines (200 000 habitants) : sièges d'entreprises tech, Université UVSQ (recherche + 18 000 étudiants), PME tertiaires denses, écosystème d'innovation (incubateurs, BPI). Proximité immédiate Technocentre Renault Guyancourt, Bouygues Construction.",
   ecosystemEn:

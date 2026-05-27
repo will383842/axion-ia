@@ -12,6 +12,7 @@ export const SAINT_FARGEAU_PONTHIERRY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Fargeau-Ponthierry (77). Nous accompagnons TPE et PME : artisans, commerçants, PME de services aux entreprises, professions libérales et indépendants du bassin sud Melun. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Fargeau-Ponthierry (77). Nous accompagnons TPE et PME : artisans, commerçants, PME de services aux entreprises, professions libérales et indépendants du bassin sud Melun. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat second & services aux",
   ecosystemFr:
     "Saint-Fargeau-Ponthierry est une commune résidentielle du sud de Melun, en bords de Seine. Tissu économique de TPE artisanales BTP, PME de services aux entreprises, commerces de centre-bourg, professions libérales de santé et prestataires BtoB. Accès direct à Melun préfecture et au bassin d'emploi sud francilien.",
   ecosystemEn:

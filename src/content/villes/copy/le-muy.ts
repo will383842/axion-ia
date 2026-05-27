@@ -10,6 +10,7 @@ export const LE_MUY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Muy (83). Nous accompagnons TPE artisanales, PME viticoles, commerces, logistique et professions libérales du centre Var. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Muy (83). Nous accompagnons TPE artisanales, PME viticoles, commerces, logistique et professions libérales du centre Var. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+  seoHook: "viticulture côtes & logistique transport",
   ecosystemFr:
     "Le Muy est une commune du centre Var sur l'axe A8 Aix-Nice, traversée par l'Argens. Connue pour son mimosa (Route du Mimosa) et son histoire (Libération de Provence août 1944). Tissu de TPE artisanales, PME viticoles (Côtes de Provence), commerces, logistique, professions libérales et tourisme rural.",
   ecosystemEn:

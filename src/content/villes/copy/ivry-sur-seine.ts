@@ -14,6 +14,7 @@ export const IVRY_SUR_SEINE_COPY: VilleCopy = {
     "À Ivry-sur-Seine, Axion-IA propose des interventions sur site pour les entreprises de divers secteurs, tels que le commerce de détail et la programmation informatique. Avec des acteurs économiques comme Fnac Darty et E.Leclerc, nous aidons à automatiser les tâches administratives et à améliorer l'efficacité opérationnelle. Nos services incluent des audits, des implémentations et des formations personnalisées pour répondre aux besoins spécifiques des entreprises locales.",
   directAnswerEn:
     "À Ivry-sur-Seine, Axion-IA propose des interventions sur site pour les entreprises de divers secteurs, tels que le commerce de détail et la programmation informatique. Avec des acteurs économiques comme Fnac Darty et E.Leclerc, nous aidons à automatiser les tâches administratives et à améliorer l'efficacité opérationnelle. Nos services incluent des audits, des implémentations et des formations personnalisées pour répondre aux besoins spécifiques des entreprises locales.",
+  seoHook: "commerce détail & programmation informatique",
   ecosystemFr:
     "Ivry-sur-Seine bénéficie d'un écosystème économique diversifié avec des entreprises comme Fnac Darty et E.Leclerc. La proximité de Paris et des infrastructures de transport facilite l'accès aux ressources et aux talents nécessaires pour le développement des entreprises locales.",
   ecosystemEn:

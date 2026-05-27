@@ -14,6 +14,7 @@ export const SAINT_MICHEL_SUR_ORGE_COPY: VilleCopy = {
     "À Saint-Michel-sur-Orge, Axion-IA propose des services adaptés aux entreprises locales, notamment dans le commerce de détail et la programmation informatique. Notre équipe nationale intervient sur place pour optimiser vos processus grâce à des technologies avancées développées par des pôles d'innovation tels que Cap Digital et Station F.",
   directAnswerEn:
     "À Saint-Michel-sur-Orge, Axion-IA propose des services adaptés aux entreprises locales, notamment dans le commerce de détail et la programmation informatique. Notre équipe nationale intervient sur place pour optimiser vos processus grâce à des technologies avancées développées par des pôles d'innovation tels que Cap Digital et Station F.",
+  seoHook: "commerce détail & travaux construction",
   ecosystemFr:
     "Le tissu économique de Saint-Michel-sur-Orge est enrichi par des secteurs comme la programmation informatique et le commerce de détail. Les entreprises locales bénéficient de l'influence de pôles technologiques comme Cap Digital et Station F.",
   ecosystemEn:

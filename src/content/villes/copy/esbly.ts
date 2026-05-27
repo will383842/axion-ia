@@ -12,6 +12,7 @@ export const ESBLY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Esbly (77). Nous accompagnons TPE et PME : artisans, commerçants, PME de services de la vallée de la Marne, professions libérales et acteurs touristiques de cette commune à la confluence Marne — Grand Morin.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Esbly (77). Nous accompagnons TPE et PME : artisans, commerçants, PME de services de la vallée de la Marne, professions libérales et acteurs touristiques de cette commune à la confluence Marne — Grand Morin.",
+  seoHook: "artisanat bâtiment & commerce proximité",
   ecosystemFr:
     "Esbly est une commune périurbaine de Seine-et-Marne située à la confluence de la Marne et du Grand Morin, entre Meaux et Lagny-sur-Marne. Tissu économique : TPE artisanat bâtiment et services, commerces de centre-bourg, PME prestataires de services, professions libérales (santé, immobilier), activités liées au tourisme fluvial et de plein air. Gare Transilien P reliant Paris Est en 35 min.",
   ecosystemEn:

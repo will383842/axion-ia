@@ -12,6 +12,7 @@ export const TREGUEUX_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trégueux (22). Nous accompagnons TPE et PME : commerces, entreprises de distribution, artisans, PME de services et professions libérales de ce pôle commercial de l'agglomération de Saint-Brieuc. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trégueux (22). Nous accompagnons TPE et PME : commerces, entreprises de distribution, artisans, PME de services et professions libérales de ce pôle commercial de l'agglomération de Saint-Brieuc. Audit Flash dès 490 € HT.",
+  seoHook: "commerce détail & distribution logistique",
   ecosystemFr:
     "Trégueux est une commune de l'agglomération de Saint-Brieuc, principal pôle commercial des Côtes-d'Armor. Zones commerciales structurantes (Langueux-Trégueux), grandes enseignes, PME de distribution. Tissu économique : TPE commerces, PME distribution et logistique, services aux entreprises, artisans, professions libérales. Communes voisines : Saint-Brieuc, Langueux, Ploufragan, Plérin, Yffiniac.",
   ecosystemEn:

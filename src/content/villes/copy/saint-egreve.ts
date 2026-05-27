@@ -12,6 +12,7 @@ export const SAINT_EGREVE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Égrève (38). Nous accompagnons tous types d'activités : structures de santé (CHAI, professions libérales médicales), TPE artisans BTP, commerçants, indépendants, PME tertiaires saint-égréviennes et entreprises du bassin nord-ouest grenoblois adhérant à Grenoble-Alpes Métropole.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Égrève (38). Nous accompagnons tous types d'activités : structures de santé (CHAI, professions libérales médicales), TPE artisans BTP, commerçants, indépendants, PME tertiaires saint-égréviennes et entreprises du bassin nord-ouest grenoblois adhérant à Grenoble-Alpes Métropole.",
+  seoHook: "santé psychiatrie & professions libérales",
   ecosystemFr:
     "Saint-Égrève est positionnée stratégiquement à la jonction de la vallée de l'Isère et du massif de la Chartreuse (sommet du Néron). Le Centre hospitalier Alpes-Isère (CHAI) est un acteur majeur de santé psychiatrique régional. Tissu de PME tertiaires et services, TPE artisanat dense, commerces de proximité. Label « Ville internet 5@ » et « trois fleurs » villes fleuries.",
   ecosystemEn:

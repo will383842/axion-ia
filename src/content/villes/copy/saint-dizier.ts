@@ -12,6 +12,7 @@ export const SAINT_DIZIER_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Dizier (52) en Haute-Marne. Nous accompagnons tous types d'activités : industriels métallurgistes et fondeurs (équipementiers, fonderie d'art), PME mécaniques, agriculteurs/éleveurs ruraux, TPE artisans BTP, commerçants centre-ville, professions libérales et services publics bragards.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Dizier (52) en Haute-Marne. Nous accompagnons tous types d'activités : industriels métallurgistes et fondeurs (équipementiers, fonderie d'art), PME mécaniques, agriculteurs/éleveurs ruraux, TPE artisans BTP, commerçants centre-ville, professions libérales et services publics bragards.",
+  seoHook: "industrie métallurgique & mécanique précision",
   ecosystemFr:
     "Saint-Dizier est le pôle industriel historique de Haute-Marne : tissu métallurgique (fonderie, mécanique de précision, équipementiers automobile), industrie agroalimentaire (transformation), PME logistique fluviale (Marne canalisée). Activité agricole majeure du département : élevage bovin, céréales, fromagerie. Tissu TPE artisanat dense, commerces centre-ville.",
   ecosystemEn:

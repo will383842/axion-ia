@@ -12,6 +12,7 @@ export const UCKANGE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Uckange (57). Nous accompagnons TPE artisans, PME industrielles, commerçants, professions libérales et indépendants de la vallée de la Fensch et du Pays thionvillois. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Uckange (57). Nous accompagnons TPE artisans, PME industrielles, commerçants, professions libérales et indépendants de la vallée de la Fensch et du Pays thionvillois. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
+  seoHook: "industrie sous-traitance & artisanat",
   ecosystemFr:
     "Uckange est une commune de la vallée de la Fensch dans le Pays thionvillois, marquée par son passé sidérurgique. Le haut fourneau U4 reconverti en jardin des Traces témoigne de cette identité industrielle. Tissu TPE artisans BTP, PME industrielles et sous-traitance, commerces de proximité, professions libérales et indépendants. Proximité immédiate du Luxembourg, axe transfrontalier.",
   ecosystemEn:

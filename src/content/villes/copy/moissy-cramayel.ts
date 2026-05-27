@@ -12,6 +12,7 @@ export const MOISSY_CRAMAYEL_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Moissy-Cramayel (77). Nous accompagnons TPE et PME : entreprises logistique et transport des zones d'activités, commerces, artisans BTP, services aux entreprises et prestataires du bassin Grand Paris Sud. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Moissy-Cramayel (77). Nous accompagnons TPE et PME : entreprises logistique et transport des zones d'activités, commerces, artisans BTP, services aux entreprises et prestataires du bassin Grand Paris Sud. Audit Flash dès 490 € HT.",
+  seoHook: "logistique transport & commerce gros",
   ecosystemFr:
     "Moissy-Cramayel est un pôle économique de l'agglomération Grand Paris Sud, avec plusieurs zones d'activités (Chanteloup, Lugny, Plain de l'Aunette). Tissu TPE/PME logistique, transport, commerce de gros et détail, services aux entreprises, artisanat BTP. Proximité de Sénart et de la Francilienne (N104).",
   ecosystemEn:

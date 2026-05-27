@@ -14,6 +14,7 @@ export const FONTENAY_SOUS_BOIS_COPY: VilleCopy = {
     "Axion-IA se déplace à Fontenay-sous-Bois pour accompagner les entreprises dans l'intégration de l'IA. Avec des acteurs comme Société Générale et BNP Paribas présents localement, notre équipe nationale propose des audits et implémentations sur site, garantissant une approche personnalisée pour chaque entreprise. Les services incluent audit à partir de 490 € HT et interventions dès 590 € HT.",
   directAnswerEn:
     "Axion-IA se déplace à Fontenay-sous-Bois pour accompagner les entreprises dans l'intégration de l'IA. Avec des acteurs comme Société Générale et BNP Paribas présents localement, notre équipe nationale propose des audits et implémentations sur site, garantissant une approche personnalisée pour chaque entreprise. Les services incluent audit à partir de 490 € HT et interventions dès 590 € HT.",
+  seoHook: "programmation informatique & commerce détail",
   ecosystemFr:
     "Fontenay-sous-Bois est un pôle économique abritant des grands groupes tels que Société Générale et BNP Paribas, favorisant un environnement propice à l'innovation et à l'optimisation des processus.",
   ecosystemEn:

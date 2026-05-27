@@ -12,6 +12,7 @@ export const DIVATTE_SUR_LOIRE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Divatte-sur-Loire (44). Nous accompagnons tous types d'activités : TPE viticulteurs et maraîchers, PME agroalimentaires, commerces de proximité, artisans et professions libérales du vignoble nantais est.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Divatte-sur-Loire (44). Nous accompagnons tous types d'activités : TPE viticulteurs et maraîchers, PME agroalimentaires, commerces de proximité, artisans et professions libérales du vignoble nantais est.",
+  seoHook: "viticulture maraîchage & agroalimentaire",
   ecosystemFr:
     "Divatte-sur-Loire est une commune nouvelle du vignoble nantais est, en bords de Loire. Viticulture Muscadet, maraîchage, agroalimentaire. Proximité Nantes (20 km). Tissu TPE viticulteurs, maraîchers, artisans, commerces de proximité et professions libérales.",
   ecosystemEn:

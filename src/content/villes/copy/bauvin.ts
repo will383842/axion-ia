@@ -12,6 +12,7 @@ export const BAUVIN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bauvin (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME logistiques et industrielles, commerçants, exploitants agricoles, professions libérales et services aux entreprises du sud Lillois et bassin minier.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bauvin (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME logistiques et industrielles, commerçants, exploitants agricoles, professions libérales et services aux entreprises du sud Lillois et bassin minier.",
+  seoHook: "artisanat rénovation & logistique transport",
   ecosystemFr:
     "Bauvin est au sud de Lille, entre la métropole lilloise et le bassin minier. Position stratégique entre Lille, Lens et Douai, proximité axes A1/A21. Économie mixte : TPE artisanat, PME logistiques, agriculture (plaine de la Deûle), commerces et professions libérales.",
   ecosystemEn:

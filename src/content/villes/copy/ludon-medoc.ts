@@ -12,6 +12,7 @@ export const LUDON_MEDOC_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ludon-Médoc (33). Nous accompagnons TPE et PME de l'entrée du Médoc : vignerons, artisans BTP, commerçants et professions libérales. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ludon-Médoc (33). Nous accompagnons TPE et PME de l'entrée du Médoc : vignerons, artisans BTP, commerçants et professions libérales. Audit Flash dès 490 € HT.",
+  seoHook: "viticulture haut-médoc & services personne",
   ecosystemFr:
     "Ludon-Médoc est une commune viticole à l'entrée du Médoc, entre Blanquefort et Macau. Vignoble AOC Haut-Médoc, tissu TPE artisanat BTP, commerces de proximité et professions libérales. Accès rocade A630 et route du Médoc D2.",
   ecosystemEn:

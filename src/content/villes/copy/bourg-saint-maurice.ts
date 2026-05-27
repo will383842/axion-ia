@@ -12,6 +12,7 @@ export const BOURG_SAINT_MAURICE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bourg-Saint-Maurice (73). Nous accompagnons TPE et PME de la Haute-Tarentaise : opérateurs touristiques Les Arcs/Paradiski, hôteliers et résidences de montagne, exploitants remontées mécaniques, commerçants de station, prestataires saisonniers et services aux entreprises.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bourg-Saint-Maurice (73). Nous accompagnons TPE et PME de la Haute-Tarentaise : opérateurs touristiques Les Arcs/Paradiski, hôteliers et résidences de montagne, exploitants remontées mécaniques, commerçants de station, prestataires saisonniers et services aux entreprises.",
+  seoHook: "tourisme sports & hôtellerie résidences",
   ecosystemFr:
     "Bourg-Saint-Maurice est la commune centre de la Haute-Tarentaise (7 300 habitants), porte d'accès à la station Les Arcs et au domaine Paradiski (425 km de pistes). Le funiculaire relie la ville à Arc 1600. Gare SNCF avec TGV direct Paris en saison d'hiver. Économie dominée par le tourisme de sports d'hiver, l'hôtellerie de montagne, les remontées mécaniques et les services saisonniers.",
   ecosystemEn:

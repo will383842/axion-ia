@@ -14,6 +14,7 @@ export const LORMONT_COPY: VilleCopy = {
     "Axion-IA propose des interventions sur site à Lormont, optimisant les opérations des entreprises locales. Avec des services tels que l'Audit Flash à partir de 490 € HT et l'Intervention Essentielle dès 590 € HT, nous apportons des solutions concrètes. Nos prestations incluent également l'implémentation IA à partir de 990 € HT, pour une transformation rapide et efficace.",
   directAnswerEn:
     "Axion-IA propose des interventions sur site à Lormont, optimisant les opérations des entreprises locales. Avec des services tels que l'Audit Flash à partir de 490 € HT et l'Intervention Essentielle dès 590 € HT, nous apportons des solutions concrètes. Nos prestations incluent également l'implémentation IA à partir de 990 € HT, pour une transformation rapide et efficace.",
+  seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Lormont bénéficie de la proximité de Bordeaux, un centre économique où se trouvent des entreprises comme Sanofi et Renault. La Zone Industrielle des Quatre Pavillons contribue également à l'activité économique locale.",
   ecosystemEn:

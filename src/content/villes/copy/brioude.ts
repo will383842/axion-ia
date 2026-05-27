@@ -12,6 +12,7 @@ export const BRIOUDE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Brioude (43). Nous accompagnons TPE et PME : acteurs tourisme patrimoine (basilique Saint-Julien), agriculteurs vallée Allier, administration sous-préfecture, artisans BTP, commerçants brivadois.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Brioude (43). Nous accompagnons TPE et PME : acteurs tourisme patrimoine (basilique Saint-Julien), agriculteurs vallée Allier, administration sous-préfecture, artisans BTP, commerçants brivadois.",
+  seoHook: "tourisme patrimoine & agriculture vallée",
   ecosystemFr:
     "Brioude est une sous-préfecture de la Haute-Loire dans la vallée de l'Allier. Patrimoine roman exceptionnel (basilique Saint-Julien, plus grande église romane d'Auvergne). Agriculture vallée Allier (maraîchage, élevage). Tourisme patrimoine et nature, TPE artisanat, commerces, administration.",
   ecosystemEn:

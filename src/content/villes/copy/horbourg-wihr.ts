@@ -12,6 +12,7 @@ export const HORBOURG_WIHR_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Horbourg-Wihr (68). Nous accompagnons tous types d'activités : TPE viticulture et artisanat, PME services et industrie légère, commerçants, professions libérales, restaurateurs et indépendants de l'agglomération colmarienne. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Horbourg-Wihr (68). Nous accompagnons tous types d'activités : TPE viticulture et artisanat, PME services et industrie légère, commerçants, professions libérales, restaurateurs et indépendants de l'agglomération colmarienne. Audit Flash dès 490 € HT.",
+  seoHook: "viticulture caves & tourisme restauration",
   ecosystemFr:
     "Horbourg-Wihr est une commune située à l'est de Colmar, dans le vignoble alsacien et l'agglomération colmarienne. Son tissu économique mêle TPE viticulture et caves indépendantes, PME services et industrie légère, artisans, commerces de proximité, restaurateurs et professions libérales. Proximité directe avec Colmar, Andolsheim, Bischwihr et la route des vins d'Alsace.",
   ecosystemEn:

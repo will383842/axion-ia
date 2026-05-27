@@ -12,6 +12,7 @@ export const PERTUIS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pertuis (84). Nous accompagnons TPE artisans, PME maraîchères, arboriculteurs, services aux entreprises, professions libérales et commerces du Sud Luberon. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pertuis (84). Nous accompagnons TPE artisans, PME maraîchères, arboriculteurs, services aux entreprises, professions libérales et commerces du Sud Luberon. Audit Flash dès 490 € HT.",
+  seoHook: "agriculture maraîchère & artisanat",
   ecosystemFr:
     "Pertuis est positionnée au sud du Vaucluse, dans la vallée de la Durance, en limite des Bouches-du-Rhône, sous-préfecture du Sud Luberon. Commune dont l'activité économique repose sur l'agriculture maraîchère et arboricole (cerises, raisins de table, légumes plein champ), les TPE artisans (BTP, services), PME tertiaires et industrielles, professions libérales et commerces de proximité. Bassin d'emploi double : pôle Pertuis–Aix, et orientation Luberon.",
   ecosystemEn:

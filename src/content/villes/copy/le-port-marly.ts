@@ -12,6 +12,7 @@ export const LE_PORT_MARLY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Port-Marly (78). Nous accompagnons TPE et PME : artisans et commerçants du centre-ville, PME de services boucle de Seine, professions libérales, activités nautiques et restaurateurs des bords de Seine. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Port-Marly (78). Nous accompagnons TPE et PME : artisans et commerçants du centre-ville, PME de services boucle de Seine, professions libérales, activités nautiques et restaurateurs des bords de Seine. Audit Flash dès 490 € HT.",
+  seoHook: "commerce proximité & services aux",
   ecosystemFr:
     "Le Port-Marly est une commune résidentielle des Yvelines en bord de Seine, face à la forêt de Saint-Germain-en-Laye. Cadre prisé entre Marly-le-Roi et Louveciennes. Tissu économique : TPE artisans et commerçants, PME de services, professions libérales, activités liées au fleuve, restauration. Communes voisines : Marly-le-Roi, Louveciennes, Saint-Germain-en-Laye, Bougival.",
   ecosystemEn:

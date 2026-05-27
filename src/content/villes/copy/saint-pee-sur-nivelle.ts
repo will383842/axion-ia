@@ -12,6 +12,7 @@ export const SAINT_PEE_SUR_NIVELLE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Pée-sur-Nivelle (64). Nous accompagnons TPE, PME et artisans du Labourd : agriculture basque, tourisme vert, produits du terroir, hébergements. Audit Flash à partir de 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Pée-sur-Nivelle (64). Nous accompagnons TPE, PME et artisans du Labourd : agriculture basque, tourisme vert, produits du terroir, hébergements. Audit Flash à partir de 490 € HT.",
+  seoHook: "agriculture basque & tourisme vert",
   ecosystemFr:
     "Saint-Pée-sur-Nivelle est un village du Labourd au pied de la Rhune, 7 264 habitants. Lac de loisirs (base nautique), tourisme vert (petit train de la Rhune), TPE agricoles basques (élevage, piment d'Espelette), artisans du terroir, hébergements ruraux (gîtes, campings) et commerces de village.",
   ecosystemEn:

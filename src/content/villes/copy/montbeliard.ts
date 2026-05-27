@@ -14,6 +14,7 @@ export const MONTBELIARD_COPY: VilleCopy = {
     "À Montbéliard, Axion-IA propose des interventions sur site pour répondre aux besoins des entreprises locales. Avec la présence de grands groupes comme PSA Peugeot Citroën et Alstom, la ville bénéficie d'un environnement industriel propice à l'innovation. Nos services incluent des audits, des implémentations et des formations personnalisées, adaptés aux spécificités de chaque entreprise, pour un retour sur investissement rapide.",
   directAnswerEn:
     "À Montbéliard, Axion-IA propose des interventions sur site pour répondre aux besoins des entreprises locales. Avec la présence de grands groupes comme PSA Peugeot Citroën et Alstom, la ville bénéficie d'un environnement industriel propice à l'innovation. Nos services incluent des audits, des implémentations et des formations personnalisées, adaptés aux spécificités de chaque entreprise, pour un retour sur investissement rapide.",
+  seoHook: "automobile & produits métalliques",
   ecosystemFr:
     "Montbéliard est un pôle industriel avec PSA Peugeot Citroën et Alstom. Le secteur de la construction de véhicules automobiles est particulièrement développé.",
   ecosystemEn:

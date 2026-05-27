@@ -12,6 +12,7 @@ export const LE_LION_D_ANGERS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Lion-d'Angers (49). Nous accompagnons tous types d'activités : TPE artisans, PME agricoles et de la filière équine, commerçants de bourg, professions libérales, hébergeurs, prestataires équestres et services aux entreprises du bassin nord-ouest angevin.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Lion-d'Angers (49). Nous accompagnons tous types d'activités : TPE artisans, PME agricoles et de la filière équine, commerçants de bourg, professions libérales, hébergeurs, prestataires équestres et services aux entreprises du bassin nord-ouest angevin.",
+  seoHook: "filière équine & agriculture polyculture",
   ecosystemFr:
     "Le Lion-d'Angers est un bourg situé aux bords de l'Oudon, célèbre pour le Mondial du Lion (championnat du monde de concours complet jeunes chevaux). Filière équine dynamique, agriculture (polyculture-élevage), artisanat, commerces de bourg, tourisme équestre et patrimonial (château du Plessis-Macé à proximité).",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const SAINT_PIERRE_EN_AUGE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Pierre-en-Auge (14). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME laitières et fromagères AOP, exploitations agricoles Pays d'Auge, professions libérales, indépendants et services aux entreprises augeronnes.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Pierre-en-Auge (14). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME laitières et fromagères AOP, exploitations agricoles Pays d'Auge, professions libérales, indépendants et services aux entreprises augeronnes.",
+  seoHook: "industrie laitière & agriculture élevage",
   ecosystemFr:
     "Saint-Pierre-en-Auge est une commune nouvelle du Pays d'Auge (Calvados), regroupant plusieurs communes depuis 2016. Cœur de la production fromagère normande AOP (Camembert, Pont-l'Évêque, Livarot). Bassin laitier et cidricole, exploitations agricoles, TPE artisans, commerces de proximité, tourisme rural.",
   ecosystemEn:

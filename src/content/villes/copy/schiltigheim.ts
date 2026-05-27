@@ -14,6 +14,7 @@ export const SCHILTIGHEIM_COPY: VilleCopy = {
     "Axion-IA se déplace à Schiltigheim pour accompagner les entreprises dans l'optimisation de leurs processus grâce à l'IA. Avec des acteurs économiques comme Heineken et Adidas présents dans la région, nous offrons des services allant de l'audit à l'implémentation, en passant par des interventions ciblées pour maximiser l'efficacité opérationnelle.",
   directAnswerEn:
     "Axion-IA se déplace à Schiltigheim pour accompagner les entreprises dans l'optimisation de leurs processus grâce à l'IA. Avec des acteurs économiques comme Heineken et Adidas présents dans la région, nous offrons des services allant de l'audit à l'implémentation, en passant par des interventions ciblées pour maximiser l'efficacité opérationnelle.",
+  seoHook: "industrie agroalimentaire & commerce gros",
   ecosystemFr:
     "Schiltigheim accueille des entreprises comme Heineken et Adidas, renforçant son statut dans l'industrie agroalimentaire et le commerce de gros. L'Espace Européen de l'Entreprise joue un rôle clé dans le développement économique local.",
   ecosystemEn:

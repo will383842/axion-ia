@@ -14,6 +14,7 @@ export const LE_PLESSIS_TREVISE_COPY: VilleCopy = {
     "Axion-IA propose des interventions à Le Plessis-Trévise, ciblant les secteurs du commerce de détail et des travaux de construction. Nos consultants se déplacent sur site pour automatiser les tâches administratives et améliorer l'efficacité. Avec des entités comme LVMH et BNP Paribas à proximité, nous apportons une expertise nationale pour répondre aux besoins spécifiques des entreprises locales.",
   directAnswerEn:
     "Axion-IA propose des interventions à Le Plessis-Trévise, ciblant les secteurs du commerce de détail et des travaux de construction. Nos consultants se déplacent sur site pour automatiser les tâches administratives et améliorer l'efficacité. Avec des entités comme LVMH et BNP Paribas à proximité, nous apportons une expertise nationale pour répondre aux besoins spécifiques des entreprises locales.",
+  seoHook: "commerce détail & travaux construction",
   ecosystemFr:
     "Le Plessis-Trévise est entouré de communes dynamiques comme Villiers-sur-Marne et Noisy-le-Grand. Le tissu économique local est marqué par des secteurs tels que le commerce de détail et la restauration, offrant un cadre propice aux interventions d'Axion-IA.",
   ecosystemEn:

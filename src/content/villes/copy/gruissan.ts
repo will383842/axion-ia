@@ -12,6 +12,7 @@ export const GRUISSAN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gruissan (11). Nous accompagnons TPE artisans, PME tourisme balnéaire, commerçants saisonniers, hôteliers-restaurateurs, viticulteurs La Clape et professionnels des salins. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gruissan (11). Nous accompagnons TPE artisans, PME tourisme balnéaire, commerçants saisonniers, hôteliers-restaurateurs, viticulteurs La Clape et professionnels des salins. Audit Flash dès 490 € HT.",
+  seoHook: "tourisme balnéaire & viticulture clape",
   ecosystemFr:
     "Gruissan est une station balnéaire audoise emblématique, entre plage méditerranéenne et étangs. Village circulaire médiéval (tour Barberousse), chalets sur pilotis iconiques, salins de Gruissan. Économie touristique saisonnière forte (campings, résidences, sports nautiques), viticulture AOC La Clape, salines, TPE artisans, commerces saisonniers, hôtellerie-restauration.",
   ecosystemEn:

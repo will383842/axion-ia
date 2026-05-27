@@ -12,6 +12,7 @@ export const JUVISY_SUR_ORGE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Juvisy-sur-Orge (91). Nous accompagnons TPE et PME : PME tertiaires et services, commerçants de gare et centre-ville, artisans BTP, professions libérales, restaurateurs. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Juvisy-sur-Orge (91). Nous accompagnons TPE et PME : PME tertiaires et services, commerçants de gare et centre-ville, artisans BTP, professions libérales, restaurateurs. Audit Flash dès 490 € HT.",
+  seoHook: "tertiaires & commerce gare",
   ecosystemFr:
     "Juvisy-sur-Orge est un carrefour ferroviaire majeur (gare RER C/D, 2e gare RER d'Île-de-France en trafic), au confluent Seine-Orge. Tissu PME tertiaires et services, commerces de gare et centre-ville, TPE artisanat BTP, professions libérales, restauration.",
   ecosystemEn:

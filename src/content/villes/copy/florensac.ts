@@ -12,6 +12,7 @@ export const FLORENSAC_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Florensac (34). Nous accompagnons tous types d'activités : domaines viticoles, caves coopératives, PME négoce vin, TPE artisans, commerçants, indépendants, professions libérales et acteurs du tourisme littoral héraultais.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Florensac (34). Nous accompagnons tous types d'activités : domaines viticoles, caves coopératives, PME négoce vin, TPE artisans, commerçants, indépendants, professions libérales et acteurs du tourisme littoral héraultais.",
+  seoHook: "viticulture caves & négoce vin",
   ecosystemFr:
     "Florensac est une commune viticole de l'Hérault entre Pézenas et Agde, à proximité du bassin de Thau et du littoral méditerranéen. Cave coopérative historique. Tissu TPE domaines viticoles, PME négoce vin, artisans BTP, commerces de proximité, tourisme balnéaire (Agde, Cap d'Agde) et œnotourisme.",
   ecosystemEn:

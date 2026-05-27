@@ -12,6 +12,7 @@ export const SAULX_LES_CHARTREUX_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saulx-les-Chartreux (91). Nous accompagnons TPE et PME : exploitants maraîchers, artisans BTP, commerces de proximité, professions libérales, PME services du sud Longjumeau. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saulx-les-Chartreux (91). Nous accompagnons TPE et PME : exploitants maraîchers, artisans BTP, commerces de proximité, professions libérales, PME services du sud Longjumeau. Audit Flash dès 490 € HT.",
+  seoHook: "maraîchage horticulture & artisanat second",
   ecosystemFr:
     "Saulx-les-Chartreux est une commune résidentielle de l'Essonne, au sud de Longjumeau, connue pour son maraîchage historique (cresson, légumes). Proximité immédiate de la N20 et de Massy. Tissu TPE artisans, exploitants maraîchers, commerces de proximité, PME services, professions libérales.",
   ecosystemEn:

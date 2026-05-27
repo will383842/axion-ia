@@ -12,6 +12,7 @@ export const ETRECHY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Étréchy (91). Nous accompagnons TPE et PME : artisans BTP Vallée de la Juine, commerces de proximité, professions libérales, PME services locaux, exploitants agricoles du sud Essonne. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Étréchy (91). Nous accompagnons TPE et PME : artisans BTP Vallée de la Juine, commerces de proximité, professions libérales, PME services locaux, exploitants agricoles du sud Essonne. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat second & commerce proximité",
   ecosystemFr:
     "Étréchy est une commune résidentielle semi-rurale de la Vallée de la Juine, au sud de l'Essonne. Gare RER C reliant Paris et Étampes. Tissu économique de proximité : TPE artisans BTP, commerces, professions libérales, PME services, agriculture céréalière et maraîchage résiduel.",
   ecosystemEn:

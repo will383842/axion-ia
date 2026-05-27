@@ -14,6 +14,7 @@ export const TOURNEFEUILLE_COPY: VilleCopy = {
     "Axion-IA se déplace à Tournefeuille pour accompagner les entreprises dans l'automatisation et l'optimisation de leurs processus. Avec des acteurs économiques tels que Sanofi et LVMH présents dans la région, notre équipe nationale propose des audits et interventions sur site, adaptés aux besoins spécifiques des entreprises locales.",
   directAnswerEn:
     "Axion-IA se déplace à Tournefeuille pour accompagner les entreprises dans l'automatisation et l'optimisation de leurs processus. Avec des acteurs économiques tels que Sanofi et LVMH présents dans la région, notre équipe nationale propose des audits et interventions sur site, adaptés aux besoins spécifiques des entreprises locales.",
+  seoHook: "commerce détail & programmation informatique",
   ecosystemFr:
     "Tournefeuille bénéficie d'une proximité avec des pôles économiques comme Toulouse, abritant des entreprises telles que Sanofi et Airbus. Ce tissu économique diversifié stimule l'innovation locale.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const SAINT_BRICE_SOUS_FORET_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Brice-sous-Forêt (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME tertiaires du bassin nord-parisien, professions libérales, indépendants et prestataires de services de la vallée de Montmorency.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Brice-sous-Forêt (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME tertiaires du bassin nord-parisien, professions libérales, indépendants et prestataires de services de la vallée de Montmorency.",
+  seoHook: "artisanat services & commerce proximité",
   ecosystemFr:
     "Saint-Brice-sous-Forêt est une commune résidentielle verdoyante en lisière de la forêt de Montmorency (nord Val-d'Oise). Tissu TPE artisans, commerces de centre-ville, PME tertiaires, professions libérales et services aux entreprises orientés vers le bassin nord-parisien (Sarcelles, Montmorency, Enghien-les-Bains).",
   ecosystemEn:

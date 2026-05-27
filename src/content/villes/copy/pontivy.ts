@@ -12,6 +12,7 @@ export const PONTIVY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pontivy (56). Nous accompagnons TPE et PME : agroalimentaire et industrie du Centre Bretagne, BTP, commerces de la cité napoléonienne, services administratifs et de santé, acteurs du tourisme fluvial. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pontivy (56). Nous accompagnons TPE et PME : agroalimentaire et industrie du Centre Bretagne, BTP, commerces de la cité napoléonienne, services administratifs et de santé, acteurs du tourisme fluvial. Audit Flash dès 490 € HT.",
+  seoHook: "agroalimentaire & construction",
   ecosystemFr:
     "Pontivy est la sous-préfecture du Morbihan, capitale du Centre Bretagne, au croisement du canal de Nantes à Brest et du canal du Blavet. Cité napoléonienne (Napoléonville) au tissu TPE/PME diversifié : agroalimentaire, industrie, BTP, commerce, administration, santé, tourisme fluvial.",
   ecosystemEn:

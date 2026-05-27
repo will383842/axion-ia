@@ -12,6 +12,7 @@ export const SAUJON_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saujon (17). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme thermal et bien-être, professionnels de santé, commerçants, agriculteurs et indépendants de cette station thermale de l'estuaire de la Seudre.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saujon (17). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme thermal et bien-être, professionnels de santé, commerçants, agriculteurs et indépendants de cette station thermale de l'estuaire de la Seudre.",
+  seoHook: "thermalisme bien-être & santé professions",
   ecosystemFr:
     "Saujon est une station thermale réputée (thermes spécialisés troubles anxieux/psychosomatiques) sur l'estuaire de la Seudre. Économie thermale et bien-être, professionnels de santé, hébergements curistes, commerces de proximité, agriculture (vignes, céréales), TPE artisans. Position entre Royan et Saintes.",
   ecosystemEn:

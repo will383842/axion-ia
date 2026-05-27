@@ -12,6 +12,7 @@ export const GEMENOS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gémenos (13). Nous accompagnons PME technologiques, TPE artisans, professions libérales, commerçants et entreprises de la zone d'activités gémenoise. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gémenos (13). Nous accompagnons PME technologiques, TPE artisans, professions libérales, commerçants et entreprises de la zone d'activités gémenoise. Audit Flash dès 490 € HT.",
+  seoHook: "technologiques numérique & artisanat services",
   ecosystemFr:
     "Gémenos accueille une zone d'activités dynamique (technologie, services aux entreprises, logistique) au pied du massif de la Sainte-Baume. Parc de Saint-Pons (abbaye cistercienne, forêt classée). Tissu de PME tech et services, TPE artisans, professions libérales et résidentiel de cadres travaillant à Aubagne ou Marseille.",
   ecosystemEn:

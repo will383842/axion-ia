@@ -10,6 +10,7 @@ export const LE_BEAUSSET_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Beausset (83). Nous accompagnons TPE viticoles AOC Bandol, PME artisanales, commerces et professions libérales de l'arrière-pays varois. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Beausset (83). Nous accompagnons TPE viticoles AOC Bandol, PME artisanales, commerces et professions libérales de l'arrière-pays varois. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+  seoHook: "viticulture bandol & hôtellerie rurale",
   ecosystemFr:
     "Le Beausset est une commune de l'arrière-pays varois au cœur du vignoble AOC Bandol, entre Toulon et Marseille. Tissu de TPE viticoles, PME artisanales, commerces de proximité, professions libérales, hôtellerie rurale et œnotourisme. Proximité circuit Paul Ricard (Le Castellet) et terroir provençal.",
   ecosystemEn:

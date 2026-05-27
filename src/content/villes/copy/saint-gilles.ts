@@ -12,6 +12,7 @@ export const SAINT_GILLES_COPY: VilleCopy = {
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Saint-Gilles (30). Nous accompagnons les TPE, PME et ETI locales : exploitants agricoles Camargue, viticulteurs Costières de Nîmes, commerçants, artisans, acteurs touristiques et professions libérales de la Petite Camargue gardoise. Audit Flash à partir de 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Saint-Gilles (30). Nous accompagnons les TPE, PME et ETI locales : exploitants agricoles Camargue, viticulteurs Costières de Nîmes, commerçants, artisans, acteurs touristiques et professions libérales de la Petite Camargue gardoise. Audit Flash à partir de 490 € HT.",
+  seoHook: "agriculture camargue & viticulture costières",
   ecosystemFr:
     "Saint-Gilles (~14 700 hab) est la porte de la Petite Camargue gardoise, à 20 min de Nîmes. Agriculture camarguaise (riziculture, élevage taureau/cheval), viticulture Costières de Nîmes, tourisme patrimonial (abbatiale UNESCO), commerces et artisanat. Économie agri-touristique structurante.",
   ecosystemEn:

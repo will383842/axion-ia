@@ -14,6 +14,7 @@ export const FLEURY_LES_AUBRAIS_COPY: VilleCopy = {
     "Axion-IA se déplace à Fleury-les-Aubrais pour accompagner les entreprises dans leur transformation numérique. Grâce à notre intervention, les entreprises locales, qu'elles soient dans le commerce de détail ou les transports terrestres, peuvent bénéficier d'une automatisation efficace. Nous proposons des audits et des implémentations sur site, adaptés aux besoins spécifiques de chaque secteur.",
   directAnswerEn:
     "Axion-IA se déplace à Fleury-les-Aubrais pour accompagner les entreprises dans leur transformation numérique. Grâce à notre intervention, les entreprises locales, qu'elles soient dans le commerce de détail ou les transports terrestres, peuvent bénéficier d'une automatisation efficace. Nous proposons des audits et des implémentations sur site, adaptés aux besoins spécifiques de chaque secteur.",
+  seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Fleury-les-Aubrais bénéficie d'une proximité avec Orléans et accueille des entreprises comme Keolis et La Poste. Le commerce de détail et les transports terrestres dominent l'économie locale, offrant un cadre propice aux interventions IA.",
   ecosystemEn:

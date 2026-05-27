@@ -12,6 +12,7 @@ export const FLEURY_SUR_ORNE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fleury-sur-Orne (14). Nous accompagnons tous types d'activités : TPE artisans BTP, PME services et industrielles de l'agglomération caennaise sud, commerçants zones d'activités, professions libérales, indépendants et prestataires du secteur tertiaire.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fleury-sur-Orne (14). Nous accompagnons tous types d'activités : TPE artisans BTP, PME services et industrielles de l'agglomération caennaise sud, commerçants zones d'activités, professions libérales, indépendants et prestataires du secteur tertiaire.",
+  seoHook: "services aux & commerce zones",
   ecosystemFr:
     "Fleury-sur-Orne est une commune de l'agglomération caennaise sud, connue pour ses anciennes carrières de pierre de Caen (site mémoriel Seconde Guerre mondiale). Zones d'activités dynamiques (Ifs-Fleury). Tissu TPE artisans BTP, PME services et industrie, commerces, professions libérales.",
   ecosystemEn:

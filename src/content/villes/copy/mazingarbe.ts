@@ -12,6 +12,7 @@ export const MAZINGARBE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mazingarbe (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthuno-lensois. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mazingarbe (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthuno-lensois. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+  seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Mazingarbe est une commune du bassin minier entre Lens et Béthune, avec un passé industriel chimique (ancienne usine de produits chimiques). Économie reconvertie vers le commerce, l'artisanat BTP, les services aux particuliers et les professions libérales.",
   ecosystemEn:

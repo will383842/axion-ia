@@ -12,6 +12,7 @@ export const BISCHWILLER_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bischwiller (67). Nous accompagnons TPE et PME : industriels textile et mécanique, sous-traitants automobile, artisans BTP, commerçants et professions libérales du Nord Alsace. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bischwiller (67). Nous accompagnons TPE et PME : industriels textile et mécanique, sous-traitants automobile, artisans BTP, commerçants et professions libérales du Nord Alsace. Audit Flash dès 490 € HT.",
+  seoHook: "industrie textile & sous-traitance automobile",
   ecosystemFr:
     "Bischwiller est un pôle industriel historique du Nord Alsace, marqué par son passé textile (drap militaire, lainages) reconverti vers la mécanique de précision, la sous-traitance automobile et la métallurgie. Tissu de TPE/PME manufacturières, ZA active, commerces de centre-ville, artisans BTP et professions libérales. Proximité immédiate de Haguenau (15 min) et Strasbourg (30 min).",
   ecosystemEn:

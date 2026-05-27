@@ -14,6 +14,7 @@ export const BRUNOY_COPY: VilleCopy = {
     "À Brunoy, Axion-IA propose des interventions sur site pour les entreprises locales. Bien que nous ne collaborions pas directement avec des entités comme Station F ou Inria, notre approche s'appuie sur une expertise éprouvée pour automatiser et optimiser les tâches administratives et commerciales. Nous proposons des services adaptés aux besoins spécifiques des TPE, PME et ETI de Brunoy.",
   directAnswerEn:
     "À Brunoy, Axion-IA propose des interventions sur site pour les entreprises locales. Bien que nous ne collaborions pas directement avec des entités comme Station F ou Inria, notre approche s'appuie sur une expertise éprouvée pour automatiser et optimiser les tâches administratives et commerciales. Nous proposons des services adaptés aux besoins spécifiques des TPE, PME et ETI de Brunoy.",
+  seoHook: "commerce détail & programmation informatique",
   ecosystemFr:
     "Brunoy, située en Île-de-France, bénéficie de la proximité d'acteurs économiques comme LVMH et BNP Paribas. Cet environnement économique dynamique offre des opportunités pour les entreprises locales souhaitant intégrer des solutions IA.",
   ecosystemEn:

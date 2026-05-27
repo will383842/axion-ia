@@ -12,6 +12,7 @@ export const LAGNIEU_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lagnieu (01). Nous accompagnons tous types d'activités : PME industrielles Bugey, agriculteurs vallée du Rhône, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lagnieu (01). Nous accompagnons tous types d'activités : PME industrielles Bugey, agriculteurs vallée du Rhône, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
+  seoHook: "industrielles bugey & agriculture vallée",
   ecosystemFr:
     "Lagnieu est positionnée dans le Bugey (Ain), vallée du Rhône. Tissu PME industrielles, agriculture vallée, TPE artisanat BTP, commerces de proximité.",
   ecosystemEn:

@@ -14,6 +14,7 @@ export const CAHORS_COPY: VilleCopy = {
     "À Cahors, Axion-IA propose des services adaptés aux besoins des entreprises locales. Avec des références comme Inria et Station F en France, nous offrons des audits, interventions et implémentations pour améliorer l'efficacité opérationnelle. Nos tarifs publics incluent l'Audit Flash à partir de 490 € HT et l'Intervention Essentielle dès 590 € HT.",
   directAnswerEn:
     "À Cahors, Axion-IA propose des services adaptés aux besoins des entreprises locales. Avec des références comme Inria et Station F en France, nous offrons des audits, interventions et implémentations pour améliorer l'efficacité opérationnelle. Nos tarifs publics incluent l'Audit Flash à partir de 490 € HT et l'Intervention Essentielle dès 590 € HT.",
+  seoHook: "commerce détail & restauration",
   ecosystemFr:
     "Le tissu économique de Cahors est marqué par des secteurs comme le commerce de détail et la construction. En France, des pôles comme Cap Digital et Station F illustrent l'importance de l'innovation. Les entreprises de Cahors peuvent bénéficier de notre expertise nationale pour se développer.",
   ecosystemEn:

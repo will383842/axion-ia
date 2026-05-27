@@ -14,6 +14,7 @@ export const HAZEBROUCK_COPY: VilleCopy = {
     "À Hazebrouck, Axion-IA propose des solutions IA adaptées aux secteurs dominants tels que le commerce de détail et les transports terrestres. Notre approche se base sur des interventions sur site, avec des références comme Cap Digital et Inria, pour répondre aux besoins spécifiques des entreprises locales. Nous offrons des audits, interventions et formations pour améliorer vos opérations.",
   directAnswerEn:
     "À Hazebrouck, Axion-IA propose des solutions IA adaptées aux secteurs dominants tels que le commerce de détail et les transports terrestres. Notre approche se base sur des interventions sur site, avec des références comme Cap Digital et Inria, pour répondre aux besoins spécifiques des entreprises locales. Nous offrons des audits, interventions et formations pour améliorer vos opérations.",
+  seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Hazebrouck, avec ses 2 000 établissements actifs, est un centre économique où le commerce de détail et les transports terrestres prédominent. Les entreprises locales bénéficient de la proximité de pôles comme Cap Digital et Inria pour stimuler l'innovation.",
   ecosystemEn:

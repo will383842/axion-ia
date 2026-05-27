@@ -12,6 +12,7 @@ export const AUREC_SUR_LOIRE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aurec-sur-Loire (43). Nous accompagnons tous types d'activités : PME industrielles nord Haute-Loire, agriculteurs montagne, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aurec-sur-Loire (43). Nous accompagnons tous types d'activités : PME industrielles nord Haute-Loire, agriculteurs montagne, TPE artisans BTP, commerçants et services aux entreprises.",
+  seoHook: "industrielles nord & agriculture montagne",
   ecosystemFr:
     "Aurec-sur-Loire est dans le nord Haute-Loire, gorges de la Loire. PME industrielles, agriculture montagne, TPE artisanat BTP, commerces.",
   ecosystemEn:

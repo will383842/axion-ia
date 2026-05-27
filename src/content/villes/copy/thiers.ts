@@ -12,6 +12,7 @@ export const THIERS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thiers (63). Nous accompagnons TPE et PME : couteliers et métallurgistes, artisans couteliers indépendants, acteurs tourisme industriel (vallée des usines), commerçants et prestataires de services.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thiers (63). Nous accompagnons TPE et PME : couteliers et métallurgistes, artisans couteliers indépendants, acteurs tourisme industriel (vallée des usines), commerçants et prestataires de services.",
+  seoHook: "coutellerie couteaux & métallurgie fine",
   ecosystemFr:
     "Thiers est la capitale mondiale de la coutellerie, sous-préfecture du Puy-de-Dôme. Plus de 100 entreprises coutelières, métallurgie fine, TPE artisans couteliers, tourisme industriel (vallée des usines classée), commerces centre-ville historique.",
   ecosystemEn:

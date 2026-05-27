@@ -14,6 +14,7 @@ export const SARTROUVILLE_COPY: VilleCopy = {
     "Axion-IA se déplace à Sartrouville pour aider les entreprises locales à intégrer l'IA dans leurs opérations. En tant que cabinet national, nous nous inspirons de l'écosystème parisien, qui comprend des acteurs comme Inria et LVMH, pour offrir des solutions adaptées aux besoins spécifiques des entreprises de la région. Nos interventions visent à améliorer l'efficacité opérationnelle des entreprises de Sartrouville.",
   directAnswerEn:
     "Axion-IA se déplace à Sartrouville pour aider les entreprises locales à intégrer l'IA dans leurs opérations. En tant que cabinet national, nous nous inspirons de l'écosystème parisien, qui comprend des acteurs comme Inria et LVMH, pour offrir des solutions adaptées aux besoins spécifiques des entreprises de la région. Nos interventions visent à améliorer l'efficacité opérationnelle des entreprises de Sartrouville.",
+  seoHook: "commerce détail & construction",
   ecosystemFr:
     "Sartrouville, avec ses secteurs dominants du commerce de détail et de la construction, bénéficie de l'influence économique de Paris. Des entreprises comme LVMH et BNP Paribas, présentes dans la région, illustrent l'importance du tissu économique local.",
   ecosystemEn:

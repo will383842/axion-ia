@@ -12,6 +12,7 @@ export const NOGENT_LE_ROTROU_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nogent-le-Rotrou (28). Nous accompagnons tous types d'activités : PME industrielles mécanique/métallurgie, TPE artisans, commerçants du centre-ville, exploitants agricoles du Perche, agroalimentaire et services aux entreprises de la sous-préfecture.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nogent-le-Rotrou (28). Nous accompagnons tous types d'activités : PME industrielles mécanique/métallurgie, TPE artisans, commerçants du centre-ville, exploitants agricoles du Perche, agroalimentaire et services aux entreprises de la sous-préfecture.",
+  seoHook: "industrie mécanique & agroalimentaire perche",
   ecosystemFr:
     "Nogent-le-Rotrou est la sous-préfecture d'Eure-et-Loir et la capitale historique du Perche, dominée par le château Saint-Jean (XIe siècle). L'économie locale repose sur l'industrie mécanique (sous-traitance automobile, métallurgie), l'agroalimentaire, l'artisanat BTP, les commerces de centre-ville et les exploitations agricoles percheronnes.",
   ecosystemEn:

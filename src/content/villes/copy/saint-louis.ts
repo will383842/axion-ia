@@ -14,6 +14,7 @@ export const SAINT_LOUIS_COPY: VilleCopy = {
     "À Saint-Louis, Axion-IA accompagne les entreprises dans l'optimisation de leurs processus grâce à l'IA. Avec la présence de grands groupes comme Novartis et Syngenta, la ville offre un environnement propice à l'innovation. Nous proposons des audits, interventions et implémentations sur site pour répondre aux besoins spécifiques des entreprises locales.",
   directAnswerEn:
     "À Saint-Louis, Axion-IA accompagne les entreprises dans l'optimisation de leurs processus grâce à l'IA. Avec la présence de grands groupes comme Novartis et Syngenta, la ville offre un environnement propice à l'innovation. Nous proposons des audits, interventions et implémentations sur site pour répondre aux besoins spécifiques des entreprises locales.",
+  seoHook: "commerce gros & transports terrestres",
   ecosystemFr:
     "Saint-Louis accueille des entreprises telles que Novartis et Syngenta, renforçant son secteur de la recherche-développement. L'Eurozone Saint-Louis constitue un pôle d'activité économique majeur.",
   ecosystemEn:

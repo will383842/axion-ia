@@ -12,6 +12,7 @@ export const COURNON_D_AUVERGNE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cournon-d'Auvergne (63). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Clermont Auvergne Métropole, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cournon-d'Auvergne (63). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Clermont Auvergne Métropole, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
+  seoHook: "tertiaires clermont & zones d'activités",
   ecosystemFr:
     "Cournon-d'Auvergne est en banlieue sud de Clermont-Ferrand, Clermont Auvergne Métropole. Zones d'activités majeures, zénith d'Auvergne. PME tertiaires/industrielles, TPE artisanat BTP, commerces.",
   ecosystemEn:

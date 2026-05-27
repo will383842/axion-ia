@@ -12,6 +12,7 @@ export const TREILLIERES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Treillières (44). Nous accompagnons tous types d'activités : TPE services et artisans, PME tertiaires de la zone RN137, professions libérales, commerçants, entreprises de la couronne nord nantaise et services aux entreprises de Nantes Métropole.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Treillières (44). Nous accompagnons tous types d'activités : TPE services et artisans, PME tertiaires de la zone RN137, professions libérales, commerçants, entreprises de la couronne nord nantaise et services aux entreprises de Nantes Métropole.",
+  seoHook: "services conseil & tertiaires axe",
   ecosystemFr:
     "Treillières est une commune de la couronne nord de Nantes Métropole, sur l'axe RN137 Nantes-Rennes. Proximité immédiate de la Chapelle-sur-Erdre et des zones d'activités nord nantaises (La Fleuriaye, Grandchamp-des-Fontaines). Tissu TPE services, PME tertiaires/conseil, professions libérales, artisanat, commerces de proximité. Cadre semi-rural préservé malgré la croissance démographique.",
   ecosystemEn:

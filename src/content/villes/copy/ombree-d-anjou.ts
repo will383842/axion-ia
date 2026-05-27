@@ -12,6 +12,7 @@ export const OMBREE_D_ANJOU_COPY: VilleCopy = {
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Ombrée d'Anjou (49). Nous accompagnons les TPE, PME et exploitants agricoles de l'Anjou bleu dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
   directAnswerEn:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Ombrée d'Anjou (49). Nous accompagnons les TPE, PME et exploitants agricoles de l'Anjou bleu dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
+  seoHook: "agriculture élevage & artisanat second",
   ecosystemFr:
     "Ombrée d'Anjou est issue de la fusion de 7 communes déléguées dans l'Anjou bleu, territoire rural marqué par l'agriculture (polyculture-élevage, production laitière), l'artisanat du bâtiment, les PME agroalimentaires et les commerces de bourg. Ancienne activité ardoisière et minière (Pouancé).",
   ecosystemEn:

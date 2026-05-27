@@ -12,6 +12,7 @@ export const CAUSSADE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Caussade (82). Nous accompagnons TPE artisans, PME agroalimentaires et industrielles, commerçants, exploitants agricoles et professions libérales du Quercy blanc. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Caussade (82). Nous accompagnons TPE artisans, PME agroalimentaires et industrielles, commerçants, exploitants agricoles et professions libérales du Quercy blanc. Audit Flash dès 490 € HT.",
+  seoHook: "agriculture melon & commerce détail",
   ecosystemFr:
     "Caussade (6 803 hab) est la capitale historique de la chapellerie de paille, en Quercy blanc. Économie diversifiée : agriculture (melon, lavande, élevage), agroalimentaire, chapellerie résiduelle et artisanat, commerces de bourg, services et professions libérales. Sur l'axe A20 Montauban-Cahors. Proximité Montauban (25 min), Cahors (40 min).",
   ecosystemEn:

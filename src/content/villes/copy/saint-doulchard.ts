@@ -12,6 +12,7 @@ export const SAINT_DOULCHARD_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Doulchard (18). Nous accompagnons TPE artisans, PME tertiaires des zones d'activités, commerces, acteurs logistique et toutes les activités de l'agglomération nord de Bourges. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Doulchard (18). Nous accompagnons TPE artisans, PME tertiaires des zones d'activités, commerces, acteurs logistique et toutes les activités de l'agglomération nord de Bourges. Audit Flash dès 490 € HT.",
+  seoHook: "zones d'activités & tertiaires services",
   ecosystemFr:
     "Saint-Doulchard est la principale commune périurbaine nord de Bourges, avec des zones d'activités commerciales et tertiaires majeures. Tissu de TPE artisans, PME tertiaires et de services, grandes surfaces, logistique, professions libérales. Dynamique agglo Bourges Plus.",
   ecosystemEn:

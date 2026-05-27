@@ -14,6 +14,7 @@ export const SAINT_GRATIEN_COPY: VilleCopy = {
     "Axion-IA se déplace à Saint-Gratien pour accompagner les entreprises locales dans l'intégration de l'IA. Nos interventions ciblent des secteurs variés, du commerce de détail à la santé humaine. Nous proposons des audits dès 490 € HT et des implémentations à partir de 990 € HT. Des entités comme Cap Digital et Station F illustrent le dynamisme de l'écosystème francilien.",
   directAnswerEn:
     "Axion-IA se déplace à Saint-Gratien pour accompagner les entreprises locales dans l'intégration de l'IA. Nos interventions ciblent des secteurs variés, du commerce de détail à la santé humaine. Nous proposons des audits dès 490 € HT et des implémentations à partir de 990 € HT. Des entités comme Cap Digital et Station F illustrent le dynamisme de l'écosystème francilien.",
+  seoHook: "commerce détail & restauration",
   ecosystemFr:
     "Saint-Gratien fait partie d'un bassin économique actif avec des communes voisines comme Argenteuil et Enghien-les-Bains. L'écosystème local est enrichi par la proximité de grands acteurs tels que Sanofi et BNP Paribas.",
   ecosystemEn:

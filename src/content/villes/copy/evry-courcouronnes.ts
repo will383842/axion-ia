@@ -14,6 +14,7 @@ export const EVRY_COURCOURONNES_COPY: VilleCopy = {
     "À Évry-Courcouronnes, Axion-IA propose des interventions IA sur site pour optimiser les processus métiers. Avec des acteurs économiques tels qu'Arianespace et le Parc d'activités du Bois Briard, nous aidons les entreprises à automatiser leurs tâches administratives et à améliorer leur efficacité opérationnelle. Nos services incluent des audits, des implémentations et des formations, avec des tarifs publics consultables.",
   directAnswerEn:
     "À Évry-Courcouronnes, Axion-IA propose des interventions IA sur site pour optimiser les processus métiers. Avec des acteurs économiques tels qu'Arianespace et le Parc d'activités du Bois Briard, nous aidons les entreprises à automatiser leurs tâches administratives et à améliorer leur efficacité opérationnelle. Nos services incluent des audits, des implémentations et des formations, avec des tarifs publics consultables.",
+  seoHook: "commerce détail & programmation informatique",
   ecosystemFr:
     "Évry-Courcouronnes est un pôle économique avec des entreprises comme Safran Aircraft Engines et des institutions académiques telles que l'Université d'Évry-Val d'Essonne. Cet environnement favorise l'innovation et la recherche, notamment dans les secteurs de la programmation informatique et de la santé.",
   ecosystemEn:

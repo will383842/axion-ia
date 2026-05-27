@@ -14,6 +14,7 @@ export const CHILLY_MAZARIN_COPY: VilleCopy = {
     "À Chilly-Mazarin, Axion-IA propose des interventions sur site pour optimiser les processus métiers. Avec des entreprises telles que Geodis et DHL dans le secteur des transports, nous aidons à automatiser les tâches administratives et à améliorer l'efficacité opérationnelle. Nos services incluent des audits à partir de 490 € HT et des interventions dès 590 € HT.",
   directAnswerEn:
     "À Chilly-Mazarin, Axion-IA propose des interventions sur site pour optimiser les processus métiers. Avec des entreprises telles que Geodis et DHL dans le secteur des transports, nous aidons à automatiser les tâches administratives et à améliorer l'efficacité opérationnelle. Nos services incluent des audits à partir de 490 € HT et des interventions dès 590 € HT.",
+  seoHook: "entreposage & commerce gros",
   ecosystemFr:
     "Chilly-Mazarin est un hub logistique avec Geodis et DHL. La ZAC des Champs accueille de nombreuses entreprises, renforçant le secteur du commerce de gros.",
   ecosystemEn:

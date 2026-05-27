@@ -12,6 +12,7 @@ export const VAISON_LA_ROMAINE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vaison-la-Romaine (84). Nous accompagnons tous types d'activités : TPE artisans et commerces, domaines viticoles Cairanne et Côtes-du-Rhône, PME agroalimentaires, hébergements touristiques et services du Haut-Vaucluse. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vaison-la-Romaine (84). Nous accompagnons tous types d'activités : TPE artisans et commerces, domaines viticoles Cairanne et Côtes-du-Rhône, PME agroalimentaires, hébergements touristiques et services du Haut-Vaucluse. Audit Flash dès 490 € HT.",
+  seoHook: "viticulture cairanne & tourisme patrimonial",
   ecosystemFr:
     "Vaison-la-Romaine est un pôle patrimonial et viticole du Haut-Vaucluse, au nord du Mont Ventoux. Site romain et pont antique, vignoble Cairanne, Rasteau et Côtes-du-Rhône Villages, tourisme culturel international. Tissu de TPE artisans, domaines viticoles, PME agroalimentaires, hébergements et restaurants. Orange à 30 min, Avignon à 50 min.",
   ecosystemEn:

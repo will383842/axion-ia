@@ -14,6 +14,7 @@ export const CAGNES_SUR_MER_COPY: VilleCopy = {
     "Axion-IA se déplace à Cagnes-sur-Mer pour offrir des services d'IA opérationnelle adaptés aux besoins des entreprises locales. Avec l'influence de Cap Digital et Station F à Paris, nous fournissons des audits, interventions, et implémentations sur site pour optimiser vos processus. Nos services incluent également des sessions 1-to-1 pour dirigeants, garantissant une intégration fluide de l'IA dans votre organisation.",
   directAnswerEn:
     "Axion-IA se déplace à Cagnes-sur-Mer pour offrir des services d'IA opérationnelle adaptés aux besoins des entreprises locales. Avec l'influence de Cap Digital et Station F à Paris, nous fournissons des audits, interventions, et implémentations sur site pour optimiser vos processus. Nos services incluent également des sessions 1-to-1 pour dirigeants, garantissant une intégration fluide de l'IA dans votre organisation.",
+  seoHook: "commerce détail & construction",
   ecosystemFr:
     "Cagnes-sur-Mer bénéficie d'un tissu économique diversifié avec des secteurs tels que le commerce de détail et la construction. À proximité, Nice et Antibes abritent des entreprises dynamiques qui profitent de l'accès à l'aéroport Nice Côte d'Azur.",
   ecosystemEn:

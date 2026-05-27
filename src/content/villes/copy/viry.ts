@@ -12,6 +12,7 @@ export const VIRY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Viry (74). Nous accompagnons tous types d'activités : TPE artisans, PME de services transfrontaliers, commerçants, indépendants, professions libérales et prestataires BtoB du Grand Genève côté français.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Viry (74). Nous accompagnons tous types d'activités : TPE artisans, PME de services transfrontaliers, commerçants, indépendants, professions libérales et prestataires BtoB du Grand Genève côté français.",
+  seoHook: "services conseil & artisanat maintenance",
   ecosystemFr:
     "Viry est une commune frontalière du Grand Genève en Haute-Savoie, à quelques minutes de la douane suisse. Économie dynamique portée par la proximité genevoise : TPE artisans BTP, PME de services et conseil, commerces, professions libérales et prestataires au croisement des marchés français et suisse.",
   ecosystemEn:

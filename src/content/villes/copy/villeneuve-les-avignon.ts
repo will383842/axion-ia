@@ -12,6 +12,7 @@ export const VILLENEUVE_LES_AVIGNON_COPY: VilleCopy = {
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Villeneuve-lès-Avignon (30). Nous accompagnons les TPE, PME et ETI locales : professions libérales, entreprises de services, commerçants, artisans, acteurs culturels et touristiques du Grand Avignon rive droite. Audit Flash à partir de 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Villeneuve-lès-Avignon (30). Nous accompagnons les TPE, PME et ETI locales : professions libérales, entreprises de services, commerçants, artisans, acteurs culturels et touristiques du Grand Avignon rive droite. Audit Flash à partir de 490 € HT.",
+  seoHook: "professions libérales & tourisme culturel",
   ecosystemFr:
     "Villeneuve-lès-Avignon (~13 100 hab) est une commune résidentielle premium face au palais des Papes d'Avignon. Services aux entreprises, professions libérales (santé, droit, conseil), commerces, artisanat, tourisme culturel (chartreuse, fort Saint-André, festival d'Avignon). Proximité immédiate du bassin d'emploi Grand Avignon.",
   ecosystemEn:

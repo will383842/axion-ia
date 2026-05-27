@@ -12,6 +12,7 @@ export const IGNY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Igny (91). Nous accompagnons TPE et PME : professions libérales, cabinets conseil et ingénierie proches du plateau de Saclay, commerces vallée de la Bièvre, artisans, indépendants et services aux entreprises du nord-Essonne. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Igny (91). Nous accompagnons TPE et PME : professions libérales, cabinets conseil et ingénierie proches du plateau de Saclay, commerces vallée de la Bièvre, artisans, indépendants et services aux entreprises du nord-Essonne. Audit Flash dès 490 € HT.",
+  seoHook: "conseil ingénierie & services aux",
   ecosystemFr:
     "Igny est une commune résidentielle du nord de l'Essonne, nichée dans la vallée de la Bièvre. Sa proximité avec le plateau de Saclay (Paris-Saclay, HEC, CentraleSupélec, CEA) irrigue un tissu de TPE services, professions libérales, cabinets conseil et ingénierie. Commerces de proximité, artisans BTP, services à la personne.",
   ecosystemEn:

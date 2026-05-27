@@ -12,6 +12,7 @@ export const SAINT_GERMAIN_LES_ARPAJON_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Germain-lès-Arpajon (91). Nous accompagnons TPE et PME : artisans, commerçants de proximité, PME services aux entreprises, professions libérales, restaurateurs et prestataires du Hurepoix. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Germain-lès-Arpajon (91). Nous accompagnons TPE et PME : artisans, commerçants de proximité, PME services aux entreprises, professions libérales, restaurateurs et prestataires du Hurepoix. Audit Flash dès 490 € HT.",
+  seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Saint-Germain-lès-Arpajon est une commune résidentielle du Hurepoix essonnien, limitrophe d'Arpajon (sous-préfecture). Axe N20 et proximité RER C favorisent l'accessibilité vers Paris et Évry. Tissu TPE artisanat BTP, commerces de proximité, PME services, professions libérales, restauration.",
   ecosystemEn:

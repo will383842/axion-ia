@@ -12,6 +12,7 @@ export const SANTES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Santes (59). Nous accompagnons TPE et PME : prestataires de services B2B du sud lillois, artisans, commerçants, professions libérales et PME logistiques du canal de la Deûle.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Santes (59). Nous accompagnons TPE et PME : prestataires de services B2B du sud lillois, artisans, commerçants, professions libérales et PME logistiques du canal de la Deûle.",
+  seoHook: "services aux & artisanat bâtiment",
   ecosystemFr:
     "Santes est une commune résidentielle du sud de la Métropole Européenne de Lille, entre Haubourdin et Wavrin, à proximité du canal de la Deûle. L'économie locale combine TPE et PME de services aux entreprises (conseil, informatique, gestion), artisanat du bâtiment, commerces de proximité, professions libérales et activités logistiques (canal de la Deûle, proximité zones d'activités Lomme-Englos et Seclin). Cadre périurbain recherché par les dirigeants lillois installés en sud métropole.",
   ecosystemEn:

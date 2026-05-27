@@ -12,6 +12,7 @@ export const HAUTE_GOULAINE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Haute-Goulaine (44). Nous accompagnons tous types d'activités : TPE viticulteurs et artisans du Muscadet, PME tertiaires, commerces de proximité, professions libérales et restauration de l'est nantais.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Haute-Goulaine (44). Nous accompagnons tous types d'activités : TPE viticulteurs et artisans du Muscadet, PME tertiaires, commerces de proximité, professions libérales et restauration de l'est nantais.",
+  seoHook: "viticulture muscadet & tertiaires services",
   ecosystemFr:
     "Haute-Goulaine est une commune résidentielle et viticole à l'est de Nantes. Château classé, vignoble Muscadet, marais de Goulaine. Tissu TPE viticulteurs, artisans, commerçants, PME tertiaires, professions libérales et restauration. Cadre patrimonial et viticole attractif.",
   ecosystemEn:

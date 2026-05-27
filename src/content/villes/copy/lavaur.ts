@@ -12,6 +12,7 @@ export const LAVAUR_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lavaur (81). Nous accompagnons TPE artisans, PME de services, commerçants, exploitants agricoles et professions libérales du Vaurais. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lavaur (81). Nous accompagnons TPE artisans, PME de services, commerçants, exploitants agricoles et professions libérales du Vaurais. Audit Flash dès 490 € HT.",
+  seoHook: "commerce détail & agriculture grandes",
   ecosystemFr:
     "Lavaur (10 965 hab) est la sous-préfecture du Tarn et le pôle économique du pays vauréen, sur les bords de l'Agout. Économie de services, commerces de centre-ville, agriculture (grandes cultures, élevage), artisanat du bâtiment. Proximité Toulouse (45 min A68), carrefour entre Albi, Castres et Toulouse. Zone d'activités de la Cavalière.",
   ecosystemEn:

@@ -14,6 +14,7 @@ export const VINCENNES_COPY: VilleCopy = {
     "Axion-IA intervient à Vincennes pour accompagner les entreprises dans l'automatisation de leurs processus. Avec des acteurs économiques tels que LVMH et BNP Paribas présents dans la région, Vincennes bénéficie d'un environnement favorable à l'innovation. Nos services incluent des audits, des implémentations et des formations, adaptés aux besoins des TPE, PME et ETI locales.",
   directAnswerEn:
     "Axion-IA intervient à Vincennes pour accompagner les entreprises dans l'automatisation de leurs processus. Avec des acteurs économiques tels que LVMH et BNP Paribas présents dans la région, Vincennes bénéficie d'un environnement favorable à l'innovation. Nos services incluent des audits, des implémentations et des formations, adaptés aux besoins des TPE, PME et ETI locales.",
+  seoHook: "commerce détail & programmation informatique",
   ecosystemFr:
     "Le tissu économique de Vincennes inclut des secteurs comme le commerce de détail et la programmation informatique. Des entreprises telles que LVMH et BNP Paribas enrichissent cet écosystème diversifié.",
   ecosystemEn:

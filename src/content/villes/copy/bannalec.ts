@@ -12,6 +12,7 @@ export const BANNALEC_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bannalec (29). Nous accompagnons tous types d'activités : TPE agricoles et éleveurs, PME agroalimentaires (volailles, transformation), artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de l'Est Cornouaille / Quimperlé.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bannalec (29). Nous accompagnons tous types d'activités : TPE agricoles et éleveurs, PME agroalimentaires (volailles, transformation), artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de l'Est Cornouaille / Quimperlé.",
+  seoHook: "agriculture élevage & agroalimentaire",
   ecosystemFr:
     "Bannalec est un bourg rural de l'est Cornouaille, entre Quimperlé (15 min) et Rosporden (15 min), intégré à Quimperlé Communauté. Forte vocation agricole (élevage avicole, bovin, polyculture), tissu PME agroalimentaires (transformation volailles, abattoirs, conditionnement), artisanat BTP, commerces et services. Axe routier Quimper-Lorient (RN165) à proximité.",
   ecosystemEn:

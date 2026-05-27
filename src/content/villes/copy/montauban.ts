@@ -14,6 +14,7 @@ export const MONTAUBAN_COPY: VilleCopy = {
     "À Montauban, Axion-IA propose des interventions sur site pour les entreprises cherchant à intégrer l'IA dans leurs processus. Avec des secteurs dominants tels que le Commerce de détail et la Construction, nous offrons des solutions adaptées aux besoins locaux. Notre équipe se déplace pour réaliser des audits, implémentations et formations, garantissant un retour sur investissement mesurable.",
   directAnswerEn:
     "À Montauban, Axion-IA propose des interventions sur site pour les entreprises cherchant à intégrer l'IA dans leurs processus. Avec des secteurs dominants tels que le Commerce de détail et la Construction, nous offrons des solutions adaptées aux besoins locaux. Notre équipe se déplace pour réaliser des audits, implémentations et formations, garantissant un retour sur investissement mesurable.",
+  seoHook: "commerce détail & construction",
   ecosystemFr:
     "Montauban, avec sa Zone Albasud, est un pôle économique dynamique. Les entreprises locales bénéficient de la proximité de la Gare de Toulouse-Matabiau et de l'Aéroport de Toulouse-Blagnac, facilitant les échanges et les interventions sur site.",
   ecosystemEn:

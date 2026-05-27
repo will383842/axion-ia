@@ -12,6 +12,7 @@ export const SURY_LE_COMTAL_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sury-le-Comtal (42). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Loire Forez Agglo, TPE artisans BTP, commerçants, agriculteurs plaine Forez, indépendants et services aux entreprises foréziennes.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sury-le-Comtal (42). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Loire Forez Agglo, TPE artisans BTP, commerçants, agriculteurs plaine Forez, indépendants et services aux entreprises foréziennes.",
+  seoHook: "tertiaires loire & industrielles diversifiées",
   ecosystemFr:
     "Sury-le-Comtal est intégrée à Loire Forez Agglo, située dans la plaine du Forez entre Saint-Étienne et Montbrison. Tissu péri-urbain mixte : PME tertiaires et industrielles diversifiées, agriculture plaine Forez (cultures, élevages), TPE artisanat BTP, commerces et services.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const MER_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mer (41). Nous accompagnons TPE artisans, PME logistique et agroalimentaire, commerces et services. Audit Flash dès 490 € HT, démarrage sous 10 jours.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mer (41). Nous accompagnons TPE artisans, PME logistique et agroalimentaire, commerces et services. Audit Flash dès 490 € HT, démarrage sous 10 jours.",
+  seoHook: "logistique transport & agroalimentaire beauce",
   ecosystemFr:
     "Mer est situé entre Beauce et Val de Loire, le long de l'axe A10/RN152. Zones d'activités logistique et industrielles, PME agroalimentaire, entreprises de transport, TPE artisanat BTP et commerces de centre-bourg.",
   ecosystemEn:

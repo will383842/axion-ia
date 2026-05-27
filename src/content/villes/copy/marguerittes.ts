@@ -12,6 +12,7 @@ export const MARGUERITTES_COPY: VilleCopy = {
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Marguerittes (30). Nous accompagnons les TPE, PME et ETI locales : entreprises de services, commerçants, artisans BTP, professions libérales et agriculteurs de l'agglomération nîmoise nord. Audit Flash à partir de 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Marguerittes (30). Nous accompagnons les TPE, PME et ETI locales : entreprises de services, commerçants, artisans BTP, professions libérales et agriculteurs de l'agglomération nîmoise nord. Audit Flash à partir de 490 € HT.",
+  seoHook: "artisanat & agriculture méditerranéenne",
   ecosystemFr:
     "Marguerittes (~8 300 hab) est une commune résidentielle et dynamique de l'agglomération nîmoise nord. Zone d'activité économique, services aux entreprises, commerces, artisanat BTP, professions libérales et agriculture méditerranéenne (oliviers, vignes). Accès direct autoroute A9.",
   ecosystemEn:

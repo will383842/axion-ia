@@ -12,6 +12,7 @@ export const IZON_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Izon (33). Nous accompagnons TPE et PME du Libournais : vignerons, artisans BTP, commerçants, professions libérales et PME de services. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Izon (33). Nous accompagnons TPE et PME du Libournais : vignerons, artisans BTP, commerçants, professions libérales et PME de services. Audit Flash dès 490 € HT.",
+  seoHook: "viticulture bordelaise & services",
   ecosystemFr:
     "Izon est une commune résidentielle en croissance entre Bordeaux et Libourne. Vignoble bordelais, tissu TPE artisanat BTP dense, commerces de proximité et professions libérales. Accès A89 vers Bordeaux et Périgueux, proximité Libourne (10 min).",
   ecosystemEn:

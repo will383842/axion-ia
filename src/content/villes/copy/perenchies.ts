@@ -12,6 +12,7 @@ export const PERENCHIES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pérenchies (59). Nous accompagnons TPE et PME : commerçants de proximité, artisans, prestataires de services aux entreprises lilloises, PME résidentes de l'agglomération ouest et professions libérales.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pérenchies (59). Nous accompagnons TPE et PME : commerçants de proximité, artisans, prestataires de services aux entreprises lilloises, PME résidentes de l'agglomération ouest et professions libérales.",
+  seoHook: "artisanat local & services aux",
   ecosystemFr:
     "Pérenchies est une commune résidentielle de la première couronne lilloise ouest, intégrée à la Métropole Européenne de Lille (MEL). L'économie locale est portée par les commerces et services de proximité, l'artisanat, et les PME diffuses bénéficiant de l'attractivité métropolitaine. Sa position entre Lille, Armentières et la frontière belge en fait un point d'ancrage pour PME en lien avec le tissu transfrontalier franco-belge.",
   ecosystemEn:

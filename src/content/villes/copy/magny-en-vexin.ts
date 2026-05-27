@@ -12,6 +12,7 @@ export const MAGNY_EN_VEXIN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Magny-en-Vexin (95). Nous accompagnons TPE et PME : commerçants et artisans du bourg, PME agricoles et agroalimentaires du Vexin, professions libérales, restaurateurs, prestataires services à la personne Val-d'Oise nord-ouest. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Magny-en-Vexin (95). Nous accompagnons TPE et PME : commerçants et artisans du bourg, PME agricoles et agroalimentaires du Vexin, professions libérales, restaurateurs, prestataires services à la personne Val-d'Oise nord-ouest. Audit Flash dès 490 € HT.",
+  seoHook: "commerce détail & agricoles agroalimentaires",
   ecosystemFr:
     "Magny-en-Vexin est un bourg-centre du Vexin français, pôle de services et de commerces pour les communes rurales du nord-ouest du Val-d'Oise. Tissu TPE commerces et artisanat, PME agricoles et agroalimentaires, professions libérales, restauration, services à la personne.",
   ecosystemEn:

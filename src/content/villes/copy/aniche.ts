@@ -12,6 +12,7 @@ export const ANICHE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aniche (59). Nous accompagnons tous types d'activités : TPE artisans BTP du bassin minier reconverti, PME industrie verrière et services, commerçants, sous-traitants industriels et services aux entreprises de l'arrondissement de Douai dans le Nord.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aniche (59). Nous accompagnons tous types d'activités : TPE artisans BTP du bassin minier reconverti, PME industrie verrière et services, commerçants, sous-traitants industriels et services aux entreprises de l'arrondissement de Douai dans le Nord.",
+  seoHook: "artisanat & industrie verrière",
   ecosystemFr:
     "Aniche est positionnée entre Douai (15 min ouest) et Valenciennes (20 min est), au cœur du bassin minier Nord-Pas-de-Calais inscrit au patrimoine mondial UNESCO. Héritage industriel structuré autour de la verrerie (ancienne cristallerie d'Aniche) et reconversion post-mine. Tissu TPE/PME artisanat BTP, industrie, services, commerces de proximité, sous-traitance industrielle. Accès A21 et A2 vers Lille (40 min), Belgique frontalière proche.",
   ecosystemEn:

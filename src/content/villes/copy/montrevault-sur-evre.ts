@@ -12,6 +12,7 @@ export const MONTREVAULT_SUR_EVRE_COPY: VilleCopy = {
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Montrevault-sur-Èvre (49). Nous accompagnons les TPE, PME et exploitants agricoles des Mauges dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict.",
   directAnswerEn:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Montrevault-sur-Èvre (49). Nous accompagnons les TPE, PME et exploitants agricoles des Mauges dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict.",
+  seoHook: "agriculture élevage & artisanat second",
   ecosystemFr:
     "Montrevault-sur-Èvre est née de la fusion de 11 communes déléguées dans les Mauges. Territoire à dominante agricole (élevage bovin, polyculture) avec un tissu d'artisanat BTP, de PME industrielles (agroalimentaire, métallurgie) et de commerces de bourg. Proximité Beaupréau-en-Mauges et Cholet.",
   ecosystemEn:

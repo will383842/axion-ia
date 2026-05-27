@@ -14,6 +14,7 @@ export const LUNEL_COPY: VilleCopy = {
     "Axion-IA, cabinet IA opérationnel, propose des interventions à Lunel pour automatiser les tâches administratives et commerciales. L'écosystème économique de Lunel est marqué par 3 000 établissements actifs, principalement dans le commerce de détail et la construction. À Paris, des entités comme Cap Digital et Station F illustrent l'innovation que nous mettons en œuvre pour nos clients.",
   directAnswerEn:
     "Axion-IA, cabinet IA opérationnel, propose des interventions à Lunel pour automatiser les tâches administratives et commerciales. L'écosystème économique de Lunel est marqué par 3 000 établissements actifs, principalement dans le commerce de détail et la construction. À Paris, des entités comme Cap Digital et Station F illustrent l'innovation que nous mettons en œuvre pour nos clients.",
+  seoHook: "commerce détail & construction",
   ecosystemFr:
     "Lunel, avec ses 3 000 établissements actifs, est un centre économique où le commerce de détail et la construction prédominent. Cap Digital et Station F à Paris sont des exemples d'innovation que nous intégrons dans nos interventions.",
   ecosystemEn:

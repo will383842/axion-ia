@@ -12,6 +12,7 @@ export const VERNEUIL_SUR_SEINE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Verneuil-sur-Seine (78). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, professions libérales, commerçants de proximité, indépendants et entreprises de la boucle de Seine yvelinoise.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Verneuil-sur-Seine (78). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, professions libérales, commerçants de proximité, indépendants et entreprises de la boucle de Seine yvelinoise.",
+  seoHook: "services tertiaires & professions libérales",
   ecosystemFr:
     "Verneuil-sur-Seine est une commune résidentielle en bords de Seine, entre forêt de Verneuil et fleuve. Tissu économique à dominante tertiaire : TPE/PME services, professions libérales (santé, conseil, immobilier), commerces de centre-ville, artisans BTP. Proximité de Poissy (industrie automobile historique), Les Mureaux et Meulan-en-Yvelines. Accès Transilien vers Paris-Saint-Lazare.",
   ecosystemEn:

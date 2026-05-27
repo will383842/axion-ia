@@ -12,6 +12,7 @@ export const FONTENAY_LE_FLEURY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fontenay-le-Fleury (78). Nous accompagnons TPE et PME : commerçants et artisans du centre-bourg, PME services et conseil plaine de Versailles, professions libérales, restaurateurs, prestataires services à la personne. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fontenay-le-Fleury (78). Nous accompagnons TPE et PME : commerçants et artisans du centre-bourg, PME services et conseil plaine de Versailles, professions libérales, restaurateurs, prestataires services à la personne. Audit Flash dès 490 € HT.",
+  seoHook: "commerce détail & services conseil",
   ecosystemFr:
     "Fontenay-le-Fleury est une commune résidentielle des Yvelines dans la plaine de Versailles, à proximité de Vélizy-Villacoublay et du château de Versailles. Tissu TPE commerces et artisanat, PME services et conseil, professions libérales, restauration, services à la personne.",
   ecosystemEn:

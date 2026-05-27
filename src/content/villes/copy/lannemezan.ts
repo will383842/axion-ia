@@ -12,6 +12,7 @@ export const LANNEMEZAN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lannemezan (65). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires, commerçants du centre-ville, professions libérales, acteurs de l'agriculture et de l'élevage du plateau pyrénéen.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lannemezan (65). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires, commerçants du centre-ville, professions libérales, acteurs de l'agriculture et de l'élevage du plateau pyrénéen.",
+  seoHook: "agriculture élevage & agroalimentaire filière",
   ecosystemFr:
     "Lannemezan est une sous-préfecture des Hautes-Pyrénées, située sur le plateau de Lannemezan au piémont pyrénéen. Carrefour routier (N117, D817) entre Tarbes et Saint-Gaudens. Tissu TPE artisans BTP, PME agroalimentaires, commerces de proximité, services publics (sous-préfecture, hôpital), agriculture et élevage bovin piémont.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const AUBIGNAN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aubignan (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles, domaines viticoles AOC Ventoux, PME agroalimentaires, commerces et services du Comtat Venaissin. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aubignan (84). Nous accompagnons tous types d'activités : TPE artisans et exploitations agricoles, domaines viticoles AOC Ventoux, PME agroalimentaires, commerces et services du Comtat Venaissin. Audit Flash dès 490 € HT.",
+  seoHook: "viticulture ventoux & agriculture maraîchage",
   ecosystemFr:
     "Aubignan est un pôle agricole et viticole du Comtat Venaissin, en bordure ouest du Mont Ventoux. Vignoble AOC Ventoux, vergers et maraîchage, coopératives agricoles. Tissu de TPE artisans, domaines viticoles, PME agroalimentaires et commerces. Carpentras à 8 min, Avignon à 30 min.",
   ecosystemEn:

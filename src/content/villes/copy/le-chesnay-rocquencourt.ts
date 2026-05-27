@@ -12,6 +12,7 @@ export const LE_CHESNAY_ROCQUENCOURT_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Chesnay-Rocquencourt (78). Nous accompagnons les TPE et professions libérales (médecins, avocats, expert-comptables, conseil), les PME tertiaires chesnaysiennes et entreprises du bassin Versailles Grand Parc sur leurs cas IA opérationnels.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Chesnay-Rocquencourt (78). Nous accompagnons les TPE et professions libérales (médecins, avocats, expert-comptables, conseil), les PME tertiaires chesnaysiennes et entreprises du bassin Versailles Grand Parc sur leurs cas IA opérationnels.",
+  seoHook: "professions libérales & services aux",
   ecosystemFr:
     "Le Chesnay-Rocquencourt s'intègre à l'agglomération Versailles Grand Parc, l'un des bassins tertiaires les plus denses de l'ouest francilien. Concentration exceptionnelle de professions libérales (médecins, avocats, expertise-comptable, conseil), TPE/PME services aux entreprises, sièges d'entreprises de taille moyenne. Proximité immédiate Château de Versailles.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const ORNEX_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ornex (01). Nous accompagnons tous types d'activités : PME tertiaires pays de Gex, économie frontalière Genève, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ornex (01). Nous accompagnons tous types d'activités : PME tertiaires pays de Gex, économie frontalière Genève, TPE artisans BTP, commerçants et services aux entreprises.",
+  seoHook: "économie frontalière & tertiaires pays",
   ecosystemFr:
     "Ornex est dans le pays de Gex, proximité frontière suisse/Genève. Économie frontalière dynamique, PME tertiaires, TPE artisanat BTP, commerces.",
   ecosystemEn:

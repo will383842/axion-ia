@@ -12,6 +12,7 @@ export const L_ISLE_ADAM_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à L'Isle-Adam (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants du centre historique, PME tertiaires et de services, professions libérales, indépendants et entreprises du nord Val-d'Oise bords de l'Oise.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à L'Isle-Adam (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants du centre historique, PME tertiaires et de services, professions libérales, indépendants et entreprises du nord Val-d'Oise bords de l'Oise.",
+  seoHook: "artisanat services & commerce centre",
   ecosystemFr:
     "L'Isle-Adam est une commune résidentielle prisée en bords de l'Oise (nord Val-d'Oise), connue pour sa plage fluviale (la plus grande d'Île-de-France). Tissu TPE artisans, commerces de centre historique, PME tertiaires et de services, professions libérales. Cadre verdoyant attirant entrepreneurs et indépendants qualifiés.",
   ecosystemEn:

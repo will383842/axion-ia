@@ -12,6 +12,7 @@ export const FONTENAY_LE_COMTE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fontenay-le-Comte (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME sud-Vendée, professions libérales, acteurs du tourisme marais poitevin, administrations et services de proximité.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fontenay-le-Comte (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME sud-Vendée, professions libérales, acteurs du tourisme marais poitevin, administrations et services de proximité.",
+  seoHook: "commerce services & tourisme patrimoine",
   ecosystemFr:
     "Fontenay-le-Comte est la sous-préfecture sud de la Vendée, ville d'art et d'histoire Renaissance (« fontaine poétique » de Rabelais). Aux portes du marais poitevin. Pôle administratif, commercial et industriel sud-Vendée. La Rochelle à 50 min, Niort à 35 min, La Roche-sur-Yon à 45 min.",
   ecosystemEn:

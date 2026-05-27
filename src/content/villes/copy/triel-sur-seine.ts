@@ -12,6 +12,7 @@ export const TRIEL_SUR_SEINE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Triel-sur-Seine (78). Nous accompagnons TPE et PME : artisans et services de proximité, PME conseil et ingénierie, commerçants de centre-ville, professions libérales, restaurateurs. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Triel-sur-Seine (78). Nous accompagnons TPE et PME : artisans et services de proximité, PME conseil et ingénierie, commerçants de centre-ville, professions libérales, restaurateurs. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat & conseil ingénierie",
   ecosystemFr:
     "Triel-sur-Seine est une commune résidentielle des bords de Seine, entre Poissy et Meulan, à 35 km au nord-ouest de Paris. Tissu TPE artisanat et services, PME conseil et ingénierie, commerces de centre-ville, professions libérales, restauration.",
   ecosystemEn:

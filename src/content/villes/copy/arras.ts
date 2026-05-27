@@ -14,6 +14,7 @@ export const ARRAS_COPY: VilleCopy = {
     "À Arras, Axion-IA propose des audits et des interventions IA adaptés aux secteurs locaux tels que le commerce de détail et la santé humaine. Notre équipe se déplace sur site pour des services personnalisés. Faurecia et l'Université d'Artois illustrent la diversité économique de la région, où nous aidons à intégrer l'IA dans les processus métiers.",
   directAnswerEn:
     "À Arras, Axion-IA propose des audits et des interventions IA adaptés aux secteurs locaux tels que le commerce de détail et la santé humaine. Notre équipe se déplace sur site pour des services personnalisés. Faurecia et l'Université d'Artois illustrent la diversité économique de la région, où nous aidons à intégrer l'IA dans les processus métiers.",
+  seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Le tissu économique d'Arras est marqué par la présence de Faurecia et l'Université d'Artois, offrant un environnement propice à l'innovation. Axion-IA y accompagne les entreprises dans l'intégration de solutions IA.",
   ecosystemEn:

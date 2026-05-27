@@ -12,6 +12,7 @@ export const LENTILLY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lentilly (69). Nous accompagnons tous types d'activités : PME tertiaires NO lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la banlieue nord-ouest lyonnaise.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lentilly (69). Nous accompagnons tous types d'activités : PME tertiaires NO lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la banlieue nord-ouest lyonnaise.",
+  seoHook: "tertiaires lyonnais",
   ecosystemFr:
     "Lentilly est positionnée en banlieue NO de Lyon, aux portes des monts du Lyonnais est. Tissu péri-urbain résidentiel : PME tertiaires, professions libérales, TPE artisanat BTP, commerces de proximité.",
   ecosystemEn:

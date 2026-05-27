@@ -12,6 +12,7 @@ export const CORBAS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Corbas (69). Nous accompagnons tous types d'activités : opérateurs MIN de Lyon (marché de gros), PME logistiques et agroalimentaires, TPE artisans BTP, commerçants, indépendants et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Corbas (69). Nous accompagnons tous types d'activités : opérateurs MIN de Lyon (marché de gros), PME logistiques et agroalimentaires, TPE artisans BTP, commerçants, indépendants et services aux entreprises de la Métropole de Lyon.",
+  seoHook: "min lyon & logistiques agroalimentaires",
   ecosystemFr:
     "Corbas est intégrée à la Métropole de Lyon, en banlieue SE. Position stratégique : MIN de Lyon (Marché d'Intérêt National — marché de gros fruits/légumes/produits frais régional), zones logistiques majeures. Tissu PME logistiques et agroalimentaires, TPE artisanat BTP, commerces.",
   ecosystemEn:

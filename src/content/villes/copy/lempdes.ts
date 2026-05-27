@@ -12,6 +12,7 @@ export const LEMPDES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lempdes (63). Nous accompagnons TPE et PME : entreprises logistique aéroportuaire, PME industrielles et tertiaires des zones d'activités, artisans, commerçants et sociétés de services de l'est clermontois.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lempdes (63). Nous accompagnons TPE et PME : entreprises logistique aéroportuaire, PME industrielles et tertiaires des zones d'activités, artisans, commerçants et sociétés de services de l'est clermontois.",
+  seoHook: "logistique aéroportuaire & zones d'activités",
   ecosystemFr:
     "Lempdes bénéficie d'une localisation stratégique à l'est de Clermont-Ferrand, à proximité immédiate de l'aéroport Clermont-Ferrand Auvergne. La commune concentre des zones d'activités importantes avec logistique aéroportuaire, PME industrielles, sociétés tertiaires et bureaux. Tissu TPE artisanat actif, commerces de proximité. Accès rapide Pont-du-Château et Cournon-d'Auvergne.",
   ecosystemEn:

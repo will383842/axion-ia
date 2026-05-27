@@ -12,6 +12,7 @@ export const SAINT_CHRISTOL_LEZ_ALES_COPY: VilleCopy = {
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Saint-Christol-lez-Alès (30). Nous accompagnons les TPE, PME et ETI locales : entreprises industrielles, commerçants, artisans BTP, professions libérales et services aux entreprises du bassin alésien. Audit Flash à partir de 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Saint-Christol-lez-Alès (30). Nous accompagnons les TPE, PME et ETI locales : entreprises industrielles, commerçants, artisans BTP, professions libérales et services aux entreprises du bassin alésien. Audit Flash à partir de 490 € HT.",
+  seoHook: "commerce zone & artisanat",
   ecosystemFr:
     "Saint-Christol-lez-Alès (~7 300 hab) fait partie d'Alès Agglomération, aux portes des Cévennes. Zone commerciale dynamique, services aux entreprises, sous-traitance industrielle (héritage minier reconverti), artisanat BTP, professions libérales et commerces de proximité.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const CHATILLON_SUR_CHALARONNE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châtillon-sur-Chalaronne (01). Nous accompagnons tous types d'activités : acteurs tourisme patrimonial cité médiévale, agriculteurs/pisciculteurs Dombes, TPE artisans BTP, commerçants et services aux entreprises de la Dombes.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châtillon-sur-Chalaronne (01). Nous accompagnons tous types d'activités : acteurs tourisme patrimonial cité médiévale, agriculteurs/pisciculteurs Dombes, TPE artisans BTP, commerçants et services aux entreprises de la Dombes.",
+  seoHook: "tourisme patrimonial & pisciculture étangs",
   ecosystemFr:
     "Châtillon-sur-Chalaronne est une cité médiévale pittoresque de la Dombes (halles médiévales classées, château, centre historique). Tissu tourisme patrimonial, agriculture Dombes (pisciculture en étangs — tradition séculaire, volaille Bresse proche), TPE artisanat BTP, commerces.",
   ecosystemEn:

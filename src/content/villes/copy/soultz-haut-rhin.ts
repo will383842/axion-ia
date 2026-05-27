@@ -12,6 +12,7 @@ export const SOULTZ_HAUT_RHIN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Soultz-Haut-Rhin (68). Nous accompagnons tous types d'activités : TPE viticulture et artisanat, PME services et industrie légère, commerçants, professions libérales, restaurateurs et indépendants du Sud-Alsace. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Soultz-Haut-Rhin (68). Nous accompagnons tous types d'activités : TPE viticulture et artisanat, PME services et industrie légère, commerçants, professions libérales, restaurateurs et indépendants du Sud-Alsace. Audit Flash dès 490 € HT.",
+  seoHook: "viticulture caves & artisanat commerce",
   ecosystemFr:
     "Soultz-Haut-Rhin est un bourg historique du vignoble alsacien situé à 19 km au nord-ouest de Mulhouse, en Sud-Alsace. Son tissu économique mêle TPE viticulture et caves indépendantes, PME services et industrie légère, artisans, commerces de proximité, restaurateurs et professions libérales. Proximité directe avec Guebwiller, Mulhouse et Cernay.",
   ecosystemEn:

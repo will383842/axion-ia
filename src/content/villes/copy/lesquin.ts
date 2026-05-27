@@ -12,6 +12,7 @@ export const LESQUIN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lesquin (59). Nous accompagnons TPE et PME : logisticiens aéroportuaires et terrestres, transporteurs, prestataires de fret, hôteliers-restaurateurs de zone, commerces et services aux entreprises du pôle aéroportuaire lillois.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lesquin (59). Nous accompagnons TPE et PME : logisticiens aéroportuaires et terrestres, transporteurs, prestataires de fret, hôteliers-restaurateurs de zone, commerces et services aux entreprises du pôle aéroportuaire lillois.",
+  seoHook: "logistique aéroportuaire & transport routier",
   ecosystemFr:
     "Lesquin est une commune de la Métropole Européenne de Lille, connue pour abriter l'aéroport Lille-Lesquin (2e aéroport du nord de la France) et un pôle logistique majeur. L'économie locale gravite autour de la logistique aéroportuaire et terrestre, du fret, du transport routier, des services aux entreprises implantés en zones d'activité aéroportuaires, de l'hôtellerie-restauration liée au trafic voyageurs, et du commerce de zone. Tissu de TPE et PME spécialisées dans la supply chain régionale.",
   ecosystemEn:

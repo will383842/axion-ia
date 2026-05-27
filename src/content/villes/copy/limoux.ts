@@ -12,6 +12,7 @@ export const LIMOUX_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Limoux (11), sous-préfecture de l'Aude. Nous accompagnons TPE artisans, PME viticoles et caves (Blanquette, Crémant de Limoux), commerçants, agriculteurs et acteurs de l'oenotourisme du Limouxin. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Limoux (11), sous-préfecture de l'Aude. Nous accompagnons TPE artisans, PME viticoles et caves (Blanquette, Crémant de Limoux), commerçants, agriculteurs et acteurs de l'oenotourisme du Limouxin. Audit Flash dès 490 € HT.",
+  seoHook: "viticulture caves & oenotourisme tourisme",
   ecosystemFr:
     "Limoux est la sous-préfecture de l'Aude, ville médiévale de la haute vallée de l'Aude. L'économie est portée par la viticulture (Blanquette de Limoux, plus vieux brut du monde depuis 1531, Crémant de Limoux, AOC Limoux), les caves coopératives, l'oenotourisme, le carnaval historique (plus long du monde), l'artisanat et le commerce. Agriculture diversifiée (vigne, céréales, élevage).",
   ecosystemEn:

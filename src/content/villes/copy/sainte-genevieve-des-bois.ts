@@ -14,6 +14,7 @@ export const SAINTE_GENEVIEVE_DES_BOIS_COPY: VilleCopy = {
     "Axion-IA intervient à Sainte-Geneviève-des-Bois, où le tissu économique est marqué par Carrefour et le commerce de détail. Nous proposons des audits, interventions et implémentations sur site pour répondre aux besoins spécifiques des entreprises locales, en s'appuyant sur notre expertise nationale et des tarifs publics transparents.",
   directAnswerEn:
     "Axion-IA intervient à Sainte-Geneviève-des-Bois, où le tissu économique est marqué par Carrefour et le commerce de détail. Nous proposons des audits, interventions et implémentations sur site pour répondre aux besoins spécifiques des entreprises locales, en s'appuyant sur notre expertise nationale et des tarifs publics transparents.",
+  seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Sainte-Geneviève-des-Bois est un centre économique dynamique avec Carrefour et un secteur du commerce de détail florissant. Axion-IA accompagne les entreprises locales dans cette région en pleine croissance.",
   ecosystemEn:

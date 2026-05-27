@@ -12,6 +12,7 @@ export const VEDENE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vedène (84). Nous accompagnons TPE artisans, PME logistiques et négoces, commerces et professions libérales de l'est avignonnais. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vedène (84). Nous accompagnons TPE artisans, PME logistiques et négoces, commerces et professions libérales de l'est avignonnais. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat & logistique négoce",
   ecosystemFr:
     "Vedène est positionnée à l'est immédiat d'Avignon, dans l'agglomération du Grand Avignon. Son économie repose sur les zones d'activités (Cristole, Le Plan) accueillant PME logistiques, négoces et industries, les TPE artisans (BTP, services), les professions libérales et commerces de proximité. Bassin d'emploi connecté à Avignon TGV et au sillon rhodanien.",
   ecosystemEn:

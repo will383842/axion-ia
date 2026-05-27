@@ -12,6 +12,7 @@ export const WALLERS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wallers (59). Nous accompagnons TPE et PME : PME industrielles reconverties du bassin minier, acteurs du tourisme patrimonial et sportif (trouée d'Arenberg, Parc Scarpe-Escaut), artisans, commerçants et professions libérales.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wallers (59). Nous accompagnons TPE et PME : PME industrielles reconverties du bassin minier, acteurs du tourisme patrimonial et sportif (trouée d'Arenberg, Parc Scarpe-Escaut), artisans, commerçants et professions libérales.",
+  seoHook: "industrie reconvertie & tourisme patrimonial",
   ecosystemFr:
     "Wallers est une commune du Parc naturel régional Scarpe-Escaut, au cœur du bassin minier du Nord-Pas-de-Calais inscrit au patrimoine mondial UNESCO. Célèbre internationalement pour la trouée d'Arenberg du Paris-Roubaix, la commune attire un tourisme patrimonial et sportif. L'économie locale combine TPE et PME de services et industrie reconvertie (ancien site minier d'Arenberg reconverti en pôle culturel et numérique), artisanat, commerces de proximité et professions libérales. La proximité de Valenciennes (15 min) et Douai (20 min) irrigue le tissu économique.",
   ecosystemEn:

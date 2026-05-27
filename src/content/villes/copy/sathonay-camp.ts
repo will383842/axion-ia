@@ -12,6 +12,7 @@ export const SATHONAY_CAMP_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sathonay-Camp (69). Nous accompagnons tous types d'activités : PME tertiaires nord lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sathonay-Camp (69). Nous accompagnons tous types d'activités : PME tertiaires nord lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon.",
+  seoHook: "tertiaires nord",
   ecosystemFr:
     "Sathonay-Camp est intégrée à la Métropole de Lyon, en banlieue nord. Héritage d'un ancien camp militaire (reconversion urbaine contemporaine). Tissu péri-urbain : PME tertiaires, TPE artisanat BTP, commerces de proximité, professions libérales.",
   ecosystemEn:

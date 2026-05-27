@@ -12,6 +12,7 @@ export const GERZAT_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gerzat (63). Nous accompagnons TPE et PME : entreprises logistique et entreposage zone nord, PME industrielles, artisans BTP, commerçants de proximité, prestataires de services.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gerzat (63). Nous accompagnons TPE et PME : entreprises logistique et entreposage zone nord, PME industrielles, artisans BTP, commerçants de proximité, prestataires de services.",
+  seoHook: "logistique entreposage & industrielles",
   ecosystemFr:
     "Gerzat est une commune du nord-est de Clermont Auvergne Métropole, avec une zone d'activités logistique importante côté nord. Tissu logistique et entreposage, PME industrielles, TPE artisanat BTP, commerces de proximité, services aux entreprises.",
   ecosystemEn:

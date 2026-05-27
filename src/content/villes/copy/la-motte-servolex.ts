@@ -12,6 +12,7 @@ export const LA_MOTTE_SERVOLEX_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Motte-Servolex (73). Nous accompagnons TPE et PME de l'agglomération chambérienne : sociétés tertiaires des zones d'activités, professions libérales, artisans BTP, commerces, services aux entreprises et indépendants du bassin savoyard.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Motte-Servolex (73). Nous accompagnons TPE et PME de l'agglomération chambérienne : sociétés tertiaires des zones d'activités, professions libérales, artisans BTP, commerces, services aux entreprises et indépendants du bassin savoyard.",
+  seoHook: "tertiaires services & zones d'activités",
   ecosystemFr:
     "La Motte-Servolex est la 2e commune de l'agglomération de Chambéry (12 000 habitants). Pôle résidentiel dynamique, elle accueille plusieurs zones d'activités commerciales et tertiaires qui concentrent PME de services, professions libérales, TPE artisanat BTP et commerces. Proximité immédiate de Chambéry centre et accès rapide à l'aéroport Chambéry-Savoie.",
   ecosystemEn:

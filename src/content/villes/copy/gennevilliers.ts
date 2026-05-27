@@ -14,6 +14,7 @@ export const GENNEVILLIERS_COPY: VilleCopy = {
     "Gennevilliers, avec ses 5 000 établissements actifs, est un hub industriel clé en Île-de-France. Les grands groupes comme TotalEnergies et Safran y sont implantés, offrant un contexte propice à l'optimisation des processus via l'IA. Axion-IA se déplace pour accompagner ces entreprises dans leur transformation numérique.",
   directAnswerEn:
     "Gennevilliers, avec ses 5 000 établissements actifs, est un hub industriel clé en Île-de-France. Les grands groupes comme TotalEnergies et Safran y sont implantés, offrant un contexte propice à l'optimisation des processus via l'IA. Axion-IA se déplace pour accompagner ces entreprises dans leur transformation numérique.",
+  seoHook: "transports terrestres & commerce gros",
   ecosystemFr:
     "Le Port de Gennevilliers et la présence de Thales illustrent le dynamisme économique local. Axion-IA s'inscrit dans cet environnement pour proposer des solutions IA adaptées aux besoins des entreprises du secteur.",
   ecosystemEn:

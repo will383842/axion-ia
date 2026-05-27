@@ -12,6 +12,7 @@ export const BULLY_LES_MINES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bully-les-Mines (62). Nous accompagnons tous types d'activités : TPE artisans BTP et services du bassin minier, PME industrie reconvertie et sous-traitance, commerçants de proximité, professions libérales de l'agglomération Lens-Liévin.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bully-les-Mines (62). Nous accompagnons tous types d'activités : TPE artisans BTP et services du bassin minier, PME industrie reconvertie et sous-traitance, commerçants de proximité, professions libérales de l'agglomération Lens-Liévin.",
+  seoHook: "artisanat & industrie reconvertie",
   ecosystemFr:
     "Bully-les-Mines est intégrée à l'agglomération Lens-Liévin, dans le bassin minier reconverti inscrit au patrimoine mondial UNESCO. Tissu économique post-mine : TPE artisanat BTP, PME industrie reconvertie (sous-traitance, métallurgie légère), commerces de proximité, professions libérales. Proximité Lens (5 min) et Liévin (5 min). Accès A21 vers Lille (30 min).",
   ecosystemEn:

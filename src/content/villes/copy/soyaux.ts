@@ -12,6 +12,7 @@ export const SOYAUX_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Soyaux (16). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, prestataires de services, commerçants et indépendants de cette commune résidentielle stratégique de l'agglomération d'Angoulême.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Soyaux (16). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, prestataires de services, commerçants et indépendants de cette commune résidentielle stratégique de l'agglomération d'Angoulême.",
+  seoHook: "services aux & services personne",
   ecosystemFr:
     "Soyaux est la deuxième commune de l'agglomération GrandAngoulême, à caractère résidentiel avec un tissu économique de services. PME tertiaires, TPE artisans BTP, commerces de proximité, services à la personne, professions libérales. Proximité immédiate du centre d'Angoulême et de ses zones d'activités.",
   ecosystemEn:

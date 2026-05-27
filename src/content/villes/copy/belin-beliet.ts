@@ -12,6 +12,7 @@ export const BELIN_BELIET_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Belin-Béliet (33). Nous accompagnons TPE et PME de la forêt landaise : entreprises forestières, artisans BTP, commerçants, prestataires tourisme nature et professions libérales. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Belin-Béliet (33). Nous accompagnons TPE et PME de la forêt landaise : entreprises forestières, artisans BTP, commerçants, prestataires tourisme nature et professions libérales. Audit Flash dès 490 € HT.",
+  seoHook: "exploitation forestière & commerce bourg",
   ecosystemFr:
     "Belin-Béliet se situe en coeur de forêt landaise, à la jonction A63/A65. Exploitation forestière (pin maritime), artisanat BTP, commerces de bourg, tourisme nature (Leyre, canoë) et services à la personne. Noeud autoroutier vers Bordeaux, Bayonne et Pau.",
   ecosystemEn:

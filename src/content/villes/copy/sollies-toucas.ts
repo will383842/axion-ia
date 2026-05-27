@@ -12,6 +12,7 @@ export const SOLLIES_TOUCAS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Solliès-Toucas (83). Nous accompagnons TPE arboriculteurs, maraîchers, artisans et PME des services, du commerce et du BTP de la vallée du Gapeau. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Solliès-Toucas (83). Nous accompagnons TPE arboriculteurs, maraîchers, artisans et PME des services, du commerce et du BTP de la vallée du Gapeau. Audit Flash dès 490 € HT.",
+  seoHook: "arboriculture figue & maraîchage agriculture",
   ecosystemFr:
     "Solliès-Toucas est ancrée dans la vallée du Gapeau, capitale française de la figue (AOP Figue de Solliès). Économie agricole forte : arboriculture, maraîchage, viticulture. Bassin résidentiel de l'aire toulonnaise avec un tissu de TPE artisans, commerces de proximité et PME services et BTP de la périphérie nord de Toulon.",
   ecosystemEn:

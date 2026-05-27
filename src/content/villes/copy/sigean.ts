@@ -12,6 +12,7 @@ export const SIGEAN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sigean (11). Nous accompagnons TPE artisans, PME tourisme (Réserve Africaine), viticulteurs Corbières, commerçants, hôteliers-restaurateurs et professionnels du littoral audois. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sigean (11). Nous accompagnons TPE artisans, PME tourisme (Réserve Africaine), viticulteurs Corbières, commerçants, hôteliers-restaurateurs et professionnels du littoral audois. Audit Flash dès 490 € HT.",
+  seoHook: "tourisme animalier & viticulture corbières",
   ecosystemFr:
     "Sigean est une commune audoise réputée pour sa Réserve Africaine, parc animalier attirant plus de 300 000 visiteurs par an. Économie mixte : tourisme animalier et balnéaire (étang de Bages-Sigean, port de plaisance), viticulture AOC Corbières, ostréiculture, TPE artisans BTP, commerces de proximité, hôtellerie-restauration saisonnière.",
   ecosystemEn:

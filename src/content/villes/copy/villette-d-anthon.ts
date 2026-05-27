@@ -12,6 +12,7 @@ export const VILLETTE_D_ANTHON_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villette-d'Anthon (38). Nous accompagnons tous types d'activités : PME industrielles et logistiques aire Saint-Exupéry, TPE artisans BTP, commerçants, agriculteurs vallée du Rhône, indépendants, professions libérales et services aux entreprises du Nord-Isère.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villette-d'Anthon (38). Nous accompagnons tous types d'activités : PME industrielles et logistiques aire Saint-Exupéry, TPE artisans BTP, commerçants, agriculteurs vallée du Rhône, indépendants, professions libérales et services aux entreprises du Nord-Isère.",
+  seoHook: "logistique aire & industrie nord-isère",
   ecosystemFr:
     "Villette-d'Anthon est positionnée à la confluence Ain-Rhône, au cœur de l'aire d'attraction est de Lyon, à proximité immédiate de l'aéroport Lyon-Saint-Exupéry (10 min). Tissu PME industrielles et logistiques, agriculture vallée du Rhône, TPE artisans BTP, commerces de proximité, services aux entreprises. Position transitaire stratégique.",
   ecosystemEn:

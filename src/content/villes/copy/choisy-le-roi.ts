@@ -14,6 +14,7 @@ export const CHOISY_LE_ROI_COPY: VilleCopy = {
     "À Choisy-le-Roi, Axion-IA propose des interventions sur site pour optimiser les processus métiers. Avec des entreprises comme LVMH et BNP Paribas dans la région parisienne, nous comprenons les défis des entreprises locales. Nos services incluent des audits, des implémentations et des formations personnalisées pour répondre aux besoins spécifiques de chaque entreprise.",
   directAnswerEn:
     "À Choisy-le-Roi, Axion-IA propose des interventions sur site pour optimiser les processus métiers. Avec des entreprises comme LVMH et BNP Paribas dans la région parisienne, nous comprenons les défis des entreprises locales. Nos services incluent des audits, des implémentations et des formations personnalisées pour répondre aux besoins spécifiques de chaque entreprise.",
+  seoHook: "transports terrestres & commerce gros",
   ecosystemFr:
     "Choisy-le-Roi bénéficie de la proximité de pôles économiques comme Vitry-sur-Seine et Créteil. Avec des entreprises de renom telles que Sanofi et Renault dans la région, le tissu économique est diversifié et dynamique.",
   ecosystemEn:

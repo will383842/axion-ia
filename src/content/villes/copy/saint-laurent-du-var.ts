@@ -12,6 +12,7 @@ export const SAINT_LAURENT_DU_VAR_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Laurent-du-Var (06) sur la Côte d'Azur. Nous accompagnons les PME tertiaires niçoises, agences immobilières premium, acteurs du tourisme (hôtels, restauration), commerces et services aux entreprises sur leurs cas IA — diagnostic chiffré, démos terrain.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Laurent-du-Var (06) sur la Côte d'Azur. Nous accompagnons les PME tertiaires niçoises, agences immobilières premium, acteurs du tourisme (hôtels, restauration), commerces et services aux entreprises sur leurs cas IA — diagnostic chiffré, démos terrain.",
+  seoHook: "commerce détail & tourisme hôtellerie",
   ecosystemFr:
     "Saint-Laurent-du-Var concentre le tissu commercial et tertiaire ouest de Nice : centre commercial CAP3000 (le plus grand de France hors région parisienne), agences immobilières premium côte d'Azur, hôtels et restauration tourisme, PME services. Proximité immédiate aéroport Nice-Côte d'Azur (2e aéroport français hors Paris).",
   ecosystemEn:

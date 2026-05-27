@@ -12,6 +12,7 @@ export const TOUL_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Toul (54). Nous accompagnons tous types d'activités : TPE viticulteurs Côtes de Toul, PME agroalimentaires, artisans BTP, commerçants centre historique, professions libérales et acteurs du tourisme patrimonial.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Toul (54). Nous accompagnons tous types d'activités : TPE viticulteurs Côtes de Toul, PME agroalimentaires, artisans BTP, commerçants centre historique, professions libérales et acteurs du tourisme patrimonial.",
+  seoHook: "viticulture côtes & agroalimentaires",
   ecosystemFr:
     "Toul est une cité épiscopale historique en Meurthe-et-Moselle, connue pour sa cathédrale gothique Saint-Étienne et le vignoble Côtes de Toul AOC. Tissu TPE viticulteurs, PME agroalimentaires, artisans BTP, commerces de proximité et tourisme.",
   ecosystemEn:

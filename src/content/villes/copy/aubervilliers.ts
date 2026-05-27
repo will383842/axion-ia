@@ -14,6 +14,7 @@ export const AUBERVILLIERS_COPY: VilleCopy = {
     "À Aubervilliers, Axion-IA propose des interventions IA sur site pour les entreprises de tous secteurs, notamment le commerce de gros et la construction. Avec des acteurs économiques tels que Veolia et Saint-Gobain, nous aidons les entreprises à automatiser leurs processus et à améliorer leur efficacité opérationnelle.",
   directAnswerEn:
     "À Aubervilliers, Axion-IA propose des interventions IA sur site pour les entreprises de tous secteurs, notamment le commerce de gros et la construction. Avec des acteurs économiques tels que Veolia et Saint-Gobain, nous aidons les entreprises à automatiser leurs processus et à améliorer leur efficacité opérationnelle.",
+  seoHook: "commerce gros & construction",
   ecosystemFr:
     "Aubervilliers est un pôle économique avec des entreprises comme Veolia et Saint-Gobain. La ville bénéficie de la proximité de la ZAC Canal Porte d'Aubervilliers et de l'Université Paris 13, renforçant son attractivité pour les entreprises cherchant à innover.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const VIEUX_CONDE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vieux-Condé (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles, commerçants de proximité, professions libérales, indépendants et services aux entreprises du Valenciennois.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vieux-Condé (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles, commerçants de proximité, professions libérales, indépendants et services aux entreprises du Valenciennois.",
+  seoHook: "industrielles & logistique fluviale",
   ecosystemFr:
     "Vieux-Condé est intégrée à l'agglomération de Valenciennes, sur les bords de l'Escaut. Tissu péri-urbain frontalier : TPE artisanat BTP, PME industrielles (sous-traitance auto, métallurgie, logistique fluviale Escaut), commerces de proximité, professions libérales, échanges transfrontaliers belges.",
   ecosystemEn:

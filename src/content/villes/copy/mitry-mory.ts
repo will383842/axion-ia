@@ -14,6 +14,7 @@ export const MITRY_MORY_COPY: VilleCopy = {
     "À Mitry-Mory, Axion-IA déploie ses services d'IA opérationnelle pour accompagner les entreprises de secteurs variés tels que le transport et l'entreposage. Avec des grands groupes comme DHL et Geodis présents, nous offrons des solutions pour améliorer l'efficacité des processus métiers, en nous déplaçant directement sur site pour une mise en œuvre rapide.",
   directAnswerEn:
     "À Mitry-Mory, Axion-IA déploie ses services d'IA opérationnelle pour accompagner les entreprises de secteurs variés tels que le transport et l'entreposage. Avec des grands groupes comme DHL et Geodis présents, nous offrons des solutions pour améliorer l'efficacité des processus métiers, en nous déplaçant directement sur site pour une mise en œuvre rapide.",
+  seoHook: "transports terrestres & entreposage",
   ecosystemFr:
     "Mitry-Mory est un pôle industriel avec des entreprises comme DHL et Geodis. La ZAC de Mitry-Compans contribue à un environnement propice au développement des activités de transport et d'entreposage.",
   ecosystemEn:

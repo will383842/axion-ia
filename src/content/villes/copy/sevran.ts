@@ -14,6 +14,7 @@ export const SEVRAN_COPY: VilleCopy = {
     "Axion-IA se déplace à Sevran pour offrir des services IA adaptés aux besoins locaux. Avec des entreprises telles que LVMH et BNP Paribas situées à Paris, nous comprenons l'importance d'un écosystème robuste. Nos interventions incluent audits, implémentations et formations, garantissant une intégration réussie de l'IA dans vos processus métier.",
   directAnswerEn:
     "Axion-IA se déplace à Sevran pour offrir des services IA adaptés aux besoins locaux. Avec des entreprises telles que LVMH et BNP Paribas situées à Paris, nous comprenons l'importance d'un écosystème robuste. Nos interventions incluent audits, implémentations et formations, garantissant une intégration réussie de l'IA dans vos processus métier.",
+  seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Le tissu économique de Sevran est enrichi par la proximité de Paris, qui abrite des entités comme Inria et Hermès, facilitant l'accès à des ressources et expertises variées.",
   ecosystemEn:

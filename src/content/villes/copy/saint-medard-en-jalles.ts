@@ -12,6 +12,7 @@ export const SAINT_MEDARD_EN_JALLES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Médard-en-Jalles (33) en banlieue bordelaise. Nous accompagnons les industriels aéronautique-défense (ArianeGroup et sous-traitants), entreprises du spatial, PME tertiaires médardaises et structures de R&D sur leurs cas IA — diagnostic chiffré, démos sécurisées, plan d'action.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Médard-en-Jalles (33) en banlieue bordelaise. Nous accompagnons les industriels aéronautique-défense (ArianeGroup et sous-traitants), entreprises du spatial, PME tertiaires médardaises et structures de R&D sur leurs cas IA — diagnostic chiffré, démos sécurisées, plan d'action.",
+  seoHook: "aéronautique spatial & défense propulsion",
   ecosystemFr:
     "Saint-Médard-en-Jalles concentre une partie majeure du pôle aéronautique-défense aquitain : site ArianeGroup (anciennement Herakles, propulsion solide), proximité CEA Le Barp (laser Mégajoule), sous-traitants spatial. Tissu PME tertiaires bordelais en périphérie, viticulture Médoc à proximité. Hub stratégique français pour le spatial.",
   ecosystemEn:

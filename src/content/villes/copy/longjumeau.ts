@@ -14,6 +14,7 @@ export const LONGJUMEAU_COPY: VilleCopy = {
     "Longjumeau, avec ses 2 000 établissements actifs, est une commune dynamique de l'Île-de-France. Les entreprises locales bénéficient de l'écosystème parisien, qui comprend des acteurs comme LVMH et BNP Paribas. Axion-IA accompagne les entreprises de Longjumeau dans l'intégration de solutions IA, en s'appuyant sur notre expertise nationale pour des interventions sur site.",
   directAnswerEn:
     "Longjumeau, avec ses 2 000 établissements actifs, est une commune dynamique de l'Île-de-France. Les entreprises locales bénéficient de l'écosystème parisien, qui comprend des acteurs comme LVMH et BNP Paribas. Axion-IA accompagne les entreprises de Longjumeau dans l'intégration de solutions IA, en s'appuyant sur notre expertise nationale pour des interventions sur site.",
+  seoHook: "commerce détail & programmation informatique",
   ecosystemFr:
     "Longjumeau est entourée de villes comme Massy et Palaiseau, et bénéficie de la proximité de pôles comme Cap Digital et Station F, renforçant son attractivité économique.",
   ecosystemEn:

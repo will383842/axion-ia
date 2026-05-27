@@ -12,6 +12,7 @@ export const LE_TEIL_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Teil (07). Nous accompagnons tous types d'activités : PME industrielles sud-Ardèche, agriculteurs vallée Rhône, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Teil (07). Nous accompagnons tous types d'activités : PME industrielles sud-Ardèche, agriculteurs vallée Rhône, TPE artisans BTP, commerçants et services aux entreprises.",
+  seoHook: "industrielles & agriculture vallée",
   ecosystemFr:
     "Le Teil est dans le sud-Ardèche, vallée du Rhône. Héritage industriel (cimenterie, carrières). Tissu PME industrielles diversifiées, agriculture, TPE artisanat BTP, commerces.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const SASSENAGE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sassenage (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, fromagers producteurs Bleu du Vercors-Sassenage AOC, acteurs touristiques (château, Cuves), professions libérales, PME tertiaires sassenageoises et entreprises de Grenoble-Alpes Métropole.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sassenage (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, fromagers producteurs Bleu du Vercors-Sassenage AOC, acteurs touristiques (château, Cuves), professions libérales, PME tertiaires sassenageoises et entreprises de Grenoble-Alpes Métropole.",
+  seoHook: "tourisme patrimoine & bleu vercors-sassenage",
   ecosystemFr:
     "Sassenage est positionnée au pied du massif du Vercors, bordée par l'Isère et traversée par le Furon. La commune a un patrimoine exceptionnel (château XVIIe siècle, Cuves de Sassenage l'une des 7 merveilles du Dauphiné) attirant un tourisme local. Son nom est associé à l'AOC fromagère Bleu du Vercors-Sassenage. Tissu PME tertiaires, TPE artisanat, commerces dans Grenoble-Alpes Métropole.",
   ecosystemEn:

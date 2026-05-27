@@ -12,6 +12,7 @@ export const BAUGE_EN_ANJOU_COPY: VilleCopy = {
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Baugé-en-Anjou (49). Nous accompagnons les TPE, PME et exploitants agricoles du Baugeois dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict.",
   directAnswerEn:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Baugé-en-Anjou (49). Nous accompagnons les TPE, PME et exploitants agricoles du Baugeois dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict.",
+  seoHook: "agriculture grandes & artisanat métiers",
   ecosystemFr:
     "Baugé-en-Anjou est un pôle rural structurant du Baugeois, territoire agricole entre forêts de Chandelais et plaines céréalières. Tissu économique : exploitations agricoles (céréales, élevage), artisanat BTP, commerces de bourg, PME agroalimentaires et services de proximité. Patrimoine historique (château, apothicairerie).",
   ecosystemEn:

@@ -14,6 +14,7 @@ export const LA_MADELEINE_COPY: VilleCopy = {
     "Axion-IA se déplace à La Madeleine pour auditer et implémenter des solutions IA adaptées aux besoins spécifiques des entreprises locales. Nous proposons des audits à partir de 490 € HT et des interventions dès 590 € HT. Notre équipe nationale intervient sur site, garantissant un accompagnement sur mesure et une intégration fluide au sein des structures existantes.",
   directAnswerEn:
     "Axion-IA se déplace à La Madeleine pour auditer et implémenter des solutions IA adaptées aux besoins spécifiques des entreprises locales. Nous proposons des audits à partir de 490 € HT et des interventions dès 590 € HT. Notre équipe nationale intervient sur site, garantissant un accompagnement sur mesure et une intégration fluide au sein des structures existantes.",
+  seoHook: "commerce détail & programmation informatique",
   ecosystemFr:
     "La Madeleine fait partie d'un bassin économique dynamique comprenant Lille et Saint-André-lez-Lille. Les entreprises locales bénéficient de la proximité de secteurs variés tels que le commerce de détail et la programmation informatique, enrichissant l'écosystème économique.",
   ecosystemEn:

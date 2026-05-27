@@ -12,6 +12,7 @@ export const CONDAT_SUR_VIENNE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Condat-sur-Vienne (87). Nous accompagnons TPE artisans, PME des zones d'activités sud Limoges, commerçants, professions libérales et exploitants agricoles périurbains. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Condat-sur-Vienne (87). Nous accompagnons TPE artisans, PME des zones d'activités sud Limoges, commerçants, professions libérales et exploitants agricoles périurbains. Audit Flash dès 490 € HT.",
+  seoHook: "commerce grande & services aux",
   ecosystemFr:
     "Condat-sur-Vienne est située au confluent de la Vienne et de la Briance, en couronne sud de Limoges Métropole. Zones d'activités commerciales et artisanales dynamiques, TPE BTP, PME services aux entreprises, commerces, agriculture périurbaine. Proximité autoroute A20 (sortie Condat) favorise la logistique et le transport.",
   ecosystemEn:

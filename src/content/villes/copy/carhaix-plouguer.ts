@@ -12,6 +12,7 @@ export const CARHAIX_PLOUGUER_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carhaix-Plouguer (29). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires centre Finistère, commerçants, acteurs de l'événementiel (Vieilles Charrues), professions libérales et services. Audit Flash à 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carhaix-Plouguer (29). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires centre Finistère, commerçants, acteurs de l'événementiel (Vieilles Charrues), professions libérales et services. Audit Flash à 490 € HT.",
+  seoHook: "agroalimentaire & événementiel tourisme",
   ecosystemFr:
     "Carhaix-Plouguer est la sous-préfecture du centre Finistère et le bourg-centre du Poher. La ville est mondialement connue pour le festival des Vieilles Charrues, plus grand festival de musique de France (280 000 festivaliers). Tissu économique : PME agroalimentaires (laiteries, filière porcine), TPE artisans BTP, commerces, services publics, professions libérales et tourisme événementiel.",
   ecosystemEn:

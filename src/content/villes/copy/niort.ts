@@ -14,6 +14,7 @@ export const NIORT_COPY: VilleCopy = {
     "À Niort, Axion-IA propose des interventions sur site pour les entreprises locales, notamment celles du secteur financier comme MAIF et MACIF. Nous offrons des audits, des implémentations et des formations personnalisées pour répondre aux besoins spécifiques de chaque entreprise. Nos services sont conçus pour améliorer l'efficacité opérationnelle et réduire les coûts, avec des tarifs publics consultables en ligne.",
   directAnswerEn:
     "À Niort, Axion-IA propose des interventions sur site pour les entreprises locales, notamment celles du secteur financier comme MAIF et MACIF. Nous offrons des audits, des implémentations et des formations personnalisées pour répondre aux besoins spécifiques de chaque entreprise. Nos services sont conçus pour améliorer l'efficacité opérationnelle et réduire les coûts, avec des tarifs publics consultables en ligne.",
+  seoHook: "services financiers & auxiliaires financiers",
   ecosystemFr:
     "Niort est un pôle important pour les services financiers avec des entreprises comme MAIF et MACIF. La ville bénéficie également de l'incubateur Niort Tech, qui soutient l'innovation locale.",
   ecosystemEn:

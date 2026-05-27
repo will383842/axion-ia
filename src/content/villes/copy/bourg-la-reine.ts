@@ -14,6 +14,7 @@ export const BOURG_LA_REINE_COPY: VilleCopy = {
     "Axion-IA se déplace à Bourg-la-Reine pour accompagner les entreprises dans l'optimisation de leurs processus grâce à l'IA. Avec la proximité de pôles comme Cap Digital et Station F, les entreprises bénéficient d'un environnement stimulant pour intégrer des solutions d'automatisation concrètes et efficaces.",
   directAnswerEn:
     "Axion-IA se déplace à Bourg-la-Reine pour accompagner les entreprises dans l'optimisation de leurs processus grâce à l'IA. Avec la proximité de pôles comme Cap Digital et Station F, les entreprises bénéficient d'un environnement stimulant pour intégrer des solutions d'automatisation concrètes et efficaces.",
+  seoHook: "commerce détail & programmation informatique",
   ecosystemFr:
     "Bourg-la-Reine, entourée par des communes dynamiques comme Antony et Sceaux, bénéficie de la proximité de pôles économiques et technologiques tels que Cap Digital et Inria, favorisant l'innovation et la croissance des entreprises locales.",
   ecosystemEn:

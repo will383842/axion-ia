@@ -12,6 +12,7 @@ export const REYRIEUX_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Reyrieux (01). Nous accompagnons tous types d'activités : PME tertiaires val de Saône, agriculteurs Dombes, TPE artisans BTP, commerçants, professions libérales et services aux entreprises.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Reyrieux (01). Nous accompagnons tous types d'activités : PME tertiaires val de Saône, agriculteurs Dombes, TPE artisans BTP, commerçants, professions libérales et services aux entreprises.",
+  seoHook: "tertiaires val & agriculture dombes",
   ecosystemFr:
     "Reyrieux est dans le val de Saône Ain, aux portes de la Dombes. Tissu péri-urbain : PME tertiaires, agriculture Dombes, professions libérales, TPE artisanat BTP, commerces.",
   ecosystemEn:

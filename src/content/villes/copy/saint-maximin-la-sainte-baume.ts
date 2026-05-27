@@ -12,6 +12,7 @@ export const SAINT_MAXIMIN_LA_SAINTE_BAUME_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Maximin-la-Sainte-Baume (83). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles centre-Var, professionnels du tourisme religieux, hôtellerie-restauration et services.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Maximin-la-Sainte-Baume (83). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles centre-Var, professionnels du tourisme religieux, hôtellerie-restauration et services.",
+  seoHook: "tourisme religieux & industrielles zones",
   ecosystemFr:
     "Saint-Maximin-la-Sainte-Baume est un carrefour économique du centre-Var, mêlant tourisme religieux (basilique, reliques Marie-Madeleine), zones d'activités et économie résidentielle. Tissu de TPE, PME industrielles et commerces. Aix-en-Provence à 30 min, Marseille à 45 min, A8 directe.",
   ecosystemEn:

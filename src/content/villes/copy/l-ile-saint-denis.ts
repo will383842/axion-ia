@@ -12,6 +12,7 @@ export const L_ILE_SAINT_DENIS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à L'Île-Saint-Denis (93). Nous accompagnons tous types d'activités : TPE créatives et artisanales, PME de services et économie circulaire, commerçants de proximité, professions libérales, acteurs culturels et associatifs de cette île fluviale en pleine transformation urbaine.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à L'Île-Saint-Denis (93). Nous accompagnons tous types d'activités : TPE créatives et artisanales, PME de services et économie circulaire, commerçants de proximité, professions libérales, acteurs culturels et associatifs de cette île fluviale en pleine transformation urbaine.",
+  seoHook: "économie créative & économie circulaire",
   ecosystemFr:
     "L'Île-Saint-Denis, commune insulaire sur la Seine, connaît une transformation majeure avec l'éco-quartier fluvial et les aménagements liés aux grands événements sportifs. Tissu économique de TPE créatives (ateliers d'artistes, artisans), PME de services, acteurs de l'économie circulaire et du réemploi. Territoire Plaine Commune, dynamique Grand Paris.",
   ecosystemEn:

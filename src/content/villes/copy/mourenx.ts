@@ -12,6 +12,7 @@ export const MOURENX_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mourenx (64). Nous accompagnons TPE, PME et industriels du bassin de Lacq : chimie, matériaux, industrie, services. Audit Flash à partir de 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mourenx (64). Nous accompagnons TPE, PME et industriels du bassin de Lacq : chimie, matériaux, industrie, services. Audit Flash à partir de 490 € HT.",
+  seoHook: "chimie verte & industrie",
   ecosystemFr:
     "Mourenx est une ville nouvelle de 5 695 habitants, construite dans les années 1960 pour le gisement de gaz de Lacq. En reconversion : plateforme chimie Induslacq (chimie verte, matériaux avancés, carbonates), PME industrielles sous-traitantes, TPE artisans, commerces et services de proximité.",
   ecosystemEn:

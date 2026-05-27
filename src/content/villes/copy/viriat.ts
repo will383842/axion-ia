@@ -12,6 +12,7 @@ export const VIRIAT_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Viriat (01). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Bresse, agriculteurs/éleveurs (volaille de Bresse AOC), TPE artisans BTP, commerçants et services aux entreprises de l'agglomération burgienne.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Viriat (01). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Bresse, agriculteurs/éleveurs (volaille de Bresse AOC), TPE artisans BTP, commerçants et services aux entreprises de l'agglomération burgienne.",
+  seoHook: "tertiaires agglomération & agriculture bresse",
   ecosystemFr:
     "Viriat est en banlieue de Bourg-en-Bresse, Bresse. Tissu PME tertiaires/industrielles, agriculture Bresse (volaille de Bresse AOC à proximité), TPE artisanat BTP, commerces.",
   ecosystemEn:

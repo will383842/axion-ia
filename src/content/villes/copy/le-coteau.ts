@@ -12,6 +12,7 @@ export const LE_COTEAU_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Coteau (42). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Roannais (héritage textile), TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de Roannais Agglomération.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Coteau (42). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Roannais (héritage textile), TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de Roannais Agglomération.",
+  seoHook: "tertiaires roannais & industrielles",
   ecosystemFr:
     "Le Coteau est intégrée à Roannais Agglomération (~99 000 hab), en banlieue est immédiate de Roanne (sur la rive opposée de la Loire — relié par pont). Tissu péri-urbain : PME tertiaires et industrielles diversifiées (lien filière textile roannaise historique), TPE artisanat BTP, commerces de proximité.",
   ecosystemEn:

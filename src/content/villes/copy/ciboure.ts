@@ -12,6 +12,7 @@ export const CIBOURE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ciboure (64). Nous accompagnons TPE, PME et artisans de la baie de Saint-Jean-de-Luz : pêche, tourisme, restauration, artisanat marin. Audit Flash à partir de 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ciboure (64). Nous accompagnons TPE, PME et artisans de la baie de Saint-Jean-de-Luz : pêche, tourisme, restauration, artisanat marin. Audit Flash à partir de 490 € HT.",
+  seoHook: "pêche mareyage & tourisme balnéaire",
   ecosystemFr:
     "Ciboure est une commune de 5 951 habitants sur la Côte Basque, face à Saint-Jean-de-Luz de l'autre côté de la baie. Port de pêche (Socoa), lieu de naissance de Ravel, tourisme balnéaire et culturel, TPE artisans marins, restauration de poissons, hébergements et commerces de bord de mer.",
   ecosystemEn:

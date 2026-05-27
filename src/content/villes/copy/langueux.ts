@@ -12,6 +12,7 @@ export const LANGUEUX_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Langueux (22). Nous accompagnons TPE et PME : commerces et enseignes des zones d'activités, artisans, PME de services, logisticiens, restaurateurs de l'agglomération briochine. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Langueux (22). Nous accompagnons TPE et PME : commerces et enseignes des zones d'activités, artisans, PME de services, logisticiens, restaurateurs de l'agglomération briochine. Audit Flash dès 490 € HT.",
+  seoHook: "commerce zones & artisanat",
   ecosystemFr:
     "Langueux est un pôle commercial majeur de l'agglomération de Saint-Brieuc (Côtes-d'Armor), avec plusieurs zones d'activités (ZA des Châtelets, ZA du Plateau) regroupant grandes enseignes, commerces, artisans, services aux entreprises et logistique. Proximité immédiate du centre-ville de Saint-Brieuc.",
   ecosystemEn:

@@ -14,6 +14,7 @@ export const BOURGES_COPY: VilleCopy = {
     "À Bourges, Axion-IA propose des services adaptés aux besoins des entreprises locales, notamment dans les secteurs de la construction aéronautique et de la recherche scientifique. Nos interventions incluent des audits et implémentations sur site pour les entreprises telles que celles du Technopôle Lahitolle. Nos experts se déplacent pour vous offrir des solutions concrètes et mesurables.",
   directAnswerEn:
     "À Bourges, Axion-IA propose des services adaptés aux besoins des entreprises locales, notamment dans les secteurs de la construction aéronautique et de la recherche scientifique. Nos interventions incluent des audits et implémentations sur site pour les entreprises telles que celles du Technopôle Lahitolle. Nos experts se déplacent pour vous offrir des solutions concrètes et mesurables.",
+  seoHook: "produits métalliques & aéronautique",
   ecosystemFr:
     "Bourges abrite des groupes comme Nexter et MBDA, et bénéficie du soutien du pôle de compétitivité S2E2. Le Technopôle Lahitolle est un lieu clé pour l'innovation locale.",
   ecosystemEn:

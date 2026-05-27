@@ -12,6 +12,7 @@ export const BROU_SUR_CHANTEREINE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Brou-sur-Chantereine (77). Nous accompagnons TPE et PME : artisans, commerçants de proximité, prestataires de services, professions libérales, entreprises logistique de l'agglomération chelloise. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Brou-sur-Chantereine (77). Nous accompagnons TPE et PME : artisans, commerçants de proximité, prestataires de services, professions libérales, entreprises logistique de l'agglomération chelloise. Audit Flash dès 490 € HT.",
+  seoHook: "services & logistique entreposage",
   ecosystemFr:
     "Brou-sur-Chantereine est une commune résidentielle limitrophe de Chelles, bien connectée par le RER E et la Francilienne. Tissu TPE artisanat, commerces de proximité, PME services, professions libérales, activités logistiques.",
   ecosystemEn:

@@ -14,6 +14,7 @@ export const COMPIEGNE_COPY: VilleCopy = {
     "Axion-IA propose ses services à Compiègne, une ville où l'industrie chimique et la construction de véhicules automobiles sont prédominantes. Avec des entreprises comme Faurecia et Continental, nous offrons des audits et des interventions pour optimiser les processus métier. Nos tarifs publics incluent l'Audit Flash à partir de 490 € HT et l'Intervention Essentielle dès 590 € HT.",
   directAnswerEn:
     "Axion-IA propose ses services à Compiègne, une ville où l'industrie chimique et la construction de véhicules automobiles sont prédominantes. Avec des entreprises comme Faurecia et Continental, nous offrons des audits et des interventions pour optimiser les processus métier. Nos tarifs publics incluent l'Audit Flash à partir de 490 € HT et l'Intervention Essentielle dès 590 € HT.",
+  seoHook: "automobile & chimie",
   ecosystemFr:
     "Compiègne abrite des entreprises comme Nestlé et Continental, et bénéficie de la proximité de la ZAC de Mercières. L'Université de Technologie de Compiègne contribue également à l'innovation locale.",
   ecosystemEn:

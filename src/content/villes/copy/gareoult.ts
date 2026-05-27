@@ -12,6 +12,7 @@ export const GAREOULT_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Garéoult (83). Nous accompagnons TPE viticulteurs Côtes-de-Provence, maraîchers, artisans et PME des services, du commerce et du BTP du centre-Var et du bassin de Brignoles. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Garéoult (83). Nous accompagnons TPE viticulteurs Côtes-de-Provence, maraîchers, artisans et PME des services, du commerce et du BTP du centre-Var et du bassin de Brignoles. Audit Flash dès 490 € HT.",
+  seoHook: "viticulture côtes-de-provence & agriculture",
   ecosystemFr:
     "Garéoult est un bourg rural du centre-Var, dans le bassin de Brignoles, en zone AOC Côtes-de-Provence. Économie agricole forte : viticulture, oléiculture, maraîchage. Bassin résidentiel avec un tissu de TPE artisans, commerces de proximité et PME services et BTP de l'arrière-pays varois, à mi-chemin entre Toulon et la Provence-Verte.",
   ecosystemEn:

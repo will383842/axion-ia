@@ -12,6 +12,7 @@ export const MENDE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mende (48). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires, commerçants du centre historique, professions libérales, acteurs du tourisme nature Gévaudan, services publics et administrations locales.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mende (48). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires, commerçants du centre historique, professions libérales, acteurs du tourisme nature Gévaudan, services publics et administrations locales.",
+  seoHook: "tourisme nature & agroalimentaire",
   ecosystemFr:
     "Mende est la préfecture de la Lozère, plus petite préfecture de France métropolitaine. Cathédrale Notre-Dame-et-Saint-Privat, terre historique du Gévaudan. Tissu TPE artisans, PME agroalimentaires (viande, fromage), commerces centre historique, tourisme nature (gorges du Tarn, Margeride, Aubrac), professions libérales et services administratifs.",
   ecosystemEn:

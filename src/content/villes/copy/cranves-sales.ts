@@ -12,6 +12,7 @@ export const CRANVES_SALES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cranves-Sales (74). Nous accompagnons TPE et PME : entreprises de services transfrontaliers Grand Genève, PME tertiaires, artisans BTP, commerces locaux et professions libérales du bassin annémassien.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cranves-Sales (74). Nous accompagnons TPE et PME : entreprises de services transfrontaliers Grand Genève, PME tertiaires, artisans BTP, commerces locaux et professions libérales du bassin annémassien.",
+  seoHook: "services transfrontaliers & tertiaires",
   ecosystemFr:
     "Cranves-Sales se situe à la jonction entre Annemasse et le Grand Genève, bénéficiant pleinement de la dynamique transfrontalière franco-suisse. Tissu économique résidentiel et tertiaire : PME de services (conseil, IT, comptabilité), TPE artisanat BTP portées par la construction résidentielle, commerces de proximité et professions libérales. Proximité immédiate de Genève (15 min) et de son bassin d'emploi.",
   ecosystemEn:

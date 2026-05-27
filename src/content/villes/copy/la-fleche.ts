@@ -12,6 +12,7 @@ export const LA_FLECHE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Flèche (72). Nous accompagnons tous types d'activités : TPE artisans, PME de services et agroalimentaires, commerçants de centre-ville, professions libérales, acteurs du tourisme (zoo, patrimoine) et prestataires de services de la vallée du Loir sarthoise.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Flèche (72). Nous accompagnons tous types d'activités : TPE artisans, PME de services et agroalimentaires, commerçants de centre-ville, professions libérales, acteurs du tourisme (zoo, patrimoine) et prestataires de services de la vallée du Loir sarthoise.",
+  seoHook: "tourisme loisirs & agroalimentaire",
   ecosystemFr:
     "La Flèche est une sous-préfecture de la Sarthe dans la vallée du Loir, connue pour le Prytanée national militaire (fondé par Henri IV) et le zoo de La Flèche (parc animalier majeur). Économie : services, agroalimentaire, tourisme, artisanat, commerces de centre-ville, professions libérales.",
   ecosystemEn:

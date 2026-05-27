@@ -14,6 +14,7 @@ export const LENS_COPY: VilleCopy = {
     "À Lens, Axion-IA propose des interventions sur site pour les entreprises souhaitant intégrer l'IA dans leurs processus. Avec l'Université d'Artois et la Zone d'activités de l'Artois à proximité, nous aidons les entreprises à automatiser des tâches comme les devis et les relances, tout en garantissant un retour sur investissement rapide. Nos services incluent des audits, des implémentations et des formations 1-to-1.",
   directAnswerEn:
     "À Lens, Axion-IA propose des interventions sur site pour les entreprises souhaitant intégrer l'IA dans leurs processus. Avec l'Université d'Artois et la Zone d'activités de l'Artois à proximité, nous aidons les entreprises à automatiser des tâches comme les devis et les relances, tout en garantissant un retour sur investissement rapide. Nos services incluent des audits, des implémentations et des formations 1-to-1.",
+  seoHook: "commerce détail & construction",
   ecosystemFr:
     "Lens, avec ses 4 000 établissements actifs, bénéficie d'un tissu économique diversifié. La Zone d'activités de l'Artois et l'Université d'Artois jouent un rôle clé dans le développement local, offrant un environnement propice à l'innovation et à l'intégration de nouvelles technologies.",
   ecosystemEn:

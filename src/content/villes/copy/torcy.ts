@@ -14,6 +14,7 @@ export const TORCY_COPY: VilleCopy = {
     "À Torcy, Axion-IA propose des prestations d'IA adaptées aux entreprises des secteurs du commerce de détail et de la programmation informatique. Notre équipe nationale se déplace pour réaliser des audits précis et des implémentations efficaces. Avec des tarifs publics consultables, nous garantissons une transparence totale. Le tissu économique local, comprenant des entreprises de la restauration et de la construction, bénéficie de notre expertise en IA.",
   directAnswerEn:
     "À Torcy, Axion-IA propose des prestations d'IA adaptées aux entreprises des secteurs du commerce de détail et de la programmation informatique. Notre équipe nationale se déplace pour réaliser des audits précis et des implémentations efficaces. Avec des tarifs publics consultables, nous garantissons une transparence totale. Le tissu économique local, comprenant des entreprises de la restauration et de la construction, bénéficie de notre expertise en IA.",
+  seoHook: "commerce détail & programmation informatique",
   ecosystemFr:
     "Torcy, avec ses 2 000 établissements actifs, est un acteur important en Île-de-France. Le Parc d'activités de Torcy accueille de nombreuses entreprises des secteurs du commerce de détail et de la programmation informatique.",
   ecosystemEn:

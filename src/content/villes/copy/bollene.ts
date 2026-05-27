@@ -12,6 +12,7 @@ export const BOLLENE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bollène (84). Nous accompagnons TPE artisans, PME viticoles, logistique, services aux entreprises, professions libérales et commerces du nord Vaucluse et de la vallée du Rhône. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bollène (84). Nous accompagnons TPE artisans, PME viticoles, logistique, services aux entreprises, professions libérales et commerces du nord Vaucluse et de la vallée du Rhône. Audit Flash dès 490 € HT.",
+  seoHook: "viticulture côtes & logistique transport",
   ecosystemFr:
     "Bollène est positionnée au nord du Vaucluse, dans la vallée du Rhône, à la limite de la Drôme, sortie A7. Commune dont l'activité économique repose sur la viticulture (AOP Côtes du Rhône), les services et sous-traitance liés au site nucléaire du Tricastin, la logistique A7, les TPE artisans (BTP, services), PME tertiaires, professions libérales et commerces de proximité. Bassin d'emploi tourné vers Pierrelatte, Orange et Montélimar.",
   ecosystemEn:

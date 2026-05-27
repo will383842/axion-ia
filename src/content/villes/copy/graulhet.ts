@@ -12,6 +12,7 @@ export const GRAULHET_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Graulhet (81). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants et professions libérales du bassin graulhétois. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Graulhet (81). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants et professions libérales du bassin graulhétois. Audit Flash dès 490 € HT.",
+  seoHook: "industrie cuir & artisanat métiers",
   ecosystemFr:
     "Graulhet (13 129 hab) est la cité historique du cuir et de la mégisserie en France, sur les bords du Dadou. Reconversion économique en cours : filière cuir résiduelle, PME industrie-services, artisanat, commerces et économie sociale. Située entre Albi (30 min), Castres (30 min) et Toulouse (1h via A68). Zone d'activités de la Courtinière.",
   ecosystemEn:

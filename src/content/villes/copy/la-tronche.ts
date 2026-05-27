@@ -12,6 +12,7 @@ export const LA_TRONCHE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Tronche (38). Nous accompagnons tous types d'activités : structures hospitalières (CHU Grenoble Nord), professions médicales et paramédicales, PME tertiaires, TPE artisans BTP, commerçants, indépendants et services aux entreprises de Grenoble-Alpes Métropole en zone nord-est.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Tronche (38). Nous accompagnons tous types d'activités : structures hospitalières (CHU Grenoble Nord), professions médicales et paramédicales, PME tertiaires, TPE artisans BTP, commerçants, indépendants et services aux entreprises de Grenoble-Alpes Métropole en zone nord-est.",
+  seoHook: "santé hospitalière & professions médicales",
   ecosystemFr:
     "La Tronche est limitrophe immédiate de Grenoble dans Grenoble-Alpes Métropole. Sous l'impulsion du XXe siècle, hôpitaux civils et militaires ont été installés sur la commune : CHU Grenoble Nord (CHU Grenoble Alpes, l'un des plus importants CHU de France) et site historique de l'École du Service de Santé des Armées. Tissu professions médicales/paramédicales très dense, PME santé, TPE artisans, commerces.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const PASSY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Passy (74). Nous accompagnons TPE et PME : acteurs tourisme montagne Mont-Blanc, hébergeurs et hôteliers de la vallée de l'Arve, artisans du bâtiment, commerçants, acteurs patrimoine culturel plateau d'Assy.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Passy (74). Nous accompagnons TPE et PME : acteurs tourisme montagne Mont-Blanc, hébergeurs et hôteliers de la vallée de l'Arve, artisans du bâtiment, commerçants, acteurs patrimoine culturel plateau d'Assy.",
+  seoHook: "tourisme montagne & hôtellerie hébergement",
   ecosystemFr:
     "Passy est une commune de la vallée de l'Arve face au Mont-Blanc, connue pour le plateau d'Assy (sanatoriums Art déco, église Notre-Dame-de-Toute-Grâce classée). Tissu tourisme montagne (stations, randonnée, ski), hôtellerie/hébergement saisonnier, TPE artisanat BTP, commerces, patrimoine culturel.",
   ecosystemEn:

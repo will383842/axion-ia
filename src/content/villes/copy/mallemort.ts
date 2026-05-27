@@ -12,6 +12,7 @@ export const MALLEMORT_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mallemort (13). Nous accompagnons TPE artisans, exploitants agricoles, commerçants, PME de services et entreprises de la vallée de la Durance nord-Alpilles. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mallemort (13). Nous accompagnons TPE artisans, exploitants agricoles, commerçants, PME de services et entreprises de la vallée de la Durance nord-Alpilles. Audit Flash dès 490 € HT.",
+  seoHook: "agriculture maraîchage & arboriculture",
   ecosystemFr:
     "Mallemort est une commune durancienne entre Salon-de-Provence et Cavaillon, au nord du massif des Alpilles. Agriculture irriguée (vergers pommes/poires, maraîchage, cultures sous serres), canal EDF de la Durance. Artisanat BTP, commerces de proximité et résidentiel en croissance (navetteurs Salon/Aix).",
   ecosystemEn:

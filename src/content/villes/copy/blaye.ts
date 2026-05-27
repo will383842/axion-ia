@@ -12,6 +12,7 @@ export const BLAYE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Blaye (33). Nous accompagnons TPE et PME du Blayais : vignerons de Côtes de Blaye, hébergeurs touristiques (citadelle UNESCO), commerçants, artisans BTP et professions libérales. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Blaye (33). Nous accompagnons TPE et PME du Blayais : vignerons de Côtes de Blaye, hébergeurs touristiques (citadelle UNESCO), commerçants, artisans BTP et professions libérales. Audit Flash dès 490 € HT.",
+  seoHook: "viticulture côtes & tourisme patrimonial",
   ecosystemFr:
     "Blaye est une cité fortifiée sur l'estuaire de la Gironde. Citadelle Vauban (patrimoine mondial UNESCO), vignoble AOC Côtes de Blaye et Côtes de Bourg, tourisme patrimonial et fluvial, commerces de centre-bourg et professions libérales. Bac Blaye-Lamarque (liaison Médoc).",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const LANGRES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Langres (52). Nous accompagnons tous types d'activités : TPE artisans couteliers, PME agroalimentaires, acteurs du tourisme patrimonial, commerçants centre fortifié, professions libérales et services publics sous-préfecture.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Langres (52). Nous accompagnons tous types d'activités : TPE artisans couteliers, PME agroalimentaires, acteurs du tourisme patrimonial, commerçants centre fortifié, professions libérales et services publics sous-préfecture.",
+  seoHook: "artisanat coutellerie & agroalimentaires",
   ecosystemFr:
     "Langres est une cité fortifiée historique, sous-préfecture de la Haute-Marne sur le plateau de Langres. Berceau de Diderot. Coutellerie centenaire, PME agroalimentaires, TPE artisanat, tourisme patrimonial, commerces et services publics.",
   ecosystemEn:

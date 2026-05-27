@@ -14,6 +14,7 @@ export const MACON_COPY: VilleCopy = {
     "À Mâcon, Axion-IA propose des services d'IA adaptés aux besoins des entreprises locales. Nous intervenons auprès des acteurs du commerce de détail et de l'industrie agroalimentaire, tout en tenant compte des spécificités du Parc d'Activités Mâcon Nord. Nos services incluent audits, implémentations et formations sur site, avec des tarifs publics accessibles, comme l'Audit Flash à partir de 490 € HT.",
   directAnswerEn:
     "À Mâcon, Axion-IA propose des services d'IA adaptés aux besoins des entreprises locales. Nous intervenons auprès des acteurs du commerce de détail et de l'industrie agroalimentaire, tout en tenant compte des spécificités du Parc d'Activités Mâcon Nord. Nos services incluent audits, implémentations et formations sur site, avec des tarifs publics accessibles, comme l'Audit Flash à partir de 490 € HT.",
+  seoHook: "commerce détail & transports",
   ecosystemFr:
     "Mâcon accueille des entreprises comme Eiffage et la Société des Ciments Vicat. L'Université de Bourgogne - IUT de Mâcon contribue à la formation des talents locaux.",
   ecosystemEn:

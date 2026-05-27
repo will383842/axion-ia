@@ -12,6 +12,7 @@ export const MOUVAUX_COPY: VilleCopy = {
     "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Mouvaux (59). Nous accompagnons TPE et PME : prestataires de services aux entreprises, professions libérales, conseil, commerçants, artisans et dirigeants résidents de la Métropole européenne de Lille. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Mouvaux (59). Nous accompagnons TPE et PME : prestataires de services aux entreprises, professions libérales, conseil, commerçants, artisans et dirigeants résidents de la Métropole européenne de Lille. Audit Flash dès 490 € HT.",
+  seoHook: "services aux & professions libérales",
   ecosystemFr:
     "Mouvaux est une commune résidentielle prisée de la Métropole européenne de Lille (MEL), située au nord de Tourcoing et limitrophe de Roubaix et Croix. La ville est connue pour son cadre de vie cossu, ses villas anciennes, ses parcs (parc du Hautmont, château et parc Vansteenkiste) et sa proximité immédiate du quartier d''affaires Euratechnologies de Lille. L''économie locale repose sur les services aux entreprises haut de gamme, les professions libérales (médecins, avocats, experts-comptables), le conseil, le commerce de proximité et l''artisanat de qualité.",
   ecosystemEn:

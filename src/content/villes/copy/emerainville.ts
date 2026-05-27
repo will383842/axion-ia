@@ -12,6 +12,7 @@ export const EMERAINVILLE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Émerainville (77). Nous accompagnons TPE et PME : entreprises logistique et transport, prestataires de services aux entreprises, commerçants, artisans BTP et sociétés tertiaires des zones d'activités. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Émerainville (77). Nous accompagnons TPE et PME : entreprises logistique et transport, prestataires de services aux entreprises, commerçants, artisans BTP et sociétés tertiaires des zones d'activités. Audit Flash dès 490 € HT.",
+  seoHook: "logistique transport & artisanat",
   ecosystemFr:
     "Émerainville fait partie de l'agglomération Marne-la-Vallée et dispose de zones d'activités économiques accueillant des entreprises logistique, transport, services tertiaires et commerce. Proximité A4 et RER A (gare Émerainville-Pontault-Combault). Le tissu économique local repose sur des TPE et PME diversifiées.",
   ecosystemEn:

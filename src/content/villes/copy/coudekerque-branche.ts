@@ -14,6 +14,7 @@ export const COUDEKERQUE_BRANCHE_COPY: VilleCopy = {
     "À Coudekerque-Branche, Axion-IA propose des audits IA pour les entreprises du commerce de détail et des transports terrestres. Nos interventions permettent d'automatiser des tâches administratives et d'améliorer l'efficacité opérationnelle. Nos tarifs débutent à 490 € HT pour un audit Flash de 4 heures, et nous intervenons sur site dans les 5 jours ouvrés.",
   directAnswerEn:
     "À Coudekerque-Branche, Axion-IA propose des audits IA pour les entreprises du commerce de détail et des transports terrestres. Nos interventions permettent d'automatiser des tâches administratives et d'améliorer l'efficacité opérationnelle. Nos tarifs débutent à 490 € HT pour un audit Flash de 4 heures, et nous intervenons sur site dans les 5 jours ouvrés.",
+  seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Coudekerque-Branche bénéficie d'une proximité avec Dunkerque, un centre économique regroupant des secteurs comme le commerce de détail et les transports terrestres, offrant un cadre propice à l'innovation.",
   ecosystemEn:

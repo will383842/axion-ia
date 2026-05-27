@@ -14,6 +14,7 @@ export const VILLENAVE_D_ORNON_COPY: VilleCopy = {
     "Axion-IA se déplace à Villenave-d'Ornon pour accompagner les entreprises locales dans l'optimisation de leurs processus grâce à l'IA. Avec une expertise éprouvée, nous aidons les entreprises à automatiser leurs tâches administratives et commerciales, en s'appuyant sur des technologies développées par des institutions comme Inria et Station F.",
   directAnswerEn:
     "Axion-IA se déplace à Villenave-d'Ornon pour accompagner les entreprises locales dans l'optimisation de leurs processus grâce à l'IA. Avec une expertise éprouvée, nous aidons les entreprises à automatiser leurs tâches administratives et commerciales, en s'appuyant sur des technologies développées par des institutions comme Inria et Station F.",
+  seoHook: "commerce détail & construction",
   ecosystemFr:
     "Villenave-d'Ornon bénéficie d'une proximité avec Bordeaux, un centre économique où se trouvent des entreprises comme LVMH et BNP Paribas. Cet environnement offre des opportunités pour les entreprises locales de collaborer et d'innover.",
   ecosystemEn:

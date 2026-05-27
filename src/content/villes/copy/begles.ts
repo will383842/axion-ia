@@ -14,6 +14,7 @@ export const BEGLES_COPY: VilleCopy = {
     "À Bègles, Axion-IA offre des services d'IA adaptés aux secteurs du commerce de détail et de la construction. Notre équipe nationale se déplace sur site pour réaliser des audits et implémentations. Avec des tarifs publics transparents, comme l'Audit Flash à partir de 490 € HT, nous garantissons une intervention rapide et efficace.",
   directAnswerEn:
     "À Bègles, Axion-IA offre des services d'IA adaptés aux secteurs du commerce de détail et de la construction. Notre équipe nationale se déplace sur site pour réaliser des audits et implémentations. Avec des tarifs publics transparents, comme l'Audit Flash à partir de 490 € HT, nous garantissons une intervention rapide et efficace.",
+  seoHook: "commerce détail & construction",
   ecosystemFr:
     "Bègles bénéficie de la proximité de Bordeaux, un centre économique où se trouvent des entreprises comme Sanofi et Hermès. La ZAC de Bègles accueille de nombreuses entreprises, renforçant le dynamisme économique local.",
   ecosystemEn:

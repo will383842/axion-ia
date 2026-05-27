@@ -14,6 +14,7 @@ export const OYONNAX_COPY: VilleCopy = {
     "Axion-IA propose des interventions à Oyonnax, une ville reconnue pour son secteur de la plasturgie avec des entreprises comme le Groupe Seb et Plastic Omnium. Nous offrons des services d'audit, d'implémentation et de formations IA sur site pour répondre aux besoins des entreprises locales, en tenant compte de leur environnement économique unique.",
   directAnswerEn:
     "Axion-IA propose des interventions à Oyonnax, une ville reconnue pour son secteur de la plasturgie avec des entreprises comme le Groupe Seb et Plastic Omnium. Nous offrons des services d'audit, d'implémentation et de formations IA sur site pour répondre aux besoins des entreprises locales, en tenant compte de leur environnement économique unique.",
+  seoHook: "produits plastique & produits métalliques",
   ecosystemFr:
     "L'écosystème économique d'Oyonnax est marqué par la présence de Plastipolis, un pôle de compétitivité dédié à la plasturgie, et de grands groupes comme Plastic Omnium. Ces entités contribuent à la dynamique industrielle de la région.",
   ecosystemEn:

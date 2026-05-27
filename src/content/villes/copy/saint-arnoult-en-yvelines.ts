@@ -12,6 +12,7 @@ export const SAINT_ARNOULT_EN_YVELINES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Arnoult-en-Yvelines (78). Nous accompagnons TPE et PME : artisans, commerces de bourg, PME agricoles et de services, professions libérales de ce bourg historique de la vallée de la Rémarde, en Hurepoix. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Arnoult-en-Yvelines (78). Nous accompagnons TPE et PME : artisans, commerces de bourg, PME agricoles et de services, professions libérales de ce bourg historique de la vallée de la Rémarde, en Hurepoix. Audit Flash dès 490 € HT.",
+  seoHook: "agriculture filières & commerce proximité",
   ecosystemFr:
     "Saint-Arnoult-en-Yvelines est un bourg historique de la vallée de la Rémarde en Hurepoix, carrefour entre Rambouillet et Dourdan. Centre-bourg commerçant avec marché hebdomadaire. Tissu économique : TPE artisans, commerces de proximité, PME agricoles, services aux particuliers, professions libérales. Communes voisines : Rochefort-en-Yvelines, Longvilliers, Ponthévrard, Dourdan, Rambouillet.",
   ecosystemEn:

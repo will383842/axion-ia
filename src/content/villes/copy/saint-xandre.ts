@@ -12,6 +12,7 @@ export const SAINT_XANDRE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Xandre (17). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, prestataires de services, commerçants et indépendants de cette commune résidentielle de l'agglomération de La Rochelle.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Xandre (17). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, prestataires de services, commerçants et indépendants de cette commune résidentielle de l'agglomération de La Rochelle.",
+  seoHook: "services aux & professions libérales",
   ecosystemFr:
     "Saint-Xandre est une commune résidentielle dynamique de l'agglomération de La Rochelle, en croissance démographique. PME tertiaires, TPE artisans BTP, commerces de proximité, professions libérales, services à la personne. Cadre périurbain entre La Rochelle centre et le nord de l'agglomération.",
   ecosystemEn:

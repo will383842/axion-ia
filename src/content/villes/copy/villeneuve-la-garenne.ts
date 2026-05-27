@@ -14,6 +14,7 @@ export const VILLENEUVE_LA_GARENNE_COPY: VilleCopy = {
     "À Villeneuve-la-Garenne, Axion-IA s'adresse aux entreprises des secteurs comme le commerce de détail et la construction de bâtiments. Nous proposons des audits à partir de 490 € HT et des interventions dès 590 € HT, permettant aux entreprises de bénéficier rapidement de solutions IA adaptées à leurs besoins spécifiques.",
   directAnswerEn:
     "À Villeneuve-la-Garenne, Axion-IA s'adresse aux entreprises des secteurs comme le commerce de détail et la construction de bâtiments. Nous proposons des audits à partir de 490 € HT et des interventions dès 590 € HT, permettant aux entreprises de bénéficier rapidement de solutions IA adaptées à leurs besoins spécifiques.",
+  seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Villeneuve-la-Garenne est un hub économique avec des entreprises telles que Carrefour et Renault. Le parc d'activités des Chanteraines renforce l'attractivité du territoire pour les entreprises du commerce de gros et des transports terrestres.",
   ecosystemEn:

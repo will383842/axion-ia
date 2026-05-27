@@ -12,6 +12,7 @@ export const PLOUMAGOAR_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ploumagoar (22). Nous accompagnons tous types d'activités : TPE artisans, PME de services et agroalimentaires du bassin guingampais, commerces de proximité, professions libérales, indépendants et exploitants agricoles du secteur.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ploumagoar (22). Nous accompagnons tous types d'activités : TPE artisans, PME de services et agroalimentaires du bassin guingampais, commerces de proximité, professions libérales, indépendants et exploitants agricoles du secteur.",
+  seoHook: "services aux & agroalimentaire industries",
   ecosystemFr:
     "Ploumagoar est une commune résidentielle limitrophe de Guingamp, à l'ouest des Côtes-d'Armor. L'économie locale s'appuie sur les services aux habitants, l'artisanat BTP, le commerce de proximité, les professions libérales et l'agriculture. Le bassin guingampais est aussi un pôle agroalimentaire breton avec des PME de transformation à proximité.",
   ecosystemEn:

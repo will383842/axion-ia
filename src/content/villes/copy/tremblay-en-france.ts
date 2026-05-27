@@ -14,6 +14,7 @@ export const TREMBLAY_EN_FRANCE_COPY: VilleCopy = {
     "Tremblay-en-France, avec ses grands groupes comme Air France et DHL, offre un environnement propice à l'innovation. Axion-IA y propose des interventions sur site pour automatiser les tâches administratives et optimiser les processus métier. Nos services incluent audits, implémentations et formations personnalisées, adaptés aux spécificités locales. Consultez nos tarifs publics pour plus de détails.",
   directAnswerEn:
     "Tremblay-en-France, avec ses grands groupes comme Air France et DHL, offre un environnement propice à l'innovation. Axion-IA y propose des interventions sur site pour automatiser les tâches administratives et optimiser les processus métier. Nos services incluent audits, implémentations et formations personnalisées, adaptés aux spécificités locales. Consultez nos tarifs publics pour plus de détails.",
+  seoHook: "entreposage & transports terrestres",
   ecosystemFr:
     "Le bassin industriel de Tremblay-en-France inclut des géants comme Air France et FedEx. Ces entreprises bénéficient d'un accès direct à l'Aéroport Paris-Charles de Gaulle, facilitant les échanges internationaux.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const PERONNAS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Péronnas (01). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Bresse, agriculteurs/éleveurs, TPE artisans BTP, commerçants et services aux entreprises de l'agglomération burgienne.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Péronnas (01). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Bresse, agriculteurs/éleveurs, TPE artisans BTP, commerçants et services aux entreprises de l'agglomération burgienne.",
+  seoHook: "tertiaires agglomération & industrielles",
   ecosystemFr:
     "Péronnas est en banlieue de Bourg-en-Bresse, Bresse. Tissu PME tertiaires/industrielles, agriculture Bresse, TPE artisanat BTP, commerces.",
   ecosystemEn:

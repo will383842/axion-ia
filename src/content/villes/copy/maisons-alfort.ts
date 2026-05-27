@@ -14,6 +14,7 @@ export const MAISONS_ALFORT_COPY: VilleCopy = {
     "À Maisons-Alfort, Axion-IA propose des interventions sur site pour optimiser les processus des entreprises locales. Le Laboratoire National de Métrologie et d'Essais et l'École Nationale Vétérinaire d'Alfort illustrent le dynamisme scientifique de la région. Nos services incluent audits, implémentations et formations pour répondre aux enjeux spécifiques des entreprises.",
   directAnswerEn:
     "À Maisons-Alfort, Axion-IA propose des interventions sur site pour optimiser les processus des entreprises locales. Le Laboratoire National de Métrologie et d'Essais et l'École Nationale Vétérinaire d'Alfort illustrent le dynamisme scientifique de la région. Nos services incluent audits, implémentations et formations pour répondre aux enjeux spécifiques des entreprises.",
+  seoHook: "recherche-développement & santé humaine",
   ecosystemFr:
     "Maisons-Alfort est un pôle scientifique avec le Laboratoire National de Métrologie et d'Essais et l'École Nationale Vétérinaire d'Alfort. Ces institutions renforcent l'importance de la recherche et du développement dans la région.",
   ecosystemEn:

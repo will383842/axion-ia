@@ -12,6 +12,7 @@ export const BETHONCOURT_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Bethoncourt (25). Nous accompagnons TPE et PME : commercants de proximite, prestataires de services a la personne, sous-traitants industriels du bassin automobile, artisans BTP et restaurateurs du Pays de Montbeliard. Audit Flash des 490 euros HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Bethoncourt (25). Nous accompagnons TPE et PME : commercants de proximite, prestataires de services a la personne, sous-traitants industriels du bassin automobile, artisans BTP et restaurateurs du Pays de Montbeliard. Audit Flash des 490 euros HT.",
+  seoHook: "commerce proximite & services personne",
   ecosystemFr:
     "Bethoncourt est une commune residentielle du Pays de Montbeliard, au nord du Doubs. La ville beneficie de la proximite du bassin industriel automobile Stellantis-Sochaux. L'economie locale repose sur le commerce de proximite, les services a la personne, la sous-traitance industrielle et l'artisanat du batiment.",
   ecosystemEn:

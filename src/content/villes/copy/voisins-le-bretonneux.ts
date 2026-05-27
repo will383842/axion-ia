@@ -12,6 +12,7 @@ export const VOISINS_LE_BRETONNEUX_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Voisins-le-Bretonneux (78). Nous accompagnons TPE et PME : PME tech et ingénierie du technopôle SQY, TPE conseil et services B2B, commerçants de centre-ville, professions libérales, restaurateurs. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Voisins-le-Bretonneux (78). Nous accompagnons TPE et PME : PME tech et ingénierie du technopôle SQY, TPE conseil et services B2B, commerçants de centre-ville, professions libérales, restaurateurs. Audit Flash dès 490 € HT.",
+  seoHook: "tech ingénierie & conseil services",
   ecosystemFr:
     "Voisins-le-Bretonneux fait partie de la communauté d'agglomération Saint-Quentin-en-Yvelines (SQY), technopôle majeur d'Île-de-France avec le siège de nombreuses entreprises tech et ingénierie. Tissu PME tech, TPE conseil B2B, commerces de centre-ville, professions libérales.",
   ecosystemEn:

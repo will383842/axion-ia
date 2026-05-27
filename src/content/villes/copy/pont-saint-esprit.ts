@@ -12,6 +12,7 @@ export const PONT_SAINT_ESPRIT_COPY: VilleCopy = {
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Pont-Saint-Esprit (30). Nous accompagnons les TPE, PME et ETI locales : entreprises logistique Rhône, viticulteurs Côtes du Rhône, commerçants, artisans BTP et professions libérales du nord Gard. Audit Flash à partir de 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Pont-Saint-Esprit (30). Nous accompagnons les TPE, PME et ETI locales : entreprises logistique Rhône, viticulteurs Côtes du Rhône, commerçants, artisans BTP et professions libérales du nord Gard. Audit Flash à partir de 490 € HT.",
+  seoHook: "logistique vallée & viticulture côtes",
   ecosystemFr:
     "Pont-Saint-Esprit (~11 000 hab) est un carrefour historique vallée du Rhône au nord du Gard, frontalier Ardèche et Drôme. Logistique transit Rhône, viticulture Côtes du Rhône, commerces, artisanat BTP, services aux entreprises et tourisme patrimonial (pont médiéval XIIIe siècle).",
   ecosystemEn:

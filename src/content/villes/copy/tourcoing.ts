@@ -14,6 +14,7 @@ export const TOURCOING_COPY: VilleCopy = {
     "Tourcoing concentre près de 9 500 établissements actifs, avec une densité forte dans le textile-habillement et le commerce de détail — deux secteurs où les tâches répétitives (devis, relances, gestion fournisseurs) restent largement manuelles. Axion-IA réalise des audits et des implémentations IA sur site à Tourcoing, en s'appuyant sur une méthodologie structurée adaptée aux PME sans équipe IT dédiée. UP-TEX et Team2 illustrent la maturité sectorielle locale ; nos interventions s'y inscrivent sans détour.",
   directAnswerEn:
     "Tourcoing concentre près de 9 500 établissements actifs, avec une densité forte dans le textile-habillement et le commerce de détail — deux secteurs où les tâches répétitives (devis, relances, gestion fournisseurs) restent largement manuelles. Axion-IA réalise des audits et des implémentations IA sur site à Tourcoing, en s'appuyant sur une méthodologie structurée adaptée aux PME sans équipe IT dédiée. UP-TEX et Team2 illustrent la maturité sectorielle locale ; nos interventions s'y inscrivent sans détour.",
+  seoHook: "commerce détail & textile habillement",
   ecosystemFr:
     "Tourcoing abrite Kiabi, Auchan Retail et Bonduelle parmi ses grands groupes, ainsi que les pôles UP-TEX et Team2. L'IÉSEG School of Management et l'ESAAT forment chaque année des profils techniques et managériaux qui alimentent un tissu de PME industrielles et commerciales actif.",
   ecosystemEn:

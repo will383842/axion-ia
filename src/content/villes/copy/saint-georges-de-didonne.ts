@@ -12,6 +12,7 @@ export const SAINT_GEORGES_DE_DIDONNE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Georges-de-Didonne (17). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et hôtellerie-restauration, commerçants saisonniers, professions libérales et indépendants de cette station balnéaire de la Côte de Beauté.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Georges-de-Didonne (17). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et hôtellerie-restauration, commerçants saisonniers, professions libérales et indépendants de cette station balnéaire de la Côte de Beauté.",
+  seoHook: "tourisme balnéaire & commerce saisonnier",
   ecosystemFr:
     "Saint-Georges-de-Didonne est une station balnéaire familiale de la Côte de Beauté, en bordure de l'estuaire de la Gironde. Économie touristique (hôtellerie, restauration, campings, plages), commerces saisonniers, TPE artisans BTP, professions libérales. Phare de la Coubre à proximité, site naturel attractif.",
   ecosystemEn:

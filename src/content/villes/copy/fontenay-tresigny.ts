@@ -12,6 +12,7 @@ export const FONTENAY_TRESIGNY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fontenay-Trésigny (77). Nous accompagnons TPE et PME : artisans du bâtiment, commerçants, PME de services et logistique de la Brie, professions libérales et exploitants agricoles de l'est Seine-et-Marne.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fontenay-Trésigny (77). Nous accompagnons TPE et PME : artisans du bâtiment, commerçants, PME de services et logistique de la Brie, professions libérales et exploitants agricoles de l'est Seine-et-Marne.",
+  seoHook: "artisanat bâtiment & commerce centre-bourg",
   ecosystemFr:
     "Fontenay-Trésigny est une commune résidentielle périurbaine de la Brie en Seine-et-Marne, à mi-chemin entre Melun et Meaux. Tissu économique : TPE artisanat bâtiment (construction, rénovation), commerces de centre-bourg, PME prestataires de services et logistique, professions libérales (santé, immobilier), exploitations agricoles céréalières (Brie). Accès rapide via N4 et proximité de Marne-la-Vallée.",
   ecosystemEn:

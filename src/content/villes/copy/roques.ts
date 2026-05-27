@@ -12,6 +12,7 @@ export const ROQUES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Roques (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud Toulouse. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Roques (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud Toulouse. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat & commerce détail",
   ecosystemFr:
     "Roques est une commune résidentielle du sud de Toulouse, sur les bords de la Garonne entre Portet-sur-Garonne et Muret. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Proximité de la zone commerciale Portet.",
   ecosystemEn:

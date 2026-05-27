@@ -12,6 +12,7 @@ export const CANEJAN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Canéjan (33). Nous accompagnons TPE et PME du sud bordelais : PME tertiaires, artisans BTP, commerçants et professions libérales. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Canéjan (33). Nous accompagnons TPE et PME du sud bordelais : PME tertiaires, artisans BTP, commerçants et professions libérales. Audit Flash dès 490 € HT.",
+  seoHook: "tertiaires services & restauration",
   ecosystemFr:
     "Canéjan est une commune résidentielle du sud de Bordeaux Métropole, entre Pessac et Cestas. PME tertiaires, artisanat BTP, commerces de proximité et professions libérales. Accès rocade A630 et A63 vers Bayonne.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const OUISTREHAM_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ouistreham (14). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tourisme balnéaire et nautisme, hôteliers-restaurateurs Sword Beach, acteurs portuaires ferry, professions libérales et services aux entreprises de la Côte de Nacre.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ouistreham (14). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tourisme balnéaire et nautisme, hôteliers-restaurateurs Sword Beach, acteurs portuaires ferry, professions libérales et services aux entreprises de la Côte de Nacre.",
+  seoHook: "tourisme balnéaire & hôtellerie restauration",
   ecosystemFr:
     "Ouistreham est la station balnéaire et le port ferry de l'agglomération caennaise. Port de Caen-Ouistreham (liaison Brittany Ferries vers Portsmouth). Plage historique Sword Beach (Débarquement du 6 juin 1944, Musée du Mur de l'Atlantique). Économie touristique et nautique forte, hôtellerie-restauration, TPE artisans, commerces, activités portuaires.",
   ecosystemEn:

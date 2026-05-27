@@ -12,6 +12,7 @@ export const ORVAULT_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Orvault (44) en banlieue nantaise. Nous accompagnons les TPE artisanales, indépendants, PME tertiaires orvaltaises et entreprises des zones d'activités (parc tertiaire d'Ar Mor, zone Nantes-Atlantis) sur leurs cas IA opérationnels.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Orvault (44) en banlieue nantaise. Nous accompagnons les TPE artisanales, indépendants, PME tertiaires orvaltaises et entreprises des zones d'activités (parc tertiaire d'Ar Mor, zone Nantes-Atlantis) sur leurs cas IA opérationnels.",
+  seoHook: "artisanat & tertiaires",
   ecosystemFr:
     "Orvault concentre une part importante du tissu tertiaire nord de Nantes Métropole : parc d'activités tertiaires Ar Mor, zone Nantes-Atlantis avec sièges PME, hôtel d'entreprises. Tissu TPE artisanales, commerces de proximité, cabinets professionnels. Proximité Nantes centre (15 min) et écosystème tech nantais.",
   ecosystemEn:

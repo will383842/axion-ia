@@ -12,6 +12,7 @@ export const EPINAY_SOUS_SENART_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Épinay-sous-Sénart (91). Nous accompagnons TPE et PME : artisans BTP, commerçants, professions libérales, PME services aux entreprises, prestataires de services à la personne du bassin Sénart. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Épinay-sous-Sénart (91). Nous accompagnons TPE et PME : artisans BTP, commerçants, professions libérales, PME services aux entreprises, prestataires de services à la personne du bassin Sénart. Audit Flash dès 490 € HT.",
+  seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Épinay-sous-Sénart est une commune résidentielle de l'Essonne à proximité de la forêt de Sénart. Rattachée à la communauté d'agglomération Val-d'Yerres-Val-de-Seine. Tissu TPE artisanat BTP, commerces de proximité, PME tertiaires, professions libérales, services à la personne et restauration.",
   ecosystemEn:

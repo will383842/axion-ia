@@ -12,6 +12,7 @@ export const LE_PONTET_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Pontet (84). Nous accompagnons TPE artisans, PME commerce de gros, logistique, services aux entreprises, professions libérales et commerces de l'agglomération d'Avignon. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Pontet (84). Nous accompagnons TPE artisans, PME commerce de gros, logistique, services aux entreprises, professions libérales et commerces de l'agglomération d'Avignon. Audit Flash dès 490 € HT.",
+  seoHook: "commerce détail & commerce gros",
   ecosystemFr:
     "Le Pontet est positionnée immédiatement au nord d'Avignon, à la jonction A7/N7, dans l'agglomération du Grand Avignon. Commune dont l'activité économique repose sur les zones commerciales (Auchan Avignon-Nord, retail park), la logistique et le commerce de gros, les TPE artisans (BTP, services), PME tertiaires, professions libérales et commerces de proximité. Bassin d'emploi intégré au pôle avignonnais.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const LISSES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lisses (91). Nous accompagnons tous types d'activités : PME logistiques et commerce de gros des zones d'activités, TPE artisans BTP, industriels légers, services aux entreprises, commerçants et indépendants du bassin Évry / Grand Paris Sud.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lisses (91). Nous accompagnons tous types d'activités : PME logistiques et commerce de gros des zones d'activités, TPE artisans BTP, industriels légers, services aux entreprises, commerçants et indépendants du bassin Évry / Grand Paris Sud.",
+  seoHook: "logistique commerce & industrie légère",
   ecosystemFr:
     "Lisses (7 373 hab) est intégrée à la communauté d'agglomération Grand Paris Sud, en continuité directe avec Évry-Courcouronnes. Ses zones d'activités économiques (ZAE du Bois Chaland, Léonard de Vinci) concentrent un tissu dense de PME logistiques, commerces de gros, industrie légère et services aux entreprises. TPE artisanat et commerces de proximité complètent le tissu.",
   ecosystemEn:

@@ -14,6 +14,7 @@ export const MONTMORENCY_COPY: VilleCopy = {
     "Axion-IA se déplace à Montmorency pour des interventions sur site. Avec des voisins économiques comme Enghien-les-Bains et Deuil-la-Barre, Montmorency bénéficie d'un environnement propice à l'innovation. Nos services incluent des audits à partir de 490 € HT et des implémentations dès 990 € HT, adaptés aux besoins des entreprises locales.",
   directAnswerEn:
     "Axion-IA se déplace à Montmorency pour des interventions sur site. Avec des voisins économiques comme Enghien-les-Bains et Deuil-la-Barre, Montmorency bénéficie d'un environnement propice à l'innovation. Nos services incluent des audits à partir de 490 € HT et des implémentations dès 990 € HT, adaptés aux besoins des entreprises locales.",
+  seoHook: "commerce détail & santé humaine",
   ecosystemFr:
     "Montmorency est entourée de pôles économiques comme Enghien-les-Bains et Sannois. L'influence de LVMH et Cap Digital à Paris soutient les initiatives IA dans cette région.",
   ecosystemEn:

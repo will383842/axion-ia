@@ -14,6 +14,7 @@ export const CROIX_COPY: VilleCopy = {
     "Axion-IA se déplace à Croix pour accompagner les entreprises locales dans l'intégration de l'IA. Avec des secteurs dominants tels que la programmation informatique et les services financiers, Croix bénéficie d'un environnement propice à l'innovation. Le Groupe Mulliez, un acteur majeur de la région, illustre bien le dynamisme économique local. Nos interventions sont conçues pour répondre aux besoins spécifiques des entreprises de Croix.",
   directAnswerEn:
     "Axion-IA se déplace à Croix pour accompagner les entreprises locales dans l'intégration de l'IA. Avec des secteurs dominants tels que la programmation informatique et les services financiers, Croix bénéficie d'un environnement propice à l'innovation. Le Groupe Mulliez, un acteur majeur de la région, illustre bien le dynamisme économique local. Nos interventions sont conçues pour répondre aux besoins spécifiques des entreprises de Croix.",
+  seoHook: "commerce détail & programmation informatique",
   ecosystemFr:
     "Croix, avec ses 2 000 établissements, est un centre d'activités regroupant le Groupe Mulliez et des secteurs comme la programmation informatique.",
   ecosystemEn:

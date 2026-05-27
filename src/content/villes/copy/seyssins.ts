@@ -12,6 +12,7 @@ export const SEYSSINS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Seyssins (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants centre-ville, professions libérales (médecins, avocats, expert-comptables), PME tertiaires seyssinoises, indépendants et entreprises de Grenoble-Alpes Métropole en zone ouest.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Seyssins (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants centre-ville, professions libérales (médecins, avocats, expert-comptables), PME tertiaires seyssinoises, indépendants et entreprises de Grenoble-Alpes Métropole en zone ouest.",
+  seoHook: "professions libérales & tertiaires services",
   ecosystemFr:
     "Seyssins est membre de la métropole Grenoble-Alpes Métropole (« La Métro »), à l'ouest immédiat de Grenoble dans l'aire urbaine de l'agglomération. Voisine de Seyssinet-Pariset (parfois confondues localement), elle développe un tissu mixte résidentiel haut de gamme et activités locales : TPE artisanat BTP, commerces, professions libérales installées, PME services. Position vers Vercors périphérique.",
   ecosystemEn:

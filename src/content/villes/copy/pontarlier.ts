@@ -12,6 +12,7 @@ export const PONTARLIER_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pontarlier (25). Nous accompagnons TPE et PME du Haut-Doubs : industriels agroalimentaire et distilleries, artisans bois du Jura, commerçants frontaliers, prestataires services aux transfrontaliers Suisse, acteurs tourisme montagne et patrimoine fort de Joux.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pontarlier (25). Nous accompagnons TPE et PME du Haut-Doubs : industriels agroalimentaire et distilleries, artisans bois du Jura, commerçants frontaliers, prestataires services aux transfrontaliers Suisse, acteurs tourisme montagne et patrimoine fort de Joux.",
+  seoHook: "industrie agroalimentaire & artisanat bois",
   ecosystemFr:
     "Pontarlier est la sous-préfecture du Haut-Doubs (18 067 habitants), à 5 km de la frontière suisse. Ville historiquement liée à l'absinthe et au fort de Joux. Économie dynamique grâce au flux transfrontalier vers Lausanne et Neuchâtel. Tissu industrie agroalimentaire, artisanat bois jurassien, commerces frontaliers, services aux 10 000+ travailleurs transfrontaliers et tourisme montagne/patrimoine.",
   ecosystemEn:

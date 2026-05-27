@@ -12,6 +12,7 @@ export const SERRIS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Serris (77). Nous accompagnons tous types d'activités : TPE commerçants, PME retail et tertiaires, professions libérales et prestataires tourisme-loisirs du pôle Val d'Europe. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Serris (77). Nous accompagnons tous types d'activités : TPE commerçants, PME retail et tertiaires, professions libérales et prestataires tourisme-loisirs du pôle Val d'Europe. Audit Flash dès 490 € HT.",
+  seoHook: "commerce détail & tourisme, loisirs",
   ecosystemFr:
     "Serris est le coeur du Val d'Europe, pôle commercial et tertiaire majeur de Marne-la-Vallée secteur IV. Son tissu économique repose sur le centre commercial Val d'Europe, La Vallée Village (outlets), PME tertiaires, TPE commerçants et prestataires liés au tourisme Disneyland Paris. Proximité directe avec Chessy, Montévrain et Bailly-Romainvilliers.",
   ecosystemEn:

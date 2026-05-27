@@ -12,6 +12,7 @@ export const BEAUMONT_SUR_OISE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beaumont-sur-Oise (95). Nous accompagnons TPE et PME : artisans, commerçants du centre-ville, PME industrielles et de services, professions libérales et professionnels de santé de l'unité urbaine Persan-Beaumont. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beaumont-sur-Oise (95). Nous accompagnons TPE et PME : artisans, commerçants du centre-ville, PME industrielles et de services, professions libérales et professionnels de santé de l'unité urbaine Persan-Beaumont. Audit Flash dès 490 € HT.",
+  seoHook: "santé médico-social & commerce centre-ville",
   ecosystemFr:
     "Beaumont-sur-Oise forme avec Persan un pôle urbain des bords de l'Oise. Centre hospitalier, commerces de centre-ville, TPE artisanales BTP, PME industrielles et de services, professions libérales. Gare Transilien H directe vers Paris. Dynamique de renouvellement urbain et tissu associatif dense.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const ROUSSILLON_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Roussillon (38). Nous accompagnons tous types d'activités : PME industrielles du sud-Isère, TPE artisans BTP, commerçants, agriculteurs et arboriculteurs de la vallée du Rhône, indépendants, professions libérales et services aux entreprises de l'axe rhodanien.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Roussillon (38). Nous accompagnons tous types d'activités : PME industrielles du sud-Isère, TPE artisans BTP, commerçants, agriculteurs et arboriculteurs de la vallée du Rhône, indépendants, professions libérales et services aux entreprises de l'axe rhodanien.",
+  seoHook: "industrie manufacturière & agriculture vallée",
   ecosystemFr:
     "Roussillon est positionnée stratégiquement sur l'axe rhodanien à mi-chemin entre Lyon et Valence. Tissu industriel important (zone d'activités élargie), activité agricole vallée du Rhône (vergers, maraîchage), commerce, services. Position de transit majeur (A7, ligne ferroviaire Paris-Marseille). Communauté de communes du Pays Roussillonnais.",
   ecosystemEn:

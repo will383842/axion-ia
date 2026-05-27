@@ -14,6 +14,7 @@ export const EPINAY_SUR_SEINE_COPY: VilleCopy = {
     "À Épinay-sur-Seine, Axion-IA propose des interventions sur site pour les entreprises de secteurs variés, comme le commerce de détail et les transports terrestres. Notre équipe nationale se déplace pour réaliser des audits, des implémentations et des formations, garantissant un déploiement IA concret et adapté aux besoins locaux.",
   directAnswerEn:
     "À Épinay-sur-Seine, Axion-IA propose des interventions sur site pour les entreprises de secteurs variés, comme le commerce de détail et les transports terrestres. Notre équipe nationale se déplace pour réaliser des audits, des implémentations et des formations, garantissant un déploiement IA concret et adapté aux besoins locaux.",
+  seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Épinay-sur-Seine, avec ses 3 000 établissements actifs, est un pôle économique où se côtoient des entreprises comme Carrefour et SNCF. Le tissu économique local est renforcé par des secteurs dominants tels que le commerce de détail et la construction.",
   ecosystemEn:

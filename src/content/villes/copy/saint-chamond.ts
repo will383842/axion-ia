@@ -14,6 +14,7 @@ export const SAINT_CHAMOND_COPY: VilleCopy = {
     "À Saint-Chamond, Axion-IA propose des services d'IA adaptés aux spécificités locales. Que vous soyez dans la fabrication de produits métalliques ou le commerce de gros, nous vous accompagnons pour automatiser et optimiser vos processus. Notre équipe se déplace sur site, assurant un service personnalisé et direct. Consultez nos tarifs publics pour un audit ou une intervention.",
   directAnswerEn:
     "À Saint-Chamond, Axion-IA propose des services d'IA adaptés aux spécificités locales. Que vous soyez dans la fabrication de produits métalliques ou le commerce de gros, nous vous accompagnons pour automatiser et optimiser vos processus. Notre équipe se déplace sur site, assurant un service personnalisé et direct. Consultez nos tarifs publics pour un audit ou une intervention.",
+  seoHook: "produits métalliques & machines équipements",
   ecosystemFr:
     "Saint-Chamond est un pôle industriel où le Groupe Casino et Eiffage sont implantés. Les entreprises locales bénéficient d'un accès à un large éventail de services IA pour améliorer leurs opérations.",
   ecosystemEn:

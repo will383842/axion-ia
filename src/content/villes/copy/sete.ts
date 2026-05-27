@@ -14,6 +14,7 @@ export const SETE_COPY: VilleCopy = {
     "Axion-IA intervient à Sète pour aider les entreprises locales à intégrer l'IA dans leurs activités. Sète, avec ses 3 000 établissements actifs, bénéficie d'une proximité avec des pôles d'innovation comme Station F et Cap Digital. Nos services incluent des audits, interventions et formations sur site, adaptés aux besoins spécifiques du commerce de détail et des transports maritimes.",
   directAnswerEn:
     "Axion-IA intervient à Sète pour aider les entreprises locales à intégrer l'IA dans leurs activités. Sète, avec ses 3 000 établissements actifs, bénéficie d'une proximité avec des pôles d'innovation comme Station F et Cap Digital. Nos services incluent des audits, interventions et formations sur site, adaptés aux besoins spécifiques du commerce de détail et des transports maritimes.",
+  seoHook: "commerce détail & restauration",
   ecosystemFr:
     "Sète, avec ses 3 000 établissements, est un centre économique en croissance. Le commerce de détail et les transports maritimes y sont dominants, soutenus par des infrastructures telles que la gare de Montpellier-Saint-Roch.",
   ecosystemEn:

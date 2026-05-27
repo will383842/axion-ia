@@ -12,6 +12,7 @@ export const PETITE_ROSSELLE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Petite-Rosselle (57). Nous accompagnons TPE artisans, PME industrielles, commerçants, professions libérales et indépendants du Bassin houiller et de l'agglomération de Forbach. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Petite-Rosselle (57). Nous accompagnons TPE artisans, PME industrielles, commerçants, professions libérales et indépendants du Bassin houiller et de l'agglomération de Forbach. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
+  seoHook: "industrie sous-traitance & artisanat",
   ecosystemFr:
     "Petite-Rosselle est une commune de l'agglomération de Forbach dans le Warndt, à la frontière sarroise. Marquée par son histoire minière, elle abrite le parc Explor Wendel et le musée de la mine, témoins du patrimoine industriel. Tissu TPE artisans BTP, PME industrielles et sous-traitance, commerces de proximité, professions libérales et indépendants. Bassin de vie transfrontalier Moselle-Est / Sarre.",
   ecosystemEn:

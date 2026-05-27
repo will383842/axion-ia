@@ -12,6 +12,7 @@ export const PEGOMAS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pégomas (06). Nous accompagnons tous types d'activités : TPE horticulteurs et pépiniéristes, artisans BTP, commerçants, professions libérales, PME services et entreprises de la vallée de la Siagne entre Cannes et Grasse.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pégomas (06). Nous accompagnons tous types d'activités : TPE horticulteurs et pépiniéristes, artisans BTP, commerçants, professions libérales, PME services et entreprises de la vallée de la Siagne entre Cannes et Grasse.",
+  seoHook: "horticulture mimosa & services personne",
   ecosystemFr:
     "Pégomas s'étend dans la vallée de la Siagne, entre Cannes (15 min) et Grasse (15 min). La commune est réputée pour sa production de mimosa et sa Fête du Mimosa (février). Économie locale : horticulture (mimosa, plantes à parfum), artisanat BTP, commerces de proximité, services. Cadre verdoyant et résidentiel prisé du bassin cannois.",
   ecosystemEn:

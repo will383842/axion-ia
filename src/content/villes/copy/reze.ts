@@ -14,6 +14,7 @@ export const REZE_COPY: VilleCopy = {
     "À Rezé, Axion-IA propose des solutions IA adaptées aux entreprises locales. En collaborant avec des secteurs comme le commerce de détail et la construction, nous aidons nos clients à automatiser leurs processus. La proximité de la Zone d'Activités Atout Sud et de grands groupes tels qu'E.Leclerc et Carrefour renforce l'attractivité de nos interventions.",
   directAnswerEn:
     "À Rezé, Axion-IA propose des solutions IA adaptées aux entreprises locales. En collaborant avec des secteurs comme le commerce de détail et la construction, nous aidons nos clients à automatiser leurs processus. La proximité de la Zone d'Activités Atout Sud et de grands groupes tels qu'E.Leclerc et Carrefour renforce l'attractivité de nos interventions.",
+  seoHook: "commerce détail & construction",
   ecosystemFr:
     "Rezé bénéficie de la proximité de la Zone d'Activités Atout Sud et de grands groupes comme E.Leclerc. Ces atouts économiques offrent un cadre propice à l'innovation et à l'optimisation des processus grâce à l'IA.",
   ecosystemEn:

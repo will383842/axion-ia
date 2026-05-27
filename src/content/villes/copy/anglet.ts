@@ -14,6 +14,7 @@ export const ANGLET_COPY: VilleCopy = {
     "Axion-IA se déplace à Anglet pour proposer des solutions d'IA adaptées aux besoins spécifiques des entreprises locales. Avec la proximité de la Technopole Izarbel et de l'Université de Pau et des Pays de l'Adour, nous sommes en mesure d'accompagner efficacement les structures de la région dans leur transformation numérique.",
   directAnswerEn:
     "Axion-IA se déplace à Anglet pour proposer des solutions d'IA adaptées aux besoins spécifiques des entreprises locales. Avec la proximité de la Technopole Izarbel et de l'Université de Pau et des Pays de l'Adour, nous sommes en mesure d'accompagner efficacement les structures de la région dans leur transformation numérique.",
+  seoHook: "commerce détail & construction",
   ecosystemFr:
     "Anglet est un pôle économique dynamique avec des entreprises comme Dassault Aviation et Safran Helicopter Engines. La Technopole Izarbel et l'Université de Pau et des Pays de l'Adour enrichissent cet environnement propice à l'innovation.",
   ecosystemEn:

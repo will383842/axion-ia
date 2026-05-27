@@ -12,6 +12,7 @@ export const VALREAS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Valréas (84). Nous accompagnons TPE artisans, viticulteurs AOC, PME cartonnage et agroalimentaires, commerces et professions libérales de l'Enclave des Papes. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Valréas (84). Nous accompagnons TPE artisans, viticulteurs AOC, PME cartonnage et agroalimentaires, commerces et professions libérales de l'Enclave des Papes. Audit Flash dès 490 € HT.",
+  seoHook: "viticulture côtes & cartonnage industrie",
   ecosystemFr:
     "Valréas est positionnée dans l'Enclave des Papes, exclave du Vaucluse au cœur de la Drôme provençale. Son économie historique repose sur l'industrie du cartonnage (capitale du cartonnage), la viticulture AOC Côtes du Rhône et Grignan-les-Adhémar, les TPE artisans (BTP, métiers d'art), les PME agroalimentaires et tourisme oenologique, les professions libérales et commerces de centre-bourg.",
   ecosystemEn:

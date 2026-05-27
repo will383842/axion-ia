@@ -14,6 +14,7 @@ export const MENTON_COPY: VilleCopy = {
     "À Menton, Axion-IA propose des audits et interventions pour les entreprises locales. Avec des secteurs comme le commerce de détail et l'hébergement, notre intervention vise à automatiser des tâches administratives et à offrir un retour sur investissement rapide. Nos services incluent des audits à partir de 490 € HT et des interventions dès 590 € HT.",
   directAnswerEn:
     "À Menton, Axion-IA propose des audits et interventions pour les entreprises locales. Avec des secteurs comme le commerce de détail et l'hébergement, notre intervention vise à automatiser des tâches administratives et à offrir un retour sur investissement rapide. Nos services incluent des audits à partir de 490 € HT et des interventions dès 590 € HT.",
+  seoHook: "commerce détail & hébergement",
   ecosystemFr:
     "Menton, avec ses 3 000 établissements actifs, est un lieu stratégique pour le commerce de détail et la restauration. L'écosystème local bénéficie de la proximité avec des infrastructures comme la Gare de Nice-Ville.",
   ecosystemEn:

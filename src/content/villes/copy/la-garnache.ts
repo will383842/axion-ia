@@ -12,6 +12,7 @@ export const LA_GARNACHE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Garnache (85). Nous accompagnons TPE artisans, PME agroalimentaires, exploitations agricoles, commerçants et professions libérales du marais breton vendéen. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Garnache (85). Nous accompagnons TPE artisans, PME agroalimentaires, exploitations agricoles, commerçants et professions libérales du marais breton vendéen. Audit Flash dès 490 € HT.",
+  seoHook: "agriculture élevage & artisanat",
   ecosystemFr:
     "La Garnache (5 515 hab) est une commune du marais breton vendéen, ancienne seigneurie médiévale. Économie rurale diversifiée : agriculture (élevage, maraîchage), artisanat, agroalimentaire, commerces de proximité et tourisme vert. Proximité Challans (10 min), Nantes (45 min), Saint-Nazaire (50 min), côte vendéenne (20 min). Bassin de vie dynamique nord-Vendée.",
   ecosystemEn:

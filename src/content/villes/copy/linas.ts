@@ -12,6 +12,7 @@ export const LINAS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Linas (91). Nous accompagnons TPE et PME : entreprises zone d'activités, artisans, commerçants de proximité, prestataires de services, acteurs logistique du Hurepoix. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Linas (91). Nous accompagnons TPE et PME : entreprises zone d'activités, artisans, commerçants de proximité, prestataires de services, acteurs logistique du Hurepoix. Audit Flash dès 490 € HT.",
+  seoHook: "zone d'activités & services",
   ecosystemFr:
     "Linas est une commune du Hurepoix en Essonne, célèbre pour l'autodrome de Linas-Montlhéry. Zone d'activités économiques, TPE artisanat, commerces de proximité, PME services, logistique locale, événementiel automobile.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const AUBIGNY_SUR_NERE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aubigny-sur-Nère (18). Nous accompagnons tous types d'activités : TPE artisans, commerçants tourisme Cité Stuart, PME agroalimentaires Sologne, exploitants forestiers, services aux entreprises du bassin albinien.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aubigny-sur-Nère (18). Nous accompagnons tous types d'activités : TPE artisans, commerçants tourisme Cité Stuart, PME agroalimentaires Sologne, exploitants forestiers, services aux entreprises du bassin albinien.",
+  seoHook: "tourisme patrimonial & artisanat commerces",
   ecosystemFr:
     "Aubigny-sur-Nère est la Cité des Stuart, aux portes de la Sologne (Cher). Patrimoine Renaissance franco-écossais (château, maisons à colombages). Tissu TPE artisanat, commerces tourisme patrimonial, PME agroalimentaires Sologne, filière bois/forêt, services tertiaires.",
   ecosystemEn:

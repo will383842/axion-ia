@@ -12,6 +12,7 @@ export const LONGUENEE_EN_ANJOU_COPY: VilleCopy = {
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Longuenée-en-Anjou (49). Nous accompagnons les TPE, PME et exploitants agricoles du nord angevin dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
   directAnswerEn:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Longuenée-en-Anjou (49). Nous accompagnons les TPE, PME et exploitants agricoles du nord angevin dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
+  seoHook: "agriculture élevage & artisanat second",
   ecosystemFr:
     "Longuenée-en-Anjou est née de la fusion de 4 communes déléguées (dont La Meignanne, Le Plessis-Macé) au nord d'Angers. Territoire semi-rural attractif : agriculture (polyculture, élevage), artisanat BTP, PME tertiaires, commerces de proximité. Château du Plessis-Macé, patrimoine médiéval remarquable.",
   ecosystemEn:

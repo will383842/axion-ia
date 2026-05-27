@@ -14,6 +14,7 @@ export const MONT_DE_MARSAN_COPY: VilleCopy = {
     "À Mont-de-Marsan, Axion-IA offre des services d'IA pour les entreprises du secteur Commerce de détail et Industrie alimentaire. Nous nous déplaçons sur site pour des audits, interventions et implémentations, garantissant un retour sur investissement rapide. Nos tarifs publics incluent l'Audit Flash à partir de 490 € HT et l'Intervention Essentielle dès 590 € HT.",
   directAnswerEn:
     "À Mont-de-Marsan, Axion-IA offre des services d'IA pour les entreprises du secteur Commerce de détail et Industrie alimentaire. Nous nous déplaçons sur site pour des audits, interventions et implémentations, garantissant un retour sur investissement rapide. Nos tarifs publics incluent l'Audit Flash à partir de 490 € HT et l'Intervention Essentielle dès 590 € HT.",
+  seoHook: "commerce détail & agriculture",
   ecosystemFr:
     "Mont-de-Marsan accueille le Parc d'Activités de la Faisanderie et des entreprises comme Euralis. L'Université de Pau et des Pays de l'Adour contribue à la formation des talents locaux, renforçant l'attractivité économique de la région.",
   ecosystemEn:

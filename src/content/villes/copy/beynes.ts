@@ -12,6 +12,7 @@ export const BEYNES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beynes (78). Nous accompagnons TPE et PME : artisans, professions libérales, PME de services, commerçants et entreprises de la plaine de Versailles ouest entre Plaisir et Jouars-Pontchartrain.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beynes (78). Nous accompagnons TPE et PME : artisans, professions libérales, PME de services, commerçants et entreprises de la plaine de Versailles ouest entre Plaisir et Jouars-Pontchartrain.",
+  seoHook: "artisanat bâtiment & professions libérales",
   ecosystemFr:
     "Beynes est une commune résidentielle semi-rurale de la plaine de Versailles ouest, entre Plaisir et Thiverval-Grignon (campus AgroParisTech historique). Tissu économique local : TPE artisanales (bâtiment, espaces verts, services à la personne), professions libérales, PME de services aux entreprises, commerces de centre-bourg. Cadre attractif pour télétravail et indépendants.",
   ecosystemEn:

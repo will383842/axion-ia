@@ -12,6 +12,7 @@ export const SAINT_LAURENT_DE_LA_SALANQUE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Laurent-de-la-Salanque (66). Nous accompagnons tous types d'activités : TPE artisans, PME commerce et logistique, agriculteurs maraîchers, commerçants, indépendants et professions libérales de la Salanque.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Laurent-de-la-Salanque (66). Nous accompagnons tous types d'activités : TPE artisans, PME commerce et logistique, agriculteurs maraîchers, commerçants, indépendants et professions libérales de la Salanque.",
+  seoHook: "commerce zones & agriculture maraîchère",
   ecosystemFr:
     "Saint-Laurent-de-la-Salanque est le bourg-centre de la plaine de la Salanque, entre Perpignan et le littoral (Le Barcarès). Intégré à Perpignan Méditerranée Métropole. Zones commerciales actives, agriculture maraîchère (primeurs, fruits), TPE artisanat, commerces de centre-bourg, logistique.",
   ecosystemEn:

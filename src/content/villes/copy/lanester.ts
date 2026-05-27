@@ -14,6 +14,7 @@ export const LANESTER_COPY: VilleCopy = {
     "Axion-IA propose des interventions à Lanester, une ville dynamique avec 2 000 établissements actifs. Nous nous déplaçons sur site pour fournir des audits, des implémentations et un accompagnement personnalisé. Des entités comme Cap Digital et Inria illustrent l'écosystème innovant dans lequel nous évoluons, garantissant des solutions adaptées aux besoins locaux.",
   directAnswerEn:
     "Axion-IA propose des interventions à Lanester, une ville dynamique avec 2 000 établissements actifs. Nous nous déplaçons sur site pour fournir des audits, des implémentations et un accompagnement personnalisé. Des entités comme Cap Digital et Inria illustrent l'écosystème innovant dans lequel nous évoluons, garantissant des solutions adaptées aux besoins locaux.",
+  seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Lanester et ses environs, incluant Lorient et Ploemeur, abritent un tissu économique varié. Le commerce de détail et la construction y sont prédominants, offrant un terreau fertile pour les interventions IA.",
   ecosystemEn:

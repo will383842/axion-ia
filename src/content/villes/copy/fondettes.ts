@@ -12,6 +12,7 @@ export const FONDETTES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fondettes (37). Nous accompagnons tous types d'activités : TPE artisans BTP, PME tertiaires de Tours Métropole ouest, exploitants agricoles Val de Loire, commerçants et services aux entreprises fondettois.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fondettes (37). Nous accompagnons tous types d'activités : TPE artisans BTP, PME tertiaires de Tours Métropole ouest, exploitants agricoles Val de Loire, commerçants et services aux entreprises fondettois.",
+  seoHook: "tertiaires services & agriculture maraîchère",
   ecosystemFr:
     "Fondettes se situe à la confluence Loire/Choisille, à l'ouest de Tours Métropole. Commune résidentielle avec tissu TPE artisanat BTP, PME tertiaires et services, agriculture maraîchère Val de Loire, commerces de proximité et professions libérales.",
   ecosystemEn:

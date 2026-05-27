@@ -12,6 +12,7 @@ export const BEUVRAGES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beuvrages (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles, commerçants de proximité, professions libérales, indépendants et services aux entreprises de l'agglomération valenciennoise.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beuvrages (59). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles, commerçants de proximité, professions libérales, indépendants et services aux entreprises de l'agglomération valenciennoise.",
+  seoHook: "industrielles & logistique",
   ecosystemFr:
     "Beuvrages est intégrée à l'agglomération de Valenciennes (Valenciennes Métropole). Tissu péri-urbain du bassin valenciennois : TPE artisanat BTP, PME industrielles (sous-traitance automobile, métallurgie, logistique), commerces de proximité, professions libérales, services aux ménages, héritage du bassin minier reconverti.",
   ecosystemEn:

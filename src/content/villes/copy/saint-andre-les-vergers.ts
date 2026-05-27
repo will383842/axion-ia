@@ -12,6 +12,7 @@ export const SAINT_ANDRE_LES_VERGERS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-André-les-Vergers (10). Nous accompagnons TPE et PME : commerces et magasins d'usine, restauration, services, artisans, sous-traitants industriels de l'agglo Troyes. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-André-les-Vergers (10). Nous accompagnons TPE et PME : commerces et magasins d'usine, restauration, services, artisans, sous-traitants industriels de l'agglo Troyes. Audit Flash dès 490 € HT.",
+  seoHook: "commerce détail & restauration hôtellerie",
   ecosystemFr:
     "Saint-André-les-Vergers est une commune dynamique de l'agglo Troyes, spécialisée dans les zones commerciales et magasins d'usine textile. Tissu TPE/PME diversifié : commerce et retail, restauration, services, artisanat, sous-traitance industrielle et activités tertiaires.",
   ecosystemEn:

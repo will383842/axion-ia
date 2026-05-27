@@ -14,6 +14,7 @@ export const DREUX_COPY: VilleCopy = {
     "Axion-IA propose des interventions à Dreux pour aider les entreprises locales à automatiser et optimiser leurs processus. Avec des acteurs économiques tels que Sanofi et les Laboratoires Expanscience présents dans la région, nous offrons notre expertise pour répondre aux besoins spécifiques des secteurs dominants comme le commerce de détail et la santé humaine.",
   directAnswerEn:
     "Axion-IA propose des interventions à Dreux pour aider les entreprises locales à automatiser et optimiser leurs processus. Avec des acteurs économiques tels que Sanofi et les Laboratoires Expanscience présents dans la région, nous offrons notre expertise pour répondre aux besoins spécifiques des secteurs dominants comme le commerce de détail et la santé humaine.",
+  seoHook: "commerce détail & santé humaine",
   ecosystemFr:
     "Dreux abrite des entreprises clés comme Sanofi et les Laboratoires Expanscience. Le Parc d'activités de la Radio est un centre d'affaires important, reflétant la diversité économique de la région.",
   ecosystemEn:

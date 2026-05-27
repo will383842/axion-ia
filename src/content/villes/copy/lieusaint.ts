@@ -12,6 +12,7 @@ export const LIEUSAINT_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lieusaint (77). Nous accompagnons tous types d'activités : TPE artisans et prestataires, PME distribution et logistique du pôle Carré Sénart, commerçants, professions libérales et entreprises de services du sud Seine-et-Marne. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lieusaint (77). Nous accompagnons tous types d'activités : TPE artisans et prestataires, PME distribution et logistique du pôle Carré Sénart, commerçants, professions libérales et entreprises de services du sud Seine-et-Marne. Audit Flash dès 490 € HT.",
+  seoHook: "commerce grande & logistique transport",
   ecosystemFr:
     "Lieusaint est le coeur économique de la ville nouvelle de Sénart avec le Carré Sénart, l'un des plus grands centres commerciaux d'Île-de-France (plus de 200 enseignes). Le pôle d'activités concentre distribution, logistique et services. Tissu TPE artisans, PME commerciales, prestataires et professions libérales. Communes voisines : Savigny-le-Temple, Moissy-Cramayel, Nandy, Réau.",
   ecosystemEn:

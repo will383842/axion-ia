@@ -14,6 +14,7 @@ export const DRANCY_COPY: VilleCopy = {
     "À Drancy, Axion-IA propose des solutions IA adaptées aux secteurs du commerce de détail et des transports terrestres. Nous intervenons sur site pour des audits, des implémentations et des formations sur mesure. Nos services sont conçus pour répondre aux besoins spécifiques des entreprises locales, en tenant compte de l'écosystème économique régional, incluant des acteurs comme LVMH et Inria.",
   directAnswerEn:
     "À Drancy, Axion-IA propose des solutions IA adaptées aux secteurs du commerce de détail et des transports terrestres. Nous intervenons sur site pour des audits, des implémentations et des formations sur mesure. Nos services sont conçus pour répondre aux besoins spécifiques des entreprises locales, en tenant compte de l'écosystème économique régional, incluant des acteurs comme LVMH et Inria.",
+  seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "L'économie de Drancy est soutenue par des secteurs clés tels que le commerce de détail et les transports terrestres. L'écosystème local bénéficie de la proximité avec des pôles d'innovation comme Cap Digital et Station F, favorisant l'essor des entreprises.",
   ecosystemEn:

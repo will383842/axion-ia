@@ -12,6 +12,7 @@ export const MULSANNE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mulsanne (72). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles agglo Le Mans, sous-traitants automobile, professions libérales et services de proximité.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mulsanne (72). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles agglo Le Mans, sous-traitants automobile, professions libérales et services de proximité.",
+  seoHook: "industrie mécanique & logistique entreposage",
   ecosystemFr:
     "Mulsanne fait partie de Le Mans Métropole (Sarthe). La célèbre ligne droite des Hunaudières traverse la commune (circuit des 24 Heures). Zones d'activités sud Le Mans, industries mécaniques, logistique, artisanat et commerces. Le Mans centre à 12 min.",
   ecosystemEn:

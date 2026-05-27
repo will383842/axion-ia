@@ -12,6 +12,7 @@ export const BERNAY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bernay (27). Nous accompagnons tous types d'activités : TPE artisans, PME agriculture et agroalimentaire Pays de Bernay, commerces et antiquaires centre-ville, professions libérales, indépendants et services aux entreprises de l'Intercom Bernay Terres de Normandie.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bernay (27). Nous accompagnons tous types d'activités : TPE artisans, PME agriculture et agroalimentaire Pays de Bernay, commerces et antiquaires centre-ville, professions libérales, indépendants et services aux entreprises de l'Intercom Bernay Terres de Normandie.",
+  seoHook: "agriculture bocage & agroalimentaire cidre",
   ecosystemFr:
     "Bernay est une sous-préfecture de l'Eure, ville d'art et d'histoire avec son abbatiale romane du XIe siècle et ses célèbres brocantes. Économie mixte : agriculture (bocage normand, élevage, cidre), agroalimentaire, commerces de centre-ville, antiquaires et brocanteurs, professions libérales. Intercom Bernay Terres de Normandie, tissu TPE/PME rural dynamique.",
   ecosystemEn:

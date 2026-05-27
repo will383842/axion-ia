@@ -12,6 +12,7 @@ export const LANCON_PROVENCE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lançon-Provence (13). Nous accompagnons TPE artisans, PME logistique et transport, professions libérales, commerçants et exploitants agricoles de la Crau et du bassin de Berre. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lançon-Provence (13). Nous accompagnons TPE artisans, PME logistique et transport, professions libérales, commerçants et exploitants agricoles de la Crau et du bassin de Berre. Audit Flash dès 490 € HT.",
+  seoHook: "logistique transport & entrepôts supply",
   ecosystemFr:
     "Lançon-Provence est positionnée sur l'axe A7-A8 entre Salon-de-Provence et Marseille, avec zones d'activités logistiques et entrepôts (Clésud à proximité). Vignobles AOC Coteaux d'Aix, oliveraies, élevage en Crau et agriculture céréalière. Tissu PME tertiaires et services aux entreprises de l'aire Aix-Marseille-Salon.",
   ecosystemEn:

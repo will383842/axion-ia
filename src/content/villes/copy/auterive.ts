@@ -12,6 +12,7 @@ export const AUTERIVE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auterive (31). Nous accompagnons TPE artisans, PME industrielles et agroalimentaires, commerçants et professions libérales du sud Toulouse. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auterive (31). Nous accompagnons TPE artisans, PME industrielles et agroalimentaires, commerçants et professions libérales du sud Toulouse. Audit Flash dès 490 € HT.",
+  seoHook: "industrie fabrication & agroalimentaire",
   ecosystemFr:
     "Auterive est un bourg structurant du sud de la Haute-Garonne, sur les bords de l'Ariège. PME industrielles, artisans BTP, entreprises agroalimentaires, commerces de centre-ville, professions libérales. Zone d'activités en développement sur l'axe Toulouse-Pamiers.",
   ecosystemEn:

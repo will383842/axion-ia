@@ -12,6 +12,7 @@ export const MONTESSON_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montesson (78). Nous accompagnons TPE et PME : commerçants et artisans du centre-bourg, PME services boucle de Seine, professions libérales, restaurateurs, exploitants agricoles et horticulteurs plaine de Montesson. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montesson (78). Nous accompagnons TPE et PME : commerçants et artisans du centre-bourg, PME services boucle de Seine, professions libérales, restaurateurs, exploitants agricoles et horticulteurs plaine de Montesson. Audit Flash dès 490 € HT.",
+  seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Montesson est une commune résidentielle des Yvelines, sur la plaine maraîchère historique de Montesson, entre Le Vésinet et Sartrouville. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, activités agricoles et horticoles.",
   ecosystemEn:

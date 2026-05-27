@@ -12,6 +12,7 @@ export const LA_SALVETAT_SAINT_GILLES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Salvetat-Saint-Gilles (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'ouest Toulouse. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Salvetat-Saint-Gilles (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'ouest Toulouse. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat & commerce détail",
   ecosystemFr:
     "La Salvetat-Saint-Gilles est une commune résidentielle de l'ouest de Toulouse. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Cadre de vie prisé entre Plaisance-du-Touch et Fonsorbes.",
   ecosystemEn:

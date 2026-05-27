@@ -12,6 +12,7 @@ export const ESCAUDAIN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Escaudain (59). Nous accompagnons TPE et PME : artisans et prestataires de services, commerçants de centre-bourg, professions libérales, PME tertiaires, restaurateurs. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Escaudain (59). Nous accompagnons TPE et PME : artisans et prestataires de services, commerçants de centre-bourg, professions libérales, PME tertiaires, restaurateurs. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat & commerce centre-bourg",
   ecosystemFr:
     "Escaudain est une commune du bassin minier reconverti du Nord, entre Valenciennes et Douai, classée au patrimoine mondial UNESCO. Tissu TPE artisanat et services, commerces de centre-bourg, professions libérales, petites PME tertiaires, restauration.",
   ecosystemEn:

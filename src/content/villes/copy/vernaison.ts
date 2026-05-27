@@ -12,6 +12,7 @@ export const VERNAISON_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vernaison (69). Nous accompagnons tous types d'activités : PME tertiaires sud lyonnais, TPE artisans BTP, commerçants, professions libérales et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vernaison (69). Nous accompagnons tous types d'activités : PME tertiaires sud lyonnais, TPE artisans BTP, commerçants, professions libérales et services aux entreprises de la Métropole de Lyon.",
+  seoHook: "tertiaires sud",
   ecosystemFr:
     "Vernaison est intégrée à la Métropole de Lyon, en banlieue sud (rive droite Rhône). Tissu péri-urbain résidentiel : PME tertiaires, professions libérales, TPE artisanat BTP, commerces.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const BRUGES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bruges (33). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME tertiaires brugeaises (zone Bordeaux Lac), industriels et sous-traitants périphériques bordelais, professions libérales (santé, juridique) et indépendants du bassin nord Métropole Bordeaux.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bruges (33). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME tertiaires brugeaises (zone Bordeaux Lac), industriels et sous-traitants périphériques bordelais, professions libérales (santé, juridique) et indépendants du bassin nord Métropole Bordeaux.",
+  seoHook: "tertiaires zone & industrie périphérique",
   ecosystemFr:
     "Bruges s'intègre au tissu économique nord de Bordeaux Métropole (770 000 hab) : zone d'activités tertiaires Bordeaux Lac (sièges entreprises régionaux, hôtels, congrès), industries périphériques (mécanique, métallerie, transformation), proximité immédiate aéroport Bordeaux-Mérignac (15 min). Tissu TPE artisanat BTP dense, professions libérales et commerces de proximité.",
   ecosystemEn:

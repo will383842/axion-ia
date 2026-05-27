@@ -12,6 +12,7 @@ export const SAUTRON_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sautron (44). Nous accompagnons les TPE, indépendants, PME tertiaires, professions libérales et commerçants de cette commune résidentielle de l'ouest nantais sur leurs cas IA opérationnels. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sautron (44). Nous accompagnons les TPE, indépendants, PME tertiaires, professions libérales et commerçants de cette commune résidentielle de l'ouest nantais sur leurs cas IA opérationnels. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat & professions libérales",
   ecosystemFr:
     "Sautron est une commune résidentielle prisée à l'ouest de Nantes Métropole. Cadre verdoyant attractif pour les professions libérales, TPE artisanales, PME tertiaires et commerces de proximité. Proximité immédiate du pôle tertiaire d'Orvault et du centre de Nantes (15 min).",
   ecosystemEn:

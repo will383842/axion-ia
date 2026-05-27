@@ -12,6 +12,7 @@ export const SAINT_QUENTIN_FALLAVIER_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Quentin-Fallavier (38). Nous accompagnons tous types d'activités : PME industrielles et logistiques des zones d'activités CAPI, opérateurs e-commerce et logistique Lyon-Saint-Exupéry, TPE artisans BTP, commerçants et services aux entreprises de la ville nouvelle.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Quentin-Fallavier (38). Nous accompagnons tous types d'activités : PME industrielles et logistiques des zones d'activités CAPI, opérateurs e-commerce et logistique Lyon-Saint-Exupéry, TPE artisans BTP, commerçants et services aux entreprises de la ville nouvelle.",
+  seoHook: "logistique massive & industrie manufacturière",
   ecosystemFr:
     "Saint-Quentin-Fallavier a une part importante de son territoire aménagée dans le cadre de la ville nouvelle de L'Isle-d'Abeau (CAPI), hébergeant l'une des plus importantes concentrations de zones d'activités logistique et industrielle de l'aire d'attraction est de Lyon. Tissu PME industrielles et logistiques (proximité aéroport Lyon-Saint-Exupéry à 10 min), TPE artisanat BTP, commerces et services.",
   ecosystemEn:

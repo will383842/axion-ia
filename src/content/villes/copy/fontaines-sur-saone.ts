@@ -12,6 +12,7 @@ export const FONTAINES_SUR_SAONE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fontaines-sur-Saône (69). Nous accompagnons tous types d'activités : PME tertiaires nord lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fontaines-sur-Saône (69). Nous accompagnons tous types d'activités : PME tertiaires nord lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon.",
+  seoHook: "tertiaires nord",
   ecosystemFr:
     "Fontaines-sur-Saône est intégrée à la Métropole de Lyon, en banlieue nord (val de Saône). Tissu péri-urbain résidentiel : PME tertiaires, TPE artisanat BTP, commerces de proximité, professions libérales installées.",
   ecosystemEn:

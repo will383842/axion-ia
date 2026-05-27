@@ -12,6 +12,7 @@ export const EZANVILLE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ézanville (95). Nous accompagnons tous types d'activités : TPE artisanales et commerçantes, PME de services aux entreprises, professions libérales, indépendants et prestataires du nord Val-d'Oise.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ézanville (95). Nous accompagnons tous types d'activités : TPE artisanales et commerçantes, PME de services aux entreprises, professions libérales, indépendants et prestataires du nord Val-d'Oise.",
+  seoHook: "artisanat maintenance & commerce proximité",
   ecosystemFr:
     "Ézanville est une commune résidentielle du nord Val-d'Oise, entre Écouen et Sarcelles, à proximité directe de la Plaine de France et de Roissy-CDG. Tissu économique de TPE artisanales BTP, PME tertiaires, commerces de centre-bourg, professions libérales de santé et prestataires de services aux entreprises.",
   ecosystemEn:

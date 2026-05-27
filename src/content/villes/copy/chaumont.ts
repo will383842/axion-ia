@@ -14,6 +14,7 @@ export const CHAUMONT_COPY: VilleCopy = {
     "À Chaumont, Axion-IA propose des interventions sur site pour les entreprises souhaitant intégrer l'IA dans leurs opérations. Notre approche s'inspire des meilleures pratiques observées dans des écosystèmes comme ceux de Cap Digital et Station F. Nous offrons des audits, interventions et formations pour répondre aux besoins spécifiques des entreprises chaumontaises.",
   directAnswerEn:
     "À Chaumont, Axion-IA propose des interventions sur site pour les entreprises souhaitant intégrer l'IA dans leurs opérations. Notre approche s'inspire des meilleures pratiques observées dans des écosystèmes comme ceux de Cap Digital et Station F. Nous offrons des audits, interventions et formations pour répondre aux besoins spécifiques des entreprises chaumontaises.",
+  seoHook: "commerce détail & transports",
   ecosystemFr:
     "Le tissu économique de Chaumont est marqué par des secteurs tels que le commerce de détail et les transports terrestres. Les entreprises locales, bien que distantes des pôles comme Inria et Station F, bénéficient d'une proximité avec des infrastructures clés pour leur développement.",
   ecosystemEn:

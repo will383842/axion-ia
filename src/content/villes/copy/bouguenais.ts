@@ -14,6 +14,7 @@ export const BOUGUENAIS_COPY: VilleCopy = {
     "Axion-IA propose des interventions sur site à Bouguenais, où des entreprises comme Airbus et STX France sont implantées. Nous nous déplaçons pour automatiser vos processus, qu'il s'agisse de devis, relances ou reporting. Nos audits débutent à 490 € HT et nos interventions à partir de 590 € HT, avec des tarifs publics consultables en ligne.",
   directAnswerEn:
     "Axion-IA propose des interventions sur site à Bouguenais, où des entreprises comme Airbus et STX France sont implantées. Nous nous déplaçons pour automatiser vos processus, qu'il s'agisse de devis, relances ou reporting. Nos audits débutent à 490 € HT et nos interventions à partir de 590 € HT, avec des tarifs publics consultables en ligne.",
+  seoHook: "transports terrestres & entreposage",
   ecosystemFr:
     "Bouguenais bénéficie d'un écosystème industriel dynamique avec des acteurs tels qu'Airbus et STX France. La ZAC de la Neustrie renforce l'attractivité locale pour les entreprises du secteur des transports et de la programmation informatique.",
   ecosystemEn:

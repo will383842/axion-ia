@@ -12,6 +12,7 @@ export const LANTON_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lanton (33). Nous accompagnons TPE et PME du nord Bassin d'Arcachon : ostréiculteurs, artisans BTP, commerçants, professions libérales et entreprises de services. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lanton (33). Nous accompagnons TPE et PME du nord Bassin d'Arcachon : ostréiculteurs, artisans BTP, commerçants, professions libérales et entreprises de services. Audit Flash dès 490 € HT.",
+  seoHook: "ostréiculture & artisanat",
   ecosystemFr:
     "Lanton est une commune résidentielle du nord du Bassin d'Arcachon. Économie mixte : ostréiculture, artisanat BTP (construction neuve), commerces de proximité et professions libérales. Plages et ports ostréicoles (Taussat, Cassy). Accès D3 vers Bordeaux et Bassin.",
   ecosystemEn:

@@ -14,6 +14,7 @@ export const ABBEVILLE_COPY: VilleCopy = {
     "Axion-IA se déplace à Abbeville pour accompagner les entreprises dans l'intégration de l'IA. Avec des acteurs comme LVMH et BNP Paribas dans l'écosystème national, nous offrons des solutions adaptées aux besoins spécifiques des entreprises abbevilloises, sans partenariat direct avec ces entités. Notre approche est pragmatique et axée sur des résultats mesurables.",
   directAnswerEn:
     "Axion-IA se déplace à Abbeville pour accompagner les entreprises dans l'intégration de l'IA. Avec des acteurs comme LVMH et BNP Paribas dans l'écosystème national, nous offrons des solutions adaptées aux besoins spécifiques des entreprises abbevilloises, sans partenariat direct avec ces entités. Notre approche est pragmatique et axée sur des résultats mesurables.",
+  seoHook: "industrie agroalimentaire & commerce détail",
   ecosystemFr:
     "Abbeville est un centre actif avec des secteurs comme l'industrie agroalimentaire et le commerce de détail. Les entreprises locales peuvent bénéficier de l'expérience nationale d'Axion-IA, dans un contexte marqué par des acteurs tels que Sanofi et Renault.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const SAINT_FLORENT_SUR_CHER_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Florent-sur-Cher (18). Nous accompagnons TPE artisans, PME industrielles, commerçants, exploitants agricoles et toutes les activités de la vallée du Cher au sud de Bourges. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Florent-sur-Cher (18). Nous accompagnons TPE artisans, PME industrielles, commerçants, exploitants agricoles et toutes les activités de la vallée du Cher au sud de Bourges. Audit Flash dès 490 € HT.",
+  seoHook: "industrie métallurgie & tertiaires services",
   ecosystemFr:
     "Saint-Florent-sur-Cher est une commune industrielle et résidentielle de la vallée du Cher, au sud de Bourges. Tissu de TPE artisans, PME industrielles (métallurgie, mécanique), commerces de proximité, agriculture céréalière, services aux entreprises. Intégrée à Bourges Plus.",
   ecosystemEn:

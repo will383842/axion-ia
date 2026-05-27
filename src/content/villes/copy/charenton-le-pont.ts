@@ -14,6 +14,7 @@ export const CHARENTON_LE_PONT_COPY: VilleCopy = {
     "Charenton-le-Pont, avec ses 3 000 établissements actifs, est un lieu stratégique pour nos interventions. Nous y accompagnons les entreprises dans l'optimisation de leurs processus grâce à l'IA. Proche de pôles comme Station F et Cap Digital, nous offrons des audits dès 490 € HT et des interventions à partir de 590 € HT. Nos solutions s'adaptent aux besoins spécifiques des secteurs présents, tels que le commerce de détail et la programmation informatique.",
   directAnswerEn:
     "Charenton-le-Pont, avec ses 3 000 établissements actifs, est un lieu stratégique pour nos interventions. Nous y accompagnons les entreprises dans l'optimisation de leurs processus grâce à l'IA. Proche de pôles comme Station F et Cap Digital, nous offrons des audits dès 490 € HT et des interventions à partir de 590 € HT. Nos solutions s'adaptent aux besoins spécifiques des secteurs présents, tels que le commerce de détail et la programmation informatique.",
+  seoHook: "commerce détail & services financiers",
   ecosystemFr:
     "Charenton-le-Pont est un carrefour économique avec des acteurs comme EssilorLuxottica et un accès rapide à des hubs d'innovation tels que Station F. Les entreprises locales bénéficient d'un environnement propice à l'innovation.",
   ecosystemEn:

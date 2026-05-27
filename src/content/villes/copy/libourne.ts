@@ -14,6 +14,7 @@ export const LIBOURNE_COPY: VilleCopy = {
     "Axion-IA se déplace à Libourne pour accompagner les entreprises locales dans leur adoption de l'IA. Avec des secteurs tels que le commerce de détail et l'industrie agroalimentaire, nous proposons des audits dès 490 € HT et des interventions à partir de 590 € HT. Notre approche personnalisée s'adapte aux spécificités de chaque entreprise, garantissant une intégration fluide des technologies IA.",
   directAnswerEn:
     "Axion-IA se déplace à Libourne pour accompagner les entreprises locales dans leur adoption de l'IA. Avec des secteurs tels que le commerce de détail et l'industrie agroalimentaire, nous proposons des audits dès 490 € HT et des interventions à partir de 590 € HT. Notre approche personnalisée s'adapte aux spécificités de chaque entreprise, garantissant une intégration fluide des technologies IA.",
+  seoHook: "commerce détail & industrie agroalimentaire",
   ecosystemFr:
     "Libourne bénéficie d'une économie dynamique avec la présence des Laboratoires Pierre Fabre et de la Zone Industrielle de la Ballastière, soutenant des secteurs variés tels que le commerce de détail et l'industrie agroalimentaire.",
   ecosystemEn:

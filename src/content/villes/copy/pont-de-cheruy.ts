@@ -12,6 +12,7 @@ export const PONT_DE_CHERUY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pont-de-Chéruy (38). Nous accompagnons tous types d'activités : PME industrielles Nord-Isère, opérateurs logistiques aire lyonnaise est, TPE artisans BTP, commerçants, indépendants, agriculteurs et services aux entreprises de la Communauté de communes Lyon Saint-Exupéry en Dauphiné.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pont-de-Chéruy (38). Nous accompagnons tous types d'activités : PME industrielles Nord-Isère, opérateurs logistiques aire lyonnaise est, TPE artisans BTP, commerçants, indépendants, agriculteurs et services aux entreprises de la Communauté de communes Lyon Saint-Exupéry en Dauphiné.",
+  seoHook: "industrielles nord-isère & logistique",
   ecosystemFr:
     "Pont-de-Chéruy est positionnée dans la partie orientale de l'aire d'attraction de Lyon, en limite frontière Isère-Rhône. Forme une unité urbaine avec Charvieu-Chavagneux et Tignieu-Jameyzieu. Tissu PME industrielles, logistique (proximité aéroport Lyon-Saint-Exupéry 20 min), TPE artisans BTP, commerces et activité agricole résiduelle.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const IFS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ifs (14). Nous accompagnons tous types d'activités : TPE artisans BTP, PME services aux entreprises de l'agglomération caennaise, commerçants zones commerciales sud Caen, professions libérales, indépendants et prestataires du secteur tertiaire.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ifs (14). Nous accompagnons tous types d'activités : TPE artisans BTP, PME services aux entreprises de l'agglomération caennaise, commerçants zones commerciales sud Caen, professions libérales, indépendants et prestataires du secteur tertiaire.",
+  seoHook: "services aux & commerce zones",
   ecosystemFr:
     "Ifs est une commune de l'agglomération caennaise sud, en forte croissance démographique. Zones commerciales et d'activités attractives (Ifs–Fleury). Tissu TPE artisans BTP, PME services aux entreprises, commerces, professions libérales, indépendants. Proximité immédiate Caen centre et campus universitaire.",
   ecosystemEn:

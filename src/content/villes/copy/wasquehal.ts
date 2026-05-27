@@ -14,6 +14,7 @@ export const WASQUEHAL_COPY: VilleCopy = {
     "À Wasquehal, Axion-IA propose des interventions IA adaptées aux besoins des entreprises locales. Avec des groupes tels que Decathlon et Bonduelle implantés dans la région, nous aidons à automatiser les processus et améliorer l'efficacité. Nos audits commencent à partir de 490 € HT pour un Audit Flash de 4 heures, garantissant une analyse rapide et précise.",
   directAnswerEn:
     "À Wasquehal, Axion-IA propose des interventions IA adaptées aux besoins des entreprises locales. Avec des groupes tels que Decathlon et Bonduelle implantés dans la région, nous aidons à automatiser les processus et améliorer l'efficacité. Nos audits commencent à partir de 490 € HT pour un Audit Flash de 4 heures, garantissant une analyse rapide et précise.",
+  seoHook: "programmation informatique & activités des",
   ecosystemFr:
     "Wasquehal, avec le Parc de la Pilaterie, héberge des entreprises comme Decathlon et Bonduelle. Ces acteurs contribuent à un tissu économique riche, soutenu par des secteurs comme la programmation informatique.",
   ecosystemEn:

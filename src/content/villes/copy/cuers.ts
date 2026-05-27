@@ -12,6 +12,7 @@ export const CUERS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cuers (83). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME viticoles Côtes de Provence, agroalimentaires, professions libérales et services du centre-Var.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cuers (83). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME viticoles Côtes de Provence, agroalimentaires, professions libérales et services du centre-Var.",
+  seoHook: "viticulture côtes & agriculture coopératives",
   ecosystemFr:
     "Cuers est un pôle viticole et agricole du centre-Var, capitale informelle du vignoble Côtes de Provence local. Tissu de TPE artisanales, PME viticoles et agroalimentaires, commerces de proximité. Toulon à 25 min, Hyères à 25 min, A57 directe.",
   ecosystemEn:

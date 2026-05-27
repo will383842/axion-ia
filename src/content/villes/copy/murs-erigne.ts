@@ -12,6 +12,7 @@ export const MURS_ERIGNE_COPY: VilleCopy = {
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Mûrs-Erigné (49). Nous accompagnons les TPE, PME et professions libérales du sud angevin dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict, tarifs publics.",
   directAnswerEn:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Mûrs-Erigné (49). Nous accompagnons les TPE, PME et professions libérales du sud angevin dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict, tarifs publics.",
+  seoHook: "professions libérales & tertiaires services",
   ecosystemFr:
     "Mûrs-Erigné est une commune résidentielle attractive en bords de Loire, porte sud d'Angers Loire Métropole. Tissu économique mixte : professions libérales, PME tertiaires, commerces de proximité, artisanat BTP, services à la personne. Vignoble AOC Anjou à proximité, cadre de vie entre Loire et coteaux.",
   ecosystemEn:

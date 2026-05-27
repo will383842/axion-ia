@@ -12,6 +12,7 @@ export const MANDUEL_COPY: VilleCopy = {
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Manduel (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs Costières de Nîmes, entreprises de services, logisticiens, commerçants et artisans BTP de la zone gare TGV. Audit Flash à partir de 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Manduel (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs Costières de Nîmes, entreprises de services, logisticiens, commerçants et artisans BTP de la zone gare TGV. Audit Flash à partir de 490 € HT.",
+  seoHook: "viticulture costières & logistique transport",
   ecosystemFr:
     "Manduel (~7 000 hab) est stratégiquement positionnée avec la gare TGV Nîmes Pont du Gard (Paris à 2h50). Viticulture Costières de Nîmes, zone d'activité en développement, services aux entreprises, logistique, artisanat BTP et commerces. Dynamique économique portée par l'accessibilité TGV.",
   ecosystemEn:

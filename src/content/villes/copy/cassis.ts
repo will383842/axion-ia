@@ -12,6 +12,7 @@ export const CASSIS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cassis (13). Nous accompagnons TPE viticulteurs AOC Cassis, restaurateurs, hôteliers, commerçants et PME du tourisme haut de gamme du littoral est-marseillais. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cassis (13). Nous accompagnons TPE viticulteurs AOC Cassis, restaurateurs, hôteliers, commerçants et PME du tourisme haut de gamme du littoral est-marseillais. Audit Flash dès 490 € HT.",
+  seoHook: "viticulture cassis & tourisme haut",
   ecosystemFr:
     "Cassis est une station balnéaire prestigieuse aux portes du Parc national des Calanques. Viticulture AOC Cassis (l'une des plus anciennes AOC de France, vin blanc renommé), tourisme haut de gamme, restauration gastronomique, nautisme et plongée. Économie saisonnière forte avec un tissu de TPE/PME tourisme et artisanat.",
   ecosystemEn:

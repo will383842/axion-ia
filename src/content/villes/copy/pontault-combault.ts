@@ -14,6 +14,7 @@ export const PONTAULT_COMBAULT_COPY: VilleCopy = {
     "Axion-IA se déplace à Pontault-Combault pour accompagner les entreprises dans l'intégration de l'IA, en tenant compte des spécificités locales. L'écosystème francilien, avec des acteurs comme LVMH et BNP Paribas, offre un contexte favorable à l'innovation. Nos services incluent l'audit, l'intervention et l'implémentation, adaptés aux besoins des structures locales.",
   directAnswerEn:
     "Axion-IA se déplace à Pontault-Combault pour accompagner les entreprises dans l'intégration de l'IA, en tenant compte des spécificités locales. L'écosystème francilien, avec des acteurs comme LVMH et BNP Paribas, offre un contexte favorable à l'innovation. Nos services incluent l'audit, l'intervention et l'implémentation, adaptés aux besoins des structures locales.",
+  seoHook: "commerce détail & transports",
   ecosystemFr:
     "Pontault-Combault bénéficie de la proximité de l'écosystème parisien, incluant Cap Digital et Station F, favorisant l'innovation technologique.",
   ecosystemEn:

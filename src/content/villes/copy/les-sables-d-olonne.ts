@@ -14,6 +14,7 @@ export const LES_SABLES_D_OLONNE_COPY: VilleCopy = {
     "Axion-IA se déplace à Les Sables-d'Olonne pour offrir des services IA adaptés aux besoins des entreprises locales. Nous proposons des audits, des interventions et des implémentations, tout en respectant les normes RGPD. À Paris, des entités comme Cap Digital et Inria façonnent l'écosystème de l'innovation, mais notre expertise est disponible partout en France, y compris aux Sables-d'Olonne.",
   directAnswerEn:
     "Axion-IA se déplace à Les Sables-d'Olonne pour offrir des services IA adaptés aux besoins des entreprises locales. Nous proposons des audits, des interventions et des implémentations, tout en respectant les normes RGPD. À Paris, des entités comme Cap Digital et Inria façonnent l'écosystème de l'innovation, mais notre expertise est disponible partout en France, y compris aux Sables-d'Olonne.",
+  seoHook: "commerce détail & hébergement",
   ecosystemFr:
     "Les Sables-d'Olonne est un centre économique avec 5 000 établissements actifs. Des secteurs tels que le commerce de détail et l'hébergement y prospèrent, tout comme LVMH et Hermès à Paris.",
   ecosystemEn:

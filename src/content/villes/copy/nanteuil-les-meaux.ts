@@ -12,6 +12,7 @@ export const NANTEUIL_LES_MEAUX_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nanteuil-lès-Meaux (77). Nous accompagnons TPE et PME : artisans et commerçants du bassin meldois, prestataires services à la personne, professions libérales et exploitants agricoles périurbains. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nanteuil-lès-Meaux (77). Nous accompagnons TPE et PME : artisans et commerçants du bassin meldois, prestataires services à la personne, professions libérales et exploitants agricoles périurbains. Audit Flash dès 490 € HT.",
+  seoHook: "services personne & agriculture périurbaine",
   ecosystemFr:
     "Nanteuil-lès-Meaux fait partie de l'agglomération de Meaux (sous-préfecture de Seine-et-Marne). Commune résidentielle dynamique, elle accueille des TPE et PME dans l'artisanat, le commerce, les services à la personne et les professions libérales. Agriculture périurbaine (Brie) en complément. Accès rapide Meaux centre et A140.",
   ecosystemEn:

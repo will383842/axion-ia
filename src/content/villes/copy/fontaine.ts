@@ -14,6 +14,7 @@ export const FONTAINE_COPY: VilleCopy = {
     "Axion-IA se déplace à Fontaine pour offrir des services d'IA opérationnelle. Nous intervenons dans des secteurs variés, tels que la fabrication de produits métalliques et le commerce de gros. Nos prestations incluent des audits, des interventions et des implémentations, avec des tarifs publics clairs. Williams et notre équipe nationale assurent une présence rapide sur site.",
   directAnswerEn:
     "Axion-IA se déplace à Fontaine pour offrir des services d'IA opérationnelle. Nous intervenons dans des secteurs variés, tels que la fabrication de produits métalliques et le commerce de gros. Nos prestations incluent des audits, des interventions et des implémentations, avec des tarifs publics clairs. Williams et notre équipe nationale assurent une présence rapide sur site.",
+  seoHook: "produits métalliques & commerce gros",
   ecosystemFr:
     "Fontaine bénéficie d'un tissu économique diversifié, avec des entreprises dans la fabrication de produits métalliques et la programmation informatique. L'écosystème régional inclut également des acteurs comme la gare TGV de Grenoble et l'aéroport de Grenoble-Alpes-Isère.",
   ecosystemEn:

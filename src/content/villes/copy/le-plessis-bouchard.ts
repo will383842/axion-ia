@@ -12,6 +12,7 @@ export const LE_PLESSIS_BOUCHARD_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Plessis-Bouchard (95). Nous accompagnons tous types d'activités : TPE artisanales, PME de services et conseil, commerçants, professions libérales, indépendants et prestataires de l'agglomération Val-et-Forêt.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Plessis-Bouchard (95). Nous accompagnons tous types d'activités : TPE artisanales, PME de services et conseil, commerçants, professions libérales, indépendants et prestataires de l'agglomération Val-et-Forêt.",
+  seoHook: "artisanat maintenance & commerce proximité",
   ecosystemFr:
     "Le Plessis-Bouchard est une commune résidentielle du Val-d'Oise, intégrée à l'agglomération Val-et-Forêt avec Franconville et Beauchamp. Tissu économique de TPE artisanales, PME de services tertiaires, commerces de centre-bourg, professions libérales de santé et prestataires connectés au bassin d'emploi Cergy-Pontoise et La Défense.",
   ecosystemEn:

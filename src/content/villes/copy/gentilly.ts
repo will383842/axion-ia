@@ -12,6 +12,7 @@ export const GENTILLY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gentilly (94). Nous accompagnons tous types d'activités : TPE prestataires tertiaires, PME de conseil et services numériques, commerçants, professions libérales, startups et indépendants du sud de Paris. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gentilly (94). Nous accompagnons tous types d'activités : TPE prestataires tertiaires, PME de conseil et services numériques, commerçants, professions libérales, startups et indépendants du sud de Paris. Audit Flash dès 490 € HT.",
+  seoHook: "conseil services & prestataires tertiaires",
   ecosystemFr:
     "Gentilly est une commune dynamique limitrophe du 13e et 14e arrondissements de Paris, adossée à la Cité internationale universitaire. Son tissu économique mêle TPE prestataires tertiaires, PME de conseil et services numériques, commerces de proximité et professions libérales. Proximité directe avec Arcueil, Le Kremlin-Bicêtre et Montrouge.",
   ecosystemEn:

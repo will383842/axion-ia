@@ -12,6 +12,7 @@ export const PIA_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pia (66). Nous accompagnons tous types d'activités : TPE artisans, PME zones d'activités, commerçants, agriculteurs maraîchers Salanque, indépendants et professions libérales de l'agglo Perpignan nord.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pia (66). Nous accompagnons tous types d'activités : TPE artisans, PME zones d'activités, commerçants, agriculteurs maraîchers Salanque, indépendants et professions libérales de l'agglo Perpignan nord.",
+  seoHook: "agriculture maraîchère & zones d'activités",
   ecosystemFr:
     "Pia est une commune résidentielle en forte croissance au nord de Perpignan, dans la plaine de la Salanque. Intégrée à Perpignan Méditerranée Métropole. Zones d'activités, TPE artisanat, agriculture maraîchère (fruits, légumes), commerces de proximité, services.",
   ecosystemEn:

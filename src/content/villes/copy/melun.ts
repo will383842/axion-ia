@@ -14,6 +14,7 @@ export const MELUN_COPY: VilleCopy = {
     "Axion-IA se déplace à Melun pour offrir des solutions IA adaptées aux besoins des entreprises locales. Melun, avec ses 3 000 établissements actifs, bénéficie d'un environnement économique varié. Nous intervenons sur site pour des audits, des implémentations et des formations, en tenant compte des spécificités des secteurs présents, tels que le commerce de détail et la construction. Nos tarifs publics, comme l'Audit Flash à partir de 490 € HT, sont consultables en ligne.",
   directAnswerEn:
     "Axion-IA se déplace à Melun pour offrir des solutions IA adaptées aux besoins des entreprises locales. Melun, avec ses 3 000 établissements actifs, bénéficie d'un environnement économique varié. Nous intervenons sur site pour des audits, des implémentations et des formations, en tenant compte des spécificités des secteurs présents, tels que le commerce de détail et la construction. Nos tarifs publics, comme l'Audit Flash à partir de 490 € HT, sont consultables en ligne.",
+  seoHook: "commerce détail & construction",
   ecosystemFr:
     "Melun accueille Safran Aircraft Engines et de nombreux autres acteurs économiques. La ZAC de Vaux-le-Pénil est un lieu stratégique pour le développement des entreprises locales, renforçant l'attractivité de la région.",
   ecosystemEn:

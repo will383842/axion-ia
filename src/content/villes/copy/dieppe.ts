@@ -14,6 +14,7 @@ export const DIEPPE_COPY: VilleCopy = {
     "À Dieppe, Axion-IA propose des audits à partir de 490 € HT et des interventions dès 590 € HT. Nous nous déplaçons sur site pour aider les entreprises locales à automatiser leurs processus. Avec Renault présent dans la région et un secteur industriel en pleine croissance, Dieppe offre un cadre propice à l'innovation.",
   directAnswerEn:
     "À Dieppe, Axion-IA propose des audits à partir de 490 € HT et des interventions dès 590 € HT. Nous nous déplaçons sur site pour aider les entreprises locales à automatiser leurs processus. Avec Renault présent dans la région et un secteur industriel en pleine croissance, Dieppe offre un cadre propice à l'innovation.",
+  seoHook: "industrie alimentaire & transports terrestres",
   ecosystemFr:
     "Dieppe bénéficie de la présence de Renault et d'un secteur de l'industrie alimentaire dynamique. Les entreprises locales peuvent compter sur un écosystème propice à l'innovation et à l'adoption de solutions IA.",
   ecosystemEn:

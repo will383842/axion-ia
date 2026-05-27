@@ -12,6 +12,7 @@ export const AUSSILLON_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aussillon (81). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants et professions libérales de l'agglomération Castres-Mazamet. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aussillon (81). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants et professions libérales de l'agglomération Castres-Mazamet. Audit Flash dès 490 € HT.",
+  seoHook: "industrie textile & artisanat",
   ecosystemFr:
     "Aussillon (5 527 hab) est une commune de l'agglomération Castres-Mazamet, au pied de la Montagne Noire. Économie liée au bassin mazamétain : PME textile-industrie en reconversion, artisanat, commerces de proximité, services. Proximité immédiate Mazamet (5 min) et Castres (15 min). Cadre naturel Montagne Noire attractif pour le tourisme vert.",
   ecosystemEn:

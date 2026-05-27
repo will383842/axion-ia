@@ -14,6 +14,7 @@ export const JOINVILLE_LE_PONT_COPY: VilleCopy = {
     "Axion-IA intervient à Joinville-le-Pont pour optimiser les processus métiers des entreprises locales. Avec des acteurs économiques comme LVMH et BNP Paribas à Paris, notre cabinet propose des audits et implémentations IA adaptés aux besoins spécifiques des TPE, PME et ETI de la région, garantissant des résultats concrets et mesurables.",
   directAnswerEn:
     "Axion-IA intervient à Joinville-le-Pont pour optimiser les processus métiers des entreprises locales. Avec des acteurs économiques comme LVMH et BNP Paribas à Paris, notre cabinet propose des audits et implémentations IA adaptés aux besoins spécifiques des TPE, PME et ETI de la région, garantissant des résultats concrets et mesurables.",
+  seoHook: "commerce détail & programmation informatique",
   ecosystemFr:
     "Joinville-le-Pont bénéficie de la proximité de Paris, abritant des institutions comme Station F et Inria. Cet environnement dynamique favorise l'innovation et l'adoption de l'IA par les entreprises locales.",
   ecosystemEn:

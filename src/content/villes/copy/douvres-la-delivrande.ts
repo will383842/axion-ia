@@ -12,6 +12,7 @@ export const DOUVRES_LA_DELIVRANDE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Douvres-la-Délivrande (14). Nous accompagnons tous types d'activités : TPE artisans BTP et commerçants, PME services et tourisme Côte de Nacre, acteurs du Débarquement, professions libérales, indépendants et services aux entreprises littorales.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Douvres-la-Délivrande (14). Nous accompagnons tous types d'activités : TPE artisans BTP et commerçants, PME services et tourisme Côte de Nacre, acteurs du Débarquement, professions libérales, indépendants et services aux entreprises littorales.",
+  seoHook: "tourisme patrimonial & services aux",
   ecosystemFr:
     "Douvres-la-Délivrande est un bourg de la Côte de Nacre (Calvados), entre Caen (15 min) et les plages du Débarquement. La basilique Notre-Dame-de-la-Délivrande est un haut lieu de pèlerinage normand. Radar station allemande Douvres (site mémoriel). Tissu TPE artisans BTP, PME services, commerces, professions libérales, tourisme patrimonial.",
   ecosystemEn:

@@ -14,6 +14,7 @@ export const ALENCON_COPY: VilleCopy = {
     "Axion-IA se déplace à Alençon pour accompagner les entreprises dans l'intégration de l'IA. Avec l'Université de Caen Normandie et la Zone Industrielle de Cerisé comme points d'ancrage locaux, nous proposons des audits à partir de 490 € HT et des interventions dès 590 € HT. Nos services s'adaptent aux besoins spécifiques des secteurs dominants tels que le commerce de détail et la santé.",
   directAnswerEn:
     "Axion-IA se déplace à Alençon pour accompagner les entreprises dans l'intégration de l'IA. Avec l'Université de Caen Normandie et la Zone Industrielle de Cerisé comme points d'ancrage locaux, nous proposons des audits à partir de 490 € HT et des interventions dès 590 € HT. Nos services s'adaptent aux besoins spécifiques des secteurs dominants tels que le commerce de détail et la santé.",
+  seoHook: "commerce détail & santé",
   ecosystemFr:
     "Alençon bénéficie de l'Université de Caen Normandie et de la Zone Industrielle de Cerisé, offrant un cadre propice à l'innovation et à l'intégration de l'IA dans divers secteurs.",
   ecosystemEn:

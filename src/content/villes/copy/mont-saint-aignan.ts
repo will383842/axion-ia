@@ -14,6 +14,7 @@ export const MONT_SAINT_AIGNAN_COPY: VilleCopy = {
     "Axion-IA se déplace à Mont-Saint-Aignan pour accompagner les entreprises locales, notamment dans les secteurs de l'enseignement et du commerce de détail. Avec des partenaires comme l'Université de Rouen Normandie et un accès facile par la Gare de Rouen Rive Droite, nous assurons une intervention rapide et efficace pour améliorer vos processus opérationnels.",
   directAnswerEn:
     "Axion-IA se déplace à Mont-Saint-Aignan pour accompagner les entreprises locales, notamment dans les secteurs de l'enseignement et du commerce de détail. Avec des partenaires comme l'Université de Rouen Normandie et un accès facile par la Gare de Rouen Rive Droite, nous assurons une intervention rapide et efficace pour améliorer vos processus opérationnels.",
+  seoHook: "enseignement & commerce détail",
   ecosystemFr:
     "Mont-Saint-Aignan est un acteur clé en Normandie avec l'Université de Rouen Normandie et NEOMA Business School, renforçant le secteur de l'enseignement. Le commerce de détail y est également prédominant, offrant un terreau fertile pour les interventions IA.",
   ecosystemEn:

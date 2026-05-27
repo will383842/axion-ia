@@ -12,6 +12,7 @@ export const EMBRUN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Embrun (05). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et sports nature (lac Serre-Ponçon, bases nautiques), commerçants, hébergeurs, agriculteurs montagne, indépendants et services aux entreprises de l'Embrunais.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Embrun (05). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et sports nature (lac Serre-Ponçon, bases nautiques), commerçants, hébergeurs, agriculteurs montagne, indépendants et services aux entreprises de l'Embrunais.",
+  seoHook: "tourisme sports & hôtellerie, camping",
   ecosystemFr:
     "Embrun est sous-préfecture des Hautes-Alpes (~6 400 hab), perchée au-dessus du lac de Serre-Ponçon (2 800 ha, plus grand lac artificiel de France métropolitaine). Tourisme été (voile, kayak, VTT, randonnée) et hiver (ski aux Orres, Réallon). PME hébergement/camping/restauration, TPE artisans BTP, commerces, agriculture montagne (vergers, élevage) et services sous-préfectoraux.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const BRICQUEBEC_EN_COTENTIN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bricquebec-en-Cotentin (50). Nous accompagnons tous types d'activités : TPE agriculteurs et artisans du bocage, PME agroalimentaires (lait, viande, cidre), commerçants de bourg, éleveurs bovins, prestataires tourisme rural et professions libérales du Cotentin.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bricquebec-en-Cotentin (50). Nous accompagnons tous types d'activités : TPE agriculteurs et artisans du bocage, PME agroalimentaires (lait, viande, cidre), commerçants de bourg, éleveurs bovins, prestataires tourisme rural et professions libérales du Cotentin.",
+  seoHook: "élevage bovin & agroalimentaire",
   ecosystemFr:
     "Bricquebec-en-Cotentin est une commune nouvelle regroupant plusieurs bourgs autour du château médiéval de Bricquebec, au cœur du bocage cotentinois. L'économie locale repose sur l'élevage bovin (lait et viande), l'agroalimentaire (fromageries, cidreries), l'artisanat, les commerces de marché, le tourisme rural (château, sentiers bocagers) et les services de proximité. Cherbourg à 30 min, Valognes à 15 min.",
   ecosystemEn:

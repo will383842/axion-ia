@@ -14,6 +14,7 @@ export const MONTELIMAR_COPY: VilleCopy = {
     "Axion-IA se déplace à Montélimar pour accompagner les entreprises locales dans l'optimisation de leurs processus grâce à l'IA. Avec des secteurs dominants comme l'industrie alimentaire et le commerce de détail, Montélimar est un lieu stratégique pour nos interventions. Nos services incluent des audits, des implémentations IA et des formations adaptées aux besoins spécifiques des entreprises.",
   directAnswerEn:
     "Axion-IA se déplace à Montélimar pour accompagner les entreprises locales dans l'optimisation de leurs processus grâce à l'IA. Avec des secteurs dominants comme l'industrie alimentaire et le commerce de détail, Montélimar est un lieu stratégique pour nos interventions. Nos services incluent des audits, des implémentations IA et des formations adaptées aux besoins spécifiques des entreprises.",
+  seoHook: "commerce détail & industrie alimentaire",
   ecosystemFr:
     "Montélimar abrite des entreprises comme Nougat Chabert & Guillot et EDF, reflétant un tissu économique diversifié. La Zone d'Activités de Fortuneau est un centre d'activité clé.",
   ecosystemEn:

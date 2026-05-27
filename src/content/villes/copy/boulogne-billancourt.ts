@@ -54,6 +54,7 @@ export const BOULOGNE_BILLANCOURT_COPY: VilleCopy = {
   directAnswerEn:
     "Axion-IA is a senior AI architects consultancy that intervenes in Boulogne-Billancourt (92) on site — Trapèze district, Île Seguin, Quai du Point-du-Jour, town centre and surrounding communes (Issy-les-Moulineaux, Meudon, Saint-Cloud, Sèvres, Vanves). We support Boulogne micro-businesses, SMEs, mid-caps and large enterprises (automotive, media, finance, consulting, digital) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
+  seoHook: "conseil, ingénierie & audiovisuel, médias",
   topSectorsNaf: [
     "Conseil, Ingénierie & Services aux entreprises",
     "Audiovisuel, Médias & Communication",

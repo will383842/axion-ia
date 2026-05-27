@@ -14,6 +14,7 @@ export const COLMAR_COPY: VilleCopy = {
     "À Colmar, Axion-IA propose des interventions sur site pour les entreprises souhaitant intégrer l'IA dans leurs opérations. Avec un écosystème incluant Timken et le Parc d'Activités Europe, nous offrons des audits à partir de 490 € HT et des implémentations dès 990 € HT. Nos services sont conçus pour répondre aux besoins spécifiques des entreprises locales.",
   directAnswerEn:
     "À Colmar, Axion-IA propose des interventions sur site pour les entreprises souhaitant intégrer l'IA dans leurs opérations. Avec un écosystème incluant Timken et le Parc d'Activités Europe, nous offrons des audits à partir de 490 € HT et des implémentations dès 990 € HT. Nos services sont conçus pour répondre aux besoins spécifiques des entreprises locales.",
+  seoHook: "commerce détail & industrie alimentaire",
   ecosystemFr:
     "Colmar abrite des entreprises comme Timken et Bucher Vaslin, au cœur d'un écosystème industriel diversifié. Le Parc d'Activités Europe soutient l'innovation et la croissance des entreprises locales.",
   ecosystemEn:

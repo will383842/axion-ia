@@ -12,6 +12,7 @@ export const LA_RICHE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Riche (37). Nous accompagnons tous types d'activités : TPE artisans BTP, PME tertiaires de Tours Métropole, commerçants, professions libérales et acteurs tourisme patrimonial (prieuré Saint-Cosme).",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Riche (37). Nous accompagnons tous types d'activités : TPE artisans BTP, PME tertiaires de Tours Métropole, commerçants, professions libérales et acteurs tourisme patrimonial (prieuré Saint-Cosme).",
+  seoHook: "tertiaires services & professions libérales",
   ecosystemFr:
     "La Riche est une commune de l'agglomération tourangelle, connue pour le prieuré Saint-Cosme (dernière demeure de Ronsard, monument historique). Tissu TPE artisanat BTP, PME tertiaires et services, commerces de proximité, professions libérales, économie péri-urbaine Tours.",
   ecosystemEn:

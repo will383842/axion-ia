@@ -12,6 +12,7 @@ export const SAINT_SEBASTIEN_DE_MORSENT_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Sébastien-de-Morsent (27). Nous accompagnons tous types d'activités : TPE artisans, PME services et tertiaire agglo Évreux, commerces, professions libérales et de santé, indépendants et services aux entreprises d'Évreux Portes de Normandie.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Sébastien-de-Morsent (27). Nous accompagnons tous types d'activités : TPE artisans, PME services et tertiaire agglo Évreux, commerces, professions libérales et de santé, indépendants et services aux entreprises d'Évreux Portes de Normandie.",
+  seoHook: "services aux & professions libérales",
   ecosystemFr:
     "Saint-Sébastien-de-Morsent est une commune résidentielle de l'agglomération d'Évreux, préfecture de l'Eure. Cadre de vie verdoyant, proximité immédiate de la zone d'emploi d'Évreux. Tissu TPE/PME orienté services, tertiaire, commerces, professions libérales et de santé. Évreux Portes de Normandie.",
   ecosystemEn:

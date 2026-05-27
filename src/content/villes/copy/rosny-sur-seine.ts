@@ -12,6 +12,7 @@ export const ROSNY_SUR_SEINE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rosny-sur-Seine (78). Nous accompagnons TPE et PME : artisans bords de Seine, PME industrielles et logistiques du bassin mantois, commerçants et professions libérales de ce pôle résidentiel historique près du château de Sully.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rosny-sur-Seine (78). Nous accompagnons TPE et PME : artisans bords de Seine, PME industrielles et logistiques du bassin mantois, commerçants et professions libérales de ce pôle résidentiel historique près du château de Sully.",
+  seoHook: "artisanat bâtiment & industrie logistique",
   ecosystemFr:
     "Rosny-sur-Seine est une commune des bords de Seine dans les Yvelines, à l'ouest immédiat de Mantes-la-Jolie. Patrimoine remarquable avec le château de Sully. Tissu économique : TPE artisanat bâtiment et services, PME industrielles et logistiques (axe Seine), commerces de centre-bourg, professions libérales et services à la personne. Proximité des zones d'activités mantaises et de l'axe A13.",
   ecosystemEn:

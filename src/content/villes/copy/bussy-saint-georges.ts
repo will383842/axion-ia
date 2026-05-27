@@ -14,6 +14,7 @@ export const BUSSY_SAINT_GEORGES_COPY: VilleCopy = {
     "À Bussy-Saint-Georges, Axion-IA propose des interventions pour automatiser les processus administratifs et optimiser la gestion des entreprises locales. Le bassin économique inclut des secteurs tels que le commerce de détail et la construction de bâtiments. Nous nous déplaçons pour des audits et implémentations, avec des tarifs publics débutant à 490 € HT pour un audit Flash 4h.",
   directAnswerEn:
     "À Bussy-Saint-Georges, Axion-IA propose des interventions pour automatiser les processus administratifs et optimiser la gestion des entreprises locales. Le bassin économique inclut des secteurs tels que le commerce de détail et la construction de bâtiments. Nous nous déplaçons pour des audits et implémentations, avec des tarifs publics débutant à 490 € HT pour un audit Flash 4h.",
+  seoHook: "commerce détail & programmation informatique",
   ecosystemFr:
     "Bussy-Saint-Georges, avec la ZAC du Sycomore, est un pôle économique dynamique. La proximité avec la Gare de Marne-la-Vallée - Chessy et l'aéroport Charles de Gaulle facilite les déplacements professionnels.",
   ecosystemEn:

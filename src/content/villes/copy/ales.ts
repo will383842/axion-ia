@@ -14,6 +14,7 @@ export const ALES_COPY: VilleCopy = {
     "À Alès, Axion-IA propose des interventions sur site pour les entreprises locales. Avec des groupes tels que BRL et IMERYS présents dans la région, notre expertise en IA s'adapte aux besoins spécifiques des secteurs dominants comme la construction et le commerce de détail. Nos services incluent des audits et implémentations à partir de 490 € HT.",
   directAnswerEn:
     "À Alès, Axion-IA propose des interventions sur site pour les entreprises locales. Avec des groupes tels que BRL et IMERYS présents dans la région, notre expertise en IA s'adapte aux besoins spécifiques des secteurs dominants comme la construction et le commerce de détail. Nos services incluent des audits et implémentations à partir de 490 € HT.",
+  seoHook: "commerce détail & construction",
   ecosystemFr:
     "Alès bénéficie de la proximité du Parc Scientifique et Technologique de l'Arche et de l'Institut des Sciences de l'Ingénieur de Montpellier. Ces institutions soutiennent l'innovation locale.",
   ecosystemEn:

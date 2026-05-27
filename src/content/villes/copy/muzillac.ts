@@ -12,6 +12,7 @@ export const MUZILLAC_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Muzillac (56). Nous accompagnons TPE artisans, PME tertiaires, commerçants, ostréiculteurs, acteurs du tourisme littoral et toutes les activités du bassin Vilaine-océan entre Vannes et La Roche-Bernard. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Muzillac (56). Nous accompagnons TPE artisans, PME tertiaires, commerçants, ostréiculteurs, acteurs du tourisme littoral et toutes les activités du bassin Vilaine-océan entre Vannes et La Roche-Bernard. Audit Flash dès 490 € HT.",
+  seoHook: "tourisme littoral & ostréiculture pêche",
   ecosystemFr:
     "Muzillac est une commune littorale du Morbihan, à la jonction entre marais d'Arzal et estuaire de la Vilaine. Tissu de TPE artisans (BTP, métiers de bouche), PME tertiaires, ostréiculture, tourisme balnéaire et nautique, commerces de proximité. Bassin d'emploi entre Vannes (25 min) et La Roche-Bernard.",
   ecosystemEn:

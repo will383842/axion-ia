@@ -12,6 +12,7 @@ export const CUSSET_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cusset (03). Nous accompagnons tous types d'activités : PME tertiaires et industrielles agglomération Vichy, TPE artisans BTP, commerçants, professions libérales et services aux entreprises du Bourbonnais.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cusset (03). Nous accompagnons tous types d'activités : PME tertiaires et industrielles agglomération Vichy, TPE artisans BTP, commerçants, professions libérales et services aux entreprises du Bourbonnais.",
+  seoHook: "tertiaires agglomération & industrielles",
   ecosystemFr:
     "Cusset est en banlieue immédiate de Vichy, cité médiévale du Bourbonnais (halles, enceinte fortifiée). Tissu PME tertiaires/industrielles, professions libérales, TPE artisanat BTP, commerces.",
   ecosystemEn:

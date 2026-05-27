@@ -12,6 +12,7 @@ export const AMBAZAC_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ambazac (87). Nous accompagnons TPE artisans, PME filière bois et granit, commerçants, agriculteurs et acteurs du tourisme vert des Monts d'Ambazac. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ambazac (87). Nous accompagnons TPE artisans, PME filière bois et granit, commerçants, agriculteurs et acteurs du tourisme vert des Monts d'Ambazac. Audit Flash dès 490 € HT.",
+  seoHook: "filière bois & extraction transformation",
   ecosystemFr:
     "Ambazac est le bourg principal des Monts d'Ambazac, massif granitique au nord-est de Limoges. Économie locale portée par la filière bois (scieries, menuiseries), l'extraction de granit, l'artisanat BTP, l'agriculture et le tourisme vert (tourbières de la Mazure, sentiers de randonnée). Commerces centre-bourg et professions libérales complètent le tissu.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const MERVILLE_31_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Merville (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Haute-Garonne. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Merville (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Haute-Garonne. Audit Flash dès 490 € HT.",
+  seoHook: "agriculture céréales & artisanat",
   ecosystemFr:
     "Merville est une commune périurbaine du nord de Toulouse, entre Grenade et Aussonne. Tissu TPE artisans, PME de services, exploitations agricoles céréalières, commerces de bourg, professions libérales.",
   ecosystemEn:

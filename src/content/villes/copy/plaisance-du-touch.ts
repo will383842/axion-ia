@@ -14,6 +14,7 @@ export const PLAISANCE_DU_TOUCH_COPY: VilleCopy = {
     "À Plaisance-du-Touch, Axion-IA propose des solutions IA adaptées aux besoins des entreprises locales. Avec des acteurs comme Sanofi et Renault présents dans l'écosystème national, nous offrons des audits, interventions et implémentations pour automatiser les tâches administratives et améliorer l'efficacité opérationnelle.",
   directAnswerEn:
     "À Plaisance-du-Touch, Axion-IA propose des solutions IA adaptées aux besoins des entreprises locales. Avec des acteurs comme Sanofi et Renault présents dans l'écosystème national, nous offrons des audits, interventions et implémentations pour automatiser les tâches administratives et améliorer l'efficacité opérationnelle.",
+  seoHook: "commerce détail & construction",
   ecosystemFr:
     "Plaisance-du-Touch bénéficie de la proximité de Toulouse, où des entreprises comme Airbus et Capgemini influencent l'économie locale. Ce contexte offre un terrain fertile pour l'innovation et l'optimisation des processus via l'IA.",
   ecosystemEn:

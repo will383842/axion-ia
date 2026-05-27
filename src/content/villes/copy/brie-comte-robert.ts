@@ -12,6 +12,7 @@ export const BRIE_COMTE_ROBERT_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Brie-Comte-Robert (77). Nous accompagnons TPE et PME : commerçants et artisans centre-ville, PME tertiaire et logistique, professions libérales, restaurateurs, exploitants agricoles Brie française. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Brie-Comte-Robert (77). Nous accompagnons TPE et PME : commerçants et artisans centre-ville, PME tertiaire et logistique, professions libérales, restaurateurs, exploitants agricoles Brie française. Audit Flash dès 490 € HT.",
+  seoHook: "commerce détail & tertiaire logistique",
   ecosystemFr:
     "Brie-Comte-Robert est la capitale historique de la Brie française, au carrefour de la Francilienne et de l'A5. Tissu économique diversifié : TPE commerces et artisanat, PME tertiaire et logistique, professions libérales, restauration, agriculture céréalière.",
   ecosystemEn:

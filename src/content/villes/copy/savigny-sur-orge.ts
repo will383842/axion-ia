@@ -14,6 +14,7 @@ export const SAVIGNY_SUR_ORGE_COPY: VilleCopy = {
     "À Savigny-sur-Orge, Axion-IA propose des services d'IA adaptés aux besoins des entreprises locales. Grâce à notre expérience avec des écosystèmes comme ceux de Cap Digital et Station F, nous aidons à automatiser les tâches administratives et à optimiser les processus métier. Nos audits commencent à partir de 490 € HT, et nos interventions dès 590 € HT.",
   directAnswerEn:
     "À Savigny-sur-Orge, Axion-IA propose des services d'IA adaptés aux besoins des entreprises locales. Grâce à notre expérience avec des écosystèmes comme ceux de Cap Digital et Station F, nous aidons à automatiser les tâches administratives et à optimiser les processus métier. Nos audits commencent à partir de 490 € HT, et nos interventions dès 590 € HT.",
+  seoHook: "commerce détail & programmation informatique",
   ecosystemFr:
     "Savigny-sur-Orge bénéficie d'une proximité avec Paris, abritant des pôles comme Cap Digital et Station F, qui enrichissent l'environnement technologique et entrepreneurial de la région.",
   ecosystemEn:

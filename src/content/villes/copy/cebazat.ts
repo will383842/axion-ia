@@ -12,6 +12,7 @@ export const CEBAZAT_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cébazat (63). Nous accompagnons TPE et PME : entreprises tertiaires zone nord Clermont, artisans BTP, commerçants, professions libérales, services aux entreprises de Clermont Auvergne Métropole.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cébazat (63). Nous accompagnons TPE et PME : entreprises tertiaires zone nord Clermont, artisans BTP, commerçants, professions libérales, services aux entreprises de Clermont Auvergne Métropole.",
+  seoHook: "tertiaires services & zone d'activités",
   ecosystemFr:
     "Cébazat bénéficie de sa position stratégique au nord de Clermont-Ferrand, au sein de Clermont Auvergne Métropole. La commune accueille une zone d'activités dynamique avec PME tertiaires, sociétés de services aux entreprises et bureaux d'études. Tissu TPE artisans BTP actif, commerces de proximité bien implantés, professions libérales. Accès rapide à Riom et à l'aéroport Clermont-Ferrand Auvergne.",
   ecosystemEn:

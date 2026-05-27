@@ -14,6 +14,7 @@ export const GONESSE_COPY: VilleCopy = {
     "Axion-IA propose ses services à Gonesse, où le commerce de détail et les transports terrestres sont prédominants. Avec des entreprises comme Carrefour et IKEA, nous aidons à automatiser les tâches administratives et à améliorer l'efficacité des processus. Notre équipe nationale se déplace pour offrir des audits et des interventions sur site, garantissant un accompagnement adapté aux besoins locaux.",
   directAnswerEn:
     "Axion-IA propose ses services à Gonesse, où le commerce de détail et les transports terrestres sont prédominants. Avec des entreprises comme Carrefour et IKEA, nous aidons à automatiser les tâches administratives et à améliorer l'efficacité des processus. Notre équipe nationale se déplace pour offrir des audits et des interventions sur site, garantissant un accompagnement adapté aux besoins locaux.",
+  seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Gonesse, avec sa ZAC des Tulipes Nord, accueille des entreprises telles que Carrefour et IKEA. Ce bassin économique est propice aux interventions d'Axion-IA, notamment dans les secteurs du commerce et de l'entreposage.",
   ecosystemEn:

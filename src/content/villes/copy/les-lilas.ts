@@ -14,6 +14,7 @@ export const LES_LILAS_COPY: VilleCopy = {
     "Axion-IA se déplace à Les Lilas pour offrir des services en IA adaptés aux entreprises locales. Avec des entités économiques telles que LVMH et BNP Paribas présentes en Île-de-France, nous comprenons l'importance d'une approche personnalisée. Nos interventions incluent audits, implémentations et formations, garantissant des résultats tangibles pour chaque secteur d'activité.",
   directAnswerEn:
     "Axion-IA se déplace à Les Lilas pour offrir des services en IA adaptés aux entreprises locales. Avec des entités économiques telles que LVMH et BNP Paribas présentes en Île-de-France, nous comprenons l'importance d'une approche personnalisée. Nos interventions incluent audits, implémentations et formations, garantissant des résultats tangibles pour chaque secteur d'activité.",
+  seoHook: "commerce détail & programmation informatique",
   ecosystemFr:
     "Les Lilas bénéficie de la proximité d'un écosystème économique riche avec des entreprises comme LVMH et BNP Paribas. Ce contexte offre un cadre idéal pour l'optimisation des processus via l'IA, soutenu par notre cabinet Axion-IA.",
   ecosystemEn:

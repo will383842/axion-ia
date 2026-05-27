@@ -12,6 +12,7 @@ export const CLOYES_LES_TROIS_RIVIERES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cloyes-les-Trois-Rivières (28), commune nouvelle d'Eure-et-Loir. Nous accompagnons tous types d'activités : TPE artisans, PME agricoles et agroalimentaires, commerçants, acteurs du tourisme vert, professions libérales et indépendants de la vallée du Loir.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cloyes-les-Trois-Rivières (28), commune nouvelle d'Eure-et-Loir. Nous accompagnons tous types d'activités : TPE artisans, PME agricoles et agroalimentaires, commerçants, acteurs du tourisme vert, professions libérales et indépendants de la vallée du Loir.",
+  seoHook: "agriculture céréalière & artisanat services",
   ecosystemFr:
     "Cloyes-les-Trois-Rivières est une commune nouvelle née de la fusion de Cloyes-sur-le-Loir et communes voisines, aux confins de la Beauce et du Perche. L'économie locale repose sur l'agriculture céréalière (grande culture Beauce), l'agroalimentaire, l'artisanat BTP, le commerce rural, les services aux particuliers et le tourisme vert le long du Loir (randonnée, pêche, patrimoine).",
   ecosystemEn:

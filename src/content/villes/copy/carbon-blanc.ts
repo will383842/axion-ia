@@ -12,6 +12,7 @@ export const CARBON_BLANC_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carbon-Blanc (33). Nous accompagnons TPE et PME de la rive droite bordelaise : artisans BTP, commerçants, professions libérales, PME de services et indépendants. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carbon-Blanc (33). Nous accompagnons TPE et PME de la rive droite bordelaise : artisans BTP, commerçants, professions libérales, PME de services et indépendants. Audit Flash dès 490 € HT.",
+  seoHook: "professions libérales & services",
   ecosystemFr:
     "Carbon-Blanc est une commune résidentielle de la rive droite de Bordeaux Métropole, entre Lormont et Bassens. Tissu TPE artisanat BTP dense, professions libérales, commerces de proximité et PME de services. Accès rocade A630 et pont Chaban-Delmas.",
   ecosystemEn:

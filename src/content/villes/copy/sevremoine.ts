@@ -14,6 +14,7 @@ export const SEVREMOINE_COPY: VilleCopy = {
     "Axion-IA, cabinet national, se déplace à Sèvremoine pour accompagner les entreprises locales dans leur transformation IA. Avec un écosystème comprenant des géants comme LVMH et des pôles d'innovation tels qu'Inria, nous proposons des audits, interventions et implémentations adaptés aux spécificités locales. Nos tarifs sont transparents, avec des audits à partir de 490 € HT.",
   directAnswerEn:
     "Axion-IA, cabinet national, se déplace à Sèvremoine pour accompagner les entreprises locales dans leur transformation IA. Avec un écosystème comprenant des géants comme LVMH et des pôles d'innovation tels qu'Inria, nous proposons des audits, interventions et implémentations adaptés aux spécificités locales. Nos tarifs sont transparents, avec des audits à partir de 490 € HT.",
+  seoHook: "industrie agroalimentaire & commerce gros",
   ecosystemFr:
     "Sèvremoine bénéficie d'une proximité avec des pôles économiques comme Cholet et Clisson. L'industrie agroalimentaire et la fabrication de produits métalliques y sont prédominantes, offrant un terreau fertile pour l'innovation IA.",
   ecosystemEn:

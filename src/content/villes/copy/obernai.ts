@@ -12,6 +12,7 @@ export const OBERNAI_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Obernai (67). Nous accompagnons TPE et PME : viticulteurs et domaines de la Route des Vins, brasseurs, hôteliers-restaurateurs, commerces du centre médiéval, artisans et professions libérales du Bas-Rhin. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Obernai (67). Nous accompagnons TPE et PME : viticulteurs et domaines de la Route des Vins, brasseurs, hôteliers-restaurateurs, commerces du centre médiéval, artisans et professions libérales du Bas-Rhin. Audit Flash dès 490 € HT.",
+  seoHook: "viticulture domaines & brasserie boissons",
   ecosystemFr:
     "Obernai est l'une des étapes phares de la Route des Vins d'Alsace, au pied du Mont Sainte-Odile. Tissu économique dominé par la viticulture (AOC Alsace, Riesling, Gewurztraminer), la brasserie Kronenbourg-Obernai (production majeure), l'hôtellerie-restauration et le tourisme patrimonial. TPE/PME viticoles, commerce du centre historique, artisans et professions libérales du Piémont des Vosges.",
   ecosystemEn:

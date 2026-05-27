@@ -12,6 +12,7 @@ export const MERY_SUR_OISE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Méry-sur-Oise (95). Nous accompagnons TPE et PME : artisans, commerçants de proximité, PME de services, professions libérales et prestataires de l'axe Pontoise-Auvers-sur-Oise. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Méry-sur-Oise (95). Nous accompagnons TPE et PME : artisans, commerçants de proximité, PME de services, professions libérales et prestataires de l'axe Pontoise-Auvers-sur-Oise. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat second & commerce proximité",
   ecosystemFr:
     "Méry-sur-Oise est une commune résidentielle des bords de l'Oise, à proximité immédiate de Pontoise et de l'agglomération Cergy-Pontoise. Économie de TPE artisanales, commerces de proximité, PME tertiaires et professions libérales. Usine d'eau potable Veolia (traitement membranaire). Cadre de vie prisé entre Oise et forêt de Montmorency.",
   ecosystemEn:

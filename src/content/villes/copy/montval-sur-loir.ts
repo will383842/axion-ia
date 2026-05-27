@@ -12,6 +12,7 @@ export const MONTVAL_SUR_LOIR_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montval-sur-Loir (72). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME viticoles Jasnières AOC, exploitations agricoles vallée du Loir, professions libérales et services entre La Flèche et Tours.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montval-sur-Loir (72). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME viticoles Jasnières AOC, exploitations agricoles vallée du Loir, professions libérales et services entre La Flèche et Tours.",
+  seoHook: "viticulture & agriculture agroalimentaire",
   ecosystemFr:
     "Montval-sur-Loir est une commune nouvelle de la Sarthe (vallée du Loir), regroupant Château-du-Loir, Vouvray-sur-Loir et Montabon depuis 2016. Vignoble Jasnières AOC et Coteaux-du-Loir, agriculture, artisanat, tourisme vert. Accès Tours (45 min), Le Mans (50 min), La Flèche (25 min).",
   ecosystemEn:

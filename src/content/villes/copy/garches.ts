@@ -12,6 +12,7 @@ export const GARCHES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Garches (92). Nous accompagnons TPE et PME : cabinets conseil ouest parisien, professions libérales de santé, PME tertiaires Hauts-de-Seine, commerçants et artisans de cette commune résidentielle proche La Défense.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Garches (92). Nous accompagnons TPE et PME : cabinets conseil ouest parisien, professions libérales de santé, PME tertiaires Hauts-de-Seine, commerçants et artisans de cette commune résidentielle proche La Défense.",
+  seoHook: "professions libérales & tertiaires cabinets",
   ecosystemFr:
     "Garches est une commune résidentielle haut de gamme de l'ouest des Hauts-de-Seine, entre Saint-Cloud et Vaucresson. Présence marquée du secteur médical (hôpital Raymond-Poincaré AP-HP, médecins spécialistes, paramédicaux). Tissu économique : PME tertiaires et cabinets conseil, professions libérales (santé, juridique, patrimoine), TPE artisanat bâtiment, commerces de centre-ville. Proximité immédiate de La Défense et du quartier d'affaires.",
   ecosystemEn:

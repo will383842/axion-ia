@@ -12,6 +12,7 @@ export const AMNEVILLE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Amnéville (57). Nous accompagnons tous types d'activités : TPE hôtels/restaurants pôle thermal, PME loisirs et tourisme (parc zoologique, parc d'attractions, centre thermal, casino), commerçants, artisans BTP, services aux entreprises du sillon mosellan entre Metz et Thionville.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Amnéville (57). Nous accompagnons tous types d'activités : TPE hôtels/restaurants pôle thermal, PME loisirs et tourisme (parc zoologique, parc d'attractions, centre thermal, casino), commerçants, artisans BTP, services aux entreprises du sillon mosellan entre Metz et Thionville.",
+  seoHook: "tourisme thermal & hôtellerie restauration",
   ecosystemFr:
     "Amnéville est positionnée dans le sillon mosellan entre Metz (20 min sud) et Thionville (15 min nord), à proximité de l'A31. Pôle touristique régional structuré autour d'Amnéville-les-Thermes (bois de Coulange) : centre thermal, casino, parc zoologique, parc d'attractions Walygator, golf, cinéma multiplexe, salle de spectacle Galaxie. Tissu TPE/PME hôtellerie/restauration/loisirs, commerces, artisans, services. L'ancienne commune de Malancourt-la-Montagne lui est rattachée depuis 1973.",
   ecosystemEn:

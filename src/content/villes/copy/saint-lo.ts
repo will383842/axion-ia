@@ -12,6 +12,7 @@ export const SAINT_LO_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Lô (50). Nous accompagnons tous types d'activités : TPE artisanales et commerçants du centre-ville reconstruit, PME agroalimentaires normandes, acteurs de la filière équine (haras), services publics départementaux, professions libérales et prestataires du bocage manchois.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Lô (50). Nous accompagnons tous types d'activités : TPE artisanales et commerçants du centre-ville reconstruit, PME agroalimentaires normandes, acteurs de la filière équine (haras), services publics départementaux, professions libérales et prestataires du bocage manchois.",
+  seoHook: "agroalimentaire & services publics",
   ecosystemFr:
     "Saint-Lô, préfecture de la Manche, est le centre administratif et économique du département. Reconstruite après les destructions de 1944, la ville abrite le haras national, un pôle agroalimentaire (laiteries, cidre, viande bovine), des services publics départementaux, un tissu de TPE/PME artisanales et commerciales, et un secteur santé (centre hospitalier). Accès A84 vers Caen (60 min) et Rennes (90 min).",
   ecosystemEn:

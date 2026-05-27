@@ -12,6 +12,7 @@ export const SAINT_ORENS_DE_GAMEVILLE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Orens-de-Gameville (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'est toulousain. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Orens-de-Gameville (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'est toulousain. Audit Flash dès 490 € HT.",
+  seoHook: "professions libérales & artisanat",
   ecosystemFr:
     "Saint-Orens-de-Gameville est une commune résidentielle de l'est de Toulouse avec un tissu économique diversifié. TPE artisans BTP, PME de services, cabinets de professions libérales, commerces de proximité, zone d'activités En Jacca. Cadre de vie prisé entre ville et campagne.",
   ecosystemEn:

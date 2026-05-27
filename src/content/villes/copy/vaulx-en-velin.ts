@@ -14,6 +14,7 @@ export const VAULX_EN_VELIN_COPY: VilleCopy = {
     "Axion-IA propose ses services à Vaulx-en-Velin, une ville dynamique avec des entreprises comme Groupe Seb et Renault Trucks. Nous offrons des audits à partir de 490 € HT et des interventions dès 590 € HT. Notre objectif est d'automatiser et d'optimiser les processus des entreprises, en nous déplaçant directement sur site pour une efficacité maximale.",
   directAnswerEn:
     "Axion-IA propose ses services à Vaulx-en-Velin, une ville dynamique avec des entreprises comme Groupe Seb et Renault Trucks. Nous offrons des audits à partir de 490 € HT et des interventions dès 590 € HT. Notre objectif est d'automatiser et d'optimiser les processus des entreprises, en nous déplaçant directement sur site pour une efficacité maximale.",
+  seoHook: "construction bâtiments & travaux spécialisés",
   ecosystemFr:
     "Vaulx-en-Velin bénéficie de la proximité du Carré de Soie et de grands groupes tels que Renault Trucks et Groupe Seb, renforçant son attractivité économique.",
   ecosystemEn:

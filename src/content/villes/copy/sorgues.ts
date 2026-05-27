@@ -12,6 +12,7 @@ export const SORGUES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sorgues (84). Nous accompagnons TPE artisans, PME industrielles et logistiques, services aux entreprises, professions libérales et commerces de l'agglomération du Grand Avignon. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sorgues (84). Nous accompagnons TPE artisans, PME industrielles et logistiques, services aux entreprises, professions libérales et commerces de l'agglomération du Grand Avignon. Audit Flash dès 490 € HT.",
+  seoHook: "industrielles & artisanat",
   ecosystemFr:
     "Sorgues est positionnée au nord d'Avignon, au confluent de l'Ouvèze et du Rhône, dans l'agglomération du Grand Avignon. Commune dont l'activité économique repose sur les industries traditionnelles (papeterie, chimie, agroalimentaire), la logistique fluviale et routière, les TPE artisans (BTP, services), PME tertiaires, professions libérales et commerces de proximité. Bassin d'emploi tourné vers Avignon et Orange.",
   ecosystemEn:

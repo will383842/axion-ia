@@ -14,6 +14,7 @@ export const MANTES_LA_JOLIE_COPY: VilleCopy = {
     "Axion-IA intervient à Mantes-la-Jolie pour aider les entreprises à intégrer l'IA dans leurs opérations. Avec des acteurs comme LVMH et BNP Paribas présents en région parisienne, notre cabinet se distingue par son approche pragmatique et sur site. Nous proposons des audits à partir de 490 € HT et des interventions dès 590 € HT, permettant une optimisation rapide des processus.",
   directAnswerEn:
     "Axion-IA intervient à Mantes-la-Jolie pour aider les entreprises à intégrer l'IA dans leurs opérations. Avec des acteurs comme LVMH et BNP Paribas présents en région parisienne, notre cabinet se distingue par son approche pragmatique et sur site. Nous proposons des audits à partir de 490 € HT et des interventions dès 590 € HT, permettant une optimisation rapide des processus.",
+  seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Mantes-la-Jolie bénéficie de la proximité d'écosystèmes tels que Cap Digital et Station F à Paris, facilitant l'accès aux innovations en IA et aux échanges professionnels.",
   ecosystemEn:

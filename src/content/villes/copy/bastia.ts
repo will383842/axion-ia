@@ -14,6 +14,7 @@ export const BASTIA_COPY: VilleCopy = {
     "Axion-IA se déplace à Bastia pour accompagner les entreprises dans l'intégration de solutions IA. Avec l'influence de l'écosystème parisien, comprenant Inria et Station F, nous apportons une expertise nationale pour automatiser les devis, relances et reporting, répondant aux besoins spécifiques du commerce de détail et de la restauration bastiais.",
   directAnswerEn:
     "Axion-IA se déplace à Bastia pour accompagner les entreprises dans l'intégration de solutions IA. Avec l'influence de l'écosystème parisien, comprenant Inria et Station F, nous apportons une expertise nationale pour automatiser les devis, relances et reporting, répondant aux besoins spécifiques du commerce de détail et de la restauration bastiais.",
+  seoHook: "commerce détail & restauration",
   ecosystemFr:
     "Bastia, avec ses 4 000 établissements actifs, est un centre économique dynamique. Le commerce de détail et la restauration y sont prédominants, tandis que Paris, abritant LVMH et Hermès, sert de modèle pour l'innovation.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const GOURNAY_SUR_MARNE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gournay-sur-Marne (93). Nous accompagnons tous types d'activités : TPE commerçantes et artisanales, PME de services aux entreprises, professions libérales, restaurateurs des bords de Marne, indépendants et prestataires de la Métropole du Grand Paris est.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gournay-sur-Marne (93). Nous accompagnons tous types d'activités : TPE commerçantes et artisanales, PME de services aux entreprises, professions libérales, restaurateurs des bords de Marne, indépendants et prestataires de la Métropole du Grand Paris est.",
+  seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Gournay-sur-Marne, nichée sur les bords de la Marne à la frontière de la Seine-et-Marne, est une commune résidentielle prisée du Grand Paris est. Tissu économique de TPE commerçantes et artisanales, professions libérales, PME tertiaires et restaurateurs. Proximité de Chelles, Noisy-le-Grand (cité Descartes) et de la zone commerciale de Champs-sur-Marne.",
   ecosystemEn:

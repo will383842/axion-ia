@@ -12,6 +12,7 @@ export const AUREILHAN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aureilhan (65). Nous accompagnons tous types d'activités : PME industrielles et logistiques, TPE artisans, enseignes de la zone commerciale, restaurateurs, indépendants, professions libérales et services de l'agglomération tarbaise.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aureilhan (65). Nous accompagnons tous types d'activités : PME industrielles et logistiques, TPE artisans, enseignes de la zone commerciale, restaurateurs, indépendants, professions libérales et services de l'agglomération tarbaise.",
+  seoHook: "industrie mécanique & commerce zone",
   ecosystemFr:
     "Aureilhan est une commune de l'agglomération de Tarbes, caractérisée par une zone commerciale et industrielle dynamique. Bassin d'emploi diversifié : PME industrielles (mécanique, agroalimentaire), TPE artisans BTP, enseignes commerciales, restauration, professions libérales. Porte d'entrée vers les stations pyrénéennes.",
   ecosystemEn:

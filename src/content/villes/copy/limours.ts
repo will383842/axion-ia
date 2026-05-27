@@ -12,6 +12,7 @@ export const LIMOURS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Limours (91). Nous accompagnons TPE et PME : artisans BTP du Hurepoix, commerces de proximité, professions libérales, PME services, exploitants agricoles et forestiers. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Limours (91). Nous accompagnons TPE et PME : artisans BTP du Hurepoix, commerces de proximité, professions libérales, PME services, exploitants agricoles et forestiers. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat second & commerce proximité",
   ecosystemFr:
     "Limours est une commune résidentielle du Hurepoix, aux portes du Parc naturel régional de la Haute Vallée de Chevreuse. Cadre forestier et vallonné, marché hebdomadaire historique. Tissu TPE artisans BTP, commerces de proximité, professions libérales, PME services, agriculture et exploitation forestière.",
   ecosystemEn:

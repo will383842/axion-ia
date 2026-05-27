@@ -12,6 +12,7 @@ export const GEX_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gex (01). Nous accompagnons tous types d'activités : PME tertiaires et administration sous-préfecture, économie frontalière Genève, acteurs tourisme montagne Jura, TPE artisans BTP, commerçants et services aux entreprises du pays de Gex.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gex (01). Nous accompagnons tous types d'activités : PME tertiaires et administration sous-préfecture, économie frontalière Genève, acteurs tourisme montagne Jura, TPE artisans BTP, commerçants et services aux entreprises du pays de Gex.",
+  seoHook: "économie frontalière & administration",
   ecosystemFr:
     "Gex est la sous-préfecture de l'Ain et chef-lieu du pays de Gex, positionnée au pied du massif du Jura avec panorama Mont-Blanc. Proximité frontière suisse / Genève (20 min). Tissu économie frontalière dynamique, administration, PME tertiaires, tourisme montagne Jura (station Lélex-Crozet), TPE artisanat BTP, commerces.",
   ecosystemEn:

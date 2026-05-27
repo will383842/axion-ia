@@ -12,6 +12,7 @@ export const PAUILLAC_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pauillac (33). Nous accompagnons TPE et PME du Médoc viticole : domaines grands crus et crus bourgeois, oenotourisme, commerçants de bourg, artisans BTP et professions libérales. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pauillac (33). Nous accompagnons TPE et PME du Médoc viticole : domaines grands crus et crus bourgeois, oenotourisme, commerçants de bourg, artisans BTP et professions libérales. Audit Flash dès 490 € HT.",
+  seoHook: "viticulture grands & oenotourisme luxe",
   ecosystemFr:
     "Pauillac est la capitale viticole du Haut-Médoc, abritant trois des cinq premiers crus classés 1855. Oenotourisme de luxe, port de plaisance sur la Gironde, commerces de bourg, artisanat et professions libérales. Accès D2 (route des châteaux) et estuaire de la Gironde.",
   ecosystemEn:

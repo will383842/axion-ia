@@ -12,6 +12,7 @@ export const SAINTRY_SUR_SEINE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saintry-sur-Seine (91). Nous accompagnons tous types d'activités : TPE artisanales, commerces de proximité, PME tertiaires, indépendants, professions libérales et services aux entreprises de la vallée de Seine.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saintry-sur-Seine (91). Nous accompagnons tous types d'activités : TPE artisanales, commerces de proximité, PME tertiaires, indépendants, professions libérales et services aux entreprises de la vallée de Seine.",
+  seoHook: "artisanat commerce & tertiaires vallée",
   ecosystemFr:
     "Saintry-sur-Seine est une commune résidentielle en bord de Seine (Essonne), à 30 km au sud-est de Paris. Tissu TPE artisanales, commerces de proximité, PME tertiaires, indépendants. Bassin d'emploi élargi vers Corbeil-Essonnes, Évry-Courcouronnes et Melun.",
   ecosystemEn:

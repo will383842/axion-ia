@@ -12,6 +12,7 @@ export const LEVES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lèves (28), dans l'agglomération de Chartres nord. Nous accompagnons tous types d'activités : TPE artisans, PME de services et négoce, commerçants, professions libérales, indépendants et entreprises du bassin chartrain.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lèves (28), dans l'agglomération de Chartres nord. Nous accompagnons tous types d'activités : TPE artisans, PME de services et négoce, commerçants, professions libérales, indépendants et entreprises du bassin chartrain.",
+  seoHook: "services aux & artisanat rénovation",
   ecosystemFr:
     "Lèves est une commune résidentielle au nord immédiat de Chartres, intégrée à Chartres Métropole. L'économie locale repose sur le commerce de proximité, les services aux entreprises et aux particuliers, l'artisanat BTP, les professions libérales et les zones d'activités partagées avec Chartres. La commune bénéficie du dynamisme économique du bassin chartrain (cosmétique, agroalimentaire, logistique).",
   ecosystemEn:

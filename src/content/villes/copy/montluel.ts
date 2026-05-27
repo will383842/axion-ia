@@ -12,6 +12,7 @@ export const MONTLUEL_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montluel (01). Nous accompagnons tous types d'activités : PME tertiaires et logistiques Côtière Ain, agriculteurs plaine de l'Ain, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montluel (01). Nous accompagnons tous types d'activités : PME tertiaires et logistiques Côtière Ain, agriculteurs plaine de l'Ain, TPE artisans BTP, commerçants et services aux entreprises.",
+  seoHook: "tertiaires logistiques & agriculture plaine",
   ecosystemFr:
     "Montluel est positionnée sur la Côtière de l'Ain, à proximité de l'aéroport Lyon-Saint-Exupéry. Tissu PME tertiaires/logistiques, agriculture plaine de l'Ain, TPE artisanat BTP, commerces.",
   ecosystemEn:

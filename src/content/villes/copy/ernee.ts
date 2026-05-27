@@ -12,6 +12,7 @@ export const ERNEE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ernée (53). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles, éleveurs laitiers, commerçants de bourg, professions libérales et prestataires de services des marches Bretagne-Mayenne.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ernée (53). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles, éleveurs laitiers, commerçants de bourg, professions libérales et prestataires de services des marches Bretagne-Mayenne.",
+  seoHook: "élevage bovin & agroalimentaire",
   ecosystemFr:
     "Ernée est un bourg du nord-ouest de la Mayenne, aux marches de la Bretagne (entre Laval et Fougères). Économie fortement agricole : élevage bovin laitier, agroalimentaire (filière lait), industrie (plasturgie, agroéquipement), artisanat, commerces de proximité. Musée Robert-Tatin à proximité.",
   ecosystemEn:

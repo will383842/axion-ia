@@ -12,6 +12,7 @@ export const LAVELANET_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lavelanet (09), Pays d'Olmes en Ariège. Nous accompagnons TPE artisans, PME textile reconverties et nouvelles industries, commerçants, agriculteurs et acteurs du tourisme Montségur. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lavelanet (09), Pays d'Olmes en Ariège. Nous accompagnons TPE artisans, PME textile reconverties et nouvelles industries, commerçants, agriculteurs et acteurs du tourisme Montségur. Audit Flash dès 490 € HT.",
+  seoHook: "textile reconverti & tourisme patrimonial",
   ecosystemFr:
     "Lavelanet est le bourg-centre du Pays d'Olmes, territoire industriel historiquement spécialisé dans le textile (laine cardée, draperie, confection). Le tissu économique se reconvertit progressivement vers de nouvelles industries (composites, plasturgie), l'artisanat BTP, le commerce et le tourisme patrimonial (château de Montségur, haut lieu cathare). Agriculture piémont (élevage, cultures).",
   ecosystemEn:

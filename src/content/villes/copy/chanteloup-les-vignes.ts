@@ -12,6 +12,7 @@ export const CHANTELOUP_LES_VIGNES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chanteloup-les-Vignes (78). Nous accompagnons TPE et PME : artisans BTP, PME services et maintenance, commerçants de quartier, professions libérales, restaurateurs. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chanteloup-les-Vignes (78). Nous accompagnons TPE et PME : artisans BTP, PME services et maintenance, commerçants de quartier, professions libérales, restaurateurs. Audit Flash dès 490 € HT.",
+  seoHook: "services maintenance & commerce quartier",
   ecosystemFr:
     "Chanteloup-les-Vignes est une commune des bords de Seine entre Poissy et Conflans-Sainte-Honorine, bénéficiant du programme de renouvellement urbain ANRU. Tissu TPE artisanat BTP, PME services et maintenance, commerces de quartier, professions libérales.",
   ecosystemEn:

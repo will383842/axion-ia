@@ -12,6 +12,7 @@ export const ALLINGES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Allinges (74). Nous accompagnons TPE et PME : PME tertiaires du Chablais, artisans BTP, commerçants, professions libérales, entreprises touristiques et de services du bassin thononais proche Genève.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Allinges (74). Nous accompagnons TPE et PME : PME tertiaires du Chablais, artisans BTP, commerçants, professions libérales, entreprises touristiques et de services du bassin thononais proche Genève.",
+  seoHook: "tertiaires chablais & artisanat construction",
   ecosystemFr:
     "Allinges est située dans le Chablais, entre Thonon-les-Bains (5 min) et le sud du lac Léman. Commune résidentielle en croissance, elle bénéficie de la proximité genevoise et de l'attractivité touristique lémanique. Tissu économique : PME tertiaires, TPE artisanat BTP portées par la construction résidentielle, commerces de proximité, professions libérales, entreprises touristiques et thermales du Chablais.",
   ecosystemEn:

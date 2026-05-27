@@ -12,6 +12,7 @@ export const PORT_LA_NOUVELLE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Port-la-Nouvelle (11). Nous accompagnons TPE artisans maritimes, PME logistique portuaire, commerces saisonniers, hôteliers-restaurateurs du littoral audois, ostréiculteurs et professionnels de la pêche. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Port-la-Nouvelle (11). Nous accompagnons TPE artisans maritimes, PME logistique portuaire, commerces saisonniers, hôteliers-restaurateurs du littoral audois, ostréiculteurs et professionnels de la pêche. Audit Flash dès 490 € HT.",
+  seoHook: "logistique transport & pêche ostréiculture",
   ecosystemFr:
     "Port-la-Nouvelle est un port de commerce méditerranéen majeur de l'Aude, en pleine modernisation (extension portuaire, éolien offshore). Tissu économique tourné vers la logistique maritime, le transport de marchandises, la pêche et l'ostréiculture (étang de Bages-Sigean). Tourisme balnéaire saisonnier (plages, campings, résidences). TPE artisans, commerces de proximité, hôtellerie-restauration.",
   ecosystemEn:

@@ -14,6 +14,7 @@ export const VAND_UVRE_LES_NANCY_COPY: VilleCopy = {
     "Axion-IA intervient à Vandœuvre-lès-Nancy, une ville où le Technopôle Nancy-Brabois et l'Université de Lorraine jouent un rôle clé dans l'innovation. Nous proposons des audits, interventions et implémentations IA pour améliorer vos processus métiers. Nos services s'adaptent aux besoins des entreprises locales, qu'elles soient TPE, PME ou ETI.",
   directAnswerEn:
     "Axion-IA intervient à Vandœuvre-lès-Nancy, une ville où le Technopôle Nancy-Brabois et l'Université de Lorraine jouent un rôle clé dans l'innovation. Nous proposons des audits, interventions et implémentations IA pour améliorer vos processus métiers. Nos services s'adaptent aux besoins des entreprises locales, qu'elles soient TPE, PME ou ETI.",
+  seoHook: "recherche-développement & santé humaine",
   ecosystemFr:
     "Vandœuvre-lès-Nancy bénéficie de la proximité du Technopôle Nancy-Brabois et de l'Université de Lorraine, favorisant l'innovation et la recherche. Ces institutions soutiennent le développement technologique.",
   ecosystemEn:

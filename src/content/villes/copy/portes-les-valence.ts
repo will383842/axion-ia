@@ -12,6 +12,7 @@ export const PORTES_LES_VALENCE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Portes-lès-Valence (26). Nous accompagnons tous types d'activités : PME industrielles et logistiques (axe ferroviaire et A7), TPE artisans BTP, commerçants, agriculteurs vallée du Rhône, indépendants, professions libérales et services aux entreprises de Valence Romans Agglo.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Portes-lès-Valence (26). Nous accompagnons tous types d'activités : PME industrielles et logistiques (axe ferroviaire et A7), TPE artisans BTP, commerçants, agriculteurs vallée du Rhône, indépendants, professions libérales et services aux entreprises de Valence Romans Agglo.",
+  seoHook: "industrielles logistiques & ferroviaire",
   ecosystemFr:
     "Portes-lès-Valence est intégrée à Valence Romans Agglo (~225 000 hab) en banlieue sud de Valence. Position stratégique : gare de triage SNCF historique (nœud ferroviaire majeur Lyon-Marseille), axe A7. Tissu PME industrielles et logistiques, TPE artisanat BTP, agriculture vallée du Rhône, commerces et services.",
   ecosystemEn:

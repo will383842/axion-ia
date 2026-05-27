@@ -12,6 +12,7 @@ export const FURIANI_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Furiani (2B). Nous accompagnons TPE et PME : commerces et services agglomération bastiaise, artisans, structures sportives et associatives (stade Armand-Cesari), exploitants agricoles plaine orientale, acteurs tourisme balnéaire et résidentiel. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Furiani (2B). Nous accompagnons TPE et PME : commerces et services agglomération bastiaise, artisans, structures sportives et associatives (stade Armand-Cesari), exploitants agricoles plaine orientale, acteurs tourisme balnéaire et résidentiel. Audit Flash dès 490 € HT.",
+  seoHook: "commerces services & équipements sportifs",
   ecosystemFr:
     "Furiani est une commune de la banlieue sud de Bastia, hôte du stade Armand-Cesari. Tissu commercial et services agglo bastiaise, TPE artisanat, équipements sportifs et associatifs, tourisme balnéaire et résidentiel, agriculture plaine orientale.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const VILLENEUVE_TOLOSANE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villeneuve-Tolosane (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud-ouest Toulouse. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villeneuve-Tolosane (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud-ouest Toulouse. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat & commerce détail",
   ecosystemFr:
     "Villeneuve-Tolosane est une commune résidentielle du sud-ouest de Toulouse, en bordure de Cugnaux et Frouzins. Tissu TPE artisans, PME de services, commerces de quartier, professions libérales. Zone pavillonnaire avec économie de proximité dynamique.",
   ecosystemEn:

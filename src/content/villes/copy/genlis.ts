@@ -12,6 +12,7 @@ export const GENLIS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Genlis (21). Nous accompagnons TPE et PME de la plaine de Saône est dijonnais : artisans BTP, prestataires services aux entreprises, commerçants, exploitants agricoles céréaliers et professions libérales.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Genlis (21). Nous accompagnons TPE et PME de la plaine de Saône est dijonnais : artisans BTP, prestataires services aux entreprises, commerçants, exploitants agricoles céréaliers et professions libérales.",
+  seoHook: "artisanat second & services aux",
   ecosystemFr:
     "Genlis est un bourg résidentiel de la plaine de Saône (5 093 habitants), à 20 min à l'est de Dijon. Pôle de services et commerces pour les communes rurales environnantes. Économie mixte : TPE artisanat BTP, PME tertiaires, agriculture céréalière, professions libérales et commerces de proximité.",
   ecosystemEn:

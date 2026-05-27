@@ -12,6 +12,7 @@ export const ANZIN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Anzin (59). Nous accompagnons TPE et PME : entreprises BTP et construction, sous-traitants de la filière automobile valenciannoise, commerçants, artisans, prestataires de services à la personne et structures de l'économie sociale et solidaire du bassin minier.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Anzin (59). Nous accompagnons TPE et PME : entreprises BTP et construction, sous-traitants de la filière automobile valenciannoise, commerçants, artisans, prestataires de services à la personne et structures de l'économie sociale et solidaire du bassin minier.",
+  seoHook: "construction & sous-traitance industrielle",
   ecosystemFr:
     "Anzin est une commune de l'agglomération de Valenciennes, au cœur du bassin minier du Nord-Pas-de-Calais inscrit au Patrimoine mondial UNESCO. Historiquement berceau de l'exploitation houillère (Compagnie des mines d'Anzin), la ville a engagé sa reconversion vers la construction et le BTP, la sous-traitance industrielle automobile (filière Toyota-Valenciennes), le commerce, les services à la personne et l'économie sociale et solidaire. TPE et PME constituent l'essentiel du tissu économique local, avec une dynamique de revitalisation soutenue par les programmes de renouvellement urbain.",
   ecosystemEn:

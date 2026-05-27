@@ -14,6 +14,7 @@ export const SUCY_EN_BRIE_COPY: VilleCopy = {
     "À Sucy-en-Brie, Axion-IA propose des interventions sur site pour automatiser les tâches administratives et optimiser les processus métiers. Avec un audit Flash à partir de 490 € HT et des interventions dès 590 € HT, nous accompagnons les entreprises dans un contexte économique dynamique où LVMH et Cap Digital sont présents. Consultez nos tarifs publics pour plus de détails.",
   directAnswerEn:
     "À Sucy-en-Brie, Axion-IA propose des interventions sur site pour automatiser les tâches administratives et optimiser les processus métiers. Avec un audit Flash à partir de 490 € HT et des interventions dès 590 € HT, nous accompagnons les entreprises dans un contexte économique dynamique où LVMH et Cap Digital sont présents. Consultez nos tarifs publics pour plus de détails.",
+  seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Sucy-en-Brie bénéficie de la proximité de pôles économiques tels que LVMH et Cap Digital, favorisant le développement des entreprises locales dans des secteurs variés.",
   ecosystemEn:

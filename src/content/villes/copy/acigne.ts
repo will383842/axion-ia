@@ -12,6 +12,7 @@ export const ACIGNE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Acigné (35). Nous accompagnons TPE artisans, PME de services, commerçants, professions libérales et indépendants de l'est rennais, vallée de la Vilaine. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Acigné (35). Nous accompagnons TPE artisans, PME de services, commerçants, professions libérales et indépendants de l'est rennais, vallée de la Vilaine. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
+  seoHook: "artisanat & professions libérales",
   ecosystemFr:
     "Acigné est une commune résidentielle attractive de Rennes Métropole, dans la vallée de la Vilaine à l'est de Rennes. Tissu TPE artisans BTP, PME de services aux entreprises, commerces de bourg, professions libérales (santé, juridique, conseil) et indépendants. Cadre de vie prisé avec proximité immédiate du pôle économique rennais (Cesson-Sévigné, Chantepie).",
   ecosystemEn:

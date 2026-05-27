@@ -12,6 +12,7 @@ export const GRANDCHAMP_DES_FONTAINES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Grandchamp-des-Fontaines (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires, entreprises des zones d'activités, professions libérales et services de proximité du nord nantais.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Grandchamp-des-Fontaines (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires, entreprises des zones d'activités, professions libérales et services de proximité du nord nantais.",
+  seoHook: "artisanat commerce & tertiaires services",
   ecosystemFr:
     "Grandchamp-des-Fontaines est une commune résidentielle dynamique au nord de Nantes, sur l'axe Nantes-Rennes. Zones d'activités accueillant PME tertiaires et artisans. Tissu TPE commerçants, professions libérales et services de proximité. Croissance démographique soutenue.",
   ecosystemEn:

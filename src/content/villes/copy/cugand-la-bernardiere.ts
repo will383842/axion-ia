@@ -12,6 +12,7 @@ export const CUGAND_LA_BERNARDIERE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cugand-la-Bernardière (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, exploitations viticoles Sèvre nantaise, PME industrielles, professions libérales et services de proximité.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cugand-la-Bernardière (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, exploitations viticoles Sèvre nantaise, PME industrielles, professions libérales et services de proximité.",
+  seoHook: "viticulture vignoble & artisanat",
   ecosystemFr:
     "Cugand-la-Bernardière est une commune nouvelle vendéenne (fusion 2019) aux portes de Clisson et du vignoble nantais (muscadet). Bords de la Sèvre nantaise, artisanat, viticulture, PME, commerces. Clisson à 5 min, Nantes à 30 min, Cholet à 30 min, La Roche-sur-Yon à 50 min.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const BOIS_D_ARCY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bois-d'Arcy (78). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, commerçants de proximité, professions libérales, indépendants et entreprises de la zone Saint-Quentin-en-Yvelines ouest.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bois-d'Arcy (78). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, commerçants de proximité, professions libérales, indépendants et entreprises de la zone Saint-Quentin-en-Yvelines ouest.",
+  seoHook: "artisanat second & services tertiaires",
   ecosystemFr:
     "Bois-d'Arcy est une commune résidentielle située entre Versailles et Saint-Quentin-en-Yvelines. Tissu économique mixte : TPE artisans (BTP, second œuvre), PME tertiaires, commerces de centre-ville, professions libérales, services aux particuliers. Proximité des zones d'activités de Saint-Quentin-en-Yvelines (technopôle, bureaux) et de Versailles (tourisme, administration).",
   ecosystemEn:

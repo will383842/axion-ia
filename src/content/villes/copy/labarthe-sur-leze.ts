@@ -12,6 +12,7 @@ export const LABARTHE_SUR_LEZE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Labarthe-sur-Lèze (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud Toulouse. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Labarthe-sur-Lèze (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud Toulouse. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat & commerce détail",
   ecosystemFr:
     "Labarthe-sur-Lèze est une commune résidentielle du sud de Toulouse, sur les bords de la Lèze. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Axe Muret-Auterive.",
   ecosystemEn:

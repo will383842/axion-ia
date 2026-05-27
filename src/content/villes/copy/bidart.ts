@@ -12,6 +12,7 @@ export const BIDART_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bidart (64). Nous accompagnons TPE, PME et artisans de la Côte Basque : tourisme, surf, produits du terroir, hébergement, restauration. Audit Flash à partir de 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bidart (64). Nous accompagnons TPE, PME et artisans de la Côte Basque : tourisme, surf, produits du terroir, hébergement, restauration. Audit Flash à partir de 490 € HT.",
+  seoHook: "tourisme balnéaire & produits terroir",
   ecosystemFr:
     "Bidart est une commune balnéaire de 7 689 habitants sur la Côte Basque, entre Biarritz et Guéthary. Spots de surf mondialement connus (Parlementia, Pavillon Royal), filière piment d'Espelette AOP (Atelier du Piment), hébergements haut de gamme, TPE artisans du terroir, restauration et commerces saisonniers.",
   ecosystemEn:

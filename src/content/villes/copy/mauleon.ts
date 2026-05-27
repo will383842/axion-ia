@@ -12,6 +12,7 @@ export const MAULEON_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mauléon (79). Nous accompagnons TPE, PME et artisans du bocage bressuirais : textile/espadrille, agriculture, industrie, commerces. Audit Flash à partir de 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mauléon (79). Nous accompagnons TPE, PME et artisans du bocage bressuirais : textile/espadrille, agriculture, industrie, commerces. Audit Flash à partir de 490 € HT.",
+  seoHook: "textile espadrille & agriculture bocagère",
   ecosystemFr:
     "Mauléon est une commune de 8 573 habitants dans le bocage bressuirais, capitale historique de l'espadrille (production artisanale encore active). Tissu de TPE artisans textile/chaussure, PME industrielles, TPE agricoles (élevage bovin, polyculture), commerces de bourg et services de proximité.",
   ecosystemEn:

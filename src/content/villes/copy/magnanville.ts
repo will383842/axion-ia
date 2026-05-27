@@ -12,6 +12,7 @@ export const MAGNANVILLE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Magnanville (78). Nous accompagnons TPE et PME : artisans, commerces de quartier, PME de services et professions libérales de cette commune résidentielle de l'agglomération mantaise. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Magnanville (78). Nous accompagnons TPE et PME : artisans, commerces de quartier, PME de services et professions libérales de cette commune résidentielle de l'agglomération mantaise. Audit Flash dès 490 € HT.",
+  seoHook: "commerce proximité & services aux",
   ecosystemFr:
     "Magnanville est une commune résidentielle intégrée à l'agglomération de Mantes-la-Jolie, dans le nord-ouest des Yvelines. Cadre pavillonnaire avec commerces de proximité et services de voisinage. Tissu économique : TPE artisans bâtiment, commerces de quartier, PME tertiaires, professions libérales et services à la personne. Communes voisines : Mantes-la-Jolie, Mantes-la-Ville, Buchelay, Rosny-sur-Seine.",
   ecosystemEn:

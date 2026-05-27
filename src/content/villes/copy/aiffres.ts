@@ -12,6 +12,7 @@ export const AIFFRES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aiffres (79). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires et prestataires du bassin niortais mutuelles/assurances, professions libérales, services à la personne et entreprises de l'agglomération sud de Niort.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aiffres (79). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires et prestataires du bassin niortais mutuelles/assurances, professions libérales, services à la personne et entreprises de l'agglomération sud de Niort.",
+  seoHook: "artisanat services & tertiaires bassin",
   ecosystemFr:
     "Aiffres est une commune résidentielle au sud immédiat de Niort. Profite du dynamisme du bassin d'emploi niortais (capitale des mutuelles). Tissu TPE artisans, commerces de proximité, PME tertiaires, professions libérales et services à la personne. Accès rapide aux zones d'activités de l'agglomération niortaise.",
   ecosystemEn:

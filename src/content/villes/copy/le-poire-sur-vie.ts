@@ -12,6 +12,7 @@ export const LE_POIRE_SUR_VIE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Poiré-sur-Vie (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles bocage vendéen, exploitations agricoles, professions libérales et services de proximité.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Poiré-sur-Vie (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles bocage vendéen, exploitations agricoles, professions libérales et services de proximité.",
+  seoHook: "artisanat & agriculture élevage",
   ecosystemFr:
     "Le Poiré-sur-Vie est un bourg périurbain dynamique du bocage vendéen, proche de La Roche-sur-Yon (15 min). Zones d'activités artisanales, PME industrielles, agriculture (élevage, grandes cultures). Croissance démographique forte. Nantes à 50 min.",
   ecosystemEn:

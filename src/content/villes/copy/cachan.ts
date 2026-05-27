@@ -14,6 +14,7 @@ export const CACHAN_COPY: VilleCopy = {
     "À Cachan, Axion-IA propose des solutions IA pour optimiser les processus des entreprises locales. La proximité de l'École normale supérieure Paris-Saclay et de pôles comme Cap Digital enrichit l'écosystème local. Nous offrons des audits dès 490 € HT et des interventions à partir de 590 € HT, avec une approche personnalisée pour chaque entreprise.",
   directAnswerEn:
     "À Cachan, Axion-IA propose des solutions IA pour optimiser les processus des entreprises locales. La proximité de l'École normale supérieure Paris-Saclay et de pôles comme Cap Digital enrichit l'écosystème local. Nous offrons des audits dès 490 € HT et des interventions à partir de 590 € HT, avec une approche personnalisée pour chaque entreprise.",
+  seoHook: "programmation informatique & ingénierie",
   ecosystemFr:
     "Cachan, avec ses secteurs dominants comme la programmation informatique et l'ingénierie, bénéficie de la proximité de l'École normale supérieure Paris-Saclay et du dynamisme de Cap Digital.",
   ecosystemEn:

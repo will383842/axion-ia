@@ -14,6 +14,7 @@ export const L_HAY_LES_ROSES_COPY: VilleCopy = {
     "Axion-IA intervient à L'Haÿ-les-Roses pour aider les entreprises à automatiser leurs processus. Dans un contexte où l'écosystème francilien inclut des acteurs comme Cap Digital et Inria, nous offrons des audits et implémentations sur site. Nos services sont conçus pour répondre aux besoins spécifiques des entreprises locales, sans engagement de partenariat avec ces entités.",
   directAnswerEn:
     "Axion-IA intervient à L'Haÿ-les-Roses pour aider les entreprises à automatiser leurs processus. Dans un contexte où l'écosystème francilien inclut des acteurs comme Cap Digital et Inria, nous offrons des audits et implémentations sur site. Nos services sont conçus pour répondre aux besoins spécifiques des entreprises locales, sans engagement de partenariat avec ces entités.",
+  seoHook: "commerce détail & travaux construction",
   ecosystemFr:
     "L'Haÿ-les-Roses bénéficie de la proximité de pôles économiques tels que Cap Digital et Inria, offrant un environnement propice à l'innovation. Axion-IA s'intègre dans cet écosystème pour proposer des solutions IA adaptées aux entreprises locales.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const NORT_SUR_ERDRE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nort-sur-Erdre (44). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires, exploitants agricoles (élevage, polyculture), commerçants de centre-bourg, professions libérales, acteurs du tourisme fluvial Erdre et services aux entreprises du nord nantais.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nort-sur-Erdre (44). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires, exploitants agricoles (élevage, polyculture), commerçants de centre-bourg, professions libérales, acteurs du tourisme fluvial Erdre et services aux entreprises du nord nantais.",
+  seoHook: "agroalimentaire élevage & tourisme fluvial",
   ecosystemFr:
     "Nort-sur-Erdre est un bourg-centre du nord Loire-Atlantique positionné au confluent de l'Erdre et du canal de Nantes à Brest. L'Erdre, surnommée « plus belle rivière de France » par François Ier, attire un tourisme fluvial notable. Gare TER sur la ligne Nantes-Châteaubriant. Économie : agroalimentaire, élevage bovin/laitier, artisanat BTP, commerces de bourg, services.",
   ecosystemEn:

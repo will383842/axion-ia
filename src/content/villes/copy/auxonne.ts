@@ -12,6 +12,7 @@ export const AUXONNE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auxonne (21). Nous accompagnons TPE et PME : agriculteurs plaine de Saône, PME industrielles, administration, artisans BTP, commerçants auxonnais et services aux entreprises. Audit Flash 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auxonne (21). Nous accompagnons TPE et PME : agriculteurs plaine de Saône, PME industrielles, administration, artisans BTP, commerçants auxonnais et services aux entreprises. Audit Flash 490 € HT.",
+  seoHook: "agriculture céréalière & industrielles",
   ecosystemFr:
     "Auxonne est positionnée sur les bords de la Saône en Côte-d'Or, à la frontière du Jura. Patrimoine militaire (caserne, statue Napoléon). Économie : agriculture céréalière plaine de Saône, PME industrielles, TPE artisanat, commerces de proximité.",
   ecosystemEn:

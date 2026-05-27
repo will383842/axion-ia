@@ -12,6 +12,7 @@ export const TRILPORT_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trilport (77). Nous accompagnons tous types d'activités : TPE artisans et commerçants des bords de Marne, PME tertiaires du bassin de Meaux, professions libérales, indépendants, entreprises BTP et prestataires de services locaux.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trilport (77). Nous accompagnons tous types d'activités : TPE artisans et commerçants des bords de Marne, PME tertiaires du bassin de Meaux, professions libérales, indépendants, entreprises BTP et prestataires de services locaux.",
+  seoHook: "artisanat & logistique transport",
   ecosystemFr:
     "Trilport est une commune résidentielle des bords de Marne, intégrée à la communauté d'agglomération du Pays de Meaux. Tissu économique de proximité : TPE artisanat et BTP, commerces du centre-bourg, professions libérales installées, PME de services aux entreprises, activité logistique liée à l'axe Meaux-Paris. Cadre de vie attractif entre Marne et campagne briarde.",
   ecosystemEn:

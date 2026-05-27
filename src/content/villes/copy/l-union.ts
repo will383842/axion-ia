@@ -12,6 +12,7 @@ export const L_UNION_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à L'Union (31). Nous accompagnons TPE de services, PME tertiaires, professions libérales et commerçants du nord-est de Toulouse. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à L'Union (31). Nous accompagnons TPE de services, PME tertiaires, professions libérales et commerçants du nord-est de Toulouse. Audit Flash dès 490 € HT.",
+  seoHook: "professions libérales & commerce détail",
   ecosystemFr:
     "L'Union est une commune résidentielle du nord-est de Toulouse, au carrefour de Balma et Saint-Jean. Tissu TPE de services, PME tertiaires, cabinets de professions libérales, commerces de proximité. Cadre de vie verdoyant avec une économie orientée services.",
   ecosystemEn:

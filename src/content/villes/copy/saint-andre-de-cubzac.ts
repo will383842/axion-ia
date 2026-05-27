@@ -12,6 +12,7 @@ export const SAINT_ANDRE_DE_CUBZAC_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-André-de-Cubzac (33). Nous accompagnons TPE et PME du Cubzaguais : vignerons, commerçants du centre-bourg, PME de services, artisans BTP et professions libérales. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-André-de-Cubzac (33). Nous accompagnons TPE et PME du Cubzaguais : vignerons, commerçants du centre-bourg, PME de services, artisans BTP et professions libérales. Audit Flash dès 490 € HT.",
+  seoHook: "viticulture & commerce centre-bourg",
   ecosystemFr:
     "Saint-André-de-Cubzac est le pôle commercial et de services du Cubzaguais. Carrefour entre vignoble bordelais (Côtes de Bourg, Fronsac), commerce de centre-bourg dynamique et tissu artisanal. Accès A10 (Paris) et N10, noeud routier vers Libourne et Blaye.",
   ecosystemEn:

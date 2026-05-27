@@ -14,6 +14,7 @@ export const VERTOU_COPY: VilleCopy = {
     "Axion-IA se déplace à Vertou pour accompagner les entreprises dans l'implémentation de solutions IA. Notre équipe nationale propose des audits à partir de 490 € HT et des interventions dès 590 € HT. Inspirés par les écosystèmes de Cap Digital et Station F, nous adaptons nos méthodes aux besoins locaux.",
   directAnswerEn:
     "Axion-IA se déplace à Vertou pour accompagner les entreprises dans l'implémentation de solutions IA. Notre équipe nationale propose des audits à partir de 490 € HT et des interventions dès 590 € HT. Inspirés par les écosystèmes de Cap Digital et Station F, nous adaptons nos méthodes aux besoins locaux.",
+  seoHook: "commerce détail & construction",
   ecosystemFr:
     "Vertou, avec ses 2 000 établissements actifs, est influencée par l'écosystème économique de Nantes, où se trouvent des acteurs comme Cap Digital et Inria.",
   ecosystemEn:

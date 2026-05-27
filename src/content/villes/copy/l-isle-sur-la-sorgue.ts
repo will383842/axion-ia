@@ -14,6 +14,7 @@ export const L_ISLE_SUR_LA_SORGUE_COPY: VilleCopy = {
     "À L'Isle-sur-la-Sorgue, Axion-IA propose des interventions sur site pour optimiser les processus des entreprises locales. Avec des secteurs comme le commerce de détail et la restauration, notre expertise en IA permet d'automatiser des tâches administratives et de relance. Nous nous déplaçons dans les communes voisines telles qu'Avignon et Cavaillon pour offrir des services personnalisés.",
   directAnswerEn:
     "À L'Isle-sur-la-Sorgue, Axion-IA propose des interventions sur site pour optimiser les processus des entreprises locales. Avec des secteurs comme le commerce de détail et la restauration, notre expertise en IA permet d'automatiser des tâches administratives et de relance. Nous nous déplaçons dans les communes voisines telles qu'Avignon et Cavaillon pour offrir des services personnalisés.",
+  seoHook: "commerce détail & hébergement",
   ecosystemFr:
     "L'Isle-sur-la-Sorgue bénéficie d'une proximité avec des pôles économiques tels qu'Avignon et Carpentras. Le tissu économique local est principalement orienté vers le commerce de détail et l'hébergement, offrant un terrain fertile pour nos interventions en IA.",
   ecosystemEn:

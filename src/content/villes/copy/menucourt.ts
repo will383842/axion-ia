@@ -12,6 +12,7 @@ export const MENUCOURT_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Menucourt (95). Nous accompagnons TPE et PME : commerçants et artisans locaux, PME services de l'agglo Cergy-Pontoise, professions libérales, restaurateurs, prestataires services à la personne Val-d'Oise ouest. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Menucourt (95). Nous accompagnons TPE et PME : commerçants et artisans locaux, PME services de l'agglo Cergy-Pontoise, professions libérales, restaurateurs, prestataires services à la personne Val-d'Oise ouest. Audit Flash dès 490 € HT.",
+  seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Menucourt est une commune résidentielle boisée de l'agglomération de Cergy-Pontoise, bénéficiant de la dynamique du pôle tertiaire cergypontain. Tissu TPE commerces et artisanat, PME services aux entreprises, professions libérales, restauration, services à la personne.",
   ecosystemEn:

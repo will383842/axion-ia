@@ -14,6 +14,7 @@ export const CRETEIL_COPY: VilleCopy = {
     "Créteil concentre des organisations à fort potentiel IA : l'AP-HP Henri-Mondor gère des flux cliniques massifs, l'Université Paris-Est Créteil forme chaque année des milliers d'étudiants, et la Pépinière d'entreprises de Créteil accompagne des structures en croissance. Nous auditons, formons et implémentons des outils IA concrets — sans jargon, sans promesse floue — pour les dirigeants qui veulent des résultats mesurables.",
   directAnswerEn:
     "Créteil concentre des organisations à fort potentiel IA : l'AP-HP Henri-Mondor gère des flux cliniques massifs, l'Université Paris-Est Créteil forme chaque année des milliers d'étudiants, et la Pépinière d'entreprises de Créteil accompagne des structures en croissance. Nous auditons, formons et implémentons des outils IA concrets — sans jargon, sans promesse floue — pour les dirigeants qui veulent des résultats mesurables.",
+  seoHook: "santé humaine & administration publique",
   ecosystemFr:
     "Le tissu économique cristolien s'appuie sur l'AP-HP Henri-Mondor, l'UPEC, la ZAC du Palais et la Zone des Petits Carreaux. Les pôles Medicen Paris Region et Systematic Paris-Region structurent les filières santé et numérique à l'échelle régionale.",
   ecosystemEn:

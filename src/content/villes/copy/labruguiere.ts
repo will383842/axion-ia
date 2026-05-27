@@ -12,6 +12,7 @@ export const LABRUGUIERE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Labruguière (81). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants et professions libérales de l'agglomération de Castres. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Labruguière (81). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants et professions libérales de l'agglomération de Castres. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat bâtiment & industrie services",
   ecosystemFr:
     "Labruguière (6 584 hab) est une commune résidentielle et industrielle de l'agglomération de Castres, en entrée sud. Zones d'activités avec PME industrie, services et artisanat. Proximité immédiate Castres (10 min). Tissu TPE artisans BTP, commerces de bourg, professions libérales, agriculture. Cadre de vie attractif entre ville et campagne tarnaise.",
   ecosystemEn:

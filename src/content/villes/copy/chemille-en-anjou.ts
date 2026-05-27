@@ -14,6 +14,7 @@ export const CHEMILLE_EN_ANJOU_COPY: VilleCopy = {
     "À Chemillé-en-Anjou, Axion-IA propose des services adaptés aux besoins des entreprises locales, notamment dans l'industrie alimentaire et le commerce de gros. Avec des interventions sur site, nous accompagnons les entreprises du secteur de la culture de plantes tout en respectant les spécificités locales. Nos solutions incluent des audits et implémentations, avec des tarifs publics consultables.",
   directAnswerEn:
     "À Chemillé-en-Anjou, Axion-IA propose des services adaptés aux besoins des entreprises locales, notamment dans l'industrie alimentaire et le commerce de gros. Avec des interventions sur site, nous accompagnons les entreprises du secteur de la culture de plantes tout en respectant les spécificités locales. Nos solutions incluent des audits et implémentations, avec des tarifs publics consultables.",
+  seoHook: "culture plantes & commerce gros",
   ecosystemFr:
     "Chemillé-en-Anjou est un pôle économique avec le Groupe Giffard et la Zone Industrielle de la Bergerie, soutenant des secteurs comme l'industrie alimentaire et le commerce de gros.",
   ecosystemEn:

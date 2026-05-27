@@ -14,6 +14,7 @@ export const LE_PERREUX_SUR_MARNE_COPY: VilleCopy = {
     "Axion-IA propose ses services à Le Perreux-sur-Marne, où le commerce de détail et la programmation informatique dominent. Nous intervenons sur site pour automatiser les tâches administratives et optimiser les processus. Nos audits débutent à 490 € HT et nos interventions à partir de 590 € HT. Le Perreux-sur-Marne bénéficie de la proximité de la Gare de Lyon et de l'aéroport de Paris-Orly, facilitant nos déplacements.",
   directAnswerEn:
     "Axion-IA propose ses services à Le Perreux-sur-Marne, où le commerce de détail et la programmation informatique dominent. Nous intervenons sur site pour automatiser les tâches administratives et optimiser les processus. Nos audits débutent à 490 € HT et nos interventions à partir de 590 € HT. Le Perreux-sur-Marne bénéficie de la proximité de la Gare de Lyon et de l'aéroport de Paris-Orly, facilitant nos déplacements.",
+  seoHook: "commerce détail & programmation informatique",
   ecosystemFr:
     "Le Perreux-sur-Marne est entouré de communes dynamiques comme Nogent-sur-Marne et Saint-Maur-des-Fossés. Le tissu économique local est marqué par le commerce de détail et les activités juridiques, offrant un cadre propice à l'innovation.",
   ecosystemEn:

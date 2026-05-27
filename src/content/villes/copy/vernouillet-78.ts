@@ -12,6 +12,7 @@ export const VERNOUILLET_78_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vernouillet (78). Nous accompagnons TPE et PME : artisans, commerces de proximité, PME de services et logistique, professions libérales de cette commune dynamique des bords de Seine entre Poissy et Les Mureaux. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vernouillet (78). Nous accompagnons TPE et PME : artisans, commerces de proximité, PME de services et logistique, professions libérales de cette commune dynamique des bords de Seine entre Poissy et Les Mureaux. Audit Flash dès 490 € HT.",
+  seoHook: "commerce proximité & services aux",
   ecosystemFr:
     "Vernouillet est une commune résidentielle et commerçante des bords de Seine, dans l'agglomération Grand Paris Seine & Oise. Tissu économique diversifié : TPE artisans bâtiment, PME de services, commerces de centre-ville, professions libérales, entreprises logistiques et transport liées à l'axe Seine. Communes voisines : Verneuil-sur-Seine, Médan, Triel-sur-Seine, Les Mureaux, Poissy.",
   ecosystemEn:

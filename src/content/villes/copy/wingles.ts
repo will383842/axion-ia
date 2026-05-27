@@ -12,6 +12,7 @@ export const WINGLES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wingles (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wingles (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+  seoHook: "commerce détail & professions libérales",
   ecosystemFr:
     "Wingles est une commune du bassin minier entre Lens et La Bassée, en reconversion économique. Tissu de TPE artisanales BTP, commerces de proximité, PME de services et professions libérales. Proximité de zones logistiques et industrielles du secteur Lens-Hénin.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const BELLERIVE_SUR_ALLIER_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bellerive-sur-Allier (03). Nous accompagnons tous types d'activités : acteurs thermalisme/hôtellerie agglomération Vichy, PME tertiaires, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bellerive-sur-Allier (03). Nous accompagnons tous types d'activités : acteurs thermalisme/hôtellerie agglomération Vichy, PME tertiaires, TPE artisans BTP, commerçants et services aux entreprises.",
+  seoHook: "thermalisme hôtellerie",
   ecosystemFr:
     "Bellerive-sur-Allier est en banlieue de Vichy (rive droite Allier). Tissu thermalisme/hôtellerie (agglomération vichyssoise thermale), PME tertiaires, TPE artisanat BTP, commerces.",
   ecosystemEn:

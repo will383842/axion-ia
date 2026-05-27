@@ -50,6 +50,7 @@ export const TOULON_COPY: VilleCopy = {
   directAnswerEn:
     "Axion-IA is an senior AI architects consultancy that delivers on site in Toulon (83). We support micro-businesses, SMEs, mid-caps and large enterprises across the Toulon agglomeration — maritime defence (Naval Group, Thales), maritime economy (Pôle Mer Méditerranée), tourism & hospitality, trade and services — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. Public pricing, no lock-in, your teams stay in control.",
 
+  seoHook: "défense maritime & activités scientifiques,",
   topSectorsNaf: [
     "Défense maritime & ingénierie navale",
     "Activités scientifiques, techniques & services aux entreprises",

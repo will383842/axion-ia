@@ -12,6 +12,7 @@ export const MARCHEPRIME_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marcheprime (33). Nous accompagnons TPE et PME du corridor Bordeaux-Arcachon : artisans BTP, commerçants, professions libérales et entreprises de services. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marcheprime (33). Nous accompagnons TPE et PME du corridor Bordeaux-Arcachon : artisans BTP, commerçants, professions libérales et entreprises de services. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat & services personne",
   ecosystemFr:
     "Marcheprime est une commune en pleine expansion sur le corridor Bordeaux-Arcachon. Tissu TPE artisanat BTP dense (construction neuve), commerces de proximité, professions libérales et services à la personne. Accès A63 et A660, gare TER.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const HENNEBONT_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hennebont (56). Nous accompagnons TPE et PME : industries des bords du Blavet, commerces du centre médiéval, artisans, services à la personne, acteurs du tourisme patrimonial et du haras national. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hennebont (56). Nous accompagnons TPE et PME : industries des bords du Blavet, commerces du centre médiéval, artisans, services à la personne, acteurs du tourisme patrimonial et du haras national. Audit Flash dès 490 € HT.",
+  seoHook: "industrie métallurgie & commerce centre-ville",
   ecosystemFr:
     "Hennebont est une commune morbihannaise des bords du Blavet, intégrée à Lorient Agglomération. Cité médiévale (basilique Notre-Dame-du-Paradis, remparts, haras national) et tissu TPE/PME : industrie, commerce de centre-ville historique, artisanat, services à la personne, tourisme.",
   ecosystemEn:

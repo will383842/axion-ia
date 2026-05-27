@@ -14,6 +14,7 @@ export const EPINAL_COPY: VilleCopy = {
     "À Épinal, Axion-IA propose des interventions sur site pour automatiser les tâches administratives et optimiser les processus métiers. Dans un bassin économique comprenant des entreprises des secteurs du commerce de détail et des transports terrestres, nous aidons à intégrer l'IA de manière pragmatique. Nos services sont adaptés aux besoins spécifiques des entreprises, avec des audits dès 490 € HT et des implémentations à partir de 990 € HT.",
   directAnswerEn:
     "À Épinal, Axion-IA propose des interventions sur site pour automatiser les tâches administratives et optimiser les processus métiers. Dans un bassin économique comprenant des entreprises des secteurs du commerce de détail et des transports terrestres, nous aidons à intégrer l'IA de manière pragmatique. Nos services sont adaptés aux besoins spécifiques des entreprises, avec des audits dès 490 € HT et des implémentations à partir de 990 € HT.",
+  seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Le tissu économique d'Épinal est marqué par la présence de l'Université de Lorraine et des secteurs comme le commerce de détail et la santé humaine. Les entreprises locales bénéficient d'un environnement propice à l'innovation.",
   ecosystemEn:

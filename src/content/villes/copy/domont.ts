@@ -12,6 +12,7 @@ export const DOMONT_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Domont (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME de services, professions libérales et indépendants du Pays de France et nord Val-d'Oise. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Domont (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME de services, professions libérales et indépendants du Pays de France et nord Val-d'Oise. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat rénovation & commerce centre-bourg",
   ecosystemFr:
     "Domont est une commune résidentielle du nord du Val-d'Oise, en lisière de la forêt de Montmorency, bien desservie par le Transilien H vers Paris. Son tissu économique comprend TPE artisans BTP, commerces de centre-bourg, PME de services, professions libérales et indépendants. Proximité avec Montmorency, Ezanville et Bouffémont.",
   ecosystemEn:

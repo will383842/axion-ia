@@ -12,6 +12,7 @@ export const CHARBONNIERES_LES_BAINS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Charbonnières-les-Bains (69). Nous accompagnons tous types d'activités : acteurs tourisme thermal et casino Le Lyon Vert, PME tertiaires ouest lyonnais, TPE artisans BTP, commerçants et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Charbonnières-les-Bains (69). Nous accompagnons tous types d'activités : acteurs tourisme thermal et casino Le Lyon Vert, PME tertiaires ouest lyonnais, TPE artisans BTP, commerçants et services aux entreprises de la Métropole de Lyon.",
+  seoHook: "tourisme thermal & tertiaires ouest",
   ecosystemFr:
     "Charbonnières-les-Bains est intégrée à la Métropole de Lyon, en banlieue ouest. Station thermale historique notable. Abrite le casino Le Lyon Vert (l'un des casinos majeurs de l'agglomération lyonnaise). Tissu PME tertiaires, tourisme thermal/casino, professions libérales, TPE artisanat BTP, commerces.",
   ecosystemEn:

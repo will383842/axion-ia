@@ -14,6 +14,7 @@ export const ROSNY_SOUS_BOIS_COPY: VilleCopy = {
     "À Rosny-sous-Bois, Axion-IA propose des services adaptés aux besoins variés des entreprises locales. Avec des références telles que LVMH et BNP Paribas dans la région, nous comprenons les enjeux spécifiques des secteurs dominants comme le commerce de détail et la construction. Nos interventions sur site permettent une intégration fluide de solutions IA, assurant un retour sur investissement rapide.",
   directAnswerEn:
     "À Rosny-sous-Bois, Axion-IA propose des services adaptés aux besoins variés des entreprises locales. Avec des références telles que LVMH et BNP Paribas dans la région, nous comprenons les enjeux spécifiques des secteurs dominants comme le commerce de détail et la construction. Nos interventions sur site permettent une intégration fluide de solutions IA, assurant un retour sur investissement rapide.",
+  seoHook: "commerce détail & construction",
   ecosystemFr:
     "Rosny-sous-Bois est proche de grands pôles économiques comme Paris, abritant des entreprises telles que LVMH et BNP Paribas. Cet environnement offre de nombreuses opportunités pour les entreprises locales cherchant à intégrer l'IA dans leurs processus.",
   ecosystemEn:

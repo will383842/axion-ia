@@ -14,6 +14,7 @@ export const GUYANCOURT_COPY: VilleCopy = {
     "À Guyancourt, Axion-IA propose des interventions sur site pour optimiser les processus des entreprises. Le Technocentre Renault et l'Université de Versailles Saint-Quentin-en-Yvelines sont des acteurs clés de l'écosystème local. Nos services incluent audits, implémentations et formations, adaptés aux spécificités des secteurs dominants tels que la programmation informatique et l'ingénierie.",
   directAnswerEn:
     "À Guyancourt, Axion-IA propose des interventions sur site pour optimiser les processus des entreprises. Le Technocentre Renault et l'Université de Versailles Saint-Quentin-en-Yvelines sont des acteurs clés de l'écosystème local. Nos services incluent audits, implémentations et formations, adaptés aux spécificités des secteurs dominants tels que la programmation informatique et l'ingénierie.",
+  seoHook: "programmation informatique & activités des",
   ecosystemFr:
     "Guyancourt accueille Renault et Bouygues, renforçant son secteur de l'ingénierie. L'Université de Versailles Saint-Quentin-en-Yvelines contribue à la formation de talents locaux.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const LILLERS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lillers (62). Nous accompagnons TPE artisanales, PME agricoles et agroalimentaires, commerçants et professions libérales de l'Artois. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lillers (62). Nous accompagnons TPE artisanales, PME agricoles et agroalimentaires, commerçants et professions libérales de l'Artois. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+  seoHook: "agriculture agroalimentaire & commerce détail",
   ecosystemFr:
     "Lillers est un bourg de l'Artois entre Béthune et Saint-Pol-sur-Ternoise. Économie agricole (grandes cultures, maraîchage), TPE artisanales BTP, commerces de centre-bourg, professions libérales et PME agroalimentaires. Centre hospitalier local structurant pour l'emploi.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const LE_THOR_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Thor (84). Nous accompagnons TPE artisans, maraîchers, PME agroalimentaires, négoces, commerces et professions libérales de la vallée de la Sorgue. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Thor (84). Nous accompagnons TPE artisans, maraîchers, PME agroalimentaires, négoces, commerces et professions libérales de la vallée de la Sorgue. Audit Flash dès 490 € HT.",
+  seoHook: "agriculture maraîchère & artisanat",
   ecosystemFr:
     "Le Thor est positionnée en vallée de la Sorgue, entre Avignon et L'Isle-sur-la-Sorgue, dans l'agglomération du Grand Avignon. Son économie repose sur l'agriculture maraîchère (raisin de table, melon, fraise), les TPE artisans (BTP, services), les PME agroalimentaires et négoces, le tourisme rural (Thouzon), les professions libérales et commerces de proximité.",
   ecosystemEn:

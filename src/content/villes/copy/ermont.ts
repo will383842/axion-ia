@@ -14,6 +14,7 @@ export const ERMONT_COPY: VilleCopy = {
     "Ermont, avec ses 29 489 habitants, est proche de Paris, où se trouvent des pôles technologiques tels que Cap Digital et Inria. Axion-IA offre des services d'IA sur site pour les entreprises d'Ermont. Nos interventions couvrent l'audit, l'implémentation et l'accompagnement personnalisé, garantissant une optimisation efficace des processus métiers locaux.",
   directAnswerEn:
     "Ermont, avec ses 29 489 habitants, est proche de Paris, où se trouvent des pôles technologiques tels que Cap Digital et Inria. Axion-IA offre des services d'IA sur site pour les entreprises d'Ermont. Nos interventions couvrent l'audit, l'implémentation et l'accompagnement personnalisé, garantissant une optimisation efficace des processus métiers locaux.",
+  seoHook: "commerce détail & programmation informatique",
   ecosystemFr:
     "Le tissu économique d'Ermont est enrichi par la proximité de Paris, qui abrite LVMH et BNP Paribas. Ces entités influencent l'environnement économique régional.",
   ecosystemEn:

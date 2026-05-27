@@ -12,6 +12,7 @@ export const USTARITZ_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ustaritz (64). Nous accompagnons TPE, PME et artisans du Labourd intérieur : agriculture basque, agroalimentaire, artisanat, commerces. Audit Flash à partir de 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ustaritz (64). Nous accompagnons TPE, PME et artisans du Labourd intérieur : agriculture basque, agroalimentaire, artisanat, commerces. Audit Flash à partir de 490 € HT.",
+  seoHook: "agriculture basque & agroalimentaire",
   ecosystemFr:
     "Ustaritz est une commune du Labourd intérieur, 7 897 habitants, réputée berceau de la pelote basque. Tissu de TPE agricoles (élevage, maraîchage), artisans du terroir basque, PME agroalimentaires (fromages, conserves), commerces locaux et professions libérales. À 15 min de Bayonne.",
   ecosystemEn:

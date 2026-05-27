@@ -14,6 +14,7 @@ export const SARREGUEMINES_COPY: VilleCopy = {
     "À Sarreguemines, Axion-IA propose des audits et interventions IA pour les entreprises des secteurs comme la fabrication de véhicules automobiles et l'industrie alimentaire. Nos services incluent des audits à partir de 490 € HT et des interventions dès 590 € HT, adaptés aux structures locales telles que Smart France et Continental.",
   directAnswerEn:
     "À Sarreguemines, Axion-IA propose des audits et interventions IA pour les entreprises des secteurs comme la fabrication de véhicules automobiles et l'industrie alimentaire. Nos services incluent des audits à partir de 490 € HT et des interventions dès 590 € HT, adaptés aux structures locales telles que Smart France et Continental.",
+  seoHook: "fabrication véhicules & commerce détail",
   ecosystemFr:
     "Sarreguemines abrite des entreprises comme Smart France et Continental, renforçant sa position dans la fabrication de véhicules automobiles et l'industrie alimentaire. La Zone Industrielle de Sarreguemines est un moteur économique local.",
   ecosystemEn:

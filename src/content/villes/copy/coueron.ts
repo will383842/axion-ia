@@ -14,6 +14,7 @@ export const COUERON_COPY: VilleCopy = {
     "À Couëron, Axion-IA propose des services adaptés aux besoins des entreprises locales, notamment dans la fabrication de produits métalliques et le commerce de gros. Avec des groupes comme Manitou Group et la Société des Eaux de Couëron, nous aidons à optimiser les processus grâce à l'IA. Nos interventions incluent des audits, des implémentations et des formations sur site.",
   directAnswerEn:
     "À Couëron, Axion-IA propose des services adaptés aux besoins des entreprises locales, notamment dans la fabrication de produits métalliques et le commerce de gros. Avec des groupes comme Manitou Group et la Société des Eaux de Couëron, nous aidons à optimiser les processus grâce à l'IA. Nos interventions incluent des audits, des implémentations et des formations sur site.",
+  seoHook: "produits métalliques & commerce gros",
   ecosystemFr:
     "Couëron bénéficie d'un tissu économique diversifié avec des acteurs comme Manitou Group et la Société des Eaux de Couëron. La Zone Industrielle de la Métairie soutient le développement industriel local.",
   ecosystemEn:

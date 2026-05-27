@@ -12,6 +12,7 @@ export const LEFOREST_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Leforest (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Leforest (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+  seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Leforest est une commune résidentielle du bassin minier entre Hénin-Beaumont et Douai. Tissu économique de TPE artisanales BTP, commerces de proximité, professions libérales et PME de services. Économie post-minière orientée vers les activités résidentielles et de proximité.",
   ecosystemEn:

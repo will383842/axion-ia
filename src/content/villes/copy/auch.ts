@@ -14,6 +14,7 @@ export const AUCH_COPY: VilleCopy = {
     "Auch, bien que petite en taille, est un point d'intervention pour Axion-IA, notamment grâce à son accessibilité depuis Toulouse. Nous y apportons notre expertise IA, reconnue dans des environnements comme Cap Digital et Station F, pour améliorer les opérations des entreprises locales. Notre approche est adaptée aux besoins spécifiques des secteurs présents à Auch, tels que la santé et le commerce de détail.",
   directAnswerEn:
     "Auch, bien que petite en taille, est un point d'intervention pour Axion-IA, notamment grâce à son accessibilité depuis Toulouse. Nous y apportons notre expertise IA, reconnue dans des environnements comme Cap Digital et Station F, pour améliorer les opérations des entreprises locales. Notre approche est adaptée aux besoins spécifiques des secteurs présents à Auch, tels que la santé et le commerce de détail.",
+  seoHook: "commerce détail & agriculture",
   ecosystemFr:
     "Le tissu économique d'Auch est marqué par des secteurs variés tels que le commerce de détail et la santé. Les entreprises locales bénéficient de l'intervention d'Axion-IA, comme celles de pôles d'innovation à Paris tels que LVMH et BNP Paribas.",
   ecosystemEn:

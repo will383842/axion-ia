@@ -12,6 +12,7 @@ export const BASSENS_73_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bassens (73). Nous accompagnons TPE et PME : cabinets de professions libérales, PME tertiaires, artisans BTP, commerçants de proximité et prestataires de services aux entreprises du Grand Chambéry. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bassens (73). Nous accompagnons TPE et PME : cabinets de professions libérales, PME tertiaires, artisans BTP, commerçants de proximité et prestataires de services aux entreprises du Grand Chambéry. Audit Flash dès 490 € HT.",
+  seoHook: "tertiaires & professions libérales",
   ecosystemFr:
     "Bassens est une commune résidentielle intégrée à Grand Chambéry Métropole (~130 000 hab). Forte densité de professions libérales (santé, juridique, comptabilité), PME tertiaires (conseil, IT, formation), TPE artisanat BTP et commerces de proximité. Accessibilité directe au centre-ville de Chambéry (5 min) et aux axes A43/A41.",
   ecosystemEn:

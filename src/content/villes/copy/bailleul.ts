@@ -12,6 +12,7 @@ export const BAILLEUL_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bailleul (59). Nous accompagnons TPE artisans, PME agroalimentaire et brasserie, commerçants, professions libérales et indépendants de la Flandre française. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bailleul (59). Nous accompagnons TPE artisans, PME agroalimentaire et brasserie, commerçants, professions libérales et indépendants de la Flandre française. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
+  seoHook: "agroalimentaire brasserie & artisanat",
   ecosystemFr:
     "Bailleul est une sous-préfecture historique de Flandre française, célèbre pour son beffroi UNESCO, son marché flamand hebdomadaire et sa brasserie traditionnelle. Tissu TPE artisans BTP, PME agroalimentaire (brasserie, transformation), commerces de centre-ville, professions libérales (santé, juridique) et indépendants. Position frontalière avec la Belgique, axe Lille-Dunkerque.",
   ecosystemEn:

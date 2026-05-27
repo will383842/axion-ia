@@ -14,6 +14,7 @@ export const CARCASSONNE_COPY: VilleCopy = {
     "Axion-IA intervient à Carcassonne pour aider les entreprises à intégrer l'IA dans leurs processus métiers. Paris, avec ses pôles comme Cap Digital et Station F, montre l'importance de l'innovation. Nous apportons cette expertise aux entreprises carcassonnaises, qu'elles soient dans le commerce de détail ou le transport terrestre, pour améliorer leurs opérations et rester compétitives.",
   directAnswerEn:
     "Axion-IA intervient à Carcassonne pour aider les entreprises à intégrer l'IA dans leurs processus métiers. Paris, avec ses pôles comme Cap Digital et Station F, montre l'importance de l'innovation. Nous apportons cette expertise aux entreprises carcassonnaises, qu'elles soient dans le commerce de détail ou le transport terrestre, pour améliorer leurs opérations et rester compétitives.",
+  seoHook: "commerce détail & hébergement",
   ecosystemFr:
     "Carcassonne, avec ses 4 000 établissements actifs, bénéficie d'un tissu économique riche en commerce de détail et en transports. Les entreprises locales peuvent s'inspirer des réussites de Paris, où des géants comme LVMH et BNP Paribas prospèrent.",
   ecosystemEn:

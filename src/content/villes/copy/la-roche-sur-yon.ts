@@ -14,6 +14,7 @@ export const LA_ROCHE_SUR_YON_COPY: VilleCopy = {
     "Axion-IA se déplace à La Roche-sur-Yon pour offrir des services d'IA opérationnelle. Nous travaillons avec des entreprises dans des secteurs tels que la fabrication de produits métalliques et l'industrie alimentaire. La ville abrite des acteurs économiques comme Beneteau et le Pôle EMC2, favorisant un environnement propice à l'innovation technologique.",
   directAnswerEn:
     "Axion-IA se déplace à La Roche-sur-Yon pour offrir des services d'IA opérationnelle. Nous travaillons avec des entreprises dans des secteurs tels que la fabrication de produits métalliques et l'industrie alimentaire. La ville abrite des acteurs économiques comme Beneteau et le Pôle EMC2, favorisant un environnement propice à l'innovation technologique.",
+  seoHook: "commerce détail & transport terrestre",
   ecosystemFr:
     "La Roche-sur-Yon est un centre industriel avec des entreprises comme le Groupe Atlantic et Beneteau. Le Pôle EMC2 y soutient les technologies de production, renforçant l'attrait pour l'innovation.",
   ecosystemEn:

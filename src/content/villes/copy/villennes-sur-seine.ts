@@ -12,6 +12,7 @@ export const VILLENNES_SUR_SEINE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villennes-sur-Seine (78). Nous accompagnons TPE et PME : artisans, commerces de village, PME de services et professions libérales de cette commune résidentielle verdoyante en bord de Seine, entre Poissy et Orgeval. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villennes-sur-Seine (78). Nous accompagnons TPE et PME : artisans, commerces de village, PME de services et professions libérales de cette commune résidentielle verdoyante en bord de Seine, entre Poissy et Orgeval. Audit Flash dès 490 € HT.",
+  seoHook: "services aux & commerce proximité",
   ecosystemFr:
     "Villennes-sur-Seine est une commune résidentielle verdoyante en bord de Seine, appréciée pour son cadre de vie entre eau et forêt. Tissu local : TPE artisans, commerces de village, PME de services, professions libérales, activités liées à l'immobilier et aux loisirs nautiques. Communes voisines : Poissy, Médan, Orgeval, Verneuil-sur-Seine, Triel-sur-Seine.",
   ecosystemEn:

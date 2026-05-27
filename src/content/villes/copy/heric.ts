@@ -12,6 +12,7 @@ export const HERIC_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Héric (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME services et bâtiment, exploitations agricoles, professions libérales et services de proximité du nord nantais.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Héric (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME services et bâtiment, exploitations agricoles, professions libérales et services de proximité du nord nantais.",
+  seoHook: "artisanat commerce & bâtiment construction",
   ecosystemFr:
     "Héric est une commune résidentielle en croissance au nord de Nantes, sur l'axe Nantes-Rennes (N137). Agriculture, artisanat, commerces de proximité. Tissu TPE artisans, commerçants, PME bâtiment et services, professions libérales. Dynamisme démographique soutenu.",
   ecosystemEn:

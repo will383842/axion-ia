@@ -12,6 +12,7 @@ export const FOUESNANT_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fouesnant (29). Nous accompagnons tous types d'activités : TPE touristiques (hôtels, campings, restaurants), PME cidricoles AOP Cornouaille, artisans BTP, commerçants saisonniers, indépendants, professions libérales et services aux entreprises du Pays fouesnantais.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fouesnant (29). Nous accompagnons tous types d'activités : TPE touristiques (hôtels, campings, restaurants), PME cidricoles AOP Cornouaille, artisans BTP, commerçants saisonniers, indépendants, professions libérales et services aux entreprises du Pays fouesnantais.",
+  seoHook: "tourisme balnéaire & cidre cornouaille",
   ecosystemFr:
     "Fouesnant (10 436 hab) est une station balnéaire majeure du sud Finistère, intégrée à Concarneau Cornouaille Agglomération. Économie fortement saisonnière portée par le tourisme littoral (Cap Coz, Beg Meil, archipel des Glénan), la production cidricole AOP Cornouaille, l'ostréiculture, le maraîchage et un tissu TPE artisans BTP / commerces. Quimper à 15 min.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const LEVENS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Levens (06). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, acteurs tourisme nature et agriculteurs de montagne du moyen-pays niçois.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Levens (06). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, acteurs tourisme nature et agriculteurs de montagne du moyen-pays niçois.",
+  seoHook: "tourisme nature & commerce village",
   ecosystemFr:
     "Levens est un village perché du moyen-pays niçois, à 600 m d'altitude sur un plateau dominant les gorges de la Vésubie. Porte d'entrée vers le Mercantour et la vallée de la Vésubie. Tissu d'artisans BTP, commerces de village, professions libérales, gîtes et tourisme nature (randonnée, VTT). Agriculture de montagne (oléiculture, maraîchage). Cadre résidentiel en expansion, 30 min de Nice.",
   ecosystemEn:

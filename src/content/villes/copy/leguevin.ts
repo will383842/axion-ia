@@ -12,6 +12,7 @@ export const LEGUEVIN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Léguevin (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'ouest Toulouse. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Léguevin (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'ouest Toulouse. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat & commerce détail",
   ecosystemFr:
     "Léguevin est une commune en croissance de l'ouest de Toulouse, sur l'axe de la RN124. Tissu TPE artisans, PME de services, commerces de centre-bourg, professions libérales, activités agricoles périurbaines. Proximité de Pibrac et Brax.",
   ecosystemEn:

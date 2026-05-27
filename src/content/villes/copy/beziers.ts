@@ -14,6 +14,7 @@ export const BEZIERS_COPY: VilleCopy = {
     "À Béziers, Axion-IA propose des interventions IA sur site pour optimiser les processus des entreprises locales. La ville, avec des acteurs économiques comme Vinci et Eiffage, offre un environnement propice à l'innovation. Nos services incluent audits, implémentations et formations personnalisées, avec des tarifs publics disponibles en ligne.",
   directAnswerEn:
     "À Béziers, Axion-IA propose des interventions IA sur site pour optimiser les processus des entreprises locales. La ville, avec des acteurs économiques comme Vinci et Eiffage, offre un environnement propice à l'innovation. Nos services incluent audits, implémentations et formations personnalisées, avec des tarifs publics disponibles en ligne.",
+  seoHook: "commerce détail & construction",
   ecosystemFr:
     "Béziers, avec ses 5 000 établissements actifs, est un pôle économique où opèrent des groupes comme Vinci et Eiffage. La ZAC de Mercorent est un lieu stratégique pour les entreprises cherchant à innover dans les secteurs du commerce et de la construction.",
   ecosystemEn:

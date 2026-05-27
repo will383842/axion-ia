@@ -14,6 +14,7 @@ export const VILLENEUVE_SAINT_GEORGES_COPY: VilleCopy = {
     "Villeneuve-Saint-Georges, avec ses 3 000 établissements actifs et 400 créations annuelles, est un pôle économique dynamique. Axion-IA y propose des services d'IA opérationnelle adaptés aux secteurs dominants tels que les transports terrestres et le commerce de gros. Nos interventions sur site permettent d'optimiser les processus métiers pour des entreprises comme celles de Choisy-le-Roi et Limeil-Brévannes.",
   directAnswerEn:
     "Villeneuve-Saint-Georges, avec ses 3 000 établissements actifs et 400 créations annuelles, est un pôle économique dynamique. Axion-IA y propose des services d'IA opérationnelle adaptés aux secteurs dominants tels que les transports terrestres et le commerce de gros. Nos interventions sur site permettent d'optimiser les processus métiers pour des entreprises comme celles de Choisy-le-Roi et Limeil-Brévannes.",
+  seoHook: "transports terrestres & commerce gros",
   ecosystemFr:
     "Villeneuve-Saint-Georges est un carrefour économique avec la SNCF et un accès rapide à l'aéroport de Paris-Orly. Les entreprises locales bénéficient de notre expertise en IA pour améliorer leurs opérations.",
   ecosystemEn:

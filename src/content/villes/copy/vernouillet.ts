@@ -12,6 +12,7 @@ export const VERNOUILLET_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vernouillet (28). Nous accompagnons tous types d'activités : TPE/PME tertiaires agglomération Dreux, commerçants de proximité, PME industrielles bassin drouais, services aux entreprises.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vernouillet (28). Nous accompagnons tous types d'activités : TPE/PME tertiaires agglomération Dreux, commerçants de proximité, PME industrielles bassin drouais, services aux entreprises.",
+  seoHook: "tertiaires & industrielles bassin",
   ecosystemFr:
     "Vernouillet est une commune résidentielle de l'agglomération Dreux (Eure-et-Loir). Tissu TPE/PME tertiaires, commerces de proximité, PME industrielles zone d'activités drouaise, services aux entreprises, artisanat BTP.",
   ecosystemEn:

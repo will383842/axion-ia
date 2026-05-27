@@ -12,6 +12,7 @@ export const MOUROUX_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mouroux (77). Nous accompagnons TPE et PME : artisans, commerçants, PME de services de l'agglomération Coulommiers, professions libérales et acteurs agroalimentaires de la Brie laitière.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mouroux (77). Nous accompagnons TPE et PME : artisans, commerçants, PME de services de l'agglomération Coulommiers, professions libérales et acteurs agroalimentaires de la Brie laitière.",
+  seoHook: "artisanat bâtiment & commerce proximité",
   ecosystemFr:
     "Mouroux est une commune périurbaine de l'agglomération de Coulommiers en Seine-et-Marne, au coeur de la Brie laitière (brie de Coulommiers AOP). Tissu économique : TPE artisanat bâtiment et services, commerces de proximité, PME prestataires de services, professions libérales (santé, immobilier), agroalimentaire et filière laitière. Gare de Mouroux sur le Transilien P reliant Paris Est.",
   ecosystemEn:

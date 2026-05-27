@@ -14,6 +14,7 @@ export const MONTFERMEIL_COPY: VilleCopy = {
     "Axion-IA se déplace à Montfermeil pour accompagner les entreprises dans l'intégration de l'IA. Avec l'influence de pôles comme Cap Digital et Station F à Paris, nous proposons des audits et interventions adaptés. Nos services s'adressent aux secteurs dominants tels que le commerce de détail et la construction, en garantissant une approche personnalisée et efficace.",
   directAnswerEn:
     "Axion-IA se déplace à Montfermeil pour accompagner les entreprises dans l'intégration de l'IA. Avec l'influence de pôles comme Cap Digital et Station F à Paris, nous proposons des audits et interventions adaptés. Nos services s'adressent aux secteurs dominants tels que le commerce de détail et la construction, en garantissant une approche personnalisée et efficace.",
+  seoHook: "commerce détail & action sociale",
   ecosystemFr:
     "Montfermeil bénéficie de la proximité de Paris et de son écosystème, incluant Cap Digital et Station F. Ces pôles d'innovation enrichissent le potentiel des entreprises locales.",
   ecosystemEn:

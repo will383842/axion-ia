@@ -12,6 +12,7 @@ export const SAINT_GREGOIRE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Grégoire (35). Nous accompagnons TPE et PME : entreprises tertiaires des zones d'activités nord rennais (Espace Performance, Saint-Sulpice), services B2B, artisans, commerçants, professions libérales et sièges régionaux de Rennes Métropole nord.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Grégoire (35). Nous accompagnons TPE et PME : entreprises tertiaires des zones d'activités nord rennais (Espace Performance, Saint-Sulpice), services B2B, artisans, commerçants, professions libérales et sièges régionaux de Rennes Métropole nord.",
+  seoHook: "tertiaires sièges & services b2b",
   ecosystemFr:
     "Saint-Grégoire est un pôle tertiaire majeur au nord immédiat de Rennes, intégré à Rennes Métropole. Les zones d'activités (Espace Performance, ZA Saint-Sulpice) regroupent PME tertiaires, services B2B, sièges régionaux et cabinets de conseil. Également présents : TPE artisanat, commerces de proximité, professions libérales et quelques exploitations agricoles périphériques. Accès rocade nord et N137 vers Saint-Malo.",
   ecosystemEn:

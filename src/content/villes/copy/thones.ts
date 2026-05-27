@@ -12,6 +12,7 @@ export const THONES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thônes (74). Nous accompagnons TPE et PME : entreprises agroalimentaires fromagers (Reblochon AOP), prestataires tourisme montagne Aravis, commerçants du bourg, artisans locaux et hôteliers-restaurateurs.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thônes (74). Nous accompagnons TPE et PME : entreprises agroalimentaires fromagers (Reblochon AOP), prestataires tourisme montagne Aravis, commerçants du bourg, artisans locaux et hôteliers-restaurateurs.",
+  seoHook: "agroalimentaire fromager & tourisme montagne",
   ecosystemFr:
     "Thônes est le coeur économique et culturel du massif des Aravis. L'agroalimentaire fromager domine : production, affinage et vente de Reblochon AOP, filière laitière alpine structurante. Le tourisme de montagne irrigue le bourg (porte d'entrée vers La Clusaz à 15 min et Le Grand-Bornand à 15 min). Commerces de centre-bourg, artisanat montagnard et hôtellerie-restauration complètent un écosystème ancré dans l'identité alpine savoyarde.",
   ecosystemEn:

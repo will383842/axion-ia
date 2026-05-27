@@ -12,6 +12,7 @@ export const PENMARCH_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Penmarch (29). Nous accompagnons TPE et PME : pêcheurs et mareyeurs du port de Saint-Guénolé, conserveries, artisans du bâtiment, commerces de bourg, hébergeurs et restaurateurs touristiques. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Penmarch (29). Nous accompagnons TPE et PME : pêcheurs et mareyeurs du port de Saint-Guénolé, conserveries, artisans du bâtiment, commerces de bourg, hébergeurs et restaurateurs touristiques. Audit Flash dès 490 € HT.",
+  seoHook: "pêche mareyage & conserveries agroalimentaire",
   ecosystemFr:
     "Penmarch est une commune du Pays Bigouden, en Finistère sud, célèbre pour son port de pêche de Saint-Guénolé (3e port français en tonnage débarqué historique) et le phare d'Eckmühl. Tissu TPE/PME : pêche et mareyage, conserveries, artisanat du bâtiment, commerces de bourg, hébergement et restauration touristique.",
   ecosystemEn:

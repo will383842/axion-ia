@@ -14,6 +14,7 @@ export const VANVES_COPY: VilleCopy = {
     "Vanves, avec ses 3 000 établissements actifs, est un terrain fertile pour l'IA. Axion-IA propose des interventions sur site pour automatiser les processus métiers. Proche de Paris, la ville bénéficie de la présence de grands groupes comme Orange et Hachette Livre, renforçant son attractivité économique.",
   directAnswerEn:
     "Vanves, avec ses 3 000 établissements actifs, est un terrain fertile pour l'IA. Axion-IA propose des interventions sur site pour automatiser les processus métiers. Proche de Paris, la ville bénéficie de la présence de grands groupes comme Orange et Hachette Livre, renforçant son attractivité économique.",
+  seoHook: "programmation informatique & activités des",
   ecosystemFr:
     "Le tissu économique de Vanves est enrichi par des entreprises comme Orange et Hachette Livre. La proximité avec des hubs technologiques parisiens offre aux entreprises locales un accès privilégié à l'innovation et aux nouvelles technologies.",
   ecosystemEn:

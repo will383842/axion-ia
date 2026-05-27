@@ -14,6 +14,7 @@ export const VILLEPARISIS_COPY: VilleCopy = {
     "Villeparisis, située en Île-de-France, bénéficie d'une proximité avec des infrastructures majeures comme l'aéroport de Paris-Charles-de-Gaulle et la gare TGV de Marne-la-Vallée - Chessy. Axion-IA propose des interventions sur site pour les entreprises locales, en s'inspirant des écosystèmes parisiens tels que ceux de Cap Digital et Station F, afin de faciliter l'intégration de l'IA dans leurs opérations quotidiennes.",
   directAnswerEn:
     "Villeparisis, située en Île-de-France, bénéficie d'une proximité avec des infrastructures majeures comme l'aéroport de Paris-Charles-de-Gaulle et la gare TGV de Marne-la-Vallée - Chessy. Axion-IA propose des interventions sur site pour les entreprises locales, en s'inspirant des écosystèmes parisiens tels que ceux de Cap Digital et Station F, afin de faciliter l'intégration de l'IA dans leurs opérations quotidiennes.",
+  seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Le tissu économique de Villeparisis est enrichi par des secteurs comme le commerce de détail et les transports terrestres. Les entreprises locales peuvent s'inspirer d'entités telles que LVMH et BNP Paribas présentes à Paris.",
   ecosystemEn:

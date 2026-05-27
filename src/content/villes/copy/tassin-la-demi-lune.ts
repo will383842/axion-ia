@@ -14,6 +14,7 @@ export const TASSIN_LA_DEMI_LUNE_COPY: VilleCopy = {
     "Axion-IA se déplace à Tassin-la-Demi-Lune pour accompagner les entreprises dans leur transformation IA. Proche de Lyon, cette ville bénéficie de l'influence économique de la région Auvergne-Rhône-Alpes, avec des acteurs comme LVMH et BNP Paribas. Nos prestations incluent audits, interventions et implémentations pour répondre aux besoins spécifiques des TPE, PME et ETI locales.",
   directAnswerEn:
     "Axion-IA se déplace à Tassin-la-Demi-Lune pour accompagner les entreprises dans leur transformation IA. Proche de Lyon, cette ville bénéficie de l'influence économique de la région Auvergne-Rhône-Alpes, avec des acteurs comme LVMH et BNP Paribas. Nos prestations incluent audits, interventions et implémentations pour répondre aux besoins spécifiques des TPE, PME et ETI locales.",
+  seoHook: "commerce détail & programmation informatique",
   ecosystemFr:
     "Tassin-la-Demi-Lune est entourée de communes dynamiques comme Lyon et Écully. L'écosystème économique local inclut des entreprises influentes telles que Sanofi et Renault.",
   ecosystemEn:

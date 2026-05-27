@@ -12,6 +12,7 @@ export const BONDOUFLE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bondoufle (91). Nous accompagnons TPE et PME : entreprises logistique et transport des zones d'activités, commerces, artisans BTP, services aux entreprises, indépendants et professions libérales du bassin Évry-Courcouronnes. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bondoufle (91). Nous accompagnons TPE et PME : entreprises logistique et transport des zones d'activités, commerces, artisans BTP, services aux entreprises, indépendants et professions libérales du bassin Évry-Courcouronnes. Audit Flash dès 490 € HT.",
+  seoHook: "logistique transport & commerce gros",
   ecosystemFr:
     "Bondoufle est située dans le bassin économique d'Évry-Courcouronnes, avec un accès direct aux zones d'activités de Lisses et Courcouronnes. Tissu PME logistique et transport, TPE artisanat BTP, commerces, services aux entreprises. Proximité de la Francilienne (N104) et de l'A6.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const SAINT_PATHUS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Pathus (77). Nous accompagnons TPE et PME : artisans du bâtiment, PME de transport et services, commerçants de proximité, professions libérales et prestataires du bassin nord Seine-et-Marne / Roissy.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Pathus (77). Nous accompagnons TPE et PME : artisans du bâtiment, PME de transport et services, commerçants de proximité, professions libérales et prestataires du bassin nord Seine-et-Marne / Roissy.",
+  seoHook: "artisanat rénovation & transport logistique",
   ecosystemFr:
     "Saint-Pathus est une commune résidentielle du nord Seine-et-Marne, limitrophe de Dammartin-en-Goële, Oissery et Marchémoret. Commune à forte croissance démographique, semi-rurale. Tissu économique de TPE artisanales BTP, PME de transport et logistique (proximité Roissy-CDG), commerces de centre-bourg, professions libérales et services à la personne. Accès N2 et N330 vers Paris et Roissy.",
   ecosystemEn:

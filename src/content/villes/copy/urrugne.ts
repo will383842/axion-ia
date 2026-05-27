@@ -12,6 +12,7 @@ export const URRUGNE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Urrugne (64). Nous accompagnons TPE, PME et artisans de la corniche basque : agriculture, tourisme, commerces transfrontaliers, artisanat. Audit Flash à partir de 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Urrugne (64). Nous accompagnons TPE, PME et artisans de la corniche basque : agriculture, tourisme, commerces transfrontaliers, artisanat. Audit Flash à partir de 490 € HT.",
+  seoHook: "agriculture basque & tourisme balnéaire",
   ecosystemFr:
     "Urrugne est une commune du Labourd sur la corniche basque, 10 661 habitants, à la frontière espagnole (Hendaye/Irún). Tissu de TPE agricoles basques, artisans (produits du terroir, piment d'Espelette), PME tourisme balnéaire, commerces transfrontaliers, hébergements saisonniers et services aux particuliers.",
   ecosystemEn:

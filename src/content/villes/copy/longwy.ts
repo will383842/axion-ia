@@ -12,6 +12,7 @@ export const LONGWY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Longwy (54). Nous accompagnons TPE et PME : industriels reconvertis du bassin sidérurgique, artisans d'art (Émaux de Longwy), commerces frontaliers, PME logistique transfrontalière, services aux frontaliers Luxembourg. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Longwy (54). Nous accompagnons TPE et PME : industriels reconvertis du bassin sidérurgique, artisans d'art (Émaux de Longwy), commerces frontaliers, PME logistique transfrontalière, services aux frontaliers Luxembourg. Audit Flash dès 490 € HT.",
+  seoHook: "industrielles reconverties & artisanat d'art",
   ecosystemFr:
     "Longwy est une ville frontalière du nord meurthe-et-mosellan, ancien pôle sidérurgique reconverti et berceau des Émaux de Longwy (faïence d'art classée). Économie marquée par la proximité Luxembourg : TPE/PME industrielles, artisanat d'art, commerces frontaliers, logistique, services aux travailleurs transfrontaliers.",
   ecosystemEn:

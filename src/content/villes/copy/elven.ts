@@ -12,6 +12,7 @@ export const ELVEN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Elven (56). Nous accompagnons TPE et PME : exploitants agricoles bretons, artisans et commerçants de proximité, acteurs du tourisme patrimonial (tours d'Elven), opérateurs Village étape, acteurs du parc naturel régional du golfe du Morbihan. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Elven (56). Nous accompagnons TPE et PME : exploitants agricoles bretons, artisans et commerçants de proximité, acteurs du tourisme patrimonial (tours d'Elven), opérateurs Village étape, acteurs du parc naturel régional du golfe du Morbihan. Audit Flash dès 490 € HT.",
+  seoHook: "agriculture bretonne & commerces proximité",
   ecosystemFr:
     "Elven, commune du Morbihan à 17 km au nord-est de Vannes, est labellisée Village étape et fait partie du parc naturel régional du golfe du Morbihan. Tissu agricole, TPE artisanat, commerces de proximité, tourisme patrimonial autour des tours d'Elven.",
   ecosystemEn:

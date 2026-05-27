@@ -12,6 +12,7 @@ export const TREGUNC_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trégunc (29). Nous accompagnons tous types d'activités : TPE artisans, hébergeurs touristiques, commerçants saisonniers, ostréiculteurs, exploitants agricoles, professions libérales et services du littoral sud Finistère. Audit Flash à 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trégunc (29). Nous accompagnons tous types d'activités : TPE artisans, hébergeurs touristiques, commerçants saisonniers, ostréiculteurs, exploitants agricoles, professions libérales et services du littoral sud Finistère. Audit Flash à 490 € HT.",
+  seoHook: "tourisme balnéaire & ostréiculture produits",
   ecosystemFr:
     "Trégunc est une commune littorale du sud Finistère, limitrophe de Concarneau. Le littoral est remarquable (pointe de la Jument, plages de Trévignon, sentier GR34). L'économie locale repose sur le tourisme balnéaire et les hébergements, l'agriculture, l'ostréiculture (rivière de Pont-Aven), le commerce saisonnier, l'artisanat BTP et les services.",
   ecosystemEn:

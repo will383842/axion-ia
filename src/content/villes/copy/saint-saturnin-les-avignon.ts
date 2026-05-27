@@ -12,6 +12,7 @@ export const SAINT_SATURNIN_LES_AVIGNON_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Saturnin-lès-Avignon (84). Nous accompagnons tous types d'activités : TPE artisans, PME services, commerces, professions libérales et exploitations agricoles de l'agglo Grand Avignon est. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Saturnin-lès-Avignon (84). Nous accompagnons tous types d'activités : TPE artisans, PME services, commerces, professions libérales et exploitations agricoles de l'agglo Grand Avignon est. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat & services commerce",
   ecosystemFr:
     "Saint-Saturnin-lès-Avignon est positionnée en première couronne est d'Avignon, dans l'agglomération du Grand Avignon. Zones d'activités, agriculture maraîchère et fruitière, commerces et services de proximité. Tissu de TPE artisans, PME services, professions libérales. Avignon centre à 10 min, Carpentras à 25 min.",
   ecosystemEn:

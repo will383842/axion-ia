@@ -14,6 +14,7 @@ export const MONTGERON_COPY: VilleCopy = {
     "Axion-IA propose des interventions à Montgeron, s'appuyant sur l'écosystème technologique de l'Île-de-France, incluant Cap Digital et Station F. Notre approche sur site permet de répondre aux besoins spécifiques des entreprises locales, notamment dans les secteurs du commerce de détail et de la santé. Nous offrons des audits dès 490 € HT et des interventions à partir de 590 € HT.",
   directAnswerEn:
     "Axion-IA propose des interventions à Montgeron, s'appuyant sur l'écosystème technologique de l'Île-de-France, incluant Cap Digital et Station F. Notre approche sur site permet de répondre aux besoins spécifiques des entreprises locales, notamment dans les secteurs du commerce de détail et de la santé. Nous offrons des audits dès 490 € HT et des interventions à partir de 590 € HT.",
+  seoHook: "commerce détail & construction",
   ecosystemFr:
     "Montgeron bénéficie de la proximité de Paris, abritant des entités comme LVMH et BNP Paribas, ce qui enrichit son tissu économique local. Les entreprises de Montgeron peuvent ainsi s'inspirer de cet environnement stimulant.",
   ecosystemEn:

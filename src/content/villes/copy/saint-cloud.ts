@@ -14,6 +14,7 @@ export const SAINT_CLOUD_COPY: VilleCopy = {
     "Axion-IA intervient à Saint-Cloud pour optimiser les processus des entreprises locales. Le tissu économique de la ville inclut Dassault Aviation et des secteurs comme l'ingénierie et les services financiers. Nous proposons des audits à partir de 490 € HT et des interventions dès 590 € HT, permettant une automatisation rapide et efficace.",
   directAnswerEn:
     "Axion-IA intervient à Saint-Cloud pour optimiser les processus des entreprises locales. Le tissu économique de la ville inclut Dassault Aviation et des secteurs comme l'ingénierie et les services financiers. Nous proposons des audits à partir de 490 € HT et des interventions dès 590 € HT, permettant une automatisation rapide et efficace.",
+  seoHook: "programmation informatique & sièges sociaux",
   ecosystemFr:
     "Saint-Cloud abrite des entreprises influentes comme Dassault Aviation et se distingue par ses secteurs dominants tels que la programmation informatique et l'ingénierie. Ces éléments créent un environnement propice à l'innovation et à l'optimisation des processus par l'IA.",
   ecosystemEn:

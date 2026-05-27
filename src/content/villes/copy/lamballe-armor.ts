@@ -12,6 +12,7 @@ export const LAMBALLE_ARMOR_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lamballe-Armor (22). Nous accompagnons TPE et PME : artisans et prestataires de services, PME agroalimentaires (filière porcine, volaille, transformation), commerçants de centre-bourg, professions libérales, hôteliers-restaurateurs et acteurs du tourisme littoral. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lamballe-Armor (22). Nous accompagnons TPE et PME : artisans et prestataires de services, PME agroalimentaires (filière porcine, volaille, transformation), commerçants de centre-bourg, professions libérales, hôteliers-restaurateurs et acteurs du tourisme littoral. Audit Flash dès 490 € HT.",
+  seoHook: "agroalimentaires & artisanat",
   ecosystemFr:
     "Lamballe-Armor est une commune nouvelle des Côtes-d'Armor créée le 1er janvier 2019 (fusion Lamballe, Meslin, Morieux, Planguenoual), entre Saint-Brieuc et Dinan, avec une façade littorale baie de Saint-Brieuc. Tissu TPE artisanat et services, PME agroalimentaires (filière porcine, volaille, transformation), commerce de centre-bourg, professions libérales, hôtellerie-restauration et tourisme littoral, patrimoine équestre Haras national.",
   ecosystemEn:

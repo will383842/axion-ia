@@ -12,6 +12,7 @@ export const SAINT_PIERRE_LES_NEMOURS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Pierre-lès-Nemours (77). Nous accompagnons TPE et PME : artisans, commerçants de proximité, PME industrie légère, professions libérales, acteurs du tourisme vert bords du Loing et Gâtinais. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Pierre-lès-Nemours (77). Nous accompagnons TPE et PME : artisans, commerçants de proximité, PME industrie légère, professions libérales, acteurs du tourisme vert bords du Loing et Gâtinais. Audit Flash dès 490 € HT.",
+  seoHook: "industrie légère & tourisme vert",
   ecosystemFr:
     "Saint-Pierre-lès-Nemours est une commune de Seine-et-Marne en bordure du Loing, aux portes de Nemours et du Gâtinais. Tissu TPE artisanat, commerces de proximité, PME industrie légère, professions libérales, tourisme vert et loisirs nature.",
   ecosystemEn:

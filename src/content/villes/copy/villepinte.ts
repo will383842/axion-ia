@@ -14,6 +14,7 @@ export const VILLEPINTE_COPY: VilleCopy = {
     "À Villepinte, Axion-IA offre des interventions sur site pour les entreprises du secteur du commerce de gros et des transports terrestres. Nous permettons une intégration efficace de l'IA, en tenant compte des besoins spécifiques des grands groupes comme DHL et Geodis. Nos services incluent des audits, des implémentations et des formations personnalisées pour garantir un retour sur investissement rapide.",
   directAnswerEn:
     "À Villepinte, Axion-IA offre des interventions sur site pour les entreprises du secteur du commerce de gros et des transports terrestres. Nous permettons une intégration efficace de l'IA, en tenant compte des besoins spécifiques des grands groupes comme DHL et Geodis. Nos services incluent des audits, des implémentations et des formations personnalisées pour garantir un retour sur investissement rapide.",
+  seoHook: "commerce gros & transports terrestres",
   ecosystemFr:
     "Villepinte est un centre économique dynamique avec le Parc des Expositions de Paris Nord Villepinte et des entreprises comme Geodis. Cet environnement est propice à l'adoption de solutions IA pour améliorer l'efficacité opérationnelle.",
   ecosystemEn:

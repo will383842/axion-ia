@@ -12,6 +12,7 @@ export const SAINT_ANDRE_LEZ_LILLE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-André-lez-Lille (59). Nous accompagnons TPE et PME : cabinets de professions libérales (santé, juridique, conseil), prestataires de services aux entreprises, commerçants, artisans et restaurateurs de la première couronne lilloise.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-André-lez-Lille (59). Nous accompagnons TPE et PME : cabinets de professions libérales (santé, juridique, conseil), prestataires de services aux entreprises, commerçants, artisans et restaurateurs de la première couronne lilloise.",
+  seoHook: "services aux & professions libérales",
   ecosystemFr:
     "Saint-André-lez-Lille est une commune résidentielle aisée de la première couronne lilloise, limitrophe de Lambersart et Marquette-lez-Lille, traversée par la Deûle. L'économie locale repose sur les TPE et PME de services aux entreprises (cabinets conseil, agences de communication, ESN), les professions libérales (santé, juridique, expertise comptable), le commerce de proximité haut de gamme, l'artisanat et la restauration. Cadre de vie attractif qui attire dirigeants et indépendants de la métropole lilloise.",
   ecosystemEn:

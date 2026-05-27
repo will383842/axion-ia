@@ -12,6 +12,7 @@ export const CHEVREUSE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chevreuse (78). Nous accompagnons TPE et PME : artisans et commerçants du bourg, PME de services, professions libérales, acteurs du tourisme vert et exploitants agricoles du PNR Haute Vallée de Chevreuse. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chevreuse (78). Nous accompagnons TPE et PME : artisans et commerçants du bourg, PME de services, professions libérales, acteurs du tourisme vert et exploitants agricoles du PNR Haute Vallée de Chevreuse. Audit Flash dès 490 € HT.",
+  seoHook: "commerce proximité & tourisme vert",
   ecosystemFr:
     "Chevreuse est un bourg historique des Yvelines au cœur du PNR de la Haute Vallée de Chevreuse, dominé par le château de la Madeleine. Cadre naturel préservé, tourisme vert actif. Tissu économique : TPE artisans et commerçants, PME de services, professions libérales, hébergement touristique, agriculture et maraîchage. Communes voisines : Saint-Rémy-lès-Chevreuse, Cernay-la-Ville, Dampierre-en-Yvelines, Gif-sur-Yvette.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const PUILBOREAU_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Puilboreau (17). Nous accompagnons tous types d'activités : TPE artisans, PME commerciales et de distribution, enseignes, prestataires de services et indépendants de ce pôle commercial majeur de l'agglomération de La Rochelle.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Puilboreau (17). Nous accompagnons tous types d'activités : TPE artisans, PME commerciales et de distribution, enseignes, prestataires de services et indépendants de ce pôle commercial majeur de l'agglomération de La Rochelle.",
+  seoHook: "commerce grande & artisanat",
   ecosystemFr:
     "Puilboreau est un pôle commercial majeur de l'agglomération de La Rochelle, concentrant la zone commerciale Beaulieu (l'une des plus grandes du département). Enseignes de distribution, PME commerciales, TPE artisans, services aux entreprises, professions libérales. Fort trafic commercial toute l'année.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const FALAISE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Falaise (14). Nous accompagnons tous types d'activités : TPE artisans BTP et commerçants, PME industrielles et agroalimentaires, acteurs du tourisme patrimoine (château Guillaume le Conquérant), professions libérales et services aux entreprises du pays de Falaise.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Falaise (14). Nous accompagnons tous types d'activités : TPE artisans BTP et commerçants, PME industrielles et agroalimentaires, acteurs du tourisme patrimoine (château Guillaume le Conquérant), professions libérales et services aux entreprises du pays de Falaise.",
+  seoHook: "industrie & agroalimentaire normand",
   ecosystemFr:
     "Falaise est une sous-préfecture du Calvados, célèbre comme ville natale de Guillaume le Conquérant (château XIIe siècle). Pôle économique entre bocage normand et plaine de Caen. Tissu PME industrielles (plasturgie, métallurgie), agroalimentaire, TPE artisans BTP, commerces centre-ville, tourisme patrimoine.",
   ecosystemEn:

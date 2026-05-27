@@ -12,6 +12,7 @@ export const VILLE_D_AVRAY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ville-d'Avray (92). Nous accompagnons tous types d'activités : TPE indépendantes, professions libérales, cabinets de conseil, PME tertiaires du secteur ouest-parisien, commerçants de proximité et artisans davraysiens. Audit Flash à partir de 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ville-d'Avray (92). Nous accompagnons tous types d'activités : TPE indépendantes, professions libérales, cabinets de conseil, PME tertiaires du secteur ouest-parisien, commerçants de proximité et artisans davraysiens. Audit Flash à partir de 490 € HT.",
+  seoHook: "professions libérales & services tertiaires",
   ecosystemFr:
     "Ville-d'Avray est une commune résidentielle prisée des Hauts-de-Seine, entre forêt de Fausses-Reposes et étangs de Corot, à 12 km de Paris et 3 km de Versailles. Tissu économique dominé par les professions libérales, TPE de conseil, cabinets d'architectes et PME tertiaires. Proximité immédiate du pôle d'activités Vélizy-Villacoublay et du campus technologique de Saclay.",
   ecosystemEn:

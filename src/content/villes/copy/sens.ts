@@ -14,6 +14,7 @@ export const SENS_COPY: VilleCopy = {
     "Axion-IA se déplace à Sens pour proposer des services IA adaptés aux entreprises locales. Avec des groupes tels que Nestlé et Lactalis présents dans la région, nous aidons à automatiser les processus administratifs et industriels. Notre offre inclut audit, intervention et implémentation, avec des tarifs publics consultables en ligne. Nous garantissons des résultats rapides et mesurables.",
   directAnswerEn:
     "Axion-IA se déplace à Sens pour proposer des services IA adaptés aux entreprises locales. Avec des groupes tels que Nestlé et Lactalis présents dans la région, nous aidons à automatiser les processus administratifs et industriels. Notre offre inclut audit, intervention et implémentation, avec des tarifs publics consultables en ligne. Nous garantissons des résultats rapides et mesurables.",
+  seoHook: "commerce détail & industrie alimentaire",
   ecosystemFr:
     "Sens abrite un tissu économique diversifié avec des entreprises comme Nestlé et Lactalis. La Zone Industrielle des Vauguillettes est un pôle clé pour le commerce de gros et l'industrie alimentaire.",
   ecosystemEn:

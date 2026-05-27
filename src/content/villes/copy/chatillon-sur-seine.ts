@@ -12,6 +12,7 @@ export const CHATILLON_SUR_SEINE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châtillon-sur-Seine (21). Nous accompagnons TPE et PME : artisans et prestataires de services, commerçants de centre-bourg, PME agroalimentaires et viticoles du Châtillonnais, professions libérales, hôteliers-restaurateurs et acteurs du tourisme patrimonial. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châtillon-sur-Seine (21). Nous accompagnons TPE et PME : artisans et prestataires de services, commerçants de centre-bourg, PME agroalimentaires et viticoles du Châtillonnais, professions libérales, hôteliers-restaurateurs et acteurs du tourisme patrimonial. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat & commerce centre-bourg",
   ecosystemFr:
     "Châtillon-sur-Seine est la principale ville du Châtillonnais, à l'extrême nord de la Côte-d'Or, traversée par la Seine naissante. Tissu TPE artisanat et services, commerce de centre-bourg, PME agroalimentaires et viticoles (Crémant de Bourgogne), professions libérales, hôtellerie-restauration tournée vers le tourisme patrimonial (Musée du Châtillonnais et Vase de Vix).",
   ecosystemEn:

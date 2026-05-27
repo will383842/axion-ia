@@ -12,6 +12,7 @@ export const BLERE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bléré (37). Nous accompagnons tous types d'activités : acteurs du tourisme patrimonial (Chenonceau, châteaux de la Loire), viticulteurs AOC Touraine, maraîchers vallée du Cher, TPE artisans, commerçants, professions libérales et PME de services du sud-tourangeau.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bléré (37). Nous accompagnons tous types d'activités : acteurs du tourisme patrimonial (Chenonceau, châteaux de la Loire), viticulteurs AOC Touraine, maraîchers vallée du Cher, TPE artisans, commerçants, professions libérales et PME de services du sud-tourangeau.",
+  seoHook: "tourisme patrimonial & viticulture touraine",
   ecosystemFr:
     "Bléré est un bourg de la vallée du Cher (5 352 habitants), porte d'entrée du château de Chenonceau (monument le plus visité après Versailles). Viticulture AOC Touraine, maraîchage vallée du Cher, artisanat local. Tissu TPE/PME : commerce de proximité, hébergement touristique, services aux entreprises, professions libérales. Zone d'influence sud de Tours Métropole.",
   ecosystemEn:

@@ -14,6 +14,7 @@ export const WATTRELOS_COPY: VilleCopy = {
     "Axion-IA intervient à Wattrelos pour aider les entreprises à automatiser leurs processus, en s'inspirant des innovations présentes à Paris avec Cap Digital et Station F. Nous offrons des audits et des implémentations IA pour améliorer l'efficacité opérationnelle, tout en respectant les réglementations en vigueur. Nos services sont conçus pour répondre aux besoins spécifiques des entreprises de la région.",
   directAnswerEn:
     "Axion-IA intervient à Wattrelos pour aider les entreprises à automatiser leurs processus, en s'inspirant des innovations présentes à Paris avec Cap Digital et Station F. Nous offrons des audits et des implémentations IA pour améliorer l'efficacité opérationnelle, tout en respectant les réglementations en vigueur. Nos services sont conçus pour répondre aux besoins spécifiques des entreprises de la région.",
+  seoHook: "commerce détail & transport terrestre",
   ecosystemFr:
     "Wattrelos, entourée par des villes comme Roubaix et Tourcoing, bénéficie d'un tissu économique diversifié. Les entreprises locales peuvent s'inspirer des pôles d'innovation tels que Cap Digital et Station F pour intégrer des solutions IA performantes.",
   ecosystemEn:

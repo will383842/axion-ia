@@ -12,6 +12,7 @@ export const BONNIERES_SUR_SEINE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bonnières-sur-Seine (78). Nous accompagnons TPE et PME : artisans et commerçants, PME industrielles et de services, professions libérales, exploitants agricoles et acteurs logistiques du Mantois ouest en bord de Seine. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bonnières-sur-Seine (78). Nous accompagnons TPE et PME : artisans et commerçants, PME industrielles et de services, professions libérales, exploitants agricoles et acteurs logistiques du Mantois ouest en bord de Seine. Audit Flash dès 490 € HT.",
+  seoHook: "commerce proximité & industrielles services",
   ecosystemFr:
     "Bonnières-sur-Seine est une commune des Yvelines en bord de Seine dans le Mantois ouest, à la limite du Vexin. Gare Transilien J directe vers Paris. Tissu économique : TPE artisans bâtiment, commerces de proximité, PME industrielles et de services, professions libérales, agriculture, logistique. Communes voisines : Freneuse, Rosny-sur-Seine, Mantes-la-Jolie, Limay, Bennecourt.",
   ecosystemEn:

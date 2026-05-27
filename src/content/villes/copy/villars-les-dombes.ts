@@ -12,6 +12,7 @@ export const VILLARS_LES_DOMBES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villars-les-Dombes (01). Nous accompagnons tous types d'activités : acteurs tourisme Parc des Oiseaux, agriculteurs/pisciculteurs Dombes, TPE artisans BTP, commerçants et services aux entreprises de la Dombes.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villars-les-Dombes (01). Nous accompagnons tous types d'activités : acteurs tourisme Parc des Oiseaux, agriculteurs/pisciculteurs Dombes, TPE artisans BTP, commerçants et services aux entreprises de la Dombes.",
+  seoHook: "tourisme nature & pisciculture étangs",
   ecosystemFr:
     "Villars-les-Dombes est au cœur de la Dombes, connue pour le Parc des Oiseaux (parc ornithologique majeur européen, ~400 000 visiteurs/an). Agriculture Dombes : pisciculture en étangs (tradition séculaire), volaille Bresse AOC proche. TPE artisanat BTP, commerces.",
   ecosystemEn:

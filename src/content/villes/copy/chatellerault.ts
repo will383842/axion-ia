@@ -14,6 +14,7 @@ export const CHATELLERAULT_COPY: VilleCopy = {
     "Axion-IA se déplace à Châtellerault pour accompagner les entreprises locales dans l'intégration de l'IA. Avec des acteurs industriels comme Thales et les Fonderies du Poitou, nous proposons des audits à partir de 490 € HT et des interventions dès 590 € HT. Notre approche opérationnelle garantit des résultats mesurables et adaptés aux spécificités du secteur.",
   directAnswerEn:
     "Axion-IA se déplace à Châtellerault pour accompagner les entreprises locales dans l'intégration de l'IA. Avec des acteurs industriels comme Thales et les Fonderies du Poitou, nous proposons des audits à partir de 490 € HT et des interventions dès 590 € HT. Notre approche opérationnelle garantit des résultats mesurables et adaptés aux spécificités du secteur.",
+  seoHook: "automobiles & machines équipements",
   ecosystemFr:
     "Châtellerault se distingue par ses secteurs industriels avec des entreprises comme Thales et les Fonderies du Poitou. La Zone Industrielle Nord renforce son rôle dans la fabrication de véhicules et de machines.",
   ecosystemEn:

@@ -14,6 +14,7 @@ export const DAX_COPY: VilleCopy = {
     "À Dax, Axion-IA propose des interventions ciblées pour les entreprises locales, en s'inspirant des écosystèmes tels que Cap Digital et Station F. Nous aidons à automatiser les processus administratifs et à améliorer l'efficacité opérationnelle, en nous déplaçant directement sur site pour offrir des solutions adaptées aux besoins spécifiques de chaque entreprise.",
   directAnswerEn:
     "À Dax, Axion-IA propose des interventions ciblées pour les entreprises locales, en s'inspirant des écosystèmes tels que Cap Digital et Station F. Nous aidons à automatiser les processus administratifs et à améliorer l'efficacité opérationnelle, en nous déplaçant directement sur site pour offrir des solutions adaptées aux besoins spécifiques de chaque entreprise.",
+  seoHook: "commerce détail & santé humaine",
   ecosystemFr:
     "Dax bénéficie d'un tissu économique diversifié avec des secteurs comme le commerce de détail et la santé humaine. Les entreprises locales peuvent s'inspirer des innovations de Cap Digital et Station F pour évoluer.",
   ecosystemEn:

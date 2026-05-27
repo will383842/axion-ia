@@ -12,6 +12,7 @@ export const ALBERTVILLE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Albertville (73). Nous accompagnons TPE et PME : acteurs tourisme montagne et sports d'hiver, sous-traitants industriels, administration sous-préfecture, commerçants et artisans, opérateurs héritage olympique. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Albertville (73). Nous accompagnons TPE et PME : acteurs tourisme montagne et sports d'hiver, sous-traitants industriels, administration sous-préfecture, commerçants et artisans, opérateurs héritage olympique. Audit Flash dès 490 € HT.",
+  seoHook: "tourisme montagne & héritage olympique",
   ecosystemFr:
     "Albertville est la sous-préfecture de Savoie et la ville olympique 1992, carrefour des quatre vallées (confluence Isère-Arly). Tissu tourisme montagne, industrie sous-traitance, administration, TPE commerces, héritage olympique. Gare TGV directe.",
   ecosystemEn:

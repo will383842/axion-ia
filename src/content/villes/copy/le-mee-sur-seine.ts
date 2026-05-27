@@ -12,6 +12,7 @@ export const LE_MEE_SUR_SEINE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Mée-sur-Seine (77). Nous accompagnons TPE et PME : commerçants et artisans, PME tertiaire agglomération Melun, professions libérales, restaurateurs, prestataires logistique sud Seine-et-Marne. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Mée-sur-Seine (77). Nous accompagnons TPE et PME : commerçants et artisans, PME tertiaire agglomération Melun, professions libérales, restaurateurs, prestataires logistique sud Seine-et-Marne. Audit Flash dès 490 € HT.",
+  seoHook: "commerce détail & tertiaire services",
   ecosystemFr:
     "Le Mée-sur-Seine fait partie de l'agglomération melunaise, pôle administratif et économique du sud Seine-et-Marne en bord de Seine. Tissu TPE commerces et artisanat, PME tertiaire et services, professions libérales, restauration, prestataires logistique.",
   ecosystemEn:

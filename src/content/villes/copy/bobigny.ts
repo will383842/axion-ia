@@ -14,6 +14,7 @@ export const BOBIGNY_COPY: VilleCopy = {
     "À Bobigny, Axion-IA propose des interventions sur site pour les entreprises locales. Avec des acteurs comme LVMH et BNP Paribas présents dans la région, nous aidons les entreprises à automatiser leurs processus administratifs et à améliorer leur efficacité. Nos services incluent des audits, des implémentations et des formations, adaptés aux besoins spécifiques de chaque entreprise.",
   directAnswerEn:
     "À Bobigny, Axion-IA propose des interventions sur site pour les entreprises locales. Avec des acteurs comme LVMH et BNP Paribas présents dans la région, nous aidons les entreprises à automatiser leurs processus administratifs et à améliorer leur efficacité. Nos services incluent des audits, des implémentations et des formations, adaptés aux besoins spécifiques de chaque entreprise.",
+  seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Bobigny, avec ses 5 000 établissements actifs, est un pôle économique en pleine croissance. La proximité de Cap Digital et Station F renforce l'attractivité de la région pour les entreprises cherchant à intégrer des solutions IA.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const ANDRESY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Andrésy (78). Nous accompagnons TPE et PME : commerçants et artisans du centre-bourg, PME services confluence Seine-Oise, professions libérales, restaurateurs, prestataires nautiques et tourisme fluvial. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Andrésy (78). Nous accompagnons TPE et PME : commerçants et artisans du centre-bourg, PME services confluence Seine-Oise, professions libérales, restaurateurs, prestataires nautiques et tourisme fluvial. Audit Flash dès 490 € HT.",
+  seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Andrésy est une commune des Yvelines située à la confluence de la Seine et de l'Oise, à 20 km de Paris, appréciée pour son cadre fluvial et sa proximité avec Conflans-Sainte-Honorine et Maurecourt. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, activités nautiques.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const SAINT_GENIS_LES_OLLIERES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Genis-les-Ollières (69). Nous accompagnons tous types d'activités : PME tertiaires ouest lyonnais, TPE artisans BTP, commerçants, professions libérales et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Genis-les-Ollières (69). Nous accompagnons tous types d'activités : PME tertiaires ouest lyonnais, TPE artisans BTP, commerçants, professions libérales et services aux entreprises de la Métropole de Lyon.",
+  seoHook: "tertiaires ouest",
   ecosystemFr:
     "Saint-Genis-les-Ollières est intégrée à la Métropole de Lyon, en banlieue ouest. Tissu péri-urbain résidentiel : PME tertiaires, professions libérales, TPE artisanat BTP, commerces.",
   ecosystemEn:

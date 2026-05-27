@@ -12,6 +12,7 @@ export const LE_BOULOU_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Boulou (66). Nous accompagnons tous types d'activités : TPE artisans, PME transport et logistique transfrontalière, commerçants, professionnels du thermalisme, indépendants et professions libérales du Vallespir frontalier.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Boulou (66). Nous accompagnons tous types d'activités : TPE artisans, PME transport et logistique transfrontalière, commerçants, professionnels du thermalisme, indépendants et professions libérales du Vallespir frontalier.",
+  seoHook: "transport logistique & thermalisme santé",
   ecosystemFr:
     "Le Boulou est une ville-étape sur l'A9 à la frontière franco-espagnole, avec une station thermale réputée (Les Thermes du Boulou). Position stratégique logistique transfrontalière. PME transport/logistique, thermalisme, TPE artisanat, commerces, agriculture (viticulture, arboriculture).",
   ecosystemEn:

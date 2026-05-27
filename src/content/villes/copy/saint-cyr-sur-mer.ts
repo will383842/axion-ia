@@ -10,6 +10,7 @@ export const SAINT_CYR_SUR_MER_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Cyr-sur-Mer (83). Nous accompagnons TPE viticoles AOC Bandol, PME hôtellerie-restauration, commerces et professions libérales de l'Ouest varois. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Cyr-sur-Mer (83). Nous accompagnons TPE viticoles AOC Bandol, PME hôtellerie-restauration, commerces et professions libérales de l'Ouest varois. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+  seoHook: "viticulture bandol & hôtellerie restauration",
   ecosystemFr:
     "Saint-Cyr-sur-Mer est une station balnéaire de la baie des Lecques entre Bandol et La Ciotat, au cœur du vignoble AOC Bandol. Tissu de TPE viticoles, PME hôtellerie-restauration, commerces touristiques, professions libérales, activités nautiques (port des Lecques) et résidences secondaires.",
   ecosystemEn:

@@ -14,6 +14,7 @@ export const DRAVEIL_COPY: VilleCopy = {
     "Axion-IA propose ses services à Draveil, une ville de l'Île-de-France où le commerce de détail et la construction sont prédominants. Avec des entités comme LVMH et Inria situées dans la région, Draveil bénéficie d'un environnement économique diversifié. Nos interventions sur site permettent d'automatiser des tâches administratives et de relance pour les entreprises locales.",
   directAnswerEn:
     "Axion-IA propose ses services à Draveil, une ville de l'Île-de-France où le commerce de détail et la construction sont prédominants. Avec des entités comme LVMH et Inria situées dans la région, Draveil bénéficie d'un environnement économique diversifié. Nos interventions sur site permettent d'automatiser des tâches administratives et de relance pour les entreprises locales.",
+  seoHook: "commerce détail & construction",
   ecosystemFr:
     "Draveil est entourée de communes dynamiques telles que Juvisy-sur-Orge et Montgeron. L'écosystème francilien, avec des acteurs comme Cap Digital et Station F, stimule les initiatives en IA.",
   ecosystemEn:

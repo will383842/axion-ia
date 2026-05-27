@@ -12,6 +12,7 @@ export const AUBENAS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aubenas (07). Nous accompagnons tous types d'activités : acteurs tourisme Ardèche méridionale (gorges), agriculteurs (châtaigneraie, viticulture), administration sous-préfecture, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aubenas (07). Nous accompagnons tous types d'activités : acteurs tourisme Ardèche méridionale (gorges), agriculteurs (châtaigneraie, viticulture), administration sous-préfecture, TPE artisans BTP, commerçants et services aux entreprises.",
+  seoHook: "tourisme ardèche & agriculture",
   ecosystemFr:
     "Aubenas est la sous-préfecture d'Ardèche méridionale (château, centre historique). Proximité gorges de l'Ardèche (site touristique majeur). Agriculture : châtaigneraie ardéchoise (marrons d'Ardèche AOC), viticulture (Côtes du Vivarais). Tissu tourisme, administration, TPE artisanat BTP, commerces.",
   ecosystemEn:

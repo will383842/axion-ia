@@ -12,6 +12,7 @@ export const ARGELES_SUR_MER_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Argelès-sur-Mer (66). Nous accompagnons tous types d'activités : TPE tourisme, PME campings et hôtellerie, commerces saisonniers, viticulteurs, indépendants et professions libérales de la Côte Vermeille.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Argelès-sur-Mer (66). Nous accompagnons tous types d'activités : TPE tourisme, PME campings et hôtellerie, commerces saisonniers, viticulteurs, indépendants et professions libérales de la Côte Vermeille.",
+  seoHook: "campings hôtellerie & tourisme restauration",
   ecosystemFr:
     "Argelès-sur-Mer est la première destination camping d'Europe avec plus de 50 campings. Station balnéaire entre plage de sable (nord) et côte rocheuse (Racou, Côte Vermeille). Économie touristique dominante : campings, hôtels, restaurants, activités nautiques. Viticulture (Collioure, Banyuls), TPE artisans, commerces.",
   ecosystemEn:

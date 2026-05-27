@@ -14,6 +14,7 @@ export const CHOLET_COPY: VilleCopy = {
     "Axion-IA se déplace à Cholet pour accompagner les entreprises dans leur transformation IA. Avec un tissu économique comprenant Jallatte et le Groupe Ridoret, nous offrons des audits dès 490 € HT et des interventions à partir de 590 € HT. Nos services incluent l'implémentation de solutions IA dans des secteurs tels que la fabrication de produits métalliques.",
   directAnswerEn:
     "Axion-IA se déplace à Cholet pour accompagner les entreprises dans leur transformation IA. Avec un tissu économique comprenant Jallatte et le Groupe Ridoret, nous offrons des audits dès 490 € HT et des interventions à partir de 590 € HT. Nos services incluent l'implémentation de solutions IA dans des secteurs tels que la fabrication de produits métalliques.",
+  seoHook: "commerce détail & industrie alimentaire",
   ecosystemFr:
     "Cholet est un pôle industriel avec des entreprises comme Jallatte et Nicoll. La Zone Industrielle du Cormier est un centre clé pour la fabrication de produits en caoutchouc et plastique, renforçant le dynamisme économique de la région.",
   ecosystemEn:

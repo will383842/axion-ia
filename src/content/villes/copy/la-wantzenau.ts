@@ -12,6 +12,7 @@ export const LA_WANTZENAU_COPY: VilleCopy = {
     "Axion-IA est un cabinet d''architectes IA seniors qui intervient à La Wantzenau (67). Nous accompagnons TPE et PME : restaurateurs gastronomiques, commerçants, artisans, professions libérales et prestataires de services de l''Eurométropole de Strasbourg. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d''architectes IA seniors qui intervient à La Wantzenau (67). Nous accompagnons TPE et PME : restaurateurs gastronomiques, commerçants, artisans, professions libérales et prestataires de services de l''Eurométropole de Strasbourg. Audit Flash dès 490 € HT.",
+  seoHook: "gastronomie restauration & hôtellerie charme",
   ecosystemFr:
     "La Wantzenau est une commune de l''Eurométropole de Strasbourg, située au nord de l''agglomération entre l''Ill et le Rhin. La ville est mondialement connue dans la sphère gastronomique pour ses restaurants étoilés et sa tradition culinaire alsacienne (poularde, foie gras, choucroute). L''économie locale repose sur la gastronomie haut de gamme, l''hôtellerie de charme, le commerce de proximité aisé, l''artisanat de qualité, les professions libérales et les services aux PME strasbourgeoises.",
   ecosystemEn:

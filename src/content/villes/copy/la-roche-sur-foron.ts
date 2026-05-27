@@ -12,6 +12,7 @@ export const LA_ROCHE_SUR_FORON_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient a La Roche-sur-Foron (74). Nous accompagnons TPE et PME : agriculture et elevage du Pays Rochois, evenementiel (Foire de Haute-Savoie), commercants de bourg, artisans et entreprises de services entre Annecy et Geneve. Audit Flash des 490 euros HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient a La Roche-sur-Foron (74). Nous accompagnons TPE et PME : agriculture et elevage du Pays Rochois, evenementiel (Foire de Haute-Savoie), commercants de bourg, artisans et entreprises de services entre Annecy et Geneve. Audit Flash des 490 euros HT.",
+  seoHook: "agriculture elevage & evenementiel",
   ecosystemFr:
     "La Roche-sur-Foron est le chef-lieu du Pays Rochois, entre Annecy (25 min) et Geneve (35 min). Ville a forte identite agricole et evenementielle grace a la Foire de Haute-Savoie (plus grande foire departementale). Tissu de PME de services, commerces de centre historique medieval, artisanat et petite industrie. Carrefour Bonneville-Annecy sur l'axe A41.",
   ecosystemEn:

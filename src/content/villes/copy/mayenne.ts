@@ -12,6 +12,7 @@ export const MAYENNE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mayenne (53). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles, commerçants, professions libérales, éleveurs, services aux entreprises et acteurs du tourisme patrimonial du nord-Mayenne.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mayenne (53). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles, commerçants, professions libérales, éleveurs, services aux entreprises et acteurs du tourisme patrimonial du nord-Mayenne.",
+  seoHook: "agroalimentaire & industrie",
   ecosystemFr:
     "Mayenne est la sous-préfecture du nord du département, aux bords de la rivière Mayenne. Château carolingien (peintures murales les plus anciennes d'Europe), patrimoine remarquable. Économie : agroalimentaire (lait, viande), industrie (plasturgie, mécanique), artisanat, commerces, services, élevage bovin laitier.",
   ecosystemEn:

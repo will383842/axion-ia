@@ -14,6 +14,7 @@ export const VALENCE_COPY: VilleCopy = {
     "Axion-IA se déplace à Valence pour accompagner les entreprises locales dans leur transformation IA. La ville abrite des grands groupes tels que Sanofi et Thales, ainsi que des pôles de compétitivité comme Techtera et Minalogic. Nous proposons des audits à partir de 490 € HT et des interventions dès 590 € HT pour répondre aux besoins spécifiques des entreprises valentinoises.",
   directAnswerEn:
     "Axion-IA se déplace à Valence pour accompagner les entreprises locales dans leur transformation IA. La ville abrite des grands groupes tels que Sanofi et Thales, ainsi que des pôles de compétitivité comme Techtera et Minalogic. Nous proposons des audits à partir de 490 € HT et des interventions dès 590 € HT pour répondre aux besoins spécifiques des entreprises valentinoises.",
+  seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Le tissu économique de Valence est marqué par la présence de Sanofi et Thales, ainsi que par des pôles de compétitivité comme Techtera et Minalogic.",
   ecosystemEn:

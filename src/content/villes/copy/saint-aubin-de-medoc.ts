@@ -12,6 +12,7 @@ export const SAINT_AUBIN_DE_MEDOC_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Aubin-de-Médoc (33). Nous accompagnons TPE et PME du nord-ouest bordelais : artisans BTP, professions libérales, commerçants, PME de services et prestataires équestres. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Aubin-de-Médoc (33). Nous accompagnons TPE et PME du nord-ouest bordelais : artisans BTP, professions libérales, commerçants, PME de services et prestataires équestres. Audit Flash dès 490 € HT.",
+  seoHook: "services personne & activités équestres",
   ecosystemFr:
     "Saint-Aubin-de-Médoc est une commune résidentielle prisée du nord-ouest bordelais, en lisière de forêt. Tissu TPE artisanat BTP dense, professions libérales, commerces de proximité, activités équestres et services à la personne. Proximité Le Taillan-Médoc et Saint-Médard-en-Jalles.",
   ecosystemEn:

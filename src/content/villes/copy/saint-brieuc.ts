@@ -14,6 +14,7 @@ export const SAINT_BRIEUC_COPY: VilleCopy = {
     "À Saint-Brieuc, Axion-IA se déplace pour offrir des services d'IA adaptés aux entreprises locales. Le Parc d'activités des Châtelets et l'Université de Rennes 1 - IUT de Saint-Brieuc illustrent le dynamisme économique de la région. Nos interventions visent à automatiser les processus administratifs et améliorer l'efficacité opérationnelle des entreprises.",
   directAnswerEn:
     "À Saint-Brieuc, Axion-IA se déplace pour offrir des services d'IA adaptés aux entreprises locales. Le Parc d'activités des Châtelets et l'Université de Rennes 1 - IUT de Saint-Brieuc illustrent le dynamisme économique de la région. Nos interventions visent à automatiser les processus administratifs et améliorer l'efficacité opérationnelle des entreprises.",
+  seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Saint-Brieuc abrite des entreprises comme Leclerc et Carrefour, qui jouent un rôle clé dans le commerce de détail. Le Parc d'activités des Châtelets est un centre important pour les activités économiques locales.",
   ecosystemEn:

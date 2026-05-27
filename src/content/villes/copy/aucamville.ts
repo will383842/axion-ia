@@ -12,6 +12,7 @@ export const AUCAMVILLE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aucamville (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aucamville (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat & commerce détail",
   ecosystemFr:
     "Aucamville est une commune résidentielle et commerçante du nord de Toulouse. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Proximité de la zone d'emploi nord toulousaine et de l'axe A62.",
   ecosystemEn:

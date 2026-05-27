@@ -14,6 +14,7 @@ export const GAGNY_COPY: VilleCopy = {
     "À Gagny, Axion-IA propose des interventions IA pour automatiser les tâches administratives et optimiser les processus métiers. Avec des entreprises comme LVMH et Sanofi dans la région, nous aidons les TPE et PME à réduire leurs coûts opérationnels. Nos services incluent audits, implémentations et formations, adaptés aux spécificités locales.",
   directAnswerEn:
     "À Gagny, Axion-IA propose des interventions IA pour automatiser les tâches administratives et optimiser les processus métiers. Avec des entreprises comme LVMH et Sanofi dans la région, nous aidons les TPE et PME à réduire leurs coûts opérationnels. Nos services incluent audits, implémentations et formations, adaptés aux spécificités locales.",
+  seoHook: "commerce détail & travaux construction",
   ecosystemFr:
     "Gagny bénéficie de la proximité de Paris, abritant des géants comme LVMH et BNP Paribas. Cet environnement économique dynamique soutient le développement des commerces de détail et des transports terrestres.",
   ecosystemEn:

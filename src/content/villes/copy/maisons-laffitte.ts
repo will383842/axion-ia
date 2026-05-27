@@ -14,6 +14,7 @@ export const MAISONS_LAFFITTE_COPY: VilleCopy = {
     "Maisons-Laffitte, avec ses 2 000 établissements actifs, est un lieu propice pour l'intégration de l'IA. Axion-IA intervient directement chez vous, que vous soyez dans le commerce de détail ou les activités des sièges sociaux. Nos consultants se déplacent pour automatiser vos processus et optimiser vos opérations, sans implication de partenariats locaux.",
   directAnswerEn:
     "Maisons-Laffitte, avec ses 2 000 établissements actifs, est un lieu propice pour l'intégration de l'IA. Axion-IA intervient directement chez vous, que vous soyez dans le commerce de détail ou les activités des sièges sociaux. Nos consultants se déplacent pour automatiser vos processus et optimiser vos opérations, sans implication de partenariats locaux.",
+  seoHook: "commerce détail & activités immobilières",
   ecosystemFr:
     "Le tissu économique de Maisons-Laffitte est caractérisé par des secteurs tels que le commerce de détail et la programmation informatique. Les entreprises locales bénéficient de la proximité de pôles économiques comme Paris, abritant des entités telles que Cap Digital et Station F.",
   ecosystemEn:

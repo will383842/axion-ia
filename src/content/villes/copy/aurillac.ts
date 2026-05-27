@@ -14,6 +14,7 @@ export const AURILLAC_COPY: VilleCopy = {
     "Axion-IA propose des interventions sur site à Aurillac, permettant aux entreprises de bénéficier de notre expertise en IA. Avec des références nationales comme Inria et Station F, nous aidons les entreprises aurillacoises à automatiser leurs processus administratifs et à améliorer leur efficacité opérationnelle.",
   directAnswerEn:
     "Axion-IA propose des interventions sur site à Aurillac, permettant aux entreprises de bénéficier de notre expertise en IA. Avec des références nationales comme Inria et Station F, nous aidons les entreprises aurillacoises à automatiser leurs processus administratifs et à améliorer leur efficacité opérationnelle.",
+  seoHook: "commerce détail & restauration",
   ecosystemFr:
     "Aurillac, avec ses 2 000 établissements actifs, bénéficie d'un tissu économique diversifié. Les entreprises locales peuvent s'inspirer de l'écosystème français qui inclut des entités comme LVMH et Cap Digital.",
   ecosystemEn:

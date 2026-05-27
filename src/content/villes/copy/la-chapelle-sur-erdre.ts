@@ -14,6 +14,7 @@ export const LA_CHAPELLE_SUR_ERDRE_COPY: VilleCopy = {
     "Axion-IA se déplace à La Chapelle-sur-Erdre pour accompagner les entreprises locales. Avec des acteurs comme Manitou Group et la Caisse d'Epargne, nous proposons des audits à partir de 490 € HT et des interventions dès 590 € HT, garantissant un déploiement IA concret et mesurable.",
   directAnswerEn:
     "Axion-IA se déplace à La Chapelle-sur-Erdre pour accompagner les entreprises locales. Avec des acteurs comme Manitou Group et la Caisse d'Epargne, nous proposons des audits à partir de 490 € HT et des interventions dès 590 € HT, garantissant un déploiement IA concret et mesurable.",
+  seoHook: "programmation informatique & commerce détail",
   ecosystemFr:
     "La Chapelle-sur-Erdre abrite des entreprises comme Manitou Group et la Caisse d'Epargne, renforçant son tissu économique. La ZAC de la Gesvrine est un pôle d'activités notable.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const MONTMAGNY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montmagny (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME de services, professions libérales et indépendants du sud Val-d'Oise et nord parisien. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montmagny (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME de services, professions libérales et indépendants du sud Val-d'Oise et nord parisien. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat rénovation & commerce proximité",
   ecosystemFr:
     "Montmagny est une commune résidentielle du sud du Val-d'Oise, bien connectée à Paris par le Transilien H (20 min Gare du Nord). Son tissu économique comprend TPE artisans BTP, commerces de proximité, PME de services, professions libérales et indépendants. Proximité directe avec Deuil-la-Barre, Groslay et Enghien-les-Bains.",
   ecosystemEn:

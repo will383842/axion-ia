@@ -12,6 +12,7 @@ export const BALMA_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Balma (31). Nous accompagnons TPE de conseil, PME tertiaires, professions libérales, commerçants et artisans de l'est toulousain. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Balma (31). Nous accompagnons TPE de conseil, PME tertiaires, professions libérales, commerçants et artisans de l'est toulousain. Audit Flash dès 490 € HT.",
+  seoHook: "conseil gestion & programmation informatique",
   ecosystemFr:
     "Balma est une commune résidentielle prisée de l'est de Toulouse, au tissu économique orienté tertiaire et services. TPE de conseil, cabinets de professions libérales, PME en informatique et services aux entreprises, commerces de proximité le long de la route de Castres. Proximité immédiate de la zone Balma-Gramont.",
   ecosystemEn:

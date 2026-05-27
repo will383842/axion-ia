@@ -12,6 +12,7 @@ export const PLEURTUIT_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pleurtuit (35). Nous accompagnons TPE artisans, PME tourisme et hôtellerie, commerçants et entreprises de la Côte d'Émeraude, proche Saint-Malo et Dinard. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pleurtuit (35). Nous accompagnons TPE artisans, PME tourisme et hôtellerie, commerçants et entreprises de la Côte d'Émeraude, proche Saint-Malo et Dinard. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
+  seoHook: "tourisme hôtellerie-restauration & artisanat",
   ecosystemFr:
     "Pleurtuit bénéficie de sa position stratégique sur la Côte d'Émeraude entre Saint-Malo (10 min) et Dinan (15 min), avec l'aéroport Dinard-Bretagne sur son territoire. Économie tournée vers le tourisme, l'hôtellerie-restauration, le commerce, l'artisanat BTP, les services aéroportuaires et les activités nautiques. Tissu TPE/PME dynamique porté par l'attractivité balnéaire.",
   ecosystemEn:

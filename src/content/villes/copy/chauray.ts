@@ -12,6 +12,7 @@ export const CHAURAY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chauray (79). Nous accompagnons tous types d'activités : TPE artisans et commerçants des zones d'activités, PME tertiaires et logistiques, prestataires mutuelles niortaises, professions libérales et services aux entreprises de l'agglomération de Niort.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chauray (79). Nous accompagnons tous types d'activités : TPE artisans et commerçants des zones d'activités, PME tertiaires et logistiques, prestataires mutuelles niortaises, professions libérales et services aux entreprises de l'agglomération de Niort.",
+  seoHook: "artisanat services & tertiaires agglomération",
   ecosystemFr:
     "Chauray fait partie de l'agglomération de Niort, capitale française des mutuelles. La commune accueille des zones d'activités dynamiques (Mendès-France, La Coupe) avec un tissu TPE/PME tertiaires, logistique, commerces et artisanat. Proximité directe du bassin d'emploi niortais (assurances, mutuelles, services).",
   ecosystemEn:

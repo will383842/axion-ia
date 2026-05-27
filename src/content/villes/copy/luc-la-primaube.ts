@@ -12,6 +12,7 @@ export const LUC_LA_PRIMAUBE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Luc-la-Primaube (12). Nous accompagnons TPE artisans, PME services et négoce, commerçants, professions libérales et agriculteurs de l'agglomération sud de Rodez. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Luc-la-Primaube (12). Nous accompagnons TPE artisans, PME services et négoce, commerçants, professions libérales et agriculteurs de l'agglomération sud de Rodez. Audit Flash dès 490 € HT.",
+  seoHook: "services aux & professions libérales",
   ecosystemFr:
     "Luc-la-Primaube est une commune résidentielle dynamique au sud de Rodez, en forte croissance démographique. Économie de proximité : TPE artisans BTP, PME de services aux entreprises, négoce matériaux, commerces de quartier, professions libérales (santé, juridique), agriculture (polyculture-élevage aveyronnais). Bassin de vie complémentaire à Rodez centre et Onet-le-Château.",
   ecosystemEn:

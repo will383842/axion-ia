@@ -14,6 +14,7 @@ export const FOUGERES_COPY: VilleCopy = {
     "À Fougères, Axion-IA propose des interventions IA adaptées aux secteurs de l'habillement et des produits métalliques. Notre équipe nationale se déplace pour auditer et implémenter des solutions sur site. Avec des entreprises comme Delta Dore et Cooper Standard, nous comprenons les enjeux locaux et offrons des services à partir de 490 € HT pour un audit Flash de 4 heures.",
   directAnswerEn:
     "À Fougères, Axion-IA propose des interventions IA adaptées aux secteurs de l'habillement et des produits métalliques. Notre équipe nationale se déplace pour auditer et implémenter des solutions sur site. Avec des entreprises comme Delta Dore et Cooper Standard, nous comprenons les enjeux locaux et offrons des services à partir de 490 € HT pour un audit Flash de 4 heures.",
+  seoHook: "habillement & produits métalliques",
   ecosystemFr:
     "Fougères est un pôle industriel avec Delta Dore et Cooper Standard. Le Parc d'Activités de l'Aumaillerie soutient le développement économique local, favorisant l'innovation dans divers secteurs.",
   ecosystemEn:

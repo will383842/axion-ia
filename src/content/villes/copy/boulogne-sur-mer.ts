@@ -14,6 +14,7 @@ export const BOULOGNE_SUR_MER_COPY: VilleCopy = {
     "À Boulogne-sur-Mer, Axion-IA propose des solutions d'IA adaptées aux secteurs de l'industrie agroalimentaire et de la pêche. Avec des acteurs tels que Findus et Capécure, nous optimisons les processus de production et de logistique. Nos services incluent des audits dès 490 € HT pour identifier les leviers d'amélioration et des interventions sur site pour une mise en œuvre rapide.",
   directAnswerEn:
     "À Boulogne-sur-Mer, Axion-IA propose des solutions d'IA adaptées aux secteurs de l'industrie agroalimentaire et de la pêche. Avec des acteurs tels que Findus et Capécure, nous optimisons les processus de production et de logistique. Nos services incluent des audits dès 490 € HT pour identifier les leviers d'amélioration et des interventions sur site pour une mise en œuvre rapide.",
+  seoHook: "industrie agroalimentaire & pêche",
   ecosystemFr:
     "Le tissu économique de Boulogne-sur-Mer s'articule autour de l'industrie agroalimentaire et de la pêche, avec des entreprises comme Findus et la zone industrielle de Capécure.",
   ecosystemEn:

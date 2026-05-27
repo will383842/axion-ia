@@ -12,6 +12,7 @@ export const MIRIBEL_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Miribel (01). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Côtière Ain, acteurs loisirs Grand Parc Miribel Jonage, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Miribel (01). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Côtière Ain, acteurs loisirs Grand Parc Miribel Jonage, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
+  seoHook: "tertiaires côtière & loisirs grand",
   ecosystemFr:
     "Miribel est positionnée sur la Côtière de l'Ain, en banlieue NE immédiate de Lyon. Grand Parc Miribel Jonage (2 200 ha, espace naturel / loisirs majeur de l'agglomération lyonnaise). Tissu PME tertiaires et industrielles, TPE artisanat BTP, commerces.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const VILLETANEUSE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villetaneuse (93). Nous accompagnons tous types d'activités : TPE commerçantes et artisanales, PME de services aux entreprises, professions libérales, laboratoires et structures liées à l'Université Sorbonne Paris Nord, restaurateurs et prestataires de proximité du nord Seine-Saint-Denis.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villetaneuse (93). Nous accompagnons tous types d'activités : TPE commerçantes et artisanales, PME de services aux entreprises, professions libérales, laboratoires et structures liées à l'Université Sorbonne Paris Nord, restaurateurs et prestataires de proximité du nord Seine-Saint-Denis.",
+  seoHook: "enseignement supérieur & commerce détail",
   ecosystemFr:
     "Villetaneuse bénéficie de la présence du campus Sorbonne Paris Nord (12 000 étudiants, laboratoires de recherche, incubateur). Tissu économique de TPE artisanales et commerçantes, PME tertiaires et professions libérales. Commune intégrée à l'Établissement public territorial Plaine Commune, dynamique de rénovation urbaine et d'innovation.",
   ecosystemEn:

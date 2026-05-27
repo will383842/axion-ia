@@ -14,6 +14,7 @@ export const NEUILLY_SUR_SEINE_COPY: VilleCopy = {
     "À Neuilly-sur-Seine, Axion-IA propose des services adaptés aux entreprises de tous secteurs, notamment ceux des services financiers et des sièges sociaux. Nous intervenons sur site pour automatiser les tâches administratives, optimiser les processus métier et former les équipes. Nos interventions sont conçues pour répondre aux besoins spécifiques des entreprises locales, incluant Publicis Groupe et JCDecaux.",
   directAnswerEn:
     "À Neuilly-sur-Seine, Axion-IA propose des services adaptés aux entreprises de tous secteurs, notamment ceux des services financiers et des sièges sociaux. Nous intervenons sur site pour automatiser les tâches administratives, optimiser les processus métier et former les équipes. Nos interventions sont conçues pour répondre aux besoins spécifiques des entreprises locales, incluant Publicis Groupe et JCDecaux.",
+  seoHook: "services financiers & sièges sociaux",
   ecosystemFr:
     "Neuilly-sur-Seine est un pôle économique regroupant des entreprises comme Publicis Groupe et Thales. Ces entités contribuent à un environnement propice aux services financiers et aux sièges sociaux.",
   ecosystemEn:

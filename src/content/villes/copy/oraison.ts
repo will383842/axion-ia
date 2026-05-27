@@ -12,6 +12,7 @@ export const ORAISON_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Oraison (04). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires, agriculteurs (vergers, lavande, maraîchage), commerçants, indépendants et services aux entreprises de la Moyenne Durance.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Oraison (04). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires, agriculteurs (vergers, lavande, maraîchage), commerçants, indépendants et services aux entreprises de la Moyenne Durance.",
+  seoHook: "agriculture vergers & lavande plantes",
   ecosystemFr:
     "Oraison est commune de la Moyenne Durance (~6 150 hab), bassin agricole dynamique entre Manosque et Sisteron. Vergers (pommes, poires), lavande, maraîchage, PME agroalimentaires locales. TPE artisans BTP, commerces de proximité, services. Marché provençal mardi reconnu.",
   ecosystemEn:

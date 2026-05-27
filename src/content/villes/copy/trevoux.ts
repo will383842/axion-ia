@@ -12,6 +12,7 @@ export const TREVOUX_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trévoux (01). Nous accompagnons tous types d'activités : PME tertiaires val de Saône Ain, acteurs tourisme patrimonial Dombes, TPE artisans BTP, commerçants, professions libérales et services aux entreprises.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trévoux (01). Nous accompagnons tous types d'activités : PME tertiaires val de Saône Ain, acteurs tourisme patrimonial Dombes, TPE artisans BTP, commerçants, professions libérales et services aux entreprises.",
+  seoHook: "tertiaires val & tourisme patrimonial",
   ecosystemFr:
     "Trévoux est une ancienne capitale de la principauté de Dombes (patrimoine architectural : Parlement de Dombes, château). Position val de Saône Ain. Tissu PME tertiaires, tourisme patrimonial, TPE artisanat BTP, commerces, professions libérales.",
   ecosystemEn:

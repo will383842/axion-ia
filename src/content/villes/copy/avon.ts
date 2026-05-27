@@ -12,6 +12,7 @@ export const AVON_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Avon (77). Nous accompagnons tous types d'activités : TPE artisans et prestataires, PME services, commerçants du centre-ville, professions libérales, métiers de la santé et services à la personne du bassin Fontainebleau-Avon. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Avon (77). Nous accompagnons tous types d'activités : TPE artisans et prestataires, PME services, commerçants du centre-ville, professions libérales, métiers de la santé et services à la personne du bassin Fontainebleau-Avon. Audit Flash dès 490 € HT.",
+  seoHook: "services personne & artisanat maintenance",
   ecosystemFr:
     "Avon est la commune jumelle de Fontainebleau, formant avec elle une agglomération de près de 30 000 habitants en lisière de la forêt domaniale. La gare de Fontainebleau-Avon (Transilien R) en fait le point d'accès ferroviaire du bassin. Tissu résidentiel dense avec TPE artisans, commerçants centre-ville, professions libérales, services à la personne et PME services. Communes voisines : Fontainebleau, Vulaines-sur-Seine, Samois-sur-Seine, Héricy.",
   ecosystemEn:

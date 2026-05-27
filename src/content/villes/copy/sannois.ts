@@ -14,6 +14,7 @@ export const SANNOIS_COPY: VilleCopy = {
     "Axion-IA se déplace à Sannois pour offrir des solutions IA adaptées aux besoins spécifiques des entreprises locales. Avec l'écosystème technologique d'Ile-de-France, comprenant Cap Digital et Inria, nous proposons des audits et interventions sur site pour automatiser des tâches administratives et optimiser les processus. Notre approche pragmatique permet un retour sur investissement rapide et mesurable.",
   directAnswerEn:
     "Axion-IA se déplace à Sannois pour offrir des solutions IA adaptées aux besoins spécifiques des entreprises locales. Avec l'écosystème technologique d'Ile-de-France, comprenant Cap Digital et Inria, nous proposons des audits et interventions sur site pour automatiser des tâches administratives et optimiser les processus. Notre approche pragmatique permet un retour sur investissement rapide et mesurable.",
+  seoHook: "commerce détail & restauration",
   ecosystemFr:
     "Sannois bénéficie de la proximité de pôles technologiques tels que Cap Digital et Inria en Ile-de-France, renforçant l'environnement propice à l'innovation et à l'optimisation des processus d'entreprise.",
   ecosystemEn:

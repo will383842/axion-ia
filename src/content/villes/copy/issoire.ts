@@ -12,6 +12,7 @@ export const ISSOIRE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Issoire (63). Nous accompagnons tous types d'activités : PME industrielles aéronautique/métallurgie, administration sous-préfecture, acteurs tourisme roman, agriculteurs Limagne, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Issoire (63). Nous accompagnons tous types d'activités : PME industrielles aéronautique/métallurgie, administration sous-préfecture, acteurs tourisme roman, agriculteurs Limagne, TPE artisans BTP, commerçants et services aux entreprises.",
+  seoHook: "industrie aéronautique & administration",
   ecosystemFr:
     "Issoire est la sous-préfecture du sud Puy-de-Dôme. Basilique romane Saint-Austremoine (majeure romane Auvergne). Tissu industriel aéronautique et métallurgique notable (sous-traitants techniques). Administration, agriculture Limagne, tourisme roman, TPE artisanat BTP, commerces.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const SAINT_REMY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Rémy (71). Nous accompagnons tous types d'activités : TPE/PME tertiaires agglomération Chalon-sur-Saône, artisans BTP, commerçants, professions libérales et services aux entreprises.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Rémy (71). Nous accompagnons tous types d'activités : TPE/PME tertiaires agglomération Chalon-sur-Saône, artisans BTP, commerçants, professions libérales et services aux entreprises.",
+  seoHook: "tertiaires grand & artisanat",
   ecosystemFr:
     "Saint-Rémy est une commune résidentielle de l'agglomération Chalon-sur-Saône, bénéficiant de la dynamique économique du Grand Chalon. Tissu TPE/PME tertiaires, artisans BTP, commerces de proximité, professions libérales.",
   ecosystemEn:

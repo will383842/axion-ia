@@ -14,6 +14,7 @@ export const THONON_LES_BAINS_COPY: VilleCopy = {
     "Axion-IA se déplace à Thonon-les-Bains pour accompagner les entreprises dans l'automatisation de leurs tâches. Avec des références comme Cap Digital et Station F à Paris, nous apportons notre expertise nationale pour répondre aux besoins spécifiques des secteurs locaux tels que le commerce de détail et la santé humaine.",
   directAnswerEn:
     "Axion-IA se déplace à Thonon-les-Bains pour accompagner les entreprises dans l'automatisation de leurs tâches. Avec des références comme Cap Digital et Station F à Paris, nous apportons notre expertise nationale pour répondre aux besoins spécifiques des secteurs locaux tels que le commerce de détail et la santé humaine.",
+  seoHook: "commerce détail & hébergement",
   ecosystemFr:
     "Thonon-les-Bains se distingue par un tissu économique diversifié incluant le commerce de détail et la restauration. Les entreprises locales bénéficient d'un accès à des infrastructures telles que l'aéroport de Genève et la gare TGV d'Annemasse.",
   ecosystemEn:

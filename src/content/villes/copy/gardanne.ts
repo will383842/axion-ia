@@ -14,6 +14,7 @@ export const GARDANNE_COPY: VilleCopy = {
     "À Gardanne, Axion-IA accompagne les entreprises dans la mise en place de solutions IA adaptées à leurs besoins. Avec des acteurs comme Alteo et EDF présents dans la région, nous intervenons pour automatiser les processus et optimiser les opérations. Nos services incluent des audits, des implémentations et des formations sur site.",
   directAnswerEn:
     "À Gardanne, Axion-IA accompagne les entreprises dans la mise en place de solutions IA adaptées à leurs besoins. Avec des acteurs comme Alteo et EDF présents dans la région, nous intervenons pour automatiser les processus et optimiser les opérations. Nos services incluent des audits, des implémentations et des formations sur site.",
+  seoHook: "métallurgie & production d'électricité",
   ecosystemFr:
     "Gardanne bénéficie d'un écosystème économique diversifié avec des entreprises comme Alteo et des pôles de compétitivité tels que Capenergies. Ce contexte favorise l'innovation dans les secteurs de la métallurgie et des énergies renouvelables.",
   ecosystemEn:

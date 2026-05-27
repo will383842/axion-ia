@@ -14,6 +14,7 @@ export const ATHIS_MONS_COPY: VilleCopy = {
     "Axion-IA se déplace à Athis-Mons pour accompagner les entreprises dans leur transition vers l'IA. En Île-de-France, où des entités comme Inria et Station F innovent, nous proposons des audits et interventions ciblés. Notre approche inclut des audits à partir de 490 € HT et des interventions dès 590 € HT, garantissant une mise en œuvre rapide et efficace.",
   directAnswerEn:
     "Axion-IA se déplace à Athis-Mons pour accompagner les entreprises dans leur transition vers l'IA. En Île-de-France, où des entités comme Inria et Station F innovent, nous proposons des audits et interventions ciblés. Notre approche inclut des audits à partir de 490 € HT et des interventions dès 590 € HT, garantissant une mise en œuvre rapide et efficace.",
+  seoHook: "commerce détail & transport terrestre",
   ecosystemFr:
     "Athis-Mons bénéficie d'un environnement économique riche avec des secteurs comme le commerce de détail et les activités pour la santé humaine. Des entreprises à proximité, telles que Renault et Sanofi, illustrent la diversité industrielle de la région.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const CHAUVIGNY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chauvigny (86). Nous accompagnons tous types d'activités : TPE artisans pierre/BTP, PME industrielles et carriers, acteurs tourisme patrimonial (5 châteaux médiévaux), commerçants, professions libérales et services aux entreprises de l'est Vienne.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chauvigny (86). Nous accompagnons tous types d'activités : TPE artisans pierre/BTP, PME industrielles et carriers, acteurs tourisme patrimonial (5 châteaux médiévaux), commerçants, professions libérales et services aux entreprises de l'est Vienne.",
+  seoHook: "artisanat pierre & industrielles carrières",
   ecosystemFr:
     "Chauvigny est une cité médiévale exceptionnelle de la vallée de la Vienne, célèbre pour ses cinq châteaux (dont le château baronnial et l'évêché) et ses carrières de pierre calcaire blanche. Tissu économique diversifié : TPE artisans pierre de taille/BTP, PME industrielles/carrières, tourisme patrimonial (spectacles Géants du Ciel), commerces, professions libérales.",
   ecosystemEn:

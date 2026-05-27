@@ -12,6 +12,7 @@ export const BOUCHEMAINE_COPY: VilleCopy = {
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Bouchemaine (49). Nous accompagnons les TPE, PME et professions libérales de l'ouest angevin dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict, tarifs publics.",
   directAnswerEn:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Bouchemaine (49). Nous accompagnons les TPE, PME et professions libérales de l'ouest angevin dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict, tarifs publics.",
+  seoHook: "professions libérales & tertiaires services",
   ecosystemFr:
     "Bouchemaine bénéficie d'un cadre exceptionnel au confluent Maine-Loire, en position résidentielle haut de gamme de l'ouest angevin. Tissu économique : professions libérales (santé, juridique, conseil), PME tertiaires, commerces de proximité, artisanat et services à la personne. Activités nautiques et de loisirs Loire.",
   ecosystemEn:

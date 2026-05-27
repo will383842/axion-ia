@@ -12,6 +12,7 @@ export const BRISSAC_LOIRE_AUBANCE_COPY: VilleCopy = {
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Brissac Loire Aubance (49). Nous accompagnons les TPE viticoles, PME touristiques et artisans de l'Aubance dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
   directAnswerEn:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Brissac Loire Aubance (49). Nous accompagnons les TPE viticoles, PME touristiques et artisans de l'Aubance dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
+  seoHook: "viticulture vignoble & tourisme patrimoine",
   ecosystemFr:
     "Brissac Loire Aubance est le cœur du vignoble des coteaux de l'Aubance (AOC Anjou, Coteaux de l'Aubance). Le château de Brissac, plus haut château de France, attire un tourisme patrimonial. Tissu économique : domaines viticoles, œnotourisme, artisanat, commerces de bourg et agriculture diversifiée.",
   ecosystemEn:

@@ -14,6 +14,7 @@ export const CHALON_SUR_SAONE_COPY: VilleCopy = {
     "À Chalon-sur-Saône, Axion-IA propose des solutions IA sur site pour les entreprises de secteurs variés tels que le commerce de détail et l'industrie alimentaire. Avec des groupes comme Areva et Nestlé présents dans la région, nous offrons des audits dès 490 € HT et des interventions à partir de 590 € HT, garantissant un retour sur investissement rapide.",
   directAnswerEn:
     "À Chalon-sur-Saône, Axion-IA propose des solutions IA sur site pour les entreprises de secteurs variés tels que le commerce de détail et l'industrie alimentaire. Avec des groupes comme Areva et Nestlé présents dans la région, nous offrons des audits dès 490 € HT et des interventions à partir de 590 € HT, garantissant un retour sur investissement rapide.",
+  seoHook: "commerce détail & industrie alimentaire",
   ecosystemFr:
     "Chalon-sur-Saône accueille des entreprises comme Areva et Nestlé, renforçant son tissu économique. Le Parc d'activités SaôneOr est un pôle clé pour les industries locales, facilitant l'innovation et la croissance.",
   ecosystemEn:

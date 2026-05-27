@@ -12,6 +12,7 @@ export const FROUZINS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Frouzins (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud Toulouse. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Frouzins (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud Toulouse. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat & commerce détail",
   ecosystemFr:
     "Frouzins est une commune résidentielle en forte croissance du sud de Toulouse, entre Cugnaux et Villeneuve-Tolosane. Tissu TPE artisans, PME de services, commerces de quartier, professions libérales. Cadre périurbain verdoyant avec économie de proximité.",
   ecosystemEn:

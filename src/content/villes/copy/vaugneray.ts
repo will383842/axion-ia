@@ -12,6 +12,7 @@ export const VAUGNERAY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vaugneray (69). Nous accompagnons tous types d'activités : PME tertiaires ouest lyonnais, agriculteurs monts du Lyonnais, TPE artisans BTP, commerçants, professions libérales et services aux entreprises.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vaugneray (69). Nous accompagnons tous types d'activités : PME tertiaires ouest lyonnais, agriculteurs monts du Lyonnais, TPE artisans BTP, commerçants, professions libérales et services aux entreprises.",
+  seoHook: "tertiaires ouest & agriculture monts",
   ecosystemFr:
     "Vaugneray est positionnée en banlieue ouest de Lyon, aux portes des monts du Lyonnais. Tissu mixte péri-urbain et rural : PME tertiaires, agriculture monts du Lyonnais (élevage, cultures), TPE artisanat BTP, commerces, professions libérales.",
   ecosystemEn:

@@ -14,6 +14,7 @@ export const FRANCONVILLE_COPY: VilleCopy = {
     "Axion-IA propose des services d'IA à Franconville, une ville dynamique de l'Île-de-France. Nous intervenons dans des secteurs variés tels que le commerce de détail et la programmation informatique. Nos prestations incluent des audits à partir de 490 € HT et des interventions dès 590 € HT. Franconville bénéficie de la proximité de Paris et de son écosystème, incluant des acteurs comme LVMH et BNP Paribas.",
   directAnswerEn:
     "Axion-IA propose des services d'IA à Franconville, une ville dynamique de l'Île-de-France. Nous intervenons dans des secteurs variés tels que le commerce de détail et la programmation informatique. Nos prestations incluent des audits à partir de 490 € HT et des interventions dès 590 € HT. Franconville bénéficie de la proximité de Paris et de son écosystème, incluant des acteurs comme LVMH et BNP Paribas.",
+  seoHook: "commerce détail & construction",
   ecosystemFr:
     "Franconville, avec ses 3 000 établissements actifs, profite de sa proximité avec Paris, où se trouvent des acteurs comme LVMH et BNP Paribas.",
   ecosystemEn:

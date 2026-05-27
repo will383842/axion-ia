@@ -14,6 +14,7 @@ export const CARRIERES_SOUS_POISSY_COPY: VilleCopy = {
     "À Carrières-sous-Poissy, Axion-IA propose des interventions sur site pour les entreprises souhaitant intégrer l'IA dans leurs opérations. L'écosystème francilien, avec des pôles comme Station F et Inria, stimule l'innovation technologique. Nos services couvrent l'audit, l'implémentation et la formation, garantissant un déploiement IA concret et mesurable.",
   directAnswerEn:
     "À Carrières-sous-Poissy, Axion-IA propose des interventions sur site pour les entreprises souhaitant intégrer l'IA dans leurs opérations. L'écosystème francilien, avec des pôles comme Station F et Inria, stimule l'innovation technologique. Nos services couvrent l'audit, l'implémentation et la formation, garantissant un déploiement IA concret et mesurable.",
+  seoHook: "commerce véhicules & commerce gros",
   ecosystemFr:
     "Carrières-sous-Poissy bénéficie de la proximité de pôles d'innovation comme Cap Digital et Station F, renforçant l'attractivité pour les entreprises cherchant à intégrer l'IA.",
   ecosystemEn:

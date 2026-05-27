@@ -12,6 +12,7 @@ export const PLUVIGNER_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pluvigner (56). Nous accompagnons TPE et PME : exploitations agricoles, PME agroalimentaires, artisans BTP, commerçants du bourg, professions libérales, entreprises touristiques et tertiaires du pays d'Auray.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pluvigner (56). Nous accompagnons TPE et PME : exploitations agricoles, PME agroalimentaires, artisans BTP, commerçants du bourg, professions libérales, entreprises touristiques et tertiaires du pays d'Auray.",
+  seoHook: "agriculture élevage & agroalimentaire",
   ecosystemFr:
     "Pluvigner se situe au centre du Morbihan, à 15 km au nord d'Auray, dans l'arrière-pays du golfe du Morbihan. Bourg rural en croissance (7 682 habitants), la commune dispose d'un tissu agricole structuré (élevage, cultures, maraîchage) et bénéficie de l'attractivité touristique du pays d'Auray. Tissu économique : exploitations agricoles, PME agroalimentaires, TPE artisans BTP, commerces de proximité, professions libérales et entreprises liées au tourisme balnéaire et rural.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const SAINT_MICHEL_CHEF_CHEF_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Michel-Chef-Chef (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tourisme balnéaire, campings et hébergements, restauration, professions libérales et entreprises de la Côte de Jade.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Michel-Chef-Chef (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tourisme balnéaire, campings et hébergements, restauration, professions libérales et entreprises de la Côte de Jade.",
+  seoHook: "tourisme balnéaire & restauration hébergement",
   ecosystemFr:
     "Saint-Michel-Chef-Chef est une station balnéaire de la Côte de Jade, entre Pornic et Saint-Brevin. Plage de Tharon, campings, résidences secondaires. Tissu TPE commerçants, PME tourisme et hébergement, restauration, artisans et professions libérales. Forte saisonnalité estivale.",
   ecosystemEn:

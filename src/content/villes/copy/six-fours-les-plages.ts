@@ -14,6 +14,7 @@ export const SIX_FOURS_LES_PLAGES_COPY: VilleCopy = {
     "Axion-IA se déplace à Six-Fours-les-Plages pour offrir des services d'IA adaptés aux entreprises locales. Que vous soyez dans le commerce de détail ou la restauration, notre équipe nationale vous accompagne sur site pour automatiser vos processus. Nos interventions incluent des audits, des implémentations et des formations personnalisées pour garantir un retour sur investissement rapide.",
   directAnswerEn:
     "Axion-IA se déplace à Six-Fours-les-Plages pour offrir des services d'IA adaptés aux entreprises locales. Que vous soyez dans le commerce de détail ou la restauration, notre équipe nationale vous accompagne sur site pour automatiser vos processus. Nos interventions incluent des audits, des implémentations et des formations personnalisées pour garantir un retour sur investissement rapide.",
+  seoHook: "commerce détail & restauration",
   ecosystemFr:
     "Six-Fours-les-Plages, avec ses 3 000 établissements actifs, est un pôle économique où le commerce de détail et la construction dominent. Les entreprises locales bénéficient de la proximité de Toulon et de ses infrastructures, facilitant les échanges et les déplacements professionnels.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const BONDUES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bondues (59). Nous accompagnons tous types d'activités : TPE commerçants et artisans, PME services aux entreprises et sièges sociaux du Nord lillois, professions libérales, dirigeants résidant dans le secteur résidentiel bourgeois de la métropole lilloise (MEL) entre Marcq-en-Barœul et Tourcoing.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bondues (59). Nous accompagnons tous types d'activités : TPE commerçants et artisans, PME services aux entreprises et sièges sociaux du Nord lillois, professions libérales, dirigeants résidant dans le secteur résidentiel bourgeois de la métropole lilloise (MEL) entre Marcq-en-Barœul et Tourcoing.",
+  seoHook: "services aux & professions libérales",
   ecosystemFr:
     "Bondues est positionnée dans la Métropole Européenne de Lille (MEL), entre Marcq-en-Barœul (5 min sud) et Tourcoing (10 min nord-est). Commune résidentielle bourgeoise du Nord lillois structurée autour du golf de Bondues (18 trous), du château du Vert-Bois et du manoir de la Vigne. Tissu PME services aux entreprises, sièges sociaux, professions libérales, TPE commerces et artisans. Accès A22 et N17, proche Belgique (15 min frontière).",
   ecosystemEn:

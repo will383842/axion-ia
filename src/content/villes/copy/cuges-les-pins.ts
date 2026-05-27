@@ -12,6 +12,7 @@ export const CUGES_LES_PINS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cuges-les-Pins (13). Nous accompagnons TPE artisans, commerçants, exploitants agricoles, PME du tourisme et entreprises du piémont de la Sainte-Baume. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cuges-les-Pins (13). Nous accompagnons TPE artisans, commerçants, exploitants agricoles, PME du tourisme et entreprises du piémont de la Sainte-Baume. Audit Flash dès 490 € HT.",
+  seoHook: "agriculture viticulture & tourisme loisirs",
   ecosystemFr:
     "Cuges-les-Pins est un village de garrigue et de collines au piémont de la Sainte-Baume, entre Aubagne et Signes. Économie locale : agriculture (vignes, oliviers, maraîchage), tourisme (parc OK Corral, randonnées Sainte-Baume), artisanat et commerces de proximité. Résidentiel familial en croissance.",
   ecosystemEn:

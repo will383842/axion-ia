@@ -14,6 +14,7 @@ export const LA_GARDE_COPY: VilleCopy = {
     "Axion-IA propose ses services à La Garde, où le commerce de détail et la programmation informatique sont prédominants. Nous nous déplaçons sur site pour accompagner les entreprises, qu'elles soient situées près de la ZAC des Plantades ou en collaboration avec l'Université de Toulon. Notre approche inclut audits, interventions et implémentations, adaptées aux spécificités de chaque secteur.",
   directAnswerEn:
     "Axion-IA propose ses services à La Garde, où le commerce de détail et la programmation informatique sont prédominants. Nous nous déplaçons sur site pour accompagner les entreprises, qu'elles soient situées près de la ZAC des Plantades ou en collaboration avec l'Université de Toulon. Notre approche inclut audits, interventions et implémentations, adaptées aux spécificités de chaque secteur.",
+  seoHook: "commerce détail & restauration",
   ecosystemFr:
     "La Garde bénéficie d'une proximité avec des entreprises comme Decathlon et Castorama, enrichissant son tissu économique. La ZAC des Plantades est un pôle clé pour le développement local.",
   ecosystemEn:

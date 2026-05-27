@@ -12,6 +12,7 @@ export const GENAS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Genas (69). Nous accompagnons tous types d'activités : PME tertiaires et logistiques est lyonnais, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Genas (69). Nous accompagnons tous types d'activités : PME tertiaires et logistiques est lyonnais, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de la Métropole de Lyon.",
+  seoHook: "tertiaires logistiques & zones d'activités",
   ecosystemFr:
     "Genas est intégrée à la Métropole de Lyon, en banlieue est (axe Lyon-Saint-Exupéry). Position de transit : zones d'activités notables, proximité aéroport. Tissu PME tertiaires et logistiques, TPE artisanat BTP, commerces, professions libérales, agriculture résiduelle.",
   ecosystemEn:

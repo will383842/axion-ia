@@ -12,6 +12,7 @@ export const CRUSEILLES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cruseilles (74). Nous accompagnons TPE et PME : artisans BTP, commerces du bourg, professions libérales, PME de services transfrontaliers du Genevois et entreprises touristiques du secteur Salève-Vuache.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cruseilles (74). Nous accompagnons TPE et PME : artisans BTP, commerces du bourg, professions libérales, PME de services transfrontaliers du Genevois et entreprises touristiques du secteur Salève-Vuache.",
+  seoHook: "artisanat second & commerce proximité",
   ecosystemFr:
     "Cruseilles est un bourg-centre du Genevois haut-savoyard, positionné à mi-chemin entre Annecy (20 min) et Genève (25 min). Tissu économique diversifié : TPE artisanat BTP portées par la croissance résidentielle, commerces de proximité animant le centre-bourg, professions libérales, PME tertiaires liées à l'économie transfrontalière et activités touristiques autour du plateau des Bornes et du Salève.",
   ecosystemEn:

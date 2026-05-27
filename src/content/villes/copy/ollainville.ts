@@ -12,6 +12,7 @@ export const OLLAINVILLE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ollainville (91). Nous accompagnons TPE et PME : artisans et commerçants de proximité, PME services aux entreprises, professions libérales, exploitants agricoles, prestataires BTP sud Essonne. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ollainville (91). Nous accompagnons TPE et PME : artisans et commerçants de proximité, PME services aux entreprises, professions libérales, exploitants agricoles, prestataires BTP sud Essonne. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat commerces & services aux",
   ecosystemFr:
     "Ollainville est une commune résidentielle et rurale du sud de l'Essonne, proche d'Arpajon et de la RN 20. Tissu TPE artisanat et commerces de proximité, PME services, professions libérales, exploitations agricoles, prestataires BTP.",
   ecosystemEn:

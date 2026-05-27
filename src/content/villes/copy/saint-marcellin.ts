@@ -12,6 +12,7 @@ export const SAINT_MARCELLIN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Marcellin (38). Nous accompagnons tous types d'activités : fromageries artisanales AOP Saint-Marcellin, agriculteurs/éleveurs laitiers, PME industrielles Sud Grésivaudan, TPE artisans BTP, commerçants, indépendants et services aux entreprises du Bas-Dauphiné.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Marcellin (38). Nous accompagnons tous types d'activités : fromageries artisanales AOP Saint-Marcellin, agriculteurs/éleveurs laitiers, PME industrielles Sud Grésivaudan, TPE artisans BTP, commerçants, indépendants et services aux entreprises du Bas-Dauphiné.",
+  seoHook: "saint-marcellin fromageries & élevage laitier",
   ecosystemFr:
     "Saint-Marcellin est ville-centre du Bas-Dauphiné (Sud Grésivaudan, vallée de l'Isère), connue pour le fromage AOP Saint-Marcellin et son AOC fromagère reconnue. Tissu d'éleveurs laitiers locaux, fromageries artisanales, PME industrielles périphériques, TPE artisans BTP, commerces. Position vers Vercors et plaine de l'Isère.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const BOUILLARGUES_COPY: VilleCopy = {
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Bouillargues (30). Nous accompagnons les TPE, PME et ETI locales : entreprises de services, commerçants, artisans BTP, professions libérales et viticulteurs Costières de l'agglo nîmoise sud. Audit Flash à partir de 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Bouillargues (30). Nous accompagnons les TPE, PME et ETI locales : entreprises de services, commerçants, artisans BTP, professions libérales et viticulteurs Costières de l'agglo nîmoise sud. Audit Flash à partir de 490 € HT.",
+  seoHook: "artisanat & viticulture costières",
   ecosystemFr:
     "Bouillargues (~6 100 hab) est une commune résidentielle de l'agglo nîmoise sud, à proximité de l'aéroport Nîmes-Garons. Services aux entreprises, commerces, artisanat BTP, professions libérales, viticulture Costières de Nîmes. Croissance démographique soutenue, accès A9.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const SAINT_JEAN_DE_BOISEAU_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean-de-Boiseau (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires, professions libérales, services à la personne et entreprises du sud-ouest de l'agglomération nantaise.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean-de-Boiseau (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires, professions libérales, services à la personne et entreprises du sud-ouest de l'agglomération nantaise.",
+  seoHook: "artisanat commerce & tertiaires services",
   ecosystemFr:
     "Saint-Jean-de-Boiseau est une commune résidentielle en bords de Loire, entre Bouguenais et Le Pellerin. Tissu TPE artisans, commerçants, PME tertiaires, professions libérales et services à la personne. Cadre de vie Loire attractif, proximité Nantes Métropole.",
   ecosystemEn:

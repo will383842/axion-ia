@@ -12,6 +12,7 @@ export const SOMMIERES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sommières (30). Nous accompagnons tous types d'activités : domaines viticoles, PME agroalimentaires, TPE artisans, commerçants du centre médiéval, restaurateurs, indépendants, professions libérales et acteurs du tourisme patrimoine gardois.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sommières (30). Nous accompagnons tous types d'activités : domaines viticoles, PME agroalimentaires, TPE artisans, commerçants du centre médiéval, restaurateurs, indépendants, professions libérales et acteurs du tourisme patrimoine gardois.",
+  seoHook: "viticulture & tourisme patrimoine",
   ecosystemFr:
     "Sommières est un bourg médiéval du Gard sur le Vidourle, entre Nîmes (30 min) et Montpellier (30 min). Patrimoine remarquable : château médiéval, pont romain, rues voûtées. Marché provençal réputé. Tissu TPE artisans, PME viticoles (AOC Languedoc, Sommières), agroalimentaire, commerces, tourisme patrimoine, professions libérales.",
   ecosystemEn:

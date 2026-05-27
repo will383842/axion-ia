@@ -14,6 +14,7 @@ export const RAMBOUILLET_COPY: VilleCopy = {
     "Axion-IA propose des interventions à Rambouillet, un pôle économique en développement avec 3 000 établissements actifs. Nous nous déplaçons pour auditer et automatiser des tâches critiques. Avec des références comme LVMH et BNP Paribas, nous garantissons une approche opérationnelle sur mesure, adaptée aux besoins spécifiques des entreprises locales.",
   directAnswerEn:
     "Axion-IA propose des interventions à Rambouillet, un pôle économique en développement avec 3 000 établissements actifs. Nous nous déplaçons pour auditer et automatiser des tâches critiques. Avec des références comme LVMH et BNP Paribas, nous garantissons une approche opérationnelle sur mesure, adaptée aux besoins spécifiques des entreprises locales.",
+  seoHook: "commerce détail & construction",
   ecosystemFr:
     "Rambouillet bénéficie d'un environnement économique dynamique avec des entreprises telles que Bouygues et Renault. Les secteurs du commerce de détail et de la construction y sont particulièrement représentés.",
   ecosystemEn:

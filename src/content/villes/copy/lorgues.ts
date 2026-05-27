@@ -12,6 +12,7 @@ export const LORGUES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lorgues (83). Nous accompagnons TPE viticulteurs Côtes de Provence, restaurateurs, artisans, commerçants du marché provençal et PME du tourisme rural du centre-Var. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lorgues (83). Nous accompagnons TPE viticulteurs Côtes de Provence, restaurateurs, artisans, commerçants du marché provençal et PME du tourisme rural du centre-Var. Audit Flash dès 490 € HT.",
+  seoHook: "viticulture côtes & marché provençal",
   ecosystemFr:
     "Lorgues est un bourg agricole et touristique du centre-Var, ancré dans la viticulture Côtes de Provence (domaines AOC, vente directe). Marché provençal du mardi parmi les plus réputés du département. Économie tirée par les TPE viticoles, l'artisanat, la restauration gastronomique et le tourisme rural haut de gamme.",
   ecosystemEn:

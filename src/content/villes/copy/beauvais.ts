@@ -14,6 +14,7 @@ export const BEAUVAIS_COPY: VilleCopy = {
     "Axion-IA se déplace à Beauvais pour accompagner les entreprises dans l'adoption de l'IA, en tenant compte de l'écosystème local qui comprend des groupes comme Valeo et Nestlé. Nos interventions sur site permettent d'automatiser les tâches administratives et de réduire les coûts opérationnels grâce à des solutions d'IA adaptées.",
   directAnswerEn:
     "Axion-IA se déplace à Beauvais pour accompagner les entreprises dans l'adoption de l'IA, en tenant compte de l'écosystème local qui comprend des groupes comme Valeo et Nestlé. Nos interventions sur site permettent d'automatiser les tâches administratives et de réduire les coûts opérationnels grâce à des solutions d'IA adaptées.",
+  seoHook: "commerce gros & transports terrestres",
   ecosystemFr:
     "Beauvais abrite des entreprises telles que le Groupe Auchan et Valeo, renforçant son tissu économique. Le Parc d'activités du Haut-Villé et la ZAC de Ther sont des zones clés pour le développement local.",
   ecosystemEn:

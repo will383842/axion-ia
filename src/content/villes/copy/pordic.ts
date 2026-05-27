@@ -12,6 +12,7 @@ export const PORDIC_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pordic (22). Nous accompagnons TPE et PME : artisans BTP, PME tertiaires, commerçants, professions libérales, acteurs du tourisme littoral de l'agglomération briochine. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pordic (22). Nous accompagnons TPE et PME : artisans BTP, PME tertiaires, commerçants, professions libérales, acteurs du tourisme littoral de l'agglomération briochine. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat & commerce bourg",
   ecosystemFr:
     "Pordic est une commune littorale résidentielle de l'agglomération de Saint-Brieuc, entre Binic-Étables-sur-Mer et Saint-Brieuc. Tissu TPE artisans BTP et services, PME tertiaires, commerces de bourg, professions libérales, hébergements touristiques et activités nautiques.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const MONTAUROUX_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montauroux (83). Nous accompagnons TPE artisans, restaurateurs, professionnels du golf et PME du tourisme rural et résidentiel du Pays de Fayence et de l'arrière-pays varois. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montauroux (83). Nous accompagnons TPE artisans, restaurateurs, professionnels du golf et PME du tourisme rural et résidentiel du Pays de Fayence et de l'arrière-pays varois. Audit Flash dès 490 € HT.",
+  seoHook: "tourisme rural & golf loisirs",
   ecosystemFr:
     "Montauroux est un village perché du Pays de Fayence, à mi-chemin entre la Côte d'Azur et les gorges du Verdon. Économie tirée par le tourisme rural (lac de Saint-Cassien, golf, randonnée), l'artisanat, la restauration provençale, le BTP résidentiel et le commerce de proximité. Tissu de TPE/PME tourisme et artisanat.",
   ecosystemEn:

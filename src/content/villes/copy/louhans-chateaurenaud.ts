@@ -12,6 +12,7 @@ export const LOUHANS_CHATEAURENAUD_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Louhans-Châteaurenaud (71). Nous accompagnons tous types d'activités : éleveurs volailles AOC Bresse, TPE/PME agroalimentaire, commerçants arcades, artisans, services aux entreprises de la Bresse bourguignonne.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Louhans-Châteaurenaud (71). Nous accompagnons tous types d'activités : éleveurs volailles AOC Bresse, TPE/PME agroalimentaire, commerçants arcades, artisans, services aux entreprises de la Bresse bourguignonne.",
+  seoHook: "élevage volailles & agroalimentaire bresse",
   ecosystemFr:
     "Louhans-Châteaurenaud est la capitale de la Bresse bourguignonne (Grande Rue aux 157 arcades, marché aux volailles AOC lundi matin). Tissu TPE/PME agriculture Bresse, élevage volailles AOC, agroalimentaire, commerces de proximité, artisanat.",
   ecosystemEn:

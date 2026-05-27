@@ -12,6 +12,7 @@ export const LYS_LEZ_LANNOY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lys-lez-Lannoy (59). Nous accompagnons TPE et PME : commerce de gros et détail roubaisien, sous-traitants industriels textile-confection, prestataires de services aux entreprises, logisticiens, artisans et professions libérales de l'agglo lilloise.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lys-lez-Lannoy (59). Nous accompagnons TPE et PME : commerce de gros et détail roubaisien, sous-traitants industriels textile-confection, prestataires de services aux entreprises, logisticiens, artisans et professions libérales de l'agglo lilloise.",
+  seoHook: "commerce gros & services aux",
   ecosystemFr:
     "Lys-lez-Lannoy est une commune résidentielle et commerçante de la Métropole Européenne de Lille, limitrophe de Roubaix et Lannoy. L'économie locale associe TPE et PME du commerce de gros et détail (héritage du pôle roubaisien), services aux entreprises (conseil, comptabilité, intérim), sous-traitance industrielle textile-confection, logistique de proximité et artisanat. La commune bénéficie de la dynamique de reconversion du bassin textile roubaisien vers le numérique et les services B2B.",
   ecosystemEn:

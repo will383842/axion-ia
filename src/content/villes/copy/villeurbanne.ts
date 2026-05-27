@@ -58,6 +58,7 @@ export const VILLEURBANNE_COPY: VilleCopy = {
   directAnswerEn:
     "Axion-IA is an senior AI architects consultancy that intervenes in Villeurbanne (69100) on site — Gratte-Ciel district, LyonTech-La Doua campus, Carré de Soie and Métropole communes. Villeurbanne is a distinct city from Lyon (69123): 2nd city in Rhône, 13,426 active businesses, INSA Lyon, CNRS, Inria, FORVIA MATERI'ACT. We support Villeurbanne micro-businesses, tech SMEs, industrial mid-caps and large enterprises on their operational AI use cases — costed diagnosis, demos on real data, concrete action plan. No tech lock-in.",
 
+  seoHook: "it, logiciel & r&d, sciences",
   topSectorsNaf: [
     "IT, Logiciel & Numérique",
     "R&D, Sciences appliquées & Ingénierie",

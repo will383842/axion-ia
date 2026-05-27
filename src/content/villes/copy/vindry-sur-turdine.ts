@@ -12,6 +12,7 @@ export const VINDRY_SUR_TURDINE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vindry-sur-Turdine (69). Nous accompagnons tous types d'activités : PME industrielles et tertiaires NO lyonnais, agriculteurs montagne, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vindry-sur-Turdine (69). Nous accompagnons tous types d'activités : PME industrielles et tertiaires NO lyonnais, agriculteurs montagne, TPE artisans BTP, commerçants et services aux entreprises.",
+  seoHook: "industrielles lyonnais & agriculture montagne",
   ecosystemFr:
     "Vindry-sur-Turdine est une commune nouvelle du NO lyonnais, vallée de la Turdine (Beaujolais ouest). Tissu PME industrielles et tertiaires, agriculture montagne, TPE artisanat BTP, commerces.",
   ecosystemEn:

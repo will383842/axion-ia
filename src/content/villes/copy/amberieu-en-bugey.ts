@@ -12,6 +12,7 @@ export const AMBERIEU_EN_BUGEY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ambérieu-en-Bugey (01). Nous accompagnons tous types d'activités : PME industrielles et logistiques ferroviaires (nœud SNCF), TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises du Bugey.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ambérieu-en-Bugey (01). Nous accompagnons tous types d'activités : PME industrielles et logistiques ferroviaires (nœud SNCF), TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises du Bugey.",
+  seoHook: "ferroviaire logistique & industrielles bugey",
   ecosystemFr:
     "Ambérieu-en-Bugey est un nœud ferroviaire majeur de l'Ain (gare de triage SNCF historique, carrefour des lignes Lyon-Genève et Lyon-Bourg-en-Bresse). Tissu PME industrielles et logistiques ferroviaires, TPE artisanat BTP, commerces, professions libérales. Position centrale Bugey.",
   ecosystemEn:

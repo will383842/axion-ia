@@ -12,6 +12,7 @@ export const SILLINGY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sillingy (74). Nous accompagnons tous types d'activités : TPE artisans, PME de services et conseil, commerçants, indépendants, professions libérales et prestataires BtoB du bassin annécien nord-ouest.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sillingy (74). Nous accompagnons tous types d'activités : TPE artisans, PME de services et conseil, commerçants, indépendants, professions libérales et prestataires BtoB du bassin annécien nord-ouest.",
+  seoHook: "artisanat maintenance & services conseil",
   ecosystemFr:
     "Sillingy est une commune résidentielle périurbaine au nord-ouest d'Annecy, dans le Grand Annecy. Zone d'activités économiques avec TPE artisans BTP, PME de services aux entreprises, commerces, professions libérales et prestataires conseil installés à proximité de l'agglomération annécienne sans les contraintes urbaines.",
   ecosystemEn:

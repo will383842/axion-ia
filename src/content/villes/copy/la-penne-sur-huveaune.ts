@@ -12,6 +12,7 @@ export const LA_PENNE_SUR_HUVEAUNE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Penne-sur-Huveaune (13). Nous accompagnons TPE artisans, commerçants, PME tertiaires et entreprises de la vallée de l'Huveaune. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Penne-sur-Huveaune (13). Nous accompagnons TPE artisans, commerçants, PME tertiaires et entreprises de la vallée de l'Huveaune. Audit Flash dès 490 € HT.",
+  seoHook: "commerce distribution & artisanat services",
   ecosystemFr:
     "La Penne-sur-Huveaune est une petite commune de la vallée de l'Huveaune, entre les 11e-12e arrondissements de Marseille et Aubagne. Zone commerciale active (centre commercial La Valentine à proximité), TPE artisans et services, PME tertiaires et résidentiel de cadres travaillant à Marseille ou Aubagne.",
   ecosystemEn:

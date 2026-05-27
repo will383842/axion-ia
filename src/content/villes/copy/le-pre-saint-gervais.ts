@@ -12,6 +12,7 @@ export const LE_PRE_SAINT_GERVAIS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Pré-Saint-Gervais (93). Nous accompagnons tous types d'activités : TPE commerçantes, artisans, professions libérales, PME de services, indépendants et structures associatives de cette commune à forte densité urbaine de première couronne parisienne. Audit Flash à partir de 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Pré-Saint-Gervais (93). Nous accompagnons tous types d'activités : TPE commerçantes, artisans, professions libérales, PME de services, indépendants et structures associatives de cette commune à forte densité urbaine de première couronne parisienne. Audit Flash à partir de 490 € HT.",
+  seoHook: "commerce proximité & artisanat services",
   ecosystemFr:
     "Le Pré-Saint-Gervais est la plus petite commune de France métropolitaine (0,7 km²) mais l'une des plus denses. Limitrophe de Paris (19e, 20e), des Lilas et Pantin, elle bénéficie du dynamisme du canal de l'Ourcq et de la ligne 11 du métro. Tissu dense de TPE commerces, artisans, professions libérales et PME de services. Proximité immédiate de la Villette, du bassin créatif de Pantin et du pôle tertiaire Romainville-Noisy.",
   ecosystemEn:

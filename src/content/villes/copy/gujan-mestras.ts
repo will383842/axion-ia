@@ -14,6 +14,7 @@ export const GUJAN_MESTRAS_COPY: VilleCopy = {
     "À Gujan-Mestras, Axion-IA propose des services adaptés aux besoins des entreprises locales, en tirant parti des innovations observées chez Cap Digital et Inria. Nous offrons des audits, interventions et implémentations sur site pour automatiser et optimiser les processus métiers. Nos solutions s'adressent aux TPE, PME et ETI, avec des tarifs publics clairs et une approche opérationnelle.",
   directAnswerEn:
     "À Gujan-Mestras, Axion-IA propose des services adaptés aux besoins des entreprises locales, en tirant parti des innovations observées chez Cap Digital et Inria. Nous offrons des audits, interventions et implémentations sur site pour automatiser et optimiser les processus métiers. Nos solutions s'adressent aux TPE, PME et ETI, avec des tarifs publics clairs et une approche opérationnelle.",
+  seoHook: "commerce détail & hébergement",
   ecosystemFr:
     "Le tissu économique de Gujan-Mestras est marqué par le commerce de détail et la restauration. Les entreprises locales bénéficient de l'expérience d'Axion-IA, qui s'inspire des innovations de Cap Digital et Inria pour optimiser leurs processus.",
   ecosystemEn:

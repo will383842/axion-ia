@@ -14,6 +14,7 @@ export const GAP_COPY: VilleCopy = {
     "Axion-IA se déplace à Gap pour accompagner les entreprises locales. Grâce à notre expertise, nous aidons les secteurs du commerce de détail et de la santé à intégrer des solutions IA. Nos interventions incluent des audits, des implémentations et des formations, sans lien commercial avec des entités comme LVMH ou Station F.",
   directAnswerEn:
     "Axion-IA se déplace à Gap pour accompagner les entreprises locales. Grâce à notre expertise, nous aidons les secteurs du commerce de détail et de la santé à intégrer des solutions IA. Nos interventions incluent des audits, des implémentations et des formations, sans lien commercial avec des entités comme LVMH ou Station F.",
+  seoHook: "commerce détail & hébergement",
   ecosystemFr:
     "Gap, avec ses 3 000 établissements, est un centre pour le commerce de détail et la santé. L'aéroport Marseille-Provence et la gare TGV d'Aix-en-Provence facilitent l'accès.",
   ecosystemEn:

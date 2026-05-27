@@ -14,6 +14,7 @@ export const ASNIERES_SUR_SEINE_COPY: VilleCopy = {
     "Axion-IA accompagne les entreprises d'Asnières-sur-Seine — du commerce de détail aux activités informatiques — avec une méthode structurée en trois temps : audit des processus, identification des chantiers prioritaires, implémentation outillée. La Zone d'activités des Hauts d'Asnières et la ZAC du Bac d'Asnières accueillent des structures pour lesquelles l'automatisation des tâches répétitives et la fiabilisation des données constituent des gains opérationnels directs.",
   directAnswerEn:
     "Axion-IA accompagne les entreprises d'Asnières-sur-Seine — du commerce de détail aux activités informatiques — avec une méthode structurée en trois temps : audit des processus, identification des chantiers prioritaires, implémentation outillée. La Zone d'activités des Hauts d'Asnières et la ZAC du Bac d'Asnières accueillent des structures pour lesquelles l'automatisation des tâches répétitives et la fiabilisation des données constituent des gains opérationnels directs.",
+  seoHook: "commerce détail & construction immobilier",
   ecosystemFr:
     "Le tissu économique asniérois s'appuie sur des secteurs variés : commerce de détail, construction, services financiers. Yves Rocher et Conforama y sont implantés. Les pôles Systematic Paris-Region et Finance Innovation structurent l'environnement d'innovation régional dans lequel s'inscrivent les entreprises du territoire.",
   ecosystemEn:

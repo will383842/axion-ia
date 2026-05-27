@@ -12,6 +12,7 @@ export const LE_PIAN_MEDOC_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Pian-Médoc (33). Nous accompagnons TPE et PME de l'entrée du Médoc : vignerons, artisans BTP, commerçants, professions libérales et PME de services. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Pian-Médoc (33). Nous accompagnons TPE et PME de l'entrée du Médoc : vignerons, artisans BTP, commerçants, professions libérales et PME de services. Audit Flash dès 490 € HT.",
+  seoHook: "viticulture haut-médoc & services",
   ecosystemFr:
     "Le Pian-Médoc se situe à l'entrée du Médoc viticole. Vignoble AOC Haut-Médoc, tissu TPE artisanat BTP (croissance résidentielle), commerces de proximité et professions libérales. Accès rocade A630 et route du Médoc D1215.",
   ecosystemEn:

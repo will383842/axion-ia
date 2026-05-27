@@ -12,6 +12,7 @@ export const VALSERHONE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Valserhône (01). Nous accompagnons tous types d'activités : PME industrielles et tertiaires pays de Gex sud, travailleurs frontaliers Genève, TPE artisans BTP, commerçants, indépendants et services aux entreprises de l'Ain sud.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Valserhône (01). Nous accompagnons tous types d'activités : PME industrielles et tertiaires pays de Gex sud, travailleurs frontaliers Genève, TPE artisans BTP, commerçants, indépendants et services aux entreprises de l'Ain sud.",
+  seoHook: "industrielles pays & économie frontalière",
   ecosystemFr:
     "Valserhône est une commune nouvelle de l'Ain (fusion Bellegarde-sur-Valserine + Châtillon-en-Michaille + Lancrans), au confluent de la Valserine et du Rhône. Proximité frontière suisse / Genève (40 min). Barrage de Génissiat (grand aménagement hydroélectrique CNR historique). Tissu PME industrielles, économie frontalière, TPE artisanat BTP, commerces.",
   ecosystemEn:

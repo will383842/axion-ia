@@ -12,6 +12,7 @@ export const CHAGNY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chagny (71). Nous accompagnons TPE et PME : viticulteurs, restaurateurs, commerçants de centre-ville, artisans et prestataires de services de la Côte chalonnaise en Bourgogne. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chagny (71). Nous accompagnons TPE et PME : viticulteurs, restaurateurs, commerçants de centre-ville, artisans et prestataires de services de la Côte chalonnaise en Bourgogne. Audit Flash dès 490 € HT.",
+  seoHook: "viticulture négoce & restauration gastronomie",
   ecosystemFr:
     "Chagny est situé au pied de la Côte chalonnaise, au croisement des vignobles de Bourgogne et du canal du Centre. La ville est connue pour sa gastronomie (Maison Lameloise, 3 étoiles Michelin) et son tissu viticole. L'économie locale repose sur la viticulture, la restauration, le commerce de proximité, l'artisanat BTP et les services. Proximité de Beaune (15 min) et Chalon-sur-Saône (15 min).",
   ecosystemEn:

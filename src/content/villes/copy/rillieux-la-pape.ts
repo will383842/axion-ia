@@ -14,6 +14,7 @@ export const RILLIEUX_LA_PAPE_COPY: VilleCopy = {
     "À Rillieux-la-Pape, Axion-IA offre des services d'IA adaptés aux besoins des entreprises locales. Avec Norbert Dentressangle et le Parc d'activités Perica, la ville est un hub pour le commerce de détail et les transports terrestres. Nos interventions incluent des audits, des implémentations et des formations pour maximiser l'efficacité opérationnelle.",
   directAnswerEn:
     "À Rillieux-la-Pape, Axion-IA offre des services d'IA adaptés aux besoins des entreprises locales. Avec Norbert Dentressangle et le Parc d'activités Perica, la ville est un hub pour le commerce de détail et les transports terrestres. Nos interventions incluent des audits, des implémentations et des formations pour maximiser l'efficacité opérationnelle.",
+  seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Le tissu économique de Rillieux-la-Pape inclut des acteurs comme Norbert Dentressangle et le Parc d'activités Perica, avec des secteurs forts en commerce de détail et transports terrestres.",
   ecosystemEn:

@@ -14,6 +14,7 @@ export const ROISSY_EN_BRIE_COPY: VilleCopy = {
     "À Roissy-en-Brie, Axion-IA propose des interventions sur site pour les entreprises souhaitant intégrer l'IA dans leurs opérations. Notre approche s'inspire des écosystèmes innovants de Paris, tels que Cap Digital et Inria. Nous offrons des audits, des implémentations et des formations pour répondre aux besoins spécifiques des entreprises locales.",
   directAnswerEn:
     "À Roissy-en-Brie, Axion-IA propose des interventions sur site pour les entreprises souhaitant intégrer l'IA dans leurs opérations. Notre approche s'inspire des écosystèmes innovants de Paris, tels que Cap Digital et Inria. Nous offrons des audits, des implémentations et des formations pour répondre aux besoins spécifiques des entreprises locales.",
+  seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Roissy-en-Brie, bien que proche de Paris, possède son propre écosystème économique. Les secteurs dominants incluent le commerce de détail et les transports terrestres. Les entreprises locales bénéficient de l'influence des pôles parisiens comme Station F et Cap Digital pour innover.",
   ecosystemEn:

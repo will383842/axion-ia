@@ -12,6 +12,7 @@ export const ARES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arès (33). Nous accompagnons TPE et PME du nord Bassin d'Arcachon : hébergeurs touristiques, ostréiculteurs, commerçants saisonniers, artisans BTP et professions libérales. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arès (33). Nous accompagnons TPE et PME du nord Bassin d'Arcachon : hébergeurs touristiques, ostréiculteurs, commerçants saisonniers, artisans BTP et professions libérales. Audit Flash dès 490 € HT.",
+  seoHook: "tourisme hébergement & ostréiculture",
   ecosystemFr:
     "Arès est une station balnéaire familiale du nord du Bassin d'Arcachon. Tourisme (campings, locations, plages), ostréiculture (port ostréicole), commerces saisonniers, artisanat BTP et professions libérales. Réserve naturelle des prés salés.",
   ecosystemEn:

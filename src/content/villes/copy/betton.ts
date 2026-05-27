@@ -12,6 +12,7 @@ export const BETTON_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Betton (35). Nous accompagnons tous types d'activités : TPE et PME de services, artisans, commerçants, professions libérales, indépendants et activités tertiaires du nord de la métropole rennaise.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Betton (35). Nous accompagnons tous types d'activités : TPE et PME de services, artisans, commerçants, professions libérales, indépendants et activités tertiaires du nord de la métropole rennaise.",
+  seoHook: "professions libérales & activités tertiaires",
   ecosystemFr:
     "Betton est une commune résidentielle dynamique du nord de Rennes Métropole, traversée par le canal d'Ille-et-Rance. Tissu économique principalement tertiaire et de services, complété par TPE artisanat BTP, commerces de proximité et professions libérales. Cadre de vie attractif, population en croissance continue, bien connectée au centre de Rennes par bus et voies express.",
   ecosystemEn:

@@ -14,6 +14,7 @@ export const SAINT_HERBLAIN_COPY: VilleCopy = {
     "Axion-IA se déplace à Saint-Herblain pour accompagner les entreprises dans l'optimisation de leurs processus grâce à l'IA. Dans un environnement économique comprenant Manitou Group et le Crédit Agricole, nous proposons des audits à partir de 490 € HT et des interventions dès 590 € HT. Notre objectif est de fournir des solutions concrètes et mesurables pour les entreprises locales.",
   directAnswerEn:
     "Axion-IA se déplace à Saint-Herblain pour accompagner les entreprises dans l'optimisation de leurs processus grâce à l'IA. Dans un environnement économique comprenant Manitou Group et le Crédit Agricole, nous proposons des audits à partir de 490 € HT et des interventions dès 590 € HT. Notre objectif est de fournir des solutions concrètes et mesurables pour les entreprises locales.",
+  seoHook: "commerce détail & programmation informatique",
   ecosystemFr:
     "Saint-Herblain bénéficie d'un écosystème économique diversifié avec des entreprises comme Manitou Group et Crédit Agricole. La ZAC Ar Mor et la proximité de Polytech Nantes renforcent l'attractivité de la ville pour les entreprises cherchant à innover.",
   ecosystemEn:

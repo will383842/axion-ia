@@ -12,6 +12,7 @@ export const CROSNE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Crosne (91). Nous accompagnons tous types d'activités : TPE artisans, commerçants de proximité des bords de l'Yerres, professions libérales, indépendants, PME tertiaires et services de l'est Essonne. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Crosne (91). Nous accompagnons tous types d'activités : TPE artisans, commerçants de proximité des bords de l'Yerres, professions libérales, indépendants, PME tertiaires et services de l'est Essonne. Audit Flash dès 490 € HT.",
+  seoHook: "professions libérales & services bureaux",
   ecosystemFr:
     "Crosne est une commune résidentielle de l'est de l'Essonne, en bordure de l'Yerres et de la Seine, à la lisière du Val-de-Marne. Tissu économique de proximité : TPE artisans BTP, commerces, professions libérales de santé, PME services et bureaux d'études. Proximité d'Orly et de la zone économique de Villeneuve-Saint-Georges.",
   ecosystemEn:

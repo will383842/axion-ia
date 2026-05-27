@@ -14,6 +14,7 @@ export const COMBS_LA_VILLE_COPY: VilleCopy = {
     "Combs-la-Ville, avec ses 23 350 habitants, est un pôle économique actif en Ile-de-France. Axion-IA y propose des interventions sur site pour les entreprises locales, en s'appuyant sur l'expérience de notre équipe nationale. Nous aidons les sociétés de secteurs comme le commerce de détail et la construction à intégrer l'IA dans leurs opérations quotidiennes.",
   directAnswerEn:
     "Combs-la-Ville, avec ses 23 350 habitants, est un pôle économique actif en Ile-de-France. Axion-IA y propose des interventions sur site pour les entreprises locales, en s'appuyant sur l'expérience de notre équipe nationale. Nous aidons les sociétés de secteurs comme le commerce de détail et la construction à intégrer l'IA dans leurs opérations quotidiennes.",
+  seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Avec ses 1 000 établissements actifs, Combs-la-Ville bénéficie d'une proximité avec des centres économiques comme Lieusaint et Savigny-le-Temple. Les entreprises locales évoluent dans un environnement propice au développement de solutions IA.",
   ecosystemEn:

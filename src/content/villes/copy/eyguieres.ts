@@ -12,6 +12,7 @@ export const EYGUIERES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Eyguières (13). Nous accompagnons TPE agricoles, artisans, commerçants, PME de services et acteurs du tourisme rural des Alpilles. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Eyguières (13). Nous accompagnons TPE agricoles, artisans, commerçants, PME de services et acteurs du tourisme rural des Alpilles. Audit Flash dès 490 € HT.",
+  seoHook: "agriculture oliveraies & artisanat métiers",
   ecosystemFr:
     "Eyguières est un village agricole au sud des Alpilles, à mi-chemin entre Salon-de-Provence et Cavaillon. Économie portée par l'agriculture (oliveraies AOC Vallée des Baux, vergers, maraîchage bio), l'artisanat local, le tourisme rural (gîtes, randonnées Alpilles) et un tissu de TPE/PME services.",
   ecosystemEn:

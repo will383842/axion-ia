@@ -12,6 +12,7 @@ export const SOISY_SOUS_MONTMORENCY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Soisy-sous-Montmorency (95). Nous accompagnons TPE et PME : commerçants et artisans centre-ville, PME services aux entreprises, professions libérales de santé, restaurateurs, prestataires bien-être vallée de Montmorency. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Soisy-sous-Montmorency (95). Nous accompagnons TPE et PME : commerçants et artisans centre-ville, PME services aux entreprises, professions libérales de santé, restaurateurs, prestataires bien-être vallée de Montmorency. Audit Flash dès 490 € HT.",
+  seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Soisy-sous-Montmorency est une commune résidentielle de la vallée de Montmorency, adossée à la forêt éponyme, à proximité d'Enghien-les-Bains et Montmorency. Tissu TPE commerces et artisanat, PME services, professions libérales de santé, restauration, prestataires bien-être.",
   ecosystemEn:

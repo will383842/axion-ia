@@ -12,6 +12,7 @@ export const SAINT_DENIS_DE_PILE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Denis-de-Pile (33). Nous accompagnons TPE et PME du Libournais : vignerons, artisans BTP, commerçants, professions libérales et PME de services. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Denis-de-Pile (33). Nous accompagnons TPE et PME du Libournais : vignerons, artisans BTP, commerçants, professions libérales et PME de services. Audit Flash dès 490 € HT.",
+  seoHook: "viticulture & services",
   ecosystemFr:
     "Saint-Denis-de-Pile est une commune résidentielle du Libournais en croissance. Vignoble bordelais (proximité Pomerol, Lalande-de-Pomerol), tissu TPE artisanat BTP dense, commerces de proximité et professions libérales. Gare TER, accès A89 vers Bordeaux.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const CESTAS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cestas (33). Nous accompagnons TPE et PME du technopôle Bordeaux-Cestas et du bassin sud-ouest bordelais : entreprises tech (laser, photonique), PME industrielles, artisans, commerçants et professions libérales. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cestas (33). Nous accompagnons TPE et PME du technopôle Bordeaux-Cestas et du bassin sud-ouest bordelais : entreprises tech (laser, photonique), PME industrielles, artisans, commerçants et professions libérales. Audit Flash dès 490 € HT.",
+  seoHook: "tech photonique & industrielles",
   ecosystemFr:
     "Cestas accueille le technopôle Bordeaux-Cestas, pôle de compétitivité laser-photonique-numérique de rang européen. En lisière de forêt des Landes, la commune allie R&D high-tech, PME industrielles et tissu TPE résidentiel. Accès rapide A63 (Bayonne) et rocade Bordeaux.",
   ecosystemEn:

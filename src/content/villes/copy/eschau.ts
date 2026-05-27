@@ -12,6 +12,7 @@ export const ESCHAU_COPY: VilleCopy = {
     "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Eschau (67). Nous accompagnons TPE et PME : commerçants, artisans, prestataires de services, exploitants agricoles, restaurateurs et industriels de l''Eurométropole de Strasbourg. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Eschau (67). Nous accompagnons TPE et PME : commerçants, artisans, prestataires de services, exploitants agricoles, restaurateurs et industriels de l''Eurométropole de Strasbourg. Audit Flash dès 490 € HT.",
+  seoHook: "commerce proximité & artisanat second",
   ecosystemFr:
     "Eschau est une commune de l''Eurométropole de Strasbourg, située au sud de l''agglomération sur les bords de l''Ill. La commune est connue pour son église-abbatiale Sainte-Sophie d''origine carolingienne, son patrimoine naturel rhénan (forêt rhénane, bras de l''Ill) et son cadre périurbain résidentiel. L''économie locale repose sur le commerce de proximité, l''artisanat BTP, les services aux entreprises strasbourgeoises, l''agriculture périurbaine et la restauration.",
   ecosystemEn:

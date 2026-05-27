@@ -14,6 +14,7 @@ export const SARCELLES_COPY: VilleCopy = {
     "À Sarcelles, Axion-IA propose des interventions IA adaptées aux besoins des entreprises locales. La proximité de pôles comme Cap Digital et Station F à Paris renforce l'écosystème technologique régional. Nos services incluent des audits, des implémentations et des formations sur site, garantissant une intégration fluide et efficace de l'IA dans vos processus métiers.",
   directAnswerEn:
     "À Sarcelles, Axion-IA propose des interventions IA adaptées aux besoins des entreprises locales. La proximité de pôles comme Cap Digital et Station F à Paris renforce l'écosystème technologique régional. Nos services incluent des audits, des implémentations et des formations sur site, garantissant une intégration fluide et efficace de l'IA dans vos processus métiers.",
+  seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Sarcelles bénéficie de la proximité de Paris, abritant des pôles comme Cap Digital et Station F, favorisant l'innovation technologique. Les entreprises locales peuvent ainsi s'appuyer sur un environnement propice au développement de solutions IA.",
   ecosystemEn:

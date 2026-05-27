@@ -12,6 +12,7 @@ export const SAINTE_SIGOLENE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sainte-Sigolène (43). Nous accompagnons tous types d'activités : PME industrielles plasturgie (capitale du plastique), agriculteurs montagne, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sainte-Sigolène (43). Nous accompagnons tous types d'activités : PME industrielles plasturgie (capitale du plastique), agriculteurs montagne, TPE artisans BTP, commerçants et services aux entreprises.",
+  seoHook: "plasturgie & industrielles",
   ecosystemFr:
     "Sainte-Sigolène est l'une des capitales françaises de la plasturgie (concentration PME industrie plastique, savoir-faire local). Agriculture montagne, TPE artisanat BTP, commerces.",
   ecosystemEn:

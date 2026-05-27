@@ -12,6 +12,7 @@ export const LONGPONT_SUR_ORGE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Longpont-sur-Orge (91). Nous accompagnons tous types d'activités : TPE artisanales, commerces de proximité, PME tertiaires, professions libérales, indépendants et services aux entreprises du Hurepoix.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Longpont-sur-Orge (91). Nous accompagnons tous types d'activités : TPE artisanales, commerces de proximité, PME tertiaires, professions libérales, indépendants et services aux entreprises du Hurepoix.",
+  seoHook: "artisanat commerce & tertiaires hurepoix",
   ecosystemFr:
     "Longpont-sur-Orge est une commune résidentielle du Hurepoix (Essonne), à 25 km au sud-ouest de Paris. Tissu TPE artisanales, commerces de proximité, PME tertiaires, professions libérales. Bassin d'emploi élargi vers Brétigny-sur-Orge, Sainte-Geneviève-des-Bois et Massy.",
   ecosystemEn:

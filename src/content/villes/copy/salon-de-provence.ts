@@ -14,6 +14,7 @@ export const SALON_DE_PROVENCE_COPY: VilleCopy = {
     "Salon-de-Provence, avec sa Zone d'Activités de la Gandonne, est un lieu stratégique pour nos interventions. Nous y proposons des audits IA et des implémentations sur site. La proximité de la Gare TGV d'Aix-en-Provence et de l'Aéroport Marseille Provence facilite nos déplacements. Nos services incluent des audits à partir de 490 € HT et des implémentations dès 990 € HT.",
   directAnswerEn:
     "Salon-de-Provence, avec sa Zone d'Activités de la Gandonne, est un lieu stratégique pour nos interventions. Nous y proposons des audits IA et des implémentations sur site. La proximité de la Gare TGV d'Aix-en-Provence et de l'Aéroport Marseille Provence facilite nos déplacements. Nos services incluent des audits à partir de 490 € HT et des implémentations dès 990 € HT.",
+  seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Salon-de-Provence abrite un tissu économique diversifié avec des secteurs comme le Commerce de détail et la Construction. La Zone d'Activités de la Gandonne est un pôle clé pour les entreprises locales. Axion-IA s'y déplace pour des interventions IA sur site.",
   ecosystemEn:

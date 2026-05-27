@@ -12,6 +12,7 @@ export const SAINT_VIT_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Vit (25). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et logistiques de l'axe Besançon-Dole, commerçants, professions libérales, indépendants et exploitants agricoles de la plaine du Doubs.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Vit (25). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et logistiques de l'axe Besançon-Dole, commerçants, professions libérales, indépendants et exploitants agricoles de la plaine du Doubs.",
+  seoHook: "artisanat services & industrie logistique",
   ecosystemFr:
     "Saint-Vit est un bourg-centre de la vallée du Doubs, positionné sur l'axe stratégique Besançon-Dole (A36/D673). L'économie locale associe petite industrie, logistique, artisanat BTP, commerce de proximité et agriculture de plaine. La commune bénéficie de la dynamique périurbaine de Besançon tout en conservant un caractère rural franc-comtois.",
   ecosystemEn:

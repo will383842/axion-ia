@@ -12,6 +12,7 @@ export const POISY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Poisy (74). Nous accompagnons TPE et PME : acteurs agricoles et formation (ISETA), PME tertiaires ouest Annecy, artisans, commerçants, professions libérales du bassin annécien.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Poisy (74). Nous accompagnons TPE et PME : acteurs agricoles et formation (ISETA), PME tertiaires ouest Annecy, artisans, commerçants, professions libérales du bassin annécien.",
+  seoHook: "agriculture formation & tertiaires bassin",
   ecosystemFr:
     "Poisy est une commune résidentielle de l'ouest d'Annecy, connue pour le campus ISETA (lycée agricole et technologique, formation agroalimentaire). Tissu agriculture/formation, PME tertiaires bassin annécien, TPE artisanat, commerces, professions libérales (cabinets, indépendants).",
   ecosystemEn:

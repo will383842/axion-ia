@@ -12,6 +12,7 @@ export const JOIGNY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Joigny (89). Nous accompagnons TPE et PME : commerçants de centre-ville, artisans BTP, prestataires de services, viticulteurs joviniens et professions libérales de la sous-préfecture de l'Yonne. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Joigny (89). Nous accompagnons TPE et PME : commerçants de centre-ville, artisans BTP, prestataires de services, viticulteurs joviniens et professions libérales de la sous-préfecture de l'Yonne. Audit Flash dès 490 € HT.",
+  seoHook: "commerce proximité & artisanat maintenance",
   ecosystemFr:
     "Joigny est une sous-préfecture de l'Yonne en bord de rivière, connue pour son centre historique Renaissance et ses côtes du vignoble jovinien. L'économie locale repose sur le commerce de centre-ville, l'artisanat BTP, les services aux entreprises, l'agroalimentaire et les professions libérales. Pôle administratif et de services du nord-ouest de l'Yonne. Proximité d'Auxerre (25 min) et de Sens (30 min).",
   ecosystemEn:

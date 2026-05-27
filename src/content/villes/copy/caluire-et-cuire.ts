@@ -14,6 +14,7 @@ export const CALUIRE_ET_CUIRE_COPY: VilleCopy = {
     "Caluire-et-Cuire, située près de Lyon, bénéficie d'un écosystème économique diversifié avec des secteurs comme le commerce de détail et la programmation informatique. Axion-IA propose des interventions sur site pour optimiser les opérations des entreprises locales. Notre approche inclut des audits précis et des implémentations IA sur mesure, en tenant compte des infrastructures existantes comme celles de l'Inria et de Station F.",
   directAnswerEn:
     "Caluire-et-Cuire, située près de Lyon, bénéficie d'un écosystème économique diversifié avec des secteurs comme le commerce de détail et la programmation informatique. Axion-IA propose des interventions sur site pour optimiser les opérations des entreprises locales. Notre approche inclut des audits précis et des implémentations IA sur mesure, en tenant compte des infrastructures existantes comme celles de l'Inria et de Station F.",
+  seoHook: "commerce détail & programmation informatique",
   ecosystemFr:
     "Caluire-et-Cuire est proche de Lyon, un centre économique dynamique abritant des entreprises comme LVMH et BNP Paribas. Les entreprises locales bénéficient de cet environnement propice à l'innovation.",
   ecosystemEn:

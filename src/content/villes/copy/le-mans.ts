@@ -59,6 +59,7 @@ export const LE_MANS_COPY: VilleCopy = {
   directAnswerEn:
     "Axion-IA is a senior AI architects consultancy that intervenes in Le Mans (72) on site. We support Sarthe micro-businesses, SMEs, mid-caps and large enterprises — insurance groups (Covéa/MMA), automotive manufacturing (Renault ACI), service SMEs and research organisations (LAUM, ENSIM) — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
+  seoHook: "assurance mutuelles & automobile mobilité",
   topSectorsNaf: [
     "Assurance & Mutuelles",
     "Automobile & Mobilité",

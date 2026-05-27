@@ -12,6 +12,7 @@ export const MACHECOUL_SAINT_MEME_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Machecoul-Saint-Même (44). Nous accompagnons les TPE artisans, PME agroalimentaires, commerçants, professions libérales et exploitants du sud Loire-Atlantique sur leurs cas IA opérationnels. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Machecoul-Saint-Même (44). Nous accompagnons les TPE artisans, PME agroalimentaires, commerçants, professions libérales et exploitants du sud Loire-Atlantique sur leurs cas IA opérationnels. Audit Flash dès 490 € HT.",
+  seoHook: "agroalimentaire & artisanat",
   ecosystemFr:
     "Machecoul-Saint-Même est une commune nouvelle (fusion 2019) aux portes du marais breton vendéen. Pôle agroalimentaire (industrie laitière, conserves), artisanat, commerces de centre-bourg, PME services et professions libérales. Carrefour entre Nantes (50 min) et la côte atlantique.",
   ecosystemEn:

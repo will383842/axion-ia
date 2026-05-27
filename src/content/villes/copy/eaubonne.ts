@@ -12,6 +12,7 @@ export const EAUBONNE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Eaubonne (95). Nous accompagnons tous types d'activités : TPE artisans BTP (plombiers, électriciens, menuisiers), commerçants centre-ville, PME industrielles locales, PME tertiaires (cabinets, conseil), hôpital Simone-Veil et professions de santé, indépendants et associations.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Eaubonne (95). Nous accompagnons tous types d'activités : TPE artisans BTP (plombiers, électriciens, menuisiers), commerçants centre-ville, PME industrielles locales, PME tertiaires (cabinets, conseil), hôpital Simone-Veil et professions de santé, indépendants et associations.",
+  seoHook: "artisanat & commerce détail",
   ecosystemFr:
     "Eaubonne s'intègre au tissu économique de la communauté d'agglomération Val Parisis (Cormeilles, Saint-Leu-la-Forêt, Herblay) : hôpital Simone-Veil (CH référence Val-d'Oise est), commerces centre-ville denses, tissu artisanal BTP, PME industrielles (mécanique, métallerie, transformation), professions libérales, ESS. Proximité Paris (25 min Saint-Lazare).",
   ecosystemEn:

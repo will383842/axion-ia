@@ -12,6 +12,7 @@ export const FACHES_THUMESNIL_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Faches-Thumesnil (59). Nous accompagnons TPE et PME : commerçants de la RN17, artisans BTP, PME de services, professions libérales et sous-traitants industriels de l'agglomération lilloise sud. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Faches-Thumesnil (59). Nous accompagnons TPE et PME : commerçants de la RN17, artisans BTP, PME de services, professions libérales et sous-traitants industriels de l'agglomération lilloise sud. Audit Flash dès 490 € HT.",
+  seoHook: "commerce détail & artisanat second",
   ecosystemFr:
     "Faches-Thumesnil est une commune périurbaine intégrée à la Métropole Européenne de Lille, marquée par son axe commercial RN17 (concessions auto, retail, restauration), ses ZA, son tissu de TPE/PME de services et d'artisans, et une population active travaillant en partie à Lille. Connectée par le métro ligne 1 (Porte des Postes), proche de l'aéroport Lille-Lesquin et du CHR Lille.",
   ecosystemEn:

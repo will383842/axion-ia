@@ -12,6 +12,7 @@ export const PERIGNY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Périgny (17). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires et technologiques, prestataires de services, commerçants et indépendants de cette commune dynamique de l'agglomération de La Rochelle.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Périgny (17). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires et technologiques, prestataires de services, commerçants et indépendants de cette commune dynamique de l'agglomération de La Rochelle.",
+  seoHook: "services aux & technologiques",
   ecosystemFr:
     "Périgny est une commune résidentielle et tertiaire de l'agglomération de La Rochelle, avec des zones d'activités accueillant PME technologiques et tertiaires. TPE artisans BTP, commerces de proximité, professions libérales, services aux entreprises. Cadre périurbain attractif entre La Rochelle et le Marais poitevin.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const CARRIERES_SUR_SEINE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carrières-sur-Seine (78). Nous accompagnons TPE et PME : commerçants et artisans du centre-ville, PME services et conseil boucle de Seine, professions libérales, agences immobilières, restaurateurs Yvelines Est. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carrières-sur-Seine (78). Nous accompagnons TPE et PME : commerçants et artisans du centre-ville, PME services et conseil boucle de Seine, professions libérales, agences immobilières, restaurateurs Yvelines Est. Audit Flash dès 490 € HT.",
+  seoHook: "commerce détail & services conseil",
   ecosystemFr:
     "Carrières-sur-Seine est une commune résidentielle des Yvelines à 6 km de Paris, en bord de Seine, connue pour ses anciennes carrières de pierre calcaire reconverties. Tissu TPE commerces et artisanat, PME services et conseil, professions libérales, immobilier, restauration.",
   ecosystemEn:

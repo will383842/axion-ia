@@ -12,6 +12,7 @@ export const LONGUEAU_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Longueau (80). Nous accompagnons tous types d'activités : TPE artisans, PME logistique et transport, sous-traitants ferroviaires SNCF, commerçants, indépendants et services aux entreprises de cette commune stratégique de l'agglomération amiénoise.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Longueau (80). Nous accompagnons tous types d'activités : TPE artisans, PME logistique et transport, sous-traitants ferroviaires SNCF, commerçants, indépendants et services aux entreprises de cette commune stratégique de l'agglomération amiénoise.",
+  seoHook: "transport ferroviaire & logistique transport",
   ecosystemFr:
     "Longueau est une commune de l'agglomération amiénoise, connue pour son nœud ferroviaire SNCF historique (gare de triage parmi les plus grandes de France). Tissu de sous-traitants ferroviaires, PME logistique et transport, TPE artisans BTP, commerces de proximité, services aux entreprises. Proximité immédiate d'Amiens centre.",
   ecosystemEn:

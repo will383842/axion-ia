@@ -14,6 +14,7 @@ export const CAVAILLON_COPY: VilleCopy = {
     "Axion-IA se déplace à Cavaillon pour offrir des solutions IA adaptées aux entreprises locales. Avec des secteurs dominants comme le commerce de détail et les industries alimentaires, nous aidons à automatiser les tâches administratives et à optimiser les processus. Nos interventions incluent des audits, des implémentations et des formations, avec des tarifs publics consultables.",
   directAnswerEn:
     "Axion-IA se déplace à Cavaillon pour offrir des solutions IA adaptées aux entreprises locales. Avec des secteurs dominants comme le commerce de détail et les industries alimentaires, nous aidons à automatiser les tâches administratives et à optimiser les processus. Nos interventions incluent des audits, des implémentations et des formations, avec des tarifs publics consultables.",
+  seoHook: "commerce détail & industries alimentaires",
   ecosystemFr:
     "Cavaillon est un pôle d'activité avec des entreprises comme Bonduelle et le Parc d'activités de la Plaine. Le tissu économique local est marqué par le commerce de détail et les industries alimentaires.",
   ecosystemEn:

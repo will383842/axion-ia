@@ -12,6 +12,7 @@ export const PRIVAS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Privas (07). Nous accompagnons tous types d'activités : administration préfecture, confiseurs marrons glacés, agriculteurs châtaigneraie, TPE artisans BTP, commerçants et services aux entreprises ardéchois.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Privas (07). Nous accompagnons tous types d'activités : administration préfecture, confiseurs marrons glacés, agriculteurs châtaigneraie, TPE artisans BTP, commerçants et services aux entreprises ardéchois.",
+  seoHook: "administration & confiserie",
   ecosystemFr:
     "Privas est la préfecture de l'Ardèche. Réputation : marrons glacés (confiserie artisanale locale historique, spécialité ardéchoise). Tissu administration/services publics, agriculture (châtaigneraie), TPE artisanat BTP, commerces.",
   ecosystemEn:

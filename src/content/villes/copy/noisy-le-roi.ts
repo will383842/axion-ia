@@ -12,6 +12,7 @@ export const NOISY_LE_ROI_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Noisy-le-Roi (78). Nous accompagnons TPE et PME : professions libérales, cabinets conseil, PME tertiaires de l'ouest yvelinois, artisans et commerçants de cette commune résidentielle entre forêt de Marly et plaine de Versailles.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Noisy-le-Roi (78). Nous accompagnons TPE et PME : professions libérales, cabinets conseil, PME tertiaires de l'ouest yvelinois, artisans et commerçants de cette commune résidentielle entre forêt de Marly et plaine de Versailles.",
+  seoHook: "professions libérales & services conseil",
   ecosystemFr:
     "Noisy-le-Roi est une commune résidentielle prisée de l'ouest des Yvelines, en lisière de la forêt de Marly, entre Versailles et Saint-Germain-en-Laye. Tissu économique : TPE de services et conseil, professions libérales (médecins, paramédicaux, avocats), PME tertiaires, artisans bâtiment et rénovation, commerces de centre-bourg. Cadre résidentiel attractif pour indépendants et cadres.",
   ecosystemEn:

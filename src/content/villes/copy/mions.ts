@@ -12,6 +12,7 @@ export const MIONS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mions (69). Nous accompagnons tous types d'activités : PME tertiaires et logistiques sud-est lyonnais, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mions (69). Nous accompagnons tous types d'activités : PME tertiaires et logistiques sud-est lyonnais, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de la Métropole de Lyon.",
+  seoHook: "tertiaires métropole & logistique aire",
   ecosystemFr:
     "Mions est intégrée à la Métropole de Lyon, en banlieue sud-est (entre Lyon et aéroport Lyon-Saint-Exupéry). Tissu péri-urbain : PME tertiaires et logistiques (proximité aéroport), TPE artisanat BTP, commerces de proximité, professions libérales, agriculture résiduelle.",
   ecosystemEn:

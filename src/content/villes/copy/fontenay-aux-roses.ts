@@ -12,6 +12,7 @@ export const FONTENAY_AUX_ROSES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fontenay-aux-Roses (92). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales (médecins, avocats), PME tertiaires fontenaysiennes, structures de recherche (CEA, école supérieure), industries périphériques et indépendants du bassin sud-ouest 92.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fontenay-aux-Roses (92). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales (médecins, avocats), PME tertiaires fontenaysiennes, structures de recherche (CEA, école supérieure), industries périphériques et indépendants du bassin sud-ouest 92.",
+  seoHook: "recherche scientifique & artisanat services",
   ecosystemFr:
     "Fontenay-aux-Roses concentre un mix unique : pôle recherche stratégique (CEA Fontenay-aux-Roses — nucléaire civil, biologie cellulaire), proximité immédiate École Centrale-Supélec (Saclay), tissu résidentiel familial dense, TPE artisans BTP, commerces de proximité, professions libérales (cabinets médicaux, avocats), PME industrielles périphériques. Vallée scientifique Saclay-Vallée de Bièvre.",
   ecosystemEn:

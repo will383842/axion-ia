@@ -14,6 +14,7 @@ export const VALLAURIS_COPY: VilleCopy = {
     "À Vallauris, Axion-IA propose des services adaptés aux besoins des entreprises locales. Avec l'influence de l'écosystème économique de la région Provence-Alpes-Côte d'Azur, comprenant des entités telles que LVMH et BNP Paribas, nous nous engageons à optimiser vos processus grâce à l'IA. Nos solutions incluent des audits, des interventions et des implémentations sur site pour répondre aux défis spécifiques de votre secteur.",
   directAnswerEn:
     "À Vallauris, Axion-IA propose des services adaptés aux besoins des entreprises locales. Avec l'influence de l'écosystème économique de la région Provence-Alpes-Côte d'Azur, comprenant des entités telles que LVMH et BNP Paribas, nous nous engageons à optimiser vos processus grâce à l'IA. Nos solutions incluent des audits, des interventions et des implémentations sur site pour répondre aux défis spécifiques de votre secteur.",
+  seoHook: "céramique & commerce détail",
   ecosystemFr:
     "Vallauris, avec ses 3 000 établissements actifs, se situe dans un bassin économique dynamique où des entreprises comme LVMH et BNP Paribas jouent un rôle clé.",
   ecosystemEn:

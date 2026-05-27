@@ -12,6 +12,7 @@ export const TEMPLEUVE_EN_PEVELE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Templeuve-en-Pévèle (59). Nous accompagnons tous types d'activités : TPE artisans BTP et services du pays de Pévèle, PME agroalimentaire et industrie, exploitations agricoles, commerçants et services aux entreprises de la métropole lilloise et de l'arrondissement de Lille.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Templeuve-en-Pévèle (59). Nous accompagnons tous types d'activités : TPE artisans BTP et services du pays de Pévèle, PME agroalimentaire et industrie, exploitations agricoles, commerçants et services aux entreprises de la métropole lilloise et de l'arrondissement de Lille.",
+  seoHook: "artisanat & agroalimentaire",
   ecosystemFr:
     "Templeuve-en-Pévèle est positionnée à 20 min sud-est de Lille et 20 min nord de Douai, au cœur du pays de Pévèle, terroir rural et agricole entre la métropole lilloise et le bassin minier. Tissu TPE/PME diversifié : artisanat BTP, services, agroalimentaire, exploitations agricoles, commerces, services aux entreprises. Accès A23 et A1 vers Lille, Paris et la Belgique frontalière (Tournai 30 min).",
   ecosystemEn:

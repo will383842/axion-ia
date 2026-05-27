@@ -12,6 +12,7 @@ export const CESSON_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cesson (77). Nous accompagnons tous types d'activités : TPE artisans, commerçants, PME tertiaires, professions libérales et prestataires de services de l'agglomération melunaise. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cesson (77). Nous accompagnons tous types d'activités : TPE artisans, commerçants, PME tertiaires, professions libérales et prestataires de services de l'agglomération melunaise. Audit Flash dès 490 € HT.",
+  seoHook: "commerce proximité & artisanat rénovation",
   ecosystemFr:
     "Cesson est une commune résidentielle en bord de Seine, rattachée à la communauté d'agglomération Melun Val de Seine. Son tissu économique repose sur les commerces de proximité, TPE artisanales, PME de services et professions libérales. Proximité directe avec Melun, Vert-Saint-Denis et Savigny-le-Temple. Cadre de vie attractif le long de la Seine.",
   ecosystemEn:

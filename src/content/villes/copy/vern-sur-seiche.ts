@@ -12,6 +12,7 @@ export const VERN_SUR_SEICHE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vern-sur-Seiche (35). Nous accompagnons TPE et PME : sociétés tertiaires périurbaines, artisans du bâtiment, commerces et services de proximité, professions libérales et de santé, sous-traitants industriels. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vern-sur-Seiche (35). Nous accompagnons TPE et PME : sociétés tertiaires périurbaines, artisans du bâtiment, commerces et services de proximité, professions libérales et de santé, sous-traitants industriels. Audit Flash dès 490 € HT.",
+  seoHook: "services tertiaires & artisanat bâtiment",
   ecosystemFr:
     "Vern-sur-Seiche est une commune résidentielle du sud-est de Rennes, en Ille-et-Vilaine, intégrée à la métropole rennaise. Tissu TPE/PME : tertiaire de proximité, artisanat du bâtiment, commerces et services, professions libérales et de santé, sous-traitance industrielle, agences immobilières.",
   ecosystemEn:

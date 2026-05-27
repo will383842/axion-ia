@@ -14,6 +14,7 @@ export const NOISY_LE_SEC_COPY: VilleCopy = {
     "Axion-IA se déplace à Noisy-le-Sec pour aider les entreprises à intégrer l'IA dans leurs opérations quotidiennes. Proche de Paris, ville qui abrite des leaders comme LVMH et BNP Paribas, Noisy-le-Sec offre un environnement propice à l'innovation. Nos services incluent des audits, des interventions sur site et des formations personnalisées pour optimiser vos processus.",
   directAnswerEn:
     "Axion-IA se déplace à Noisy-le-Sec pour aider les entreprises à intégrer l'IA dans leurs opérations quotidiennes. Proche de Paris, ville qui abrite des leaders comme LVMH et BNP Paribas, Noisy-le-Sec offre un environnement propice à l'innovation. Nos services incluent des audits, des interventions sur site et des formations personnalisées pour optimiser vos processus.",
+  seoHook: "commerce détail & construction",
   ecosystemFr:
     "Noisy-le-Sec est entourée de communes dynamiques comme Bobigny et Pantin, et bénéficie de la proximité de Paris, où se trouvent des acteurs clés tels que Cap Digital et Station F.",
   ecosystemEn:

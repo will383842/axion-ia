@@ -12,6 +12,7 @@ export const PLESSE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plessé (44). Nous accompagnons tous types d'activités : exploitations agricoles et éleveurs laitiers, artisans BTP et menuisiers, commerçants de bourg, PME agroalimentaires, professions libérales de santé et services aux entreprises du nord Loire-Atlantique. Audit Flash accessible dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Plessé (44). Nous accompagnons tous types d'activités : exploitations agricoles et éleveurs laitiers, artisans BTP et menuisiers, commerçants de bourg, PME agroalimentaires, professions libérales de santé et services aux entreprises du nord Loire-Atlantique. Audit Flash accessible dès 490 € HT.",
+  seoHook: "agriculture élevage & artisanat filière",
   ecosystemFr:
     "Plessé est une commune rurale de plus de 5 300 habitants au nord de la Loire-Atlantique, dans le pays de Redon. L'économie repose sur l'agriculture (élevage laitier, polyculture), les TPE artisanales BTP et bois, le commerce de bourg et les services de proximité. La forêt domaniale du Gâvre toute proche alimente une filière bois active.",
   ecosystemEn:

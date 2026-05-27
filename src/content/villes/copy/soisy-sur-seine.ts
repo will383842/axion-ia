@@ -12,6 +12,7 @@ export const SOISY_SUR_SEINE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Soisy-sur-Seine (91). Nous accompagnons tous types d'activités : TPE artisans, commerçants, professions libérales, PME tertiaires, indépendants et structures du bassin Évry-Corbeil en bord de Seine et lisière de la forêt de Sénart.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Soisy-sur-Seine (91). Nous accompagnons tous types d'activités : TPE artisans, commerçants, professions libérales, PME tertiaires, indépendants et structures du bassin Évry-Corbeil en bord de Seine et lisière de la forêt de Sénart.",
+  seoHook: "professions libérales & artisanat second",
   ecosystemFr:
     "Soisy-sur-Seine (7 418 hab) est une commune résidentielle entre bords de Seine et forêt de Sénart, intégrée à la communauté d'agglomération Grand Paris Sud. Proximité d'Évry-Courcouronnes (préfecture, Génopole, université) et Corbeil-Essonnes. Tissu TPE artisanat, professions libérales, PME tertiaires et commerces de proximité.",
   ecosystemEn:

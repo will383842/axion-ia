@@ -12,6 +12,7 @@ export const CAVALAIRE_SUR_MER_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cavalaire-sur-Mer (83). Nous accompagnons TPE restaurateurs, professionnels du nautisme, commerçants et PME du tourisme balnéaire et de l'hôtellerie de plein air du golfe de Saint-Tropez. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cavalaire-sur-Mer (83). Nous accompagnons TPE restaurateurs, professionnels du nautisme, commerçants et PME du tourisme balnéaire et de l'hôtellerie de plein air du golfe de Saint-Tropez. Audit Flash dès 490 € HT.",
+  seoHook: "tourisme balnéaire & hôtellerie plein",
   ecosystemFr:
     "Cavalaire-sur-Mer est une station balnéaire familiale du golfe de Saint-Tropez à l'identité plus accessible que sa célèbre voisine. Économie tirée par le tourisme estival (plages, port plaisance, plongée), la restauration, l'hôtellerie de plein air (campings haut de gamme), le nautisme et le commerce de proximité. Tissu de TPE/PME tourisme.",
   ecosystemEn:

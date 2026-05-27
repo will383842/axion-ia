@@ -12,6 +12,7 @@ export const PFASTATT_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pfastatt (68). Nous accompagnons TPE et PME : industriels, sous-traitants textile et mécanique, artisans BTP, commerçants et prestataires de services de l'agglomération mulhousienne. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pfastatt (68). Nous accompagnons TPE et PME : industriels, sous-traitants textile et mécanique, artisans BTP, commerçants et prestataires de services de l'agglomération mulhousienne. Audit Flash dès 490 € HT.",
+  seoHook: "industrie sous-traitance & textile technique",
   ecosystemFr:
     "Pfastatt s'inscrit dans la première couronne nord de Mulhouse, au sein de Mulhouse Alsace Agglomération (m2A). Ancienne place forte de l'industrie textile alsacienne (DMC, ex-manufactures), la commune a diversifié son tissu vers la sous-traitance industrielle, la mécanique, l'artisanat BTP, le commerce de proximité et les services aux entreprises. Proximité immédiate des zones d'activités mulhousiennes.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const MOULINS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Moulins (03). Nous accompagnons tous types d'activités : administration préfecture, PME tertiaires Bourbonnais, agriculteurs/éleveurs allier, acteurs tourisme patrimonial, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Moulins (03). Nous accompagnons tous types d'activités : administration préfecture, PME tertiaires Bourbonnais, agriculteurs/éleveurs allier, acteurs tourisme patrimonial, TPE artisans BTP, commerçants et services aux entreprises.",
+  seoHook: "administration & agriculture bourbonnaise",
   ecosystemFr:
     "Moulins est la préfecture de l'Allier et capitale historique du Bourbonnais (cathédrale, château des ducs de Bourbon, patrimoine ducal). Tissu administration/services publics, PME tertiaires, agriculture bourbonnaise (élevage charolais à proximité, grandes cultures), tourisme patrimonial, TPE artisanat BTP, commerces.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const ITTEVILLE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Itteville (91). Nous accompagnons TPE et PME : artisans BTP, commerces ruraux, professions libérales, PME services, exploitants agricoles du sud Essonne entre Mennecy et La Ferté-Alais. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Itteville (91). Nous accompagnons TPE et PME : artisans BTP, commerces ruraux, professions libérales, PME services, exploitants agricoles du sud Essonne entre Mennecy et La Ferté-Alais. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat second & commerce rural",
   ecosystemFr:
     "Itteville est une commune résidentielle rurale du sud de l'Essonne, entre Mennecy et La Ferté-Alais. Cadre verdoyant à 38 km de Paris. Tissu économique local : TPE artisans BTP, commerces de proximité, professions libérales, PME services aux particuliers, exploitations agricoles céréalières.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const LESIGNY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lésigny (77). Nous accompagnons TPE et PME : artisans du bâtiment, commerçants de proximité, PME tertiaires, professions libérales et prestataires de services de l'est Seine-et-Marne.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lésigny (77). Nous accompagnons TPE et PME : artisans du bâtiment, commerçants de proximité, PME tertiaires, professions libérales et prestataires de services de l'est Seine-et-Marne.",
+  seoHook: "artisanat rénovation & commerce proximité",
   ecosystemFr:
     "Lésigny est une commune résidentielle du sud-est de la Seine-et-Marne, entre Brie-Comte-Robert et Pontault-Combault. Cadre verdoyant avec le golf de Lésigny et les espaces boisés. Tissu économique de TPE artisanales BTP, commerces de centre-bourg, professions libérales, PME de services aux entreprises. Accès rapide à la Francilienne (N104) et à la zone commerciale Val d'Europe/Marne-la-Vallée.",
   ecosystemEn:

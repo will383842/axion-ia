@@ -12,6 +12,7 @@ export const ARPAJON_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arpajon (91). Nous accompagnons TPE et PME : commerçants centre-ville et marché, artisans, PME services, professions libérales, restaurateurs, prestataires du Hurepoix essonnien. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arpajon (91). Nous accompagnons TPE et PME : commerçants centre-ville et marché, artisans, PME services, professions libérales, restaurateurs, prestataires du Hurepoix essonnien. Audit Flash dès 490 € HT.",
+  seoHook: "commerce détail & artisanat métiers",
   ecosystemFr:
     "Arpajon est une sous-préfecture historique de l'Essonne, centre du Hurepoix, connue pour sa foire aux haricots séculaire et son marché couvert animé. Tissu vivant TPE commerces de bouche et artisanat, PME tertiaires, professions libérales (avocats, notaires, médecins), restauration et services administratifs sous-préfecture.",
   ecosystemEn:

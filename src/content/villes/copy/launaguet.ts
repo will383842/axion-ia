@@ -12,6 +12,7 @@ export const LAUNAGUET_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Launaguet (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Launaguet (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit Flash dès 490 € HT.",
+  seoHook: "professions libérales & artisanat",
   ecosystemFr:
     "Launaguet est une commune résidentielle du nord immédiat de Toulouse. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Proximité de la zone Borderouge et du métro ligne B.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const MOUGINS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mougins (06). Nous accompagnons tous types d'activités : TPE artisans, PME tech (Sophia Antipolis), restaurateurs étoilés, galeries, hôteliers, commerçants, professions libérales, indépendants et services aux entreprises du bassin mouginois.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mougins (06). Nous accompagnons tous types d'activités : TPE artisans, PME tech (Sophia Antipolis), restaurateurs étoilés, galeries, hôteliers, commerçants, professions libérales, indépendants et services aux entreprises du bassin mouginois.",
+  seoHook: "tech startups & gastronomie étoilée",
   ecosystemFr:
     "Mougins est commune résidentielle et gastronomique des Alpes-Maritimes (~19 800 hab), entre Cannes, Grasse et la technopole Sophia Antipolis. Village historique perché avec restaurants étoilés Michelin, galeries d'art (Musée de la Photographie, mémoire Picasso). PME tech/startups (débordement Sophia Antipolis), TPE artisans, hôtellerie haut de gamme, professions libérales et commerces.",
   ecosystemEn:

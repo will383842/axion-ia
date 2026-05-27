@@ -12,6 +12,7 @@ export const BILLERE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Billère (64). Nous accompagnons TPE, PME et professions libérales de l'agglomération paloise : commerces, services aux entreprises, artisans, santé. Audit Flash à partir de 490 € HT, déplacement sur site inclus dans l'agglo Pau.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Billère (64). Nous accompagnons TPE, PME et professions libérales de l'agglomération paloise : commerces, services aux entreprises, artisans, santé. Audit Flash à partir de 490 € HT, déplacement sur site inclus dans l'agglo Pau.",
+  seoHook: "services aux & commerces proximité",
   ecosystemFr:
     "Billère est une commune résidentielle de 14 384 habitants directement limitrophe ouest de Pau. Tissu économique de proximité : TPE artisans BTP, commerces de quartier, professions libérales (santé, juridique), PME de services tertiaires. Bassin d'emploi commun avec Pau, accès direct à la zone Hélioparc (technopole).",
   ecosystemEn:

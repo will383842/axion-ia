@@ -12,6 +12,7 @@ export const BILLY_MONTIGNY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Billy-Montigny (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier lensois. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Billy-Montigny (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier lensois. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+  seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Billy-Montigny est une commune résidentielle du bassin minier au sud de Lens, entre Montigny-en-Gohelle et Courrières. Tissu de TPE artisanales BTP, commerces de proximité, professions libérales et PME de services. Économie post-minière tournée vers les activités résidentielles.",
   ecosystemEn:

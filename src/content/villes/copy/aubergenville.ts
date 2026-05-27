@@ -12,6 +12,7 @@ export const AUBERGENVILLE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aubergenville (78). Nous accompagnons TPE et PME : commerçants et artisans du centre-bourg, PME industrie et logistique zones d'activités, services aux entreprises, professions libérales, restaurateurs vallée de Seine. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aubergenville (78). Nous accompagnons TPE et PME : commerçants et artisans du centre-bourg, PME industrie et logistique zones d'activités, services aux entreprises, professions libérales, restaurateurs vallée de Seine. Audit Flash dès 490 € HT.",
+  seoHook: "commerce détail & industrie logistique",
   ecosystemFr:
     "Aubergenville est une commune des Yvelines en bord de Seine, dotée de plusieurs zones industrielles et d'activités (ZI des Closeaux, ZA des Graviers), à proximité de Mantes-la-Jolie et Poissy. Tissu TPE commerces et artisanat, PME industrie et logistique, services aux entreprises, professions libérales.",
   ecosystemEn:

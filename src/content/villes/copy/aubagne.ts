@@ -14,6 +14,7 @@ export const AUBAGNE_COPY: VilleCopy = {
     "À Aubagne, Axion-IA accompagne les entreprises dans l'intégration de l'IA. Nous intervenons dans des secteurs variés tels que le commerce de gros et la fabrication de produits métalliques, où des entreprises comme Gemalto et Immunotech sont implantées. Nos services incluent des audits, des interventions et des formations pour maximiser l'efficacité opérationnelle.",
   directAnswerEn:
     "À Aubagne, Axion-IA accompagne les entreprises dans l'intégration de l'IA. Nous intervenons dans des secteurs variés tels que le commerce de gros et la fabrication de produits métalliques, où des entreprises comme Gemalto et Immunotech sont implantées. Nos services incluent des audits, des interventions et des formations pour maximiser l'efficacité opérationnelle.",
+  seoHook: "commerce gros & produits métalliques",
   ecosystemFr:
     "Aubagne, avec la ZAC Napollon, accueille des entreprises telles que Gemalto et Immunotech, renforçant son tissu économique dans le commerce de gros et l'industrie.",
   ecosystemEn:

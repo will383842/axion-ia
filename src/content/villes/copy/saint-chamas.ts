@@ -12,6 +12,7 @@ export const SAINT_CHAMAS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Chamas (13). Nous accompagnons TPE artisans, commerçants, pêcheurs, PME de services, exploitants agricoles (oliveraies, maraîchage) et entreprises du bassin de l'étang de Berre. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Chamas (13). Nous accompagnons TPE artisans, commerçants, pêcheurs, PME de services, exploitants agricoles (oliveraies, maraîchage) et entreprises du bassin de l'étang de Berre. Audit Flash dès 490 € HT.",
+  seoHook: "agriculture oliveraies & pêche artisanale",
   ecosystemFr:
     "Saint-Chamas s'étend sur les rives nord-est de l'étang de Berre, dominée par le pont Flavien (arc romain Ier siècle av. J.-C.). Économie locale portée par l'agriculture (oliveraies AOC, maraîchage), la pêche artisanale en étang, le tourisme patrimonial et un tissu de TPE artisans BTP et commerces de proximité.",
   ecosystemEn:

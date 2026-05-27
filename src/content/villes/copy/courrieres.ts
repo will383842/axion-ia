@@ -12,6 +12,7 @@ export const COURRIERES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Courrières (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier lensois. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Courrières (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier lensois. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+  seoHook: "commerce détail & professions libérales",
   ecosystemFr:
     "Courrières est une commune du bassin minier entre Lens et Hénin-Beaumont, marquée par la catastrophe minière de 1906. Économie reconvertie vers les services, le commerce de proximité, l'artisanat BTP et les professions libérales. Tissu résidentiel avec TPE et PME de services.",
   ecosystemEn:

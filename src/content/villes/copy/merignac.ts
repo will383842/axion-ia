@@ -14,6 +14,7 @@ export const MERIGNAC_COPY: VilleCopy = {
     "À Mérignac, Axion-IA propose des interventions sur site pour les entreprises de secteurs variés, notamment la programmation informatique et le transport aérien. Avec des acteurs comme Safran et des infrastructures telles que l'Aéroport de Bordeaux-Mérignac, nous aidons à automatiser les tâches administratives et à améliorer l'efficacité opérationnelle.",
   directAnswerEn:
     "À Mérignac, Axion-IA propose des interventions sur site pour les entreprises de secteurs variés, notamment la programmation informatique et le transport aérien. Avec des acteurs comme Safran et des infrastructures telles que l'Aéroport de Bordeaux-Mérignac, nous aidons à automatiser les tâches administratives et à améliorer l'efficacité opérationnelle.",
+  seoHook: "programmation informatique & transport aérien",
   ecosystemFr:
     "Mérignac est un pôle industriel avec des entreprises comme Dassault Aviation et Safran. Le Parc d'activités du Phare et Technowest soutiennent l'innovation locale.",
   ecosystemEn:

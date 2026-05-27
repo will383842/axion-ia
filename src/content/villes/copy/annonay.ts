@@ -12,6 +12,7 @@ export const ANNONAY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Annonay (07). Nous accompagnons tous types d'activités : PME industrielles nord-Ardèche (héritage papetier/tanneur Montgolfier), agriculteurs montagne, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Annonay (07). Nous accompagnons tous types d'activités : PME industrielles nord-Ardèche (héritage papetier/tanneur Montgolfier), agriculteurs montagne, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
+  seoHook: "industrielles & agriculture montagne",
   ecosystemFr:
     "Annonay est la sous-préfecture du nord-Ardèche, berceau des frères Montgolfier (invention montgolfière 1783). Héritage industriel papetier et tanneur (savoir-faire local historique). Tissu PME industrielles diversifiées, agriculture montagne ardéchoise, TPE artisanat BTP, commerces.",
   ecosystemEn:

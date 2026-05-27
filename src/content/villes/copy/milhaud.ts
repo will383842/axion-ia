@@ -12,6 +12,7 @@ export const MILHAUD_COPY: VilleCopy = {
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Milhaud (30). Nous accompagnons les TPE, PME et ETI locales : entreprises de services, commerçants, artisans BTP, professions libérales et agriculteurs de l'agglomération nîmoise sud. Audit Flash à partir de 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Milhaud (30). Nous accompagnons les TPE, PME et ETI locales : entreprises de services, commerçants, artisans BTP, professions libérales et agriculteurs de l'agglomération nîmoise sud. Audit Flash à partir de 490 € HT.",
+  seoHook: "artisanat & agriculture méditerranéenne",
   ecosystemFr:
     "Milhaud (~6 300 hab) est une commune résidentielle de l'agglomération nîmoise sud, en croissance démographique. Services aux entreprises, commerces, artisanat BTP, professions libérales et agriculture méditerranéenne. Accès facile à Nîmes (10 min) et zones d'activité sud.",
   ecosystemEn:

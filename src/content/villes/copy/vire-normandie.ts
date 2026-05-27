@@ -12,6 +12,7 @@ export const VIRE_NORMANDIE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vire Normandie (14). Nous accompagnons tous types d'activités : TPE artisans et commerçants du bocage, PME agroalimentaires (andouille de Vire IGP, produits laitiers), industriels, professions libérales, indépendants et services aux entreprises du sud-Calvados.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vire Normandie (14). Nous accompagnons tous types d'activités : TPE artisans et commerçants du bocage, PME agroalimentaires (andouille de Vire IGP, produits laitiers), industriels, professions libérales, indépendants et services aux entreprises du sud-Calvados.",
+  seoHook: "agroalimentaire & industrie manufacturière",
   ecosystemFr:
     "Vire Normandie est la sous-préfecture sud du Calvados, au cœur du bocage normand. Commune nouvelle depuis 2016, elle est le pôle économique du Bocage virois. L'agroalimentaire domine (andouille de Vire IGP, laiteries, abattoirs). Tissu TPE artisans, PME industrielles, commerces de centre-ville, services aux entreprises et professions libérales.",
   ecosystemEn:

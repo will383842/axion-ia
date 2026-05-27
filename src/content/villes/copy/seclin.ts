@@ -12,6 +12,7 @@ export const SECLIN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Seclin (59). Nous accompagnons TPE et PME : acteurs de la santé et du médico-social, logisticiens et transporteurs du pôle aéroportuaire Lesquin, PME agroalimentaires, commerçants, artisans et prestataires de services aux entreprises.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Seclin (59). Nous accompagnons TPE et PME : acteurs de la santé et du médico-social, logisticiens et transporteurs du pôle aéroportuaire Lesquin, PME agroalimentaires, commerçants, artisans et prestataires de services aux entreprises.",
+  seoHook: "santé médico-social & logistique transport",
   ecosystemFr:
     "Seclin est une commune du sud de la Métropole Européenne de Lille, connue pour son centre hospitalier (un des plus importants du département) et sa proximité avec l'aéroport Lille-Lesquin. L'économie locale combine TPE et PME du secteur santé-médico-social (cliniques, EHPAD, prestataires), logistique et transport (zone aéroportuaire, A1), agroalimentaire (brasserie et filière alimentaire historique), commerce de centre-ville et services aux entreprises. Pôle péri-urbain dynamique bénéficiant de la desserte autoroutière A1 Paris-Lille.",
   ecosystemEn:

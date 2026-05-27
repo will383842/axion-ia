@@ -12,6 +12,7 @@ export const BOUGIVAL_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bougival (78). Nous accompagnons TPE et PME : commerces, professions libérales, PME tertiaires, artisans et acteurs du tourisme culturel de cette commune des bords de Seine, entre Rueil-Malmaison et Louveciennes. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bougival (78). Nous accompagnons TPE et PME : commerces, professions libérales, PME tertiaires, artisans et acteurs du tourisme culturel de cette commune des bords de Seine, entre Rueil-Malmaison et Louveciennes. Audit Flash dès 490 € HT.",
+  seoHook: "professions libérales & commerce proximité",
   ecosystemFr:
     "Bougival est une commune résidentielle et culturelle des bords de Seine, dans la boucle entre Rueil-Malmaison et Louveciennes. Patrimoine impressionniste majeur (Renoir, Monet, Berthe Morisot) et historique (Machine de Marly). Tissu économique : TPE artisans, commerces de centre-bourg, professions libérales, PME tertiaires, acteurs culturels et touristiques. Communes voisines : Louveciennes, La Celle-Saint-Cloud, Croissy-sur-Seine, Rueil-Malmaison.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const SAINT_JUNIEN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Junien (87). Nous accompagnons tous types d'activités : PME industrielles cuir et textile, TPE artisans, commerçants, professions libérales, indépendants et services aux entreprises du Haut-Limousin occidental.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Junien (87). Nous accompagnons tous types d'activités : PME industrielles cuir et textile, TPE artisans, commerçants, professions libérales, indépendants et services aux entreprises du Haut-Limousin occidental.",
+  seoHook: "industrie cuir & manufacturières mécanique",
   ecosystemFr:
     "Saint-Junien (11 415 hab) est la deuxième ville de Haute-Vienne, sous-préfecture historique de l'industrie du cuir (ganterie, mégisserie) sur les bords de la Vienne. Tissu PME industrielles (cuir, textile, mécanique), TPE artisans, commerces centre-ville, professions libérales. Position stratégique entre Limoges (30 min) et Angoulême (1h), axe RN141.",
   ecosystemEn:

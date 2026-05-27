@@ -12,6 +12,7 @@ export const CEYRAT_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ceyrat (63). Nous accompagnons TPE et PME : professions libérales santé, sociétés tertiaires, artisans, commerçants et acteurs du tourisme volcans d'Auvergne du sud-ouest clermontois.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ceyrat (63). Nous accompagnons TPE et PME : professions libérales santé, sociétés tertiaires, artisans, commerçants et acteurs du tourisme volcans d'Auvergne du sud-ouest clermontois.",
+  seoHook: "professions libérales & tertiaires services",
   ecosystemFr:
     "Ceyrat est une commune résidentielle prisée au sud-ouest de Clermont-Ferrand, au piémont de la chaîne des Puys (volcans d'Auvergne, patrimoine mondial UNESCO depuis 2018). La commune accueille un tissu dense de professions libérales santé (cabinets médicaux, paramédicaux), PME tertiaires, TPE artisans, commerces de proximité. Proximité Chamalières et Romagnat. Porte d'entrée tourisme volcans.",
   ecosystemEn:

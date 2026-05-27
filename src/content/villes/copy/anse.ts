@@ -12,6 +12,7 @@ export const ANSE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Anse (69). Nous accompagnons tous types d'activités : viticulteurs Beaujolais méridional, PME tertiaires, TPE artisans BTP, commerçants, agriculteurs val de Saône, indépendants et services aux entreprises.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Anse (69). Nous accompagnons tous types d'activités : viticulteurs Beaujolais méridional, PME tertiaires, TPE artisans BTP, commerçants, agriculteurs val de Saône, indépendants et services aux entreprises.",
+  seoHook: "viticulture beaujolais & tertiaires val",
   ecosystemFr:
     "Anse est positionnée dans le val de Saône (Rhône), à l'entrée sud du vignoble du Beaujolais (Beaujolais-Villages, Beaujolais). Tissu viticole (domaines, caves), PME tertiaires, agriculture vallée Saône, TPE artisanat BTP, commerces.",
   ecosystemEn:

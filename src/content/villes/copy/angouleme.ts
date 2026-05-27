@@ -14,6 +14,7 @@ export const ANGOULEME_COPY: VilleCopy = {
     "À Angoulême, Axion-IA offre des services d'IA adaptés aux entreprises de secteurs variés, tels que l'imprimerie avec Imprimerie Pollina et l'édition. Notre approche inclut des audits, interventions et implémentations sur site, garantissant une intégration fluide et efficace de l'IA dans vos processus métiers. Nous sommes présents pour répondre aux besoins spécifiques des entreprises locales.",
   directAnswerEn:
     "À Angoulême, Axion-IA offre des services d'IA adaptés aux entreprises de secteurs variés, tels que l'imprimerie avec Imprimerie Pollina et l'édition. Notre approche inclut des audits, interventions et implémentations sur site, garantissant une intégration fluide et efficace de l'IA dans vos processus métiers. Nous sommes présents pour répondre aux besoins spécifiques des entreprises locales.",
+  seoHook: "imprimerie & édition",
   ecosystemFr:
     "Angoulême se distingue par ses secteurs d'imprimerie et d'édition, avec des entreprises comme Papeteries de Charente et Imprimerie Pollina. Ces acteurs contribuent au dynamisme économique local.",
   ecosystemEn:

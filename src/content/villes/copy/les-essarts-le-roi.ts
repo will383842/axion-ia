@@ -12,6 +12,7 @@ export const LES_ESSARTS_LE_ROI_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient aux Essarts-le-Roi (78). Nous accompagnons TPE et PME : artisans du bâtiment, PME de services sud Yvelines, commerçants, professions libérales et auto-entrepreneurs de cette commune résidentielle forestière entre Rambouillet et Saint-Quentin-en-Yvelines.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient aux Essarts-le-Roi (78). Nous accompagnons TPE et PME : artisans du bâtiment, PME de services sud Yvelines, commerçants, professions libérales et auto-entrepreneurs de cette commune résidentielle forestière entre Rambouillet et Saint-Quentin-en-Yvelines.",
+  seoHook: "artisanat bâtiment & services conseil",
   ecosystemFr:
     "Les Essarts-le-Roi est une commune résidentielle forestière du sud des Yvelines, entre Rambouillet et le plateau de Saint-Quentin-en-Yvelines. Cadre de vie prisé en lisière de la forêt de Rambouillet. Tissu économique : TPE artisanat bâtiment et espaces verts, PME services et conseil, commerces de centre-bourg, professions libérales (santé, paramédical), auto-entrepreneurs et travailleurs indépendants en télétravail.",
   ecosystemEn:

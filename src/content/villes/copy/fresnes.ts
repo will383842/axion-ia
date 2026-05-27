@@ -14,6 +14,7 @@ export const FRESNES_COPY: VilleCopy = {
     "Axion-IA se déplace à Fresnes pour accompagner les entreprises dans l'optimisation de leurs processus grâce à l'IA. Avec des références dans l'écosystème parisien incluant LVMH et BNP Paribas, nous proposons des audits à partir de 490 € HT et des interventions dès 590 € HT. Nos services s'adaptent aux besoins spécifiques des entreprises de Fresnes.",
   directAnswerEn:
     "Axion-IA se déplace à Fresnes pour accompagner les entreprises dans l'optimisation de leurs processus grâce à l'IA. Avec des références dans l'écosystème parisien incluant LVMH et BNP Paribas, nous proposons des audits à partir de 490 € HT et des interventions dès 590 € HT. Nos services s'adaptent aux besoins spécifiques des entreprises de Fresnes.",
+  seoHook: "commerce détail & programmation informatique",
   ecosystemFr:
     "Fresnes bénéficie de la proximité de grands noms comme LVMH et BNP Paribas dans l'écosystème économique parisien. Ces entreprises influencent le tissu économique local.",
   ecosystemEn:

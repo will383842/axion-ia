@@ -12,6 +12,7 @@ export const ESSEY_LES_NANCY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Essey-lès-Nancy (54). Nous accompagnons TPE et PME : commerçants de la zone Saint-Sébastien, sociétés tertiaires de l'est nancéien, artisans BTP, services aux entreprises, professions libérales. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Essey-lès-Nancy (54). Nous accompagnons TPE et PME : commerçants de la zone Saint-Sébastien, sociétés tertiaires de l'est nancéien, artisans BTP, services aux entreprises, professions libérales. Audit Flash dès 490 € HT.",
+  seoHook: "commerce zone & tertiaires",
   ecosystemFr:
     "Essey-lès-Nancy est une commune de la Métropole du Grand Nancy (Meurthe-et-Moselle) structurée autour de la zone commerciale Saint-Sébastien. Tissu TPE/PME commerce de zone et de proximité, sociétés tertiaires, services aux entreprises, artisanat BTP, professions libérales adossés au bassin nancéien.",
   ecosystemEn:

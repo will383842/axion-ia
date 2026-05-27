@@ -14,6 +14,7 @@ export const BAGNOLET_COPY: VilleCopy = {
     "Axion-IA propose à Bagnolet des solutions IA adaptées aux besoins des entreprises, qu'elles soient dans le commerce de détail ou la programmation informatique. Avec des voisins comme Montreuil et Pantin, et la proximité de la Gare de Lyon et de l'aéroport de Paris-Charles de Gaulle, Bagnolet offre un accès facile aux ressources technologiques et économiques.",
   directAnswerEn:
     "Axion-IA propose à Bagnolet des solutions IA adaptées aux besoins des entreprises, qu'elles soient dans le commerce de détail ou la programmation informatique. Avec des voisins comme Montreuil et Pantin, et la proximité de la Gare de Lyon et de l'aéroport de Paris-Charles de Gaulle, Bagnolet offre un accès facile aux ressources technologiques et économiques.",
+  seoHook: "commerce détail & restauration",
   ecosystemFr:
     "Bagnolet, avec ses 4 000 établissements actifs, profite de la proximité de grands groupes comme Fnac Darty et Carrefour. Ce tissu économique diversifié est propice à l'innovation et à l'optimisation des processus métiers.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const VILLENEUVE_SUR_YONNE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villeneuve-sur-Yonne (89). Nous accompagnons TPE et PME : TPE artisans, commerçants villeneuviens, acteurs tourisme patrimonial cité royale, PME services et agriculteurs périurbains. Audit Flash 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villeneuve-sur-Yonne (89). Nous accompagnons TPE et PME : TPE artisans, commerçants villeneuviens, acteurs tourisme patrimonial cité royale, PME services et agriculteurs périurbains. Audit Flash 490 € HT.",
+  seoHook: "tourisme patrimonial & services",
   ecosystemFr:
     "Villeneuve-sur-Yonne est positionnée sur les bords de l'Yonne au nord du département, ancienne cité royale fondée par Louis VII (1163). Patrimoine médiéval : portes de Joigny et de Sens, donjon, église Notre-Dame. Économie : TPE artisanat, commerce de proximité, tourisme patrimonial, PME services, agriculture céréalière.",
   ecosystemEn:

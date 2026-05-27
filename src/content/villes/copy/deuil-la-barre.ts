@@ -14,6 +14,7 @@ export const DEUIL_LA_BARRE_COPY: VilleCopy = {
     "À Deuil-la-Barre, Axion-IA accompagne les entreprises dans l'adoption de l'IA. L'écosystème régional inclut des acteurs comme Station F et Cap Digital, offrant un contexte propice à l'innovation. Nous intervenons directement sur site pour optimiser les processus métiers et favoriser une intégration fluide de l'IA dans vos opérations quotidiennes.",
   directAnswerEn:
     "À Deuil-la-Barre, Axion-IA accompagne les entreprises dans l'adoption de l'IA. L'écosystème régional inclut des acteurs comme Station F et Cap Digital, offrant un contexte propice à l'innovation. Nous intervenons directement sur site pour optimiser les processus métiers et favoriser une intégration fluide de l'IA dans vos opérations quotidiennes.",
+  seoHook: "commerce détail & construction",
   ecosystemFr:
     "Deuil-la-Barre bénéficie d'une proximité avec des pôles d'innovation comme Station F et Cap Digital, ce qui enrichit son tissu économique. Les entreprises locales peuvent ainsi profiter d'un environnement stimulant pour développer leurs projets IA.",
   ecosystemEn:

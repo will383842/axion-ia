@@ -12,6 +12,7 @@ export const NUEIL_LES_AUBIERS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nueil-les-Aubiers (79). Nous accompagnons tous types d'activités : TPE artisans et commerçants du bourg, PME industrielles (métallurgie, agroalimentaire), exploitations agricoles du bocage bressuirais, professions libérales et services aux entreprises.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nueil-les-Aubiers (79). Nous accompagnons tous types d'activités : TPE artisans et commerçants du bourg, PME industrielles (métallurgie, agroalimentaire), exploitations agricoles du bocage bressuirais, professions libérales et services aux entreprises.",
+  seoHook: "industrielles & artisanat services",
   ecosystemFr:
     "Nueil-les-Aubiers se situe dans le bocage bressuirais, territoire rural industrieux du nord des Deux-Sèvres. Tissu PME industrielles (métallurgie, agroalimentaire), TPE artisans, exploitations agricoles (élevage bovin, polyculture), commerces de proximité. Proximité de Bressuire, pôle économique du bocage.",
   ecosystemEn:

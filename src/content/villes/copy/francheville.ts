@@ -12,6 +12,7 @@ export const FRANCHEVILLE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Francheville (69). Nous accompagnons tous types d'activités : PME tertiaires Métropole de Lyon ouest, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la banlieue ouest lyonnaise.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Francheville (69). Nous accompagnons tous types d'activités : PME tertiaires Métropole de Lyon ouest, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la banlieue ouest lyonnaise.",
+  seoHook: "tertiaires métropole & professions libérales",
   ecosystemFr:
     "Francheville est intégrée à la Métropole de Lyon (~1,4 M hab), en banlieue ouest immédiate de Lyon (sur les contreforts des monts d'Or au sud). Tissu péri-urbain résidentiel : PME tertiaires, TPE artisanat BTP, commerces de proximité, professions libérales installées, agriculture résiduelle.",
   ecosystemEn:

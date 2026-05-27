@@ -12,6 +12,7 @@ export const BOURG_SAINT_ANDEOL_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bourg-Saint-Andéol (07). Nous accompagnons tous types d'activités : agriculteurs vallée Rhône, PME tertiaires, acteurs tourisme patrimonial, TPE artisans BTP, commerçants et services aux entreprises du sud-Ardèche.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bourg-Saint-Andéol (07). Nous accompagnons tous types d'activités : agriculteurs vallée Rhône, PME tertiaires, acteurs tourisme patrimonial, TPE artisans BTP, commerçants et services aux entreprises du sud-Ardèche.",
+  seoHook: "agriculture vallée & tertiaires sud-ardèche",
   ecosystemFr:
     "Bourg-Saint-Andéol est en sud-Ardèche, vallée Rhône. Patrimoine roman notable. Tissu agriculture, PME tertiaires, tourisme patrimonial, TPE artisanat BTP, commerces.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const GRANVILLE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Granville (50). Nous accompagnons tous types d'activités : TPE pêche et ostréiculture, PME tourisme balnéaire et hôtellerie-restauration, commerçants du port et de la Haute Ville, artisans, prestataires nautiques et professionnels des îles Chausey.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Granville (50). Nous accompagnons tous types d'activités : TPE pêche et ostréiculture, PME tourisme balnéaire et hôtellerie-restauration, commerçants du port et de la Haute Ville, artisans, prestataires nautiques et professionnels des îles Chausey.",
+  seoHook: "pêche ostréiculture & tourisme balnéaire",
   ecosystemFr:
     "Granville est le premier port coquillier de France, station balnéaire historique et porte d'accès aux îles Chausey. Le tissu économique repose sur la pêche (coquille Saint-Jacques, bulots), l'ostréiculture, le tourisme (carnaval de Granville, patrimoine Haute Ville), l'hôtellerie-restauration saisonnière, les commerces portuaires et l'artisanat. Accès vers Avranches (25 min) et Saint-Lô (40 min).",
   ecosystemEn:

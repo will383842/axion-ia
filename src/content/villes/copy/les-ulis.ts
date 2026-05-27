@@ -14,6 +14,7 @@ export const LES_ULIS_COPY: VilleCopy = {
     "Axion-IA se déplace à Les Ulis pour proposer des solutions IA adaptées aux entreprises locales. Avec des acteurs comme Hewlett-Packard et Orange présents, notre cabinet aide à automatiser les tâches administratives et à optimiser les processus. Nos services incluent audits, interventions et implémentations, avec des tarifs publics accessibles dès 490 € HT pour un audit Flash.",
   directAnswerEn:
     "Axion-IA se déplace à Les Ulis pour proposer des solutions IA adaptées aux entreprises locales. Avec des acteurs comme Hewlett-Packard et Orange présents, notre cabinet aide à automatiser les tâches administratives et à optimiser les processus. Nos services incluent audits, interventions et implémentations, avec des tarifs publics accessibles dès 490 € HT pour un audit Flash.",
+  seoHook: "programmation informatique & commerce gros",
   ecosystemFr:
     "Les Ulis abrite des entreprises comme Hewlett-Packard et Intel, au cœur de la zone Courtaboeuf. Le secteur de la programmation informatique y est particulièrement développé.",
   ecosystemEn:

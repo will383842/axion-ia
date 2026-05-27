@@ -60,6 +60,7 @@ export const ANGERS_COPY: VilleCopy = {
   directAnswerEn:
     "Axion-IA is a senior AI architects consultancy that intervenes in Angers (49) on site across the Angers Loire Métropole and the Maine-et-Loire area. We support Angers micro-businesses, SMEs, mid-caps and large enterprises — plant industry (Vegepolys Valley), manufacturing (Scania, Eviden/Atos, Thales), agri-food (Cointreau), services and French Tech Angers — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. No tech lock-in.",
 
+  seoHook: "filière végétale & industrie manufacturière",
   topSectorsNaf: [
     "Filière végétale & Agroalimentaire",
     "Industrie manufacturière & Poids lourds",

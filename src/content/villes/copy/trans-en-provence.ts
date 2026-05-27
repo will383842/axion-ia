@@ -12,6 +12,7 @@ export const TRANS_EN_PROVENCE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trans-en-Provence (83). Nous accompagnons TPE artisans, commerçants, restaurateurs et PME BTP et services de l'agglomération dracénoise et du centre-Var. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trans-en-Provence (83). Nous accompagnons TPE artisans, commerçants, restaurateurs et PME BTP et services de l'agglomération dracénoise et du centre-Var. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat résidentiel & commerce proximité",
   ecosystemFr:
     "Trans-en-Provence est une commune résidentielle et économique du centre-Var, intégrée à l'agglomération dracénoise (Communauté d'agglo Dracénoise). Économie tirée par les TPE artisanat, le BTP, le commerce de proximité, les services aux entreprises, la restauration et un tourisme patrimonial (cascades, vieux village). Tissu de TPE/PME local.",
   ecosystemEn:

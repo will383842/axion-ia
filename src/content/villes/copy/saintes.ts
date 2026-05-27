@@ -14,6 +14,7 @@ export const SAINTES_COPY: VilleCopy = {
     "Axion-IA se déplace à Saintes pour accompagner les entreprises dans leur transformation numérique. En s'appuyant sur des références nationales telles que LVMH et BNP Paribas, nous proposons des audits, interventions et implémentations adaptés aux besoins locaux. Notre approche garantit une intégration fluide de l'IA dans les processus existants, tout en respectant les contraintes économiques et structurelles de chaque entreprise.",
   directAnswerEn:
     "Axion-IA se déplace à Saintes pour accompagner les entreprises dans leur transformation numérique. En s'appuyant sur des références nationales telles que LVMH et BNP Paribas, nous proposons des audits, interventions et implémentations adaptés aux besoins locaux. Notre approche garantit une intégration fluide de l'IA dans les processus existants, tout en respectant les contraintes économiques et structurelles de chaque entreprise.",
+  seoHook: "commerce détail & construction",
   ecosystemFr:
     "Saintes se distingue par un tissu économique dominé par le commerce de détail et la construction. À l'image de pôles comme Cap Digital et Station F, les entreprises locales bénéficient d'un environnement propice à l'innovation et à l'adoption de l'IA.",
   ecosystemEn:

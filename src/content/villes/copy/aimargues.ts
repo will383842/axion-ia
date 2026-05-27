@@ -12,6 +12,7 @@ export const AIMARGUES_COPY: VilleCopy = {
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Aimargues (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs, agriculteurs, commerçants, artisans BTP et acteurs des traditions camarguaises en Petite Camargue. Audit Flash à partir de 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Aimargues (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs, agriculteurs, commerçants, artisans BTP et acteurs des traditions camarguaises en Petite Camargue. Audit Flash à partir de 490 € HT.",
+  seoHook: "viticulture & agriculture petite",
   ecosystemFr:
     "Aimargues (~5 700 hab) est un bourg de la Petite Camargue gardoise, entre Nîmes et le littoral. Viticulture, agriculture, commerces, artisanat BTP et traditions camarguaises (courses, manades). Gare SNCF Aimargues-Le Cailar sur la ligne Nîmes-Montpellier.",
   ecosystemEn:

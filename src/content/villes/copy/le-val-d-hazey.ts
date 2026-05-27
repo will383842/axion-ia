@@ -12,6 +12,7 @@ export const LE_VAL_D_HAZEY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Val d'Hazey (27). Nous accompagnons tous types d'activités : TPE artisans, PME industrie et logistique vallée de Seine, exploitants agricoles, commerces, indépendants et services aux entreprises de Seine Normandie Agglomération.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Val d'Hazey (27). Nous accompagnons tous types d'activités : TPE artisans, PME industrie et logistique vallée de Seine, exploitants agricoles, commerces, indépendants et services aux entreprises de Seine Normandie Agglomération.",
+  seoHook: "industrie logistique & agriculture grandes",
   ecosystemFr:
     "Le Val d'Hazey est une commune nouvelle de l'Eure issue de la fusion d'Aubevoye et communes voisines, dans la vallée de la Seine entre Gaillon et Les Andelys. Position stratégique axe Seine (A13), zones d'activité industrielles et logistiques. Agriculture, artisanat, commerces de proximité, services aux entreprises.",
   ecosystemEn:

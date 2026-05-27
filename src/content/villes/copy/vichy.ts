@@ -14,6 +14,7 @@ export const VICHY_COPY: VilleCopy = {
     "À Vichy, Axion-IA propose des audits et interventions pour les entreprises locales, notamment dans les secteurs du commerce de détail et de l'hébergement. Avec des entités comme L'Oréal et Danone présentes, notre équipe nationale se déplace sur site pour offrir des solutions adaptées aux besoins spécifiques de chaque entreprise.",
   directAnswerEn:
     "À Vichy, Axion-IA propose des audits et interventions pour les entreprises locales, notamment dans les secteurs du commerce de détail et de l'hébergement. Avec des entités comme L'Oréal et Danone présentes, notre équipe nationale se déplace sur site pour offrir des solutions adaptées aux besoins spécifiques de chaque entreprise.",
+  seoHook: "commerce détail & santé humaine",
   ecosystemFr:
     "Vichy accueille des entreprises comme L'Oréal et Danone, renforçant ainsi son tissu économique. Le parc d'activités de Vichy-Rhue constitue un pôle d'attraction pour les entreprises cherchant à innover.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const TOULOUGES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Toulouges (66). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, commerçants, professions libérales, indépendants et services aux entreprises de l'agglo Perpignan sud-ouest.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Toulouges (66). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, commerçants, professions libérales, indépendants et services aux entreprises de l'agglo Perpignan sud-ouest.",
+  seoHook: "tertiaires périurbaines",
   ecosystemFr:
     "Toulouges est une commune résidentielle dynamique au sud-ouest de Perpignan, intégrée à Perpignan Méditerranée Métropole. Zones d'activités, PME tertiaires, TPE artisanat, commerces, professions libérales. Proximité directe Perpignan, Le Soler, Canohès.",
   ecosystemEn:

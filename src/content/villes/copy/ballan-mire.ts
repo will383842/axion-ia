@@ -12,6 +12,7 @@ export const BALLAN_MIRE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ballan-Miré (37). Nous accompagnons tous types d'activités : TPE artisans BTP, PME tertiaires de Tours Métropole sud-ouest, commerçants, professions libérales et services aux entreprises ballanais.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ballan-Miré (37). Nous accompagnons tous types d'activités : TPE artisans BTP, PME tertiaires de Tours Métropole sud-ouest, commerçants, professions libérales et services aux entreprises ballanais.",
+  seoHook: "tertiaires services & professions libérales",
   ecosystemFr:
     "Ballan-Miré est une commune résidentielle du sud-ouest de Tours Métropole, prisée pour son cadre verdoyant. Tissu TPE artisanat BTP, PME tertiaires et services, commerces de proximité, professions libérales, économie péri-urbaine Tours.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const BRESSUIRE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bressuire (79). Nous accompagnons TPE, PME et industriels du bocage bressuirais : agroalimentaire, élevage, industrie, artisanat, commerces. Audit Flash à partir de 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bressuire (79). Nous accompagnons TPE, PME et industriels du bocage bressuirais : agroalimentaire, élevage, industrie, artisanat, commerces. Audit Flash à partir de 490 € HT.",
+  seoHook: "agroalimentaire & élevage agriculture",
   ecosystemFr:
     "Bressuire est sous-préfecture des Deux-Sèvres, 19 970 habitants, capitale du bocage bressuirais. Pôle agroalimentaire majeur (abattoirs, transformation viande bovine/volaille, laiteries coopératives), PME industrielles (métallurgie, plasturgie), TPE artisans, commerces de centre-ville et services de santé.",
   ecosystemEn:

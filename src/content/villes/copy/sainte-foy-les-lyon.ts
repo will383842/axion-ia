@@ -14,6 +14,7 @@ export const SAINTE_FOY_LES_LYON_COPY: VilleCopy = {
     "À Sainte-Foy-lès-Lyon, Axion-IA propose des services adaptés aux entreprises locales. Avec des établissements actifs dans le commerce de détail et la programmation informatique, la ville est proche de Lyonbiopôle, un pôle de compétitivité en santé. Nos interventions incluent audits, implémentations et formations, adaptés aux besoins spécifiques des entreprises de la région.",
   directAnswerEn:
     "À Sainte-Foy-lès-Lyon, Axion-IA propose des services adaptés aux entreprises locales. Avec des établissements actifs dans le commerce de détail et la programmation informatique, la ville est proche de Lyonbiopôle, un pôle de compétitivité en santé. Nos interventions incluent audits, implémentations et formations, adaptés aux besoins spécifiques des entreprises de la région.",
+  seoHook: "commerce détail & santé humaine",
   ecosystemFr:
     "Sainte-Foy-lès-Lyon se distingue par ses secteurs de commerce de détail et de programmation informatique. Proche de Lyonbiopôle, elle offre un environnement propice aux entreprises cherchant à intégrer des solutions IA.",
   ecosystemEn:

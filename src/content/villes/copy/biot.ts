@@ -12,6 +12,7 @@ export const BIOT_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Biot (06). Nous accompagnons tous types d'activités : TPE artisans d'art (verrerie, céramique), startups tech Sophia Antipolis, PME R&D, acteurs tourisme culturel et commerces du village provençal.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Biot (06). Nous accompagnons tous types d'activités : TPE artisans d'art (verrerie, céramique), startups tech Sophia Antipolis, PME R&D, acteurs tourisme culturel et commerces du village provençal.",
+  seoHook: "artisanat d'art & tech startups",
   ecosystemFr:
     "Biot réunit deux pôles économiques distincts : le village historique (verrerie d'art soufflé — tradition depuis 1956, Musée national Fernand Léger, galeries, artisanat) et la zone Sophia Antipolis (tech, R&D, startups). La commune abrite plusieurs centres de recherche du technopôle. Tourisme culturel et gastronomique actif toute l'année.",
   ecosystemEn:

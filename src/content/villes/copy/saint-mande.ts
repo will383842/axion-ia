@@ -14,6 +14,7 @@ export const SAINT_MANDE_COPY: VilleCopy = {
     "Axion-IA intervient à Saint-Mandé pour répondre aux besoins des entreprises locales. Avec une proximité de Paris, où se trouvent des acteurs comme LVMH et BNP Paribas, nous offrons des audits, interventions et implémentations IA sur site. Nos services incluent l'automatisation de tâches administratives et la formation des équipes pour une intégration fluide de l'IA.",
   directAnswerEn:
     "Axion-IA intervient à Saint-Mandé pour répondre aux besoins des entreprises locales. Avec une proximité de Paris, où se trouvent des acteurs comme LVMH et BNP Paribas, nous offrons des audits, interventions et implémentations IA sur site. Nos services incluent l'automatisation de tâches administratives et la formation des équipes pour une intégration fluide de l'IA.",
+  seoHook: "commerce détail & programmation informatique",
   ecosystemFr:
     "Saint-Mandé, avec ses 2 000 établissements actifs, bénéficie de la proximité de Paris, un pôle économique majeur abritant des entreprises comme LVMH et BNP Paribas. Les entreprises locales peuvent ainsi s'inspirer de cet environnement pour intégrer l'IA dans leurs opérations.",
   ecosystemEn:

@@ -14,6 +14,7 @@ export const SAVIGNY_LE_TEMPLE_COPY: VilleCopy = {
     "À Savigny-le-Temple, Axion-IA propose des interventions sur site adaptées aux besoins spécifiques des entreprises locales. Grâce à notre expertise, nous aidons à intégrer des solutions IA performantes. Le tissu économique régional, comprenant des acteurs comme LVMH et BNP Paribas, bénéficie d'un environnement stimulant pour l'innovation. Nos interventions visent à optimiser les processus internes et à améliorer l'efficacité opérationnelle.",
   directAnswerEn:
     "À Savigny-le-Temple, Axion-IA propose des interventions sur site adaptées aux besoins spécifiques des entreprises locales. Grâce à notre expertise, nous aidons à intégrer des solutions IA performantes. Le tissu économique régional, comprenant des acteurs comme LVMH et BNP Paribas, bénéficie d'un environnement stimulant pour l'innovation. Nos interventions visent à optimiser les processus internes et à améliorer l'efficacité opérationnelle.",
+  seoHook: "commerce détail & construction",
   ecosystemFr:
     "Savigny-le-Temple est entourée d'un riche tissu économique, avec des entreprises telles que LVMH et BNP Paribas dans la région. Cet environnement offre de nombreuses opportunités pour l'innovation et le développement technologique.",
   ecosystemEn:

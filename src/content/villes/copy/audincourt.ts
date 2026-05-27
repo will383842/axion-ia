@@ -12,6 +12,7 @@ export const AUDINCOURT_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Audincourt (25). Nous accompagnons TPE et PME du Pays de Montbéliard : sous-traitants automobile, usineurs et mécaniciens de précision, métallurgistes, commerçants et prestataires services aux entreprises industrielles de l'agglomération.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Audincourt (25). Nous accompagnons TPE et PME du Pays de Montbéliard : sous-traitants automobile, usineurs et mécaniciens de précision, métallurgistes, commerçants et prestataires services aux entreprises industrielles de l'agglomération.",
+  seoHook: "sous-traitance automobile & usinage mécanique",
   ecosystemFr:
     "Audincourt est une commune industrielle du Pays de Montbéliard (14 071 habitants), au cœur d'un bassin historiquement lié à l'automobile. Économie structurée autour de la sous-traitance automobile, l'usinage de précision, la métallurgie et les services aux entreprises industrielles. En reconversion progressive vers l'industrie du futur et l'électromobilité.",
   ecosystemEn:

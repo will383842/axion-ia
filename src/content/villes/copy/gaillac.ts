@@ -12,6 +12,7 @@ export const GAILLAC_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gaillac (81). Nous accompagnons TPE viticoles, PME agroalimentaires, commerçants, artisans et professions libérales du Gaillacois. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gaillac (81). Nous accompagnons TPE viticoles, PME agroalimentaires, commerçants, artisans et professions libérales du Gaillacois. Audit Flash dès 490 € HT.",
+  seoHook: "viticulture oenologie & commerce détail",
   ecosystemFr:
     "Gaillac (16 162 hab) est la capitale historique de l'AOC Gaillac, le plus ancien vignoble de France. Économie structurée autour de la viticulture, de l'agroalimentaire, du tourisme oenotouristique et des commerces de centre-ville. Proximité Albi (25 min) et Toulouse (50 min via A68). Tissu TPE vignerons et caves coopératives, PME négoce et transformation, artisans, professions libérales.",
   ecosystemEn:

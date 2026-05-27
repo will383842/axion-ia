@@ -12,6 +12,7 @@ export const TOURVES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tourves (83). Nous accompagnons TPE artisans, PME viticoles, exploitations agricoles, professions libérales et commerces du Centre-Var. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tourves (83). Nous accompagnons TPE artisans, PME viticoles, exploitations agricoles, professions libérales et commerces du Centre-Var. Audit Flash dès 490 € HT.",
+  seoHook: "viticulture côtes & artisanat",
   ecosystemFr:
     "Tourves est positionnée dans le Centre-Var, sur l'axe Brignoles–Saint-Maximin, en bordure de l'A8. Commune dont l'activité économique repose sur la viticulture (AOP Côtes de Provence), les TPE artisans (BTP, services), PME tertiaires, exploitations agricoles et oléicoles, professions libérales et commerces de proximité. Bassin d'emploi double : Brignoles à l'est, Saint-Maximin à l'ouest.",
   ecosystemEn:

@@ -14,6 +14,7 @@ export const HENIN_BEAUMONT_COPY: VilleCopy = {
     "À Hénin-Beaumont, Axion-IA propose des services adaptés aux secteurs du commerce de détail et de la construction, dominés par des entreprises telles qu'Auchan et Carrefour. Nos interventions incluent des audits à partir de 490 € HT et des implémentations dès 990 € HT, garantissant une optimisation des processus sur site.",
   directAnswerEn:
     "À Hénin-Beaumont, Axion-IA propose des services adaptés aux secteurs du commerce de détail et de la construction, dominés par des entreprises telles qu'Auchan et Carrefour. Nos interventions incluent des audits à partir de 490 € HT et des implémentations dès 990 € HT, garantissant une optimisation des processus sur site.",
+  seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Le tissu économique d'Hénin-Beaumont est marqué par la présence d'Auchan et Carrefour. Le Parc d'Activités du Bord des Eaux contribue également à l'attractivité de la région pour les entreprises.",
   ecosystemEn:

@@ -14,6 +14,7 @@ export const GIVORS_COPY: VilleCopy = {
     "Axion-IA se déplace à Givors pour offrir des services d'IA opérationnelle. Avec des entreprises comme Carrefour et TotalEnergies présentes dans la région, nous aidons à automatiser les processus administratifs et de relance. Notre intervention commence à partir de 590 € HT, et nous proposons également des audits à partir de 490 € HT.",
   directAnswerEn:
     "Axion-IA se déplace à Givors pour offrir des services d'IA opérationnelle. Avec des entreprises comme Carrefour et TotalEnergies présentes dans la région, nous aidons à automatiser les processus administratifs et de relance. Notre intervention commence à partir de 590 € HT, et nous proposons également des audits à partir de 490 € HT.",
+  seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Givors bénéficie de la proximité de grands groupes tels que Carrefour et TotalEnergies, renforçant ainsi son tissu économique. La ZI de la Vallée du Gier est un centre d'activité important.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const MORIERES_LES_AVIGNON_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Morières-lès-Avignon (84). Nous accompagnons TPE artisans, PME commerciales, professions libérales, commerces et exploitations maraîchères du sud-est d'Avignon. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Morières-lès-Avignon (84). Nous accompagnons TPE artisans, PME commerciales, professions libérales, commerces et exploitations maraîchères du sud-est d'Avignon. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat & commerces négoces",
   ecosystemFr:
     "Morières-lès-Avignon est positionnée au sud-est immédiat d'Avignon, dans l'agglomération du Grand Avignon. Son économie repose sur les TPE artisans (BTP, services à la personne), les PME commerciales et négoces, les professions libérales (médecins, kinés, avocats), les commerces de proximité, ainsi que des exploitations maraîchères résiduelles. Bassin d'emploi connecté à Avignon TGV.",
   ecosystemEn:

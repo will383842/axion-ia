@@ -12,6 +12,7 @@ export const SAINT_BERTHEVIN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Berthevin (53). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et de services, commerçants, professions libérales, prestataires B2B et entreprises des zones d'activités de l'agglomération lavalloise est.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Berthevin (53). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et de services, commerçants, professions libérales, prestataires B2B et entreprises des zones d'activités de l'agglomération lavalloise est.",
+  seoHook: "industrie fabrication & services aux",
   ecosystemFr:
     "Saint-Berthevin est une commune résidentielle et économique de l'est de Laval Agglomération. Zones d'activités industrielles et commerciales, tissu PME diversifié (industrie, services aux entreprises, BTP, logistique). Proximité immédiate de Laval et du bassin d'emploi mayennais.",
   ecosystemEn:

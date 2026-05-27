@@ -12,6 +12,7 @@ export const ONET_LE_CHATEAU_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Onet-le-Château (12). Nous accompagnons TPE artisans, PME tertiaires et commerciales, professions libérales, commerçants et services de l'agglomération de Rodez. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Onet-le-Château (12). Nous accompagnons TPE artisans, PME tertiaires et commerciales, professions libérales, commerçants et services de l'agglomération de Rodez. Audit Flash dès 490 € HT.",
+  seoHook: "commerce détail & professions libérales",
   ecosystemFr:
     "Onet-le-Château est la première commune périurbaine de Rodez et l'un des pôles commerciaux majeurs de l'Aveyron. Zones d'activités tertiaires et commerciales (Cap de Crès, Bel-Air), PME services aux entreprises, TPE artisans BTP, professions libérales (santé, juridique), grande distribution. Bassin d'emploi dynamique en complément de Rodez centre.",
   ecosystemEn:

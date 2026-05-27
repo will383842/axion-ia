@@ -12,6 +12,7 @@ export const LE_MESNIL_SAINT_DENIS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Mesnil-Saint-Denis (78). Nous accompagnons TPE et PME : prestataires IT sud Yvelines, artisans du bâtiment, commerces de centre-ville, professions libérales et PME de services de cette commune résidentielle entre Trappes et Chevreuse.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Mesnil-Saint-Denis (78). Nous accompagnons TPE et PME : prestataires IT sud Yvelines, artisans du bâtiment, commerces de centre-ville, professions libérales et PME de services de cette commune résidentielle entre Trappes et Chevreuse.",
+  seoHook: "informatique conseil & artisanat bâtiment",
   ecosystemFr:
     "Le Mesnil-Saint-Denis est une commune résidentielle verdoyante du sud des Yvelines, entre Trappes et la vallée de Chevreuse. Cadre de vie prisé à 28 km de Paris. Tissu économique : TPE artisanat et services, PME informatique et conseil (proximité Technocentre Renault et Saint-Quentin-en-Yvelines), commerces de centre-bourg, professions libérales santé et juridique, entreprises de services à la personne.",
   ecosystemEn:

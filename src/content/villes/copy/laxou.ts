@@ -12,6 +12,7 @@ export const LAXOU_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Laxou (54). Nous accompagnons TPE et PME : sociétés tertiaires des zones d'activités, ESN, cabinets conseil, commerçants de zone, services aux entreprises, professions libérales de la Métropole Grand Nancy. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Laxou (54). Nous accompagnons TPE et PME : sociétés tertiaires des zones d'activités, ESN, cabinets conseil, commerçants de zone, services aux entreprises, professions libérales de la Métropole Grand Nancy. Audit Flash dès 490 € HT.",
+  seoHook: "tertiaires & esn services",
   ecosystemFr:
     "Laxou est une commune résidentielle et tertiaire de la Métropole du Grand Nancy (Meurthe-et-Moselle). Tissu TPE/PME tertiaires, ESN, cabinets conseil, commerces de zone et de proximité, services aux entreprises, professions libérales adossés au bassin économique nancéien.",
   ecosystemEn:

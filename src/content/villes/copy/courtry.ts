@@ -12,6 +12,7 @@ export const COURTRY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Courtry (77). Nous accompagnons TPE et PME : artisans et entreprises BTP, commerçants de proximité, prestataires services à la personne, professions libérales et entreprises de services. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Courtry (77). Nous accompagnons TPE et PME : artisans et entreprises BTP, commerçants de proximité, prestataires services à la personne, professions libérales et entreprises de services. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat & services personne",
   ecosystemFr:
     "Courtry est une commune résidentielle du nord-ouest de la Seine-et-Marne, entre Meaux et l'aéroport Roissy-CDG. Le tissu économique repose sur des TPE et PME : artisanat BTP, commerces de proximité, services à la personne, professions libérales. Accès N3 et proximité A104 (Francilienne).",
   ecosystemEn:

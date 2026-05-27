@@ -12,6 +12,7 @@ export const FOS_SUR_MER_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fos-sur-Mer (13). Nous accompagnons TPE artisans, sous-traitants sidérurgie/pétrochimie, PME logistiques, transporteurs portuaires et commerces du bassin de Fos. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fos-sur-Mer (13). Nous accompagnons TPE artisans, sous-traitants sidérurgie/pétrochimie, PME logistiques, transporteurs portuaires et commerces du bassin de Fos. Audit Flash dès 490 € HT.",
+  seoHook: "logistique portuaire & sidérurgie pétrochimie",
   ecosystemFr:
     "Fos-sur-Mer accueille le bassin ouest du Grand Port Maritime de Marseille (Fos2XL, terminaux conteneurs, terminaux pétroliers, GNL). Sidérurgie (haut-fourneau ArcelorMittal), pétrochimie, raffineries, logistique conteneurs, transport routier et ferroviaire. Tissu de TPE artisans, sous-traitants industriels et PME de services portuaires.",
   ecosystemEn:

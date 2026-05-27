@@ -12,6 +12,7 @@ export const SENAS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sénas (13). Nous accompagnons TPE agricoles, artisans BTP, transporteurs, PME logistique et commerçants de la vallée de la Durance. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sénas (13). Nous accompagnons TPE agricoles, artisans BTP, transporteurs, PME logistique et commerçants de la vallée de la Durance. Audit Flash dès 490 € HT.",
+  seoHook: "agriculture maraîchage & logistique transport",
   ecosystemFr:
     "Sénas est une commune de la vallée de la Durance, au carrefour de l'A7 (autoroute du Soleil) et de la RD7n. Économie mixte agriculture (vergers, maraîchage Durance), logistique et transport (nœud autoroutier), artisanat BTP et commerces de proximité. Zone d'activités en développement.",
   ecosystemEn:

@@ -14,6 +14,7 @@ export const DUNKERQUE_COPY: VilleCopy = {
     "À Dunkerque, Axion-IA accompagne les entreprises dans l'optimisation de leurs processus grâce à l'IA. La ville abrite des géants industriels tels qu'ArcelorMittal et TotalEnergies, et bénéficie de pôles de compétitivité comme i-Trans et Team2. Nos interventions sur site permettent de répondre aux enjeux spécifiques de ce tissu économique unique.",
   directAnswerEn:
     "À Dunkerque, Axion-IA accompagne les entreprises dans l'optimisation de leurs processus grâce à l'IA. La ville abrite des géants industriels tels qu'ArcelorMittal et TotalEnergies, et bénéficie de pôles de compétitivité comme i-Trans et Team2. Nos interventions sur site permettent de répondre aux enjeux spécifiques de ce tissu économique unique.",
+  seoHook: "métallurgie & cokéfaction",
   ecosystemFr:
     "Dunkerque est un centre industriel majeur avec ArcelorMittal et Dunkerque LNG. Les pôles i-Trans et Team2 renforcent l'innovation dans les transports et le recyclage.",
   ecosystemEn:

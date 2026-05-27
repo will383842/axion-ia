@@ -12,6 +12,7 @@ export const TRAPPES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trappes (78) et tout le bassin Saint-Quentin-en-Yvelines. Nous accompagnons les industriels automobiles et sous-traitants, opérateurs logistiques, PME tertiaires et entreprises de services sur leurs cas IA opérationnels — diagnostic chiffré, démos sur données réelles, plan d'action.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trappes (78) et tout le bassin Saint-Quentin-en-Yvelines. Nous accompagnons les industriels automobiles et sous-traitants, opérateurs logistiques, PME tertiaires et entreprises de services sur leurs cas IA opérationnels — diagnostic chiffré, démos sur données réelles, plan d'action.",
+  seoHook: "industrie automobile & logistique transport",
   ecosystemFr:
     "Trappes s'insère dans le tissu industriel et tertiaire de Saint-Quentin-en-Yvelines, agglomération de 200 000 habitants. Proximité immédiate du Technocentre Renault (Guyancourt), des sièges Bouygues Construction, Nexter, et tissu sous-traitants automobile/défense. Hub logistique nord-Yvelines.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const CORMONTREUIL_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cormontreuil (51). Nous accompagnons TPE et PME : commerces de zone d'activités, prestataires logistiques, artisans BTP, entreprises agroalimentaires, sociétés tertiaires de l'agglomération rémoise. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cormontreuil (51). Nous accompagnons TPE et PME : commerces de zone d'activités, prestataires logistiques, artisans BTP, entreprises agroalimentaires, sociétés tertiaires de l'agglomération rémoise. Audit Flash dès 490 € HT.",
+  seoHook: "commerce détail & logistique transport",
   ecosystemFr:
     "Cormontreuil est une commune résidentielle et commerciale au sud de Reims, adossée à des zones d'activités le long de la RN51. Tissu TPE/PME : commerce, logistique, BTP, agroalimentaire, services tertiaires. Proximité immédiate du vignoble champenois.",
   ecosystemEn:

@@ -14,6 +14,7 @@ export const LIMEIL_BREVANNES_COPY: VilleCopy = {
     "À Limeil-Brévannes, Axion-IA déploie son expertise en IA pour optimiser les processus métiers. Avec des voisins économiques comme Créteil et Bonneuil-sur-Marne, la région offre un environnement propice à l'innovation. Nous proposons des audits et interventions sur site, s'adaptant aux spécificités de chaque entreprise, sans lien direct avec des entités comme Cap Digital ou Station F.",
   directAnswerEn:
     "À Limeil-Brévannes, Axion-IA déploie son expertise en IA pour optimiser les processus métiers. Avec des voisins économiques comme Créteil et Bonneuil-sur-Marne, la région offre un environnement propice à l'innovation. Nous proposons des audits et interventions sur site, s'adaptant aux spécificités de chaque entreprise, sans lien direct avec des entités comme Cap Digital ou Station F.",
+  seoHook: "commerce gros & transports terrestres",
   ecosystemFr:
     "Limeil-Brévannes est entourée de communes comme Villeneuve-Saint-Georges et Boissy-Saint-Léger. Le commerce de gros et les transports terrestres dominent l'économie locale.",
   ecosystemEn:

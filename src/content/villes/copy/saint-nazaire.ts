@@ -14,6 +14,7 @@ export const SAINT_NAZAIRE_COPY: VilleCopy = {
     "À Saint-Nazaire, Axion-IA accompagne les entreprises dans l'optimisation de leurs processus. Avec des acteurs industriels comme les Chantiers de l'Atlantique et Airbus, nous proposons des audits à partir de 490 € HT et des interventions dès 590 € HT. Nos solutions s'adaptent aux spécificités locales pour répondre aux besoins des TPE, PME, ETI et grandes entreprises.",
   directAnswerEn:
     "À Saint-Nazaire, Axion-IA accompagne les entreprises dans l'optimisation de leurs processus. Avec des acteurs industriels comme les Chantiers de l'Atlantique et Airbus, nous proposons des audits à partir de 490 € HT et des interventions dès 590 € HT. Nos solutions s'adaptent aux spécificités locales pour répondre aux besoins des TPE, PME, ETI et grandes entreprises.",
+  seoHook: "construction navale & réparation machines",
   ecosystemFr:
     "Le tissu économique de Saint-Nazaire inclut des géants comme Airbus et les Chantiers de l'Atlantique, soutenu par le Pôle EMC2 pour les technologies avancées de production.",
   ecosystemEn:

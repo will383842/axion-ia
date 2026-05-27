@@ -14,6 +14,7 @@ export const LAON_COPY: VilleCopy = {
     "Axion-IA se déplace à Laon pour offrir des services d'IA adaptés aux besoins des entreprises locales. La région des Hauts-de-France, avec ses 2 000 établissements actifs, bénéficie d'un tissu économique diversifié. Nous proposons des audits et interventions sur site pour automatiser les tâches administratives et améliorer l'efficacité des processus, en nous inspirant des pratiques observées dans des pôles tels que Cap Digital et Inria.",
   directAnswerEn:
     "Axion-IA se déplace à Laon pour offrir des services d'IA adaptés aux besoins des entreprises locales. La région des Hauts-de-France, avec ses 2 000 établissements actifs, bénéficie d'un tissu économique diversifié. Nous proposons des audits et interventions sur site pour automatiser les tâches administratives et améliorer l'efficacité des processus, en nous inspirant des pratiques observées dans des pôles tels que Cap Digital et Inria.",
+  seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Le tissu économique de Laon est enrichi par la proximité de pôles tels que Cap Digital et Inria, qui influencent les pratiques technologiques locales.",
   ecosystemEn:

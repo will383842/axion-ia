@@ -12,6 +12,7 @@ export const SAINT_AFFRIQUE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Affrique (12). Nous accompagnons TPE artisans, PME agroalimentaires de la filière Roquefort, commerçants, professions libérales, acteurs du tourisme vert Grands Causses et services du sud Aveyron. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Affrique (12). Nous accompagnons TPE artisans, PME agroalimentaires de la filière Roquefort, commerçants, professions libérales, acteurs du tourisme vert Grands Causses et services du sud Aveyron. Audit Flash dès 490 € HT.",
+  seoHook: "agroalimentaire filière & élevage ovin",
   ecosystemFr:
     "Saint-Affrique est le pôle urbain du sud Aveyron, dans la vallée de la Sorgue, à proximité immédiate de Roquefort-sur-Soulzon (caves Roquefort). Économie structurée autour de l'agroalimentaire (filière laitière Roquefort AOP, charcuterie, produits du terroir), de l'élevage ovin, du commerce de centre-ville, des professions libérales et du tourisme vert (Parc naturel régional des Grands Causses).",
   ecosystemEn:

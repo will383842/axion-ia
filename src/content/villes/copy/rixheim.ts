@@ -12,6 +12,7 @@ export const RIXHEIM_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rixheim (68). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants, professions libérales et indépendants de l'est de Mulhouse, terre historique du papier peint. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rixheim (68). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants, professions libérales et indépendants de l'est de Mulhouse, terre historique du papier peint. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
+  seoHook: "industrie édition & sous-traitance mécanique",
   ecosystemFr:
     "Rixheim est une commune dynamique de Mulhouse Alsace Agglomération (m2A), à l'est de Mulhouse, héritière d'une riche tradition manufacturière (papier peint, musée du papier peint dans la commanderie). Tissu TPE artisans BTP, PME industrielles (édition impression, sous-traitance mécanique, agroalimentaire), PME de services aux entreprises, commerces de proximité, professions libérales (santé, juridique) et indépendants.",
   ecosystemEn:

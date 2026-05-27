@@ -12,6 +12,7 @@ export const MEXIMIEUX_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Meximieux (01). Nous accompagnons tous types d'activités : PME tertiaires et industrielles plaine de l'Ain, TPE artisans BTP, commerçants, agriculteurs, indépendants et services aux entreprises.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Meximieux (01). Nous accompagnons tous types d'activités : PME tertiaires et industrielles plaine de l'Ain, TPE artisans BTP, commerçants, agriculteurs, indépendants et services aux entreprises.",
+  seoHook: "tertiaires plaine & industrielles",
   ecosystemFr:
     "Meximieux est positionnée sur la Côtière est de Lyon, plaine de l'Ain. Tissu PME tertiaires et industrielles, agriculture plaine de l'Ain, TPE artisanat BTP, commerces.",
   ecosystemEn:

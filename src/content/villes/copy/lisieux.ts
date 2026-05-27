@@ -12,6 +12,7 @@ export const LISIEUX_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lisieux (14). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles, producteurs agroalimentaires normands (fromages AOP, cidre), professionnels du tourisme et pèlerinage, commerçants et indépendants du Pays d'Auge.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lisieux (14). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles, producteurs agroalimentaires normands (fromages AOP, cidre), professionnels du tourisme et pèlerinage, commerçants et indépendants du Pays d'Auge.",
+  seoHook: "agroalimentaire normand & tourisme pèlerinage",
   ecosystemFr:
     "Lisieux est sous-préfecture du Calvados, deuxième ville du département, porte du Pays d'Auge. Pôle de pèlerinage majeur (basilique Sainte-Thérèse, 2e lieu de pèlerinage de France). Tissu agroalimentaire normand (fromages AOP Pont-l'Évêque/Livarot, cidreries), PME industrielles, TPE artisans, tourisme religieux et culturel, commerces de centre-ville.",
   ecosystemEn:

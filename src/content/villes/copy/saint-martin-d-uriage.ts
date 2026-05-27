@@ -12,6 +12,7 @@ export const SAINT_MARTIN_D_URIAGE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Martin-d'Uriage (38). Nous accompagnons tous types d'activités : acteurs du thermalisme et tourisme Uriage-les-Bains, TPE artisans BTP, commerçants, agriculteurs/éleveurs montagne, professions libérales et services aux entreprises du Grésivaudan oriental Belledonne.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Martin-d'Uriage (38). Nous accompagnons tous types d'activités : acteurs du thermalisme et tourisme Uriage-les-Bains, TPE artisans BTP, commerçants, agriculteurs/éleveurs montagne, professions libérales et services aux entreprises du Grésivaudan oriental Belledonne.",
+  seoHook: "thermalisme santé & hôtellerie restauration",
   ecosystemFr:
     "Saint-Martin-d'Uriage est positionnée sur les contreforts du massif de Belledonne, à l'est de Grenoble. La station d'Uriage-les-Bains (établissement thermal historique, soins dermatologiques et rhumatologiques) constitue le pivot économique local. Tissu PME thermalisme/hôtellerie, TPE artisans BTP, agriculture/élevage montagne, commerces. Position vers stations de ski Chamrousse.",
   ecosystemEn:

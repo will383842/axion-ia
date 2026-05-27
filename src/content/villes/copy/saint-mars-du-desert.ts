@@ -12,6 +12,7 @@ export const SAINT_MARS_DU_DESERT_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Mars-du-Désert (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires, exploitations agricoles, professions libérales et services de proximité du nord-est de l'agglomération nantaise.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Mars-du-Désert (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires, exploitations agricoles, professions libérales et services de proximité du nord-est de l'agglomération nantaise.",
+  seoHook: "artisanat commerce & tertiaires services",
   ecosystemFr:
     "Saint-Mars-du-Désert est une commune résidentielle dynamique au nord-est de Nantes, sur l'axe Nantes-Ancenis. Agriculture, artisanat, commerces de proximité. Tissu TPE artisans, commerçants, PME tertiaires, exploitations agricoles et professions libérales. Croissance démographique soutenue.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const THORIGNE_FOUILLARD_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thorigné-Fouillard (35). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, PME de services et tertiaire nord-est Rennes, professions libérales de santé, indépendants et prestataires de Rennes Métropole.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thorigné-Fouillard (35). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, PME de services et tertiaire nord-est Rennes, professions libérales de santé, indépendants et prestataires de Rennes Métropole.",
+  seoHook: "artisanat services & commerce proximité",
   ecosystemFr:
     "Thorigné-Fouillard est une commune résidentielle du nord-est de Rennes Métropole, en croissance démographique constante. L'économie locale repose sur les TPE artisans BTP, le commerce de proximité, les PME de services et tertiaire, les professions libérales de santé et les indépendants. Proximité directe de Cesson-Sévigné (technopole Atalante) et du centre de Rennes.",
   ecosystemEn:

@@ -14,6 +14,7 @@ export const HEROUVILLE_SAINT_CLAIR_COPY: VilleCopy = {
     "À Hérouville-Saint-Clair, Axion-IA accompagne les entreprises dans l'adoption de l'IA pour optimiser leurs opérations. Le Parc Tertiaire de la Bijude et l'Université de Caen Normandie sont des éléments clés de l'écosystème local. Nos interventions sur site permettent d'automatiser des tâches administratives et d'améliorer l'efficacité des processus métiers.",
   directAnswerEn:
     "À Hérouville-Saint-Clair, Axion-IA accompagne les entreprises dans l'adoption de l'IA pour optimiser leurs opérations. Le Parc Tertiaire de la Bijude et l'Université de Caen Normandie sont des éléments clés de l'écosystème local. Nos interventions sur site permettent d'automatiser des tâches administratives et d'améliorer l'efficacité des processus métiers.",
+  seoHook: "commerce détail & programmation informatique",
   ecosystemFr:
     "Hérouville-Saint-Clair abrite des groupes comme E.Leclerc et Orange, enrichissant son tissu économique. Le Parc Tertiaire de la Bijude est un centre d'activités majeur.",
   ecosystemEn:

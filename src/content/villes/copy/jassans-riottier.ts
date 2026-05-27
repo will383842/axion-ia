@@ -12,6 +12,7 @@ export const JASSANS_RIOTTIER_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jassans-Riottier (01). Nous accompagnons tous types d'activités : PME tertiaires val de Saône, TPE artisans BTP, commerçants, professions libérales et services aux entreprises.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jassans-Riottier (01). Nous accompagnons tous types d'activités : PME tertiaires val de Saône, TPE artisans BTP, commerçants, professions libérales et services aux entreprises.",
+  seoHook: "tertiaires val",
   ecosystemFr:
     "Jassans-Riottier est face à Villefranche-sur-Saône (rive gauche Saône), val de Saône Ain. Tissu péri-urbain : PME tertiaires, professions libérales, TPE artisanat BTP, commerces.",
   ecosystemEn:

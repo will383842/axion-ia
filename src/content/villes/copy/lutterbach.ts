@@ -12,6 +12,7 @@ export const LUTTERBACH_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lutterbach (68). Nous accompagnons tous types d'activités : TPE artisanat et commerce, PME industrie et services, professions libérales, commerçants et indépendants de l'agglomération mulhousienne. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lutterbach (68). Nous accompagnons tous types d'activités : TPE artisanat et commerce, PME industrie et services, professions libérales, commerçants et indépendants de l'agglomération mulhousienne. Audit Flash dès 490 € HT.",
+  seoHook: "industrie manufacturière & artisanat commerce",
   ecosystemFr:
     "Lutterbach est une commune dynamique de la banlieue nord-ouest de Mulhouse, intégrée à Mulhouse Alsace Agglomération (m2A). Son tissu économique mêle TPE artisanat et commerce, PME industrie et services, commerces de proximité, professions libérales et entreprises du tertiaire. Proximité directe avec Mulhouse, Wittenheim, Pfastatt et Reiningue.",
   ecosystemEn:

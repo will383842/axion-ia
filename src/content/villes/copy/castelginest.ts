@@ -12,6 +12,7 @@ export const CASTELGINEST_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Castelginest (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord de Toulouse. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Castelginest (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord de Toulouse. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat & logistique transport",
   ecosystemFr:
     "Castelginest est une commune résidentielle et économique du nord de Toulouse. Tissu TPE artisans, PME de services et logistique, commerces centre-bourg, professions libérales. Proximité de l'axe A62 et des zones d'emploi nord toulousaines.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const VALBONNE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Valbonne (06). Nous accompagnons tous types d'activités : startups tech et IA de Sophia Antipolis, TPE/PME R&D, biotech, éditeurs logiciels, services numériques, professions libérales et commerces du village provençal.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Valbonne (06). Nous accompagnons tous types d'activités : startups tech et IA de Sophia Antipolis, TPE/PME R&D, biotech, éditeurs logiciels, services numériques, professions libérales et commerces du village provençal.",
+  seoHook: "tech startups & r&d biotech",
   ecosystemFr:
     "Valbonne héberge le cœur de la technopôle Sophia Antipolis, première d'Europe (créée 1969, 2 500+ entreprises, 38 000 emplois). Pôles d'excellence : IA, IoT, biotech, télécoms (siège W3C Europe, INRIA, CNRS, EURECOM). Tissu dense de startups, PME tech et centres R&D multinationaux. Le village provençal historique (place des Arcades, abbaye) attire tourisme culturel et commerces de proximité.",
   ecosystemEn:

@@ -14,6 +14,7 @@ export const VIRY_CHATILLON_COPY: VilleCopy = {
     "À Viry-Châtillon, Axion-IA offre des solutions IA opérationnelles pour les entreprises locales. Avec des acteurs comme LVMH et BNP Paribas dans l'écosystème parisien, nous intervenons pour automatiser devis, relances et reporting. Nos services incluent des audits à partir de 490 € HT et des interventions dès 590 € HT, disponibles sur notre site.",
   directAnswerEn:
     "À Viry-Châtillon, Axion-IA offre des solutions IA opérationnelles pour les entreprises locales. Avec des acteurs comme LVMH et BNP Paribas dans l'écosystème parisien, nous intervenons pour automatiser devis, relances et reporting. Nos services incluent des audits à partir de 490 € HT et des interventions dès 590 € HT, disponibles sur notre site.",
+  seoHook: "commerce détail & construction",
   ecosystemFr:
     "Viry-Châtillon bénéficie de la proximité d'entreprises notables comme LVMH et BNP Paribas. Ce contexte économique dynamique offre un terreau fertile pour l'innovation et l'implémentation de solutions IA.",
   ecosystemEn:

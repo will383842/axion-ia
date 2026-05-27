@@ -12,6 +12,7 @@ export const EVIAN_LES_BAINS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Évian-les-Bains (74). Nous accompagnons TPE et PME : acteurs thermalisme et eau minérale, hôteliers de luxe lac Léman, commerçants, organisateurs événementiel (golf, congrès), prestataires tourisme prestige.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Évian-les-Bains (74). Nous accompagnons TPE et PME : acteurs thermalisme et eau minérale, hôteliers de luxe lac Léman, commerçants, organisateurs événementiel (golf, congrès), prestataires tourisme prestige.",
+  seoHook: "thermalisme eau & tourisme lacustre",
   ecosystemFr:
     "Évian-les-Bains est une station thermale et lacustre prestigieuse sur le lac Léman, mondialement connue pour ses eaux minérales. Tissu thermalisme (thermes, cures), hôtellerie de luxe (Royal, Ermitage), tourisme lacustre prestige, événementiel haut de gamme (golf, congrès), TPE commerces.",
   ecosystemEn:

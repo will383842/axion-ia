@@ -12,6 +12,7 @@ export const SAINT_JULIEN_LES_VILLAS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Julien-les-Villas (10). Nous accompagnons TPE et PME : sociétés tertiaires agglo Troyes, commerçants de zone, artisans BTP, services aux entreprises, professions libérales. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Julien-les-Villas (10). Nous accompagnons TPE et PME : sociétés tertiaires agglo Troyes, commerçants de zone, artisans BTP, services aux entreprises, professions libérales. Audit Flash dès 490 € HT.",
+  seoHook: "tertiaires & commerce zone",
   ecosystemFr:
     "Saint-Julien-les-Villas est une commune résidentielle de l'agglomération Troyes Champagne Métropole (Aube). Tissu TPE/PME tertiaires, commerces de zone et de proximité, services aux entreprises, artisanat BTP, professions libérales adossés au bassin économique troyen.",
   ecosystemEn:

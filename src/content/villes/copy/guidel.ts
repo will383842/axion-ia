@@ -12,6 +12,7 @@ export const GUIDEL_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guidel (56). Nous accompagnons TPE et PME : tourisme balnéaire et hôtellerie-restauration de Guidel-Plages, commerces, artisans, BTP, services, nautisme, agriculteurs de l'agglomération de Lorient. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guidel (56). Nous accompagnons TPE et PME : tourisme balnéaire et hôtellerie-restauration de Guidel-Plages, commerces, artisans, BTP, services, nautisme, agriculteurs de l'agglomération de Lorient. Audit Flash dès 490 € HT.",
+  seoHook: "tourisme balnéaire & artisanat",
   ecosystemFr:
     "Guidel est une commune littorale morbihannaise de Lorient Agglomération, connue pour ses plages (Guidel-Plages, Le Loc'h) et son cadre de vie. Tissu TPE/PME : tourisme balnéaire, hôtellerie-restauration, commerce, artisanat, BTP, services, nautisme, agriculture.",
   ecosystemEn:

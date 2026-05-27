@@ -12,6 +12,7 @@ export const SAINT_PIERRE_D_IRUBE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Pierre-d'Irube (64). Nous accompagnons TPE, PME et artisans de l'agglomération bayonnaise : services, artisanat, commerces, professions libérales. Audit Flash à partir de 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Pierre-d'Irube (64). Nous accompagnons TPE, PME et artisans de l'agglomération bayonnaise : services, artisanat, commerces, professions libérales. Audit Flash à partir de 490 € HT.",
+  seoHook: "restauration",
   ecosystemFr:
     "Saint-Pierre-d'Irube est une commune résidentielle de 5 900 habitants dans l'agglomération bayonnaise. Tissu de TPE artisans BTP, PME de services aux entreprises, commerces de proximité, professions libérales et quelques zones d'activités. Bassin d'emploi commun Bayonne-Anglet-Biarritz.",
   ecosystemEn:

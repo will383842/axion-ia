@@ -139,14 +139,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const isFr = locale === "fr";
   const isPilot = !!ville.copy;
 
-  // Title sectoriel par ville (Sprint Anti-Boilerplate 2026-05-26) : si la ville
-  // expose `copy.seoHook`, on remplace le suffixe générique par un hook
-  // sectoriel court (anti-CTR plat + signal Google).
+  // Title : 5 services explicites + seoHook sectoriel ville (Audit Will 2026-05-27).
+  // Pattern : "[Ville] · IA pour entreprises · audit, formation, implémentation [hook]"
+  // Cible 55-65 chars. Si seoHook présent : remplace par hook sectoriel.
   const seoHook = ville.copy?.seoHook?.trim();
-  const titleSuffix = seoHook ? `Architectes IA · ${seoHook}` : "Architectes IA seniors";
-  const title = isPilot
-    ? `${ville.nameFr} (${ville.departementLabel ?? ville.departement}) · ${titleSuffix}`
-    : `${ville.nameFr} · Architectes IA seniors (${region.nameFr})`;
+  const titleFr = seoHook
+    ? `${ville.nameFr} (${ville.departementLabel ?? ville.departement}) · IA pour entreprises · ${seoHook}`
+    : `${ville.nameFr} (${ville.departementLabel ?? ville.departement}) · Audit, formation & implémentation IA`;
+  const titleEn = seoHook
+    ? `${ville.nameFr} (${ville.departementLabel ?? ville.departement}) · AI for businesses · ${seoHook}`
+    : `${ville.nameFr} (${ville.departementLabel ?? ville.departement}) · AI audit, training & implementation`;
+  const title = isFr ? titleFr : titleEn;
 
   // Description ≤ 155 chars (cible Google SERP — au-delà → tronqué).
   const truncateForSerp = (s: string, max = 155): string => {
@@ -155,13 +158,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const lastSpace = cut.lastIndexOf(" ");
     return (lastSpace > max * 0.7 ? cut.slice(0, lastSpace) : cut).trimEnd() + "…";
   };
+  // Description : si pilote (copy.directAnswer) → directAnswer ville-spécifique.
+  // Sinon : pattern explicitant les 5 services Axion-IA + ville + secteur(s) hook.
+  // Audit Will 2026-05-27 : éviter description boilerplate, utiliser seoHook pour
+  // différencier les 1842 villes qui ont un hook sectoriel auto-généré.
+  const fallbackFr = seoHook
+    ? `Axion-IA à ${ville.nameFr} (${region.nameFr}) : audit IA, formation, implémentation, coaching 1-to-1 et plateformes web/SaaS pour ${seoHook}. TPE, PME, ETI.`
+    : `Axion-IA à ${ville.nameFr} (${region.nameFr}) : audit IA, formation à l'IA, implémentation, coaching 1-to-1 dirigeants et plateformes web/SaaS IA. TPE, PME, ETI.`;
+  const fallbackEn = seoHook
+    ? `Axion-IA in ${ville.nameFr} (${region.nameFr}): AI audit, training, implementation, 1-to-1 coaching and AI web/SaaS platforms for ${seoHook}. SMBs, mid-market.`
+    : `Axion-IA in ${ville.nameFr} (${region.nameFr}): AI audit, training, implementation, 1-to-1 executive coaching and AI web/SaaS platforms. SMBs, mid-market.`;
   const rawDescription = isPilot
     ? isFr
-      ? (ville.copy?.directAnswerFr ?? ville.copy?.pitchFr ?? "")
-      : (ville.copy?.directAnswerEn ?? ville.copy?.pitchEn ?? "")
+      ? (ville.copy?.directAnswerFr ?? ville.copy?.pitchFr ?? fallbackFr)
+      : (ville.copy?.directAnswerEn ?? ville.copy?.pitchEn ?? fallbackEn)
     : isFr
-      ? `Axion-IA intervient à ${ville.nameFr} (${region.nameFr}). 5 services : audit IA, formations et interventions sur site, implémentation, accompagnement 1-to-1 dirigeants, sites web et plateformes SaaS IA. Réservation en ligne.`
-      : `Axion-IA operates in ${ville.nameFr} (${region.nameFr}). 5 modules: AI audit, on-site, implementation, 1-to-1, AI-augmented websites. Direct online booking.`;
+      ? fallbackFr
+      : fallbackEn;
   const description = truncateForSerp(rawDescription, 155);
 
   const meta = buildProductMetadata({
@@ -479,38 +492,41 @@ export default async function VilleHubPage({ params }: Props) {
                   aria-hidden="true"
                   className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
                 />
-                {isFr ? `Architectes IA · ${ville.nameFr}` : `AI architects · ${ville.nameFr}`}
+                {isFr
+                  ? `Experts IA pour entreprises · ${ville.nameFr}`
+                  : `AI experts for businesses · ${ville.nameFr}`}
               </p>
+              {/* H1 hero reformulé Will 2026-05-27 (audit perfection) — wording
+                  orienté valeur explicite ("structurez et déployez l'IA dans votre
+                  entreprise") vs ancien "architectes IA" qui pouvait être confondu
+                  avec architecte bâtiment. Mention des 5 services intégrée pour
+                  intent SEO + AEO immédiat. */}
               <h1
                 id="ville-hub-hero"
-                className="text-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight"
+                className="text-fg text-[clamp(2rem,3.8vw,3.25rem)] leading-[1.08] font-semibold tracking-tight"
                 data-speakable-hero
               >
-                {isFr ? "Vos concurrents à " : "Vos concurrents à "}
+                {isFr ? "Structurez et déployez l'IA dans votre entreprise à " : "Structure and deploy AI in your business in "}
                 <span
                   className="text-terracotta italic"
                   style={{ fontFamily: "var(--font-serif)" }}
                 >
                   {ville.nameFr}
                 </span>
-                {isFr ? " utilisent déjà l'IA. Et vous ?" : " utilisent déjà l'IA. Et vous ?"}
               </h1>
-              {/* Sous-ligne hero — préfixe « Axion-IA, votre cabinet… »
-                  (Will 2026-05-26) lève l'ambiguïté : c'est UN cabinet
-                  (Axion-IA), pas plusieurs architectes en sous-traitance. */}
+              {/* Sous-ligne hero — détail des 5 services Axion-IA + identité
+                  partenaire IA senior, explicite la valeur livrée. */}
               <p
                 className="text-fg-soft mt-6 text-lg leading-relaxed sm:text-xl"
                 data-speakable-hero
               >
-                {isFr
-                  ? "Axion-IA, votre cabinet d'architectes IA seniors à "
-                  : "Axion-IA, votre cabinet d'architectes IA seniors à "}
+                {isFr ? "Axion-IA, votre partenaire IA senior à " : "Axion-IA, your senior AI partner in "}
                 <span className="text-fg font-semibold">
-                  {ville.nameFr} {isFr ? "et alentours" : "et alentours"}
+                  {ville.nameFr} {isFr ? "et alentours" : "and surroundings"}
                 </span>
                 {isFr
-                  ? " — audit IA, formation entreprise, implémentation, coaching 1-to-1 dirigeants, plateformes web et SaaS IA. De la TPE à l'ETI."
-                  : " — audit IA, formation entreprise, implémentation, coaching 1-to-1 dirigeants, plateformes web et SaaS IA. De la TPE à l'ETI."}
+                  ? " : audit IA, formation à l'IA pour vos équipes, implémentation, coaching 1-to-1 dirigeants et plateformes/SaaS web IA. De la TPE à l'ETI."
+                  : ": AI audit, AI training for your teams, implementation, 1-to-1 executive coaching and AI web/SaaS platforms. From SME to mid-market."}
               </p>
               {/* Badges 5 services — compréhension immédiate des prestations.
                   Petits pills terracotta-soft avec icône Lucide. */}

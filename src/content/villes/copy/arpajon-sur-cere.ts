@@ -12,6 +12,7 @@ export const ARPAJON_SUR_CERE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arpajon-sur-Cère (15). Nous accompagnons tous types d'activités : PME tertiaires agglomération Aurillac, éleveurs Salers Cantal, agriculteurs, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arpajon-sur-Cère (15). Nous accompagnons tous types d'activités : PME tertiaires agglomération Aurillac, éleveurs Salers Cantal, agriculteurs, TPE artisans BTP, commerçants et services aux entreprises.",
+  seoHook: "tertiaires agglomération & élevage salers",
   ecosystemFr:
     "Arpajon-sur-Cère est en banlieue d'Aurillac, vallée de la Cère. Tissu PME tertiaires, agriculture Cantal (élevage race Salers), TPE artisanat BTP, commerces.",
   ecosystemEn:

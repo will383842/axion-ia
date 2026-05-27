@@ -12,6 +12,7 @@ export const ROSHEIM_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rosheim (67). Nous accompagnons tous types d'activités : TPE viticulteurs AOC Alsace de la Route des Vins, artisans-vignerons, PME oenotourisme, hôteliers-restaurateurs, commerçants et services aux entreprises du piémont des Vosges alsacien.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rosheim (67). Nous accompagnons tous types d'activités : TPE viticulteurs AOC Alsace de la Route des Vins, artisans-vignerons, PME oenotourisme, hôteliers-restaurateurs, commerçants et services aux entreprises du piémont des Vosges alsacien.",
+  seoHook: "viticulture alsace & oenotourisme caves",
   ecosystemFr:
     "Rosheim est une étape de la Route des Vins d'Alsace au pied des Vosges. Centre historique médiéval (Maison romane XIIe, église Saints-Pierre-et-Paul). Tissu viticulture AOC Alsace, TPE artisans-vignerons, PME oenotourisme et caves coopératives, hôtellerie-restauration, commerces de proximité, artisanat local.",
   ecosystemEn:

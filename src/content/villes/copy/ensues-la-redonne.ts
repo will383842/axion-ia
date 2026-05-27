@@ -12,6 +12,7 @@ export const ENSUES_LA_REDONNE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ensuès-la-Redonne (13). Nous accompagnons TPE tourisme et restauration, PME services, commerces de proximité et acteurs nautiques de la Côte Bleue. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ensuès-la-Redonne (13). Nous accompagnons TPE tourisme et restauration, PME services, commerces de proximité et acteurs nautiques de la Côte Bleue. Audit Flash dès 490 € HT.",
+  seoHook: "tourisme restauration & plaisance activités",
   ecosystemFr:
     "Ensuès-la-Redonne est positionnée sur la Côte Bleue, entre Marseille et Martigues, avec ses calanques (Méjean, La Redonne, Niolon à proximité) et son port de pêche traditionnel. Tissu économique de TPE tourisme (locations saisonnières, restauration de bord de mer), pêche artisanale, plaisance et activités nautiques, viticulture AOC Côtes-de-Provence, PME services et commerces de proximité.",
   ecosystemEn:

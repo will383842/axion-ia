@@ -12,6 +12,7 @@ export const GUILHERAND_GRANGES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guilherand-Granges (07). Nous accompagnons tous types d'activités : PME tertiaires et industrielles agglomération Valence, TPE artisans BTP, commerçants, professions libérales et services aux entreprises.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guilherand-Granges (07). Nous accompagnons tous types d'activités : PME tertiaires et industrielles agglomération Valence, TPE artisans BTP, commerçants, professions libérales et services aux entreprises.",
+  seoHook: "tertiaires agglomération & industrielles",
   ecosystemFr:
     "Guilherand-Granges est face à Valence (rive droite Rhône, Ardèche). Tissu PME tertiaires/industrielles agglomération valentinoise, TPE artisanat BTP, commerces, professions libérales.",
   ecosystemEn:

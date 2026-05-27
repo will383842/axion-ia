@@ -12,6 +12,7 @@ export const THOUARS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thouars (79). Nous accompagnons TPE, PME et artisans du Thouarsais : agroalimentaire, industrie mécanique, artisanat, commerces. Audit Flash à partir de 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thouars (79). Nous accompagnons TPE, PME et artisans du Thouarsais : agroalimentaire, industrie mécanique, artisanat, commerces. Audit Flash à partir de 490 € HT.",
+  seoHook: "agroalimentaire & industrie mécanique",
   ecosystemFr:
     "Thouars est sous-préfecture des Deux-Sèvres sur le Thouet, 13 891 habitants. Patrimoine médiéval (château des ducs de La Trémoïlle). PME agroalimentaires, industrie mécanique et plastique, TPE artisans BTP, commerces de centre-ville et services de proximité. Pôle économique du nord Deux-Sèvres.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const WISSOUS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wissous (91). Nous accompagnons TPE et PME : entreprises logistiques proches d'Orly, exploitants de serres maraîchères, artisans BTP, commerces de proximité, PME transport et services aux entreprises de la zone d'activités. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Wissous (91). Nous accompagnons TPE et PME : entreprises logistiques proches d'Orly, exploitants de serres maraîchères, artisans BTP, commerces de proximité, PME transport et services aux entreprises de la zone d'activités. Audit Flash dès 490 € HT.",
+  seoHook: "logistique transport & maraîchage serres",
   ecosystemFr:
     "Wissous est une commune résidentielle et économique de l'Essonne, limitrophe de l'aéroport Paris-Orly. Tradition maraîchère sous serres (fraises, tomates), zone d'activités logistiques et tertiaires. TPE artisans, PME transport et logistique aéroportuaire, commerces de proximité, professions libérales.",
   ecosystemEn:

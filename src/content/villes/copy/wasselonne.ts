@@ -12,6 +12,7 @@ export const WASSELONNE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Wasselonne (67). Nous accompagnons TPE et PME : commerçants de marchés, artisans, viticulteurs, exploitants agricoles, restaurateurs et prestataires de services du piémont des Vosges. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Wasselonne (67). Nous accompagnons TPE et PME : commerçants de marchés, artisans, viticulteurs, exploitants agricoles, restaurateurs et prestataires de services du piémont des Vosges. Audit Flash dès 490 € HT.",
+  seoHook: "commerce marchés & artisanat alsacien",
   ecosystemFr:
     "Wasselonne est un chef-lieu de canton du Bas-Rhin, située dans le piémont des Vosges entre Strasbourg et Saverne. La ville est réputée pour ses marchés hebdomadaires (lundi), sa foire-kermesse annuelle d''août et son patrimoine alsacien (vestiges du château, vieille ville, église). L''économie locale repose sur le commerce de marché et de proximité, l''artisanat alsacien, la viticulture (porte de la route des vins), l''agriculture, l''hôtellerie-restauration, les services aux entreprises et l''industrie locale (mobilier, textile).",
   ecosystemEn:

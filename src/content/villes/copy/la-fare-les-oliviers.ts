@@ -12,6 +12,7 @@ export const LA_FARE_LES_OLIVIERS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Fare-les-Oliviers (13). Nous accompagnons TPE artisans, oléiculteurs, viticulteurs, professions libérales, commerçants et PME tertiaires du bassin de Berre. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Fare-les-Oliviers (13). Nous accompagnons TPE artisans, oléiculteurs, viticulteurs, professions libérales, commerçants et PME tertiaires du bassin de Berre. Audit Flash dès 490 € HT.",
+  seoHook: "oléiculture moulins & viticulture coteaux",
   ecosystemFr:
     "La Fare-les-Oliviers est une commune résidentielle au nord de l'étang de Berre, sur l'axe Aix-Salon (D113). Oléiculture historique (moulins, oliveraies), vignobles AOC Coteaux d'Aix, artisanat, commerces de proximité et résidents cadres travaillant à Aix, Marseille, Vitrolles, Marignane ou sur le technopôle de l'Arbois.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const GRAY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gray (70), sous-préfecture de Haute-Saône. Nous accompagnons TPE et PME : commerçants, artisans, professions libérales, agriculteurs, prestataires tourisme fluvial et services aux entreprises du Pays de Gray et val de Saône.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gray (70), sous-préfecture de Haute-Saône. Nous accompagnons TPE et PME : commerçants, artisans, professions libérales, agriculteurs, prestataires tourisme fluvial et services aux entreprises du Pays de Gray et val de Saône.",
+  seoHook: "commerce proximité & artisanat second",
   ecosystemFr:
     "Gray est la sous-préfecture du sud Haute-Saône, pôle de services et de commerces pour le Pays de Gray (~20 000 hab bassin de vie) en bords de Saône. Tissu de TPE/PME artisanat, commerces, services publics (hôpital, tribunaux, sous-préfecture), agriculture céréalière, tourisme fluvial et patrimoine (musée Baron Martin). Axe Dijon-Besançon, carrefour rural.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const SAINT_PIERRE_DU_PERRAY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Pierre-du-Perray (91). Nous accompagnons TPE et PME : artisans BTP, commerçants, professions libérales, PME services aux entreprises, prestataires péri-urbains du bassin Évry-Sénart. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Pierre-du-Perray (91). Nous accompagnons TPE et PME : artisans BTP, commerçants, professions libérales, PME services aux entreprises, prestataires péri-urbains du bassin Évry-Sénart. Audit Flash dès 490 € HT.",
+  seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Saint-Pierre-du-Perray est une commune résidentielle de l'Essonne, rattachée à la communauté d'agglomération Grand Paris Sud Seine-Essonne-Sénart. Proximité immédiate Évry-Courcouronnes et ville nouvelle de Sénart. Tissu TPE artisanat BTP, commerces de proximité, PME services, professions libérales, restauration et services à la personne.",
   ecosystemEn:

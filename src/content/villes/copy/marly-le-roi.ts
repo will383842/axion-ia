@@ -12,6 +12,7 @@ export const MARLY_LE_ROI_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marly-le-Roi (78). Nous accompagnons tous types d'activités : TPE et PME tertiaires, professions libérales, commerces de centre-ville, agences immobilières, cabinets de conseil, indépendants et services aux particuliers de cette commune résidentielle de l'ouest parisien.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marly-le-Roi (78). Nous accompagnons tous types d'activités : TPE et PME tertiaires, professions libérales, commerces de centre-ville, agences immobilières, cabinets de conseil, indépendants et services aux particuliers de cette commune résidentielle de l'ouest parisien.",
+  seoHook: "professions libérales & services tertiaires",
   ecosystemFr:
     "Marly-le-Roi est une commune résidentielle prisée de l'ouest parisien, célèbre pour la Machine de Marly (ouvrage hydraulique construit sous Louis XIV pour alimenter les fontaines de Versailles) et le domaine royal de Marly. Tissu économique dominé par les TPE/PME tertiaires, professions libérales (santé, juridique, conseil), commerces de centre-ville, agences immobilières et services aux particuliers. Proximité immédiate de Saint-Germain-en-Laye et du Pecq.",
   ecosystemEn:

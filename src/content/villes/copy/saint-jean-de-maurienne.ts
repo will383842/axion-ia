@@ -12,6 +12,7 @@ export const SAINT_JEAN_DE_MAURIENNE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean-de-Maurienne (73). Nous accompagnons TPE et PME de la vallée de la Maurienne : industriels aluminium et métallurgie, acteurs du tourisme montagne et cols alpins, administration sous-préfectorale, artisans, commerçants et services de vallée.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean-de-Maurienne (73). Nous accompagnons TPE et PME de la vallée de la Maurienne : industriels aluminium et métallurgie, acteurs du tourisme montagne et cols alpins, administration sous-préfectorale, artisans, commerçants et services de vallée.",
+  seoHook: "industrie aluminium & tourisme montagne",
   ecosystemFr:
     "Saint-Jean-de-Maurienne est la sous-préfecture de Savoie et le centre de la vallée de la Maurienne, plus grande vallée alpine intra-européenne. Historiquement marquée par l'industrie de l'aluminium, la ville est aussi la porte d'accès aux cols alpins majeurs (Galibier, Croix-de-Fer, col du Télégraphe). Tissu industriel métallurgie, tourisme montagne/cyclisme, administration, TPE artisanat et commerces de vallée.",
   ecosystemEn:

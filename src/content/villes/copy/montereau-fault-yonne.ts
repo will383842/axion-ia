@@ -14,6 +14,7 @@ export const MONTEREAU_FAULT_YONNE_COPY: VilleCopy = {
     "Montereau-Fault-Yonne, bien que sans ligne de métro, bénéficie de la proximité de la gare TGV de Melun et de l'aéroport de Paris-Orly. Axion-IA intervient ici pour soutenir les entreprises locales dans l'adoption de l'IA. Avec des institutions comme Cap Digital et Inria en toile de fond, nous proposons des solutions adaptées aux secteurs du commerce de détail et des transports terrestres.",
   directAnswerEn:
     "Montereau-Fault-Yonne, bien que sans ligne de métro, bénéficie de la proximité de la gare TGV de Melun et de l'aéroport de Paris-Orly. Axion-IA intervient ici pour soutenir les entreprises locales dans l'adoption de l'IA. Avec des institutions comme Cap Digital et Inria en toile de fond, nous proposons des solutions adaptées aux secteurs du commerce de détail et des transports terrestres.",
+  seoHook: "commerce détail & transports",
   ecosystemFr:
     "Le tissu économique de Montereau-Fault-Yonne est marqué par le commerce de détail et la construction. Les entreprises locales profitent de l'influence de pôles comme Cap Digital et Station F pour développer leur compétitivité.",
   ecosystemEn:

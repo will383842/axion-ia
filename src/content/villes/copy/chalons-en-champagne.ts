@@ -13,6 +13,7 @@ export const CHALONS_EN_CHAMPAGNE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châlons-en-Champagne (51) sur site. Nous accompagnons les administrations préfectorales, PME tertiaires châlonnaises, cabinets juridiques et entreprises de la filière champagne sur leurs cas IA opérationnels — audit chiffré, plan d'action, automatisations CRM/ERP. Vos équipes restent maîtres de la stack après notre mission.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châlons-en-Champagne (51) sur site. Nous accompagnons les administrations préfectorales, PME tertiaires châlonnaises, cabinets juridiques et entreprises de la filière champagne sur leurs cas IA opérationnels — audit chiffré, plan d'action, automatisations CRM/ERP. Vos équipes restent maîtres de la stack après notre mission.",
+  seoHook: "administration publique & filière champagne",
   ecosystemFr:
     "Préfecture de la Marne, Châlons concentre les services régionaux (DDT, DREAL antenne), l'École nationale de gendarmerie, le tissu PME tertiaire châlonnais et les coopératives champagne en périphérie. Bassin économique cœur des grandes maisons (Reims-Épernay-Châlons), hub administratif Grand-Est sud.",
   ecosystemEn:

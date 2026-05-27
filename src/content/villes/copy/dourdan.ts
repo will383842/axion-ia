@@ -12,6 +12,7 @@ export const DOURDAN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Dourdan (91). Nous accompagnons TPE et PME : commerçants centre historique, artisans, professions libérales, PME services, acteurs tourisme patrimonial, exploitants agricoles Beauce-Hurepoix. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Dourdan (91). Nous accompagnons TPE et PME : commerçants centre historique, artisans, professions libérales, PME services, acteurs tourisme patrimonial, exploitants agricoles Beauce-Hurepoix. Audit Flash dès 490 € HT.",
+  seoHook: "commerce détail & artisanat métiers",
   ecosystemFr:
     "Dourdan est une sous-préfecture de l'Essonne, cité historique du Hurepoix dominée par un château royal du XIIIe siècle classé monument historique. Terminus RER C, porte sud de l'Île-de-France vers la Beauce. Tissu TPE commerces centre historique, artisanat, PME services, professions libérales, tourisme patrimonial et agriculture céréalière.",
   ecosystemEn:

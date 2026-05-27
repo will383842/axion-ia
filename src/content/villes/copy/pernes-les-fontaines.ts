@@ -12,6 +12,7 @@ export const PERNES_LES_FONTAINES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pernes-les-Fontaines (84). Nous accompagnons TPE artisans, PME tourisme et agroalimentaire, professions libérales, commerces et viticulteurs du Comtat Venaissin. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pernes-les-Fontaines (84). Nous accompagnons TPE artisans, PME tourisme et agroalimentaire, professions libérales, commerces et viticulteurs du Comtat Venaissin. Audit Flash dès 490 € HT.",
+  seoHook: "tourisme patrimoine & artisanat métiers",
   ecosystemFr:
     "Pernes-les-Fontaines est positionnée au cœur du Comtat Venaissin, ancienne capitale historique, entre Avignon et Carpentras. Son économie repose sur le tourisme patrimonial (40 fontaines, marché provençal), les TPE artisans (BTP, métiers d'art, restauration patrimoine), les PME agroalimentaires et hôtellerie-restauration, la viticulture AOC Ventoux, les professions libérales et commerces de proximité.",
   ecosystemEn:

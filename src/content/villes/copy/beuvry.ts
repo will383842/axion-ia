@@ -12,6 +12,7 @@ export const BEUVRY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beuvry (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthuno-lensois. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beuvry (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthuno-lensois. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+  seoHook: "commerce détail & professions libérales",
   ecosystemFr:
     "Beuvry est une commune résidentielle du bassin minier située entre Béthune et Lens. Tissu économique de TPE artisanales BTP, commerces de proximité, professions libérales et PME de services. Canal d'Aire traversant la commune, zones pavillonnaires et activités péri-urbaines.",
   ecosystemEn:

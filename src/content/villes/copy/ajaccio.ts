@@ -14,6 +14,7 @@ export const AJACCIO_COPY: VilleCopy = {
     "À Ajaccio, Axion-IA propose des prestations sur site pour les entreprises souhaitant intégrer l'IA dans leurs activités. Avec des secteurs dominants comme le commerce de détail et l'hébergement, notre intervention permet de rationaliser les opérations. Nos services incluent audits, implémentations et formations, avec des tarifs publics consultables à partir de 490 € HT pour un audit Flash.",
   directAnswerEn:
     "À Ajaccio, Axion-IA propose des prestations sur site pour les entreprises souhaitant intégrer l'IA dans leurs activités. Avec des secteurs dominants comme le commerce de détail et l'hébergement, notre intervention permet de rationaliser les opérations. Nos services incluent audits, implémentations et formations, avec des tarifs publics consultables à partir de 490 € HT pour un audit Flash.",
+  seoHook: "commerce détail & hébergement",
   ecosystemFr:
     "Ajaccio, avec ses 7 000 établissements actifs, est un centre économique où le commerce de détail et la restauration prédominent. L'Université de Corse Pasquale Paoli contribue également à l'écosystème local en formant les futurs talents.",
   ecosystemEn:

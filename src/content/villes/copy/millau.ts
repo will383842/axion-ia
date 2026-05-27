@@ -14,6 +14,7 @@ export const MILLAU_COPY: VilleCopy = {
     "À Millau, Axion-IA propose des solutions IA adaptées aux besoins des entreprises locales. Les secteurs dominants tels que le commerce de détail et l'hébergement bénéficient de notre expertise. Avec des références comme LVMH et Inria, nous aidons les entreprises à automatiser les tâches administratives et à améliorer leur efficacité opérationnelle.",
   directAnswerEn:
     "À Millau, Axion-IA propose des solutions IA adaptées aux besoins des entreprises locales. Les secteurs dominants tels que le commerce de détail et l'hébergement bénéficient de notre expertise. Avec des références comme LVMH et Inria, nous aidons les entreprises à automatiser les tâches administratives et à améliorer leur efficacité opérationnelle.",
+  seoHook: "commerce détail & hébergement",
   ecosystemFr:
     "Millau compte 2 000 établissements actifs. Les entreprises locales dans les secteurs du commerce de détail et de l'hébergement bénéficient de notre expertise IA, inspirée par des références comme LVMH et Inria.",
   ecosystemEn:

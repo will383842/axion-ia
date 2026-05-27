@@ -14,6 +14,7 @@ export const SCEAUX_COPY: VilleCopy = {
     "À Sceaux, Axion-IA propose des services adaptés aux besoins des entreprises locales. Notre équipe nationale se déplace pour des audits et interventions sur site. L'écosystème économique de la région comprend des entités comme l'Université Paris-Saclay et la proximité avec des infrastructures telles que la Gare de Massy TGV. Nos tarifs publics sont transparents et consultables en ligne.",
   directAnswerEn:
     "À Sceaux, Axion-IA propose des services adaptés aux besoins des entreprises locales. Notre équipe nationale se déplace pour des audits et interventions sur site. L'écosystème économique de la région comprend des entités comme l'Université Paris-Saclay et la proximité avec des infrastructures telles que la Gare de Massy TGV. Nos tarifs publics sont transparents et consultables en ligne.",
+  seoHook: "commerce détail & enseignement",
   ecosystemFr:
     "Sceaux bénéficie d'un environnement économique diversifié avec des secteurs comme le commerce de détail et l'enseignement. La proximité de l'Université Paris-Saclay enrichit l'écosystème local.",
   ecosystemEn:

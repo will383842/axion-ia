@@ -12,6 +12,7 @@ export const THORIGNY_SUR_MARNE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thorigny-sur-Marne (77). Nous accompagnons tous types d'activités : TPE artisans, commerçants, PME tertiaires, professions libérales et indépendants des bords de Marne. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thorigny-sur-Marne (77). Nous accompagnons tous types d'activités : TPE artisans, commerçants, PME tertiaires, professions libérales et indépendants des bords de Marne. Audit Flash dès 490 € HT.",
+  seoHook: "commerce centre-ville & artisanat rénovation",
   ecosystemFr:
     "Thorigny-sur-Marne est une commune résidentielle des bords de Marne, rattachée à la communauté d'agglomération de Marne-et-Gondoire. Son tissu économique repose sur les commerces de centre-ville, TPE artisanales, PME de services et professions libérales. Proximité directe avec Lagny-sur-Marne, Pomponne et Bussy-Saint-Georges.",
   ecosystemEn:

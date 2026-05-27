@@ -12,6 +12,7 @@ export const BRIEC_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Briec (29). Nous accompagnons tous types d'activités : TPE agricoles et éleveurs cornouaillais, PME agroalimentaires, artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises du Centre Cornouaille.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Briec (29). Nous accompagnons tous types d'activités : TPE agricoles et éleveurs cornouaillais, PME agroalimentaires, artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises du Centre Cornouaille.",
+  seoHook: "agriculture élevage & agroalimentaire",
   ecosystemFr:
     "Briec est un bourg-centre du Centre Cornouaille, à mi-chemin entre Quimper (20 min) et Châteaulin (20 min). La commune est intégrée à Quimper Bretagne Occidentale. Forte vocation agricole (élevage bovin/porcin, polyculture), tissu PME agroalimentaires (abattoirs, transformation viande, laiteries), artisanat BTP rural, commerces et services. Bassin d'emploi de Quimper à 20 min.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const ROUVROY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rouvroy (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier héninois. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rouvroy (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier héninois. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+  seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Rouvroy est une commune résidentielle du bassin minier entre Hénin-Beaumont et Drocourt. Économie reconvertie vers le commerce de proximité, l'artisanat BTP, les services aux particuliers et les professions libérales. Tissu de TPE et micro-entreprises du bassin minier en transformation.",
   ecosystemEn:

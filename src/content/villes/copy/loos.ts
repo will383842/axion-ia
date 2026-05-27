@@ -14,6 +14,7 @@ export const LOOS_COPY: VilleCopy = {
     "Axion-IA se déplace à Loos pour offrir des services IA adaptés aux besoins des entreprises locales. Avec des acteurs comme le Centre Hospitalier Universitaire de Lille et la proximité de la Gare de Lille-Europe, nous assurons une intervention rapide et efficace. Nos services incluent audits, implémentations et formations, garantissant une approche complète pour chaque entreprise.",
   directAnswerEn:
     "Axion-IA se déplace à Loos pour offrir des services IA adaptés aux besoins des entreprises locales. Avec des acteurs comme le Centre Hospitalier Universitaire de Lille et la proximité de la Gare de Lille-Europe, nous assurons une intervention rapide et efficace. Nos services incluent audits, implémentations et formations, garantissant une approche complète pour chaque entreprise.",
+  seoHook: "santé humaine & recherche scientifique",
   ecosystemFr:
     "Loos se distingue par la présence du Centre Hospitalier Universitaire de Lille et une proximité avec la Gare de Lille-Europe, facilitant les échanges et collaborations pour les entreprises locales.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const CHENNEVIERES_SUR_MARNE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chennevières-sur-Marne (94). Nous accompagnons tous types d'activités : TPE artisans du bâtiment et de la rénovation, PME de services et commerce, professions libérales, indépendants et prestataires des bords de Marne est. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chennevières-sur-Marne (94). Nous accompagnons tous types d'activités : TPE artisans du bâtiment et de la rénovation, PME de services et commerce, professions libérales, indépendants et prestataires des bords de Marne est. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat rénovation & professions libérales",
   ecosystemFr:
     "Chennevières-sur-Marne est une commune résidentielle des bords de Marne dans l'est du Val-de-Marne. Son tissu économique associe TPE artisans du bâtiment, PME de services et commerce, professions libérales et prestataires. Proximité directe avec Champigny-sur-Marne, Le Plessis-Trévise, Ormesson-sur-Marne et Bry-sur-Marne.",
   ecosystemEn:

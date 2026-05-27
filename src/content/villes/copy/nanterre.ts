@@ -14,6 +14,7 @@ export const NANTERRE_COPY: VilleCopy = {
     "Nanterre accueille les sièges de Société Générale et Natixis, ainsi que l'Université Paris Nanterre et son laboratoire EconomiX. Les entreprises du 92 font face à des processus métier lourds et des équipes sans ressources DSI dédiées. Axion-IA se déplace à Nanterre pour auditer vos flux, identifier trois chantiers IA prioritaires et les implémenter — avec des tarifs publics, sans ambiguïté.",
   directAnswerEn:
     "Nanterre accueille les sièges de Société Générale et Natixis, ainsi que l'Université Paris Nanterre et son laboratoire EconomiX. Les entreprises du 92 font face à des processus métier lourds et des équipes sans ressources DSI dédiées. Axion-IA se déplace à Nanterre pour auditer vos flux, identifier trois chantiers IA prioritaires et les implémenter — avec des tarifs publics, sans ambiguïté.",
+  seoHook: "activités financières & sièges sociaux",
   ecosystemFr:
     "Nanterre s'inscrit dans l'orbite de La Défense et accueille des groupes comme TotalEnergies et Bouygues, aux côtés de l'incubateur POLD et du pôle Systematic Paris-Region. Quelque 12 000 établissements actifs et 2 800 créations annuelles composent ce bassin B2B dense.",
   ecosystemEn:

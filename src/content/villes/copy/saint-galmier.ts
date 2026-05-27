@@ -12,6 +12,7 @@ export const SAINT_GALMIER_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Galmier (42). Nous accompagnons tous types d'activités : PME industrielles agroalimentaires (filière eau minérale Badoit), acteurs tourisme et oenologie, TPE artisans BTP, commerçants, indépendants et services aux entreprises foréziennes.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Galmier (42). Nous accompagnons tous types d'activités : PME industrielles agroalimentaires (filière eau minérale Badoit), acteurs tourisme et oenologie, TPE artisans BTP, commerçants, indépendants et services aux entreprises foréziennes.",
+  seoHook: "eau minérale & agroalimentaires",
   ecosystemFr:
     "Saint-Galmier est mondialement réputée pour la source d'eau minérale Badoit (eau gazeuse naturellement pétillante issue du sous-sol local, distribuée internationalement). Tissu PME industrielles agroalimentaires (filière eau minérale, embouteillage), tourisme thermal historique, casino, oenologie périphérique, TPE artisanat BTP, commerces.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const LA_CADIERE_D_AZUR_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Cadière-d'Azur (83). Nous accompagnons TPE viticulteurs AOC Bandol, oléiculteurs, restaurateurs, hôteliers, artisans et PME du tourisme premium et des services du sud-Var. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Cadière-d'Azur (83). Nous accompagnons TPE viticulteurs AOC Bandol, oléiculteurs, restaurateurs, hôteliers, artisans et PME du tourisme premium et des services du sud-Var. Audit Flash dès 490 € HT.",
+  seoHook: "viticulture bandol & oléiculture agriculture",
   ecosystemFr:
     "La Cadière-d'Azur est un village perché provençal du sud-Var, au cœur de l'AOC Bandol (l'une des plus prestigieuses AOC viticoles de Provence). Domaines viticoles renommés, oléiculture, hôtellerie haut de gamme, restauration gastronomique, œnotourisme. Tissu de TPE/PME viticulture, tourisme premium et artisanat d'art du sud-Var.",
   ecosystemEn:

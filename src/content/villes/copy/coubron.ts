@@ -12,6 +12,7 @@ export const COUBRON_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coubron (93). Nous accompagnons tous types d'activités : TPE artisans du bâtiment et de la rénovation, PME de services, commerçants de proximité, professions libérales, indépendants et prestataires du nord-est de la Seine-Saint-Denis. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coubron (93). Nous accompagnons tous types d'activités : TPE artisans du bâtiment et de la rénovation, PME de services, commerçants de proximité, professions libérales, indépendants et prestataires du nord-est de la Seine-Saint-Denis. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat rénovation & professions libérales",
   ecosystemFr:
     "Coubron est une commune résidentielle verdoyante de l'est de la Seine-Saint-Denis, bordée par la forêt régionale de Bondy. Son tissu économique est composé de TPE artisans du bâtiment, PME de services aux entreprises, commerces de proximité et professions libérales. Proximité directe avec Livry-Gargan, Montfermeil et Vaujours.",
   ecosystemEn:

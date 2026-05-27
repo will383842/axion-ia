@@ -14,6 +14,7 @@ export const SAINT_CYR_L_ECOLE_COPY: VilleCopy = {
     "À Saint-Cyr-l'École, Axion-IA propose des interventions sur site pour les entreprises, s'appuyant sur des méthodologies éprouvées. Nous nous inspirons des écosystèmes d'innovation de Cap Digital et Station F. Nos services incluent audits, implémentations et formations, avec des tarifs publics clairs, à partir de 490 € HT pour un audit Flash de 4 heures.",
   directAnswerEn:
     "À Saint-Cyr-l'École, Axion-IA propose des interventions sur site pour les entreprises, s'appuyant sur des méthodologies éprouvées. Nous nous inspirons des écosystèmes d'innovation de Cap Digital et Station F. Nos services incluent audits, implémentations et formations, avec des tarifs publics clairs, à partir de 490 € HT pour un audit Flash de 4 heures.",
+  seoHook: "commerce détail & programmation informatique",
   ecosystemFr:
     "Saint-Cyr-l'École est entourée par un tissu économique dynamique, incluant des entreprises dans le commerce de détail et la programmation informatique, proches de pôles comme Cap Digital et Station F.",
   ecosystemEn:

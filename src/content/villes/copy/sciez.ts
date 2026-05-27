@@ -12,6 +12,7 @@ export const SCIEZ_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sciez (74). Nous accompagnons TPE et PME : acteurs du tourisme lacustre Léman, viticulteurs AOC Crépy, commerces saisonniers, artisans BTP, professions libérales, hébergeurs et restaurateurs du Chablais.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sciez (74). Nous accompagnons TPE et PME : acteurs du tourisme lacustre Léman, viticulteurs AOC Crépy, commerces saisonniers, artisans BTP, professions libérales, hébergeurs et restaurateurs du Chablais.",
+  seoHook: "tourisme lacustre & viticulture crépy",
   ecosystemFr:
     "Sciez-sur-Léman est une commune résidentielle et touristique du Chablais, en bordure du lac Léman (rive sud française). Le port de Sciez et les plages attirent un tourisme lacustre saisonnier. La commune fait partie de l'appellation AOC Crépy (vin blanc savoyard). Proximité Thonon-les-Bains (10 min) et bassin frontalier genevois. TPE artisans, commerces saisonniers, PME viticoles et touristiques, professions libérales.",
   ecosystemEn:

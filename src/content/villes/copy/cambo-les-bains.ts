@@ -12,6 +12,7 @@ export const CAMBO_LES_BAINS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cambo-les-Bains (64). Nous accompagnons TPE, PME et artisans du Pays Basque intérieur : thermalisme, tourisme, produits du terroir, commerces. Audit Flash à partir de 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cambo-les-Bains (64). Nous accompagnons TPE, PME et artisans du Pays Basque intérieur : thermalisme, tourisme, produits du terroir, commerces. Audit Flash à partir de 490 € HT.",
+  seoHook: "thermalisme bien-être & tourisme culturel",
   ecosystemFr:
     "Cambo-les-Bains est une station thermale du Pays Basque intérieur, 6 760 habitants. Thermes (rhumatologie, voies respiratoires), villa Arnaga (musée Rostand), tourisme culturel et bien-être. Tissu de TPE artisans du terroir basque, hébergements thermaux, commerces locaux et professions de santé.",
   ecosystemEn:

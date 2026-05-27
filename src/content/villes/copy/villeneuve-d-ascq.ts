@@ -14,6 +14,7 @@ export const VILLENEUVE_D_ASCQ_COPY: VilleCopy = {
     "À Villeneuve-d'Ascq, Axion-IA propose des interventions sur site pour les entreprises souhaitant intégrer l'IA dans leurs processus. Avec des pôles comme Euratechnologies et des entreprises telles que Bonduelle, notre approche se concentre sur l'optimisation des tâches administratives et la réduction des coûts opérationnels.",
   directAnswerEn:
     "À Villeneuve-d'Ascq, Axion-IA propose des interventions sur site pour les entreprises souhaitant intégrer l'IA dans leurs processus. Avec des pôles comme Euratechnologies et des entreprises telles que Bonduelle, notre approche se concentre sur l'optimisation des tâches administratives et la réduction des coûts opérationnels.",
+  seoHook: "programmation informatique & commerce détail",
   ecosystemFr:
     "Villeneuve-d'Ascq abrite le Parc Scientifique de la Haute Borne et l'Université de Lille, offrant un environnement propice à l'innovation. Les entreprises locales bénéficient de la proximité avec des pôles de compétitivité comme i-Trans et NSL.",
   ecosystemEn:

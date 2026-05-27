@@ -12,6 +12,7 @@ export const VENDIN_LE_VIEIL_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vendin-le-Vieil (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthuno-lensois. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vendin-le-Vieil (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthuno-lensois. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+  seoHook: "commerce détail & professions libérales",
   ecosystemFr:
     "Vendin-le-Vieil est une commune résidentielle du bassin minier entre Lens et Béthune. Tissu économique de TPE artisanales BTP, commerces de proximité, professions libérales et PME de services. Zone commerciale et activités péri-urbaines le long de l'axe Lens-Béthune.",
   ecosystemEn:

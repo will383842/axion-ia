@@ -14,6 +14,7 @@ export const ROMANS_SUR_ISERE_COPY: VilleCopy = {
     "Romans-sur-Isère, avec ses 3 000 établissements, est un terrain fertile pour l'IA, notamment dans l'industrie du cuir et de la chaussure. Axion-IA propose des solutions adaptées aux entreprises locales, s'inspirant des écosystèmes d'innovation tels que Cap Digital et Station F. Nous intervenons directement sur site pour garantir une mise en œuvre efficace et rapide.",
   directAnswerEn:
     "Romans-sur-Isère, avec ses 3 000 établissements, est un terrain fertile pour l'IA, notamment dans l'industrie du cuir et de la chaussure. Axion-IA propose des solutions adaptées aux entreprises locales, s'inspirant des écosystèmes d'innovation tels que Cap Digital et Station F. Nous intervenons directement sur site pour garantir une mise en œuvre efficace et rapide.",
+  seoHook: "industrie cuir & commerce détail",
   ecosystemFr:
     "Romans-sur-Isère abrite l'industrie du cuir et de la chaussure, avec des entreprises comme Arche. Ce tissu économique est complété par le commerce de détail et l'industrie alimentaire.",
   ecosystemEn:

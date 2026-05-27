@@ -12,6 +12,7 @@ export const CASTANET_TOLOSAN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Castanet-Tolosan (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du Sicoval sud-est toulousain. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Castanet-Tolosan (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du Sicoval sud-est toulousain. Audit Flash dès 490 € HT.",
+  seoHook: "professions libérales & commerce détail",
   ecosystemFr:
     "Castanet-Tolosan est le siège de la communauté d'agglomération du Sicoval. Commune résidentielle et commerçante du sud-est de Toulouse, traversée par le canal du Midi. TPE artisans, PME de services, cabinets de professions libérales, commerces de centre-ville, quelques entreprises technologiques liées au pôle spatial toulousain.",
   ecosystemEn:

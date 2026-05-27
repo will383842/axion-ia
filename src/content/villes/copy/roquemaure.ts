@@ -12,6 +12,7 @@ export const ROQUEMAURE_COPY: VilleCopy = {
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Roquemaure (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs Côtes du Rhône, commerçants, artisans BTP, professions libérales et acteurs oenotouristiques du Gard rhodanien. Audit Flash à partir de 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Roquemaure (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs Côtes du Rhône, commerçants, artisans BTP, professions libérales et acteurs oenotouristiques du Gard rhodanien. Audit Flash à partir de 490 € HT.",
+  seoHook: "viticulture côtes & oenotourisme",
   ecosystemFr:
     "Roquemaure (~5 500 hab) est une commune viticole historique des bords du Rhône, berceau du label Côtes du Rhône (XIVe siècle). Viticulture dominant (caves, négoce), tourisme viticole et patrimonial, commerces, artisanat BTP et agriculture. Proximité Orange (15 min) et Avignon (20 min).",
   ecosystemEn:

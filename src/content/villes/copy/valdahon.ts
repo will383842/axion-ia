@@ -12,6 +12,7 @@ export const VALDAHON_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Valdahon (25). Nous accompagnons TPE et PME : commercants de proximite, prestataires de services lies a la garnison, exploitants agricoles du plateau, artisans BTP et restaurateurs du secteur. Audit Flash des 490 euros HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Valdahon (25). Nous accompagnons TPE et PME : commercants de proximite, prestataires de services lies a la garnison, exploitants agricoles du plateau, artisans BTP et restaurateurs du secteur. Audit Flash des 490 euros HT.",
+  seoHook: "commerce proximite & services",
   ecosystemFr:
     "Valdahon est un bourg-centre du plateau du Doubs, anime par la presence du camp militaire de Valdahon (25e Regiment du Genie, centre d'entrainement). La garnison genere une economie de services (commerces, restauration, immobilier). L'agriculture (elevage bovin, fromage comte AOP) et l'artisanat completent le tissu economique local.",
   ecosystemEn:

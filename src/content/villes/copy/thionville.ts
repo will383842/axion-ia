@@ -14,6 +14,7 @@ export const THIONVILLE_COPY: VilleCopy = {
     "Axion-IA propose des solutions IA sur site à Thionville, où ArcelorMittal influence fortement le secteur métallurgique. Nous offrons des audits à partir de 490 € HT et des interventions dès 590 € HT. Nos services incluent des implémentations IA et des sessions 1-to-1 pour dirigeants, garantissant un retour sur investissement rapide et mesurable.",
   directAnswerEn:
     "Axion-IA propose des solutions IA sur site à Thionville, où ArcelorMittal influence fortement le secteur métallurgique. Nous offrons des audits à partir de 490 € HT et des interventions dès 590 € HT. Nos services incluent des implémentations IA et des sessions 1-to-1 pour dirigeants, garantissant un retour sur investissement rapide et mesurable.",
+  seoHook: "métallurgie & transports terrestres",
   ecosystemFr:
     "Thionville accueille ArcelorMittal, un acteur clé dans la métallurgie, et bénéficie de l'influence économique du transport terrestre. Les entreprises locales tirent parti de ce tissu industriel pour se développer.",
   ecosystemEn:

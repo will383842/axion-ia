@@ -12,6 +12,7 @@ export const CARENTAN_LES_MARAIS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carentan-les-Marais (50). Nous accompagnons tous types d'activités : TPE éleveurs et agriculteurs des marais du Cotentin, PME agroalimentaires (lait, viande), commerçants de bourg, prestataires tourisme mémoriel D-Day, artisans et professions libérales.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carentan-les-Marais (50). Nous accompagnons tous types d'activités : TPE éleveurs et agriculteurs des marais du Cotentin, PME agroalimentaires (lait, viande), commerçants de bourg, prestataires tourisme mémoriel D-Day, artisans et professions libérales.",
+  seoHook: "élevage bovin & agroalimentaire",
   ecosystemFr:
     "Carentan-les-Marais est un bourg-centre historique au carrefour des marais du Cotentin et du Bessin. L'économie repose sur l'élevage bovin laitier et allaitant (prairies humides AOC), l'agroalimentaire (laiteries, transformation viande), le tourisme mémoriel (Débarquement 1944, musées, plages Utah et Omaha proches), les commerces de proximité et l'artisanat. Carrefour routier N13/N174, entre Cherbourg (45 min) et Saint-Lô (25 min).",
   ecosystemEn:

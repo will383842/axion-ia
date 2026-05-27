@@ -14,6 +14,7 @@ export const CASTELNAU_LE_LEZ_COPY: VilleCopy = {
     "À Castelnau-le-Lez, Axion-IA propose des interventions sur site pour les entreprises souhaitant intégrer l'IA dans leurs opérations. Avec une proximité stratégique de Montpellier et des infrastructures comme la Gare de Montpellier Saint-Roch et l'Aéroport de Montpellier-Méditerranée, nous assurons un déploiement rapide et efficace. Nos services incluent des audits, des implémentations et des formations personnalisées.",
   directAnswerEn:
     "À Castelnau-le-Lez, Axion-IA propose des interventions sur site pour les entreprises souhaitant intégrer l'IA dans leurs opérations. Avec une proximité stratégique de Montpellier et des infrastructures comme la Gare de Montpellier Saint-Roch et l'Aéroport de Montpellier-Méditerranée, nous assurons un déploiement rapide et efficace. Nos services incluent des audits, des implémentations et des formations personnalisées.",
+  seoHook: "programmation informatique & commerce détail",
   ecosystemFr:
     "Castelnau-le-Lez bénéficie d'une proximité avec Montpellier, qui abrite des acteurs économiques clés dans les secteurs de la santé et du commerce de détail. Cette localisation stratégique facilite l'accès aux ressources et aux infrastructures nécessaires pour le développement des entreprises.",
   ecosystemEn:

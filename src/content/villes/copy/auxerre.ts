@@ -14,6 +14,7 @@ export const AUXERRE_COPY: VilleCopy = {
     "Auxerre, avec ses 3 000 établissements actifs, est un pôle économique en Bourgogne-Franche-Comté. Axion-IA y propose des interventions IA sur site, notamment pour les entreprises du secteur de l'industrie alimentaire comme Yoplait. Nous offrons des audits dès 490 € HT et des implémentations à partir de 990 € HT, adaptés aux besoins spécifiques des entreprises locales.",
   directAnswerEn:
     "Auxerre, avec ses 3 000 établissements actifs, est un pôle économique en Bourgogne-Franche-Comté. Axion-IA y propose des interventions IA sur site, notamment pour les entreprises du secteur de l'industrie alimentaire comme Yoplait. Nous offrons des audits dès 490 € HT et des implémentations à partir de 990 € HT, adaptés aux besoins spécifiques des entreprises locales.",
+  seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Le parc d'activités des Clairions à Auxerre accueille des entreprises telles que Yoplait et Ciments Calcia, illustrant la diversité économique de la région. Axion-IA s'inscrit dans cet écosystème en proposant des solutions IA adaptées.",
   ecosystemEn:

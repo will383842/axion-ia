@@ -12,6 +12,7 @@ export const AUSSONNE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aussonne (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord-ouest Toulouse. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aussonne (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord-ouest Toulouse. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat & commerce détail",
   ecosystemFr:
     "Aussonne est une commune résidentielle du nord-ouest de Toulouse, entre Beauzelle et Cornebarrieu. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Proximité du pôle aéroportuaire et de Blagnac.",
   ecosystemEn:

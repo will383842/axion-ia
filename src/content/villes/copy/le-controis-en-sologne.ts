@@ -12,6 +12,7 @@ export const LE_CONTROIS_EN_SOLOGNE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Controis-en-Sologne (41). Nous accompagnons TPE viticoles, PME agricoles, artisans, hébergeurs tourisme vert et commerçants. Audit Flash dès 490 € HT, démarrage sous 10 jours.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Controis-en-Sologne (41). Nous accompagnons TPE viticoles, PME agricoles, artisans, hébergeurs tourisme vert et commerçants. Audit Flash dès 490 € HT, démarrage sous 10 jours.",
+  seoHook: "viticulture touraine & agriculture céréalière",
   ecosystemFr:
     "Le Controis-en-Sologne est une commune nouvelle née de la fusion de plusieurs bourgs en Sologne viticole. Viticulture AOC Touraine, agriculture céréalière, tourisme vert (châteaux de la Loire proches), artisanat BTP et commerces de proximité.",
   ecosystemEn:

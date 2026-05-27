@@ -14,6 +14,7 @@ export const CARPENTRAS_COPY: VilleCopy = {
     "À Carpentras, Axion-IA propose des interventions sur site pour automatiser les tâches administratives et commerciales. Nous nous inspirons de l'écosystème parisien, où Cap Digital et Station F jouent un rôle clé dans l'innovation. Nos services sont conçus pour répondre aux besoins spécifiques des entreprises locales, sans partenariat direct avec ces entités.",
   directAnswerEn:
     "À Carpentras, Axion-IA propose des interventions sur site pour automatiser les tâches administratives et commerciales. Nous nous inspirons de l'écosystème parisien, où Cap Digital et Station F jouent un rôle clé dans l'innovation. Nos services sont conçus pour répondre aux besoins spécifiques des entreprises locales, sans partenariat direct avec ces entités.",
+  seoHook: "commerce détail & agriculture",
   ecosystemFr:
     "Carpentras bénéficie d'une proximité avec des infrastructures de transport comme la Gare d'Avignon TGV et l'Aéroport de Marseille Provence, facilitant l'accès aux services d'Axion-IA.",
   ecosystemEn:

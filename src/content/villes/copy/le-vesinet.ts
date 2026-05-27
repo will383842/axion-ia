@@ -12,6 +12,7 @@ export const LE_VESINET_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Vésinet (78). Nous accompagnons tous types d'activités : TPE et PME tertiaires, professions libérales haut de gamme (santé, juridique, patrimoine), commerces de centre-ville, agences immobilières prestige, indépendants et services aux particuliers de cette ville-parc de l'ouest parisien.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Vésinet (78). Nous accompagnons tous types d'activités : TPE et PME tertiaires, professions libérales haut de gamme (santé, juridique, patrimoine), commerces de centre-ville, agences immobilières prestige, indépendants et services aux particuliers de cette ville-parc de l'ouest parisien.",
+  seoHook: "professions libérales & immobilier prestige",
   ecosystemFr:
     "Le Vésinet est une ville-parc unique en France, conçue en 1875 par le comte de Choulot avec un plan paysager intégrant lacs artificiels (lac de la Station, lac Supérieur, lac des Ibis), pelouses classées et allées arborées. Commune résidentielle prestige de l'ouest parisien. Tissu économique dominé par les professions libérales haut de gamme (cabinets médicaux, juridiques, conseil en patrimoine), agences immobilières, commerces de centre-ville et services premium aux particuliers.",
   ecosystemEn:

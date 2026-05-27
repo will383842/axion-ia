@@ -14,6 +14,7 @@ export const CHAMBERY_COPY: VilleCopy = {
     "À Chambéry, Axion-IA offre ses services aux entreprises locales, un environnement marqué par la présence de Lactalis et Technolac. Nous intervenons sur site pour auditer, implémenter et former, avec des solutions adaptées aux besoins spécifiques des TPE, PME et ETI. Nos tarifs publics incluent l'Audit Flash à partir de 490 € HT et l'Intervention Essentielle dès 590 € HT.",
   directAnswerEn:
     "À Chambéry, Axion-IA offre ses services aux entreprises locales, un environnement marqué par la présence de Lactalis et Technolac. Nous intervenons sur site pour auditer, implémenter et former, avec des solutions adaptées aux besoins spécifiques des TPE, PME et ETI. Nos tarifs publics incluent l'Audit Flash à partir de 490 € HT et l'Intervention Essentielle dès 590 € HT.",
+  seoHook: "commerce détail & recherche-développement",
   ecosystemFr:
     "Chambéry bénéficie de la proximité de Technolac et de l'Université Savoie Mont Blanc, renforçant son potentiel en recherche-développement scientifique et innovation.",
   ecosystemEn:

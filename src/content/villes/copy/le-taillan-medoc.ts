@@ -12,6 +12,7 @@ export const LE_TAILLAN_MEDOC_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Taillan-Médoc (33). Nous accompagnons TPE et PME du nord-ouest Bordeaux-Médoc : vignerons, PME tertiaires, artisans BTP, commerçants et professions libérales. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Taillan-Médoc (33). Nous accompagnons TPE et PME du nord-ouest Bordeaux-Médoc : vignerons, PME tertiaires, artisans BTP, commerçants et professions libérales. Audit Flash dès 490 € HT.",
+  seoHook: "viticulture haut-médoc & tertiaires services",
   ecosystemFr:
     "Le Taillan-Médoc se situe à l'entrée du Médoc, en limite nord-ouest de Bordeaux Métropole. Commune résidentielle avec vignoble AOC Haut-Médoc, tissu PME tertiaires, artisanat BTP et commerces de proximité. Tramway D en développement, accès rocade et route du Médoc.",
   ecosystemEn:

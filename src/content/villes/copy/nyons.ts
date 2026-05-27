@@ -12,6 +12,7 @@ export const NYONS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nyons (26). Nous accompagnons tous types d'activités : oléiculteurs AOP Nyons, viticulteurs, acteurs tourisme provençal, PME agroalimentaires, TPE artisans BTP, commerçants, indépendants et services aux entreprises Drôme provençale.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nyons (26). Nous accompagnons tous types d'activités : oléiculteurs AOP Nyons, viticulteurs, acteurs tourisme provençal, PME agroalimentaires, TPE artisans BTP, commerçants, indépendants et services aux entreprises Drôme provençale.",
+  seoHook: "oléiculture nyons & viticulture associée",
   ecosystemFr:
     "Nyons est la capitale de la Drôme provençale, mondialement réputée pour l'olive noire AOP de Nyons (huile d'olive AOP — reconnue première AOP oléicole de France, olives de table AOP). Tissu PME oléicoles et agroalimentaires (moulins, conserveries, distilleries), viticulture associée, tourisme provençal (lavande, marchés), TPE artisanat BTP, commerces.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const SAINTE_PAZANNE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sainte-Pazanne (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME services et bâtiment, exploitations agricoles, professions libérales et services de santé du Pays de Retz.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sainte-Pazanne (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME services et bâtiment, exploitations agricoles, professions libérales et services de santé du Pays de Retz.",
+  seoHook: "artisanat commerce & bâtiment construction",
   ecosystemFr:
     "Sainte-Pazanne est le bourg central du Pays de Retz, carrefour routier entre Nantes, Pornic et Machecoul. Tissu TPE artisans, commerçants, PME bâtiment et services, exploitations agricoles, professions libérales et services de santé. Dynamisme résidentiel et commercial.",
   ecosystemEn:

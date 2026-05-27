@@ -12,6 +12,7 @@ export const ROCHEFORT_DU_GARD_COPY: VilleCopy = {
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Rochefort-du-Gard (30). Nous accompagnons les TPE, PME et ETI locales : professions libérales, entreprises de services, commerçants, artisans BTP et viticulteurs entre Nîmes et Avignon. Audit Flash à partir de 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Rochefort-du-Gard (30). Nous accompagnons les TPE, PME et ETI locales : professions libérales, entreprises de services, commerçants, artisans BTP et viticulteurs entre Nîmes et Avignon. Audit Flash à partir de 490 € HT.",
+  seoHook: "artisanat & viticulture",
   ecosystemFr:
     "Rochefort-du-Gard (~8 100 hab) est une commune résidentielle entre Nîmes (20 min) et Avignon (15 min). Services aux entreprises, professions libérales, artisanat BTP, commerces, viticulture et agriculture de garrigue. Cadre de vie attractif, accès N100 et proximité Grand Avignon.",
   ecosystemEn:

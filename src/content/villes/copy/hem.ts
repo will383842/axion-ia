@@ -12,6 +12,7 @@ export const HEM_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hem (59). Nous accompagnons TPE et PME : artisans BTP, sous-traitants textile et industriels, PME de services, commerçants et professions libérales de l'agglomération lilloise est. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hem (59). Nous accompagnons TPE et PME : artisans BTP, sous-traitants textile et industriels, PME de services, commerçants et professions libérales de l'agglomération lilloise est. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat second & sous-traitance textile",
   ecosystemFr:
     "Hem est une commune résidentielle de la Métropole Européenne de Lille, située à l'est entre Roubaix et la frontière belge. Économie portée par les ZA (Hem-Centre, Trois Baudets), l'artisanat BTP, les sous-traitants industriels héritiers du bassin textile roubaisien et un tissu dense de TPE/PME de services. Patrimoine architectural moderne (chapelle de Sainte-Thérèse) et proximité immédiate Roubaix.",
   ecosystemEn:

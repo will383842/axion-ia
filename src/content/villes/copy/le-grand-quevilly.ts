@@ -14,6 +14,7 @@ export const LE_GRAND_QUEVILLY_COPY: VilleCopy = {
     "Le Grand-Quevilly, avec ses 25 789 habitants, est un pôle économique dynamique en Normandie. La ville abrite des entreprises de renom comme TotalEnergies et Renault, offrant un terreau fertile pour l'innovation. Axion-IA se déplace sur site pour accompagner les entreprises locales dans l'automatisation de leurs processus et l'implémentation de solutions IA adaptées.",
   directAnswerEn:
     "Le Grand-Quevilly, avec ses 25 789 habitants, est un pôle économique dynamique en Normandie. La ville abrite des entreprises de renom comme TotalEnergies et Renault, offrant un terreau fertile pour l'innovation. Axion-IA se déplace sur site pour accompagner les entreprises locales dans l'automatisation de leurs processus et l'implémentation de solutions IA adaptées.",
+  seoHook: "transport terrestre & commerce gros",
   ecosystemFr:
     "Le tissu économique de Le Grand-Quevilly est marqué par la présence de TotalEnergies et Renault. Ces grands groupes contribuent à la vitalité économique locale, notamment dans les secteurs du transport terrestre et du commerce de gros.",
   ecosystemEn:

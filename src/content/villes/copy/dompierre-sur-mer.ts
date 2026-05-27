@@ -12,6 +12,7 @@ export const DOMPIERRE_SUR_MER_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Dompierre-sur-Mer (17). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, prestataires de services, commerçants et indépendants de cette commune résidentielle prisée de l'agglomération de La Rochelle.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Dompierre-sur-Mer (17). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, prestataires de services, commerçants et indépendants de cette commune résidentielle prisée de l'agglomération de La Rochelle.",
+  seoHook: "services aux & professions libérales",
   ecosystemFr:
     "Dompierre-sur-Mer est une commune résidentielle prisée de l'agglomération de La Rochelle, en forte croissance démographique. PME tertiaires, TPE artisans BTP, commerces de proximité, services à la personne, professions libérales et de santé. Cadre périurbain attractif entre La Rochelle et le Marais poitevin.",
   ecosystemEn:

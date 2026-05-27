@@ -12,6 +12,7 @@ export const LA_FERTE_SOUS_JOUARRE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Ferté-sous-Jouarre (77). Nous accompagnons tous types d'activités : TPE artisans, commerçants, PME agroalimentaires et industrielles, professions libérales et indépendants du bassin fertois. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Ferté-sous-Jouarre (77). Nous accompagnons tous types d'activités : TPE artisans, commerçants, PME agroalimentaires et industrielles, professions libérales et indépendants du bassin fertois. Audit Flash dès 490 € HT.",
+  seoHook: "commerce centre-bourg & artisanat rénovation",
   ecosystemFr:
     "La Ferté-sous-Jouarre est une commune historique à la confluence de la Marne et du Petit Morin, connue pour ses meulières. Son tissu économique repose sur les commerces de centre-bourg, TPE artisanales, PME agroalimentaires, petite industrie et professions libérales. Proximité avec Jouarre, Saâcy-sur-Marne et Château-Thierry. Pôle de centralité du nord-est seine-et-marnais.",
   ecosystemEn:

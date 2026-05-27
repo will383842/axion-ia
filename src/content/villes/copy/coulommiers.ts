@@ -12,6 +12,7 @@ export const COULOMMIERS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coulommiers (77). Nous accompagnons TPE et PME : artisans, PME agroalimentaires, commerçants de centre-ville, services aux entreprises, professions libérales et indépendants du bassin est Seine-et-Marne. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coulommiers (77). Nous accompagnons TPE et PME : artisans, PME agroalimentaires, commerçants de centre-ville, services aux entreprises, professions libérales et indépendants du bassin est Seine-et-Marne. Audit Flash dès 490 € HT.",
+  seoHook: "agroalimentaire filière & commerce détail",
   ecosystemFr:
     "Coulommiers, sous-préfecture de Seine-et-Marne, est un pôle structurant de l'est francilien. Tissu économique diversifié : filière agroalimentaire (Brie de Coulommiers), artisanat BTP, commerces de centre-ville, services aux entreprises, professions libérales de santé. Zone d'activités des Musiciens et parc Coutevroult à proximité.",
   ecosystemEn:

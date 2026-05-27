@@ -12,6 +12,7 @@ export const LA_BOUILLADISSE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Bouilladisse (13). Nous accompagnons TPE artisans BTP, commerçants, PME de services et professions libérales de l'est marseillais. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Bouilladisse (13). Nous accompagnons TPE artisans BTP, commerçants, PME de services et professions libérales de l'est marseillais. Audit Flash dès 490 € HT.",
+  seoHook: "rénovation résidentielle & artisanat services",
   ecosystemFr:
     "La Bouilladisse est une commune résidentielle vallonnée de l'arrière-pays marseillais, entre Aubagne et la Sainte-Baume. Centre-village avec commerces de proximité, zones artisanales, TPE BTP (construction, rénovation) et professions libérales. Cadres et employés travaillant à Aubagne, Marseille ou Aix.",
   ecosystemEn:

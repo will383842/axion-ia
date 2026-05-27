@@ -12,6 +12,7 @@ export const SEYSSINET_PARISET_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Seyssinet-Pariset (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales (médecins, avocats, expert-comptables), PME tertiaires seyssinardes, indépendants et entreprises de Grenoble-Alpes Métropole (« La Métro »).",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Seyssinet-Pariset (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales (médecins, avocats, expert-comptables), PME tertiaires seyssinardes, indépendants et entreprises de Grenoble-Alpes Métropole (« La Métro »).",
+  seoHook: "professions libérales & tertiaires services",
   ecosystemFr:
     "Seyssinet-Pariset est adhérente à Grenoble-Alpes Métropole (« La Métro »), rattachée au canton de Fontaine-Seyssinet. Le territoire mixte plaine/montagne reflète l'écosystème : tissu PME tertiaires et résidentiel dense côté Seyssinet (limitrophe Grenoble), activité touristique périphérique côté Pariset (premières pentes Vercors, route de Saint-Nizier). Commerces, artisanat BTP, professions libérales nombreuses.",
   ecosystemEn:

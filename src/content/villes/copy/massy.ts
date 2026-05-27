@@ -14,6 +14,7 @@ export const MASSY_COPY: VilleCopy = {
     "À Massy, Axion-IA propose des interventions sur site pour optimiser les processus métiers. Avec des acteurs économiques tels que Carrefour et Orange, nous aidons les entreprises locales à intégrer l'IA dans leurs opérations quotidiennes. Nos services incluent des audits à partir de 490 € HT et des implémentations dès 990 € HT, adaptés au tissu économique de Massy.",
   directAnswerEn:
     "À Massy, Axion-IA propose des interventions sur site pour optimiser les processus métiers. Avec des acteurs économiques tels que Carrefour et Orange, nous aidons les entreprises locales à intégrer l'IA dans leurs opérations quotidiennes. Nos services incluent des audits à partir de 490 € HT et des implémentations dès 990 € HT, adaptés au tissu économique de Massy.",
+  seoHook: "commerce détail & programmation informatique",
   ecosystemFr:
     "Massy est un pôle économique regroupant des entreprises comme Carrefour et Thales. Ces entités contribuent à un environnement propice à l'innovation et à la croissance.",
   ecosystemEn:

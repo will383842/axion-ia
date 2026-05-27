@@ -12,6 +12,7 @@ export const SAINT_FLOUR_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Flour (15). Nous accompagnons tous types d'activités : administration sous-préfecture, éleveurs Salers/Aubrac montagne Cantal, agriculteurs Planèze, TPE artisans BTP, commerçants et services aux entreprises cantaliennes.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Flour (15). Nous accompagnons tous types d'activités : administration sous-préfecture, éleveurs Salers/Aubrac montagne Cantal, agriculteurs Planèze, TPE artisans BTP, commerçants et services aux entreprises cantaliennes.",
+  seoHook: "administration & élevage salers/aubrac",
   ecosystemFr:
     "Saint-Flour est la sous-préfecture du Cantal, ville perchée (haute sur plateau basaltique). Agriculture montagne : élevage races Salers et Aubrac (races bovines locales emblématiques), Planèze de Saint-Flour (plateau agricole). Tissu administration, TPE artisanat BTP, commerces.",
   ecosystemEn:

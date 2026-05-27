@@ -14,6 +14,7 @@ export const ROMAINVILLE_COPY: VilleCopy = {
     "À Romainville, Axion-IA propose des interventions sur site pour les entreprises de secteurs variés tels que le commerce de détail et la programmation informatique. Nous nous déplaçons rapidement pour accompagner vos projets IA, en lien avec des pôles comme Inria et des acteurs économiques majeurs tels que LVMH, présents en Ile-de-France.",
   directAnswerEn:
     "À Romainville, Axion-IA propose des interventions sur site pour les entreprises de secteurs variés tels que le commerce de détail et la programmation informatique. Nous nous déplaçons rapidement pour accompagner vos projets IA, en lien avec des pôles comme Inria et des acteurs économiques majeurs tels que LVMH, présents en Ile-de-France.",
+  seoHook: "commerce détail & construction",
   ecosystemFr:
     "Romainville bénéficie de la proximité avec des pôles d'innovation comme Cap Digital et Station F, renforçant son attractivité pour les entreprises technologiques.",
   ecosystemEn:

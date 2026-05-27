@@ -12,6 +12,7 @@ export const MOUILLERON_LE_CAPTIF_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mouilleron-le-Captif (85). Nous accompagnons TPE artisans, PME industrielles et services, commerçants et professions libérales de l'agglomération de La Roche-sur-Yon nord. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mouilleron-le-Captif (85). Nous accompagnons TPE artisans, PME industrielles et services, commerçants et professions libérales de l'agglomération de La Roche-sur-Yon nord. Audit Flash dès 490 € HT.",
+  seoHook: "industrie & commerce détail",
   ecosystemFr:
     "Mouilleron-le-Captif (5 273 hab) est une commune périurbaine de l'agglomération yonnaise (La Roche-sur-Yon Agglomération), au nord de la préfecture vendéenne. Économie diversifiée : industrie, services aux entreprises, BTP, commerces, événementiel (Vendéspace) et professions libérales. Proximité immédiate La Roche-sur-Yon (5 min), Nantes (55 min), Les Sables-d'Olonne (45 min).",
   ecosystemEn:

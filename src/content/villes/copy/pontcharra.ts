@@ -12,6 +12,7 @@ export const PONTCHARRA_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pontcharra (38). Nous accompagnons tous types d'activités : PME industrielles du Grésivaudan / Combe de Savoie, TPE artisans BTP, commerçants, agriculteurs, indépendants, professions libérales et services aux entreprises de la limite Isère-Savoie.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pontcharra (38). Nous accompagnons tous types d'activités : PME industrielles du Grésivaudan / Combe de Savoie, TPE artisans BTP, commerçants, agriculteurs, indépendants, professions libérales et services aux entreprises de la limite Isère-Savoie.",
+  seoHook: "industrielles vallée & agriculture élevage",
   ecosystemFr:
     "Pontcharra occupe une position stratégique au débouché de la vallée du Grésivaudan vers la Combe de Savoie (frontière Isère-Savoie sur l'axe Grenoble-Chambéry). Site historique (lieu de naissance du chevalier Bayard XVIe siècle, château de Bayard à Pontcharra). Tissu PME industrielles, TPE artisanat BTP, agriculture vallée, commerces et services péri-urbains.",
   ecosystemEn:

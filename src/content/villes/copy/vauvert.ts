@@ -12,6 +12,7 @@ export const VAUVERT_COPY: VilleCopy = {
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Vauvert (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs Costières de Nîmes, exploitants agricoles Camargue, commerçants, artisans BTP et professions libérales de la Petite Camargue. Audit Flash à partir de 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Vauvert (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs Costières de Nîmes, exploitants agricoles Camargue, commerçants, artisans BTP et professions libérales de la Petite Camargue. Audit Flash à partir de 490 € HT.",
+  seoHook: "viticulture costières & agriculture camargue",
   ecosystemFr:
     "Vauvert (~11 700 hab) est une commune de la Petite Camargue gardoise, entre Nîmes et Aigues-Mortes. Viticulture Costières de Nîmes (AOP), agriculture camarguaise (riz, élevage), commerces centre-ville, artisanat BTP et services aux entreprises. Économie agri-viticole dominante.",
   ecosystemEn:

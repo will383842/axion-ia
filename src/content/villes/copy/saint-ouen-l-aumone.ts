@@ -14,6 +14,7 @@ export const SAINT_OUEN_L_AUMONE_COPY: VilleCopy = {
     "À Saint-Ouen-l'Aumône, Axion-IA propose des services IA adaptés aux entreprises locales, incluant des interventions sur site. Avec des groupes comme Thales et Renault présents dans la région, nous comprenons les défis uniques de l'écosystème local. Nos services commencent à partir de 490 € HT pour un audit flash de 4 heures.",
   directAnswerEn:
     "À Saint-Ouen-l'Aumône, Axion-IA propose des services IA adaptés aux entreprises locales, incluant des interventions sur site. Avec des groupes comme Thales et Renault présents dans la région, nous comprenons les défis uniques de l'écosystème local. Nos services commencent à partir de 490 € HT pour un audit flash de 4 heures.",
+  seoHook: "commerce gros & transport entreposage",
   ecosystemFr:
     "Saint-Ouen-l'Aumône est un centre industriel avec la présence de Thales et Renault. Le Parc d'activités des Béthunes joue un rôle clé dans le développement économique local, soutenant divers secteurs d'activité.",
   ecosystemEn:

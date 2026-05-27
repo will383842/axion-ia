@@ -12,6 +12,7 @@ export const ERAGNY_SUR_OISE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Éragny-sur-Oise (95). Nous accompagnons TPE et PME : commerçants zone commerciale, PME tertiaire agglo Cergy-Pontoise, professions libérales, restaurateurs, prestataires logistique Val-d'Oise. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Éragny-sur-Oise (95). Nous accompagnons TPE et PME : commerçants zone commerciale, PME tertiaire agglo Cergy-Pontoise, professions libérales, restaurateurs, prestataires logistique Val-d'Oise. Audit Flash dès 490 € HT.",
+  seoHook: "commerce détail & tertiaire services",
   ecosystemFr:
     "Éragny-sur-Oise fait partie de l'agglomération Cergy-Pontoise, pôle économique majeur du Val-d'Oise en bord d'Oise. Tissu TPE commerces et services, PME tertiaire, professions libérales, restauration, prestataires logistique.",
   ecosystemEn:

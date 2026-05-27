@@ -12,6 +12,7 @@ export const MARLY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marly (59). Nous accompagnons TPE et PME : commerces et enseignes de la zone commerciale, prestataires de services aux entreprises, professions libérales, artisans, sous-traitants industriels du Valenciennois.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marly (59). Nous accompagnons TPE et PME : commerces et enseignes de la zone commerciale, prestataires de services aux entreprises, professions libérales, artisans, sous-traitants industriels du Valenciennois.",
+  seoHook: "commerce grande & services aux",
   ecosystemFr:
     "Marly est une commune résidentielle et commerciale au sud de Valenciennes, disposant d'une zone commerciale importante (Place Verte) qui rayonne sur tout le Valenciennois. L'économie locale combine TPE et PME du commerce et de la grande distribution, services aux entreprises (cabinets conseil, comptabilité, intérim), professions libérales (santé, juridique), artisanat, et sous-traitance industrielle bénéficiant de la proximité de la filière automobile valenciannoise. Commune dynamique en développement avec de nouveaux quartiers résidentiels attirant cadres et indépendants.",
   ecosystemEn:

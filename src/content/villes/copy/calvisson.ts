@@ -12,6 +12,7 @@ export const CALVISSON_COPY: VilleCopy = {
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Calvisson (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs, agriculteurs, commerçants, artisans BTP et professions libérales de la Vaunage gardoise. Audit Flash à partir de 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Calvisson (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs, agriculteurs, commerçants, artisans BTP et professions libérales de la Vaunage gardoise. Audit Flash à partir de 490 € HT.",
+  seoHook: "viticulture & agriculture méditerranéenne",
   ecosystemFr:
     "Calvisson (~6 500 hab) est le bourg central de la Vaunage, plaine viticole entre Nîmes (20 min) et Sommières (10 min). Viticulture (caves coopératives et indépendants), agriculture méditerranéenne (oliviers), commerces de proximité, artisanat BTP et professions libérales. Marché provençal vivant.",
   ecosystemEn:

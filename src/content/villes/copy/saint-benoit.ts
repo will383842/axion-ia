@@ -12,6 +12,7 @@ export const SAINT_BENOIT_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Benoît (86). Nous accompagnons tous types d'activités : TPE artisans, commerçants de proximité, PME tertiaires, professions libérales (médecins, avocats), services aux entreprises, associations et acteurs patrimoine/culture du Grand Poitiers sud.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Benoît (86). Nous accompagnons tous types d'activités : TPE artisans, commerçants de proximité, PME tertiaires, professions libérales (médecins, avocats), services aux entreprises, associations et acteurs patrimoine/culture du Grand Poitiers sud.",
+  seoHook: "artisanat services & professions libérales",
   ecosystemFr:
     "Saint-Benoît est une commune résidentielle du sud de l'agglomération Grand Poitiers, connue pour son abbaye bénédictine romane (XIe siècle). Traversée par le Clain, elle offre un cadre verdoyant. Tissu économique périurbain : TPE artisans, commerces de proximité, PME tertiaires/services, professions libérales (santé, juridique, gestion), associations culturelles et sociales.",
   ecosystemEn:

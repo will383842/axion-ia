@@ -14,6 +14,7 @@ export const CHERBOURG_EN_COTENTIN_COPY: VilleCopy = {
     "Axion-IA se déplace à Cherbourg-en-Cotentin pour accompagner les entreprises locales, notamment celles de la construction navale et du commerce de détail. Avec Naval Group implanté dans la région et l'Université de Caen Normandie - Campus de Cherbourg, nous proposons des solutions IA adaptées à ces secteurs. Nos prestations incluent des audits, interventions et implémentations, assurant une adoption fluide de l'IA.",
   directAnswerEn:
     "Axion-IA se déplace à Cherbourg-en-Cotentin pour accompagner les entreprises locales, notamment celles de la construction navale et du commerce de détail. Avec Naval Group implanté dans la région et l'Université de Caen Normandie - Campus de Cherbourg, nous proposons des solutions IA adaptées à ces secteurs. Nos prestations incluent des audits, interventions et implémentations, assurant une adoption fluide de l'IA.",
+  seoHook: "construction navale & transport terrestre",
   ecosystemFr:
     "Cherbourg-en-Cotentin est marqué par la présence de Naval Group et la Zone Industrielle de Querqueville, renforçant son importance dans la construction navale et le transport terrestre.",
   ecosystemEn:

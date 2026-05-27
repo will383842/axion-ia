@@ -14,6 +14,7 @@ export const HYERES_COPY: VilleCopy = {
     "À Hyères, Axion-IA propose des interventions sur site pour optimiser les processus métiers. L'écosystème français comprend des entités comme Cap Digital et Inria, qui soutiennent l'innovation technologique. Nos services incluent des audits à partir de 490 € HT et des interventions dès 590 € HT, offrant des solutions concrètes pour les entreprises locales.",
   directAnswerEn:
     "À Hyères, Axion-IA propose des interventions sur site pour optimiser les processus métiers. L'écosystème français comprend des entités comme Cap Digital et Inria, qui soutiennent l'innovation technologique. Nos services incluent des audits à partir de 490 € HT et des interventions dès 590 € HT, offrant des solutions concrètes pour les entreprises locales.",
+  seoHook: "commerce détail & hébergement",
   ecosystemFr:
     "Hyères bénéficie d'un tissu économique diversifié avec des secteurs dominants comme le commerce de détail et la restauration. La proximité de l'aéroport de Toulon-Hyères facilite les déplacements pour nos interventions.",
   ecosystemEn:

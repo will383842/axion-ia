@@ -12,6 +12,7 @@ export const MEULAN_EN_YVELINES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Meulan-en-Yvelines (78). Nous accompagnons TPE et PME : artisans, commerces de centre-ville, PME de services, professions libérales et entreprises agricoles de cette commune historique à la confluence Aubette/Seine, aux portes du Vexin. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Meulan-en-Yvelines (78). Nous accompagnons TPE et PME : artisans, commerces de centre-ville, PME de services, professions libérales et entreprises agricoles de cette commune historique à la confluence Aubette/Seine, aux portes du Vexin. Audit Flash dès 490 € HT.",
+  seoHook: "commerce proximité & services aux",
   ecosystemFr:
     "Meulan-en-Yvelines est une commune historique à la confluence de l'Aubette et de la Seine, aux portes du Vexin français. Centre-ville commerçant actif avec marché traditionnel. Tissu économique : TPE artisans bâtiment, commerces de proximité, PME de services, professions libérales, agriculture et maraîchage périurbain. Communes voisines : Les Mureaux, Hardricourt, Vaux-sur-Seine, Mézy-sur-Seine, Juziers.",
   ecosystemEn:

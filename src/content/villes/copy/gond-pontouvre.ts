@@ -12,6 +12,7 @@ export const GOND_PONTOUVRE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gond-Pontouvre (16). Nous accompagnons tous types d'activités : TPE artisans, PME commerciales, prestataires de services, commerçants et indépendants de cette commune résidentielle du nord de l'agglomération d'Angoulême.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gond-Pontouvre (16). Nous accompagnons tous types d'activités : TPE artisans, PME commerciales, prestataires de services, commerçants et indépendants de cette commune résidentielle du nord de l'agglomération d'Angoulême.",
+  seoHook: "commerce zones & services aux",
   ecosystemFr:
     "Gond-Pontouvre est une commune résidentielle et commerciale du nord de l'agglomération GrandAngoulême. Zones d'activités économiques, PME commerciales et tertiaires, TPE artisans BTP, commerces de proximité, services à la personne. Accès direct à l'axe Angoulême-Limoges.",
   ecosystemEn:

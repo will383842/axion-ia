@@ -12,6 +12,7 @@ export const CHANGE_53_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Changé (53, Mayenne). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et technologiques, commerçants, professions libérales, prestataires B2B et entreprises des zones d'activités de l'agglomération lavalloise.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Changé (53, Mayenne). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et technologiques, commerçants, professions libérales, prestataires B2B et entreprises des zones d'activités de l'agglomération lavalloise.",
+  seoHook: "industrie technologie & numérique services",
   ecosystemFr:
     "Changé est une commune dynamique de Laval Agglomération (Mayenne), dotée de zones d'activités commerciales et technologiques (Laval Mayenne Technopole). Tissu PME diversifié : industrie, numérique, services B2B, artisanat, commerces. Proximité immédiate du centre de Laval.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const GIERES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gières (38). Nous accompagnons tous types d'activités : structures universitaires et de recherche (campus Université Grenoble Alpes), PME tertiaires, TPE artisans BTP, commerçants, professions libérales et services aux entreprises de Grenoble-Alpes Métropole en zone est.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Gières (38). Nous accompagnons tous types d'activités : structures universitaires et de recherche (campus Université Grenoble Alpes), PME tertiaires, TPE artisans BTP, commerçants, professions libérales et services aux entreprises de Grenoble-Alpes Métropole en zone est.",
+  seoHook: "université recherche & tertiaires services",
   ecosystemFr:
     "Gières est membre de Grenoble-Alpes Métropole (« La Métro »), à l'est de Grenoble. Position stratégique : seconde gare ferroviaire de l'agglomération (Grenoble-Universités-Gières) desservant le campus universitaire Université Grenoble Alpes (~60 000 étudiants). Tissu PME tertiaires, structures de formation, TPE artisanat BTP, commerces de proximité, professions libérales.",
   ecosystemEn:

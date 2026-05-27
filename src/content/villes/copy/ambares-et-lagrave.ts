@@ -12,6 +12,7 @@ export const AMBARES_ET_LAGRAVE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ambarès-et-Lagrave (33). Nous accompagnons TPE et PME du nord Bordeaux : industries chimiques et logistiques, artisans BTP, commerçants, PME de services et professions libérales. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ambarès-et-Lagrave (33). Nous accompagnons TPE et PME du nord Bordeaux : industries chimiques et logistiques, artisans BTP, commerçants, PME de services et professions libérales. Audit Flash dès 490 € HT.",
+  seoHook: "industrie chimique & services aux",
   ecosystemFr:
     "Ambarès-et-Lagrave fait partie de Bordeaux Métropole nord. Zone industrielle historique (chimie, logistique, port autonome de Bordeaux), tissu PME diversifié et développement résidentiel récent. Accès direct à la rocade A630 et à la voie ferrée Bordeaux–Paris.",
   ecosystemEn:

@@ -14,6 +14,7 @@ export const AGEN_COPY: VilleCopy = {
     "À Agen, Axion-IA propose des interventions sur site pour optimiser les processus des entreprises locales, comme celles du Groupe GIFI et Fonroche Énergie. Notre approche inclut des audits à partir de 490 € HT et des implémentations dès 990 € HT. Nous nous déplaçons auprès de nos clients dans des délais rapides pour garantir une intégration fluide de l'IA.",
   directAnswerEn:
     "À Agen, Axion-IA propose des interventions sur site pour optimiser les processus des entreprises locales, comme celles du Groupe GIFI et Fonroche Énergie. Notre approche inclut des audits à partir de 490 € HT et des implémentations dès 990 € HT. Nous nous déplaçons auprès de nos clients dans des délais rapides pour garantir une intégration fluide de l'IA.",
+  seoHook: "commerce détail & industrie agroalimentaire",
   ecosystemFr:
     "Agen bénéficie de la présence de l'Agropole et du campus de l'Université de Bordeaux, favorisant l'innovation et la recherche dans la région.",
   ecosystemEn:

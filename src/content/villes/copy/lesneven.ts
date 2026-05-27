@@ -12,6 +12,7 @@ export const LESNEVEN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lesneven (29). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires Pays de Léon, commerçants centre bourg, professions libérales, agriculteurs, services aux entreprises du nord Finistère. Audit Flash à 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lesneven (29). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires Pays de Léon, commerçants centre bourg, professions libérales, agriculteurs, services aux entreprises du nord Finistère. Audit Flash à 490 € HT.",
+  seoHook: "agroalimentaire filière & agriculture élevage",
   ecosystemFr:
     "Lesneven est le bourg-centre historique du Pays de Léon, dans le nord Finistère. La commune joue un rôle de pôle de services, de commerces et d'équipements pour les communes environnantes (Ploudaniel, Le Folgoët, Plouider). Tissu économique diversifié : TPE artisans BTP, PME agroalimentaires (filière légumière bretonne), commerces, professions libérales et agriculture.",
   ecosystemEn:

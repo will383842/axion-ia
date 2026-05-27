@@ -12,6 +12,7 @@ export const LONGUENESSE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Longuenesse (62). Nous accompagnons TPE commerçantes, PME de services, professions libérales et artisans de l'agglomération de Saint-Omer. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Longuenesse (62). Nous accompagnons TPE commerçantes, PME de services, professions libérales et artisans de l'agglomération de Saint-Omer. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+  seoHook: "commerce détail & professions libérales",
   ecosystemFr:
     "Longuenesse est la principale extension urbaine de Saint-Omer, concentrant zones commerciales, centres de services et activités tertiaires de l'agglomération audomaroise. TPE artisanales, PME de services aux entreprises, professions libérales santé et juridiques, et commerces de proximité.",
   ecosystemEn:

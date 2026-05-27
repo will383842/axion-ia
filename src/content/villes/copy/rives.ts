@@ -12,6 +12,7 @@ export const RIVES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rives (38). Nous accompagnons tous types d'activités : PME industrielles du Voironnais (héritage papetier vallée Fure), TPE artisans BTP, commerçants, agriculteurs, indépendants, professions libérales et services aux entreprises du Pays voironnais.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rives (38). Nous accompagnons tous types d'activités : PME industrielles du Voironnais (héritage papetier vallée Fure), TPE artisans BTP, commerçants, agriculteurs, indépendants, professions libérales et services aux entreprises du Pays voironnais.",
+  seoHook: "industrielles & industrie diversifiée",
   ecosystemFr:
     "Rives est intégrée à la communauté d'agglomération du Pays voironnais (~93 000 hab) dans la vallée de la Fure (affluent du Réaumont). Tradition industrielle papetière historique sur la commune (sites industriels successifs depuis le XIXe siècle). Tissu PME industrielles, TPE artisanat BTP, agriculture, commerces et services péri-urbains. Position vers Voiron (10 min).",
   ecosystemEn:

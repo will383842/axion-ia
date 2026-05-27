@@ -12,6 +12,7 @@ export const PONT_L_EVEQUE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pont-l'Évêque (14). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME fromagères AOP (Pont-l'Évêque), hôteliers-restaurateurs Pays d'Auge, cidreries, professions libérales et services aux entreprises entre Deauville et Lisieux.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pont-l'Évêque (14). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME fromagères AOP (Pont-l'Évêque), hôteliers-restaurateurs Pays d'Auge, cidreries, professions libérales et services aux entreprises entre Deauville et Lisieux.",
+  seoHook: "fromagerie & tourisme gastronomique",
   ecosystemFr:
     "Pont-l'Évêque est une commune du Pays d'Auge (Calvados), qui a donné son nom au fromage Pont-l'Évêque AOP (le plus ancien fromage normand documenté, XIIe siècle). Positionnée entre Deauville (20 min) et Lisieux (15 min), sur l'A13. Économie mixte : agroalimentaire AOP, tourisme gastronomique, hôtellerie, TPE artisans, commerces.",
   ecosystemEn:

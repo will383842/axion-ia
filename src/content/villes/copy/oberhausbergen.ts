@@ -12,6 +12,7 @@ export const OBERHAUSBERGEN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Oberhausbergen (67). Nous accompagnons TPE et PME : sous-traitants industriels, prestataires de services aux entreprises, artisans BTP, commerçants, restaurateurs et logisticiens de l''Eurométropole de Strasbourg. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Oberhausbergen (67). Nous accompagnons TPE et PME : sous-traitants industriels, prestataires de services aux entreprises, artisans BTP, commerçants, restaurateurs et logisticiens de l''Eurométropole de Strasbourg. Audit Flash dès 490 € HT.",
+  seoHook: "services aux & artisanat second",
   ecosystemFr:
     "Oberhausbergen est une commune de l''Eurométropole de Strasbourg, située à l''ouest de l''agglomération sur les hauteurs de Hausbergen. La commune accueille plusieurs zones d''activités économiques (artisanat, sous-traitance industrielle, services), des commerces et restaurants, ainsi qu''un tissu résidentiel périurbain dense. L''économie locale repose sur les services aux entreprises strasbourgeoises, la sous-traitance industrielle, l''artisanat BTP, le commerce de proximité, la restauration et la logistique de proximité.",
   ecosystemEn:

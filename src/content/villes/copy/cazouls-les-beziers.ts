@@ -12,6 +12,7 @@ export const CAZOULS_LES_BEZIERS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cazouls-lès-Béziers (34). Nous accompagnons tous types d'activités : domaines viticoles, caves coopératives, PME négoce vin, TPE artisans, commerçants, indépendants, professions libérales et acteurs de l'œnotourisme du Biterrois.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cazouls-lès-Béziers (34). Nous accompagnons tous types d'activités : domaines viticoles, caves coopératives, PME négoce vin, TPE artisans, commerçants, indépendants, professions libérales et acteurs de l'œnotourisme du Biterrois.",
+  seoHook: "viticulture vinification & négoce vin",
   ecosystemFr:
     "Cazouls-lès-Béziers est une commune viticole de l'agglomération de Béziers, au cœur de l'AOC Languedoc et du vignoble biterrois. Le canal du Midi passe à proximité (tourisme fluvial). Tissu TPE domaines viticoles et caves coopératives, PME négoce vin, artisans BTP, commerces de proximité, œnotourisme en développement.",
   ecosystemEn:

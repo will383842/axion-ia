@@ -12,6 +12,7 @@ export const BRIGNAIS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Brignais (69). Nous accompagnons tous types d'activités : PME tertiaires SO lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la banlieue sud-ouest lyonnaise.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Brignais (69). Nous accompagnons tous types d'activités : PME tertiaires SO lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la banlieue sud-ouest lyonnaise.",
+  seoHook: "tertiaires lyonnais & professions libérales",
   ecosystemFr:
     "Brignais est positionnée dans la vallée du Garon, en banlieue SO lyonnaise. Tissu péri-urbain résidentiel : PME tertiaires, TPE artisanat BTP, commerces de proximité, professions libérales installées (médecins, avocats, expert-comptables), agriculture résiduelle.",
   ecosystemEn:

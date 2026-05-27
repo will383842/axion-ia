@@ -12,6 +12,7 @@ export const BELLEVIGNY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bellevigny (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles agglo La Roche-sur-Yon, exploitations agricoles, professions libérales et services de proximité.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bellevigny (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles agglo La Roche-sur-Yon, exploitations agricoles, professions libérales et services de proximité.",
+  seoHook: "industrielles zones & artisanat construction",
   ecosystemFr:
     "Bellevigny est une commune nouvelle vendéenne (fusion 2019 Belleville-sur-Vie / Saligny), en périphérie nord de La Roche-sur-Yon. Zones d'activités artisanales et industrielles, agriculture bocagère, commerces. Croissance démographique dynamique. La Roche centre à 10 min, Nantes à 50 min.",
   ecosystemEn:

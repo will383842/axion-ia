@@ -12,6 +12,7 @@ export const UZES_COPY: VilleCopy = {
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Uzès (30). Nous accompagnons les TPE, PME et ETI locales : acteurs tourisme culturel, artisans d'art, commerçants, viticulteurs Duché d'Uzès, professions libérales et services aux entreprises de l'Uzège. Audit Flash à partir de 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Uzès (30). Nous accompagnons les TPE, PME et ETI locales : acteurs tourisme culturel, artisans d'art, commerçants, viticulteurs Duché d'Uzès, professions libérales et services aux entreprises de l'Uzège. Audit Flash à partir de 490 € HT.",
+  seoHook: "tourisme culturel & artisanat d'art",
   ecosystemFr:
     "Uzès (~8 500 hab) est le premier duché de France, cité patrimoniale entre Pont du Gard et garrigue gardoise. Tourisme culturel majeur (marché samedi, duché, Pont du Gard à 15 min), artisanat d'art, commerces premium, viticulture Duché d'Uzès AOP, professions libérales et résidences secondaires.",
   ecosystemEn:

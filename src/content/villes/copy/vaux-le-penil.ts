@@ -12,6 +12,7 @@ export const VAUX_LE_PENIL_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vaux-le-Pénil (77). Nous accompagnons tous types d'activités : TPE artisans, commerçants, PME tertiaires, professions libérales et prestataires de services de l'agglomération melunaise. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vaux-le-Pénil (77). Nous accompagnons tous types d'activités : TPE artisans, commerçants, PME tertiaires, professions libérales et prestataires de services de l'agglomération melunaise. Audit Flash dès 490 € HT.",
+  seoHook: "commerce proximité & artisanat rénovation",
   ecosystemFr:
     "Vaux-le-Pénil est une commune résidentielle du sud de la Seine-et-Marne, rattachée à la communauté d'agglomération Melun Val de Seine. Son tissu économique repose sur les commerces de proximité, TPE artisanales, PME de services, cabinets de professions libérales et activités logistiques liées à l'axe Seine. Proximité directe avec Melun, Dammarie-les-Lys et Le Mée-sur-Seine.",
   ecosystemEn:

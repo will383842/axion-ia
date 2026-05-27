@@ -14,6 +14,7 @@ export const LE_PLESSIS_ROBINSON_COPY: VilleCopy = {
     "À Le Plessis-Robinson, Axion-IA propose des services d'IA adaptés aux besoins des entreprises locales. Avec des acteurs tels que Thales et Dassault Systèmes présents, nous offrons des audits dès 490 € HT et des interventions à partir de 590 € HT, pour automatiser les tâches administratives et améliorer l'efficacité opérationnelle.",
   directAnswerEn:
     "À Le Plessis-Robinson, Axion-IA propose des services d'IA adaptés aux besoins des entreprises locales. Avec des acteurs tels que Thales et Dassault Systèmes présents, nous offrons des audits dès 490 € HT et des interventions à partir de 590 € HT, pour automatiser les tâches administratives et améliorer l'efficacité opérationnelle.",
+  seoHook: "programmation informatique & activités des",
   ecosystemFr:
     "Le Plessis-Robinson accueille des entreprises de renom comme Thales et Dassault Systèmes, reflétant un tissu économique riche en programmation informatique et ingénierie.",
   ecosystemEn:

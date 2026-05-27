@@ -12,6 +12,7 @@ export const VILLENEUVE_LOUBET_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villeneuve-Loubet (06). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme balnéaire et hôtellerie, commerçants, restaurateurs, professions libérales, indépendants et services aux entreprises du littoral entre Nice et Antibes.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villeneuve-Loubet (06). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme balnéaire et hôtellerie, commerçants, restaurateurs, professions libérales, indépendants et services aux entreprises du littoral entre Nice et Antibes.",
+  seoHook: "tourisme balnéaire & restauration gastronomie",
   ecosystemFr:
     "Villeneuve-Loubet est commune littorale des Alpes-Maritimes (~17 550 hab) entre Nice et Antibes, avec deux pôles : village historique (château médiéval, musée Escoffier) et front de mer (Marina Baie des Anges, plages). PME tourisme balnéaire, hébergements, restauration, TPE artisans BTP, professions libérales, commerces et services résidentiels.",
   ecosystemEn:

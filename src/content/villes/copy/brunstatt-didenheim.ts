@@ -12,6 +12,7 @@ export const BRUNSTATT_DIDENHEIM_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Brunstatt-Didenheim (68). Nous accompagnons TPE et PME : prestataires de services, professions libérales, artisans, commerçants et sous-traitants industriels du sud mulhousien. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Brunstatt-Didenheim (68). Nous accompagnons TPE et PME : prestataires de services, professions libérales, artisans, commerçants et sous-traitants industriels du sud mulhousien. Audit Flash dès 490 € HT.",
+  seoHook: "services aux & commerce proximité",
   ecosystemFr:
     "Brunstatt-Didenheim, commune nouvelle créée en 2016, s'inscrit en première couronne sud de Mulhouse au sein de Mulhouse Alsace Agglomération (m2A). Profil mixte résidentiel et tertiaire, avec présence de zones d'activités, commerces de proximité, services aux entreprises et professions libérales. Proximité immédiate du pôle universitaire et hospitalier mulhousien.",
   ecosystemEn:

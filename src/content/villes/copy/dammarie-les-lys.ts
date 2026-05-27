@@ -14,6 +14,7 @@ export const DAMMARIE_LES_LYS_COPY: VilleCopy = {
     "Axion-IA se déplace à Dammarie-les-Lys pour accompagner les entreprises dans l'intégration de l'IA. L'écosystème local, influencé par des entités comme Cap Digital et Inria, favorise l'innovation. Nous proposons des audits à partir de 490 € HT et des interventions dès 590 € HT pour répondre aux besoins spécifiques des entreprises locales.",
   directAnswerEn:
     "Axion-IA se déplace à Dammarie-les-Lys pour accompagner les entreprises dans l'intégration de l'IA. L'écosystème local, influencé par des entités comme Cap Digital et Inria, favorise l'innovation. Nous proposons des audits à partir de 490 € HT et des interventions dès 590 € HT pour répondre aux besoins spécifiques des entreprises locales.",
+  seoHook: "commerce détail & construction",
   ecosystemFr:
     "Dammarie-les-Lys, avec son bassin économique comprenant Melun et Fontainebleau, bénéficie d'une proximité avec des pôles comme Cap Digital et Station F, propices à l'innovation technologique.",
   ecosystemEn:

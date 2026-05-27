@@ -12,6 +12,7 @@ export const POUZAUGES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pouzauges (85). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles (volaille, charcuterie, laiterie), commerces, professions libérales et prestataires du haut bocage vendéen.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pouzauges (85). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles (volaille, charcuterie, laiterie), commerces, professions libérales et prestataires du haut bocage vendéen.",
+  seoHook: "agroalimentaire & industrie mécanique",
   ecosystemFr:
     "Pouzauges est la capitale du haut bocage vendéen, perchée sur les collines à 290 m d'altitude. Bassin économique structuré autour de l'agroalimentaire (volaille, charcuterie, produits laitiers), de l'industrie mécanique, de l'artisanat BTP et d'un tissu PME familial dynamique typique du modèle économique vendéen.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const VALLONS_DE_L_ERDRE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vallons-de-l'Erdre (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, exploitations agricoles, PME agroalimentaires, services de proximité et entreprises du nord Loire-Atlantique.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vallons-de-l'Erdre (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, exploitations agricoles, PME agroalimentaires, services de proximité et entreprises du nord Loire-Atlantique.",
+  seoHook: "agriculture élevage & agroalimentaire",
   ecosystemFr:
     "Vallons-de-l'Erdre est une commune nouvelle rurale du nord Loire-Atlantique, à la frontière du Maine-et-Loire. Agriculture, élevage, agroalimentaire. Tissu TPE artisans, commerçants, exploitations agricoles, services de proximité. Bassin de vie entre Ancenis et Châteaubriant.",
   ecosystemEn:

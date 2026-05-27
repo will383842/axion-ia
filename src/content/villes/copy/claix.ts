@@ -12,6 +12,7 @@ export const CLAIX_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Claix (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, professions libérales (médecins, avocats), PME tertiaires claixoises, indépendants, agriculteurs/éleveurs sur les contreforts du Vercors et services aux entreprises.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Claix (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, professions libérales (médecins, avocats), PME tertiaires claixoises, indépendants, agriculteurs/éleveurs sur les contreforts du Vercors et services aux entreprises.",
+  seoHook: "artisanat & professions libérales",
   ecosystemFr:
     "Claix est positionnée sur les balcons sud du massif du Vercors, en position résidentielle haut de gamme de Grenoble-Alpes Métropole. Tissu péri-urbain mixte : TPE artisanat BTP (BTP haut de gamme, second œuvre), commerces de proximité, professions libérales installées, PME services, activité agricole résiduelle (élevage, pâtures). Position vers stations Vercors (Lans-en-Vercors, Villard-de-Lans).",
   ecosystemEn:

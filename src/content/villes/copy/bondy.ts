@@ -14,6 +14,7 @@ export const BONDY_COPY: VilleCopy = {
     "Axion-IA se déplace à Bondy pour offrir des services d'IA adaptés aux entreprises locales. Avec son accès facile à Paris via la Gare de Paris-Est et sa proximité avec l'aéroport de Paris-Charles de Gaulle, Bondy est bien positionnée pour bénéficier de nos interventions. Nous accompagnons les entreprises dans divers secteurs, notamment le commerce de détail et la construction.",
   directAnswerEn:
     "Axion-IA se déplace à Bondy pour offrir des services d'IA adaptés aux entreprises locales. Avec son accès facile à Paris via la Gare de Paris-Est et sa proximité avec l'aéroport de Paris-Charles de Gaulle, Bondy est bien positionnée pour bénéficier de nos interventions. Nous accompagnons les entreprises dans divers secteurs, notamment le commerce de détail et la construction.",
+  seoHook: "commerce détail & construction",
   ecosystemFr:
     "Bondy est entourée de communes actives comme Bobigny et Drancy. Le secteur économique y est diversifié, avec une forte présence dans le commerce de détail et les transports terrestres.",
   ecosystemEn:

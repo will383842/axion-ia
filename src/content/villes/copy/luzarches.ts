@@ -12,6 +12,7 @@ export const LUZARCHES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Luzarches (95). Nous accompagnons TPE et PME : commerçants et artisans centre-bourg, PME services aux entreprises, professions libérales, restaurateurs, prestataires BTP et exploitants agricoles Pays de France. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Luzarches (95). Nous accompagnons TPE et PME : commerçants et artisans centre-bourg, PME services aux entreprises, professions libérales, restaurateurs, prestataires BTP et exploitants agricoles Pays de France. Audit Flash dès 490 € HT.",
+  seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Luzarches est un bourg historique du Pays de France, au nord du Val-d'Oise, réputé pour son patrimoine médiéval et son marché. Tissu TPE commerces de proximité et artisanat, PME services, professions libérales, restauration, prestataires BTP et agriculture.",
   ecosystemEn:

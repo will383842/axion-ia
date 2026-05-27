@@ -12,6 +12,7 @@ export const AIZENAY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aizenay (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles bocage vendéen, professions libérales, exploitations agricoles et services de proximité.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aizenay (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles bocage vendéen, professions libérales, exploitations agricoles et services de proximité.",
+  seoHook: "artisanat construction & agriculture élevage",
   ecosystemFr:
     "Aizenay est un bourg dynamique du bocage vendéen, au croisement des axes La Roche-sur-Yon / Challans et Nantes / littoral. Zones d'activités industrielles et commerciales. Agriculture, artisanat du bâtiment, services. La Roche-sur-Yon à 20 min, Challans à 20 min, Nantes à 50 min.",
   ecosystemEn:

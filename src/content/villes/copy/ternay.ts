@@ -12,6 +12,7 @@ export const TERNAY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ternay (69). Nous accompagnons tous types d'activités : PME tertiaires sud lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ternay (69). Nous accompagnons tous types d'activités : PME tertiaires sud lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises.",
+  seoHook: "tertiaires sud",
   ecosystemFr:
     "Ternay est positionnée en banlieue sud de Lyon, vallée du Rhône (axe Lyon-Vienne). Tissu péri-urbain : PME tertiaires, TPE artisanat BTP, commerces, professions libérales.",
   ecosystemEn:

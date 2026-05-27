@@ -14,6 +14,7 @@ export const LAGNY_SUR_MARNE_COPY: VilleCopy = {
     "À Lagny-sur-Marne, Axion-IA propose des services d'IA adaptés aux besoins des entreprises locales. Avec l'influence de pôles technologiques parisiens tels que Station F et Cap Digital, notre équipe nationale se déplace pour offrir des solutions sur site, sans implantation locale. Nous garantissons une approche personnalisée pour chaque entreprise, en tenant compte des spécificités du tissu économique local.",
   directAnswerEn:
     "À Lagny-sur-Marne, Axion-IA propose des services d'IA adaptés aux besoins des entreprises locales. Avec l'influence de pôles technologiques parisiens tels que Station F et Cap Digital, notre équipe nationale se déplace pour offrir des solutions sur site, sans implantation locale. Nous garantissons une approche personnalisée pour chaque entreprise, en tenant compte des spécificités du tissu économique local.",
+  seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Lagny-sur-Marne bénéficie de la proximité de pôles économiques comme Bussy-Saint-Georges et Noisiel. Le tissu économique local est enrichi par des secteurs tels que le commerce de détail et les transports terrestres.",
   ecosystemEn:

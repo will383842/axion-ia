@@ -12,6 +12,7 @@ export const CHANGE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Changé (72). Nous accompagnons tous types d'activités : TPE artisans, PME de services, commerçants, professions libérales (santé, juridique, expertise) et prestataires du nord-est de l'agglomération mancelle.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Changé (72). Nous accompagnons tous types d'activités : TPE artisans, PME de services, commerçants, professions libérales (santé, juridique, expertise) et prestataires du nord-est de l'agglomération mancelle.",
+  seoHook: "artisanat proximité & commerce distribution",
   ecosystemFr:
     "Changé est l'une des communes résidentielles dynamiques de Le Mans Métropole, à l'est du Mans. Tissu économique de proximité : artisanat, commerces, professions libérales, services à la personne, petites PME tertiaires. Proximité directe avec les zones d'activités du nord-est manceau.",
   ecosystemEn:

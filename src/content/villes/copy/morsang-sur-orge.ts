@@ -14,6 +14,7 @@ export const MORSANG_SUR_ORGE_COPY: VilleCopy = {
     "À Morsang-sur-Orge, Axion-IA propose des audits et interventions sur site, en s'inspirant des méthodologies éprouvées de Paris, où se trouvent des pôles comme Inria et Station F. Nos services incluent l'automatisation des tâches administratives et la mise en œuvre de solutions IA, adaptées aux besoins spécifiques des entreprises locales.",
   directAnswerEn:
     "À Morsang-sur-Orge, Axion-IA propose des audits et interventions sur site, en s'inspirant des méthodologies éprouvées de Paris, où se trouvent des pôles comme Inria et Station F. Nos services incluent l'automatisation des tâches administratives et la mise en œuvre de solutions IA, adaptées aux besoins spécifiques des entreprises locales.",
+  seoHook: "commerce détail & construction",
   ecosystemFr:
     "Morsang-sur-Orge bénéficie de la proximité de Paris, abritant des entités comme LVMH et BNP Paribas, qui influencent le tissu économique régional. Les entreprises locales peuvent ainsi s'inspirer de ces leaders pour leur propre développement.",
   ecosystemEn:

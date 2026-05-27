@@ -14,6 +14,7 @@ export const MONTLUCON_COPY: VilleCopy = {
     "À Montluçon, Axion-IA propose des services adaptés aux besoins des entreprises locales, notamment dans la fabrication de produits métalliques et de machines. Notre expertise s'étend à des secteurs variés, permettant aux entreprises de bénéficier d'un audit dès 490 € HT. Nos interventions sur site garantissent une mise en œuvre rapide et efficace de solutions IA.",
   directAnswerEn:
     "À Montluçon, Axion-IA propose des services adaptés aux besoins des entreprises locales, notamment dans la fabrication de produits métalliques et de machines. Notre expertise s'étend à des secteurs variés, permettant aux entreprises de bénéficier d'un audit dès 490 € HT. Nos interventions sur site garantissent une mise en œuvre rapide et efficace de solutions IA.",
+  seoHook: "produits métalliques & machines",
   ecosystemFr:
     "Le tissu économique de Montluçon inclut des entreprises comme Dunlop et Safran, situées dans la Zone Industrielle de Châteaugay.",
   ecosystemEn:

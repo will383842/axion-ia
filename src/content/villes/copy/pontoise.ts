@@ -12,6 +12,7 @@ export const PONTOISE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pontoise (95). Nous accompagnons les TPE et indépendants (cabinets juridiques, expert-comptables, artisans), les PME tertiaires pontoisiennes, les services publics et structures hospitalières/universitaires sur leurs cas IA opérationnels. Vos équipes restent autonomes après notre mission.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pontoise (95). Nous accompagnons les TPE et indépendants (cabinets juridiques, expert-comptables, artisans), les PME tertiaires pontoisiennes, les services publics et structures hospitalières/universitaires sur leurs cas IA opérationnels. Vos équipes restent autonomes après notre mission.",
+  seoHook: "administration services & santé hôpital",
   ecosystemFr:
     "Pontoise concentre la fonction administrative du Val-d'Oise (préfecture, tribunal, sous-préfecture services régionaux) au sein de l'agglomération Cergy-Pontoise (200 000 hab). Université CY Cergy Paris (20 000 étudiants), hôpital René-Dubos (CH référence Val-d'Oise), tissu dense PME tertiaires et TPE artisanales.",
   ecosystemEn:

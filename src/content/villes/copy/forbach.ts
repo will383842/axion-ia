@@ -14,6 +14,7 @@ export const FORBACH_COPY: VilleCopy = {
     "Axion-IA se déplace à Forbach pour accompagner les entreprises locales dans leur adoption de l'IA. Avec des acteurs économiques tels qu'ArcelorMittal et la Zone Industrielle de Forbach Ouest, nous proposons des audits et interventions sur site pour automatiser les tâches administratives et améliorer l'efficacité opérationnelle de nos clients.",
   directAnswerEn:
     "Axion-IA se déplace à Forbach pour accompagner les entreprises locales dans leur adoption de l'IA. Avec des acteurs économiques tels qu'ArcelorMittal et la Zone Industrielle de Forbach Ouest, nous proposons des audits et interventions sur site pour automatiser les tâches administratives et améliorer l'efficacité opérationnelle de nos clients.",
+  seoHook: "commerce détail & transports",
   ecosystemFr:
     "Forbach, avec ArcelorMittal et sa Zone Industrielle de Forbach Ouest, constitue un environnement propice à l'innovation industrielle. Axion-IA y intervient pour apporter son expertise en IA aux entreprises locales.",
   ecosystemEn:

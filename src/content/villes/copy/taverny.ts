@@ -14,6 +14,7 @@ export const TAVERNY_COPY: VilleCopy = {
     "À Taverny, Axion-IA propose des interventions sur site pour automatiser les tâches administratives et améliorer l'efficacité opérationnelle. Avec des exemples inspirés de Cap Digital et Station F, nous offrons des solutions concrètes pour les entreprises locales, qu'il s'agisse de commerce de détail ou de travaux de construction. Nos services incluent des audits et des implémentations adaptés aux besoins spécifiques des entreprises.",
   directAnswerEn:
     "À Taverny, Axion-IA propose des interventions sur site pour automatiser les tâches administratives et améliorer l'efficacité opérationnelle. Avec des exemples inspirés de Cap Digital et Station F, nous offrons des solutions concrètes pour les entreprises locales, qu'il s'agisse de commerce de détail ou de travaux de construction. Nos services incluent des audits et des implémentations adaptés aux besoins spécifiques des entreprises.",
+  seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Taverny, avec ses 1 000 établissements actifs, est un pôle économique en croissance. Les entreprises locales, notamment dans le commerce de détail et les transports, bénéficient de la proximité de grands centres économiques comme Paris, abritant des entités telles que LVMH et BNP Paribas.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const BAILLY_ROMAINVILLIERS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bailly-Romainvilliers (77). Nous accompagnons TPE et PME : commerçants du Val d'Europe, hôteliers et restaurateurs, agences immobilières, prestataires de services aux entreprises et sociétés tertiaires. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bailly-Romainvilliers (77). Nous accompagnons TPE et PME : commerçants du Val d'Europe, hôteliers et restaurateurs, agences immobilières, prestataires de services aux entreprises et sociétés tertiaires. Audit Flash dès 490 € HT.",
+  seoHook: "commerce & hôtellerie-restauration",
   ecosystemFr:
     "Bailly-Romainvilliers est au coeur du Val d'Europe (Marne-la-Vallée secteur IV), pôle commercial et tertiaire majeur d'Île-de-France. Centre commercial international La Vallée Village, proximité Disneyland Paris, quartiers résidentiels en croissance. TPE et PME commerce, hôtellerie-restauration, immobilier, services aux entreprises et activités tertiaires.",
   ecosystemEn:

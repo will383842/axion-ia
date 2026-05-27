@@ -12,6 +12,7 @@ export const VIC_LE_COMTE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vic-le-Comte (63). Nous accompagnons TPE et PME : exploitants agricoles vallée Allier, artisans et commerçants ruraux, acteurs tourisme patrimoine (Sainte-Chapelle), prestataires de services. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vic-le-Comte (63). Nous accompagnons TPE et PME : exploitants agricoles vallée Allier, artisans et commerçants ruraux, acteurs tourisme patrimoine (Sainte-Chapelle), prestataires de services. Audit Flash dès 490 € HT.",
+  seoHook: "agriculture vallée & commerce rural",
   ecosystemFr:
     "Vic-le-Comte est un bourg du sud Clermont dans la vallée de l'Allier, connu pour sa Sainte-Chapelle classée. Tissu agriculture vallée Allier, TPE artisanat, commerce rural, tourisme patrimoine, services aux entreprises.",
   ecosystemEn:

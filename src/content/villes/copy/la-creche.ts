@@ -12,6 +12,7 @@ export const LA_CRECHE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Crèche (79). Nous accompagnons tous types d'activités : TPE artisans BTP et commerçants, PME tertiaires liées au bassin niortais mutuelles/assurances, professions libérales, services à la personne et prestataires du Haut-Val-de-Sèvre.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Crèche (79). Nous accompagnons tous types d'activités : TPE artisans BTP et commerçants, PME tertiaires liées au bassin niortais mutuelles/assurances, professions libérales, services à la personne et prestataires du Haut-Val-de-Sèvre.",
+  seoHook: "tertiaires bassin & services personne",
   ecosystemFr:
     "La Crèche est une commune résidentielle dynamique à l'est de l'agglomération niortaise. Profite du bassin d'emploi de Niort (capitale des mutuelles). Tissu TPE artisans BTP, commerces de proximité, PME tertiaires, professions libérales et services à la personne. Carrefour routier vers Poitiers (N11/A10).",
   ecosystemEn:

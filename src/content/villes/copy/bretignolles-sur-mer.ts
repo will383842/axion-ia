@@ -12,6 +12,7 @@ export const BRETIGNOLLES_SUR_MER_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bretignolles-sur-Mer (85). Nous accompagnons TPE artisans, PME tourisme et hôtellerie, commerçants saisonniers et professions libérales de la côte de Lumière vendéenne. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bretignolles-sur-Mer (85). Nous accompagnons TPE artisans, PME tourisme et hôtellerie, commerçants saisonniers et professions libérales de la côte de Lumière vendéenne. Audit Flash dès 490 € HT.",
+  seoHook: "tourisme hôtellerie & restauration commerce",
   ecosystemFr:
     "Bretignolles-sur-Mer (5 344 hab) est une station balnéaire de la côte de Lumière, capitale vendéenne du surf. Économie centrée sur tourisme (hôtellerie, campings, locations saisonnières), nautisme, commerces, restauration, artisanat et BTP. Proximité Saint-Gilles-Croix-de-Vie (10 min), Les Sables-d'Olonne (30 min), Nantes (1h10). Forte saisonnalité estivale.",
   ecosystemEn:

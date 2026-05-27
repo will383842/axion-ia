@@ -12,6 +12,7 @@ export const SAINT_JORY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jory (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jory (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du nord Toulouse. Audit Flash dès 490 € HT.",
+  seoHook: "logistique transport & artisanat",
   ecosystemFr:
     "Saint-Jory est une commune des bords de Garonne au nord de Toulouse. Tissu TPE artisans, PME de services et logistique, commerces de centre-bourg, professions libérales. Proximité Castelnau-d'Estrétefonds et de l'axe A62.",
   ecosystemEn:

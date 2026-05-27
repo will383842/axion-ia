@@ -12,6 +12,7 @@ export const BELLEGARDE_COPY: VilleCopy = {
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Bellegarde (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs Costières de Nîmes, exploitants agricoles, entreprises logistique, commerçants et artisans BTP entre Nîmes et Arles. Audit Flash à partir de 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Bellegarde (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs Costières de Nîmes, exploitants agricoles, entreprises logistique, commerçants et artisans BTP entre Nîmes et Arles. Audit Flash à partir de 490 € HT.",
+  seoHook: "viticulture costières & agriculture",
   ecosystemFr:
     "Bellegarde (~8 000 hab) est une commune des Costières entre Nîmes (20 min) et Arles (25 min). Viticulture Costières de Nîmes AOP, agriculture (arboriculture, maraîchage), logistique axe Nîmes-Arles, commerces, artisanat BTP et services aux entreprises. Carrefour agricole gardois.",
   ecosystemEn:

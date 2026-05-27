@@ -12,6 +12,7 @@ export const VILLECRESNES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villecresnes (94). Nous accompagnons TPE et PME : artisans et prestataires de services, PME tertiaires, commerçants de proximité, professions libérales, entreprises de logistique locale. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villecresnes (94). Nous accompagnons TPE et PME : artisans et prestataires de services, PME tertiaires, commerçants de proximité, professions libérales, entreprises de logistique locale. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat & logistique locale",
   ecosystemFr:
     "Villecresnes est une commune résidentielle du sud-est du Val-de-Marne, entre Boissy-Saint-Léger et Mandres-les-Roses. Tissu TPE artisanat et services, PME tertiaires, commerces de proximité, professions libérales, petite logistique.",
   ecosystemEn:

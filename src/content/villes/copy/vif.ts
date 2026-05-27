@@ -12,6 +12,7 @@ export const VIF_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vif (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, agriculteurs et éleveurs de la vallée de la Gresse, professions libérales, indépendants, PME tertiaires et structures rurales du sud-grenoblois.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vif (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, agriculteurs et éleveurs de la vallée de la Gresse, professions libérales, indépendants, PME tertiaires et structures rurales du sud-grenoblois.",
+  seoHook: "agriculture élevage & services aux",
   ecosystemFr:
     "Vif est positionnée dans la partie haute de la vallée de la Gresse, au sud immédiat de la Métropole grenobloise. Tissu économique péri-urbain mixte : TPE artisanat BTP (BTP rural, second œuvre), commerces de proximité, professions libérales installées, activité agricole résiduelle (élevage bovin, pâtures alpines périphériques). Position géographique vers Vercors et Trièves.",
   ecosystemEn:

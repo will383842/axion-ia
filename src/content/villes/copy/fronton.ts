@@ -12,6 +12,7 @@ export const FRONTON_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fronton (31). Nous accompagnons TPE viticulteurs, PME agroalimentaires, commerçants, professions libérales et acteurs du tourisme viticole. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fronton (31). Nous accompagnons TPE viticulteurs, PME agroalimentaires, commerçants, professions libérales et acteurs du tourisme viticole. Audit Flash dès 490 € HT.",
+  seoHook: "viticulture fronton & agroalimentaire",
   ecosystemFr:
     "Fronton est la capitale de l'AOC Fronton, vignoble de la négrette au nord de Toulouse. TPE viticulteurs et domaines, PME agroalimentaires, commerces de centre-ville, professions libérales, tourisme œnotourisme. Marché traditionnel actif.",
   ecosystemEn:

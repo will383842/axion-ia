@@ -12,6 +12,7 @@ export const FISMES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fismes (51). Nous accompagnons TPE et PME : artisans et commerçants de centre-bourg, PME agroalimentaires, exploitants viticoles, professions de santé, prestataires de services ruraux. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fismes (51). Nous accompagnons TPE et PME : artisans et commerçants de centre-bourg, PME agroalimentaires, exploitants viticoles, professions de santé, prestataires de services ruraux. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat & agroalimentaire",
   ecosystemFr:
     "Fismes est un bourg-centre de la vallée de la Vesle, entre Reims (30 km) et Soissons (30 km). Tissu TPE/PME : artisanat, commerces de proximité, agroalimentaire, viticulture champenoise, professions de santé. Carrefour rural desservant le Tardenois.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const LACANAU_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lacanau (33). Nous accompagnons TPE et PME de la station balnéaire : écoles de surf, hébergeurs touristiques, restaurateurs, commerçants saisonniers, artisans BTP et professions libérales. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lacanau (33). Nous accompagnons TPE et PME de la station balnéaire : écoles de surf, hébergeurs touristiques, restaurateurs, commerçants saisonniers, artisans BTP et professions libérales. Audit Flash dès 490 € HT.",
+  seoHook: "tourisme surf & hébergement saisonnier",
   ecosystemFr:
     "Lacanau est une station balnéaire océane du Médoc, célèbre pour le Lacanau Pro (surf). Économie saisonnière : surf schools, campings, résidences touristiques, restaurants, commerces de plage. Lac de Lacanau (activités nautiques). Artisanat BTP et professions libérales toute l'année.",
   ecosystemEn:

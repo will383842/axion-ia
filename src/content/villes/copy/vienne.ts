@@ -14,6 +14,7 @@ export const VIENNE_COPY: VilleCopy = {
     "Axion-IA propose des interventions sur site à Vienne pour automatiser les tâches administratives et optimiser les processus métiers. Forts de notre expérience avec des entreprises comme Hermès et Sanofi, nous garantissons un audit clair et des solutions adaptées aux besoins spécifiques de chaque entreprise, qu'il s'agisse de TPE ou de grandes entreprises.",
   directAnswerEn:
     "Axion-IA propose des interventions sur site à Vienne pour automatiser les tâches administratives et optimiser les processus métiers. Forts de notre expérience avec des entreprises comme Hermès et Sanofi, nous garantissons un audit clair et des solutions adaptées aux besoins spécifiques de chaque entreprise, qu'il s'agisse de TPE ou de grandes entreprises.",
+  seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Le tissu économique de Vienne est soutenu par le commerce de détail et la construction, avec des entreprises telles que Bouygues et Renault présentes dans la région.",
   ecosystemEn:

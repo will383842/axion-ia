@@ -14,6 +14,7 @@ export const JOUE_LES_TOURS_COPY: VilleCopy = {
     "Axion-IA se déplace à Joué-lès-Tours pour accompagner les entreprises dans l'optimisation de leurs processus grâce à l'IA. Le tissu économique local, comprenant des groupes comme STMicroelectronics et Sanofi, bénéficie de nos interventions sur site. Notre offre inclut des audits à partir de 490 € HT et des implémentations dès 990 € HT, garantissant des solutions adaptées aux besoins locaux.",
   directAnswerEn:
     "Axion-IA se déplace à Joué-lès-Tours pour accompagner les entreprises dans l'optimisation de leurs processus grâce à l'IA. Le tissu économique local, comprenant des groupes comme STMicroelectronics et Sanofi, bénéficie de nos interventions sur site. Notre offre inclut des audits à partir de 490 € HT et des implémentations dès 990 € HT, garantissant des solutions adaptées aux besoins locaux.",
+  seoHook: "commerce détail & programmation informatique",
   ecosystemFr:
     "Joué-lès-Tours bénéficie d'un écosystème économique riche avec la présence de STMicroelectronics et Sanofi. La ZAC des Deux Lions contribue également à l'innovation locale.",
   ecosystemEn:

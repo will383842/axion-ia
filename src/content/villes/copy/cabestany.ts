@@ -12,6 +12,7 @@ export const CABESTANY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cabestany (66). Nous accompagnons tous types d'activités : TPE artisans, PME zones commerciales, commerçants, professions libérales, indépendants et services aux entreprises de l'agglo Perpignan est.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cabestany (66). Nous accompagnons tous types d'activités : TPE artisans, PME zones commerciales, commerçants, professions libérales, indépendants et services aux entreprises de l'agglo Perpignan est.",
+  seoHook: "commerce zones & tertiaires périurbaines",
   ecosystemFr:
     "Cabestany est une commune dynamique à l'est de Perpignan, intégrée à Perpignan Méditerranée Métropole. Importantes zones commerciales (Porte d'Espagne), PME tertiaires, TPE artisanat, commerces, professions libérales santé. Proximité directe Perpignan et accès littoral.",
   ecosystemEn:

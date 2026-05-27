@@ -12,6 +12,7 @@ export const FEURS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Feurs (42). Nous accompagnons tous types d'activités : PME tertiaires et agricoles plaine Forez, acteurs hippisme (hippodrome), TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de Loire Forez Agglo.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Feurs (42). Nous accompagnons tous types d'activités : PME tertiaires et agricoles plaine Forez, acteurs hippisme (hippodrome), TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de Loire Forez Agglo.",
+  seoHook: "tertiaires loire & agriculture plaine",
   ecosystemFr:
     "Feurs est une ville historique de la plaine du Forez, fondée comme ville antique gallo-romaine (Forum Segusiavorum, capitale du peuple des Ségusiaves — vestiges archéologiques visibles). Intégrée à Loire Forez Agglo. Position : hippodrome notable, tissu PME tertiaires et agricoles, TPE artisanat BTP, commerces.",
   ecosystemEn:

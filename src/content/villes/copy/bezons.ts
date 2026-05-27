@@ -14,6 +14,7 @@ export const BEZONS_COPY: VilleCopy = {
     "À Bezons, Axion-IA propose des interventions sur site pour les entreprises locales, incluant des audits et des implémentations. Avec des acteurs comme Atos et un accès rapide à Paris via la Gare de Paris-Saint-Lazare, nous facilitons l'intégration de solutions IA adaptées à votre secteur, qu'il s'agisse de programmation informatique ou d'activités des sièges sociaux.",
   directAnswerEn:
     "À Bezons, Axion-IA propose des interventions sur site pour les entreprises locales, incluant des audits et des implémentations. Avec des acteurs comme Atos et un accès rapide à Paris via la Gare de Paris-Saint-Lazare, nous facilitons l'intégration de solutions IA adaptées à votre secteur, qu'il s'agisse de programmation informatique ou d'activités des sièges sociaux.",
+  seoHook: "programmation informatique & activités des",
   ecosystemFr:
     "Bezons, avec Atos et un secteur de programmation informatique en plein essor, offre un environnement propice aux interventions IA. Nous aidons les entreprises à naviguer cet écosystème pour maximiser leur efficacité.",
   ecosystemEn:

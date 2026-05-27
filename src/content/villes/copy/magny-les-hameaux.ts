@@ -12,6 +12,7 @@ export const MAGNY_LES_HAMEAUX_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Magny-les-Hameaux (78). Nous accompagnons TPE et PME : consultants, professions libérales, PME tertiaires, artisans et commerces de cette commune résidentielle de la vallée de Chevreuse, proche du plateau de Saclay. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Magny-les-Hameaux (78). Nous accompagnons TPE et PME : consultants, professions libérales, PME tertiaires, artisans et commerces de cette commune résidentielle de la vallée de Chevreuse, proche du plateau de Saclay. Audit Flash dès 490 € HT.",
+  seoHook: "conseil services & professions libérales",
   ecosystemFr:
     "Magny-les-Hameaux est une commune résidentielle verdoyante de la haute vallée de Chevreuse, dans le parc naturel régional. Présence du site historique de Port-Royal-des-Champs. Tissu économique : TPE artisans, PME tertiaires et consultants, professions libérales, commerces de proximité. Proximité du plateau de Saclay (pôle scientifique Paris-Saclay). Communes voisines : Saint-Rémy-lès-Chevreuse, Voisins-le-Bretonneux, Châteaufort, Chevreuse.",
   ecosystemEn:

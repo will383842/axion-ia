@@ -12,6 +12,7 @@ export const CHESSY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chessy (77). Nous accompagnons TPE et PME : hôteliers et restaurateurs du pôle Disneyland, commerçants du Val d'Europe, prestataires tourisme et événementiel, entreprises de services et logistique. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chessy (77). Nous accompagnons TPE et PME : hôteliers et restaurateurs du pôle Disneyland, commerçants du Val d'Europe, prestataires tourisme et événementiel, entreprises de services et logistique. Audit Flash dès 490 € HT.",
+  seoHook: "tourisme loisirs & hôtellerie-restauration",
   ecosystemFr:
     "Chessy est la commune d'implantation de Disneyland Paris et de la gare internationale Marne-la-Vallée-Chessy (TGV + RER A + Eurostar). Le pôle touristique génère un écosystème dense : hôtellerie-restauration, commerce Val d'Europe, prestataires événementiels, services aux visiteurs et logistique. TPE et PME constituent le tissu économique local.",
   ecosystemEn:

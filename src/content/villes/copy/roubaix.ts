@@ -14,6 +14,7 @@ export const ROUBAIX_COPY: VilleCopy = {
     "Axion-IA se déplace à Roubaix pour auditer, former et implémenter des outils IA opérationnels dans les entreprises du territoire. Le tissu local — porté par des acteurs comme La Redoute, Kiabi ou les filières textiles de l'ENSAIT — combine contraintes métier historiques et ambitions numériques réelles. Nos interventions ciblent les processus manuels coûteux : relances, devis, gestion documentaire, reporting.",
   directAnswerEn:
     "Axion-IA se déplace à Roubaix pour auditer, former et implémenter des outils IA opérationnels dans les entreprises du territoire. Le tissu local — porté par des acteurs comme La Redoute, Kiabi ou les filières textiles de l'ENSAIT — combine contraintes métier historiques et ambitions numériques réelles. Nos interventions ciblent les processus manuels coûteux : relances, devis, gestion documentaire, reporting.",
+  seoHook: "commerce détail & informatique numérique",
   ecosystemFr:
     "Roubaix abrite La Redoute, Kiabi, Auchan Retail et Décathlon côté grands groupes, l'ENSAIT et l'IUT de Roubaix côté formation, et le pôle Euratechnologies côté numérique. L'Imaginarium et Roubaix Innovation structurent un tissu de PME et startups actif sur la métropole lilloise.",
   ecosystemEn:

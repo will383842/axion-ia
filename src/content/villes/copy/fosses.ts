@@ -12,6 +12,7 @@ export const FOSSES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fosses (95). Nous accompagnons TPE et PME : artisans BTP, commerçants de proximité, PME de services, professions libérales et prestataires du bassin Roissy Pays de France. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fosses (95). Nous accompagnons TPE et PME : artisans BTP, commerçants de proximité, PME de services, professions libérales et prestataires du bassin Roissy Pays de France. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat second & commerce proximité",
   ecosystemFr:
     "Fosses est une commune résidentielle du nord Val-d'Oise intégrée à la communauté d'agglomération Roissy Pays de France. Économie locale de TPE artisanales BTP, commerces de proximité, PME tertiaires et professions libérales. Bassin d'emploi lié à la plateforme aéroportuaire Roissy-CDG et aux zones d'activités du nord francilien.",
   ecosystemEn:

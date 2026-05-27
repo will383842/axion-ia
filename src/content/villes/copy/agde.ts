@@ -14,6 +14,7 @@ export const AGDE_COPY: VilleCopy = {
     "Axion-IA se déplace à Agde pour accompagner les entreprises dans l'adoption de l'IA. L'écosystème économique parisien, incluant LVMH et BNP Paribas, influence notre approche méthodologique. Nous proposons des audits, interventions et implémentations sur site, adaptés aux secteurs locaux tels que le commerce de détail et la restauration.",
   directAnswerEn:
     "Axion-IA se déplace à Agde pour accompagner les entreprises dans l'adoption de l'IA. L'écosystème économique parisien, incluant LVMH et BNP Paribas, influence notre approche méthodologique. Nous proposons des audits, interventions et implémentations sur site, adaptés aux secteurs locaux tels que le commerce de détail et la restauration.",
+  seoHook: "commerce détail & hébergement",
   ecosystemFr:
     "Agde bénéficie d'un tissu économique riche avec le commerce de détail et l'hébergement. À Paris, des entités comme Inria et Hermès montrent l'importance de l'innovation continue.",
   ecosystemEn:

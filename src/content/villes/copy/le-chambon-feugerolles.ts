@@ -12,6 +12,7 @@ export const LE_CHAMBON_FEUGEROLLES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Chambon-Feugerolles (42). Nous accompagnons tous types d'activités : PME industrielles vallée Ondaine (héritage métallurgique/petite mécanique), TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de Saint-Étienne Métropole.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Chambon-Feugerolles (42). Nous accompagnons tous types d'activités : PME industrielles vallée Ondaine (héritage métallurgique/petite mécanique), TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de Saint-Étienne Métropole.",
+  seoHook: "industrielles vallée & héritage métallurgie",
   ecosystemFr:
     "Le Chambon-Feugerolles est intégrée à Saint-Étienne Métropole, dans la vallée de l'Ondaine (limitrophe Firminy). Héritage industriel important : métallurgie historique, petite mécanique fine (savoir-faire local en pièces de précision). Tissu PME industrielles diversifiées contemporaines, TPE artisanat BTP, commerces de proximité.",
   ecosystemEn:

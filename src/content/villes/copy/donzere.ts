@@ -12,6 +12,7 @@ export const DONZERE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Donzère (26). Nous accompagnons tous types d'activités : PME industrielles bassin Tricastin, agriculteurs et viticulteurs vallée du Rhône (AOC Grignan-les-Adhémar à proximité), TPE artisans BTP, commerçants, indépendants et services aux entreprises sud-Drôme.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Donzère (26). Nous accompagnons tous types d'activités : PME industrielles bassin Tricastin, agriculteurs et viticulteurs vallée du Rhône (AOC Grignan-les-Adhémar à proximité), TPE artisans BTP, commerçants, indépendants et services aux entreprises sud-Drôme.",
+  seoHook: "industrielles bassin & hydraulique cnr",
   ecosystemFr:
     "Donzère marque l'entrée du défilé éponyme et est associée au grand aménagement hydraulique du canal Donzère-Mondragon (concession Compagnie Nationale du Rhône — production hydroélectrique majeure). Située dans le bassin Tricastin (sud-Drôme), tissu PME industrielles et sous-traitants techniques, agriculture vallée du Rhône, viticulture périphérique, TPE artisanat BTP.",
   ecosystemEn:

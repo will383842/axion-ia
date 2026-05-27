@@ -12,6 +12,7 @@ export const LES_ANDELYS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient aux Andelys (27). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et patrimoine Château-Gaillard, agriculture bords de Seine, commerces, professions libérales, indépendants et services aux entreprises de Seine Normandie Agglomération.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient aux Andelys (27). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et patrimoine Château-Gaillard, agriculture bords de Seine, commerces, professions libérales, indépendants et services aux entreprises de Seine Normandie Agglomération.",
+  seoHook: "tourisme patrimonial & agriculture boucles",
   ecosystemFr:
     "Les Andelys est une commune de l'Eure sur les bords de Seine, dominée par les ruines du Château-Gaillard édifié par Richard Cœur de Lion en 1196. Économie portée par le tourisme patrimonial et fluvial, l'agriculture des boucles de Seine, les commerces, les professions libérales et un tissu TPE/PME diversifié. Seine Normandie Agglomération.",
   ecosystemEn:

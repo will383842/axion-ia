@@ -12,6 +12,7 @@ export const SAINT_MARTIN_BOULOGNE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Martin-Boulogne (62). Nous accompagnons TPE commerçantes, PME de services, professions libérales, artisans et entreprises tertiaires de l'agglomération boulonnaise. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Martin-Boulogne (62). Nous accompagnons TPE commerçantes, PME de services, professions libérales, artisans et entreprises tertiaires de l'agglomération boulonnaise. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+  seoHook: "commerce détail & professions libérales",
   ecosystemFr:
     "Saint-Martin-Boulogne fait partie de l'agglomération de Boulogne-sur-Mer, premier port de pêche de France. La commune concentre zones commerciales, services aux entreprises, professions libérales et PME tertiaires desservant le bassin boulonnais. TPE artisans BTP et commerces alimentent l'économie résidentielle.",
   ecosystemEn:

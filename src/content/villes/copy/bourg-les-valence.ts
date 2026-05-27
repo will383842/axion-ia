@@ -12,6 +12,7 @@ export const BOURG_LES_VALENCE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bourg-lès-Valence (26). Nous accompagnons tous types d'activités : PME industrielles et commerciales agglomération Valence Romans Agglo, TPE artisans BTP, commerçants, agriculteurs vallée du Rhône, indépendants, professions libérales et services aux entreprises drômoises.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bourg-lès-Valence (26). Nous accompagnons tous types d'activités : PME industrielles et commerciales agglomération Valence Romans Agglo, TPE artisans BTP, commerçants, agriculteurs vallée du Rhône, indépendants, professions libérales et services aux entreprises drômoises.",
+  seoHook: "industrielles agglomération & commerce zones",
   ecosystemFr:
     "Bourg-lès-Valence est intégrée à la Communauté d'agglomération Valence Romans Agglo (~225 000 hab) et fait partie du tissu économique nord de Valence. Tissu PME industrielles (transformation, mécanique), commerces et zones d'activités, agriculture vallée du Rhône (vergers, viticulture), TPE artisanat BTP, professions libérales. Position axe A7 Lyon-Marseille.",
   ecosystemEn:

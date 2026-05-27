@@ -14,6 +14,7 @@ export const CUGNAUX_COPY: VilleCopy = {
     "À Cugnaux, Axion-IA propose des interventions sur site pour automatiser les tâches administratives et commerciales. Avec le tissu économique comprenant LVMH et Cap Digital, nous aidons les entreprises à intégrer des solutions IA sur mesure. Nos services incluent des audits, implémentations et formations personnalisées pour répondre aux besoins spécifiques de chaque entreprise.",
   directAnswerEn:
     "À Cugnaux, Axion-IA propose des interventions sur site pour automatiser les tâches administratives et commerciales. Avec le tissu économique comprenant LVMH et Cap Digital, nous aidons les entreprises à intégrer des solutions IA sur mesure. Nos services incluent des audits, implémentations et formations personnalisées pour répondre aux besoins spécifiques de chaque entreprise.",
+  seoHook: "commerce détail & construction",
   ecosystemFr:
     "Cugnaux bénéficie de la proximité de Toulouse, abritant des entreprises comme LVMH et Cap Digital, ce qui enrichit le tissu économique local.",
   ecosystemEn:

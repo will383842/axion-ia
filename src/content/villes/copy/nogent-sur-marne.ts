@@ -14,6 +14,7 @@ export const NOGENT_SUR_MARNE_COPY: VilleCopy = {
     "Axion-IA se déplace à Nogent-sur-Marne pour accompagner les entreprises dans l'automatisation de leurs tâches administratives. Grâce à notre expérience nationale, nous intervenons rapidement sur site. Paris, abritant des entités comme LVMH et Inria, inspire nos méthodes d'implémentation pour un retour sur investissement rapide.",
   directAnswerEn:
     "Axion-IA se déplace à Nogent-sur-Marne pour accompagner les entreprises dans l'automatisation de leurs tâches administratives. Grâce à notre expérience nationale, nous intervenons rapidement sur site. Paris, abritant des entités comme LVMH et Inria, inspire nos méthodes d'implémentation pour un retour sur investissement rapide.",
+  seoHook: "commerce détail & restauration",
   ecosystemFr:
     "Nogent-sur-Marne, proche de Paris, bénéficie de l'influence économique de la capitale, où se trouvent des acteurs comme Cap Digital et Station F. Ces pôles favorisent l'innovation que nous apportons aux entreprises locales.",
   ecosystemEn:

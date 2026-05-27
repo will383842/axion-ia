@@ -14,6 +14,7 @@ export const SURESNES_COPY: VilleCopy = {
     "À Suresnes, Axion-IA propose des solutions d'IA adaptées aux besoins des entreprises locales. Avec des groupes tels que Dassault Systèmes et Bel Group présents dans la région, nous nous déplaçons sur site pour réaliser des audits, interventions et implémentations, permettant aux entreprises de bénéficier d'une expertise nationale. Nos services incluent également des sessions 1-to-1 pour dirigeants, facilitant l'intégration de l'IA dans leurs opérations.",
   directAnswerEn:
     "À Suresnes, Axion-IA propose des solutions d'IA adaptées aux besoins des entreprises locales. Avec des groupes tels que Dassault Systèmes et Bel Group présents dans la région, nous nous déplaçons sur site pour réaliser des audits, interventions et implémentations, permettant aux entreprises de bénéficier d'une expertise nationale. Nos services incluent également des sessions 1-to-1 pour dirigeants, facilitant l'intégration de l'IA dans leurs opérations.",
+  seoHook: "programmation informatique & activités des",
   ecosystemFr:
     "Suresnes, avec des entreprises comme Vinci et Bel Group, bénéficie d'un écosystème riche en innovation. La ville se distingue par ses secteurs de programmation informatique et de recherche-développement scientifique.",
   ecosystemEn:

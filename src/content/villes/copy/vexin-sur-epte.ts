@@ -12,6 +12,7 @@ export const VEXIN_SUR_EPTE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vexin-sur-Epte (27). Nous accompagnons tous types d'activités : TPE artisans, PME agriculture grandes cultures Vexin normand, commerces ruraux, professions libérales, indépendants et services aux entreprises du canton de Gisors.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vexin-sur-Epte (27). Nous accompagnons tous types d'activités : TPE artisans, PME agriculture grandes cultures Vexin normand, commerces ruraux, professions libérales, indépendants et services aux entreprises du canton de Gisors.",
+  seoHook: "agriculture grandes & élevage productions",
   ecosystemFr:
     "Vexin-sur-Epte est une commune nouvelle de l'Eure issue de la fusion de plusieurs communes le long de la vallée de l'Epte, au cœur du Vexin normand. Territoire rural dynamique, grandes cultures céréalières, élevage, artisanat, commerces de proximité. Proximité Gisors (sous-préfecture) et frontière Île-de-France.",
   ecosystemEn:

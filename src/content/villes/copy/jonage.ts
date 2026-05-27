@@ -12,6 +12,7 @@ export const JONAGE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jonage (69). Nous accompagnons tous types d'activités : PME tertiaires et industrielles est lyonnais, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jonage (69). Nous accompagnons tous types d'activités : PME tertiaires et industrielles est lyonnais, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de la Métropole de Lyon.",
+  seoHook: "tertiaires est & industrielles",
   ecosystemFr:
     "Jonage est intégrée à la Métropole de Lyon, en banlieue est. Position notable : canal de Jonage (aménagement hydroélectrique historique, Grand Parc Miribel Jonage — espace naturel majeur est lyonnais). Tissu PME tertiaires et industrielles, TPE artisanat BTP, commerces.",
   ecosystemEn:

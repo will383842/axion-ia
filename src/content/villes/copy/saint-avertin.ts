@@ -12,6 +12,7 @@ export const SAINT_AVERTIN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient Ã  Saint-Avertin (37). Nous accompagnons tous types d'activitÃ©s : PME tertiaires et cabinets conseil, TPE artisans, professions libÃ©rales, commerces, services Ã  la personne de Tours MÃ©tropole sud.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient Ã  Saint-Avertin (37). Nous accompagnons tous types d'activitÃ©s : PME tertiaires et cabinets conseil, TPE artisans, professions libÃ©rales, commerces, services Ã  la personne de Tours MÃ©tropole sud.",
+  seoHook: "tertiaires conseil & professions libã©rales",
   ecosystemFr:
     "Saint-Avertin est une commune rÃ©sidentielle et tertiaire au sud de Tours, en bords du Cher. Zones d'activitÃ©s tertiaires, parc du chÃ¢teau de CangÃ©. Tissu PME cabinets conseil, professions libÃ©rales (santÃ©, juridique), TPE artisanat, commerces, services Ã  la personne.",
   ecosystemEn:

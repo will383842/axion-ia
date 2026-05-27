@@ -12,6 +12,7 @@ export const MONTROND_LES_BAINS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montrond-les-Bains (42). Nous accompagnons tous types d'activités : acteurs thermalisme et hôtellerie (sources thermales, casino), PME tertiaires Loire Forez Agglo, TPE artisans BTP, commerçants, agriculteurs périphériques et services aux entreprises foréziennes.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montrond-les-Bains (42). Nous accompagnons tous types d'activités : acteurs thermalisme et hôtellerie (sources thermales, casino), PME tertiaires Loire Forez Agglo, TPE artisans BTP, commerçants, agriculteurs périphériques et services aux entreprises foréziennes.",
+  seoHook: "thermalisme casino & hôtellerie cure",
   ecosystemFr:
     "Montrond-les-Bains est une station thermale historique de la plaine du Forez, dotée de sources thermales et d'un casino. Tissu thermal et hôtelier (établissement thermal, hôtels de cure, casino), PME tertiaires et services, TPE artisanat BTP, agriculture périphérique. Intégrée à Loire Forez Agglo.",
   ecosystemEn:

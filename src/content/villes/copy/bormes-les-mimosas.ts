@@ -12,6 +12,7 @@ export const BORMES_LES_MIMOSAS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bormes-les-Mimosas (83). Nous accompagnons TPE viticulteurs Côtes de Provence, mimosistes, restaurateurs et PME du tourisme haut de gamme du littoral varois oriental. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bormes-les-Mimosas (83). Nous accompagnons TPE viticulteurs Côtes de Provence, mimosistes, restaurateurs et PME du tourisme haut de gamme du littoral varois oriental. Audit Flash dès 490 € HT.",
+  seoHook: "viticulture côtes & culture mimosa",
   ecosystemFr:
     "Bormes-les-Mimosas est une station classée tourisme et l'un des plus beaux villages fleuris de France. Économie tirée par la viticulture Côtes de Provence, la culture du mimosa (route du mimosa), le tourisme haut de gamme (port La Favière, plages, fort de Brégançon), la restauration et l'artisanat. Tissu de TPE/PME tourisme et patrimoine.",
   ecosystemEn:

@@ -14,6 +14,7 @@ export const CERGY_COPY: VilleCopy = {
     "À Cergy, Axion-IA propose des interventions sur site pour les entreprises souhaitant intégrer l'IA. Avec des institutions comme l'ESSEC Business School et l'Université de Cergy-Pontoise, la région bénéficie d'un environnement propice à l'innovation. Notre équipe nationale se déplace pour des audits, des implémentations et des formations, garantissant une approche personnalisée et adaptée aux besoins spécifiques de chaque entreprise.",
   directAnswerEn:
     "À Cergy, Axion-IA propose des interventions sur site pour les entreprises souhaitant intégrer l'IA. Avec des institutions comme l'ESSEC Business School et l'Université de Cergy-Pontoise, la région bénéficie d'un environnement propice à l'innovation. Notre équipe nationale se déplace pour des audits, des implémentations et des formations, garantissant une approche personnalisée et adaptée aux besoins spécifiques de chaque entreprise.",
+  seoHook: "programmation informatique & activités des",
   ecosystemFr:
     "Cergy est un pôle économique avec des entreprises comme Sagemcom et des infrastructures telles que le Parc d'activités de l'Horloge. Ces éléments favorisent le développement des entreprises locales.",
   ecosystemEn:

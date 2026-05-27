@@ -14,6 +14,7 @@ export const MARTIGUES_COPY: VilleCopy = {
     "Axion-IA propose des interventions à Martigues, une ville où le raffinage de pétrole et l'industrie chimique dominent avec des acteurs comme TotalEnergies et LyondellBasell. Nous offrons des solutions IA adaptées à ces secteurs, permettant d'automatiser les tâches administratives et d'améliorer l'efficacité opérationnelle. Nos services incluent audits, implémentations et formations, garantissant un retour sur investissement rapide et mesurable.",
   directAnswerEn:
     "Axion-IA propose des interventions à Martigues, une ville où le raffinage de pétrole et l'industrie chimique dominent avec des acteurs comme TotalEnergies et LyondellBasell. Nous offrons des solutions IA adaptées à ces secteurs, permettant d'automatiser les tâches administratives et d'améliorer l'efficacité opérationnelle. Nos services incluent audits, implémentations et formations, garantissant un retour sur investissement rapide et mesurable.",
+  seoHook: "raffinage pétrole & industrie chimique",
   ecosystemFr:
     "Martigues est un pôle industriel accueillant TotalEnergies et LyondellBasell. La Zone Industrielle de Lavéra renforce son rôle dans le raffinage de pétrole et l'industrie chimique.",
   ecosystemEn:

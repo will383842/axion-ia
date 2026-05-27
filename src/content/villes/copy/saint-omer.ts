@@ -12,6 +12,7 @@ export const SAINT_OMER_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Omer (62). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles, commerçants, professionnels du tourisme, indépendants, professions libérales et services aux entreprises de l'Audomarois.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Omer (62). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles, commerçants, professionnels du tourisme, indépendants, professions libérales et services aux entreprises de l'Audomarois.",
+  seoHook: "agroalimentaire maraîchage & artisanat",
   ecosystemFr:
     "Saint-Omer est la sous-préfecture de l'Audomarois, pôle administratif et économique du nord du Pas-de-Calais. Le marais audomarois (classé Ramsar, réserve de biosphère UNESCO) soutient une filière maraîchère et touristique. Tissu PME agroalimentaires, industrielles (verrerie, cristallerie historique), TPE artisanat, commerces centre-ville, services publics et santé. Proximité Calais (40 min), Boulogne (45 min), Lille (1h).",
   ecosystemEn:

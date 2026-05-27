@@ -12,6 +12,7 @@ export const DOUE_EN_ANJOU_COPY: VilleCopy = {
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Doué-en-Anjou (49). Nous accompagnons les TPE, PME et acteurs touristiques douésiens dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict.",
   directAnswerEn:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Doué-en-Anjou (49). Nous accompagnons les TPE, PME et acteurs touristiques douésiens dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict.",
+  seoHook: "horticulture roses & tourisme patrimoine",
   ecosystemFr:
     "Doué-en-Anjou est connue mondialement pour sa roseraie (Journées de la Rose) et son Bioparc zoo troglodytique. L'économie locale mêle horticulture (roses, pépinières), tourisme patrimonial, artisanat, commerces de bourg et agriculture (viticulture, maraîchage). Troglodytes classés, patrimoine souterrain unique.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const CHAMBOURCY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chambourcy (78). Nous accompagnons TPE et PME : artisans, commerces de village, PME de services et professions libérales de cette commune résidentielle en lisière de la forêt de Marly, entre Saint-Germain-en-Laye et Poissy. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chambourcy (78). Nous accompagnons TPE et PME : artisans, commerces de village, PME de services et professions libérales de cette commune résidentielle en lisière de la forêt de Marly, entre Saint-Germain-en-Laye et Poissy. Audit Flash dès 490 € HT.",
+  seoHook: "services aux & professions libérales",
   ecosystemFr:
     "Chambourcy est une commune résidentielle prisée en lisière de la forêt de Marly, entre Saint-Germain-en-Laye et Poissy. Cadre verdoyant attractif pour les professions libérales et indépendants. Tissu économique : TPE artisans, commerces de village, PME de services, conseil, immobilier haut de gamme. Communes voisines : Saint-Germain-en-Laye, Poissy, Aigremont, Fourqueux, L'Étang-la-Ville.",
   ecosystemEn:

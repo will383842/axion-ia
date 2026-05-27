@@ -12,6 +12,7 @@ export const N_UX_LES_MINES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nœux-les-Mines (62). Nous accompagnons tous types d'activités : TPE artisans BTP et services du bassin minier reconverti, PME industrie et sous-traitance, commerçants de proximité, acteurs du tourisme sportif (Loisinord), prestataires de l'agglomération béthunoise.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Nœux-les-Mines (62). Nous accompagnons tous types d'activités : TPE artisans BTP et services du bassin minier reconverti, PME industrie et sous-traitance, commerçants de proximité, acteurs du tourisme sportif (Loisinord), prestataires de l'agglomération béthunoise.",
+  seoHook: "artisanat & industrie reconvertie",
   ecosystemFr:
     "Nœux-les-Mines est intégrée à l'agglomération béthunoise, dans le bassin minier reconverti inscrit au patrimoine mondial UNESCO. La base de loisirs Loisinord (stade nautique, piste de ski synthétique) fait de la commune un pôle de tourisme sportif unique dans le nord. Tissu TPE/PME : artisanat BTP, industrie reconvertie, commerces, services. Accès A26 vers Béthune (10 min) et Lille (35 min).",
   ecosystemEn:

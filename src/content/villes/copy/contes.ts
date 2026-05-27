@@ -12,6 +12,7 @@ export const CONTES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Contes (06). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, oléiculteurs, PME services et entreprises de la vallée du Paillon.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Contes (06). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, oléiculteurs, PME services et entreprises de la vallée du Paillon.",
+  seoHook: "agriculture oléiculture & services aux",
   ecosystemFr:
     "Contes est un bourg-centre de la vallée du Paillon, à 20 km de Nice dans le moyen-pays. La commune regroupe commerces de proximité, artisanat BTP, professions libérales et quelques exploitations oléicoles. Le moulin à huile de Contes perpétue la tradition provençale. Position de carrefour entre littoral niçois et arrière-pays montagneux (Lucéram, L'Escarène).",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const SAINT_GENIS_POUILLY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Genis-Pouilly (01). Nous accompagnons tous types d'activités : PME tertiaires et technologiques pays de Gex (proximité CERN), économie frontalière Genève, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Genis-Pouilly (01). Nous accompagnons tous types d'activités : PME tertiaires et technologiques pays de Gex (proximité CERN), économie frontalière Genève, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
+  seoHook: "économie frontalière & technologiques",
   ecosystemFr:
     "Saint-Genis-Pouilly est positionnée dans le pays de Gex, à la frontière suisse immédiate (Genève). Proximité du CERN (centre de recherche nucléaire international). Économie frontalière très dynamique : PME tertiaires et technologiques, commerces transfrontaliers, TPE artisanat BTP.",
   ecosystemEn:

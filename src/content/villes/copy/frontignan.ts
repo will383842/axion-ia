@@ -14,6 +14,7 @@ export const FRONTIGNAN_COPY: VilleCopy = {
     "Axion-IA propose des interventions IA à Frontignan, optimisant les processus pour les commerces de détail et les transports terrestres. Avec un audit à partir de 490 € HT, nous aidons les entreprises à intégrer l'IA efficacement. Nos services incluent également des formations et implémentations sur site, garantissant un ROI rapide et mesurable.",
   directAnswerEn:
     "Axion-IA propose des interventions IA à Frontignan, optimisant les processus pour les commerces de détail et les transports terrestres. Avec un audit à partir de 490 € HT, nous aidons les entreprises à intégrer l'IA efficacement. Nos services incluent également des formations et implémentations sur site, garantissant un ROI rapide et mesurable.",
+  seoHook: "commerce détail & restauration",
   ecosystemFr:
     "Frontignan, entourée de Sète et Balaruc-les-Bains, bénéficie d'un tissu économique riche avec 1 000 établissements actifs. Les secteurs clés incluent le commerce de détail et la restauration.",
   ecosystemEn:

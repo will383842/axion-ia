@@ -14,6 +14,7 @@ export const RODEZ_COPY: VilleCopy = {
     "Axion-IA se déplace à Rodez pour proposer des solutions IA adaptées aux besoins des entreprises. Avec la présence de Bosch et la zone d'activités de Bel Air, Rodez est un environnement favorable pour nos interventions. Nos services incluent audits, implémentations et formations, avec des tarifs publics consultables sur notre site.",
   directAnswerEn:
     "Axion-IA se déplace à Rodez pour proposer des solutions IA adaptées aux besoins des entreprises. Avec la présence de Bosch et la zone d'activités de Bel Air, Rodez est un environnement favorable pour nos interventions. Nos services incluent audits, implémentations et formations, avec des tarifs publics consultables sur notre site.",
+  seoHook: "commerce détail & construction",
   ecosystemFr:
     "Rodez, avec Bosch et l'Institut Universitaire de Technologie, offre un environnement propice à l'innovation. La zone d'activités de Bel Air soutient le développement des entreprises locales.",
   ecosystemEn:

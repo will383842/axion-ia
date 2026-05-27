@@ -12,6 +12,7 @@ export const BONCHAMP_LES_LAVAL_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bonchamp-lès-Laval (53). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et agroalimentaires, commerçants, professions libérales, prestataires B2B et entreprises des zones d'activités de l'est de l'agglomération lavalloise.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bonchamp-lès-Laval (53). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et agroalimentaires, commerçants, professions libérales, prestataires B2B et entreprises des zones d'activités de l'est de l'agglomération lavalloise.",
+  seoHook: "industrie fabrication & agroalimentaire",
   ecosystemFr:
     "Bonchamp-lès-Laval est une commune résidentielle et économique de l'est de Laval Agglomération. Zones d'activités industrielles et commerciales le long de l'A81. Tissu PME : industrie, agroalimentaire, services aux entreprises, BTP, logistique. Accès direct autoroute A81 Rennes-Le Mans.",
   ecosystemEn:

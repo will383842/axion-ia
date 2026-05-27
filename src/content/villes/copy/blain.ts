@@ -12,6 +12,7 @@ export const BLAIN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Blain (44). Nous accompagnons tous types d'activités : TPE artisans BTP, PME filière bois et agroalimentaire, exploitants agricoles (élevage, polyculture), commerçants, acteurs du tourisme fluvial (canal Nantes-Brest) et services aux entreprises du nord Loire-Atlantique.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Blain (44). Nous accompagnons tous types d'activités : TPE artisans BTP, PME filière bois et agroalimentaire, exploitants agricoles (élevage, polyculture), commerçants, acteurs du tourisme fluvial (canal Nantes-Brest) et services aux entreprises du nord Loire-Atlantique.",
+  seoHook: "filière bois & agroalimentaire élevage",
   ecosystemFr:
     "Blain est une commune du nord Loire-Atlantique traversée par le canal de Nantes à Brest, à proximité immédiate de la forêt domaniale du Gâvre (la plus grande du département). Château médiéval de la Groulais (XIIIe siècle). Économie rurale : filière bois (scieries, exploitation forestière), agroalimentaire, élevage bovin, polyculture, artisanat BTP, tourisme fluvial et vert.",
   ecosystemEn:

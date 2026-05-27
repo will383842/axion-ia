@@ -12,6 +12,7 @@ export const BONS_EN_CHABLAIS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bons-en-Chablais (74). Nous accompagnons TPE et PME : commerces de la ZAC, artisans BTP, PME services, professions libérales, exploitants agricoles et acteurs du bassin Thonon-Annemasse.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bons-en-Chablais (74). Nous accompagnons TPE et PME : commerces de la ZAC, artisans BTP, PME services, professions libérales, exploitants agricoles et acteurs du bassin Thonon-Annemasse.",
+  seoHook: "commerce proximité & agriculture élevage",
   ecosystemFr:
     "Bons-en-Chablais est une commune en croissance du Chablais, positionnée au carrefour entre Thonon-les-Bains (15 min) et Annemasse (20 min). La ZAC commerciale concentre enseignes et services. L'agriculture (élevage laitier, maraîchage) reste présente. Commune résidentielle attractrice de frontaliers suisses. TPE artisans, commerces, PME services, professions libérales, exploitants agricoles.",
   ecosystemEn:

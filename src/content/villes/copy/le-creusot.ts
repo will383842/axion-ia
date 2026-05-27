@@ -14,6 +14,7 @@ export const LE_CREUSOT_COPY: VilleCopy = {
     "À Le Creusot, Axion-IA propose des interventions sur site pour les entreprises locales, notamment celles du secteur de la fabrication de machines et de produits métalliques. Avec des acteurs comme Framatome et Alstom, nous assurons un accompagnement personnalisé pour automatiser vos processus. Notre audit Flash commence à 490 € HT, permettant une évaluation rapide et efficace de vos besoins en IA.",
   directAnswerEn:
     "À Le Creusot, Axion-IA propose des interventions sur site pour les entreprises locales, notamment celles du secteur de la fabrication de machines et de produits métalliques. Avec des acteurs comme Framatome et Alstom, nous assurons un accompagnement personnalisé pour automatiser vos processus. Notre audit Flash commence à 490 € HT, permettant une évaluation rapide et efficace de vos besoins en IA.",
+  seoHook: "fabrication machines & produits métalliques",
   ecosystemFr:
     "Le Creusot est un pôle industriel avec des entreprises comme Framatome et Alstom. Le Technoparc et le pôle Nuclear Valley renforcent l'importance de la recherche et développement scientifique dans la région.",
   ecosystemEn:

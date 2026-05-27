@@ -12,6 +12,7 @@ export const MORTEAU_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Morteau (25). Nous accompagnons TPE et PME : producteurs agroalimentaires de la filiere saucisse de Morteau IGP, horlogers et micromecaniciens, commercants transfrontaliers, artisans du batiment et professionnels du tourisme du Haut-Doubs. Audit Flash des 490 euros HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Morteau (25). Nous accompagnons TPE et PME : producteurs agroalimentaires de la filiere saucisse de Morteau IGP, horlogers et micromecaniciens, commercants transfrontaliers, artisans du batiment et professionnels du tourisme du Haut-Doubs. Audit Flash des 490 euros HT.",
+  seoHook: "agroalimentaire & horlogerie micromecanique",
   ecosystemFr:
     "Morteau est la ville-centre du Val de Morteau dans le Haut-Doubs, a 10 km de la frontiere suisse. La filiere saucisse de Morteau IGP structure l'agroalimentaire local. L'heritage horloger (Musee de l'Horlogerie) et la proximite de La Chaux-de-Fonds alimentent un tissu de micromecaniciens et commercants transfrontaliers.",
   ecosystemEn:

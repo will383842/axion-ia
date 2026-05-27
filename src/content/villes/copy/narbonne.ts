@@ -14,6 +14,7 @@ export const NARBONNE_COPY: VilleCopy = {
     "Axion-IA propose des interventions à Narbonne, où le Groupe Narbonne Accessoires et la ZAC Bonne Source sont des acteurs économiques clés. Nos services incluent des audits à partir de 490 € HT et des interventions dès 590 € HT. Nous nous déplaçons sur site pour vous offrir des solutions IA adaptées à vos besoins spécifiques.",
   directAnswerEn:
     "Axion-IA propose des interventions à Narbonne, où le Groupe Narbonne Accessoires et la ZAC Bonne Source sont des acteurs économiques clés. Nos services incluent des audits à partir de 490 € HT et des interventions dès 590 € HT. Nous nous déplaçons sur site pour vous offrir des solutions IA adaptées à vos besoins spécifiques.",
+  seoHook: "commerce détail & hébergement",
   ecosystemFr:
     "Narbonne, avec le Groupe Trigano et la ZAC Bonne Source, offre un cadre propice à l'innovation. Axion-IA y intervient pour soutenir les entreprises locales dans leur transformation numérique.",
   ecosystemEn:

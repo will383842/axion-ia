@@ -12,6 +12,7 @@ export const VERGEZE_COPY: VilleCopy = {
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Vergèze (30). Nous accompagnons les TPE, PME et ETI locales : sous-traitants industriels, viticulteurs, commerçants, artisans BTP et professions libérales de la Vaunage gardoise. Audit Flash à partir de 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Vergèze (30). Nous accompagnons les TPE, PME et ETI locales : sous-traitants industriels, viticulteurs, commerçants, artisans BTP et professions libérales de la Vaunage gardoise. Audit Flash à partir de 490 € HT.",
+  seoHook: "agroalimentaire & sous-traitance industrielle",
   ecosystemFr:
     "Vergèze (~5 800 hab) est connue mondialement pour la source Perrier (Nestlé Waters), premier employeur local. Sous-traitance industrielle liée à l'embouteillage, viticulture Vaunage, commerces, artisanat BTP et services. Économie structurée autour du pôle agroalimentaire.",
   ecosystemEn:

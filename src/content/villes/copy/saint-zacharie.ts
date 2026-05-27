@@ -12,6 +12,7 @@ export const SAINT_ZACHARIE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Zacharie (83). Nous accompagnons TPE artisans, BTP, commerçants, restaurateurs et PME des services, de l'agriculture et de l'industrie de la vallée de l'Huveaune et de la périphérie est marseillaise. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Zacharie (83). Nous accompagnons TPE artisans, BTP, commerçants, restaurateurs et PME des services, de l'agriculture et de l'industrie de la vallée de l'Huveaune et de la périphérie est marseillaise. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat & commerce proximité",
   ecosystemFr:
     "Saint-Zacharie est ancrée dans la vallée de l'Huveaune au pied du massif classé de la Sainte-Baume, à la frontière entre Var et Bouches-du-Rhône. Bassin résidentiel de l'aire marseillaise est, économie locale tirée par l'artisanat, le BTP, le commerce de proximité, l'agriculture (oléiculture, viticulture) et les services aux habitants.",
   ecosystemEn:

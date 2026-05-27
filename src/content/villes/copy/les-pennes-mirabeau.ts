@@ -14,6 +14,7 @@ export const LES_PENNES_MIRABEAU_COPY: VilleCopy = {
     "Les Pennes-Mirabeau, située entre Marseille et Aix-en-Provence, est un centre d'activités avec des entreprises comme Carrefour et Decathlon. Axion-IA y propose des interventions IA pour améliorer l'efficacité des entreprises locales, en se déplaçant directement sur site pour des audits et implémentations.",
   directAnswerEn:
     "Les Pennes-Mirabeau, située entre Marseille et Aix-en-Provence, est un centre d'activités avec des entreprises comme Carrefour et Decathlon. Axion-IA y propose des interventions IA pour améliorer l'efficacité des entreprises locales, en se déplaçant directement sur site pour des audits et implémentations.",
+  seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Les Pennes-Mirabeau abrite la Zone d'Activités de la Palun, où des entreprises comme Carrefour et Decathlon sont présentes. Axion-IA y intervient pour optimiser les processus des entreprises locales.",
   ecosystemEn:

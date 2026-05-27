@@ -12,6 +12,7 @@ export const EPERNON_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Épernon (28). Nous accompagnons tous types d'activités : TPE/PME services, artisans BTP, commerçants de proximité, professions libérales, indépendants et consultants de la vallée de la Drouette, porte de l'Île-de-France.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Épernon (28). Nous accompagnons tous types d'activités : TPE/PME services, artisans BTP, commerçants de proximité, professions libérales, indépendants et consultants de la vallée de la Drouette, porte de l'Île-de-France.",
+  seoHook: "conseil indépendants",
   ecosystemFr:
     "Épernon est un bourg résidentiel attractif de la vallée de la Drouette, à la lisière de l'Eure-et-Loir et des Yvelines, prisé pour sa proximité Paris-Montparnasse (gare TER 1h). L'économie locale repose sur les TPE/PME de services, artisans BTP, commerces de proximité, professions libérales et indépendants.",
   ecosystemEn:

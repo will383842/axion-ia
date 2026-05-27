@@ -12,6 +12,7 @@ export const VILLENOY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villenoy (77). Nous accompagnons tous types d'activités : TPE artisans et commerçants du bassin meldois, PME tertiaires, professions libérales, indépendants, prestataires de services et petites structures industrielles locales.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villenoy (77). Nous accompagnons tous types d'activités : TPE artisans et commerçants du bassin meldois, PME tertiaires, professions libérales, indépendants, prestataires de services et petites structures industrielles locales.",
+  seoHook: "artisanat & logistique petite",
   ecosystemFr:
     "Villenoy est une commune résidentielle limitrophe de Meaux, intégrée à la communauté d'agglomération du Pays de Meaux. Tissu économique local : TPE artisanat et BTP, commerces de centre-ville, professions libérales, PME de services, activités liées à la logistique briarde et à la proximité de Meaux. Cadre semi-rural attractif entre campagne et ville.",
   ecosystemEn:

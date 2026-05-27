@@ -12,6 +12,7 @@ export const SAINT_GERMAIN_LES_CORBEIL_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Germain-lès-Corbeil (91). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, professions libérales, PME de services aux entreprises, indépendants et structures de la vallée de Seine entre Corbeil-Essonnes et Évry-Courcouronnes.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Germain-lès-Corbeil (91). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, professions libérales, PME de services aux entreprises, indépendants et structures de la vallée de Seine entre Corbeil-Essonnes et Évry-Courcouronnes.",
+  seoHook: "artisanat second & commerce proximité",
   ecosystemFr:
     "Saint-Germain-lès-Corbeil (7 469 hab) s'inscrit dans le bassin d'emploi Évry-Corbeil au sud de l'Essonne. Commune résidentielle en bord de Seine, elle bénéficie de la dynamique économique d'Évry-Courcouronnes (préfecture, Génopole) et de Corbeil-Essonnes. Tissu TPE artisanat, commerces, professions libérales et PME de services.",
   ecosystemEn:

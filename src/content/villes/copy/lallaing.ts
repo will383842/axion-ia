@@ -12,6 +12,7 @@ export const LALLAING_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lallaing (59). Nous accompagnons TPE artisans BTP du bassin minier, PME logistique et sous-traitance industrielle, commerçants et services aux entreprises de l'agglomération de Douai. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lallaing (59). Nous accompagnons TPE artisans BTP du bassin minier, PME logistique et sous-traitance industrielle, commerçants et services aux entreprises de l'agglomération de Douai. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
+  seoHook: "artisanat rénovation & logistique transport",
   ecosystemFr:
     "Lallaing est située dans l'agglomération de Douai, au coeur du bassin minier du Nord-Pas-de-Calais (UNESCO). Tissu TPE artisans BTP et rénovation, PME logistique et sous-traitance industrielle, commerces de proximité, services aux entreprises. Proximité immédiate de Douai et accès rapide vers Lille via A21. Reconversion économique active du bassin minier avec dynamique d'innovation.",
   ecosystemEn:

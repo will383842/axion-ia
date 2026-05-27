@@ -14,6 +14,7 @@ export const ROCHEFORT_COPY: VilleCopy = {
     "Axion-IA se déplace à Rochefort pour accompagner les entreprises locales dans l'optimisation de leurs processus. Avec des acteurs comme Alstom et la Société des Chantiers de l'Atlantique, nous proposons des audits dès 490 € HT, et des interventions à partir de 590 € HT. Consultez nos tarifs publics pour plus de détails.",
   directAnswerEn:
     "Axion-IA se déplace à Rochefort pour accompagner les entreprises locales dans l'optimisation de leurs processus. Avec des acteurs comme Alstom et la Société des Chantiers de l'Atlantique, nous proposons des audits dès 490 € HT, et des interventions à partir de 590 € HT. Consultez nos tarifs publics pour plus de détails.",
+  seoHook: "réparation machines & hébergement",
   ecosystemFr:
     "Rochefort accueille des entreprises comme Alstom et la Société des Chantiers de l'Atlantique, renforçant son tissu économique. La ZAC des Soeurs contribue également à ce dynamisme.",
   ecosystemEn:

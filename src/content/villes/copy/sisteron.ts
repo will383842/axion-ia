@@ -12,6 +12,7 @@ export const SISTERON_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sisteron (04). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et hôtellerie (citadelle, Nuits de la Citadelle), agriculteurs, commerçants, indépendants et services aux entreprises de la sous-préfecture des Alpes-de-Haute-Provence.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sisteron (04). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et hôtellerie (citadelle, Nuits de la Citadelle), agriculteurs, commerçants, indépendants et services aux entreprises de la sous-préfecture des Alpes-de-Haute-Provence.",
+  seoHook: "tourisme hôtellerie & agriculture fruitière",
   ecosystemFr:
     "Sisteron est sous-préfecture des Alpes-de-Haute-Provence (~7 850 hab), point stratégique entre Alpes et Provence sur la Durance. Citadelle classée, festival Les Nuits de la Citadelle, filière touristique estivale forte. Tissu TPE artisans BTP, PME hôtellerie/restauration, agriculteurs (fruitiers, olives), commerçants et services sous-préfectoraux.",
   ecosystemEn:

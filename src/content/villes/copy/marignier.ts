@@ -12,6 +12,7 @@ export const MARIGNIER_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marignier (74). Nous accompagnons TPE et PME : sous-traitants du décolletage vallée de l'Arve, ateliers usinage, commerces, artisans BTP, professions libérales, services aux entreprises et acteurs logistique entre Cluses et Bonneville.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marignier (74). Nous accompagnons TPE et PME : sous-traitants du décolletage vallée de l'Arve, ateliers usinage, commerces, artisans BTP, professions libérales, services aux entreprises et acteurs logistique entre Cluses et Bonneville.",
+  seoHook: "décolletage usinage & industrielles vallée",
   ecosystemFr:
     "Marignier est au cœur de la vallée de l'Arve, premier bassin mondial du décolletage (2 000+ entreprises sur Cluses-Scionzier-Marnaz-Marignier-Thyez). L'industrie de sous-traitance automobile, horlogerie et médical structure le tissu économique. Le pôle de compétitivité Mont-Blanc Industries irrigue la zone. PME industrielles, TPE artisans, commerces de proximité, services aux entreprises.",
   ecosystemEn:

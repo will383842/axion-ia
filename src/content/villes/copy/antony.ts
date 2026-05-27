@@ -14,6 +14,7 @@ export const ANTONY_COPY: VilleCopy = {
     "À Antony, Axion-IA propose des interventions sur site pour optimiser les processus métiers des entreprises locales. Avec des acteurs comme Air Liquide et le Parc d'activités Antonypole, notre approche pragmatique permet une automatisation rapide des tâches administratives et commerciales, garantissant un retour sur investissement mesurable dès le premier trimestre.",
   directAnswerEn:
     "À Antony, Axion-IA propose des interventions sur site pour optimiser les processus métiers des entreprises locales. Avec des acteurs comme Air Liquide et le Parc d'activités Antonypole, notre approche pragmatique permet une automatisation rapide des tâches administratives et commerciales, garantissant un retour sur investissement mesurable dès le premier trimestre.",
+  seoHook: "programmation informatique & commerce détail",
   ecosystemFr:
     "Le tissu économique d'Antony est marqué par la présence de grands groupes tels qu'Air Liquide et Sanofi. Le Parc d'activités Antonypole joue un rôle clé dans le développement local, offrant un environnement propice à l'innovation et à la croissance des entreprises.",
   ecosystemEn:

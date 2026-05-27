@@ -12,6 +12,7 @@ export const LUXEUIL_LES_BAINS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Luxeuil-les-Bains (70). Nous accompagnons TPE et PME : établissements thermaux et hôteliers, commerçants, artisans, professions libérales, prestataires tourisme et services aux entreprises du Pays de Luxeuil.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Luxeuil-les-Bains (70). Nous accompagnons TPE et PME : établissements thermaux et hôteliers, commerçants, artisans, professions libérales, prestataires tourisme et services aux entreprises du Pays de Luxeuil.",
+  seoHook: "tourisme thermal & hôtellerie-restauration",
   ecosystemFr:
     "Luxeuil-les-Bains est une station thermale historique de Haute-Saône, labellisée Ville d'Art et d'Histoire (abbaye fondée au VIe siècle). Base aérienne 116 (défense, emploi indirect). Tissu de TPE/PME tourisme thermal, hôtellerie-restauration, bien-être, artisanat local, commerces et professions libérales. Proximité Lure (15 min) et Belfort (40 min).",
   ecosystemEn:

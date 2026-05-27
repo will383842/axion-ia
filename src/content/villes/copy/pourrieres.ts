@@ -12,6 +12,7 @@ export const POURRIERES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pourrières (83). Nous accompagnons TPE artisans, PME viticoles, exploitations agricoles, professions libérales et commerces du Centre-Var et de la vallée de l'Arc. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pourrières (83). Nous accompagnons TPE artisans, PME viticoles, exploitations agricoles, professions libérales et commerces du Centre-Var et de la vallée de l'Arc. Audit Flash dès 490 € HT.",
+  seoHook: "viticulture côtes & artisanat",
   ecosystemFr:
     "Pourrières est positionnée au pied sud-est de la montagne Sainte-Victoire, dans la haute vallée de l'Arc, à la limite du Var et des Bouches-du-Rhône. Commune dont l'activité économique repose sur la viticulture (AOP Côtes de Provence Sainte-Victoire), les TPE artisans (BTP, services), PME tertiaires, exploitations agricoles, professions libérales et commerces de proximité. Bassin d'emploi double : Aix-en-Provence et Saint-Maximin.",
   ecosystemEn:

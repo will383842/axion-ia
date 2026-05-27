@@ -12,6 +12,7 @@ export const CHAMALIERES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chamalières (63). Nous accompagnons tous types d'activités : PME tertiaires Clermont Métropole ouest, professions libérales, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chamalières (63). Nous accompagnons tous types d'activités : PME tertiaires Clermont Métropole ouest, professions libérales, TPE artisans BTP, commerçants et services aux entreprises.",
+  seoHook: "tertiaires clermont",
   ecosystemFr:
     "Chamalières est en banlieue ouest de Clermont-Ferrand, Clermont Auvergne Métropole. Position résidentielle. PME tertiaires, professions libérales, TPE artisanat BTP, commerces.",
   ecosystemEn:

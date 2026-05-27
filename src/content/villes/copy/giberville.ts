@@ -12,6 +12,7 @@ export const GIBERVILLE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Giberville (14). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrie et logistique zone Colombelles-Mondeville, commerces, professionnels de santé, indépendants et services aux entreprises de Caen la Mer.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Giberville (14). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrie et logistique zone Colombelles-Mondeville, commerces, professionnels de santé, indépendants et services aux entreprises de Caen la Mer.",
+  seoHook: "industrie logistique & artisanat second",
   ecosystemFr:
     "Giberville est une commune de l'agglomération Caen la Mer, positionnée à l'est de la métropole caennaise. Proximité immédiate des zones d'activité Colombelles et Mondeville (logistique, industrie, tertiaire). Tissu TPE/PME diversifié, commerces de proximité, professionnels libéraux et de santé.",
   ecosystemEn:

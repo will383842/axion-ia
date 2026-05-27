@@ -12,6 +12,7 @@ export const LE_RELECQ_KERHUON_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Relecq-Kerhuon (29). Nous accompagnons tous types d'activités : TPE artisans BTP, PME tertiaires et industrielles des zones d'activités, commerçants, indépendants, professions libérales, acteurs maritimes et services aux entreprises de Brest Métropole rive droite.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Relecq-Kerhuon (29). Nous accompagnons tous types d'activités : TPE artisans BTP, PME tertiaires et industrielles des zones d'activités, commerçants, indépendants, professions libérales, acteurs maritimes et services aux entreprises de Brest Métropole rive droite.",
+  seoHook: "tertiaires services & industrie navale",
   ecosystemFr:
     "Le Relecq-Kerhuon (11 897 hab) est une commune de Brest Métropole en rive droite de la Penfeld, bordant la rade de Brest. Zones d'activités économiques accueillant PME tertiaires, sous-traitants navals et industriels, TPE artisans BTP, commerces de proximité. Proximité immédiate de Brest centre (5 min), de la base navale et du technopôle Brest-Iroise.",
   ecosystemEn:

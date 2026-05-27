@@ -12,6 +12,7 @@ export const VILLENEUVE_SUR_LOT_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villeneuve-sur-Lot (47). Nous accompagnons tous types d'activités : agriculteurs et arboriculteurs (vergers de pruneaux, fruits), conserveries agroalimentaires (pruneau d'Agen, confitures, conserves), TPE artisans BTP, commerçants centre bastide, professions libérales et PME tertiaires villeneuvoises.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villeneuve-sur-Lot (47). Nous accompagnons tous types d'activités : agriculteurs et arboriculteurs (vergers de pruneaux, fruits), conserveries agroalimentaires (pruneau d'Agen, confitures, conserves), TPE artisans BTP, commerçants centre bastide, professions libérales et PME tertiaires villeneuvoises.",
+  seoHook: "arboriculture agriculture & agroalimentaire",
   ecosystemFr:
     "Villeneuve-sur-Lot rayonne sur le bassin agricole du Lot-et-Garonne : vergers de pruneaux d'Agen (1ère production française), arboriculture (pommes, kiwis, noisettes), conserveries fruits (jus, confitures, fruits au sirop), élevage bovin/ovin. Bastide commerçante préservée, tissu artisanal dense, PME tertiaires et services aux agriculteurs.",
   ecosystemEn:

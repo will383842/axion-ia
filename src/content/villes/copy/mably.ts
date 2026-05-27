@@ -12,6 +12,7 @@ export const MABLY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mably (42). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Roannais (héritage textile), TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de Roannais Agglomération.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mably (42). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Roannais (héritage textile), TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de Roannais Agglomération.",
+  seoHook: "tertiaires roannais & industrielles",
   ecosystemFr:
     "Mably est intégrée à Roannais Agglomération (~99 000 hab), en banlieue nord immédiate de Roanne. Tissu péri-urbain : PME tertiaires et industrielles diversifiées (lien filière textile roannaise historique), TPE artisanat BTP, commerces de proximité, professions libérales.",
   ecosystemEn:

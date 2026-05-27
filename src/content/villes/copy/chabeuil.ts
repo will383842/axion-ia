@@ -12,6 +12,7 @@ export const CHABEUIL_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chabeuil (26). Nous accompagnons tous types d'activités : acteurs aéronautiques aérodrome Valence-Chabeuil, PME tertiaires Valence Romans Agglo, TPE artisans BTP, commerçants, agriculteurs périphériques, indépendants et services aux entreprises drômoises.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chabeuil (26). Nous accompagnons tous types d'activités : acteurs aéronautiques aérodrome Valence-Chabeuil, PME tertiaires Valence Romans Agglo, TPE artisans BTP, commerçants, agriculteurs périphériques, indépendants et services aux entreprises drômoises.",
+  seoHook: "aéronautique générale & tertiaires valence",
   ecosystemFr:
     "Chabeuil est intégrée à Valence Romans Agglo (~225 000 hab), en banlieue est de Valence au pied des contreforts du Vercors. Position notable : aérodrome Valence-Chabeuil (aviation générale, école de pilotage, parachutisme). Tissu PME tertiaires, TPE artisanat BTP, agriculture périphérique (vergers), commerces et services.",
   ecosystemEn:

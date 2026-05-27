@@ -12,6 +12,7 @@ export const CONDE_EN_NORMANDIE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Condé-en-Normandie (14). Nous accompagnons tous types d'activités : TPE artisans BTP et commerçants, PME industrielles du bocage (métallurgie, mécanique), exploitations agricoles, professions libérales et services aux entreprises du sud-Calvados.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Condé-en-Normandie (14). Nous accompagnons tous types d'activités : TPE artisans BTP et commerçants, PME industrielles du bocage (métallurgie, mécanique), exploitations agricoles, professions libérales et services aux entreprises du sud-Calvados.",
+  seoHook: "industrie & agriculture élevage",
   ecosystemFr:
     "Condé-en-Normandie est une commune nouvelle du bocage normand sud (Calvados), au confluent du Noireau et de la Druance. Héritage industriel (textile, métallurgie) en reconversion. Tissu PME industrielles, TPE artisans BTP, exploitations agricoles bocage, commerces de centre-ville, professions libérales.",
   ecosystemEn:

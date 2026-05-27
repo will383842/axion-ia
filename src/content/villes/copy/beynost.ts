@@ -12,6 +12,7 @@ export const BEYNOST_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beynost (01). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Côtière Ain, TPE artisans BTP, commerçants, professions libérales et services aux entreprises.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beynost (01). Nous accompagnons tous types d'activités : PME tertiaires et industrielles Côtière Ain, TPE artisans BTP, commerçants, professions libérales et services aux entreprises.",
+  seoHook: "tertiaires côtière & industrielles",
   ecosystemFr:
     "Beynost est sur la Côtière de l'Ain, banlieue NE Lyon. Tissu PME tertiaires/industrielles, professions libérales, TPE artisanat BTP, commerces.",
   ecosystemEn:

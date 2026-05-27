@@ -12,6 +12,7 @@ export const CARQUEIRANNE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carqueiranne (83). Nous accompagnons TPE pêcheurs, restaurateurs, professionnels du nautisme et PME du tourisme et de l'hôtellerie du littoral toulonnais. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carqueiranne (83). Nous accompagnons TPE pêcheurs, restaurateurs, professionnels du nautisme et PME du tourisme et de l'hôtellerie du littoral toulonnais. Audit Flash dès 490 € HT.",
+  seoHook: "pêche artisanale & nautisme port",
   ecosystemFr:
     "Carqueiranne est une station balnéaire familiale du littoral est-toulonnais. Économie tirée par le tourisme estival, la pêche artisanale (port des Salettes), le nautisme et la plaisance, la restauration de poisson et les commerces de proximité. Tissu de TPE/PME marines et tourisme dans la rade d'Hyères.",
   ecosystemEn:

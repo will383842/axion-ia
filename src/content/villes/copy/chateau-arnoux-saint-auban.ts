@@ -12,6 +12,7 @@ export const CHATEAU_ARNOUX_SAINT_AUBAN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Château-Arnoux-Saint-Auban (04). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles (chimie, plasturgie, maintenance plateforme), commerçants, agriculteurs, indépendants et services aux entreprises de la Moyenne Durance.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Château-Arnoux-Saint-Auban (04). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles (chimie, plasturgie, maintenance plateforme), commerçants, agriculteurs, indépendants et services aux entreprises de la Moyenne Durance.",
+  seoHook: "industrie chimique & maintenance industrielle",
   ecosystemFr:
     "Château-Arnoux-Saint-Auban est commune de la Moyenne Durance (~5 100 hab), marquée par la plateforme chimique historique de Saint-Auban (reconversion industrielle en cours). PME industrielles chimie/plasturgie, sous-traitants maintenance, TPE artisans BTP, commerces et services. Restaurant gastronomique La Bonne Étape (étoilé Michelin).",
   ecosystemEn:

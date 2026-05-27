@@ -12,6 +12,7 @@ export const SAINT_ETIENNE_DE_MONTLUC_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Étienne-de-Montluc (44). Nous accompagnons les TPE, indépendants, PME tertiaires, commerçants et professions libérales du nord-ouest nantais sur leurs cas IA opérationnels. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Étienne-de-Montluc (44). Nous accompagnons les TPE, indépendants, PME tertiaires, commerçants et professions libérales du nord-ouest nantais sur leurs cas IA opérationnels. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat & services aux",
   ecosystemFr:
     "Saint-Étienne-de-Montluc est une commune périurbaine du nord-ouest nantais, entre estuaire de la Loire et bocage. Tissu TPE artisanales, commerces de centre-bourg, PME tertiaires, professions libérales. Gare TER desservie, accès rapide Nantes et Savenay.",
   ecosystemEn:

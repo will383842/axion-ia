@@ -10,6 +10,7 @@ export const LE_PRADET_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Pradet (83). Nous accompagnons TPE artisanales, PME de services, commerces, professions libérales et hôtellerie-restauration de l'agglo toulonnaise est. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Pradet (83). Nous accompagnons TPE artisanales, PME de services, commerces, professions libérales et hôtellerie-restauration de l'agglo toulonnaise est. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+  seoHook: "hôtellerie restauration & tourisme activités",
   ecosystemFr:
     "Le Pradet est une commune littorale à l'est de Toulon, membre de la Métropole Toulon-Provence-Méditerranée. Tissu résidentiel et touristique : TPE artisanales, PME de services, commerces, professions libérales, hôtellerie-restauration, activités balnéaires (plages de la Garonne, Pin de Galle, Bonnettes) et musée de la Mine.",
   ecosystemEn:

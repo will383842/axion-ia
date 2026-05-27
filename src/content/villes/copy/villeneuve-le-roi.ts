@@ -12,6 +12,7 @@ export const VILLENEUVE_LE_ROI_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villeneuve-le-Roi (94). Nous accompagnons tous types d'activités : opérateurs logistiques aéroportuaires Orly, services au sol (catering, maintenance, ground handling), industriels et sous-traitants aéronautiques, TPE artisans BTP, commerçants, PME tertiaires villeneuvoises et services publics.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villeneuve-le-Roi (94). Nous accompagnons tous types d'activités : opérateurs logistiques aéroportuaires Orly, services au sol (catering, maintenance, ground handling), industriels et sous-traitants aéronautiques, TPE artisans BTP, commerçants, PME tertiaires villeneuvoises et services publics.",
+  seoHook: "aéronautique services & logistique e-commerce",
   ecosystemFr:
     "Villeneuve-le-Roi est aux portes immédiates de l'aéroport Paris-Orly (2e aéroport français, 31 M passagers/an, 30 000+ emplois directs/indirects), un des écosystèmes logistique-aéroportuaire majeurs d'Europe. Services au sol (catering, maintenance avions, fret), sous-traitants aéronautiques, plateformes logistiques e-commerce. Tissu TPE artisanat BTP dense, PME tertiaires.",
   ecosystemEn:

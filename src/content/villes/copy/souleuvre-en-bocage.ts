@@ -12,6 +12,7 @@ export const SOULEUVRE_EN_BOCAGE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Souleuvre en Bocage (14). Nous accompagnons tous types d'activités : TPE artisans BTP et commerçants du bocage, PME agroalimentaires, exploitations agricoles, acteurs du tourisme vert (viaduc de la Souleuvre), professions libérales et services aux entreprises rurales.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Souleuvre en Bocage (14). Nous accompagnons tous types d'activités : TPE artisans BTP et commerçants du bocage, PME agroalimentaires, exploitations agricoles, acteurs du tourisme vert (viaduc de la Souleuvre), professions libérales et services aux entreprises rurales.",
+  seoHook: "agriculture élevage & agroalimentaire normand",
   ecosystemFr:
     "Souleuvre en Bocage est une commune nouvelle du bocage normand (Calvados), regroupant plusieurs communes rurales depuis 2016. Le viaduc de la Souleuvre (gustave Eiffel, reconverti en site de loisirs extrêmes) attire le tourisme vert. Territoire agricole et agroalimentaire, TPE artisans BTP, commerces de proximité.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const YFFINIAC_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Yffiniac (22). Nous accompagnons tous types d'activités : TPE artisans, PME de services de l'agglomération briochine, commerces de proximité, professions libérales, exploitants agricoles, indépendants et prestataires du tourisme nature de la baie de Saint-Brieuc.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Yffiniac (22). Nous accompagnons tous types d'activités : TPE artisans, PME de services de l'agglomération briochine, commerces de proximité, professions libérales, exploitants agricoles, indépendants et prestataires du tourisme nature de la baie de Saint-Brieuc.",
+  seoHook: "services aux & artisanat bâtiment",
   ecosystemFr:
     "Yffiniac est une commune de l'agglomération de Saint-Brieuc, au fond de la baie de Saint-Brieuc. La réserve naturelle nationale de la baie, site ornithologique majeur, attire un tourisme nature. L'économie locale repose sur les services, l'artisanat BTP, le commerce, les professions libérales, l'agriculture et les zones d'activités de l'agglo briochine accessibles en 10 minutes.",
   ecosystemEn:

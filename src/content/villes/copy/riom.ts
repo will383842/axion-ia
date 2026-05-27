@@ -12,6 +12,7 @@ export const RIOM_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Riom (63). Nous accompagnons tous types d'activités : administration sous-préfecture, PME tertiaires Clermont Métropole nord, acteurs tourisme patrimonial Renaissance, agriculteurs Limagne, TPE artisans BTP, commerçants et services aux entreprises.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Riom (63). Nous accompagnons tous types d'activités : administration sous-préfecture, PME tertiaires Clermont Métropole nord, acteurs tourisme patrimonial Renaissance, agriculteurs Limagne, TPE artisans BTP, commerçants et services aux entreprises.",
+  seoHook: "administration & tourisme patrimonial",
   ecosystemFr:
     "Riom est la sous-préfecture du Puy-de-Dôme, ancienne capitale judiciaire Auvergne (patrimoine Renaissance, Sainte-Chapelle). Tissu administration, PME tertiaires, agriculture Limagne, tourisme patrimonial, TPE artisanat BTP, commerces.",
   ecosystemEn:

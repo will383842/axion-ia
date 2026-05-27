@@ -14,6 +14,7 @@ export const BLOIS_COPY: VilleCopy = {
     "À Blois, Axion-IA propose des interventions IA adaptées aux besoins des entreprises locales, notamment dans les secteurs du commerce de détail et de la santé humaine. Avec des entreprises comme les Laboratoires Servier et Valeo présentes dans la région, nous offrons des audits et des implémentations sur site pour améliorer l'efficacité opérationnelle.",
   directAnswerEn:
     "À Blois, Axion-IA propose des interventions IA adaptées aux besoins des entreprises locales, notamment dans les secteurs du commerce de détail et de la santé humaine. Avec des entreprises comme les Laboratoires Servier et Valeo présentes dans la région, nous offrons des audits et des implémentations sur site pour améliorer l'efficacité opérationnelle.",
+  seoHook: "commerce détail & hébergement",
   ecosystemFr:
     "Blois abrite des entreprises comme les Laboratoires Servier et Valeo, renforçant son tissu économique. Le parc d'activités de la Boissière est un lieu clé pour les affaires dans la région.",
   ecosystemEn:

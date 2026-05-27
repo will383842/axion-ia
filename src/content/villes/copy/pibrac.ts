@@ -12,6 +12,7 @@ export const PIBRAC_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pibrac (31). Nous accompagnons TPE de services, PME tertiaires, professions libérales et commerçants de l'ouest Toulouse. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pibrac (31). Nous accompagnons TPE de services, PME tertiaires, professions libérales et commerçants de l'ouest Toulouse. Audit Flash dès 490 € HT.",
+  seoHook: "professions libérales & commerce détail",
   ecosystemFr:
     "Pibrac est une commune résidentielle verdoyante de l'ouest de Toulouse. Tissu TPE de services, PME tertiaires, cabinets de professions libérales, commerces de centre-bourg. Cadre de vie prisé, proximité Léguevin et Brax.",
   ecosystemEn:

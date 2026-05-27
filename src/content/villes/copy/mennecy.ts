@@ -12,6 +12,7 @@ export const MENNECY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mennecy (91). Nous accompagnons TPE et PME : commerçants et artisans centre-ville, PME services aux entreprises, professions libérales, restaurateurs, prestataires services à la personne sud Essonne. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mennecy (91). Nous accompagnons TPE et PME : commerçants et artisans centre-ville, PME services aux entreprises, professions libérales, restaurateurs, prestataires services à la personne sud Essonne. Audit Flash dès 490 € HT.",
+  seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Mennecy est une commune résidentielle du sud de l'Essonne, réputée pour le Parc de Villeroy et son cadre de vie verdoyant. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, services à la personne.",
   ecosystemEn:

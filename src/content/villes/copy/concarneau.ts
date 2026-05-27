@@ -14,6 +14,7 @@ export const CONCARNEAU_COPY: VilleCopy = {
     "Axion-IA propose des interventions sur site à Concarneau pour automatiser les processus administratifs et commerciaux des entreprises locales. Grâce à nos audits et implémentations, nous aidons les entreprises de la région, comme celles de la Zone Industrielle de Keramperu, à intégrer l'IA dans leurs opérations quotidiennes. Nos services s'adressent à divers secteurs, y compris ceux où Chantiers Piriou et Intermarché opèrent.",
   directAnswerEn:
     "Axion-IA propose des interventions sur site à Concarneau pour automatiser les processus administratifs et commerciaux des entreprises locales. Grâce à nos audits et implémentations, nous aidons les entreprises de la région, comme celles de la Zone Industrielle de Keramperu, à intégrer l'IA dans leurs opérations quotidiennes. Nos services s'adressent à divers secteurs, y compris ceux où Chantiers Piriou et Intermarché opèrent.",
+  seoHook: "industrie agroalimentaire & pêche",
   ecosystemFr:
     "Le tissu économique de Concarneau inclut des entreprises telles que Chantiers Piriou et Intermarché. La Zone Industrielle de Keramperu est un point central pour l'industrie locale, favorisant l'innovation et l'optimisation des processus.",
   ecosystemEn:

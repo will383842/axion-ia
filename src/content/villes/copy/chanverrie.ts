@@ -12,6 +12,7 @@ export const CHANVERRIE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chanverrie (85). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles (volaille, mécanique, transformation), commerces, professions libérales et prestataires du haut bocage vendéen.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Chanverrie (85). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles (volaille, mécanique, transformation), commerces, professions libérales et prestataires du haut bocage vendéen.",
+  seoHook: "agroalimentaire & industrie mécanique",
   ecosystemFr:
     "Chanverrie est une commune nouvelle créée en 2016 dans le haut bocage vendéen, à l'est de Pouzauges. Bassin économique structuré autour de l'agroalimentaire, de l'industrie mécanique, de l'artisanat BTP, des commerces de proximité et d'un tissu PME familial typique du modèle économique vendéen.",
   ecosystemEn:

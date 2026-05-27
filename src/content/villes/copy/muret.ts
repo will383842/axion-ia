@@ -14,6 +14,7 @@ export const MURET_COPY: VilleCopy = {
     "À Muret, Axion-IA propose des services de conseil en IA pour les entreprises locales. Nous intervenons pour automatiser les tâches administratives et optimiser les processus métiers. Nos prestations incluent des audits dès 490 € HT et des interventions à partir de 590 € HT. Muret bénéficie de la proximité de Toulouse, un centre économique important avec des entreprises comme LVMH et BNP Paribas.",
   directAnswerEn:
     "À Muret, Axion-IA propose des services de conseil en IA pour les entreprises locales. Nous intervenons pour automatiser les tâches administratives et optimiser les processus métiers. Nos prestations incluent des audits dès 490 € HT et des interventions à partir de 590 € HT. Muret bénéficie de la proximité de Toulouse, un centre économique important avec des entreprises comme LVMH et BNP Paribas.",
+  seoHook: "commerce détail & construction",
   ecosystemFr:
     "L'économie de Muret est soutenue par sa proximité avec Toulouse, où des entreprises comme LVMH et Sanofi sont présentes. Ce contexte offre des opportunités pour les entreprises locales de se développer en intégrant des solutions IA.",
   ecosystemEn:

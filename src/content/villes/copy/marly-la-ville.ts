@@ -12,6 +12,7 @@ export const MARLY_LA_VILLE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marly-la-Ville (95). Nous accompagnons TPE et PME : commerçants et artisans locaux, PME logistique et transport zone Roissy, professions libérales, restaurateurs, prestataires services à la personne nord Val-d'Oise. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marly-la-Ville (95). Nous accompagnons TPE et PME : commerçants et artisans locaux, PME logistique et transport zone Roissy, professions libérales, restaurateurs, prestataires services à la personne nord Val-d'Oise. Audit Flash dès 490 € HT.",
+  seoHook: "commerce détail & logistique transport",
   ecosystemFr:
     "Marly-la-Ville est une commune du nord du Val-d'Oise, proche de l'aéroport Roissy-CDG et de l'unité urbaine de Fosses. Tissu TPE commerces et artisanat, PME logistique et transport, professions libérales, restauration, services à la personne.",
   ecosystemEn:

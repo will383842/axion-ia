@@ -12,6 +12,7 @@ export const MAINVILLIERS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mainvilliers (28). Nous accompagnons tous types d'activités : TPE/PME des zones d'activités chartraines, commerces de zone, artisans BTP, logisticiens, professions libérales et services aux entreprises de l'agglomération de Chartres.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mainvilliers (28). Nous accompagnons tous types d'activités : TPE/PME des zones d'activités chartraines, commerces de zone, artisans BTP, logisticiens, professions libérales et services aux entreprises de l'agglomération de Chartres.",
+  seoHook: "logistique entreposage & commerce zone",
   ecosystemFr:
     "Mainvilliers est une commune dynamique de l'agglomération de Chartres (Chartres Métropole), qui concentre zones d'activités économiques et commerces de périphérie. L'économie locale repose sur les TPE/PME logistique, services aux entreprises, commerces de zone (grande distribution, retail), artisanat BTP et professions libérales.",
   ecosystemEn:

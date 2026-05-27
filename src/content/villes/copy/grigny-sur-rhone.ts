@@ -12,6 +12,7 @@ export const GRIGNY_SUR_RHONE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Grigny (69). Nous accompagnons tous types d'activités : PME tertiaires et industrielles sud lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Grigny (69). Nous accompagnons tous types d'activités : PME tertiaires et industrielles sud lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises de la Métropole de Lyon.",
+  seoHook: "tertiaires sud & industrielles vallée",
   ecosystemFr:
     "Grigny est intégrée à la Métropole de Lyon, en banlieue sud (vallée du Rhône, entre Lyon et Vienne). Tissu péri-urbain mixte : PME tertiaires et industrielles, TPE artisanat BTP, commerces de proximité, professions libérales, agriculture résiduelle vallée du Rhône.",
   ecosystemEn:

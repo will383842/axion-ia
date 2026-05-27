@@ -12,6 +12,7 @@ export const SAINT_JUERY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Juéry (81). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants et professions libérales de l'agglomération d'Albi. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Juéry (81). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants et professions libérales de l'agglomération d'Albi. Audit Flash dès 490 € HT.",
+  seoHook: "métallurgie mécanique & commerce détail",
   ecosystemFr:
     "Saint-Juéry (6 564 hab) est une commune industrielle de l'agglomération d'Albi, connue pour le site métallurgique du Saut de Sabo (musée du patrimoine industriel). Économie diversifiée : PME métallurgie-mécanique, TPE artisans, commerces, services aux entreprises. Proximité immédiate Albi (5 min). Zones d'activités accueillant sous-traitants et PME tertiaires.",
   ecosystemEn:

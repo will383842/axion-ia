@@ -12,6 +12,7 @@ export const ROQUEFORT_LES_PINS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Roquefort-les-Pins (06). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, indépendants en télétravail, PME services et entreprises de l'arrière-pays azuréen.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Roquefort-les-Pins (06). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, indépendants en télétravail, PME services et entreprises de l'arrière-pays azuréen.",
+  seoHook: "indépendants télétravail & services aux",
   ecosystemFr:
     "Roquefort-les-Pins est une commune résidentielle boisée de l'arrière-pays azuréen, positionnée entre Sophia Antipolis (15 min), Vence et Cagnes-sur-Mer. Tissu d'artisans BTP, commerces de proximité, professions libérales et indépendants en télétravail. Cadre de vie prisé des familles et cadres travaillant sur le littoral ou à Sophia Antipolis.",
   ecosystemEn:

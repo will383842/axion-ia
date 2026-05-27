@@ -12,6 +12,7 @@ export const FERNEY_VOLTAIRE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ferney-Voltaire (01). Nous accompagnons tous types d'activités : PME tertiaires et internationales pays de Gex, économie frontalière Genève, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ferney-Voltaire (01). Nous accompagnons tous types d'activités : PME tertiaires et internationales pays de Gex, économie frontalière Genève, TPE artisans BTP, commerçants, indépendants et services aux entreprises.",
+  seoHook: "économie frontalière & internationales",
   ecosystemFr:
     "Ferney-Voltaire est positionnée dans le pays de Gex, à la frontière suisse immédiate (Genève). Ville historique : château de Voltaire (domaine restauré, patrimoine culturel). Économie frontalière très dynamique : PME tertiaires et internationales, organisations internationales (proximité ONU Genève), commerces transfrontaliers, TPE artisanat BTP.",
   ecosystemEn:

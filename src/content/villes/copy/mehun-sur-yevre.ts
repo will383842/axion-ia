@@ -12,6 +12,7 @@ export const MEHUN_SUR_YEVRE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mehun-sur-Yèvre (18). Nous accompagnons tous types d'activités : TPE artisans porcelaine/céramique, PME industrielles Berry, commerçants, acteurs tourisme patrimonial (château Charles VII), services aux entreprises du bassin berruyer.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mehun-sur-Yèvre (18). Nous accompagnons tous types d'activités : TPE artisans porcelaine/céramique, PME industrielles Berry, commerçants, acteurs tourisme patrimonial (château Charles VII), services aux entreprises du bassin berruyer.",
+  seoHook: "artisanat porcelaine & industrielles berry",
   ecosystemFr:
     "Mehun-sur-Yèvre est une commune du Berry (Cher) au patrimoine remarquable : château de Charles VII (ruines classées MH), tradition porcelainière séculaire. Tissu TPE artisanat porcelaine/céramique, PME industrielles, commerces de proximité, services tertiaires le long de l'Yèvre.",
   ecosystemEn:

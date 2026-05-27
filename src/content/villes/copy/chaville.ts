@@ -14,6 +14,7 @@ export const CHAVILLE_COPY: VilleCopy = {
     "Axion-IA se déplace à Chaville pour accompagner les entreprises locales dans l'intégration de l'IA. Avec des acteurs comme LVMH et BNP Paribas présents dans la région, notre expertise répond aux besoins spécifiques des entreprises du secteur du commerce de détail et de la programmation informatique.",
   directAnswerEn:
     "Axion-IA se déplace à Chaville pour accompagner les entreprises locales dans l'intégration de l'IA. Avec des acteurs comme LVMH et BNP Paribas présents dans la région, notre expertise répond aux besoins spécifiques des entreprises du secteur du commerce de détail et de la programmation informatique.",
+  seoHook: "commerce détail & programmation informatique",
   ecosystemFr:
     "Chaville est entourée de villes dynamiques comme Boulogne-Billancourt et Versailles. L'écosystème économique local inclut des entreprises renommées telles que LVMH et BNP Paribas, offrant un terreau fertile pour l'innovation.",
   ecosystemEn:

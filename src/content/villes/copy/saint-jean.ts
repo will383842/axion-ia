@@ -12,6 +12,7 @@ export const SAINT_JEAN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud toulousain. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jean (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud toulousain. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat & commerce détail",
   ecosystemFr:
     "Saint-Jean est une commune résidentielle du sud de Toulouse, entre Castanet-Tolosan et Ramonville. Tissu TPE artisans, PME de services, professions libérales, commerces de proximité. Cadre périurbain avec accès rapide au bassin d'emploi toulousain.",
   ecosystemEn:

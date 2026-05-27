@@ -14,6 +14,7 @@ export const LE_BOUSCAT_COPY: VilleCopy = {
     "Le Bouscat, situé en Nouvelle-Aquitaine, bénéficie de la proximité de Bordeaux et de Mérignac. Axion-IA y propose ses services d'IA, en s'appuyant sur des entités comme Aerospace Valley et les infrastructures de l'aéroport de Bordeaux-Mérignac. Nos interventions visent à automatiser les tâches administratives et à optimiser les processus des entreprises locales.",
   directAnswerEn:
     "Le Bouscat, situé en Nouvelle-Aquitaine, bénéficie de la proximité de Bordeaux et de Mérignac. Axion-IA y propose ses services d'IA, en s'appuyant sur des entités comme Aerospace Valley et les infrastructures de l'aéroport de Bordeaux-Mérignac. Nos interventions visent à automatiser les tâches administratives et à optimiser les processus des entreprises locales.",
+  seoHook: "commerce détail & programmation informatique",
   ecosystemFr:
     "Le Bouscat est entouré de Bordeaux et Mérignac, avec un accès facilité aux pôles économiques tels qu'Aerospace Valley. Ce contexte offre un cadre propice aux interventions IA d'Axion-IA.",
   ecosystemEn:

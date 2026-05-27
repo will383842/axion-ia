@@ -12,6 +12,7 @@ export const LE_GRAU_DU_ROI_COPY: VilleCopy = {
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient au Grau-du-Roi (30). Nous accompagnons les TPE, PME et ETI locales : acteurs tourisme balnéaire, hôteliers-restaurateurs, pêcheurs, commerçants saisonniers et professions libérales du littoral gardois. Audit Flash à partir de 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient au Grau-du-Roi (30). Nous accompagnons les TPE, PME et ETI locales : acteurs tourisme balnéaire, hôteliers-restaurateurs, pêcheurs, commerçants saisonniers et professions libérales du littoral gardois. Audit Flash à partir de 490 € HT.",
+  seoHook: "tourisme balnéaire & hôtellerie-restauration",
   ecosystemFr:
     "Le Grau-du-Roi (~8 600 hab) est une station balnéaire du littoral gardois avec Port-Camargue (plus grand port de plaisance d'Europe). Tourisme balnéaire, hôtellerie-restauration saisonnière, pêche professionnelle, commerces, nautisme et activités liées à la Camargue maritime.",
   ecosystemEn:

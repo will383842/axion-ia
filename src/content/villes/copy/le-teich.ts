@@ -12,6 +12,7 @@ export const LE_TEICH_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Teich (33). Nous accompagnons TPE et PME du sud Bassin d'Arcachon : hébergeurs écotouristiques, ostréiculteurs, artisans BTP, commerçants et professions libérales. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Teich (33). Nous accompagnons TPE et PME du sud Bassin d'Arcachon : hébergeurs écotouristiques, ostréiculteurs, artisans BTP, commerçants et professions libérales. Audit Flash dès 490 € HT.",
+  seoHook: "écotourisme hébergement & ostréiculture",
   ecosystemFr:
     "Le Teich est connu pour son parc ornithologique (réserve naturelle, écotourisme) au sud du Bassin d'Arcachon. Économie touristique (hébergements, activités nature), ostréiculture, tissu TPE artisanat BTP et commerces. Gare TER Le Teich sur la ligne Bordeaux-Arcachon.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const PEYMEINADE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Peymeinade (06). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, agriculteurs (oléiculture), PME services et entreprises de l'arrière-pays grassois.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Peymeinade (06). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, agriculteurs (oléiculture), PME services et entreprises de l'arrière-pays grassois.",
+  seoHook: "services personne & agriculture",
   ecosystemFr:
     "Peymeinade est une commune résidentielle de l'arrière-pays grassois, sur la route entre Grasse et Draguignan. Économie locale portée par l'artisanat BTP, les commerces de proximité, les services à la personne et l'agriculture (oliveraies, horticulture). Cadre provençal préservé attirant familles et retraités. Proximité de Grasse (parfumerie, 10 min) et Cannes (25 min).",
   ecosystemEn:

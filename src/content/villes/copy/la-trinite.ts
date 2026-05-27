@@ -12,6 +12,7 @@ export const LA_TRINITE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Trinité (06). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, PME de la zone d'activités des Music et entreprises de services de la vallée du Paillon.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Trinité (06). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, PME de la zone d'activités des Music et entreprises de services de la vallée du Paillon.",
+  seoHook: "commerce proximité & immobilier gestion",
   ecosystemFr:
     "La Trinité est une commune résidentielle et commerciale de la vallée du Paillon, aux portes est de Nice. La zone d'activités des Music regroupe des PME commerciales et de services. Tissu dense d'artisans BTP, commerces de proximité et professions libérales. Membre de la Métropole Nice Côte d'Azur, la commune bénéficie du dynamisme économique niçois tout en conservant un caractère résidentiel accessible.",
   ecosystemEn:

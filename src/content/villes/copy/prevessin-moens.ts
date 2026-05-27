@@ -12,6 +12,7 @@ export const PREVESSIN_MOENS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Prévessin-Moëns (01). Nous accompagnons tous types d'activités : PME technologiques (proximité CERN site Prévessin), économie frontalière Genève, TPE artisans BTP, commerçants et services aux entreprises pays de Gex.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Prévessin-Moëns (01). Nous accompagnons tous types d'activités : PME technologiques (proximité CERN site Prévessin), économie frontalière Genève, TPE artisans BTP, commerçants et services aux entreprises pays de Gex.",
+  seoHook: "technologiques & économie frontalière",
   ecosystemFr:
     "Prévessin-Moëns est positionnée dans le pays de Gex, à la frontière suisse. Proximité immédiate du CERN (site principal côté français à Prévessin). Économie frontalière dynamique : PME technologiques et tertiaires, commerces transfrontaliers, TPE artisanat BTP.",
   ecosystemEn:

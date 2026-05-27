@@ -12,6 +12,7 @@ export const COUZEIX_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Couzeix (87). Nous accompagnons tous types d'activités : TPE artisans BTP, PME tertiaires, commerçants, professions libérales, agriculteurs, indépendants et services aux entreprises de l'agglomération de Limoges nord-ouest.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Couzeix (87). Nous accompagnons tous types d'activités : TPE artisans BTP, PME tertiaires, commerçants, professions libérales, agriculteurs, indépendants et services aux entreprises de l'agglomération de Limoges nord-ouest.",
+  seoHook: "artisanat construction & tertiaires services",
   ecosystemFr:
     "Couzeix (10 195 hab) est une des communes les plus peuplées de Haute-Vienne, résidentielle et attractive au nord-ouest de Limoges. Proximité immédiate du centre-ville Limoges (10 min) et de la zone d'activités nord. Tissu PME tertiaires, TPE artisans BTP, commerces de proximité, professions libérales, agriculture périurbaine.",
   ecosystemEn:

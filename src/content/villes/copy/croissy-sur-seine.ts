@@ -12,6 +12,7 @@ export const CROISSY_SUR_SEINE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Croissy-sur-Seine (78). Nous accompagnons TPE et PME : cabinets conseil et gestion de patrimoine, professions libérales, TPE services haut de gamme, commerçants de centre-ville, restaurateurs. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Croissy-sur-Seine (78). Nous accompagnons TPE et PME : cabinets conseil et gestion de patrimoine, professions libérales, TPE services haut de gamme, commerçants de centre-ville, restaurateurs. Audit Flash dès 490 € HT.",
+  seoHook: "conseil gestion & services haut",
   ecosystemFr:
     "Croissy-sur-Seine est une commune résidentielle prisée des bords de Seine, entre Le Vésinet et Chatou, à 15 km à l'ouest de Paris. Tissu PME conseil et gestion de patrimoine, professions libérales, TPE services haut de gamme, commerces de centre-ville.",
   ecosystemEn:

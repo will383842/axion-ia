@@ -12,6 +12,7 @@ export const BURES_SUR_YVETTE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bures-sur-Yvette (91). Nous accompagnons tous types d'activités : TPE, professions libérales, commerçants de la vallée de Chevreuse, PME de services, indépendants et structures proches du campus Paris-Saclay. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bures-sur-Yvette (91). Nous accompagnons tous types d'activités : TPE, professions libérales, commerçants de la vallée de Chevreuse, PME de services, indépendants et structures proches du campus Paris-Saclay. Audit Flash dès 490 € HT.",
+  seoHook: "professions libérales & artisanat services",
   ecosystemFr:
     "Bures-sur-Yvette est une commune résidentielle de la vallée de Chevreuse, à la lisière du plateau de Saclay. Proximité immédiate du campus Paris-Saclay (universités, laboratoires, startups deeptech). Tissu local : TPE artisans, professions libérales, commerces de centre-ville, PME tertiaires et bureaux d'études liés à l'écosystème scientifique.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const PULNOY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pulnoy (54). Nous accompagnons TPE et PME : commerçants, artisans BTP, professions libérales, services aux particuliers et prestataires de services de la métropole du Grand Nancy. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Pulnoy (54). Nous accompagnons TPE et PME : commerçants, artisans BTP, professions libérales, services aux particuliers et prestataires de services de la métropole du Grand Nancy. Audit Flash dès 490 € HT.",
+  seoHook: "commerce proximité & professions libérales",
   ecosystemFr:
     "Pulnoy fait partie de la métropole du Grand Nancy, dans la première couronne est de l'agglomération nancéienne. Commune principalement résidentielle, elle accueille un tissu de TPE/PME de proximité : commerces, artisans BTP, professions libérales (santé, conseil) et services aux particuliers. Proximité immédiate de Nancy (10 min), Essey-lès-Nancy et Saint-Max.",
   ecosystemEn:

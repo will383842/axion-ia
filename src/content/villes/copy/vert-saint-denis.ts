@@ -12,6 +12,7 @@ export const VERT_SAINT_DENIS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vert-Saint-Denis (77). Nous accompagnons TPE et PME : artisans du bâtiment, commerces de proximité, professions libérales, prestataires de services et entreprises du bassin melunais sud. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vert-Saint-Denis (77). Nous accompagnons TPE et PME : artisans du bâtiment, commerces de proximité, professions libérales, prestataires de services et entreprises du bassin melunais sud. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat rénovation & professions libérales",
   ecosystemFr:
     "Vert-Saint-Denis est une commune résidentielle du sud de Melun en Seine-et-Marne. Son tissu économique associe TPE artisans du bâtiment, PME de services, commerces de proximité et professions libérales. Proximité directe avec Melun, Le Mée-sur-Seine, Savigny-le-Temple et Cesson.",
   ecosystemEn:

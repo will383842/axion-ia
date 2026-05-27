@@ -12,6 +12,7 @@ export const MONTREUIL_JUIGNE_COPY: VilleCopy = {
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Montreuil-Juigné (49). Nous accompagnons les TPE, PME et indépendants de la rive nord-ouest angevine dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
   directAnswerEn:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Montreuil-Juigné (49). Nous accompagnons les TPE, PME et indépendants de la rive nord-ouest angevine dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
+  seoHook: "commerce proximité & professions libérales",
   ecosystemFr:
     "Montreuil-Juigné est une commune résidentielle attractive en bords de Mayenne, à la porte nord-ouest d'Angers Loire Métropole. Tissu économique de proximité : commerces, professions libérales, PME services, artisanat BTP. Cadre de vie prisé entre vallée de la Mayenne et espaces verts.",
   ecosystemEn:

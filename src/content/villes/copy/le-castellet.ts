@@ -12,6 +12,7 @@ export const LE_CASTELLET_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Castellet (83). Nous accompagnons TPE viticulteurs AOC Bandol, restaurateurs, hôteliers, artisans et PME du tourisme, des sports mécaniques et des services du sud-Var. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Castellet (83). Nous accompagnons TPE viticulteurs AOC Bandol, restaurateurs, hôteliers, artisans et PME du tourisme, des sports mécaniques et des services du sud-Var. Audit Flash dès 490 € HT.",
+  seoHook: "viticulture bandol & sports mécaniques",
   ecosystemFr:
     "Le Castellet est un village perché provençal du sud-Var, célèbre pour son circuit Paul Ricard (sports mécaniques, événements internationaux F1, Grand Prix) et son vignoble AOC Bandol prestigieux. Tourisme premium, viticulture renommée, hôtellerie haut de gamme, restauration. Tissu de TPE/PME tourisme, viticulture et services aux événements.",
   ecosystemEn:

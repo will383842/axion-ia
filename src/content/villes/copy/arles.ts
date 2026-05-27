@@ -14,6 +14,7 @@ export const ARLES_COPY: VilleCopy = {
     "Axion-IA se déplace à Arles pour accompagner les entreprises dans leur transformation IA. Avec des acteurs tels que SNCF et EDF présents dans la région, nous offrons des services d'audit, d'intervention et d'implémentation adaptés aux besoins locaux. Nos tarifs publics incluent l'Audit Flash à partir de 490 € HT et l'Intervention Essentielle dès 590 € HT.",
   directAnswerEn:
     "Axion-IA se déplace à Arles pour accompagner les entreprises dans leur transformation IA. Avec des acteurs tels que SNCF et EDF présents dans la région, nous offrons des services d'audit, d'intervention et d'implémentation adaptés aux besoins locaux. Nos tarifs publics incluent l'Audit Flash à partir de 490 € HT et l'Intervention Essentielle dès 590 € HT.",
+  seoHook: "commerce détail & hébergement",
   ecosystemFr:
     "Le tissu économique d'Arles inclut des entreprises comme SNCF et EDF, enrichi par le Parc des Ateliers. Ce cadre favorise l'innovation et la collaboration.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const LA_TESTE_DE_BUCH_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Teste-de-Buch (33) sur le bassin d'Arcachon. Nous accompagnons les ostréiculteurs et coopératives maritimes, les acteurs du tourisme balnéaire (hôtels Pyla, restauration premium, locations saisonnières), les artisans, indépendants et PME tertiaires testérines sur leurs cas IA opérationnels.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Teste-de-Buch (33) sur le bassin d'Arcachon. Nous accompagnons les ostréiculteurs et coopératives maritimes, les acteurs du tourisme balnéaire (hôtels Pyla, restauration premium, locations saisonnières), les artisans, indépendants et PME tertiaires testérines sur leurs cas IA opérationnels.",
+  seoHook: "ostréiculture filière & tourisme balnéaire",
   ecosystemFr:
     "La Teste concentre l'activité économique du sud bassin d'Arcachon : 1er port ostréicole français (production huîtres Marennes-Oléron concurrent), tourisme balnéaire haut de gamme (Pyla, Dune du Pilat, capacité hôtelière premium), viticulture Pays de Buch (vins de sable). Tissu TPE artisanat (BTP, services), PME tertiaires liées au tourisme.",
   ecosystemEn:

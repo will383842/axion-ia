@@ -14,6 +14,7 @@ export const NOISY_LE_GRAND_COPY: VilleCopy = {
     "Axion-IA propose des interventions à Noisy-le-Grand, une ville dynamique avec des entreprises comme Société Générale et BNP Paribas. Nos services incluent des audits à partir de 490 € HT, des interventions dès 590 € HT, et des implémentations à partir de 990 € HT. Nous nous déplaçons sur site pour des solutions adaptées à vos besoins.",
   directAnswerEn:
     "Axion-IA propose des interventions à Noisy-le-Grand, une ville dynamique avec des entreprises comme Société Générale et BNP Paribas. Nos services incluent des audits à partir de 490 € HT, des interventions dès 590 € HT, et des implémentations à partir de 990 € HT. Nous nous déplaçons sur site pour des solutions adaptées à vos besoins.",
+  seoHook: "commerce détail & programmation informatique",
   ecosystemFr:
     "Noisy-le-Grand abrite des entreprises telles que Société Générale et BNP Paribas. La ZAC du Mont d'Est est un pôle économique important, renforçant l'attractivité de la ville pour les entreprises du secteur tertiaire.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const BEAUSOLEIL_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beausoleil (06). Nous accompagnons tous types d'activités : TPE commerces de proximité, professions libérales, services à la personne, PME hôtellerie-restauration et entreprises liées à l'économie transfrontalière Monaco-France.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beausoleil (06). Nous accompagnons tous types d'activités : TPE commerces de proximité, professions libérales, services à la personne, PME hôtellerie-restauration et entreprises liées à l'économie transfrontalière Monaco-France.",
+  seoHook: "commerce proximité & services personne",
   ecosystemFr:
     "Beausoleil est la ville française la plus proche de Monaco, séparée de la Principauté par le boulevard de la Turbie (frontière ouverte). Économie fortement liée à Monaco : commerces de proximité pour résidents et travailleurs transfrontaliers, services à la personne, professions libérales, hôtellerie abordable. Forte densité urbaine sur un relief pentu (Mont Agel, 1 148 m).",
   ecosystemEn:

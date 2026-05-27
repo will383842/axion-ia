@@ -12,6 +12,7 @@ export const GRANS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Grans (13). Nous accompagnons TPE artisans, PME services, agriculteurs (foin de Crau, oliveraies) et commerces de proximité du pays salonais et de la Crau. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Grans (13). Nous accompagnons TPE artisans, PME services, agriculteurs (foin de Crau, oliveraies) et commerces de proximité du pays salonais et de la Crau. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat & agriculture",
   ecosystemFr:
     "Grans est positionnée dans la plaine de la Crau, au sud-ouest de Salon-de-Provence, en bordure de la zone agricole AOP foin de Crau. Tissu économique de TPE artisans (BTP, services à la personne), PME tertiaires, agriculture (foin de Crau AOP, oliveraies, élevage ovin transhumant), commerces de proximité, professions libérales. Bassin d'emploi rattaché à Salon-de-Provence, Istres et la base aérienne 701.",
   ecosystemEn:

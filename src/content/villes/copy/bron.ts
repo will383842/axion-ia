@@ -14,6 +14,7 @@ export const BRON_COPY: VilleCopy = {
     "Axion-IA se déplace à Bron pour offrir des services d'IA opérationnelle, adaptés aux besoins des entreprises locales. Bron, avec ses 4 000 établissements actifs, bénéficie de la proximité de grands groupes comme Sanofi et d'institutions académiques telles que l'Université Lumière Lyon 2, facilitant ainsi l'innovation et la collaboration.",
   directAnswerEn:
     "Axion-IA se déplace à Bron pour offrir des services d'IA opérationnelle, adaptés aux besoins des entreprises locales. Bron, avec ses 4 000 établissements actifs, bénéficie de la proximité de grands groupes comme Sanofi et d'institutions académiques telles que l'Université Lumière Lyon 2, facilitant ainsi l'innovation et la collaboration.",
+  seoHook: "programmation informatique & santé humaine",
   ecosystemFr:
     "Bron est un centre économique dynamique avec des entreprises comme Sanofi et bioMérieux. Le Parc d'activités de Chassieu renforce l'attractivité de la ville pour les secteurs de la santé et de la programmation informatique.",
   ecosystemEn:

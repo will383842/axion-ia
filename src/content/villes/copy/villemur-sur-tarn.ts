@@ -12,6 +12,7 @@ export const VILLEMUR_SUR_TARN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villemur-sur-Tarn (31). Nous accompagnons TPE artisans, PME industrielles, commerçants et professions libérales du nord Haute-Garonne. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villemur-sur-Tarn (31). Nous accompagnons TPE artisans, PME industrielles, commerçants et professions libérales du nord Haute-Garonne. Audit Flash dès 490 € HT.",
+  seoHook: "industrie fabrication & artisanat",
   ecosystemFr:
     "Villemur-sur-Tarn est un bourg historique des bords du Tarn au nord de Toulouse. PME industrielles, artisans BTP, commerces de centre-ville, professions libérales, quelques exploitations agricoles. Ville-passerelle entre Toulouse nord et le Tarn-et-Garonne.",
   ecosystemEn:

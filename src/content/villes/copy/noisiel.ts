@@ -12,6 +12,7 @@ export const NOISIEL_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Noisiel (77). Nous accompagnons TPE et PME : entreprises tertiaires et numériques du pôle Marne-la-Vallée, commerces, prestataires de services, professions libérales et indépendants du bassin Noisiel-Torcy-Champs-sur-Marne. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Noisiel (77). Nous accompagnons TPE et PME : entreprises tertiaires et numériques du pôle Marne-la-Vallée, commerces, prestataires de services, professions libérales et indépendants du bassin Noisiel-Torcy-Champs-sur-Marne. Audit Flash dès 490 € HT.",
+  seoHook: "services aux & numérique développement",
   ecosystemFr:
     "Noisiel est un pôle tertiaire de Marne-la-Vallée, à proximité de la Cité Descartes (recherche, innovation, université) et du centre commercial Bay 1. Tissu TPE/PME services aux entreprises, conseil, numérique, commerce, restauration. Patrimoine industriel historique (ancienne chocolaterie Menier, classée monument historique).",
   ecosystemEn:

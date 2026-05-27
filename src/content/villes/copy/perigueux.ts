@@ -14,6 +14,7 @@ export const PERIGUEUX_COPY: VilleCopy = {
     "À Périgueux, Axion-IA propose des interventions sur site pour les entreprises locales. Nous nous déplaçons dans des communes comme Marsac-sur-l'Isle et Trélissac pour offrir des services d'IA adaptés aux besoins spécifiques des secteurs tels que le commerce de détail et la construction. Nos tarifs publics incluent l'audit dès 490 € HT et l'intervention à partir de 590 € HT.",
   directAnswerEn:
     "À Périgueux, Axion-IA propose des interventions sur site pour les entreprises locales. Nous nous déplaçons dans des communes comme Marsac-sur-l'Isle et Trélissac pour offrir des services d'IA adaptés aux besoins spécifiques des secteurs tels que le commerce de détail et la construction. Nos tarifs publics incluent l'audit dès 490 € HT et l'intervention à partir de 590 € HT.",
+  seoHook: "commerce détail & restauration",
   ecosystemFr:
     "Périgueux et ses environs, comme Notre-Dame-de-Sanilhac, bénéficient d'un tissu économique actif. Les secteurs dominants incluent le commerce de détail et la restauration, soutenus par des établissements comme ceux de Boulazac Isle Manoire.",
   ecosystemEn:

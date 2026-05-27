@@ -12,6 +12,7 @@ export const SAINT_SULPICE_LA_POINTE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Sulpice-la-Pointe (81). Nous accompagnons TPE artisans, PME aéronautique et industrielles, commerçants et professions libérales entre Toulouse et Tarn. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Sulpice-la-Pointe (81). Nous accompagnons TPE artisans, PME aéronautique et industrielles, commerçants et professions libérales entre Toulouse et Tarn. Audit Flash dès 490 € HT.",
+  seoHook: "sous-traitance aéronautique & commerce détail",
   ecosystemFr:
     "Saint-Sulpice-la-Pointe (9 719 hab) est une commune en forte croissance à la charnière Toulouse-Tarn, sur l'axe A68. Zones d'activités accueillant sous-traitants aéronautique, PME industrielles et tertiaires. Proximité immédiate Toulouse (30 min), Albi (40 min). Tissu TPE artisans, commerces de bourg, professions libérales, services aux entreprises.",
   ecosystemEn:

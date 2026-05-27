@@ -12,6 +12,7 @@ export const TARARE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tarare (69). Nous accompagnons tous types d'activités : PME industrielles (héritage textile mousseline de Tarare), agriculteurs montagne, TPE artisans BTP, commerçants, indépendants et services aux entreprises du NO lyonnais.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Tarare (69). Nous accompagnons tous types d'activités : PME industrielles (héritage textile mousseline de Tarare), agriculteurs montagne, TPE artisans BTP, commerçants, indépendants et services aux entreprises du NO lyonnais.",
+  seoHook: "industrielles & agriculture montagne",
   ecosystemFr:
     "Tarare est positionnée dans le NO lyonnais (monts du Beaujolais ouest, col des Sauvages). Héritage textile réputé : la mousseline de Tarare (tradition textile fine, savoir-faire local historique). Tissu PME industrielles diversifiées contemporaines, agriculture montagne, TPE artisanat BTP, commerces.",
   ecosystemEn:

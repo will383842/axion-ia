@@ -14,6 +14,7 @@ export const GRASSE_COPY: VilleCopy = {
     "Axion-IA se déplace à Grasse pour accompagner les entreprises dans l'intégration de l'IA. Avec des acteurs économiques tels que Fragonard et la ZAC des Bois de Grasse, nous aidons à automatiser les tâches administratives et à améliorer l'efficacité opérationnelle. Nos services incluent des audits dès 490 € HT et des interventions à partir de 590 € HT.",
   directAnswerEn:
     "Axion-IA se déplace à Grasse pour accompagner les entreprises dans l'intégration de l'IA. Avec des acteurs économiques tels que Fragonard et la ZAC des Bois de Grasse, nous aidons à automatiser les tâches administratives et à améliorer l'efficacité opérationnelle. Nos services incluent des audits dès 490 € HT et des interventions à partir de 590 € HT.",
+  seoHook: "industrie chimique & commerce gros",
   ecosystemFr:
     "Grasse abrite des entreprises renommées telles que Robertet et Mane, spécialisées dans l'industrie chimique. La ZAC des Bois de Grasse est un pôle d'activité important, contribuant au dynamisme économique local.",
   ecosystemEn:

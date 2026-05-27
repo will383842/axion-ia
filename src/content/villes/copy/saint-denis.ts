@@ -464,6 +464,7 @@ export const SAINT_DENIS_COPY: VilleCopy = {
   pitchEn:
     "Saint-Denis (93) abrite le Stade de France, le hub Grand Paris Express Pleyel (lignes 15/16/17) et la Plaine Saint-Denis — 200 ha de reconversion industrielle en cluster audiovisuel, logistique et tech. Axion-IA intervient sur site dans cette ville de 149 000 habitants, des TPE de l'ESS aux grandes directions logistiques et créatives de l'intercommunalité Plaine Commune.",
 
+  seoHook: "logistique, transport & audiovisuel, médias",
   servicesContext: {
     audit: {
       fr: "Audit IA opérationnel à Saint-Denis : nous cartographions ce qui peut être automatisé dans votre organisation et chiffrons le ROI. Quatre niveaux du Flash au Stratégique ETI couvrent toutes les tailles, des structures ESS et studios audiovisuels de la Plaine aux grandes directions logistiques et BTP présentes en Seine-Saint-Denis.",

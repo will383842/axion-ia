@@ -14,6 +14,7 @@ export const OLIVET_COPY: VilleCopy = {
     "Axion-IA se déplace à Olivet pour automatiser les tâches administratives et optimiser les processus des entreprises locales. Avec notre audit Flash à partir de 490 € HT et nos interventions dès 590 € HT, nous offrons des solutions adaptées aux secteurs dominants tels que le commerce de détail et la santé humaine. Consultez nos tarifs publics pour plus de détails.",
   directAnswerEn:
     "Axion-IA se déplace à Olivet pour automatiser les tâches administratives et optimiser les processus des entreprises locales. Avec notre audit Flash à partir de 490 € HT et nos interventions dès 590 € HT, nous offrons des solutions adaptées aux secteurs dominants tels que le commerce de détail et la santé humaine. Consultez nos tarifs publics pour plus de détails.",
+  seoHook: "commerce détail & santé humaine",
   ecosystemFr:
     "À Olivet, le Parc d'activités des Aulnaies abrite des entreprises telles que les Laboratoires Pierre Fabre. La Poste joue également un rôle clé dans le paysage économique local.",
   ecosystemEn:

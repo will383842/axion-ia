@@ -14,6 +14,7 @@ export const NOGENT_SUR_OISE_COPY: VilleCopy = {
     "Nogent-sur-Oise, avec ses 21 907 habitants, se situe dans un bassin économique incluant Creil et Chantilly. Axion-IA y propose des audits et interventions IA. Paris, abritant Cap Digital et Inria, est une référence en innovation. À Nogent-sur-Oise, nous aidons les entreprises du commerce de détail et des transports à automatiser leurs processus.",
   directAnswerEn:
     "Nogent-sur-Oise, avec ses 21 907 habitants, se situe dans un bassin économique incluant Creil et Chantilly. Axion-IA y propose des audits et interventions IA. Paris, abritant Cap Digital et Inria, est une référence en innovation. À Nogent-sur-Oise, nous aidons les entreprises du commerce de détail et des transports à automatiser leurs processus.",
+  seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Nogent-sur-Oise est proche de Paris, ville où se trouvent Cap Digital et Inria, deux pôles d'innovation majeurs. Les entreprises locales bénéficient de notre expertise en IA pour moderniser leurs opérations.",
   ecosystemEn:

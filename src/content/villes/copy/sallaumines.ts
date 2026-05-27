@@ -12,6 +12,7 @@ export const SALLAUMINES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sallaumines (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier lensois. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sallaumines (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier lensois. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+  seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Sallaumines est une commune résidentielle du bassin minier, limitrophe de Lens. Économie reconvertie vers le commerce de proximité, l'artisanat BTP, les services aux particuliers et les professions libérales. Proximité du Louvre-Lens et du stade Bollaert-Delelis.",
   ecosystemEn:

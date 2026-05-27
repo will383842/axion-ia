@@ -12,6 +12,7 @@ export const GUENANGE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Guénange (57). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants, professions libérales et indépendants de la vallée de la Fensch et du nord mosellan. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
   directAnswerEn:
     "Axion-IA est un cabinet d''architectes IA seniors qui intervient à Guénange (57). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants, professions libérales et indépendants de la vallée de la Fensch et du nord mosellan. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
+  seoHook: "industrie sous-traitance & artisanat",
   ecosystemFr:
     "Guénange est une commune de la vallée de la Fensch, ancien bassin sidérurgique reconverti, au sud de Thionville. Tissu TPE artisans BTP, PME industrielles de sous-traitance, services aux entreprises, commerces de bourg, professions libérales (santé, juridique) et indépendants. Reconversion économique post-sidérurgie avec diversification vers les services et la logistique transfrontalière.",
   ecosystemEn:

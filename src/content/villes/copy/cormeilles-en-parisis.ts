@@ -14,6 +14,7 @@ export const CORMEILLES_EN_PARISIS_COPY: VilleCopy = {
     "À Cormeilles-en-Parisis, Axion-IA propose des interventions IA adaptées aux secteurs dominants tels que le commerce de détail et les transports terrestres. Notre approche inclut des audits et des implémentations sur site, tout en tenant compte des spécificités locales. Avec des entités comme LVMH et BNP Paribas dans l'écosystème parisien, nous assurons une intégration fluide et efficace de l'IA.",
   directAnswerEn:
     "À Cormeilles-en-Parisis, Axion-IA propose des interventions IA adaptées aux secteurs dominants tels que le commerce de détail et les transports terrestres. Notre approche inclut des audits et des implémentations sur site, tout en tenant compte des spécificités locales. Avec des entités comme LVMH et BNP Paribas dans l'écosystème parisien, nous assurons une intégration fluide et efficace de l'IA.",
+  seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Cormeilles-en-Parisis bénéficie de la proximité avec Paris, où des entités comme Inria et Station F enrichissent l'écosystème technologique. Les entreprises locales peuvent ainsi s'inspirer de ces pôles d'innovation pour intégrer l'IA.",
   ecosystemEn:

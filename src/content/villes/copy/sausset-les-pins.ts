@@ -12,6 +12,7 @@ export const SAUSSET_LES_PINS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sausset-les-Pins (13). Nous accompagnons TPE restaurateurs, commerçants, artisans, PME du tourisme balnéaire, pêcheurs et entreprises de la Côte Bleue. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sausset-les-Pins (13). Nous accompagnons TPE restaurateurs, commerçants, artisans, PME du tourisme balnéaire, pêcheurs et entreprises de la Côte Bleue. Audit Flash dès 490 € HT.",
+  seoHook: "tourisme balnéaire & restauration gastronomie",
   ecosystemFr:
     "Sausset-les-Pins est une station balnéaire familiale de la Côte Bleue, entre Carry-le-Rouet et Martigues. Port de pêche traditionnel, parc marin de la Côte Bleue (réserve marine). Économie tournée vers le tourisme saisonnier, la restauration, la pêche artisanale et un tissu résidentiel de TPE/PME services.",
   ecosystemEn:

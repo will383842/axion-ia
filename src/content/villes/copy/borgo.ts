@@ -12,6 +12,7 @@ export const BORGO_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Borgo (2B). Nous accompagnons tous types d'activités : TPE/PME logistique et transport (zone aéroport Bastia-Poretta), commerces zone commerciale, artisans BTP, indépendants, professions libérales et services aux entreprises de l'agglomération bastiaise sud.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Borgo (2B). Nous accompagnons tous types d'activités : TPE/PME logistique et transport (zone aéroport Bastia-Poretta), commerces zone commerciale, artisans BTP, indépendants, professions libérales et services aux entreprises de l'agglomération bastiaise sud.",
+  seoHook: "logistique transport & commerce",
   ecosystemFr:
     "Borgo est une commune dynamique de la plaine orientale corse, dans l'agglomération sud de Bastia. Elle héberge l'aéroport Bastia-Poretta (principal aéroport de Haute-Corse, trafic touristique et fret) et une zone commerciale/logistique majeure (enseignes, entrepôts, transport). Forte croissance démographique et économique. Tissu TPE/PME logistique, transport aérien, commerce, BTP, services aux entreprises.",
   ecosystemEn:

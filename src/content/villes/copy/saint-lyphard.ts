@@ -12,6 +12,7 @@ export const SAINT_LYPHARD_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Lyphard (44). Nous accompagnons tous types d'activités : TPE touristiques et gîtes de Brière, artisans et commerçants, exploitations agricoles et maraîchères, PME de services, professions libérales et entreprises du bassin Saint-Nazaire–La Baule. Audit Flash accessible dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Lyphard (44). Nous accompagnons tous types d'activités : TPE touristiques et gîtes de Brière, artisans et commerçants, exploitations agricoles et maraîchères, PME de services, professions libérales et entreprises du bassin Saint-Nazaire–La Baule. Audit Flash accessible dès 490 € HT.",
+  seoHook: "tourisme vert & artisanat chaume",
   ecosystemFr:
     "Saint-Lyphard est une commune de plus de 5 300 habitants au cœur du parc naturel régional de Brière, deuxième plus grande zone humide de France. L'économie locale repose sur le tourisme vert (clocher panoramique, balades en chaland dans les marais), l'artisanat du chaume, l'agriculture et l'élevage, les commerces saisonniers et les services liés au bassin Saint-Nazaire–La Baule.",
   ecosystemEn:

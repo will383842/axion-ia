@@ -14,6 +14,7 @@ export const ETAMPES_COPY: VilleCopy = {
     "Axion-IA se déplace à Étampes pour offrir des services d'IA opérationnelle. Avec des inspirations de Cap Digital et Inria, nous proposons des audits, interventions et implémentations adaptés aux entreprises du secteur Commerce de détail et Transports terrestres. Nos solutions visent à optimiser les processus métier tout en respectant les normes en vigueur.",
   directAnswerEn:
     "Axion-IA se déplace à Étampes pour offrir des services d'IA opérationnelle. Avec des inspirations de Cap Digital et Inria, nous proposons des audits, interventions et implémentations adaptés aux entreprises du secteur Commerce de détail et Transports terrestres. Nos solutions visent à optimiser les processus métier tout en respectant les normes en vigueur.",
+  seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Étampes, avec sa zone d'activités du Bois Bourdon, est un centre économique où le Commerce de détail et la Construction prédominent. Des entreprises locales bénéficient de l'expertise d'Axion-IA pour intégrer des solutions d'IA inspirées par des pôles comme Station F.",
   ecosystemEn:

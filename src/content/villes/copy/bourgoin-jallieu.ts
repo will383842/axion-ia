@@ -14,6 +14,7 @@ export const BOURGOIN_JALLIEU_COPY: VilleCopy = {
     "À Bourgoin-Jallieu, Axion-IA accompagne les entreprises dans l'optimisation de leurs processus grâce à l'IA. Avec des acteurs économiques comme STMicroelectronics et Caterpillar présents dans la région, nous proposons des audits à partir de 490 € HT et des interventions dès 590 € HT, permettant une intégration rapide et efficace.",
   directAnswerEn:
     "À Bourgoin-Jallieu, Axion-IA accompagne les entreprises dans l'optimisation de leurs processus grâce à l'IA. Avec des acteurs économiques comme STMicroelectronics et Caterpillar présents dans la région, nous proposons des audits à partir de 490 € HT et des interventions dès 590 € HT, permettant une intégration rapide et efficace.",
+  seoHook: "commerce gros & transports terrestres",
   ecosystemFr:
     "Le Parc Technologique Porte de l'Isère à Bourgoin-Jallieu accueille des entreprises telles que STMicroelectronics et Caterpillar, renforçant le tissu économique local. Axion-IA intervient pour soutenir cette dynamique industrielle.",
   ecosystemEn:

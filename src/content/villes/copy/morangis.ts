@@ -12,6 +12,7 @@ export const MORANGIS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Morangis (91). Nous accompagnons TPE et PME : entreprises logistique et transport zone Orly, PME industrielles, artisans BTP, commerçants de proximité, prestataires services aux entreprises. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Morangis (91). Nous accompagnons TPE et PME : entreprises logistique et transport zone Orly, PME industrielles, artisans BTP, commerçants de proximité, prestataires services aux entreprises. Audit Flash dès 490 € HT.",
+  seoHook: "logistique transport & industrielles",
   ecosystemFr:
     "Morangis est une commune de l'Essonne proche d'Orly, avec des zones d'activités orientées logistique, transport et industrie. Tissu logistique aéroportuaire, PME industrielles, TPE artisanat BTP, commerces de proximité, services aux entreprises.",
   ecosystemEn:

@@ -14,6 +14,7 @@ export const ALLAUCH_COPY: VilleCopy = {
     "À Allauch, Axion-IA propose des solutions IA sur site pour les entreprises locales, en tenant compte de l'environnement économique marqué par la présence de LVMH et BNP Paribas. Nos services incluent des audits, interventions et implémentations pour automatiser les tâches administratives et optimiser les processus métier, avec des tarifs publics transparents et des délais d'intervention rapides.",
   directAnswerEn:
     "À Allauch, Axion-IA propose des solutions IA sur site pour les entreprises locales, en tenant compte de l'environnement économique marqué par la présence de LVMH et BNP Paribas. Nos services incluent des audits, interventions et implémentations pour automatiser les tâches administratives et optimiser les processus métier, avec des tarifs publics transparents et des délais d'intervention rapides.",
+  seoHook: "commerce détail & restauration",
   ecosystemFr:
     "L'écosystème économique d'Allauch est influencé par des entreprises telles que LVMH et BNP Paribas, offrant un terreau fertile pour l'innovation et l'optimisation des processus via l'IA.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const BOUAYE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bouaye (44). Nous accompagnons les TPE, indépendants, PME tertiaires, commerçants et professions libérales de cette commune résidentielle du sud-ouest nantais sur leurs cas IA opérationnels. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bouaye (44). Nous accompagnons les TPE, indépendants, PME tertiaires, commerçants et professions libérales de cette commune résidentielle du sud-ouest nantais sur leurs cas IA opérationnels. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat & services aux",
   ecosystemFr:
     "Bouaye est une commune résidentielle du sud-ouest de Nantes Métropole, en bordure du lac de Grand-Lieu (réserve naturelle). Tissu TPE artisans, commerces de proximité, PME tertiaires, professions libérales. Proximité aéroport Nantes-Atlantique (10 min) et pôle Bouguenais.",
   ecosystemEn:

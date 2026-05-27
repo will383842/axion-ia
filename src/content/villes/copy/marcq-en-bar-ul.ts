@@ -14,6 +14,7 @@ export const MARCQ_EN_BAR_UL_COPY: VilleCopy = {
     "À Marcq-en-Barœul, Axion-IA propose des interventions sur site pour les entreprises locales. Avec des acteurs comme Bonduelle et Crédit Agricole Nord de France, la ville offre un cadre stimulant pour l'innovation. Nos services incluent des audits à partir de 490 € HT et des implémentations dès 990 € HT, disponibles pour les entreprises de toutes tailles.",
   directAnswerEn:
     "À Marcq-en-Barœul, Axion-IA propose des interventions sur site pour les entreprises locales. Avec des acteurs comme Bonduelle et Crédit Agricole Nord de France, la ville offre un cadre stimulant pour l'innovation. Nos services incluent des audits à partir de 490 € HT et des implémentations dès 990 € HT, disponibles pour les entreprises de toutes tailles.",
+  seoHook: "programmation informatique & commerce détail",
   ecosystemFr:
     "Marcq-en-Barœul abrite des entreprises telles que Bonduelle et Crédit Agricole Nord de France, renforçant son tissu économique. Les pôles i-Trans et NSL contribuent à la diversité des secteurs.",
   ecosystemEn:

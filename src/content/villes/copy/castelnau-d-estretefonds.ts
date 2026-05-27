@@ -12,6 +12,7 @@ export const CASTELNAU_D_ESTRETEFONDS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Castelnau-d'Estrétefonds (31). Nous accompagnons TPE artisans, PME logistique et transport, professions libérales et commerçants du pôle Eurocentre nord Toulouse. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Castelnau-d'Estrétefonds (31). Nous accompagnons TPE artisans, PME logistique et transport, professions libérales et commerçants du pôle Eurocentre nord Toulouse. Audit Flash dès 490 € HT.",
+  seoHook: "logistique entreposage & transport routier",
   ecosystemFr:
     "Castelnau-d'Estrétefonds accueille la plateforme logistique Eurocentre, l'un des plus grands pôles logistiques du sud-ouest. PME de transport et logistique, entrepôts, TPE artisans, commerces de bourg, professions libérales. Nœud autoroutier A62/A68.",
   ecosystemEn:

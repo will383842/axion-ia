@@ -14,6 +14,7 @@ export const HALLUIN_COPY: VilleCopy = {
     "À Halluin, Axion-IA propose des solutions adaptées aux secteurs dominants tels que le commerce de détail et la fabrication de produits métalliques. Nous intervenons directement sur site pour réaliser des audits et implémentations. Nos services s'adressent aussi bien aux TPE qu'aux grandes entreprises, avec des tarifs publics transparents, comme l'Audit Flash à partir de 490 € HT.",
   directAnswerEn:
     "À Halluin, Axion-IA propose des solutions adaptées aux secteurs dominants tels que le commerce de détail et la fabrication de produits métalliques. Nous intervenons directement sur site pour réaliser des audits et implémentations. Nos services s'adressent aussi bien aux TPE qu'aux grandes entreprises, avec des tarifs publics transparents, comme l'Audit Flash à partir de 490 € HT.",
+  seoHook: "commerce détail & transport terrestre",
   ecosystemFr:
     "Halluin bénéficie de la proximité de la Zone Industrielle de la Rouge Porte et de la Gare de Lille-Europe. Ce contexte industriel dynamique est propice à l'intégration de solutions IA pour les entreprises locales.",
   ecosystemEn:

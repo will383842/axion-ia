@@ -12,6 +12,7 @@ export const SEYSSES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Seysses (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud-ouest Toulouse. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Seysses (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud-ouest Toulouse. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat & commerce détail",
   ecosystemFr:
     "Seysses est une commune résidentielle du sud-ouest de Toulouse, entre Muret et Cugnaux. Tissu TPE artisans BTP, PME de services, commerces de bourg, professions libérales, quelques exploitations agricoles. Croissance démographique soutenue.",
   ecosystemEn:

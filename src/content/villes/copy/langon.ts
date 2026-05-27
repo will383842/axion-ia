@@ -12,6 +12,7 @@ export const LANGON_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Langon (33). Nous accompagnons TPE et PME du sud-Gironde : vignerons de Sauternes et Graves, commerçants, PME de services, artisans BTP et professions libérales. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Langon (33). Nous accompagnons TPE et PME du sud-Gironde : vignerons de Sauternes et Graves, commerçants, PME de services, artisans BTP et professions libérales. Audit Flash dès 490 € HT.",
+  seoHook: "viticulture sauternes & commerce centre-ville",
   ecosystemFr:
     "Langon est la sous-préfecture et le pôle commercial du sud-Gironde. Vignoble AOC Sauternes (vins liquoreux prestigieux) et Graves, commerce de centre-ville actif, tissu PME de services, artisanat BTP et professions libérales. Gare SNCF sur la ligne Bordeaux-Toulouse, accès A62.",
   ecosystemEn:

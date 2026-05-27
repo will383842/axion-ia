@@ -12,6 +12,7 @@ export const VALDALLIERE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Valdallière (14). Nous accompagnons tous types d'activités : TPE artisans BTP et commerçants du bocage, exploitations agricoles, PME agroalimentaires, professions libérales, indépendants et services aux entreprises rurales du sud-ouest Calvados.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Valdallière (14). Nous accompagnons tous types d'activités : TPE artisans BTP et commerçants du bocage, exploitations agricoles, PME agroalimentaires, professions libérales, indépendants et services aux entreprises rurales du sud-ouest Calvados.",
+  seoHook: "agriculture élevage & agroalimentaire",
   ecosystemFr:
     "Valdallière est une commune nouvelle du bocage normand sud-ouest (Calvados), regroupant plusieurs communes rurales depuis 2016. Territoire agricole (élevage bovin, production laitière) et artisanal. Tissu TPE artisans BTP, exploitations agricoles, PME agroalimentaires, commerces de proximité.",
   ecosystemEn:

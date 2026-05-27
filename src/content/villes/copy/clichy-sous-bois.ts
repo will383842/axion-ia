@@ -14,6 +14,7 @@ export const CLICHY_SOUS_BOIS_COPY: VilleCopy = {
     "Axion-IA se déplace à Clichy-sous-Bois pour offrir ses services en IA, inspiré par l'écosystème d'innovation parisien comprenant Cap Digital et Station F. Nos interventions visent à automatiser les processus administratifs et à optimiser les opérations. Nous proposons des audits à partir de 490 € HT et des interventions dès 590 € HT, avec des tarifs publics consultables sur notre site.",
   directAnswerEn:
     "Axion-IA se déplace à Clichy-sous-Bois pour offrir ses services en IA, inspiré par l'écosystème d'innovation parisien comprenant Cap Digital et Station F. Nos interventions visent à automatiser les processus administratifs et à optimiser les opérations. Nous proposons des audits à partir de 490 € HT et des interventions dès 590 € HT, avec des tarifs publics consultables sur notre site.",
+  seoHook: "commerce détail & travaux construction",
   ecosystemFr:
     "Le tissu économique de Clichy-sous-Bois est influencé par la proximité de pôles comme Station F et Inria à Paris. Les entreprises locales bénéficient de cet environnement stimulant pour l'innovation et la technologie.",
   ecosystemEn:

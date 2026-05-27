@@ -12,6 +12,7 @@ export const SAINT_BONNET_DE_MURE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Bonnet-de-Mure (69). Nous accompagnons tous types d'activités : PME logistiques et tertiaires est lyonnais, TPE artisans BTP, commerçants, indépendants et services aux entreprises de l'aire Lyon-Saint-Exupéry.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Bonnet-de-Mure (69). Nous accompagnons tous types d'activités : PME logistiques et tertiaires est lyonnais, TPE artisans BTP, commerçants, indépendants et services aux entreprises de l'aire Lyon-Saint-Exupéry.",
+  seoHook: "logistiques aire & tertiaires zones",
   ecosystemFr:
     "Saint-Bonnet-de-Mure est positionnée en banlieue est de Lyon, entre la Métropole et l'aéroport Lyon-Saint-Exupéry. Tissu PME logistiques et tertiaires (zones d'activités), TPE artisanat BTP, commerces, agriculture résiduelle.",
   ecosystemEn:

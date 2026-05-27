@@ -12,6 +12,7 @@ export const JOUY_EN_JOSAS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jouy-en-Josas (78). Nous accompagnons TPE et PME : cabinets conseil vallée de la Bièvre, startups et PME technologiques proches HEC, professions libérales, commerçants et artisans de cette commune résidentielle entre Versailles et Vélizy.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jouy-en-Josas (78). Nous accompagnons TPE et PME : cabinets conseil vallée de la Bièvre, startups et PME technologiques proches HEC, professions libérales, commerçants et artisans de cette commune résidentielle entre Versailles et Vélizy.",
+  seoHook: "enseignement supérieur & conseil services",
   ecosystemFr:
     "Jouy-en-Josas est une commune résidentielle verdoyante de la vallée de la Bièvre, entre Versailles et Vélizy-Villacoublay. Présence marquante d'HEC Paris (école de commerce, incubateur, startups). Tissu économique : TPE conseil et services aux entreprises, professions libérales, PME technologiques, artisans et commerces de proximité. Patrimoine industriel historique (toile de Jouy).",
   ecosystemEn:

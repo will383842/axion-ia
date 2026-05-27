@@ -12,6 +12,7 @@ export const ISBERGUES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Isbergues (62). Nous accompagnons PME industrielles reconverties, TPE artisanales, commerçants et professions libérales du bassin artésien. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Isbergues (62). Nous accompagnons PME industrielles reconverties, TPE artisanales, commerçants et professions libérales du bassin artésien. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+  seoHook: "industrielles & commerce détail",
   ecosystemFr:
     "Isbergues est une commune à tradition métallurgique reconvertie entre Aire-sur-la-Lys et Lillers. Présence de PME industrielles (tréfilerie, mécanique), TPE artisanales BTP, commerces de proximité et professions libérales. Reconversion progressive vers les services et la diversification industrielle.",
   ecosystemEn:

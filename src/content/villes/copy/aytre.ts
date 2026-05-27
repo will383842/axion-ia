@@ -12,6 +12,7 @@ export const AYTRE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aytré (17). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et sous-traitants ferroviaires, commerçants, professions libérales et indépendants de cette commune industrielle de l'agglomération de La Rochelle.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aytré (17). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et sous-traitants ferroviaires, commerçants, professions libérales et indépendants de cette commune industrielle de l'agglomération de La Rochelle.",
+  seoHook: "industrie ferroviaire & industrielles",
   ecosystemFr:
     "Aytré est une commune industrielle de l'agglomération de La Rochelle, connue pour son site Alstom (construction de TGV et trains régionaux). PME industrielles et sous-traitants ferroviaires, TPE artisans BTP, commerces de proximité, professions libérales. Accès plage (Plage d'Aytré-Plage du Platin) et littoral.",
   ecosystemEn:

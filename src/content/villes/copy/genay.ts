@@ -12,6 +12,7 @@ export const GENAY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Genay (69). Nous accompagnons tous types d'activités : PME tertiaires et industrielles nord lyonnais, TPE artisans BTP, commerçants, professions libérales et services aux entreprises.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Genay (69). Nous accompagnons tous types d'activités : PME tertiaires et industrielles nord lyonnais, TPE artisans BTP, commerçants, professions libérales et services aux entreprises.",
+  seoHook: "tertiaires nord & industrielles",
   ecosystemFr:
     "Genay est positionnée en banlieue nord de Lyon, val de Saône. Tissu péri-urbain : PME tertiaires et industrielles, TPE artisanat BTP, commerces, professions libérales.",
   ecosystemEn:

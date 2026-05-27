@@ -12,6 +12,7 @@ export const BINIC_ETABLES_SUR_MER_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Binic-Étables-sur-Mer (22). Nous accompagnons tous types d'activités : TPE du nautisme et de la plaisance, PME hôtelières et restaurateurs de la côte, commerces saisonniers, artisans BTP, professions libérales et prestataires touristiques du littoral briochin.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Binic-Étables-sur-Mer (22). Nous accompagnons tous types d'activités : TPE du nautisme et de la plaisance, PME hôtelières et restaurateurs de la côte, commerces saisonniers, artisans BTP, professions libérales et prestataires touristiques du littoral briochin.",
+  seoHook: "tourisme balnéaire & nautisme port",
   ecosystemFr:
     "Binic-Étables-sur-Mer est une commune nouvelle littorale née en 2016 de la fusion de Binic et Étables-sur-Mer, sur la baie de Saint-Brieuc. L'économie locale repose sur le tourisme balnéaire, le port de plaisance, l'hôtellerie-restauration saisonnière, le commerce de proximité, l'artisanat BTP et les services aux résidents. Saint-Brieuc est à 15 minutes.",
   ecosystemEn:

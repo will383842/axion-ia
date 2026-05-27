@@ -14,6 +14,7 @@ export const GRIGNY_COPY: VilleCopy = {
     "Axion-IA se déplace à Grigny pour offrir des services de conseil en IA adaptés aux entreprises locales. Avec Paris abritant des pôles d'innovation comme Inria et Station F, les entreprises de Grigny bénéficient d'une proximité avec des centres de recherche avancés. Notre approche vise à optimiser les processus métier des TPE, PME et ETI par des interventions ciblées.",
   directAnswerEn:
     "Axion-IA se déplace à Grigny pour offrir des services de conseil en IA adaptés aux entreprises locales. Avec Paris abritant des pôles d'innovation comme Inria et Station F, les entreprises de Grigny bénéficient d'une proximité avec des centres de recherche avancés. Notre approche vise à optimiser les processus métier des TPE, PME et ETI par des interventions ciblées.",
+  seoHook: "commerce détail & transport terrestre",
   ecosystemFr:
     "Grigny, proche de Paris, bénéficie de l'influence économique de grands noms comme LVMH et BNP Paribas. Les entreprises locales peuvent ainsi profiter d'un environnement propice au développement.",
   ecosystemEn:

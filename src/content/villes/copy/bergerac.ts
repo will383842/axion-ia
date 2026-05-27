@@ -12,6 +12,7 @@ export const BERGERAC_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bergerac (24) en Périgord. Nous accompagnons les viticulteurs (caves coopératives, négociants), artisans agroalimentaires (conserveries canard, foies gras, fromageries), TPE/PME tertiaires bergeracoises et acteurs du tourisme patrimoine sur leurs cas IA opérationnels.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bergerac (24) en Périgord. Nous accompagnons les viticulteurs (caves coopératives, négociants), artisans agroalimentaires (conserveries canard, foies gras, fromageries), TPE/PME tertiaires bergeracoises et acteurs du tourisme patrimoine sur leurs cas IA opérationnels.",
+  seoHook: "viticulture & artisanat agroalimentaire",
   ecosystemFr:
     "Bergerac est le centre économique du Périgord pourpre : 13 000 ha de vignobles AOC (Bergerac, Monbazillac, Pécharmant), artisanat agroalimentaire (canards gras, conserveries, fromage), tourisme patrimoine (Cyrano, vieille ville Renaissance, Dordogne navigable). Tissu TPE artisanat dense, PME tertiaires liées au tourisme et viticulture.",
   ecosystemEn:

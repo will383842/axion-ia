@@ -12,6 +12,7 @@ export const LEZIGNAN_CORBIERES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lézignan-Corbières (11), pôle viticole des Corbières audoises. Nous accompagnons TPE artisans, PME viticoles et caves coopératives, commerçants, agriculteurs et acteurs logistique du bassin lézignanais. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lézignan-Corbières (11), pôle viticole des Corbières audoises. Nous accompagnons TPE artisans, PME viticoles et caves coopératives, commerçants, agriculteurs et acteurs logistique du bassin lézignanais. Audit Flash dès 490 € HT.",
+  seoHook: "viticulture caves & commerce zones",
   ecosystemFr:
     "Lézignan-Corbières est un pôle viticole et commercial au coeur des Corbières audoises. L'économie est dominée par la viticulture (AOC Corbières, plus grande appellation du Languedoc), les caves coopératives, le négoce vin. Zones d'activités commerciales et artisanales dynamiques, agriculture diversifiée (vigne, olivier, miel), logistique (carrefour routier A61/D6113). Tourisme viticole croissant.",
   ecosystemEn:

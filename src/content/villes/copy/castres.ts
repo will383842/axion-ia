@@ -14,6 +14,7 @@ export const CASTRES_COPY: VilleCopy = {
     "Axion-IA se déplace à Castres pour accompagner les entreprises dans l'automatisation de leurs processus. Avec des secteurs comme l'industrie pharmaceutique et des pôles comme Cancer-Bio-Santé, nous aidons à optimiser les opérations sur site. Nos services incluent des audits, interventions et implémentations pour améliorer l'efficacité des entreprises castraises.",
   directAnswerEn:
     "Axion-IA se déplace à Castres pour accompagner les entreprises dans l'automatisation de leurs processus. Avec des secteurs comme l'industrie pharmaceutique et des pôles comme Cancer-Bio-Santé, nous aidons à optimiser les opérations sur site. Nos services incluent des audits, interventions et implémentations pour améliorer l'efficacité des entreprises castraises.",
+  seoHook: "industrie pharmaceutique & santé humaine",
   ecosystemFr:
     "Le tissu économique de Castres est marqué par l'industrie pharmaceutique avec Pierre Fabre et le pôle Cancer-Bio-Santé, favorisant l'innovation en santé.",
   ecosystemEn:

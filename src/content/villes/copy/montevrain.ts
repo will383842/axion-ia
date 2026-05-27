@@ -12,6 +12,7 @@ export const MONTEVRAIN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montévrain (77). Nous accompagnons TPE et PME : hôteliers et restaurateurs, commerçants, prestataires tourisme, services aux entreprises, professions libérales et indépendants du pôle Val d'Europe / Marne-la-Vallée. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montévrain (77). Nous accompagnons TPE et PME : hôteliers et restaurateurs, commerçants, prestataires tourisme, services aux entreprises, professions libérales et indépendants du pôle Val d'Europe / Marne-la-Vallée. Audit Flash dès 490 € HT.",
+  seoHook: "hôtellerie restauration & commerce détail",
   ecosystemFr:
     "Montévrain est intégrée au pôle Val d'Europe dans Marne-la-Vallée, à proximité immédiate de Disneyland Paris. Tissu économique porté par l'hôtellerie-restauration, le commerce, les services tourisme, les prestataires BtoB et les professions libérales. Zone d'activités en développement, attractivité renforcée par le parc et le centre commercial Val d'Europe.",
   ecosystemEn:

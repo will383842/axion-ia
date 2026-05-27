@@ -12,6 +12,7 @@ export const FEYTIAT_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Feytiat (87). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires et technologiques, commerçants, professions libérales, indépendants et services aux entreprises de l'agglomération de Limoges sud.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Feytiat (87). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires et technologiques, commerçants, professions libérales, indépendants et services aux entreprises de l'agglomération de Limoges sud.",
+  seoHook: "technologiques r&d & tertiaires services",
   ecosystemFr:
     "Feytiat (6 176 hab) est une commune résidentielle et économique au sud de Limoges, intégrée à Limoges Métropole. Proximité d'Ester Technopole (pôle tech/recherche), zones d'activités sud. Tissu PME tertiaires et tech, TPE artisans, commerces de proximité, professions libérales. Cadre périurbain attractif entre ville et campagne limousine.",
   ecosystemEn:

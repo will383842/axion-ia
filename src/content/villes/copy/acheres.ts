@@ -14,6 +14,7 @@ export const ACHERES_COPY: VilleCopy = {
     "À Achères, Axion-IA propose des services d'IA adaptés aux besoins locaux. Avec une proximité de pôles comme Cap Digital et Inria, nous apportons notre expertise nationale pour automatiser les processus, optimiser les opérations et former les équipes. Notre approche est conçue pour répondre aux spécificités des secteurs dominants tels que les transports terrestres et le commerce de gros.",
   directAnswerEn:
     "À Achères, Axion-IA propose des services d'IA adaptés aux besoins locaux. Avec une proximité de pôles comme Cap Digital et Inria, nous apportons notre expertise nationale pour automatiser les processus, optimiser les opérations et former les équipes. Notre approche est conçue pour répondre aux spécificités des secteurs dominants tels que les transports terrestres et le commerce de gros.",
+  seoHook: "transports terrestres & commerce gros",
   ecosystemFr:
     "Le tissu économique d'Achères est enrichi par des secteurs comme le transport terrestre et le commerce de gros. La proximité avec Paris permet aux entreprises de bénéficier des ressources de Cap Digital et des innovations d'Inria.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const LA_BAULE_ESCOUBLAC_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Baule-Escoublac (44), station balnéaire de prestige de la baie. Nous accompagnons TPE commerçants, PME hôtelières et immobilières, artisans et professions libérales de la côte d'Amour. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Baule-Escoublac (44), station balnéaire de prestige de la baie. Nous accompagnons TPE commerçants, PME hôtelières et immobilières, artisans et professions libérales de la côte d'Amour. Audit Flash dès 490 € HT.",
+  seoHook: "hôtellerie haut & immobilier gestion",
   ecosystemFr:
     "La Baule-Escoublac (16 912 hab) est l'une des plus prestigieuses stations balnéaires de France, avec sa plage de 12 km en baie de La Baule. Hôtellerie haut de gamme, thalassothérapie, immobilier de standing, commerces, événementiel et professions libérales. Proximité Saint-Nazaire (15 min), Nantes (1h10). Pôle touristique majeur de la côte d'Amour.",
   ecosystemEn:

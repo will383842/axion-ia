@@ -12,6 +12,7 @@ export const CARBONNE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carbonne (31). Nous accompagnons TPE artisans, PME industrielles, commerçants et professions libérales du sud Haute-Garonne. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carbonne (31). Nous accompagnons TPE artisans, PME industrielles, commerçants et professions libérales du sud Haute-Garonne. Audit Flash dès 490 € HT.",
+  seoHook: "industrie fabrication & artisanat",
   ecosystemFr:
     "Carbonne est un bourg structurant du sud de la Haute-Garonne, sur les bords de la Garonne. PME industrielles, artisans BTP, commerces de centre-ville, professions libérales, exploitations agricoles. Axe A64 vers les Pyrénées.",
   ecosystemEn:

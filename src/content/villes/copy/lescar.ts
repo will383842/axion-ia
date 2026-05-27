@@ -12,6 +12,7 @@ export const LESCAR_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lescar (64). Nous accompagnons TPE, PME et commerces de l'agglomération paloise : retail, services, artisanat, restauration. Audit Flash à partir de 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lescar (64). Nous accompagnons TPE, PME et commerces de l'agglomération paloise : retail, services, artisanat, restauration. Audit Flash à partir de 490 € HT.",
+  seoHook: "commerce grande & restauration",
   ecosystemFr:
     "Lescar est une commune de l'agglomération paloise, 9 455 habitants, ancienne cité épiscopale (cathédrale Notre-Dame, XIIe siècle). Zones commerciales dynamiques (Lescar-Soleil, retail), TPE artisans BTP, PME services aux entreprises, restauration et commerces de proximité. Bassin d'emploi commun avec Pau.",
   ecosystemEn:

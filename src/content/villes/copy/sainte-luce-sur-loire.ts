@@ -12,6 +12,7 @@ export const SAINTE_LUCE_SUR_LOIRE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sainte-Luce-sur-Loire (44), commune de Nantes Métropole est. Nous accompagnons TPE artisans, PME de services, commerçants et professions libérales des bords de Loire. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sainte-Luce-sur-Loire (44), commune de Nantes Métropole est. Nous accompagnons TPE artisans, PME de services, commerçants et professions libérales des bords de Loire. Audit Flash dès 490 € HT.",
+  seoHook: "services aux & artisanat",
   ecosystemFr:
     "Sainte-Luce-sur-Loire (16 400 hab) est une commune résidentielle attractive de l'est nantais, en bords de Loire. Zones d'activités (ZA de la Sécherie, ZA de la Minais), services aux entreprises, artisanat, commerces de proximité et professions libérales. Accès direct Nantes centre (15 min, tram-bus), périphérique nantais. Cadre de vie prisé des familles et entrepreneurs.",
   ecosystemEn:

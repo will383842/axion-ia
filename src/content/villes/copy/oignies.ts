@@ -12,6 +12,7 @@ export const OIGNIES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Oignies (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Oignies (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+  seoHook: "logistique transports & commerce détail",
   ecosystemFr:
     "Oignies fait partie du bassin minier du Nord-Pas-de-Calais inscrit au patrimoine mondial UNESCO. Ancienne ville minière reconvertie, elle accueille la scène culturelle du 9-9bis et un tissu de TPE artisanales, PME de services, commerces et professions libérales. Proximité de la plateforme logistique Delta 3.",
   ecosystemEn:

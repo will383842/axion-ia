@@ -12,6 +12,7 @@ export const FLEURY_MEROGIS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fleury-Mérogis (91). Nous accompagnons TPE et PME : PME industrielles zones d'activités, entreprises logistique et entreposage, artisans BTP, commerçants de proximité, prestataires services aux entreprises. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fleury-Mérogis (91). Nous accompagnons TPE et PME : PME industrielles zones d'activités, entreprises logistique et entreposage, artisans BTP, commerçants de proximité, prestataires services aux entreprises. Audit Flash dès 490 € HT.",
+  seoHook: "industrielles zones & logistique entreposage",
   ecosystemFr:
     "Fleury-Mérogis est une commune de l'Essonne dotée de zones d'activités économiques avec un tissu industriel, logistique et artisanal. PME industrielles, entreprises logistique et entreposage, TPE artisanat BTP, commerces de proximité, services aux entreprises.",
   ecosystemEn:

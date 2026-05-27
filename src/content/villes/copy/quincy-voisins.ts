@@ -12,6 +12,7 @@ export const QUINCY_VOISINS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Quincy-Voisins (77). Nous accompagnons TPE et PME : artisans BTP, commerçants de proximité, prestataires de services, professions libérales, exploitants agricoles du nord meldois. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Quincy-Voisins (77). Nous accompagnons TPE et PME : artisans BTP, commerçants de proximité, prestataires de services, professions libérales, exploitants agricoles du nord meldois. Audit Flash dès 490 € HT.",
+  seoHook: "services & agriculture céréalière",
   ecosystemFr:
     "Quincy-Voisins est une commune résidentielle du nord de Meaux en Seine-et-Marne, adossée aux plaines céréalières de la Brie. Tissu TPE artisanat BTP, commerces de proximité, PME services, professions libérales, exploitations agricoles.",
   ecosystemEn:

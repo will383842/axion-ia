@@ -12,6 +12,7 @@ export const BEAUVOISIN_COPY: VilleCopy = {
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Beauvoisin (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs, agriculteurs, commerçants, artisans BTP et professions libérales entre Vaunage et Petite Camargue. Audit Flash à partir de 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Beauvoisin (30). Nous accompagnons les TPE, PME et ETI locales : viticulteurs, agriculteurs, commerçants, artisans BTP et professions libérales entre Vaunage et Petite Camargue. Audit Flash à partir de 490 € HT.",
+  seoHook: "viticulture & agriculture méditerranéenne",
   ecosystemFr:
     "Beauvoisin (~6 100 hab) est une commune entre Vaunage et Petite Camargue, à 20 min de Nîmes. Viticulture, agriculture méditerranéenne, commerces de proximité, artisanat BTP et services aux entreprises. Cadre de vie attractif entre garrigue et plaine camarguaise.",
   ecosystemEn:

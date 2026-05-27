@@ -57,6 +57,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
   directAnswerEn:
     "Axion-IA is a senior AI architects consultancy that intervenes in Argenteuil (95) on site — residential districts, business parks, Parc du Val d'Argent and basin communes (Bezons, Sartrouville, Colombes, Cormeilles-en-Parisis). We support Argenteuil micro-businesses, SMEs, mid-caps and large enterprises (commerce, construction, services, industrial reconversion) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
+  seoHook: "commerce, transport & construction",
   topSectorsNaf: [
     "Commerce, Transport & Services aux entreprises",
     "BTP & Construction",

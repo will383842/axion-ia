@@ -12,6 +12,7 @@ export const LOUVECIENNES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Louveciennes (78). Nous accompagnons TPE et PME : professions libérales, consultants, PME tertiaires, artisans et commerçants de cette commune résidentielle de prestige de l'ouest parisien, entre Bougival et Marly-le-Roi. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Louveciennes (78). Nous accompagnons TPE et PME : professions libérales, consultants, PME tertiaires, artisans et commerçants de cette commune résidentielle de prestige de l'ouest parisien, entre Bougival et Marly-le-Roi. Audit Flash dès 490 € HT.",
+  seoHook: "professions libérales & conseil services",
   ecosystemFr:
     "Louveciennes est une commune résidentielle haut de gamme de l'ouest des Yvelines, entre Bougival et Marly-le-Roi. Aqueduc historique de Louveciennes et patrimoine impressionniste (Pissarro, Sisley). Tissu économique : professions libérales (juridique, santé, patrimoine), PME tertiaires et cabinets conseil, TPE artisans, commerces de village, consultants indépendants. Communes voisines : Bougival, Marly-le-Roi, Le Pecq, La Celle-Saint-Cloud, Vaucresson.",
   ecosystemEn:

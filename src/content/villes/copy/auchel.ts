@@ -12,6 +12,7 @@ export const AUCHEL_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auchel (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthunois. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auchel (62). Nous accompagnons TPE artisanales, PME de services, commerçants et professions libérales du bassin minier béthunois. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+  seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Auchel est une commune minière entre Béthune et Bruay-la-Buissière. Économie reconvertie vers le commerce de proximité, l'artisanat BTP, les services aux particuliers et les professions libérales. Tissu de TPE et micro-entreprises caractéristique du bassin minier en transformation.",
   ecosystemEn:

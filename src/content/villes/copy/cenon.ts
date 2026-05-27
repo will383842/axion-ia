@@ -14,6 +14,7 @@ export const CENON_COPY: VilleCopy = {
     "Axion-IA se déplace à Cenon pour offrir des services IA opérationnels adaptés aux réalités locales. Avec une proximité à Bordeaux et des infrastructures comme la gare de Bordeaux-Saint-Jean, nous intervenons rapidement. Nos services incluent des audits dès 490 € HT et des interventions à partir de 590 € HT, garantissant une optimisation immédiate des processus métiers.",
   directAnswerEn:
     "Axion-IA se déplace à Cenon pour offrir des services IA opérationnels adaptés aux réalités locales. Avec une proximité à Bordeaux et des infrastructures comme la gare de Bordeaux-Saint-Jean, nous intervenons rapidement. Nos services incluent des audits dès 490 € HT et des interventions à partir de 590 € HT, garantissant une optimisation immédiate des processus métiers.",
+  seoHook: "commerce détail & travaux spécialisés",
   ecosystemFr:
     "Cenon, au cœur de la Nouvelle-Aquitaine, bénéficie de la proximité de Bordeaux et de son écosystème économique riche, incluant des entreprises comme LVMH et BNP Paribas. Ce contexte dynamique favorise l'innovation et l'optimisation des processus via l'IA.",
   ecosystemEn:

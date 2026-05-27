@@ -12,6 +12,7 @@ export const SAINT_GILLES_CROIX_DE_VIE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Gilles-Croix-de-Vie (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, professionnels de la pêche et mareyage, hôteliers-restaurateurs, acteurs tourisme littoral et services.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Gilles-Croix-de-Vie (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, professionnels de la pêche et mareyage, hôteliers-restaurateurs, acteurs tourisme littoral et services.",
+  seoHook: "pêche mareyage & tourisme balnéaire",
   ecosystemFr:
     "Saint-Gilles-Croix-de-Vie est le premier port sardinier de la côte atlantique. Station balnéaire animée avec port de pêche, port de plaisance et plages. Économie mixte : pêche/mareyage, tourisme, commerces, artisanat nautique. Saint-Hilaire-de-Riez à 5 min, La Roche-sur-Yon à 40 min.",
   ecosystemEn:

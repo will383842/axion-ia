@@ -12,6 +12,7 @@ export const TRIGNAC_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trignac (44). Nous accompagnons les TPE artisans, PME industrielles et tertiaires, commerçants et prestataires du bassin nazairien sur leurs cas IA opérationnels. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trignac (44). Nous accompagnons les TPE artisans, PME industrielles et tertiaires, commerçants et prestataires du bassin nazairien sur leurs cas IA opérationnels. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat & industrie sous-traitance",
   ecosystemFr:
     "Trignac fait partie de l'agglomération de Saint-Nazaire (CARENE, 130 000 habitants). Ancien site sidérurgique reconverti, zones d'activités commerciales et industrielles actives. Tissu TPE artisans, PME sous-traitantes, commerces et services du bassin nazairien.",
   ecosystemEn:

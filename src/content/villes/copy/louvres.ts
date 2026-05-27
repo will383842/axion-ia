@@ -12,6 +12,7 @@ export const LOUVRES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Louvres (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME logistiques et tertiaires de la zone aéroportuaire Roissy-CDG, professions libérales, indépendants et entreprises du Pays de France.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Louvres (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME logistiques et tertiaires de la zone aéroportuaire Roissy-CDG, professions libérales, indépendants et entreprises du Pays de France.",
+  seoHook: "logistique transport & artisanat services",
   ecosystemFr:
     "Louvres est située aux portes de l'aéroport Paris-Charles-de-Gaulle, dans le Pays de France (nord Val-d'Oise). L'économie locale bénéficie de la proximité Roissy-CDG : PME logistiques, transporteurs, prestataires aéroportuaires, TPE artisans BTP, commerces et professions libérales. Tissu en forte croissance démographique.",
   ecosystemEn:

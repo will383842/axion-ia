@@ -14,6 +14,7 @@ export const VILLIERS_LE_BEL_COPY: VilleCopy = {
     "À Villiers-le-Bel, Axion-IA propose des services d'IA adaptés aux besoins des entreprises locales. Avec des entités comme LVMH et BNP Paribas à Paris, nous comprenons les exigences des environnements complexes. Nos interventions incluent audits, implémentations et formations, avec des tarifs publics clairs, tels que l'Audit Flash à partir de 490 € HT.",
   directAnswerEn:
     "À Villiers-le-Bel, Axion-IA propose des services d'IA adaptés aux besoins des entreprises locales. Avec des entités comme LVMH et BNP Paribas à Paris, nous comprenons les exigences des environnements complexes. Nos interventions incluent audits, implémentations et formations, avec des tarifs publics clairs, tels que l'Audit Flash à partir de 490 € HT.",
+  seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Villiers-le-Bel bénéficie de la proximité de grands acteurs économiques tels que LVMH et Hermès à Paris, offrant un environnement propice aux entreprises locales. Les secteurs du commerce de détail et des transports y sont particulièrement développés.",
   ecosystemEn:

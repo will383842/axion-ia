@@ -12,6 +12,7 @@ export const SALEILLES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saleilles (66). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, commerçants, professions libérales, indépendants et services aux entreprises de l'agglo Perpignan est.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saleilles (66). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, commerçants, professions libérales, indépendants et services aux entreprises de l'agglo Perpignan est.",
+  seoHook: "tertiaires périurbaines",
   ecosystemFr:
     "Saleilles est une commune résidentielle à l'est de Perpignan, entre Cabestany et le littoral. Intégrée à Perpignan Méditerranée Métropole. PME tertiaires, TPE artisanat, commerces, professions libérales, zones d'activités partagées avec Cabestany.",
   ecosystemEn:

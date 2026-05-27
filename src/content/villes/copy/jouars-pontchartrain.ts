@@ -12,6 +12,7 @@ export const JOUARS_PONTCHARTRAIN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jouars-Pontchartrain (78). Nous accompagnons TPE et PME : artisans, commerces de bourg, PME de services et professions libérales de cette commune résidentielle de la plaine de Versailles ouest. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jouars-Pontchartrain (78). Nous accompagnons TPE et PME : artisans, commerces de bourg, PME de services et professions libérales de cette commune résidentielle de la plaine de Versailles ouest. Audit Flash dès 490 € HT.",
+  seoHook: "services aux & commerce proximité",
   ecosystemFr:
     "Jouars-Pontchartrain est une commune résidentielle de la plaine de Versailles ouest, aux portes de la forêt de Sainte-Apolline. Site archéologique gallo-romain (Diodurum) et patrimoine rural préservé. Tissu économique : TPE artisans, commerces de bourg, PME tertiaires, professions libérales, services à la personne et entreprises liées au bassin Plaisir-Trappes. Communes voisines : Neauphle-le-Château, Plaisir, Élancourt, Villepreux, Beynes.",
   ecosystemEn:

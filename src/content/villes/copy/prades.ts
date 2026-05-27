@@ -12,6 +12,7 @@ export const PRADES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Prades (66). Nous accompagnons tous types d'activités : TPE artisans, PME services et santé, commerçants, agriculteurs de montagne, acteurs du tourisme Canigou, indépendants et professions libérales du Conflent.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Prades (66). Nous accompagnons tous types d'activités : TPE artisans, PME services et santé, commerçants, agriculteurs de montagne, acteurs du tourisme Canigou, indépendants et professions libérales du Conflent.",
+  seoHook: "services professions & tourisme nature",
   ecosystemFr:
     "Prades est la sous-préfecture du Conflent, au pied du massif du Canigou (montagne sacrée des Catalans). Festival Pablo Casals de renommée internationale. Bourg-centre de services : santé (hôpital), commerces, professions libérales. Agriculture de montagne, arboriculture, tourisme vert et culturel.",
   ecosystemEn:

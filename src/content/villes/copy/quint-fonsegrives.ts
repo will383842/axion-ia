@@ -12,6 +12,7 @@ export const QUINT_FONSEGRIVES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Quint-Fonsegrives (31). Nous accompagnons TPE de services, PME tertiaires, professions libérales et commerçants de l'est Toulouse. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Quint-Fonsegrives (31). Nous accompagnons TPE de services, PME tertiaires, professions libérales et commerçants de l'est Toulouse. Audit Flash dès 490 € HT.",
+  seoHook: "professions libérales & conseil gestion",
   ecosystemFr:
     "Quint-Fonsegrives est une commune résidentielle verdoyante de l'est de Toulouse. Tissu TPE de services, PME tertiaires, cabinets de professions libérales, commerces de proximité. Cadre de vie prisé, proximité Balma et Saint-Orens.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const AUBY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auby (59). Nous accompagnons tous types d'activités : TPE artisans BTP de l'agglomération de Douai, PME industrie métallurgique (zinc, sidérurgie) et sous-traitance, commerçants, services aux entreprises de la Douaisis et du Nord.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Auby (59). Nous accompagnons tous types d'activités : TPE artisans BTP de l'agglomération de Douai, PME industrie métallurgique (zinc, sidérurgie) et sous-traitance, commerçants, services aux entreprises de la Douaisis et du Nord.",
+  seoHook: "artisanat & industrie métallurgique",
   ecosystemFr:
     "Auby est positionnée à 10 min nord de Douai et 30 min sud-ouest de Lille, intégrée à la Communauté d'agglomération du Douaisis. Héritage industriel métallurgique structurant (production de zinc historique, sidérurgie) et tissu PME industriel actif autour de la sous-traitance, logistique, BTP. Accès A21 vers Lille (30 min) et Valenciennes, A1 vers Paris. Bassin minier Nord-Pas-de-Calais (UNESCO) à proximité.",
   ecosystemEn:

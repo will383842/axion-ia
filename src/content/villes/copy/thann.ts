@@ -12,6 +12,7 @@ export const THANN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thann (68). Nous accompagnons TPE et PME : industriels (chimie, mécanique), domaines viticoles AOC, hôtels-restaurants, artisans, commerçants et prestataires de services de la vallée de la Thur et du sud du vignoble alsacien. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Thann (68). Nous accompagnons TPE et PME : industriels (chimie, mécanique), domaines viticoles AOC, hôtels-restaurants, artisans, commerçants et prestataires de services de la vallée de la Thur et du sud du vignoble alsacien. Audit Flash dès 490 € HT.",
+  seoHook: "industrie chimique & viticulture domaines",
   ecosystemFr:
     "Thann, sous-préfecture du Haut-Rhin, est située à l'entrée de la vallée de la Thur, au pied des Vosges. La ville accueille des sites industriels historiques (Cristel pour la cuisine, ex-DuPont/Thann Chemicals pour la chimie du dioxyde de titane), un patrimoine viticole remarquable avec le grand cru Rangen, et un tourisme patrimonial autour de la collégiale Saint-Thiébaut. Tissu complet TPE/PME : industrie, viticulture, artisanat BTP, commerce et services.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const LUISANT_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Luisant (28). Nous accompagnons tous types d'activités : TPE/PME services, professions libérales, artisans BTP, commerçants de proximité, indépendants et consultants de l'agglomération chartraine sud.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Luisant (28). Nous accompagnons tous types d'activités : TPE/PME services, professions libérales, artisans BTP, commerçants de proximité, indépendants et consultants de l'agglomération chartraine sud.",
+  seoHook: "professions libérales & conseil indépendants",
   ecosystemFr:
     "Luisant est une commune résidentielle prisée au sud de Chartres (Chartres Métropole), avec un cadre de vie attractif (parc de Mainvilliers-Luisant, forêt domaniale). L'économie locale repose sur les TPE/PME de services, professions libérales (santé, juridique, comptable), artisans BTP, commerces de proximité et indépendants.",
   ecosystemEn:

@@ -14,6 +14,7 @@ export const CHATEAUROUX_COPY: VilleCopy = {
     "À Châteauroux, Axion-IA propose des services d'IA adaptés aux besoins spécifiques des entreprises locales. Avec des acteurs comme Michelin et Legrand, la région bénéficie d'une dynamique industrielle solide. Nos interventions incluent des audits, des implémentations et des formations personnalisées, garantissant une intégration fluide de l'IA dans vos processus métier.",
   directAnswerEn:
     "À Châteauroux, Axion-IA propose des services d'IA adaptés aux besoins spécifiques des entreprises locales. Avec des acteurs comme Michelin et Legrand, la région bénéficie d'une dynamique industrielle solide. Nos interventions incluent des audits, des implémentations et des formations personnalisées, garantissant une intégration fluide de l'IA dans vos processus métier.",
+  seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Le bassin industriel de Châteauroux inclut des entreprises comme Michelin et Legrand, renforçant son potentiel économique. La ZAC de la Martinerie est un pôle clé pour le développement local.",
   ecosystemEn:

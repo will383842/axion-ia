@@ -12,6 +12,7 @@ export const BEAUCAIRE_COPY: VilleCopy = {
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Beaucaire (30). Nous accompagnons les TPE, PME et ETI locales : entreprises logistique Rhône, viticulteurs Costières de Nîmes, commerçants, artisans BTP, professions libérales et acteurs touristiques du Gard rhodanien. Audit Flash à partir de 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Beaucaire (30). Nous accompagnons les TPE, PME et ETI locales : entreprises logistique Rhône, viticulteurs Costières de Nîmes, commerçants, artisans BTP, professions libérales et acteurs touristiques du Gard rhodanien. Audit Flash à partir de 490 € HT.",
+  seoHook: "logistique vallée & viticulture costières",
   ecosystemFr:
     "Beaucaire (~15 700 hab) est une ville historique du Gard rhodanien, face à Tarascon (Bouches-du-Rhône). Carrefour logistique vallée du Rhône, viticulture Costières de Nîmes, commerces, artisanat BTP, tourisme patrimonial (château, canal du Rhône à Sète) et services aux entreprises.",
   ecosystemEn:

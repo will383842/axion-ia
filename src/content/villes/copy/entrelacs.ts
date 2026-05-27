@@ -12,6 +12,7 @@ export const ENTRELACS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Entrelacs (73). Nous accompagnons TPE et PME : acteurs du tourisme lacustre, exploitations viticoles et agricoles savoyardes, artisans, commerçants et hôteliers du bassin Aix-les-Bains.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Entrelacs (73). Nous accompagnons TPE et PME : acteurs du tourisme lacustre, exploitations viticoles et agricoles savoyardes, artisans, commerçants et hôteliers du bassin Aix-les-Bains.",
+  seoHook: "tourisme lacustre & agriculture viticulture",
   ecosystemFr:
     "Entrelacs, commune nouvelle issue de la fusion de plusieurs villages entre Aix-les-Bains et Annecy, bénéficie de la proximité du lac du Bourget. Économie marquée par le tourisme lacustre, l'agriculture et la viticulture savoyarde (crus de Savoie). TPE artisanat local actif, commerces de proximité, hôtellerie saisonnière et résidentielle. Position géographique privilégiée entre deux pôles touristiques majeurs de Savoie.",
   ecosystemEn:

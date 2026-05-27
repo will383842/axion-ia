@@ -12,6 +12,7 @@ export const LE_PONT_DE_CLAIX_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Pont-de-Claix (38). Nous accompagnons tous types d'activités : industriels et sous-traitants de la grande plateforme industrielle historique pontoise, TPE artisans BTP, commerçants, PME services aux entreprises, professions libérales et structures du sud de Grenoble-Alpes Métropole.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Pont-de-Claix (38). Nous accompagnons tous types d'activités : industriels et sous-traitants de la grande plateforme industrielle historique pontoise, TPE artisans BTP, commerçants, PME services aux entreprises, professions libérales et structures du sud de Grenoble-Alpes Métropole.",
+  seoHook: "industrie & sous-traitance industrielle",
   ecosystemFr:
     "Le Pont-de-Claix est un des principaux pôles industriels de Grenoble-Alpes Métropole : plateforme industrielle historique de la vallée du Drac (sites industriels successifs depuis le XXe siècle), tissu dense de sous-traitants techniques, PME services aux industriels, TPE artisanat BTP, commerces de proximité. Position stratégique au sud du Y grenoblois, sur l'axe vers Vizille et la vallée de la Romanche.",
   ecosystemEn:

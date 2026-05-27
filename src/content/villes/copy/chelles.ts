@@ -14,6 +14,7 @@ export const CHELLES_COPY: VilleCopy = {
     "Axion-IA se déplace à Chelles pour accompagner les entreprises dans l'intégration de l'IA. En Île-de-France, des pôles comme Cap Digital et Station F sont des références en matière d'innovation technologique. Nous proposons des audits et interventions adaptés aux besoins spécifiques des entreprises chelloises, garantissant un retour sur investissement rapide.",
   directAnswerEn:
     "Axion-IA se déplace à Chelles pour accompagner les entreprises dans l'intégration de l'IA. En Île-de-France, des pôles comme Cap Digital et Station F sont des références en matière d'innovation technologique. Nous proposons des audits et interventions adaptés aux besoins spécifiques des entreprises chelloises, garantissant un retour sur investissement rapide.",
+  seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Chelles bénéficie d'un tissu économique varié, avec des entreprises dans le commerce de détail et la construction. LVMH et BNP Paribas, présents en Île-de-France, illustrent la diversité et la richesse de l'écosystème régional.",
   ecosystemEn:

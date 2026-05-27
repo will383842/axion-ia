@@ -12,6 +12,7 @@ export const GENNES_VAL_DE_LOIRE_COPY: VilleCopy = {
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Gennes-Val-de-Loire (49). Nous accompagnons les TPE, PME et acteurs touristiques du Val de Loire angevin dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
   directAnswerEn:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Gennes-Val-de-Loire (49). Nous accompagnons les TPE, PME et acteurs touristiques du Val de Loire angevin dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
+  seoHook: "tourisme hébergement & viticulture vignoble",
   ecosystemFr:
     "Gennes-Val-de-Loire est au cœur du Val de Loire UNESCO, territoire de troglodytes, de vignobles (AOC Saumur, Anjou) et de tourisme fluvial. Tissu économique : domaines viticoles, hébergements touristiques, artisanat tuffeau, commerces de bourg, agriculture et services de proximité. Site mégalithique du dolmen de Bagneux.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const BALLANCOURT_SUR_ESSONNE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ballancourt-sur-Essonne (91). Nous accompagnons TPE et PME : artisans, commerçants de proximité, prestataires de services, professions libérales, exploitants agricoles de la vallée de l'Essonne. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ballancourt-sur-Essonne (91). Nous accompagnons TPE et PME : artisans, commerçants de proximité, prestataires de services, professions libérales, exploitants agricoles de la vallée de l'Essonne. Audit Flash dès 490 € HT.",
+  seoHook: "services & agriculture locale",
   ecosystemFr:
     "Ballancourt-sur-Essonne est une commune résidentielle semi-rurale de la vallée de l'Essonne, entre Mennecy et La Ferté-Alais. Tissu TPE artisanat, commerces de proximité, PME services, professions libérales, agriculture locale.",
   ecosystemEn:

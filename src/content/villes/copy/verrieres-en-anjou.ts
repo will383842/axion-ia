@@ -12,6 +12,7 @@ export const VERRIERES_EN_ANJOU_COPY: VilleCopy = {
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Verrières-en-Anjou (49). Nous accompagnons les TPE, PME et entreprises du nord-est angevin dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Tarifs publics, RGPD strict.",
   directAnswerEn:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Verrières-en-Anjou (49). Nous accompagnons les TPE, PME et entreprises du nord-est angevin dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Tarifs publics, RGPD strict.",
+  seoHook: "tertiaires services & artisanat second",
   ecosystemFr:
     "Verrières-en-Anjou combine tissu résidentiel et zones d'activités économiques en périphérie nord-est d'Angers. PME tertiaires, artisanat BTP, logistique, commerces de proximité et services aux entreprises. Commune en forte croissance démographique, attractivité résidentielle et économique.",
   ecosystemEn:

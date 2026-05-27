@@ -12,6 +12,7 @@ export const FONTAINEBLEAU_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fontainebleau (77). Nous accompagnons tous types d'activités : acteurs du tourisme international (château UNESCO, forêt domaniale), hôtellerie et restauration haut de gamme, établissements d'enseignement supérieur (INSEAD), TPE artisans, PME services, commerçants et professions libérales bellifontaines. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Fontainebleau (77). Nous accompagnons tous types d'activités : acteurs du tourisme international (château UNESCO, forêt domaniale), hôtellerie et restauration haut de gamme, établissements d'enseignement supérieur (INSEAD), TPE artisans, PME services, commerçants et professions libérales bellifontaines. Audit Flash dès 490 € HT.",
+  seoHook: "tourisme patrimoine & hôtellerie restauration",
   ecosystemFr:
     "Fontainebleau est une ville à rayonnement international grâce à son château classé au patrimoine mondial UNESCO et sa forêt domaniale de 25 000 hectares. L'INSEAD, l'une des premières business schools mondiales, et le campus Mines ParisTech y attirent cadres et entrepreneurs internationaux. Tissu TPE artisans, PME hôtellerie-restauration haut de gamme, tourisme, commerces centre-ville, professions libérales. Communes voisines : Avon, Samois-sur-Seine, Thomery, Bourron-Marlotte.",
   ecosystemEn:

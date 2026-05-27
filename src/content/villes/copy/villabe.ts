@@ -12,6 +12,7 @@ export const VILLABE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villabé (91). Nous accompagnons tous types d'activités : TPE artisanales, commerces, PME distribution et logistique, services aux entreprises, indépendants et professions libérales de la zone Villabé–Corbeil.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villabé (91). Nous accompagnons tous types d'activités : TPE artisanales, commerces, PME distribution et logistique, services aux entreprises, indépendants et professions libérales de la zone Villabé–Corbeil.",
+  seoHook: "commerce grande & logistique transport",
   ecosystemFr:
     "Villabé est positionnée sur l'axe logistique sud-Essonne, à 31 km au sud-est de Paris. Zones d'activités commerciales dynamiques, enseignes distribution, PME logistique et transport, TPE artisanales, commerces. Bassin d'emploi élargi vers Corbeil-Essonnes, Évry-Courcouronnes et Lisses.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const LA_CHEVROLIERE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Chevrolière (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires, professions libérales, exploitations maraîchères et services de proximité du sud nantais, en bordure du lac de Grand-Lieu.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Chevrolière (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tertiaires, professions libérales, exploitations maraîchères et services de proximité du sud nantais, en bordure du lac de Grand-Lieu.",
+  seoHook: "artisanat commerce & tertiaires services",
   ecosystemFr:
     "La Chevrolière est une commune résidentielle en bordure du lac de Grand-Lieu, au sud de Nantes. Maraîchage, viticulture, artisanat. Tissu TPE artisans, commerçants, PME tertiaires, professions libérales et services de proximité. Cadre de vie nature attractif.",
   ecosystemEn:

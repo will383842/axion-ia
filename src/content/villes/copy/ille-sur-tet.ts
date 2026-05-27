@@ -12,6 +12,7 @@ export const ILLE_SUR_TET_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ille-sur-Têt (66). Nous accompagnons tous types d'activités : TPE artisans, PME agriculture et arboriculture, commerçants, acteurs du tourisme nature, indépendants et professions libérales de la vallée de la Têt.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ille-sur-Têt (66). Nous accompagnons tous types d'activités : TPE artisans, PME agriculture et arboriculture, commerçants, acteurs du tourisme nature, indépendants et professions libérales de la vallée de la Têt.",
+  seoHook: "arboriculture & agriculture maraîchage",
   ecosystemFr:
     "Ille-sur-Têt est un bourg de la vallée de la Têt, entre Perpignan et Prades. Site touristique des orgues de calcaire (cheminées de fées). Agriculture dominante : arboriculture (pêches, abricots, cerises), maraîchage, viticulture. TPE artisanat, commerces de centre-bourg, services.",
   ecosystemEn:

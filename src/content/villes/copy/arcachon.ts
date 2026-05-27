@@ -12,6 +12,7 @@ export const ARCACHON_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arcachon (33). Nous accompagnons TPE et PME de la station balnéaire : hôteliers et résidences de tourisme, restaurateurs, ostréiculteurs, commerçants de centre-ville et professions libérales. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arcachon (33). Nous accompagnons TPE et PME de la station balnéaire : hôteliers et résidences de tourisme, restaurateurs, ostréiculteurs, commerçants de centre-ville et professions libérales. Audit Flash dès 490 € HT.",
+  seoHook: "hôtellerie tourisme & ostréiculture produits",
   ecosystemFr:
     "Arcachon est la station balnéaire emblématique de la Gironde. Tourisme prestige (Ville d'Hiver classée, dune du Pilat, plages), ostréiculture (huîtres du Bassin, ports ostréicoles), hôtellerie-restauration haut de gamme, commerces de centre-ville et économie résidentielle toute l'année.",
   ecosystemEn:

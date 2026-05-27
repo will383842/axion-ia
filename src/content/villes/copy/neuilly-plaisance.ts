@@ -14,6 +14,7 @@ export const NEUILLY_PLAISANCE_COPY: VilleCopy = {
     "Axion-IA propose des interventions à Neuilly-Plaisance, où le commerce de détail et la construction dominent. Nous offrons des audits, interventions et implémentations pour les entreprises locales. Nos services s'adaptent aux besoins spécifiques des secteurs présents, comme ceux de LVMH ou Cap Digital, sans lien contractuel avec ces entités. Consultez nos tarifs publics pour plus de détails.",
   directAnswerEn:
     "Axion-IA propose des interventions à Neuilly-Plaisance, où le commerce de détail et la construction dominent. Nous offrons des audits, interventions et implémentations pour les entreprises locales. Nos services s'adaptent aux besoins spécifiques des secteurs présents, comme ceux de LVMH ou Cap Digital, sans lien contractuel avec ces entités. Consultez nos tarifs publics pour plus de détails.",
+  seoHook: "commerce détail & construction",
   ecosystemFr:
     "Neuilly-Plaisance bénéficie de la proximité de pôles économiques tels que LVMH et Cap Digital. Ces entités illustrent la diversité et la vitalité du tissu économique environnant, offrant de nombreuses opportunités pour les entreprises locales.",
   ecosystemEn:

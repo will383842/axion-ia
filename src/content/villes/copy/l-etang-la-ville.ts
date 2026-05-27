@@ -12,6 +12,7 @@ export const L_ETANG_LA_VILLE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à L'Étang-la-Ville (78). Nous accompagnons TPE et PME : artisans et commerçants, PME de services et conseil, professions libérales, agences immobilières et praticiens bien-être de cette commune résidentielle en forêt de Marly. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à L'Étang-la-Ville (78). Nous accompagnons TPE et PME : artisans et commerçants, PME de services et conseil, professions libérales, agences immobilières et praticiens bien-être de cette commune résidentielle en forêt de Marly. Audit Flash dès 490 € HT.",
+  seoHook: "commerce proximité & services aux",
   ecosystemFr:
     "L'Étang-la-Ville est une commune résidentielle verdoyante des Yvelines en lisière de la forêt de Marly, entre Saint-Germain-en-Laye et Versailles. Cadre naturel prisé, habitat pavillonnaire. Tissu économique : TPE artisans, commerces de proximité, PME de services et conseil, professions libérales, immobilier, bien-être. Communes voisines : Mareil-Marly, Saint-Germain-en-Laye, Noisy-le-Roi, Bailly.",
   ecosystemEn:

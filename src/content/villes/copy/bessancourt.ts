@@ -12,6 +12,7 @@ export const BESSANCOURT_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bessancourt (95). Nous accompagnons tous types d'activités : TPE artisanales, PME de services et conseil, commerçants, professions libérales, indépendants et prestataires de la vallée de Montmorency.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bessancourt (95). Nous accompagnons tous types d'activités : TPE artisanales, PME de services et conseil, commerçants, professions libérales, indépendants et prestataires de la vallée de Montmorency.",
+  seoHook: "artisanat paysagisme & commerce proximité",
   ecosystemFr:
     "Bessancourt est une commune résidentielle du Val-d'Oise, en lisière de la forêt de Montmorency, entre Taverny et Frépillon. Tissu économique de TPE artisanales BTP et paysagistes, PME de services aux entreprises, commerces de proximité, professions libérales de santé et prestataires tertiaires connectés au bassin Cergy-Pontoise.",
   ecosystemEn:

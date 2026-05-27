@@ -55,6 +55,7 @@ export const NANCY_COPY: VilleCopy = {
   directAnswerEn:
     "Axion-IA is a senior AI architects consultancy that intervenes in Nancy (54) on site — city centre, Henri Poincaré Brabois Technopole (Vandœuvre-lès-Nancy), Artem campus and Grand Nancy communes. We support Nancy micro-businesses, SMEs, mid-caps and large enterprises (industry, health, research, services) on their operational AI use cases — costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
+  seoHook: "santé, chru & industrie matériaux",
   topSectorsNaf: [
     "Santé, CHRU & Biotech Brabois",
     "Industrie & Matériaux (Saint-Gobain PAM, Materalia)",

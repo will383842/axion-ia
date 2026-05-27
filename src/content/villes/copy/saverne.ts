@@ -12,6 +12,7 @@ export const SAVERNE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saverne (67). Nous accompagnons TPE et PME : industriels, commerçants du centre-ville, hôteliers-restaurateurs, artisans BTP, professions libérales et services aux entreprises du Pays de Saverne. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saverne (67). Nous accompagnons TPE et PME : industriels, commerçants du centre-ville, hôteliers-restaurateurs, artisans BTP, professions libérales et services aux entreprises du Pays de Saverne. Audit Flash dès 490 € HT.",
+  seoHook: "industrie manufacturières & commerce centre",
   ecosystemFr:
     "Saverne, sous-préfecture du Bas-Rhin et porte d'entrée Alsace-Lorraine au pied du col de Saverne, conjugue patrimoine (château des Rohan, jardin botanique) et activités économiques diversifiées : PME industrielles, commerce du centre historique, hôtellerie-restauration et tourisme patrimonial. Tissu de TPE/PME artisanales, professions libérales, services aux entreprises et exploitations agricoles des Vosges du Nord.",
   ecosystemEn:

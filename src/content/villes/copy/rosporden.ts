@@ -12,6 +12,7 @@ export const ROSPORDEN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rosporden (29). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et biscuiteries, commerçants, acteurs du tourisme vert, professions libérales et services aux entreprises du sud Finistère. Audit Flash à 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rosporden (29). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et biscuiteries, commerçants, acteurs du tourisme vert, professions libérales et services aux entreprises du sud Finistère. Audit Flash à 490 € HT.",
+  seoHook: "agroalimentaire biscuiterie & tourisme vert",
   ecosystemFr:
     "Rosporden est une commune du sud Finistère, à mi-chemin entre Quimper et Lorient. Son étang en centre-ville et sa tradition biscuitière (biscuiterie artisanale réputée) font sa singularité. Nœud ferroviaire TER (gare Rosporden sur la ligne Quimper-Lorient). Tissu TPE artisans, PME agroalimentaires, commerces de proximité, tourisme vert et services.",
   ecosystemEn:

@@ -14,6 +14,7 @@ export const GOUSSAINVILLE_COPY: VilleCopy = {
     "Axion-IA se déplace à Goussainville pour proposer des solutions IA adaptées aux besoins des entreprises locales. Avec des acteurs comme DHL et FedEx présents dans la région, nous aidons à automatiser les processus logistiques et administratifs. Nos services incluent audits, interventions et implémentations, garantissant un retour sur investissement rapide et mesurable.",
   directAnswerEn:
     "Axion-IA se déplace à Goussainville pour proposer des solutions IA adaptées aux besoins des entreprises locales. Avec des acteurs comme DHL et FedEx présents dans la région, nous aidons à automatiser les processus logistiques et administratifs. Nos services incluent audits, interventions et implémentations, garantissant un retour sur investissement rapide et mesurable.",
+  seoHook: "transports terrestres & entreposage",
   ecosystemFr:
     "Goussainville bénéficie de la proximité de grands groupes tels que DHL et FedEx, renforçant son tissu économique. La ZAC des Tulipes est un pôle d'activité clé, soutenant les secteurs du transport et de l'entreposage.",
   ecosystemEn:

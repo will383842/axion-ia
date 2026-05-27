@@ -12,6 +12,7 @@ export const VILLEBON_SUR_YVETTE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villebon-sur-Yvette (91). Nous accompagnons TPE et PME : enseignes commerciales Villebon 2, PME ingénierie et services de la zone Courtaboeuf, professions libérales, artisans, indépendants du plateau de Saclay. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Villebon-sur-Yvette (91). Nous accompagnons TPE et PME : enseignes commerciales Villebon 2, PME ingénierie et services de la zone Courtaboeuf, professions libérales, artisans, indépendants du plateau de Saclay. Audit Flash dès 490 € HT.",
+  seoHook: "commerce & ingénierie services",
   ecosystemFr:
     "Villebon-sur-Yvette est positionnée sur le plateau de Saclay, à proximité de la zone d'activités de Courtaboeuf (plus grande ZA d'Île-de-France). Le centre commercial Villebon 2 est un pôle commercial majeur. Tissu PME ingénierie, services aux entreprises, commerces, professions libérales, TPE artisans.",
   ecosystemEn:

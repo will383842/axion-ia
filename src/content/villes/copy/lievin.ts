@@ -14,6 +14,7 @@ export const LIEVIN_COPY: VilleCopy = {
     "À Liévin, Axion-IA propose des interventions sur site pour les entreprises cherchant à intégrer l'IA dans leurs opérations. Notre expertise, reconnue à l'échelle nationale, s'appuie sur des références comme Cap Digital et Inria pour garantir des résultats concrets. Nos services incluent des audits, des implémentations et des formations, avec des tarifs publics clairs et transparents.",
   directAnswerEn:
     "À Liévin, Axion-IA propose des interventions sur site pour les entreprises cherchant à intégrer l'IA dans leurs opérations. Notre expertise, reconnue à l'échelle nationale, s'appuie sur des références comme Cap Digital et Inria pour garantir des résultats concrets. Nos services incluent des audits, des implémentations et des formations, avec des tarifs publics clairs et transparents.",
+  seoHook: "commerce détail & construction",
   ecosystemFr:
     "Le tissu économique de Liévin, avec des secteurs comme le commerce de détail et la construction, bénéficie de notre expertise en IA. Les entreprises locales peuvent s'inspirer de pôles d'innovation tels qu'Inria pour progresser.",
   ecosystemEn:

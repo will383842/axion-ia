@@ -14,6 +14,7 @@ export const SAINT_GERMAIN_EN_LAYE_COPY: VilleCopy = {
     "Axion-IA se déplace à Saint-Germain-en-Laye pour offrir des solutions IA adaptées aux entreprises locales. Avec des acteurs économiques tels que Thales et Renault, la ville bénéficie d'un environnement propice à l'innovation. Notre approche inclut des audits dès 490 € HT et des interventions à partir de 590 € HT, pour répondre aux besoins spécifiques des entreprises de la région.",
   directAnswerEn:
     "Axion-IA se déplace à Saint-Germain-en-Laye pour offrir des solutions IA adaptées aux entreprises locales. Avec des acteurs économiques tels que Thales et Renault, la ville bénéficie d'un environnement propice à l'innovation. Notre approche inclut des audits dès 490 € HT et des interventions à partir de 590 € HT, pour répondre aux besoins spécifiques des entreprises de la région.",
+  seoHook: "commerce détail & programmation informatique",
   ecosystemFr:
     "Saint-Germain-en-Laye héberge des entreprises comme Thales et Renault, renforçant son tissu économique. Axion-IA intervient dans cet environnement pour optimiser les processus IA des entreprises locales.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const PEYROLLES_EN_PROVENCE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Peyrolles-en-Provence (13). Nous accompagnons TPE artisans, PME services, agriculteurs, professions libérales et commerces de proximité de la vallée de la Durance. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Peyrolles-en-Provence (13). Nous accompagnons TPE artisans, PME services, agriculteurs, professions libérales et commerces de proximité de la vallée de la Durance. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat & agriculture provençale",
   ecosystemFr:
     "Peyrolles-en-Provence est positionnée dans la vallée de la Durance, au nord-est d'Aix-en-Provence, dotée d'un château Renaissance et d'un vieux village provençal. Tissu économique de TPE artisans (BTP, services à la personne, paysagistes), PME tertiaires, agriculture provençale (viticulture, oléiculture, maraîchage), commerces de proximité, professions libérales et tourisme patrimonial. Bassin d'emploi rattaché à Aix-en-Provence, Pertuis et Manosque.",
   ecosystemEn:

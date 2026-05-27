@@ -12,6 +12,7 @@ export const SAINT_JORIOZ_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jorioz (74). Nous accompagnons TPE et PME : hébergeurs et restaurateurs du lac d'Annecy, commerces de proximité, artisans BTP, professions libérales, PME services et acteurs du tourisme lacustre rive ouest.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Jorioz (74). Nous accompagnons TPE et PME : hébergeurs et restaurateurs du lac d'Annecy, commerces de proximité, artisans BTP, professions libérales, PME services et acteurs du tourisme lacustre rive ouest.",
+  seoHook: "tourisme lacustre & professions libérales",
   ecosystemFr:
     "Saint-Jorioz est une commune résidentielle prisée de la rive ouest du lac d'Annecy. La plage municipale, la réserve naturelle du Bout du Lac et la voie verte (piste cyclable Annecy-Albertville) attirent un tourisme estival fort. Proximité immédiate d'Annecy (15 min). Économie locale dominée par les hébergements touristiques, la restauration, les commerces de proximité, l'artisanat BTP et les professions libérales.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const BEAUCHAMP_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beauchamp (95). Nous accompagnons tous types d'activités : TPE artisanales, PME de services et conseil, commerçants, professions libérales de santé et indépendants de la vallée de Montmorency.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beauchamp (95). Nous accompagnons tous types d'activités : TPE artisanales, PME de services et conseil, commerçants, professions libérales de santé et indépendants de la vallée de Montmorency.",
+  seoHook: "artisanat maintenance & commerce proximité",
   ecosystemFr:
     "Beauchamp est une commune résidentielle de la vallée de Montmorency, entre Taverny et Pierrelaye. Économie locale portée par les TPE artisanales BTP, les commerces de centre-ville, les PME de services aux entreprises, les professions libérales de santé et les prestataires tertiaires desservant le bassin Cergy-Pontoise et Paris.",
   ecosystemEn:

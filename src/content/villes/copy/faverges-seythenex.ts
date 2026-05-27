@@ -12,6 +12,7 @@ export const FAVERGES_SEYTHENEX_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Faverges-Seythenex (74). Nous accompagnons TPE et PME : industries mécaniques et horlogères, prestataires tourisme montagne, exploitations agricoles alpines, artisans locaux et commerces du bourg.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Faverges-Seythenex (74). Nous accompagnons TPE et PME : industries mécaniques et horlogères, prestataires tourisme montagne, exploitations agricoles alpines, artisans locaux et commerces du bourg.",
+  seoHook: "industrielles & tourisme montagne",
   ecosystemFr:
     "Faverges-Seythenex occupe une position stratégique entre les bassins d'Annecy (25 min) et d'Albertville (20 min). Héritage industriel fort : PME de mécanique de précision et d'horlogerie implantées de longue date. Tourisme de montagne actif (randonnée, stations proches). Agriculture alpine (élevage laitier, alpages). TPE artisanat et commerces de bourg complètent le tissu. Carrefour vers Chambéry (45 min) et vallée de la Tarentaise.",
   ecosystemEn:

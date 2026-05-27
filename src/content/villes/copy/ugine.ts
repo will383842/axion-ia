@@ -12,6 +12,7 @@ export const UGINE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ugine (73). Nous accompagnons TPE et PME de la vallée d'Arly : industriels métallurgie et aciers spéciaux, entreprises mécanique de précision, artisans, commerçants, services aux entreprises et indépendants du bassin Albertville-Annecy.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Ugine (73). Nous accompagnons TPE et PME de la vallée d'Arly : industriels métallurgie et aciers spéciaux, entreprises mécanique de précision, artisans, commerçants, services aux entreprises et indépendants du bassin Albertville-Annecy.",
+  seoHook: "métallurgie aciers & industrie mécanique",
   ecosystemFr:
     "Ugine est une commune industrielle de la vallée d'Arly (7 150 habitants), positionnée entre Albertville et Annecy en Savoie. Historiquement marquée par la métallurgie des aciers spéciaux (tradition sidérurgique alpine), elle conserve un tissu industriel mécanique significatif. Commerces de vallée, TPE artisanat et services aux entreprises complètent l'économie locale, à la croisée des bassins d'emploi d'Albertville et d'Annecy.",
   ecosystemEn:

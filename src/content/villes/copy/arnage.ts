@@ -12,6 +12,7 @@ export const ARNAGE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arnage (72). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles agglo Le Mans, sous-traitants automobile et sport mécanique, professions libérales et services de proximité.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Arnage (72). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles agglo Le Mans, sous-traitants automobile et sport mécanique, professions libérales et services de proximité.",
+  seoHook: "industrie mécanique & sport mécanique",
   ecosystemFr:
     "Arnage fait partie de Le Mans Métropole (Sarthe). Le circuit des 24 Heures du Mans passe par la commune (virage d'Arnage). Zones d'activités à proximité du pôle économique sud Le Mans. Industries mécaniques, commerce, artisanat, services. Le Mans centre à 10 min.",
   ecosystemEn:

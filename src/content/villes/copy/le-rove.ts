@@ -12,6 +12,7 @@ export const LE_ROVE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Rove (13). Nous accompagnons TPE tourisme et restauration, PME services, éleveurs de chèvres du Rove, plaisanciers et commerces de proximité de la Côte Bleue. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Rove (13). Nous accompagnons TPE tourisme et restauration, PME services, éleveurs de chèvres du Rove, plaisanciers et commerces de proximité de la Côte Bleue. Audit Flash dès 490 € HT.",
+  seoHook: "tourisme restauration & élevage caprin",
   ecosystemFr:
     "Le Rove est positionnée à l'ouest immédiat de Marseille, sur la Côte Bleue, avec ses calanques (Niolon, La Vesse, L'Erevine) et son identité agricole forte (chèvre du Rove, brousse du Rove AOP, fromage de tradition provençale). Tissu économique de TPE tourisme (locations saisonnières, restauration), élevage caprin et fromageries artisanales, plaisance et clubs de plongée, PME services, commerces de proximité et viticulture côtière.",
   ecosystemEn:

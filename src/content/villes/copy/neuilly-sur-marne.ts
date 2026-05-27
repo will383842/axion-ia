@@ -14,6 +14,7 @@ export const NEUILLY_SUR_MARNE_COPY: VilleCopy = {
     "À Neuilly-sur-Marne, Axion-IA propose des services d'IA opérationnelle adaptés aux besoins des entreprises locales. Notre équipe nationale se déplace pour des interventions sur site, offrant des audits dès 490 € HT. Avec notre expérience, nous aidons les entreprises de la région, en tenant compte des infrastructures proches comme l'aéroport de Paris-Charles-de-Gaulle et la Gare de Lyon, ainsi que des pôles d'innovation parisiens tels que Station F et LVMH.",
   directAnswerEn:
     "À Neuilly-sur-Marne, Axion-IA propose des services d'IA opérationnelle adaptés aux besoins des entreprises locales. Notre équipe nationale se déplace pour des interventions sur site, offrant des audits dès 490 € HT. Avec notre expérience, nous aidons les entreprises de la région, en tenant compte des infrastructures proches comme l'aéroport de Paris-Charles-de-Gaulle et la Gare de Lyon, ainsi que des pôles d'innovation parisiens tels que Station F et LVMH.",
+  seoHook: "commerce détail & construction",
   ecosystemFr:
     "Neuilly-sur-Marne bénéficie d'un écosystème économique varié avec des secteurs comme le commerce de détail et la programmation informatique. Les entreprises de la région, proches de Paris, peuvent s'inspirer de l'innovation présente chez des entités telles que Cap Digital et Inria.",
   ecosystemEn:

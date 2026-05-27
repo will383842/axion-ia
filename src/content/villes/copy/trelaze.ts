@@ -12,6 +12,7 @@ export const TRELAZE_COPY: VilleCopy = {
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Trélazé (49). Nous accompagnons les TPE, PME et indépendants trélazéens dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict, tarifs publics.",
   directAnswerEn:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Trélazé (49). Nous accompagnons les TPE, PME et indépendants trélazéens dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Engagement sous 5 jours, RGPD strict, tarifs publics.",
+  seoHook: "artisanat second & commerce détail",
   ecosystemFr:
     "Trélazé hérite d'un passé ardoisier devenu patrimoine industriel, reconverti en zones d'activités modernes (ZA de la Quantinière, ZA des Music'Halles). Tissu économique mixte : TPE artisanat BTP, commerces de proximité, PME services et logistique, professions de santé. Proximité immédiate Angers Loire Métropole et gare TGV.",
   ecosystemEn:

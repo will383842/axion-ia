@@ -14,6 +14,7 @@ export const OULLINS_PIERRE_BENITE_COPY: VilleCopy = {
     "À Oullins-Pierre-Bénite, Axion-IA propose des services adaptés aux besoins des entreprises locales. Avec des acteurs comme Sanofi et le pôle Lyonbiopôle, nous intervenons sur site pour des audits, des implémentations et des formations IA. Notre approche garantit un déploiement efficace et mesurable, sans partenariat direct avec ces entités.",
   directAnswerEn:
     "À Oullins-Pierre-Bénite, Axion-IA propose des services adaptés aux besoins des entreprises locales. Avec des acteurs comme Sanofi et le pôle Lyonbiopôle, nous intervenons sur site pour des audits, des implémentations et des formations IA. Notre approche garantit un déploiement efficace et mesurable, sans partenariat direct avec ces entités.",
+  seoHook: "santé humaine & r&d scientifique",
   ecosystemFr:
     "Oullins-Pierre-Bénite bénéficie de la proximité de Lyonbiopôle et de Sanofi, renforçant son secteur santé. Axion-IA y propose ses services IA pour optimiser les opérations des entreprises locales.",
   ecosystemEn:

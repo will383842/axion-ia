@@ -12,6 +12,7 @@ export const LONS_LE_SAUNIER_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lons-le-Saunier (39), préfecture du Jura. Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et fromagères, commerçants, acteurs du thermalisme et du tourisme, professions libérales, indépendants et services publics jurassiens.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lons-le-Saunier (39), préfecture du Jura. Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et fromagères, commerçants, acteurs du thermalisme et du tourisme, professions libérales, indépendants et services publics jurassiens.",
+  seoHook: "agroalimentaire filière & artisanat services",
   ecosystemFr:
     "Lons-le-Saunier, préfecture du Jura, est le centre administratif, commercial et thermal du département. L'économie locale repose sur l'agroalimentaire (filière Comté, industrie fromagère, berceau historique de la Vache qui rit), le thermalisme (Thermes Lédonia), les services publics départementaux, l'artisanat BTP, le commerce de centre-ville et le tourisme jurassien (reculées, vignoble).",
   ecosystemEn:

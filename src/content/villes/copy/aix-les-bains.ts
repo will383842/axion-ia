@@ -14,6 +14,7 @@ export const AIX_LES_BAINS_COPY: VilleCopy = {
     "À Aix-les-Bains, Axion-IA se déplace pour accompagner les entreprises dans l'optimisation de leurs opérations. Avec des acteurs économiques tels que les Thermes Nationaux d'Aix-les-Bains et un secteur du commerce de détail florissant, nous proposons des audits dès 490 € HT et des interventions à partir de 590 € HT pour répondre aux besoins spécifiques des entreprises locales.",
   directAnswerEn:
     "À Aix-les-Bains, Axion-IA se déplace pour accompagner les entreprises dans l'optimisation de leurs opérations. Avec des acteurs économiques tels que les Thermes Nationaux d'Aix-les-Bains et un secteur du commerce de détail florissant, nous proposons des audits dès 490 € HT et des interventions à partir de 590 € HT pour répondre aux besoins spécifiques des entreprises locales.",
+  seoHook: "hébergement & activités sportives",
   ecosystemFr:
     "L'écosystème économique d'Aix-les-Bains est marqué par les Thermes Nationaux d'Aix-les-Bains et un secteur dynamique du commerce de détail, offrant un cadre propice à l'innovation et à l'amélioration des processus par l'IA.",
   ecosystemEn:

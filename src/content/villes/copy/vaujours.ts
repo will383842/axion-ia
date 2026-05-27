@@ -12,6 +12,7 @@ export const VAUJOURS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vaujours (93). Nous accompagnons tous types d'activités : TPE artisanales BTP et commerçantes, PME de services aux entreprises, professions libérales, restaurateurs, prestataires logistiques et indépendants de l'est Seine-Saint-Denis.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vaujours (93). Nous accompagnons tous types d'activités : TPE artisanales BTP et commerçantes, PME de services aux entreprises, professions libérales, restaurateurs, prestataires logistiques et indépendants de l'est Seine-Saint-Denis.",
+  seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Vaujours se situe à la frontière est de la Seine-Saint-Denis, limitrophe de Livry-Gargan, Coubron et Courtry (Seine-et-Marne). Tissu économique de TPE artisanales BTP, commerces de centre-bourg, professions libérales et PME tertiaires. Commune résidentielle intégrée au Grand Paris avec un accès rapide à l'A104 (Francilienne) et à Roissy-CDG.",
   ecosystemEn:

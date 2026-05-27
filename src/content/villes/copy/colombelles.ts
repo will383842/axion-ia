@@ -12,6 +12,7 @@ export const COLOMBELLES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Colombelles (14). Nous accompagnons tous types d'activités : TPE artisans BTP, PME services et industrielles de l'agglomération caennaise est, acteurs de la reconversion créative, commerçants, professions libérales et indépendants.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Colombelles (14). Nous accompagnons tous types d'activités : TPE artisans BTP, PME services et industrielles de l'agglomération caennaise est, acteurs de la reconversion créative, commerçants, professions libérales et indépendants.",
+  seoHook: "services aux & industrie reconversion",
   ecosystemFr:
     "Colombelles est une commune de l'agglomération caennaise est, marquée par la reconversion de l'ancienne friche sidérurgique. Les espaces culturels et créatifs (le Wip, le Big Band Café) symbolisent cette transformation. Tissu TPE artisans BTP, PME services et industrie, commerces de proximité, professions libérales.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const ENTRAIGUES_SUR_LA_SORGUE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Entraigues-sur-la-Sorgue (84). Nous accompagnons TPE artisans, PME logistiques et négoces, maraîchers, commerces et professions libérales du nord-est avignonnais. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Entraigues-sur-la-Sorgue (84). Nous accompagnons TPE artisans, PME logistiques et négoces, maraîchers, commerces et professions libérales du nord-est avignonnais. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat & logistique négoces",
   ecosystemFr:
     "Entraigues-sur-la-Sorgue est positionnée au nord-est d'Avignon, en vallée des Sorgues, dans l'agglomération du Grand Avignon. Son économie repose sur les zones d'activités logistiques et négoces, les TPE artisans (BTP, services), les PME commerciales et industrielles, l'agriculture maraîchère résiduelle, les professions libérales et commerces de proximité. Bassin d'emploi connecté à Avignon TGV via A7.",
   ecosystemEn:

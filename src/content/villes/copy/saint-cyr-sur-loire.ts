@@ -12,6 +12,7 @@ export const SAINT_CYR_SUR_LOIRE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient Ã  Saint-Cyr-sur-Loire (37). Nous accompagnons tous types d'activitÃ©s : PME tertiaires zones commerciales (La Petite Arche, Les Atlantes), TPE artisans, professions libÃ©rales, commerces, prestataires services aux entreprises de Tours MÃ©tropole nord.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient Ã  Saint-Cyr-sur-Loire (37). Nous accompagnons tous types d'activitÃ©s : PME tertiaires zones commerciales (La Petite Arche, Les Atlantes), TPE artisans, professions libÃ©rales, commerces, prestataires services aux entreprises de Tours MÃ©tropole nord.",
+  seoHook: "commerce zones & professions libã©rales",
   ecosystemFr:
     "Saint-Cyr-sur-Loire est une commune rÃ©sidentielle et commerciale au nord de Tours, en bords de Loire. Zones commerciales majeures (La Petite Arche, Les Atlantes), pÃ´les tertiaires. Tissu PME services, TPE artisans, professions libÃ©rales, commerces, restauration.",
   ecosystemEn:

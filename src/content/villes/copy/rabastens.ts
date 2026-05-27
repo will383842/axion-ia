@@ -12,6 +12,7 @@ export const RABASTENS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rabastens (81). Nous accompagnons TPE vignerons et artisans, PME de services, commerçants, exploitants agricoles et professions libérales du vignoble tarnais. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rabastens (81). Nous accompagnons TPE vignerons et artisans, PME de services, commerçants, exploitants agricoles et professions libérales du vignoble tarnais. Audit Flash dès 490 € HT.",
+  seoHook: "viticulture gaillac & agriculture grandes",
   ecosystemFr:
     "Rabastens (5 867 hab) est une cité médiévale sur les bords du Tarn, au coeur du vignoble AOC Gaillac. Économie mixte viticulture-agriculture, commerces de bourg, artisanat et services. Proximité Toulouse (35 min A68), Albi (30 min), Gaillac (10 min). Commune résidentielle attractive entre Toulouse et Albi.",
   ecosystemEn:

@@ -14,6 +14,7 @@ export const LES_PAVILLONS_SOUS_BOIS_COPY: VilleCopy = {
     "Axion-IA propose des solutions adaptées aux besoins des entreprises de Les Pavillons-sous-Bois. Avec des acteurs comme LVMH et BNP Paribas présents à Paris, notre approche s'inscrit dans un contexte économique riche. Nous nous déplaçons pour offrir des services tels que l'audit, l'intervention et l'implémentation, garantissant une intégration fluide et efficace des technologies IA.",
   directAnswerEn:
     "Axion-IA propose des solutions adaptées aux besoins des entreprises de Les Pavillons-sous-Bois. Avec des acteurs comme LVMH et BNP Paribas présents à Paris, notre approche s'inscrit dans un contexte économique riche. Nous nous déplaçons pour offrir des services tels que l'audit, l'intervention et l'implémentation, garantissant une intégration fluide et efficace des technologies IA.",
+  seoHook: "commerce détail & travaux construction",
   ecosystemFr:
     "Les Pavillons-sous-Bois bénéficient de la proximité avec Paris, où se trouvent des pôles comme Cap Digital et Station F, favorisant l'innovation et le développement technologique.",
   ecosystemEn:

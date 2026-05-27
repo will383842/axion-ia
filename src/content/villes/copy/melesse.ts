@@ -12,6 +12,7 @@ export const MELESSE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Melesse (35). Nous accompagnons TPE artisans, PME de services, commerçants, professions libérales et entreprises tertiaires du nord rennais. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Melesse (35). Nous accompagnons TPE artisans, PME de services, commerçants, professions libérales et entreprises tertiaires du nord rennais. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
+  seoHook: "artisanat & professions libérales",
   ecosystemFr:
     "Melesse est intégrée à Rennes Métropole (~460 000 hab) et profite de la dynamique économique rennaise (numérique, cybersécurité, agroalimentaire). Commune résidentielle attractive avec tissu TPE artisans, PME de services aux entreprises, commerces de proximité et professions libérales. Proximité immédiate de la zone nord de Rennes (La Chapelle-des-Fougeretz, Pacé, Betton).",
   ecosystemEn:

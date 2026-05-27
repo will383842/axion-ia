@@ -12,6 +12,7 @@ export const SAINT_ANDRE_DES_EAUX_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-André-des-Eaux (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tourisme balnéaire, hébergements, restauration, professions libérales et entreprises du bassin Brière-La Baule.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-André-des-Eaux (44). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME tourisme balnéaire, hébergements, restauration, professions libérales et entreprises du bassin Brière-La Baule.",
+  seoHook: "tourisme balnéaire & restauration",
   ecosystemFr:
     "Saint-André-des-Eaux est une commune résidentielle entre la Brière et La Baule. Tourisme balnéaire, golf, résidences secondaires. Tissu TPE artisans, commerçants, PME tourisme et hébergement, restauration, professions libérales. Proximité directe La Baule et Saint-Nazaire.",
   ecosystemEn:

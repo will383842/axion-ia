@@ -14,6 +14,7 @@ export const VILLEJUIF_COPY: VilleCopy = {
     "Axion-IA propose ses services à Villejuif, où l'environnement économique est marqué par le centre Gustave Roussy et l'INSERM. Nous offrons des audits à partir de 490 € HT et des interventions dès 590 € HT. Notre équipe se déplace sur site pour accompagner les entreprises dans l'intégration de l'IA, en tenant compte des spécificités du secteur de la santé et de la recherche.",
   directAnswerEn:
     "Axion-IA propose ses services à Villejuif, où l'environnement économique est marqué par le centre Gustave Roussy et l'INSERM. Nous offrons des audits à partir de 490 € HT et des interventions dès 590 € HT. Notre équipe se déplace sur site pour accompagner les entreprises dans l'intégration de l'IA, en tenant compte des spécificités du secteur de la santé et de la recherche.",
+  seoHook: "santé humaine & recherche scientifique",
   ecosystemFr:
     "Villejuif se distingue par ses activités de santé humaine et de recherche avec Gustave Roussy et l'INSERM, renforçant son potentiel économique.",
   ecosystemEn:

@@ -14,6 +14,7 @@ export const PLAISIR_COPY: VilleCopy = {
     "Axion-IA se déplace à Plaisir pour accompagner les entreprises dans l'intégration de l'IA. Avec des acteurs comme Renault et Thales présents dans la région, notre expertise permet d'automatiser les tâches administratives et de relance, assurant un retour sur investissement rapide et mesurable.",
   directAnswerEn:
     "Axion-IA se déplace à Plaisir pour accompagner les entreprises dans l'intégration de l'IA. Avec des acteurs comme Renault et Thales présents dans la région, notre expertise permet d'automatiser les tâches administratives et de relance, assurant un retour sur investissement rapide et mesurable.",
+  seoHook: "commerce détail & programmation informatique",
   ecosystemFr:
     "Plaisir accueille des entreprises comme Renault et Thales, renforçant son tissu économique. La zone d'activités des Gâtines est un pôle industriel clé.",
   ecosystemEn:

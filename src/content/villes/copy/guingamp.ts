@@ -12,6 +12,7 @@ export const GUINGAMP_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guingamp (22). Nous accompagnons TPE et PME : entreprises agroalimentaires, artisans, commerçants de centre-ville, professions libérales, prestataires de services du bassin guingampais et du Trégor. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Guingamp (22). Nous accompagnons TPE et PME : entreprises agroalimentaires, artisans, commerçants de centre-ville, professions libérales, prestataires de services du bassin guingampais et du Trégor. Audit Flash dès 490 € HT.",
+  seoHook: "agroalimentaire & artisanat",
   ecosystemFr:
     "Guingamp est la sous-préfecture des Côtes-d'Armor, au carrefour du Trégor et du Goëlo. Pôle agroalimentaire (viande, lait, légumes) structurant pour le bassin d'emploi, complété par un tissu TPE artisans, commerces de centre-ville, professions libérales et services. Noeud ferroviaire TGV Paris-Brest.",
   ecosystemEn:

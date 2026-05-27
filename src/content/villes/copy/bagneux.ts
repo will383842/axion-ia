@@ -14,6 +14,7 @@ export const BAGNEUX_COPY: VilleCopy = {
     "Bagneux, avec ses 3 000 établissements actifs, est un environnement propice pour les interventions d'Axion-IA. Proche de pôles tels que Station F et Inria, nous offrons des solutions IA adaptées aux besoins locaux. Notre approche sur site garantit une mise en œuvre efficace, répondant aux exigences spécifiques de chaque entreprise.",
   directAnswerEn:
     "Bagneux, avec ses 3 000 établissements actifs, est un environnement propice pour les interventions d'Axion-IA. Proche de pôles tels que Station F et Inria, nous offrons des solutions IA adaptées aux besoins locaux. Notre approche sur site garantit une mise en œuvre efficace, répondant aux exigences spécifiques de chaque entreprise.",
+  seoHook: "programmation informatique & activités des",
   ecosystemFr:
     "Le tissu économique de Bagneux inclut des acteurs comme LVMH et BNP Paribas, offrant un cadre riche pour nos interventions IA.",
   ecosystemEn:

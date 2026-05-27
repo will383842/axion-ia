@@ -12,6 +12,7 @@ export const RIVES_DU_LOIR_EN_ANJOU_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rives-du-Loir-en-Anjou (49). Nous accompagnons tous types d'activités : TPE artisans, PME agricoles et viticoles, maraîchers, commerçants de bourg, professions libérales et prestataires de services du bassin du Loir entre Angers et La Flèche.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Rives-du-Loir-en-Anjou (49). Nous accompagnons tous types d'activités : TPE artisans, PME agricoles et viticoles, maraîchers, commerçants de bourg, professions libérales et prestataires de services du bassin du Loir entre Angers et La Flèche.",
+  seoHook: "agriculture polyculture-élevage & viticulture",
   ecosystemFr:
     "Rives-du-Loir-en-Anjou est une commune nouvelle issue de la fusion de Lézigné, Seiches-sur-le-Loir et Matheflon, le long du Loir entre Angers et La Flèche. Économie rurale diversifiée : agriculture (polyculture, élevage), viticulture, maraîchage, artisanat, commerces de proximité.",
   ecosystemEn:

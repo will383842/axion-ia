@@ -12,6 +12,7 @@ export const MANTES_LA_VILLE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mantes-la-Ville (78). Nous accompagnons tous types d'activités : industriels et sous-traitants automobiles/aéronautiques (bassin Renault Flins-Safran Buchelay), TPE artisans BTP, commerçants, PME tertiaires mantevillois, professions libérales et services publics du bassin Mantois.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mantes-la-Ville (78). Nous accompagnons tous types d'activités : industriels et sous-traitants automobiles/aéronautiques (bassin Renault Flins-Safran Buchelay), TPE artisans BTP, commerçants, PME tertiaires mantevillois, professions libérales et services publics du bassin Mantois.",
+  seoHook: "industrie automobile & aéronautique r&d",
   ecosystemFr:
     "Mantes-la-Ville s'intègre au bassin industriel mantois : proximité immédiate site Renault Flins-Aubergenville (4 000 emplois, usine reconvertie batteries-recyclage), Safran Buchelay (R&D moteurs), tissu dense de sous-traitants automobile/aéronautique. Activité commerce centre-ville, TPE artisans BTP, PME tertiaires, services aux entreprises industrielles.",
   ecosystemEn:

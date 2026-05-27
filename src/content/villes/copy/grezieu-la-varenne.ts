@@ -12,6 +12,7 @@ export const GREZIEU_LA_VARENNE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Grézieu-la-Varenne (69). Nous accompagnons tous types d'activités : PME tertiaires ouest lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Grézieu-la-Varenne (69). Nous accompagnons tous types d'activités : PME tertiaires ouest lyonnais, TPE artisans BTP, commerçants, professions libérales, indépendants et services aux entreprises.",
+  seoHook: "tertiaires ouest",
   ecosystemFr:
     "Grézieu-la-Varenne est positionnée en banlieue ouest de Lyon, aux portes des monts du Lyonnais. Tissu péri-urbain résidentiel : PME tertiaires, professions libérales, TPE artisanat BTP, commerces de proximité.",
   ecosystemEn:

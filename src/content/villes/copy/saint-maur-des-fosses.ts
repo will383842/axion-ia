@@ -14,6 +14,7 @@ export const SAINT_MAUR_DES_FOSSES_COPY: VilleCopy = {
     "Axion-IA se déplace à Saint-Maur-des-Fossés pour accompagner les entreprises dans l'optimisation de leurs processus grâce à l'IA. L'écosystème local, comprenant des acteurs comme Cap Digital et Station F à Paris, offre un environnement propice à l'innovation. Nos services incluent audits, interventions et implémentations, adaptés aux besoins spécifiques des entreprises locales.",
   directAnswerEn:
     "Axion-IA se déplace à Saint-Maur-des-Fossés pour accompagner les entreprises dans l'optimisation de leurs processus grâce à l'IA. L'écosystème local, comprenant des acteurs comme Cap Digital et Station F à Paris, offre un environnement propice à l'innovation. Nos services incluent audits, interventions et implémentations, adaptés aux besoins spécifiques des entreprises locales.",
+  seoHook: "commerce détail & programmation informatique",
   ecosystemFr:
     "Le tissu économique de Saint-Maur-des-Fossés est enrichi par des secteurs tels que le commerce de détail et la programmation informatique. Proche de pôles comme Cap Digital à Paris, cette ville bénéficie d'un environnement favorable à l'innovation.",
   ecosystemEn:

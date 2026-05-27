@@ -12,6 +12,7 @@ export const ESVRES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Esvres (37). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, PME tertiaires, professions libérales, exploitants agricoles, prestataires de services et entreprises de la vallée de l'Indre sud-tourangelle.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Esvres (37). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, PME tertiaires, professions libérales, exploitants agricoles, prestataires de services et entreprises de la vallée de l'Indre sud-tourangelle.",
+  seoHook: "artisanat second & tertiaires services",
   ecosystemFr:
     "Esvres est une commune périurbaine attractive de la vallée de l'Indre, entre Tours et Loches. Position résidentielle prisée avec accès rapide à l'agglomération tourangelle. Tissu TPE artisans BTP, commerçants de proximité, PME tertiaires, professions libérales, exploitations agricoles (céréales, polyculture) et entreprises de services. Proximité directe du Val de Loire et des châteaux tourangeaux.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const TREBES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trèbes (11). Nous accompagnons TPE artisans, PME viticoles Minervois, professionnels du canal du Midi, commerçants, restaurateurs et services de l'agglomération carcassonnaise. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Trèbes (11). Nous accompagnons TPE artisans, PME viticoles Minervois, professionnels du canal du Midi, commerçants, restaurateurs et services de l'agglomération carcassonnaise. Audit Flash dès 490 € HT.",
+  seoHook: "viticulture minervois & tourisme fluvial",
   ecosystemFr:
     "Trèbes est une commune de l'agglomération de Carcassonne, traversée par le canal du Midi (classé UNESCO) et la rivière Aude. Économie viticole (AOC Minervois, Cabardès), tourisme fluvial sur le canal du Midi, TPE artisans BTP, PME agroalimentaires, commerces de proximité, hôtellerie-restauration liée au tourisme carcassonnais.",
   ecosystemEn:

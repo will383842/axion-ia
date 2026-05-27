@@ -12,6 +12,7 @@ export const SAINT_LYS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Lys (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'ouest Toulouse. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Lys (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants de l'ouest Toulouse. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat & commerce centre-bourg",
   ecosystemFr:
     "Saint-Lys est un bourg en croissance de l'ouest de Toulouse. Tissu TPE artisans BTP et second œuvre, PME de services, commerces de centre-bourg animé, professions libérales, exploitations agricoles céréalières. Axe Toulouse-Auch (RN124).",
   ecosystemEn:

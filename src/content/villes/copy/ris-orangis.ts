@@ -14,6 +14,7 @@ export const RIS_ORANGIS_COPY: VilleCopy = {
     "À Ris-Orangis, Axion-IA propose des solutions IA adaptées aux entreprises locales. Avec des infrastructures de transport comme la Gare de Lyon et l'aéroport de Paris-Orly, nous intervenons rapidement sur site. L'écosystème francilien, comprenant Cap Digital et Inria, offre un cadre idéal pour intégrer l'IA dans vos processus métier.",
   directAnswerEn:
     "À Ris-Orangis, Axion-IA propose des solutions IA adaptées aux entreprises locales. Avec des infrastructures de transport comme la Gare de Lyon et l'aéroport de Paris-Orly, nous intervenons rapidement sur site. L'écosystème francilien, comprenant Cap Digital et Inria, offre un cadre idéal pour intégrer l'IA dans vos processus métier.",
+  seoHook: "commerce détail & transports",
   ecosystemFr:
     "Ris-Orangis est entourée de villes dynamiques comme Évry-Courcouronnes et Corbeil-Essonnes. L'écosystème local inclut des entreprises de commerce de détail et des transports terrestres, propices à l'innovation IA.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const SAINT_CHERON_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Chéron (91). Nous accompagnons TPE et PME : commerçants et artisans centre-bourg, PME services aux entreprises, professions libérales, restaurateurs, prestataires BTP vallée de l'Orge. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Chéron (91). Nous accompagnons TPE et PME : commerçants et artisans centre-bourg, PME services aux entreprises, professions libérales, restaurateurs, prestataires BTP vallée de l'Orge. Audit Flash dès 490 € HT.",
+  seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Saint-Chéron est une commune résidentielle de la vallée de l'Orge supérieure, desservie par le RER C. Tissu TPE commerces et artisanat, PME services, professions libérales, restauration, prestataires BTP.",
   ecosystemEn:

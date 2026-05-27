@@ -12,6 +12,7 @@ export const VAUREAL_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vauréal (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME de services, professions libérales et indépendants de l'agglomération Cergy-Pontoise. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vauréal (95). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, PME de services, professions libérales et indépendants de l'agglomération Cergy-Pontoise. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat rénovation & commerce quartier",
   ecosystemFr:
     "Vauréal est une commune résidentielle de la ville nouvelle de Cergy-Pontoise (200 000 hab), entre Jouy-le-Moutier et Cergy. Son tissu économique s'appuie sur les commerces de quartier, TPE artisanales, PME de services aux entreprises, professions libérales et indépendants. Accès direct RER A branche Cergy.",
   ecosystemEn:

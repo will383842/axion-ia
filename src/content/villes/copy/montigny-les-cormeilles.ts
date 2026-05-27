@@ -14,6 +14,7 @@ export const MONTIGNY_LES_CORMEILLES_COPY: VilleCopy = {
     "Axion-IA se déplace à Montigny-lès-Cormeilles pour accompagner les entreprises dans leur transformation IA. Notre équipe nationale intervient sur site, permettant aux entreprises de bénéficier de notre savoir-faire, comme celui reconnu par LVMH et Inria, sans besoin de déplacement de leur part. Nos services incluent audit, implémentation et formation, adaptés aux spécificités locales.",
   directAnswerEn:
     "Axion-IA se déplace à Montigny-lès-Cormeilles pour accompagner les entreprises dans leur transformation IA. Notre équipe nationale intervient sur site, permettant aux entreprises de bénéficier de notre savoir-faire, comme celui reconnu par LVMH et Inria, sans besoin de déplacement de leur part. Nos services incluent audit, implémentation et formation, adaptés aux spécificités locales.",
+  seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Montigny-lès-Cormeilles bénéficie d'un accès à l'écosystème parisien, incluant Cap Digital et Station F, facilitant l'innovation pour les entreprises locales.",
   ecosystemEn:

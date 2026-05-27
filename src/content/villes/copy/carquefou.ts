@@ -14,6 +14,7 @@ export const CARQUEFOU_COPY: VilleCopy = {
     "Axion-IA se déplace à Carquefou pour accompagner les entreprises dans l'intégration de l'IA. Avec des acteurs économiques tels que Manitou et Armor, et des pôles de compétitivité comme Images & Réseaux, nous auditons et implémentons des solutions IA pour améliorer l'efficacité des opérations. Nos tarifs débutent à 490 € HT pour un audit flash de 4 heures.",
   directAnswerEn:
     "Axion-IA se déplace à Carquefou pour accompagner les entreprises dans l'intégration de l'IA. Avec des acteurs économiques tels que Manitou et Armor, et des pôles de compétitivité comme Images & Réseaux, nous auditons et implémentons des solutions IA pour améliorer l'efficacité des opérations. Nos tarifs débutent à 490 € HT pour un audit flash de 4 heures.",
+  seoHook: "commerce gros & transports terrestres",
   ecosystemFr:
     "Carquefou abrite des entreprises comme Manitou et Armor, et bénéficie de pôles de compétitivité tels qu'Images & Réseaux, renforçant son tissu industriel.",
   ecosystemEn:

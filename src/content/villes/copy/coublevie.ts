@@ -12,6 +12,7 @@ export const COUBLEVIE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coublevie (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, indépendants, PME tertiaires coublevitaines et services aux entreprises du Pays voironnais et bassin Voiron-Chartreuse.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coublevie (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales, indépendants, PME tertiaires coublevitaines et services aux entreprises du Pays voironnais et bassin Voiron-Chartreuse.",
+  seoHook: "tertiaires pays & professions libérales",
   ecosystemFr:
     "Coublevie est intégrée à la communauté d'agglomération du Pays voironnais (~93 000 hab), positionnée en banlieue résidentielle de Voiron. Position pied du massif de la Chartreuse. Tissu péri-urbain : PME tertiaires, TPE artisanat BTP, commerces de proximité, professions libérales installées, agriculture résiduelle.",
   ecosystemEn:

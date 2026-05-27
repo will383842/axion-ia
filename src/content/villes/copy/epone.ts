@@ -12,6 +12,7 @@ export const EPONE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Épône (78). Nous accompagnons TPE et PME : artisans locaux, PME industrielles et logistiques de la vallée de Seine, commerçants et professions libérales de cette commune dynamique entre Mantes-la-Jolie et Les Mureaux.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Épône (78). Nous accompagnons TPE et PME : artisans locaux, PME industrielles et logistiques de la vallée de Seine, commerçants et professions libérales de cette commune dynamique entre Mantes-la-Jolie et Les Mureaux.",
+  seoHook: "industrie logistique & artisanat bâtiment",
   ecosystemFr:
     "Épône est une commune de la rive gauche de Seine dans les Yvelines, à mi-chemin entre Mantes-la-Jolie et Les Mureaux. Zones d'activités industrielles et logistiques le long de l'axe Seine. Tissu économique : PME industrie et logistique, TPE artisanat bâtiment, commerces de centre-bourg, professions libérales, exploitations agricoles (plaine de Versailles). Proximité immédiate de l'A13 et gare Transilien.",
   ecosystemEn:

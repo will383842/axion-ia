@@ -12,6 +12,7 @@ export const AUBIGNY_LES_CLOUZEAUX_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aubigny-Les Clouzeaux (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles agglo La Roche-sur-Yon, exploitations agricoles, professions libérales et services.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aubigny-Les Clouzeaux (85). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME industrielles agglo La Roche-sur-Yon, exploitations agricoles, professions libérales et services.",
+  seoHook: "industrielles zones & artisanat construction",
   ecosystemFr:
     "Aubigny-Les Clouzeaux est une commune nouvelle de l'agglomération yonnaise (Vendée), née de la fusion d'Aubigny et Les Clouzeaux. Zones d'activités industrielles et artisanales, agriculture bocagère, commerces de proximité. La Roche-sur-Yon centre à 10 min, Nantes à 50 min.",
   ecosystemEn:

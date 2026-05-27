@@ -14,6 +14,7 @@ export const CORBEIL_ESSONNES_COPY: VilleCopy = {
     "Nous intervenons à Corbeil-Essonnes, où le tissu économique inclut Safran Aircraft Engines et des secteurs comme le commerce de détail et la construction. Axion-IA propose des audits dès 490 € HT et des interventions à partir de 590 € HT. Nous nous déplaçons sur site pour accompagner les entreprises dans l'intégration de l'IA.",
   directAnswerEn:
     "Nous intervenons à Corbeil-Essonnes, où le tissu économique inclut Safran Aircraft Engines et des secteurs comme le commerce de détail et la construction. Axion-IA propose des audits dès 490 € HT et des interventions à partir de 590 € HT. Nous nous déplaçons sur site pour accompagner les entreprises dans l'intégration de l'IA.",
+  seoHook: "commerce détail & construction",
   ecosystemFr:
     "Corbeil-Essonnes, avec Safran Aircraft Engines et un secteur actif de la santé humaine, offre un cadre propice à l'innovation. Axion-IA y apporte son expertise nationale pour des solutions IA adaptées.",
   ecosystemEn:

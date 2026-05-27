@@ -12,6 +12,7 @@ export const ISLE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Isle (87). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et tertiaires, commerçants, agriculteurs, professions libérales, indépendants et services aux entreprises de l'agglomération de Limoges nord.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Isle (87). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et tertiaires, commerçants, agriculteurs, professions libérales, indépendants et services aux entreprises de l'agglomération de Limoges nord.",
+  seoHook: "industrielles logistique & commerce proximité",
   ecosystemFr:
     "Isle (7 995 hab) est une commune attractive au nord de Limoges, traversée par la Vienne. Zones d'activités économiques dynamiques (artisanat, PME industrielles, logistique). Tissu mixte : PME tertiaires, TPE artisans BTP, agriculture, commerces, services de proximité. Proximité directe Limoges centre (10 min) et aéroport Bellegarde (10 min).",
   ecosystemEn:

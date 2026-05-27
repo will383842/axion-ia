@@ -12,6 +12,7 @@ export const LA_ROQUE_D_ANTHERON_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Roque-d'Anthéron (13). Nous accompagnons TPE tourisme culturel, restauration, artisans, PME services, hébergements et commerces de proximité de la vallée de la Durance. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Roque-d'Anthéron (13). Nous accompagnons TPE tourisme culturel, restauration, artisans, PME services, hébergements et commerces de proximité de la vallée de la Durance. Audit Flash dès 490 € HT.",
+  seoHook: "tourisme culturel & restauration événementiel",
   ecosystemFr:
     "La Roque-d'Anthéron est positionnée dans la vallée de la Durance, au nord d'Aix-en-Provence, et tire son rayonnement du Festival international de piano (juillet-août, plus de 80 000 spectateurs) et de l'abbaye cistercienne de Silvacane. Tissu économique de TPE tourisme culturel (hébergements, restauration, locations saisonnières), artisans, PME services tertiaires, viticulture des Coteaux d'Aix, commerces de proximité et professions libérales. Saisonnalité forte autour du festival.",
   ecosystemEn:

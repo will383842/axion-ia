@@ -12,6 +12,7 @@ export const ROCHE_LA_MOLIERE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Roche-la-Molière (42). Nous accompagnons tous types d'activités : PME industrielles diversifiées Saint-Étienne Métropole, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de la banlieue ouest stéphanoise.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Roche-la-Molière (42). Nous accompagnons tous types d'activités : PME industrielles diversifiées Saint-Étienne Métropole, TPE artisans BTP, commerçants, indépendants, professions libérales et services aux entreprises de la banlieue ouest stéphanoise.",
+  seoHook: "industrielles diversifiées & héritage minier",
   ecosystemFr:
     "Roche-la-Molière est intégrée à Saint-Étienne Métropole, en banlieue ouest immédiate de Saint-Étienne. Héritage minier (ancien bassin charbonnier stéphanois historique). Reconversion vers tissu PME industrielles diversifiées contemporaines, tertiaires, TPE artisanat BTP, commerces de proximité.",
   ecosystemEn:

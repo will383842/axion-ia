@@ -14,6 +14,7 @@ export const DRAGUIGNAN_COPY: VilleCopy = {
     "Axion-IA se déplace à Draguignan pour offrir des solutions IA adaptées aux besoins des entreprises locales. Avec plus de 3 000 établissements actifs, dont de nombreux dans le commerce de détail et la construction, nous aidons à automatiser les tâches administratives. Nos services incluent des audits et des implémentations, avec des tarifs publics consultables sur notre site.",
   directAnswerEn:
     "Axion-IA se déplace à Draguignan pour offrir des solutions IA adaptées aux besoins des entreprises locales. Avec plus de 3 000 établissements actifs, dont de nombreux dans le commerce de détail et la construction, nous aidons à automatiser les tâches administratives. Nos services incluent des audits et des implémentations, avec des tarifs publics consultables sur notre site.",
+  seoHook: "commerce détail & construction",
   ecosystemFr:
     "Draguignan, avec ses 40 826 habitants, est un pôle régional regroupant des activités variées comme le commerce de détail et la santé humaine. Les entreprises locales bénéficient de notre expertise en IA pour améliorer leur efficacité opérationnelle.",
   ecosystemEn:

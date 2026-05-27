@@ -12,6 +12,7 @@ export const MARCK_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marck (62). Nous accompagnons TPE artisanales, PME logistiques et portuaires, commerçants et professions libérales du Calaisis. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Marck (62). Nous accompagnons TPE artisanales, PME logistiques et portuaires, commerçants et professions libérales du Calaisis. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+  seoHook: "logistique transports & commerce détail",
   ecosystemFr:
     "Marck est limitrophe de Calais, à proximité de la zone industrialo-portuaire et du terminal Eurotunnel. Économie marquée par la logistique transmanche, les transports, le commerce et l'artisanat. TPE et PME de services bénéficient du flux économique transfrontalier.",
   ecosystemEn:

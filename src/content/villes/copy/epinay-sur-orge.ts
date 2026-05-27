@@ -12,6 +12,7 @@ export const EPINAY_SUR_ORGE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Épinay-sur-Orge (91). Nous accompagnons TPE et PME : professions libérales, cabinets conseil, commerces vallée de l'Orge, artisans BTP, services à la personne et entreprises du bassin Massy-Longjumeau. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Épinay-sur-Orge (91). Nous accompagnons TPE et PME : professions libérales, cabinets conseil, commerces vallée de l'Orge, artisans BTP, services à la personne et entreprises du bassin Massy-Longjumeau. Audit Flash dès 490 € HT.",
+  seoHook: "professions libérales & conseil services",
   ecosystemFr:
     "Épinay-sur-Orge est une commune résidentielle de la vallée de l'Orge, desservie par le RER C. Située entre Massy (TGV) et Longjumeau, elle bénéficie du bassin d'emploi sud-francilien. Tissu TPE services, professions libérales, commerces de proximité, artisans BTP, santé.",
   ecosystemEn:

@@ -14,6 +14,7 @@ export const CANNES_COPY: VilleCopy = {
     "À Cannes, Axion-IA se déplace pour accompagner les entreprises dans leur transition vers l'IA. Avec des secteurs dominants tels que l'hébergement et la restauration, et la présence de Thales Alenia Space, nous offrons des audits et interventions sur site. Nos services incluent des audits à partir de 490 € HT et des interventions dès 590 € HT, avec des résultats mesurables dès le premier trimestre.",
   directAnswerEn:
     "À Cannes, Axion-IA se déplace pour accompagner les entreprises dans leur transition vers l'IA. Avec des secteurs dominants tels que l'hébergement et la restauration, et la présence de Thales Alenia Space, nous offrons des audits et interventions sur site. Nos services incluent des audits à partir de 490 € HT et des interventions dès 590 € HT, avec des résultats mesurables dès le premier trimestre.",
+  seoHook: "hébergement & restauration",
   ecosystemFr:
     "Cannes, avec ses 7 000 établissements actifs, est un pôle économique où l'hébergement et les activités artistiques prospèrent. Thales Alenia Space y est implanté, renforçant l'importance du secteur technologique dans la région. Les entreprises locales bénéficient d'un environnement propice à l'innovation.",
   ecosystemEn:

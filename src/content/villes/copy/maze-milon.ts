@@ -12,6 +12,7 @@ export const MAZE_MILON_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mazé-Milon (49). Nous accompagnons tous types d'activités : TPE horticoles, PME maraîchères et semencières, exploitants agricoles du val d'Authion, artisans, commerçants de proximité, professions libérales et prestataires de services entre Angers et Saumur.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mazé-Milon (49). Nous accompagnons tous types d'activités : TPE horticoles, PME maraîchères et semencières, exploitants agricoles du val d'Authion, artisans, commerçants de proximité, professions libérales et prestataires de services entre Angers et Saumur.",
+  seoHook: "horticulture pépinières & maraîchage semences",
   ecosystemFr:
     "Mazé-Milon est une commune nouvelle issue de la fusion de Mazé et Fontaine-Milon, dans le val d'Authion (plaine fertile entre Angers et Saumur). Économie horticole et maraîchère de premier plan (pôle semencier Anjou), pépinières, artisanat, commerces de bourg et services aux entreprises.",
   ecosystemEn:

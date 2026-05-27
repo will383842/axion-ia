@@ -12,6 +12,7 @@ export const SAINT_MANDRIER_SUR_MER_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Mandrier-sur-Mer (83). Nous accompagnons TPE pêcheurs, restaurateurs, commerçants, artisans et PME du tourisme, du nautisme et des services à la défense de la presqu'île et de la rade de Toulon. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Mandrier-sur-Mer (83). Nous accompagnons TPE pêcheurs, restaurateurs, commerçants, artisans et PME du tourisme, du nautisme et des services à la défense de la presqu'île et de la rade de Toulon. Audit Flash dès 490 € HT.",
+  seoHook: "marine nationale & tourisme balnéaire",
   ecosystemFr:
     "Saint-Mandrier-sur-Mer est une presqu'île fermant la rade de Toulon, dominée par la présence forte de la Marine nationale (école des fusiliers marins, base aéronavale). Tourisme balnéaire, pêche artisanale, port de plaisance, nautisme. Tissu de TPE/PME tourisme, restauration, commerce de proximité et services aux familles de militaires.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const LE_PALAIS_SUR_VIENNE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Palais-sur-Vienne (87). Nous accompagnons TPE artisans, PME industrielles porcelaine et luxe, commerçants, professions libérales et services aux entreprises de l'agglomération nord de Limoges. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Palais-sur-Vienne (87). Nous accompagnons TPE artisans, PME industrielles porcelaine et luxe, commerçants, professions libérales et services aux entreprises de l'agglomération nord de Limoges. Audit Flash dès 490 € HT.",
+  seoHook: "industrie porcelaine & professions libérales",
   ecosystemFr:
     "Le Palais-sur-Vienne est une commune résidentielle et économique de la première couronne nord de Limoges. Tissu TPE artisans BTP, PME industrielles héritières de la tradition porcelaine et luxe limougeaude, commerces centre-bourg, professions libérales. Zones d'activités connectées au pôle Limoges Métropole.",
   ecosystemEn:

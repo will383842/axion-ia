@@ -12,6 +12,7 @@ export const SAINT_BARTHELEMY_D_ANJOU_COPY: VilleCopy = {
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Saint-Barthélemy-d'Anjou (49). Nous accompagnons les TPE, PME et entreprises des zones d'activités bartholoméennes dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Tarifs publics.",
   directAnswerEn:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Saint-Barthélemy-d'Anjou (49). Nous accompagnons les TPE, PME et entreprises des zones d'activités bartholoméennes dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. Tarifs publics.",
+  seoHook: "services aux & logistique transport",
   ecosystemFr:
     "Saint-Barthélemy-d'Anjou est un pôle économique majeur de l'est angevin avec ses zones d'activités (ZA de la Baumette, Parc d'activités Saint-Barthélemy). Tissu dense de PME tertiaires, logistique, commerce de gros, services aux entreprises et sièges sociaux régionaux. Proximité immédiate Angers Loire Métropole.",
   ecosystemEn:

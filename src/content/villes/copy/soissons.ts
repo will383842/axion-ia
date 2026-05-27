@@ -14,6 +14,7 @@ export const SOISSONS_COPY: VilleCopy = {
     "Axion-IA se déplace à Soissons pour offrir des services d'IA sur mesure. Avec des entreprises comme Nestlé et Cooperl présentes dans la région, nous comprenons les enjeux locaux. Nos prestations incluent des audits à partir de 490 € HT et des interventions dès 590 € HT, garantissant une approche personnalisée pour chaque secteur d'activité.",
   directAnswerEn:
     "Axion-IA se déplace à Soissons pour offrir des services d'IA sur mesure. Avec des entreprises comme Nestlé et Cooperl présentes dans la région, nous comprenons les enjeux locaux. Nos prestations incluent des audits à partir de 490 € HT et des interventions dès 590 € HT, garantissant une approche personnalisée pour chaque secteur d'activité.",
+  seoHook: "commerce détail & construction",
   ecosystemFr:
     "À Soissons, le tissu économique est renforcé par la présence de grands groupes tels que Nestlé et Cooperl. Le Parc d'activités du Plateau joue un rôle crucial dans le développement industriel local.",
   ecosystemEn:

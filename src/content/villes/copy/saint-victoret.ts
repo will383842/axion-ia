@@ -12,6 +12,7 @@ export const SAINT_VICTORET_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Victoret (13). Nous accompagnons TPE artisans, PME de logistique aéroportuaire, prestataires de services, commerçants et entreprises de la zone Marseille-Provence. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Victoret (13). Nous accompagnons TPE artisans, PME de logistique aéroportuaire, prestataires de services, commerçants et entreprises de la zone Marseille-Provence. Audit Flash dès 490 € HT.",
+  seoHook: "logistique aéroportuaire & transport handling",
   ecosystemFr:
     "Saint-Victoret est bordée par l'aéroport international Marseille-Provence (8,5 M passagers/an). Économie tirée par les activités aéroportuaires (handling, fret, maintenance), la logistique, le transport et les services aux entreprises. Zones d'activités commerciales, TPE artisans et résidentiel de cadres.",
   ecosystemEn:

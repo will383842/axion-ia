@@ -12,6 +12,7 @@ export const CHALONNES_SUR_LOIRE_COPY: VilleCopy = {
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Chalonnes-sur-Loire (49). Nous accompagnons les TPE viticoles, PME touristiques et commerçants chalonnais dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
   directAnswerEn:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Chalonnes-sur-Loire (49). Nous accompagnons les TPE viticoles, PME touristiques et commerçants chalonnais dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
+  seoHook: "viticulture vignoble & tourisme fluvial",
   ecosystemFr:
     "Chalonnes-sur-Loire se situe au pied de la corniche angevine, surplomb spectaculaire de la Loire classée UNESCO. Vignoble AOC (Coteaux du Layon, Savennières) et domaines viticoles familiaux constituent le socle économique. Commerce de bourg, artisanat, tourisme fluvial (Loire à Vélo) et agriculture complètent le tissu local.",
   ecosystemEn:

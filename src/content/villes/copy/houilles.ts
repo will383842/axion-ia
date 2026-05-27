@@ -14,6 +14,7 @@ export const HOUILLES_COPY: VilleCopy = {
     "Axion-IA propose des interventions IA à Houilles, une ville connectée via la Gare de Paris-Saint-Lazare et l'aéroport Charles de Gaulle. Nous accompagnons les entreprises de divers secteurs, tels que le commerce de détail et les transports terrestres, en automatisant les tâches administratives et en optimisant les processus métier. Nos services incluent des audits, des implémentations et des formations, avec des tarifs publics transparents.",
   directAnswerEn:
     "Axion-IA propose des interventions IA à Houilles, une ville connectée via la Gare de Paris-Saint-Lazare et l'aéroport Charles de Gaulle. Nous accompagnons les entreprises de divers secteurs, tels que le commerce de détail et les transports terrestres, en automatisant les tâches administratives et en optimisant les processus métier. Nos services incluent des audits, des implémentations et des formations, avec des tarifs publics transparents.",
+  seoHook: "commerce détail & travaux construction",
   ecosystemFr:
     "À Houilles, le tissu économique est influencé par des secteurs comme le commerce de détail et les travaux de construction spécialisés. Les entreprises locales bénéficient de la proximité de Sartrouville et Nanterre, renforçant leur positionnement stratégique.",
   ecosystemEn:

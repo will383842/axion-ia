@@ -12,6 +12,7 @@ export const LES_ARCS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient aux Arcs (83). Nous accompagnons TPE viticulteurs Côtes de Provence, artisans, restaurateurs, PME logistique, tourisme et services du centre-Var autour du hub TGV. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient aux Arcs (83). Nous accompagnons TPE viticulteurs Côtes de Provence, artisans, restaurateurs, PME logistique, tourisme et services du centre-Var autour du hub TGV. Audit Flash dès 490 € HT.",
+  seoHook: "viticulture côtes & hub tgv",
   ecosystemFr:
     "Les Arcs est un nœud TGV stratégique du Var (gare Les Arcs-Draguignan, porte d'entrée vers la côte). Économie tirée par la viticulture Côtes de Provence (Maison des Vins du Var), l'artisanat, le commerce, les services logistiques liés au hub TGV et le tourisme rural. Tissu de TPE/PME centre-Var.",
   ecosystemEn:

@@ -14,6 +14,7 @@ export const MEAUX_COPY: VilleCopy = {
     "Axion-IA se déplace à Meaux pour accompagner les entreprises dans l'intégration de l'IA. Avec des références comme Cap Digital et Station F à Paris, nous offrons des audits et des implémentations sur site, garantissant une adoption fluide et conforme aux normes en vigueur. Nos interventions sont conçues pour répondre aux besoins spécifiques des entreprises locales.",
   directAnswerEn:
     "Axion-IA se déplace à Meaux pour accompagner les entreprises dans l'intégration de l'IA. Avec des références comme Cap Digital et Station F à Paris, nous offrons des audits et des implémentations sur site, garantissant une adoption fluide et conforme aux normes en vigueur. Nos interventions sont conçues pour répondre aux besoins spécifiques des entreprises locales.",
+  seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Le tissu économique de Meaux est enrichi par la proximité de la ZAC du Parc d'Activités de Meaux et des infrastructures de transport comme l'aéroport de Paris-Charles de Gaulle. Ces éléments facilitent l'accès aux services d'Axion-IA pour les entreprises locales.",
   ecosystemEn:

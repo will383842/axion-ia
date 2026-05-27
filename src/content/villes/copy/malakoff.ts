@@ -14,6 +14,7 @@ export const MALAKOFF_COPY: VilleCopy = {
     "Axion-IA intervient à Malakoff pour accompagner les entreprises dans l'intégration de l'IA. Avec un écosystème comprenant Orange et Thales, nous proposons des audits, interventions et implémentations pour automatiser les tâches administratives et optimiser les processus métier. Nos services incluent des audits à partir de 490 € HT et des interventions dès 590 € HT.",
   directAnswerEn:
     "Axion-IA intervient à Malakoff pour accompagner les entreprises dans l'intégration de l'IA. Avec un écosystème comprenant Orange et Thales, nous proposons des audits, interventions et implémentations pour automatiser les tâches administratives et optimiser les processus métier. Nos services incluent des audits à partir de 490 € HT et des interventions dès 590 € HT.",
+  seoHook: "programmation informatique & activités des",
   ecosystemFr:
     "Malakoff, avec ses 3 000 établissements actifs, accueille des entreprises comme Orange et Thales. Les secteurs dominants incluent la programmation informatique et les activités des sièges sociaux, ce qui en fait un lieu propice à l'innovation technologique.",
   ecosystemEn:

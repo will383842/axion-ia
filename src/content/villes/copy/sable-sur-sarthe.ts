@@ -12,6 +12,7 @@ export const SABLE_SUR_SARTHE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sablé-sur-Sarthe (72). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles, commerçants, professions libérales, prestataires logistiques et services aux entreprises du bassin sabolien.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sablé-sur-Sarthe (72). Nous accompagnons tous types d'activités : TPE artisans, PME agroalimentaires et industrielles, commerçants, professions libérales, prestataires logistiques et services aux entreprises du bassin sabolien.",
+  seoHook: "agroalimentaire & industrie imprimerie",
   ecosystemFr:
     "Sablé-sur-Sarthe est une sous-préfecture de la Sarthe aux bords de la rivière Sarthe, dotée d'une gare TGV (Paris 1 h 30). Pôle agroalimentaire historique, industrie, imprimerie et logistique. Patrimoine : château de Sablé, abbaye de Solesmes. Carrefour entre Le Mans, Angers et Laval.",
   ecosystemEn:

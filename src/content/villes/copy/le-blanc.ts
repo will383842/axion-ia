@@ -12,6 +12,7 @@ export const LE_BLANC_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Blanc (36), sous-préfecture de l'Indre aux portes de la Brenne. Nous accompagnons tous types d'activités : TPE artisans, PME agricoles, commerçants, acteurs du tourisme nature, professions libérales, indépendants et services publics du sud Berry.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Blanc (36), sous-préfecture de l'Indre aux portes de la Brenne. Nous accompagnons tous types d'activités : TPE artisans, PME agricoles, commerçants, acteurs du tourisme nature, professions libérales, indépendants et services publics du sud Berry.",
+  seoHook: "agriculture, élevage & artisanat services",
   ecosystemFr:
     "Le Blanc est une sous-préfecture de l'Indre sur les bords de la Creuse, porte d'entrée du Parc naturel régional de la Brenne (« pays aux mille étangs »). L'économie locale repose sur l'agriculture (élevage, polyculture), l'artisanat BTP, le commerce de centre-ville, les services publics et de santé, le tourisme nature (ornithologie, pêche, randonnée en Brenne) et les professions libérales.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const CESSON_SEVIGNE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cesson-Sévigné (35). Nous accompagnons tous types d'activités : TPE et PME du numérique, ESN, startups Rennes Atalante, éditeurs logiciels, télécoms, commerçants, indépendants et services aux entreprises de la métropole rennaise.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cesson-Sévigné (35). Nous accompagnons tous types d'activités : TPE et PME du numérique, ESN, startups Rennes Atalante, éditeurs logiciels, télécoms, commerçants, indépendants et services aux entreprises de la métropole rennaise.",
+  seoHook: "numérique esn & télécoms cybersécurité",
   ecosystemFr:
     "Cesson-Sévigné est le coeur technologique de Rennes Métropole, siège du technopôle Rennes Atalante — premier pôle numérique/télécoms de l'Ouest. Concentration d'ESN, éditeurs logiciels, startups deeptech, centres R&D télécoms et cybersécurité. Tissu TPE/PME tech dense, complété par services aux entreprises, commerces et activités tertiaires de la métropole rennaise.",
   ecosystemEn:

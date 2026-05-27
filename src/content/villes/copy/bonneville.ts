@@ -12,6 +12,7 @@ export const BONNEVILLE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Bonneville (74). Nous accompagnons TPE et PME : decolletage et horlogerie de la vallee de l'Arve, administration locale (sous-prefecture), commercants, artisans BTP et entreprises de services du Faucigny. Audit Flash des 490 euros HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Bonneville (74). Nous accompagnons TPE et PME : decolletage et horlogerie de la vallee de l'Arve, administration locale (sous-prefecture), commercants, artisans BTP et entreprises de services du Faucigny. Audit Flash des 490 euros HT.",
+  seoHook: "decolletage horlogerie & administration",
   ecosystemFr:
     "Bonneville est la sous-prefecture de la Haute-Savoie et la capitale du Faucigny, au coeur de la vallee de l'Arve. Ce bassin industriel historique concentre des PME de decolletage et horlogerie de renommee mondiale (Cluses a 15 min). Administration departementale, commerces de centre-ville, artisanat BTP et services aux entreprises completent le tissu economique.",
   ecosystemEn:

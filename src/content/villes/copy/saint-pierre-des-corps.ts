@@ -12,6 +12,7 @@ export const SAINT_PIERRE_DES_CORPS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient Ã  Saint-Pierre-des-Corps (37). Nous accompagnons tous types d'activitÃ©s : PME logistique et transport ferroviaire, ateliers maintenance SNCF, TPE artisans, industries de transformation, commerces et services aux entreprises du nÅ“ud TGV Tours.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient Ã  Saint-Pierre-des-Corps (37). Nous accompagnons tous types d'activitÃ©s : PME logistique et transport ferroviaire, ateliers maintenance SNCF, TPE artisans, industries de transformation, commerces et services aux entreprises du nÅ“ud TGV Tours.",
+  seoHook: "logistique transport & maintenance sncf",
   ecosystemFr:
     "Saint-Pierre-des-Corps est le nÅ“ud ferroviaire de Tours MÃ©tropole : gare TGV LGV Atlantique (Paris Ã  1h05), ateliers SNCF de maintenance (technicentre historique), fret ferroviaire. Tissu PME logistique/transport, sous-traitants ferroviaire, industries de transformation, TPE artisans BTP, commerces.",
   ecosystemEn:

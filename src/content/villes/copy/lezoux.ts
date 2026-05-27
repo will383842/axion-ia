@@ -12,6 +12,7 @@ export const LEZOUX_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lezoux (63). Nous accompagnons TPE et PME : artisans d'art céramique, exploitants agricoles Limagne, commerçants ruraux, acteurs tourisme patrimoine (Musée de la Céramique) et professions libérales du bassin Thiers-Lezoux.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Lezoux (63). Nous accompagnons TPE et PME : artisans d'art céramique, exploitants agricoles Limagne, commerçants ruraux, acteurs tourisme patrimoine (Musée de la Céramique) et professions libérales du bassin Thiers-Lezoux.",
+  seoHook: "céramique artisanat & agriculture limagne",
   ecosystemFr:
     "Lezoux est un bourg historique de la plaine de la Limagne, célèbre pour ses poteries gallo-romaines (plus grand centre de céramique sigillée de Gaule romaine). Le Musée départemental de la Céramique retrace cette histoire exceptionnelle. Économie locale artisanat d'art (céramistes, potiers), agriculture fertile de la Limagne (grandes cultures céréalières), TPE artisans, commerces ruraux, tourisme patrimoine. Bassin d'emploi partagé avec Thiers.",
   ecosystemEn:

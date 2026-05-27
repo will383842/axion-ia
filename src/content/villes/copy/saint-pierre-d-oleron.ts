@@ -12,6 +12,7 @@ export const SAINT_PIERRE_D_OLERON_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Pierre-d'Oléron (17). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et hôtellerie, ostréiculteurs, commerçants saisonniers et indépendants de cette commune principale de l'île d'Oléron.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Pierre-d'Oléron (17). Nous accompagnons tous types d'activités : TPE artisans, PME tourisme et hôtellerie, ostréiculteurs, commerçants saisonniers et indépendants de cette commune principale de l'île d'Oléron.",
+  seoHook: "ostréiculture produits & tourisme balnéaire",
   ecosystemFr:
     "Saint-Pierre-d'Oléron est la commune principale de l'île d'Oléron, plus grande île de la façade atlantique française. Économie ostréicole (huîtres Marennes-Oléron), tourisme balnéaire et nature (plages, forêts, marais), hôtellerie-restauration, commerces saisonniers, TPE artisans, viticulture (pineau, cognac insulaire).",
   ecosystemEn:

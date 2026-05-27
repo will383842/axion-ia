@@ -12,6 +12,7 @@ export const DECAZEVILLE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Decazeville (12). Nous accompagnons TPE artisans, PME industrielles en reconversion, commerçants, services à la personne, professions libérales et acteurs du tourisme patrimoine minier de l'Aveyron ouest. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Decazeville (12). Nous accompagnons TPE artisans, PME industrielles en reconversion, commerçants, services à la personne, professions libérales et acteurs du tourisme patrimoine minier de l'Aveyron ouest. Audit Flash dès 490 € HT.",
+  seoHook: "industrie reconvertie & services personne",
   ecosystemFr:
     "Decazeville est le coeur du bassin minier aveyronnais (houille et sidérurgie, XIXe-XXe siècle), en reconversion économique depuis la fermeture des mines. La Découverte (ancienne mine à ciel ouvert) est un site de tourisme industriel. Tissu PME industrielles reconverties (mécanique, recyclage), TPE artisans BTP, services à la personne, commerces de centre-ville, professions libérales. Dynamique d'économie sociale et solidaire.",
   ecosystemEn:

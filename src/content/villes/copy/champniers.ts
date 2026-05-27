@@ -12,6 +12,7 @@ export const CHAMPNIERS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Champniers (16). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et logistiques, entreprises des zones d'activités, commerçants et indépendants de cette commune dynamique du nord de l'agglomération d'Angoulême.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Champniers (16). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles et logistiques, entreprises des zones d'activités, commerçants et indépendants de cette commune dynamique du nord de l'agglomération d'Angoulême.",
+  seoHook: "logistique transport & industrielles zones",
   ecosystemFr:
     "Champniers est une commune du nord de l'agglomération GrandAngoulême concentrant plusieurs zones d'activités (parc Agora, zones industrielles). PME industrielles, logistique et transport, TPE artisans BTP, commerces, services aux entreprises. Nœud routier (N10/N141) facilitant l'accès au bassin angoumoisin.",
   ecosystemEn:

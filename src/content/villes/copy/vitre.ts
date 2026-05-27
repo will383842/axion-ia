@@ -12,6 +12,7 @@ export const VITRE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vitré (35). Nous accompagnons tous types d'activités : TPE et PME agroalimentaires, industries des marches bretonnes, artisans, commerçants, professions libérales, indépendants et services aux entreprises de Vitré Communauté.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Vitré (35). Nous accompagnons tous types d'activités : TPE et PME agroalimentaires, industries des marches bretonnes, artisans, commerçants, professions libérales, indépendants et services aux entreprises de Vitré Communauté.",
+  seoHook: "agroalimentaire & industrie mécanique",
   ecosystemFr:
     "Vitré est la sous-préfecture orientale de l'Ille-et-Vilaine, porte historique des marches de Bretagne. Pôle agroalimentaire de premier plan (industries laitières, viandes, plats préparés), complété par un tissu TPE/PME diversifié : mécanique, plasturgie, logistique, services. Gare TGV directe Paris-Rennes, bassin d'emploi dynamique avec un taux de chômage inférieur à la moyenne nationale.",
   ecosystemEn:

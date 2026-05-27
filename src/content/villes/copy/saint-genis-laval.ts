@@ -14,6 +14,7 @@ export const SAINT_GENIS_LAVAL_COPY: VilleCopy = {
     "À Saint-Genis-Laval, Axion-IA propose des solutions IA adaptées aux besoins des entreprises locales. Avec des entités comme Sanofi et bioMérieux présentes dans la région, notre cabinet offre des audits à partir de 490 € HT et des interventions dès 590 € HT. Nous nous déplaçons sur site pour garantir une mise en œuvre efficace.",
   directAnswerEn:
     "À Saint-Genis-Laval, Axion-IA propose des solutions IA adaptées aux besoins des entreprises locales. Avec des entités comme Sanofi et bioMérieux présentes dans la région, notre cabinet offre des audits à partir de 490 € HT et des interventions dès 590 € HT. Nous nous déplaçons sur site pour garantir une mise en œuvre efficace.",
+  seoHook: "commerce détail & santé humaine",
   ecosystemFr:
     "Saint-Genis-Laval abrite des entreprises telles que Sanofi et bioMérieux, renforçant son positionnement dans la recherche-développement scientifique et les activités pour la santé humaine.",
   ecosystemEn:

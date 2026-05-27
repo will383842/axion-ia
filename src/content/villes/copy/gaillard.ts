@@ -12,6 +12,7 @@ export const GAILLARD_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Gaillard (74). Nous accompagnons TPE et PME : commerce transfrontalier, services aux entreprises du Grand Geneve, professions liberales, artisans BTP et entreprises tertiaires de l'agglomeration annemassienne. Audit Flash des 490 euros HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient a Gaillard (74). Nous accompagnons TPE et PME : commerce transfrontalier, services aux entreprises du Grand Geneve, professions liberales, artisans BTP et entreprises tertiaires de l'agglomeration annemassienne. Audit Flash des 490 euros HT.",
+  seoHook: "commerce transfrontalier & services grand",
   ecosystemFr:
     "Gaillard est une commune directement frontaliere avec Geneve, integree a l'agglomeration d'Annemasse dans le Grand Geneve. Forte densite de commerces transfrontaliers, services tertiaires, professions liberales et artisanat BTP. La proximite immediate de Geneve (5 min) attire un tissu dynamique de TPE/PME orientees clientele suisse et franco-genevoise.",
   ecosystemEn:

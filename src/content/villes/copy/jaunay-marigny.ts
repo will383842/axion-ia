@@ -12,6 +12,7 @@ export const JAUNAY_MARIGNY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jaunay-Marigny (86). Nous accompagnons tous types d'activités : PME tech/numérique de la technopole du Futuroscope, acteurs tourisme et hôtellerie-restauration, TPE artisans, commerçants, professions libérales et services aux entreprises du Grand Poitiers nord.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Jaunay-Marigny (86). Nous accompagnons tous types d'activités : PME tech/numérique de la technopole du Futuroscope, acteurs tourisme et hôtellerie-restauration, TPE artisans, commerçants, professions libérales et services aux entreprises du Grand Poitiers nord.",
+  seoHook: "tech numérique & tourisme loisirs",
   ecosystemFr:
     "Jaunay-Marigny est la commune d'accueil du Futuroscope (parc d'attractions sciences & technologies, ~2 millions de visiteurs/an) et de sa technopole (200+ entreprises, numérique, image, formation). Commune nouvelle (Jaunay-Clan + Marigny-Brizay, 2019). Tissu économique mixte : PME tech, tourisme, hôtellerie-restauration, TPE artisans, commerces et agriculture résiduelle.",
   ecosystemEn:

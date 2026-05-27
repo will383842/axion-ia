@@ -12,6 +12,7 @@ export const SAINT_AMAND_LES_EAUX_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Amand-les-Eaux (59). Nous accompagnons TPE et PME : établissements thermaux et bien-être, artisans faïenciers et métiers d'art, commerces de centre-ville, professions libérales de santé et PME agroalimentaires du Valenciennois.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Amand-les-Eaux (59). Nous accompagnons TPE et PME : établissements thermaux et bien-être, artisans faïenciers et métiers d'art, commerces de centre-ville, professions libérales de santé et PME agroalimentaires du Valenciennois.",
+  seoHook: "thermalisme bien-être & artisanat faïencier",
   ecosystemFr:
     "Saint-Amand-les-Eaux est une ville thermale du Nord au cœur du parc naturel régional Scarpe-Escaut, entre Valenciennes (20 min) et Lille (45 min). L'économie locale repose sur le thermalisme et le bien-être (station thermale historique, centre Vauban), l'artisanat faïencier héritier d'une tradition séculaire, les commerces de centre-ville, les professions libérales de santé et les PME agroalimentaires et brassicoles du Valenciennois. Patrimoine touristique (abbaye, tour abbatiale) et écotourisme Scarpe-Escaut complètent le tissu économique.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const MERIEL_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mériel (95). Nous accompagnons TPE et PME : commerçants et artisans bords d'Oise, PME services aux entreprises, professions libérales, restaurateurs, prestataires services à la personne Val-d'Oise. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mériel (95). Nous accompagnons TPE et PME : commerçants et artisans bords d'Oise, PME services aux entreprises, professions libérales, restaurateurs, prestataires services à la personne Val-d'Oise. Audit Flash dès 490 € HT.",
+  seoHook: "commerce détail & services aux",
   ecosystemFr:
     "Mériel est une commune résidentielle en bord d'Oise, entre la forêt de L'Isle-Adam et Auvers-sur-Oise. Tissu TPE commerces de proximité et artisanat, PME services, professions libérales, restauration, services à la personne.",
   ecosystemEn:

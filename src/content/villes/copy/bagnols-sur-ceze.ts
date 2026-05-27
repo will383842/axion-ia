@@ -12,6 +12,7 @@ export const BAGNOLS_SUR_CEZE_COPY: VilleCopy = {
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Bagnols-sur-Cèze (30). Nous accompagnons les TPE, PME et ETI locales : sous-traitants nucléaire Marcoule, artisans BTP, commerçants, viticulteurs Côtes du Rhône, professions libérales et services aux entreprises du nord Gard. Audit Flash à partir de 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Bagnols-sur-Cèze (30). Nous accompagnons les TPE, PME et ETI locales : sous-traitants nucléaire Marcoule, artisans BTP, commerçants, viticulteurs Côtes du Rhône, professions libérales et services aux entreprises du nord Gard. Audit Flash à partir de 490 € HT.",
+  seoHook: "sous-traitance industrielle & artisanat",
   ecosystemFr:
     "Bagnols-sur-Cèze est la sous-préfecture du nord Gard (~18 000 hab), adossée au site nucléaire de Marcoule (CEA, Orano). Tissu dense de TPE/PME sous-traitantes industrielles, artisanat BTP, commerces centre-ville dynamique, viticulture Côtes du Rhône gardoises, services aux entreprises et professions libérales.",
   ecosystemEn:

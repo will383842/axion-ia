@@ -12,6 +12,7 @@ export const MONCOUTANT_SUR_SEVRE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Moncoutant-sur-Sèvre (79). Nous accompagnons tous types d'activités : PME industrielles mécanique/agroalimentaire, TPE artisans BTP, commerçants ruraux, exploitations agricoles bocagères, professions libérales et services aux entreprises du Bocage bressuirais.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Moncoutant-sur-Sèvre (79). Nous accompagnons tous types d'activités : PME industrielles mécanique/agroalimentaire, TPE artisans BTP, commerçants ruraux, exploitations agricoles bocagères, professions libérales et services aux entreprises du Bocage bressuirais.",
+  seoHook: "industrielles mécanique & artisanat métiers",
   ecosystemFr:
     "Moncoutant-sur-Sèvre est une commune nouvelle du nord des Deux-Sèvres, au cœur du Bocage bressuirais. Née de la fusion de Moncoutant et Le Breuil-Bernard en 2019, elle s'inscrit dans un tissu rural dynamique : PME industrielles (mécanique, agroalimentaire), TPE artisans BTP, exploitations agricoles (élevage bovin, polyculture), commerces de proximité et services.",
   ecosystemEn:

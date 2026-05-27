@@ -12,6 +12,7 @@ export const SALLANCHES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sallanches (74). Nous accompagnons TPE et PME : hôteliers et acteurs du tourisme montagne, commerçants zone commerciale, artisans BTP, prestataires de services et professions libérales du Pays du Mont-Blanc. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sallanches (74). Nous accompagnons TPE et PME : hôteliers et acteurs du tourisme montagne, commerçants zone commerciale, artisans BTP, prestataires de services et professions libérales du Pays du Mont-Blanc. Audit Flash dès 490 € HT.",
+  seoHook: "tourisme montagne & commerce zone",
   ecosystemFr:
     "Sallanches est la ville-centre du Pays du Mont-Blanc, face au massif. Pôle de commerces et services pour le bassin de vie (zone commerciale Sallanches-Passy), tissu hôtelier et touristique important (étape vers Chamonix, Megève, Saint-Gervais), TPE artisanat BTP (rénovation montagne), professions libérales. Proximité Cluses (20 min) et Chamonix (25 min).",
   ecosystemEn:

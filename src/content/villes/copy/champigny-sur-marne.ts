@@ -14,6 +14,7 @@ export const CHAMPIGNY_SUR_MARNE_COPY: VilleCopy = {
     "Axion-IA se déplace à Champigny-sur-Marne pour accompagner les entreprises locales dans l'optimisation de leurs processus. L'écosystème environnant inclut des entités comme Cap Digital et Station F, qui favorisent l'innovation. Nos services incluent des audits, interventions et implémentations IA, adaptés aux besoins des entreprises de la région.",
   directAnswerEn:
     "Axion-IA se déplace à Champigny-sur-Marne pour accompagner les entreprises locales dans l'optimisation de leurs processus. L'écosystème environnant inclut des entités comme Cap Digital et Station F, qui favorisent l'innovation. Nos services incluent des audits, interventions et implémentations IA, adaptés aux besoins des entreprises de la région.",
+  seoHook: "commerce détail & construction",
   ecosystemFr:
     "À Champigny-sur-Marne, l'écosystème économique intègre des acteurs comme LVMH et BNP Paribas, offrant un contexte propice à l'innovation. Axion-IA y intervient pour optimiser les opérations des entreprises locales.",
   ecosystemEn:

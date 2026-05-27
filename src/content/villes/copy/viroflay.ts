@@ -12,6 +12,7 @@ export const VIROFLAY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Viroflay (78). Nous accompagnons tous types d'activités : TPE et PME tertiaires de l'axe Paris-Versailles, professions libérales, cabinets de conseil, commerçants de centre-ville, artisans, indépendants et prestataires de services.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Viroflay (78). Nous accompagnons tous types d'activités : TPE et PME tertiaires de l'axe Paris-Versailles, professions libérales, cabinets de conseil, commerçants de centre-ville, artisans, indépendants et prestataires de services.",
+  seoHook: "professions libérales & services aux",
   ecosystemFr:
     "Viroflay est une commune résidentielle prisée de l'ouest parisien, idéalement placée entre Paris-Montparnasse et Versailles grâce à deux gares (Rive Gauche et Rive Droite). Tissu économique tertiaire : professions libérales, cabinets de conseil, TPE de services numériques, commerces de centre-ville, artisanat de qualité. Proximité immédiate de Vélizy-Villacoublay (pôle économique majeur) et du plateau de Saclay.",
   ecosystemEn:

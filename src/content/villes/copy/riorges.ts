@@ -12,6 +12,7 @@ export const RIORGES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Riorges (42). Nous accompagnons tous types d'activités : PME industrielles Roannais (héritage textile fort), tertiaires, TPE artisans BTP, commerçants, agriculteurs périphériques, indépendants, professions libérales et services aux entreprises de Roannais Agglomération.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Riorges (42). Nous accompagnons tous types d'activités : PME industrielles Roannais (héritage textile fort), tertiaires, TPE artisans BTP, commerçants, agriculteurs périphériques, indépendants, professions libérales et services aux entreprises de Roannais Agglomération.",
+  seoHook: "industrielles roannais & tertiaires services",
   ecosystemFr:
     "Riorges est intégrée à Roannais Agglomération (~99 000 hab), en banlieue immédiate de Roanne. Héritage industriel marqué par la filière textile roannaise (Roanne historiquement bassin textile français). Tissu PME industrielles diversifiées contemporaines, tertiaires, TPE artisanat BTP, commerces et agriculture périphérique.",
   ecosystemEn:

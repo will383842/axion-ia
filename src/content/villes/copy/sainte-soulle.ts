@@ -12,6 +12,7 @@ export const SAINTE_SOULLE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sainte-Soulle (17). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, exploitants agricoles, commerçants et indépendants de cette commune périurbaine de l'agglomération de La Rochelle.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Sainte-Soulle (17). Nous accompagnons tous types d'activités : TPE artisans, PME tertiaires, exploitants agricoles, commerçants et indépendants de cette commune périurbaine de l'agglomération de La Rochelle.",
+  seoHook: "agriculture élevage & services aux",
   ecosystemFr:
     "Sainte-Soulle est une commune périurbaine de l'agglomération de La Rochelle, à caractère rural préservé. Agriculture (céréales, élevage), TPE artisans BTP, PME tertiaires, commerces de proximité, services à la personne. Croissance démographique, cadre de vie attractif entre La Rochelle et l'Aunis.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const LA_RAVOIRE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Ravoire (73). Nous accompagnons TPE et PME du bassin chambérien : sociétés de services tertiaires, professions libérales, artisans, commerces de proximité, acteurs immobilier résidentiel et indépendants savoyards.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à La Ravoire (73). Nous accompagnons TPE et PME du bassin chambérien : sociétés de services tertiaires, professions libérales, artisans, commerces de proximité, acteurs immobilier résidentiel et indépendants savoyards.",
+  seoHook: "tertiaires services & immobilier résidentiel",
   ecosystemFr:
     "La Ravoire est la 3e commune de l'agglomération de Chambéry (9 300 habitants), ancien village agricole devenu résidentiel au pied du Mont Peney. Proximité immédiate de Chambéry et Challes-les-Eaux (station thermale). Tissu PME tertiaires services, professions libérales, TPE artisanat, commerces de proximité et acteurs de l'immobilier résidentiel en forte croissance.",
   ecosystemEn:

@@ -14,6 +14,7 @@ export const EVREUX_COPY: VilleCopy = {
     "Axion-IA se déplace à Évreux pour répondre aux besoins des entreprises locales, notamment dans les secteurs du commerce de gros et de détail. Nous proposons des audits dès 490 € HT et des interventions à partir de 590 € HT. Avec l'IUT d'Évreux et la Zone d'Activités de Nétreville, le tissu économique local est propice à l'innovation.",
   directAnswerEn:
     "Axion-IA se déplace à Évreux pour répondre aux besoins des entreprises locales, notamment dans les secteurs du commerce de gros et de détail. Nous proposons des audits dès 490 € HT et des interventions à partir de 590 € HT. Avec l'IUT d'Évreux et la Zone d'Activités de Nétreville, le tissu économique local est propice à l'innovation.",
+  seoHook: "commerce gros & commerce détail",
   ecosystemFr:
     "Évreux accueille des entreprises comme Sanofi et Safran, renforçant son secteur industriel. La Zone d'Activités de Nétreville et l'IUT d'Évreux contribuent à la vitalité économique locale.",
   ecosystemEn:

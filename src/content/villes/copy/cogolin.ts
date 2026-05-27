@@ -10,6 +10,7 @@ export const COGOLIN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cogolin (83). Nous accompagnons TPE artisanales, PME nautisme, commerces et hôtellerie-restauration du Golfe de Saint-Tropez. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Cogolin (83). Nous accompagnons TPE artisanales, PME nautisme, commerces et hôtellerie-restauration du Golfe de Saint-Tropez. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+  seoHook: "hôtellerie restauration & nautisme plaisance",
   ecosystemFr:
     "Cogolin est une commune de l'aire du Golfe de Saint-Tropez, célèbre pour ses manufactures historiques de tapis et de pipes en bruyère. Tissu de TPE artisanales d'art, PME du nautisme (port des Marines de Cogolin), hôtellerie-restauration, commerces, professions libérales et viticulture (Côtes de Provence).",
   ecosystemEn:

@@ -14,6 +14,7 @@ export const FREJUS_COPY: VilleCopy = {
     "Axion-IA se déplace à Fréjus pour offrir des services d'IA adaptés aux entreprises locales. Avec des références comme Station F et LVMH, nous aidons les entreprises à optimiser leurs processus. Nos interventions incluent des audits, des implémentations et des formations, garantissant un retour sur investissement rapide pour les entreprises de Fréjus.",
   directAnswerEn:
     "Axion-IA se déplace à Fréjus pour offrir des services d'IA adaptés aux entreprises locales. Avec des références comme Station F et LVMH, nous aidons les entreprises à optimiser leurs processus. Nos interventions incluent des audits, des implémentations et des formations, garantissant un retour sur investissement rapide pour les entreprises de Fréjus.",
+  seoHook: "commerce détail & construction",
   ecosystemFr:
     "Fréjus, avec ses 6 000 établissements actifs, est un centre économique important. Les entreprises locales bénéficient de la proximité de pôles d'innovation comme Cap Digital et Station F, favorisant l'adoption de technologies avancées.",
   ecosystemEn:

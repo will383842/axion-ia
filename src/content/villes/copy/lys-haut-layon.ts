@@ -12,6 +12,7 @@ export const LYS_HAUT_LAYON_COPY: VilleCopy = {
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Lys-Haut-Layon (49). Nous accompagnons les TPE viticoles, PME touristiques et artisans des coteaux du Layon dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
   directAnswerEn:
     "Axion-IA est un cabinet de conseil en intelligence artificielle qui intervient à Lys-Haut-Layon (49). Nous accompagnons les TPE viticoles, PME touristiques et artisans des coteaux du Layon dans l'adoption de l'IA : audit Flash dès 490 € HT, interventions sur site, implémentation d'agents IA et coaching dirigeants 1-to-1. RGPD strict.",
+  seoHook: "viticulture vignoble & tourisme œnotourisme",
   ecosystemFr:
     "Lys-Haut-Layon est le cœur viticole des coteaux du Layon (AOC Coteaux du Layon, Bonnezeaux, Quarts de Chaume). Domaines viticoles familiaux, œnotourisme, hébergements de charme, artisanat local et commerces de bourg. Agriculture diversifiée (arboriculture, maraîchage) en complément du vignoble.",
   ecosystemEn:

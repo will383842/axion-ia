@@ -12,6 +12,7 @@ export const CARMAUX_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carmaux (81). Nous accompagnons TPE artisans, PME en reconversion, commerçants, acteurs de l'économie sociale et professions libérales du Carmausin. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Carmaux (81). Nous accompagnons TPE artisans, PME en reconversion, commerçants, acteurs de l'économie sociale et professions libérales du Carmausin. Audit Flash dès 490 € HT.",
+  seoHook: "commerce détail & économie sociale",
   ecosystemFr:
     "Carmaux (9 872 hab) est l'ancienne cité minière et verrière du Tarn, indissociable de Jean Jaurès. Bassin en reconversion : ancienne mine transformée en parc Cap'Découverte, verrerie fermée, tissu économique réorienté services, artisanat et économie sociale. Proximité Albi (15 min). PME industrie légère, commerces, professions libérales.",
   ecosystemEn:

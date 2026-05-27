@@ -12,6 +12,7 @@ export const EAUNES_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Eaunes (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud Toulouse. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Eaunes (31). Nous accompagnons TPE artisans, PME de services, professions libérales et commerçants du sud Toulouse. Audit Flash dès 490 € HT.",
+  seoHook: "artisanat & commerce détail",
   ecosystemFr:
     "Eaunes est une commune résidentielle du sud de Toulouse, entre Muret et Labarthe-sur-Lèze. Tissu TPE artisans, PME de services, commerces de proximité, professions libérales. Croissance démographique liée à l'attractivité du sud toulousain.",
   ecosystemEn:

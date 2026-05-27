@@ -12,6 +12,7 @@ export const AIXE_SUR_VIENNE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aixe-sur-Vienne (87). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles, agriculteurs, commerçants, professions libérales, indépendants et services aux entreprises de l'agglomération de Limoges sud-ouest.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Aixe-sur-Vienne (87). Nous accompagnons tous types d'activités : TPE artisans BTP, PME industrielles, agriculteurs, commerçants, professions libérales, indépendants et services aux entreprises de l'agglomération de Limoges sud-ouest.",
+  seoHook: "artisanat construction & industrielles",
   ecosystemFr:
     "Aixe-sur-Vienne (5 890 hab) est une commune du confluent Vienne-Aixette, au sud-ouest de Limoges. Patrimoine industriel (papeterie historique), tissu PME, TPE artisans BTP, agriculture (élevage limousin, polyculture), commerces centre-bourg, professions libérales. Intégrée à Limoges Métropole, elle est desservie par le TER Limoges-Angoulême.",
   ecosystemEn:

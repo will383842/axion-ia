@@ -14,6 +14,7 @@ export const CAMBRAI_COPY: VilleCopy = {
     "À Cambrai, Axion-IA propose des services adaptés aux entreprises des secteurs dominants tels que l'industrie alimentaire et le commerce de détail. Nous intervenons directement sur site pour offrir des audits, des implémentations et des formations, afin d'améliorer l'efficacité opérationnelle. Notre approche est conçue pour répondre aux besoins spécifiques des entreprises locales, y compris celles de la Zone Industrielle Actipôle.",
   directAnswerEn:
     "À Cambrai, Axion-IA propose des services adaptés aux entreprises des secteurs dominants tels que l'industrie alimentaire et le commerce de détail. Nous intervenons directement sur site pour offrir des audits, des implémentations et des formations, afin d'améliorer l'efficacité opérationnelle. Notre approche est conçue pour répondre aux besoins spécifiques des entreprises locales, y compris celles de la Zone Industrielle Actipôle.",
+  seoHook: "industrie alimentaire & commerce détail",
   ecosystemFr:
     "Le tissu économique de Cambrai est marqué par la présence de Bonduelle et Nestlé. La Zone Industrielle Actipôle joue un rôle clé dans le développement industriel local.",
   ecosystemEn:

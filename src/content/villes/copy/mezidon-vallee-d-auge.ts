@@ -12,6 +12,7 @@ export const MEZIDON_VALLEE_D_AUGE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mézidon Vallée d'Auge (14). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agroalimentaires Pays d'Auge (fromages AOP, cidre, calvados), exploitations agricoles, professions libérales et services aux entreprises de l'Augeron.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mézidon Vallée d'Auge (14). Nous accompagnons tous types d'activités : TPE artisans et commerçants, PME agroalimentaires Pays d'Auge (fromages AOP, cidre, calvados), exploitations agricoles, professions libérales et services aux entreprises de l'Augeron.",
+  seoHook: "agroalimentaire pays & agriculture élevage",
   ecosystemFr:
     "Mézidon Vallée d'Auge est une commune nouvelle au cœur du Pays d'Auge (Calvados). Nœud ferroviaire historique (gare de Mézidon, bifurcation vers Lisieux et Argentan). Terre de traditions : fromages AOP (Camembert, Pont-l'Évêque, Livarot), cidre, calvados. Tissu TPE artisans, PME agroalimentaires, exploitations agricoles, commerces de proximité.",
   ecosystemEn:

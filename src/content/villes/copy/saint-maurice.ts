@@ -12,6 +12,7 @@ export const SAINT_MAURICE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Maurice (94). Nous accompagnons TPE et PME : prestataires santé autour des hôpitaux nationaux, professions libérales, commerçants, restaurateurs, services à la personne en bordure du Bois de Vincennes. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Maurice (94). Nous accompagnons TPE et PME : prestataires santé autour des hôpitaux nationaux, professions libérales, commerçants, restaurateurs, services à la personne en bordure du Bois de Vincennes. Audit Flash dès 490 € HT.",
+  seoHook: "santé médico-social & commerce proximité",
   ecosystemFr:
     "Saint-Maurice est une commune résidentielle en bordure du Bois de Vincennes, marquée par la présence des hôpitaux nationaux de Saint-Maurice (Esquirol). Tissu économique de proximité orienté santé, professions libérales, commerces, restauration et services à la personne. Accès direct Paris 12e par le pont de Charenton.",
   ecosystemEn:

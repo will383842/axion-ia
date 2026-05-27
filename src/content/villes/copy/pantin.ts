@@ -14,6 +14,7 @@ export const PANTIN_COPY: VilleCopy = {
     "Axion-IA se déplace à Pantin pour accompagner les entreprises dans l'optimisation de leurs processus grâce à l'IA. Avec des acteurs économiques tels que Hermès et BNP Paribas présents dans la région, nous proposons des audits à partir de 490 € HT et des interventions dès 590 € HT, pour des résultats mesurables et concrets.",
   directAnswerEn:
     "Axion-IA se déplace à Pantin pour accompagner les entreprises dans l'optimisation de leurs processus grâce à l'IA. Avec des acteurs économiques tels que Hermès et BNP Paribas présents dans la région, nous proposons des audits à partir de 490 € HT et des interventions dès 590 € HT, pour des résultats mesurables et concrets.",
+  seoHook: "commerce détail & programmation informatique",
   ecosystemFr:
     "Pantin abrite des entreprises de renom telles que Hermès et BNP Paribas. La ZAC du Port est un pôle d'activité important, renforçant le tissu économique local. Axion-IA intervient pour automatiser les processus et améliorer l'efficacité des entreprises.",
   ecosystemEn:

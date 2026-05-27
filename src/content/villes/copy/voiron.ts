@@ -14,6 +14,7 @@ export const VOIRON_COPY: VilleCopy = {
     "À Voiron, Axion-IA se concentre sur l'amélioration des processus grâce à l'IA. Avec des secteurs dominants tels que l'industrie agroalimentaire et la fabrication de produits métalliques, nous apportons notre savoir-faire pour automatiser les tâches administratives. Chartreuse Diffusion et Rossignol sont des exemples d'entreprises présentes dans la région, illustrant la diversité économique locale.",
   directAnswerEn:
     "À Voiron, Axion-IA se concentre sur l'amélioration des processus grâce à l'IA. Avec des secteurs dominants tels que l'industrie agroalimentaire et la fabrication de produits métalliques, nous apportons notre savoir-faire pour automatiser les tâches administratives. Chartreuse Diffusion et Rossignol sont des exemples d'entreprises présentes dans la région, illustrant la diversité économique locale.",
+  seoHook: "industrie agroalimentaire & commerce détail",
   ecosystemFr:
     "Voiron est un pôle industriel incluant Chartreuse Diffusion et Rossignol. L'industrie agroalimentaire et la fabrication de produits métalliques y sont prépondérantes.",
   ecosystemEn:

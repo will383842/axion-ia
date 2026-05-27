@@ -12,6 +12,7 @@ export const BREUILLET_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Breuillet (91). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, professions libérales, exploitants agricoles de la vallée de la Renarde, indépendants et PME de services du sud Essonne. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Breuillet (91). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, professions libérales, exploitants agricoles de la vallée de la Renarde, indépendants et PME de services du sud Essonne. Audit Flash dès 490 € HT.",
+  seoHook: "commerce proximité & professions libérales",
   ecosystemFr:
     "Breuillet est une commune résidentielle rurale du sud de l'Essonne, dans la vallée de la Renarde (affluent de l'Orge). Tissu économique mixte rural-péri-urbain : TPE artisans BTP, commerces de centre-bourg, professions libérales, exploitants agricoles (grandes cultures, maraîchage), PME tertiaires et services. Proximité de Dourdan et de la gare RER C d'Arpajon.",
   ecosystemEn:

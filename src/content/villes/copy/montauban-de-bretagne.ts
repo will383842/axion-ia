@@ -12,6 +12,7 @@ export const MONTAUBAN_DE_BRETAGNE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montauban-de-Bretagne (35). Nous accompagnons tous types d'activités : TPE artisans BTP, PME de services et logistique du corridor Rennes-Saint-Brieuc, commerçants, professions libérales, exploitants agricoles et acteurs agroalimentaires bretons.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Montauban-de-Bretagne (35). Nous accompagnons tous types d'activités : TPE artisans BTP, PME de services et logistique du corridor Rennes-Saint-Brieuc, commerçants, professions libérales, exploitants agricoles et acteurs agroalimentaires bretons.",
+  seoHook: "artisanat construction & agriculture élevage",
   ecosystemFr:
     "Montauban-de-Bretagne est un bourg-centre du centre de l'Ille-et-Vilaine, sur l'axe Rennes-Saint-Brieuc (N12). Pôle de services rural dynamique, il accueille des TPE artisans BTP, des PME de services et logistique, des commerces de proximité, des professions libérales et un tissu agricole fort (polyculture-élevage laitier, agroalimentaire). Gare TER sur la ligne Rennes-Saint-Brieuc.",
   ecosystemEn:

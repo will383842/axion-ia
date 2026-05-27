@@ -12,6 +12,7 @@ export const BONNEUIL_SUR_MARNE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bonneuil-sur-Marne (94). Nous accompagnons TPE et PME : entreprises logistiques et portuaires, PME transport et BTP, artisans, commerçants, prestataires de services du sud-est Val-de-Marne. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Bonneuil-sur-Marne (94). Nous accompagnons TPE et PME : entreprises logistiques et portuaires, PME transport et BTP, artisans, commerçants, prestataires de services du sud-est Val-de-Marne. Audit Flash dès 490 € HT.",
+  seoHook: "transport logistique & matériaux construction",
   ecosystemFr:
     "Bonneuil-sur-Marne est structurée autour du port fluvial de Bonneuil (deuxième port fluvial IDF) et de zones d'activités logistiques et industrielles étendues. Tissu PME transport/logistique, BTP, TPE artisans, commerces de proximité et services aux entreprises. Proximité Créteil et A86.",
   ecosystemEn:

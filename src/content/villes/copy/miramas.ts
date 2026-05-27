@@ -12,6 +12,7 @@ export const MIRAMAS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Miramas (13) dans l'ouest des Bouches-du-Rhône. Nous accompagnons tous types d'activités : opérateurs logistiques (Fos, Salon, Istres), industriels (CMR, PME manufacture), TPE artisans BTP, commerces, agriculteurs/maraîchers de la Crau, PME tertiaires et professions libérales du bassin.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Miramas (13) dans l'ouest des Bouches-du-Rhône. Nous accompagnons tous types d'activités : opérateurs logistiques (Fos, Salon, Istres), industriels (CMR, PME manufacture), TPE artisans BTP, commerces, agriculteurs/maraîchers de la Crau, PME tertiaires et professions libérales du bassin.",
+  seoHook: "logistique transport & ferroviaire",
   ecosystemFr:
     "Miramas est au cœur du bassin économique ouest provençal : centre de maintenance TGV SNCF (CMR Miramas, 800+ emplois), proximité immédiate du grand port maritime de Fos-sur-Mer (4ème port méditerranéen), logistique d'envergure (plateformes e-commerce), industrie pétrochimie/sidérurgie périphérique. Tissu agricole de la Crau (foin AOC, maraîchage), TPE artisanat.",
   ecosystemEn:

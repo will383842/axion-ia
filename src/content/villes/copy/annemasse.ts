@@ -14,6 +14,7 @@ export const ANNEMASSE_COPY: VilleCopy = {
     "Axion-IA propose des interventions à Annemasse, où le commerce de détail et la programmation informatique sont des secteurs clés. Nous aidons les entreprises à automatiser les tâches administratives et à améliorer l'efficacité opérationnelle. Notre offre inclut des audits, des interventions et des implémentations sur site, assurant un retour sur investissement rapide et mesurable.",
   directAnswerEn:
     "Axion-IA propose des interventions à Annemasse, où le commerce de détail et la programmation informatique sont des secteurs clés. Nous aidons les entreprises à automatiser les tâches administratives et à améliorer l'efficacité opérationnelle. Notre offre inclut des audits, des interventions et des implémentations sur site, assurant un retour sur investissement rapide et mesurable.",
+  seoHook: "commerce détail & construction",
   ecosystemFr:
     "Annemasse abrite des groupes tels que Migros et Manpower. Le parc d'activités des Esserts est un lieu stratégique pour les entreprises cherchant à innover dans la programmation informatique.",
   ecosystemEn:

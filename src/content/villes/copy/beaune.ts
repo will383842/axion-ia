@@ -14,6 +14,7 @@ export const BEAUNE_COPY: VilleCopy = {
     "À Beaune, Axion-IA propose des services adaptés aux entreprises locales, incluant des audits dès 490 € HT et des interventions à partir de 590 € HT. Avec des entités comme Maison Louis Jadot et la Zone d'Activités de Vignoles, le commerce de détail et la production de boissons sont des secteurs clés où l'IA peut optimiser les processus.",
   directAnswerEn:
     "À Beaune, Axion-IA propose des services adaptés aux entreprises locales, incluant des audits dès 490 € HT et des interventions à partir de 590 € HT. Avec des entités comme Maison Louis Jadot et la Zone d'Activités de Vignoles, le commerce de détail et la production de boissons sont des secteurs clés où l'IA peut optimiser les processus.",
+  seoHook: "commerce détail & hébergement",
   ecosystemFr:
     "Beaune se distingue par la présence de grands groupes tels que Maison Albert Bichot et Maison Louis Jadot, et par une forte activité dans la Zone d'Activités de Vignoles.",
   ecosystemEn:

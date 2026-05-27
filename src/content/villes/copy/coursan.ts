@@ -12,6 +12,7 @@ export const COURSAN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coursan (11). Nous accompagnons TPE viticoles, artisans, PME négoce, commerçants, professions libérales et services de l'agglomération narbonnaise. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Coursan (11). Nous accompagnons TPE viticoles, artisans, PME négoce, commerçants, professions libérales et services de l'agglomération narbonnaise. Audit Flash dès 490 € HT.",
+  seoHook: "viticulture vinification & négoce commerce",
   ecosystemFr:
     "Coursan est une commune viticole de l'agglomération narbonnaise, traversée par le canal de la Robine (classé UNESCO). Économie dominée par la viticulture (AOC Corbières, Coteaux de Narbonne), le négoce vinicole, les services à la personne et les commerces de proximité. Proximité immédiate de Narbonne (5 km) avec son bassin d'emploi tertiaire.",
   ecosystemEn:

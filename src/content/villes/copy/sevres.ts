@@ -14,6 +14,7 @@ export const SEVRES_COPY: VilleCopy = {
     "Axion-IA se déplace à Sèvres pour proposer des solutions IA opérationnelles aux entreprises locales. Avec un tissu économique comprenant des secteurs comme le commerce de détail et la programmation informatique, Sèvres est un lieu propice à l'innovation. Nos interventions incluent des audits à partir de 490 € HT et des implémentations dès 990 € HT. Nous assurons un déploiement rapide et efficace pour optimiser vos processus métiers.",
   directAnswerEn:
     "Axion-IA se déplace à Sèvres pour proposer des solutions IA opérationnelles aux entreprises locales. Avec un tissu économique comprenant des secteurs comme le commerce de détail et la programmation informatique, Sèvres est un lieu propice à l'innovation. Nos interventions incluent des audits à partir de 490 € HT et des implémentations dès 990 € HT. Nous assurons un déploiement rapide et efficace pour optimiser vos processus métiers.",
+  seoHook: "commerce détail & programmation informatique",
   ecosystemFr:
     "Sèvres, entourée de communes comme Boulogne-Billancourt et Issy-les-Moulineaux, bénéficie d'un écosystème économique riche. Avec 2 000 établissements actifs, la ville est un pôle pour des secteurs tels que le commerce de détail et l'enseignement.",
   ecosystemEn:

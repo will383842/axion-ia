@@ -12,6 +12,7 @@ export const CHATENOY_LE_ROYAL_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châtenoy-le-Royal (71). Nous accompagnons tous types d'activités : TPE/PME des zones commerciales et tertiaires Grand Chalon, enseignes retail, logisticiens, artisans BTP et services aux entreprises.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châtenoy-le-Royal (71). Nous accompagnons tous types d'activités : TPE/PME des zones commerciales et tertiaires Grand Chalon, enseignes retail, logisticiens, artisans BTP et services aux entreprises.",
+  seoHook: "commerce retail & logistique distribution",
   ecosystemFr:
     "Châtenoy-le-Royal est une commune dynamique de l'agglomération Chalon-sur-Saône dotée de zones d'activités commerciales et tertiaires majeures. Tissu TPE/PME commerce, retail, logistique, services aux entreprises, artisanat BTP.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const HASPARREN_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hasparren (64). Nous accompagnons TPE, PME et artisans du Labourd intérieur : cuir/chaussure, agriculture basque, agroalimentaire, commerces. Audit Flash à partir de 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Hasparren (64). Nous accompagnons TPE, PME et artisans du Labourd intérieur : cuir/chaussure, agriculture basque, agroalimentaire, commerces. Audit Flash à partir de 490 € HT.",
+  seoHook: "cuir chaussure & agriculture basque",
   ecosystemFr:
     "Hasparren est la capitale historique du cuir et de la chaussure au Pays Basque, 7 626 habitants. Filière cuir artisanale encore active, PME textile/maroquinerie, TPE agricoles (élevage, brebis laitières), agroalimentaire basque (fromage Ossau-Iraty), commerces de bourg et artisanat d'art. À 25 min de Bayonne.",
   ecosystemEn:

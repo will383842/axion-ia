@@ -10,6 +10,7 @@ export const LE_LUC_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Luc (83). Nous accompagnons TPE artisanales, PME viticoles, commerces, professions libérales et logistique du centre Var. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Luc (83). Nous accompagnons TPE artisanales, PME viticoles, commerces, professions libérales et logistique du centre Var. Audit Flash dès 490 € HT, intervention sur site ou en visio.",
+  seoHook: "viticulture côtes & défense aéronautique",
   ecosystemFr:
     "Le Luc est une commune du centre Var sur l'axe A8 Aix-Nice, siège historique de la Base d'aviation école de l'Aéronautique navale (BAN Le Luc). Tissu de TPE artisanales, PME viticoles (Côtes de Provence), commerces, professions libérales, logistique et services à la base militaire.",
   ecosystemEn:

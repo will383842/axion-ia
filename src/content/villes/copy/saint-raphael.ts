@@ -14,6 +14,7 @@ export const SAINT_RAPHAEL_COPY: VilleCopy = {
     "Axion-IA propose des interventions à Saint-Raphaël, où le commerce de détail et les activités sportives dominent. Nos services, déjà sollicités par des écosystèmes comme ceux de Cap Digital et Station F à Paris, s'adaptent aux besoins des entreprises locales pour automatiser les tâches administratives et améliorer l'efficacité opérationnelle.",
   directAnswerEn:
     "Axion-IA propose des interventions à Saint-Raphaël, où le commerce de détail et les activités sportives dominent. Nos services, déjà sollicités par des écosystèmes comme ceux de Cap Digital et Station F à Paris, s'adaptent aux besoins des entreprises locales pour automatiser les tâches administratives et améliorer l'efficacité opérationnelle.",
+  seoHook: "commerce détail & hébergement",
   ecosystemFr:
     "Saint-Raphaël, avec ses 4 000 établissements actifs, partage un bassin économique avec Fréjus et Roquebrune-sur-Argens. Le commerce de détail et l'hébergement y sont particulièrement développés.",
   ecosystemEn:

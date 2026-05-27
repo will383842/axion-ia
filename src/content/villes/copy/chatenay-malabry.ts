@@ -14,6 +14,7 @@ export const CHATENAY_MALABRY_COPY: VilleCopy = {
     "À Châtenay-Malabry, Axion-IA propose des services d'IA adaptés aux besoins des entreprises locales. Grâce à notre expertise, nous accompagnons les entreprises dans des secteurs tels que la recherche-développement scientifique et le commerce de détail. Les infrastructures de transport, comme la gare de Massy TGV et l'aéroport de Paris-Orly, facilitent nos interventions sur site pour une mise en œuvre rapide et efficace.",
   directAnswerEn:
     "À Châtenay-Malabry, Axion-IA propose des services d'IA adaptés aux besoins des entreprises locales. Grâce à notre expertise, nous accompagnons les entreprises dans des secteurs tels que la recherche-développement scientifique et le commerce de détail. Les infrastructures de transport, comme la gare de Massy TGV et l'aéroport de Paris-Orly, facilitent nos interventions sur site pour une mise en œuvre rapide et efficace.",
+  seoHook: "recherche-développement & enseignement",
   ecosystemFr:
     "Châtenay-Malabry bénéficie de la proximité de l'Université Paris-Saclay et de l'École Centrale Paris, renforçant son secteur de la recherche-développement scientifique.",
   ecosystemEn:

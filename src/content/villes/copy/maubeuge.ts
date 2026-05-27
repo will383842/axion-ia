@@ -14,6 +14,7 @@ export const MAUBEUGE_COPY: VilleCopy = {
     "Axion-IA propose des interventions sur site à Maubeuge, optimisant les processus des entreprises locales. Dans un environnement économique où Renault et la Zone Industrielle de la Petite Savate sont présents, notre expertise en IA aide à automatiser les tâches administratives, améliorer l'efficacité et réduire les coûts. Nos services incluent audits, implémentations et formations adaptés aux besoins spécifiques des entreprises du secteur.",
   directAnswerEn:
     "Axion-IA propose des interventions sur site à Maubeuge, optimisant les processus des entreprises locales. Dans un environnement économique où Renault et la Zone Industrielle de la Petite Savate sont présents, notre expertise en IA aide à automatiser les tâches administratives, améliorer l'efficacité et réduire les coûts. Nos services incluent audits, implémentations et formations adaptés aux besoins spécifiques des entreprises du secteur.",
+  seoHook: "produits métalliques & réparation automobiles",
   ecosystemFr:
     "Le tissu économique de Maubeuge inclut Renault et la Zone Industrielle de la Petite Savate. Ces entités jouent un rôle clé dans les secteurs de la fabrication de produits métalliques et des transports terrestres.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const LE_PEAGE_DE_ROUSSILLON_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Péage-de-Roussillon (38). Nous accompagnons tous types d'activités : PME industrielles et logistiques rhodaniennes, TPE artisans BTP, commerçants, agriculteurs vallée du Rhône, indépendants, professions libérales et services aux entreprises du Pays Roussillonnais.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Péage-de-Roussillon (38). Nous accompagnons tous types d'activités : PME industrielles et logistiques rhodaniennes, TPE artisans BTP, commerçants, agriculteurs vallée du Rhône, indépendants, professions libérales et services aux entreprises du Pays Roussillonnais.",
+  seoHook: "industrie sud-isère & logistique axe",
   ecosystemFr:
     "Le Péage-de-Roussillon est positionnée stratégiquement comme point ferroviaire local du sud-Isère (gare TER Lyon-Valence). Proximité immédiate Roussillon et Saint-Maurice-l'Exil — appartient à la Communauté de communes du Pays Roussillonnais. Tissu PME industrielles bassin rhodanien, logistique (A7), agriculture vallée du Rhône, TPE artisanat BTP, commerces.",
   ecosystemEn:

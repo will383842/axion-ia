@@ -12,6 +12,7 @@ export const SAINT_ISMIER_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Ismier (38). Nous accompagnons tous types d'activités : TPE artisans BTP haut de gamme, commerçants, professions libérales (médecins, avocats, expert-comptables), PME tertiaires saint-ismiéroises, indépendants et services aux entreprises du Grésivaudan.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Ismier (38). Nous accompagnons tous types d'activités : TPE artisans BTP haut de gamme, commerçants, professions libérales (médecins, avocats, expert-comptables), PME tertiaires saint-ismiéroises, indépendants et services aux entreprises du Grésivaudan.",
+  seoHook: "tertiaires services & artisanat",
   ecosystemFr:
     "Saint-Ismier est positionnée dans la vallée du Grésivaudan, en zone résidentielle haut de gamme de l'agglomération grenobloise est. Proximité du parc technologique Inovallée (Meylan, 10 min) — accueille certaines structures innovation. Tissu PME tertiaires, TPE artisans BTP (haut de gamme, second œuvre), professions libérales installées, commerces de proximité et services péri-urbains.",
   ecosystemEn:

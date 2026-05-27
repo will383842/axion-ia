@@ -12,6 +12,7 @@ export const NAINTRE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Naintré (86). Nous accompagnons tous types d'activités : PME industrielles mécanique/automobile, TPE artisans BTP, commerçants, exploitants agricoles vallée de la Vienne, professions libérales et services aux entreprises du Châtelleraudais.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Naintré (86). Nous accompagnons tous types d'activités : PME industrielles mécanique/automobile, TPE artisans BTP, commerçants, exploitants agricoles vallée de la Vienne, professions libérales et services aux entreprises du Châtelleraudais.",
+  seoHook: "industrielles mécanique & artisanat métiers",
   ecosystemFr:
     "Naintré est une commune de l'agglomération de Châtellerault, dans la vallée de la Vienne sur l'axe stratégique Poitiers-Tours (A10). Héritage industriel du bassin châtelleraudais (mécanique, automobile, coutellerie historique). Tissu économique diversifié : PME industrielles, TPE artisans BTP, exploitations agricoles vallée de la Vienne, commerces et services.",
   ecosystemEn:

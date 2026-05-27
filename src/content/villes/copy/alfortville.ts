@@ -14,6 +14,7 @@ export const ALFORTVILLE_COPY: VilleCopy = {
     "Alfortville, située en Île-de-France, bénéficie d'un tissu économique varié avec des secteurs dominants tels que le commerce de détail et la construction. Axion-IA propose des interventions sur site pour automatiser des tâches comme les devis et les relances. Paris, abritant des entités comme Cap Digital et Station F, est à proximité, offrant un environnement propice à l'innovation.",
   directAnswerEn:
     "Alfortville, située en Île-de-France, bénéficie d'un tissu économique varié avec des secteurs dominants tels que le commerce de détail et la construction. Axion-IA propose des interventions sur site pour automatiser des tâches comme les devis et les relances. Paris, abritant des entités comme Cap Digital et Station F, est à proximité, offrant un environnement propice à l'innovation.",
+  seoHook: "commerce détail & construction",
   ecosystemFr:
     "Alfortville est entourée de communes dynamiques comme Vitry-sur-Seine et Maisons-Alfort. Le tissu économique local est renforcé par la proximité de pôles d'innovation parisiens tels que Cap Digital et Station F, facilitant les synergies entre entreprises.",
   ecosystemEn:

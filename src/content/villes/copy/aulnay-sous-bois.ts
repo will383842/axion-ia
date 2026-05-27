@@ -14,6 +14,7 @@ export const AULNAY_SOUS_BOIS_COPY: VilleCopy = {
     "Axion-IA propose des interventions à Aulnay-sous-Bois pour automatiser les tâches administratives et améliorer l'efficacité des entreprises locales. Avec des secteurs dominants tels que la construction automobile et le commerce de gros, notre expertise s'adapte aux besoins spécifiques des entreprises de la région. Nos services incluent des audits, des implémentations et des formations personnalisées.",
   directAnswerEn:
     "Axion-IA propose des interventions à Aulnay-sous-Bois pour automatiser les tâches administratives et améliorer l'efficacité des entreprises locales. Avec des secteurs dominants tels que la construction automobile et le commerce de gros, notre expertise s'adapte aux besoins spécifiques des entreprises de la région. Nos services incluent des audits, des implémentations et des formations personnalisées.",
+  seoHook: "construction automobile & commerce gros",
   ecosystemFr:
     "Aulnay-sous-Bois est un centre industriel avec PSA Peugeot Citroën et Airbus. Le Parc d'activités de la Garenne renforce l'attractivité économique de la ville, offrant un environnement propice aux entreprises cherchant à intégrer l'IA.",
   ecosystemEn:

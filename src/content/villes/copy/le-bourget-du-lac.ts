@@ -12,6 +12,7 @@ export const LE_BOURGET_DU_LAC_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Bourget-du-Lac (73). Nous accompagnons TPE et PME : startups Technolac, laboratoires R&D universitaires, acteurs du tourisme lacustre, commerçants, artisans et professions libérales du bassin Chambérien. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient au Bourget-du-Lac (73). Nous accompagnons TPE et PME : startups Technolac, laboratoires R&D universitaires, acteurs du tourisme lacustre, commerçants, artisans et professions libérales du bassin Chambérien. Audit Flash dès 490 € HT.",
+  seoHook: "recherche université & startups r&d",
   ecosystemFr:
     "Le Bourget-du-Lac est un pôle universitaire et technologique majeur en Savoie. Le campus Savoie-Mont-Blanc (~14 000 étudiants) et le technopôle Technolac (~250 entreprises, startups deeptech, labos CNRS) concentrent recherche et innovation. Le lac du Bourget, plus grand lac naturel de France, alimente un tourisme lacustre significatif. Proximité directe de Chambéry et Aix-les-Bains.",
   ecosystemEn:

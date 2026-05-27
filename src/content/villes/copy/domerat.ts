@@ -12,6 +12,7 @@ export const DOMERAT_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Domérat (03). Nous accompagnons tous types d'activités : PME industrielles agglomération Montluçon (héritage métallurgique), tertiaires, TPE artisans BTP, commerçants et services aux entreprises du Bourbonnais.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Domérat (03). Nous accompagnons tous types d'activités : PME industrielles agglomération Montluçon (héritage métallurgique), tertiaires, TPE artisans BTP, commerçants et services aux entreprises du Bourbonnais.",
+  seoHook: "industrielles",
   ecosystemFr:
     "Domérat est en banlieue de Montluçon, Bourbonnais. Tissu PME industrielles (héritage métallurgique Montluçon), tertiaires, TPE artisanat BTP, commerces.",
   ecosystemEn:

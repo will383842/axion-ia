@@ -14,6 +14,7 @@ export const OZOIR_LA_FERRIERE_COPY: VilleCopy = {
     "Axion-IA propose des interventions à Ozoir-la-Ferrière, où le commerce de détail et les travaux de construction spécialisés dominent. Grâce à notre expertise, nous aidons les entreprises à automatiser leurs processus. L'écosystème IA français, comprenant des entités comme LVMH et BNP Paribas, soutient cette transformation. Nos services incluent des audits, des implémentations et des sessions personnalisées pour répondre aux besoins spécifiques des entreprises.",
   directAnswerEn:
     "Axion-IA propose des interventions à Ozoir-la-Ferrière, où le commerce de détail et les travaux de construction spécialisés dominent. Grâce à notre expertise, nous aidons les entreprises à automatiser leurs processus. L'écosystème IA français, comprenant des entités comme LVMH et BNP Paribas, soutient cette transformation. Nos services incluent des audits, des implémentations et des sessions personnalisées pour répondre aux besoins spécifiques des entreprises.",
+  seoHook: "commerce détail & travaux construction",
   ecosystemFr:
     "Ozoir-la-Ferrière bénéficie de sa proximité avec Paris, abritant des entités telles que LVMH et Cap Digital. Ces acteurs influencent le paysage économique local.",
   ecosystemEn:

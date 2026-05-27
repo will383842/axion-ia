@@ -14,6 +14,7 @@ export const LA_SEYNE_SUR_MER_COPY: VilleCopy = {
     "Axion-IA se déplace à La Seyne-sur-Mer pour proposer des solutions IA adaptées aux besoins des entreprises locales. Avec des secteurs dominants tels que le commerce de détail et la construction, et des acteurs comme DCNS, notre approche opérationnelle permet d'optimiser les processus métiers. Nos services incluent des audits, interventions et implémentations sur site, garantissant un retour sur investissement rapide.",
   directAnswerEn:
     "Axion-IA se déplace à La Seyne-sur-Mer pour proposer des solutions IA adaptées aux besoins des entreprises locales. Avec des secteurs dominants tels que le commerce de détail et la construction, et des acteurs comme DCNS, notre approche opérationnelle permet d'optimiser les processus métiers. Nos services incluent des audits, interventions et implémentations sur site, garantissant un retour sur investissement rapide.",
+  seoHook: "commerce détail & restauration",
   ecosystemFr:
     "La Seyne-sur-Mer abrite des entreprises comme DCNS et CNIM, renforçant son tissu économique. La ZAC Les Playes est un pôle d'activité clé pour le développement local.",
   ecosystemEn:

@@ -12,6 +12,7 @@ export const SAINT_LAURENT_DE_MURE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Laurent-de-Mure (69). Nous accompagnons tous types d'activités : PME logistiques et tertiaires aire Saint-Exupéry, TPE artisans BTP, commerçants, indépendants et services aux entreprises est lyonnais.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Laurent-de-Mure (69). Nous accompagnons tous types d'activités : PME logistiques et tertiaires aire Saint-Exupéry, TPE artisans BTP, commerçants, indépendants et services aux entreprises est lyonnais.",
+  seoHook: "logistiques aire & tertiaires zones",
   ecosystemFr:
     "Saint-Laurent-de-Mure est positionnée en banlieue est de Lyon, à proximité immédiate de l'aéroport Lyon-Saint-Exupéry. Tissu PME logistiques et tertiaires (zones d'activités), TPE artisanat BTP, commerces, agriculture résiduelle.",
   ecosystemEn:

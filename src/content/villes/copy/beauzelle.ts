@@ -12,6 +12,7 @@ export const BEAUZELLE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beauzelle (31). Nous accompagnons TPE de services, PME tertiaires, professions libérales et commerçants du nord-ouest Toulouse. Audit Flash dès 490 € HT.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Beauzelle (31). Nous accompagnons TPE de services, PME tertiaires, professions libérales et commerçants du nord-ouest Toulouse. Audit Flash dès 490 € HT.",
+  seoHook: "professions libérales & commerce détail",
   ecosystemFr:
     "Beauzelle est une commune résidentielle du nord-ouest de Toulouse, entre Blagnac et Aussonne. Tissu TPE de services, PME tertiaires, professions libérales, commerces de proximité. Proximité de l'aéroport et du pôle aéronautique.",
   ecosystemEn:

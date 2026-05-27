@@ -12,6 +12,7 @@ export const SAINT_CLAUDE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Claude (39), sous-préfecture du Jura. Nous accompagnons tous types d'activités : TPE artisans, PME de tournerie et plasturgie, pipiers, commerçants, acteurs du tourisme de montagne du Haut-Jura, professions libérales et indépendants.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Saint-Claude (39), sous-préfecture du Jura. Nous accompagnons tous types d'activités : TPE artisans, PME de tournerie et plasturgie, pipiers, commerçants, acteurs du tourisme de montagne du Haut-Jura, professions libérales et indépendants.",
+  seoHook: "tournerie plasturgie & artisanat d'art",
   ecosystemFr:
     "Saint-Claude est la capitale historique de la pipe et du diamant, au coeur du Haut-Jura. L'économie locale repose sur la tournerie (bois, plastique, corne), la plasturgie, l'artisanat d'art, le commerce de centre-ville et le tourisme de montagne (ski de fond, randonnée, Parc naturel régional du Haut-Jura). La commune est un pôle de services pour les villages du Haut-Jura environnant.",
   ecosystemEn:

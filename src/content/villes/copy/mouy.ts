@@ -12,6 +12,7 @@ export const MOUY_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mouy (60). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles légères, commerçants, agriculteurs grandes cultures, indépendants, professions libérales et services aux entreprises du Pays de Thelle / sud Oise.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Mouy (60). Nous accompagnons tous types d'activités : TPE artisans, PME industrielles légères, commerçants, agriculteurs grandes cultures, indépendants, professions libérales et services aux entreprises du Pays de Thelle / sud Oise.",
+  seoHook: "artisanat mécanique & agriculture grandes",
   ecosystemFr:
     "Mouy est un bourg du Pays de Thelle (communauté de communes Thelloise) dans le sud de l'Oise, à mi-chemin entre Beauvais et Creil. Tissu TPE artisanales (BTP, mécanique), PME industrielles légères, agriculture grandes cultures picardes (céréales, betteraves), commerces de proximité et services. Proximité du bassin d'emploi Creil-Senlis et de l'axe Paris-Nord.",
   ecosystemEn:

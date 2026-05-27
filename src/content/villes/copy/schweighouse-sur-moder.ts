@@ -12,6 +12,7 @@ export const SCHWEIGHOUSE_SUR_MODER_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Schweighouse-sur-Moder (67). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants, professions libérales et indépendants de l'agglomération de Haguenau, vallée de la Moder. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Schweighouse-sur-Moder (67). Nous accompagnons TPE artisans, PME industrielles et de services, commerçants, professions libérales et indépendants de l'agglomération de Haguenau, vallée de la Moder. Audit Flash dès 490 € HT, interventions sur site et coaching dirigeants.",
+  seoHook: "industrie sous-traitance & artisanat",
   ecosystemFr:
     "Schweighouse-sur-Moder est une commune résidentielle et productive de l'agglomération de Haguenau (CA Haguenau), située dans la vallée de la Moder en Alsace du Nord. Tissu TPE artisans BTP, PME industrielles (sous-traitance mécanique, plasturgie), PME de services aux entreprises, commerces de bourg, professions libérales (santé, juridique) et indépendants. Forte intégration avec le bassin économique haguenovien.",
   ecosystemEn:
