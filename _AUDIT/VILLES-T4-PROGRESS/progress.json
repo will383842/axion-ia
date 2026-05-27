@@ -1,10 +1,10 @@
 {
   "totalT4": 1702,
-  "done": 160,
-  "remaining": 1542,
-  "lastBatchAt": "2026-05-27T09:33:39.647Z",
+  "done": 170,
+  "remaining": 1532,
+  "lastBatchAt": "2026-05-27T09:39:59.450Z",
   "lastBatchSize": 10,
-  "lastBatchNumber": 16,
+  "lastBatchNumber": 17,
   "villes": {
     "gentilly": {
       "slug": "gentilly",
@@ -2172,9 +2172,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "07",
       "population": 17274,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:39:59.450Z",
+      "batch": 17
     },
     "firminy": {
       "slug": "firminy",
@@ -2382,9 +2382,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "07",
       "population": 12416,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:39:59.450Z",
+      "batch": 17
     },
     "pont-du-chateau": {
       "slug": "pont-du-chateau",
@@ -2502,9 +2502,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "07",
       "population": 11279,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:39:59.450Z",
+      "batch": 17
     },
     "guilherand-granges": {
       "slug": "guilherand-granges",
@@ -2512,9 +2512,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "07",
       "population": 11235,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:39:59.450Z",
+      "batch": 17
     },
     "chassieu": {
       "slug": "chassieu",
@@ -2902,9 +2902,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "07",
       "population": 8726,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:39:59.450Z",
+      "batch": 17
     },
     "lempdes": {
       "slug": "lempdes",
@@ -2982,9 +2982,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "07",
       "population": 8538,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:39:59.450Z",
+      "batch": 17
     },
     "vif": {
       "slug": "vif",
@@ -3222,9 +3222,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "07",
       "population": 7661,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:39:59.450Z",
+      "batch": 17
     },
     "tullins": {
       "slug": "tullins",
@@ -3242,9 +3242,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "07",
       "population": 7580,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:39:59.450Z",
+      "batch": 17
     },
     "faverges-seythenex": {
       "slug": "faverges-seythenex",
@@ -3792,9 +3792,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "15",
       "population": 6391,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:39:59.450Z",
+      "batch": 17
     },
     "saint-jorioz": {
       "slug": "saint-jorioz",
@@ -3812,9 +3812,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "15",
       "population": 6361,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:39:59.450Z",
+      "batch": 17
     },
     "ambilly": {
       "slug": "ambilly",
