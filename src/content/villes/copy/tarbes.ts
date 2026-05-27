@@ -14,6 +14,7 @@ export const TARBES_COPY: VilleCopy = {
     "À Tarbes, Axion-IA propose des services d'IA adaptés aux besoins locaux. Avec des secteurs dominants comme la construction aéronautique et la recherche scientifique, et des entreprises telles qu'Alstom et Safran, nous intervenons pour améliorer l'efficacité opérationnelle. Nos solutions incluent des audits, des interventions et des implémentations sur site.",
   directAnswerEn:
     "À Tarbes, Axion-IA propose des services d'IA adaptés aux besoins locaux. Avec des secteurs dominants comme la construction aéronautique et la recherche scientifique, et des entreprises telles qu'Alstom et Safran, nous intervenons pour améliorer l'efficacité opérationnelle. Nos solutions incluent des audits, des interventions et des implémentations sur site.",
+  seoHook: "TPE & PME · IA opérationnelle",
   ecosystemFr:
     "Tarbes est animé par des secteurs tels que la construction aéronautique et la recherche scientifique. Des entreprises comme Alstom et Safran renforcent ce tissu économique dynamique.",
   ecosystemEn:

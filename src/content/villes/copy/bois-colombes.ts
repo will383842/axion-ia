@@ -14,6 +14,7 @@ export const BOIS_COLOMBES_COPY: VilleCopy = {
     "Axion-IA se déplace à Bois-Colombes pour accompagner les entreprises locales dans l'intégration de l'IA. Avec des acteurs comme Aviva France et Colgate-Palmolive dans la région, nous proposons des audits dès 490 € HT et des interventions à partir de 590 € HT. Notre approche garantit une mise en œuvre efficace adaptée au contexte économique local.",
   directAnswerEn:
     "Axion-IA se déplace à Bois-Colombes pour accompagner les entreprises locales dans l'intégration de l'IA. Avec des acteurs comme Aviva France et Colgate-Palmolive dans la région, nous proposons des audits dès 490 € HT et des interventions à partir de 590 € HT. Notre approche garantit une mise en œuvre efficace adaptée au contexte économique local.",
+  seoHook: "TPE & PME · IA opérationnelle",
   ecosystemFr:
     "Bois-Colombes accueille des entreprises comme Aviva France et Colgate-Palmolive. Le secteur des services financiers et la programmation informatique y sont particulièrement présents.",
   ecosystemEn:

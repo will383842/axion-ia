@@ -14,6 +14,7 @@ export const LANNION_COPY: VilleCopy = {
     "Axion-IA intervient à Lannion, un centre technologique abritant des entreprises comme Nokia et Ericsson. Notre cabinet propose des audits, interventions et implémentations sur site pour les entreprises locales. Nos services incluent l'automatisation de tâches administratives et le déploiement de solutions IA, adaptés aux besoins spécifiques des entreprises de télécommunications et de recherche-développement.",
   directAnswerEn:
     "Axion-IA intervient à Lannion, un centre technologique abritant des entreprises comme Nokia et Ericsson. Notre cabinet propose des audits, interventions et implémentations sur site pour les entreprises locales. Nos services incluent l'automatisation de tâches administratives et le déploiement de solutions IA, adaptés aux besoins spécifiques des entreprises de télécommunications et de recherche-développement.",
+  seoHook: "TPE & PME · IA opérationnelle",
   ecosystemFr:
     "Lannion accueille le pôle de compétitivité Images & Réseaux et la Technopole Anticipa. Ces infrastructures soutiennent les entreprises dans les secteurs des télécommunications et de la programmation informatique.",
   ecosystemEn:

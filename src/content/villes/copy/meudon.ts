@@ -14,6 +14,7 @@ export const MEUDON_COPY: VilleCopy = {
     "À Meudon, Axion-IA propose des interventions sur site pour répondre aux besoins des entreprises locales. Nous travaillons avec des secteurs tels que la programmation informatique et la recherche-développement scientifique. Nos services incluent des audits, des implémentations et des formations, adaptés aux spécificités des entreprises de la région.",
   directAnswerEn:
     "À Meudon, Axion-IA propose des interventions sur site pour répondre aux besoins des entreprises locales. Nous travaillons avec des secteurs tels que la programmation informatique et la recherche-développement scientifique. Nos services incluent des audits, des implémentations et des formations, adaptés aux spécificités des entreprises de la région.",
+  seoHook: "TPE & PME · IA opérationnelle",
   ecosystemFr:
     "Meudon accueille des entreprises majeures comme Thales et Bouygues Telecom. Le tissu économique local est renforcé par des secteurs tels que la programmation informatique et les services financiers.",
   ecosystemEn:

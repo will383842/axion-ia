@@ -14,6 +14,7 @@ export const BOURG_EN_BRESSE_COPY: VilleCopy = {
     "À Bourg-en-Bresse, Axion-IA propose des interventions sur site pour optimiser les processus des entreprises locales. Le Groupe Bel et le Parc d'activités de la Chambière figurent parmi les acteurs économiques de la région. Nous offrons des audits à partir de 490 € HT et des interventions dès 590 € HT, en nous déplaçant directement chez vous.",
   directAnswerEn:
     "À Bourg-en-Bresse, Axion-IA propose des interventions sur site pour optimiser les processus des entreprises locales. Le Groupe Bel et le Parc d'activités de la Chambière figurent parmi les acteurs économiques de la région. Nous offrons des audits à partir de 490 € HT et des interventions dès 590 € HT, en nous déplaçant directement chez vous.",
+  seoHook: "TPE & PME · IA opérationnelle",
   ecosystemFr:
     "Bourg-en-Bresse bénéficie de la présence du Groupe Bel et d'Aubert & Duval. Ces entreprises renforcent les secteurs de l'industrie agroalimentaire et de la fabrication de produits métalliques.",
   ecosystemEn:

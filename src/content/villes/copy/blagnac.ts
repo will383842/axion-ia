@@ -14,6 +14,7 @@ export const BLAGNAC_COPY: VilleCopy = {
     "Axion-IA se déplace à Blagnac pour accompagner les entreprises dans l'intégration de l'IA, en tenant compte de l'écosystème local marqué par la présence d'Airbus et ATR. Nos services incluent des audits, des interventions et des implémentations, avec des tarifs publics à partir de 490 € HT pour un audit Flash 4h.",
   directAnswerEn:
     "Axion-IA se déplace à Blagnac pour accompagner les entreprises dans l'intégration de l'IA, en tenant compte de l'écosystème local marqué par la présence d'Airbus et ATR. Nos services incluent des audits, des interventions et des implémentations, avec des tarifs publics à partir de 490 € HT pour un audit Flash 4h.",
+  seoHook: "TPE & PME · IA opérationnelle",
   ecosystemFr:
     "Blagnac, avec ses 3 000 établissements actifs, accueille des géants comme Airbus et ATR, renforçant sa position dans le secteur aéronautique. La zone ZAC Andromède est un pôle d'activité clé.",
   ecosystemEn:

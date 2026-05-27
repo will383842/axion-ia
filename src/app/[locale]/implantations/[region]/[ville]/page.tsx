@@ -36,6 +36,7 @@ import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
 import { JsonLdGraph } from "@/components/marketing/JsonLdGraph";
 import { Illustration } from "@/components/visual/Illustration";
+import { hasVilleHeroImage } from "@/content/villes/hero-images-map";
 import { ClientLogosBand } from "@/components/sections/ClientLogosBand";
 import { FounderTrustSection } from "@/components/sections/FounderTrustSection";
 import { PricingGridVille } from "@/components/sections/PricingGridVille";
@@ -446,19 +447,41 @@ export default async function VilleHubPage({ params }: Props) {
     ],
   } as const;
 
-  // ImageObject JSON-LD — Hero image triangle 3 piliers Axion-IA (Will 2026-05-26).
-  // Signal Google Images + AI engines pour indexation visuelle de la marque.
+  // Hero image : custom ville si dispo, sinon fallback universel (Audit Will 2026-05-27).
+  // 58 villes T1/T2 ont leur photo hero dédiée (AVIF + WebP + JPG dans /public/villes-hero/).
+  // Les autres villes utilisent l'illustration triangle "3 piliers" universelle.
+  const hasCustomHeroImage = hasVilleHeroImage(ville.slug);
+  const heroImageSrc = hasCustomHeroImage
+    ? `/villes-hero/${ville.slug}.avif`
+    : `/images/axion-ia-ville-hero-triangle-3-piliers-temps-couts-resultats-carre.avif`;
+  const heroImageAlt = hasCustomHeroImage
+    ? isFr
+      ? `${ville.nameFr} — vue représentative du tissu économique local accompagné par Axion-IA (audit, formation, implémentation, coaching, plateformes web/SaaS IA).`
+      : `${ville.nameFr} — representative view of the local economic ecosystem supported by Axion-IA (AI audit, training, implementation, coaching, web/SaaS platforms).`
+    : isFr
+      ? `Triangle Axion-IA des 3 piliers à ${ville.nameFr} : gagnez du temps, réduisez vos coûts, maximisez vos résultats — 100 % gagnant, moins de complexité, plus de performance.`
+      : `Axion-IA 3 pillars triangle in ${ville.nameFr}: save time, cut costs, maximize results.`;
+  const heroImageCaption = hasCustomHeroImage
+    ? isFr
+      ? `${ville.nameFr} · accompagné par Axion-IA`
+      : `${ville.nameFr} · supported by Axion-IA`
+    : isFr
+      ? `Axion-IA · 3 piliers à ${ville.nameFr}`
+      : `Axion-IA · 3 pillars in ${ville.nameFr}`;
+
+  // ImageObject JSON-LD — Hero image ville-spécifique ou universelle.
+  // Signal Google Images + AI engines pour indexation visuelle locale.
   // Licence CC BY 4.0 (cohérent avec /galerie banque d'images Axion-IA).
   const heroImageJsonLd = {
     "@context": "https://schema.org",
     "@type": "ImageObject",
     "@id": `${SITE_URL}${path}#hero-image`,
-    contentUrl: `${SITE_URL}/images/axion-ia-ville-hero-triangle-3-piliers-temps-couts-resultats-carre.avif`,
-    url: `${SITE_URL}/images/axion-ia-ville-hero-triangle-3-piliers-temps-couts-resultats-carre.avif`,
-    name: `Axion-IA · 3 piliers à ${ville.nameFr}`,
-    description: `Triangle Axion-IA des 3 piliers à ${ville.nameFr} : gagnez du temps, réduisez vos coûts, maximisez vos résultats — 100 % gagnant, moins de complexité, plus de performance.`,
-    width: 1254,
-    height: 1254,
+    contentUrl: `${SITE_URL}${heroImageSrc}`,
+    url: `${SITE_URL}${heroImageSrc}`,
+    name: heroImageCaption,
+    description: heroImageAlt,
+    width: hasCustomHeroImage ? 1200 : 1254,
+    height: hasCustomHeroImage ? 1200 : 1254,
     encodingFormat: "image/avif",
     creator: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: "Axion-IA" },
     copyrightHolder: { "@type": "Organization", name: "Axion-IA OÜ" },
@@ -594,26 +617,19 @@ export default async function VilleHubPage({ params }: Props) {
                 </Cta>
               </div>
             </div>
-            {/* Colonne droite — illustration triangle « 3 piliers » Axion-IA :
-                Gagnez du temps · Réduisez vos coûts · Maximisez vos résultats.
-                Image hand-crafted (Will 2026-05-26), AVIF 56 KB / WebP 91 KB
-                fallback PNG. Aspect 1:1, priority LCP. Cachée < lg. */}
+            {/* Colonne droite — illustration hero ville (Audit Will 2026-05-27) :
+                - 58 villes ont leur photo dédiée AVIF/WebP/JPG dans /villes-hero/
+                  (Paris, Lyon, Marseille, Aix-en-Provence, Saint-Marcellin, etc.)
+                - Autres villes : fallback universel triangle 3 piliers Axion-IA
+                Format AVIF priority LCP, aspect 1:1, alt ville-spécifique. */}
             <div className="hidden lg:block">
               <Illustration
                 slot="VILLE-01-hero"
-                src="/images/axion-ia-ville-hero-triangle-3-piliers-temps-couts-resultats-carre.avif"
+                src={heroImageSrc}
                 aspectRatio="1:1"
-                filenameTarget="public/images/axion-ia-ville-hero-triangle-3-piliers-temps-couts-resultats-carre.avif"
-                alt={
-                  isFr
-                    ? `Triangle Axion-IA des 3 piliers à ${ville.nameFr} : gagnez du temps, réduisez vos coûts, maximisez vos résultats — 100 % gagnant, moins de complexité, plus de performance.`
-                    : `Triangle Axion-IA des 3 piliers à ${ville.nameFr} : gagnez du temps, réduisez vos coûts, maximisez vos résultats — 100 % gagnant, moins de complexité, plus de performance.`
-                }
-                caption={
-                  isFr
-                    ? `Axion-IA · 3 piliers à ${ville.nameFr}`
-                    : `Axion-IA · 3 piliers à ${ville.nameFr}`
-                }
+                filenameTarget={`public${heroImageSrc}`}
+                alt={heroImageAlt}
+                caption={heroImageCaption}
                 priority
               />
             </div>

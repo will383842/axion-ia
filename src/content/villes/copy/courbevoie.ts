@@ -14,6 +14,7 @@ export const COURBEVOIE_COPY: VilleCopy = {
     "Axion-IA propose des interventions sur site à Courbevoie, une ville abritant des entreprises comme TotalEnergies et Engie. Nos services incluent audits, implémentations et formations pour les TPE, PME et ETI. Nous nous déplaçons sur site pour offrir des solutions concrètes aux défis opérationnels des entreprises locales.",
   directAnswerEn:
     "Axion-IA propose des interventions sur site à Courbevoie, une ville abritant des entreprises comme TotalEnergies et Engie. Nos services incluent audits, implémentations et formations pour les TPE, PME et ETI. Nous nous déplaçons sur site pour offrir des solutions concrètes aux défis opérationnels des entreprises locales.",
+  seoHook: "TPE & PME · IA opérationnelle",
   ecosystemFr:
     "Courbevoie est un pôle économique avec des entreprises telles que TotalEnergies et Saint-Gobain. Ses secteurs dominants incluent les services financiers et la programmation informatique.",
   ecosystemEn:

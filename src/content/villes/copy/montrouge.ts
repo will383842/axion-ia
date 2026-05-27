@@ -14,6 +14,7 @@ export const MONTROUGE_COPY: VilleCopy = {
     "Axion-IA se déplace à Montrouge pour accompagner les entreprises dans l'automatisation de leurs processus. Avec des acteurs économiques comme Crédit Agricole et Orange présents dans la région, notre cabinet propose des solutions adaptées aux besoins spécifiques de chaque secteur. Nos tarifs débutent à 490 € HT pour un Audit Flash de 4 heures, permettant une évaluation rapide et efficace.",
   directAnswerEn:
     "Axion-IA se déplace à Montrouge pour accompagner les entreprises dans l'automatisation de leurs processus. Avec des acteurs économiques comme Crédit Agricole et Orange présents dans la région, notre cabinet propose des solutions adaptées aux besoins spécifiques de chaque secteur. Nos tarifs débutent à 490 € HT pour un Audit Flash de 4 heures, permettant une évaluation rapide et efficace.",
+  seoHook: "TPE & PME · IA opérationnelle",
   ecosystemFr:
     "Montrouge est un pôle économique avec des entreprises comme Crédit Agricole et Orange. Axion-IA y intervient pour soutenir les entreprises dans leur transformation IA, en tenant compte des spécificités locales.",
   ecosystemEn:

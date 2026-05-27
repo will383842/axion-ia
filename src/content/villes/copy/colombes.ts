@@ -14,6 +14,7 @@ export const COLOMBES_COPY: VilleCopy = {
     "Axion-IA se déplace à Colombes pour offrir des services d'IA opérationnelle adaptés aux besoins des entreprises locales. Avec des acteurs économiques tels qu'Oracle France et Technip Energies, Colombes est un pôle d'activité où nous proposons des audits, interventions et implémentations pour optimiser vos processus métiers. Nos tarifs publics sont disponibles en ligne.",
   directAnswerEn:
     "Axion-IA se déplace à Colombes pour offrir des services d'IA opérationnelle adaptés aux besoins des entreprises locales. Avec des acteurs économiques tels qu'Oracle France et Technip Energies, Colombes est un pôle d'activité où nous proposons des audits, interventions et implémentations pour optimiser vos processus métiers. Nos tarifs publics sont disponibles en ligne.",
+  seoHook: "TPE & PME · IA opérationnelle",
   ecosystemFr:
     "Colombes, avec ses 7 000 établissements actifs, abrite des entreprises comme Oracle France et Arkema. Ce tissu économique diversifié offre un cadre idéal pour l'implémentation de solutions IA par Axion-IA, visant à automatiser et optimiser les processus internes.",
   ecosystemEn:

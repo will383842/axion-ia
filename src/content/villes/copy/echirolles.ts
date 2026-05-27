@@ -14,6 +14,7 @@ export const ECHIROLLES_COPY: VilleCopy = {
     "À Échirolles, Axion-IA s'engage à fournir des interventions sur site pour optimiser vos processus grâce à l'IA. Avec des pôles comme Minalogic et Tenerrdis, notre équipe nationale se déplace pour automatiser vos tâches administratives. Nos services incluent audits, implémentations, et formations personnalisées pour assurer une adoption réussie de l'IA.",
   directAnswerEn:
     "À Échirolles, Axion-IA s'engage à fournir des interventions sur site pour optimiser vos processus grâce à l'IA. Avec des pôles comme Minalogic et Tenerrdis, notre équipe nationale se déplace pour automatiser vos tâches administratives. Nos services incluent audits, implémentations, et formations personnalisées pour assurer une adoption réussie de l'IA.",
+  seoHook: "TPE & PME · IA opérationnelle",
   ecosystemFr:
     "Échirolles bénéficie d'un écosystème riche avec le Parc d'activités Sud Galaxie et des entreprises comme Schneider Electric. Les pôles Minalogic et Tenerrdis renforcent l'innovation dans les secteurs technologiques et énergétiques.",
   ecosystemEn:

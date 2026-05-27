@@ -14,6 +14,7 @@ export const PUTEAUX_COPY: VilleCopy = {
     "Axion-IA propose des interventions en IA à Puteaux, où des entreprises telles que TotalEnergies et AXA jouent un rôle clé dans l'économie locale. Nous offrons des audits, des implémentations et des formations sur site pour optimiser les processus métiers. Nos services sont conçus pour répondre aux besoins spécifiques des entreprises de la région, avec des tarifs publics consultables en ligne.",
   directAnswerEn:
     "Axion-IA propose des interventions en IA à Puteaux, où des entreprises telles que TotalEnergies et AXA jouent un rôle clé dans l'économie locale. Nous offrons des audits, des implémentations et des formations sur site pour optimiser les processus métiers. Nos services sont conçus pour répondre aux besoins spécifiques des entreprises de la région, avec des tarifs publics consultables en ligne.",
+  seoHook: "TPE & PME · IA opérationnelle",
   ecosystemFr:
     "Puteaux abrite des sièges sociaux importants comme ceux de TotalEnergies et Société Générale. Ce tissu économique dense offre un environnement propice à l'innovation et à l'optimisation des processus grâce à l'IA.",
   ecosystemEn:

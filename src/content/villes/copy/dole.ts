@@ -14,6 +14,7 @@ export const DOLE_COPY: VilleCopy = {
     "À Dole, Axion-IA propose des services d'IA adaptés aux secteurs de l'industrie agroalimentaire et des transports terrestres. Nos interventions sur site permettent aux entreprises de Dole de bénéficier de solutions IA concrètes. Avec des acteurs comme Euroserum et Solvay implantés localement, nous apportons notre expertise nationale pour répondre aux besoins spécifiques de chaque entreprise.",
   directAnswerEn:
     "À Dole, Axion-IA propose des services d'IA adaptés aux secteurs de l'industrie agroalimentaire et des transports terrestres. Nos interventions sur site permettent aux entreprises de Dole de bénéficier de solutions IA concrètes. Avec des acteurs comme Euroserum et Solvay implantés localement, nous apportons notre expertise nationale pour répondre aux besoins spécifiques de chaque entreprise.",
+  seoHook: "TPE & PME · IA opérationnelle",
   ecosystemFr:
     "Le tissu économique de Dole inclut des entreprises comme Euroserum et Solvay. La Zone Industrielle de Dole est un centre d'activités majeur, renforçant le dynamisme économique local.",
   ecosystemEn:

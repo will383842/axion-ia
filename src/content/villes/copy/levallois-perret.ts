@@ -14,6 +14,7 @@ export const LEVALLOIS_PERRET_COPY: VilleCopy = {
     "À Levallois-Perret, Axion-IA propose des services d'IA opérationnelle pour les entreprises, notamment dans les secteurs de la programmation informatique et des services financiers. Avec des entreprises comme L'Oréal et Edenred implantées localement, nous accompagnons nos clients dans l'optimisation de leurs processus métiers, tout en garantissant un retour sur investissement mesurable.",
   directAnswerEn:
     "À Levallois-Perret, Axion-IA propose des services d'IA opérationnelle pour les entreprises, notamment dans les secteurs de la programmation informatique et des services financiers. Avec des entreprises comme L'Oréal et Edenred implantées localement, nous accompagnons nos clients dans l'optimisation de leurs processus métiers, tout en garantissant un retour sur investissement mesurable.",
+  seoHook: "TPE & PME · IA opérationnelle",
   ecosystemFr:
     "Levallois-Perret accueille des géants comme L'Oréal et Alstom. Ce tissu économique dynamique offre un cadre propice à l'innovation et à l'optimisation des processus grâce à l'IA.",
   ecosystemEn:

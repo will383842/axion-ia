@@ -14,6 +14,7 @@ export const LES_MUREAUX_COPY: VilleCopy = {
     "À Les Mureaux, Axion-IA propose des audits et interventions pour optimiser les processus des entreprises, notamment dans les secteurs de la construction aéronautique et de la programmation informatique. Avec ArianeGroup implanté localement, notre expertise s'adresse aux entreprises cherchant à intégrer l'IA dans leurs opérations quotidiennes.",
   directAnswerEn:
     "À Les Mureaux, Axion-IA propose des audits et interventions pour optimiser les processus des entreprises, notamment dans les secteurs de la construction aéronautique et de la programmation informatique. Avec ArianeGroup implanté localement, notre expertise s'adresse aux entreprises cherchant à intégrer l'IA dans leurs opérations quotidiennes.",
+  seoHook: "TPE & PME · IA opérationnelle",
   ecosystemFr:
     "Les Mureaux, avec la Zone d'activités des Garennes, est un pôle important pour la construction aéronautique. ArianeGroup y est présent, renforçant l'importance de ce secteur.",
   ecosystemEn:

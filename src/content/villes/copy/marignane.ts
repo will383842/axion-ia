@@ -14,6 +14,7 @@ export const MARIGNANE_COPY: VilleCopy = {
     "Axion-IA propose des interventions à Marignane, une ville où Airbus Helicopters et le pôle de compétitivité Pégase sont présents. Nous offrons des audits dès 490 € HT et des implémentations IA à partir de 990 € HT, permettant aux entreprises de bénéficier d’outils IA adaptés à leurs besoins spécifiques.",
   directAnswerEn:
     "Axion-IA propose des interventions à Marignane, une ville où Airbus Helicopters et le pôle de compétitivité Pégase sont présents. Nous offrons des audits dès 490 € HT et des implémentations IA à partir de 990 € HT, permettant aux entreprises de bénéficier d’outils IA adaptés à leurs besoins spécifiques.",
+  seoHook: "TPE & PME · IA opérationnelle",
   ecosystemFr:
     "Marignane est un centre de l'industrie aéronautique, avec Airbus Helicopters et le pôle Pégase. La ZAC des Florides renforce ce tissu économique spécialisé.",
   ecosystemEn:

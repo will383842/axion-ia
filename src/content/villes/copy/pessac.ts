@@ -14,6 +14,7 @@ export const PESSAC_COPY: VilleCopy = {
     "À Pessac, Axion-IA propose des services d'IA adaptés aux besoins des entreprises locales. Avec des pôles comme Aerospace Valley et Digital Aquitaine, nous aidons à automatiser les tâches administratives et à améliorer l'efficacité opérationnelle. Nos interventions incluent des audits, des implémentations et des formations sur site pour garantir un retour sur investissement rapide.",
   directAnswerEn:
     "À Pessac, Axion-IA propose des services d'IA adaptés aux besoins des entreprises locales. Avec des pôles comme Aerospace Valley et Digital Aquitaine, nous aidons à automatiser les tâches administratives et à améliorer l'efficacité opérationnelle. Nos interventions incluent des audits, des implémentations et des formations sur site pour garantir un retour sur investissement rapide.",
+  seoHook: "TPE & PME · IA opérationnelle",
   ecosystemFr:
     "Pessac bénéficie de la proximité de l'Université de Bordeaux et de KEDGE Business School, renforçant son potentiel en recherche et développement. Le technopôle Euratlantique et l'incubateur Technowest soutiennent l'innovation locale.",
   ecosystemEn:

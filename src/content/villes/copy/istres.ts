@@ -14,6 +14,7 @@ export const ISTRES_COPY: VilleCopy = {
     "Axion-IA intervient à Istres pour aider les entreprises à intégrer l'IA dans leurs opérations. Avec des secteurs dominants comme la construction aéronautique et le commerce de détail, nous proposons des audits et implémentations adaptés. Nos services incluent des audits à partir de 490 € HT et des interventions dès 590 € HT, disponibles sur notre site.",
   directAnswerEn:
     "Axion-IA intervient à Istres pour aider les entreprises à intégrer l'IA dans leurs opérations. Avec des secteurs dominants comme la construction aéronautique et le commerce de détail, nous proposons des audits et implémentations adaptés. Nos services incluent des audits à partir de 490 € HT et des interventions dès 590 € HT, disponibles sur notre site.",
+  seoHook: "TPE & PME · IA opérationnelle",
   ecosystemFr:
     "Istres, avec ses 4 000 établissements actifs, est un pôle industriel où se distingue Dassault Aviation. La ville est également un centre pour le commerce de détail et le transport terrestre, offrant un environnement propice aux innovations IA.",
   ecosystemEn:

@@ -14,6 +14,7 @@ export const CALAIS_COPY: VilleCopy = {
     "À Calais, Axion-IA propose des services adaptés aux besoins des entreprises locales. Avec des acteurs comme Eurotunnel et la Zone Industrielle des Dunes, nous offrons des audits dès 490 € HT et des interventions à partir de 590 € HT. Notre équipe nationale se déplace pour vous accompagner dans vos projets IA, garantissant une approche personnalisée et efficace.",
   directAnswerEn:
     "À Calais, Axion-IA propose des services adaptés aux besoins des entreprises locales. Avec des acteurs comme Eurotunnel et la Zone Industrielle des Dunes, nous offrons des audits dès 490 € HT et des interventions à partir de 590 € HT. Notre équipe nationale se déplace pour vous accompagner dans vos projets IA, garantissant une approche personnalisée et efficace.",
+  seoHook: "TPE & PME · IA opérationnelle",
   ecosystemFr:
     "Calais est un pôle stratégique avec Eurotunnel et Tioxide Europe. La Zone Industrielle des Dunes renforce l'activité économique, offrant un environnement propice aux interventions IA d'Axion-IA.",
   ecosystemEn:

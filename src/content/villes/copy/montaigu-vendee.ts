@@ -14,6 +14,7 @@ export const MONTAIGU_VENDEE_COPY: VilleCopy = {
     "Axion-IA accompagne les entreprises de Montaigu-Vendée dans l'optimisation de leurs processus grâce à l'IA. Avec un tissu économique comprenant Fleury Michon et la Zone Industrielle de la Bretonnière, nous réalisons des audits précis et des implémentations efficaces pour répondre aux besoins spécifiques de chaque secteur, comme l'industrie agroalimentaire et la fabrication de produits métalliques.",
   directAnswerEn:
     "Axion-IA accompagne les entreprises de Montaigu-Vendée dans l'optimisation de leurs processus grâce à l'IA. Avec un tissu économique comprenant Fleury Michon et la Zone Industrielle de la Bretonnière, nous réalisons des audits précis et des implémentations efficaces pour répondre aux besoins spécifiques de chaque secteur, comme l'industrie agroalimentaire et la fabrication de produits métalliques.",
+  seoHook: "TPE & PME · IA opérationnelle",
   ecosystemFr:
     "Le tissu économique de Montaigu-Vendée inclut des acteurs comme Fleury Michon et le Groupe Atlantic. La Zone Industrielle de la Bretonnière est un pôle clé pour l'industrie locale.",
   ecosystemEn:

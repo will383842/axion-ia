@@ -14,6 +14,7 @@ export const CHAMPS_SUR_MARNE_COPY: VilleCopy = {
     "Axion-IA se déplace à Champs-sur-Marne pour accompagner les entreprises dans l'intégration de l'IA. Avec des acteurs comme Eiffage et Vinci, et des pôles tels que la Cité Descartes, la ville est un centre stratégique pour le développement technologique. Nos services incluent audits, interventions et formations sur site.",
   directAnswerEn:
     "Axion-IA se déplace à Champs-sur-Marne pour accompagner les entreprises dans l'intégration de l'IA. Avec des acteurs comme Eiffage et Vinci, et des pôles tels que la Cité Descartes, la ville est un centre stratégique pour le développement technologique. Nos services incluent audits, interventions et formations sur site.",
+  seoHook: "TPE & PME · IA opérationnelle",
   ecosystemFr:
     "Champs-sur-Marne est dotée d'un écosystème riche avec l'Université Gustave Eiffel et l'ESIEE Paris. Les entreprises bénéficient également de l'Incubateur Descartes et du Laboratoire Navier pour leurs projets IA.",
   ecosystemEn:

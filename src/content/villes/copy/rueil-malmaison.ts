@@ -14,6 +14,7 @@ export const RUEIL_MALMAISON_COPY: VilleCopy = {
     "À Rueil-Malmaison, Axion-IA propose des interventions sur site pour automatiser des tâches administratives et optimiser les processus métiers. Grâce à notre expertise, nous aidons les entreprises locales, comme celles du secteur des services financiers ou de la programmation informatique, à intégrer l'IA efficacement. Nos services incluent des audits, des implémentations et des formations personnalisées.",
   directAnswerEn:
     "À Rueil-Malmaison, Axion-IA propose des interventions sur site pour automatiser des tâches administratives et optimiser les processus métiers. Grâce à notre expertise, nous aidons les entreprises locales, comme celles du secteur des services financiers ou de la programmation informatique, à intégrer l'IA efficacement. Nos services incluent des audits, des implémentations et des formations personnalisées.",
+  seoHook: "TPE & PME · IA opérationnelle",
   ecosystemFr:
     "Rueil-Malmaison accueille des entreprises comme Schneider Electric et Heineken France, favorisant un environnement propice aux services financiers et à l'informatique.",
   ecosystemEn:

@@ -14,6 +14,7 @@ export const GIF_SUR_YVETTE_COPY: VilleCopy = {
     "Axion-IA s'engage à Gif-sur-Yvette pour accompagner les entreprises dans leur transition IA. Avec des acteurs comme le CNRS et l'Université Paris-Saclay présents, nous proposons des audits dès 490 € HT et des implémentations à partir de 990 € HT. Notre expertise s'adapte aux spécificités du tissu économique local, notamment en recherche-développement et programmation informatique.",
   directAnswerEn:
     "Axion-IA s'engage à Gif-sur-Yvette pour accompagner les entreprises dans leur transition IA. Avec des acteurs comme le CNRS et l'Université Paris-Saclay présents, nous proposons des audits dès 490 € HT et des implémentations à partir de 990 € HT. Notre expertise s'adapte aux spécificités du tissu économique local, notamment en recherche-développement et programmation informatique.",
+  seoHook: "TPE & PME · IA opérationnelle",
   ecosystemFr:
     "Gif-sur-Yvette est un pôle de recherche avec le CNRS et l'Université Paris-Saclay. Le secteur numérique est renforcé par le pôle Systematic Paris-Region.",
   ecosystemEn:

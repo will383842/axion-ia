@@ -14,6 +14,7 @@ export const SAINT_MARTIN_D_HERES_COPY: VilleCopy = {
     "Axion-IA se déplace à Saint-Martin-d'Hères pour accompagner les entreprises dans l'optimisation de leurs processus. Avec la proximité de l'Université Grenoble Alpes et du Laboratoire d'Informatique de Grenoble, nous intervenons sur des projets variés, du développement de solutions IA sur mesure à l'audit de systèmes existants, en garantissant un retour sur investissement rapide.",
   directAnswerEn:
     "Axion-IA se déplace à Saint-Martin-d'Hères pour accompagner les entreprises dans l'optimisation de leurs processus. Avec la proximité de l'Université Grenoble Alpes et du Laboratoire d'Informatique de Grenoble, nous intervenons sur des projets variés, du développement de solutions IA sur mesure à l'audit de systèmes existants, en garantissant un retour sur investissement rapide.",
+  seoHook: "TPE & PME · IA opérationnelle",
   ecosystemFr:
     "Saint-Martin-d'Hères est un pôle technologique avec STMicroelectronics et Schneider Electric. L'Université Grenoble Alpes et le Laboratoire d'Informatique de Grenoble renforcent cet environnement propice à l'innovation.",
   ecosystemEn:

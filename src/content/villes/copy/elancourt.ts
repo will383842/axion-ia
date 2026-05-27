@@ -14,6 +14,7 @@ export const ELANCOURT_COPY: VilleCopy = {
     "Élancourt, située en Île-de-France, est un pôle industriel avec Thales et le Parc d'activités de la Clef de Saint-Pierre. Axion-IA propose des interventions sur site pour optimiser les processus des entreprises locales, en s'appuyant sur notre expertise nationale. Nos services incluent audit, implémentation et formations personnalisées pour répondre aux besoins spécifiques des entreprises élancourtoises.",
   directAnswerEn:
     "Élancourt, située en Île-de-France, est un pôle industriel avec Thales et le Parc d'activités de la Clef de Saint-Pierre. Axion-IA propose des interventions sur site pour optimiser les processus des entreprises locales, en s'appuyant sur notre expertise nationale. Nos services incluent audit, implémentation et formations personnalisées pour répondre aux besoins spécifiques des entreprises élancourtoises.",
+  seoHook: "TPE & PME · IA opérationnelle",
   ecosystemFr:
     "Le tissu économique d'Élancourt est marqué par la présence de Thales et le pôle Systematic Paris-Region. Ces entités renforcent la position de la ville dans les secteurs de la fabrication électronique et de la recherche-développement scientifique.",
   ecosystemEn:

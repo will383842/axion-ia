@@ -14,6 +14,7 @@ export const BEAUPREAU_EN_MAUGES_COPY: VilleCopy = {
     "Axion-IA se déplace à Beaupréau-en-Mauges pour accompagner les entreprises dans l'adoption de l'IA. Notre approche s'inspire des écosystèmes comme Cap Digital à Paris et Station F, garantissant une intégration efficace de l'IA dans des secteurs tels que l'industrie agroalimentaire et le commerce de gros.",
   directAnswerEn:
     "Axion-IA se déplace à Beaupréau-en-Mauges pour accompagner les entreprises dans l'adoption de l'IA. Notre approche s'inspire des écosystèmes comme Cap Digital à Paris et Station F, garantissant une intégration efficace de l'IA dans des secteurs tels que l'industrie agroalimentaire et le commerce de gros.",
+  seoHook: "TPE & PME · IA opérationnelle",
   ecosystemFr:
     "Beaupréau-en-Mauges se distingue par son industrie agroalimentaire et la fabrication de produits métalliques. L'écosystème local est complété par le commerce de gros et les transports terrestres.",
   ecosystemEn:

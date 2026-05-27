@@ -14,6 +14,7 @@ export const CHATILLON_COPY: VilleCopy = {
     "À Châtillon, Axion-IA propose des services d'IA adaptés aux besoins des entreprises locales. Avec des secteurs dominants tels que la programmation informatique et la présence d'acteurs comme Thales, notre intervention vise à automatiser les processus et optimiser les opérations. Nos tarifs publics incluent l'Audit Flash à partir de 490 € HT et l'Intervention Essentielle dès 590 € HT.",
   directAnswerEn:
     "À Châtillon, Axion-IA propose des services d'IA adaptés aux besoins des entreprises locales. Avec des secteurs dominants tels que la programmation informatique et la présence d'acteurs comme Thales, notre intervention vise à automatiser les processus et optimiser les opérations. Nos tarifs publics incluent l'Audit Flash à partir de 490 € HT et l'Intervention Essentielle dès 590 € HT.",
+  seoHook: "TPE & PME · IA opérationnelle",
   ecosystemFr:
     "Châtillon, avec ses 3 000 établissements actifs, abrite des entreprises de pointe telles que Thales. La proximité avec Paris et ses pôles comme Cap Digital favorise l'innovation et le développement technologique.",
   ecosystemEn:

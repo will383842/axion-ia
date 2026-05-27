@@ -14,6 +14,7 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
     "Vitry-sur-Seine abrite le Centre de recherche Sanofi Vitry et des établissements liés aux pôles Medicen Paris Region et Systematic Paris-Region. Les 5 500 établissements actifs de la ville couvrent l'industrie chimique, la R&D scientifique et la construction. Axion-IA se déplace à Vitry-sur-Seine pour auditer les processus, former les équipes et implémenter des outils IA opérationnels — sans intermédiaire, sans jargon.",
   directAnswerEn:
     "Vitry-sur-Seine abrite le Centre de recherche Sanofi Vitry et des établissements liés aux pôles Medicen Paris Region et Systematic Paris-Region. Les 5 500 établissements actifs de la ville couvrent l'industrie chimique, la R&D scientifique et la construction. Axion-IA se déplace à Vitry-sur-Seine pour auditer les processus, former les équipes et implémenter des outils IA opérationnels — sans intermédiaire, sans jargon.",
+  seoHook: "TPE & PME · IA opérationnelle",
   ecosystemFr:
     "L'économie vitriote s'articule autour de l'industrie pharmaceutique — avec le Centre de recherche Sanofi Vitry — et du numérique via le pôle Systematic Paris-Region. Les ZAC du Port à l'Anglais et Rouget de Lisle accueillent également des activités de construction et de commerce structurant le tissu local.",
   ecosystemEn:

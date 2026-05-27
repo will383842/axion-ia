@@ -14,6 +14,7 @@ export const VELIZY_VILLACOUBLAY_COPY: VilleCopy = {
     "À Vélizy-Villacoublay, Axion-IA propose des audits et interventions pour les entreprises locales. Avec la présence de groupes comme Dassault Systèmes et Thales, notre expertise en IA opérationnelle aide à automatiser et optimiser les tâches administratives et techniques. Nos services incluent l'audit Flash à partir de 490 € HT et l'intervention dès 590 € HT.",
   directAnswerEn:
     "À Vélizy-Villacoublay, Axion-IA propose des audits et interventions pour les entreprises locales. Avec la présence de groupes comme Dassault Systèmes et Thales, notre expertise en IA opérationnelle aide à automatiser et optimiser les tâches administratives et techniques. Nos services incluent l'audit Flash à partir de 490 € HT et l'intervention dès 590 € HT.",
+  seoHook: "TPE & PME · IA opérationnelle",
   ecosystemFr:
     "Vélizy-Villacoublay abrite des géants comme Renault et Dassault Systèmes, au cœur d'un écosystème technologique. Le technopôle Inovel Parc renforce ce dynamisme avec ses nombreuses entreprises innovantes.",
   ecosystemEn:

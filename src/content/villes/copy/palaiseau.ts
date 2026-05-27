@@ -14,6 +14,7 @@ export const PALAISEAU_COPY: VilleCopy = {
     "À Palaiseau, Axion-IA propose des interventions sur site, profitant de l'environnement technologique de Paris-Saclay. Avec des entités comme Thales et EDF implantées localement, nous aidons les entreprises à intégrer l'IA dans leurs opérations. Nos services incluent des audits et des implémentations clés en main, adaptés aux secteurs de la recherche et de la programmation informatique.",
   directAnswerEn:
     "À Palaiseau, Axion-IA propose des interventions sur site, profitant de l'environnement technologique de Paris-Saclay. Avec des entités comme Thales et EDF implantées localement, nous aidons les entreprises à intégrer l'IA dans leurs opérations. Nos services incluent des audits et des implémentations clés en main, adaptés aux secteurs de la recherche et de la programmation informatique.",
+  seoHook: "TPE & PME · IA opérationnelle",
   ecosystemFr:
     "Palaiseau, au sein de Paris-Saclay, héberge des acteurs comme l'École Polytechnique et le Laboratoire de Physique des Solides, renforçant son statut de pôle scientifique et technologique.",
   ecosystemEn:

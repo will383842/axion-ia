@@ -12,6 +12,7 @@ export const PORTO_VECCHIO_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Porto-Vecchio (2A). Nous accompagnons tous types d'activités : TPE/PME tourisme balnéaire prestige, hôtellerie-restauration haut de gamme, nautisme et port de plaisance, commerces saisonniers, agences immobilières, artisans BTP, indépendants et services aux entreprises du sud-est corse.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Porto-Vecchio (2A). Nous accompagnons tous types d'activités : TPE/PME tourisme balnéaire prestige, hôtellerie-restauration haut de gamme, nautisme et port de plaisance, commerces saisonniers, agences immobilières, artisans BTP, indépendants et services aux entreprises du sud-est corse.",
+  seoHook: "TPE & PME · IA opérationnelle",
   ecosystemFr:
     "Porto-Vecchio est la troisième ville de Corse, pôle touristique balnéaire prestige de la côte sud-est. Plages iconiques de Palombaggia et Santa Giulia, port de plaisance, citadelle génoise (XVIe siècle), salines historiques. Économie fortement saisonnière : hôtellerie-restauration haut de gamme, nautisme, locations de vacances, commerces, immobilier, BTP. Tissu TPE/PME adapté au tourisme premium international.",
   ecosystemEn:
