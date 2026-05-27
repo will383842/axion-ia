@@ -1,0 +1,70 @@
+// AUTO-GENERATED 2026-05-27 — T4 batch #21 Claude Code (Will).
+// Châteaudun (28, Eure-et-Loir) — Sous-préfecture, château donjon, base aérienne 279.
+
+import type { VilleCopy } from "./types";
+
+export const CHATEAUDUN_COPY: VilleCopy = {
+  pitchFr:
+    "Châteaudun (28), sous-préfecture d'Eure-et-Loir, est une cité historique dominée par son château médiéval (donjon XIIe siècle). Tissu TPE/PME industrielles, services défense (base aérienne 279), commerces centre-ville, agroalimentaire Beauce. Axion-IA y intervient pour tous types d'activités.",
+  pitchEn:
+    "Châteaudun (28), sous-préfecture d'Eure-et-Loir, est une cité historique dominée par son château médiéval (donjon XIIe siècle). Tissu TPE/PME industrielles, services défense (base aérienne 279), commerces centre-ville, agroalimentaire Beauce. Axion-IA y intervient pour tous types d'activités.",
+  directAnswerFr:
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châteaudun (28). Nous accompagnons tous types d'activités : TPE/PME industrielles, sous-traitants défense, commerçants centre-ville, acteurs agroalimentaires Beauce, services aux entreprises du Dunois.",
+  directAnswerEn:
+    "Axion-IA est un cabinet d'architectes IA seniors qui intervient à Châteaudun (28). Nous accompagnons tous types d'activités : TPE/PME industrielles, sous-traitants défense, commerçants centre-ville, acteurs agroalimentaires Beauce, services aux entreprises du Dunois.",
+  ecosystemFr:
+    "Châteaudun est sous-préfecture d'Eure-et-Loir, dominée par son château médiéval (donjon XIIe, chapelle Renaissance). Tissu TPE/PME industrielles, écosystème défense (base aérienne 279), agroalimentaire Beauce, commerces centre-ville historique.",
+  ecosystemEn:
+    "Châteaudun est sous-préfecture d'Eure-et-Loir, dominée par son château médiéval (donjon XIIe, chapelle Renaissance). Tissu TPE/PME industrielles, écosystème défense (base aérienne 279), agroalimentaire Beauce, commerces centre-ville historique.",
+  distancesFr:
+    "Chartres à 45 min. Orléans à 50 min. Blois à 50 min. Paris à 1h45 via A10/N10. Gare Châteaudun desservie par TER Centre-Val de Loire.",
+  distancesEn:
+    "Chartres à 45 min. Orléans à 50 min. Blois à 50 min. Paris à 1h45 via A10/N10. Gare Châteaudun desservie par TER Centre-Val de Loire.",
+  topSectorsNaf: [
+    "TPE/PME industrielles",
+    "Défense & sous-traitance (base aérienne 279)",
+    "Agroalimentaire Beauce",
+    "Commerce centre-ville",
+    "Services aux entreprises",
+  ],
+  servicesContext: {
+    audit: {
+      fr: "Audit IA à Châteaudun : diagnostic adapté aux TPE/PME industrielles, sous-traitants défense, acteurs agroalimentaires Beauce, commerçants. ROI chiffré, audit Flash 490 € HT.",
+      en: "Audit IA à Châteaudun : diagnostic adapté aux TPE/PME industrielles, sous-traitants défense, acteurs agroalimentaires Beauce, commerçants. ROI chiffré, audit Flash 490 € HT.",
+    },
+    interventions: {
+      fr: "Interventions IA sur site à Châteaudun : formats adaptés à l'atelier industriel, bureau tertiaire, exploitation agricole, commerce. Vos équipes repartent autonomes.",
+      en: "Interventions IA sur site à Châteaudun : formats adaptés à l'atelier industriel, bureau tertiaire, exploitation agricole, commerce. Vos équipes repartent autonomes.",
+    },
+    implementation: {
+      fr: "Implémentation IA à Châteaudun : automatisation processus industriels, maintenance prédictive, traçabilité agroalimentaire Beauce, CRM augmenté, classification documents PME dunoise.",
+      en: "Implémentation IA à Châteaudun : automatisation processus industriels, maintenance prédictive, traçabilité agroalimentaire Beauce, CRM augmenté, classification documents PME dunoise.",
+    },
+    unAUn: {
+      fr: "Coaching 1-to-1 à Châteaudun : sessions dans votre atelier, bureau, exploitation ou en visio. Gérants TPE/PME industrielles, responsables défense, exploitants Beauce, commerçants dunois.",
+      en: "Coaching 1-to-1 à Châteaudun : sessions dans votre atelier, bureau, exploitation ou en visio. Gérants TPE/PME industrielles, responsables défense, exploitants Beauce, commerçants dunois.",
+    },
+  },
+  faqGeolocalisee: [
+    {
+      q: "Axion-IA intervient-il à Châteaudun et dans le Dunois ?",
+      a: "Oui, Axion-IA intervient à Châteaudun et tout le Dunois (Cloyes-les-Trois-Rivières, Bonneval). Consultants depuis Chartres (45 min) ou Orléans (50 min).",
+    },
+    {
+      q: "Accompagnez-vous les TPE/PME industrielles de Châteaudun ?",
+      a: "Oui, automatisation processus, maintenance prédictive, classification qualité, optimisation chaîne logistique. Audit Flash 490 € HT.",
+    },
+    {
+      q: "Travaillez-vous avec les acteurs agroalimentaires Beauce ?",
+      a: "Oui, traçabilité produits, automatisation gestion stocks, classification documents qualité, optimisation logistique céréalière.",
+    },
+    {
+      q: "Quels services pour les TPE et commerces du centre-ville ?",
+      a: "Audit Flash 490 € HT, intervention 1 journée formation, coaching 1-to-1. Formats adaptés aux petites structures.",
+    },
+    {
+      q: "Comment se passe une mission depuis Chartres ou Orléans ?",
+      a: "Chartres (45 min) ou Orléans (50 min). Frais de déplacement facturés à part du forfait, tarifs publics.",
+    },
+  ],
+};

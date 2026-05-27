@@ -1,10 +1,10 @@
 {
   "totalT4": 1702,
-  "done": 430,
-  "remaining": 1272,
-  "lastBatchAt": "2026-05-27T10:43:27.272Z",
-  "lastBatchSize": 195,
-  "lastBatchNumber": 22,
+  "done": 730,
+  "remaining": 972,
+  "lastBatchAt": "2026-05-27T12:10:44.110Z",
+  "lastBatchSize": 300,
+  "lastBatchNumber": 23,
   "villes": {
     "gentilly": {
       "slug": "gentilly",
@@ -1572,9 +1572,9 @@
       "region": "ile-de-france",
       "departement": "78",
       "population": 6480,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "saint-pathus": {
       "slug": "saint-pathus",
@@ -1592,9 +1592,9 @@
       "region": "ile-de-france",
       "departement": "78",
       "population": 6383,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "nandy": {
       "slug": "nandy",
@@ -1612,9 +1612,9 @@
       "region": "ile-de-france",
       "departement": "78",
       "population": 6332,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "menucourt": {
       "slug": "menucourt",
@@ -1632,9 +1632,9 @@
       "region": "ile-de-france",
       "departement": "78",
       "population": 6083,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "bois-le-roi": {
       "slug": "bois-le-roi",
@@ -1662,9 +1662,9 @@
       "region": "ile-de-france",
       "departement": "78",
       "population": 6039,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "marly-la-ville": {
       "slug": "marly-la-ville",
@@ -1692,9 +1692,9 @@
       "region": "ile-de-france",
       "departement": "78",
       "population": 5994,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "ablon-sur-seine": {
       "slug": "ablon-sur-seine",
@@ -1712,9 +1712,9 @@
       "region": "ile-de-france",
       "departement": "78",
       "population": 5952,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "saintry-sur-seine": {
       "slug": "saintry-sur-seine",
@@ -1732,9 +1732,9 @@
       "region": "ile-de-france",
       "departement": "78",
       "population": 5875,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "chambourcy": {
       "slug": "chambourcy",
@@ -1742,9 +1742,9 @@
       "region": "ile-de-france",
       "departement": "78",
       "population": 5847,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "villabe": {
       "slug": "villabe",
@@ -1762,9 +1762,9 @@
       "region": "ile-de-france",
       "departement": "78",
       "population": 5816,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "mouroux": {
       "slug": "mouroux",
@@ -1822,9 +1822,9 @@
       "region": "ile-de-france",
       "departement": "78",
       "population": 5559,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "viarmes": {
       "slug": "viarmes",
@@ -1862,9 +1862,9 @@
       "region": "ile-de-france",
       "departement": "78",
       "population": 5502,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "ollainville": {
       "slug": "ollainville",
@@ -1922,9 +1922,9 @@
       "region": "ile-de-france",
       "departement": "78",
       "population": 5202,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "brou-sur-chantereine": {
       "slug": "brou-sur-chantereine",
@@ -1952,9 +1952,9 @@
       "region": "ile-de-france",
       "departement": "78",
       "population": 5157,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "trilport": {
       "slug": "trilport",
@@ -1992,9 +1992,9 @@
       "region": "ile-de-france",
       "departement": "78",
       "population": 5064,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "champagne-sur-oise": {
       "slug": "champagne-sur-oise",
@@ -11062,9 +11062,9 @@
       "region": "grand-est",
       "departement": "54",
       "population": 18262,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "yutz": {
       "slug": "yutz",
@@ -11092,9 +11092,9 @@
       "region": "grand-est",
       "departement": "08",
       "population": 16667,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "hayange": {
       "slug": "hayange",
@@ -11112,9 +11112,9 @@
       "region": "grand-est",
       "departement": "54",
       "population": 15768,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "longwy": {
       "slug": "longwy",
@@ -11122,9 +11122,9 @@
       "region": "grand-est",
       "departement": "54",
       "population": 15679,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "wittenheim": {
       "slug": "wittenheim",
@@ -11152,9 +11152,9 @@
       "region": "grand-est",
       "departement": "10",
       "population": 14959,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "illzach": {
       "slug": "illzach",
@@ -11182,9 +11182,9 @@
       "region": "grand-est",
       "departement": "54",
       "population": 14771,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "saint-avold": {
       "slug": "saint-avold",
@@ -11202,9 +11202,9 @@
       "region": "grand-est",
       "departement": "54",
       "population": 14718,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "bar-le-duc": {
       "slug": "bar-le-duc",
@@ -11232,9 +11232,9 @@
       "region": "grand-est",
       "departement": "54",
       "population": 14190,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "ostwald": {
       "slug": "ostwald",
@@ -11272,9 +11272,9 @@
       "region": "grand-est",
       "departement": "10",
       "population": 12806,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "la-chapelle-saint-luc": {
       "slug": "la-chapelle-saint-luc",
@@ -11282,9 +11282,9 @@
       "region": "grand-est",
       "departement": "10",
       "population": 12648,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "obernai": {
       "slug": "obernai",
@@ -11402,9 +11402,9 @@
       "region": "grand-est",
       "departement": "51",
       "population": 10996,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "stiring-wendel": {
       "slug": "stiring-wendel",
@@ -11442,9 +11442,9 @@
       "region": "grand-est",
       "departement": "51",
       "population": 10771,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "wittelsheim": {
       "slug": "wittelsheim",
@@ -11482,9 +11482,9 @@
       "region": "grand-est",
       "departement": "10",
       "population": 10289,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "marly-57": {
       "slug": "marly-57",
@@ -11502,9 +11502,9 @@
       "region": "grand-est",
       "departement": "54",
       "population": 10102,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "maxeville": {
       "slug": "maxeville",
@@ -11512,9 +11512,9 @@
       "region": "grand-est",
       "departement": "54",
       "population": 10090,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "saint-max": {
       "slug": "saint-max",
@@ -11522,9 +11522,9 @@
       "region": "grand-est",
       "departement": "54",
       "population": 9913,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "dombasle-sur-meurthe": {
       "slug": "dombasle-sur-meurthe",
@@ -11532,9 +11532,9 @@
       "region": "grand-est",
       "departement": "54",
       "population": 9424,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "rombas": {
       "slug": "rombas",
@@ -11552,9 +11552,9 @@
       "region": "grand-est",
       "departement": "54",
       "population": 9361,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "jarville-la-malgrange": {
       "slug": "jarville-la-malgrange",
@@ -11562,9 +11562,9 @@
       "region": "grand-est",
       "departement": "54",
       "population": 9356,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "molsheim": {
       "slug": "molsheim",
@@ -11592,9 +11592,9 @@
       "region": "grand-est",
       "departement": "54",
       "population": 9117,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "golbey": {
       "slug": "golbey",
@@ -11612,9 +11612,9 @@
       "region": "grand-est",
       "departement": "54",
       "population": 8670,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "thaon-les-vosges": {
       "slug": "thaon-les-vosges",
@@ -11652,9 +11652,9 @@
       "region": "grand-est",
       "departement": "54",
       "population": 8130,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "talange": {
       "slug": "talange",
@@ -11692,9 +11692,9 @@
       "region": "grand-est",
       "departement": "54",
       "population": 8050,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "geispolsheim": {
       "slug": "geispolsheim",
@@ -11712,9 +11712,9 @@
       "region": "grand-est",
       "departement": "54",
       "population": 7820,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "terville": {
       "slug": "terville",
@@ -11782,9 +11782,9 @@
       "region": "grand-est",
       "departement": "08",
       "population": 7444,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "langres": {
       "slug": "langres",
@@ -11792,9 +11792,9 @@
       "region": "grand-est",
       "departement": "52",
       "population": 7421,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "remiremont": {
       "slug": "remiremont",
@@ -11812,9 +11812,9 @@
       "region": "grand-est",
       "departement": "54",
       "population": 7359,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "audun-le-tiche": {
       "slug": "audun-le-tiche",
@@ -11892,9 +11892,9 @@
       "region": "grand-est",
       "departement": "51",
       "population": 6975,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "lutterbach": {
       "slug": "lutterbach",
@@ -11912,9 +11912,9 @@
       "region": "grand-est",
       "departement": "10",
       "population": 6760,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "neufchateau": {
       "slug": "neufchateau",
@@ -11932,9 +11932,9 @@
       "region": "grand-est",
       "departement": "54",
       "population": 6630,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "champigneulles": {
       "slug": "champigneulles",
@@ -11962,9 +11962,9 @@
       "region": "grand-est",
       "departement": "51",
       "population": 6534,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "neuves-maisons": {
       "slug": "neuves-maisons",
@@ -12002,9 +12002,9 @@
       "region": "grand-est",
       "departement": "08",
       "population": 6364,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "homecourt": {
       "slug": "homecourt",
@@ -12132,9 +12132,9 @@
       "region": "grand-est",
       "departement": "51",
       "population": 5850,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "ludres": {
       "slug": "ludres",
@@ -12192,9 +12192,9 @@
       "region": "grand-est",
       "departement": "08",
       "population": 5716,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "mondelange": {
       "slug": "mondelange",
@@ -12242,9 +12242,9 @@
       "region": "grand-est",
       "departement": "10",
       "population": 5537,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "nouzonville": {
       "slug": "nouzonville",
@@ -12252,9 +12252,9 @@
       "region": "grand-est",
       "departement": "08",
       "population": 5523,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "rosheim": {
       "slug": "rosheim",
@@ -12272,9 +12272,9 @@
       "region": "grand-est",
       "departement": "51",
       "population": 5441,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "boulay-moselle": {
       "slug": "boulay-moselle",
@@ -12372,9 +12372,9 @@
       "region": "grand-est",
       "departement": "10",
       "population": 5249,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "farebersviller": {
       "slug": "farebersviller",
@@ -12442,9 +12442,9 @@
       "region": "grand-est",
       "departement": "51",
       "population": 5103,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "val-de-moder": {
       "slug": "val-de-moder",
@@ -12482,9 +12482,9 @@
       "region": "grand-est",
       "departement": "51",
       "population": 5039,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "rambervillers": {
       "slug": "rambervillers",
@@ -13752,9 +13752,9 @@
       "region": "bretagne",
       "departement": "35",
       "population": 19683,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "vitre": {
       "slug": "vitre",
@@ -13762,9 +13762,9 @@
       "region": "bretagne",
       "departement": "35",
       "population": 19365,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "ploemeur": {
       "slug": "ploemeur",
@@ -13772,9 +13772,9 @@
       "region": "bretagne",
       "departement": "56",
       "population": 18872,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "cesson-sevigne": {
       "slug": "cesson-sevigne",
@@ -13782,9 +13782,9 @@
       "region": "bretagne",
       "departement": "35",
       "population": 18761,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "lamballe-armor": {
       "slug": "lamballe-armor",
@@ -13792,9 +13792,9 @@
       "region": "bretagne",
       "departement": "22",
       "population": 17241,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "landerneau": {
       "slug": "landerneau",
@@ -13802,9 +13802,9 @@
       "region": "bretagne",
       "departement": "29",
       "population": 16363,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "hennebont": {
       "slug": "hennebont",
@@ -13812,9 +13812,9 @@
       "region": "bretagne",
       "departement": "56",
       "population": 15910,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "guipavas": {
       "slug": "guipavas",
@@ -13822,9 +13822,9 @@
       "region": "bretagne",
       "departement": "29",
       "population": 15538,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "morlaix": {
       "slug": "morlaix",
@@ -13832,9 +13832,9 @@
       "region": "bretagne",
       "departement": "29",
       "population": 15194,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "dinan": {
       "slug": "dinan",
@@ -13842,9 +13842,9 @@
       "region": "bretagne",
       "departement": "22",
       "population": 14764,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "pontivy": {
       "slug": "pontivy",
@@ -13852,9 +13852,9 @@
       "region": "bretagne",
       "departement": "56",
       "population": 14640,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "plerin": {
       "slug": "plerin",
@@ -13862,9 +13862,9 @@
       "region": "bretagne",
       "departement": "22",
       "population": 14425,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "auray": {
       "slug": "auray",
@@ -13872,9 +13872,9 @@
       "region": "bretagne",
       "departement": "56",
       "population": 14207,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "douarnenez": {
       "slug": "douarnenez",
@@ -13882,9 +13882,9 @@
       "region": "bretagne",
       "departement": "29",
       "population": 14068,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "saint-jacques-de-la-lande": {
       "slug": "saint-jacques-de-la-lande",
@@ -13892,9 +13892,9 @@
       "region": "bretagne",
       "departement": "35",
       "population": 13800,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "plouzane": {
       "slug": "plouzane",
@@ -13902,9 +13902,9 @@
       "region": "bretagne",
       "departement": "29",
       "population": 13567,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "plougastel-daoulas": {
       "slug": "plougastel-daoulas",
@@ -13912,9 +13912,9 @@
       "region": "bretagne",
       "departement": "29",
       "population": 13434,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "betton": {
       "slug": "betton",
@@ -13922,9 +13922,9 @@
       "region": "bretagne",
       "departement": "35",
       "population": 12964,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "saint-ave": {
       "slug": "saint-ave",
@@ -13932,9 +13932,9 @@
       "region": "bretagne",
       "departement": "56",
       "population": 12470,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "quimperle": {
       "slug": "quimperle",
@@ -13942,9 +13942,9 @@
       "region": "bretagne",
       "departement": "29",
       "population": 12469,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "guidel": {
       "slug": "guidel",
@@ -13952,9 +13952,9 @@
       "region": "bretagne",
       "departement": "56",
       "population": 12338,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "le-relecq-kerhuon": {
       "slug": "le-relecq-kerhuon",
@@ -13962,9 +13962,9 @@
       "region": "bretagne",
       "departement": "29",
       "population": 11897,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "pace": {
       "slug": "pace",
@@ -13972,9 +13972,9 @@
       "region": "bretagne",
       "departement": "35",
       "population": 11703,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "ploufragan": {
       "slug": "ploufragan",
@@ -13982,9 +13982,9 @@
       "region": "bretagne",
       "departement": "22",
       "population": 11507,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "chateaugiron": {
       "slug": "chateaugiron",
@@ -13992,9 +13992,9 @@
       "region": "bretagne",
       "departement": "35",
       "population": 10845,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "dinard": {
       "slug": "dinard",
@@ -14002,9 +14002,9 @@
       "region": "bretagne",
       "departement": "35",
       "population": 10772,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "chantepie": {
       "slug": "chantepie",
@@ -14012,9 +14012,9 @@
       "region": "bretagne",
       "departement": "35",
       "population": 10670,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "fouesnant": {
       "slug": "fouesnant",
@@ -14022,9 +14022,9 @@
       "region": "bretagne",
       "departement": "29",
       "population": 10436,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "ploermel": {
       "slug": "ploermel",
@@ -14032,9 +14032,9 @@
       "region": "bretagne",
       "departement": "56",
       "population": 10163,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "loudeac": {
       "slug": "loudeac",
@@ -14042,9 +14042,9 @@
       "region": "bretagne",
       "departement": "22",
       "population": 9987,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "saint-gregoire": {
       "slug": "saint-gregoire",
@@ -14052,9 +14052,9 @@
       "region": "bretagne",
       "departement": "35",
       "population": 9957,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "le-rheu": {
       "slug": "le-rheu",
@@ -14062,9 +14062,9 @@
       "region": "bretagne",
       "departement": "35",
       "population": 9839,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "sene": {
       "slug": "sene",
@@ -14072,9 +14072,9 @@
       "region": "bretagne",
       "departement": "56",
       "population": 9554,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "redon": {
       "slug": "redon",
@@ -14082,9 +14082,9 @@
       "region": "bretagne",
       "departement": "35",
       "population": 9542,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "landivisiau": {
       "slug": "landivisiau",
@@ -14092,9 +14092,9 @@
       "region": "bretagne",
       "departement": "29",
       "population": 9426,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "guichen": {
       "slug": "guichen",
@@ -14102,9 +14102,9 @@
       "region": "bretagne",
       "departement": "35",
       "population": 9412,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "liffre": {
       "slug": "liffre",
@@ -14112,9 +14112,9 @@
       "region": "bretagne",
       "departement": "35",
       "population": 9339,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "sarzeau": {
       "slug": "sarzeau",
@@ -14122,9 +14122,9 @@
       "region": "bretagne",
       "departement": "56",
       "population": 9212,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "queven": {
       "slug": "queven",
@@ -14132,9 +14132,9 @@
       "region": "bretagne",
       "departement": "56",
       "population": 8991,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "chartres-de-bretagne": {
       "slug": "chartres-de-bretagne",
@@ -14142,9 +14142,9 @@
       "region": "bretagne",
       "departement": "35",
       "population": 8880,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "plabennec": {
       "slug": "plabennec",
@@ -14152,9 +14152,9 @@
       "region": "bretagne",
       "departement": "29",
       "population": 8686,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "thorigne-fouillard": {
       "slug": "thorigne-fouillard",
@@ -14162,9 +14162,9 @@
       "region": "bretagne",
       "departement": "35",
       "population": 8667,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "janze": {
       "slug": "janze",
@@ -14172,9 +14172,9 @@
       "region": "bretagne",
       "departement": "35",
       "population": 8649,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "ergue-gaberic": {
       "slug": "ergue-gaberic",
@@ -14182,9 +14182,9 @@
       "region": "bretagne",
       "departement": "29",
       "population": 8606,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "saint-renan": {
       "slug": "saint-renan",
@@ -14192,9 +14192,9 @@
       "region": "bretagne",
       "departement": "29",
       "population": 8577,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "theix-noyalo": {
       "slug": "theix-noyalo",
@@ -14202,9 +14202,9 @@
       "region": "bretagne",
       "departement": "56",
       "population": 8500,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "pont-l-abbe": {
       "slug": "pont-l-abbe",
@@ -14212,9 +14212,9 @@
       "region": "bretagne",
       "departement": "29",
       "population": 8484,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "tregueux": {
       "slug": "tregueux",
@@ -14222,9 +14222,9 @@
       "region": "bretagne",
       "departement": "22",
       "population": 8450,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "larmor-plage": {
       "slug": "larmor-plage",
@@ -14232,9 +14232,9 @@
       "region": "bretagne",
       "departement": "56",
       "population": 8418,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "noyal-chatillon-sur-seiche": {
       "slug": "noyal-chatillon-sur-seiche",
@@ -14242,9 +14242,9 @@
       "region": "bretagne",
       "departement": "35",
       "population": 8359,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "guilers": {
       "slug": "guilers",
@@ -14252,9 +14252,9 @@
       "region": "bretagne",
       "departement": "29",
       "population": 8268,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "vern-sur-seiche": {
       "slug": "vern-sur-seiche",
@@ -14262,9 +14262,9 @@
       "region": "bretagne",
       "departement": "35",
       "population": 8207,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "questembert": {
       "slug": "questembert",
@@ -14272,9 +14272,9 @@
       "region": "bretagne",
       "departement": "56",
       "population": 8133,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "languidic": {
       "slug": "languidic",
@@ -14282,9 +14282,9 @@
       "region": "bretagne",
       "departement": "56",
       "population": 8042,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "langueux": {
       "slug": "langueux",
@@ -14292,9 +14292,9 @@
       "region": "bretagne",
       "departement": "22",
       "population": 7939,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "mordelles": {
       "slug": "mordelles",
@@ -14302,9 +14302,9 @@
       "region": "bretagne",
       "departement": "35",
       "population": 7911,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "pluvigner": {
       "slug": "pluvigner",
@@ -14312,9 +14312,9 @@
       "region": "bretagne",
       "departement": "56",
       "population": 7682,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "bain-de-bretagne": {
       "slug": "bain-de-bretagne",
@@ -14322,9 +14322,9 @@
       "region": "bretagne",
       "departement": "35",
       "population": 7674,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "lesneven": {
       "slug": "lesneven",
@@ -14332,9 +14332,9 @@
       "region": "bretagne",
       "departement": "29",
       "population": 7566,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "rosporden": {
       "slug": "rosporden",
@@ -14342,9 +14342,9 @@
       "region": "bretagne",
       "departement": "29",
       "population": 7550,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "melesse": {
       "slug": "melesse",
@@ -14352,9 +14352,9 @@
       "region": "bretagne",
       "departement": "35",
       "population": 7541,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "chateaubourg": {
       "slug": "chateaubourg",
@@ -14362,9 +14362,9 @@
       "region": "bretagne",
       "departement": "35",
       "population": 7533,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "crozon": {
       "slug": "crozon",
@@ -14372,9 +14372,9 @@
       "region": "bretagne",
       "departement": "29",
       "population": 7499,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "pordic": {
       "slug": "pordic",
@@ -14382,9 +14382,9 @@
       "region": "bretagne",
       "departement": "22",
       "population": 7454,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "carhaix-plouguer": {
       "slug": "carhaix-plouguer",
@@ -14392,9 +14392,9 @@
       "region": "bretagne",
       "departement": "29",
       "population": 7412,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "guipry-messac": {
       "slug": "guipry-messac",
@@ -14402,9 +14402,9 @@
       "region": "bretagne",
       "departement": "35",
       "population": 7354,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "paimpol": {
       "slug": "paimpol",
@@ -14412,9 +14412,9 @@
       "region": "bretagne",
       "departement": "22",
       "population": 7341,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "perros-guirec": {
       "slug": "perros-guirec",
@@ -14422,9 +14422,9 @@
       "region": "bretagne",
       "departement": "22",
       "population": 7336,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "caudan": {
       "slug": "caudan",
@@ -14432,9 +14432,9 @@
       "region": "bretagne",
       "departement": "56",
       "population": 7206,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "kervignac": {
       "slug": "kervignac",
@@ -14442,9 +14442,9 @@
       "region": "bretagne",
       "departement": "56",
       "population": 7204,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "pleurtuit": {
       "slug": "pleurtuit",
@@ -14452,9 +14452,9 @@
       "region": "bretagne",
       "departement": "35",
       "population": 7167,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "tregunc": {
       "slug": "tregunc",
@@ -14462,9 +14462,9 @@
       "region": "bretagne",
       "departement": "29",
       "population": 7148,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "guingamp": {
       "slug": "guingamp",
@@ -14472,9 +14472,9 @@
       "region": "bretagne",
       "departement": "22",
       "population": 7111,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "brech": {
       "slug": "brech",
@@ -14482,9 +14482,9 @@
       "region": "bretagne",
       "departement": "56",
       "population": 7052,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "binic-etables-sur-mer": {
       "slug": "binic-etables-sur-mer",
@@ -14492,9 +14492,9 @@
       "region": "bretagne",
       "departement": "22",
       "population": 7041,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "saint-pol-de-leon": {
       "slug": "saint-pol-de-leon",
@@ -14502,9 +14502,9 @@
       "region": "bretagne",
       "departement": "29",
       "population": 6941,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "pledran": {
       "slug": "pledran",
@@ -14512,9 +14512,9 @@
       "region": "bretagne",
       "departement": "22",
       "population": 6933,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "acigne": {
       "slug": "acigne",
@@ -14522,9 +14522,9 @@
       "region": "bretagne",
       "departement": "35",
       "population": 6874,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "montfort-sur-meu": {
       "slug": "montfort-sur-meu",
@@ -14532,9 +14532,9 @@
       "region": "bretagne",
       "departement": "35",
       "population": 6810,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "ploeren": {
       "slug": "ploeren",
@@ -14542,9 +14542,9 @@
       "region": "bretagne",
       "departement": "56",
       "population": 6790,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "plouguerneau": {
       "slug": "plouguerneau",
@@ -14552,9 +14552,9 @@
       "region": "bretagne",
       "departement": "29",
       "population": 6755,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "moelan-sur-mer": {
       "slug": "moelan-sur-mer",
@@ -14562,9 +14562,9 @@
       "region": "bretagne",
       "departement": "29",
       "population": 6749,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "inzinzac-lochrist": {
       "slug": "inzinzac-lochrist",
@@ -14572,9 +14572,9 @@
       "region": "bretagne",
       "departement": "56",
       "population": 6691,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "elven": {
       "slug": "elven",
@@ -14582,9 +14582,9 @@
       "region": "bretagne",
       "departement": "56",
       "population": 6651,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "montauban-de-bretagne": {
       "slug": "montauban-de-bretagne",
@@ -14592,9 +14592,9 @@
       "region": "bretagne",
       "departement": "35",
       "population": 6597,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "le-mene": {
       "slug": "le-mene",
@@ -14602,9 +14602,9 @@
       "region": "bretagne",
       "departement": "22",
       "population": 6556,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "ploudalmezeau": {
       "slug": "ploudalmezeau",
@@ -14612,9 +14612,9 @@
       "region": "bretagne",
       "departement": "29",
       "population": 6522,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "gouesnou": {
       "slug": "gouesnou",
@@ -14622,9 +14622,9 @@
       "region": "bretagne",
       "departement": "29",
       "population": 6501,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "vezin-le-coquet": {
       "slug": "vezin-le-coquet",
@@ -14632,9 +14632,9 @@
       "region": "bretagne",
       "departement": "35",
       "population": 6471,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "ploneour-lanvern": {
       "slug": "ploneour-lanvern",
@@ -14642,9 +14642,9 @@
       "region": "bretagne",
       "departement": "29",
       "population": 6452,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "combourg": {
       "slug": "combourg",
@@ -14652,9 +14652,9 @@
       "region": "bretagne",
       "departement": "35",
       "population": 6411,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "breal-sous-montfort": {
       "slug": "breal-sous-montfort",
@@ -14662,9 +14662,9 @@
       "region": "bretagne",
       "departement": "35",
       "population": 6391,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "baud": {
       "slug": "baud",
@@ -14672,9 +14672,9 @@
       "region": "bretagne",
       "departement": "56",
       "population": 6367,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "plescop": {
       "slug": "plescop",
@@ -14682,9 +14682,9 @@
       "region": "bretagne",
       "departement": "56",
       "population": 6362,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "noyal-sur-vilaine": {
       "slug": "noyal-sur-vilaine",
@@ -14692,9 +14692,9 @@
       "region": "bretagne",
       "departement": "35",
       "population": 6269,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "pluneret": {
       "slug": "pluneret",
@@ -14702,9 +14702,9 @@
       "region": "bretagne",
       "departement": "56",
       "population": 6262,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "guer": {
       "slug": "guer",
@@ -14712,9 +14712,9 @@
       "region": "bretagne",
       "departement": "56",
       "population": 6208,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "geveze": {
       "slug": "geveze",
@@ -14722,9 +14722,9 @@
       "region": "bretagne",
       "departement": "35",
       "population": 6061,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "grand-champ": {
       "slug": "grand-champ",
@@ -14732,9 +14732,9 @@
       "region": "bretagne",
       "departement": "56",
       "population": 5929,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "riantec": {
       "slug": "riantec",
@@ -14742,9 +14742,9 @@
       "region": "bretagne",
       "departement": "56",
       "population": 5865,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "arradon": {
       "slug": "arradon",
@@ -14752,9 +14752,9 @@
       "region": "bretagne",
       "departement": "56",
       "population": 5835,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "dol-de-bretagne": {
       "slug": "dol-de-bretagne",
@@ -14762,9 +14762,9 @@
       "region": "bretagne",
       "departement": "35",
       "population": 5829,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "briec": {
       "slug": "briec",
@@ -14772,9 +14772,9 @@
       "region": "bretagne",
       "departement": "29",
       "population": 5816,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "plouay": {
       "slug": "plouay",
@@ -14782,9 +14782,9 @@
       "region": "bretagne",
       "departement": "56",
       "population": 5755,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "orgeres": {
       "slug": "orgeres",
@@ -14792,9 +14792,9 @@
       "region": "bretagne",
       "departement": "35",
       "population": 5732,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "bannalec": {
       "slug": "bannalec",
@@ -14802,9 +14802,9 @@
       "region": "bretagne",
       "departement": "29",
       "population": 5725,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "lannilis": {
       "slug": "lannilis",
@@ -14812,9 +14812,9 @@
       "region": "bretagne",
       "departement": "29",
       "population": 5709,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "cancale": {
       "slug": "cancale",
@@ -14822,9 +14822,9 @@
       "region": "bretagne",
       "departement": "35",
       "population": 5672,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "saint-gilles-35": {
       "slug": "saint-gilles-35",
@@ -14832,9 +14832,9 @@
       "region": "bretagne",
       "departement": "35",
       "population": 5576,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "penmarch": {
       "slug": "penmarch",
@@ -14842,9 +14842,9 @@
       "region": "bretagne",
       "departement": "29",
       "population": 5508,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "ploumagoar": {
       "slug": "ploumagoar",
@@ -14852,9 +14852,9 @@
       "region": "bretagne",
       "departement": "22",
       "population": 5414,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "plouhinec": {
       "slug": "plouhinec",
@@ -14862,9 +14862,9 @@
       "region": "bretagne",
       "departement": "56",
       "population": 5400,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "laille": {
       "slug": "laille",
@@ -14872,9 +14872,9 @@
       "region": "bretagne",
       "departement": "35",
       "population": 5225,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "surzur": {
       "slug": "surzur",
@@ -14882,9 +14882,9 @@
       "region": "bretagne",
       "departement": "56",
       "population": 5211,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "scaer": {
       "slug": "scaer",
@@ -14892,9 +14892,9 @@
       "region": "bretagne",
       "departement": "29",
       "population": 5178,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "locmaria-plouzane": {
       "slug": "locmaria-plouzane",
@@ -14902,9 +14902,9 @@
       "region": "bretagne",
       "departement": "29",
       "population": 5130,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "muzillac": {
       "slug": "muzillac",
@@ -14912,9 +14912,9 @@
       "region": "bretagne",
       "departement": "56",
       "population": 5089,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "maen-roch": {
       "slug": "maen-roch",
@@ -14922,9 +14922,9 @@
       "region": "bretagne",
       "departement": "35",
       "population": 5088,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "baden": {
       "slug": "baden",
@@ -14932,9 +14932,9 @@
       "region": "bretagne",
       "departement": "56",
       "population": 5086,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "chateaulin": {
       "slug": "chateaulin",
@@ -14942,9 +14942,9 @@
       "region": "bretagne",
       "departement": "29",
       "population": 5085,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "yffiniac": {
       "slug": "yffiniac",
@@ -14952,9 +14952,9 @@
       "region": "bretagne",
       "departement": "22",
       "population": 5074,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "la-meziere": {
       "slug": "la-meziere",
@@ -14962,9 +14962,9 @@
       "region": "bretagne",
       "departement": "35",
       "population": 5033,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "plouigneau": {
       "slug": "plouigneau",
@@ -14972,9 +14972,9 @@
       "region": "bretagne",
       "departement": "29",
       "population": 5014,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "lisieux": {
       "slug": "lisieux",
@@ -15812,9 +15812,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "25",
       "population": 18067,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "montceau-les-mines": {
       "slug": "montceau-les-mines",
@@ -15822,9 +15822,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "71",
       "population": 17064,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "lons-le-saunier": {
       "slug": "lons-le-saunier",
@@ -15832,9 +15832,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "39",
       "population": 16618,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "vesoul": {
       "slug": "vesoul",
@@ -15842,9 +15842,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "70",
       "population": 15078,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "chenove": {
       "slug": "chenove",
@@ -15852,9 +15852,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "21",
       "population": 14244,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "audincourt": {
       "slug": "audincourt",
@@ -15862,9 +15862,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "25",
       "population": 14071,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "autun": {
       "slug": "autun",
@@ -15872,9 +15872,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "71",
       "population": 13172,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "talant": {
       "slug": "talant",
@@ -15882,9 +15882,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "21",
       "population": 11896,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "chevigny-saint-sauveur": {
       "slug": "chevigny-saint-sauveur",
@@ -15892,9 +15892,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "21",
       "population": 11108,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "hericourt": {
       "slug": "hericourt",
@@ -15902,9 +15902,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "70",
       "population": 10621,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "valentigney": {
       "slug": "valentigney",
@@ -15912,9 +15912,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "25",
       "population": 10501,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "cosne-cours-sur-loire": {
       "slug": "cosne-cours-sur-loire",
@@ -15922,9 +15922,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "58",
       "population": 9733,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "paray-le-monial": {
       "slug": "paray-le-monial",
@@ -15932,9 +15932,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "71",
       "population": 9291,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "fontaine-les-dijon": {
       "slug": "fontaine-les-dijon",
@@ -15942,9 +15942,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "21",
       "population": 9252,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "varennes-vauzelles": {
       "slug": "varennes-vauzelles",
@@ -15952,9 +15952,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "58",
       "population": 9146,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "joigny": {
       "slug": "joigny",
@@ -15962,9 +15962,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "89",
       "population": 9016,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "quetigny": {
       "slug": "quetigny",
@@ -15972,9 +15972,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "21",
       "population": 8971,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "longvic": {
       "slug": "longvic",
@@ -15982,9 +15982,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "21",
       "population": 8896,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "saint-vallier": {
       "slug": "saint-vallier",
@@ -15992,9 +15992,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "71",
       "population": 8508,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "saint-claude": {
       "slug": "saint-claude",
@@ -16002,9 +16002,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "39",
       "population": 8386,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "charnay-les-macon": {
       "slug": "charnay-les-macon",
@@ -16012,9 +16012,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "71",
       "population": 8227,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "champagnole": {
       "slug": "champagnole",
@@ -16022,9 +16022,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "39",
       "population": 8036,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "lure": {
       "slug": "lure",
@@ -16032,9 +16032,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "70",
       "population": 7877,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "auxonne": {
       "slug": "auxonne",
@@ -16042,9 +16042,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "21",
       "population": 7581,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "saint-apollinaire": {
       "slug": "saint-apollinaire",
@@ -16052,9 +16052,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "21",
       "population": 7544,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "digoin": {
       "slug": "digoin",
@@ -16062,9 +16062,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "71",
       "population": 7353,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "morteau": {
       "slug": "morteau",
@@ -16072,9 +16072,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "25",
       "population": 6953,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "migennes": {
       "slug": "migennes",
@@ -16082,9 +16082,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "89",
       "population": 6688,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "luxeuil-les-bains": {
       "slug": "luxeuil-les-bains",
@@ -16092,9 +16092,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "70",
       "population": 6663,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "gueugnon": {
       "slug": "gueugnon",
@@ -16102,9 +16102,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "71",
       "population": 6528,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "louhans-chateaurenaud": {
       "slug": "louhans-chateaurenaud",
@@ -16112,9 +16112,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "71",
       "population": 6446,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "saint-remy": {
       "slug": "saint-remy",
@@ -16122,9 +16122,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "71",
       "population": 6410,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "avallon": {
       "slug": "avallon",
@@ -16132,9 +16132,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "89",
       "population": 6305,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "chatenoy-le-royal": {
       "slug": "chatenoy-le-royal",
@@ -16142,9 +16142,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "71",
       "population": 6267,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "saint-marcel": {
       "slug": "saint-marcel",
@@ -16152,9 +16152,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "71",
       "population": 6211,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "blanzy": {
       "slug": "blanzy",
@@ -16162,9 +16162,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "71",
       "population": 5955,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "grand-charmont": {
       "slug": "grand-charmont",
@@ -16172,9 +16172,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "25",
       "population": 5873,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "seloncourt": {
       "slug": "seloncourt",
@@ -16182,9 +16182,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "25",
       "population": 5854,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "valdahon": {
       "slug": "valdahon",
@@ -16192,9 +16192,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "25",
       "population": 5705,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "tournus": {
       "slug": "tournus",
@@ -16202,9 +16202,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "71",
       "population": 5701,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "delle": {
       "slug": "delle",
@@ -16212,9 +16212,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "90",
       "population": 5623,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "chatillon-sur-seine": {
       "slug": "chatillon-sur-seine",
@@ -16222,9 +16222,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "21",
       "population": 5443,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "marsannay-la-cote": {
       "slug": "marsannay-la-cote",
@@ -16232,9 +16232,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "21",
       "population": 5433,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "gray": {
       "slug": "gray",
@@ -16242,9 +16242,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "70",
       "population": 5365,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "chagny": {
       "slug": "chagny",
@@ -16252,9 +16252,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "71",
       "population": 5350,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "bethoncourt": {
       "slug": "bethoncourt",
@@ -16262,9 +16262,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "25",
       "population": 5308,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "villers-le-lac": {
       "slug": "villers-le-lac",
@@ -16272,9 +16272,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "25",
       "population": 5292,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "nuits-saint-georges": {
       "slug": "nuits-saint-georges",
@@ -16282,9 +16282,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "21",
       "population": 5235,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "valdoie": {
       "slug": "valdoie",
@@ -16292,9 +16292,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "90",
       "population": 5175,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "baume-les-dames": {
       "slug": "baume-les-dames",
@@ -16302,9 +16302,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "25",
       "population": 5155,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "villeneuve-sur-yonne": {
       "slug": "villeneuve-sur-yonne",
@@ -16312,9 +16312,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "89",
       "population": 5135,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "saint-vit": {
       "slug": "saint-vit",
@@ -16322,9 +16322,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "25",
       "population": 5133,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "genlis": {
       "slug": "genlis",
@@ -16332,9 +16332,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "21",
       "population": 5093,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "hauts-de-bienne": {
       "slug": "hauts-de-bienne",
@@ -16342,9 +16342,9 @@
       "region": "bourgogne-franche-comte",
       "departement": "39",
       "population": 5032,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "romorantin-lanthenay": {
       "slug": "romorantin-lanthenay",
@@ -16352,9 +16352,9 @@
       "region": "centre-val-de-loire",
       "departement": "41",
       "population": 18373,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "saran": {
       "slug": "saran",
@@ -16362,9 +16362,9 @@
       "region": "centre-val-de-loire",
       "departement": "45",
       "population": 17316,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "saint-cyr-sur-loire": {
       "slug": "saint-cyr-sur-loire",
@@ -16372,9 +16372,9 @@
       "region": "centre-val-de-loire",
       "departement": "37",
       "population": 17029,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "saint-jean-de-la-ruelle": {
       "slug": "saint-jean-de-la-ruelle",
@@ -16382,9 +16382,9 @@
       "region": "centre-val-de-loire",
       "departement": "45",
       "population": 16768,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "luce": {
       "slug": "luce",
@@ -16392,9 +16392,9 @@
       "region": "centre-val-de-loire",
       "departement": "28",
       "population": 15921,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "saint-pierre-des-corps": {
       "slug": "saint-pierre-des-corps",
@@ -16402,9 +16402,9 @@
       "region": "centre-val-de-loire",
       "departement": "37",
       "population": 15898,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "vendome": {
       "slug": "vendome",
@@ -16412,9 +16412,9 @@
       "region": "centre-val-de-loire",
       "departement": "41",
       "population": 15758,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "saint-avertin": {
       "slug": "saint-avertin",
@@ -16422,9 +16422,9 @@
       "region": "centre-val-de-loire",
       "departement": "37",
       "population": 14999,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "montargis": {
       "slug": "montargis",
@@ -16432,9 +16432,9 @@
       "region": "centre-val-de-loire",
       "departement": "45",
       "population": 14825,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "amilly": {
       "slug": "amilly",
@@ -16442,9 +16442,9 @@
       "region": "centre-val-de-loire",
       "departement": "45",
       "population": 13582,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "gien": {
       "slug": "gien",
@@ -16452,9 +16452,9 @@
       "region": "centre-val-de-loire",
       "departement": "45",
       "population": 13459,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "amboise": {
       "slug": "amboise",
@@ -16462,9 +16462,9 @@
       "region": "centre-val-de-loire",
       "departement": "37",
       "population": 12937,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "chateaudun": {
       "slug": "chateaudun",
@@ -16472,9 +16472,9 @@
       "region": "centre-val-de-loire",
       "departement": "28",
       "population": 12830,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "chambray-les-tours": {
       "slug": "chambray-les-tours",
@@ -16482,9 +16482,9 @@
       "region": "centre-val-de-loire",
       "departement": "37",
       "population": 12720,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "chalette-sur-loing": {
       "slug": "chalette-sur-loing",
@@ -16492,9 +16492,9 @@
       "region": "centre-val-de-loire",
       "departement": "45",
       "population": 12677,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "vernouillet": {
       "slug": "vernouillet",
@@ -16502,9 +16502,9 @@
       "region": "centre-val-de-loire",
       "departement": "28",
       "population": 12310,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "montlouis-sur-loire": {
       "slug": "montlouis-sur-loire",
@@ -16512,9 +16512,9 @@
       "region": "centre-val-de-loire",
       "departement": "37",
       "population": 11335,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "issoudun": {
       "slug": "issoudun",
@@ -16522,9 +16522,9 @@
       "region": "centre-val-de-loire",
       "departement": "36",
       "population": 11159,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "la-chapelle-saint-mesmin": {
       "slug": "la-chapelle-saint-mesmin",
@@ -16532,9 +16532,9 @@
       "region": "centre-val-de-loire",
       "departement": "45",
       "population": 11017,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "fondettes": {
       "slug": "fondettes",
@@ -16542,9 +16542,9 @@
       "region": "centre-val-de-loire",
       "departement": "37",
       "population": 10954,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "mainvilliers": {
       "slug": "mainvilliers",
@@ -16552,9 +16552,9 @@
       "region": "centre-val-de-loire",
       "departement": "28",
       "population": 10629,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "la-riche": {
       "slug": "la-riche",
@@ -16562,9 +16562,9 @@
       "region": "centre-val-de-loire",
       "departement": "37",
       "population": 10487,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "ingre": {
       "slug": "ingre",
@@ -16572,9 +16572,9 @@
       "region": "centre-val-de-loire",
       "departement": "45",
       "population": 10062,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "saint-amand-montrond": {
       "slug": "saint-amand-montrond",
@@ -16582,9 +16582,9 @@
       "region": "centre-val-de-loire",
       "departement": "18",
       "population": 9899,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "saint-doulchard": {
       "slug": "saint-doulchard",
@@ -16592,9 +16592,9 @@
       "region": "centre-val-de-loire",
       "departement": "18",
       "population": 9647,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "saint-jean-le-blanc": {
       "slug": "saint-jean-le-blanc",
@@ -16602,9 +16602,9 @@
       "region": "centre-val-de-loire",
       "departement": "45",
       "population": 9562,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "nogent-le-rotrou": {
       "slug": "nogent-le-rotrou",
@@ -16612,9 +16612,9 @@
       "region": "centre-val-de-loire",
       "departement": "28",
       "population": 9292,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "checy": {
       "slug": "checy",
@@ -16622,9 +16622,9 @@
       "region": "centre-val-de-loire",
       "departement": "45",
       "population": 9083,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "pithiviers": {
       "slug": "pithiviers",
@@ -16632,9 +16632,9 @@
       "region": "centre-val-de-loire",
       "departement": "45",
       "population": 8856,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "chateauneuf-sur-loire": {
       "slug": "chateauneuf-sur-loire",
@@ -16642,9 +16642,9 @@
       "region": "centre-val-de-loire",
       "departement": "45",
       "population": 8546,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "ballan-mire": {
       "slug": "ballan-mire",
@@ -16652,9 +16652,9 @@
       "region": "centre-val-de-loire",
       "departement": "37",
       "population": 8477,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "chinon": {
       "slug": "chinon",
@@ -16662,9 +16662,9 @@
       "region": "centre-val-de-loire",
       "departement": "37",
       "population": 8144,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "monts": {
       "slug": "monts",
@@ -16672,9 +16672,9 @@
       "region": "centre-val-de-loire",
       "departement": "37",
       "population": 8080,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "vineuil": {
       "slug": "vineuil",
@@ -16682,9 +16682,9 @@
       "region": "centre-val-de-loire",
       "departement": "41",
       "population": 8064,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "beaugency": {
       "slug": "beaugency",
@@ -16692,9 +16692,9 @@
       "region": "centre-val-de-loire",
       "departement": "45",
       "population": 8024,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "le-malesherbois": {
       "slug": "le-malesherbois",
@@ -16702,9 +16702,9 @@
       "region": "centre-val-de-loire",
       "departement": "45",
       "population": 8016,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "saint-denis-en-val": {
       "slug": "saint-denis-en-val",
@@ -16712,9 +16712,9 @@
       "region": "centre-val-de-loire",
       "departement": "45",
       "population": 7766,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "deols": {
       "slug": "deols",
@@ -16722,9 +16722,9 @@
       "region": "centre-val-de-loire",
       "departement": "36",
       "population": 7600,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "la-ferte-saint-aubin": {
       "slug": "la-ferte-saint-aubin",
@@ -16732,9 +16732,9 @@
       "region": "centre-val-de-loire",
       "departement": "45",
       "population": 7284,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "villemandeur": {
       "slug": "villemandeur",
@@ -16742,9 +16742,9 @@
       "region": "centre-val-de-loire",
       "departement": "45",
       "population": 7078,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "luisant": {
       "slug": "luisant",
@@ -16752,9 +16752,9 @@
       "region": "centre-val-de-loire",
       "departement": "28",
       "population": 6945,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "veigne": {
       "slug": "veigne",
@@ -16762,9 +16762,9 @@
       "region": "centre-val-de-loire",
       "departement": "37",
       "population": 6865,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "le-controis-en-sologne": {
       "slug": "le-controis-en-sologne",
@@ -16772,9 +16772,9 @@
       "region": "centre-val-de-loire",
       "departement": "41",
       "population": 6860,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "meung-sur-loire": {
       "slug": "meung-sur-loire",
@@ -16782,9 +16782,9 @@
       "region": "centre-val-de-loire",
       "departement": "45",
       "population": 6670,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "saint-florent-sur-cher": {
       "slug": "saint-florent-sur-cher",
@@ -16792,9 +16792,9 @@
       "region": "centre-val-de-loire",
       "departement": "18",
       "population": 6463,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "auneau-bleury-saint-symphorien": {
       "slug": "auneau-bleury-saint-symphorien",
@@ -16802,9 +16802,9 @@
       "region": "centre-val-de-loire",
       "departement": "28",
       "population": 6419,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "mehun-sur-yevre": {
       "slug": "mehun-sur-yevre",
@@ -16812,9 +16812,9 @@
       "region": "centre-val-de-loire",
       "departement": "18",
       "population": 6380,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "esvres": {
       "slug": "esvres",
@@ -16822,9 +16822,9 @@
       "region": "centre-val-de-loire",
       "departement": "37",
       "population": 6294,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "saint-pryve-saint-mesmin": {
       "slug": "saint-pryve-saint-mesmin",
@@ -16832,9 +16832,9 @@
       "region": "centre-val-de-loire",
       "departement": "45",
       "population": 6256,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "mer": {
       "slug": "mer",
@@ -16842,9 +16842,9 @@
       "region": "centre-val-de-loire",
       "departement": "41",
       "population": 6250,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "loches": {
       "slug": "loches",
@@ -16852,9 +16852,9 @@
       "region": "centre-val-de-loire",
       "departement": "37",
       "population": 6234,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "le-blanc": {
       "slug": "le-blanc",
@@ -16862,9 +16862,9 @@
       "region": "centre-val-de-loire",
       "departement": "36",
       "population": 6164,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "le-poinconnet": {
       "slug": "le-poinconnet",
@@ -16872,9 +16872,9 @@
       "region": "centre-val-de-loire",
       "departement": "36",
       "population": 5855,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "epernon": {
       "slug": "epernon",
@@ -16882,9 +16882,9 @@
       "region": "centre-val-de-loire",
       "departement": "28",
       "population": 5715,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "leves": {
       "slug": "leves",
@@ -16892,9 +16892,9 @@
       "region": "centre-val-de-loire",
       "departement": "28",
       "population": 5685,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "cloyes-les-trois-rivieres": {
       "slug": "cloyes-les-trois-rivieres",
@@ -16902,9 +16902,9 @@
       "region": "centre-val-de-loire",
       "departement": "28",
       "population": 5607,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "la-ville-aux-dames": {
       "slug": "la-ville-aux-dames",
@@ -16912,9 +16912,9 @@
       "region": "centre-val-de-loire",
       "departement": "37",
       "population": 5606,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "aubigny-sur-nere": {
       "slug": "aubigny-sur-nere",
@@ -16922,9 +16922,9 @@
       "region": "centre-val-de-loire",
       "departement": "18",
       "population": 5451,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "blere": {
       "slug": "blere",
@@ -16932,9 +16932,9 @@
       "region": "centre-val-de-loire",
       "departement": "37",
       "population": 5352,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "sully-sur-loire": {
       "slug": "sully-sur-loire",
@@ -16942,9 +16942,9 @@
       "region": "centre-val-de-loire",
       "departement": "45",
       "population": 5124,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "luynes": {
       "slug": "luynes",
@@ -16952,9 +16952,9 @@
       "region": "centre-val-de-loire",
       "departement": "37",
       "population": 5062,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "porto-vecchio": {
       "slug": "porto-vecchio",
@@ -16962,9 +16962,9 @@
       "region": "corse",
       "departement": "2A",
       "population": 11198,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "borgo": {
       "slug": "borgo",
@@ -16972,9 +16972,9 @@
       "region": "corse",
       "departement": "2B",
       "population": 10311,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "corte": {
       "slug": "corte",
@@ -16982,9 +16982,9 @@
       "region": "corse",
       "departement": "2B",
       "population": 7819,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "biguglia": {
       "slug": "biguglia",
@@ -16992,9 +16992,9 @@
       "region": "corse",
       "departement": "2B",
       "population": 7642,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "lucciana": {
       "slug": "lucciana",
@@ -17002,9 +17002,9 @@
       "region": "corse",
       "departement": "2B",
       "population": 6923,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "furiani": {
       "slug": "furiani",
@@ -17012,9 +17012,9 @@
       "region": "corse",
       "departement": "2B",
       "population": 6585,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     },
     "calvi": {
       "slug": "calvi",
@@ -17022,9 +17022,9 @@
       "region": "corse",
       "departement": "2B",
       "population": 5788,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T12:10:44.110Z",
+      "batch": 23
     }
   }
 }
