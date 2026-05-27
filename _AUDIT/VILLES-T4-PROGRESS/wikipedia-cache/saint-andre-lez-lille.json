@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T06:13:07.478Z",
+  "villeSlug": "saint-andre-lez-lille",
+  "villeName": "Saint-André-lez-Lille",
+  "wikipediaTitle": "Saint-André-lez-Lille",
+  "extract": "Saint-André-lez-Lille est une commune française, située dans le département du Nord en région Hauts-de-France. Elle fait partie de la Métropole européenne de Lille.",
+  "description": "commune française du département du Nord",
+  "coordinates": {
+    "lat": 50.66083333,
+    "lon": 3.045
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/St-andre_eglise_st_andre_face.jpg/330px-St-andre_eglise_st_andre_face.jpg",
+  "notFound": false
+}

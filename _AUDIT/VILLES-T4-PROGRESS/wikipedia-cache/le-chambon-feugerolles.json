@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T06:13:33.389Z",
+  "villeSlug": "le-chambon-feugerolles",
+  "villeName": "Le Chambon-Feugerolles",
+  "wikipediaTitle": "Le Chambon-Feugerolles",
+  "extract": "Le Chambon-Feugerolles est une commune française située dans le département de la Loire en région Auvergne-Rhône-Alpes.",
+  "description": "commune française du département de la Loire",
+  "coordinates": {
+    "lat": 45.39694444,
+    "lon": 4.32583333
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/LeChambonFlles.JPG/330px-LeChambonFlles.JPG",
+  "notFound": false
+}

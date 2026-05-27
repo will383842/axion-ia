@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T06:11:44.883Z",
+  "villeSlug": "montceau-les-mines",
+  "villeName": "Montceau-les-Mines",
+  "wikipediaTitle": "Montceau-les-Mines",
+  "extract": "Montceau-les-Mines est une commune française située dans le département de Saône-et-Loire, en région Bourgogne-Franche-Comté.\nC'est une ancienne ville minière du bassin minier de Saône-et-Loire, bassin exploité dès le Moyen Âge, mais de façon industrielle à partir du XIXe siècle et ce jusqu'en 2000, permettant l'essor de l'industrie sidérurgique et mécanique dans la région.\nIl s'agit de la 13e commune de Bourgogne-Franche-Comté en nombre d'habitants.",
+  "description": "commune française du département de Saône-et-Loire",
+  "coordinates": {
+    "lat": 46.66777778,
+    "lon": 4.36972222
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/H%C3%B4tel_ville_Montceau_Mines_22.jpg/330px-H%C3%B4tel_ville_Montceau_Mines_22.jpg",
+  "notFound": false
+}

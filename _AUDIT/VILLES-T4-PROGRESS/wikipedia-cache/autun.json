@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T06:13:08.634Z",
+  "villeSlug": "autun",
+  "villeName": "Autun",
+  "wikipediaTitle": "Autun",
+  "extract": "Autun est une commune française du département de Saône-et-Loire en région Bourgogne-Franche-Comté, située dans le parc naturel régional du Morvan. Sous-préfecture de Saône-et-Loire depuis 1790, la ville compte 13 172 habitants (Autunois et Autunoises) au recensement de 2023, au cœur d'une intercommunalité regroupant environ 40 000 habitants.\nFondée par les Romains comme Augustodunum, sœur et émule de Rome au début du règne de l'empereur Auguste, capitale gallo-romaine des Éduens en remplacement de Bibracte, évêché dès l'Antiquité, Autun est jusqu'à la fin du XVe siècle une cité prospère et un centre culturel influent, en dépit des pillages et des invasions. Pionnière de la révolution industrielle au XIXe siècle avec l'exploitation précoce du schiste bitumineux et de la fluorine, Autun a connu au XXe siècle un regain de dynamisme qui en a fait le siège de plusieurs entreprises internationales (Dim, Nexans) et de l'un des six lycées militaires français. La ville conserve de son passé antique et médiéval un riche patrimoine qui en fait un des plus importants sites touristiques au cœur de la Bourgogne.",
+  "description": "commune française du département de Saône-et-Loire",
+  "coordinates": {
+    "lat": 46.95166667,
+    "lon": 4.29944444
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Autun_-_Vue_depuis_le_temple_de_Janus.jpg/330px-Autun_-_Vue_depuis_le_temple_de_Janus.jpg",
+  "notFound": false
+}

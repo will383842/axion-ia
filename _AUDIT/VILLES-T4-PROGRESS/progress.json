@@ -1,10 +1,10 @@
 {
   "totalT4": 1702,
-  "done": 0,
-  "remaining": 1702,
-  "lastBatchAt": null,
-  "lastBatchSize": 0,
-  "lastBatchNumber": 0,
+  "done": 10,
+  "remaining": 1692,
+  "lastBatchAt": "2026-05-27T06:35:09.895Z",
+  "lastBatchSize": 10,
+  "lastBatchNumber": 1,
   "villes": {
     "gentilly": {
       "slug": "gentilly",
@@ -2052,9 +2052,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "38",
       "population": 19445,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T06:35:09.895Z",
+      "batch": 1
     },
     "saint-fons": {
       "slug": "saint-fons",
@@ -2092,9 +2092,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "38",
       "population": 18770,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T06:35:09.895Z",
+      "batch": 1
     },
     "le-puy-en-velay": {
       "slug": "le-puy-en-velay",
@@ -2112,9 +2112,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "38",
       "population": 17986,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T06:35:09.895Z",
+      "batch": 1
     },
     "ecully": {
       "slug": "ecully",
@@ -2142,9 +2142,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "38",
       "population": 17515,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T06:35:09.895Z",
+      "batch": 1
     },
     "chamalieres": {
       "slug": "chamalieres",
@@ -2442,9 +2442,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "38",
       "population": 11739,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T06:35:09.895Z",
+      "batch": 1
     },
     "sassenage": {
       "slug": "sassenage",
@@ -2452,9 +2452,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "38",
       "population": 11646,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T06:35:09.895Z",
+      "batch": 1
     },
     "thiers": {
       "slug": "thiers",
@@ -2542,9 +2542,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "38",
       "population": 10956,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T06:35:09.895Z",
+      "batch": 1
     },
     "vetraz-monthoux": {
       "slug": "vetraz-monthoux",
@@ -2592,9 +2592,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "38",
       "population": 10547,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T06:35:09.895Z",
+      "batch": 1
     },
     "eybens": {
       "slug": "eybens",
@@ -2602,9 +2602,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "38",
       "population": 10493,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T06:35:09.895Z",
+      "batch": 1
     },
     "portes-les-valence": {
       "slug": "portes-les-valence",
@@ -2702,9 +2702,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "38",
       "population": 9922,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T06:35:09.895Z",
+      "batch": 1
     },
     "bourg-de-peage": {
       "slug": "bourg-de-peage",

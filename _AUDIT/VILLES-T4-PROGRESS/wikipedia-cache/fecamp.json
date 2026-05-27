@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T06:11:42.207Z",
+  "villeSlug": "fecamp",
+  "villeName": "Fécamp",
+  "wikipediaTitle": "Fécamp",
+  "extract": "Fécamp est une commune française située dans le département de la Seine-Maritime en région Normandie. Ancien port morutier sur le littoral du pays de Caux, la commune est située à environ 40 km au nord du Havre.\n\n",
+  "description": "commune française du département de la Seine-Maritime",
+  "coordinates": {
+    "lat": 49.75833333,
+    "lon": 0.38
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/F%C3%A9camp_100_0014.JPG/330px-F%C3%A9camp_100_0014.JPG",
+  "notFound": false
+}

@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T06:12:05.355Z",
+  "villeSlug": "fos-sur-mer",
+  "villeName": "Fos-sur-Mer",
+  "wikipediaTitle": "Fos-sur-Mer",
+  "extract": "Fos-sur-Mer est une commune française, située dans le département des Bouches-du-Rhône en région Provence-Alpes-Côte d'Azur.",
+  "description": "commune française du département des Bouches-du-Rhône",
+  "coordinates": {
+    "lat": 43.4403,
+    "lon": 4.9486
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/L%27h%C3%B4tel_de_ville.jpg/330px-L%27h%C3%B4tel_de_ville.jpg",
+  "notFound": false
+}

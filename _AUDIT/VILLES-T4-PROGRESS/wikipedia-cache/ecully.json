@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T06:11:32.833Z",
+  "villeSlug": "ecully",
+  "villeName": "Écully",
+  "wikipediaTitle": "Écully",
+  "extract": "Écully est une commune française de la métropole de Lyon, en région Auvergne-Rhône-Alpes.\nCommune aisée, elle abrite le service national de police scientifique et son école, Centrale Lyon et l'Institut Lyfe, et elle accueillait jusqu'en 2024 l'EM Lyon Business School.",
+  "description": "commune française de la métropole de Lyon",
+  "coordinates": {
+    "lat": 45.775277,
+    "lon": 4.778333
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Ecully_vivier.jpg/330px-Ecully_vivier.jpg",
+  "notFound": false
+}

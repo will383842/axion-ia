@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T06:12:33.249Z",
+  "villeSlug": "ollioules",
+  "villeName": "Ollioules",
+  "wikipediaTitle": "Ollioules",
+  "extract": "Ollioules est une commune française située juste à l'ouest de Toulon dans le département du Var, en région Provence-Alpes-Côte d'Azur.\nSes habitants sont appelés les Ollioulais et Ollioulaises.",
+  "description": "commune française du département du Var",
+  "coordinates": {
+    "lat": 43.133,
+    "lon": 5.85
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Fa%C3%A7ade_principale_de_l%27%C3%A9glise_Saint-Laurent.JPG/330px-Fa%C3%A7ade_principale_de_l%27%C3%A9glise_Saint-Laurent.JPG",
+  "notFound": false
+}

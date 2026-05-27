@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T06:12:29.611Z",
+  "villeSlug": "le-raincy",
+  "villeName": "Le Raincy",
+  "wikipediaTitle": "Le Raincy",
+  "extract": "Le Raincy est une commune française située dans le département de la Seine-Saint-Denis, dont elle est sous-préfecture, en région Île-de-France.\nAtypique dans le département, parfois surnommée « petit Neuilly du 93 », elle apparaît comme une ville dont les habitants sont, en moyenne, relativement aisés, puisque le revenu fiscal médian par ménage y était en 2011 non seulement le troisième plus élevé du département, après Gournay-sur-Marne et Coubron (39 344 € en 2011 contre 26 944 € en Seine-Saint-Denis), mais aussi nettement supérieur à celui de l'Île-de-France : 34 913 €.\nSes habitants sont appelés les Raincéens.",
+  "description": "commune française du département de la Seine-Saint-Denis",
+  "coordinates": {
+    "lat": 48.9,
+    "lon": 2.5167
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Mairie_Raincy_21.jpg/330px-Mairie_Raincy_21.jpg",
+  "notFound": false
+}

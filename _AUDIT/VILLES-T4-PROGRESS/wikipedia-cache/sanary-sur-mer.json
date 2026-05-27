@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T06:11:24.308Z",
+  "villeSlug": "sanary-sur-mer",
+  "villeName": "Sanary-sur-Mer",
+  "wikipediaTitle": "Sanary-sur-Mer",
+  "extract": "Sanary-sur-Mer est une commune française et une station balnéaire située dans le département du Var, en région Provence-Alpes-Côte d'Azur.",
+  "description": "commune française du département du Var",
+  "coordinates": {
+    "lat": 43.1207832,
+    "lon": 5.8043861
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Sanary-sur-Mer.jpg/330px-Sanary-sur-Mer.jpg",
+  "notFound": false
+}

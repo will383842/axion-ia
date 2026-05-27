@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T06:11:25.953Z",
+  "villeSlug": "bry-sur-marne",
+  "villeName": "Bry-sur-Marne",
+  "wikipediaTitle": "Bry-sur-Marne",
+  "extract": "Bry-sur-Marne est une commune française située dans le département du Val-de-Marne, en région Île-de-France.\nDesservie par une station du RER A (Bry-sur-Marne RER), Bry-sur-Marne fait partie du secteur 1 de la ville nouvelle de Marne-la-Vallée, Porte de Paris avec Noisy-le-Grand et Villiers-sur-Marne.\nElle devient connue en partie grâce aux Studios de Bry-sur-Marne et à l'Institut national de l'audiovisuel (INA).",
+  "description": "commune française du département du Val-de-Marne",
+  "coordinates": {
+    "lat": 48.84111111,
+    "lon": 2.52222222
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/H%C3%B4tel_Ville_-_Bry-sur-Marne_%28FR94%29_-_2022-02-13_-_8.jpg/330px-H%C3%B4tel_Ville_-_Bry-sur-Marne_%28FR94%29_-_2022-02-13_-_8.jpg",
+  "notFound": false
+}

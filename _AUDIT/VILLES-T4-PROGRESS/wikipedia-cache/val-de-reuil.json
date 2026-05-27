@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T06:13:07.005Z",
+  "villeSlug": "val-de-reuil",
+  "villeName": "Val-de-Reuil",
+  "wikipediaTitle": "Val-de-Reuil",
+  "extract": "Val-de-Reuil est une commune située dans le département de l'Eure, en région Normandie. \nElle est l'une des neuf villes nouvelles créées en France à la fin des années 1960 et est parfois citée comme la plus récente commune française créée ex nihilo en 1981, car avant cette date, sa population était inexistante. Depuis, d'autres communes ont aussi été créées par détachement mais, contrairement à Val-de-Reuil, leur population était déjà constituée.",
+  "description": "commune française du département de l'Eure",
+  "coordinates": {
+    "lat": 49.275,
+    "lon": 1.21111111
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Val_de_Reuil_-_Menhir_de_la_Basse_Cr%C3%A9monville.JPG/330px-Val_de_Reuil_-_Menhir_de_la_Basse_Cr%C3%A9monville.JPG",
+  "notFound": false
+}

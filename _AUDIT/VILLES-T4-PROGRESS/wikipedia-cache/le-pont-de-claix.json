@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T06:26:31.557Z",
+  "villeSlug": "le-pont-de-claix",
+  "villeName": "Le Pont-de-Claix",
+  "wikipediaTitle": "Le Pont-de-Claix",
+  "extract": "Le Pont-de-Claix (nommée également Pont-de-Claix non officiellement) est une commune française située dans le département de l'Isère, en région Auvergne-Rhône-Alpes.\nSes habitants sont les Pontois.",
+  "description": "commune française du département de l'Isère",
+  "coordinates": {
+    "lat": 45.1289,
+    "lon": 5.6989
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/H%C3%B4tel_de_ville_Pont-de-Claix%2C_Is%C3%A8re.JPG/330px-H%C3%B4tel_de_ville_Pont-de-Claix%2C_Is%C3%A8re.JPG",
+  "notFound": false
+}

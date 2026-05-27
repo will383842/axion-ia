@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T06:12:36.142Z",
+  "villeSlug": "saint-genis-pouilly",
+  "villeName": "Saint-Genis-Pouilly",
+  "wikipediaTitle": "Saint-Genis-Pouilly",
+  "extract": "Saint-Genis-Pouilly est une commune française, située dans le département de l'Ain en région Auvergne-Rhône-Alpes.\nElle se trouve dans le pays de Gex. Bordant la frontière suisse, elle fait partie de l'agglomération transfrontalière de Genève. De par sa population de plus de 12 000 habitants, c'est l'une des dix villes les plus importantes du département de l'Ain.\nSaint-Genis-Pouilly accueille sur son territoire une grande partie des installations de physique des particules du CERN, l’Organisation européenne pour la recherche nucléaire, haut-lieu de la recherche fondamentale mondiale. C'est au CERN que la commune doit l'essentiel de son développement depuis le milieu des années 1960.",
+  "description": "commune française du département de l'Ain",
+  "coordinates": {
+    "lat": 46.2437,
+    "lon": 6.025
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Eglise_Pouilly_01.jpg/330px-Eglise_Pouilly_01.jpg",
+  "notFound": false
+}

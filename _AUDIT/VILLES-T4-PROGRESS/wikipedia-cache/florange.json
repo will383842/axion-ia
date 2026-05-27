@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T06:13:44.471Z",
+  "villeSlug": "florange",
+  "villeName": "Florange",
+  "wikipediaTitle": "Florange",
+  "extract": "Florange (Flörchingen en allemand) est une commune française située dans le département de la Moselle, en région Grand Est. Elle est notamment connue pour son usine sidérurgique détenue par le groupe ArcelorMittal.",
+  "description": "commune française du département de la Moselle",
+  "coordinates": {
+    "lat": 49.32222222,
+    "lon": 6.11916667
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Eglise_Florange_3.JPG/330px-Eglise_Florange_3.JPG",
+  "notFound": false
+}

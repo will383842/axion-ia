@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-05-27T06:12:25.291Z",
+  "villeSlug": "romilly-sur-seine",
+  "villeName": "Romilly-sur-Seine",
+  "wikipediaTitle": "Romilly-sur-Seine",
+  "extract": "Romilly-sur-Seine est une commune française située dans le département de l'Aube, en région Grand Est. \nC'est la deuxième commune de l'Aube par sa population. Ses habitants sont appelés les Romillons.",
+  "description": "commune française du département de l'Aube",
+  "coordinates": {
+    "lat": 48.51666667,
+    "lon": 3.7275
+  },
+  "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/H%C3%B4tel_de_ville_de_Romilly-sur-Seine.jpg/330px-H%C3%B4tel_de_ville_de_Romilly-sur-Seine.jpg",
+  "notFound": false
+}
