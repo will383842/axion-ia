@@ -1,10 +1,10 @@
 {
   "totalT4": 1702,
-  "done": 170,
-  "remaining": 1532,
-  "lastBatchAt": "2026-05-27T09:39:59.450Z",
+  "done": 180,
+  "remaining": 1522,
+  "lastBatchAt": "2026-05-27T09:54:39.859Z",
   "lastBatchSize": 10,
-  "lastBatchNumber": 17,
+  "lastBatchNumber": 18,
   "villes": {
     "gentilly": {
       "slug": "gentilly",
@@ -2042,9 +2042,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "63",
       "population": 19951,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:54:39.859Z",
+      "batch": 18
     },
     "villefontaine": {
       "slug": "villefontaine",
@@ -2082,9 +2082,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "63",
       "population": 18820,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:54:39.859Z",
+      "batch": 18
     },
     "meylan": {
       "slug": "meylan",
@@ -2102,9 +2102,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "43",
       "population": 18540,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:54:39.859Z",
+      "batch": 18
     },
     "saint-egreve": {
       "slug": "saint-egreve",
@@ -2152,9 +2152,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "63",
       "population": 17509,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:54:39.859Z",
+      "batch": 18
     },
     "sallanches": {
       "slug": "sallanches",
@@ -2272,9 +2272,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "63",
       "population": 15115,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:54:39.859Z",
+      "batch": 18
     },
     "saint-genis-pouilly": {
       "slug": "saint-genis-pouilly",
@@ -2892,9 +2892,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "43",
       "population": 8823,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:54:39.859Z",
+      "batch": 18
     },
     "le-teil": {
       "slug": "le-teil",
@@ -3292,9 +3292,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "43",
       "population": 7415,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:54:39.859Z",
+      "batch": 18
     },
     "lagnieu": {
       "slug": "lagnieu",
@@ -3692,9 +3692,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "43",
       "population": 6527,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:54:39.859Z",
+      "batch": 18
     },
     "chatuzange-le-goubet": {
       "slug": "chatuzange-le-goubet",
@@ -3972,9 +3972,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "43",
       "population": 6164,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:54:39.859Z",
+      "batch": 18
     },
     "saint-denis-les-bourg": {
       "slug": "saint-denis-les-bourg",
@@ -4002,9 +4002,9 @@
       "region": "auvergne-rhone-alpes",
       "departement": "43",
       "population": 6097,
-      "status": "pending",
-      "doneAt": null,
-      "batch": null
+      "status": "done",
+      "doneAt": "2026-05-27T09:54:39.859Z",
+      "batch": 18
     },
     "saint-martin-le-vinoux": {
       "slug": "saint-martin-le-vinoux",
