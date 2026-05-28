@@ -292,14 +292,14 @@ export default async function CollectivesFamilyHub({ params }: Props) {
         titleEm={isFr ? "pour un gain de temps immédiat" : "for immediate time savings"}
         description={
           isFr
-            ? "Un formateur IA expert vient sur votre site. Vos équipes montent en compétence sur leurs vrais outils et leurs vrais cas métier — et gagnent des heures dès la 1ʳᵉ session."
-            : "An expert AI trainer comes on site. Your teams upskill on their real tools and real business cases — and save hours from the very first session."
+            ? "Un formateur IA expert vient sur votre site. Vos équipes montent en compétence sur leurs vrais outils (ChatGPT, Claude, Mistral), apprennent à concevoir des agents IA et automatisations métier — et gagnent des heures dès la 1ʳᵉ session."
+            : "An expert AI trainer comes on site. Your teams upskill on their real tools (ChatGPT, Claude, Mistral), learn to build AI agents and business automations — and save hours from the very first session."
         }
         ctas={
           // Sprint cohérence CTA 2026-05-28 (Will) — alignés Header (Primary
-          // « Réserver un appel » + Secondary « Nous écrire »). Suivi d'un lien
-          // anchor « Découvrir les formations » avec chevron-down qui scroll
-          // vers la section #formats (cards palier durée juste en dessous).
+          // « Réserver un appel » + Secondary « Nous écrire »). Le scroll hint
+          // « Découvrir les formations » est désormais un bouton séparé visible
+          // centré sous le hero (Will : « plus visible et centré en bas du hero »).
           <>
             <Cta
               href="/appel"
@@ -319,15 +319,6 @@ export default async function CollectivesFamilyHub({ params }: Props) {
             >
               {isFr ? "Nous écrire" : "Email us"}
             </Cta>
-            {/* Scroll hint vers la section paliers durée — visual cue subtil. */}
-            <a
-              href="#formats"
-              data-cta="collectives-hero-scroll-formats"
-              className="text-fg-muted hover:text-terracotta inline-flex basis-full items-center gap-1.5 text-[13px] font-medium tracking-tight transition-colors sm:basis-auto"
-            >
-              {isFr ? "Découvrir les formations" : "Discover the trainings"}
-              <ChevronDown aria-hidden="true" className="h-4 w-4" />
-            </a>
           </>
         }
         customVisual={
@@ -392,16 +383,31 @@ export default async function CollectivesFamilyHub({ params }: Props) {
         }
       />
 
+      {/* SCROLL HINT visible centré sous le hero (Will 2026-05-28 — « plus
+          visible et centré en bas du hero »). Bouton pill avec chevron-down
+          animé bounce, ancre vers la section #formats. Placé hors du hero
+          pour respiration visuelle. */}
+      <div className="bg-paper flex justify-center pb-12 sm:pb-16">
+        <a
+          href="#formats"
+          data-cta="collectives-hero-scroll-formats"
+          className="bg-paper text-fg hover:text-terracotta border-terracotta/40 hover:border-terracotta shadow-subtle hover:shadow-card focus-visible:ring-terracotta inline-flex items-center gap-3 rounded-full border-2 px-7 py-3.5 text-[15px] font-semibold tracking-tight transition-all hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+        >
+          {isFr ? "Découvrir les formations" : "Discover the trainings"}
+          <ChevronDown aria-hidden="true" className="text-terracotta h-5 w-5 animate-bounce" />
+        </a>
+      </div>
+
       {/* 4 CARDS PALIER DURÉE */}
       <Section
         id="formats"
-        eyebrow={isFr ? "Quel format pour votre équipe ?" : "Which format for your team?"}
+        eyebrow={isFr ? "Formation ponctuelle one-shot" : "One-shot training"}
         title={isFr ? "Choisissez la durée" : "Choose the duration"}
-        titleEm={isFr ? "selon vos besoins" : "that fits your needs"}
+        titleEm={isFr ? "de votre formation" : "of your training"}
         description={
           isFr
-            ? "Que vous découvriez l'IA ou que vous l'utilisiez quotidiennement, chaque journée d'intervention sera un bond en avant et un déclic évolutif."
-            : "Whether you're discovering AI or using it daily, each training day will be a leap forward and an evolutionary trigger."
+            ? "Que vous découvriez l'IA ou que vous l'utilisiez quotidiennement, chaque journée d'intervention sera un bond en avant et un déclic évolutif. Pour un programme durable, voir la formation régulière mensuelle plus bas."
+            : "Whether you're discovering AI or using it daily, each training day will be a leap forward and an evolutionary trigger. For a sustained programme, see the monthly recurring training below."
         }
         contentClassName={TIGHT_X}
       >
@@ -559,9 +565,10 @@ export default async function CollectivesFamilyHub({ params }: Props) {
             laisser les cards en premier (call-to-action visible direct),
             les photos servent d'ancrage visuel après le choix.
             Grid 4 cols 1 ligne desktop (`md:grid-cols-4`), 2 cols mobile.
-            Aspect-[4/3] paysage moderne (vs carré « grossier »).
+            Aspect-[4/3] paysage moderne. max-w-7xl (vs 6xl avant) pour
+            légèrement grossir les photos selon retour Will.
             Pas de zoom/lightbox (Will : « sans possibilité de grossir »). */}
-        <div className="mx-auto mt-12 grid max-w-6xl grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4 md:gap-4">
+        <div className="mx-auto mt-14 grid max-w-7xl grid-cols-2 gap-4 sm:gap-5 md:grid-cols-4 md:gap-5">
           {PHOTOS_FORMATION.map((p) => (
             <figure key={p.src} className="m-0 overflow-hidden rounded-2xl">
               <Image
@@ -571,7 +578,7 @@ export default async function CollectivesFamilyHub({ params }: Props) {
                 height={768}
                 loading="lazy"
                 decoding="async"
-                sizes="(max-width: 768px) 50vw, 280px"
+                sizes="(max-width: 768px) 50vw, (max-width: 1280px) 33vw, 320px"
                 className="aspect-[4/3] h-auto w-full object-cover transition-transform duration-300 hover:scale-[1.02]"
                 quality={82}
               />
@@ -975,21 +982,35 @@ export default async function CollectivesFamilyHub({ params }: Props) {
                     },
                     {
                       id: "outils",
-                      question: "Quels outils IA utilisés ?",
+                      question: "Quels outils IA utilisés en formation ?",
                       answer:
-                        "Ceux que votre équipe utilise déjà ou qui correspondent aux métiers : ChatGPT, Claude, Mistral, Microsoft Copilot, Perplexity pour le texte et la recherche ; Midjourney pour le visuel ; Sora et HeyGen pour la vidéo et les avatars. Pas de techno imposée.",
+                        "Ceux que votre équipe utilise déjà ou qui correspondent à vos métiers : ChatGPT, Claude, Mistral, Microsoft Copilot, Perplexity pour le texte et la recherche ; Midjourney pour la création visuelle ; Sora et HeyGen pour la vidéo et les avatars. On peut aussi former à la conception d'agents IA (assistants conversationnels, agents autonomes) et aux automatisations métier. Pas de techno imposée.",
+                    },
+                    {
+                      id: "couverture-paris",
+                      question:
+                        "Vos formations IA sont-elles disponibles à Paris et en Île-de-France ?",
+                      answer:
+                        "Oui. Paris et l'Île-de-France sont notre premier terrain d'intervention. Les 4 formats durée (4 h, 1 jour, 2 jours, 3 jours+) sont accessibles dans les arrondissements parisiens et la première couronne (La Défense, Issy, Boulogne, Levallois, Neuilly). Même tarif public qu'en région.",
                     },
                     {
                       id: "couverture-france",
-                      question: "Intervenez-vous dans toute la France ?",
+                      question: "Intervenez-vous dans toute la France métropolitaine ?",
                       answer:
-                        "Oui. Nos formateurs IA experts se déplacent dans toute la France métropolitaine, des grandes métropoles (Paris, Lyon, Marseille, Bordeaux, Lille, Nantes, Toulouse) jusqu'aux villes moyennes. Frais de déplacement chiffrés au cas par cas dans le devis.",
+                        "Oui. 12 régions métropolitaines couvertes, plus de 2 100 communes éligibles. Nos formateurs IA experts sont mobiles : Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes, Strasbourg, Rennes, Rouen, Dijon, Orléans, Ajaccio. Aucun surcoût géographique sur le tarif formation — seuls les frais de déplacement (transport, logement, repas) sont facturés en sus.",
+                    },
+                    {
+                      id: "couverture-formation-vs-organisme",
+                      question:
+                        "En quoi vos formations diffèrent d'un organisme de formation classique ?",
+                      answer:
+                        "Chaque format intègre une dimension pédagogique sur vos vrais documents et vos vrais cas métier (vs scénarios théoriques d'organisme classique). Vos collaborateurs apprennent à maîtriser ChatGPT, Claude, Mistral, les agents IA et les automatisations en travaillant directement sur leurs tâches récurrentes. Méthode de prompting installée durablement.",
                     },
                     {
                       id: "couverture-international",
-                      question: "Et à l'international ?",
+                      question: "Intervenez-vous à l'international ou seulement en France ?",
                       answer:
-                        "Oui, sur demande. Nos formateurs peuvent intervenir dans les pays francophones (Belgique, Suisse, Luxembourg, Québec…) ou anglophones. Cadrage par appel pour valider la faisabilité et les modalités.",
+                        "Pour les sièges français de groupes internationaux, oui systématiquement. Pour les filiales hors France (Belgique, Suisse, Luxembourg, Allemagne, Québec, etc.), c'est possible au cas par cas avec un devis sur mesure incluant les frais de déplacement. Anglais opérationnel disponible.",
                     },
                     {
                       id: "remboursement",
@@ -1019,21 +1040,34 @@ export default async function CollectivesFamilyHub({ params }: Props) {
                     },
                     {
                       id: "tools",
-                      question: "Which AI tools are used?",
+                      question: "Which AI tools are used in training?",
                       answer:
-                        "The ones your team already uses or that fit the roles: ChatGPT, Claude, Mistral, Microsoft Copilot, Perplexity for text and research; Midjourney for visual; Sora and HeyGen for video and avatars. No imposed tech.",
+                        "The ones your team already uses or that fit your roles: ChatGPT, Claude, Mistral, Microsoft Copilot, Perplexity for text and research; Midjourney for visual creation; Sora and HeyGen for video and avatars. We can also train on building AI agents (conversational assistants, autonomous agents) and business automations. No imposed tech.",
+                    },
+                    {
+                      id: "coverage-paris",
+                      question: "Are your AI trainings available in Paris and Greater Paris?",
+                      answer:
+                        "Yes. Paris and Greater Paris are our top engagement ground. The 4 duration formats (4 h, 1 day, 2 days, 3 days+) are accessible in Paris arrondissements and inner suburbs (La Défense, Issy, Boulogne, Levallois, Neuilly). Same public pricing as regions.",
                     },
                     {
                       id: "coverage-france",
-                      question: "Do you cover all of France?",
+                      question: "Do you cover all metropolitan France?",
                       answer:
-                        "Yes. Our expert AI trainers travel throughout metropolitan France, from major cities (Paris, Lyon, Marseille, Bordeaux, Lille, Nantes, Toulouse) to mid-size towns. Travel costs quoted case by case.",
+                        "Yes. 12 metropolitan regions covered, 2,100+ eligible communes. Our expert AI trainers are mobile: Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes, Strasbourg, Rennes, Rouen, Dijon, Orléans, Ajaccio. No geographic surcharge on the training rate — only travel costs (transport, lodging, meals) are billed separately.",
+                    },
+                    {
+                      id: "coverage-formation-vs-organisme",
+                      question:
+                        "How do your trainings differ from a classic training organization?",
+                      answer:
+                        "Each format includes a pedagogical dimension on your real documents and real business cases (vs theoretical scenarios of classic organizations). Your staff learn to master ChatGPT, Claude, Mistral, AI agents and automations by working directly on their recurring tasks. Prompting methodology installed durably.",
                     },
                     {
                       id: "coverage-international",
-                      question: "And internationally?",
+                      question: "Do you intervene internationally or only in France?",
                       answer:
-                        "Yes, on request. Our trainers can travel to French-speaking countries (Belgium, Switzerland, Luxembourg, Quebec…) or English-speaking ones. Scoping call to validate feasibility and terms.",
+                        "For French headquarters of international groups, yes systematically. For non-French subsidiaries (Belgium, Switzerland, Luxembourg, Germany, Quebec, etc.), it's possible case-by-case with a custom quote including travel costs. Operational English available.",
                     },
                     {
                       id: "guarantee",
