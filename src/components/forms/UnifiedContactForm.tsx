@@ -24,6 +24,7 @@ import { ArrowRight, Check, ChevronDown } from "lucide-react";
 import {
   unifiedContactSchema,
   UNIFIED_CONTACT_TYPES,
+  TYPE_GROUPS,
   COMPANY_SIZES,
   TIMING_WEEKS,
   type UnifiedContactInput,
@@ -48,17 +49,28 @@ const LABELS = {
     title: "Décrivez votre besoin",
     titleEm: "en quelques secondes",
     subtitle:
-      "Chaque demande est lue personnellement par un consultant senior Axion-IA. Réponse cadrée sous 24 h ouvrées. Sans engagement.",
+      "Chaque demande est lue personnellement par un consultant senior Axion-IA. Réponse sous 24 h ouvrées. Sans engagement.",
     typeLabel: "Objet de votre demande",
     typeHelp: "Vous ne trouvez pas votre cas ? Choisissez « Autre » — le formulaire sert à tout.",
     typeOptions: {
-      autre: "Autre",
-      devis: "Devis",
-      audit: "Audit",
-      implementation: "Implémentation",
-      formation: "Formation",
-      un_a_un: "1-à-1",
+      // Groupe 1 — Projet IA pour mon entreprise
+      audit: "Audit IA",
+      implementation: "Intégration sur-mesure",
+      formation: "Formation IA",
+      un_a_un: "Coaching 1 to 1",
+      devis: "Devis sur projet",
+      // Groupe 2 — Autres demandes
       partenariat: "Partenariat",
+      presse: "Presse / média",
+      recrutement: "Recrutement",
+      speaker: "Invitation conférence",
+      investisseur: "Investisseur / M&A",
+      support_client: "Support client",
+      autre: "Autre demande",
+    },
+    typeGroups: {
+      projet: "Projet IA pour mon entreprise",
+      autre: "Autre demande",
     },
     nom: "Nom complet",
     nomPlaceholder: "Prénom Nom",
@@ -109,17 +121,28 @@ const LABELS = {
     title: "Tell us about your need",
     titleEm: "in seconds",
     subtitle:
-      "Chaque demande est lue personnellement par un consultant senior Axion-IA. Réponse cadrée sous 24 h ouvrées. Sans engagement.",
+      "Chaque demande est lue personnellement par un consultant senior Axion-IA. Réponse sous 24 h ouvrées. Sans engagement.",
     typeLabel: "What is your request about?",
     typeHelp: "Not sure where you fit? Pick « Other » — this form covers everything.",
     typeOptions: {
-      autre: "Other",
-      devis: "Quote",
-      audit: "Audit",
-      implementation: "Implementation",
-      formation: "Training",
-      un_a_un: "1-on-1",
+      // Group 1 — AI project for my company
+      audit: "AI audit",
+      implementation: "Bespoke integration",
+      formation: "AI training",
+      un_a_un: "1-to-1 coaching",
+      devis: "Project quote",
+      // Group 2 — Other requests
       partenariat: "Partnership",
+      presse: "Press / media",
+      recrutement: "Recruitment",
+      speaker: "Speaking invitation",
+      investisseur: "Investor / M&A",
+      support_client: "Customer support",
+      autre: "Other request",
+    },
+    typeGroups: {
+      projet: "AI project for my company",
+      autre: "Other request",
     },
     nom: "Full name",
     nomPlaceholder: "First Last",
@@ -244,6 +267,30 @@ export function UnifiedContactForm({
     if (isAdvancedType(type)) setAdvancedOpen(true);
   }, [type]);
 
+  // Type dropdown state — pattern bouton-trigger qui ouvre un popover listbox.
+  // Form v2 2026-05-28 : remplace le segmented control 12 boutons par un
+  // dropdown compact (mobile-first, Linear/Stripe pattern). Click outside +
+  // Escape ferment le panel.
+  const [typeOpen, setTypeOpen] = React.useState(false);
+  const typeDropdownRef = React.useRef<HTMLDivElement>(null);
+  React.useEffect(() => {
+    if (!typeOpen) return;
+    function onClickOutside(e: MouseEvent) {
+      if (!typeDropdownRef.current?.contains(e.target as Node)) {
+        setTypeOpen(false);
+      }
+    }
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") setTypeOpen(false);
+    }
+    document.addEventListener("mousedown", onClickOutside);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onClickOutside);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [typeOpen]);
+
   const {
     token: turnstileToken,
     widget: turnstileWidget,
@@ -332,48 +379,120 @@ export function UnifiedContactForm({
     <form
       onSubmit={handleSubmit(onSubmit)}
       noValidate
-      className={cn("space-y-6", className)}
+      className={cn("space-y-5", className)}
       aria-label={t.title}
     >
       <HoneypotField />
 
-      {/* Type — segmented control */}
+      {/* Type — dropdown trigger + popover listbox (Form v2 2026-05-28).
+          Pattern Linear/Stripe : 1 bouton compact qui ouvre les 12 choix en
+          2 groupes. Économise ~140px de hauteur vs segmented control, mobile-
+          first (panel full-width responsive), keyboard navigable (Escape +
+          click outside ferment). */}
       {!lockType ? (
-        <fieldset className="space-y-3">
-          <legend className="text-fg block text-base font-bold sm:text-lg">
+        <div className="space-y-1.5" ref={typeDropdownRef}>
+          <label
+            htmlFor="type-trigger"
+            className="text-fg block text-base font-bold sm:text-lg"
+          >
             {t.typeLabel}
             <span className="text-terracotta-deep ml-1.5 font-bold">*</span>
-          </legend>
-          <div role="radiogroup" aria-label={t.typeLabel} className="flex flex-wrap gap-2">
-            {UNIFIED_CONTACT_TYPES.map((opt) => {
-              const isSel = type === opt;
-              return (
-                <button
-                  key={opt}
-                  type="button"
-                  role="radio"
-                  aria-checked={isSel}
-                  onClick={() => setValue("type", opt, { shouldValidate: true, shouldDirty: true })}
-                  className={cn(
-                    "border-border bg-paper hover:border-terracotta focus-visible:ring-terracotta inline-flex items-center gap-1.5 rounded-full border-2 px-4 py-2 text-[13px] font-semibold transition-all focus-visible:ring-2 focus-visible:outline-none",
-                    isSel && "border-terracotta bg-halo-warm text-terracotta-deep shadow-subtle",
-                  )}
-                >
-                  {isSel ? (
-                    <Check aria-hidden="true" strokeWidth={3} className="h-3.5 w-3.5" />
-                  ) : null}
-                  {t.typeOptions[opt]}
-                </button>
-              );
-            })}
+          </label>
+          <div className="relative">
+            <button
+              id="type-trigger"
+              type="button"
+              aria-haspopup="listbox"
+              aria-expanded={typeOpen}
+              aria-controls="type-listbox"
+              onClick={() => setTypeOpen((v) => !v)}
+              className={cn(
+                "border-border bg-paper hover:border-terracotta focus-visible:ring-terracotta flex w-full items-center justify-between gap-3 rounded-xl border-2 px-4 py-3 text-left text-[15px] font-medium transition-all focus-visible:ring-2 focus-visible:outline-none",
+                type && "border-terracotta bg-halo-warm text-terracotta-deep",
+                !type && "text-fg-muted",
+              )}
+            >
+              <span className="flex items-center gap-2">
+                {type ? (
+                  <>
+                    <Check
+                      aria-hidden="true"
+                      strokeWidth={3}
+                      className="h-4 w-4 shrink-0"
+                    />
+                    <span className="text-fg font-semibold">{t.typeOptions[type]}</span>
+                  </>
+                ) : (
+                  <span>{t.typeHelp}</span>
+                )}
+              </span>
+              <ChevronDown
+                aria-hidden="true"
+                className={cn("h-4 w-4 shrink-0 transition-transform", typeOpen && "rotate-180")}
+              />
+            </button>
+            {typeOpen ? (
+              <div
+                id="type-listbox"
+                role="listbox"
+                aria-label={t.typeLabel}
+                className="bg-paper border-border shadow-card absolute top-full left-0 right-0 z-20 mt-2 max-h-[60vh] overflow-y-auto rounded-xl border-2 p-2"
+              >
+                {(["projet", "autre"] as const).map((groupKey, gIdx) => (
+                  <div key={groupKey} className={cn(gIdx > 0 && "border-border mt-2 border-t pt-2")}>
+                    <p className="text-fg-muted px-3 pb-1 pt-2 text-[10.5px] font-semibold tracking-[0.16em] uppercase">
+                      {t.typeGroups[groupKey]}
+                    </p>
+                    <ul className="space-y-0.5">
+                      {TYPE_GROUPS[groupKey].map((opt) => {
+                        const isSel = type === opt;
+                        return (
+                          <li key={opt}>
+                            <button
+                              type="button"
+                              role="option"
+                              aria-selected={isSel}
+                              onClick={() => {
+                                setValue("type", opt, { shouldValidate: true, shouldDirty: true });
+                                setTypeOpen(false);
+                              }}
+                              className={cn(
+                                "hover:bg-halo-warm focus-visible:ring-terracotta flex w-full items-start gap-2.5 rounded-lg px-3 py-2 text-left transition-colors focus-visible:ring-2 focus-visible:outline-none",
+                                isSel && "bg-halo-warm",
+                              )}
+                            >
+                              <Check
+                                aria-hidden="true"
+                                strokeWidth={3}
+                                className={cn(
+                                  "mt-0.5 h-4 w-4 shrink-0",
+                                  isSel ? "text-terracotta-deep" : "text-transparent",
+                                )}
+                              />
+                              <span
+                                className={cn(
+                                  "flex-1 text-[14px] font-semibold",
+                                  isSel ? "text-terracotta-deep" : "text-fg",
+                                )}
+                              >
+                                {t.typeOptions[opt]}
+                              </span>
+                            </button>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            ) : null}
           </div>
-          <p className="text-fg-muted text-[12.5px] leading-relaxed">{t.typeHelp}</p>
           {errors.type ? (
             <p role="alert" className="text-accent-red text-xs">
               {errors.type.message ?? t.typeRequired}
             </p>
           ) : null}
-        </fieldset>
+        </div>
       ) : (
         <input type="hidden" {...register("type")} />
       )}

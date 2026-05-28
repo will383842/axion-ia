@@ -20,6 +20,14 @@ const ROUTING: Record<NotificationCategory, RoutingEntry> = {
   IMPLEMENTATION_REQUEST_SUBMITTED: { channels: ["telegram"], severity: "info" },
   QUOTE_REQUEST_RECEIVED: { channels: ["telegram"], severity: "info" },
 
+  // --- Form v2 (2026-05-28) : 5 demandes périphériques. Severity "warn" pour
+  // investisseur (signal stratégique fort), "info" pour les 4 autres. ---
+  PRESS_REQUEST_SUBMITTED: { channels: ["telegram"], severity: "info" },
+  RECRUITMENT_RECEIVED: { channels: ["telegram"], severity: "info" },
+  SPEAKER_INVITATION_RECEIVED: { channels: ["telegram"], severity: "info" },
+  INVESTOR_INQUIRY_RECEIVED: { channels: ["telegram"], severity: "warn" },
+  CUSTOMER_SUPPORT_REQUEST: { channels: ["telegram"], severity: "warn" },
+
   // --- Newsletter ---
   NEWSLETTER_PENDING: { channels: ["telegram"], severity: "info" },
   NEWSLETTER_CONFIRMED: { channels: ["telegram"], severity: "info" },

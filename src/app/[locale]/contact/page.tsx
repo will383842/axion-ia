@@ -24,8 +24,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         : "Contact · Axion-IA · 48 business-hour reply",
     description:
       locale === "fr"
-        ? "Contactez Axion-IA — un formulaire unique pour devis, audit, implémentation, formation, 1-à-1, partenariat. Réponse sous 48 h ouvrées par un humain."
-        : "Contact Axion-IA — a single form for quote, audit, implementation, training, 1-on-1, partnership. Reply within 48 business hours, by a human.",
+        ? "Contactez Axion-IA — un formulaire unique pour devis, audit, implémentation, formation, 1-à-1, partenariat. Réponse sous 24 h."
+        : "Contact Axion-IA — a single form for quote, audit, implementation, training, 1-on-1, partnership. Reply within 24 hours.",
   });
 }
 
@@ -96,8 +96,8 @@ export default async function Contact({ params }: Props) {
             </h1>
             <p className="text-fg-soft mx-auto mt-5 max-w-xl text-base leading-relaxed sm:text-lg">
               {isFr
-                ? "Un formulaire unique pour toute demande. Réponse sous 48 h ouvrées par un humain, sans engagement, sans relance automatisée."
-                : "A single form for every request. Reply within 48 business hours, by a human, no commitment, no automated chasing."}
+                ? "Un formulaire unique pour toute demande. Réponse sous 24 h, sans engagement."
+                : "A single form for every request. Reply within 24 hours, no commitment."}
             </p>
           </header>
 

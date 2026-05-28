@@ -1,65 +1,59 @@
 import { getLocale, getTranslations } from "next-intl/server";
-import { ArrowRight } from "lucide-react";
+import { Mail, Phone } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { BRAND } from "@/lib/brand";
 import { ROUTES } from "@/lib/routes";
 import { MobileNav } from "./MobileNav";
 import { NavLink } from "./NavLink";
-import { SolutionsMegaMenu } from "./SolutionsMegaMenu";
 
-// Server Component. Sprint Header v2 2026-05-24 (Will, 5 onglets).
+// Server Component. Header v5 2026-05-28 (Will) — layout 2026 dual-CTA :
+//   [Logo · Cabinet IA pour entreprises]   nav 6 items     [Nous écrire ghost] [Réserver un appel primary]
 //
-// Structure nav desktop — 5 onglets top-level + 1 CTA central :
-//   [Logo]  [Nos solutions ▾]  [Nos formations]  [Audit entreprise]
-//                                [Contact CTA]
-//                                [Tarifs]  [Cas concrets]
-//
-// 2 raccourcis directs (Nos formations + Audit entreprise) sont aussi dans
-// le mega-menu Solutions — doublon volontaire Will pour mettre en avant les
-// 2 entrées commerciales primaires (la pyramide CA 2026 est 65 % formations
-// + 22 % audits = 87 % du revenue → ils méritent leur onglet direct).
-//
-// Conservé du Sprint Header v1 (PR #22) :
-//   - Mega-menu unique « Nos solutions » avec 5 items
-//   - CTA central « Contact » (pas de badge prix, pas de liaison pricing.ts)
-//   - LocaleSwitcher retiré (Will — réintégration ultérieure)
-//   - Server Component, fond bg-terracotta, hairline mocha, sticky z-40
-//   - Drawer mobile Radix Sheet, WCAG 2.2 AA
+// Améliorations vs v4 :
+//   - Tagline B2B « Cabinet IA pour entreprises » à côté du logo → signal
+//     d'audience immédiat (le visiteur sait que c'est pour son entreprise).
+//   - 2e CTA secondaire ghost outlined « Nous écrire » → laisse le choix entre
+//     appel direct (engagement fort) et message (engagement plus doux).
+//     Pattern dual-CTA Linear/Stripe/Cal.com : ghost contre primary, hiérarchie
+//     visuelle préservée par les couleurs (transparent vs bleu glow).
 export async function Header() {
   const t = await getTranslations();
   const locale = await getLocale();
   const isFr = locale === "fr";
 
-  // 2 raccourcis DIRECTS à gauche du CTA (à côté du mega-menu Solutions).
-  // Ces 2 liens dupliquent volontairement 2 items du mega-menu (Will 2026-05-24).
-  const navLeftOfCta = [
-    { href: "/interventions/collectives", label: t("nav.ourFormations") },
-    { href: "/audit", label: t("nav.companyAudit") },
-  ] as const;
-
-  // 3 onglets secondaires À DROITE du CTA (desktop).
-  // /implementation : label affiché sur 2 lignes pour compacter la largeur
-  // (« Implémentations » + « & automatisations »). Le `\n` est honoré via
-  // le prop `multiline` qui applique `whitespace-pre-line` côté NavLink.
-  const navAfterCtaDesktop = [
+  // 6 items nav — labels 1-2 mots, single-row, cluster gauche.
+  // `multiline: true` + `\n` injecté force le label sur 2 lignes (visuel
+  // compact pour les intitulés qui ont une qualification distinctive :
+  // « 1 to 1 » et « Native IA »).
+  const navItems = [
+    {
+      href: "/interventions/collectives",
+      label: t("nav.formationsEntreprise"),
+      multiline: false,
+    },
+    {
+      href: "/un-a-un",
+      label: t("nav.coachingOneToOne").replace(" 1 to 1", "\n1 to 1"),
+      multiline: true,
+    },
+    { href: "/audit", label: t("nav.companyAudit"), multiline: false },
     {
       href: "/implementation",
-      label: t("nav.implementationShort").replace(" & ", "\n& "),
+      label: t("nav.implementationShort").replace(" sur-mesure", "\nsur-mesure"),
+      multiline: true,
+    },
+    {
+      href: "/sites-web-augmentes",
+      label: t("nav.sitesWebSaas").replace(" Native", "\nNative"),
       multiline: true,
     },
     { href: "/tarifs", label: t("nav.pricing"), multiline: false },
-    { href: "/cas-concrets", label: t("nav.caseStudies"), multiline: false },
-  ] as const;
-
-  // Mobile drawer : on évite le doublon /implementation (déjà dans solutionsMobileItems)
-  const navAfterCtaMobile = [
-    { href: "/tarifs", label: t("nav.pricing") },
-    { href: "/cas-concrets", label: t("nav.caseStudies") },
   ] as const;
 
   // Items supplémentaires uniquement dans le drawer mobile (pages stratégiques
   // accessibles depuis mobile, pas seulement depuis le footer).
   const navMobileExtras = [
+    { href: "/cas-concrets", label: t("nav.caseStudies") },
     { href: "/implantations", label: t("nav.implantations") },
     { href: "/stack-ia", label: isFr ? "Stack IA" : "AI Stack" },
     { href: "/blog", label: t("nav.blog") },
@@ -68,24 +62,7 @@ export async function Header() {
     { href: "/a-propos", label: t("nav.about") },
   ] as const;
 
-  // Solutions mega-menu — i18n résolu côté server, passé client en props.
-  const solutionsItems = {
-    formations: { label: t("nav.formations") },
-    oneToOne: { label: t("nav.oneToOne") },
-    audit: { label: t("nav.auditShort") },
-    implementation: { label: t("nav.implementationShort") },
-    platform: { label: t("nav.platform") },
-  } as const;
-
-  // Items mobile mega-menu Solutions (plat, sans featured card pour limiter
-  // la profondeur du drawer)
-  const solutionsMobileItems = [
-    { href: "/interventions/collectives", label: t("nav.formations") },
-    { href: "/audit", label: t("nav.auditShort") },
-    { href: "/implementation", label: t("nav.implementationShort") },
-    { href: "/un-a-un", label: t("nav.oneToOne") },
-    { href: "/codage-developpement", label: t("nav.platform") },
-  ] as const;
+  const taglineB2B = isFr ? "Cabinet IA pour entreprises" : "AI consultancy for companies";
 
   return (
     <header
@@ -97,14 +74,14 @@ export async function Header() {
         aria-hidden="true"
         className="bg-mocha/30 pointer-events-none absolute inset-x-0 bottom-0 block h-px"
       />
-      {/* Layout pleine largeur : Logo + Nav split + CTA central Contact */}
-      <div className="relative flex h-20 w-full items-center gap-4 px-6 sm:px-8 lg:h-24 lg:gap-4 lg:px-12 xl:gap-6 xl:px-16">
-        {/* GAUCHE : Logo TYPOGRAPHIQUE serif (restauré 2026-05-26 à la
-            version d'avant le commit ece82717 — version éditoriale d'origine
-            qui était parfaite : « Axion » noir serif + tiret gris + « IA »
-            italique terracotta, dans un badge ivoire bg-paper) + Nav mega-menu
-            Solutions */}
-        <div className="flex flex-1 items-center justify-between gap-6 lg:gap-10">
+      {/* Layout 2026 : Logo + tagline + Nav clusterisés à GAUCHE | dual-CTA à
+          DROITE (Contact ghost + Appel primary), pattern Linear/Stripe. */}
+      <div className="relative flex h-20 w-full items-center gap-4 px-6 sm:px-8 lg:gap-8 lg:px-10 xl:gap-10 xl:px-14">
+        {/* Bloc identité : logo serif badge ivoire + tagline B2B EN DESSOUS.
+            Layout colonne → libère l'espace horizontal pour la nav (vs ancien
+            layout row qui occupait ~200px de plus). Tagline visible à tous les
+            breakpoints desktop (plus de compromis xl-only). */}
+        <div className="flex shrink-0 flex-col items-start gap-1">
           <Link
             href={ROUTES.home}
             aria-label={BRAND.name}
@@ -123,91 +100,105 @@ export async function Header() {
               </span>
             </span>
           </Link>
-
-          <nav
-            aria-label={t("nav.primaryLabel")}
-            className="hidden items-center gap-8 lg:flex lg:justify-end xl:gap-10"
+          {/* Tagline B2B sous le logo — signal d'audience cible (TPE/PME/ETI).
+              Serif italique pour cohérence éditoriale avec le « IA » du logo. */}
+          <span
+            aria-hidden="true"
+            className="text-mocha-fg/85 hidden pl-1 text-[12px] leading-none font-medium tracking-tight italic lg:block"
+            style={{ fontFamily: "var(--font-serif)" }}
           >
-            <SolutionsMegaMenu
-              triggerLabel={t("nav.solutions")}
-              panelLabel={t("nav.solutionsLabel")}
-              tagline={t("nav.solutionsTagline")}
-              items={solutionsItems}
-            />
-            {navLeftOfCta.map((item) => (
-              <NavLink key={item.href} href={item.href} label={item.label} />
-            ))}
-          </nav>
+            {taglineB2B}
+          </span>
         </div>
 
-        {/* CENTRE : CTA Contact (pill primary, AUCUN badge prix — pure UX 2027) */}
-        <Link
-          href={ROUTES.contact}
-          aria-label={t("cta.contactAria")}
-          data-cta="header-central"
-          data-cta-tracking="cta_central_contact_click"
-          className="bg-primary text-primary-fg cta-lift hover:bg-primary-hover focus-visible:ring-mocha-fg focus-visible:ring-offset-terracotta ring-mocha-fg/30 hover:ring-mocha-fg/60 hidden h-12 shrink-0 items-center gap-2 rounded-full px-6 text-sm font-bold shadow-[0_8px_24px_-8px_rgba(26,77,217,0.6)] ring-2 ring-offset-0 transition-shadow hover:shadow-[0_12px_32px_-8px_rgba(26,77,217,0.7)] focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none lg:inline-flex"
+        {/* Nav principale clusterisée à GAUCHE (collée au logo) — pattern 2026.
+            Gaps généreux gap-10/xl:gap-14 (40/56 px) pour aérer la barre. */}
+        <nav
+          aria-label={t("nav.primaryLabel")}
+          className="hidden items-center gap-12 lg:flex xl:gap-16"
         >
-          <span>{t("cta.contactLong")}</span>
-          <ArrowRight className="h-4 w-4" aria-hidden="true" />
-        </Link>
+          {navItems.map((item) => (
+            <NavLink
+              key={item.href}
+              href={item.href}
+              label={item.label}
+              multiline={item.multiline}
+            />
+          ))}
+        </nav>
 
-        {/* DROITE : Implémentations + Tarifs + Cas concrets */}
-        <div className="hidden flex-1 items-center justify-between gap-6 lg:flex lg:gap-10">
-          <nav
-            aria-label={t("nav.primaryLabel")}
-            className="hidden items-center gap-8 lg:flex lg:justify-start xl:gap-10"
-            data-nav-section="secondary"
+        {/* Bloc dual-CTA à DROITE — ml-auto pour pousser à l'extrême droite,
+            gap-3 entre les 2 CTAs pour les lire comme un groupe distinct. */}
+        <div className="ml-auto hidden shrink-0 items-center gap-3 lg:flex">
+          {/* CTA secondaire → /contact (formulaire).
+              Fond ivoire bg-paper + texte terracotta : cohérent avec le badge
+              logo, lisible sur fond terracotta du header. Engagement plus doux
+              que l'appel (asynchrone) — hiérarchie préservée car le CTA primary
+              porte le bleu + glow shadow (signal d'action fort). */}
+          <Link
+            href={ROUTES.contact}
+            aria-label={t("cta.contactAria")}
+            data-cta="header-secondary"
+            data-cta-tracking="cta_header_contact_click"
+            className="bg-paper text-terracotta shadow-subtle hover:shadow-card focus-visible:ring-mocha focus-visible:ring-offset-terracotta inline-flex h-11 items-center gap-2 rounded-full px-4 text-sm font-semibold transition-shadow focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
           >
-            {navAfterCtaDesktop.map((item) => (
-              <NavLink
-                key={item.href}
-                href={item.href}
-                label={item.label}
-                multiline={item.multiline}
-              />
-            ))}
-          </nav>
+            <Mail className="h-4 w-4" aria-hidden="true" />
+            <span>{isFr ? "Nous écrire" : "Email us"}</span>
+          </Link>
+
+          {/* CTA primaire → /appel (réservation Calendly).
+              Fond bleu primary + glow shadow : signal d'action fort, conforme
+              aux standards 2026 (Linear, Stripe, Cal.com, Anthropic, Resend). */}
+          <Link
+            href={ROUTES.appel}
+            aria-label={t("cta.bookCallAria")}
+            data-cta="header-primary"
+            data-cta-tracking="cta_header_book_call_click"
+            className="bg-primary text-primary-fg cta-lift hover:bg-primary-hover focus-visible:ring-mocha-fg focus-visible:ring-offset-terracotta ring-mocha-fg/30 hover:ring-mocha-fg/60 inline-flex h-11 items-center gap-2 rounded-full px-5 text-sm font-bold shadow-[0_8px_24px_-8px_rgba(26,77,217,0.6)] ring-2 ring-offset-0 transition-shadow hover:shadow-[0_12px_32px_-8px_rgba(26,77,217,0.7)] focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+          >
+            <Phone className="h-4 w-4" aria-hidden="true" />
+            <span>{t("cta.bookCall")}</span>
+          </Link>
         </div>
 
         {/* Mobile drawer trigger (mobile only) */}
         <div className="ml-auto lg:hidden">
           <MobileNav>
             <nav aria-label={t("nav.primaryLabel")} className="flex flex-col gap-1 text-base">
-              {/* Raccourcis directs (Nos formations + Audit entreprise) en
-                  tête du drawer — parité avec les onglets top-level desktop */}
-              {navLeftOfCta.map((item) => (
-                <NavLink key={item.href} href={item.href} label={item.label} variant="mobile" />
-              ))}
-              <div className="border-border mt-3 mb-1 border-t pt-3" aria-hidden="true" />
-              {/* Section Solutions (5 items développés à plat — pas de nested
-                  accordion pour limiter la profondeur de navigation mobile) */}
-              <p className="text-fg-muted mt-1 mb-1.5 text-[11px] font-semibold tracking-[0.16em] uppercase">
-                {t("nav.solutions")}
+              {/* Tagline B2B affichée en tête du drawer mobile pour le signal
+                  d'audience (le tagline desktop est xl-only). */}
+              <p className="text-fg-muted mb-2 text-[12px] font-medium tracking-tight">
+                {taglineB2B}
               </p>
-              {solutionsMobileItems.map((item) => (
+              {/* 6 items principaux */}
+              {navItems.map((item) => (
                 <NavLink key={item.href} href={item.href} label={item.label} variant="mobile" />
               ))}
-              {/* Séparateur fin avant Tarifs + Cas concrets */}
-              <div className="border-border mt-3 mb-1 border-t pt-3" aria-hidden="true" />
-              {navAfterCtaMobile.map((item) => (
-                <NavLink key={item.href} href={item.href} label={item.label} variant="mobile" />
-              ))}
-              {/* Items secondaires (6) — pages stratégiques accessibles depuis mobile */}
+              {/* Items secondaires (pages stratégiques accessibles depuis mobile) */}
               <div className="border-border mt-3 mb-1 border-t pt-3" aria-hidden="true" />
               {navMobileExtras.map((item) => (
                 <NavLink key={item.href} href={item.href} label={item.label} variant="mobile" />
               ))}
-              {/* CTA Contact mobile (parité desktop, sans badge prix) */}
+              {/* Dual-CTA mobile — parité desktop : Appel primary + Contact ghost */}
+              <Link
+                href={ROUTES.appel}
+                aria-label={t("cta.bookCallAria")}
+                data-cta="header-mobile-primary"
+                data-cta-tracking="cta_header_book_call_click"
+                className="bg-primary text-primary-fg mt-4 flex items-center justify-center gap-2 rounded-full px-5 py-3 text-base font-semibold"
+              >
+                <Phone className="h-4 w-4" aria-hidden="true" />
+                <span>{t("cta.bookCall")}</span>
+              </Link>
               <Link
                 href={ROUTES.contact}
                 aria-label={t("cta.contactAria")}
-                data-cta="header-mobile-central"
-                data-cta-tracking="cta_central_contact_click"
-                className="bg-terracotta text-mocha-fg mt-4 flex items-center justify-center gap-2 rounded-full px-5 py-3 text-base font-semibold"
+                data-cta="header-mobile-secondary"
+                data-cta-tracking="cta_header_contact_click"
+                className="bg-paper text-terracotta shadow-subtle mt-2 flex items-center justify-center gap-2 rounded-full px-5 py-3 text-base font-semibold"
               >
-                <span>{t("cta.contactLong")}</span>
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                <Mail className="h-4 w-4" aria-hidden="true" />
+                <span>{isFr ? "Nous écrire" : "Email us"}</span>
               </Link>
             </nav>
           </MobileNav>

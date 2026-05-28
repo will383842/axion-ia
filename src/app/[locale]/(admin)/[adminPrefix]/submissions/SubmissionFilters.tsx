@@ -52,8 +52,12 @@ export function SubmissionFilters({ initial }: FiltersProps) {
             <option value="all">Tous</option>
             <option value="audit">Audit</option>
             <option value="implementation">Implémentation</option>
-            <option value="intervention">Intervention</option>
-            <option value="contact">Contact</option>
+            <option value="intervention">Intervention (Formation / 1-to-1)</option>
+            <option value="contact">
+              Contact générique (Partenariat / Presse / Recrutement / Speaker /
+              Investisseur / Support / Autre)
+            </option>
+            <option value="quote_request">Devis</option>
           </select>
         </div>
 

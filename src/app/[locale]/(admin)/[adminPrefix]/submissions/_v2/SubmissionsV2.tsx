@@ -8,13 +8,7 @@ import { listSubmissionsAction } from "@/features/admin-submissions/actions";
 import { SubmissionFilters } from "../SubmissionFilters";
 import { AdminPageShell, AdminPageHeader, AdminStatusBadge } from "@/components/admin/ui";
 import { AdminListScaffold } from "../../_v2/AdminListScaffold";
-
-const TYPE_LABELS: Record<string, string> = {
-  audit: "Audit",
-  implementation: "Implémentation",
-  intervention: "Intervention",
-  contact: "Contact",
-};
+import { resolveSubmissionLabel } from "./submission-type-labels";
 const STATUS_LABELS: Record<string, string> = {
   new: "Nouveau",
   in_progress: "En cours",
@@ -87,7 +81,7 @@ export async function SubmissionsV2({
       detailHref: `${base}/${s.id}`,
       cells: [
         s.submittedAt.toISOString().slice(0, 10),
-        TYPE_LABELS[s.type] ?? s.type,
+        resolveSubmissionLabel(s.type, s.unifiedType),
         <span
           key="reply"
           className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[length:var(--text-admin-xs)] font-medium admin-badge-${r.tone}`}

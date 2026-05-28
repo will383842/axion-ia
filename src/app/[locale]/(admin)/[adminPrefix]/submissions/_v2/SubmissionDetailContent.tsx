@@ -15,13 +15,7 @@ import { AdminPageShell, AdminPageHeader } from "@/components/admin/ui";
 import { SubmissionUpdateForm } from "../[id]/SubmissionUpdateForm";
 import { ReplyComposer } from "@/components/admin/contacts/ReplyComposer";
 import { ReplyHistory } from "@/components/admin/contacts/ReplyHistory";
-
-const TYPE_LABELS: Record<string, string> = {
-  audit: "Audit",
-  implementation: "Implémentation",
-  intervention: "Intervention",
-  contact: "Contact",
-};
+import { resolveSubmissionLabel } from "./submission-type-labels";
 
 interface Props {
   adminPrefix: string;
@@ -43,10 +37,21 @@ export async function SubmissionDetailContent({
   const submission = await getSubmissionDetailAction(id);
   if (!submission) notFound();
 
+  // Form v2 (2026-05-28) — extrait unifiedType depuis details JSON pour
+  // afficher le label fin (presse, recrutement, etc.) plutôt que le type DB
+  // générique « contact ». Cf. submission-type-labels.ts.
+  const details =
+    submission.details && typeof submission.details === "object" && !Array.isArray(submission.details)
+      ? (submission.details as Record<string, unknown>)
+      : null;
+  const unifiedType =
+    details && typeof details.unifiedType === "string" ? details.unifiedType : null;
+  const typeLabel = resolveSubmissionLabel(submission.type, unifiedType);
+
   return (
     <AdminPageShell>
       <AdminPageHeader
-        title={`${TYPE_LABELS[submission.type] ?? submission.type} · ${submission.companyName}`}
+        title={`${typeLabel} · ${submission.companyName}`}
         description={`Reçue le ${submission.submittedAt.toISOString().slice(0, 10)} · locale ${submission.locale.toUpperCase()}`}
         breadcrumbs={
           <a href={backHref} className="admin-link admin-back">
@@ -58,7 +63,7 @@ export async function SubmissionDetailContent({
             submissionId={submission.id}
             contactName={submission.contactName}
             contactEmail={submission.contactEmail}
-            defaultSubject={`Re: votre demande ${TYPE_LABELS[submission.type] ?? submission.type}`}
+            defaultSubject={`Re: votre demande ${typeLabel}`}
           />
         }
       />

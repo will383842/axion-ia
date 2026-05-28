@@ -64,7 +64,15 @@ function submissionTypeFor(type: UnifiedContactType): SubmissionType {
       return SubmissionType.intervention;
     case "devis":
       return SubmissionType.quote_request;
+    // Form v2 (2026-05-28) — les 5 demandes périphériques sont stockées comme
+    // `contact` au niveau DB (enum fermé), distinction fine via
+    // `details.unifiedType` (audit trail) + dispatch downstream.
     case "partenariat":
+    case "presse":
+    case "recrutement":
+    case "speaker":
+    case "investisseur":
+    case "support_client":
     case "autre":
       return SubmissionType.contact;
   }
@@ -81,6 +89,17 @@ function notifCategoryFor(type: UnifiedContactType): NotificationCategory {
       return "INTERVENTION_REQUEST_SUBMITTED";
     case "devis":
       return "QUOTE_REQUEST_RECEIVED";
+    // Form v2 — catégories dédiées pour routage Telegram fin
+    case "presse":
+      return "PRESS_REQUEST_SUBMITTED";
+    case "recrutement":
+      return "RECRUITMENT_RECEIVED";
+    case "speaker":
+      return "SPEAKER_INVITATION_RECEIVED";
+    case "investisseur":
+      return "INVESTOR_INQUIRY_RECEIVED";
+    case "support_client":
+      return "CUSTOMER_SUPPORT_REQUEST";
     case "partenariat":
     case "autre":
       return "CONTACT_FORM_SUBMITTED";
@@ -93,10 +112,20 @@ function emailTemplateFor(type: UnifiedContactType): EmailJobName {
       return "audit-confirmed";
     case "implementation":
       return "implementation-confirmed";
+    // Form v2 — fallback sur `contact-confirmed` pour les 5 nouveaux types.
+    // Des templates dédiés (press-confirmed / recruitment-confirmed / etc.)
+    // peuvent être ajoutés ultérieurement ; pour l'instant la confirmation
+    // générique « nous revenons vers vous » suffit. Le routage interne fin
+    // se fait côté Telegram (catégories distinctes).
     case "devis":
     case "formation":
     case "un_a_un":
     case "partenariat":
+    case "presse":
+    case "recrutement":
+    case "speaker":
+    case "investisseur":
+    case "support_client":
     case "autre":
       return "contact-confirmed";
   }

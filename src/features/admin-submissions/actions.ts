@@ -84,6 +84,10 @@ export interface SubmissionListItem {
   lastRepliedAt: Date | null;
   /** Status delivery de la DERNIÈRE reply (null si aucune). */
   lastReplyStatus: string | null;
+  /** Form v2 (2026-05-28) — type fin extrait de details.unifiedType. Les 5
+   * nouveaux types (presse, recrutement, speaker, investisseur, support_client)
+   * sont stockés en DB comme SubmissionType.contact + details.unifiedType. */
+  unifiedType: string | null;
 }
 
 export interface SubmissionListResult {
@@ -173,6 +177,9 @@ export async function listSubmissionsAction(
         needsAttention: true,
         archivedAt: true,
         lastRepliedAt: true,
+        // Form v2 — `details` JSON contient unifiedType pour distinguer les
+        // 12 types unifiés (le champ `type` DB n'a que 5 valeurs enum).
+        details: true,
         // Sprint Notif Infra 2026-05-26 / fix P1-2 — récupère la dernière
         // reply pour calculer lastReplyStatus (badge "Échec envoi").
         replies: {
@@ -184,24 +191,34 @@ export async function listSubmissionsAction(
     }),
   ]);
 
-  // Mappe vers SubmissionListItem (flatten lastReplyStatus depuis replies[0])
-  const mapped = items.map((s) => ({
-    id: s.id,
-    type: s.type,
-    status: s.status,
-    locale: s.locale,
-    companyName: s.companyName,
-    contactName: s.contactName,
-    contactEmail: s.contactEmail,
-    sector: s.sector,
-    assignedTo: s.assignedTo,
-    submittedAt: s.submittedAt,
-    replyCount: s.replyCount,
-    needsAttention: s.needsAttention,
-    archivedAt: s.archivedAt,
-    lastRepliedAt: s.lastRepliedAt,
-    lastReplyStatus: s.replies[0]?.deliveryStatus ?? null,
-  }));
+  // Mappe vers SubmissionListItem (flatten lastReplyStatus depuis replies[0]
+  // + extrait unifiedType depuis details JSON).
+  const mapped = items.map((s) => {
+    const details =
+      s.details && typeof s.details === "object" && !Array.isArray(s.details)
+        ? (s.details as Record<string, unknown>)
+        : null;
+    const unifiedType =
+      details && typeof details.unifiedType === "string" ? details.unifiedType : null;
+    return {
+      id: s.id,
+      type: s.type,
+      status: s.status,
+      locale: s.locale,
+      companyName: s.companyName,
+      contactName: s.contactName,
+      contactEmail: s.contactEmail,
+      sector: s.sector,
+      assignedTo: s.assignedTo,
+      submittedAt: s.submittedAt,
+      replyCount: s.replyCount,
+      needsAttention: s.needsAttention,
+      archivedAt: s.archivedAt,
+      lastRepliedAt: s.lastRepliedAt,
+      lastReplyStatus: s.replies[0]?.deliveryStatus ?? null,
+      unifiedType,
+    };
+  });
 
   return {
     items: mapped,

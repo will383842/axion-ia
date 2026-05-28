@@ -90,6 +90,74 @@ export type NotificationEvent =
         locale: "fr" | "en";
       };
     }
+  // === Demandes périphériques (Form v2 2026-05-28) ===
+  // 5 catégories séparées (et non MISC générique) car chacune a une routing
+  // différente : presse → comms, recrutement → talents, investisseur → CEO,
+  // speaker → comms, support → ops. Distinction fine en Telegram + email
+  // dispatch downstream.
+  | {
+      category: "PRESS_REQUEST_SUBMITTED";
+      payload: {
+        submissionId: string;
+        contactName: string;
+        contactEmail: string;
+        contactPhone?: string;
+        outlet?: string;
+        deadline?: string;
+        source?: string;
+        locale: "fr" | "en";
+      };
+    }
+  | {
+      category: "RECRUITMENT_RECEIVED";
+      payload: {
+        submissionId: string;
+        contactName: string;
+        contactEmail: string;
+        contactPhone?: string;
+        position?: string;
+        source?: string;
+        locale: "fr" | "en";
+      };
+    }
+  | {
+      category: "SPEAKER_INVITATION_RECEIVED";
+      payload: {
+        submissionId: string;
+        contactName: string;
+        contactEmail: string;
+        contactPhone?: string;
+        eventName?: string;
+        eventDate?: string;
+        source?: string;
+        locale: "fr" | "en";
+      };
+    }
+  | {
+      category: "INVESTOR_INQUIRY_RECEIVED";
+      payload: {
+        submissionId: string;
+        contactName: string;
+        contactEmail: string;
+        contactPhone?: string;
+        firm?: string;
+        source?: string;
+        locale: "fr" | "en";
+      };
+    }
+  | {
+      category: "CUSTOMER_SUPPORT_REQUEST";
+      payload: {
+        submissionId: string;
+        contactName: string;
+        contactEmail: string;
+        contactPhone?: string;
+        ville?: string;
+        companyName?: string;
+        source?: string;
+        locale: "fr" | "en";
+      };
+    }
   // === Newsletter ===
   | {
       category: "NEWSLETTER_PENDING" | "NEWSLETTER_CONFIRMED" | "NEWSLETTER_UNSUBSCRIBED";

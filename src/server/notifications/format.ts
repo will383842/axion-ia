@@ -19,6 +19,11 @@ const TITLES: Record<NotificationCategory, string> = {
   INTERVENTION_REQUEST_SUBMITTED: "Nouvelle demande d'intervention",
   IMPLEMENTATION_REQUEST_SUBMITTED: "Nouvelle demande d'implémentation",
   QUOTE_REQUEST_RECEIVED: "Nouvelle demande de devis",
+  PRESS_REQUEST_SUBMITTED: "📰 Demande presse / média",
+  RECRUITMENT_RECEIVED: "👤 Candidature reçue",
+  SPEAKER_INVITATION_RECEIVED: "🎤 Invitation conférence",
+  INVESTOR_INQUIRY_RECEIVED: "💼 Demande investisseur / M&A",
+  CUSTOMER_SUPPORT_REQUEST: "🛟 Support client",
   NEWSLETTER_PENDING: "Newsletter — opt-in en attente",
   NEWSLETTER_CONFIRMED: "Newsletter — opt-in confirmé",
   NEWSLETTER_UNSUBSCRIBED: "Newsletter — désinscription",
@@ -73,7 +78,12 @@ function formatBody(event: NotificationEvent): string {
     case "AUDIT_REQUEST_SUBMITTED":
     case "INTERVENTION_REQUEST_SUBMITTED":
     case "IMPLEMENTATION_REQUEST_SUBMITTED":
-    case "QUOTE_REQUEST_RECEIVED": {
+    case "QUOTE_REQUEST_RECEIVED":
+    case "PRESS_REQUEST_SUBMITTED":
+    case "RECRUITMENT_RECEIVED":
+    case "SPEAKER_INVITATION_RECEIVED":
+    case "INVESTOR_INQUIRY_RECEIVED":
+    case "CUSTOMER_SUPPORT_REQUEST": {
       const p = event.payload;
       const lines = [
         formatKV("Nom", p.contactName),
@@ -88,6 +98,13 @@ function formatBody(event: NotificationEvent): string {
         "scope" in p ? formatKV("Scope", p.scope) : null,
         "urgency" in p ? formatKV("Urgence", p.urgency) : null,
         "budget" in p ? formatKV("Budget", p.budget) : null,
+        // Champs spécifiques aux 5 demandes périphériques (Form v2)
+        "outlet" in p ? formatKV("Média", p.outlet) : null,
+        "deadline" in p ? formatKV("Deadline", p.deadline) : null,
+        "position" in p ? formatKV("Poste visé", p.position) : null,
+        "eventName" in p ? formatKV("Événement", p.eventName) : null,
+        "eventDate" in p ? formatKV("Date événement", p.eventDate) : null,
+        "firm" in p ? formatKV("Société", p.firm) : null,
         "source" in p ? formatKV("Source", p.source) : null,
         formatKV("Locale", p.locale),
         formatKV("ID", p.submissionId),

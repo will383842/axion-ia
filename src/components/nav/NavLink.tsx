@@ -49,7 +49,9 @@ export function NavLink({ href, label, variant = "desktop", multiline = false }:
         "[[data-tone=terracotta]_&]:after:bg-mocha-fg",
         // Mode multi-lignes : honore les `\n` dans le label, compacte la
         // hauteur de ligne et centre le texte pour un visuel équilibré.
-        multiline && "text-center leading-[1.15] whitespace-pre-line",
+        // Sinon, force le single-line pour éviter tout retour à la ligne
+        // intempestif quand le container devient étroit (≤ ~1400px).
+        multiline ? "text-center leading-[1.15] whitespace-pre-line" : "whitespace-nowrap",
         isActive
           ? "text-mocha italic after:w-full"
           : "text-mocha-fg hover:text-mocha [[data-tone=terracotta]_&]:after:w-0 [[data-tone=terracotta]_&]:hover:after:w-full",

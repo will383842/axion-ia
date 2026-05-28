@@ -92,6 +92,9 @@ export const ROUTES = {
 
   // Tarifs récap multi-modules (Sprint Header refonte 2026-05-24)
   pricing: "/tarifs",
+
+  // CTA droite Header v3 — réservation Calendly
+  appel: "/appel",
 } as const satisfies Record<string, RouteKey>;
 
 export type Route = (typeof ROUTES)[keyof typeof ROUTES];
