@@ -22,11 +22,11 @@ export const JOINVILLE_LE_PONT_COPY: VilleCopy = {
   distancesEn:
     "Joinville-le-Pont est desservie par le RER A, qui relie le centre de Paris en une vingtaine de minutes. La gare de Lyon est à environ 10 km, l'aéroport de Paris-Orly à 16 km et celui de Roissy-Charles-de-Gaulle à 30 km, ce qui rend nos déplacements sur site très rapides dans l'est parisien.",
   topSectorsNaf: [
-    "Production audiovisuelle et créative",
-    "Services aux entreprises",
-    "Commerce de détail",
-    "Restauration et loisirs de bord de Marne",
-    "Professions libérales",
+    "Production audiovisuelle et cinéma (héritage studios de Joinville)",
+    "Hôtellerie, restauration et guinguettes des bords de Marne",
+    "Sport nautique, aviron et loisirs fluviaux",
+    "Cabinets de conseil et agences créatives",
+    "Commerce et artisanat de centre-ville",
   ],
   servicesContext: {
     audit: {

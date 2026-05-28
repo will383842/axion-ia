@@ -22,11 +22,11 @@ export const HEROUVILLE_SAINT_CLAIR_COPY: VilleCopy = {
   distancesEn:
     "Hérouville-Saint-Clair jouxte Caen, dont la gare est à environ 5 km et reliée à Paris-Saint-Lazare en moins de deux heures. L'aéroport de Caen-Carpiquet est à 15 km et le port de Ouistreham à 12 km, ce qui permet à notre cabinet de se déplacer aisément sur site dans toute l'agglomération caennaise.",
   topSectorsNaf: [
-    "Services aux entreprises",
-    "Santé humaine et action sociale",
-    "Commerce de détail",
-    "Administration et associations",
-    "Programmation informatique",
+    "Santé, médico-social et services à la personne",
+    "Numérique et cybersécurité (campus EffiScience, pôle TES)",
+    "Centres de relation client et back-offices tertiaires",
+    "Grande distribution et commerce d'agglomération caennaise",
+    "Économie sociale et solidaire, associations",
   ],
   servicesContext: {
     audit: {
