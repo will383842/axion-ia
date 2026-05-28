@@ -28,6 +28,7 @@ import {
   buildItemListJsonLd,
   buildHowToJsonLd,
   buildCourseJsonLd,
+  buildImageGraphJsonLd,
   SITE_URL,
 } from "@/lib/seo";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
@@ -148,83 +149,45 @@ export default async function CollectivesFamilyHub({ params }: Props) {
     },
   ];
 
-  // JSON-LD ImageObject @graph — exposition AEO/Google Images. Chaque photo
-  // est déclarée comme ImageObject avec creator, license CC BY 4.0,
-  // copyrightHolder, datePublished. Permet l'indexation par Google Images,
-  // Bing, Pinterest, et la citation dans les AI Overviews / Perplexity /
-  // Claude Vision (alignement doctrine image-bank Axion-IA).
-  // Inclut les 5 photos formation (carré 1024×768) + le bandeau quadriptyque
-  // (2400×800 panoramique placé après la section « Comment réserver »).
-  const photosImageObjectJsonLd = {
-    "@context": "https://schema.org",
-    "@graph": [
+  // JSON-LD ImageObject @graph — refactor 2026-05-28 (Will sprint perfection) :
+  // utilise désormais la factory centralisée `buildImageGraphJsonLd` (lib/seo.ts).
+  // Réutilisable cross-site, élimine 70+ lignes de duplication. Émet 6 ImageObject
+  // (4 photos formation + 1 quadriptyque + 1 portrait William) avec license
+  // CC BY 4.0, creator/copyrightHolder Axion-IA, datePublished.
+  const photosImageObjectJsonLd = buildImageGraphJsonLd({
+    locale: loc,
+    images: [
       ...PHOTOS_FORMATION.map((p) => ({
-        "@type": "ImageObject",
-        "@id": `${SITE_URL}${p.src}#image`,
-        contentUrl: `${SITE_URL}${p.src}`,
-        url: `${SITE_URL}${p.src}`,
+        src: p.src,
         name: isFr ? p.nameFr : p.nameEn,
-        description: isFr ? p.altFr : p.altEn,
+        alt: isFr ? p.altFr : p.altEn,
         width: 1024,
         height: 768,
-        encodingFormat: "image/png",
-        representativeOfPage: false,
-        license: "https://creativecommons.org/licenses/by/4.0/",
-        acquireLicensePage: `${SITE_URL}/${locale}/cgu`,
-        creator: { "@type": "Organization", "@id": `${SITE_URL}#org`, name: "Axion-IA" },
-        copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}#org`, name: "Axion-IA" },
-        copyrightNotice: "© Axion-IA 2026 — CC BY 4.0",
-        datePublished: "2026-05-28",
-        inLanguage: locale,
       })),
       {
-        "@type": "ImageObject",
-        "@id": `${SITE_URL}/illustrations/formation-claude-team-quadriptyque.png#image`,
-        contentUrl: `${SITE_URL}/illustrations/formation-claude-team-quadriptyque.png`,
-        url: `${SITE_URL}/illustrations/formation-claude-team-quadriptyque.png`,
+        src: "/illustrations/formation-claude-team-quadriptyque.png",
         name: isFr
           ? "Séquence formation IA Axion-IA quadriptyque — 4 moments d'intervention"
           : "Axion-IA AI training sequence quadriptych — 4 intervention moments",
-        description: isFr
+        alt: isFr
           ? "Bandeau quadriptyque illustrant 4 moments clés d'une formation IA Axion-IA en entreprise : présentation au tableau, démo écran Claude, équipe collaborative en atelier pratique, salle de formation sur site avec formateur IA expert."
           : "Quadriptych banner illustrating 4 key moments of an Axion-IA corporate AI training: tableau presentation, Claude screen demo, collaborative team in hands-on workshop, on-site training room with expert AI trainer.",
         width: 2400,
         height: 800,
-        encodingFormat: "image/png",
-        representativeOfPage: false,
-        license: "https://creativecommons.org/licenses/by/4.0/",
-        acquireLicensePage: `${SITE_URL}/${locale}/cgu`,
-        creator: { "@type": "Organization", "@id": `${SITE_URL}#org`, name: "Axion-IA" },
-        copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}#org`, name: "Axion-IA" },
-        copyrightNotice: "© Axion-IA 2026 — CC BY 4.0",
-        datePublished: "2026-05-28",
-        inLanguage: locale,
       },
       {
-        "@type": "ImageObject",
-        "@id": `${SITE_URL}/illustrations/william-fondateur-formateur-ia-axion-ia.png#image`,
-        contentUrl: `${SITE_URL}/illustrations/william-fondateur-formateur-ia-axion-ia.png`,
-        url: `${SITE_URL}/illustrations/william-fondateur-formateur-ia-axion-ia.png`,
+        src: "/illustrations/william-fondateur-formateur-ia-axion-ia.png",
         name: isFr
           ? "William — Fondateur Axion-IA et formateur IA"
           : "William — Axion-IA founder and AI trainer",
-        description: isFr
+        alt: isFr
           ? "Portrait de William, fondateur d'Axion-IA et formateur IA dédié. Intervient souvent en personne ou avec un formateur de son équipe — forme les équipes TPE, PME, ETI et grandes entreprises partout en France métropolitaine."
           : "Portrait of William, Axion-IA founder and dedicated AI trainer. Often delivers in person or with a trainer from his team — trains French SME, mid-cap and large enterprise teams across metropolitan France.",
         width: 800,
         height: 1000,
-        encodingFormat: "image/png",
-        representativeOfPage: false,
-        license: "https://creativecommons.org/licenses/by/4.0/",
-        acquireLicensePage: `${SITE_URL}/${locale}/cgu`,
-        creator: { "@type": "Organization", "@id": `${SITE_URL}#org`, name: "Axion-IA" },
-        copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}#org`, name: "Axion-IA" },
-        copyrightNotice: "© Axion-IA 2026 — CC BY 4.0",
-        datePublished: "2026-05-28",
-        inLanguage: locale,
       },
     ],
-  };
+  });
 
   // Features par palier durée — Sprint 14.10.7 (Will 2026-05-11) : enrichir
   // les cards pour qu'elles soient parlantes (3 points de positionnement par

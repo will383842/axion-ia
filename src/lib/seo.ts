@@ -1431,6 +1431,91 @@ export function buildImageObjectJsonLd({
   } as const;
 }
 
+// ============================================================
+// ImageGraph JSON-LD (Sprint perfection 2026-05-28 — Will + audit sub-agent)
+// ============================================================
+//
+// Émet un `@graph` ImageObject array pour exposer plusieurs images d'une
+// page à l'indexation Google Images / Bing / Pinterest et permettre la
+// citation par AI Overviews / Perplexity / Claude Vision. Pattern enrichi
+// vs `buildImageObjectJsonLd` qui ne gère qu'une seule image.
+//
+// Champs par image : `@id` stable + `contentUrl` + `name` (titre) + `alt`
+// (description SEO dense) + dimensions + license CC BY 4.0 par défaut +
+// creator/copyrightHolder Organization Axion-IA + datePublished + inLanguage.
+//
+// Centralise le pattern dupliqué inline dans `/interventions/collectives`.
+// Réutilisable pour : home, audit, implementation, un-a-un, codage-dev,
+// sites-web-augmentes, cas-concrets, ressources, actualites.
+
+interface ImageGraphImageInput {
+  /** Path relatif (ex. "/illustrations/formations/formateur-ia-claude.png"). */
+  src: string;
+  /** Titre court de l'image (Schema.org `name`). */
+  name: string;
+  /** Alt text dense pour SEO + a11y (Schema.org `description`). */
+  alt: string;
+  /** Dimensions en pixels (recommandé pour CLS-safe pre-render). */
+  width?: number;
+  height?: number;
+  /** Format encoding (ex. "image/png", "image/avif"). Default : "image/png". */
+  encodingFormat?: string;
+  /** Date de publication ISO. Default : BUILD_DATE. */
+  datePublished?: string;
+}
+
+interface ImageGraphJsonLdInput {
+  /** Locale "fr" | "en". */
+  locale: Locale;
+  /** Tableau d'images (1 à N). */
+  images: ReadonlyArray<ImageGraphImageInput>;
+  /** License URL. Default : CC BY 4.0. */
+  license?: string;
+  /**
+   * Nom de l'Organization creator/copyrightHolder. Default : "Axion-IA".
+   * Permet override pour pages partenariat/presse si besoin.
+   */
+  organizationName?: string;
+}
+
+export function buildImageGraphJsonLd({
+  locale,
+  images,
+  license = "https://creativecommons.org/licenses/by/4.0/",
+  organizationName = "Axion-IA",
+}: ImageGraphJsonLdInput) {
+  return {
+    "@context": "https://schema.org",
+    "@graph": images.map((img) => ({
+      "@type": "ImageObject",
+      "@id": `${SITE_URL}${img.src}#image`,
+      contentUrl: `${SITE_URL}${img.src}`,
+      url: `${SITE_URL}${img.src}`,
+      name: img.name,
+      description: img.alt,
+      ...(typeof img.width === "number" ? { width: img.width } : {}),
+      ...(typeof img.height === "number" ? { height: img.height } : {}),
+      encodingFormat: img.encodingFormat ?? "image/png",
+      representativeOfPage: false,
+      license,
+      acquireLicensePage: `${SITE_URL}/${locale}/cgu`,
+      creator: {
+        "@type": "Organization",
+        "@id": `${SITE_URL}#org`,
+        name: organizationName,
+      },
+      copyrightHolder: {
+        "@type": "Organization",
+        "@id": `${SITE_URL}#org`,
+        name: organizationName,
+      },
+      copyrightNotice: `© ${organizationName} 2026 — CC BY 4.0`,
+      datePublished: img.datePublished ?? BUILD_DATE,
+      inLanguage: locale,
+    })),
+  } as const;
+}
+
 interface QAPageJsonLdInput {
   locale: Locale;
   /** Path WITHOUT locale prefix. */
