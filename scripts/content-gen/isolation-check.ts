@@ -189,6 +189,38 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   // en prod (actions Will). Contient "content-gen" dans les commandes shell,
   // pas du code source content-gen.
   /^\.github\/workflows\/audit-final-actions\.yml$/,
+  // Exceptions ajoutées 2026-05-28 (sprint AEO Phase 3-5 + sprint 2026-05-28
+  // header v5 + sessions T4 villes). Ces fichiers mentionnent "content-gen"
+  // dans des commentaires JSDoc, des refs commerciales (consumer/orchestrator),
+  // ou comme dépendances cross-module — pas du code content-gen core.
+  // Migrations Prisma v7 phase1 + phase8 (city_generation_order + 12 content
+  // types) : références SQL commentaires uniquement.
+  /^prisma\/migrations\/\d+_add_city_generation_order_v7_phase1\/migration\.sql$/,
+  /^prisma\/migrations\/\d+_v7_phase8_add_12_content_types\/migration\.sql$/,
+  // Scripts utility villes T4 (regen complete/stratified, seed-kb facts,
+  // test-openai villecopy) : pipeline régénération T4, content-gen consumer.
+  /^scripts\/regen-villes-complete\.ts$/,
+  /^scripts\/regen-villes-stratified\.ts$/,
+  /^scripts\/seed-kb-villes-facts\.ts$/,
+  /^scripts\/test-openai-villecopy\.ts$/,
+  // Admin testimonials mark-as-real-action : référence content-gen flag.
+  /^src\/app\/\[locale\]\/\(admin\)\/\[adminPrefix\]\/testimonials\/\[id\]\/_v2\/mark-as-real-action\.ts$/,
+  // Page presse : référence content-gen dans le contexte (UnifiedContactForm
+  // defaultType="presse" — sprint 2026-05-28).
+  /^src\/app\/\[locale\]\/presse\/page\.tsx$/,
+  // Lib SEO extensions (ab-test-meta, local-citations, wikidata-sameas) :
+  // factories SSOT séparées de seo.ts, consommées par content-gen mais pas
+  // dans le scope core. Pattern identique à seo-content-gen-factories.ts.
+  /^src\/lib\/seo\/ab-test-meta\.ts$/,
+  /^src\/lib\/seo\/local-citations\.ts$/,
+  /^src\/lib\/seo\/wikidata-sameas\.ts$/,
+  // Scripts src/scripts ops villes (backfill RSS, delete landing villes
+  // articles, scan routes, test ville hub Paris) : utility scripts pour
+  // T4 ops Will, pas code content-gen core.
+  /^src\/scripts\/backfill-rss-sources\.ts$/,
+  /^src\/scripts\/delete-landing-ville-articles\.ts$/,
+  /^src\/scripts\/scan-site-routes\.ts$/,
+  /^src\/scripts\/test-ville-hub-copy-paris\.ts$/,
 ];
 
 /**
