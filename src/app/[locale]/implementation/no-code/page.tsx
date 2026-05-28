@@ -45,20 +45,20 @@ export default async function NoCodePage({ params }: Props) {
   const copy = a[loc];
   const path = loc === "fr" ? a.pathFr : a.pathEn;
   const isFr = loc === "fr";
-  // ImageObject @graph — Sprint AEO Phase 5 2026-05-28 (Will). Photo équipe
-  // + portrait fondateur pour exposition Google Images + AI Overviews sur
-  // requêtes « automatisation no-code IA », « n8n Make Zapier IA TPE PME ».
+  // ImageObject @graph — Sprint AEO Phase 5. Positionnement honnête : Axion-IA
+  // fait du code custom par défaut ; intégration IA dans no-code existant
+  // (n8n, Make, Zapier, Bubble, Airtable) uniquement sur demande client.
   const imagesJsonLd = buildImageGraphJsonLd({
     locale: loc,
     images: [
       {
         src: "/illustrations/home-bandeau-team.avif",
         name: isFr
-          ? "Équipe Axion-IA — automatisations no-code IA pour entreprises"
-          : "Axion-IA team — no-code AI automations for companies",
+          ? "Équipe Axion-IA — intégration IA dans vos outils no-code existants"
+          : "Axion-IA team — AI integration into your existing no-code tools",
         alt: isFr
-          ? "Équipe Axion-IA déploie des automatisations no-code IA pour TPE et PME — workflows n8n, Make, Zapier avec briques IA (résumé, classification, génération), maintenance simplifiée par les équipes métier."
-          : "Axion-IA team deploys no-code AI automations for small businesses and SMEs — n8n, Make, Zapier workflows with AI bricks (summarization, classification, generation), easy maintenance by business teams.",
+          ? "Équipe Axion-IA intègre l'IA dans vos outils no-code existants (n8n, Make, Zapier, Bubble, Airtable) pour TPE et PME — sur demande client uniquement, notre approche par défaut reste le code custom souverain."
+          : "Axion-IA team integrates AI into your existing no-code tools (n8n, Make, Zapier, Bubble, Airtable) for small businesses and SMEs — on client request only, our default approach is sovereign custom code.",
         width: 1961,
         height: 802,
         encodingFormat: "image/avif",
@@ -66,11 +66,11 @@ export default async function NoCodePage({ params }: Props) {
       {
         src: "/illustrations/home-founder-william.avif",
         name: isFr
-          ? "William — Fondateur Axion-IA, expert no-code IA"
-          : "William — Axion-IA founder, no-code AI expert",
+          ? "William — Fondateur Axion-IA"
+          : "William — Axion-IA founder",
         alt: isFr
-          ? "Portrait de William, fondateur d'Axion-IA. Pilote personnellement les projets d'automatisation no-code IA pour dirigeants TPE et PME — sélection plateforme, design des flows, transfert d'autonomie aux équipes."
-          : "Portrait of William, Axion-IA founder. Personally drives no-code AI automation projects for small business and SME executives — platform selection, flow design, autonomy transfer to teams.",
+          ? "Portrait de William, fondateur d'Axion-IA. Pilote les projets d'intégration IA dans vos outils no-code existants pour dirigeants TPE et PME — analyse de l'existant, design des flows, transfert d'autonomie aux équipes."
+          : "Portrait of William, Axion-IA founder. Drives AI integration projects into your existing no-code tools for small business and SME executives — analysis of existing setup, flow design, autonomy transfer to teams.",
         width: 800,
         height: 1000,
         encodingFormat: "image/avif",
