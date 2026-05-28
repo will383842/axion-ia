@@ -104,7 +104,7 @@ export default async function CollectivesFamilyHub({ params }: Props) {
   // array émis pour visibilité Google Images + AI Overviews.
   const PHOTOS_FORMATION = [
     {
-      src: "/illustrations/formations/formation-equipe-02.png",
+      src: "/illustrations/formations/formateur-ia-claude-atelier-pme.png",
       altFr:
         "Formateur IA expert Axion-IA présentant Claude à des collaborateurs PME française — atelier pratique sur les vrais outils métier en formation IA opérationnelle.",
       altEn:
@@ -113,7 +113,7 @@ export default async function CollectivesFamilyHub({ params }: Props) {
       nameEn: "AI trainer presenting Claude in SME workshop",
     },
     {
-      src: "/illustrations/formations/formation-equipe-03.png",
+      src: "/illustrations/formations/equipe-pme-formation-ia-atelier-pratique.png",
       altFr:
         "Équipe PME engagée en formation IA — apprenants en atelier pratique automatisations métier sur leurs vrais outils, montée en compétence opérationnelle Axion-IA.",
       altEn:
@@ -122,7 +122,7 @@ export default async function CollectivesFamilyHub({ params }: Props) {
       nameEn: "Engaged SME team in AI training workshop",
     },
     {
-      src: "/illustrations/formations/formation-equipe-04.png",
+      src: "/illustrations/formations/salle-formation-ia-entreprise-sur-site.png",
       altFr:
         "Salle de formation IA sur site entreprise — Axion-IA forme les équipes TPE, PME, ETI sur ChatGPT, Claude, Mistral et les outils IA quotidien pour gagner du temps.",
       altEn:
@@ -131,7 +131,7 @@ export default async function CollectivesFamilyHub({ params }: Props) {
       nameEn: "On-site corporate AI training",
     },
     {
-      src: "/illustrations/formations/formation-equipe-05.png",
+      src: "/illustrations/formations/bilan-formation-ia-equipe-autonome.png",
       altFr:
         "Bilan de formation IA — équipe entreprise française autonome sur ChatGPT, Claude, Mistral et automatisations métier, gains de temps mesurés après l'intervention Axion-IA.",
       altEn:
@@ -183,6 +183,29 @@ export default async function CollectivesFamilyHub({ params }: Props) {
           : "Quadriptych banner illustrating 4 key moments of an Axion-IA corporate AI training: tableau presentation, Claude screen demo, collaborative team in hands-on workshop, on-site training room with expert AI trainer.",
         width: 2400,
         height: 800,
+        encodingFormat: "image/png",
+        representativeOfPage: false,
+        license: "https://creativecommons.org/licenses/by/4.0/",
+        acquireLicensePage: `${SITE_URL}/${locale}/cgu`,
+        creator: { "@type": "Organization", "@id": `${SITE_URL}#org`, name: "Axion-IA" },
+        copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}#org`, name: "Axion-IA" },
+        copyrightNotice: "© Axion-IA 2026 — CC BY 4.0",
+        datePublished: "2026-05-28",
+        inLanguage: locale,
+      },
+      {
+        "@type": "ImageObject",
+        "@id": `${SITE_URL}/illustrations/william-fondateur-formateur-ia-axion-ia.png#image`,
+        contentUrl: `${SITE_URL}/illustrations/william-fondateur-formateur-ia-axion-ia.png`,
+        url: `${SITE_URL}/illustrations/william-fondateur-formateur-ia-axion-ia.png`,
+        name: isFr
+          ? "William J. — Fondateur Axion-IA et formateur IA expert"
+          : "William J. — Axion-IA founder and expert AI trainer",
+        description: isFr
+          ? "Portrait de William J., fondateur d'Axion-IA et formateur IA expert avec plus de 10 ans d'expertise en IA opérationnelle. Forme personnellement les équipes TPE, PME, ETI et grandes entreprises françaises sur ChatGPT, Claude, Mistral, Microsoft Copilot et la conception d'agents IA."
+          : "Portrait of William J., Axion-IA founder and expert AI trainer with 10+ years of operational AI expertise. Personally trains French SME, mid-cap and large enterprise teams on ChatGPT, Claude, Mistral, Microsoft Copilot and AI agent design.",
+        width: 800,
+        height: 1000,
         encodingFormat: "image/png",
         representativeOfPage: false,
         license: "https://creativecommons.org/licenses/by/4.0/",
@@ -936,6 +959,132 @@ export default async function CollectivesFamilyHub({ params }: Props) {
           sizes="100vw"
           className="h-auto w-full"
         />
+      </section>
+
+      {/* SECTION FONDATEUR / FORMATEUR — Sprint 2026-05-28 (Will). Pattern
+          aligné sur la home (line 553+ de `/[locale]/page.tsx`) mais adapté
+          au contexte formation IA : crédibilité du formateur expert dédié,
+          stats spécifiques (entreprises formées, heures économisées, années
+          d'expertise IA). Photo William en chemise sage devant olivier
+          (ambiance méditerranée, confiance, posture engagée). */}
+      <section
+        id="formateur"
+        aria-labelledby="formateur-heading"
+        className="bg-paper border-border border-t py-20 sm:py-24 lg:py-28"
+      >
+        <Container>
+          <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+            {/* Colonne gauche : copy formation */}
+            <div className="max-w-xl">
+              <p className="text-fg-muted mb-6 text-[12px] font-semibold tracking-[0.2em] uppercase">
+                <span className="bg-terracotta mr-2.5 inline-block h-1.5 w-1.5 rounded-full align-middle" />
+                {isFr ? "Votre formateur IA" : "Your AI trainer"}
+              </p>
+              <h2
+                id="formateur-heading"
+                className="text-fg text-[clamp(2.5rem,5vw,4.25rem)] leading-[1.02] font-semibold tracking-tight"
+                style={{ fontFamily: "var(--font-serif)" }}
+              >
+                {isFr ? "Un expert IA" : "An AI expert"}
+                <br />
+                <span className="text-terracotta italic">
+                  {isFr ? "qui forme vos équipes" : "training your teams"}
+                </span>
+              </h2>
+              <p className="text-fg-soft mt-7 text-lg leading-relaxed">
+                {isFr
+                  ? "William, fondateur d'Axion-IA, intervient personnellement chez vous. Plus de 10 ans dans l'IA opérationnelle, du prompt engineering aux agents IA et automatisations métier. Vos équipes montent en compétence sur leurs vrais outils — ChatGPT, Claude, Mistral, Microsoft Copilot — avec un formateur qui connaît votre quotidien."
+                  : "William, founder of Axion-IA, personally trains your team on site. 10+ years in operational AI, from prompt engineering to AI agents and business automations. Your teams upskill on their real tools — ChatGPT, Claude, Mistral, Microsoft Copilot — with a trainer who knows your daily work."}
+              </p>
+              <div className="border-border-strong mt-8 flex items-start gap-4 border-t pt-6">
+                <span className="bg-terracotta mt-1 inline-block h-6 w-0.5 shrink-0 rounded-full" />
+                <p
+                  className="text-fg-soft text-base leading-relaxed italic"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
+                  {isFr
+                    ? "« Mon engagement : que vos équipes maîtrisent l'IA opérationnelle dès le lendemain de la formation — pas dans 6 mois. »"
+                    : "« My commitment: your teams master operational AI from the day after training — not 6 months later. »"}
+                </p>
+              </div>
+              <p className="mt-6">
+                <Link
+                  href="/a-propos"
+                  className="text-terracotta hover:text-terracotta-deep inline-flex items-center gap-1 text-sm font-semibold underline-offset-4 hover:underline focus-visible:underline focus-visible:outline-none"
+                >
+                  {isFr ? "Découvrir l'approche Axion-IA" : "Discover the Axion-IA approach"}
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </Link>
+              </p>
+            </div>
+
+            {/* Colonne droite : photo William */}
+            <div className="flex justify-center lg:justify-end">
+              <div className="w-full max-w-xs">
+                <figure className="shadow-card m-0 overflow-hidden rounded-2xl">
+                  <Image
+                    src="/illustrations/william-fondateur-formateur-ia-axion-ia.png"
+                    alt={
+                      isFr
+                        ? "William, fondateur Axion-IA et formateur IA expert — portrait posé devant olivier, ambiance méditerranée, plus de 10 ans d'expertise en IA opérationnelle pour TPE, PME, ETI et grandes entreprises françaises."
+                        : "William, Axion-IA founder and expert AI trainer — portrait in front of olive tree, Mediterranean atmosphere, 10+ years of expertise in operational AI for French SMEs, mid-caps and large enterprises."
+                    }
+                    width={800}
+                    height={1000}
+                    loading="lazy"
+                    decoding="async"
+                    sizes="(max-width: 1024px) 80vw, 320px"
+                    className="aspect-[4/5] h-auto w-full object-cover"
+                    quality={85}
+                  />
+                </figure>
+                <div className="mt-4 text-center">
+                  <p className="text-fg text-lg font-semibold">William J.</p>
+                  <p className="text-fg-muted text-sm">
+                    {isFr
+                      ? "Fondateur & formateur IA · Axion-IA"
+                      : "Founder & AI trainer · Axion-IA"}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Stats bar — 3 colonnes adaptées formation */}
+          <div className="border-border-strong mt-16 grid grid-cols-3 divide-x border-t pt-10">
+            {(
+              [
+                {
+                  number: "10+",
+                  labelFr: "années d'expertise IA opérationnelle",
+                  labelEn: "years of operational AI expertise",
+                },
+                {
+                  number: isFr ? "3-5 / pers." : "3-5 / person",
+                  labelFr: "automatisations maîtrisées par formation",
+                  labelEn: "automations mastered per training",
+                },
+                {
+                  number: isFr ? "12h/sem" : "12h/week",
+                  labelFr: "gain de temps moyen post-formation",
+                  labelEn: "average time saved post-training",
+                },
+              ] as const
+            ).map((stat, idx) => (
+              <div key={idx} className="flex flex-col gap-1 px-6 first:pl-0 last:pr-0">
+                <span
+                  className="text-fg text-[clamp(1.25rem,2.5vw,1.75rem)] leading-tight font-semibold tracking-tight"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
+                  {stat.number}
+                </span>
+                <span className="text-fg-soft text-sm leading-snug">
+                  {isFr ? stat.labelFr : stat.labelEn}
+                </span>
+              </div>
+            ))}
+          </div>
+        </Container>
       </section>
 
       {/* COUVERTURE NATIONALE (pSEO villes/régions) */}
