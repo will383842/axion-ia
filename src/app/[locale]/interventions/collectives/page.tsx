@@ -914,8 +914,13 @@ export default async function CollectivesFamilyHub({ params }: Props) {
               </h2>
               <p className="text-fg-soft mt-7 text-lg leading-relaxed">
                 {isFr
-                  ? "William, fondateur d'Axion-IA, intervient souvent durant les formations, ou un membre de son équipe — formateur IA dédié à votre entreprise, qui adapte la formation à votre métier, votre stack et vos enjeux."
-                  : "William, founder of Axion-IA, often delivers the trainings himself, or a member of his team — a dedicated AI trainer who adapts the training to your business, your stack and your stakes."}
+                  ? "William, fondateur d'Axion-IA, intervient souvent durant les formations, ou un formateur de son équipe — dédié à votre entreprise, qui adapte la formation à votre métier, votre stack et vos enjeux."
+                  : "William, founder of Axion-IA, often delivers the trainings himself, or a trainer from his team — dedicated to your business, who adapts the training to your work, your stack and your stakes."}
+              </p>
+              <p className="text-fg-soft mt-5 text-lg leading-relaxed">
+                {isFr
+                  ? "Nos formateurs codent et déploient au quotidien sur nos projets (audit, implémentation, sites web, SaaS) avant d'enseigner — un atout pour vous : être formé·e par quelqu'un qui maîtrise toute la chaîne, pas seulement la théorie."
+                  : "Our trainers code and deploy daily on our projects (audit, implementation, websites, SaaS) before teaching — an asset for you: being trained by someone who masters the full chain, not just theory."}
               </p>
               <div className="border-border-strong mt-8 flex items-start gap-4 border-t pt-6">
                 <span className="bg-terracotta mt-1 inline-block h-6 w-0.5 shrink-0 rounded-full" />
@@ -924,8 +929,8 @@ export default async function CollectivesFamilyHub({ params }: Props) {
                   style={{ fontFamily: "var(--font-serif)" }}
                 >
                   {isFr
-                    ? "« Notre engagement : que vos équipes ressortent autonomes dès le lendemain de la formation. »"
-                    : "« Our commitment: your teams leave autonomous from the day after training. »"}
+                    ? "« L'esprit voulu : des formations fun, en détente, avec beaucoup d'humanité — et une forte valeur pour chaque participant. Que vos équipes ressortent autonomes dès le lendemain. »"
+                    : "« The spirit we want: fun, relaxed trainings with deep humanity — and strong value for every participant. That your teams leave autonomous from the day after. »"}
                 </p>
               </div>
               <p className="mt-6">
@@ -978,8 +983,8 @@ export default async function CollectivesFamilyHub({ params }: Props) {
               [
                 {
                   number: isFr ? "Toute la France" : "All France",
-                  labelFr: "métropolitaine + international sur demande",
-                  labelEn: "metropolitan + international on request",
+                  labelFr: "métropolitaine + francophone à l'international (1 sem. min.)",
+                  labelEn: "metropolitan + French-speaking abroad (1 week min.)",
                 },
                 {
                   number: isFr ? "3-5 / pers." : "3-5 / person",
@@ -1192,7 +1197,7 @@ export default async function CollectivesFamilyHub({ params }: Props) {
                       id: "couverture-international",
                       question: "Intervenez-vous à l'international ou seulement en France ?",
                       answer:
-                        "Pour les sièges français de groupes internationaux, oui systématiquement. Pour les filiales hors France (Belgique, Suisse, Luxembourg, Allemagne, Québec, etc.), c'est possible au cas par cas avec un devis sur mesure incluant les frais de déplacement. Anglais opérationnel disponible.",
+                        "France métropolitaine systématiquement. À l'international, nous intervenons dans les sociétés francophones (Belgique, Suisse, Luxembourg, Québec, Maghreb francophone, etc.) sur des missions d'une semaine minimum — pour rentabiliser le déplacement et garantir un transfert d'autonomie complet à votre équipe. Devis sur mesure incluant les frais de voyage et hébergement.",
                     },
                     {
                       id: "remboursement",
@@ -1249,7 +1254,7 @@ export default async function CollectivesFamilyHub({ params }: Props) {
                       id: "coverage-international",
                       question: "Do you intervene internationally or only in France?",
                       answer:
-                        "For French headquarters of international groups, yes systematically. For non-French subsidiaries (Belgium, Switzerland, Luxembourg, Germany, Quebec, etc.), it's possible case-by-case with a custom quote including travel costs. Operational English available.",
+                        "Metropolitan France systematically. Internationally, we intervene in French-speaking organisations (Belgium, Switzerland, Luxembourg, Quebec, French-speaking Maghreb, etc.) on missions of one week minimum — to make travel cost-effective and guarantee a complete autonomy transfer to your team. Custom quote including travel and accommodation costs.",
                     },
                     {
                       id: "guarantee",
