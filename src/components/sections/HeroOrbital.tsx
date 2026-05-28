@@ -6,13 +6,17 @@
 //    Copilot, Perplexity, Midjourney, Sora, HeyGen) au lieu de dots colorés.
 //  - Plus de profondeur visuelle : gradients radiaux sur les satellites, ombre
 //    portée subtile, anneau supplémentaire de raffinement.
-//  - Animations CSS pures (pulse halo lent, fade-in stagger) avec respect
-//    `prefers-reduced-motion`.
 //  - Typo serif italique sur les labels d'outils (cohérent identité Axion-IA
 //    éditoriale).
 //
-// Le composant reste pur SVG inline (0 network call, 0 JS, ~8 KB gz),
-// Server Component. CLS = 0, LCP optimal.
+// viewBox 720×600 (vs 560×560 v1) — englobe les labels qui dépassaient en
+// horizontal du viewBox originel et faisaient expand le SVG, cassant le grid
+// 2-col du hero parent. Pas d'`overflow:visible` côté SVG : rendu propre dans
+// la grille.
+//
+// Composant pur SVG inline (0 network call, 0 JS, ~7 KB gz), Server Component.
+// Pas d'animations CSS (les rotations CSS sur SVG ellipse via transform-origin
+// ont des comportements aléatoires cross-browser et débordaient). CLS = 0.
 
 import type { ReactNode } from "react";
 
@@ -82,13 +86,17 @@ export function HeroOrbital({
   ariaLabel,
   className,
 }: HeroOrbitalProps): ReactNode {
-  // Canvas 1:1 cohérent doctrine .hero-schema v3.3.
-  const W = 560;
-  const H = 560;
+  // Canvas élargi 720×600 (vs 560×560 v1) — fix débordement labels qui faisait
+  // expand le SVG horizontalement et cassait le grid 2-col du hero. Les labels
+  // satellites sont positionnés à `pos.x ± 32` au-delà du satellite, ce qui
+  // dépassait le viewBox 560 par 50-60px en horizontal. Nouveau viewBox
+  // englobe largement les labels droit/gauche pour overflow:hidden propre.
+  const W = 720;
+  const H = 600;
   const cx = W / 2;
   const cy = H / 2;
-  const rx = 200;
-  const ry = 188;
+  const rx = 195;
+  const ry = 185;
 
   // 8 angles répartis sens horaire depuis le haut, écartés pour minimiser
   // les collisions visuelles entre satellites + leurs labels.
@@ -111,14 +119,15 @@ export function HeroOrbital({
     <div
       role="img"
       aria-label={ariaLabel}
-      className={className ?? "hero-orbital pointer-events-none"}
+      className={
+        className ?? "hero-orbital pointer-events-none mx-auto w-full max-w-[640px] lg:max-w-none"
+      }
     >
       <svg
         viewBox={`0 0 ${W} ${H}`}
         xmlns="http://www.w3.org/2000/svg"
-        className="h-auto w-full overflow-visible"
+        className="h-auto w-full"
         preserveAspectRatio="xMidYMid meet"
-        overflow="visible"
       >
         <defs>
           {/* Halos atmosphériques diffus — terracotta centre, primary haut-droit,
@@ -194,7 +203,6 @@ export function HeroOrbital({
           strokeOpacity="0.15"
           strokeDasharray="2 10"
           fill="none"
-          className="ho-ring-outer"
         />
         <ellipse
           cx={cx}
@@ -244,11 +252,7 @@ export function HeroOrbital({
           const glyphPath = BRAND_GLYPHS[node.slug];
 
           return (
-            <g
-              key={`sat-${idx}`}
-              className="ho-satellite"
-              style={{ animationDelay: `${idx * 80}ms` }}
-            >
+            <g key={`sat-${idx}`}>
               {/* Halo externe diffus (le plus large) — donne ambiance lumineuse */}
               <circle cx={pos.x} cy={pos.y} r={38} fill={accent} fillOpacity="0.08" />
               {/* Halo intermédiaire — couleur accent atténuée */}
@@ -362,28 +366,6 @@ export function HeroOrbital({
           opacity="0.55"
         />
       </svg>
-
-      {/* Animations CSS — fade-in stagger des satellites + pulse halo lent.
-          Respecte `prefers-reduced-motion`. */}
-      <style>{`
-        @media (prefers-reduced-motion: no-preference) {
-          .ho-satellite {
-            animation: ho-fade-in 700ms ease-out backwards;
-          }
-          .ho-ring-outer {
-            animation: ho-ring-rotate 80s linear infinite;
-            transform-origin: ${cx}px ${cy}px;
-          }
-          @keyframes ho-fade-in {
-            from { opacity: 0; transform: scale(0.92); }
-            to { opacity: 1; transform: scale(1); }
-          }
-          @keyframes ho-ring-rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-          }
-        }
-      `}</style>
     </div>
   );
 }
