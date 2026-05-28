@@ -19,10 +19,8 @@ export const BOURG_SAINT_ANDEOL_COPY: VilleCopy = {
     "Bourg-Saint-Andéol s'inscrit dans la vallée du Rhône sud-Ardèche, à 43,74 km² et 2 600 h/an d'ensoleillement. L'économie locale combine viticulture côtes-du-rhône, oléiculture méditerranéenne, tourisme patrimonial (église romane XIIe, La Cascade pôle national arts du cirque) et un réseau de TPE artisanat BTP, commerces de proximité et services. Les communes limitrophes Pierrelatte, Saint-Marcel-d'Ardèche, Donzère, Gras, Bidon et Saint-Montan forment un bassin d'environ 30 000 habitants où Axion-IA peut intervenir.",
   ecosystemEn:
     "Bourg-Saint-Andéol s'inscrit dans la vallée du Rhône sud-Ardèche, à 43,74 km² et 2 600 h/an d'ensoleillement. L'économie locale combine viticulture côtes-du-rhône, oléiculture méditerranéenne, tourisme patrimonial (église romane XIIe, La Cascade pôle national arts du cirque) et un réseau de TPE artisanat BTP, commerces de proximité et services. Les communes limitrophes Pierrelatte, Saint-Marcel-d'Ardèche, Donzère, Gras, Bidon et Saint-Montan forment un bassin d'environ 30 000 habitants où Axion-IA peut intervenir.",
-  distancesFr:
-    "Pierrelatte 15 min, Montélimar 30 min, Avignon 1h, Valence 1h, Lyon 2h.",
-  distancesEn:
-    "Pierrelatte 15 min, Montélimar 30 min, Avignon 1h, Valence 1h, Lyon 2h.",
+  distancesFr: "Pierrelatte 15 min, Montélimar 30 min, Avignon 1h, Valence 1h, Lyon 2h.",
+  distancesEn: "Pierrelatte 15 min, Montélimar 30 min, Avignon 1h, Valence 1h, Lyon 2h.",
   topSectorsNaf: [
     "Viticulture côtes-du-rhône",
     "Oléiculture & huile d'olive AOP",
