@@ -38,7 +38,7 @@ export function VideoTestimonials({ videos }: VideoTestimonialsProps) {
               <div className="bg-mocha-rich relative aspect-video w-full overflow-hidden">
                 <Image
                   src={thumbUrl}
-                  alt=""
+                  alt={`Témoignage vidéo client Axion-IA — ${video.title}`}
                   width={1280}
                   height={720}
                   loading="lazy"

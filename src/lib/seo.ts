@@ -209,10 +209,11 @@ interface ServiceJsonLdInput {
   /**
    * Speakable specification — auto-injecte `speakable` (selectors CSS) sur
    * Service JSON-LD pour citation Google Assistant / Alexa / Claude voice.
-   * Sprint perfection AEO 2026-05-28 (Will). Default : non émis (backward
-   * compat avec ~25 pages services qui n'en avaient pas besoin). Pass
-   * `speakable: true` pour activer avec selectors par défaut h1/h2/[data-
-   * speakable], OU `speakable: { selectors: [...] }` pour custom.
+   * Sprint perfection AEO 2026-05-28 (Will). Default désormais `true` :
+   * toutes les ~26 pages services bénéficient automatiquement du signal
+   * AEO vocal sans modification. Pour bypass (rare), passer
+   * `speakable: false`. Custom selectors via `{ selectors: [...] }`.
+   * Selectors par défaut : `h1`, `h2`, `[data-speakable]`.
    */
   speakable?: boolean | { selectors: ReadonlyArray<string> };
 }
@@ -295,10 +296,11 @@ export function buildServiceJsonLd({
         }
       : {}),
     // Speakable specification — Sprint perfection AEO 2026-05-28 (Will).
-    // Centralisé sur toutes les pages services. Selectors par défaut
-    // h1/h2/[data-speakable] couvrent les zones critiques (titre, sous-titre,
-    // contenus vocaux). Custom selectors si besoin via param objet.
-    ...(speakable
+    // Centralisé sur toutes les pages services (default `true`). Selectors
+    // par défaut h1/h2/[data-speakable] couvrent les zones critiques (titre,
+    // sous-titre, contenus vocaux). Pass `speakable: false` pour bypass, ou
+    // `{ selectors: [...] }` pour custom.
+    ...(speakable !== false
       ? {
           speakable: buildSpeakableSpecification({
             selectors:
