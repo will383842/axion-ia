@@ -15,6 +15,7 @@ import {
   buildFaqJsonLd,
   buildHowToJsonLd,
   buildItemListJsonLd,
+  buildImageGraphJsonLd,
 } from "@/lib/seo";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
@@ -288,12 +289,47 @@ export default async function CodageDeveloppementHub({ params }: Props) {
     ],
   });
 
+  // ImageObject @graph — Sprint AEO Phase 4 2026-05-28 (Will). Photo équipe
+  // + portrait fondateur pour exposition Google Images + AI Overviews sur
+  // requêtes « développement plateforme IA », « SaaS native IA »,
+  // « agents IA conversationnels développeur France ».
+  const codageImagesJsonLd = buildImageGraphJsonLd({
+    locale: loc,
+    images: [
+      {
+        src: "/illustrations/home-bandeau-team.avif",
+        name: isFr
+          ? "Équipe Axion-IA — développement plateformes IA et SaaS native IA"
+          : "Axion-IA team — AI platform and AI-native SaaS development",
+        alt: isFr
+          ? "Équipe Axion-IA en session de développement plateforme IA — Next.js, agents IA conversationnels, RAG, intégrations CRM/ERP pour TPE, PME, ETI et grandes entreprises françaises. Mode full-remote ou hybride."
+          : "Axion-IA team in AI platform development session — Next.js, conversational AI agents, RAG, CRM/ERP integrations for French SMEs, mid-caps and large enterprises. Full-remote or hybrid mode.",
+        width: 1961,
+        height: 802,
+        encodingFormat: "image/avif",
+      },
+      {
+        src: "/illustrations/home-founder-william.avif",
+        name: isFr
+          ? "William — Fondateur Axion-IA et architecte plateformes IA"
+          : "William — Axion-IA founder and AI platform architect",
+        alt: isFr
+          ? "Portrait de William, fondateur d'Axion-IA. Pilote le développement de plateformes IA et SaaS native IA pour dirigeants TPE, PME, ETI et grandes entreprises françaises — code, revues, démos hebdo en visio, kick-off sur site."
+          : "Portrait of William, Axion-IA founder. Drives AI platform and AI-native SaaS development for French SME, mid-cap and large enterprise executives — code, reviews, weekly video demos, on-site kick-off.",
+        width: 800,
+        height: 1000,
+        encodingFormat: "image/avif",
+      },
+    ],
+  });
+
   return (
     <>
       {/* V-04 P1 (Sprint Correctif suite 2026-05-22) — Service inline (SEO racine
           critique), 3 schemas secondaires différés afterInteractive (-200 à
           -350 ms TBT, page lourde 4 schemas). */}
       <JsonLd data={serviceJsonLd} />
+      <JsonLd data={codageImagesJsonLd} />
       <JsonLd
         data={faqJsonLd}
         strategy="afterInteractive"

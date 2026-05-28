@@ -22,7 +22,7 @@ import { Illustration } from "@/components/visual/Illustration";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { CASE_STUDIES } from "@/content/case-studies";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { buildProductMetadata, buildItemListJsonLd } from "@/lib/seo";
+import { buildProductMetadata, buildItemListJsonLd, buildImageGraphJsonLd } from "@/lib/seo";
 import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
 import {
   CaseStudiesFilteredGrid,
@@ -99,6 +99,39 @@ export default async function CaseStudiesListing({ params }: Props) {
   const breadcrumbItems = [
     { href: "/cas-concrets", label: isFr ? "Cas concrets" : "Case studies" },
   ];
+
+  // ImageObject @graph — Sprint AEO Phase 4 2026-05-28 (Will). Photo équipe
+  // + portrait fondateur pour exposition Google Images + AI Overviews sur
+  // requêtes « cas clients IA », « références entreprise IA Axion-IA ».
+  const casConcretsImagesJsonLd = buildImageGraphJsonLd({
+    locale: loc,
+    images: [
+      {
+        src: "/illustrations/home-bandeau-team.avif",
+        name: isFr
+          ? "Équipe Axion-IA — proof social cas clients IA"
+          : "Axion-IA team — case studies social proof",
+        alt: isFr
+          ? "Équipe Axion-IA en session de cadrage cas client IA — cabinet IA opérationnel français accompagnant TPE, PME, ETI et grandes entreprises avec preuves chiffrées et témoignages vérifiés."
+          : "Axion-IA team in client case scoping session — French operational AI consultancy supporting SMEs, mid-caps and large enterprises with quantified proofs and verified testimonials.",
+        width: 1961,
+        height: 802,
+        encodingFormat: "image/avif",
+      },
+      {
+        src: "/illustrations/home-founder-william.avif",
+        name: isFr
+          ? "William — Fondateur Axion-IA et garant des cas clients"
+          : "William — Axion-IA founder, guarantor of client case studies",
+        alt: isFr
+          ? "Portrait de William, fondateur d'Axion-IA. Pilote personnellement les missions cas clients IA et garantit l'authenticité des résultats chiffrés présentés sur Axion-IA — ROI mesuré, témoignages vérifiés."
+          : "Portrait of William, Axion-IA founder. Personally drives client AI missions and guarantees the authenticity of quantified results presented on Axion-IA — measured ROI, verified testimonials.",
+        width: 800,
+        height: 1000,
+        encodingFormat: "image/avif",
+      },
+    ],
+  });
 
   // ItemList JSON-LD — expose tous les cas concrets au crawler depuis l'index
   // (AEO/GEO 2026 : LLMs résolvent « cas clients Axion-IA » avec liens directs).
@@ -329,6 +362,7 @@ export default async function CaseStudiesListing({ params }: Props) {
       />
 
       <JsonLd data={itemListJsonLd} />
+      <JsonLd data={casConcretsImagesJsonLd} />
     </>
   );
 }

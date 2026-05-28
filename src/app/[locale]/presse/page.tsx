@@ -18,6 +18,7 @@ import { PressReleases } from "@/components/sections/PressReleases";
 import { MediaCoverage } from "@/components/sections/MediaCoverage";
 import { PressSpokesperson } from "@/components/sections/PressSpokesperson";
 import { PressContact } from "@/components/sections/PressContact";
+import { UnifiedContactForm } from "@/components/forms/UnifiedContactForm";
 import {
   PRESS_PITCH,
   PRESS_FACTS,
@@ -28,7 +29,12 @@ import {
   PRESS_FAQ,
 } from "@/content/press";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { buildProductMetadata, buildFaqSpeakableJsonLd, SITE_URL } from "@/lib/seo";
+import {
+  buildProductMetadata,
+  buildFaqSpeakableJsonLd,
+  buildImageGraphJsonLd,
+  SITE_URL,
+} from "@/lib/seo";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 import { getRealTestimonialsOnly } from "@/server/actions/content-gen/real-testimonials";
 
@@ -199,6 +205,40 @@ export default async function PressePage({ params }: Props) {
       : null;
 
   const faqJsonLd = buildFaqSpeakableJsonLd({ items: faqItems });
+
+  // ImageObject @graph — Sprint AEO Phase 4 2026-05-28 (Will). Photo
+  // équipe + portrait fondateur pour exposition Google Images + AI Overviews
+  // sur requêtes « presse Axion-IA », « interview fondateur cabinet IA »,
+  // « press kit IA opérationnelle France ».
+  const pressImagesJsonLd = buildImageGraphJsonLd({
+    locale: loc,
+    images: [
+      {
+        src: "/illustrations/home-founder-william.avif",
+        name: isFr
+          ? "William — Fondateur Axion-IA disponible pour interviews"
+          : "William — Axion-IA founder available for interviews",
+        alt: isFr
+          ? "Portrait haute résolution de William, fondateur d'Axion-IA. Disponible pour interviews presse, podcasts, conférences sur l'IA opérationnelle pour TPE, PME, ETI et grandes entreprises françaises."
+          : "High-resolution portrait of William, Axion-IA founder. Available for press interviews, podcasts, conferences on operational AI for French SMEs, mid-caps and large enterprises.",
+        width: 800,
+        height: 1000,
+        encodingFormat: "image/avif",
+      },
+      {
+        src: "/illustrations/home-bandeau-team.avif",
+        name: isFr
+          ? "Équipe Axion-IA — press kit visuels cabinet IA"
+          : "Axion-IA team — AI consultancy press kit visuals",
+        alt: isFr
+          ? "Bandeau équipe Axion-IA — visuels press kit cabinet IA opérationnel français. 4 scènes : démo écran IA, échange canapé, session laptop binôme, portrait souriant."
+          : "Axion-IA team banner — French operational AI consultancy press kit visuals. 4 scenes: AI screen demo, sofa exchange, paired laptop session, smiling portrait.",
+        width: 1961,
+        height: 802,
+        encodingFormat: "image/avif",
+      },
+    ],
+  });
 
   return (
     <>
@@ -472,6 +512,30 @@ export default async function PressePage({ params }: Props) {
         />
       </Section>
 
+      {/* DEMANDE PRESSE — formulaire unifié (defaultType=presse, lockType).
+          Form v2 2026-05-28 : remplace le mailto historique par une demande
+          structurée trackée en Submission + Telegram canal presse. Le bandeau
+          PressContact ci-dessous garde l'email visible + délais SLA pour les
+          journalistes qui préfèrent le raw email. */}
+      <Section
+        id="presse-form"
+        tone="paper"
+        eyebrow={isFr ? "Contactez la rédaction Axion-IA" : "Contact Axion-IA newsroom"}
+        title={isFr ? "Envoyer une" : "Send a"}
+        titleEm={isFr ? "demande presse" : "press request"}
+        description={
+          isFr
+            ? "Interview, presskit, citation, podcast, fact-check — décrivez votre demande, on revient sous 24 h ouvrées avec une réponse personnalisée."
+            : "Interview, presskit, quote, podcast, fact-check — describe your request and we get back within 24 business hours with a personalized reply."
+        }
+      >
+        <Container>
+          <div className="mx-auto max-w-3xl">
+            <UnifiedContactForm defaultType="presse" lockType source="/presse" />
+          </div>
+        </Container>
+      </Section>
+
       {/* CONTACT presse — bandeau mocha avec mailto + 3 facts */}
       <PressContact
         labels={{
@@ -519,6 +583,7 @@ export default async function PressePage({ params }: Props) {
         <JsonLd key={`person-${idx}`} data={p} />
       ))}
       {releasesItemList ? <JsonLd data={releasesItemList} /> : null}
+      <JsonLd data={pressImagesJsonLd} />
     </>
   );
 }
