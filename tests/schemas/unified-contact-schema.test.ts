@@ -150,19 +150,21 @@ describe("unifiedContactSchema", () => {
 
 describe("unifiedTypeLabel", () => {
   it("returns FR labels for all types", () => {
+    // Labels alignés sur le schema v2 2026-05-28 (12 types, libellés plus
+    // explicites pour TYPE_GROUPS bi-section UI).
     expect(unifiedTypeLabel("autre", "fr")).toBe("Autre demande");
-    expect(unifiedTypeLabel("devis", "fr")).toBe("Devis");
+    expect(unifiedTypeLabel("devis", "fr")).toBe("Devis sur projet");
     expect(unifiedTypeLabel("audit", "fr")).toBe("Audit IA");
-    expect(unifiedTypeLabel("implementation", "fr")).toBe("Implémentation IA");
-    expect(unifiedTypeLabel("formation", "fr")).toBe("Formation");
-    expect(unifiedTypeLabel("un_a_un", "fr")).toBe("Coaching 1-à-1");
+    expect(unifiedTypeLabel("implementation", "fr")).toBe("Intégration sur-mesure");
+    expect(unifiedTypeLabel("formation", "fr")).toBe("Formation IA");
+    expect(unifiedTypeLabel("un_a_un", "fr")).toBe("Coaching 1 to 1");
     expect(unifiedTypeLabel("partenariat", "fr")).toBe("Partenariat");
   });
 
   it("returns EN labels for all types", () => {
     expect(unifiedTypeLabel("audit", "en")).toBe("AI audit");
-    expect(unifiedTypeLabel("implementation", "en")).toBe("AI implementation");
-    expect(unifiedTypeLabel("devis", "en")).toBe("Quote");
+    expect(unifiedTypeLabel("implementation", "en")).toBe("Bespoke integration");
+    expect(unifiedTypeLabel("devis", "en")).toBe("Project quote");
     expect(unifiedTypeLabel("partenariat", "en")).toBe("Partnership");
   });
 });

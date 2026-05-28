@@ -204,8 +204,8 @@ export default async function CollectivesFamilyHub({ params }: Props) {
         schemaCenterLabel={isFr ? "Votre équipe" : "Your team"}
         schemaAriaLabel={
           isFr
-            ? "Schéma : votre équipe au centre, entourée des 8 outils IA enseignés en formation (ChatGPT, Claude, Microsoft Copilot, Gemini, Perplexity, Midjourney, Sora, HeyGen) avec leur usage métier."
-            : "Diagram: your team at the center, surrounded by 8 AI tools taught in training (ChatGPT, Claude, Microsoft Copilot, Gemini, Perplexity, Midjourney, Sora, HeyGen) with their business use."
+            ? "Schéma : votre équipe au centre, entourée des 8 outils IA enseignés en formation (ChatGPT, Claude, Mistral, Microsoft Copilot, Perplexity, Midjourney, Sora, HeyGen) avec leur usage métier."
+            : "Diagram: your team at the center, surrounded by 8 AI tools taught in training (ChatGPT, Claude, Mistral, Microsoft Copilot, Perplexity, Midjourney, Sora, HeyGen) with their business use."
         }
         schemaNodes={[
           {
@@ -219,13 +219,13 @@ export default async function CollectivesFamilyHub({ params }: Props) {
             accent: "primary",
           },
           {
-            label: "Copilot",
-            benefit: isFr ? "Office, Outlook" : "Office, Outlook",
+            label: "Mistral",
+            benefit: isFr ? "IA souveraine FR" : "Sovereign EU AI",
             accent: "sage",
           },
           {
-            label: "Gemini",
-            benefit: isFr ? "Google Workspace" : "Google Workspace",
+            label: "Copilot",
+            benefit: isFr ? "Office, Outlook" : "Office, Outlook",
             accent: "mocha",
           },
           {
