@@ -95,6 +95,107 @@ export default async function CollectivesFamilyHub({ params }: Props) {
     loc,
   );
 
+  // Sprint photos formation 2026-05-28 (Will) — 4 photos illustratives de
+  // sessions de formation IA en entreprise, insérées entre la section
+  // « Choisissez la durée » et les 4 cards palier durée. Optimisation top
+  // mai 2026 : Next.js Image auto AVIF/WebP au runtime (×5-10 gain poids vs
+  // PNG source), lazy loading (sous le fold du hero), aspect ratio fixe
+  // (CLS=0), sizes responsive, alt textes denses SEO, JSON-LD ImageObject
+  // array émis pour visibilité Google Images + AI Overviews.
+  const PHOTOS_FORMATION = [
+    {
+      src: "/illustrations/formations/formation-equipe-02.png",
+      altFr:
+        "Formateur IA expert Axion-IA présentant Claude à des collaborateurs PME française — atelier pratique sur les vrais outils métier en formation IA opérationnelle.",
+      altEn:
+        "Expert Axion-IA AI trainer presenting Claude to French SME team members — hands-on workshop on real business tools in operational AI training.",
+      nameFr: "Formateur IA présentant Claude en atelier PME",
+      nameEn: "AI trainer presenting Claude in SME workshop",
+    },
+    {
+      src: "/illustrations/formations/formation-equipe-03.png",
+      altFr:
+        "Équipe PME engagée en formation IA — apprenants en atelier pratique automatisations métier sur leurs vrais outils, montée en compétence opérationnelle Axion-IA.",
+      altEn:
+        "Engaged SME team in AI training — learners in hands-on business automation workshop on their real tools, operational upskilling by Axion-IA.",
+      nameFr: "Équipe PME engagée en atelier formation IA",
+      nameEn: "Engaged SME team in AI training workshop",
+    },
+    {
+      src: "/illustrations/formations/formation-equipe-04.png",
+      altFr:
+        "Salle de formation IA sur site entreprise — Axion-IA forme les équipes TPE, PME, ETI sur ChatGPT, Claude, Mistral et les outils IA quotidien pour gagner du temps.",
+      altEn:
+        "On-site corporate AI training room — Axion-IA trains SME, mid-cap and large enterprise teams on ChatGPT, Claude, Mistral and daily AI tools for time savings.",
+      nameFr: "Formation IA sur site entreprise",
+      nameEn: "On-site corporate AI training",
+    },
+    {
+      src: "/illustrations/formations/formation-equipe-05.png",
+      altFr:
+        "Bilan de formation IA — équipe entreprise française autonome sur ChatGPT, Claude, Mistral et automatisations métier, gains de temps mesurés après l'intervention Axion-IA.",
+      altEn:
+        "AI training review — autonomous French corporate team on ChatGPT, Claude, Mistral and business automations, measured time savings after Axion-IA intervention.",
+      nameFr: "Bilan formation IA équipe autonome",
+      nameEn: "AI training review with autonomous team",
+    },
+  ];
+
+  // JSON-LD ImageObject @graph — exposition AEO/Google Images. Chaque photo
+  // est déclarée comme ImageObject avec creator, license CC BY 4.0,
+  // copyrightHolder, datePublished. Permet l'indexation par Google Images,
+  // Bing, Pinterest, et la citation dans les AI Overviews / Perplexity /
+  // Claude Vision (alignement doctrine image-bank Axion-IA).
+  // Inclut les 5 photos formation (carré 1024×768) + le bandeau quadriptyque
+  // (2400×800 panoramique placé après la section « Comment réserver »).
+  const photosImageObjectJsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      ...PHOTOS_FORMATION.map((p) => ({
+        "@type": "ImageObject",
+        "@id": `${SITE_URL}${p.src}#image`,
+        contentUrl: `${SITE_URL}${p.src}`,
+        url: `${SITE_URL}${p.src}`,
+        name: isFr ? p.nameFr : p.nameEn,
+        description: isFr ? p.altFr : p.altEn,
+        width: 1024,
+        height: 768,
+        encodingFormat: "image/png",
+        representativeOfPage: false,
+        license: "https://creativecommons.org/licenses/by/4.0/",
+        acquireLicensePage: `${SITE_URL}/${locale}/cgu`,
+        creator: { "@type": "Organization", "@id": `${SITE_URL}#org`, name: "Axion-IA" },
+        copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}#org`, name: "Axion-IA" },
+        copyrightNotice: "© Axion-IA 2026 — CC BY 4.0",
+        datePublished: "2026-05-28",
+        inLanguage: locale,
+      })),
+      {
+        "@type": "ImageObject",
+        "@id": `${SITE_URL}/illustrations/formation-claude-team-quadriptyque.png#image`,
+        contentUrl: `${SITE_URL}/illustrations/formation-claude-team-quadriptyque.png`,
+        url: `${SITE_URL}/illustrations/formation-claude-team-quadriptyque.png`,
+        name: isFr
+          ? "Séquence formation IA Axion-IA quadriptyque — 4 moments d'intervention"
+          : "Axion-IA AI training sequence quadriptych — 4 intervention moments",
+        description: isFr
+          ? "Bandeau quadriptyque illustrant 4 moments clés d'une formation IA Axion-IA en entreprise : présentation au tableau, démo écran Claude, équipe collaborative en atelier pratique, salle de formation sur site avec formateur IA expert."
+          : "Quadriptych banner illustrating 4 key moments of an Axion-IA corporate AI training: tableau presentation, Claude screen demo, collaborative team in hands-on workshop, on-site training room with expert AI trainer.",
+        width: 2400,
+        height: 800,
+        encodingFormat: "image/png",
+        representativeOfPage: false,
+        license: "https://creativecommons.org/licenses/by/4.0/",
+        acquireLicensePage: `${SITE_URL}/${locale}/cgu`,
+        creator: { "@type": "Organization", "@id": `${SITE_URL}#org`, name: "Axion-IA" },
+        copyrightHolder: { "@type": "Organization", "@id": `${SITE_URL}#org`, name: "Axion-IA" },
+        copyrightNotice: "© Axion-IA 2026 — CC BY 4.0",
+        datePublished: "2026-05-28",
+        inLanguage: locale,
+      },
+    ],
+  };
+
   // Features par palier durée — Sprint 14.10.7 (Will 2026-05-11) : enrichir
   // les cards pour qu'elles soient parlantes (3 points de positionnement par
   // palier). Évite le rendu trop simpliste « badge + compteur ».
@@ -304,6 +405,12 @@ export default async function CollectivesFamilyHub({ params }: Props) {
         }
         contentClassName={TIGHT_X}
       >
+        {/* PHOTOS FORMATION — 5 photos illustratives en grid 3 cols desktop
+            (3+2 = 2 lignes), 2 cols mobile (2+2+1 = 3 lignes). Optimisation
+            top mai 2026 : Next.js Image auto AVIF/WebP au runtime, sizes
+            responsive, loading lazy (sous fold), aspect ratio fixe → CLS=0.
+            Pas de zoom/lightbox (Will : « sans possibilité de grossir »).
+            JSON-LD ImageObject array émis plus bas pour Google Images + AEO. */}
         {/* Sprint 14.10.7 (Will 2026-05-11) — cards portrait, plus hautes
             que larges sur desktop. Badge palier XXL agrandi, padding y
             étendu, min-h pour forcer une silhouette rectangle vertical
@@ -446,6 +553,32 @@ export default async function CollectivesFamilyHub({ params }: Props) {
             );
           })}
         </div>
+
+        {/* PHOTOS FORMATION — 4 photos illustratives sous les cards palier
+            durée. Sprint 2026-05-28 (Will) — déplacé sous les cards pour
+            laisser les cards en premier (call-to-action visible direct),
+            les photos servent d'ancrage visuel après le choix.
+            Grid 4 cols 1 ligne desktop (`md:grid-cols-4`), 2 cols mobile.
+            Aspect-[4/3] paysage moderne (vs carré « grossier »).
+            Pas de zoom/lightbox (Will : « sans possibilité de grossir »). */}
+        <div className="mx-auto mt-12 grid max-w-6xl grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4 md:gap-4">
+          {PHOTOS_FORMATION.map((p) => (
+            <figure key={p.src} className="m-0 overflow-hidden rounded-2xl">
+              <Image
+                src={p.src}
+                alt={isFr ? p.altFr : p.altEn}
+                width={1024}
+                height={768}
+                loading="lazy"
+                decoding="async"
+                sizes="(max-width: 768px) 50vw, 280px"
+                className="aspect-[4/3] h-auto w-full object-cover transition-transform duration-300 hover:scale-[1.02]"
+                quality={82}
+              />
+              <figcaption className="sr-only">{isFr ? p.nameFr : p.nameEn}</figcaption>
+            </figure>
+          ))}
+        </div>
       </Section>
 
       {/* ============================================================
@@ -458,28 +591,6 @@ export default async function CollectivesFamilyHub({ params }: Props) {
           en compétence IA », « formation IA récurrente », « formation
           continue IA », « formation IA mensuelle ».
           ============================================================ */}
-      {/* BANDEAU QUADRIPTYQUE FORMATION — full-bleed.
-          Pattern aligné sur la home (`home-bandeau-team.avif`) : hors Container,
-          bord-à-bord, sans wrapper blanc ni arrondis. Le visuel respire et
-          fait coupure narrative entre la section paliers durée et la section
-          formation récurrente. */}
-      <section className="bg-bg">
-        <Image
-          src="/illustrations/formation-claude-team-quadriptyque.png"
-          alt={
-            isFr
-              ? "Séquence formation IA Axion-IA : présentation au tableau, écran Claude, équipe collaborative, salle de formation"
-              : "Axion-IA training sequence: presentation, Claude screen, collaborative team, training room"
-          }
-          width={2400}
-          height={800}
-          loading="lazy"
-          decoding="async"
-          sizes="100vw"
-          className="h-auto w-full"
-        />
-      </section>
-
       <Section
         tone="sand"
         eyebrow={isFr ? "Formation régulière" : "Recurring training"}
@@ -797,6 +908,29 @@ export default async function CollectivesFamilyHub({ params }: Props) {
         </Container>
       </Section>
 
+      {/* BANDEAU QUADRIPTYQUE FORMATION — full-bleed (Will 2026-05-28).
+          Déplacé après la section « Comment réserver » : conclut narrativement
+          le process par une image forte montrant l'intervention réelle (4
+          moments : présentation au tableau, écran Claude, équipe collab,
+          salle de formation). Pattern aligné home (`home-bandeau-team.avif`)
+          : hors Container, bord-à-bord, sans wrapper blanc ni arrondis. */}
+      <section className="bg-bg">
+        <Image
+          src="/illustrations/formation-claude-team-quadriptyque.png"
+          alt={
+            isFr
+              ? "Séquence formation IA Axion-IA en entreprise : présentation au tableau, démo écran Claude, équipe collaborative en atelier pratique, salle de formation sur site avec formateur IA expert."
+              : "Axion-IA corporate AI training sequence: tableau presentation, Claude screen demo, collaborative team in hands-on workshop, on-site training room with expert AI trainer."
+          }
+          width={2400}
+          height={800}
+          loading="lazy"
+          decoding="async"
+          sizes="100vw"
+          className="h-auto w-full"
+        />
+      </section>
+
       {/* COUVERTURE NATIONALE (pSEO villes/régions) */}
       <LocalCoverageSection
         isFr={isFr}
@@ -948,6 +1082,7 @@ export default async function CollectivesFamilyHub({ params }: Props) {
 
       <JsonLd data={serviceJsonLd} />
       <JsonLd data={itemListJsonLd} />
+      <JsonLd data={photosImageObjectJsonLd} />
     </>
   );
 }
