@@ -68,8 +68,8 @@ export async function generateMetadata({ params }: HomeProps): Promise<Metadata>
   if (!hasLocale(routing.locales, locale)) return {};
   const isFr = locale === "fr";
   const titleStr = isFr
-    ? "Cabinet IA Paris · Formations · Audits · Axion-IA"
-    : "AI Consultancy Paris · Training · Audits · Axion-IA";
+    ? "Cabinet IA France · Formations · Audits · Axion-IA"
+    : "AI Consultancy France · Training · Audits · Axion-IA";
   return {
     ...buildProductMetadata({
       locale,

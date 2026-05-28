@@ -4,7 +4,7 @@ import Image from "next/image";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { ArrowRight, Users, Sparkles } from "lucide-react";
+import { ArrowRight, ChevronDown, Users, Sparkles } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
@@ -197,8 +197,9 @@ export default async function CollectivesFamilyHub({ params }: Props) {
         }
         ctas={
           // Sprint cohérence CTA 2026-05-28 (Will) — alignés Header (Primary
-          // « Réserver un appel » + Secondary « Nous écrire »). Le booking
-          // calendrier formation est accessible plus bas via les cards palier.
+          // « Réserver un appel » + Secondary « Nous écrire »). Suivi d'un lien
+          // anchor « Découvrir les formations » avec chevron-down qui scroll
+          // vers la section #formats (cards palier durée juste en dessous).
           <>
             <Cta
               href="/appel"
@@ -218,6 +219,15 @@ export default async function CollectivesFamilyHub({ params }: Props) {
             >
               {isFr ? "Nous écrire" : "Email us"}
             </Cta>
+            {/* Scroll hint vers la section paliers durée — visual cue subtil. */}
+            <a
+              href="#formats"
+              data-cta="collectives-hero-scroll-formats"
+              className="text-fg-muted hover:text-terracotta inline-flex basis-full items-center gap-1.5 text-[13px] font-medium tracking-tight transition-colors sm:basis-auto"
+            >
+              {isFr ? "Découvrir les formations" : "Discover the trainings"}
+              <ChevronDown aria-hidden="true" className="h-4 w-4" />
+            </a>
           </>
         }
         customVisual={
@@ -284,6 +294,7 @@ export default async function CollectivesFamilyHub({ params }: Props) {
 
       {/* 4 CARDS PALIER DURÉE */}
       <Section
+        id="formats"
         eyebrow={isFr ? "Quel format pour votre équipe ?" : "Which format for your team?"}
         title={isFr ? "Choisissez la durée" : "Choose the duration"}
         titleEm={isFr ? "selon vos besoins" : "that fits your needs"}
@@ -515,16 +526,14 @@ export default async function CollectivesFamilyHub({ params }: Props) {
                         "Montée en compétence progressive et mesurable",
                         "Gain de temps instantané dès la 1ʳᵉ session",
                         "Nouveaux cas d'automatisation métier maîtrisés chaque journée",
-                        "Support continu entre sessions (Slack/email)",
-                        "Bilan mensuel : KPI gains de temps et adoption",
+                        "WhatsApp d'entraide continue entre les sessions",
                       ]
                     : [
                         "Dedicated expert AI trainer for your company",
                         "Progressive, measurable upskilling",
                         "Instant time savings from session 1",
                         "New business automation cases mastered every session",
-                        "Continuous support between sessions (Slack/email)",
-                        "Monthly review: time-saving KPIs and adoption",
+                        "Continuous WhatsApp peer-support between sessions",
                       ]
                   ).map((line, i) => (
                     <li key={i} className="text-fg flex items-start gap-3 text-[14px]">
@@ -582,19 +591,15 @@ export default async function CollectivesFamilyHub({ params }: Props) {
                   {(isFr
                     ? [
                         "Cadence respectueuse de la charge opérationnelle",
-                        "Idéal TPE en démarrage ou équipes <10 personnes",
                         "Mêmes bénéfices que mensuel, rythme ajusté",
                         "Temps d'intégration entre sessions pour pratiquer",
-                        "Support continu entre journées (Slack/email)",
-                        "Bilan par session : adoption et automatisations",
+                        "WhatsApp d'entraide continue entre les journées",
                       ]
                     : [
                         "Pace that respects operational workload",
-                        "Ideal for small businesses or teams <10 people",
                         "Same benefits as monthly, adjusted pace",
                         "Integration time between sessions to practice",
-                        "Continuous support between days (Slack/email)",
-                        "Per-session review: adoption and automations",
+                        "Continuous WhatsApp peer-support between days",
                       ]
                   ).map((line, i) => (
                     <li key={i} className="text-fg flex items-start gap-3 text-[14px]">
@@ -705,43 +710,57 @@ export default async function CollectivesFamilyHub({ params }: Props) {
         </Container>
       </Section>
 
-      {/* BANDEAU TERRACOTTA — conversion forte entre la formation récurrente
-          et la section process. Sémantique SEO dense : formation IA en
+      {/* BANDEAU TERRACOTTA compact — pattern aligné sur la home (line 1288 de
+          `/[locale]/page.tsx`) : section py-16 sm:py-20 flex horizontal
+          (texte gauche, CTAs droite). Beaucoup plus fin que le CtaBlock
+          épais (py-24/28/36). Sémantique SEO dense : formation IA en
           entreprise, formateur IA expert, intervention sur site, montée en
-          compétence, équipes, vrais outils métier, gain de temps. */}
-      <CtaBlock
-        tone="terracotta"
-        eyebrow={isFr ? "Formation IA en entreprise" : "Corporate AI training"}
-        title={isFr ? "Faites monter en compétence" : "Upskill"}
-        titleEm={isFr ? "vos équipes à l'IA" : "your teams in AI"}
-        description={
-          isFr
-            ? "Un formateur IA expert intervient sur votre site. Vos équipes apprennent sur leurs vrais outils métier et gagnent des heures dès la 1ʳᵉ intervention de formation. Réservez un appel pour cadrer votre journée."
-            : "An expert AI trainer comes on site. Your teams learn on their real business tools and save hours from the very first training session. Book a call to scope your day."
-        }
-        cta={
-          <>
-            <Cta
-              href="/appel"
-              size="lg"
-              className="bg-paper text-terracotta hover:bg-paper shadow-card border-paper hover:border-paper-soft border-2"
-              track="collectives-terracotta-band-call"
-            >
-              {isFr ? "Réserver un appel" : "Book a call"}
-              <ArrowRight aria-hidden="true" className="h-4 w-4" />
-            </Cta>
-            <Cta
-              href="/contact"
-              variant="outline"
-              size="lg"
-              className="text-paper border-paper hover:bg-paper/15 border-2"
-              track="collectives-terracotta-band-contact"
-            >
-              {isFr ? "Nous écrire" : "Email us"}
-            </Cta>
-          </>
-        }
-      />
+          compétence, vrais outils métier, gain de temps. CTAs alignés Header
+          (Primary bleu /appel + Secondary ivoire /contact). */}
+      <section className="bg-terracotta py-16 sm:py-20">
+        <Container>
+          <div className="flex flex-col items-center gap-8 text-center md:flex-row md:items-center md:justify-between md:text-left">
+            <div className="max-w-2xl">
+              <p className="text-mocha-fg/75 mb-3 text-[12px] font-semibold tracking-[0.16em] uppercase">
+                {isFr ? "Formation IA en entreprise" : "Corporate AI training"}
+              </p>
+              <h2
+                className="text-mocha-fg text-[clamp(1.75rem,3.5vw,2.75rem)] leading-tight font-semibold tracking-tight"
+                style={{ fontFamily: "var(--font-serif)" }}
+              >
+                {isFr ? "Faites monter en compétence" : "Upskill"}{" "}
+                <span className="text-paper italic" style={{ fontFamily: "var(--font-serif)" }}>
+                  {isFr ? "vos équipes à l'IA" : "your teams in AI"}
+                </span>
+              </h2>
+              <p className="text-mocha-fg/90 mt-3 text-base leading-relaxed sm:text-lg">
+                {isFr
+                  ? "Un formateur IA expert intervient sur votre site. Vos équipes apprennent sur leurs vrais outils métier et gagnent des heures dès la 1ʳᵉ intervention."
+                  : "An expert AI trainer comes on site. Your teams learn on their real business tools and save hours from the very first session."}
+              </p>
+            </div>
+            <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
+              <Cta
+                href="/appel"
+                size="lg"
+                className="bg-primary text-primary-fg hover:bg-primary-hover shadow-[0_8px_24px_-8px_rgba(26,77,217,0.6)] hover:shadow-[0_12px_32px_-8px_rgba(26,77,217,0.7)]"
+                track="collectives-terracotta-band-call"
+              >
+                {isFr ? "Réserver un appel" : "Book a call"}
+                <ArrowRight aria-hidden="true" className="h-4 w-4" />
+              </Cta>
+              <Cta
+                href="/contact"
+                size="lg"
+                className="bg-paper text-terracotta hover:bg-paper/95 shadow-subtle"
+                track="collectives-terracotta-band-contact"
+              >
+                {isFr ? "Nous écrire" : "Email us"}
+              </Cta>
+            </div>
+          </div>
+        </Container>
+      </section>
 
       {/* COMMENT ÇA FONCTIONNE — 3 étapes simplifiées (Sprint 2026-05-28 Will).
           1) 3 façons de réserver, 2) on prépare adapté à votre entreprise,
@@ -759,26 +778,22 @@ export default async function CollectivesFamilyHub({ params }: Props) {
                 id: "step-1-reservation",
                 title: isFr ? "Vous réservez" : "You book",
                 description: isFr
-                  ? "Trois façons de nous solliciter : pré-réservation directe sur le calendrier (nous vous rappelons), formulaire de contact en quelques clics, ou prise de rendez-vous téléphonique. Vous choisissez le canal qui vous convient."
-                  : "Three ways to reach us: direct pre-booking on the calendar (we call you back), quick contact form, or phone appointment. Pick the channel that suits you.",
+                  ? "Calendrier, formulaire ou appel : 3 canaux, vous choisissez."
+                  : "Calendar, form or call: 3 channels, your pick.",
               },
               {
                 id: "step-2-preparation",
-                title: isFr
-                  ? "Préparation adaptée à votre entreprise"
-                  : "Preparation tailored to your business",
+                title: isFr ? "On prépare votre journée" : "We prepare your day",
                 description: isFr
-                  ? "Avant la formation, le formateur étudie votre secteur, vos outils et vos enjeux. Le contenu est calibré pour votre entreprise — vos équipes apprennent sur des exemples qui leur parlent immédiatement."
-                  : "Before the training, the trainer studies your industry, tools and business challenges. The content is calibrated for your company — your teams learn on examples that resonate immediately.",
+                  ? "Étude de votre secteur, vos outils, vos enjeux."
+                  : "Study of your industry, tools, challenges.",
               },
               {
                 id: "step-3-cadrage-intervention",
-                title: isFr
-                  ? "Cadrage puis intervention le jour J"
-                  : "Scoping then on-site delivery",
+                title: isFr ? "Intervention sur site" : "On-site delivery",
                 description: isFr
-                  ? "Une fois réservé, on cadre la journée par un appel téléphonique pour aligner les objectifs et le programme. Le jour J, le formateur intervient sur votre site avec vos équipes."
-                  : "Once booked, we frame the day on a phone call to align objectives and programme. On the day, the trainer comes on site with your teams.",
+                  ? "Cadrage rapide par téléphone, puis le formateur intervient le jour J."
+                  : "Quick phone scoping, then trainer comes on the day.",
               },
             ]}
           />
